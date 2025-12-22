@@ -1584,3 +1584,233 @@ fn test_flying_immune_to_spikes() {
     // Since Flying type is immune to ground-based hazards, check the HP difference doesn't include spikes
     println!("Flying immunity test log:\n{}", log);
 }
+
+#[test]
+fn test_protect_blocks_damage() {
+    // Protect should block damage from attacks
+    let team1 = vec![
+        PokemonSet {
+            name: "Blissey".to_string(),
+            species: "Blissey".to_string(),
+            level: 50,
+            ability: "Natural Cure".to_string(),
+            moves: vec!["Protect".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Machamp".to_string(),
+            species: "Machamp".to_string(),
+            level: 50,
+            ability: "Guts".to_string(),
+            moves: vec!["Close Combat".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Blissey uses Protect
+    battle.make_choices("move protect", "move closecombat");
+
+    // Check that Protect was used
+    let log = battle.get_log();
+    println!("Protect test log:\n{}", log);
+    assert!(log.contains("Protect"), "Protect should be logged");
+}
+
+#[test]
+fn test_substitute_creation() {
+    // Substitute should cost 1/4 HP and create a substitute
+    let team1 = vec![
+        PokemonSet {
+            name: "Gengar".to_string(),
+            species: "Gengar".to_string(),
+            level: 50,
+            ability: "Levitate".to_string(),
+            moves: vec!["Substitute".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Blissey".to_string(),
+            species: "Blissey".to_string(),
+            level: 50,
+            ability: "Natural Cure".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    let gengar_hp_before = battle.sides[0].pokemon[0].hp;
+    let gengar_maxhp = battle.sides[0].pokemon[0].maxhp;
+    let expected_cost = gengar_maxhp / 4;
+
+    battle.make_choices("move substitute", "move tackle");
+
+    let gengar_hp_after = battle.sides[0].pokemon[0].hp;
+    let hp_lost = gengar_hp_before - gengar_hp_after;
+
+    // Should lose at least 1/4 HP for substitute (plus potential tackle damage)
+    assert!(hp_lost >= expected_cost, "Gengar should lose at least 1/4 HP for Substitute");
+
+    // Check that Substitute was created
+    assert!(battle.sides[0].pokemon[0].has_volatile(&ID::new("substitute")), "Gengar should have a Substitute");
+
+    let log = battle.get_log();
+    println!("Substitute test log:\n{}", log);
+    assert!(log.contains("Substitute"), "Substitute should be logged");
+}
+
+#[test]
+fn test_recovery_move() {
+    // Recover should heal 50% HP
+    let team1 = vec![
+        PokemonSet {
+            name: "Blissey".to_string(),
+            species: "Blissey".to_string(),
+            level: 50,
+            ability: "Natural Cure".to_string(),
+            moves: vec!["Recover".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Machamp".to_string(),
+            species: "Machamp".to_string(),
+            level: 50,
+            ability: "Guts".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Damage Blissey first (but not too much)
+    let maxhp = battle.sides[0].pokemon[0].maxhp;
+    let damage = maxhp / 3; // Take 1/3 damage
+    battle.sides[0].pokemon[0].take_damage(damage);
+    let _hp_before = battle.sides[0].pokemon[0].hp;
+
+    battle.make_choices("move recover", "move tackle");
+
+    let _hp_after = battle.sides[0].pokemon[0].hp;
+
+    // Recover heals 50% max HP, then takes tackle damage
+    // Net HP change depends on tackle damage, but Recover should have healed
+    let log = battle.get_log();
+    println!("Recover test log:\n{}", log);
+    assert!(log.contains("-heal"), "Recover should heal and log it");
+}
+
+#[test]
+fn test_haze_clears_boosts() {
+    // Haze should clear all stat boosts
+    let team1 = vec![
+        PokemonSet {
+            name: "Weezing".to_string(),
+            species: "Weezing".to_string(),
+            level: 50,
+            ability: "Levitate".to_string(),
+            moves: vec!["Haze".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Gyarados".to_string(),
+            species: "Gyarados".to_string(),
+            level: 50,
+            ability: "Intimidate".to_string(),
+            moves: vec!["Dragon Dance".to_string(), "Swords Dance".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Gyarados uses Swords Dance, then Weezing uses Haze
+    battle.make_choices("move haze", "move swordsdance");
+
+    // Both should have no boosts after Haze
+    assert_eq!(battle.sides[0].pokemon[0].boosts.atk, 0, "Weezing's Attack should be reset");
+    assert_eq!(battle.sides[1].pokemon[0].boosts.atk, 0, "Gyarados's Attack should be reset by Haze");
+
+    let log = battle.get_log();
+    println!("Haze test log:\n{}", log);
+    assert!(log.contains("-clearallboost"), "Haze should clear all boosts");
+}

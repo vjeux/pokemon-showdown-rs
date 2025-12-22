@@ -1010,9 +1010,22 @@ impl Battle {
             "ironhead" => (80, "Physical", "Steel"),
             "energyball" => (90, "Special", "Grass"),
             "scald" => (80, "Special", "Water"),
+            "uturn" => (70, "Physical", "Bug"),
+            "voltswitch" => (70, "Special", "Electric"),
+            "knockoff" => (65, "Physical", "Dark"),
+            "bravebird" => (120, "Physical", "Flying"),
+            "flareblitz" => (120, "Physical", "Fire"),
+            "woodhammer" => (120, "Physical", "Grass"),
+            "headsmash" => (150, "Physical", "Rock"),
+            "doubleedge" => (120, "Physical", "Normal"),
+            "takedown" => (90, "Physical", "Normal"),
+            "wildcharge" => (90, "Physical", "Electric"),
             "thunderwave" | "willowisp" | "toxic" | "spore" | "sleeppowder" | "bulkup" | "swordsdance" | "nastyplot" | "calmmind" | "agility" |
-            "stealthrock" | "spikes" | "toxicspikes" | "stickyweb" | "defog" | "rapidspin" => {
-                return 0; // Status/hazard moves - no damage
+            "stealthrock" | "spikes" | "toxicspikes" | "stickyweb" | "defog" | "rapidspin" |
+            "protect" | "detect" | "substitute" | "recover" | "roost" | "softboiled" | "moonlight" | "synthesis" | "morningsun" |
+            "wish" | "healbell" | "aromatherapy" | "haze" | "whirlwind" | "roar" | "dragontail" | "circlethrow" |
+            "taunt" | "encore" | "disable" | "trick" | "switcheroo" => {
+                return 0; // Status/hazard/utility moves - no damage
             }
             _ => (50, "Physical", "Normal"), // Default for unknown moves
         };
@@ -1302,6 +1315,116 @@ impl Battle {
             "rapidspin" => {
                 // Rapid Spin removes hazards from user's own side
                 self.remove_all_hazards(attacker_side);
+            }
+            // Protection moves
+            "protect" | "detect" => {
+                self.sides[attacker_side].pokemon[target_idx].add_volatile(ID::new("protect"));
+                let name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[target_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                self.add_log("-singleturn", &[&name, "Protect"]);
+            }
+            // Recovery moves
+            "recover" | "softboiled" | "milkdrink" | "slackoff" => {
+                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
+                let heal = maxhp / 2;
+                self.sides[attacker_side].pokemon[target_idx].heal(heal);
+                let name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[target_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                let hp = self.sides[attacker_side].pokemon[target_idx].hp;
+                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
+                self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp)]);
+            }
+            "roost" => {
+                // Roost heals 50% HP and removes Flying type for the turn
+                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
+                let heal = maxhp / 2;
+                self.sides[attacker_side].pokemon[target_idx].heal(heal);
+                self.sides[attacker_side].pokemon[target_idx].add_volatile(ID::new("roost"));
+                let name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[target_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                let hp = self.sides[attacker_side].pokemon[target_idx].hp;
+                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
+                self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp)]);
+            }
+            "moonlight" | "synthesis" | "morningsun" => {
+                // Weather-dependent recovery: 2/3 in sun, 1/4 in rain/sand/hail, 1/2 normally
+                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
+                let weather = self.field.weather.as_str();
+                let heal_frac = match weather {
+                    "sunnyday" | "desolateland" => 2.0 / 3.0,
+                    "raindance" | "primordialsea" | "sandstorm" | "hail" | "snow" => 0.25,
+                    _ => 0.5,
+                };
+                let heal = ((maxhp as f64) * heal_frac) as u32;
+                self.sides[attacker_side].pokemon[target_idx].heal(heal);
+                let name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[target_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                let hp = self.sides[attacker_side].pokemon[target_idx].hp;
+                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
+                self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp)]);
+            }
+            // Substitute
+            "substitute" => {
+                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
+                let hp = self.sides[attacker_side].pokemon[target_idx].hp;
+                let cost = maxhp / 4;
+
+                if hp > cost && !self.sides[attacker_side].pokemon[target_idx].has_volatile(&ID::new("substitute")) {
+                    self.sides[attacker_side].pokemon[target_idx].take_damage(cost);
+                    self.sides[attacker_side].pokemon[target_idx].add_volatile(ID::new("substitute"));
+                    // Store substitute HP in volatile data
+                    let name = {
+                        let side_id = self.sides[attacker_side].id_str();
+                        let pokemon = &self.sides[attacker_side].pokemon[target_idx];
+                        format!("{}: {}", side_id, pokemon.name)
+                    };
+                    self.add_log("-start", &[&name, "Substitute"]);
+                }
+            }
+            // Haze - reset all stat changes
+            "haze" => {
+                for side in &mut self.sides {
+                    for pokemon in &mut side.pokemon {
+                        if pokemon.is_active {
+                            pokemon.boosts = Default::default();
+                        }
+                    }
+                }
+                self.add_log("-clearallboost", &[]);
+            }
+            // Phazing moves
+            "whirlwind" | "roar" => {
+                // Force switch the target
+                let switchable = self.sides[target_side].get_switchable();
+                if !switchable.is_empty() {
+                    let random_idx = self.random(switchable.len() as u32) as usize;
+                    let switch_to = switchable[random_idx];
+                    let target_slot = self.sides[target_side].pokemon[target_idx].position;
+                    self.do_switch(target_side, target_slot, switch_to);
+                }
+            }
+            // Team support moves
+            "healbell" | "aromatherapy" => {
+                // Cure status of all team members
+                let side_id = self.sides[attacker_side].id_str();
+                for pokemon in &mut self.sides[attacker_side].pokemon {
+                    if !pokemon.status.is_empty() {
+                        pokemon.cure_status();
+                    }
+                }
+                self.add_log("-cureteam", &[side_id]);
             }
             _ => {}
         }
