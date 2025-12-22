@@ -334,3 +334,384 @@ fn test_dual_type_effectiveness() {
     let effectiveness = dex.get_type_effectiveness("Ground", &types);
     assert_eq!(effectiveness, 0.0, "Ground should be immune to Electric/Flying");
 }
+
+#[test]
+fn test_make_choices_basic() {
+    let team1 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Thunderbolt".to_string(), "Quick Attack".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Squirtle".to_string(),
+            species: "Squirtle".to_string(),
+            level: 50,
+            ability: "Torrent".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Alice".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Bob".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    // Start the battle
+    battle.start_battle();
+    assert_eq!(battle.turn, 1);
+
+    // Make moves
+    battle.make_choices("move thunderbolt", "move tackle");
+
+    // Should be turn 2 now
+    assert_eq!(battle.turn, 2);
+
+    // Check log contains move entries
+    let log = battle.get_log();
+    assert!(log.contains("|move|"), "Log should contain move messages");
+}
+
+#[test]
+fn test_damage_dealt() {
+    let team1 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Thunderbolt".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Squirtle".to_string(),
+            species: "Squirtle".to_string(),
+            level: 50,
+            ability: "Torrent".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Alice".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Bob".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    // Set up Pokemon with proper stats and types
+    battle.start_battle();
+
+    // Set types for effectiveness
+    if let Some(p1_pokemon) = battle.sides[0].get_active_mut(0) {
+        p1_pokemon.types = vec!["Electric".to_string()];
+        p1_pokemon.stored_stats.spa = 80;
+        p1_pokemon.stored_stats.spe = 90;
+    }
+    if let Some(p2_pokemon) = battle.sides[1].get_active_mut(0) {
+        p2_pokemon.types = vec!["Water".to_string()];
+        p2_pokemon.stored_stats.spd = 64;
+        p2_pokemon.hp = 500;  // High HP so it survives
+        p2_pokemon.maxhp = 500;
+    }
+
+    let initial_hp = battle.sides[1].get_active(0).unwrap().hp;
+
+    battle.make_choices("move thunderbolt", "move tackle");
+
+    // After the move, check HP - might be fainted or still active
+    let final_hp = battle.sides[1].pokemon[0].hp;  // Use pokemon directly instead of get_active
+    println!("Initial HP: {}, Final HP: {}", initial_hp, final_hp);
+
+    // Thunderbolt should deal damage (super effective against water)
+    assert!(final_hp < initial_hp, "Thunderbolt should deal damage");
+}
+
+#[test]
+fn test_status_burn() {
+    let team1 = vec![
+        PokemonSet {
+            name: "Sableye".to_string(),
+            species: "Sableye".to_string(),
+            level: 50,
+            ability: "Prankster".to_string(),
+            moves: vec!["Will-O-Wisp".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Machamp".to_string(),
+            species: "Machamp".to_string(),
+            level: 50,
+            ability: "Guts".to_string(),
+            moves: vec!["Bulk Up".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Alice".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Bob".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set types
+    if let Some(p2_pokemon) = battle.sides[1].get_active_mut(0) {
+        p2_pokemon.types = vec!["Fighting".to_string()];
+        p2_pokemon.hp = 160;
+        p2_pokemon.maxhp = 160;
+    }
+
+    // Will-O-Wisp should burn
+    battle.make_choices("move willowisp", "move bulkup");
+
+    // Check Machamp is burned
+    let machamp = battle.sides[1].get_active(0).unwrap();
+    assert_eq!(machamp.status.as_str(), "brn", "Machamp should be burned");
+
+    // Record HP before residual
+    let hp_before = machamp.hp;
+
+    // Next turn, burn should deal 1/16 max HP damage
+    battle.make_choices("move willowisp", "move bulkup");
+
+    let hp_after = battle.sides[1].get_active(0).unwrap().hp;
+    let burn_damage = hp_before - hp_after;
+
+    // Burn damage should be at least 1/16 of max HP (10 for 160 HP)
+    println!("Burn damage: {} (expected ~10 for 160 maxhp)", burn_damage);
+    assert!(burn_damage >= 10, "Burn should deal ~1/16 max HP per turn");
+}
+
+#[test]
+fn test_status_paralysis_speed() {
+    let team1 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Thunder Wave".to_string(), "Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Rattata".to_string(),
+            species: "Rattata".to_string(),
+            level: 50,
+            ability: "Run Away".to_string(),
+            moves: vec!["Quick Attack".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Alice".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Bob".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set types (not Electric so it can be paralyzed)
+    if let Some(p2_pokemon) = battle.sides[1].get_active_mut(0) {
+        p2_pokemon.types = vec!["Normal".to_string()];
+    }
+
+    // Thunder Wave should paralyze
+    battle.make_choices("move thunderwave", "move quickattack");
+
+    // Check Rattata is paralyzed
+    let rattata = battle.sides[1].get_active(0).unwrap();
+    assert_eq!(rattata.status.as_str(), "par", "Rattata should be paralyzed");
+}
+
+#[test]
+fn test_switch_in_battle() {
+    let team1 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Thunderbolt".to_string()],
+            ..Default::default()
+        },
+        PokemonSet {
+            name: "Charizard".to_string(),
+            species: "Charizard".to_string(),
+            level: 50,
+            ability: "Blaze".to_string(),
+            moves: vec!["Flamethrower".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Squirtle".to_string(),
+            species: "Squirtle".to_string(),
+            level: 50,
+            ability: "Torrent".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Alice".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Bob".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Pikachu should be active
+    assert_eq!(battle.sides[0].get_active(0).unwrap().name, "Pikachu");
+
+    // Switch to Charizard
+    battle.make_choices("switch 2", "move tackle");
+
+    // Charizard should now be active
+    assert_eq!(battle.sides[0].get_active(0).unwrap().name, "Charizard");
+
+    // Log should contain switch message
+    let log = battle.get_log();
+    assert!(log.contains("switch") && log.contains("Charizard"), "Log should contain Charizard switch");
+}
+
+#[test]
+fn test_faint_detection() {
+    let team1 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Thunderbolt".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Magikarp".to_string(),
+            species: "Magikarp".to_string(),
+            level: 5,  // Very low level
+            ability: "Swift Swim".to_string(),
+            moves: vec!["Splash".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Alice".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Bob".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set Magikarp with very low HP
+    if let Some(magikarp) = battle.sides[1].get_active_mut(0) {
+        magikarp.types = vec!["Water".to_string()];
+        magikarp.hp = 20;
+        magikarp.maxhp = 20;
+        magikarp.stored_stats.spd = 20;
+    }
+
+    // Set Pikachu with high attack
+    if let Some(pikachu) = battle.sides[0].get_active_mut(0) {
+        pikachu.types = vec!["Electric".to_string()];
+        pikachu.stored_stats.spa = 100;
+    }
+
+    // Thunderbolt should KO
+    battle.make_choices("move thunderbolt", "move splash");
+
+    // Check Magikarp fainted
+    let magikarp_hp = battle.sides[1].pokemon[0].hp;
+    assert_eq!(magikarp_hp, 0, "Magikarp should be at 0 HP");
+    assert!(battle.sides[1].pokemon[0].fainted, "Magikarp should be fainted");
+
+    // Battle should have ended (only 1 Pokemon per side)
+    assert!(battle.ended, "Battle should have ended");
+    assert_eq!(battle.winner.as_deref(), Some("p1"), "Alice (p1) should have won");
+}

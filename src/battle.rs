@@ -486,6 +486,907 @@ impl Battle {
     pub fn get_log(&self) -> String {
         self.log.join("\n")
     }
+
+    /// Make choices for both sides and run the turn
+    /// This is the main entry point for progressing the battle
+    pub fn make_choices(&mut self, p1_choice: &str, p2_choice: &str) {
+        // Parse and validate choices
+        self.parse_choice(SideID::P1, p1_choice);
+        self.parse_choice(SideID::P2, p2_choice);
+
+        // Log choices
+        if !p1_choice.is_empty() {
+            self.input_log.push(format!(">p1 {}", p1_choice));
+        }
+        if !p2_choice.is_empty() {
+            self.input_log.push(format!(">p2 {}", p2_choice));
+        }
+
+        // Run the turn
+        self.commit_choices();
+    }
+
+    /// Parse a choice string and store the actions
+    fn parse_choice(&mut self, side_id: SideID, choice: &str) {
+        let side_idx = side_id.index();
+        if side_idx >= self.sides.len() {
+            return;
+        }
+
+        // Clear previous choice
+        self.sides[side_idx].choice.clear();
+
+        // Parse the choice string
+        let parts: Vec<&str> = choice.split(',').map(|s| s.trim()).collect();
+
+        for (slot, part) in parts.iter().enumerate() {
+            if slot >= self.active_per_half {
+                break;
+            }
+
+            let words: Vec<&str> = part.split_whitespace().collect();
+            if words.is_empty() {
+                continue;
+            }
+
+            let action = match words[0] {
+                "move" => {
+                    let move_id = if words.len() > 1 {
+                        // Could be a move name or number
+                        if let Ok(num) = words[1].parse::<usize>() {
+                            // Move by number (1-indexed)
+                            if let Some(Some(poke_idx)) = self.sides[side_idx].active.get(slot) {
+                                if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
+                                    if num > 0 && num <= pokemon.move_slots.len() {
+                                        Some(pokemon.move_slots[num - 1].id.clone())
+                                    } else {
+                                        None
+                                    }
+                                } else {
+                                    None
+                                }
+                            } else {
+                                None
+                            }
+                        } else {
+                            Some(ID::new(words[1]))
+                        }
+                    } else {
+                        None
+                    };
+
+                    // Parse target if present
+                    let target_loc = if words.len() > 2 {
+                        words[2].parse::<i8>().ok()
+                    } else {
+                        None
+                    };
+
+                    // Check for mega/zmove flags
+                    let mega = words.iter().any(|&w| w == "mega");
+                    let terastallize = if words.iter().any(|&w| w == "terastallize") {
+                        self.sides[side_idx].get_active(slot)
+                            .and_then(|p| p.tera_type.clone())
+                    } else {
+                        None
+                    };
+
+                    crate::side::ChosenAction {
+                        choice: crate::side::ChoiceType::Move,
+                        pokemon_index: slot,
+                        target_loc,
+                        move_id,
+                        switch_index: None,
+                        mega,
+                        zmove: None,
+                        max_move: None,
+                        terastallize,
+                    }
+                }
+                "switch" => {
+                    let switch_idx = if words.len() > 1 {
+                        words[1].parse::<usize>().ok().map(|n| n.saturating_sub(1))
+                    } else {
+                        None
+                    };
+
+                    crate::side::ChosenAction {
+                        choice: crate::side::ChoiceType::Switch,
+                        pokemon_index: slot,
+                        target_loc: None,
+                        move_id: None,
+                        switch_index: switch_idx,
+                        mega: false,
+                        zmove: None,
+                        max_move: None,
+                        terastallize: None,
+                    }
+                }
+                "pass" | _ => {
+                    crate::side::ChosenAction {
+                        choice: crate::side::ChoiceType::Pass,
+                        pokemon_index: slot,
+                        target_loc: None,
+                        move_id: None,
+                        switch_index: None,
+                        mega: false,
+                        zmove: None,
+                        max_move: None,
+                        terastallize: None,
+                    }
+                }
+            };
+
+            self.sides[side_idx].choice.actions.push(action);
+        }
+    }
+
+    /// Commit choices and run the turn
+    fn commit_choices(&mut self) {
+        // Build action queue
+        self.queue.clear();
+
+        // Collect all move actions with their priorities and speeds
+        let mut actions: Vec<(usize, usize, crate::side::ChosenAction, i8, u32)> = Vec::new();
+
+        for side_idx in 0..self.sides.len() {
+            for action in &self.sides[side_idx].choice.actions {
+                match action.choice {
+                    crate::side::ChoiceType::Move => {
+                        let pokemon_idx = self.sides[side_idx].active.get(action.pokemon_index)
+                            .and_then(|opt| *opt);
+                        if let Some(poke_idx) = pokemon_idx {
+                            let priority = 0i8; // Would look up move priority from dex
+                            let speed = self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as u32;
+                            actions.push((side_idx, poke_idx, action.clone(), priority, speed));
+                        }
+                    }
+                    crate::side::ChoiceType::Switch => {
+                        // Switches happen before moves (priority 7 effectively)
+                        let pokemon_idx = self.sides[side_idx].active.get(action.pokemon_index)
+                            .and_then(|opt| *opt);
+                        if let Some(poke_idx) = pokemon_idx {
+                            let speed = self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as u32;
+                            actions.push((side_idx, poke_idx, action.clone(), 7, speed));
+                        }
+                    }
+                    _ => {}
+                }
+            }
+        }
+
+        // Sort by priority (desc), then speed (desc), then random
+        let tie_breaker = self.random(2) == 0;
+        actions.sort_by(|a, b| {
+            let priority_cmp = b.3.cmp(&a.3); // Higher priority first
+            if priority_cmp != std::cmp::Ordering::Equal {
+                return priority_cmp;
+            }
+            let speed_cmp = b.4.cmp(&a.4); // Higher speed first
+            if speed_cmp != std::cmp::Ordering::Equal {
+                return speed_cmp;
+            }
+            // Speed tie - use random tie breaker
+            if tie_breaker {
+                std::cmp::Ordering::Less
+            } else {
+                std::cmp::Ordering::Greater
+            }
+        });
+
+        // Execute actions in order
+        for (side_idx, poke_idx, action, _, _) in actions {
+            if self.ended {
+                break;
+            }
+
+            match action.choice {
+                crate::side::ChoiceType::Switch => {
+                    if let Some(switch_to) = action.switch_index {
+                        // Get slot from the Pokemon's position
+                        let slot = self.sides[side_idx].pokemon.get(poke_idx)
+                            .map(|p| p.position)
+                            .unwrap_or(0);
+                        self.do_switch(side_idx, slot, switch_to);
+                    }
+                }
+                crate::side::ChoiceType::Move => {
+                    if let Some(move_id) = &action.move_id {
+                        let target_loc = action.target_loc.unwrap_or(0);
+                        self.run_move(side_idx, poke_idx, move_id, target_loc);
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        // End of turn
+        self.run_residual();
+
+        // Check for fainted Pokemon
+        self.faint_messages();
+
+        // Check win condition
+        if self.check_win().is_some() {
+            return;
+        }
+
+        // Start next turn
+        self.next_turn();
+    }
+
+    /// Execute a switch
+    fn do_switch(&mut self, side_idx: usize, slot: usize, switch_to: usize) {
+        if side_idx >= self.sides.len() {
+            return;
+        }
+
+        // Check if switch_to Pokemon is valid
+        if switch_to >= self.sides[side_idx].pokemon.len() {
+            return;
+        }
+        if self.sides[side_idx].pokemon[switch_to].is_fainted() {
+            return;
+        }
+        if self.sides[side_idx].pokemon[switch_to].is_active {
+            return;
+        }
+
+        // Get the old Pokemon's name for logging
+        let old_name = self.sides[side_idx].get_active(slot)
+            .map(|p| p.name.clone())
+            .unwrap_or_default();
+
+        // Perform the switch
+        self.sides[side_idx].switch_in(slot, switch_to);
+
+        // Log the switch
+        if let Some(pokemon) = self.sides[side_idx].get_active(slot) {
+            let side_id = self.sides[side_idx].id_str();
+            let details = pokemon.details();
+            let hp = format!("{}/{}", pokemon.hp, pokemon.maxhp);
+            self.log.push(format!("|switch|{}: {}|{}|{}", side_id, pokemon.name, details, hp));
+        }
+    }
+
+    /// Execute a move
+    fn run_move(&mut self, side_idx: usize, poke_idx: usize, move_id: &ID, target_loc: i8) {
+        if side_idx >= self.sides.len() {
+            return;
+        }
+
+        // Check if Pokemon can still move
+        let can_act = {
+            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+            !pokemon.is_fainted() && pokemon.is_active
+        };
+
+        if !can_act {
+            return;
+        }
+
+        // Get target side and Pokemon
+        let (target_side_idx, target_poke_idx) = self.get_move_target(side_idx, target_loc);
+
+        // Log the move use
+        let (attacker_name, move_name) = {
+            let side_id = self.sides[side_idx].id_str();
+            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+            (format!("{}: {}", side_id, pokemon.name), move_id.as_str().to_string())
+        };
+        self.add_log("move", &[&attacker_name, &move_name]);
+
+        // Deduct PP
+        self.sides[side_idx].pokemon[poke_idx].deduct_pp(move_id, 1);
+
+        // Check if move hits, calculate damage, apply effects
+        // For now, implement basic damage application
+        self.use_move(side_idx, poke_idx, move_id, target_side_idx, target_poke_idx);
+    }
+
+    /// Get the target for a move based on target_loc
+    fn get_move_target(&self, side_idx: usize, target_loc: i8) -> (usize, usize) {
+        // In singles, target_loc is typically 0 (auto-target foe) or specific
+        // Positive = foe position, Negative = ally position
+        let foe_idx = if side_idx == 0 { 1 } else { 0 };
+
+        if target_loc <= 0 {
+            // Default to first active foe
+            let target_poke_idx = self.sides.get(foe_idx)
+                .and_then(|s| s.active.get(0))
+                .and_then(|opt| *opt)
+                .unwrap_or(0);
+            (foe_idx, target_poke_idx)
+        } else {
+            // Specific target position
+            let slot = (target_loc.abs() - 1) as usize;
+            let target_poke_idx = self.sides.get(foe_idx)
+                .and_then(|s| s.active.get(slot))
+                .and_then(|opt| *opt)
+                .unwrap_or(0);
+            (foe_idx, target_poke_idx)
+        }
+    }
+
+    /// Apply a move's effects
+    fn use_move(&mut self, attacker_side: usize, attacker_idx: usize, move_id: &ID, target_side: usize, target_idx: usize) {
+        // Load move data - we need to get this from the Dex
+        // For now, we'll implement inline with basic damage
+
+        // Check paralysis
+        let paralysis_check = self.random(4);
+        if self.sides[attacker_side].pokemon[attacker_idx].status.as_str() == "par" && paralysis_check == 0 {
+            let name = {
+                let side_id = self.sides[attacker_side].id_str();
+                let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                format!("{}: {}", side_id, pokemon.name)
+            };
+            self.add_log("cant", &[&name, "par"]);
+            return;
+        }
+
+        // Check freeze (20% thaw chance)
+        if self.sides[attacker_side].pokemon[attacker_idx].status.as_str() == "frz" {
+            let thaw_check = self.random(5);
+            if thaw_check != 0 {
+                let name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                self.add_log("cant", &[&name, "frz"]);
+                return;
+            } else {
+                // Thaw out
+                self.sides[attacker_side].pokemon[attacker_idx].cure_status();
+                let name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                self.add_log("-curestatus", &[&name, "frz", "[msg]"]);
+            }
+        }
+
+        // Check sleep
+        if self.sides[attacker_side].pokemon[attacker_idx].status.as_str() == "slp" {
+            let duration = self.sides[attacker_side].pokemon[attacker_idx].status_state.duration;
+            if let Some(d) = duration {
+                if d > 0 {
+                    self.sides[attacker_side].pokemon[attacker_idx].status_state.duration = Some(d - 1);
+                    let name = {
+                        let side_id = self.sides[attacker_side].id_str();
+                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                        format!("{}: {}", side_id, pokemon.name)
+                    };
+                    self.add_log("cant", &[&name, "slp"]);
+                    return;
+                } else {
+                    // Wake up
+                    self.sides[attacker_side].pokemon[attacker_idx].cure_status();
+                    let name = {
+                        let side_id = self.sides[attacker_side].id_str();
+                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                        format!("{}: {}", side_id, pokemon.name)
+                    };
+                    self.add_log("-curestatus", &[&name, "slp", "[msg]"]);
+                }
+            }
+        }
+
+        // Set last move
+        self.sides[attacker_side].pokemon[attacker_idx].move_this_turn = Some(move_id.clone());
+        self.sides[attacker_side].pokemon[attacker_idx].last_move_used = Some(move_id.clone());
+
+        // Check if target is valid
+        if target_side >= self.sides.len() || target_idx >= self.sides[target_side].pokemon.len() {
+            return;
+        }
+
+        let target_fainted = self.sides[target_side].pokemon[target_idx].is_fainted();
+        if target_fainted {
+            self.add_log("-notarget", &[]);
+            return;
+        }
+
+        // For now, apply basic damage based on move ID
+        // In a full implementation, we'd look up move data from the Dex
+        let damage = self.calculate_move_damage(attacker_side, attacker_idx, target_side, target_idx, move_id);
+
+        if damage > 0 {
+            // Apply damage
+            self.sides[target_side].pokemon[target_idx].take_damage(damage);
+
+            let target_name = {
+                let side_id = self.sides[target_side].id_str();
+                let pokemon = &self.sides[target_side].pokemon[target_idx];
+                format!("{}: {}", side_id, pokemon.name)
+            };
+            let hp = self.sides[target_side].pokemon[target_idx].hp;
+            let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
+            self.add_log("-damage", &[&target_name, &format!("{}/{}", hp, maxhp)]);
+
+            // Apply burn damage reduction if physical move and attacker is burned
+            // (this is already factored into calculate_move_damage)
+        }
+
+        // Apply secondary effects based on move
+        self.apply_move_secondary(attacker_side, attacker_idx, target_side, target_idx, move_id);
+    }
+
+    /// Calculate damage for a move (basic implementation)
+    fn calculate_move_damage(&mut self, attacker_side: usize, attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) -> u32 {
+        // Get base power from common moves (simplified)
+        let (base_power, category, move_type): (u32, &str, &str) = match move_id.as_str() {
+            "thunderbolt" => (90, "Special", "Electric"),
+            "flamethrower" => (90, "Special", "Fire"),
+            "icebeam" => (90, "Special", "Ice"),
+            "surf" => (90, "Special", "Water"),
+            "psychic" => (90, "Special", "Psychic"),
+            "earthquake" => (100, "Physical", "Ground"),
+            "tackle" => (40, "Physical", "Normal"),
+            "quickattack" => (40, "Physical", "Normal"),
+            "slash" => (70, "Physical", "Normal"),
+            "bodyslam" => (85, "Physical", "Normal"),
+            "hyperbeam" => (150, "Special", "Normal"),
+            "dragonclaw" => (80, "Physical", "Dragon"),
+            "crunch" => (80, "Physical", "Dark"),
+            "shadowball" => (80, "Special", "Ghost"),
+            "sludgebomb" => (90, "Special", "Poison"),
+            "closecombat" => (120, "Physical", "Fighting"),
+            "stoneedge" => (100, "Physical", "Rock"),
+            "ironhead" => (80, "Physical", "Steel"),
+            "energyball" => (90, "Special", "Grass"),
+            "scald" => (80, "Special", "Water"),
+            "thunderwave" | "willowisp" | "toxic" | "spore" | "sleeppowder" | "bulkup" | "swordsdance" | "nastyplot" | "calmmind" | "agility" => {
+                return 0; // Status moves - no damage
+            }
+            _ => (50, "Physical", "Normal"), // Default for unknown moves
+        };
+
+        if base_power == 0 {
+            return 0;
+        }
+
+        // Extract all needed data from Pokemon before any mutable operations
+        let (attack_stat, defense_stat, atk_boost, def_boost, level, attacker_types, attacker_status, defender_types, defender_name) = {
+            let attacker = &self.sides[attacker_side].pokemon[attacker_idx];
+            let defender = &self.sides[target_side].pokemon[target_idx];
+
+            let (attack_stat, defense_stat) = if category == "Physical" {
+                (attacker.stored_stats.atk as u32, defender.stored_stats.def as u32)
+            } else {
+                (attacker.stored_stats.spa as u32, defender.stored_stats.spd as u32)
+            };
+
+            let (atk_boost, def_boost) = if category == "Physical" {
+                (attacker.boosts.atk, defender.boosts.def)
+            } else {
+                (attacker.boosts.spa, defender.boosts.spd)
+            };
+
+            (
+                attack_stat,
+                defense_stat,
+                atk_boost,
+                def_boost,
+                attacker.level as u32,
+                attacker.types.clone(),
+                attacker.status.as_str().to_string(),
+                defender.types.clone(),
+                defender.name.clone(),
+            )
+        };
+
+        // Check type immunity
+        let type_effectiveness = self.get_type_effectiveness(move_type, &defender_types);
+        if type_effectiveness == 0.0 {
+            let side_id = self.sides[target_side].id_str();
+            let target_name = format!("{}: {}", side_id, defender_name);
+            self.add_log("-immune", &[&target_name]);
+            return 0;
+        }
+
+        // Calculate boosted stats
+        let attack = self.calculate_boosted_stat(attack_stat, atk_boost);
+        let defense = self.calculate_boosted_stat(defense_stat, def_boost).max(1);
+
+        // Base damage calculation: ((2L/5 + 2) * P * A/D) / 50 + 2
+        let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense) / 50 + 2;
+
+        // Random factor (85-100%)
+        let random_factor = 85 + self.random(16);
+        let damage = base_damage * random_factor / 100;
+
+        // STAB
+        let has_stab = attacker_types.iter().any(|t| t.to_lowercase() == move_type.to_lowercase());
+        let damage = if has_stab {
+            (damage as f64 * 1.5) as u32
+        } else {
+            damage
+        };
+
+        // Type effectiveness
+        let damage = (damage as f64 * type_effectiveness) as u32;
+
+        // Burn reduces physical damage
+        let damage = if category == "Physical" && attacker_status == "brn" {
+            damage / 2
+        } else {
+            damage
+        };
+
+        // Log effectiveness
+        if type_effectiveness > 1.0 {
+            self.add_log("-supereffective", &[]);
+        } else if type_effectiveness < 1.0 && type_effectiveness > 0.0 {
+            self.add_log("-resisted", &[]);
+        }
+
+        // Critical hit check (1/24 chance in Gen 7+)
+        let crit_roll = self.random(24);
+        if crit_roll == 0 {
+            self.add_log("-crit", &[]);
+            return (damage as f64 * 1.5) as u32;
+        }
+
+        damage.max(1)
+    }
+
+    /// Get type effectiveness multiplier
+    fn get_type_effectiveness(&self, move_type: &str, defender_types: &[String]) -> f64 {
+        // Type chart (simplified)
+        let get_single_effectiveness = |attack_type: &str, defend_type: &str| -> f64 {
+            match (attack_type.to_lowercase().as_str(), defend_type.to_lowercase().as_str()) {
+                // Super effective
+                ("fire", "grass") | ("fire", "ice") | ("fire", "bug") | ("fire", "steel") => 2.0,
+                ("water", "fire") | ("water", "ground") | ("water", "rock") => 2.0,
+                ("grass", "water") | ("grass", "ground") | ("grass", "rock") => 2.0,
+                ("electric", "water") | ("electric", "flying") => 2.0,
+                ("ice", "grass") | ("ice", "ground") | ("ice", "flying") | ("ice", "dragon") => 2.0,
+                ("fighting", "normal") | ("fighting", "ice") | ("fighting", "rock") | ("fighting", "dark") | ("fighting", "steel") => 2.0,
+                ("poison", "grass") | ("poison", "fairy") => 2.0,
+                ("ground", "fire") | ("ground", "electric") | ("ground", "poison") | ("ground", "rock") | ("ground", "steel") => 2.0,
+                ("flying", "grass") | ("flying", "fighting") | ("flying", "bug") => 2.0,
+                ("psychic", "fighting") | ("psychic", "poison") => 2.0,
+                ("bug", "grass") | ("bug", "psychic") | ("bug", "dark") => 2.0,
+                ("rock", "fire") | ("rock", "ice") | ("rock", "flying") | ("rock", "bug") => 2.0,
+                ("ghost", "psychic") | ("ghost", "ghost") => 2.0,
+                ("dragon", "dragon") => 2.0,
+                ("dark", "psychic") | ("dark", "ghost") => 2.0,
+                ("steel", "ice") | ("steel", "rock") | ("steel", "fairy") => 2.0,
+                ("fairy", "fighting") | ("fairy", "dragon") | ("fairy", "dark") => 2.0,
+
+                // Immunities
+                ("normal", "ghost") | ("fighting", "ghost") => 0.0,
+                ("electric", "ground") => 0.0,
+                ("poison", "steel") => 0.0,
+                ("ground", "flying") => 0.0,
+                ("psychic", "dark") => 0.0,
+                ("ghost", "normal") => 0.0,
+                ("dragon", "fairy") => 0.0,
+
+                // Not very effective
+                ("fire", "fire") | ("fire", "water") | ("fire", "rock") | ("fire", "dragon") => 0.5,
+                ("water", "water") | ("water", "grass") | ("water", "dragon") => 0.5,
+                ("grass", "fire") | ("grass", "grass") | ("grass", "poison") | ("grass", "flying") | ("grass", "bug") | ("grass", "dragon") | ("grass", "steel") => 0.5,
+                ("electric", "electric") | ("electric", "grass") | ("electric", "dragon") => 0.5,
+                ("ice", "fire") | ("ice", "water") | ("ice", "ice") | ("ice", "steel") => 0.5,
+                ("fighting", "poison") | ("fighting", "flying") | ("fighting", "psychic") | ("fighting", "bug") | ("fighting", "fairy") => 0.5,
+                ("poison", "poison") | ("poison", "ground") | ("poison", "rock") | ("poison", "ghost") => 0.5,
+                ("ground", "grass") | ("ground", "bug") => 0.5,
+                ("flying", "electric") | ("flying", "rock") | ("flying", "steel") => 0.5,
+                ("psychic", "psychic") | ("psychic", "steel") => 0.5,
+                ("bug", "fire") | ("bug", "fighting") | ("bug", "poison") | ("bug", "flying") | ("bug", "ghost") | ("bug", "steel") | ("bug", "fairy") => 0.5,
+                ("rock", "fighting") | ("rock", "ground") | ("rock", "steel") => 0.5,
+                ("ghost", "dark") => 0.5,
+                ("dark", "fighting") | ("dark", "dark") | ("dark", "fairy") => 0.5,
+                ("steel", "fire") | ("steel", "water") | ("steel", "electric") | ("steel", "steel") => 0.5,
+                ("fairy", "fire") | ("fairy", "poison") | ("fairy", "steel") => 0.5,
+
+                _ => 1.0,
+            }
+        };
+
+        let mut effectiveness = 1.0;
+        for def_type in defender_types {
+            effectiveness *= get_single_effectiveness(move_type, def_type);
+        }
+        effectiveness
+    }
+
+    /// Calculate a stat with boost applied
+    fn calculate_boosted_stat(&self, base: u32, boost: i8) -> u32 {
+        let (num, denom) = match boost {
+            -6 => (2, 8),
+            -5 => (2, 7),
+            -4 => (2, 6),
+            -3 => (2, 5),
+            -2 => (2, 4),
+            -1 => (2, 3),
+            0 => (2, 2),
+            1 => (3, 2),
+            2 => (4, 2),
+            3 => (5, 2),
+            4 => (6, 2),
+            5 => (7, 2),
+            6 => (8, 2),
+            b if b < -6 => (2, 8),
+            _ => (8, 2),
+        };
+        (base * num / denom).max(1)
+    }
+
+    /// Apply secondary effects from a move
+    fn apply_move_secondary(&mut self, attacker_side: usize, _attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) {
+        match move_id.as_str() {
+            "thunderbolt" | "thunder" => {
+                // 10% chance to paralyze
+                if self.random(10) == 0 {
+                    self.apply_status(target_side, target_idx, "par");
+                }
+            }
+            "flamethrower" | "fireblast" => {
+                // 10% chance to burn
+                if self.random(10) == 0 {
+                    self.apply_status(target_side, target_idx, "brn");
+                }
+            }
+            "icebeam" | "blizzard" => {
+                // 10% chance to freeze
+                if self.random(10) == 0 {
+                    self.apply_status(target_side, target_idx, "frz");
+                }
+            }
+            "scald" => {
+                // 30% chance to burn
+                if self.random(10) < 3 {
+                    self.apply_status(target_side, target_idx, "brn");
+                }
+            }
+            "bodyslam" => {
+                // 30% chance to paralyze
+                if self.random(10) < 3 {
+                    self.apply_status(target_side, target_idx, "par");
+                }
+            }
+            "thunderwave" => {
+                self.apply_status(target_side, target_idx, "par");
+            }
+            "willowisp" => {
+                self.apply_status(target_side, target_idx, "brn");
+            }
+            "toxic" => {
+                self.apply_status(target_side, target_idx, "tox");
+            }
+            "spore" | "sleeppowder" => {
+                self.apply_status(target_side, target_idx, "slp");
+            }
+            "swordsdance" => {
+                self.apply_boost(attacker_side, target_idx, "atk", 2);
+            }
+            "nastyplot" => {
+                self.apply_boost(attacker_side, target_idx, "spa", 2);
+            }
+            "calmmind" => {
+                self.apply_boost(attacker_side, target_idx, "spa", 1);
+                self.apply_boost(attacker_side, target_idx, "spd", 1);
+            }
+            "bulkup" => {
+                self.apply_boost(attacker_side, target_idx, "atk", 1);
+                self.apply_boost(attacker_side, target_idx, "def", 1);
+            }
+            "agility" => {
+                self.apply_boost(attacker_side, target_idx, "spe", 2);
+            }
+            _ => {}
+        }
+    }
+
+    /// Apply a status condition
+    fn apply_status(&mut self, side_idx: usize, poke_idx: usize, status: &str) {
+        if side_idx >= self.sides.len() || poke_idx >= self.sides[side_idx].pokemon.len() {
+            return;
+        }
+
+        // First check if status can be applied
+        {
+            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+
+            // Check if already has status
+            if !pokemon.status.is_empty() {
+                return;
+            }
+
+            // Check type immunities
+            let has_type = |t: &str| pokemon.types.iter().any(|pt| pt.to_lowercase() == t.to_lowercase());
+
+            match status {
+                "brn" if has_type("fire") => return,
+                "par" if has_type("electric") && self.gen >= 6 => return,
+                "psn" | "tox" if has_type("poison") || has_type("steel") => return,
+                "frz" if has_type("ice") => return,
+                _ => {}
+            }
+        }
+
+        // Get random duration for sleep before mutating
+        let sleep_duration = if status == "slp" {
+            Some(1 + self.random(3))
+        } else {
+            None
+        };
+
+        // Now apply the status
+        let pokemon = &mut self.sides[side_idx].pokemon[poke_idx];
+        pokemon.set_status(ID::new(status));
+
+        // Set duration for sleep/toxic
+        match status {
+            "slp" => {
+                pokemon.status_state.duration = sleep_duration;
+            }
+            "tox" => {
+                pokemon.status_state.duration = Some(1); // Toxic counter starts at 1
+            }
+            _ => {}
+        }
+
+        // Get name for logging
+        let name = pokemon.name.clone();
+        let side_id = self.sides[side_idx].id_str();
+        let full_name = format!("{}: {}", side_id, name);
+        self.add_log("-status", &[&full_name, status]);
+    }
+
+    /// Apply a stat boost
+    fn apply_boost(&mut self, side_idx: usize, poke_idx: usize, stat: &str, amount: i8) {
+        if side_idx >= self.sides.len() || poke_idx >= self.sides[side_idx].pokemon.len() {
+            return;
+        }
+
+        let (name, actual_change) = {
+            let pokemon = &mut self.sides[side_idx].pokemon[poke_idx];
+            let old_boost = match stat {
+                "atk" => pokemon.boosts.atk,
+                "def" => pokemon.boosts.def,
+                "spa" => pokemon.boosts.spa,
+                "spd" => pokemon.boosts.spd,
+                "spe" => pokemon.boosts.spe,
+                _ => return,
+            };
+
+            let new_boost = (old_boost + amount).clamp(-6, 6);
+            let actual_change = new_boost - old_boost;
+
+            if actual_change == 0 {
+                return;
+            }
+
+            match stat {
+                "atk" => pokemon.boosts.atk = new_boost,
+                "def" => pokemon.boosts.def = new_boost,
+                "spa" => pokemon.boosts.spa = new_boost,
+                "spd" => pokemon.boosts.spd = new_boost,
+                "spe" => pokemon.boosts.spe = new_boost,
+                _ => return,
+            }
+
+            (pokemon.name.clone(), actual_change)
+        };
+
+        let side_id = self.sides[side_idx].id_str();
+        let full_name = format!("{}: {}", side_id, name);
+        self.add_log("-boost", &[&full_name, stat, &actual_change.to_string()]);
+    }
+
+    /// Process end-of-turn residual effects
+    fn run_residual(&mut self) {
+        for side_idx in 0..self.sides.len() {
+            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
+                let is_active = self.sides[side_idx].pokemon[poke_idx].is_active;
+                if !is_active {
+                    continue;
+                }
+
+                if self.sides[side_idx].pokemon[poke_idx].is_fainted() {
+                    continue;
+                }
+
+                let status = self.sides[side_idx].pokemon[poke_idx].status.as_str().to_string();
+                let maxhp = self.sides[side_idx].pokemon[poke_idx].maxhp;
+
+                match status.as_str() {
+                    "brn" => {
+                        // Burn does 1/16 max HP (Gen 7+)
+                        let damage = (maxhp / 16).max(1);
+                        self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
+
+                        let name = {
+                            let side_id = self.sides[side_idx].id_str();
+                            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                            format!("{}: {}", side_id, pokemon.name)
+                        };
+                        let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                        self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] brn"]);
+                    }
+                    "psn" => {
+                        // Poison does 1/8 max HP
+                        let damage = (maxhp / 8).max(1);
+                        self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
+
+                        let name = {
+                            let side_id = self.sides[side_idx].id_str();
+                            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                            format!("{}: {}", side_id, pokemon.name)
+                        };
+                        let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                        self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] psn"]);
+                    }
+                    "tox" => {
+                        // Toxic does N/16 max HP where N increases each turn
+                        let counter = self.sides[side_idx].pokemon[poke_idx].status_state.duration.unwrap_or(1);
+                        let damage = (maxhp * counter / 16).max(1);
+                        self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
+
+                        // Increment counter
+                        self.sides[side_idx].pokemon[poke_idx].status_state.duration = Some(counter + 1);
+
+                        let name = {
+                            let side_id = self.sides[side_idx].id_str();
+                            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                            format!("{}: {}", side_id, pokemon.name)
+                        };
+                        let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                        self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] tox"]);
+                    }
+                    _ => {}
+                }
+            }
+        }
+    }
+
+    /// Process faint messages
+    fn faint_messages(&mut self) {
+        for side_idx in 0..self.sides.len() {
+            let mut slots_to_faint = Vec::new();
+
+            for slot in 0..self.sides[side_idx].active.len() {
+                if let Some(poke_idx) = self.sides[side_idx].active[slot] {
+                    if self.sides[side_idx].pokemon[poke_idx].hp == 0 {
+                        slots_to_faint.push((slot, poke_idx));
+                    }
+                }
+            }
+
+            for (slot, poke_idx) in slots_to_faint {
+                let name = {
+                    let side_id = self.sides[side_idx].id_str();
+                    let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                self.add_log("faint", &[&name]);
+                self.sides[side_idx].faint_pokemon(slot);
+            }
+        }
+    }
+
+    /// Start the next turn
+    fn next_turn(&mut self) {
+        // Clear turn state
+        for side in &mut self.sides {
+            side.clear_turn_state();
+        }
+
+        self.turn += 1;
+        self.add_log("turn", &[&self.turn.to_string()]);
+
+        // Set up new request
+        self.request_state = BattleRequestState::Move;
+        for side in &mut self.sides {
+            side.request_state = RequestState::Move;
+        }
+    }
 }
 
 fn game_type_to_string(game_type: &GameType) -> String {
