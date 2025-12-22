@@ -12,6 +12,7 @@ pub mod battle_queue;
 pub mod pokemon;
 pub mod side;
 pub mod battle;
+pub mod battle_actions;
 
 // Re-export main types
 pub use prng::{PRNG, PRNGSeed, Gen5RNG};
@@ -24,3 +25,4 @@ pub use battle_queue::{BattleQueue, Action, MoveAction, SwitchAction};
 pub use pokemon::{Pokemon, PokemonSet, MoveSlot};
 pub use side::Side;
 pub use battle::{Battle, BattleOptions, PlayerOptions};
+pub use battle_actions::{BattleActions, DamageResult, MoveHitData};
