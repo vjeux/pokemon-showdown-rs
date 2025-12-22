@@ -211,6 +211,12 @@ pub struct PRNG {
     rng: PRNGImpl,
 }
 
+impl Default for PRNG {
+    fn default() -> Self {
+        Self::new(None)
+    }
+}
+
 #[derive(Debug, Clone)]
 enum PRNGImpl {
     Gen5(Gen5RNG),
