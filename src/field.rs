@@ -210,6 +210,93 @@ impl Field {
     }
 }
 
+/// Weather damage calculation helper
+pub fn get_weather_damage_fraction(weather: &str, pokemon_types: &[String]) -> f64 {
+    let has_type = |t: &str| pokemon_types.iter().any(|pt| pt.to_lowercase() == t.to_lowercase());
+
+    match weather {
+        // Sandstorm damages non-Rock/Ground/Steel types
+        "sandstorm" => {
+            if has_type("rock") || has_type("ground") || has_type("steel") {
+                0.0
+            } else {
+                1.0 / 16.0
+            }
+        }
+        // Hail/Snow damages non-Ice types (Gen 1-8), Gen 9 Snow doesn't damage
+        "hail" => {
+            if has_type("ice") {
+                0.0
+            } else {
+                1.0 / 16.0
+            }
+        }
+        _ => 0.0,
+    }
+}
+
+/// Weather type boost (1.5x for weather-boosted types, 0.5x for weakened)
+pub fn get_weather_type_modifier(weather: &str, move_type: &str) -> f64 {
+    match (weather, move_type.to_lowercase().as_str()) {
+        // Rain boosts Water, weakens Fire
+        ("raindance" | "rain" | "primordialsea", "water") => 1.5,
+        ("raindance" | "rain" | "primordialsea", "fire") => 0.5,
+
+        // Sun boosts Fire, weakens Water
+        ("sunnyday" | "sun" | "desolateland", "fire") => 1.5,
+        ("sunnyday" | "sun" | "desolateland", "water") => 0.5,
+
+        _ => 1.0,
+    }
+}
+
+/// Get terrain damage modifier for grounded Pokemon
+pub fn get_terrain_damage_modifier(terrain: &str, move_type: &str, is_grounded: bool) -> f64 {
+    if !is_grounded {
+        return 1.0;
+    }
+
+    match (terrain, move_type.to_lowercase().as_str()) {
+        // Electric Terrain: 1.3x Electric moves
+        ("electricterrain", "electric") => 1.3,
+        // Grassy Terrain: 1.3x Grass moves
+        ("grassyterrain", "grass") => 1.3,
+        // Psychic Terrain: 1.3x Psychic moves
+        ("psychicterrain", "psychic") => 1.3,
+        _ => 1.0,
+    }
+}
+
+/// Check if terrain prevents priority moves
+pub fn terrain_blocks_priority(terrain: &str, target_is_grounded: bool) -> bool {
+    // Psychic Terrain blocks priority moves targeting grounded Pokemon
+    terrain == "psychicterrain" && target_is_grounded
+}
+
+/// Check if terrain prevents status
+pub fn terrain_prevents_status(terrain: &str, status: &str, is_grounded: bool) -> bool {
+    if !is_grounded {
+        return false;
+    }
+
+    match (terrain, status) {
+        // Electric Terrain prevents Sleep
+        ("electricterrain", "slp") => true,
+        // Misty Terrain prevents all non-volatile status
+        ("mistyterrain", "brn" | "par" | "psn" | "tox" | "slp" | "frz") => true,
+        _ => false,
+    }
+}
+
+/// Grassy Terrain end-of-turn healing
+pub fn get_grassy_terrain_heal(terrain: &str, is_grounded: bool) -> f64 {
+    if terrain == "grassyterrain" && is_grounded {
+        1.0 / 16.0
+    } else {
+        0.0
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

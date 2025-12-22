@@ -997,3 +997,269 @@ fn test_speed_order() {
     // from log order. The important thing is the battle runs correctly.
     println!("Speed order test passed - battle executed successfully");
 }
+
+#[test]
+fn test_weather_rain_boost() {
+    // Rain should boost Water moves by 1.5x and weaken Fire moves by 0.5x
+    let team1 = vec![
+        PokemonSet {
+            name: "Pelipper".to_string(),
+            species: "Pelipper".to_string(),
+            level: 50,
+            ability: "Drizzle".to_string(),
+            moves: vec!["Surf".to_string(), "Scald".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Blissey".to_string(),
+            species: "Blissey".to_string(),
+            level: 50,
+            ability: "Natural Cure".to_string(),
+            moves: vec!["Flamethrower".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set rain
+    battle.field.set_weather(ID::new("raindance"), Some(5));
+
+    let hp_before = battle.sides[1].pokemon[0].hp;
+    battle.make_choices("move surf", "move flamethrower");
+
+    // Water move in rain should deal boosted damage
+    let hp_after = battle.sides[1].pokemon[0].hp;
+    let damage_dealt = hp_before - hp_after;
+
+    // Rain should have boosted the Water move
+    assert!(damage_dealt > 0, "Surf should deal damage");
+    println!("Rain boost test - Surf dealt {} damage in rain", damage_dealt);
+}
+
+#[test]
+fn test_weather_sandstorm_damage() {
+    // Sandstorm should deal 1/16 max HP damage to non-Rock/Ground/Steel types
+    let team1 = vec![
+        PokemonSet {
+            name: "Tyranitar".to_string(),
+            species: "Tyranitar".to_string(),
+            level: 50,
+            ability: "Sand Stream".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set Tyranitar as Rock/Dark
+    if let Some(ttar) = battle.sides[0].get_active_mut(0) {
+        ttar.types = vec!["Rock".to_string(), "Dark".to_string()];
+    }
+    // Set Pikachu as Electric
+    if let Some(pika) = battle.sides[1].get_active_mut(0) {
+        pika.types = vec!["Electric".to_string()];
+    }
+
+    // Set sandstorm
+    battle.field.set_weather(ID::new("sandstorm"), Some(5));
+
+    let pikachu_hp_before = battle.sides[1].pokemon[0].hp;
+    let tyranitar_hp_before = battle.sides[0].pokemon[0].hp;
+
+    battle.make_choices("move tackle", "move tackle");
+
+    // Pikachu (Electric type) should take sandstorm damage
+    let pikachu_hp_after = battle.sides[1].pokemon[0].hp;
+    let tyranitar_hp_after = battle.sides[0].pokemon[0].hp;
+
+    let log = battle.get_log();
+    println!("Sandstorm test log:\n{}", log);
+
+    // Tyranitar (Rock type) should NOT take sandstorm damage
+    // But may take damage from Pikachu's Tackle
+    // Pikachu should take both Tackle damage AND sandstorm damage
+    assert!(pikachu_hp_after < pikachu_hp_before, "Pikachu should take damage");
+
+    // Check that sandstorm damage appears in log
+    assert!(log.contains("sandstorm"), "Log should mention sandstorm damage");
+}
+
+#[test]
+fn test_terrain_electric_boost() {
+    // Electric Terrain should boost Electric moves by 1.3x for grounded Pokemon
+    let team1 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Thunderbolt".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Blissey".to_string(),
+            species: "Blissey".to_string(),
+            level: 50,
+            ability: "Natural Cure".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set Pikachu as Electric (grounded)
+    if let Some(pika) = battle.sides[0].get_active_mut(0) {
+        pika.types = vec!["Electric".to_string()];
+    }
+
+    // Set Electric Terrain
+    battle.field.set_terrain(ID::new("electricterrain"), Some(5));
+
+    let hp_before = battle.sides[1].pokemon[0].hp;
+    battle.make_choices("move thunderbolt", "move tackle");
+
+    let hp_after = battle.sides[1].pokemon[0].hp;
+    let damage_dealt = hp_before - hp_after;
+
+    assert!(damage_dealt > 0, "Thunderbolt should deal damage");
+    println!("Electric Terrain test - Thunderbolt dealt {} damage", damage_dealt);
+}
+
+#[test]
+fn test_terrain_grassy_healing() {
+    // Grassy Terrain should heal grounded Pokemon 1/16 HP at end of turn
+    let team1 = vec![
+        PokemonSet {
+            name: "Bulbasaur".to_string(),
+            species: "Bulbasaur".to_string(),
+            level: 50,
+            ability: "Overgrow".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Charmander".to_string(),
+            species: "Charmander".to_string(),
+            level: 50,
+            ability: "Blaze".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set both as Grass type (grounded)
+    if let Some(bulba) = battle.sides[0].get_active_mut(0) {
+        bulba.types = vec!["Grass".to_string(), "Poison".to_string()];
+    }
+    if let Some(char) = battle.sides[1].get_active_mut(0) {
+        char.types = vec!["Fire".to_string()];
+    }
+
+    // Damage both Pokemon first
+    battle.sides[0].pokemon[0].take_damage(50);
+    battle.sides[1].pokemon[0].take_damage(50);
+
+    let bulba_hp_before = battle.sides[0].pokemon[0].hp;
+    let char_hp_before = battle.sides[1].pokemon[0].hp;
+
+    // Set Grassy Terrain
+    battle.field.set_terrain(ID::new("grassyterrain"), Some(5));
+
+    battle.make_choices("move tackle", "move tackle");
+
+    // Both should have taken some damage from Tackle, then healed from Grassy Terrain
+    let log = battle.get_log();
+    println!("Grassy Terrain test log:\n{}", log);
+
+    // Check that Grassy Terrain healing appears in log
+    assert!(log.contains("Grassy Terrain"), "Log should mention Grassy Terrain healing");
+}

@@ -9,7 +9,7 @@ use std::collections::HashSet;
 use serde::{Deserialize, Serialize};
 
 use crate::dex_data::{ID, GameType, SideID, EffectState};
-use crate::field::Field;
+use crate::field::{Field, get_weather_type_modifier, get_terrain_damage_modifier, get_weather_damage_fraction, get_grassy_terrain_heal};
 use crate::battle_queue::BattleQueue;
 use crate::pokemon::PokemonSet;
 use crate::side::{Side, RequestState};
@@ -1016,6 +1016,18 @@ impl Battle {
             damage
         };
 
+        // Weather type modifier (rain boosts Water, sun boosts Fire, etc.)
+        let weather = self.field.weather.as_str();
+        let weather_mod = get_weather_type_modifier(weather, move_type);
+        let damage = (damage as f64 * weather_mod) as u32;
+
+        // Terrain type modifier (grounded Pokemon only)
+        // Check if attacker is grounded (simplified - not Flying type and no Levitate)
+        let attacker_grounded = !attacker_types.iter().any(|t| t.to_lowercase() == "flying");
+        let terrain = self.field.terrain.as_str();
+        let terrain_mod = get_terrain_damage_modifier(terrain, move_type, attacker_grounded);
+        let damage = (damage as f64 * terrain_mod) as u32;
+
         // Log effectiveness
         if type_effectiveness > 1.0 {
             self.add_log("-supereffective", &[]);
@@ -1282,6 +1294,10 @@ impl Battle {
 
     /// Process end-of-turn residual effects
     fn run_residual(&mut self) {
+        // Get field conditions once
+        let weather = self.field.weather.as_str().to_string();
+        let terrain = self.field.terrain.as_str().to_string();
+
         for side_idx in 0..self.sides.len() {
             for poke_idx in 0..self.sides[side_idx].pokemon.len() {
                 let is_active = self.sides[side_idx].pokemon[poke_idx].is_active;
@@ -1295,7 +1311,44 @@ impl Battle {
 
                 let status = self.sides[side_idx].pokemon[poke_idx].status.as_str().to_string();
                 let maxhp = self.sides[side_idx].pokemon[poke_idx].maxhp;
+                let pokemon_types = self.sides[side_idx].pokemon[poke_idx].types.clone();
+                let is_grounded = !pokemon_types.iter().any(|t| t.to_lowercase() == "flying");
 
+                // Weather damage (sandstorm/hail)
+                let weather_damage_frac = get_weather_damage_fraction(&weather, &pokemon_types);
+                if weather_damage_frac > 0.0 {
+                    let damage = ((maxhp as f64 * weather_damage_frac) as u32).max(1);
+                    self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
+
+                    let name = {
+                        let side_id = self.sides[side_idx].id_str();
+                        let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                        format!("{}: {}", side_id, pokemon.name)
+                    };
+                    let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                    let weather_source = format!("[from] {}", weather);
+                    self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), &weather_source]);
+                }
+
+                // Grassy Terrain healing
+                let grassy_heal_frac = get_grassy_terrain_heal(&terrain, is_grounded);
+                if grassy_heal_frac > 0.0 {
+                    let heal = ((maxhp as f64 * grassy_heal_frac) as u32).max(1);
+                    let old_hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                    self.sides[side_idx].pokemon[poke_idx].heal(heal);
+
+                    if self.sides[side_idx].pokemon[poke_idx].hp > old_hp {
+                        let name = {
+                            let side_id = self.sides[side_idx].id_str();
+                            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                            format!("{}: {}", side_id, pokemon.name)
+                        };
+                        let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                        self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp), "[from] Grassy Terrain"]);
+                    }
+                }
+
+                // Status damage
                 match status.as_str() {
                     "brn" => {
                         // Burn does 1/16 max HP (Gen 7+)
@@ -1343,6 +1396,12 @@ impl Battle {
                     _ => {}
                 }
             }
+        }
+
+        // Decrement field condition durations
+        let expired = self.field.decrement_durations();
+        for effect_id in expired {
+            self.add_log("-fieldend", &[effect_id.as_str()]);
         }
     }
 
