@@ -978,8 +978,32 @@ impl Battle {
             let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
             self.add_log("-damage", &[&target_name, &format!("{}/{}", hp, maxhp)]);
 
-            // Apply burn damage reduction if physical move and attacker is burned
-            // (this is already factored into calculate_move_damage)
+            // Apply recoil damage for recoil moves
+            let recoil_fraction = match move_id.as_str() {
+                "bravebird" | "flareblitz" | "woodhammer" | "wildcharge" => 1.0 / 3.0,
+                "headsmash" => 0.5,
+                "doubleedge" | "takedown" => 1.0 / 4.0,
+                _ => 0.0,
+            };
+
+            if recoil_fraction > 0.0 {
+                let recoil_damage = ((damage as f64 * recoil_fraction) as u32).max(1);
+                self.sides[attacker_side].pokemon[attacker_idx].take_damage(recoil_damage);
+
+                let attacker_name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
+                let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
+                self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), "[from] Recoil"]);
+            }
+
+            // Flare Blitz has 10% burn chance
+            if move_id.as_str() == "flareblitz" && self.random(10) == 0 {
+                self.apply_status(target_side, target_idx, "brn");
+            }
         }
 
         // Apply secondary effects based on move
@@ -1246,6 +1270,46 @@ impl Battle {
                 // 30% chance to paralyze
                 if self.random(10) < 3 {
                     self.apply_status(target_side, target_idx, "par");
+                }
+            }
+            // Recoil moves
+            "bravebird" | "flareblitz" | "woodhammer" | "headsmash" | "doubleedge" | "takedown" | "wildcharge" => {
+                // These moves have recoil - but we need damage dealt first
+                // Recoil will be applied after damage in run_move
+            }
+            // Close Combat - lowers user's Def and SpD
+            "closecombat" => {
+                self.apply_boost(attacker_side, target_idx, "def", -1);
+                self.apply_boost(attacker_side, target_idx, "spd", -1);
+            }
+            // Crunch - 20% chance to lower Defense
+            "crunch" => {
+                if self.random(5) == 0 {
+                    self.apply_boost(target_side, target_idx, "def", -1);
+                }
+            }
+            // Psychic - 10% chance to lower SpD
+            "psychic" => {
+                if self.random(10) == 0 {
+                    self.apply_boost(target_side, target_idx, "spd", -1);
+                }
+            }
+            // Shadow Ball - 20% chance to lower SpD
+            "shadowball" => {
+                if self.random(5) == 0 {
+                    self.apply_boost(target_side, target_idx, "spd", -1);
+                }
+            }
+            // Sludge Bomb - 30% chance to poison
+            "sludgebomb" => {
+                if self.random(10) < 3 {
+                    self.apply_status(target_side, target_idx, "psn");
+                }
+            }
+            // Iron Head - 30% flinch
+            "ironhead" => {
+                if self.random(10) < 3 {
+                    self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flinch"));
                 }
             }
             "thunderwave" => {
