@@ -379,4 +379,38 @@ mod tests {
         let seed = PRNGSeed::from_string("sodium,abcdef0123456789").unwrap();
         assert!(matches!(seed, PRNGSeed::Sodium(_)));
     }
+
+    /// Test that our Gen5 PRNG matches the JavaScript implementation exactly
+    #[test]
+    fn test_gen5_matches_javascript() {
+        // Test case 1: Seed [0x1234, 0x5678, 0x9ABC, 0xDEF0]
+        // Expected from JS: [85,74,94,18,28,70,9,0,38,13,6,60,1,55,88,37,21,97,15,12]
+        let mut prng = PRNG::new(Some(PRNGSeed::Gen5([0x1234, 0x5678, 0x9ABC, 0xDEF0])));
+        let expected = [85, 74, 94, 18, 28, 70, 9, 0, 38, 13, 6, 60, 1, 55, 88, 37, 21, 97, 15, 12];
+        for (i, &exp) in expected.iter().enumerate() {
+            let val = prng.random_int(100);
+            assert_eq!(val, exp, "Mismatch at index {} for seed1", i);
+        }
+
+        // Test case 2: Seed [1, 2, 3, 4]
+        // Expected from JS: [47,88,66,13,84,57,95,38,77,82,10,22,6,84,31,85,14,93,14,1]
+        let mut prng2 = PRNG::new(Some(PRNGSeed::Gen5([1, 2, 3, 4])));
+        let expected2 = [47, 88, 66, 13, 84, 57, 95, 38, 77, 82, 10, 22, 6, 84, 31, 85, 14, 93, 14, 1];
+        for (i, &exp) in expected2.iter().enumerate() {
+            let val = prng2.random_int(100);
+            assert_eq!(val, exp, "Mismatch at index {} for seed2", i);
+        }
+
+        // Test case 3: Raw 32-bit values with seed [0xAAAA, 0xBBBB, 0xCCCC, 0xDDDD]
+        // Expected from JS: [2795446293,2744431784,3501875646,746470024,1664743198,3087483402,966965533,2002677306,2482317012,1229306196]
+        let mut rng3 = Gen5RNG::new([0xAAAA, 0xBBBB, 0xCCCC, 0xDDDD]);
+        let expected_raw: [u32; 10] = [
+            2795446293, 2744431784, 3501875646, 746470024, 1664743198,
+            3087483402, 966965533, 2002677306, 2482317012, 1229306196
+        ];
+        for (i, &exp) in expected_raw.iter().enumerate() {
+            let val = rng3.next();
+            assert_eq!(val, exp, "Raw value mismatch at index {}", i);
+        }
+    }
 }
