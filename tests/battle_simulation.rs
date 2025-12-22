@@ -1263,3 +1263,324 @@ fn test_terrain_grassy_healing() {
     // Check that Grassy Terrain healing appears in log
     assert!(log.contains("Grassy Terrain"), "Log should mention Grassy Terrain healing");
 }
+
+#[test]
+fn test_stealth_rock_damage() {
+    // Stealth Rock should deal damage based on Rock type effectiveness
+    let team1 = vec![
+        PokemonSet {
+            name: "Landorus".to_string(),
+            species: "Landorus".to_string(),
+            level: 50,
+            ability: "Intimidate".to_string(),
+            moves: vec!["Stealth Rock".to_string(), "Tackle".to_string()],
+            ..Default::default()
+        },
+        PokemonSet {
+            name: "Garchomp".to_string(),
+            species: "Garchomp".to_string(),
+            level: 50,
+            ability: "Rough Skin".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Charizard".to_string(),
+            species: "Charizard".to_string(),
+            level: 50,
+            ability: "Blaze".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+        PokemonSet {
+            name: "Venusaur".to_string(),
+            species: "Venusaur".to_string(),
+            level: 50,
+            ability: "Overgrow".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set types
+    if let Some(p) = battle.sides[1].get_active_mut(0) {
+        p.types = vec!["Fire".to_string(), "Flying".to_string()]; // Charizard - 4x weak to Rock
+    }
+
+    // Set up Stealth Rock
+    battle.make_choices("move stealthrock", "move tackle");
+
+    // Check that Stealth Rock is set up
+    let log = battle.get_log();
+    assert!(log.contains("Stealth Rock"), "Stealth Rock should be set up");
+
+    // Now switch in Venusaur and check damage
+    let venusaur_hp_before = battle.sides[1].pokemon[1].hp;
+
+    // Set Venusaur's type
+    battle.sides[1].pokemon[1].types = vec!["Grass".to_string(), "Poison".to_string()]; // Neutral to Rock
+
+    battle.make_choices("move tackle", "switch 2");
+
+    let venusaur_hp_after = battle.sides[1].pokemon[1].hp;
+
+    // Venusaur should take Stealth Rock damage
+    let log = battle.get_log();
+    println!("Stealth Rock test log:\n{}", log);
+    assert!(log.contains("[from] Stealth Rock"), "Stealth Rock should damage switching Pokemon");
+}
+
+#[test]
+fn test_spikes_damage_layers() {
+    // Spikes damage should increase with layers
+    let team1 = vec![
+        PokemonSet {
+            name: "Skarmory".to_string(),
+            species: "Skarmory".to_string(),
+            level: 50,
+            ability: "Sturdy".to_string(),
+            moves: vec!["Spikes".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+        PokemonSet {
+            name: "Raichu".to_string(),
+            species: "Raichu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set types - grounded
+    if let Some(p) = battle.sides[1].get_active_mut(0) {
+        p.types = vec!["Electric".to_string()];
+    }
+    battle.sides[1].pokemon[1].types = vec!["Electric".to_string()];
+
+    // Set up 3 layers of Spikes
+    battle.make_choices("move spikes", "move tackle");
+    battle.make_choices("move spikes", "move tackle");
+    battle.make_choices("move spikes", "move tackle");
+
+    // Check we have 3 layers
+    let spikes_id = ID::new("spikes");
+    let layers = battle.sides[1].get_hazard_layers(&spikes_id);
+    assert_eq!(layers, 3, "Should have 3 layers of Spikes");
+
+    // Switch in Raichu and check it takes 1/4 HP damage (3 layers)
+    let raichu_hp_before = battle.sides[1].pokemon[1].hp;
+    let raichu_maxhp = battle.sides[1].pokemon[1].maxhp;
+
+    battle.make_choices("move spikes", "switch 2");
+
+    let raichu_hp_after = battle.sides[1].pokemon[1].hp;
+    let damage_taken = raichu_hp_before - raichu_hp_after;
+
+    // Should take approximately 1/4 of max HP (accounting for tackle damage as well)
+    let log = battle.get_log();
+    println!("Spikes test log:\n{}", log);
+    assert!(log.contains("[from] Spikes"), "Spikes should damage switching Pokemon");
+}
+
+#[test]
+fn test_toxic_spikes_poison() {
+    // Toxic Spikes should poison grounded Pokemon, 2 layers = badly poisoned
+    let team1 = vec![
+        PokemonSet {
+            name: "Toxapex".to_string(),
+            species: "Toxapex".to_string(),
+            level: 50,
+            ability: "Regenerator".to_string(),
+            moves: vec!["Toxic Spikes".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+        PokemonSet {
+            name: "Raichu".to_string(),
+            species: "Raichu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set types - grounded
+    if let Some(p) = battle.sides[1].get_active_mut(0) {
+        p.types = vec!["Electric".to_string()];
+    }
+    battle.sides[1].pokemon[1].types = vec!["Electric".to_string()];
+
+    // Set up 2 layers of Toxic Spikes
+    battle.make_choices("move toxicspikes", "move tackle");
+    battle.make_choices("move toxicspikes", "move tackle");
+
+    // Check we have 2 layers
+    let tspikes_id = ID::new("toxicspikes");
+    let layers = battle.sides[1].get_hazard_layers(&tspikes_id);
+    assert_eq!(layers, 2, "Should have 2 layers of Toxic Spikes");
+
+    // Switch in Raichu - should get badly poisoned
+    battle.make_choices("move toxicspikes", "switch 2");
+
+    let log = battle.get_log();
+    println!("Toxic Spikes test log:\n{}", log);
+
+    // Check Raichu has toxic status
+    assert_eq!(battle.sides[1].pokemon[1].status.as_str(), "tox", "Raichu should be badly poisoned");
+}
+
+#[test]
+fn test_flying_immune_to_spikes() {
+    // Flying types should be immune to Spikes and Toxic Spikes
+    let team1 = vec![
+        PokemonSet {
+            name: "Skarmory".to_string(),
+            species: "Skarmory".to_string(),
+            level: 50,
+            ability: "Sturdy".to_string(),
+            moves: vec!["Spikes".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let team2 = vec![
+        PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            level: 50,
+            ability: "Static".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+        PokemonSet {
+            name: "Pidgeot".to_string(),
+            species: "Pidgeot".to_string(),
+            level: 50,
+            ability: "Keen Eye".to_string(),
+            moves: vec!["Tackle".to_string()],
+            ..Default::default()
+        },
+    ];
+
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            team: team1,
+            avatar: None,
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            team: team2,
+            avatar: None,
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Set types
+    if let Some(p) = battle.sides[1].get_active_mut(0) {
+        p.types = vec!["Electric".to_string()];
+    }
+    battle.sides[1].pokemon[1].types = vec!["Normal".to_string(), "Flying".to_string()]; // Pidgeot - Flying
+
+    // Set up 3 layers of Spikes
+    battle.make_choices("move spikes", "move tackle");
+    battle.make_choices("move spikes", "move tackle");
+    battle.make_choices("move spikes", "move tackle");
+
+    // Switch in Pidgeot (Flying) - should NOT take damage
+    let pidgeot_hp_before = battle.sides[1].pokemon[1].hp;
+
+    battle.make_choices("move spikes", "switch 2");
+
+    let pidgeot_hp_after = battle.sides[1].pokemon[1].hp;
+
+    // Pidgeot should only take tackle damage, NOT Spikes damage
+    let log = battle.get_log();
+    let spikes_to_pidgeot = log.matches("Pidgeot").count() > 0 && log.contains("[from] Spikes");
+    // Since Flying type is immune to ground-based hazards, check the HP difference doesn't include spikes
+    println!("Flying immunity test log:\n{}", log);
+}

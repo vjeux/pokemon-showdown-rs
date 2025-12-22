@@ -733,7 +733,7 @@ impl Battle {
         }
 
         // Get the old Pokemon's name for logging
-        let old_name = self.sides[side_idx].get_active(slot)
+        let _old_name = self.sides[side_idx].get_active(slot)
             .map(|p| p.name.clone())
             .unwrap_or_default();
 
@@ -746,6 +746,78 @@ impl Battle {
             let details = pokemon.details();
             let hp = format!("{}/{}", pokemon.hp, pokemon.maxhp);
             self.log.push(format!("|switch|{}: {}|{}|{}", side_id, pokemon.name, details, hp));
+        }
+
+        // Apply entry hazard damage
+        self.apply_hazards(side_idx, slot, switch_to);
+    }
+
+    /// Apply entry hazard damage to a Pokemon that just switched in
+    fn apply_hazards(&mut self, side_idx: usize, _slot: usize, poke_idx: usize) {
+        // Get Pokemon data before hazard checks
+        let (maxhp, pokemon_types, pokemon_name, is_grounded) = {
+            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+            let is_grounded = !pokemon.types.iter().any(|t| t.to_lowercase() == "flying");
+            (pokemon.maxhp, pokemon.types.clone(), pokemon.name.clone(), is_grounded)
+        };
+
+        let side_id = self.sides[side_idx].id_str();
+        let full_name = format!("{}: {}", side_id, pokemon_name);
+
+        // Stealth Rock - affects all Pokemon, damage based on Rock type effectiveness
+        let sr_id = ID::new("stealthrock");
+        if self.sides[side_idx].has_side_condition(&sr_id) {
+            let damage = Side::calc_stealth_rock_damage(&pokemon_types, maxhp);
+            self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
+
+            let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+            self.add_log("-damage", &[&full_name, &format!("{}/{}", hp, maxhp), "[from] Stealth Rock"]);
+        }
+
+        // Spikes - only affects grounded Pokemon
+        let spikes_id = ID::new("spikes");
+        if is_grounded && self.sides[side_idx].has_side_condition(&spikes_id) {
+            let layers = self.sides[side_idx].get_hazard_layers(&spikes_id);
+            if layers > 0 {
+                let damage = Side::calc_spikes_damage(layers, maxhp);
+                self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
+
+                let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                self.add_log("-damage", &[&full_name, &format!("{}/{}", hp, maxhp), "[from] Spikes"]);
+            }
+        }
+
+        // Toxic Spikes - only affects grounded Pokemon, poisons them
+        let tspikes_id = ID::new("toxicspikes");
+        if is_grounded && self.sides[side_idx].has_side_condition(&tspikes_id) {
+            let layers = self.sides[side_idx].get_hazard_layers(&tspikes_id);
+
+            // Poison types absorb Toxic Spikes
+            let is_poison = pokemon_types.iter().any(|t| t.to_lowercase() == "poison");
+            if is_poison {
+                // Poison type absorbs Toxic Spikes
+                self.sides[side_idx].remove_side_condition(&tspikes_id);
+                self.add_log("-sideend", &[side_id, "Toxic Spikes", "[from] ability: Poison Touch"]); // Generic message
+            } else if !self.sides[side_idx].pokemon[poke_idx].status.is_empty() {
+                // Already has a status - can't be poisoned
+            } else {
+                // Apply poison (1 layer) or toxic (2 layers)
+                let status = if layers >= 2 { "tox" } else { "psn" };
+                self.sides[side_idx].pokemon[poke_idx].set_status(ID::new(status));
+
+                let status_msg = if layers >= 2 { "badly poisoned" } else { "poisoned" };
+                self.add_log("-status", &[&full_name, status, &format!("[from] Toxic Spikes")]);
+            }
+        }
+
+        // Sticky Web - lowers Speed by 1 stage (only affects grounded Pokemon)
+        let sticky_web_id = ID::new("stickyweb");
+        if is_grounded && self.sides[side_idx].has_side_condition(&sticky_web_id) {
+            let current_spe = self.sides[side_idx].pokemon[poke_idx].boosts.spe;
+            if current_spe > -6 {
+                self.sides[side_idx].pokemon[poke_idx].boosts.spe = (current_spe - 1).max(-6);
+                self.add_log("-boost", &[&full_name, "spe", "-1", "[from] Sticky Web"]);
+            }
         }
     }
 
@@ -938,8 +1010,9 @@ impl Battle {
             "ironhead" => (80, "Physical", "Steel"),
             "energyball" => (90, "Special", "Grass"),
             "scald" => (80, "Special", "Water"),
-            "thunderwave" | "willowisp" | "toxic" | "spore" | "sleeppowder" | "bulkup" | "swordsdance" | "nastyplot" | "calmmind" | "agility" => {
-                return 0; // Status moves - no damage
+            "thunderwave" | "willowisp" | "toxic" | "spore" | "sleeppowder" | "bulkup" | "swordsdance" | "nastyplot" | "calmmind" | "agility" |
+            "stealthrock" | "spikes" | "toxicspikes" | "stickyweb" | "defog" | "rapidspin" => {
+                return 0; // Status/hazard moves - no damage
             }
             _ => (50, "Physical", "Normal"), // Default for unknown moves
         };
@@ -1191,7 +1264,70 @@ impl Battle {
             "agility" => {
                 self.apply_boost(attacker_side, target_idx, "spe", 2);
             }
+            // Entry hazard moves - set on opponent's side
+            "stealthrock" => {
+                let hazard_id = ID::new("stealthrock");
+                if self.sides[target_side].add_hazard(&hazard_id) {
+                    let target_side_id = self.sides[target_side].id_str();
+                    self.add_log("-sidestart", &[target_side_id, "Stealth Rock"]);
+                }
+            }
+            "spikes" => {
+                let hazard_id = ID::new("spikes");
+                if self.sides[target_side].add_hazard(&hazard_id) {
+                    let target_side_id = self.sides[target_side].id_str();
+                    self.add_log("-sidestart", &[target_side_id, "Spikes"]);
+                }
+            }
+            "toxicspikes" => {
+                let hazard_id = ID::new("toxicspikes");
+                if self.sides[target_side].add_hazard(&hazard_id) {
+                    let target_side_id = self.sides[target_side].id_str();
+                    self.add_log("-sidestart", &[target_side_id, "Toxic Spikes"]);
+                }
+            }
+            "stickyweb" => {
+                let hazard_id = ID::new("stickyweb");
+                if self.sides[target_side].add_hazard(&hazard_id) {
+                    let target_side_id = self.sides[target_side].id_str();
+                    self.add_log("-sidestart", &[target_side_id, "Sticky Web"]);
+                }
+            }
+            // Hazard removal moves
+            "defog" => {
+                self.remove_all_hazards(target_side);
+                // Also remove hazards from user's side
+                self.remove_all_hazards(attacker_side);
+            }
+            "rapidspin" => {
+                // Rapid Spin removes hazards from user's own side
+                self.remove_all_hazards(attacker_side);
+            }
             _ => {}
+        }
+    }
+
+    /// Remove all entry hazards from a side
+    fn remove_all_hazards(&mut self, side_idx: usize) {
+        if side_idx >= self.sides.len() {
+            return;
+        }
+
+        let side_id = self.sides[side_idx].id_str();
+        let hazards = ["stealthrock", "spikes", "toxicspikes", "stickyweb"];
+
+        for hazard_name in hazards {
+            let hazard_id = ID::new(hazard_name);
+            if self.sides[side_idx].remove_side_condition(&hazard_id) {
+                let display_name = match hazard_name {
+                    "stealthrock" => "Stealth Rock",
+                    "spikes" => "Spikes",
+                    "toxicspikes" => "Toxic Spikes",
+                    "stickyweb" => "Sticky Web",
+                    _ => hazard_name,
+                };
+                self.add_log("-sideend", &[side_id, display_name]);
+            }
         }
     }
 

@@ -387,6 +387,7 @@ pub struct EffectState {
     pub id: ID,
     pub effect_order: u32,
     pub duration: Option<u32>,
+    pub layers: Option<u32>,
     pub source_slot: Option<String>,
     #[serde(flatten)]
     pub data: HashMap<String, serde_json::Value>,
@@ -398,6 +399,7 @@ impl EffectState {
             id,
             effect_order: 0,
             duration: None,
+            layers: None,
             source_slot: None,
             data: HashMap::new(),
         }
@@ -405,6 +407,11 @@ impl EffectState {
 
     pub fn with_duration(mut self, duration: u32) -> Self {
         self.duration = Some(duration);
+        self
+    }
+
+    pub fn with_layers(mut self, layers: u32) -> Self {
+        self.layers = Some(layers);
         self
     }
 }
