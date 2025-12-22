@@ -13,6 +13,8 @@ pub mod pokemon;
 pub mod side;
 pub mod battle;
 pub mod battle_actions;
+pub mod abilities;
+pub mod items;
 
 // Re-export main types
 pub use prng::{PRNG, PRNGSeed, Gen5RNG};
@@ -26,3 +28,5 @@ pub use pokemon::{Pokemon, PokemonSet, MoveSlot};
 pub use side::Side;
 pub use battle::{Battle, BattleOptions, PlayerOptions};
 pub use battle_actions::{BattleActions, DamageResult, MoveHitData};
+pub use abilities::{AbilityEvent, AbilityModifier, get_ability_effect, check_ability_immunity, check_ability_prevents_status};
+pub use items::{ItemEvent, ItemModifier, get_item_effect, get_item_type_boost, check_item_prevents_status};
