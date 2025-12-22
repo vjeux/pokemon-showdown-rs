@@ -1,0 +1,53 @@
+{
+  "leftovers": {
+    "num": 234,
+    "name": "Leftovers",
+    "desc": "At the end of every turn, holder restores 1/16 of its max HP.",
+    "fling": {
+      "basePower": 10
+    }
+  },
+  "lifeorb": {
+    "num": 270,
+    "name": "Life Orb",
+    "desc": "Holder's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+    "fling": {
+      "basePower": 30
+    }
+  },
+  "choiceband": {
+    "num": 220,
+    "name": "Choice Band",
+    "desc": "Holder's Attack is 1.5x, but it can only select the first move it executes.",
+    "isChoice": true,
+    "fling": {
+      "basePower": 10
+    }
+  },
+  "choicescarf": {
+    "num": 287,
+    "name": "Choice Scarf",
+    "desc": "Holder's Speed is 1.5x, but it can only select the first move it executes.",
+    "isChoice": true,
+    "fling": {
+      "basePower": 10
+    }
+  },
+  "choicespecs": {
+    "num": 297,
+    "name": "Choice Specs",
+    "desc": "Holder's Sp. Atk is 1.5x, but it can only select the first move it executes.",
+    "isChoice": true,
+    "fling": {
+      "basePower": 10
+    }
+  },
+  "focussash": {
+    "num": 275,
+    "name": "Focus Sash",
+    "desc": "If holder's HP is full, will survive an attack that would KO it with 1 HP. Single use.",
+    "fling": {
+      "basePower": 10
+    }
+  }
+}

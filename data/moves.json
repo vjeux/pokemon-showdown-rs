@@ -1,0 +1,137 @@
+{
+  "thunderbolt": {
+    "num": 85,
+    "name": "Thunderbolt",
+    "type": "Electric",
+    "category": "Special",
+    "basePower": 90,
+    "accuracy": 100,
+    "pp": 15,
+    "priority": 0,
+    "target": "normal",
+    "secondary": {
+      "chance": 10,
+      "status": "par"
+    },
+    "flags": {
+      "protect": 1,
+      "mirror": 1
+    }
+  },
+  "quickattack": {
+    "num": 98,
+    "name": "Quick Attack",
+    "type": "Normal",
+    "category": "Physical",
+    "basePower": 40,
+    "accuracy": 100,
+    "pp": 30,
+    "priority": 1,
+    "target": "normal",
+    "flags": {
+      "contact": 1,
+      "protect": 1,
+      "mirror": 1
+    }
+  },
+  "flamethrower": {
+    "num": 53,
+    "name": "Flamethrower",
+    "type": "Fire",
+    "category": "Special",
+    "basePower": 90,
+    "accuracy": 100,
+    "pp": 15,
+    "priority": 0,
+    "target": "normal",
+    "secondary": {
+      "chance": 10,
+      "status": "brn"
+    },
+    "flags": {
+      "protect": 1,
+      "mirror": 1
+    }
+  },
+  "dragonclaw": {
+    "num": 337,
+    "name": "Dragon Claw",
+    "type": "Dragon",
+    "category": "Physical",
+    "basePower": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "priority": 0,
+    "target": "normal",
+    "flags": {
+      "contact": 1,
+      "protect": 1,
+      "mirror": 1
+    }
+  },
+  "tackle": {
+    "num": 33,
+    "name": "Tackle",
+    "type": "Normal",
+    "category": "Physical",
+    "basePower": 40,
+    "accuracy": 100,
+    "pp": 35,
+    "priority": 0,
+    "target": "normal",
+    "flags": {
+      "contact": 1,
+      "protect": 1,
+      "mirror": 1
+    }
+  },
+  "thunderwave": {
+    "num": 86,
+    "name": "Thunder Wave",
+    "type": "Electric",
+    "category": "Status",
+    "basePower": 0,
+    "accuracy": 90,
+    "pp": 20,
+    "priority": 0,
+    "target": "normal",
+    "status": "par",
+    "flags": {
+      "protect": 1,
+      "mirror": 1,
+      "reflectable": 1
+    }
+  },
+  "protect": {
+    "num": 182,
+    "name": "Protect",
+    "type": "Normal",
+    "category": "Status",
+    "basePower": 0,
+    "accuracy": true,
+    "pp": 10,
+    "priority": 4,
+    "target": "self",
+    "flags": {
+      "stallingMove": 1
+    },
+    "volatileStatus": "protect"
+  },
+  "swordsdance": {
+    "num": 14,
+    "name": "Swords Dance",
+    "type": "Normal",
+    "category": "Status",
+    "basePower": 0,
+    "accuracy": true,
+    "pp": 20,
+    "priority": 0,
+    "target": "self",
+    "boosts": {
+      "atk": 2
+    },
+    "flags": {
+      "snatch": 1
+    }
+  }
+}

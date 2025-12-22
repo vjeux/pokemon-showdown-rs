@@ -1,0 +1,58 @@
+{
+  "static": {
+    "num": 9,
+    "name": "Static",
+    "desc": "30% chance a Pokemon making contact with this Pokemon will be paralyzed.",
+    "shortDesc": "30% chance of paralyzing Pokemon making contact with this Pokemon.",
+    "rating": 2
+  },
+  "blaze": {
+    "num": 66,
+    "name": "Blaze",
+    "desc": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its attacking stat is multiplied by 1.5 while using a Fire-type attack.",
+    "shortDesc": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
+    "rating": 2
+  },
+  "overgrow": {
+    "num": 65,
+    "name": "Overgrow",
+    "desc": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its attacking stat is multiplied by 1.5 while using a Grass-type attack.",
+    "shortDesc": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
+    "rating": 2
+  },
+  "torrent": {
+    "num": 67,
+    "name": "Torrent",
+    "desc": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its attacking stat is multiplied by 1.5 while using a Water-type attack.",
+    "shortDesc": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
+    "rating": 2
+  },
+  "lightningrod": {
+    "num": 31,
+    "name": "Lightning Rod",
+    "desc": "This Pokemon is immune to Electric-type moves and raises its Special Attack by 1 stage when hit by an Electric-type move.",
+    "shortDesc": "This Pokemon draws Electric moves to itself to raise Sp. Atk by 1; Electric immunity.",
+    "rating": 3
+  },
+  "solarpower": {
+    "num": 94,
+    "name": "Solar Power",
+    "desc": "If Sunny Day is active, this Pokemon's Special Attack is multiplied by 1.5 and it loses 1/8 of its maximum HP, rounded down, at the end of each turn.",
+    "shortDesc": "If Sunny Day is active, this Pokemon's Sp. Atk is 1.5x; loses 1/8 max HP per turn.",
+    "rating": 2
+  },
+  "chlorophyll": {
+    "num": 34,
+    "name": "Chlorophyll",
+    "desc": "If Sunny Day is active, this Pokemon's Speed is doubled.",
+    "shortDesc": "If Sunny Day is active, this Pokemon's Speed is doubled.",
+    "rating": 3
+  },
+  "raindish": {
+    "num": 44,
+    "name": "Rain Dish",
+    "desc": "If Rain Dance is active, this Pokemon restores 1/16 of its maximum HP, rounded down, at the end of each turn.",
+    "shortDesc": "If Rain Dance is active, this Pokemon heals 1/16 of its max HP each turn.",
+    "rating": 1
+  }
+}

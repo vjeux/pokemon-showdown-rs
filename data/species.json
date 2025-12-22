@@ -1,0 +1,140 @@
+{
+  "pikachu": {
+    "num": 25,
+    "name": "Pikachu",
+    "types": [
+      "Electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    },
+    "abilities": {
+      "0": "Static",
+      "H": "Lightning Rod"
+    },
+    "heightm": 0.4,
+    "weightkg": 6,
+    "genderRatio": {
+      "M": 0.5,
+      "F": 0.5
+    },
+    "evos": [
+      "Raichu"
+    ]
+  },
+  "raichu": {
+    "num": 26,
+    "name": "Raichu",
+    "types": [
+      "Electric"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 90,
+      "def": 55,
+      "spa": 90,
+      "spd": 80,
+      "spe": 110
+    },
+    "abilities": {
+      "0": "Static",
+      "H": "Lightning Rod"
+    },
+    "heightm": 0.8,
+    "weightkg": 30,
+    "genderRatio": {
+      "M": 0.5,
+      "F": 0.5
+    },
+    "prevo": "Pikachu"
+  },
+  "charizard": {
+    "num": 6,
+    "name": "Charizard",
+    "types": [
+      "Fire",
+      "Flying"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 84,
+      "def": 78,
+      "spa": 109,
+      "spd": 85,
+      "spe": 100
+    },
+    "abilities": {
+      "0": "Blaze",
+      "H": "Solar Power"
+    },
+    "heightm": 1.7,
+    "weightkg": 90.5,
+    "genderRatio": {
+      "M": 0.875,
+      "F": 0.125
+    },
+    "prevo": "Charmeleon"
+  },
+  "bulbasaur": {
+    "num": 1,
+    "name": "Bulbasaur",
+    "types": [
+      "Grass",
+      "Poison"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 49,
+      "def": 49,
+      "spa": 65,
+      "spd": 65,
+      "spe": 45
+    },
+    "abilities": {
+      "0": "Overgrow",
+      "H": "Chlorophyll"
+    },
+    "heightm": 0.7,
+    "weightkg": 6.9,
+    "genderRatio": {
+      "M": 0.875,
+      "F": 0.125
+    },
+    "evos": [
+      "Ivysaur"
+    ]
+  },
+  "squirtle": {
+    "num": 7,
+    "name": "Squirtle",
+    "types": [
+      "Water"
+    ],
+    "baseStats": {
+      "hp": 44,
+      "atk": 48,
+      "def": 65,
+      "spa": 50,
+      "spd": 64,
+      "spe": 43
+    },
+    "abilities": {
+      "0": "Torrent",
+      "H": "Rain Dish"
+    },
+    "heightm": 0.5,
+    "weightkg": 9,
+    "genderRatio": {
+      "M": 0.875,
+      "F": 0.125
+    },
+    "evos": [
+      "Wartortle"
+    ]
+  }
+}
