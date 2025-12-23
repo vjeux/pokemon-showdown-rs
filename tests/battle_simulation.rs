@@ -2084,11 +2084,11 @@ fn test_choice_band_locking() {
             name: "Player 2".to_string(),
             avatar: None,
             team: vec![PokemonSet {
-                name: "Blissey".to_string(),
-                species: "Blissey".to_string(),
+                name: "Bronzong".to_string(),
+                species: "Bronzong".to_string(),
                 level: 100,
-                ability: "Natural Cure".to_string(),
-                moves: vec!["softboiled".to_string()],
+                ability: "Levitate".to_string(),
+                moves: vec!["irondefense".to_string()],
                 ..Default::default()
             }],
         }),
@@ -2097,8 +2097,8 @@ fn test_choice_band_locking() {
 
     battle.start_battle();
 
-    // Garchomp uses Earthquake first
-    battle.make_choices("move earthquake", "move softboiled");
+    // Garchomp uses Earthquake first (does 0 damage to Levitate Bronzong)
+    battle.make_choices("move earthquake", "move irondefense");
 
     // Garchomp should be locked into Earthquake
     assert!(battle.sides[0].pokemon[0].locked_move.is_some(), "Garchomp should be locked into a move");
@@ -2106,7 +2106,7 @@ fn test_choice_band_locking() {
                "Garchomp should be locked into Earthquake");
 
     // Try to use Dragon Claw but should still use Earthquake
-    battle.make_choices("move dragonclaw", "move softboiled");
+    battle.make_choices("move dragonclaw", "move irondefense");
 
     let log = battle.get_log();
     println!("Choice Band test log:\n{}", log);
@@ -2114,4 +2114,195 @@ fn test_choice_band_locking() {
     // The log should show Earthquake was used twice (not Dragon Claw)
     let eq_count = log.matches("earthquake").count();
     assert!(eq_count >= 2, "Earthquake should be used twice due to Choice lock, found {} occurrences", eq_count);
+}
+
+/// Test Intimidate ability lowers Attack on switch-in
+#[test]
+fn test_intimidate_ability() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Gyarados".to_string(),
+                species: "Gyarados".to_string(),
+                level: 100,
+                ability: "Intimidate".to_string(),
+                moves: vec!["waterfall".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Machamp".to_string(),
+                species: "Machamp".to_string(),
+                level: 100,
+                ability: "Guts".to_string(),
+                moves: vec!["closecombat".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    let log = battle.get_log();
+    println!("Intimidate test log:\n{}", log);
+
+    // Machamp should have -1 Attack boost from Intimidate
+    assert_eq!(battle.sides[1].pokemon[0].boosts.atk, -1, "Machamp's Attack should be lowered by Intimidate");
+
+    // Log should show Intimidate activated
+    assert!(log.contains("-ability|p1: Gyarados|Intimidate"), "Intimidate ability should be logged");
+}
+
+/// Test Drizzle ability summons rain on switch-in
+#[test]
+fn test_drizzle_ability() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Politoed".to_string(),
+                species: "Politoed".to_string(),
+                level: 100,
+                ability: "Drizzle".to_string(),
+                moves: vec!["scald".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Pikachu".to_string(),
+                species: "Pikachu".to_string(),
+                level: 100,
+                ability: "Static".to_string(),
+                moves: vec!["thunderbolt".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Rain should be active
+    assert!(battle.field.is_weather("raindance"), "Rain should be active from Drizzle");
+
+    let log = battle.get_log();
+    println!("Drizzle test log:\n{}", log);
+
+    // Log should show weather activation
+    assert!(log.contains("-weather|RainDance"), "Drizzle weather should be logged");
+}
+
+/// Test Leftovers item healing at end of turn
+#[test]
+fn test_leftovers_healing() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Blissey".to_string(),
+                species: "Blissey".to_string(),
+                level: 100,
+                ability: "Natural Cure".to_string(),
+                item: "Leftovers".to_string(),
+                moves: vec!["protect".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Pikachu".to_string(),
+                species: "Pikachu".to_string(),
+                level: 100,
+                ability: "Static".to_string(),
+                moves: vec!["thunderbolt".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Damage Blissey a bit so Leftovers has something to heal
+    let maxhp = battle.sides[0].pokemon[0].maxhp;
+    battle.sides[0].pokemon[0].take_damage(maxhp / 4); // Damage by 25%
+
+    // Make a move to trigger end of turn - Blissey uses Protect
+    battle.make_choices("move protect", "move thunderbolt");
+
+    let log = battle.get_log();
+    println!("Leftovers test log:\n{}", log);
+
+    // Log should show Leftovers healing
+    assert!(log.contains("[from] item: Leftovers"), "Leftovers healing should be logged");
+}
+
+/// Test Life Orb damage boost and recoil
+#[test]
+fn test_life_orb_damage() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Alakazam".to_string(),
+                species: "Alakazam".to_string(),
+                level: 100,
+                ability: "Magic Guard".to_string(),
+                item: "Life Orb".to_string(),
+                moves: vec!["psychic".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Machamp".to_string(),
+                species: "Machamp".to_string(),
+                level: 100,
+                ability: "Guts".to_string(),
+                moves: vec!["closecombat".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    let alakazam_hp_before = battle.sides[0].pokemon[0].hp;
+
+    // Alakazam uses Psychic with Life Orb
+    battle.make_choices("move psychic", "move closecombat");
+
+    let log = battle.get_log();
+    println!("Life Orb test log:\n{}", log);
+
+    // Life Orb should cause recoil damage
+    assert!(log.contains("[from] item: Life Orb"), "Life Orb recoil should be logged");
+
+    // Alakazam should have taken Life Orb recoil (10% of max HP)
+    // Note: Alakazam also took damage from Close Combat, so we just check recoil was applied
 }

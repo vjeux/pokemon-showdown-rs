@@ -294,8 +294,13 @@ impl Battle {
             }
         }
 
-        for (side_idx, slot, pokemon_idx) in switch_ops {
-            self.switch_in(side_idx, slot, pokemon_idx);
+        for (side_idx, slot, pokemon_idx) in &switch_ops {
+            self.switch_in(*side_idx, *slot, *pokemon_idx);
+        }
+
+        // Trigger switch-in abilities after all Pokemon are on the field
+        for (side_idx, _slot, pokemon_idx) in switch_ops {
+            self.trigger_switch_in_abilities(side_idx, pokemon_idx);
         }
 
         self.request_state = BattleRequestState::Move;
@@ -316,6 +321,9 @@ impl Battle {
                     side.id_str(), pokemon.name, details, hp));
             }
         }
+
+        // Apply hazards (ability triggers are called separately)
+        self.apply_hazards(side_index, slot, pokemon_index);
     }
 
     /// Add a log entry
@@ -769,6 +777,75 @@ impl Battle {
 
         // Apply entry hazard damage
         self.apply_hazards(side_idx, slot, switch_to);
+
+        // Trigger switch-in abilities
+        self.trigger_switch_in_abilities(side_idx, switch_to);
+    }
+
+    /// Trigger abilities that activate on switch-in
+    fn trigger_switch_in_abilities(&mut self, side_idx: usize, poke_idx: usize) {
+        let (ability_id, pokemon_name) = {
+            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+            (pokemon.ability.clone(), pokemon.name.clone())
+        };
+        let side_id = self.sides[side_idx].id_str();
+        let full_name = format!("{}: {}", side_id, pokemon_name);
+
+        match ability_id.as_str() {
+            "intimidate" => {
+                // Lower the foe's Attack by 1 stage
+                let foe_side_idx = 1 - side_idx;
+                for foe_poke_idx in 0..self.sides[foe_side_idx].pokemon.len() {
+                    if self.sides[foe_side_idx].pokemon[foe_poke_idx].is_active {
+                        // Check for abilities that block Intimidate
+                        let foe_ability = self.sides[foe_side_idx].pokemon[foe_poke_idx].ability.as_str();
+                        if foe_ability == "innerfocus" || foe_ability == "owntempo" ||
+                           foe_ability == "oblivious" || foe_ability == "scrappy" {
+                            let foe_name = &self.sides[foe_side_idx].pokemon[foe_poke_idx].name;
+                            let foe_side_id = self.sides[foe_side_idx].id_str();
+                            let foe_full_name = format!("{}: {}", foe_side_id, foe_name);
+                            self.add_log("-fail", &[&foe_full_name]);
+                        } else {
+                            self.apply_boost(foe_side_idx, foe_poke_idx, "atk", -1);
+                            self.add_log("-ability", &[&full_name, "Intimidate"]);
+                        }
+                    }
+                }
+            }
+            "drizzle" => {
+                self.field.set_weather(ID::new("raindance"), Some(5));
+                self.add_log("-weather", &["RainDance", "[from] ability: Drizzle", &format!("[of] {}", full_name)]);
+            }
+            "drought" => {
+                self.field.set_weather(ID::new("sunnyday"), Some(5));
+                self.add_log("-weather", &["SunnyDay", "[from] ability: Drought", &format!("[of] {}", full_name)]);
+            }
+            "sandstream" => {
+                self.field.set_weather(ID::new("sandstorm"), Some(5));
+                self.add_log("-weather", &["Sandstorm", "[from] ability: Sand Stream", &format!("[of] {}", full_name)]);
+            }
+            "snowwarning" => {
+                self.field.set_weather(ID::new("hail"), Some(5));
+                self.add_log("-weather", &["Hail", "[from] ability: Snow Warning", &format!("[of] {}", full_name)]);
+            }
+            "electricsurge" => {
+                self.field.set_terrain(ID::new("electricterrain"), Some(5));
+                self.add_log("-fieldstart", &["Electric Terrain", "[from] ability: Electric Surge", &format!("[of] {}", full_name)]);
+            }
+            "grassysurge" => {
+                self.field.set_terrain(ID::new("grassyterrain"), Some(5));
+                self.add_log("-fieldstart", &["Grassy Terrain", "[from] ability: Grassy Surge", &format!("[of] {}", full_name)]);
+            }
+            "psychicsurge" => {
+                self.field.set_terrain(ID::new("psychicterrain"), Some(5));
+                self.add_log("-fieldstart", &["Psychic Terrain", "[from] ability: Psychic Surge", &format!("[of] {}", full_name)]);
+            }
+            "mistysurge" => {
+                self.field.set_terrain(ID::new("mistyterrain"), Some(5));
+                self.add_log("-fieldstart", &["Misty Terrain", "[from] ability: Misty Surge", &format!("[of] {}", full_name)]);
+            }
+            _ => {}
+        }
     }
 
     /// Apply entry hazard damage to a Pokemon that just switched in
@@ -1160,6 +1237,23 @@ impl Battle {
             if move_id.as_str() == "flareblitz" && self.random(10) == 0 {
                 self.apply_status(target_side, target_idx, "brn");
             }
+
+            // Life Orb recoil (10% of max HP)
+            let attacker_item = self.sides[attacker_side].pokemon[attacker_idx].item.as_str();
+            if attacker_item == "lifeorb" {
+                let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
+                let life_orb_damage = (maxhp / 10).max(1);
+                self.sides[attacker_side].pokemon[attacker_idx].take_damage(life_orb_damage);
+
+                let attacker_name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
+                let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
+                self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), "[from] item: Life Orb"]);
+            }
         }
 
         // Apply secondary effects based on move
@@ -1221,7 +1315,7 @@ impl Battle {
             "fireblast" => (110, "Special", "Fire"),
             "hydropump" => (110, "Special", "Water"),
             "hurricane" => (110, "Special", "Flying"),
-            "thunderwave" | "willowisp" | "toxic" | "spore" | "sleeppowder" | "bulkup" | "swordsdance" | "nastyplot" | "calmmind" | "agility" |
+            "thunderwave" | "willowisp" | "toxic" | "spore" | "sleeppowder" | "bulkup" | "swordsdance" | "nastyplot" | "calmmind" | "agility" | "irondefense" |
             "stealthrock" | "spikes" | "toxicspikes" | "stickyweb" | "defog" | "rapidspin" |
             "protect" | "detect" | "substitute" | "recover" | "roost" | "softboiled" | "moonlight" | "synthesis" | "morningsun" |
             "wish" | "healbell" | "aromatherapy" | "haze" | "whirlwind" | "roar" | "dragontail" | "circlethrow" |
@@ -1236,7 +1330,7 @@ impl Battle {
         }
 
         // Extract all needed data from Pokemon before any mutable operations
-        let (attack_stat, defense_stat, atk_boost, def_boost, level, attacker_types, attacker_status, defender_types, defender_name) = {
+        let (attack_stat, defense_stat, atk_boost, def_boost, level, attacker_types, attacker_status, defender_types, defender_name, defender_ability) = {
             let attacker = &self.sides[attacker_side].pokemon[attacker_idx];
             let defender = &self.sides[target_side].pokemon[target_idx];
 
@@ -1262,8 +1356,18 @@ impl Battle {
                 attacker.status.as_str().to_string(),
                 defender.types.clone(),
                 defender.name.clone(),
+                defender.ability.as_str().to_lowercase(),
             )
         };
+
+        // Check ability-based immunities
+        // Levitate: Immune to Ground-type moves
+        if move_type.to_lowercase() == "ground" && defender_ability == "levitate" {
+            let side_id = self.sides[target_side].id_str();
+            let target_name = format!("{}: {}", side_id, defender_name);
+            self.add_log("-immune", &[&target_name, "[from] ability: Levitate"]);
+            return 0;
+        }
 
         // Check type immunity
         let type_effectiveness = self.get_type_effectiveness(move_type, &defender_types);
@@ -1314,6 +1418,25 @@ impl Battle {
         let terrain = self.field.terrain.as_str();
         let terrain_mod = get_terrain_damage_modifier(terrain, move_type, attacker_grounded);
         let damage = (damage as f64 * terrain_mod) as u32;
+
+        // Item damage modifiers
+        let item = self.sides[attacker_side].pokemon[attacker_idx].item.as_str();
+        let item_mod = match item {
+            // Life Orb: 1.3x damage boost
+            "lifeorb" => 1.3,
+            // Choice Band: 1.5x Attack (physical moves only)
+            "choiceband" if category == "Physical" => 1.5,
+            // Choice Specs: 1.5x Sp. Attack (special moves only)
+            "choicespecs" if category == "Special" => 1.5,
+            // Expert Belt: 1.2x for super effective moves
+            "expertbelt" if type_effectiveness > 1.0 => 1.2,
+            // Muscle Band: 1.1x for physical moves
+            "muscleband" if category == "Physical" => 1.1,
+            // Wise Glasses: 1.1x for special moves
+            "wiseglasses" if category == "Special" => 1.1,
+            _ => 1.0,
+        };
+        let damage = (damage as f64 * item_mod) as u32;
 
         // Log effectiveness
         if type_effectiveness > 1.0 {
@@ -2043,6 +2166,58 @@ impl Battle {
                         };
                         let hp = self.sides[side_idx].pokemon[poke_idx].hp;
                         self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] tox"]);
+                    }
+                    _ => {}
+                }
+
+                // Item end-of-turn effects
+                let item = self.sides[side_idx].pokemon[poke_idx].item.as_str().to_string();
+                match item.as_str() {
+                    "leftovers" => {
+                        // Heal 1/16 max HP
+                        let old_hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                        if old_hp < maxhp {
+                            let heal = (maxhp / 16).max(1);
+                            self.sides[side_idx].pokemon[poke_idx].heal(heal);
+
+                            let name = {
+                                let side_id = self.sides[side_idx].id_str();
+                                let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                                format!("{}: {}", side_id, pokemon.name)
+                            };
+                            let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                            self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp), "[from] item: Leftovers"]);
+                        }
+                    }
+                    "blacksludge" => {
+                        // Heal 1/16 if Poison type, damage otherwise
+                        let is_poison = pokemon_types.iter().any(|t| t.to_lowercase() == "poison");
+                        if is_poison {
+                            let old_hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                            if old_hp < maxhp {
+                                let heal = (maxhp / 16).max(1);
+                                self.sides[side_idx].pokemon[poke_idx].heal(heal);
+
+                                let name = {
+                                    let side_id = self.sides[side_idx].id_str();
+                                    let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                                    format!("{}: {}", side_id, pokemon.name)
+                                };
+                                let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                                self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp), "[from] item: Black Sludge"]);
+                            }
+                        } else {
+                            let damage = (maxhp / 8).max(1);
+                            self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
+
+                            let name = {
+                                let side_id = self.sides[side_idx].id_str();
+                                let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                                format!("{}: {}", side_id, pokemon.name)
+                            };
+                            let hp = self.sides[side_idx].pokemon[poke_idx].hp;
+                            self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] item: Black Sludge"]);
+                        }
                     }
                     _ => {}
                 }
