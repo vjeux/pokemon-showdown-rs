@@ -350,6 +350,9 @@ impl Pokemon {
 
     /// Heal HP
     pub fn heal(&mut self, amount: u32) -> u32 {
+        if self.hp >= self.maxhp {
+            return 0;
+        }
         let actual = amount.min(self.maxhp - self.hp);
         self.hp += actual;
         actual

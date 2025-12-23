@@ -1290,6 +1290,39 @@ impl Battle {
                 let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
                 self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), "[from] item: Life Orb"]);
             }
+
+            // Contact ability damage (Iron Barbs, Rough Skin)
+            // Check if move makes contact
+            let contact_moves = [
+                "tackle", "bodyslam", "doubleedge", "takedown", "quickattack", "slash",
+                "earthquake", "closecombat", "uturn", "knockoff", "ironhead", "crunch",
+                "bravebird", "flareblitz", "woodhammer", "wildcharge", "headsmash",
+                "dragonclaw", "stoneedge", "waterfall", "drillrun", "crosschop",
+                "bulletpunch", "machpunch", "iceshard", "aquajet", "shadowclaw",
+                "nightslash", "leafblade", "psychocut", "aerialace", "dragonrush",
+                "flipturn", "bounce", "fly", "dive", "dig", "skyattack",
+            ];
+            let is_contact = contact_moves.contains(&move_id.as_str());
+
+            if is_contact && !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
+                let defender_ability = self.sides[target_side].pokemon[target_idx].ability.as_str().to_lowercase();
+
+                if defender_ability == "ironbarbs" || defender_ability == "roughskin" {
+                    let attacker_maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
+                    let contact_damage = (attacker_maxhp / 8).max(1);
+                    self.sides[attacker_side].pokemon[attacker_idx].take_damage(contact_damage);
+
+                    let attacker_name = {
+                        let side_id = self.sides[attacker_side].id_str();
+                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                        format!("{}: {}", side_id, pokemon.name)
+                    };
+                    let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
+                    let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
+                    let ability_name = if defender_ability == "ironbarbs" { "Iron Barbs" } else { "Rough Skin" };
+                    self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), &format!("[from] ability: {}", ability_name)]);
+                }
+            }
         }
 
         // Apply secondary effects based on move
@@ -1416,6 +1449,79 @@ impl Battle {
             return 0;
         }
 
+        // Flash Fire: Immune to Fire-type moves, boosts Fire moves
+        if move_type.to_lowercase() == "fire" && defender_ability == "flashfire" {
+            let side_id = self.sides[target_side].id_str();
+            let target_name = format!("{}: {}", side_id, defender_name);
+            self.add_log("-immune", &[&target_name, "[from] ability: Flash Fire"]);
+            // Add Flash Fire boost volatile
+            self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flashfire"));
+            self.add_log("-start", &[&target_name, "ability: Flash Fire"]);
+            return 0;
+        }
+
+        // Water Absorb: Immune to Water-type moves, heals 25% HP
+        if move_type.to_lowercase() == "water" && defender_ability == "waterabsorb" {
+            let side_id = self.sides[target_side].id_str();
+            let target_name = format!("{}: {}", side_id, defender_name);
+            self.add_log("-immune", &[&target_name, "[from] ability: Water Absorb"]);
+            let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
+            let heal = (maxhp / 4).max(1);
+            self.sides[target_side].pokemon[target_idx].heal(heal);
+            let hp = self.sides[target_side].pokemon[target_idx].hp;
+            self.add_log("-heal", &[&target_name, &format!("{}/{}", hp, maxhp), "[from] ability: Water Absorb"]);
+            return 0;
+        }
+
+        // Volt Absorb: Immune to Electric-type moves, heals 25% HP
+        if move_type.to_lowercase() == "electric" && defender_ability == "voltabsorb" {
+            let side_id = self.sides[target_side].id_str();
+            let target_name = format!("{}: {}", side_id, defender_name);
+            self.add_log("-immune", &[&target_name, "[from] ability: Volt Absorb"]);
+            let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
+            let heal = (maxhp / 4).max(1);
+            self.sides[target_side].pokemon[target_idx].heal(heal);
+            let hp = self.sides[target_side].pokemon[target_idx].hp;
+            self.add_log("-heal", &[&target_name, &format!("{}/{}", hp, maxhp), "[from] ability: Volt Absorb"]);
+            return 0;
+        }
+
+        // Motor Drive: Immune to Electric-type moves, boosts Speed by 1 stage
+        if move_type.to_lowercase() == "electric" && defender_ability == "motordrive" {
+            let side_id = self.sides[target_side].id_str();
+            let target_name = format!("{}: {}", side_id, defender_name);
+            self.add_log("-immune", &[&target_name, "[from] ability: Motor Drive"]);
+            self.apply_boost(target_side, target_idx, "spe", 1);
+            return 0;
+        }
+
+        // Lightning Rod: Immune to Electric-type moves, boosts SpA by 1 stage
+        if move_type.to_lowercase() == "electric" && defender_ability == "lightningrod" {
+            let side_id = self.sides[target_side].id_str();
+            let target_name = format!("{}: {}", side_id, defender_name);
+            self.add_log("-immune", &[&target_name, "[from] ability: Lightning Rod"]);
+            self.apply_boost(target_side, target_idx, "spa", 1);
+            return 0;
+        }
+
+        // Storm Drain: Immune to Water-type moves, boosts SpA by 1 stage
+        if move_type.to_lowercase() == "water" && defender_ability == "stormdrain" {
+            let side_id = self.sides[target_side].id_str();
+            let target_name = format!("{}: {}", side_id, defender_name);
+            self.add_log("-immune", &[&target_name, "[from] ability: Storm Drain"]);
+            self.apply_boost(target_side, target_idx, "spa", 1);
+            return 0;
+        }
+
+        // Sap Sipper: Immune to Grass-type moves, boosts Attack by 1 stage
+        if move_type.to_lowercase() == "grass" && defender_ability == "sapsipper" {
+            let side_id = self.sides[target_side].id_str();
+            let target_name = format!("{}: {}", side_id, defender_name);
+            self.add_log("-immune", &[&target_name, "[from] ability: Sap Sipper"]);
+            self.apply_boost(target_side, target_idx, "atk", 1);
+            return 0;
+        }
+
         // Check type immunity
         let type_effectiveness = self.get_type_effectiveness(move_type, &defender_types);
         if type_effectiveness == 0.0 {
@@ -1492,11 +1598,21 @@ impl Battle {
             self.add_log("-resisted", &[]);
         }
 
-        // Critical hit check (1/24 chance in Gen 7+)
-        let crit_roll = self.random(24);
+        // Critical hit check
+        // Base crit rate: 1/24 (~4.17%), high crit ratio moves: 1/8 (12.5%)
+        let high_crit_moves = [
+            "stoneedge", "slash", "nightslash", "shadowclaw", "crosschop",
+            "aeroblast", "spacialrend", "attackorder", "leafblade", "crabhammer",
+            "drillrun", "psychocut", "razorleaf", "karatechop",
+        ];
+        let crit_ratio = if high_crit_moves.contains(&move_id.as_str()) { 8 } else { 24 };
+        let crit_roll = self.random(crit_ratio);
+
         if crit_roll == 0 {
-            self.add_log("-crit", &[]);
-            return (damage as f64 * 1.5) as u32;
+            let target_name = format!("{}: {}", self.sides[target_side].id_str(), defender_name);
+            self.add_log("-crit", &[&target_name]);
+            // Critical hits: 1.5x damage, ignore burn penalty (for physical), ignore stat drops
+            return ((damage as f64 * 1.5) as u32).max(1);
         }
 
         damage.max(1)

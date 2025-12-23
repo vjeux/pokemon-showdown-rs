@@ -2443,3 +2443,114 @@ fn test_trick_room_speed_reversal() {
         assert!(psychic_pos < tb_pos2, "Under Trick Room, slower Reuniclus's Psychic should come before faster Jolteon's Thunderbolt");
     }
 }
+
+/// Test Water Absorb ability heals from Water moves
+#[test]
+fn test_water_absorb_ability() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Vaporeon".to_string(),
+                species: "Vaporeon".to_string(),
+                level: 100,
+                ability: "Water Absorb".to_string(),
+                moves: vec!["tackle".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Blastoise".to_string(),
+                species: "Blastoise".to_string(),
+                level: 100,
+                ability: "Torrent".to_string(),
+                moves: vec!["surf".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Damage Vaporeon first so it can heal
+    let maxhp = battle.sides[0].pokemon[0].maxhp;
+    battle.sides[0].pokemon[0].hp = maxhp / 2; // Set to 50% HP
+    let hp_before = battle.sides[0].pokemon[0].hp;
+
+    // Blastoise uses Surf on Vaporeon (Water Absorb)
+    battle.make_choices("move tackle", "move surf");
+
+    let log = battle.get_log();
+    println!("Water Absorb test log:\n{}", log);
+
+    // Should see immunity and heal messages
+    assert!(log.contains("[from] ability: Water Absorb"), "Water Absorb should trigger");
+    assert!(log.contains("-heal") && log.contains("Vaporeon"), "Vaporeon should be healed by Water Absorb");
+
+    // Vaporeon should have healed (25% of max HP)
+    let hp_after = battle.sides[0].pokemon[0].hp;
+    let _expected_heal = (maxhp / 4).max(1);
+    assert!(hp_after > hp_before, "Vaporeon should have gained HP from Water Absorb");
+}
+
+/// Test Iron Barbs deals damage to attackers using contact moves
+#[test]
+fn test_iron_barbs_contact_damage() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Machamp".to_string(),
+                species: "Machamp".to_string(),
+                level: 100,
+                ability: "Guts".to_string(),
+                moves: vec!["closecombat".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Ferrothorn".to_string(),
+                species: "Ferrothorn".to_string(),
+                level: 100,
+                ability: "Iron Barbs".to_string(),
+                moves: vec!["irondefense".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    let machamp_hp_before = battle.sides[0].pokemon[0].hp;
+
+    // Machamp uses Close Combat (contact move) on Ferrothorn
+    battle.make_choices("move closecombat", "move irondefense");
+
+    let log = battle.get_log();
+    println!("Iron Barbs test log:\n{}", log);
+
+    // Should see Iron Barbs damage
+    assert!(log.contains("[from] ability: Iron Barbs"), "Iron Barbs should trigger on contact");
+
+    // Machamp should have taken 1/8 max HP damage from Iron Barbs
+    let machamp_hp_after = battle.sides[0].pokemon[0].hp;
+    let machamp_maxhp = battle.sides[0].pokemon[0].maxhp;
+    let expected_damage = (machamp_maxhp / 8).max(1);
+
+    // Machamp takes Close Combat stat drops, so HP change includes Iron Barbs
+    assert!(machamp_hp_after < machamp_hp_before, "Machamp should have taken Iron Barbs damage");
+}
