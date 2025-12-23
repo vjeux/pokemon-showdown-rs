@@ -124,6 +124,9 @@ pub struct Pokemon {
     pub ate_berry: bool,
     pub item_knocked_off: bool,
 
+    // Choice item lock (Choice Band/Scarf/Specs)
+    pub locked_move: Option<ID>,
+
     // Types
     pub types: Vec<String>,
     pub added_type: Option<String>,
@@ -239,6 +242,8 @@ impl Pokemon {
             used_item_this_turn: false,
             ate_berry: false,
             item_knocked_off: false,
+
+            locked_move: None,
 
             types: Vec::new(),
             added_type: None,
@@ -473,6 +478,7 @@ impl Pokemon {
         self.being_called_back = false;
         self.active_turns = 0;
         self.active_move_actions = 0;
+        self.locked_move = None; // Clear Choice item lock
     }
 
     /// Get the slot ID for protocol messages

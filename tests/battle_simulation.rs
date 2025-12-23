@@ -1814,3 +1814,304 @@ fn test_haze_clears_boosts() {
     println!("Haze test log:\n{}", log);
     assert!(log.contains("-clearallboost"), "Haze should clear all boosts");
 }
+
+/// Test multi-hit moves (Bullet Seed)
+#[test]
+fn test_multi_hit_moves() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Breloom".to_string(),
+                species: "Breloom".to_string(),
+                level: 100,
+                ability: "Technician".to_string(),
+                moves: vec!["bulletseed".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Blissey".to_string(),
+                species: "Blissey".to_string(),
+                level: 100,
+                ability: "Natural Cure".to_string(),
+                moves: vec!["softboiled".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    let blissey_hp_before = battle.sides[1].pokemon[0].hp;
+
+    // Use Bullet Seed
+    battle.make_choices("move bulletseed", "move softboiled");
+
+    let blissey_hp_after = battle.sides[1].pokemon[0].hp;
+    let log = battle.get_log();
+    println!("Multi-hit test log:\n{}", log);
+
+    // Should have taken damage
+    assert!(blissey_hp_before > blissey_hp_after, "Blissey should have taken damage");
+
+    // Should show hitcount in log (for multi-hit moves)
+    assert!(log.contains("-hitcount"), "Multi-hit move should show hit count");
+}
+
+/// Test fixed 2-hit move (Double Kick)
+#[test]
+fn test_fixed_double_hit_move() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([5, 6, 7, 8])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Hitmonlee".to_string(),
+                species: "Hitmonlee".to_string(),
+                level: 100,
+                ability: "Limber".to_string(),
+                moves: vec!["doublekick".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Snorlax".to_string(),
+                species: "Snorlax".to_string(),
+                level: 100,
+                ability: "Thick Fat".to_string(),
+                moves: vec!["rest".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Use Double Kick
+    battle.make_choices("move doublekick", "move rest");
+
+    let log = battle.get_log();
+    println!("Double Kick test log:\n{}", log);
+
+    // Should show hitcount 2 in log (fixed 2 hits)
+    assert!(log.contains("-hitcount|2"), "Double Kick should hit exactly 2 times");
+}
+
+/// Test move accuracy (Focus Blast with 70% accuracy)
+#[test]
+fn test_move_accuracy_miss() {
+    // Use a seed that causes Focus Blast to miss
+    // We'll try multiple seeds until we find one that misses
+    let mut missed = false;
+    for seed_val in 100u16..200u16 {
+        let mut battle = Battle::new(BattleOptions {
+            format_id: ID::new("gen9ou"),
+            seed: Some(PRNGSeed::Gen5([seed_val, 0, 0, 0])),
+            p1: Some(PlayerOptions {
+                name: "Player 1".to_string(),
+                avatar: None,
+                team: vec![PokemonSet {
+                    name: "Gengar".to_string(),
+                    species: "Gengar".to_string(),
+                    level: 100,
+                    ability: "Levitate".to_string(),
+                    moves: vec!["focusblast".to_string()],
+                    ..Default::default()
+                }],
+            }),
+            p2: Some(PlayerOptions {
+                name: "Player 2".to_string(),
+                avatar: None,
+                team: vec![PokemonSet {
+                    name: "Blissey".to_string(),
+                    species: "Blissey".to_string(),
+                    level: 100,
+                    ability: "Natural Cure".to_string(),
+                    moves: vec!["softboiled".to_string()],
+                    ..Default::default()
+                }],
+            }),
+            ..Default::default()
+        });
+
+        battle.start_battle();
+        battle.make_choices("move focusblast", "move softboiled");
+
+        let log = battle.get_log();
+        if log.contains("-miss") {
+            println!("Found miss with seed {} - log:\n{}", seed_val, log);
+            missed = true;
+            break;
+        }
+    }
+
+    assert!(missed, "Focus Blast should miss sometimes (70% accuracy)");
+}
+
+/// Test confusion (confuse ray and self-damage)
+#[test]
+fn test_confusion_volatile() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Gengar".to_string(),
+                species: "Gengar".to_string(),
+                level: 100,
+                ability: "Levitate".to_string(),
+                moves: vec!["confuseray".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Machamp".to_string(),
+                species: "Machamp".to_string(),
+                level: 100,
+                ability: "Guts".to_string(),
+                moves: vec!["closecombat".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Gengar uses Confuse Ray
+    battle.make_choices("move confuseray", "move closecombat");
+
+    let log = battle.get_log();
+    println!("Confusion test log:\n{}", log);
+
+    // Machamp should be confused
+    assert!(log.contains("-start|p2: Machamp|confusion"), "Confuse Ray should cause confusion");
+
+    // Check if confusion was activated on subsequent turn or caused self-damage
+    assert!(battle.sides[1].pokemon[0].has_volatile(&ID::new("confusion")), "Machamp should have confusion volatile");
+}
+
+/// Test flinch (Fake Out always flinches)
+#[test]
+fn test_flinch_prevents_move() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Persian".to_string(),
+                species: "Persian".to_string(),
+                level: 100,
+                ability: "Technician".to_string(),
+                moves: vec!["fakeout".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Machamp".to_string(),
+                species: "Machamp".to_string(),
+                level: 100,
+                ability: "Guts".to_string(),
+                moves: vec!["closecombat".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    let persian_hp_before = battle.sides[0].pokemon[0].hp;
+
+    // Persian uses Fake Out - it should flinch Machamp
+    battle.make_choices("move fakeout", "move closecombat");
+
+    let persian_hp_after = battle.sides[0].pokemon[0].hp;
+    let log = battle.get_log();
+    println!("Flinch test log:\n{}", log);
+
+    // Persian should not take damage because Machamp flinched
+    assert_eq!(persian_hp_before, persian_hp_after, "Persian should not take damage - Machamp flinched");
+
+    // Log should show Machamp couldn't move due to flinch
+    assert!(log.contains("cant|p2: Machamp|flinch"), "Machamp should be prevented from moving by flinch");
+}
+
+/// Test Choice item locking (Choice Band locks into first move used)
+#[test]
+fn test_choice_band_locking() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Garchomp".to_string(),
+                species: "Garchomp".to_string(),
+                level: 100,
+                ability: "Rough Skin".to_string(),
+                item: "Choice Band".to_string(),
+                moves: vec!["earthquake".to_string(), "dragonclaw".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Blissey".to_string(),
+                species: "Blissey".to_string(),
+                level: 100,
+                ability: "Natural Cure".to_string(),
+                moves: vec!["softboiled".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Garchomp uses Earthquake first
+    battle.make_choices("move earthquake", "move softboiled");
+
+    // Garchomp should be locked into Earthquake
+    assert!(battle.sides[0].pokemon[0].locked_move.is_some(), "Garchomp should be locked into a move");
+    assert_eq!(battle.sides[0].pokemon[0].locked_move.as_ref().unwrap().as_str(), "earthquake",
+               "Garchomp should be locked into Earthquake");
+
+    // Try to use Dragon Claw but should still use Earthquake
+    battle.make_choices("move dragonclaw", "move softboiled");
+
+    let log = battle.get_log();
+    println!("Choice Band test log:\n{}", log);
+
+    // The log should show Earthquake was used twice (not Dragon Claw)
+    let eq_count = log.matches("earthquake").count();
+    assert!(eq_count >= 2, "Earthquake should be used twice due to Choice lock, found {} occurrences", eq_count);
+}

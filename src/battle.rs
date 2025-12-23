@@ -555,6 +555,21 @@ impl Battle {
                         None
                     };
 
+                    // Check Choice item lock - if locked, override with locked move
+                    let move_id = if let Some(Some(poke_idx)) = self.sides[side_idx].active.get(slot) {
+                        if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
+                            if let Some(ref locked) = pokemon.locked_move {
+                                Some(locked.clone())
+                            } else {
+                                move_id
+                            }
+                        } else {
+                            move_id
+                        }
+                    } else {
+                        move_id
+                    };
+
                     // Parse target if present
                     let target_loc = if words.len() > 2 {
                         words[2].parse::<i8>().ok()
@@ -636,7 +651,11 @@ impl Battle {
                         let pokemon_idx = self.sides[side_idx].active.get(action.pokemon_index)
                             .and_then(|opt| *opt);
                         if let Some(poke_idx) = pokemon_idx {
-                            let priority = 0i8; // Would look up move priority from dex
+                            let priority = if let Some(ref move_id) = action.move_id {
+                                self.get_move_priority(move_id)
+                            } else {
+                                0
+                            };
                             let speed = self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as u32;
                             actions.push((side_idx, poke_idx, action.clone(), priority, speed));
                         }
@@ -885,6 +904,19 @@ impl Battle {
         // Load move data - we need to get this from the Dex
         // For now, we'll implement inline with basic damage
 
+        // Check flinch (flinch prevents action and is consumed)
+        let flinch_id = ID::new("flinch");
+        if self.sides[attacker_side].pokemon[attacker_idx].has_volatile(&flinch_id) {
+            self.sides[attacker_side].pokemon[attacker_idx].remove_volatile(&flinch_id);
+            let name = {
+                let side_id = self.sides[attacker_side].id_str();
+                let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                format!("{}: {}", side_id, pokemon.name)
+            };
+            self.add_log("cant", &[&name, "flinch"]);
+            return;
+        }
+
         // Check paralysis
         let paralysis_check = self.random(4);
         if self.sides[attacker_side].pokemon[attacker_idx].status.as_str() == "par" && paralysis_check == 0 {
@@ -946,9 +978,70 @@ impl Battle {
             }
         }
 
+        // Check confusion (33% chance to hit self in Gen 7+)
+        let confusion_id = ID::new("confusion");
+        if self.sides[attacker_side].pokemon[attacker_idx].has_volatile(&confusion_id) {
+            // Decrement confusion counter
+            let snap_out = {
+                if let Some(state) = self.sides[attacker_side].pokemon[attacker_idx].get_volatile_mut(&confusion_id) {
+                    if let Some(ref mut duration) = state.duration {
+                        if *duration > 0 {
+                            *duration -= 1;
+                        }
+                        *duration == 0
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                }
+            };
+
+            if snap_out {
+                self.sides[attacker_side].pokemon[attacker_idx].remove_volatile(&confusion_id);
+                let name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                self.add_log("-end", &[&name, "confusion"]);
+            } else {
+                let name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                self.add_log("-activate", &[&name, "confusion"]);
+
+                // 33% chance to hit self (Gen 7+)
+                if self.random(3) == 0 {
+                    // Calculate confusion damage: 40 BP typeless physical move
+                    let (atk, def, level) = {
+                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                        (pokemon.stored_stats.atk as u32, pokemon.stored_stats.def as u32, pokemon.level as u32)
+                    };
+                    let base_damage = ((2 * level / 5 + 2) * 40 * atk / def.max(1)) / 50 + 2;
+                    let random_factor = 85 + self.random(16);
+                    let confusion_damage = (base_damage * random_factor / 100).max(1);
+
+                    self.sides[attacker_side].pokemon[attacker_idx].take_damage(confusion_damage);
+                    let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
+                    let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
+                    self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] confusion"]);
+                    return; // Can't use the move this turn
+                }
+            }
+        }
+
         // Set last move
         self.sides[attacker_side].pokemon[attacker_idx].move_this_turn = Some(move_id.clone());
         self.sides[attacker_side].pokemon[attacker_idx].last_move_used = Some(move_id.clone());
+
+        // Choice item locking - lock the Pokemon into this move
+        let item = self.sides[attacker_side].pokemon[attacker_idx].item.as_str();
+        if matches!(item, "choiceband" | "choicescarf" | "choicespecs") {
+            self.sides[attacker_side].pokemon[attacker_idx].locked_move = Some(move_id.clone());
+        }
 
         // Check if target is valid
         if target_side >= self.sides.len() || target_idx >= self.sides[target_side].pokemon.len() {
@@ -961,24 +1054,87 @@ impl Battle {
             return;
         }
 
-        // For now, apply basic damage based on move ID
-        // In a full implementation, we'd look up move data from the Dex
-        let damage = self.calculate_move_damage(attacker_side, attacker_idx, target_side, target_idx, move_id);
+        // Check accuracy
+        let mut accuracy = self.get_move_accuracy(move_id);
 
-        if damage > 0 {
-            // Apply damage
-            self.sides[target_side].pokemon[target_idx].take_damage(damage);
+        // Weather-based accuracy modifiers
+        let weather = self.field.weather.as_str();
+        match (move_id.as_str(), weather) {
+            // Thunder and Hurricane always hit in rain
+            ("thunder" | "hurricane", "raindance" | "rain" | "primordialsea") => accuracy = 101,
+            // Blizzard always hits in hail
+            ("blizzard", "hail" | "snow") => accuracy = 101,
+            // Thunder and Hurricane have lower accuracy in sun
+            ("thunder" | "hurricane", "sunnyday" | "sun" | "desolateland") => accuracy = 50,
+            _ => {}
+        }
 
-            let target_name = {
-                let side_id = self.sides[target_side].id_str();
-                let pokemon = &self.sides[target_side].pokemon[target_idx];
-                format!("{}: {}", side_id, pokemon.name)
+        if accuracy < 100 {
+            // Get accuracy/evasion boosts
+            let acc_boost = self.sides[attacker_side].pokemon[attacker_idx].boosts.accuracy;
+            let eva_boost = self.sides[target_side].pokemon[target_idx].boosts.evasion;
+            let effective_boost = acc_boost - eva_boost;
+
+            // Calculate effective accuracy with boosts
+            let accuracy_modifier = if effective_boost >= 0 {
+                (3 + effective_boost as u32) as f64 / 3.0
+            } else {
+                3.0 / (3 + (-effective_boost) as u32) as f64
             };
-            let hp = self.sides[target_side].pokemon[target_idx].hp;
-            let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
-            self.add_log("-damage", &[&target_name, &format!("{}/{}", hp, maxhp)]);
 
-            // Apply recoil damage for recoil moves
+            let effective_accuracy = (accuracy as f64 * accuracy_modifier) as u32;
+            let roll = self.random(100);
+
+            if roll >= effective_accuracy {
+                let attacker_name = {
+                    let side_id = self.sides[attacker_side].id_str();
+                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                self.add_log("-miss", &[&attacker_name]);
+                return;
+            }
+        }
+
+        // Determine number of hits for multi-hit moves
+        let hit_count = self.get_multi_hit_count(move_id);
+        let mut total_damage = 0u32;
+        let mut hits_landed = 0u32;
+
+        for _hit in 0..hit_count {
+            // Check if target fainted during multi-hit
+            if self.sides[target_side].pokemon[target_idx].is_fainted() {
+                break;
+            }
+
+            // Calculate damage for this hit
+            let damage = self.calculate_move_damage(attacker_side, attacker_idx, target_side, target_idx, move_id);
+
+            if damage > 0 {
+                hits_landed += 1;
+                total_damage += damage;
+
+                // Apply damage
+                self.sides[target_side].pokemon[target_idx].take_damage(damage);
+
+                let target_name = {
+                    let side_id = self.sides[target_side].id_str();
+                    let pokemon = &self.sides[target_side].pokemon[target_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                let hp = self.sides[target_side].pokemon[target_idx].hp;
+                let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
+                self.add_log("-damage", &[&target_name, &format!("{}/{}", hp, maxhp)]);
+            }
+        }
+
+        // Log hit count for multi-hit moves
+        if hit_count > 1 && hits_landed > 0 {
+            self.add_log("-hitcount", &[&hits_landed.to_string()]);
+        }
+
+        if total_damage > 0 {
+            // Apply recoil damage for recoil moves (based on total damage)
             let recoil_fraction = match move_id.as_str() {
                 "bravebird" | "flareblitz" | "woodhammer" | "wildcharge" => 1.0 / 3.0,
                 "headsmash" => 0.5,
@@ -987,7 +1143,7 @@ impl Battle {
             };
 
             if recoil_fraction > 0.0 {
-                let recoil_damage = ((damage as f64 * recoil_fraction) as u32).max(1);
+                let recoil_damage = ((total_damage as f64 * recoil_fraction) as u32).max(1);
                 self.sides[attacker_side].pokemon[attacker_idx].take_damage(recoil_damage);
 
                 let attacker_name = {
@@ -1044,6 +1200,27 @@ impl Battle {
             "doubleedge" => (120, "Physical", "Normal"),
             "takedown" => (90, "Physical", "Normal"),
             "wildcharge" => (90, "Physical", "Electric"),
+            // Multi-hit moves
+            "bulletseed" => (25, "Physical", "Grass"),
+            "rockblast" => (25, "Physical", "Rock"),
+            "iciclespear" => (25, "Physical", "Ice"),
+            "pinmissile" => (25, "Physical", "Bug"),
+            "tailslap" => (25, "Physical", "Normal"),
+            "scaleshot" => (25, "Physical", "Dragon"),
+            "tripleaxel" => (20, "Physical", "Ice"),
+            "populationbomb" => (20, "Physical", "Normal"),
+            // Fixed multi-hit
+            "doublekick" => (30, "Physical", "Fighting"),
+            "doublehit" => (35, "Physical", "Normal"),
+            "bonemerang" => (50, "Physical", "Ground"),
+            "dualwingbeat" => (40, "Physical", "Flying"),
+            // Low accuracy high power
+            "focusblast" => (120, "Special", "Fighting"),
+            "thunder" => (110, "Special", "Electric"),
+            "blizzard" => (110, "Special", "Ice"),
+            "fireblast" => (110, "Special", "Fire"),
+            "hydropump" => (110, "Special", "Water"),
+            "hurricane" => (110, "Special", "Flying"),
             "thunderwave" | "willowisp" | "toxic" | "spore" | "sleeppowder" | "bulkup" | "swordsdance" | "nastyplot" | "calmmind" | "agility" |
             "stealthrock" | "spikes" | "toxicspikes" | "stickyweb" | "defog" | "rapidspin" |
             "protect" | "detect" | "substitute" | "recover" | "roost" | "softboiled" | "moonlight" | "synthesis" | "morningsun" |
@@ -1153,6 +1330,106 @@ impl Battle {
         }
 
         damage.max(1)
+    }
+
+    /// Get move priority (-7 to +5)
+    fn get_move_priority(&self, move_id: &ID) -> i8 {
+        match move_id.as_str() {
+            // +5 priority
+            "helpinghand" => 5,
+            // +4 priority
+            "protect" | "detect" | "endure" | "banefulbunker" | "kingsshield" |
+            "spikyshield" | "obstruct" | "silktrap" => 4,
+            // +3 priority
+            "fakeout" | "quickguard" | "wideguard" => 3,
+            // +2 priority
+            "extremespeed" | "feint" | "firstimpression" | "followme" | "ragepowder" => 2,
+            // +1 priority
+            "aquajet" | "bulletpunch" | "iceshard" | "machpunch" | "quickattack" |
+            "shadowsneak" | "suckerpunch" | "vacuumwave" | "watershuriken" |
+            "babydolleyes" | "accelerock" | "jetpunch" | "grassy glide" => 1,
+            // 0 priority - most moves
+            // -1 priority
+            "vitalthrow" => -1,
+            // -2 priority
+            // -3 priority
+            "focuspunch" => -3,
+            // -4 priority
+            "avalanche" | "revenge" => -4,
+            // -5 priority
+            "counter" | "mirrorcoat" => -5,
+            // -6 priority
+            "circlethrough" | "roar" | "whirlwind" | "dragontail" | "teleport" => -6,
+            // -7 priority
+            "trickroom" => -7,
+            // Default 0 priority
+            _ => 0,
+        }
+    }
+
+    /// Get number of hits for multi-hit moves
+    fn get_multi_hit_count(&mut self, move_id: &ID) -> u32 {
+        match move_id.as_str() {
+            // Variable 2-5 hit moves (standard distribution: 35% 2, 35% 3, 15% 4, 15% 5)
+            "bulletseed" | "rockblast" | "iciclespear" | "pinmissile" | "tailslap" |
+            "scaleshot" | "populationbomb" | "watershuriken" => {
+                let roll = self.random(100);
+                if roll < 35 { 2 }
+                else if roll < 70 { 3 }
+                else if roll < 85 { 4 }
+                else { 5 }
+            }
+            // Fixed 2-hit moves
+            "doublekick" | "doublehit" | "dualwingbeat" | "dragondarts" |
+            "doubleironbash" | "geargrind" | "twineedle" | "bonemerang" => 2,
+            // Fixed 3-hit moves
+            "tripleaxel" | "triplekick" => 3,
+            // All other moves hit once
+            _ => 1,
+        }
+    }
+
+    /// Get move accuracy (0-100, where 100+ means never miss)
+    fn get_move_accuracy(&self, move_id: &ID) -> u32 {
+        match move_id.as_str() {
+            // Always hit moves (Aerial Ace, Swift, etc.)
+            "aerialace" | "swift" | "magnetbomb" | "shadowpunch" | "feintattack" |
+            "shockwave" | "aurasphere" | "clearsmog" | "disarmingvoice" => 101,
+
+            // Status moves that bypass accuracy
+            "thunderwave" => 90,
+            "willowisp" => 85,
+            "toxic" => 90,
+            "sleeppowder" | "stunspore" | "poisonpowder" => 75,
+            "spore" => 100,
+            "hypnosis" => 60,
+            "sing" | "grasswhistle" | "lovelykiss" => 55,
+
+            // High-power low-accuracy moves
+            "focusblast" => 70,
+            "thunder" => 70,  // Higher in rain
+            "blizzard" => 70, // Higher in hail
+            "fireblast" => 85,
+            "hydropump" => 80,
+            "hurricane" => 70, // Higher in rain
+            "stoneedge" => 80,
+            "crosschop" | "dynamicpunch" | "megakick" => 75,
+            "zapcannon" | "inferno" => 50,
+
+            // Multi-hit moves often have lower accuracy
+            "rockblast" => 90,
+            "bulletseed" => 100,
+            "iciclespear" => 100,
+            "pinmissile" => 95,
+            "tailslap" => 85,
+
+            // Fixed hit moves
+            "doublekick" => 100,
+            "bonemerang" => 90,
+
+            // Standard moves (most are 100%)
+            _ => 100,
+        }
     }
 
     /// Get type effectiveness multiplier
@@ -1306,11 +1583,22 @@ impl Battle {
                     self.apply_status(target_side, target_idx, "psn");
                 }
             }
-            // Iron Head - 30% flinch
-            "ironhead" => {
+            // Flinch moves - 30% flinch
+            "ironhead" | "airslash" | "zenheadbutt" | "bite" | "darkpulse" | "twister" |
+            "headbutt" | "rockslide" | "snore" | "waterfall" | "astonish" | "iciclecrash" => {
                 if self.random(10) < 3 {
                     self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flinch"));
                 }
+            }
+            // Flinch moves - 10% flinch
+            "stomp" | "extrasensory" | "dragon rush" | "needle arm" => {
+                if self.random(10) == 0 {
+                    self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flinch"));
+                }
+            }
+            // Fake Out always flinches (but only works on first turn - not implemented)
+            "fakeout" => {
+                self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flinch"));
             }
             "thunderwave" => {
                 self.apply_status(target_side, target_idx, "par");
@@ -1490,8 +1778,48 @@ impl Battle {
                 }
                 self.add_log("-cureteam", &[side_id]);
             }
+            // Confusion-causing moves
+            "confuseray" | "supersonic" | "sweetkiss" | "teeterdance" => {
+                self.apply_confusion(target_side, target_idx);
+            }
+            // Hurricane and Dynamic Punch have 100% confusion chance
+            "hurricane" | "dynamicpunch" => {
+                self.apply_confusion(target_side, target_idx);
+            }
+            // Psybeam, Signal Beam, Confusion - 10% confusion chance
+            "psybeam" | "signalbeam" | "confusion" => {
+                if self.random(10) == 0 {
+                    self.apply_confusion(target_side, target_idx);
+                }
+            }
             _ => {}
         }
+    }
+
+    /// Apply confusion volatile to a Pokemon
+    fn apply_confusion(&mut self, side_idx: usize, poke_idx: usize) {
+        if side_idx >= self.sides.len() || poke_idx >= self.sides[side_idx].pokemon.len() {
+            return;
+        }
+
+        let confusion_id = ID::new("confusion");
+        if self.sides[side_idx].pokemon[poke_idx].has_volatile(&confusion_id) {
+            return; // Already confused
+        }
+
+        // Confusion lasts 2-5 turns
+        let duration = 2 + self.random(4);
+        self.sides[side_idx].pokemon[poke_idx].add_volatile(confusion_id.clone());
+        if let Some(state) = self.sides[side_idx].pokemon[poke_idx].get_volatile_mut(&confusion_id) {
+            state.duration = Some(duration);
+        }
+
+        let name = {
+            let side_id = self.sides[side_idx].id_str();
+            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+            format!("{}: {}", side_id, pokemon.name)
+        };
+        self.add_log("-start", &[&name, "confusion"]);
     }
 
     /// Remove all entry hazards from a side
