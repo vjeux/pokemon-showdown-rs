@@ -35,3 +35,5 @@ pub use items::{ItemEvent, ItemModifier, get_item_effect, get_item_type_boost, c
 pub use event::{EventType, EventResult, EffectType as EventEffectType, HandlerPriority, EventHandler, MoveFlags, AbilityFlags, ConditionData};
 pub use data::abilities::{AbilityDef, BasePowerBoost, get_ability, ability_grants_type_immunity, ability_absorbs_type, ability_grants_status_immunity};
 pub use data::moves::{MoveDef, MoveCategory, MoveTargetType, SecondaryEffect, get_move, is_pivot_move, is_status_move, get_base_power, get_accuracy};
+pub use data::items::{ItemDef, ItemCategory, get_item, item_boosts_type, is_choice_item, is_berry, get_residual_heal, item_grants_type_immunity};
+pub use data::conditions::{ConditionDef, ConditionType, MoveRestriction, get_condition, is_status_condition, is_volatile_condition, condition_traps, get_condition_damage};
