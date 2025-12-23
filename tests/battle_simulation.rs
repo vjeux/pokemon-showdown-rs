@@ -2306,3 +2306,140 @@ fn test_life_orb_damage() {
     // Alakazam should have taken Life Orb recoil (10% of max HP)
     // Note: Alakazam also took damage from Close Combat, so we just check recoil was applied
 }
+
+/// Test U-Turn pivot mechanics
+#[test]
+fn test_uturn_pivot_switch() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![
+                PokemonSet {
+                    name: "Scizor".to_string(),
+                    species: "Scizor".to_string(),
+                    level: 100,
+                    ability: "Technician".to_string(),
+                    moves: vec!["uturn".to_string(), "bulletpunch".to_string()],
+                    ..Default::default()
+                },
+                PokemonSet {
+                    name: "Blissey".to_string(),
+                    species: "Blissey".to_string(),
+                    level: 100,
+                    ability: "Natural Cure".to_string(),
+                    moves: vec!["softboiled".to_string()],
+                    ..Default::default()
+                },
+            ],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Ferrothorn".to_string(),
+                species: "Ferrothorn".to_string(),
+                level: 100,
+                ability: "Iron Barbs".to_string(),
+                moves: vec!["irondefense".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // Scizor should be active initially
+    assert_eq!(battle.sides[0].pokemon[0].name, "Scizor");
+    assert!(battle.sides[0].pokemon[0].is_active);
+    assert!(!battle.sides[0].pokemon[1].is_active);
+
+    // Scizor uses U-Turn - should deal damage and switch to Blissey
+    battle.make_choices("move uturn", "move irondefense");
+
+    let log = battle.get_log();
+    println!("U-Turn test log:\n{}", log);
+
+    // Should see U-Turn move logged
+    assert!(log.contains("|move|") && log.contains("uturn"), "U-Turn should be used");
+
+    // Ferrothorn should have taken damage
+    assert!(log.contains("-damage") && log.contains("Ferrothorn"), "Ferrothorn should take U-Turn damage");
+
+    // After U-Turn, Blissey should be active (Scizor switched out)
+    assert!(!battle.sides[0].pokemon[0].is_active, "Scizor should no longer be active");
+    assert!(battle.sides[0].pokemon[1].is_active, "Blissey should be active after U-Turn");
+
+    // Log should show the switch
+    assert!(log.contains("switch") && log.contains("Blissey"), "Should log switch to Blissey");
+}
+
+/// Test Trick Room reverses speed order
+#[test]
+fn test_trick_room_speed_reversal() {
+    let mut battle = Battle::new(BattleOptions {
+        format_id: ID::new("gen9ou"),
+        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        p1: Some(PlayerOptions {
+            name: "Player 1".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Reuniclus".to_string(),
+                species: "Reuniclus".to_string(),
+                level: 100,
+                ability: "Magic Guard".to_string(),
+                moves: vec!["trickroom".to_string(), "psychic".to_string()],
+                ..Default::default()
+            }],
+        }),
+        p2: Some(PlayerOptions {
+            name: "Player 2".to_string(),
+            avatar: None,
+            team: vec![PokemonSet {
+                name: "Jolteon".to_string(),
+                species: "Jolteon".to_string(),
+                level: 100,
+                ability: "Volt Absorb".to_string(),
+                moves: vec!["thunderbolt".to_string()],
+                ..Default::default()
+            }],
+        }),
+        ..Default::default()
+    });
+
+    battle.start_battle();
+
+    // First turn: Without Trick Room, faster Jolteon should move first
+    // Turn 1: Reuniclus uses Trick Room (priority -7, moves last), Jolteon attacks
+    battle.make_choices("move trickroom", "move thunderbolt");
+
+    let log1 = battle.get_log();
+    println!("Trick Room setup log:\n{}", log1);
+
+    // Trick Room should be logged
+    assert!(log1.contains("-fieldstart") && log1.contains("Trick Room"), "Trick Room should be set up");
+
+    // Jolteon (faster) should have moved before Reuniclus in turn 1
+    // because Trick Room has -7 priority and only affects future turns
+    let tb_pos = log1.find("thunderbolt").unwrap_or(0);
+    let tr_pos = log1.find("trickroom").unwrap_or(0);
+    assert!(tb_pos < tr_pos, "Jolteon's Thunderbolt should come before Trick Room (Trick Room has -7 priority)");
+
+    // Turn 2: With Trick Room active, slower Reuniclus should move first
+    battle.make_choices("move psychic", "move thunderbolt");
+
+    let log2 = battle.get_log();
+    println!("Trick Room effect log:\n{}", log2);
+
+    // In the turn 2 section, Reuniclus (slower) should move before Jolteon (faster)
+    // Look for the order after "turn|2"
+    if let Some(turn2_start) = log2.find("|turn|2") {
+        let turn2_log = &log2[turn2_start..];
+        let psychic_pos = turn2_log.find("psychic").unwrap_or(999);
+        let tb_pos2 = turn2_log.find("thunderbolt").unwrap_or(999);
+        assert!(psychic_pos < tb_pos2, "Under Trick Room, slower Reuniclus's Psychic should come before faster Jolteon's Thunderbolt");
+    }
+}

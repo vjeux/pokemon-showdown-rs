@@ -682,14 +682,23 @@ impl Battle {
             }
         }
 
-        // Sort by priority (desc), then speed (desc), then random
+        // Check if Trick Room is active (reverses speed order)
+        let trick_room_id = ID::new("trickroom");
+        let trick_room_active = self.field.has_pseudo_weather(&trick_room_id);
+
+        // Sort by priority (desc), then speed (desc, or asc if Trick Room), then random
         let tie_breaker = self.random(2) == 0;
         actions.sort_by(|a, b| {
             let priority_cmp = b.3.cmp(&a.3); // Higher priority first
             if priority_cmp != std::cmp::Ordering::Equal {
                 return priority_cmp;
             }
-            let speed_cmp = b.4.cmp(&a.4); // Higher speed first
+            // Speed comparison: normally higher speed first, but reversed in Trick Room
+            let speed_cmp = if trick_room_active {
+                a.4.cmp(&b.4) // Lower speed first in Trick Room
+            } else {
+                b.4.cmp(&a.4) // Higher speed first normally
+            };
             if speed_cmp != std::cmp::Ordering::Equal {
                 return speed_cmp;
             }
@@ -721,6 +730,22 @@ impl Battle {
                     if let Some(move_id) = &action.move_id {
                         let target_loc = action.target_loc.unwrap_or(0);
                         self.run_move(side_idx, poke_idx, move_id, target_loc);
+
+                        // Handle pivot switch (U-Turn, Volt Switch, Flip Turn)
+                        let pivot_switch_id = ID::new("pivotswitch");
+                        if self.sides[side_idx].pokemon[poke_idx].has_volatile(&pivot_switch_id) {
+                            self.sides[side_idx].pokemon[poke_idx].remove_volatile(&pivot_switch_id);
+
+                            // Find a valid switch target
+                            let switch_target = self.find_valid_switch_target(side_idx, poke_idx);
+                            if let Some(target_idx) = switch_target {
+                                // Get slot from the Pokemon's position
+                                let slot = self.sides[side_idx].pokemon.get(poke_idx)
+                                    .map(|p| p.position)
+                                    .unwrap_or(0);
+                                self.do_switch(side_idx, slot, target_idx);
+                            }
+                        }
                     }
                 }
                 _ => {}
@@ -740,6 +765,17 @@ impl Battle {
 
         // Start next turn
         self.next_turn();
+    }
+
+    /// Find a valid switch target for pivot moves (U-Turn, Volt Switch, etc.)
+    fn find_valid_switch_target(&self, side_idx: usize, current_poke_idx: usize) -> Option<usize> {
+        // Find the first non-active, non-fainted Pokemon
+        for (idx, pokemon) in self.sides[side_idx].pokemon.iter().enumerate() {
+            if idx != current_poke_idx && !pokemon.is_active && !pokemon.is_fainted() {
+                return Some(idx);
+            }
+        }
+        None
     }
 
     /// Execute a switch
@@ -1258,6 +1294,16 @@ impl Battle {
 
         // Apply secondary effects based on move
         self.apply_move_secondary(attacker_side, attacker_idx, target_side, target_idx, move_id);
+
+        // Handle pivot moves (U-Turn, Volt Switch, Flip Turn)
+        // These moves force a switch after dealing damage
+        if total_damage > 0 && matches!(move_id.as_str(), "uturn" | "voltswitch" | "flipturn") {
+            // Only switch if the attacker is not fainted
+            if !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
+                // Flag that a pivot switch is pending
+                self.sides[attacker_side].pokemon[attacker_idx].add_volatile(ID::new("pivotswitch"));
+            }
+        }
     }
 
     /// Calculate damage for a move (basic implementation)
@@ -1286,6 +1332,7 @@ impl Battle {
             "scald" => (80, "Special", "Water"),
             "uturn" => (70, "Physical", "Bug"),
             "voltswitch" => (70, "Special", "Electric"),
+            "flipturn" => (60, "Physical", "Water"),
             "knockoff" => (65, "Physical", "Dark"),
             "bravebird" => (120, "Physical", "Flying"),
             "flareblitz" => (120, "Physical", "Fire"),
@@ -1319,7 +1366,7 @@ impl Battle {
             "stealthrock" | "spikes" | "toxicspikes" | "stickyweb" | "defog" | "rapidspin" |
             "protect" | "detect" | "substitute" | "recover" | "roost" | "softboiled" | "moonlight" | "synthesis" | "morningsun" |
             "wish" | "healbell" | "aromatherapy" | "haze" | "whirlwind" | "roar" | "dragontail" | "circlethrow" |
-            "taunt" | "encore" | "disable" | "trick" | "switcheroo" => {
+            "taunt" | "encore" | "disable" | "trick" | "switcheroo" | "trickroom" => {
                 return 0; // Status/hazard/utility moves - no damage
             }
             _ => (50, "Physical", "Normal"), // Default for unknown moves
@@ -1913,6 +1960,19 @@ impl Battle {
             "psybeam" | "signalbeam" | "confusion" => {
                 if self.random(10) == 0 {
                     self.apply_confusion(target_side, target_idx);
+                }
+            }
+            // Trick Room - reverses speed order for 5 turns
+            "trickroom" => {
+                let trick_room_id = ID::new("trickroom");
+                if self.field.has_pseudo_weather(&trick_room_id) {
+                    // Trick Room is already active - remove it
+                    self.field.remove_pseudo_weather(&trick_room_id);
+                    self.add_log("-fieldend", &["Trick Room"]);
+                } else {
+                    // Set Trick Room for 5 turns
+                    self.field.add_pseudo_weather(trick_room_id, Some(5));
+                    self.add_log("-fieldstart", &["Trick Room"]);
                 }
             }
             _ => {}
