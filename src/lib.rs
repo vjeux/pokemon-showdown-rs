@@ -34,3 +34,4 @@ pub use abilities::{AbilityEvent, AbilityModifier, get_ability_effect, check_abi
 pub use items::{ItemEvent, ItemModifier, get_item_effect, get_item_type_boost, check_item_prevents_status};
 pub use event::{EventType, EventResult, EffectType as EventEffectType, HandlerPriority, EventHandler, MoveFlags, AbilityFlags, ConditionData};
 pub use data::abilities::{AbilityDef, BasePowerBoost, get_ability, ability_grants_type_immunity, ability_absorbs_type, ability_grants_status_immunity};
+pub use data::moves::{MoveDef, MoveCategory, MoveTargetType, SecondaryEffect, get_move, is_pivot_move, is_status_move, get_base_power, get_accuracy};
