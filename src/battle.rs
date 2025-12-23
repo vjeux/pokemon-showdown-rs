@@ -14,6 +14,7 @@ use crate::battle_queue::BattleQueue;
 use crate::pokemon::PokemonSet;
 use crate::side::{Side, RequestState};
 use crate::prng::{PRNG, PRNGSeed};
+use crate::data::abilities::{get_ability, AbilityDef};
 
 /// Battle options
 #[derive(Debug, Clone, Default)]
@@ -827,60 +828,64 @@ impl Battle {
         let side_id = self.sides[side_idx].id_str();
         let full_name = format!("{}: {}", side_id, pokemon_name);
 
-        match ability_id.as_str() {
-            "intimidate" => {
-                // Lower the foe's Attack by 1 stage
-                let foe_side_idx = 1 - side_idx;
-                for foe_poke_idx in 0..self.sides[foe_side_idx].pokemon.len() {
-                    if self.sides[foe_side_idx].pokemon[foe_poke_idx].is_active {
-                        // Check for abilities that block Intimidate
-                        let foe_ability = self.sides[foe_side_idx].pokemon[foe_poke_idx].ability.as_str();
-                        if foe_ability == "innerfocus" || foe_ability == "owntempo" ||
-                           foe_ability == "oblivious" || foe_ability == "scrappy" {
-                            let foe_name = &self.sides[foe_side_idx].pokemon[foe_poke_idx].name;
-                            let foe_side_id = self.sides[foe_side_idx].id_str();
-                            let foe_full_name = format!("{}: {}", foe_side_id, foe_name);
-                            self.add_log("-fail", &[&foe_full_name]);
-                        } else {
-                            self.apply_boost(foe_side_idx, foe_poke_idx, "atk", -1);
-                            self.add_log("-ability", &[&full_name, "Intimidate"]);
+        // Use data-driven ability handling
+        let ability_key = ID::new(ability_id.as_str());
+        if let Some(ability_def) = get_ability(&ability_key) {
+            // Weather setters (Drizzle, Drought, Sand Stream, Snow Warning)
+            if let Some(weather_id) = &ability_def.on_switch_in_weather {
+                let weather_display = match weather_id.as_str() {
+                    "raindance" => "RainDance",
+                    "sunnyday" => "SunnyDay",
+                    "sandstorm" => "Sandstorm",
+                    "snow" | "hail" => "Hail",
+                    _ => weather_id.as_str(),
+                };
+                self.field.set_weather(ID::new(weather_id), Some(5));
+                self.add_log("-weather", &[weather_display, &format!("[from] ability: {}", ability_def.name), &format!("[of] {}", full_name)]);
+                return;
+            }
+
+            // Terrain setters (Electric/Grassy/Psychic/Misty Surge)
+            if let Some(terrain_id) = &ability_def.on_switch_in_terrain {
+                let terrain_display = match terrain_id.as_str() {
+                    "electricterrain" => "Electric Terrain",
+                    "grassyterrain" => "Grassy Terrain",
+                    "psychicterrain" => "Psychic Terrain",
+                    "mistyterrain" => "Misty Terrain",
+                    _ => terrain_id.as_str(),
+                };
+                self.field.set_terrain(ID::new(terrain_id), Some(5));
+                self.add_log("-fieldstart", &[terrain_display, &format!("[from] ability: {}", ability_def.name), &format!("[of] {}", full_name)]);
+                return;
+            }
+
+            // Stat boost on switch-in (Intimidate targets foes)
+            if let Some((stat, stages, target_foe)) = &ability_def.on_switch_in_boost {
+                if *target_foe {
+                    // Apply to foes (Intimidate)
+                    let foe_side_idx = 1 - side_idx;
+                    for foe_poke_idx in 0..self.sides[foe_side_idx].pokemon.len() {
+                        if self.sides[foe_side_idx].pokemon[foe_poke_idx].is_active {
+                            // Check for abilities that block Intimidate
+                            let foe_ability = self.sides[foe_side_idx].pokemon[foe_poke_idx].ability.as_str();
+                            if foe_ability == "innerfocus" || foe_ability == "owntempo" ||
+                               foe_ability == "oblivious" || foe_ability == "scrappy" {
+                                let foe_name = &self.sides[foe_side_idx].pokemon[foe_poke_idx].name;
+                                let foe_side_id = self.sides[foe_side_idx].id_str();
+                                let foe_full_name = format!("{}: {}", foe_side_id, foe_name);
+                                self.add_log("-fail", &[&foe_full_name]);
+                            } else {
+                                self.apply_boost(foe_side_idx, foe_poke_idx, stat, *stages as i8);
+                                self.add_log("-ability", &[&full_name, &ability_def.name]);
+                            }
                         }
                     }
+                } else {
+                    // Apply to self
+                    self.apply_boost(side_idx, poke_idx, stat, *stages as i8);
+                    self.add_log("-ability", &[&full_name, &ability_def.name]);
                 }
             }
-            "drizzle" => {
-                self.field.set_weather(ID::new("raindance"), Some(5));
-                self.add_log("-weather", &["RainDance", "[from] ability: Drizzle", &format!("[of] {}", full_name)]);
-            }
-            "drought" => {
-                self.field.set_weather(ID::new("sunnyday"), Some(5));
-                self.add_log("-weather", &["SunnyDay", "[from] ability: Drought", &format!("[of] {}", full_name)]);
-            }
-            "sandstream" => {
-                self.field.set_weather(ID::new("sandstorm"), Some(5));
-                self.add_log("-weather", &["Sandstorm", "[from] ability: Sand Stream", &format!("[of] {}", full_name)]);
-            }
-            "snowwarning" => {
-                self.field.set_weather(ID::new("hail"), Some(5));
-                self.add_log("-weather", &["Hail", "[from] ability: Snow Warning", &format!("[of] {}", full_name)]);
-            }
-            "electricsurge" => {
-                self.field.set_terrain(ID::new("electricterrain"), Some(5));
-                self.add_log("-fieldstart", &["Electric Terrain", "[from] ability: Electric Surge", &format!("[of] {}", full_name)]);
-            }
-            "grassysurge" => {
-                self.field.set_terrain(ID::new("grassyterrain"), Some(5));
-                self.add_log("-fieldstart", &["Grassy Terrain", "[from] ability: Grassy Surge", &format!("[of] {}", full_name)]);
-            }
-            "psychicsurge" => {
-                self.field.set_terrain(ID::new("psychicterrain"), Some(5));
-                self.add_log("-fieldstart", &["Psychic Terrain", "[from] ability: Psychic Surge", &format!("[of] {}", full_name)]);
-            }
-            "mistysurge" => {
-                self.field.set_terrain(ID::new("mistyterrain"), Some(5));
-                self.add_log("-fieldstart", &["Misty Terrain", "[from] ability: Misty Surge", &format!("[of] {}", full_name)]);
-            }
-            _ => {}
         }
     }
 
@@ -1440,86 +1445,47 @@ impl Battle {
             )
         };
 
-        // Check ability-based immunities
-        // Levitate: Immune to Ground-type moves
-        if move_type.to_lowercase() == "ground" && defender_ability == "levitate" {
-            let side_id = self.sides[target_side].id_str();
-            let target_name = format!("{}: {}", side_id, defender_name);
-            self.add_log("-immune", &[&target_name, "[from] ability: Levitate"]);
-            return 0;
-        }
+        // Check ability-based immunities using data-driven approach
+        let ability_id = ID::new(&defender_ability);
+        if let Some(ability_def) = get_ability(&ability_id) {
+            let move_type_lower = move_type.to_lowercase();
 
-        // Flash Fire: Immune to Fire-type moves, boosts Fire moves
-        if move_type.to_lowercase() == "fire" && defender_ability == "flashfire" {
-            let side_id = self.sides[target_side].id_str();
-            let target_name = format!("{}: {}", side_id, defender_name);
-            self.add_log("-immune", &[&target_name, "[from] ability: Flash Fire"]);
-            // Add Flash Fire boost volatile
-            self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flashfire"));
-            self.add_log("-start", &[&target_name, "ability: Flash Fire"]);
-            return 0;
-        }
+            // Check type immunity (Levitate, Flash Fire)
+            if ability_def.grants_type_immunity(&move_type_lower) {
+                let side_id = self.sides[target_side].id_str();
+                let target_name = format!("{}: {}", side_id, defender_name);
+                self.add_log("-immune", &[&target_name, &format!("[from] ability: {}", ability_def.name)]);
 
-        // Water Absorb: Immune to Water-type moves, heals 25% HP
-        if move_type.to_lowercase() == "water" && defender_ability == "waterabsorb" {
-            let side_id = self.sides[target_side].id_str();
-            let target_name = format!("{}: {}", side_id, defender_name);
-            self.add_log("-immune", &[&target_name, "[from] ability: Water Absorb"]);
-            let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
-            let heal = (maxhp / 4).max(1);
-            self.sides[target_side].pokemon[target_idx].heal(heal);
-            let hp = self.sides[target_side].pokemon[target_idx].hp;
-            self.add_log("-heal", &[&target_name, &format!("{}/{}", hp, maxhp), "[from] ability: Water Absorb"]);
-            return 0;
-        }
+                // Flash Fire adds a volatile for boosted Fire moves
+                if defender_ability == "flashfire" {
+                    self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flashfire"));
+                    self.add_log("-start", &[&target_name, &format!("ability: {}", ability_def.name)]);
+                }
+                return 0;
+            }
 
-        // Volt Absorb: Immune to Electric-type moves, heals 25% HP
-        if move_type.to_lowercase() == "electric" && defender_ability == "voltabsorb" {
-            let side_id = self.sides[target_side].id_str();
-            let target_name = format!("{}: {}", side_id, defender_name);
-            self.add_log("-immune", &[&target_name, "[from] ability: Volt Absorb"]);
-            let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
-            let heal = (maxhp / 4).max(1);
-            self.sides[target_side].pokemon[target_idx].heal(heal);
-            let hp = self.sides[target_side].pokemon[target_idx].hp;
-            self.add_log("-heal", &[&target_name, &format!("{}/{}", hp, maxhp), "[from] ability: Volt Absorb"]);
-            return 0;
-        }
+            // Check absorb abilities (Water Absorb, Volt Absorb, etc.)
+            if ability_def.absorbs_type(&move_type_lower) {
+                let side_id = self.sides[target_side].id_str();
+                let target_name = format!("{}: {}", side_id, defender_name);
+                self.add_log("-immune", &[&target_name, &format!("[from] ability: {}", ability_def.name)]);
 
-        // Motor Drive: Immune to Electric-type moves, boosts Speed by 1 stage
-        if move_type.to_lowercase() == "electric" && defender_ability == "motordrive" {
-            let side_id = self.sides[target_side].id_str();
-            let target_name = format!("{}: {}", side_id, defender_name);
-            self.add_log("-immune", &[&target_name, "[from] ability: Motor Drive"]);
-            self.apply_boost(target_side, target_idx, "spe", 1);
-            return 0;
-        }
+                // Healing absorb (Water Absorb, Volt Absorb, Dry Skin)
+                if let Some(heal_fraction) = ability_def.absorb_heal {
+                    let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
+                    let heal = ((maxhp as f64 * heal_fraction) as u32).max(1);
+                    self.sides[target_side].pokemon[target_idx].heal(heal);
+                    let hp = self.sides[target_side].pokemon[target_idx].hp;
+                    self.add_log("-heal", &[&target_name, &format!("{}/{}", hp, maxhp), &format!("[from] ability: {}", ability_def.name)]);
+                }
 
-        // Lightning Rod: Immune to Electric-type moves, boosts SpA by 1 stage
-        if move_type.to_lowercase() == "electric" && defender_ability == "lightningrod" {
-            let side_id = self.sides[target_side].id_str();
-            let target_name = format!("{}: {}", side_id, defender_name);
-            self.add_log("-immune", &[&target_name, "[from] ability: Lightning Rod"]);
-            self.apply_boost(target_side, target_idx, "spa", 1);
-            return 0;
-        }
+                // Boost absorb (Motor Drive, Lightning Rod, Storm Drain, Sap Sipper)
+                if let Some((stat, stages)) = &ability_def.absorb_boost {
+                    self.apply_boost(target_side, target_idx, stat, *stages as i8);
+                }
 
-        // Storm Drain: Immune to Water-type moves, boosts SpA by 1 stage
-        if move_type.to_lowercase() == "water" && defender_ability == "stormdrain" {
-            let side_id = self.sides[target_side].id_str();
-            let target_name = format!("{}: {}", side_id, defender_name);
-            self.add_log("-immune", &[&target_name, "[from] ability: Storm Drain"]);
-            self.apply_boost(target_side, target_idx, "spa", 1);
-            return 0;
-        }
-
-        // Sap Sipper: Immune to Grass-type moves, boosts Attack by 1 stage
-        if move_type.to_lowercase() == "grass" && defender_ability == "sapsipper" {
-            let side_id = self.sides[target_side].id_str();
-            let target_name = format!("{}: {}", side_id, defender_name);
-            self.add_log("-immune", &[&target_name, "[from] ability: Sap Sipper"]);
-            self.apply_boost(target_side, target_idx, "atk", 1);
-            return 0;
+                return 0;
+            }
         }
 
         // Check type immunity
