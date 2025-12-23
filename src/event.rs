@@ -310,8 +310,16 @@ pub struct MoveFlags {
     pub heal: bool,
     /// Is a dance move
     pub dance: bool,
+    /// Can target distant Pokemon
+    pub distance: bool,
+    /// Is a pulse move (Mega Launcher)
+    pub pulse: bool,
     /// Is a charge move (turn 1)
     pub charge: bool,
+    // Stolen by Snatch
+    pub snatch: bool,
+    // Cannot be used in Sky Battles
+    pub nonsky: bool,
 }
 
 impl MoveFlags {

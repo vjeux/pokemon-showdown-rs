@@ -1,0 +1,515 @@
+        // R moves
+        map.insert(ID::new("rage"), MoveDef {
+            id: ID::new("rage"),
+            name: "Rage".to_string(),
+            base_power: 20,
+            accuracy: 100,
+            pp: 20,
+            category: MoveCategory::Physical,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            self_volatile: Some("rage".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("ragefist"), MoveDef {
+            id: ID::new("ragefist"),
+            name: "Rage Fist".to_string(),
+            base_power: 50,
+            accuracy: 100,
+            pp: 10,
+            category: MoveCategory::Physical,
+            move_type: "Ghost".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, punch: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("ragepowder"), MoveDef {
+            id: ID::new("ragepowder"),
+            name: "Rage Powder".to_string(),
+            base_power: 0,
+            pp: 20,
+            priority: 2,
+            category: MoveCategory::Status,
+            move_type: "Bug".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { powder: true, ..Default::default() },
+            volatile_status: Some("ragepowder".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("ragingbull"), MoveDef {
+            id: ID::new("ragingbull"),
+            name: "Raging Bull".to_string(),
+            base_power: 90,
+            accuracy: 100,
+            pp: 10,
+            category: MoveCategory::Physical,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("ragingfury"), MoveDef {
+            id: ID::new("ragingfury"),
+            name: "Raging Fury".to_string(),
+            base_power: 120,
+            accuracy: 100,
+            pp: 10,
+            category: MoveCategory::Physical,
+            move_type: "Fire".to_string(),
+            target: MoveTargetType::RandomNormal,
+            flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+            self_volatile: Some("lockedmove".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("raindance"), MoveDef {
+            id: ID::new("raindance"),
+            name: "Rain Dance".to_string(),
+            base_power: 0,
+            pp: 5,
+            category: MoveCategory::Status,
+            move_type: "Water".to_string(),
+            target: MoveTargetType::All,
+            flags: MoveFlags { ..Default::default() },
+            weather: Some("RainDance".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("rapidspin"), MoveDef {
+            id: ID::new("rapidspin"),
+            name: "Rapid Spin".to_string(),
+            base_power: 50,
+            accuracy: 100,
+            pp: 40,
+            category: MoveCategory::Physical,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 100,
+                boosts: Some(vec![("spe".to_string(), 1)]),
+                self_boost: true,
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("razorleaf"), MoveDef {
+            id: ID::new("razorleaf"),
+            name: "Razor Leaf".to_string(),
+            base_power: 55,
+            accuracy: 95,
+            pp: 25,
+            category: MoveCategory::Physical,
+            move_type: "Grass".to_string(),
+            target: MoveTargetType::AllAdjacentFoes,
+            flags: MoveFlags { protect: true, mirror: true, slicing: true, ..Default::default() },
+            crit_ratio: 2,
+            ..Default::default()
+        });
+        map.insert(ID::new("razorshell"), MoveDef {
+            id: ID::new("razorshell"),
+            name: "Razor Shell".to_string(),
+            base_power: 75,
+            accuracy: 95,
+            pp: 10,
+            category: MoveCategory::Physical,
+            move_type: "Water".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, slicing: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 50,
+                boosts: Some(vec![("def".to_string(), -1)]),
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("razorwind"), MoveDef {
+            id: ID::new("razorwind"),
+            name: "Razor Wind".to_string(),
+            base_power: 80,
+            accuracy: 100,
+            pp: 10,
+            category: MoveCategory::Special,
+            move_type: "Normal".to_string(),
+            target: MoveTargetType::AllAdjacentFoes,
+            flags: MoveFlags { charge: true, protect: true, mirror: true, ..Default::default() },
+            crit_ratio: 2,
+            ..Default::default()
+        });
+        map.insert(ID::new("recover"), MoveDef {
+            id: ID::new("recover"),
+            name: "Recover".to_string(),
+            base_power: 0,
+            pp: 5,
+            category: MoveCategory::Status,
+            move_type: "Normal".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { snatch: true, heal: true, ..Default::default() },
+            heal: Some(0.5),
+            ..Default::default()
+        });
+        map.insert(ID::new("recycle"), MoveDef {
+            id: ID::new("recycle"),
+            name: "Recycle".to_string(),
+            base_power: 0,
+            pp: 10,
+            category: MoveCategory::Status,
+            move_type: "Normal".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { snatch: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("reflect"), MoveDef {
+            id: ID::new("reflect"),
+            name: "Reflect".to_string(),
+            base_power: 0,
+            pp: 20,
+            category: MoveCategory::Status,
+            move_type: "Psychic".to_string(),
+            target: MoveTargetType::AllySide,
+            flags: MoveFlags { snatch: true, ..Default::default() },
+            side_condition: Some("reflect".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("reflecttype"), MoveDef {
+            id: ID::new("reflecttype"),
+            name: "Reflect Type".to_string(),
+            base_power: 0,
+            pp: 15,
+            category: MoveCategory::Status,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { protect: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("refresh"), MoveDef {
+            id: ID::new("refresh"),
+            name: "Refresh".to_string(),
+            base_power: 0,
+            pp: 20,
+            category: MoveCategory::Status,
+            move_type: "Normal".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { snatch: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("relicsong"), MoveDef {
+            id: ID::new("relicsong"),
+            name: "Relic Song".to_string(),
+            base_power: 75,
+            accuracy: 100,
+            pp: 10,
+            category: MoveCategory::Special,
+            move_type: "Normal".to_string(),
+            target: MoveTargetType::AllAdjacentFoes,
+            flags: MoveFlags { protect: true, mirror: true, sound: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 10,
+                status: Some("slp".to_string()),
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("rest"), MoveDef {
+            id: ID::new("rest"),
+            name: "Rest".to_string(),
+            base_power: 0,
+            pp: 5,
+            category: MoveCategory::Status,
+            move_type: "Psychic".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { snatch: true, heal: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("retaliate"), MoveDef {
+            id: ID::new("retaliate"),
+            name: "Retaliate".to_string(),
+            base_power: 70,
+            accuracy: 100,
+            pp: 5,
+            category: MoveCategory::Physical,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("return"), MoveDef {
+            id: ID::new("return"),
+            name: "Return".to_string(),
+            base_power: 0,
+            accuracy: 100,
+            pp: 20,
+            category: MoveCategory::Physical,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("revelationdance"), MoveDef {
+            id: ID::new("revelationdance"),
+            name: "Revelation Dance".to_string(),
+            base_power: 90,
+            accuracy: 100,
+            pp: 15,
+            category: MoveCategory::Special,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, dance: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("revenge"), MoveDef {
+            id: ID::new("revenge"),
+            name: "Revenge".to_string(),
+            base_power: 60,
+            accuracy: 100,
+            pp: 10,
+            priority: -4,
+            category: MoveCategory::Physical,
+            move_type: "Fighting".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("reversal"), MoveDef {
+            id: ID::new("reversal"),
+            name: "Reversal".to_string(),
+            base_power: 0,
+            accuracy: 100,
+            pp: 15,
+            category: MoveCategory::Physical,
+            move_type: "Fighting".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("revivalblessing"), MoveDef {
+            id: ID::new("revivalblessing"),
+            name: "Revival Blessing".to_string(),
+            base_power: 0,
+            pp: 1,
+            category: MoveCategory::Status,
+            move_type: "Normal".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { heal: true, ..Default::default() },
+            slot_condition: Some("revivalblessing".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("risingvoltage"), MoveDef {
+            id: ID::new("risingvoltage"),
+            name: "Rising Voltage".to_string(),
+            base_power: 70,
+            accuracy: 100,
+            pp: 20,
+            category: MoveCategory::Special,
+            move_type: "Electric".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("roar"), MoveDef {
+            id: ID::new("roar"),
+            name: "Roar".to_string(),
+            base_power: 0,
+            pp: 20,
+            priority: -6,
+            category: MoveCategory::Status,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { reflectable: true, mirror: true, sound: true, ..Default::default() },
+            force_switch: true,
+            ..Default::default()
+        });
+        map.insert(ID::new("roaroftime"), MoveDef {
+            id: ID::new("roaroftime"),
+            name: "Roar of Time".to_string(),
+            base_power: 150,
+            accuracy: 90,
+            pp: 5,
+            category: MoveCategory::Special,
+            move_type: "Dragon".to_string(),
+            flags: MoveFlags { recharge: true, protect: true, mirror: true, ..Default::default() },
+            self_volatile: Some("mustrecharge".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("rockblast"), MoveDef {
+            id: ID::new("rockblast"),
+            name: "Rock Blast".to_string(),
+            base_power: 25,
+            accuracy: 90,
+            pp: 10,
+            category: MoveCategory::Physical,
+            move_type: "Rock".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, bullet: true, ..Default::default() },
+            multi_hit: Some((2, 5)),
+            ..Default::default()
+        });
+        map.insert(ID::new("rockclimb"), MoveDef {
+            id: ID::new("rockclimb"),
+            name: "Rock Climb".to_string(),
+            base_power: 90,
+            accuracy: 85,
+            pp: 20,
+            category: MoveCategory::Physical,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 20,
+                volatile_status: Some("confusion".to_string()),
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("rockpolish"), MoveDef {
+            id: ID::new("rockpolish"),
+            name: "Rock Polish".to_string(),
+            base_power: 0,
+            pp: 20,
+            category: MoveCategory::Status,
+            move_type: "Rock".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { snatch: true, ..Default::default() },
+            boosts: Some(vec![("spe".to_string(), 2)]),
+            ..Default::default()
+        });
+        map.insert(ID::new("rockslide"), MoveDef {
+            id: ID::new("rockslide"),
+            name: "Rock Slide".to_string(),
+            base_power: 75,
+            accuracy: 90,
+            pp: 10,
+            category: MoveCategory::Physical,
+            move_type: "Rock".to_string(),
+            target: MoveTargetType::AllAdjacentFoes,
+            flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 30,
+                volatile_status: Some("flinch".to_string()),
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("rocksmash"), MoveDef {
+            id: ID::new("rocksmash"),
+            name: "Rock Smash".to_string(),
+            base_power: 40,
+            accuracy: 100,
+            pp: 15,
+            category: MoveCategory::Physical,
+            move_type: "Fighting".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 50,
+                boosts: Some(vec![("def".to_string(), -1)]),
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("rockthrow"), MoveDef {
+            id: ID::new("rockthrow"),
+            name: "Rock Throw".to_string(),
+            base_power: 50,
+            accuracy: 90,
+            pp: 15,
+            category: MoveCategory::Physical,
+            move_type: "Rock".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("rocktomb"), MoveDef {
+            id: ID::new("rocktomb"),
+            name: "Rock Tomb".to_string(),
+            base_power: 60,
+            accuracy: 95,
+            pp: 15,
+            category: MoveCategory::Physical,
+            move_type: "Rock".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 100,
+                boosts: Some(vec![("spe".to_string(), -1)]),
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("rockwrecker"), MoveDef {
+            id: ID::new("rockwrecker"),
+            name: "Rock Wrecker".to_string(),
+            base_power: 150,
+            accuracy: 90,
+            pp: 5,
+            category: MoveCategory::Physical,
+            move_type: "Rock".to_string(),
+            flags: MoveFlags { recharge: true, protect: true, mirror: true, bullet: true, ..Default::default() },
+            self_volatile: Some("mustrecharge".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("roleplay"), MoveDef {
+            id: ID::new("roleplay"),
+            name: "Role Play".to_string(),
+            base_power: 0,
+            pp: 10,
+            category: MoveCategory::Status,
+            move_type: "Psychic".to_string(),
+            flags: MoveFlags { ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("rollingkick"), MoveDef {
+            id: ID::new("rollingkick"),
+            name: "Rolling Kick".to_string(),
+            base_power: 60,
+            accuracy: 85,
+            pp: 15,
+            category: MoveCategory::Physical,
+            move_type: "Fighting".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 30,
+                volatile_status: Some("flinch".to_string()),
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("rollout"), MoveDef {
+            id: ID::new("rollout"),
+            name: "Rollout".to_string(),
+            base_power: 30,
+            accuracy: 90,
+            pp: 20,
+            category: MoveCategory::Physical,
+            move_type: "Rock".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            self_volatile: Some("rollout".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("roost"), MoveDef {
+            id: ID::new("roost"),
+            name: "Roost".to_string(),
+            base_power: 0,
+            pp: 5,
+            category: MoveCategory::Status,
+            move_type: "Flying".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { snatch: true, heal: true, ..Default::default() },
+            heal: Some(0.5),
+            self_volatile: Some("roost".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("rototiller"), MoveDef {
+            id: ID::new("rototiller"),
+            name: "Rototiller".to_string(),
+            base_power: 0,
+            pp: 10,
+            category: MoveCategory::Status,
+            move_type: "Ground".to_string(),
+            target: MoveTargetType::All,
+            flags: MoveFlags { distance: true, nonsky: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("round"), MoveDef {
+            id: ID::new("round"),
+            name: "Round".to_string(),
+            base_power: 60,
+            accuracy: 100,
+            pp: 15,
+            category: MoveCategory::Special,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, sound: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("ruination"), MoveDef {
+            id: ID::new("ruination"),
+            name: "Ruination".to_string(),
+            base_power: 0,
+            accuracy: 90,
+            pp: 10,
+            category: MoveCategory::Special,
+            move_type: "Dark".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+            ..Default::default()
+        });

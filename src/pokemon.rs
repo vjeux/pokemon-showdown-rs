@@ -511,6 +511,219 @@ impl Pokemon {
             false
         }
     }
+
+    /// Check if Pokemon has a specific move
+    pub fn has_move(&self, move_id: &str) -> bool {
+        let id = crate::dex_data::to_id(move_id);
+        self.move_slots.iter().any(|slot| slot.id.as_str() == id)
+    }
+
+    /// Get the types of this Pokemon
+    pub fn get_types(&self, exclude_added: bool) -> Vec<String> {
+        let mut types = self.types.clone();
+        if !exclude_added {
+            if let Some(ref added) = self.added_type {
+                if !types.contains(added) {
+                    types.push(added.clone());
+                }
+            }
+        }
+        // Handle Terastallization
+        if let Some(ref tera) = self.terastallized {
+            return vec![tera.clone()];
+        }
+        types
+    }
+
+    /// Check if Pokemon is grounded (affected by Ground moves and terrain)
+    pub fn is_grounded(&self) -> bool {
+        // Flying type or Levitate makes you not grounded
+        if self.types.iter().any(|t| t.to_lowercase() == "flying") {
+            return false;
+        }
+        if self.ability.as_str() == "levitate" {
+            return false;
+        }
+        // Air Balloon makes you not grounded
+        if self.item.as_str() == "airballoon" {
+            return false;
+        }
+        // Magnet Rise volatile
+        if self.has_volatile(&ID::new("magnetrise")) {
+            return false;
+        }
+        // Telekinesis volatile
+        if self.has_volatile(&ID::new("telekinesis")) {
+            return false;
+        }
+        // Iron Ball or Gravity or Ingrain makes you grounded even if flying
+        if self.item.as_str() == "ironball" {
+            return true;
+        }
+        if self.has_volatile(&ID::new("ingrain")) {
+            return true;
+        }
+        true
+    }
+
+    /// Check if Pokemon is semi-invulnerable (Fly, Dig, Dive, etc.)
+    pub fn is_semi_invulnerable(&self) -> bool {
+        self.has_volatile(&ID::new("fly")) ||
+        self.has_volatile(&ID::new("bounce")) ||
+        self.has_volatile(&ID::new("skydrop")) ||
+        self.has_volatile(&ID::new("dig")) ||
+        self.has_volatile(&ID::new("dive")) ||
+        self.has_volatile(&ID::new("phantomforce")) ||
+        self.has_volatile(&ID::new("shadowforce"))
+    }
+
+    /// Check if Pokemon is protected
+    pub fn is_protected(&self) -> bool {
+        self.has_volatile(&ID::new("protect")) ||
+        self.has_volatile(&ID::new("banefulbunker")) ||
+        self.has_volatile(&ID::new("kingsshield")) ||
+        self.has_volatile(&ID::new("spikyshield")) ||
+        self.has_volatile(&ID::new("silktrap")) ||
+        self.has_volatile(&ID::new("burningbulwark"))
+    }
+
+    /// Get effective weather considering abilities
+    pub fn effective_weather(&self, field_weather: &str) -> String {
+        // Cloud Nine and Air Lock negate weather
+        // This would normally check all Pokemon on field
+        // For now just return the field weather
+        field_weather.to_string()
+    }
+
+    /// Check if Pokemon has a specific item
+    pub fn has_item(&self, items: &[&str]) -> bool {
+        let item_id = self.item.as_str();
+        items.iter().any(|&i| crate::dex_data::to_id(i) == item_id)
+    }
+
+    /// Check if Pokemon has a specific ability
+    pub fn has_ability(&self, abilities: &[&str]) -> bool {
+        let ability_id = self.ability.as_str();
+        abilities.iter().any(|&a| crate::dex_data::to_id(a) == ability_id)
+    }
+
+    /// Copy volatiles from another Pokemon (for Baton Pass, etc.)
+    pub fn copy_volatile_from(&mut self, source: &Pokemon, copy_type: &str) {
+        match copy_type {
+            "copyvolatile" | "batonpass" => {
+                // Copy stat boosts
+                self.boosts = source.boosts.clone();
+
+                // Copy certain volatiles
+                let copyable = [
+                    "aquaring", "confusion", "curse", "embargo", "focusenergy",
+                    "gmaxchistrike", "healblock", "ingrain", "laserfocus",
+                    "leechseed", "magnetrise", "perishsong", "powertrick",
+                    "substitute", "telekinesis", "torment",
+                ];
+
+                for volatile_id in &copyable {
+                    let id = ID::new(volatile_id);
+                    if source.has_volatile(&id) {
+                        if let Some(state) = source.get_volatile(&id) {
+                            self.volatiles.insert(id, state.clone());
+                        }
+                    }
+                }
+            }
+            "shedtail" => {
+                // Shed Tail only copies the substitute
+                let sub_id = ID::new("substitute");
+                if source.has_volatile(&sub_id) {
+                    if let Some(state) = source.get_volatile(&sub_id) {
+                        self.volatiles.insert(sub_id, state.clone());
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+
+    /// Get the weight in hectograms
+    pub fn get_weight(&self) -> u32 {
+        // Base weight would come from species data
+        // For now return stored weight
+        self.weight_hg
+    }
+
+    /// Set a new type (for moves like Soak, Forest's Curse, etc.)
+    pub fn set_type(&mut self, new_types: Vec<String>) {
+        self.types = new_types;
+    }
+
+    /// Add a type (for Forest's Curse, Trick-or-Treat)
+    pub fn add_type(&mut self, new_type: String) {
+        if !self.types.contains(&new_type) {
+            self.added_type = Some(new_type);
+        }
+    }
+
+    /// Get positive boost count (for Stored Power, etc.)
+    pub fn positive_boosts(&self) -> i32 {
+        let mut count = 0;
+        if self.boosts.atk > 0 { count += self.boosts.atk as i32; }
+        if self.boosts.def > 0 { count += self.boosts.def as i32; }
+        if self.boosts.spa > 0 { count += self.boosts.spa as i32; }
+        if self.boosts.spd > 0 { count += self.boosts.spd as i32; }
+        if self.boosts.spe > 0 { count += self.boosts.spe as i32; }
+        if self.boosts.accuracy > 0 { count += self.boosts.accuracy as i32; }
+        if self.boosts.evasion > 0 { count += self.boosts.evasion as i32; }
+        count
+    }
+
+    /// Get the action speed (speed used for turn order)
+    pub fn get_action_speed(&self) -> u32 {
+        let mut speed = self.get_stat(StatID::Spe, false);
+
+        // Paralysis halves speed
+        if self.status.as_str() == "par" {
+            speed /= 2;
+        }
+
+        speed
+    }
+
+    /// Disable a move
+    pub fn disable_move(&mut self, move_id: &str, source: Option<String>) {
+        let id = crate::dex_data::to_id(move_id);
+        if let Some(slot) = self.move_slots.iter_mut().find(|s| s.id.as_str() == id) {
+            slot.disabled = true;
+            slot.disabled_source = source;
+        }
+    }
+
+    /// Enable all disabled moves
+    pub fn enable_moves(&mut self) {
+        for slot in &mut self.move_slots {
+            slot.disabled = false;
+            slot.disabled_source = None;
+        }
+    }
+
+    /// Get usable moves (not disabled, has PP)
+    pub fn get_usable_moves(&self) -> Vec<&MoveSlot> {
+        self.move_slots.iter()
+            .filter(|slot| !slot.disabled && slot.pp > 0)
+            .collect()
+    }
+
+    /// Check if Pokemon can terastallize
+    pub fn can_tera(&self) -> bool {
+        self.terastallized.is_none() && self.can_terastallize.is_some()
+    }
+
+    /// Terastallize the Pokemon
+    pub fn terastallize(&mut self) {
+        if let Some(ref tera_type) = self.can_terastallize {
+            self.terastallized = Some(tera_type.clone());
+            self.can_terastallize = None;
+        }
+    }
 }
 
 #[cfg(test)]

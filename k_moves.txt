@@ -1,0 +1,59 @@
+        // K moves
+        map.insert(ID::new("karatechop"), MoveDef {
+            id: ID::new("karatechop"),
+            name: "Karate Chop".to_string(),
+            base_power: 50,
+            accuracy: 100,
+            pp: 25,
+            category: MoveCategory::Physical,
+            move_type: "Fighting".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            crit_ratio: 2,
+            ..Default::default()
+        });
+        map.insert(ID::new("kinesis"), MoveDef {
+            id: ID::new("kinesis"),
+            name: "Kinesis".to_string(),
+            base_power: 0,
+            accuracy: 80,
+            pp: 15,
+            category: MoveCategory::Status,
+            move_type: "Psychic".to_string(),
+            flags: MoveFlags { protect: true, reflectable: true, mirror: true, ..Default::default() },
+            boosts: Some(vec![("accuracy".to_string(), -1)]),
+            ..Default::default()
+        });
+        map.insert(ID::new("kingsshield"), MoveDef {
+            id: ID::new("kingsshield"),
+            name: "King's Shield".to_string(),
+            base_power: 0,
+            pp: 10,
+            priority: 4,
+            category: MoveCategory::Status,
+            move_type: "Steel".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { ..Default::default() },
+            volatile_status: Some("kingsshield".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("knockoff"), MoveDef {
+            id: ID::new("knockoff"),
+            name: "Knock Off".to_string(),
+            base_power: 65,
+            accuracy: 100,
+            pp: 20,
+            category: MoveCategory::Physical,
+            move_type: "Dark".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("kowtowcleave"), MoveDef {
+            id: ID::new("kowtowcleave"),
+            name: "Kowtow Cleave".to_string(),
+            base_power: 85,
+            pp: 10,
+            category: MoveCategory::Physical,
+            move_type: "Dark".to_string(),
+            flags: MoveFlags { contact: true, protect: true, mirror: true, slicing: true, ..Default::default() },
+            ..Default::default()
+        });

@@ -1,0 +1,579 @@
+    // === A moves ===
+    map.insert(ID::new("absorb"), MoveDef {
+        id: ID::new("absorb"),
+        name: "Absorb".to_string(),
+        base_power: 20,
+        accuracy: 100,
+        pp: 25,
+        category: MoveCategory::Special,
+        move_type: "Grass".to_string(),
+        flags: MoveFlags { protect: true, mirror: true, heal: true, ..Default::default() },
+        drain: Some(0.5),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("accelerock"), MoveDef {
+        id: ID::new("accelerock"),
+        name: "Accelerock".to_string(),
+        base_power: 40,
+        accuracy: 100,
+        pp: 20,
+        priority: 1,
+        category: MoveCategory::Physical,
+        move_type: "Rock".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("acid"), MoveDef {
+        id: ID::new("acid"),
+        name: "Acid".to_string(),
+        base_power: 40,
+        accuracy: 100,
+        pp: 30,
+        category: MoveCategory::Special,
+        move_type: "Poison".to_string(),
+        target: MoveTargetType::AllAdjacentFoes,
+        flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 10,
+            boosts: Some(vec![("spd".to_string(), -1)]),
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("acidarmor"), MoveDef {
+        id: ID::new("acidarmor"),
+        name: "Acid Armor".to_string(),
+        accuracy: 0,
+        pp: 20,
+        category: MoveCategory::Status,
+        move_type: "Poison".to_string(),
+        target: MoveTargetType::Self_,
+        self_boosts: Some(vec![("def".to_string(), 2)]),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aciddownpour"), MoveDef {
+        id: ID::new("aciddownpour"),
+        name: "Acid Downpour".to_string(),
+        base_power: 1,
+        accuracy: 0,
+        pp: 1,
+        category: MoveCategory::Physical,
+        move_type: "Poison".to_string(),
+        is_z: true,
+        ..Default::default()
+    });
+
+    map.insert(ID::new("acidspray"), MoveDef {
+        id: ID::new("acidspray"),
+        name: "Acid Spray".to_string(),
+        base_power: 40,
+        accuracy: 100,
+        pp: 20,
+        category: MoveCategory::Special,
+        move_type: "Poison".to_string(),
+        flags: MoveFlags { protect: true, mirror: true, bullet: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 100,
+            boosts: Some(vec![("spd".to_string(), -2)]),
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("acrobatics"), MoveDef {
+        id: ID::new("acrobatics"),
+        name: "Acrobatics".to_string(),
+        base_power: 55,
+        accuracy: 100,
+        pp: 15,
+        category: MoveCategory::Physical,
+        move_type: "Flying".to_string(),
+        target: MoveTargetType::Any,
+        flags: MoveFlags { contact: true, protect: true, mirror: true, distance: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("acupressure"), MoveDef {
+        id: ID::new("acupressure"),
+        name: "Acupressure".to_string(),
+        accuracy: 0,
+        pp: 30,
+        category: MoveCategory::Status,
+        move_type: "Normal".to_string(),
+        target: MoveTargetType::Ally,
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aerialace"), MoveDef {
+        id: ID::new("aerialace"),
+        name: "Aerial Ace".to_string(),
+        base_power: 60,
+        accuracy: 0,
+        pp: 20,
+        category: MoveCategory::Physical,
+        move_type: "Flying".to_string(),
+        target: MoveTargetType::Any,
+        flags: MoveFlags { contact: true, protect: true, mirror: true, distance: true, slicing: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aeroblast"), MoveDef {
+        id: ID::new("aeroblast"),
+        name: "Aeroblast".to_string(),
+        base_power: 100,
+        accuracy: 95,
+        pp: 5,
+        category: MoveCategory::Special,
+        move_type: "Flying".to_string(),
+        target: MoveTargetType::Any,
+        crit_ratio: 1,
+        flags: MoveFlags { protect: true, mirror: true, distance: true, wind: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("afteryou"), MoveDef {
+        id: ID::new("afteryou"),
+        name: "After You".to_string(),
+        accuracy: 0,
+        pp: 15,
+        category: MoveCategory::Status,
+        move_type: "Normal".to_string(),
+        flags: MoveFlags { bypasssub: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aircutter"), MoveDef {
+        id: ID::new("aircutter"),
+        name: "Air Cutter".to_string(),
+        base_power: 60,
+        accuracy: 95,
+        pp: 25,
+        category: MoveCategory::Special,
+        move_type: "Flying".to_string(),
+        target: MoveTargetType::AllAdjacentFoes,
+        crit_ratio: 1,
+        flags: MoveFlags { protect: true, mirror: true, slicing: true, wind: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("airslash"), MoveDef {
+        id: ID::new("airslash"),
+        name: "Air Slash".to_string(),
+        base_power: 75,
+        accuracy: 95,
+        pp: 15,
+        category: MoveCategory::Special,
+        move_type: "Flying".to_string(),
+        target: MoveTargetType::Any,
+        flags: MoveFlags { protect: true, mirror: true, distance: true, slicing: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 30,
+            volatile_status: Some("flinch".to_string()),
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("alloutpummeling"), MoveDef {
+        id: ID::new("alloutpummeling"),
+        name: "All-Out Pummeling".to_string(),
+        base_power: 1,
+        accuracy: 0,
+        pp: 1,
+        category: MoveCategory::Physical,
+        move_type: "Fighting".to_string(),
+        is_z: true,
+        ..Default::default()
+    });
+
+    map.insert(ID::new("alluringvoice"), MoveDef {
+        id: ID::new("alluringvoice"),
+        name: "Alluring Voice".to_string(),
+        base_power: 80,
+        accuracy: 100,
+        pp: 10,
+        category: MoveCategory::Special,
+        move_type: "Fairy".to_string(),
+        flags: MoveFlags { protect: true, mirror: true, sound: true, bypasssub: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("allyswitch"), MoveDef {
+        id: ID::new("allyswitch"),
+        name: "Ally Switch".to_string(),
+        accuracy: 0,
+        pp: 15,
+        priority: 2,
+        category: MoveCategory::Status,
+        move_type: "Psychic".to_string(),
+        target: MoveTargetType::Self_,
+        ..Default::default()
+    });
+
+    map.insert(ID::new("amnesia"), MoveDef {
+        id: ID::new("amnesia"),
+        name: "Amnesia".to_string(),
+        accuracy: 0,
+        pp: 20,
+        category: MoveCategory::Status,
+        move_type: "Psychic".to_string(),
+        target: MoveTargetType::Self_,
+        self_boosts: Some(vec![("spd".to_string(), 2)]),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("anchorshot"), MoveDef {
+        id: ID::new("anchorshot"),
+        name: "Anchor Shot".to_string(),
+        base_power: 80,
+        accuracy: 100,
+        pp: 20,
+        category: MoveCategory::Physical,
+        move_type: "Steel".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 100,
+            volatile_status: Some("trapped".to_string()),
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("ancientpower"), MoveDef {
+        id: ID::new("ancientpower"),
+        name: "Ancient Power".to_string(),
+        base_power: 60,
+        accuracy: 100,
+        pp: 5,
+        category: MoveCategory::Special,
+        move_type: "Rock".to_string(),
+        flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 10,
+            boosts: Some(vec![("atk".to_string(), 1), ("def".to_string(), 1), ("spa".to_string(), 1), ("spd".to_string(), 1), ("spe".to_string(), 1)]),
+            self_boost: true,
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("appleacid"), MoveDef {
+        id: ID::new("appleacid"),
+        name: "Apple Acid".to_string(),
+        base_power: 80,
+        accuracy: 100,
+        pp: 10,
+        category: MoveCategory::Special,
+        move_type: "Grass".to_string(),
+        flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 100,
+            boosts: Some(vec![("spd".to_string(), -1)]),
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aquacutter"), MoveDef {
+        id: ID::new("aquacutter"),
+        name: "Aqua Cutter".to_string(),
+        base_power: 70,
+        accuracy: 100,
+        pp: 20,
+        category: MoveCategory::Physical,
+        move_type: "Water".to_string(),
+        crit_ratio: 1,
+        flags: MoveFlags { protect: true, mirror: true, slicing: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aquajet"), MoveDef {
+        id: ID::new("aquajet"),
+        name: "Aqua Jet".to_string(),
+        base_power: 40,
+        accuracy: 100,
+        pp: 20,
+        priority: 1,
+        category: MoveCategory::Physical,
+        move_type: "Water".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aquaring"), MoveDef {
+        id: ID::new("aquaring"),
+        name: "Aqua Ring".to_string(),
+        accuracy: 0,
+        pp: 20,
+        category: MoveCategory::Status,
+        move_type: "Water".to_string(),
+        target: MoveTargetType::Self_,
+        self_volatile: Some("aquaring".to_string()),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aquastep"), MoveDef {
+        id: ID::new("aquastep"),
+        name: "Aqua Step".to_string(),
+        base_power: 80,
+        accuracy: 100,
+        pp: 10,
+        category: MoveCategory::Physical,
+        move_type: "Water".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, dance: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 100,
+            boosts: Some(vec![("spe".to_string(), 1)]),
+            self_boost: true,
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aquatail"), MoveDef {
+        id: ID::new("aquatail"),
+        name: "Aqua Tail".to_string(),
+        base_power: 90,
+        accuracy: 90,
+        pp: 10,
+        category: MoveCategory::Physical,
+        move_type: "Water".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("armorcannon"), MoveDef {
+        id: ID::new("armorcannon"),
+        name: "Armor Cannon".to_string(),
+        base_power: 120,
+        accuracy: 100,
+        pp: 5,
+        category: MoveCategory::Special,
+        move_type: "Fire".to_string(),
+        flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+        self_drops: Some(vec![("def".to_string(), -1), ("spd".to_string(), -1)]),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("armthrust"), MoveDef {
+        id: ID::new("armthrust"),
+        name: "Arm Thrust".to_string(),
+        base_power: 15,
+        accuracy: 100,
+        pp: 20,
+        category: MoveCategory::Physical,
+        move_type: "Fighting".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+        multi_hit: Some((2, 5)),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aromatherapy"), MoveDef {
+        id: ID::new("aromatherapy"),
+        name: "Aromatherapy".to_string(),
+        accuracy: 0,
+        pp: 5,
+        category: MoveCategory::Status,
+        move_type: "Grass".to_string(),
+        target: MoveTargetType::AllySide,
+        flags: MoveFlags { distance: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aromaticmist"), MoveDef {
+        id: ID::new("aromaticmist"),
+        name: "Aromatic Mist".to_string(),
+        accuracy: 0,
+        pp: 20,
+        category: MoveCategory::Status,
+        move_type: "Fairy".to_string(),
+        target: MoveTargetType::Ally,
+        flags: MoveFlags { bypasssub: true, ..Default::default() },
+        boosts: Some(vec![("spd".to_string(), 1)]),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("assist"), MoveDef {
+        id: ID::new("assist"),
+        name: "Assist".to_string(),
+        accuracy: 0,
+        pp: 20,
+        category: MoveCategory::Status,
+        move_type: "Normal".to_string(),
+        target: MoveTargetType::Self_,
+        ..Default::default()
+    });
+
+    map.insert(ID::new("assurance"), MoveDef {
+        id: ID::new("assurance"),
+        name: "Assurance".to_string(),
+        base_power: 60,
+        accuracy: 100,
+        pp: 10,
+        category: MoveCategory::Physical,
+        move_type: "Dark".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("astonish"), MoveDef {
+        id: ID::new("astonish"),
+        name: "Astonish".to_string(),
+        base_power: 30,
+        accuracy: 100,
+        pp: 15,
+        category: MoveCategory::Physical,
+        move_type: "Ghost".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 30,
+            volatile_status: Some("flinch".to_string()),
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("astralbarrage"), MoveDef {
+        id: ID::new("astralbarrage"),
+        name: "Astral Barrage".to_string(),
+        base_power: 120,
+        accuracy: 100,
+        pp: 5,
+        category: MoveCategory::Special,
+        move_type: "Ghost".to_string(),
+        target: MoveTargetType::AllAdjacentFoes,
+        flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("attackorder"), MoveDef {
+        id: ID::new("attackorder"),
+        name: "Attack Order".to_string(),
+        base_power: 90,
+        accuracy: 100,
+        pp: 15,
+        category: MoveCategory::Physical,
+        move_type: "Bug".to_string(),
+        crit_ratio: 1,
+        flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("attract"), MoveDef {
+        id: ID::new("attract"),
+        name: "Attract".to_string(),
+        accuracy: 100,
+        pp: 15,
+        category: MoveCategory::Status,
+        move_type: "Normal".to_string(),
+        flags: MoveFlags { protect: true, reflectable: true, mirror: true, bypasssub: true, ..Default::default() },
+        volatile_status: Some("attract".to_string()),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aurasphere"), MoveDef {
+        id: ID::new("aurasphere"),
+        name: "Aura Sphere".to_string(),
+        base_power: 80,
+        accuracy: 0,
+        pp: 20,
+        category: MoveCategory::Special,
+        move_type: "Fighting".to_string(),
+        target: MoveTargetType::Any,
+        flags: MoveFlags { protect: true, mirror: true, distance: true, bullet: true, pulse: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aurawheel"), MoveDef {
+        id: ID::new("aurawheel"),
+        name: "Aura Wheel".to_string(),
+        base_power: 110,
+        accuracy: 100,
+        pp: 10,
+        category: MoveCategory::Physical,
+        move_type: "Electric".to_string(),
+        flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 100,
+            boosts: Some(vec![("spe".to_string(), 1)]),
+            self_boost: true,
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("aurorabeam"), MoveDef {
+        id: ID::new("aurorabeam"),
+        name: "Aurora Beam".to_string(),
+        base_power: 65,
+        accuracy: 100,
+        pp: 20,
+        category: MoveCategory::Special,
+        move_type: "Ice".to_string(),
+        flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 10,
+            boosts: Some(vec![("atk".to_string(), -1)]),
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+
+    map.insert(ID::new("auroraveil"), MoveDef {
+        id: ID::new("auroraveil"),
+        name: "Aurora Veil".to_string(),
+        accuracy: 0,
+        pp: 20,
+        category: MoveCategory::Status,
+        move_type: "Ice".to_string(),
+        target: MoveTargetType::AllySide,
+        side_condition: Some("auroraveil".to_string()),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("autotomize"), MoveDef {
+        id: ID::new("autotomize"),
+        name: "Autotomize".to_string(),
+        accuracy: 0,
+        pp: 15,
+        category: MoveCategory::Status,
+        move_type: "Steel".to_string(),
+        target: MoveTargetType::Self_,
+        self_boosts: Some(vec![("spe".to_string(), 2)]),
+        ..Default::default()
+    });
+
+    map.insert(ID::new("avalanche"), MoveDef {
+        id: ID::new("avalanche"),
+        name: "Avalanche".to_string(),
+        base_power: 60,
+        accuracy: 100,
+        pp: 10,
+        priority: -4,
+        category: MoveCategory::Physical,
+        move_type: "Ice".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+        ..Default::default()
+    });
+
+    map.insert(ID::new("axekick"), MoveDef {
+        id: ID::new("axekick"),
+        name: "Axe Kick".to_string(),
+        base_power: 120,
+        accuracy: 90,
+        pp: 10,
+        category: MoveCategory::Physical,
+        move_type: "Fighting".to_string(),
+        flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+        secondaries: vec![SecondaryEffect {
+            chance: 30,
+            volatile_status: Some("confusion".to_string()),
+            ..Default::default()
+        }],
+        ..Default::default()
+    });
+

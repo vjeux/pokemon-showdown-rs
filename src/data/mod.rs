@@ -7,3 +7,7 @@ pub mod abilities;
 pub mod moves;
 pub mod items;
 pub mod conditions;
+pub mod typechart;
+pub mod species;
+pub mod natures;
+pub mod formats;

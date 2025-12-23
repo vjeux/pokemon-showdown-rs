@@ -1,0 +1,155 @@
+        // O moves
+        map.insert(ID::new("oblivionwing"), MoveDef {
+            id: ID::new("oblivionwing"),
+            name: "Oblivion Wing".to_string(),
+            base_power: 80,
+            accuracy: 100,
+            pp: 10,
+            category: MoveCategory::Special,
+            move_type: "Flying".to_string(),
+            target: MoveTargetType::Any,
+            flags: MoveFlags { protect: true, mirror: true, distance: true, heal: true, ..Default::default() },
+            drain: Some(0.75),
+            ..Default::default()
+        });
+        map.insert(ID::new("obstruct"), MoveDef {
+            id: ID::new("obstruct"),
+            name: "Obstruct".to_string(),
+            base_power: 0,
+            accuracy: 100,
+            pp: 10,
+            priority: 4,
+            category: MoveCategory::Status,
+            move_type: "Dark".to_string(),
+            target: MoveTargetType::Self_,
+            flags: MoveFlags { ..Default::default() },
+            volatile_status: Some("obstruct".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("oceanicoperetta"), MoveDef {
+            id: ID::new("oceanicoperetta"),
+            name: "Oceanic Operetta".to_string(),
+            base_power: 195,
+            pp: 1,
+            category: MoveCategory::Special,
+            move_type: "Water".to_string(),
+            flags: MoveFlags { ..Default::default() },
+            is_z: true,
+            ..Default::default()
+        });
+        map.insert(ID::new("octazooka"), MoveDef {
+            id: ID::new("octazooka"),
+            name: "Octazooka".to_string(),
+            base_power: 65,
+            accuracy: 85,
+            pp: 10,
+            category: MoveCategory::Special,
+            move_type: "Water".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, bullet: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 50,
+                boosts: Some(vec![("accuracy".to_string(), -1)]),
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("octolock"), MoveDef {
+            id: ID::new("octolock"),
+            name: "Octolock".to_string(),
+            base_power: 0,
+            accuracy: 100,
+            pp: 15,
+            category: MoveCategory::Status,
+            move_type: "Fighting".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+            volatile_status: Some("octolock".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("odorsleuth"), MoveDef {
+            id: ID::new("odorsleuth"),
+            name: "Odor Sleuth".to_string(),
+            base_power: 0,
+            pp: 40,
+            category: MoveCategory::Status,
+            move_type: "Normal".to_string(),
+            flags: MoveFlags { protect: true, reflectable: true, mirror: true, ..Default::default() },
+            volatile_status: Some("foresight".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("ominouswind"), MoveDef {
+            id: ID::new("ominouswind"),
+            name: "Ominous Wind".to_string(),
+            base_power: 60,
+            accuracy: 100,
+            pp: 5,
+            category: MoveCategory::Special,
+            move_type: "Ghost".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+            secondaries: vec![SecondaryEffect {
+                chance: 10,
+                boosts: Some(vec![("atk".to_string(), 1), ("def".to_string(), 1), ("spa".to_string(), 1), ("spd".to_string(), 1), ("spe".to_string(), 1)]),
+                self_boost: true,
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+        map.insert(ID::new("orderup"), MoveDef {
+            id: ID::new("orderup"),
+            name: "Order Up".to_string(),
+            base_power: 80,
+            accuracy: 100,
+            pp: 10,
+            category: MoveCategory::Physical,
+            move_type: "Dragon".to_string(),
+            flags: MoveFlags { protect: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("originpulse"), MoveDef {
+            id: ID::new("originpulse"),
+            name: "Origin Pulse".to_string(),
+            base_power: 110,
+            accuracy: 85,
+            pp: 10,
+            category: MoveCategory::Special,
+            move_type: "Water".to_string(),
+            target: MoveTargetType::AllAdjacentFoes,
+            flags: MoveFlags { protect: true, mirror: true, pulse: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("outrage"), MoveDef {
+            id: ID::new("outrage"),
+            name: "Outrage".to_string(),
+            base_power: 120,
+            accuracy: 100,
+            pp: 10,
+            category: MoveCategory::Physical,
+            move_type: "Dragon".to_string(),
+            target: MoveTargetType::RandomNormal,
+            flags: MoveFlags { contact: true, protect: true, mirror: true, ..Default::default() },
+            self_volatile: Some("lockedmove".to_string()),
+            ..Default::default()
+        });
+        map.insert(ID::new("overdrive"), MoveDef {
+            id: ID::new("overdrive"),
+            name: "Overdrive".to_string(),
+            base_power: 80,
+            accuracy: 100,
+            pp: 10,
+            category: MoveCategory::Special,
+            move_type: "Electric".to_string(),
+            target: MoveTargetType::AllAdjacentFoes,
+            flags: MoveFlags { protect: true, mirror: true, sound: true, ..Default::default() },
+            ..Default::default()
+        });
+        map.insert(ID::new("overheat"), MoveDef {
+            id: ID::new("overheat"),
+            name: "Overheat".to_string(),
+            base_power: 130,
+            accuracy: 90,
+            pp: 5,
+            category: MoveCategory::Special,
+            move_type: "Fire".to_string(),
+            flags: MoveFlags { protect: true, mirror: true, ..Default::default() },
+            self_boosts: Some(vec![("spa".to_string(), -2)]),
+            ..Default::default()
+        });
