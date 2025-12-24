@@ -55,12 +55,24 @@ This file tracks all methods from the TypeScript `sim/` files that are not yet i
 
 ## battle-actions.ts → battle_actions.rs
 
-### Missing Methods:
-- [ ] switchIn (switch pokemon in)
-- [ ] dragIn (force drag pokemon in)
-- [ ] runSwitch (execute switch queue)
-- [ ] runMove (execute move action)
-- [ ] useMove (use a move)
+### Implemented Methods:
+- [x] switchIn (switch pokemon in) - Implemented in battle.rs
+- [x] dragIn (force drag pokemon in) - Implemented in battle.rs
+- [x] runSwitch (execute switch queue) - Implemented in battle.rs
+- [x] runMove (execute move action) - Basic implementation in battle.rs
+- [x] useMove (use a move) - Basic implementation in battle.rs
+- [x] calcRecoilDamage (calculate recoil damage) - Implemented in battle_actions.rs
+- [x] getZMove (get Z-move variant) - Implemented in battle_actions.rs
+- [x] canZMove (check if Z-move is possible) - Implemented in battle_actions.rs
+- [x] getMaxMove (get Max move variant) - Implemented in battle_actions.rs
+- [x] targetTypeChoices (determine valid targets) - Implemented in battle_actions.rs
+- [x] getConfusionDamage (calculate confusion damage) - Implemented in battle_actions.rs
+- [x] canMegaEvo (check if Mega Evolution is possible) - Implemented in battle_actions.rs
+- [x] canUltraBurst (check if Ultra Burst is possible) - Implemented in battle_actions.rs
+- [x] canTerastallize (check if Terastallization is possible) - Implemented in battle_actions.rs
+- [x] calculate_damage (calculate damage) - Implemented in battle_actions.rs
+
+### Partially Implemented/Needs Full Port:
 - [ ] useMoveInner (internal move execution)
 - [ ] trySpreadMoveHit (try hitting multiple targets)
 - [ ] hitStepInvulnerabilityEvent (check invulnerability)
@@ -81,21 +93,11 @@ This file tracks all methods from the TypeScript `sim/` files that are not yet i
 - [ ] secondaries (handle secondary effects)
 - [ ] forceSwitch (force switch out)
 - [ ] moveHit (execute move hit)
-- [ ] calcRecoilDamage (calculate recoil damage)
-- [ ] getZMove (get Z-move variant)
 - [ ] getActiveZMove (get active Z-move)
-- [ ] canZMove (check if Z-move is possible)
-- [ ] getMaxMove (get Max move variant)
 - [ ] getActiveMaxMove (get active Max move)
 - [ ] runZPower (execute Z-power effect)
-- [ ] targetTypeChoices (determine valid targets)
-- [ ] getDamage (calculate damage)
 - [ ] modifyDamage (apply damage modifiers)
-- [ ] getConfusionDamage (calculate confusion damage)
-- [ ] canMegaEvo (check if Mega Evolution is possible)
-- [ ] canUltraBurst (check if Ultra Burst is possible)
 - [ ] runMegaEvo (execute Mega Evolution)
-- [ ] canTerastallize (check if Terastallization is possible)
 - [ ] terastallize (execute Terastallization)
 
 ---
