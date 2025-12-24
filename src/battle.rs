@@ -16,6 +16,45 @@ use crate::side::{Side, RequestState};
 use crate::prng::{PRNG, PRNGSeed};
 use crate::data::abilities::{get_ability, AbilityDef};
 
+/// Event information for tracking current event context
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EventInfo {
+    /// Event ID/name
+    pub id: String,
+    /// Target of the event (side_idx, poke_idx) or None for field/battle
+    pub target: Option<(usize, usize)>,
+    /// Source of the event
+    pub source: Option<(usize, usize)>,
+    /// Effect that caused the event
+    pub effect: Option<ID>,
+    /// Modifier accumulated during event processing
+    pub modifier: f64,
+}
+
+impl EventInfo {
+    pub fn new(id: &str) -> Self {
+        Self {
+            id: id.to_string(),
+            target: None,
+            source: None,
+            effect: None,
+            modifier: 1.0,
+        }
+    }
+}
+
+impl Default for EventInfo {
+    fn default() -> Self {
+        Self {
+            id: String::new(),
+            target: None,
+            source: None,
+            effect: None,
+            modifier: 1.0,
+        }
+    }
+}
+
 /// Battle options
 #[derive(Debug, Clone, Default)]
 pub struct BattleOptions {
@@ -108,6 +147,17 @@ pub struct Battle {
     /// Effect order counter
     pub effect_order: u32,
 
+    /// Event depth for recursion tracking
+    pub event_depth: u8,
+    /// Current event being processed
+    pub current_event: Option<EventInfo>,
+    /// Current effect being processed
+    pub current_effect: Option<ID>,
+    /// Current effect state
+    pub current_effect_state: Option<crate::dex_data::EffectState>,
+    /// Log position for line limit checking
+    pub sent_log_pos: usize,
+
     /// Debug mode
     pub debug_mode: bool,
     /// Rated match
@@ -168,6 +218,11 @@ impl Battle {
             active_pokemon: None,
             active_target: None,
             effect_order: 0,
+            event_depth: 0,
+            current_event: None,
+            current_effect: None,
+            current_effect_state: None,
+            sent_log_pos: 0,
             debug_mode: options.debug,
             rated: options.rated,
             strict_choices: options.strict_choices,
@@ -3503,6 +3558,482 @@ impl Battle {
         self.log.clear();
         self.input_log.clear();
         self.hints.clear();
+    }
+
+    // =========================================================================
+    // EVENT SYSTEM (ported from battle.ts)
+    // =========================================================================
+
+    /// Single event - runs a single callback on an effect
+    /// Equivalent to battle.ts singleEvent()
+    ///
+    /// This is a simplified version that handles common event patterns.
+    /// In the full implementation, this would dynamically call effect handlers.
+    pub fn single_event(
+        &mut self,
+        event_id: &str,
+        effect_id: &ID,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        _source_effect: Option<&ID>,
+    ) -> crate::event::EventResult {
+        use crate::event::EventResult;
+
+        // Check stack depth
+        if self.event_depth >= 8 {
+            self.add("message", &["STACK LIMIT EXCEEDED"]);
+            self.add("message", &["PLEASE REPORT IN BUG THREAD"]);
+            self.add("message", &[&format!("Event: {}", event_id)]);
+            return EventResult::Fail;
+        }
+
+        // Check log line limit
+        if self.log.len() - self.sent_log_pos > 1000 {
+            self.add("message", &["LINE LIMIT EXCEEDED"]);
+            return EventResult::Fail;
+        }
+
+        // Save parent event context
+        let parent_event = self.current_event.take();
+        let parent_effect = self.current_effect.take();
+        let parent_effect_state = self.current_effect_state.take();
+
+        // Set up current event
+        self.current_event = Some(EventInfo {
+            id: event_id.to_string(),
+            target,
+            source,
+            effect: Some(effect_id.clone()),
+            modifier: 1.0,
+        });
+        self.current_effect = Some(effect_id.clone());
+        self.event_depth += 1;
+
+        // Dispatch based on effect type
+        let result = self.dispatch_single_event(event_id, effect_id, target, source);
+
+        // Restore parent context
+        self.event_depth -= 1;
+        self.current_event = parent_event;
+        self.current_effect = parent_effect;
+        self.current_effect_state = parent_effect_state;
+
+        result
+    }
+
+    /// Dispatch a single event to the appropriate handler
+    fn dispatch_single_event(
+        &mut self,
+        event_id: &str,
+        effect_id: &ID,
+        target: Option<(usize, usize)>,
+        _source: Option<(usize, usize)>,
+    ) -> crate::event::EventResult {
+        use crate::event::EventResult;
+
+        let effect_str = effect_id.as_str();
+
+        // Handle ability events
+        if let Some(ability_def) = crate::data::abilities::get_ability(effect_id) {
+            return self.handle_ability_event(event_id, ability_def, target);
+        }
+
+        // Handle item events
+        if let Some(item_def) = crate::data::items::get_item(effect_id) {
+            return self.handle_item_event(event_id, item_def, target);
+        }
+
+        // Handle move events
+        if let Some(_move_def) = crate::data::moves::get_move(effect_id) {
+            return self.handle_move_event(event_id, effect_str, target);
+        }
+
+        // Handle condition events (status, volatile, weather, terrain)
+        if let Some(_condition) = crate::data::conditions::get_condition(effect_id) {
+            return self.handle_condition_event(event_id, effect_str, target);
+        }
+
+        EventResult::Continue
+    }
+
+    /// Handle ability events
+    fn handle_ability_event(
+        &mut self,
+        event_id: &str,
+        ability: &crate::data::abilities::AbilityDef,
+        target: Option<(usize, usize)>,
+    ) -> crate::event::EventResult {
+        use crate::event::EventResult;
+
+        match event_id {
+            "SwitchIn" => {
+                // Handle switch-in abilities
+                if let Some((side_idx, poke_idx)) = target {
+                    // Intimidate
+                    if ability.id.as_str() == "intimidate" {
+                        // Lower foe's Attack - collect targets first to avoid borrow issues
+                        let foe_side = if side_idx == 0 { 1 } else { 0 };
+                        let mut targets = Vec::new();
+                        if let Some(foe) = self.sides.get(foe_side) {
+                            for slot in 0..foe.active.len() {
+                                if foe.active[slot].is_some() {
+                                    targets.push((foe_side, slot));
+                                }
+                            }
+                        }
+                        for target_pos in targets {
+                            self.boost(&[("atk", -1)], target_pos, Some((side_idx, poke_idx)), Some("Intimidate"));
+                        }
+                        return EventResult::Stop;
+                    }
+                    // Drizzle
+                    if ability.id.as_str() == "drizzle" {
+                        self.field.set_weather(ID::new("rain"), None);
+                        return EventResult::Stop;
+                    }
+                    // Drought
+                    if ability.id.as_str() == "drought" {
+                        self.field.set_weather(ID::new("sunnyday"), None);
+                        return EventResult::Stop;
+                    }
+                    // Sand Stream
+                    if ability.id.as_str() == "sandstream" {
+                        self.field.set_weather(ID::new("sandstorm"), None);
+                        return EventResult::Stop;
+                    }
+                    // Snow Warning
+                    if ability.id.as_str() == "snowwarning" {
+                        self.field.set_weather(ID::new("snow"), None);
+                        return EventResult::Stop;
+                    }
+                }
+            }
+            "ModifyDamage" => {
+                // Damage modifying abilities
+                if ability.id.as_str() == "multiscale" {
+                    if let Some((side_idx, poke_idx)) = target {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                if pokemon.hp == pokemon.maxhp {
+                                    return EventResult::Modify(0.5);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            "Residual" => {
+                // Residual abilities like Poison Heal, Rain Dish, etc.
+                if let Some((side_idx, poke_idx)) = target {
+                    if ability.id.as_str() == "poisonheal" {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                if pokemon.status.as_str() == "tox" || pokemon.status.as_str() == "psn" {
+                                    let heal = pokemon.maxhp / 8;
+                                    self.heal(heal, (side_idx, poke_idx), None, Some("Poison Heal"));
+                                    return EventResult::Stop;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+
+        EventResult::Continue
+    }
+
+    /// Handle item events
+    fn handle_item_event(
+        &mut self,
+        event_id: &str,
+        item: &crate::data::items::ItemDef,
+        target: Option<(usize, usize)>,
+    ) -> crate::event::EventResult {
+        use crate::event::EventResult;
+
+        match event_id {
+            "Residual" => {
+                if let Some((side_idx, poke_idx)) = target {
+                    // Leftovers
+                    if item.id.as_str() == "leftovers" {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                if pokemon.hp < pokemon.maxhp {
+                                    let heal = pokemon.maxhp / 16;
+                                    self.heal(heal.max(1), (side_idx, poke_idx), None, Some("Leftovers"));
+                                    return EventResult::Stop;
+                                }
+                            }
+                        }
+                    }
+                    // Black Sludge
+                    if item.id.as_str() == "blacksludge" {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                let is_poison = pokemon.types.iter().any(|t| t.to_lowercase() == "poison");
+                                if is_poison {
+                                    if pokemon.hp < pokemon.maxhp {
+                                        let heal = pokemon.maxhp / 16;
+                                        self.heal(heal.max(1), (side_idx, poke_idx), None, Some("Black Sludge"));
+                                    }
+                                } else {
+                                    let damage = pokemon.maxhp / 8;
+                                    self.damage(damage.max(1), (side_idx, poke_idx), None, Some("Black Sludge"));
+                                }
+                                return EventResult::Stop;
+                            }
+                        }
+                    }
+                }
+            }
+            "ModifyDamage" => {
+                // Life Orb
+                if item.id.as_str() == "lifeorb" {
+                    return EventResult::Modify(1.3);
+                }
+            }
+            "AfterMoveSecondarySelf" => {
+                // Life Orb recoil
+                if item.id.as_str() == "lifeorb" {
+                    if let Some((side_idx, poke_idx)) = target {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                let recoil = pokemon.maxhp / 10;
+                                self.damage(recoil.max(1), (side_idx, poke_idx), None, Some("Life Orb"));
+                            }
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+
+        EventResult::Continue
+    }
+
+    /// Handle move events
+    fn handle_move_event(
+        &mut self,
+        event_id: &str,
+        _move_id: &str,
+        _target: Option<(usize, usize)>,
+    ) -> crate::event::EventResult {
+        use crate::event::EventResult;
+
+        match event_id {
+            // Move-specific handlers would go here
+            _ => {}
+        }
+
+        EventResult::Continue
+    }
+
+    /// Handle condition events (status, volatile, weather, terrain)
+    fn handle_condition_event(
+        &mut self,
+        event_id: &str,
+        condition_id: &str,
+        target: Option<(usize, usize)>,
+    ) -> crate::event::EventResult {
+        use crate::event::EventResult;
+
+        match event_id {
+            "Residual" => {
+                if let Some((side_idx, poke_idx)) = target {
+                    // Burn damage
+                    if condition_id == "brn" {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                let damage = pokemon.maxhp / 16;
+                                self.damage(damage.max(1), (side_idx, poke_idx), None, Some("burn"));
+                                return EventResult::Stop;
+                            }
+                        }
+                    }
+                    // Poison damage
+                    if condition_id == "psn" {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                let damage = pokemon.maxhp / 8;
+                                self.damage(damage.max(1), (side_idx, poke_idx), None, Some("poison"));
+                                return EventResult::Stop;
+                            }
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+
+        EventResult::Continue
+    }
+
+    /// Run event on all relevant handlers
+    /// Equivalent to battle.ts runEvent()
+    ///
+    /// This is a simplified version that handles common event patterns.
+    pub fn run_event(
+        &mut self,
+        event_id: &str,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
+        relay_var: Option<i32>,
+    ) -> Option<i32> {
+        use crate::event::EventResult;
+
+        // Check stack depth
+        if self.event_depth >= 8 {
+            self.add("message", &["STACK LIMIT EXCEEDED"]);
+            return None;
+        }
+
+        // Save parent event context
+        let parent_event = self.current_event.take();
+        self.event_depth += 1;
+
+        // Set up current event
+        self.current_event = Some(EventInfo {
+            id: event_id.to_string(),
+            target,
+            source,
+            effect: source_effect.cloned(),
+            modifier: 1.0,
+        });
+
+        let mut result = relay_var;
+
+        // Find and run all handlers for this event
+        let handlers = self.find_event_handlers(event_id, target, source);
+
+        for (effect_id, holder_target) in handlers {
+            let event_result = self.dispatch_single_event(event_id, &effect_id, holder_target, source);
+
+            match event_result {
+                EventResult::Fail => {
+                    result = None;
+                    break;
+                }
+                EventResult::Stop => {
+                    break;
+                }
+                EventResult::Modify(m) => {
+                    if let Some(ref mut r) = result {
+                        *r = (*r as f64 * m) as i32;
+                    }
+                }
+                EventResult::ModifyInt(m) => {
+                    if let Some(ref mut r) = result {
+                        *r = m;
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        // Apply event modifier if we have a numeric result
+        if let (Some(ref mut r), Some(ref event)) = (&mut result, &self.current_event) {
+            if event.modifier != 1.0 {
+                *r = self.modify_f(*r, event.modifier);
+            }
+        }
+
+        // Restore parent context
+        self.event_depth -= 1;
+        self.current_event = parent_event;
+
+        result
+    }
+
+    /// Run event and return boolean
+    pub fn run_event_bool(
+        &mut self,
+        event_id: &str,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
+    ) -> bool {
+        self.run_event(event_id, target, source, source_effect, Some(1)).is_some()
+    }
+
+    /// Find all event handlers for an event
+    /// Equivalent to battle.ts findEventHandlers()
+    fn find_event_handlers(
+        &self,
+        event_id: &str,
+        target: Option<(usize, usize)>,
+        _source: Option<(usize, usize)>,
+    ) -> Vec<(ID, Option<(usize, usize)>)> {
+        let mut handlers = Vec::new();
+
+        // Add handlers from target Pokemon (abilities, items, volatiles, status)
+        if let Some((side_idx, poke_idx)) = target {
+            if let Some(side) = self.sides.get(side_idx) {
+                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                    // Add ability handler
+                    if !pokemon.ability.is_empty() {
+                        handlers.push((pokemon.ability.clone(), Some((side_idx, poke_idx))));
+                    }
+                    // Add item handler
+                    if !pokemon.item.is_empty() {
+                        handlers.push((pokemon.item.clone(), Some((side_idx, poke_idx))));
+                    }
+                    // Add status handler
+                    if !pokemon.status.is_empty() {
+                        handlers.push((pokemon.status.clone(), Some((side_idx, poke_idx))));
+                    }
+                    // Add volatile handlers
+                    for volatile_id in pokemon.volatiles.keys() {
+                        handlers.push((volatile_id.clone(), Some((side_idx, poke_idx))));
+                    }
+                }
+            }
+        }
+
+        // Add field condition handlers (weather, terrain, pseudo-weather)
+        if !self.field.weather.is_empty() {
+            handlers.push((self.field.weather.clone(), None));
+        }
+        if !self.field.terrain.is_empty() {
+            handlers.push((self.field.terrain.clone(), None));
+        }
+
+        // Add format/rule handlers
+        // (would check format rules here)
+
+        // Sort by priority
+        // In the full implementation, this would use compare_priority
+        // For now, we keep the insertion order
+
+        handlers
+    }
+
+    /// Priority event - exits on first non-undefined result
+    /// Equivalent to battle.ts priorityEvent()
+    pub fn priority_event(
+        &mut self,
+        event_id: &str,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        effect: Option<&ID>,
+    ) -> Option<i32> {
+        // For priority events, we use fastExit behavior
+        self.run_event(event_id, target, source, effect, None)
+    }
+
+    /// Get event modifier
+    pub fn get_event_modifier(&self) -> f64 {
+        self.current_event.as_ref().map(|e| e.modifier).unwrap_or(1.0)
+    }
+
+    /// Set event modifier (for chainModify pattern)
+    pub fn set_event_modifier(&mut self, modifier: f64) {
+        if let Some(ref mut event) = self.current_event {
+            // Chain modifiers by multiplying (simplified version)
+            event.modifier = event.modifier * modifier;
+        }
     }
 }
 
