@@ -284,8 +284,7 @@ impl<'a> BattleActions<'a> {
         random_factor: u32,
     ) -> DamageResult {
         // Check for immunity first
-        let defender_types: Vec<&str> = defender.types.iter().map(|s| s.as_str()).collect();
-        let effectiveness = get_effectiveness_multi(&move_data.move_type, &defender_types);
+        let effectiveness = get_effectiveness_multi(&move_data.move_type, &defender.types);
 
         if effectiveness == 0.0 {
             return DamageResult::Immune;
@@ -299,14 +298,14 @@ impl<'a> BattleActions<'a> {
 
         // Get attack and defense stats
         let (attack, defense) = if move_data.category == "Special" {
-            (attacker.stored_stats.spa, defender.stored_stats.spd)
+            (attacker.stored_stats.spa as u32, defender.stored_stats.spd as u32)
         } else {
-            (attacker.stored_stats.atk, defender.stored_stats.def)
+            (attacker.stored_stats.atk as u32, defender.stored_stats.def as u32)
         };
 
         // Basic damage formula: ((2 * Level / 5 + 2) * Power * A/D) / 50 + 2
         let level = attacker.level as u32;
-        let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense) / 50 + 2;
+        let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense.max(1)) / 50 + 2;
 
         // Apply STAB (Same Type Attack Bonus)
         let stab = if attacker.types.iter().any(|t| t == &move_data.move_type) {
