@@ -1196,6 +1196,317 @@ impl Pokemon {
         self.stats_raised_this_turn = false;
         self.stats_lowered_this_turn = false;
     }
+
+    // ==========================================
+    // Additional methods from pokemon.ts
+    // ==========================================
+
+    /// Get moves as string list
+    /// Equivalent to moves getter in pokemon.ts
+    pub fn get_moves(&self) -> Vec<String> {
+        self.move_slots.iter().map(|slot| slot.id.as_str().to_string()).collect()
+    }
+
+    /// Get base moves as string list
+    /// Equivalent to baseMoves getter in pokemon.ts
+    pub fn get_base_moves(&self) -> Vec<String> {
+        self.base_move_slots.iter().map(|slot| slot.id.as_str().to_string()).collect()
+    }
+
+    /// Convert to JSON representation
+    /// Equivalent to toJSON in pokemon.ts
+    pub fn to_json(&self) -> serde_json::Value {
+        serde_json::json!({
+            "name": self.name,
+            "species": self.species_id.as_str(),
+            "hp": self.hp,
+            "maxhp": self.maxhp,
+            "level": self.level,
+            "status": if self.status.is_empty() { None } else { Some(self.status.as_str()) },
+            "isActive": self.is_active,
+            "position": self.position,
+            "side": self.side_index
+        })
+    }
+
+    /// Get combat power (for Pokemon Go style formats)
+    /// Equivalent to getCombatPower in pokemon.ts
+    pub fn get_combat_power(&self) -> u32 {
+        // Simplified formula based on stats
+        let atk = self.stored_stats.atk as u32;
+        let def = self.stored_stats.def as u32;
+        let sta = (self.stored_stats.hp as u32).max(10); // Use HP as stamina proxy
+
+        (((atk as f64) * (def as f64).powf(0.5) * (sta as f64).powf(0.5)) / 10.0) as u32
+    }
+
+    /// Get location of a target Pokemon relative to this one
+    /// Equivalent to getLocOf in pokemon.ts
+    pub fn get_loc_of(&self, target_side_index: usize, target_position: usize, active_per_half: usize) -> i8 {
+        if self.side_index == target_side_index {
+            // Same side - positive numbers
+            (target_position as i8 - self.position as i8 + 1).max(-(active_per_half as i8))
+        } else {
+            // Opposing side - negative numbers
+            -(target_position as i8 + 1)
+        }
+    }
+
+    /// Get Pokemon at a location relative to this one
+    /// Returns (side_index, position)
+    /// Equivalent to getAtLoc in pokemon.ts
+    pub fn get_at_loc(&self, target_loc: i8, active_per_half: usize) -> Option<(usize, usize)> {
+        if target_loc == 0 {
+            return None;
+        }
+
+        if target_loc > 0 {
+            // Same side
+            let pos = (self.position as i8 + target_loc - 1) as usize;
+            if pos < active_per_half {
+                Some((self.side_index, pos))
+            } else {
+                None
+            }
+        } else {
+            // Opposite side
+            let foe_side = if self.side_index == 0 { 1 } else { 0 };
+            let pos = (-target_loc - 1) as usize;
+            if pos < active_per_half {
+                Some((foe_side, pos))
+            } else {
+                None
+            }
+        }
+    }
+
+    /// Get smart targets for move
+    /// Equivalent to getSmartTargets in pokemon.ts
+    pub fn get_smart_targets(&self, target_side: usize, target_pos: usize, move_smart_target: bool) -> Vec<(usize, usize)> {
+        if !move_smart_target {
+            return vec![(target_side, target_pos)];
+        }
+
+        // Smart targeting redirects to a valid target if original fainted
+        // Would need battle context for full implementation
+        vec![(target_side, target_pos)]
+    }
+
+    /// Get last attacker info
+    /// Equivalent to getLastAttackedBy in pokemon.ts
+    pub fn get_last_attacked_by(&self) -> Option<(ID, u32)> {
+        // Would need attacked_by tracking for full implementation
+        None
+    }
+
+    /// Get last damager info
+    /// Equivalent to getLastDamagedBy in pokemon.ts
+    pub fn get_last_damaged_by(&self, filter_out_same_side: bool) -> Option<(ID, u32)> {
+        if self.last_damage == 0 {
+            return None;
+        }
+        // Would need more tracking for full implementation
+        None
+    }
+
+    /// Get Dynamax request data
+    /// Equivalent to getDynamaxRequest in pokemon.ts
+    pub fn get_dynamax_request(&self, can_dynamax: bool) -> Option<serde_json::Value> {
+        if !can_dynamax || self.has_volatile(&ID::new("dynamax")) {
+            return None;
+        }
+
+        Some(serde_json::json!({
+            "canDynamax": true
+        }))
+    }
+
+    /// Get move request data for protocol
+    /// Equivalent to getMoveRequestData in pokemon.ts
+    pub fn get_move_request_data(&self) -> serde_json::Value {
+        let moves: Vec<serde_json::Value> = self.move_slots.iter().map(|slot| {
+            serde_json::json!({
+                "move": slot.move_name,
+                "id": slot.id.as_str(),
+                "pp": slot.pp,
+                "maxpp": slot.maxpp,
+                "target": slot.target,
+                "disabled": slot.disabled
+            })
+        }).collect();
+
+        serde_json::json!({
+            "moves": moves,
+            "canDynamax": self.can_gigantamax.is_some() || self.dynamax_level > 0
+        })
+    }
+
+    /// Get switch request data for protocol
+    /// Equivalent to getSwitchRequestData in pokemon.ts
+    pub fn get_switch_request_data(&self) -> serde_json::Value {
+        serde_json::json!({
+            "name": self.name,
+            "species": self.species_id.as_str(),
+            "level": self.level,
+            "hp": self.hp,
+            "maxhp": self.maxhp,
+            "status": if self.status.is_empty() { serde_json::Value::Null } else { serde_json::Value::String(self.status.as_str().to_string()) },
+            "moves": self.get_moves(),
+            "ability": self.ability.as_str(),
+            "item": self.item.as_str()
+        })
+    }
+
+    /// Try to set status with immunity checks
+    /// Equivalent to trySetStatus in pokemon.ts
+    pub fn try_set_status(&mut self, status_id: ID, _source_effect: Option<&str>) -> bool {
+        // Check if already has status
+        if !self.status.is_empty() {
+            return false;
+        }
+
+        // Check for type-based immunities
+        let status_str = status_id.as_str();
+        match status_str {
+            "brn" => {
+                // Fire types immune to burn
+                if self.has_type("fire") {
+                    return false;
+                }
+            }
+            "par" => {
+                // Electric types immune to paralysis (Gen 6+)
+                if self.has_type("electric") {
+                    return false;
+                }
+            }
+            "psn" | "tox" => {
+                // Poison and Steel types immune to poison
+                if self.has_type("poison") || self.has_type("steel") {
+                    return false;
+                }
+            }
+            "frz" => {
+                // Ice types immune to freeze
+                if self.has_type("ice") {
+                    return false;
+                }
+            }
+            _ => {}
+        }
+
+        self.set_status(status_id)
+    }
+
+    /// Use held item
+    /// Equivalent to useItem in pokemon.ts
+    pub fn use_item(&mut self) -> Option<ID> {
+        if self.item.is_empty() {
+            return None;
+        }
+        let item = self.item.clone();
+        self.used_item_this_turn = true;
+        self.last_item = item.clone();
+        self.item = ID::empty();
+        self.item_state = EffectState::new(ID::empty());
+        Some(item)
+    }
+
+    /// Eat held item (berries)
+    /// Equivalent to eatItem in pokemon.ts
+    pub fn eat_item(&mut self, is_forced: bool) -> Option<ID> {
+        if self.item.is_empty() {
+            return None;
+        }
+
+        // Would check if item is edible (berry)
+        // For now, same as use_item
+        self.use_item()
+    }
+
+    /// Run type effectiveness check
+    /// Equivalent to runEffectiveness in pokemon.ts
+    pub fn run_effectiveness(&self, move_type: &str) -> f64 {
+        crate::data::typechart::get_effectiveness_multi(move_type, &self.types)
+    }
+
+    /// Run immunity check
+    /// Equivalent to runImmunity in pokemon.ts
+    pub fn run_immunity(&self, move_type: &str) -> bool {
+        let effectiveness = self.run_effectiveness(move_type);
+        effectiveness > 0.0
+    }
+
+    /// Run status immunity check
+    /// Equivalent to runStatusImmunity in pokemon.ts
+    pub fn run_status_immunity(&self, status: &str) -> bool {
+        match status {
+            "brn" => !self.has_type("fire"),
+            "par" => !self.has_type("electric"),
+            "psn" | "tox" => !self.has_type("poison") && !self.has_type("steel"),
+            "frz" => !self.has_type("ice"),
+            "slp" => true, // No type immunity to sleep
+            _ => true,
+        }
+    }
+
+    /// Remove linked volatiles
+    /// Equivalent to removeLinkedVolatiles in pokemon.ts
+    pub fn remove_linked_volatiles(&mut self, linked_status: &ID) {
+        // Remove volatiles that are linked to this one
+        // For example, Leech Seed removes when source switches
+        let to_remove: Vec<ID> = self.volatiles.keys()
+            .filter(|k| k.as_str().starts_with(linked_status.as_str()))
+            .cloned()
+            .collect();
+
+        for id in to_remove {
+            self.volatiles.remove(&id);
+        }
+    }
+
+    /// Clear volatile with switch flag handling
+    /// Equivalent to clearVolatile in pokemon.ts
+    pub fn clear_volatile_full(&mut self, include_switch_flags: bool) {
+        self.volatiles.clear();
+        self.boosts = BoostsTable::default();
+
+        if include_switch_flags {
+            self.switch_flag = false;
+            self.force_switch_flag = false;
+        }
+
+        self.last_move = None;
+        self.last_move_used = None;
+        self.move_this_turn = None;
+    }
+
+    /// Get nature
+    /// Equivalent to getNature in pokemon.ts
+    /// Note: Nature is applied at stat calculation time; we return default here
+    pub fn get_nature(&self) -> &str {
+        // In battle, the nature is already applied to stored_stats
+        // The actual nature value would need to be stored if needed
+        "Hardy" // Default neutral nature
+    }
+
+    /// Get status object
+    /// Equivalent to getStatus in pokemon.ts
+    pub fn get_status(&self) -> Option<&ID> {
+        if self.status.is_empty() {
+            None
+        } else {
+            Some(&self.status)
+        }
+    }
+
+    /// Destroy/cleanup Pokemon
+    /// Equivalent to destroy in pokemon.ts
+    pub fn destroy(&mut self) {
+        self.volatiles.clear();
+        self.move_slots.clear();
+        self.base_move_slots.clear();
+    }
 }
 
 #[cfg(test)]
