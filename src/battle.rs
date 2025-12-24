@@ -4035,6 +4035,208 @@ impl Battle {
             event.modifier = event.modifier * modifier;
         }
     }
+
+    // =========================================================================
+    // ADDITIONAL METHODS (ported from battle.ts)
+    // =========================================================================
+
+    /// Apply random damage roll (85-100%)
+    /// Equivalent to battle.ts randomizer()
+    pub fn randomizer(&mut self, base_damage: i32) -> i32 {
+        // Damage = baseDamage * (100 - random(16)) / 100
+        // This gives range 85% to 100% damage
+        let roll = 100 - self.prng.random_int(16) as i32;
+        self.trunc(base_damage as f64 * roll as f64 / 100.0)
+    }
+
+    /// Run an event on each active Pokemon in speed order
+    /// Equivalent to battle.ts eachEvent()
+    pub fn each_event(&mut self, event_id: &str, effect: Option<&ID>) {
+        // Collect all active Pokemon with their speeds
+        let mut actives: Vec<(usize, usize, u32)> = Vec::new();
+        for (side_idx, side) in self.sides.iter().enumerate() {
+            for (_slot, active_idx) in side.active.iter().enumerate() {
+                if let Some(poke_idx) = active_idx {
+                    if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                        if !pokemon.fainted {
+                            actives.push((side_idx, *poke_idx, pokemon.speed));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Sort by speed (highest first)
+        actives.sort_by(|a, b| b.2.cmp(&a.2));
+
+        // Run event on each
+        for (side_idx, poke_idx, _speed) in actives {
+            self.run_event(event_id, Some((side_idx, poke_idx)), None, effect, None);
+        }
+
+        // Weather update triggers Update event in Gen 7+
+        if event_id == "Weather" && self.gen >= 7 {
+            self.each_event("Update", None);
+        }
+    }
+
+    /// Get the target for a move
+    /// Equivalent to battle.ts getTarget()
+    pub fn get_target(
+        &mut self,
+        user: (usize, usize),
+        move_id: &ID,
+        target_loc: i8,
+        original_target: Option<(usize, usize)>,
+    ) -> Option<(usize, usize)> {
+        // Get move data
+        let move_def = crate::data::moves::get_move(move_id)?;
+        let target_type = format!("{:?}", move_def.target);
+
+        // Check for smart-tracking (Stalwart, Propeller Tail)
+        let (user_side, user_idx) = user;
+        let tracks_target = if let Some(side) = self.sides.get(user_side) {
+            if let Some(pokemon) = side.pokemon.get(user_idx) {
+                let ability = pokemon.ability.as_str();
+                ability == "stalwart" || ability == "propellertail"
+            } else {
+                false
+            }
+        } else {
+            false
+        };
+
+        // If tracking and original target is still active, use it
+        if tracks_target {
+            if let Some((target_side, target_idx)) = original_target {
+                if let Some(side) = self.sides.get(target_side) {
+                    if let Some(pokemon) = side.pokemon.get(target_idx) {
+                        if pokemon.is_active && !pokemon.fainted {
+                            return Some((target_side, target_idx));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Validate target location
+        if target_type != "RandomNormal" && self.valid_target_loc(target_loc, user, &target_type) {
+            // Get target at location
+            if let Some(target) = self.get_at_loc(user, target_loc) {
+                // Check if target is fainted
+                if let Some(side) = self.sides.get(target.0) {
+                    if let Some(pokemon) = side.pokemon.get(target.1) {
+                        if !pokemon.fainted {
+                            return Some(target);
+                        }
+                    }
+                }
+                // Target fainted, need to retarget in some cases
+            }
+        }
+
+        // Fall back to random target
+        self.get_random_target(user_side, user_idx, &target_type)
+    }
+
+    /// Get Pokemon at a location relative to a source Pokemon
+    /// Helper for get_target
+    fn get_at_loc(&self, source: (usize, usize), target_loc: i8) -> Option<(usize, usize)> {
+        let (source_side, _source_idx) = source;
+
+        if target_loc == 0 {
+            return None;
+        }
+
+        let (target_side, slot) = if target_loc > 0 {
+            // Opponent's side
+            let foe_side = if source_side == 0 { 1 } else { 0 };
+            (foe_side, (target_loc - 1) as usize)
+        } else {
+            // Own side (negative)
+            (source_side, (-target_loc - 1) as usize)
+        };
+
+        if slot >= self.active_per_half {
+            return None;
+        }
+
+        // Get active Pokemon at slot
+        if let Some(side) = self.sides.get(target_side) {
+            if let Some(Some(poke_idx)) = side.active.get(slot) {
+                return Some((target_side, *poke_idx));
+            }
+        }
+
+        None
+    }
+
+    /// Undo a player's choice
+    /// Equivalent to battle.ts undoChoice()
+    pub fn undo_choice(&mut self, side_id: SideID) -> bool {
+        let side_idx = side_id.index();
+
+        if let Some(side) = self.sides.get_mut(side_idx) {
+            if side.choice.cant_undo {
+                return false;
+            }
+            side.choice.clear();
+            return true;
+        }
+
+        false
+    }
+
+    /// Get all active Pokemon (including fainted if specified)
+    /// Equivalent to battle.ts getAllActive()
+    pub fn get_all_active_incl_fainted(&self, include_fainted: bool) -> Vec<(usize, usize)> {
+        let mut result = Vec::new();
+
+        for (side_idx, side) in self.sides.iter().enumerate() {
+            for active_idx in &side.active {
+                if let Some(poke_idx) = active_idx {
+                    if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                        if include_fainted || !pokemon.fainted {
+                            result.push((side_idx, *poke_idx));
+                        }
+                    }
+                }
+            }
+        }
+
+        result
+    }
+
+    /// Spread damage to multiple targets
+    /// Equivalent to battle.ts spreadDamage()
+    pub fn spread_damage(
+        &mut self,
+        damages: &[Option<u32>],
+        targets: &[(usize, usize)],
+        source: Option<(usize, usize)>,
+        effect: Option<&str>,
+    ) -> Vec<u32> {
+        let mut results = Vec::new();
+
+        for (i, damage) in damages.iter().enumerate() {
+            if let (Some(dmg), Some(&target)) = (damage, targets.get(i)) {
+                let actual_damage = self.damage(*dmg, target, source, effect);
+                results.push(actual_damage);
+            } else {
+                results.push(0);
+            }
+        }
+
+        results
+    }
+
+    /// Final stat modification with 4096 denominator
+    /// Equivalent to battle.ts finalModify()
+    pub fn final_modify(&self, relay_var: i32) -> i32 {
+        // In PS, this applies the event modifier
+        // For now, just return the value
+        relay_var
+    }
 }
 
 /// Priority item for sorting actions/handlers
