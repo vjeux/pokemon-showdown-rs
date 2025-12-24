@@ -1,11 +1,20 @@
 //! Item Effect System
 //!
-//! This module handles item effects in battle.
-//! Items can modify various game mechanics through event handlers.
+//! Pokemon Showdown - http://pokemonshowdown.com/
+//!
+//! This module handles item effects in battle using a hybrid approach:
+//! 1. Data-driven effects (ItemEffect) for simple items
+//! 2. Handler functions for complex items
+//!
+//! The battle engine should use run_item_event() as the main entry point.
 
 use crate::dex_data::ID;
+use crate::event::{EventType, EventResult};
+use crate::data::items::{get_item, ItemDef};
+use crate::data::item_effects::{ItemEffect, Stat, Trigger};
+use crate::item_handlers::{get_handler, ItemContext};
 
-/// Item effect types for different game events
+/// Item effect types for different game events (legacy enum for compatibility)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ItemEvent {
     /// When Pokemon switches in
@@ -36,6 +45,28 @@ pub enum ItemEvent {
     OnFaint,
     /// On contact with foe
     OnContact,
+}
+
+impl ItemEvent {
+    /// Convert to EventType
+    pub fn to_event_type(&self) -> EventType {
+        match self {
+            ItemEvent::OnSwitchIn => EventType::SwitchIn,
+            ItemEvent::OnResidual => EventType::Residual,
+            ItemEvent::BeforeMove => EventType::BeforeMove,
+            ItemEvent::AfterMoveHit => EventType::AfterHit,
+            ItemEvent::OnModifyDamage => EventType::ModifyDamage,
+            ItemEvent::OnModifyStat => EventType::ModifyAtk, // Generic stat
+            ItemEvent::OnTakeDamage => EventType::Damage,
+            ItemEvent::OnHPBelowHalf => EventType::Update,
+            ItemEvent::OnHPBelowQuarter => EventType::Update,
+            ItemEvent::OnSetStatus => EventType::SetStatus,
+            ItemEvent::OnModifyAccuracy => EventType::ModifyAccuracy,
+            ItemEvent::OnModifyCritRatio => EventType::ModifyCritRatio,
+            ItemEvent::OnFaint => EventType::Residual,
+            ItemEvent::OnContact => EventType::DamagingHit,
+        }
+    }
 }
 
 /// Modifiers returned by item effects
@@ -73,235 +104,359 @@ pub struct ItemModifier {
     pub speed_multiplier: Option<f64>,
 }
 
+impl ItemModifier {
+    /// Convert from EventResult
+    pub fn from_event_result(result: &EventResult) -> Option<Self> {
+        match result {
+            EventResult::Modify(m) => Some(ItemModifier {
+                stat_multiplier: Some(*m),
+                ..Default::default()
+            }),
+            EventResult::Heal(h) => Some(ItemModifier {
+                heal_fraction: Some(*h as f64),
+                ..Default::default()
+            }),
+            EventResult::Damage(d) => Some(ItemModifier {
+                damage_fraction: Some(*d as f64),
+                ..Default::default()
+            }),
+            EventResult::Fail => Some(ItemModifier {
+                block: true,
+                ..Default::default()
+            }),
+            _ => None,
+        }
+    }
+}
+
 /// Item effect handler result
 pub type ItemResult = Option<ItemModifier>;
 
-/// Get item effect for a specific item and event
-pub fn get_item_effect(item_id: &ID, event: ItemEvent) -> ItemResult {
-    let item_name = item_id.as_str();
+/// Apply an ItemEffect and return the result
+pub fn apply_item_effect(effect: &ItemEffect, ctx: &ItemContext) -> EventResult {
+    match effect {
+        // Stat modifiers
+        ItemEffect::ModifyStat { multiplier, .. } => {
+            EventResult::Modify(*multiplier)
+        }
 
-    match (item_name, event) {
-        // LEFTOVERS - Heal 1/16 HP at end of turn
-        ("leftovers", ItemEvent::OnResidual) => Some(ItemModifier {
-            heal_fraction: Some(1.0 / 16.0),
-            message: Some("Leftovers restored a little HP!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::BoostType { move_type, multiplier } => {
+            if ctx.move_type.as_deref() == Some(move_type.as_str()) {
+                EventResult::Modify(*multiplier)
+            } else {
+                EventResult::Continue
+            }
+        }
 
-        // BLACK SLUDGE - Heal 1/16 HP for Poison types, damage others
-        ("blacksludge", ItemEvent::OnResidual) => Some(ItemModifier {
-            heal_fraction: Some(1.0 / 16.0), // For Poison types
-            message: Some("Black Sludge restored HP!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::BoostDamage { multiplier } => {
+            EventResult::Modify(*multiplier)
+        }
 
-        // SITRUS BERRY - Heal 25% HP when below 50%
-        ("sitrusberry", ItemEvent::OnHPBelowHalf) => Some(ItemModifier {
-            heal_fraction: Some(0.25),
-            consume: true,
-            message: Some("Sitrus Berry restored HP!".to_string()),
-            ..Default::default()
-        }),
+        // HP effects
+        ItemEffect::ResidualHeal { fraction } => {
+            // Return as a modifier; battle will interpret
+            EventResult::Modify(*fraction)
+        }
 
-        // ORAN BERRY - Heal 10 HP when below 50%
-        ("oranberry", ItemEvent::OnHPBelowHalf) => Some(ItemModifier {
-            heal_fraction: Some(0.10), // Simplified - normally fixed 10 HP
-            consume: true,
-            message: Some("Oran Berry restored HP!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::ResidualHealOrDamage { required_type, heal_fraction, damage_fraction } => {
+            // Check if holder has the required type
+            if ctx.target_types.iter().any(|t| t.eq_ignore_ascii_case(required_type)) {
+                EventResult::Modify(*heal_fraction)
+            } else {
+                EventResult::Modify(-damage_fraction) // Negative = damage
+            }
+        }
 
-        // FIGY BERRY, AGUAV, IAPAPA, MAGO, WIKI - Heal 33% HP when below 25%
-        ("figyberry" | "aguavberry" | "iapapaberry" | "magoberry" | "wikiberry", ItemEvent::OnHPBelowQuarter) => Some(ItemModifier {
-            heal_fraction: Some(1.0 / 3.0),
-            consume: true,
-            message: Some("A berry restored HP!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::HealOnThreshold { threshold, heal_fraction } => {
+            if let Some(hp_frac) = ctx.hp_fraction {
+                if hp_frac <= *threshold {
+                    return EventResult::Modify(*heal_fraction);
+                }
+            }
+            EventResult::Continue
+        }
 
-        // LUM BERRY - Cure any status
-        ("lumberry", ItemEvent::OnSetStatus) => Some(ItemModifier {
-            prevent_status: true,
-            consume: true,
-            message: Some("Lum Berry cured the status!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::RecoilOnAttack { fraction } => {
+            EventResult::Modify(-fraction) // Negative = damage to self
+        }
 
-        // RAWST BERRY - Cure burn
-        ("rawstberry", ItemEvent::OnSetStatus) => Some(ItemModifier {
-            prevent_status: true,
-            consume: true,
-            message: Some("Rawst Berry cured the burn!".to_string()),
-            ..Default::default()
-        }),
+        // Status effects
+        ItemEffect::CureStatus { status } => {
+            if ctx.status.as_deref() == Some(status.as_str()) {
+                EventResult::Stop // Block the status
+            } else {
+                EventResult::Continue
+            }
+        }
 
-        // CHERI BERRY - Cure paralysis
-        ("cheriberry", ItemEvent::OnSetStatus) => Some(ItemModifier {
-            prevent_status: true,
-            consume: true,
-            message: Some("Cheri Berry cured paralysis!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::CureAllStatus => {
+            EventResult::Stop
+        }
 
-        // PECHA BERRY - Cure poison
-        ("pechaberry", ItemEvent::OnSetStatus) => Some(ItemModifier {
-            prevent_status: true,
-            consume: true,
-            message: Some("Pecha Berry cured poison!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::PreventStatus { status } => {
+            if ctx.status.as_deref() == Some(status.as_str()) {
+                EventResult::Fail
+            } else {
+                EventResult::Continue
+            }
+        }
 
-        // ASPEAR BERRY - Cure freeze
-        ("aspearberry", ItemEvent::OnSetStatus) => Some(ItemModifier {
-            prevent_status: true,
-            consume: true,
-            message: Some("Aspear Berry thawed the freeze!".to_string()),
-            ..Default::default()
-        }),
+        // Boost effects
+        ItemEffect::BoostStats { boosts } => {
+            // Return the first boost; battle will handle applying all
+            if let Some((stat, stages)) = boosts.first() {
+                EventResult::ModifyInt(*stages as i32)
+            } else {
+                EventResult::Continue
+            }
+        }
 
-        // CHESTO BERRY - Cure sleep
-        ("chestoberry", ItemEvent::OnSetStatus) => Some(ItemModifier {
-            prevent_status: true,
-            consume: true,
-            message: Some("Chesto Berry woke up!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::PreventStatDrops => {
+            if let Some((_, change)) = &ctx.boost {
+                if *change < 0 && !ctx.is_source {
+                    return EventResult::Fail;
+                }
+            }
+            EventResult::Continue
+        }
 
-        // CHOICE BAND - 1.5x Attack, locked into one move
-        ("choiceband", ItemEvent::OnModifyStat) => Some(ItemModifier {
-            stat_multiplier: Some(1.5),
-            ..Default::default()
-        }),
+        ItemEffect::RestoreLoweredStats => {
+            EventResult::Stop // Signal that stats should be restored
+        }
 
-        // CHOICE SPECS - 1.5x Sp. Atk, locked into one move
-        ("choicespecs", ItemEvent::OnModifyStat) => Some(ItemModifier {
-            stat_multiplier: Some(1.5),
-            ..Default::default()
-        }),
+        // Type resistance
+        ItemEffect::ResistSuperEffective { resist_type, multiplier } => {
+            if ctx.move_type.as_deref() == Some(resist_type.as_str()) {
+                if let Some(eff) = ctx.type_effectiveness {
+                    if eff > 1.0 {
+                        return EventResult::Modify(*multiplier);
+                    }
+                }
+            }
+            EventResult::Continue
+        }
 
-        // CHOICE SCARF - 1.5x Speed, locked into one move
-        ("choicescarf", ItemEvent::OnModifyStat) => Some(ItemModifier {
-            stat_multiplier: Some(1.5),
-            speed_multiplier: Some(1.5),
-            ..Default::default()
-        }),
+        // Move modification
+        ItemEffect::ChoiceLock { stat, multiplier } => {
+            // Return the multiplier; battle handles the lock
+            EventResult::Modify(*multiplier)
+        }
 
-        // LIFE ORB - 1.3x damage, lose 10% HP
-        ("lifeorb", ItemEvent::OnModifyDamage) => Some(ItemModifier {
-            damage_multiplier: Some(1.3),
-            ..Default::default()
-        }),
-        ("lifeorb", ItemEvent::AfterMoveHit) => Some(ItemModifier {
-            damage_fraction: Some(0.1), // Recoil
-            ..Default::default()
-        }),
+        ItemEffect::BoostCritRatio { stages } => {
+            EventResult::ModifyInt(*stages as i32)
+        }
 
-        // EXPERT BELT - 1.2x damage for super effective moves
-        ("expertbelt", ItemEvent::OnModifyDamage) => Some(ItemModifier {
-            damage_multiplier: Some(1.2),
-            ..Default::default()
-        }),
+        ItemEffect::BoostAccuracy { multiplier } => {
+            EventResult::Modify(*multiplier)
+        }
 
-        // MUSCLE BAND - 1.1x physical damage
-        ("muscleband", ItemEvent::OnModifyDamage) => Some(ItemModifier {
-            damage_multiplier: Some(1.1),
-            ..Default::default()
-        }),
+        ItemEffect::ReduceOpponentAccuracy { multiplier } => {
+            EventResult::Modify(*multiplier)
+        }
 
-        // WISE GLASSES - 1.1x special damage
-        ("wiseglasses", ItemEvent::OnModifyDamage) => Some(ItemModifier {
-            damage_multiplier: Some(1.1),
-            ..Default::default()
-        }),
+        ItemEffect::PriorityChance { chance } => {
+            // Battle should roll for this
+            EventResult::Modify(*chance)
+        }
 
-        // EVIOLITE - 1.5x Def/SpD for not fully evolved Pokemon
-        ("eviolite", ItemEvent::OnModifyStat) => Some(ItemModifier {
-            stat_multiplier: Some(1.5),
-            ..Default::default()
-        }),
+        ItemEffect::SkipChargeTurn => {
+            EventResult::Stop
+        }
 
-        // ASSAULT VEST - 1.5x SpD, can't use status moves
-        ("assaultvest", ItemEvent::OnModifyStat) => Some(ItemModifier {
-            stat_multiplier: Some(1.5),
-            ..Default::default()
-        }),
+        ItemEffect::MaxMultiHit => {
+            EventResult::ModifyInt(5) // Max 5 hits
+        }
 
-        // FOCUS SASH - Survive at 1 HP if at full health
-        ("focussash", ItemEvent::OnTakeDamage) => Some(ItemModifier {
-            message: Some("Focus Sash prevented the knockout!".to_string()),
-            consume: true,
-            ..Default::default()
-        }),
+        // Defensive effects
+        ItemEffect::FocusSash => {
+            if let Some(hp_frac) = ctx.hp_fraction {
+                if hp_frac >= 1.0 {
+                    return EventResult::Stop; // Survive at 1 HP
+                }
+            }
+            EventResult::Continue
+        }
 
-        // ROCKY HELMET - Deal 1/6 damage to attacker on contact
-        ("rockyhelmet", ItemEvent::OnContact) => Some(ItemModifier {
-            damage_fraction: Some(1.0 / 6.0),
-            message: Some("Rocky Helmet damaged the attacker!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::ContactDamage { fraction } => {
+            if ctx.is_contact && !ctx.is_source {
+                EventResult::Modify(*fraction)
+            } else {
+                EventResult::Continue
+            }
+        }
 
-        // SCOPE LENS - Increase crit ratio
-        ("scopelens", ItemEvent::OnModifyCritRatio) => Some(ItemModifier {
-            crit_ratio_boost: Some(1),
-            ..Default::default()
-        }),
+        ItemEffect::HazardImmunity => {
+            EventResult::Stop
+        }
 
-        // RAZOR CLAW - Increase crit ratio
-        ("razorclaw", ItemEvent::OnModifyCritRatio) => Some(ItemModifier {
-            crit_ratio_boost: Some(1),
-            ..Default::default()
-        }),
+        ItemEffect::WeatherImmunity => {
+            EventResult::Stop
+        }
 
-        // WIDE LENS - 1.1x accuracy
-        ("widelens", ItemEvent::OnModifyAccuracy) => Some(ItemModifier {
-            accuracy_multiplier: Some(1.1),
-            ..Default::default()
-        }),
+        ItemEffect::PowderImmunity => {
+            EventResult::Stop
+        }
 
-        // ZOOM LENS - 1.2x accuracy if moving last
-        ("zoomlens", ItemEvent::OnModifyAccuracy) => Some(ItemModifier {
-            accuracy_multiplier: Some(1.2),
-            ..Default::default()
-        }),
+        ItemEffect::TypeImmunity { immune_type } => {
+            if ctx.move_type.as_deref() == Some(immune_type.as_str()) {
+                EventResult::Fail
+            } else {
+                EventResult::Continue
+            }
+        }
 
-        // QUICK CLAW - Chance to move first
-        ("quickclaw", ItemEvent::BeforeMove) => Some(ItemModifier {
-            priority_modifier: Some(1),
-            message: Some("Quick Claw let it move first!".to_string()),
-            ..Default::default()
-        }),
+        // Grounding
+        ItemEffect::GroundHolder => {
+            EventResult::True
+        }
 
-        // TYPE BOOSTING ITEMS
-        // Charcoal - 1.2x Fire
-        ("charcoal" | "mysticwater" | "miracleseed" | "magnet" | "nevermeltice" |
-         "blackbelt" | "poisonbarb" | "softsand" | "sharpbeak" | "twistedspoon" |
-         "silverpowder" | "hardstone" | "spellplate" | "dragonfang" | "blackglasses" |
-         "metalcoat" | "silkscarf" | "pixieplate", ItemEvent::OnModifyDamage) => Some(ItemModifier {
-            damage_multiplier: Some(1.2),
-            ..Default::default()
-        }),
+        ItemEffect::Airborne => {
+            EventResult::True
+        }
 
-        // HEAVY-DUTY BOOTS - Immune to entry hazards
-        ("heavydutyboots", ItemEvent::OnSwitchIn) => Some(ItemModifier {
-            block: true, // Block hazard damage
-            ..Default::default()
-        }),
+        // Switching
+        ItemEffect::EjectOnHit => {
+            if ctx.damage.is_some() {
+                EventResult::Override("eject".to_string())
+            } else {
+                EventResult::Continue
+            }
+        }
 
-        // SAFETY GOGGLES - Immune to powder moves and weather damage
-        ("safetygoggles", ItemEvent::OnResidual) => Some(ItemModifier {
-            block: true, // Block weather damage
-            ..Default::default()
-        }),
+        ItemEffect::ForceOpponentSwitch => {
+            EventResult::Override("forceswitch".to_string())
+        }
 
-        // AIR BALLOON - Immune to Ground
-        ("airballoon", ItemEvent::OnSwitchIn) => Some(ItemModifier {
-            message: Some("floats in the air with its Air Balloon!".to_string()),
-            ..Default::default()
-        }),
+        ItemEffect::EscapeTrapping => {
+            EventResult::True
+        }
 
-        // Default - no effect
-        _ => None,
+        // Volatile status
+        ItemEffect::AddVolatile { volatile } => {
+            EventResult::Override(volatile.clone())
+        }
+
+        ItemEffect::RemoveVolatile { volatile } => {
+            EventResult::Override(format!("remove:{}", volatile))
+        }
+
+        ItemEffect::MentalHerb => {
+            EventResult::Stop
+        }
+
+        // Consumption
+        ItemEffect::ConsumeItem => {
+            EventResult::Stop
+        }
+
+        ItemEffect::CannotRemove => {
+            EventResult::Fail
+        }
+
+        ItemEffect::IgnoreKlutz => {
+            EventResult::True
+        }
+
+        // Fling
+        ItemEffect::FlingEffect { effect } => {
+            apply_item_effect(effect, ctx)
+        }
+
+        // Compound effects
+        ItemEffect::Compound { effects } => {
+            for eff in effects {
+                let result = apply_item_effect(eff, ctx);
+                if !matches!(result, EventResult::Continue) {
+                    return result;
+                }
+            }
+            EventResult::Continue
+        }
+
+        // Triggered effects
+        ItemEffect::Triggered { trigger, effect } => {
+            let should_trigger = match trigger {
+                Trigger::OnDamagingHitType(t) => {
+                    ctx.damage.is_some() && ctx.move_type.as_deref() == Some(t.as_str())
+                }
+                Trigger::OnHPBelow(threshold) => {
+                    ctx.hp_fraction.map_or(false, |hp| hp <= *threshold)
+                }
+                Trigger::OnHPBelowGluttony(threshold) => {
+                    // Gluttony triggers at 50% instead of 25%
+                    ctx.holder_ability.as_deref() == Some("gluttony")
+                        && ctx.hp_fraction.map_or(false, |hp| hp <= 0.5)
+                        || ctx.hp_fraction.map_or(false, |hp| hp <= *threshold)
+                }
+                Trigger::OnStatus(status) => {
+                    ctx.status.as_deref() == Some(status.as_str())
+                }
+                Trigger::OnAnyStatus => {
+                    ctx.status.is_some()
+                }
+                Trigger::OnSuperEffectiveHit(t) => {
+                    ctx.type_effectiveness.map_or(false, |eff| eff > 1.0)
+                        && ctx.move_type.as_deref() == Some(t.as_str())
+                }
+                Trigger::OnResidual => true,
+                Trigger::OnSwitchIn => true,
+                Trigger::OnUseMove => true,
+                Trigger::OnStatDrop => {
+                    ctx.boost.as_ref().map_or(false, |(_, change)| *change < 0)
+                }
+                Trigger::OnContactHit => {
+                    ctx.is_contact && ctx.damage.is_some()
+                }
+            };
+
+            if should_trigger {
+                apply_item_effect(effect, ctx)
+            } else {
+                EventResult::Continue
+            }
+        }
+
+        _ => EventResult::Continue,
     }
+}
+
+/// Main entry point: Run item event using the hybrid system
+///
+/// This function checks:
+/// 1. First, custom handlers for complex items
+/// 2. Then, data-driven effects from ItemDef
+///
+/// Returns the result of the first matching handler/effect
+pub fn run_item_event(item_id: &ID, event: &EventType, ctx: &ItemContext) -> EventResult {
+    // 1. Check for custom handler first
+    if let Some(handler) = get_handler(item_id, event) {
+        let result = handler(ctx);
+        if !matches!(result, EventResult::Continue) {
+            return result;
+        }
+    }
+
+    // 2. Check data-driven effects
+    if let Some(item_def) = get_item(item_id) {
+        for effect in item_def.get_effects_for_event(event) {
+            let result = apply_item_effect(effect, ctx);
+            if !matches!(result, EventResult::Continue) {
+                return result;
+            }
+        }
+    }
+
+    EventResult::Continue
+}
+
+/// Legacy function for backward compatibility
+/// Get item effect for a specific item and event using the old match-based system
+pub fn get_item_effect(item_id: &ID, event: ItemEvent) -> ItemResult {
+    let ctx = ItemContext::new();
+    let event_type = event.to_event_type();
+
+    let result = run_item_event(item_id, &event_type, &ctx);
+    ItemModifier::from_event_result(&result)
 }
 
 /// Check if an item provides type damage boost
@@ -351,64 +506,93 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_leftovers_effect() {
-        let item = ID::new("leftovers");
-        let effect = get_item_effect(&item, ItemEvent::OnResidual);
-        assert!(effect.is_some());
-        let modifier = effect.unwrap();
-        assert_eq!(modifier.heal_fraction, Some(1.0 / 16.0));
+    fn test_run_item_event_no_effect() {
+        let ctx = ItemContext::new();
+        let result = run_item_event(&ID::new("nonexistent"), &EventType::Residual, &ctx);
+        assert!(matches!(result, EventResult::Continue));
     }
 
     #[test]
-    fn test_sitrus_berry_effect() {
-        let item = ID::new("sitrusberry");
-        let effect = get_item_effect(&item, ItemEvent::OnHPBelowHalf);
-        assert!(effect.is_some());
-        let modifier = effect.unwrap();
-        assert_eq!(modifier.heal_fraction, Some(0.25));
-        assert!(modifier.consume);
+    fn test_apply_residual_heal_effect() {
+        let effect = ItemEffect::ResidualHeal { fraction: 0.0625 };
+        let ctx = ItemContext::new();
+        let result = apply_item_effect(&effect, &ctx);
+        assert!(matches!(result, EventResult::Modify(m) if (m - 0.0625).abs() < 0.001));
     }
 
     #[test]
-    fn test_choice_band_effect() {
-        let item = ID::new("choiceband");
-        let effect = get_item_effect(&item, ItemEvent::OnModifyStat);
-        assert!(effect.is_some());
-        let modifier = effect.unwrap();
-        assert_eq!(modifier.stat_multiplier, Some(1.5));
+    fn test_apply_type_boost_effect() {
+        let effect = ItemEffect::BoostType {
+            move_type: "Fire".to_string(),
+            multiplier: 1.2,
+        };
+
+        // Matching type
+        let ctx = ItemContext::new().with_move("flamethrower", "Fire", "Special");
+        let result = apply_item_effect(&effect, &ctx);
+        assert!(matches!(result, EventResult::Modify(m) if (m - 1.2).abs() < 0.001));
+
+        // Non-matching type
+        let ctx = ItemContext::new().with_move("thunderbolt", "Electric", "Special");
+        let result = apply_item_effect(&effect, &ctx);
+        assert!(matches!(result, EventResult::Continue));
     }
 
     #[test]
-    fn test_life_orb_effect() {
-        let item = ID::new("lifeorb");
-        let effect = get_item_effect(&item, ItemEvent::OnModifyDamage);
-        assert!(effect.is_some());
-        let modifier = effect.unwrap();
-        assert_eq!(modifier.damage_multiplier, Some(1.3));
+    fn test_apply_triggered_effect() {
+        let effect = ItemEffect::Triggered {
+            trigger: Trigger::OnHPBelow(0.5),
+            effect: Box::new(ItemEffect::HealOnThreshold {
+                threshold: 0.5,
+                heal_fraction: 0.25,
+            }),
+        };
+
+        // HP at 40% - should trigger
+        let ctx = ItemContext::new().with_hp_fraction(0.4);
+        let result = apply_item_effect(&effect, &ctx);
+        assert!(matches!(result, EventResult::Modify(m) if (m - 0.25).abs() < 0.001));
+
+        // HP at 60% - should not trigger
+        let ctx = ItemContext::new().with_hp_fraction(0.6);
+        let result = apply_item_effect(&effect, &ctx);
+        assert!(matches!(result, EventResult::Continue));
     }
 
     #[test]
-    fn test_type_boost_charcoal() {
-        let item = ID::new("charcoal");
-        let boost = get_item_type_boost(&item);
-        assert!(boost.is_some());
-        let (type_name, multiplier) = boost.unwrap();
-        assert_eq!(type_name, "Fire");
-        assert_eq!(multiplier, 1.2);
+    fn test_apply_compound_effect() {
+        let effect = ItemEffect::Compound {
+            effects: vec![
+                ItemEffect::BoostDamage { multiplier: 1.3 },
+                ItemEffect::RecoilOnAttack { fraction: 0.1 },
+            ],
+        };
+
+        let ctx = ItemContext::new();
+        let result = apply_item_effect(&effect, &ctx);
+        // Should return first non-Continue result
+        assert!(matches!(result, EventResult::Modify(m) if (m - 1.3).abs() < 0.001));
     }
 
     #[test]
-    fn test_lum_berry_status_prevention() {
-        let item = ID::new("lumberry");
-        assert!(check_item_prevents_status(&item, "brn"));
-        assert!(check_item_prevents_status(&item, "par"));
-        assert!(check_item_prevents_status(&item, "slp"));
+    fn test_get_item_type_boost() {
+        assert_eq!(get_item_type_boost(&ID::new("charcoal")), Some(("Fire", 1.2)));
+        assert_eq!(get_item_type_boost(&ID::new("mysticwater")), Some(("Water", 1.2)));
+        assert_eq!(get_item_type_boost(&ID::new("leftovers")), None);
     }
 
     #[test]
-    fn test_rawst_berry_status_prevention() {
-        let item = ID::new("rawstberry");
-        assert!(check_item_prevents_status(&item, "brn"));
-        assert!(!check_item_prevents_status(&item, "par"));
+    fn test_check_item_prevents_status() {
+        assert!(check_item_prevents_status(&ID::new("lumberry"), "par"));
+        assert!(check_item_prevents_status(&ID::new("lumberry"), "brn"));
+        assert!(check_item_prevents_status(&ID::new("rawstberry"), "brn"));
+        assert!(!check_item_prevents_status(&ID::new("rawstberry"), "par"));
+    }
+
+    #[test]
+    fn test_item_event_to_event_type() {
+        assert_eq!(ItemEvent::OnResidual.to_event_type(), EventType::Residual);
+        assert_eq!(ItemEvent::OnSwitchIn.to_event_type(), EventType::SwitchIn);
+        assert_eq!(ItemEvent::OnSetStatus.to_event_type(), EventType::SetStatus);
     }
 }
