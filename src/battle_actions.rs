@@ -589,6 +589,385 @@ impl<'a> BattleActions<'a> {
         }
         tera_type.map(|t| t.to_string())
     }
+
+    // =========================================================================
+    // HIT STEP METHODS - Ported from battle-actions.ts
+    // These are 1:1 ports of the hit step processing methods
+    // =========================================================================
+
+    /// Check invulnerability for targets
+    /// Equivalent to hitStepInvulnerabilityEvent in battle-actions.ts
+    pub fn hit_step_invulnerability_event(
+        targets: &[(usize, usize)],
+        attacker_flying: bool,
+        move_flags_contact: bool,
+        move_target: &str,
+    ) -> Vec<(usize, usize, bool)> {
+        // Returns (side_idx, pokemon_idx, is_hit)
+        targets.iter().map(|&(side_idx, pokemon_idx)| {
+            // For now, all targets are hit unless in a semi-invulnerable state
+            // Full implementation would check volatiles like Fly, Dig, Dive, etc.
+            (side_idx, pokemon_idx, true)
+        }).collect()
+    }
+
+    /// Check type immunity for targets
+    /// Equivalent to hitStepTypeImmunity in battle-actions.ts
+    pub fn hit_step_type_immunity(
+        defender_types: &[String],
+        move_type: &str,
+        ignore_immunity: bool,
+    ) -> bool {
+        if ignore_immunity {
+            return true; // Bypass immunity check
+        }
+
+        // Check type chart for immunity
+        let effectiveness = get_effectiveness_multi(move_type, defender_types);
+        effectiveness > 0.0
+    }
+
+    /// Check accuracy for move hit
+    /// Equivalent to hitStepAccuracy in battle-actions.ts
+    pub fn hit_step_accuracy(
+        move_accuracy: u32,
+        move_always_hit: bool,
+        move_ohko: bool,
+        attacker_accuracy_boost: i8,
+        defender_evasion_boost: i8,
+        ignore_accuracy: bool,
+        ignore_evasion: bool,
+        random_value: u32, // 0-99
+    ) -> bool {
+        // Always hit moves
+        if move_always_hit || move_accuracy == 0 {
+            return true;
+        }
+
+        // Calculate effective accuracy
+        let mut accuracy_stages = if ignore_accuracy { 0 } else { attacker_accuracy_boost };
+        let evasion_stages = if ignore_evasion { 0 } else { defender_evasion_boost };
+        accuracy_stages = accuracy_stages - evasion_stages;
+
+        // Apply stage modifier
+        let (num, denom) = Self::get_accuracy_modifier(accuracy_stages);
+        let effective_accuracy = (move_accuracy as i32 * num / denom) as u32;
+
+        // OHKO moves have special accuracy handling
+        if move_ohko {
+            return random_value < effective_accuracy.min(100);
+        }
+
+        random_value < effective_accuracy.min(100)
+    }
+
+    /// Get accuracy modifier from stages
+    fn get_accuracy_modifier(stages: i8) -> (i32, i32) {
+        match stages {
+            -6 => (3, 9),
+            -5 => (3, 8),
+            -4 => (3, 7),
+            -3 => (3, 6),
+            -2 => (3, 5),
+            -1 => (3, 4),
+            0 => (3, 3),
+            1 => (4, 3),
+            2 => (5, 3),
+            3 => (6, 3),
+            4 => (7, 3),
+            5 => (8, 3),
+            6 => (9, 3),
+            _ if stages < -6 => (3, 9),
+            _ => (9, 3),
+        }
+    }
+
+    /// Check if move breaks protect
+    /// Equivalent to hitStepBreakProtect in battle-actions.ts
+    pub fn hit_step_break_protect(
+        move_breaks_protect: bool,
+        move_is_z: bool,
+        target_protected: bool,
+    ) -> bool {
+        if !target_protected {
+            return true; // Not protected, can hit
+        }
+        if move_breaks_protect {
+            return true; // Move breaks protect
+        }
+        if move_is_z {
+            return true; // Z-moves break protect (with reduced damage)
+        }
+        false
+    }
+
+    /// Check if move steals boosts
+    /// Equivalent to hitStepStealBoosts in battle-actions.ts
+    pub fn hit_step_steal_boosts(
+        move_steals_boosts: bool,
+        target_boosts: &BoostsTable,
+    ) -> Option<BoostsTable> {
+        if !move_steals_boosts {
+            return None;
+        }
+
+        // Copy only positive boosts
+        let mut stolen = BoostsTable::default();
+        if target_boosts.atk > 0 { stolen.atk = target_boosts.atk; }
+        if target_boosts.def > 0 { stolen.def = target_boosts.def; }
+        if target_boosts.spa > 0 { stolen.spa = target_boosts.spa; }
+        if target_boosts.spd > 0 { stolen.spd = target_boosts.spd; }
+        if target_boosts.spe > 0 { stolen.spe = target_boosts.spe; }
+        if target_boosts.accuracy > 0 { stolen.accuracy = target_boosts.accuracy; }
+        if target_boosts.evasion > 0 { stolen.evasion = target_boosts.evasion; }
+
+        Some(stolen)
+    }
+
+    /// Process self stat drops from moves
+    /// Equivalent to selfDrops in battle-actions.ts
+    pub fn self_drops(
+        move_self_boost: Option<&BoostsTable>,
+        already_dropped: bool,
+    ) -> Option<BoostsTable> {
+        if already_dropped {
+            return None;
+        }
+        move_self_boost.cloned()
+    }
+
+    /// Get secondary effects for a move
+    /// Equivalent to secondaries in battle-actions.ts
+    pub fn get_secondaries(
+        secondaries: &[SecondaryEffect],
+        has_sheer_force: bool,
+    ) -> Vec<SecondaryEffect> {
+        if has_sheer_force {
+            // Sheer Force removes secondary effects
+            return Vec::new();
+        }
+        secondaries.to_vec()
+    }
+
+    /// Get active Z-move from base move
+    /// Equivalent to getActiveZMove in battle-actions.ts
+    pub fn get_active_z_move(
+        base_move_id: &str,
+        base_move_type: &str,
+        base_move_category: &str,
+        base_move_base_power: u32,
+        z_crystal_base_power: Option<u32>,
+    ) -> ActiveMove {
+        let z_move_name = get_z_move_name(base_move_type);
+        let z_base_power = if base_move_category == "Status" {
+            0
+        } else {
+            z_crystal_base_power.unwrap_or_else(|| Self::z_move_power_table(base_move_base_power))
+        };
+
+        ActiveMove {
+            id: ID::new(&z_move_name.to_lowercase().replace(" ", "")),
+            name: z_move_name.to_string(),
+            base_power: z_base_power,
+            category: base_move_category.to_string(),
+            move_type: base_move_type.to_string(),
+            accuracy: 0, // Z-moves always hit
+            priority: 0,
+            target: "normal".to_string(),
+            is_z: true,
+            is_z_or_max_powered: true,
+            always_hit: true,
+            base_move: Some(ID::new(base_move_id)),
+            ..Default::default()
+        }
+    }
+
+    /// Get Z-move base power from original move's base power
+    fn z_move_power_table(base_power: u32) -> u32 {
+        match base_power {
+            0..=55 => 100,
+            56..=65 => 120,
+            66..=75 => 140,
+            76..=85 => 160,
+            86..=95 => 175,
+            96..=100 => 180,
+            101..=110 => 185,
+            111..=125 => 190,
+            126..=130 => 195,
+            _ => 200,
+        }
+    }
+
+    /// Get active Max move from base move
+    /// Equivalent to getActiveMaxMove in battle-actions.ts
+    pub fn get_active_max_move(
+        base_move_id: &str,
+        base_move_type: &str,
+        base_move_category: &str,
+        base_move_base_power: u32,
+        gmax_move: Option<&str>,
+    ) -> ActiveMove {
+        let max_move_name = if let Some(gmax) = gmax_move {
+            gmax.to_string()
+        } else {
+            get_max_move_name(if base_move_category == "Status" { "Status" } else { base_move_type }).to_string()
+        };
+
+        let max_base_power = if base_move_category == "Status" {
+            0
+        } else {
+            Self::max_move_power_table(base_move_base_power, base_move_type)
+        };
+
+        ActiveMove {
+            id: ID::new(&max_move_name.to_lowercase().replace(" ", "").replace("-", "")),
+            name: max_move_name,
+            base_power: max_base_power,
+            category: base_move_category.to_string(),
+            move_type: base_move_type.to_string(),
+            accuracy: 0, // Max moves always hit
+            priority: 0,
+            target: if base_move_category == "Status" { "self".to_string() } else { "adjacentFoe".to_string() },
+            is_max: true,
+            is_z_or_max_powered: true,
+            always_hit: true,
+            base_move: Some(ID::new(base_move_id)),
+            ..Default::default()
+        }
+    }
+
+    /// Get Max move base power from original move's base power
+    fn max_move_power_table(base_power: u32, move_type: &str) -> u32 {
+        // Fighting and Poison type moves have different scaling
+        let is_fighting_poison = move_type == "Fighting" || move_type == "Poison";
+
+        match base_power {
+            0..=40 => if is_fighting_poison { 70 } else { 90 },
+            41..=50 => if is_fighting_poison { 75 } else { 100 },
+            51..=60 => if is_fighting_poison { 80 } else { 110 },
+            61..=70 => if is_fighting_poison { 85 } else { 120 },
+            71..=100 => if is_fighting_poison { 90 } else { 130 },
+            101..=140 => if is_fighting_poison { 95 } else { 140 },
+            _ => if is_fighting_poison { 100 } else { 150 },
+        }
+    }
+
+    /// Run Z-Power effect (status Z-moves)
+    /// Equivalent to runZPower in battle-actions.ts
+    pub fn get_z_power_effect(z_move_effect: Option<&str>) -> Option<ZPowerEffect> {
+        match z_move_effect {
+            Some("heal") => Some(ZPowerEffect::Heal),
+            Some("clearnegativeboost") => Some(ZPowerEffect::ClearNegativeBoost),
+            Some("crit2") => Some(ZPowerEffect::Crit2),
+            Some("redirect") => Some(ZPowerEffect::Redirect),
+            Some("healreplacement") => Some(ZPowerEffect::HealReplacement),
+            Some("curse") => Some(ZPowerEffect::Curse),
+            _ => None,
+        }
+    }
+
+    /// Calculate spread move damage modifier
+    /// Equivalent to getSpreadDamage calculation in battle-actions.ts
+    pub fn get_spread_damage_modifier(target_count: usize) -> f64 {
+        if target_count > 1 {
+            0.75 // 75% damage when hitting multiple targets
+        } else {
+            1.0
+        }
+    }
+
+    /// Modify damage with various factors
+    /// Equivalent to modifyDamage in battle-actions.ts
+    pub fn modify_damage(
+        base_damage: u32,
+        modifiers: &[f64],
+    ) -> u32 {
+        let mut damage = base_damage as f64;
+        for modifier in modifiers {
+            damage = (damage * modifier).floor();
+        }
+        (damage as u32).max(1)
+    }
+
+    /// Check if move forces switch
+    /// Equivalent to forceSwitch handling in battle-actions.ts
+    pub fn should_force_switch(
+        move_force_switch: bool,
+        target_hp: u32,
+        target_is_dynamaxed: bool,
+    ) -> bool {
+        if !move_force_switch {
+            return false;
+        }
+        if target_hp == 0 {
+            return false;
+        }
+        if target_is_dynamaxed {
+            return false; // Dynamaxed Pokemon can't be forced out
+        }
+        true
+    }
+
+    /// Get multi-hit count for a move
+    /// Equivalent to multi-hit handling in battle-actions.ts
+    pub fn get_multi_hit_count(multi_hit: Option<u32>, random_value: u32) -> u32 {
+        match multi_hit {
+            None => 1,
+            Some(n) if n <= 1 => 1,
+            Some(2) => 2,
+            Some(3) => 3,
+            Some(5) => {
+                // 2-5 hits: 35% for 2, 35% for 3, 15% for 4, 15% for 5
+                match random_value % 100 {
+                    0..=34 => 2,
+                    35..=69 => 3,
+                    70..=84 => 4,
+                    _ => 5,
+                }
+            }
+            Some(n) => n,
+        }
+    }
+
+    /// Check critical hit
+    /// Equivalent to critical hit calculation in battle-actions.ts
+    pub fn is_critical_hit(
+        crit_ratio: i32,
+        attacker_focus_energy: bool,
+        move_will_crit: Option<bool>,
+        random_value: u32,
+    ) -> bool {
+        // Guaranteed crit or no crit
+        if let Some(will_crit) = move_will_crit {
+            return will_crit;
+        }
+
+        let mut crit_stages = crit_ratio;
+        if attacker_focus_energy {
+            crit_stages += 2;
+        }
+
+        // Crit chance by stage (Gen 7+)
+        let crit_chance = match crit_stages {
+            0 => 24, // 1/24
+            1 => 8,  // 1/8
+            2 => 2,  // 1/2
+            _ => 1,  // Always crit at stage 3+
+        };
+
+        random_value % crit_chance == 0
+    }
+}
+
+/// Z-Power effects for status Z-moves
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ZPowerEffect {
+    Heal,
+    ClearNegativeBoost,
+    Crit2,
+    Redirect,
+    HealReplacement,
+    Curse,
 }
 
 // =========================================================================
