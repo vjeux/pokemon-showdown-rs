@@ -473,6 +473,12 @@ impl BasicEffect {
     }
 }
 
+impl std::fmt::Display for BasicEffect {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.name)
+    }
+}
+
 /// Nature data
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Nature {
@@ -534,6 +540,12 @@ impl Nature {
     }
 }
 
+impl std::fmt::Display for Nature {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.name)
+    }
+}
+
 /// Type info for type chart
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TypeInfo {
@@ -568,6 +580,583 @@ impl TypeInfo {
             Some(3) => 0.0,  // Immunity
             _ => 1.0,        // Normal
         }
+    }
+}
+
+impl std::fmt::Display for TypeInfo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.name)
+    }
+}
+
+// =========================================================================
+// DEX NATURES - ported from dex-data.ts DexNatures class
+// =========================================================================
+
+/// Natures collection with caching
+pub struct DexNatures {
+    gen: u8,
+    nature_cache: HashMap<String, Nature>,
+    all_cache: Option<Vec<Nature>>,
+}
+
+impl DexNatures {
+    /// Create a new DexNatures for a given generation
+    pub fn new(gen: u8) -> Self {
+        Self {
+            gen,
+            nature_cache: HashMap::new(),
+            all_cache: None,
+        }
+    }
+
+    /// Get a nature by name or ID
+    pub fn get(&mut self, name: &str) -> Nature {
+        self.get_by_id(&to_id(name))
+    }
+
+    /// Get a nature by ID
+    pub fn get_by_id(&mut self, id: &str) -> Nature {
+        if id.is_empty() {
+            return Nature {
+                id: ID::empty(),
+                name: String::new(),
+                plus: None,
+                minus: None,
+                gen: 0,
+            };
+        }
+
+        if let Some(nature) = self.nature_cache.get(id) {
+            return nature.clone();
+        }
+
+        // Look up in nature data
+        if let Some(nature) = get_nature_data(id) {
+            let mut n = nature.clone();
+            if n.gen > self.gen {
+                // Mark as future if not available in this gen
+            }
+            self.nature_cache.insert(id.to_string(), n.clone());
+            return n;
+        }
+
+        // Return non-existent nature
+        Nature {
+            id: ID::new(id),
+            name: id.to_string(),
+            plus: None,
+            minus: None,
+            gen: 0,
+        }
+    }
+
+    /// Get all natures
+    pub fn all(&mut self) -> Vec<Nature> {
+        if let Some(ref all) = self.all_cache {
+            return all.clone();
+        }
+
+        let natures = get_all_natures();
+        self.all_cache = Some(natures.clone());
+        natures
+    }
+}
+
+/// Built-in nature data
+fn get_nature_data(id: &str) -> Option<Nature> {
+    let (plus, minus) = match id {
+        "adamant" => (Some(StatID::Atk), Some(StatID::SpA)),
+        "bashful" => (None, None),
+        "bold" => (Some(StatID::Def), Some(StatID::Atk)),
+        "brave" => (Some(StatID::Atk), Some(StatID::Spe)),
+        "calm" => (Some(StatID::SpD), Some(StatID::Atk)),
+        "careful" => (Some(StatID::SpD), Some(StatID::SpA)),
+        "docile" => (None, None),
+        "gentle" => (Some(StatID::SpD), Some(StatID::Def)),
+        "hardy" => (None, None),
+        "hasty" => (Some(StatID::Spe), Some(StatID::Def)),
+        "impish" => (Some(StatID::Def), Some(StatID::SpA)),
+        "jolly" => (Some(StatID::Spe), Some(StatID::SpA)),
+        "lax" => (Some(StatID::Def), Some(StatID::SpD)),
+        "lonely" => (Some(StatID::Atk), Some(StatID::Def)),
+        "mild" => (Some(StatID::SpA), Some(StatID::Def)),
+        "modest" => (Some(StatID::SpA), Some(StatID::Atk)),
+        "naive" => (Some(StatID::Spe), Some(StatID::SpD)),
+        "naughty" => (Some(StatID::Atk), Some(StatID::SpD)),
+        "quiet" => (Some(StatID::SpA), Some(StatID::Spe)),
+        "quirky" => (None, None),
+        "rash" => (Some(StatID::SpA), Some(StatID::SpD)),
+        "relaxed" => (Some(StatID::Def), Some(StatID::Spe)),
+        "sassy" => (Some(StatID::SpD), Some(StatID::Spe)),
+        "serious" => (None, None),
+        "timid" => (Some(StatID::Spe), Some(StatID::Atk)),
+        _ => return None,
+    };
+
+    let name = match id {
+        "adamant" => "Adamant",
+        "bashful" => "Bashful",
+        "bold" => "Bold",
+        "brave" => "Brave",
+        "calm" => "Calm",
+        "careful" => "Careful",
+        "docile" => "Docile",
+        "gentle" => "Gentle",
+        "hardy" => "Hardy",
+        "hasty" => "Hasty",
+        "impish" => "Impish",
+        "jolly" => "Jolly",
+        "lax" => "Lax",
+        "lonely" => "Lonely",
+        "mild" => "Mild",
+        "modest" => "Modest",
+        "naive" => "Naive",
+        "naughty" => "Naughty",
+        "quiet" => "Quiet",
+        "quirky" => "Quirky",
+        "rash" => "Rash",
+        "relaxed" => "Relaxed",
+        "sassy" => "Sassy",
+        "serious" => "Serious",
+        "timid" => "Timid",
+        _ => return None,
+    };
+
+    Some(Nature {
+        id: ID::new(id),
+        name: name.to_string(),
+        plus,
+        minus,
+        gen: 3,
+    })
+}
+
+/// Get all natures
+fn get_all_natures() -> Vec<Nature> {
+    let nature_ids = [
+        "adamant", "bashful", "bold", "brave", "calm", "careful", "docile",
+        "gentle", "hardy", "hasty", "impish", "jolly", "lax", "lonely",
+        "mild", "modest", "naive", "naughty", "quiet", "quirky", "rash",
+        "relaxed", "sassy", "serious", "timid",
+    ];
+    nature_ids.iter().filter_map(|id| get_nature_data(id)).collect()
+}
+
+// =========================================================================
+// DEX TYPES - ported from dex-data.ts DexTypes class
+// =========================================================================
+
+/// Types collection with caching
+pub struct DexTypes {
+    gen: u8,
+    type_cache: HashMap<String, TypeInfo>,
+    all_cache: Option<Vec<TypeInfo>>,
+    names_cache: Option<Vec<String>>,
+}
+
+impl DexTypes {
+    /// Create a new DexTypes for a given generation
+    pub fn new(gen: u8) -> Self {
+        Self {
+            gen,
+            type_cache: HashMap::new(),
+            all_cache: None,
+            names_cache: None,
+        }
+    }
+
+    /// Get a type by name
+    pub fn get(&mut self, name: &str) -> TypeInfo {
+        self.get_by_id(&to_id(name))
+    }
+
+    /// Get a type by ID
+    pub fn get_by_id(&mut self, id: &str) -> TypeInfo {
+        if id.is_empty() {
+            return TypeInfo {
+                id: ID::empty(),
+                name: String::new(),
+                effect_type: EffectType::Condition,
+                exists: false,
+                gen: 0,
+                is_nonstandard: None,
+                damage_taken: HashMap::new(),
+            };
+        }
+
+        if let Some(type_info) = self.type_cache.get(id) {
+            return type_info.clone();
+        }
+
+        // Capitalize the name
+        let type_name = capitalize_first(id);
+
+        if let Some(type_info) = get_type_data(id, &type_name, self.gen) {
+            self.type_cache.insert(id.to_string(), type_info.clone());
+            return type_info;
+        }
+
+        // Return non-existent type
+        TypeInfo {
+            id: ID::new(id),
+            name: type_name,
+            effect_type: EffectType::Condition,
+            exists: false,
+            gen: 0,
+            is_nonstandard: None,
+            damage_taken: HashMap::new(),
+        }
+    }
+
+    /// Get all type names (excluding nonstandard)
+    pub fn names(&mut self) -> Vec<String> {
+        if let Some(ref names) = self.names_cache {
+            return names.clone();
+        }
+
+        let names: Vec<String> = self.all()
+            .into_iter()
+            .filter(|t| t.is_nonstandard.is_none())
+            .map(|t| t.name)
+            .collect();
+        self.names_cache = Some(names.clone());
+        names
+    }
+
+    /// Check if a name is a valid type name
+    pub fn is_name(&self, name: &str) -> bool {
+        if name.is_empty() {
+            return false;
+        }
+        let id = name.to_lowercase();
+        let type_name = capitalize_first(&id);
+        name == type_name && is_valid_type(&id)
+    }
+
+    /// Get all types
+    pub fn all(&mut self) -> Vec<TypeInfo> {
+        if let Some(ref all) = self.all_cache {
+            return all.clone();
+        }
+
+        let types = get_all_types(self.gen);
+        self.all_cache = Some(types.clone());
+        types
+    }
+}
+
+fn capitalize_first(s: &str) -> String {
+    let mut chars = s.chars();
+    match chars.next() {
+        None => String::new(),
+        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+    }
+}
+
+fn is_valid_type(id: &str) -> bool {
+    matches!(id,
+        "normal" | "fire" | "water" | "electric" | "grass" | "ice" |
+        "fighting" | "poison" | "ground" | "flying" | "psychic" | "bug" |
+        "rock" | "ghost" | "dragon" | "dark" | "steel" | "fairy"
+    )
+}
+
+fn get_type_data(id: &str, name: &str, gen: u8) -> Option<TypeInfo> {
+    // Build damage_taken based on type chart
+    let damage_taken = get_type_chart(id)?;
+
+    // Check if type exists in this gen
+    let (type_gen, is_nonstandard) = match id {
+        "dark" | "steel" => (2, if gen < 2 { Some(Nonstandard::Future) } else { None }),
+        "fairy" => (6, if gen < 6 { Some(Nonstandard::Future) } else { None }),
+        _ => (1, None),
+    };
+
+    Some(TypeInfo {
+        id: ID::new(id),
+        name: name.to_string(),
+        effect_type: EffectType::Condition,
+        exists: true,
+        gen: type_gen,
+        is_nonstandard,
+        damage_taken,
+    })
+}
+
+fn get_type_chart(id: &str) -> Option<HashMap<String, u8>> {
+    // 0 = normal, 1 = weakness, 2 = resistance, 3 = immunity
+    let mut chart = HashMap::new();
+
+    match id {
+        "normal" => {
+            chart.insert("fighting".to_string(), 1);
+            chart.insert("ghost".to_string(), 3);
+        }
+        "fire" => {
+            chart.insert("fire".to_string(), 2);
+            chart.insert("water".to_string(), 1);
+            chart.insert("grass".to_string(), 2);
+            chart.insert("ice".to_string(), 2);
+            chart.insert("ground".to_string(), 1);
+            chart.insert("bug".to_string(), 2);
+            chart.insert("rock".to_string(), 1);
+            chart.insert("steel".to_string(), 2);
+            chart.insert("fairy".to_string(), 2);
+        }
+        "water" => {
+            chart.insert("fire".to_string(), 2);
+            chart.insert("water".to_string(), 2);
+            chart.insert("electric".to_string(), 1);
+            chart.insert("grass".to_string(), 1);
+            chart.insert("ice".to_string(), 2);
+            chart.insert("steel".to_string(), 2);
+        }
+        "electric" => {
+            chart.insert("electric".to_string(), 2);
+            chart.insert("ground".to_string(), 1);
+            chart.insert("flying".to_string(), 2);
+            chart.insert("steel".to_string(), 2);
+        }
+        "grass" => {
+            chart.insert("fire".to_string(), 1);
+            chart.insert("water".to_string(), 2);
+            chart.insert("electric".to_string(), 2);
+            chart.insert("grass".to_string(), 2);
+            chart.insert("ice".to_string(), 1);
+            chart.insert("poison".to_string(), 1);
+            chart.insert("ground".to_string(), 2);
+            chart.insert("flying".to_string(), 1);
+            chart.insert("bug".to_string(), 1);
+        }
+        "ice" => {
+            chart.insert("fire".to_string(), 1);
+            chart.insert("ice".to_string(), 2);
+            chart.insert("fighting".to_string(), 1);
+            chart.insert("rock".to_string(), 1);
+            chart.insert("steel".to_string(), 1);
+        }
+        "fighting" => {
+            chart.insert("flying".to_string(), 1);
+            chart.insert("psychic".to_string(), 1);
+            chart.insert("bug".to_string(), 2);
+            chart.insert("rock".to_string(), 2);
+            chart.insert("dark".to_string(), 2);
+            chart.insert("fairy".to_string(), 1);
+        }
+        "poison" => {
+            chart.insert("grass".to_string(), 2);
+            chart.insert("fighting".to_string(), 2);
+            chart.insert("poison".to_string(), 2);
+            chart.insert("ground".to_string(), 1);
+            chart.insert("psychic".to_string(), 1);
+            chart.insert("bug".to_string(), 2);
+            chart.insert("fairy".to_string(), 2);
+        }
+        "ground" => {
+            chart.insert("water".to_string(), 1);
+            chart.insert("electric".to_string(), 3);
+            chart.insert("grass".to_string(), 1);
+            chart.insert("ice".to_string(), 1);
+            chart.insert("poison".to_string(), 2);
+            chart.insert("rock".to_string(), 2);
+        }
+        "flying" => {
+            chart.insert("electric".to_string(), 1);
+            chart.insert("grass".to_string(), 2);
+            chart.insert("ice".to_string(), 1);
+            chart.insert("fighting".to_string(), 2);
+            chart.insert("ground".to_string(), 3);
+            chart.insert("bug".to_string(), 2);
+            chart.insert("rock".to_string(), 1);
+        }
+        "psychic" => {
+            chart.insert("fighting".to_string(), 2);
+            chart.insert("psychic".to_string(), 2);
+            chart.insert("bug".to_string(), 1);
+            chart.insert("ghost".to_string(), 1);
+            chart.insert("dark".to_string(), 1);
+        }
+        "bug" => {
+            chart.insert("fire".to_string(), 1);
+            chart.insert("grass".to_string(), 2);
+            chart.insert("fighting".to_string(), 2);
+            chart.insert("ground".to_string(), 2);
+            chart.insert("flying".to_string(), 1);
+            chart.insert("rock".to_string(), 1);
+        }
+        "rock" => {
+            chart.insert("normal".to_string(), 2);
+            chart.insert("fire".to_string(), 2);
+            chart.insert("water".to_string(), 1);
+            chart.insert("grass".to_string(), 1);
+            chart.insert("fighting".to_string(), 1);
+            chart.insert("poison".to_string(), 2);
+            chart.insert("ground".to_string(), 1);
+            chart.insert("flying".to_string(), 2);
+            chart.insert("steel".to_string(), 1);
+        }
+        "ghost" => {
+            chart.insert("normal".to_string(), 3);
+            chart.insert("fighting".to_string(), 3);
+            chart.insert("poison".to_string(), 2);
+            chart.insert("bug".to_string(), 2);
+            chart.insert("ghost".to_string(), 1);
+            chart.insert("dark".to_string(), 1);
+        }
+        "dragon" => {
+            chart.insert("fire".to_string(), 2);
+            chart.insert("water".to_string(), 2);
+            chart.insert("electric".to_string(), 2);
+            chart.insert("grass".to_string(), 2);
+            chart.insert("ice".to_string(), 1);
+            chart.insert("dragon".to_string(), 1);
+            chart.insert("fairy".to_string(), 1);
+        }
+        "dark" => {
+            chart.insert("fighting".to_string(), 1);
+            chart.insert("psychic".to_string(), 3);
+            chart.insert("bug".to_string(), 1);
+            chart.insert("ghost".to_string(), 2);
+            chart.insert("dark".to_string(), 2);
+            chart.insert("fairy".to_string(), 1);
+        }
+        "steel" => {
+            chart.insert("normal".to_string(), 2);
+            chart.insert("fire".to_string(), 1);
+            chart.insert("grass".to_string(), 2);
+            chart.insert("ice".to_string(), 2);
+            chart.insert("fighting".to_string(), 1);
+            chart.insert("poison".to_string(), 3);
+            chart.insert("ground".to_string(), 1);
+            chart.insert("flying".to_string(), 2);
+            chart.insert("psychic".to_string(), 2);
+            chart.insert("bug".to_string(), 2);
+            chart.insert("rock".to_string(), 2);
+            chart.insert("dragon".to_string(), 2);
+            chart.insert("steel".to_string(), 2);
+            chart.insert("fairy".to_string(), 2);
+        }
+        "fairy" => {
+            chart.insert("fighting".to_string(), 2);
+            chart.insert("poison".to_string(), 1);
+            chart.insert("bug".to_string(), 2);
+            chart.insert("dragon".to_string(), 3);
+            chart.insert("dark".to_string(), 2);
+            chart.insert("steel".to_string(), 1);
+        }
+        _ => return None,
+    }
+
+    Some(chart)
+}
+
+fn get_all_types(gen: u8) -> Vec<TypeInfo> {
+    let type_ids = [
+        "normal", "fire", "water", "electric", "grass", "ice",
+        "fighting", "poison", "ground", "flying", "psychic", "bug",
+        "rock", "ghost", "dragon", "dark", "steel", "fairy",
+    ];
+
+    type_ids.iter()
+        .filter_map(|id| {
+            let name = capitalize_first(id);
+            get_type_data(id, &name, gen)
+        })
+        .filter(|t| t.gen <= gen)
+        .collect()
+}
+
+// =========================================================================
+// DEX STATS - ported from dex-data.ts DexStats class
+// =========================================================================
+
+/// Stats helper with name lookups
+pub struct DexStats {
+    gen: u8,
+}
+
+impl DexStats {
+    /// Create a new DexStats for a given generation
+    pub fn new(gen: u8) -> Self {
+        Self { gen }
+    }
+
+    /// Get short stat names
+    pub fn short_names(&self) -> HashMap<StatID, &'static str> {
+        let mut map = HashMap::new();
+        if self.gen != 1 {
+            map.insert(StatID::HP, "HP");
+            map.insert(StatID::Atk, "Atk");
+            map.insert(StatID::Def, "Def");
+            map.insert(StatID::SpA, "SpA");
+            map.insert(StatID::SpD, "SpD");
+            map.insert(StatID::Spe, "Spe");
+        } else {
+            map.insert(StatID::HP, "HP");
+            map.insert(StatID::Atk, "Atk");
+            map.insert(StatID::Def, "Def");
+            map.insert(StatID::SpA, "Spc");
+            map.insert(StatID::SpD, "[SpD]");
+            map.insert(StatID::Spe, "Spe");
+        }
+        map
+    }
+
+    /// Get medium stat names
+    pub fn medium_names(&self) -> HashMap<StatID, &'static str> {
+        let mut map = HashMap::new();
+        if self.gen != 1 {
+            map.insert(StatID::HP, "HP");
+            map.insert(StatID::Atk, "Attack");
+            map.insert(StatID::Def, "Defense");
+            map.insert(StatID::SpA, "Sp. Atk");
+            map.insert(StatID::SpD, "Sp. Def");
+            map.insert(StatID::Spe, "Speed");
+        } else {
+            map.insert(StatID::HP, "HP");
+            map.insert(StatID::Atk, "Attack");
+            map.insert(StatID::Def, "Defense");
+            map.insert(StatID::SpA, "Special");
+            map.insert(StatID::SpD, "[Sp. Def]");
+            map.insert(StatID::Spe, "Speed");
+        }
+        map
+    }
+
+    /// Get full stat names
+    pub fn names(&self) -> HashMap<StatID, &'static str> {
+        let mut map = HashMap::new();
+        if self.gen != 1 {
+            map.insert(StatID::HP, "HP");
+            map.insert(StatID::Atk, "Attack");
+            map.insert(StatID::Def, "Defense");
+            map.insert(StatID::SpA, "Special Attack");
+            map.insert(StatID::SpD, "Special Defense");
+            map.insert(StatID::Spe, "Speed");
+        } else {
+            map.insert(StatID::HP, "HP");
+            map.insert(StatID::Atk, "Attack");
+            map.insert(StatID::Def, "Defense");
+            map.insert(StatID::SpA, "Special");
+            map.insert(StatID::SpD, "[Special Defense]");
+            map.insert(StatID::Spe, "Speed");
+        }
+        map
+    }
+
+    /// Get stat ID from name
+    pub fn get_id(&self, name: &str) -> Option<StatID> {
+        // Special case: "Spd" means Speed, not Special Defense
+        if name == "Spd" {
+            return Some(StatID::Spe);
+        }
+        StatID::from_str(name)
+    }
+
+    /// Get all stat IDs
+    pub fn ids(&self) -> &'static [StatID] {
+        StatID::all()
     }
 }
 
@@ -631,5 +1220,80 @@ mod tests {
         assert_eq!(adamant.stat_modifier(StatID::SpA), 0.9);
         assert_eq!(adamant.stat_modifier(StatID::Spe), 1.0);
         assert_eq!(adamant.stat_modifier(StatID::HP), 1.0);
+    }
+
+    #[test]
+    fn test_dex_natures() {
+        let mut natures = DexNatures::new(9);
+
+        let adamant = natures.get("Adamant");
+        assert_eq!(adamant.name, "Adamant");
+        assert_eq!(adamant.plus, Some(StatID::Atk));
+        assert_eq!(adamant.minus, Some(StatID::SpA));
+
+        let all = natures.all();
+        assert_eq!(all.len(), 25); // 25 natures total
+    }
+
+    #[test]
+    fn test_dex_types() {
+        let mut types = DexTypes::new(9);
+
+        let fire = types.get("Fire");
+        assert_eq!(fire.name, "Fire");
+        assert!(fire.exists);
+        assert_eq!(fire.damage_multiplier("water"), 2.0);
+        assert_eq!(fire.damage_multiplier("grass"), 0.5);
+
+        let all = types.all();
+        assert_eq!(all.len(), 18); // 18 types in gen 9
+
+        assert!(types.is_name("Fire"));
+        assert!(!types.is_name("fire")); // Must be capitalized
+        assert!(!types.is_name("NotAType"));
+    }
+
+    #[test]
+    fn test_dex_types_gen1() {
+        let mut types = DexTypes::new(1);
+
+        // Dark and Steel don't exist in Gen 1
+        let all = types.all();
+        assert_eq!(all.len(), 15); // 15 types in gen 1 (no Dark, Steel, Fairy)
+    }
+
+    #[test]
+    fn test_dex_stats() {
+        let stats = DexStats::new(9);
+
+        assert_eq!(stats.get_id("Attack"), Some(StatID::Atk));
+        assert_eq!(stats.get_id("Spd"), Some(StatID::Spe)); // Special case
+        assert_eq!(stats.get_id("Speed"), Some(StatID::Spe));
+
+        let ids = stats.ids();
+        assert_eq!(ids.len(), 6);
+
+        let short = stats.short_names();
+        assert_eq!(short.get(&StatID::SpA), Some(&"SpA"));
+    }
+
+    #[test]
+    fn test_dex_stats_gen1() {
+        let stats = DexStats::new(1);
+
+        let short = stats.short_names();
+        assert_eq!(short.get(&StatID::SpA), Some(&"Spc")); // Gen 1 uses "Special"
+    }
+
+    #[test]
+    fn test_display_traits() {
+        let effect = BasicEffect::new("Leftovers");
+        assert_eq!(format!("{}", effect), "Leftovers");
+
+        let nature = Nature::new("Adamant", Some(StatID::Atk), Some(StatID::SpA));
+        assert_eq!(format!("{}", nature), "Adamant");
+
+        let type_info = TypeInfo::new("Fire");
+        assert_eq!(format!("{}", type_info), "Fire");
     }
 }
