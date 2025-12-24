@@ -464,6 +464,397 @@ impl Side {
         };
         ((max_hp as f64 * damage_frac) as u32).max(1)
     }
+
+    // ==========================================
+    // Methods ported from side.ts
+    // ==========================================
+
+    /// String representation of Side
+    pub fn to_string(&self) -> String {
+        format!("{}: {}", self.id_str(), self.name)
+    }
+
+    /// Check if this side can dynamax now (Gen 8)
+    pub fn can_dynamax_now(&self, gen: u8, game_type: &str, turn: u32) -> bool {
+        if gen != 8 {
+            return false;
+        }
+        // In multi battles, players alternate turns for dynamaxing
+        if game_type == "multi" {
+            let allowed_indices = match turn % 2 {
+                1 => [0, 1],
+                _ => [2, 3],
+            };
+            if !allowed_indices.contains(&self.n) {
+                return false;
+            }
+        }
+        !self.dynamax_used
+    }
+
+    /// Get allies (all active Pokemon on this side)
+    pub fn allies(&self, include_fainted: bool) -> Vec<usize> {
+        let mut allies = Vec::new();
+        for active_idx in &self.active {
+            if let Some(idx) = active_idx {
+                if let Some(pokemon) = self.pokemon.get(*idx) {
+                    if include_fainted || !pokemon.is_fainted() {
+                        allies.push(*idx);
+                    }
+                }
+            }
+        }
+        allies
+    }
+
+    /// Get foes (active Pokemon on foe sides)
+    /// Returns vec of (side_index, pokemon_index) for each foe
+    pub fn foes_active(&self) -> Vec<usize> {
+        // This would need access to the battle to get foe side
+        // For now return empty - caller should use battle context
+        Vec::new()
+    }
+
+    /// Check if a Pokemon is an ally
+    pub fn has_ally(&self, pokemon_side_index: usize) -> bool {
+        pokemon_side_index == self.n || self.ally_index == Some(pokemon_side_index)
+    }
+
+    /// Add a Pokemon to the team
+    pub fn add_pokemon(&mut self, set: PokemonSet) -> Option<usize> {
+        if self.pokemon.len() >= 24 {
+            return None;
+        }
+        let pos = self.pokemon.len();
+        let pokemon = Pokemon::new(&set, self.n, pos);
+        self.pokemon.push(pokemon);
+        self.team.push(set);
+        self.pokemon_left += 1;
+        Some(pos)
+    }
+
+    /// Get a random foe (would need RNG in real implementation)
+    pub fn random_foe(&self) -> Option<usize> {
+        // This is a stub - real implementation needs battle context
+        None
+    }
+
+    /// Get total Pokemon left on foe side
+    pub fn foe_pokemon_left(&self) -> usize {
+        // This is a stub - needs battle context
+        0
+    }
+
+    /// Get slot condition data
+    pub fn get_slot_condition(&self, slot: usize, id: &ID) -> Option<&EffectState> {
+        self.slot_conditions.get(slot)?.get(id)
+    }
+
+    /// Get mutable slot condition data
+    pub fn get_slot_condition_mut(&mut self, slot: usize, id: &ID) -> Option<&mut EffectState> {
+        self.slot_conditions.get_mut(slot)?.get_mut(id)
+    }
+
+    /// Clear the current choice
+    pub fn clear_choice(&mut self, request_state: RequestState, forced_switches: usize, forced_passes: usize) {
+        self.choice = Choice {
+            cant_undo: false,
+            error: String::new(),
+            actions: Vec::new(),
+            forced_switches_left: forced_switches,
+            forced_passes_left: forced_passes,
+            switch_ins: Vec::new(),
+            z_move: false,
+            mega: false,
+            ultra: false,
+            dynamax: false,
+            terastallize: false,
+        };
+        self.request_state = request_state;
+    }
+
+    /// Get the current choice action index
+    pub fn get_choice_index(&self) -> usize {
+        self.choice.actions.len()
+    }
+
+    /// Choose pass action
+    pub fn choose_pass(&mut self) -> bool {
+        let index = self.get_choice_index();
+        if index >= self.active.len() {
+            return false;
+        }
+
+        match self.request_state {
+            RequestState::Switch => {
+                if self.choice.forced_passes_left == 0 {
+                    return false;
+                }
+                self.choice.forced_passes_left -= 1;
+            }
+            RequestState::Move => {
+                // Check if the Pokemon is fainted
+                if let Some(Some(pokemon_idx)) = self.active.get(index) {
+                    if let Some(pokemon) = self.pokemon.get(*pokemon_idx) {
+                        if !pokemon.is_fainted() {
+                            return false; // Can't pass if not fainted
+                        }
+                    }
+                }
+            }
+            _ => return false,
+        }
+
+        self.choice.actions.push(ChosenAction {
+            choice: ChoiceType::Pass,
+            pokemon_index: index,
+            target_loc: None,
+            move_id: None,
+            switch_index: None,
+            mega: false,
+            zmove: None,
+            max_move: None,
+            terastallize: None,
+        });
+        true
+    }
+
+    /// Choose switch action
+    pub fn choose_switch(&mut self, slot: usize) -> Result<(), String> {
+        let index = self.get_choice_index();
+        if index >= self.active.len() {
+            return Err("You sent more switches than needed".to_string());
+        }
+
+        if slot >= self.pokemon.len() {
+            return Err(format!("You don't have a Pokemon in slot {}", slot + 1));
+        }
+
+        if slot < self.active.len() {
+            return Err("Can't switch to an active Pokemon".to_string());
+        }
+
+        if self.choice.switch_ins.contains(&slot) {
+            return Err(format!("Pokemon in slot {} already switching in", slot + 1));
+        }
+
+        let target = self.pokemon.get(slot).ok_or("Invalid slot")?;
+        if target.is_fainted() {
+            return Err("Can't switch to a fainted Pokemon".to_string());
+        }
+
+        self.choice.switch_ins.push(slot);
+
+        let choice_type = if self.request_state == RequestState::Switch {
+            if self.choice.forced_switches_left == 0 {
+                return Err("No more forced switches".to_string());
+            }
+            self.choice.forced_switches_left -= 1;
+            ChoiceType::InstaSwitch
+        } else {
+            ChoiceType::Switch
+        };
+
+        self.choice.actions.push(ChosenAction {
+            choice: choice_type,
+            pokemon_index: index,
+            target_loc: None,
+            move_id: None,
+            switch_index: Some(slot),
+            mega: false,
+            zmove: None,
+            max_move: None,
+            terastallize: None,
+        });
+
+        Ok(())
+    }
+
+    /// Choose move action
+    pub fn choose_move(&mut self, move_id: ID, target_loc: Option<i8>, mega: bool, zmove: Option<String>, max_move: Option<String>, terastallize: Option<String>) -> Result<(), String> {
+        let index = self.get_choice_index();
+        if index >= self.active.len() {
+            return Err("You sent more choices than unfainted Pokemon".to_string());
+        }
+
+        if self.request_state != RequestState::Move {
+            return Err(format!("Can't move: You need a {:?} response", self.request_state));
+        }
+
+        // Check mega/dynamax/tera restrictions
+        if mega && self.choice.mega {
+            return Err("You can only mega evolve once per battle".to_string());
+        }
+        if zmove.is_some() && self.choice.z_move {
+            return Err("You can only use a Z-move once per battle".to_string());
+        }
+        if max_move.is_some() && self.choice.dynamax {
+            return Err("You can only Dynamax once per battle".to_string());
+        }
+        if terastallize.is_some() && self.choice.terastallize {
+            return Err("You can only Terastallize once per battle".to_string());
+        }
+
+        self.choice.actions.push(ChosenAction {
+            choice: ChoiceType::Move,
+            pokemon_index: index,
+            target_loc,
+            move_id: Some(move_id),
+            switch_index: None,
+            mega,
+            zmove: zmove.clone(),
+            max_move: max_move.clone(),
+            terastallize: terastallize.clone(),
+        });
+
+        if mega {
+            self.choice.mega = true;
+        }
+        if zmove.is_some() {
+            self.choice.z_move = true;
+        }
+        if max_move.is_some() {
+            self.choice.dynamax = true;
+        }
+        if terastallize.is_some() {
+            self.choice.terastallize = true;
+        }
+
+        Ok(())
+    }
+
+    /// Choose team action (team preview)
+    pub fn choose_team(&mut self, positions: Vec<usize>) -> Result<(), String> {
+        if self.request_state != RequestState::TeamPreview {
+            return Err("Not in team preview phase".to_string());
+        }
+
+        for (i, pos) in positions.iter().enumerate() {
+            if *pos >= self.pokemon.len() {
+                return Err(format!("No Pokemon in slot {}", pos + 1));
+            }
+            if positions[..i].contains(pos) {
+                return Err(format!("Pokemon in slot {} selected twice", pos + 1));
+            }
+        }
+
+        for (index, pos) in positions.iter().enumerate() {
+            self.choice.switch_ins.push(*pos);
+            self.choice.actions.push(ChosenAction {
+                choice: ChoiceType::Team,
+                pokemon_index: *pos,
+                target_loc: None,
+                move_id: None,
+                switch_index: Some(index),
+                mega: false,
+                zmove: None,
+                max_move: None,
+                terastallize: None,
+            });
+        }
+
+        Ok(())
+    }
+
+    /// Choose shift action (triples)
+    pub fn choose_shift(&mut self) -> Result<(), String> {
+        let index = self.get_choice_index();
+        if index >= self.active.len() {
+            return Err(format!("No Pokemon in slot {}", index + 1));
+        }
+        if self.request_state != RequestState::Move {
+            return Err("Can only shift during move phase".to_string());
+        }
+        if self.active.len() != 3 {
+            return Err("Can only shift in triples".to_string());
+        }
+        if index == 1 {
+            return Err("Can only shift from edge to center".to_string());
+        }
+
+        self.choice.actions.push(ChosenAction {
+            choice: ChoiceType::Shift,
+            pokemon_index: index,
+            target_loc: None,
+            move_id: None,
+            switch_index: None,
+            mega: false,
+            zmove: None,
+            max_move: None,
+            terastallize: None,
+        });
+
+        Ok(())
+    }
+
+    /// Auto-choose remaining actions
+    pub fn auto_choose(&mut self) -> bool {
+        match self.request_state {
+            RequestState::TeamPreview => {
+                if !self.is_choice_done() {
+                    let positions: Vec<usize> = (0..self.pokemon.len()).collect();
+                    let _ = self.choose_team(positions);
+                }
+            }
+            RequestState::Switch => {
+                let mut iterations = 0;
+                while !self.is_choice_done() && iterations < 10 {
+                    // Find first available switch target
+                    for i in self.active.len()..self.pokemon.len() {
+                        if !self.choice.switch_ins.contains(&i) {
+                            if let Some(pokemon) = self.pokemon.get(i) {
+                                if !pokemon.is_fainted() {
+                                    let _ = self.choose_switch(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    iterations += 1;
+                }
+            }
+            RequestState::Move => {
+                let mut iterations = 0;
+                while !self.is_choice_done() && iterations < 10 {
+                    let index = self.get_choice_index();
+                    if let Some(Some(pokemon_idx)) = self.active.get(index) {
+                        let pokemon = &self.pokemon[*pokemon_idx];
+                        if pokemon.is_fainted() {
+                            self.choose_pass();
+                        } else {
+                            // Try first available move
+                            if let Some(first_move) = pokemon.move_slots.first() {
+                                let move_id = first_move.id.clone();
+                                let _ = self.choose_move(move_id, None, false, None, None, None);
+                            } else {
+                                // Struggle
+                                let _ = self.choose_move(ID::new("struggle"), None, false, None, None, None);
+                            }
+                        }
+                    }
+                    iterations += 1;
+                }
+            }
+            RequestState::None => {}
+        }
+        true
+    }
+
+    /// Get picked team size for team preview
+    pub fn picked_team_size(&self, rule_table_size: Option<usize>) -> usize {
+        rule_table_size.unwrap_or(self.pokemon.len()).min(self.pokemon.len())
+    }
+
+    /// Destroy side (cleanup)
+    pub fn destroy(&mut self) {
+        self.pokemon.clear();
+        self.active.clear();
+        self.choice.actions.clear();
+        self.side_conditions.clear();
+        for slot_cond in &mut self.slot_conditions {
+            slot_cond.clear();
+        }
+    }
 }
 
 #[cfg(test)]
