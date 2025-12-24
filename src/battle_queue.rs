@@ -433,6 +433,160 @@ impl BattleQueue {
     pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut Action> {
         self.list.iter_mut()
     }
+
+    // ==========================================
+    // Methods ported from battle-queue.ts
+    // ==========================================
+
+    /// Check if will act (has move/switch/shift action)
+    pub fn will_act_full(&self) -> Option<&Action> {
+        for action in &self.list {
+            match action {
+                Action::Move(_) | Action::Switch(_) => return Some(action),
+                Action::Pokemon(p) if p.choice == PokemonActionType::Shift => return Some(action),
+                _ => {}
+            }
+        }
+        None
+    }
+
+    /// Change an action for a pokemon (cancel and reinsert)
+    pub fn change_action(&mut self, side_index: usize, pokemon_index: usize, new_action: Action) {
+        self.cancel_action(side_index, pokemon_index);
+        // Insert in priority order
+        self.insert_in_order(new_action);
+    }
+
+    /// Insert action maintaining sort order
+    pub fn insert_in_order(&mut self, action: Action) {
+        // Find the right position based on priority
+        let mut insert_pos = self.list.len();
+
+        for (i, existing) in self.list.iter().enumerate() {
+            // Order: lower first
+            let order_cmp = action.order().cmp(&existing.order());
+            if order_cmp == std::cmp::Ordering::Less {
+                insert_pos = i;
+                break;
+            } else if order_cmp == std::cmp::Ordering::Greater {
+                continue;
+            }
+
+            // Priority: higher first
+            if action.priority() > existing.priority() {
+                insert_pos = i;
+                break;
+            } else if action.priority() < existing.priority() {
+                continue;
+            }
+
+            // Fractional priority: higher first
+            if action.fractional_priority() > existing.fractional_priority() {
+                insert_pos = i;
+                break;
+            } else if action.fractional_priority() < existing.fractional_priority() {
+                continue;
+            }
+
+            // Speed: higher first
+            if action.speed() > existing.speed() {
+                insert_pos = i;
+                break;
+            }
+        }
+
+        self.list.insert(insert_pos, action);
+    }
+
+    /// Add one or more action choices and resolve them
+    pub fn add_choice(&mut self, action: Action) {
+        self.list.push(action);
+    }
+
+    /// Debug output for queue state
+    pub fn debug(&self) -> String {
+        self.list.iter().map(|action| {
+            match action {
+                Action::Move(m) => format!(
+                    "{}:{}:{}:0 - move {} (side {}, pos {})",
+                    m.order, m.priority, m.speed, m.move_id.as_str(), m.side_index, m.pokemon_index
+                ),
+                Action::Switch(s) => format!(
+                    "{}:{}:{}:0 - switch (side {}, pos {} -> {})",
+                    s.order, s.priority, s.speed, s.side_index, s.pokemon_index, s.target_index
+                ),
+                Action::Team(t) => format!(
+                    "1:{}:1:0 - team (side {}, pos {})",
+                    t.priority, t.side_index, t.pokemon_index
+                ),
+                Action::Field(f) => format!(
+                    "{}:{}:1:0 - {:?}",
+                    action.order(), f.priority, f.choice
+                ),
+                Action::Pokemon(p) => format!(
+                    "{}:{}:{}:0 - {:?} (side {}, pos {})",
+                    action.order(), p.priority, p.speed, p.choice, p.side_index, p.pokemon_index
+                ),
+            }
+        }).collect::<Vec<_>>().join("\n")
+    }
+
+    /// Get entries as iterator with indices
+    pub fn entries(&self) -> impl Iterator<Item = (usize, &Action)> {
+        self.list.iter().enumerate()
+    }
+
+    /// Get mutable entries
+    pub fn entries_mut(&mut self) -> impl Iterator<Item = (usize, &mut Action)> {
+        self.list.iter_mut().enumerate()
+    }
+
+    /// Find a specific action by predicate
+    pub fn find<F>(&self, predicate: F) -> Option<&Action>
+    where
+        F: Fn(&Action) -> bool,
+    {
+        self.list.iter().find(|action| predicate(action))
+    }
+
+    /// Remove actions matching predicate
+    pub fn remove_where<F>(&mut self, predicate: F) -> Vec<Action>
+    where
+        F: Fn(&Action) -> bool,
+    {
+        let mut removed = Vec::new();
+        let mut i = 0;
+        while i < self.list.len() {
+            if predicate(&self.list[i]) {
+                removed.push(self.list.remove(i));
+            } else {
+                i += 1;
+            }
+        }
+        removed
+    }
+
+    /// Prioritize an action by action itself (move to front with new order)
+    pub fn prioritize_action_ref(&mut self, action: &Action) -> bool {
+        let pos = self.list.iter().position(|a| {
+            a.side_index() == action.side_index() &&
+            a.pokemon_index() == action.pokemon_index() &&
+            std::mem::discriminant(a) == std::mem::discriminant(action)
+        });
+        if let Some(i) = pos {
+            let mut removed = self.list.remove(i);
+            // Set order to 3 (high priority)
+            match &mut removed {
+                Action::Move(m) => m.order = 3,
+                Action::Switch(s) => s.order = 3,
+                _ => {}
+            }
+            self.list.insert(0, removed);
+            true
+        } else {
+            false
+        }
+    }
 }
 
 #[cfg(test)]
