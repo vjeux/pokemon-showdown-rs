@@ -13,6 +13,159 @@ use crate::data::moves::get_move;
 use crate::data::items::get_item;
 use crate::data::abilities::get_ability;
 
+// =========================================================================
+// PokemonSources - tracks possible ways to get a Pokemon with a given set
+// Equivalent to PokemonSources class in team-validator.ts
+// =========================================================================
+
+/// Represents a set of possible ways to get a Pokemon with a given set.
+///
+/// `PokemonSources::new()` creates an empty set;
+/// `PokemonSources::allow_all(gen)` allows all Pokemon from that gen.
+///
+/// The set is mainly stored as a Vec `sources`, but for sets that
+/// could be sourced from anywhere (for instance, TM moves), we
+/// instead just set `sources_before` to a number meaning "any
+/// source at or before this gen is possible."
+#[derive(Debug, Clone, Default)]
+pub struct PokemonSources {
+    /// A set of specific possible PokemonSources
+    pub sources: Vec<String>,
+    /// If nonzero: the set also contains all possible sources from
+    /// this gen and earlier
+    pub sources_before: u8,
+    /// The set requires sources from this gen or later
+    pub sources_after: u8,
+    /// Whether hidden ability is required
+    pub is_hidden: Option<bool>,
+    /// Limited egg moves
+    pub limited_egg_moves: Option<Vec<ID>>,
+    /// Possibly limited egg moves
+    pub possibly_limited_egg_moves: Option<Vec<ID>>,
+    /// Tradeback limited egg moves
+    pub tradeback_limited_egg_moves: Option<Vec<ID>>,
+    /// Level up egg moves
+    pub level_up_egg_moves: Option<Vec<ID>>,
+    /// Pomeg egg moves
+    pub pomeg_egg_moves: Option<Vec<ID>>,
+    /// Sketch moves
+    pub sketch_moves: Option<Vec<ID>>,
+    /// Track Baton Pass for some formats
+    pub baton_pass: Option<String>,
+    /// Gigantamax capability
+    pub gmaxed: Option<bool>,
+    /// Hatch counter
+    pub hatch_counter: Option<u8>,
+}
+
+impl PokemonSources {
+    /// Create a new empty PokemonSources
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Create a PokemonSources that allows all sources from gen and before
+    pub fn allow_all(gen: u8) -> Self {
+        Self {
+            sources_before: gen,
+            ..Default::default()
+        }
+    }
+
+    /// Get the size of the sources set
+    pub fn size(&self) -> usize {
+        self.sources.len() + if self.sources_before > 0 { 1 } else { 0 }
+    }
+
+    /// Check if there are no possible sources
+    pub fn is_empty(&self) -> bool {
+        self.sources.is_empty() && self.sources_before == 0
+    }
+
+    /// Add a source
+    pub fn add(&mut self, source: String) {
+        if !self.sources.contains(&source) {
+            self.sources.push(source);
+        }
+    }
+
+    /// Add a source with a specific generation
+    pub fn add_gen(&mut self, source: &str, gen: u8) {
+        let full_source = format!("{}{}", gen, source);
+        self.add(full_source);
+    }
+
+    /// Check if a source is included
+    pub fn has(&self, source: &str) -> bool {
+        if self.sources.contains(&source.to_string()) {
+            return true;
+        }
+        // Check if within sources_before
+        if self.sources_before > 0 && !source.is_empty() {
+            if let Some(first_char) = source.chars().next() {
+                if let Some(gen) = first_char.to_digit(10) {
+                    return (gen as u8) <= self.sources_before;
+                }
+            }
+        }
+        false
+    }
+
+    /// Mark all sources at or before gen as valid
+    pub fn set_sources_before(&mut self, gen: u8) {
+        if self.sources_before < gen {
+            self.sources_before = gen;
+        }
+    }
+
+    /// Mark that sources after gen are required
+    pub fn set_sources_after(&mut self, gen: u8) {
+        if self.sources_after < gen {
+            self.sources_after = gen;
+        }
+    }
+
+    /// Get all sources as a combined vector
+    pub fn get_all(&self) -> Vec<String> {
+        let mut all = self.sources.clone();
+        if self.sources_before > 0 {
+            for gen in 1..=self.sources_before {
+                all.push(format!("{}G", gen));
+            }
+        }
+        all
+    }
+
+    /// Intersect with another PokemonSources
+    pub fn intersect(&mut self, other: &PokemonSources) {
+        // Remove sources not in other
+        self.sources.retain(|s| other.has(s));
+
+        // Update sources_before to be the min
+        if other.sources_before > 0 && self.sources_before > 0 {
+            self.sources_before = self.sources_before.min(other.sources_before);
+        } else if self.sources_before == 0 {
+            // Keep as is
+        } else if other.sources_before == 0 {
+            self.sources_before = 0;
+        }
+    }
+
+    /// Union with another PokemonSources
+    pub fn union(&mut self, other: &PokemonSources) {
+        for source in &other.sources {
+            self.add(source.clone());
+        }
+        self.sources_before = self.sources_before.max(other.sources_before);
+    }
+
+    /// Clear all sources
+    pub fn clear(&mut self) {
+        self.sources.clear();
+        self.sources_before = 0;
+    }
+}
+
 /// Validation error type
 #[derive(Debug, Clone, PartialEq)]
 pub enum ValidationError {
@@ -534,6 +687,215 @@ impl TeamValidator {
             })
         } else {
             false
+        }
+    }
+
+    // =========================================================================
+    // Additional methods ported from team-validator.ts
+    // =========================================================================
+
+    /// Get event-only data for a species
+    /// Equivalent to TeamValidator.getEventOnlyData() in team-validator.ts
+    /// Returns None if the species isn't event-only
+    pub fn get_event_only_data(&self, species: &str) -> Option<Vec<String>> {
+        // Stub implementation - would need event data to fully implement
+        // In practice, this would look up the species' eventData
+        let _ = species;
+        None
+    }
+
+    /// Get the validation species for a set
+    /// Handles form differences between what's used in battle vs what's validated
+    /// Equivalent to TeamValidator.getValidationSpecies() in team-validator.ts
+    pub fn get_validation_species(&self, species: &str) -> (String, String) {
+        // For now, return the same species for both
+        // Full implementation would handle formes like Zygarde-Complete
+        let species_id = ID::new(species).as_str().to_string();
+        (species_id.clone(), species_id)
+    }
+
+    /// Validate moves for a Pokemon
+    /// Equivalent to TeamValidator.validateMoves() in team-validator.ts
+    pub fn validate_moves(&self, pokemon: &ValidatorSet) -> Vec<ValidationError> {
+        let mut errors = Vec::new();
+        let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
+
+        // Check move count
+        if pokemon.moves.len() > 4 {
+            errors.push(ValidationError::TooManyMoves {
+                pokemon: pokemon_name.clone(),
+                count: pokemon.moves.len(),
+            });
+        }
+
+        // Check for duplicates
+        let mut seen: HashSet<String> = HashSet::new();
+        for move_name in &pokemon.moves {
+            let move_id = ID::new(move_name).as_str().to_string();
+            if seen.contains(&move_id) {
+                errors.push(ValidationError::DuplicateMove {
+                    pokemon: pokemon_name.clone(),
+                    move_name: move_name.clone(),
+                });
+            }
+            seen.insert(move_id);
+
+            // Check if banned
+            if self.is_banned(move_name) {
+                errors.push(ValidationError::BannedMove {
+                    pokemon: pokemon_name.clone(),
+                    move_name: move_name.clone(),
+                });
+            }
+        }
+
+        errors
+    }
+
+    /// Check if a Pokemon can learn a move
+    /// Equivalent to TeamValidator.checkCanLearn() in team-validator.ts
+    ///
+    /// This is a simplified implementation. The full TypeScript version
+    /// handles complex learnset inheritance, event-only moves, egg moves,
+    /// transfer moves, etc.
+    ///
+    /// Returns None if the move can be learned, or an error message if not
+    pub fn check_can_learn(&self, pokemon: &ValidatorSet, move_name: &str) -> Option<String> {
+        let move_id = ID::new(move_name);
+        let species_id = ID::new(&pokemon.species);
+
+        // Check move exists
+        if get_move(&move_id).is_none() {
+            return Some(format!("{} is not a valid move", move_name));
+        }
+
+        // Check species exists
+        if get_species(&species_id).is_none() {
+            return Some(format!("{} is not a valid Pokemon", pokemon.species));
+        }
+
+        // Simplified learnset check - in full implementation would check:
+        // - Level-up moves
+        // - TM/HM moves
+        // - Egg moves
+        // - Event moves
+        // - Transfer moves
+        // - Pre-evolution moves
+        // For now, we assume any move can be learned
+        None
+    }
+
+    /// Get external learnset data for a species
+    /// Equivalent to TeamValidator.getExternalLearnsetData() in team-validator.ts
+    ///
+    /// Stub - would load learnset data from external files
+    pub fn get_external_learnset_data(&self, _species: &str) -> Option<HashMap<String, Vec<String>>> {
+        // Stub - would need learnset JSON data
+        None
+    }
+
+    /// Validate a set's species
+    /// Equivalent to part of TeamValidator.validateSet() in team-validator.ts
+    pub fn validate_species(&self, pokemon: &ValidatorSet) -> Vec<ValidationError> {
+        let mut errors = Vec::new();
+        let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
+
+        let species_id = ID::new(&pokemon.species);
+        if get_species(&species_id).is_none() {
+            errors.push(ValidationError::InvalidSpecies {
+                pokemon: pokemon_name.clone(),
+            });
+        }
+
+        if self.is_banned(&pokemon.species) {
+            errors.push(ValidationError::BannedPokemon {
+                pokemon: pokemon_name,
+            });
+        }
+
+        errors
+    }
+
+    /// Validate a set's ability
+    /// Equivalent to part of TeamValidator.validateSet() in team-validator.ts
+    pub fn validate_ability(&self, pokemon: &ValidatorSet) -> Vec<ValidationError> {
+        let mut errors = Vec::new();
+        let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
+
+        if !pokemon.ability.is_empty() {
+            let ability_id = ID::new(&pokemon.ability);
+            if get_ability(&ability_id).is_none() {
+                errors.push(ValidationError::InvalidAbility {
+                    pokemon: pokemon_name.clone(),
+                    ability: pokemon.ability.clone(),
+                });
+            }
+
+            if self.is_banned(&pokemon.ability) {
+                errors.push(ValidationError::BannedAbility {
+                    pokemon: pokemon_name,
+                    ability: pokemon.ability.clone(),
+                });
+            }
+        }
+
+        errors
+    }
+
+    /// Validate a set's item
+    /// Equivalent to part of TeamValidator.validateSet() in team-validator.ts
+    pub fn validate_item(&self, pokemon: &ValidatorSet) -> Vec<ValidationError> {
+        let mut errors = Vec::new();
+        let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
+
+        if let Some(ref item) = pokemon.item {
+            if !item.is_empty() {
+                let item_id = ID::new(item);
+                if get_item(&item_id).is_none() {
+                    errors.push(ValidationError::InvalidItem {
+                        pokemon: pokemon_name.clone(),
+                        item: item.clone(),
+                    });
+                }
+
+                if self.is_banned(item) {
+                    errors.push(ValidationError::BannedItem {
+                        pokemon: pokemon_name,
+                        item: item.clone(),
+                    });
+                }
+            }
+        }
+
+        errors
+    }
+
+    /// Check for illegal ability combinations
+    /// Equivalent to relevant parts of team-validator.ts ability validation
+    pub fn check_illegal_ability(&self, pokemon: &ValidatorSet) -> Option<String> {
+        // Would check:
+        // - Is ability valid for this species?
+        // - Is hidden ability available?
+        // - Event-only abilities
+        let _ = pokemon;
+        None
+    }
+
+    /// Get minimum source generation for a Pokemon
+    /// Equivalent to accessing minSourceGen in team-validator.ts
+    pub fn get_min_source_gen(&self) -> u8 {
+        // Default to gen 3 for modern games
+        if let Some(format) = self.format {
+            // Parse from format if available
+            if format.id.starts_with("gen1") {
+                1
+            } else if format.id.starts_with("gen2") {
+                2
+            } else {
+                3
+            }
+        } else {
+            3
         }
     }
 }
