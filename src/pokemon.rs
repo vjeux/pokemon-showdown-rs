@@ -1507,6 +1507,120 @@ impl Pokemon {
         self.move_slots.clear();
         self.base_move_slots.clear();
     }
+
+    // =========================================================================
+    // TARGET METHODS (ported from pokemon.ts)
+    // These methods return indices instead of Pokemon references since the
+    // actual Pokemon are owned by the Battle.
+    // =========================================================================
+
+    /// Get indices of all allies including self
+    /// Equivalent to pokemon.ts alliesAndSelf()
+    ///
+    /// Returns (side_index, pokemon_index) pairs for all Pokemon on this side
+    /// that are alive. In actual use, the battle would filter by active status.
+    pub fn allies_and_self_stub(&self) -> Vec<(usize, usize)> {
+        // This is a stub - full implementation needs battle context
+        // Would return all pokemon on the same side that are alive
+        vec![(self.side_index, self.position)]
+    }
+
+    /// Get indices of allies (not including self)
+    /// Equivalent to pokemon.ts allies()
+    pub fn allies_stub(&self) -> Vec<(usize, usize)> {
+        // This is a stub - full implementation needs battle context
+        vec![]
+    }
+
+    /// Get indices of adjacent allies (for triples)
+    /// Equivalent to pokemon.ts adjacentAllies()
+    pub fn adjacent_allies_stub(&self, active_per_half: usize) -> Vec<(usize, usize)> {
+        // In singles/doubles, all allies are adjacent
+        // In triples, only adjacent positions
+        let _ = active_per_half;
+        vec![]
+    }
+
+    /// Get indices of foes
+    /// Equivalent to pokemon.ts foes()
+    ///
+    /// foe_side_index is the opponent's side index (0 or 1)
+    /// include_fainted: whether to include fainted pokemon
+    pub fn foes_stub(&self, foe_side_index: usize, include_fainted: bool) -> Vec<(usize, usize)> {
+        // This is a stub - full implementation needs battle context
+        let _ = (foe_side_index, include_fainted);
+        vec![]
+    }
+
+    /// Get indices of adjacent foes
+    /// Equivalent to pokemon.ts adjacentFoes()
+    pub fn adjacent_foes_stub(&self, foe_side_index: usize, active_per_half: usize) -> Vec<(usize, usize)> {
+        // This is a stub - full implementation needs battle context
+        let _ = (foe_side_index, active_per_half);
+        vec![]
+    }
+
+    /// Clear the pokemon's status
+    /// Equivalent to pokemon.ts clearStatus()
+    pub fn clear_status(&mut self) -> bool {
+        if self.status.is_some() {
+            self.status = None;
+            self.status_state = crate::dex_data::EffectState::new(ID::empty());
+            true
+        } else {
+            false
+        }
+    }
+
+    /// Get move hit data for tracking hit results
+    /// Equivalent to pokemon.ts getMoveHitData()
+    ///
+    /// Returns a new MoveHitData struct for this target
+    pub fn get_move_hit_data(&self, _move_id: &ID) -> MoveHitData {
+        // Get the stored move hit data if it exists, otherwise create new
+        // In the actual implementation, this would be stored per-move per-turn
+        MoveHitData::default()
+    }
+
+    /// Get move targets for an active move
+    /// Equivalent to pokemon.ts getMoveTargets()
+    ///
+    /// Returns lists of target indices and pressure target indices
+    /// This is a stub that returns placeholder data.
+    pub fn get_move_targets_stub(
+        &self,
+        target_side_index: usize,
+        target_position: usize,
+        _move_target_type: &str,
+    ) -> GetMoveTargetsResult {
+        // This is a stub - full implementation needs battle context and move data
+        GetMoveTargetsResult {
+            targets: vec![(target_side_index, target_position)],
+            pressure_targets: vec![],
+        }
+    }
+}
+
+/// Result of getMoveTargets
+#[derive(Debug, Clone, Default)]
+pub struct GetMoveTargetsResult {
+    /// Target pokemon indices (side_index, position)
+    pub targets: Vec<(usize, usize)>,
+    /// Pressure targets for PP deduction
+    pub pressure_targets: Vec<(usize, usize)>,
+}
+
+/// Move hit data for tracking crit, type effectiveness, etc.
+#[derive(Debug, Clone, Default)]
+pub struct MoveHitData {
+    /// Was this hit a critical hit?
+    pub crit: bool,
+    /// Type effectiveness modifier (-2 to 2, for 0.25x to 4x)
+    pub type_mod: i8,
+    /// Actual damage dealt
+    pub damage: u32,
+    /// Did the move hit the substitute instead?
+    pub hit_substitute: bool,
 }
 
 #[cfg(test)]
