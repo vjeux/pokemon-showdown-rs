@@ -1220,6 +1220,423 @@ pub enum ZPowerEffect {
     Curse,
 }
 
+/// Run move options for runMove
+/// Equivalent to the options parameter in battle-actions.ts runMove()
+#[derive(Debug, Clone, Default)]
+pub struct RunMoveOptions {
+    /// Source effect that caused this move
+    pub source_effect: Option<ID>,
+    /// Z-move override
+    pub z_move: Option<String>,
+    /// External move (Dancer, etc.)
+    pub external_move: bool,
+    /// Max move override
+    pub max_move: Option<String>,
+    /// Original target for redirection tracking
+    pub original_target: Option<usize>,
+}
+
+/// Use move options for useMove
+/// Equivalent to the options parameter in battle-actions.ts useMove()
+#[derive(Debug, Clone, Default)]
+pub struct UseMoveOptions {
+    /// Target pokemon index
+    pub target: Option<usize>,
+    /// Source effect
+    pub source_effect: Option<ID>,
+    /// Z-move override
+    pub z_move: Option<String>,
+    /// Max move override
+    pub max_move: Option<String>,
+}
+
+/// Spread move damage result type
+/// Can be damage amount, false (failed), or true/undefined (success with no damage)
+#[derive(Debug, Clone, Copy)]
+pub enum SpreadMoveDamageValue {
+    Damage(u32),
+    Failed,
+    Success,
+    Undefined,
+}
+
+impl Default for SpreadMoveDamageValue {
+    fn default() -> Self {
+        SpreadMoveDamageValue::Undefined
+    }
+}
+
+/// Result of spread move hit containing damage and target info
+pub type SpreadMoveDamage = Vec<SpreadMoveDamageValue>;
+
+/// Target info for spread moves (can be the Pokemon or null/false for failed)
+#[derive(Debug, Clone)]
+pub enum SpreadMoveTarget {
+    Target(usize),
+    None,
+    Failed,
+}
+
+/// Spread move targets array
+pub type SpreadMoveTargets = Vec<SpreadMoveTarget>;
+
+impl<'a> BattleActions<'a> {
+    /// Run a move - the "outside" move caller
+    /// Handles Dancer, Instruct, Pursuit, etc.
+    /// Equivalent to battle-actions.ts runMove()
+    ///
+    /// This is a stub that provides the interface for the full battle implementation.
+    /// The actual implementation requires Battle context for events.
+    pub fn run_move_stub(
+        move_id: &ID,
+        pokemon_index: usize,
+        target_loc: i32,
+        options: RunMoveOptions,
+    ) -> RunMoveResult {
+        // This is a stub - full implementation requires Battle context
+        RunMoveResult {
+            move_id: move_id.clone(),
+            pokemon_index,
+            target_loc,
+            z_move: options.z_move,
+            max_move: options.max_move,
+            external_move: options.external_move,
+            success: true,
+        }
+    }
+
+    /// Use move - the "inside" move caller
+    /// Handles effects of the move itself
+    /// Equivalent to battle-actions.ts useMove()
+    ///
+    /// This is a stub that provides the interface for the full battle implementation.
+    pub fn use_move_stub(
+        move_id: &ID,
+        pokemon_index: usize,
+        options: UseMoveOptions,
+    ) -> bool {
+        // This is a stub - full implementation requires Battle context
+        // Returns whether the move was successful
+        let _ = (move_id, pokemon_index, options);
+        true
+    }
+
+    /// Inner implementation of useMove
+    /// Equivalent to battle-actions.ts useMoveInner()
+    ///
+    /// This is a stub that provides the interface for the full battle implementation.
+    pub fn use_move_inner_stub(
+        move_id: &ID,
+        pokemon_index: usize,
+        options: UseMoveOptions,
+    ) -> bool {
+        // This is a stub - full implementation requires Battle context
+        let _ = (move_id, pokemon_index, options);
+        true
+    }
+
+    /// Try spread move hit - main entry point for move hit processing
+    /// Equivalent to battle-actions.ts trySpreadMoveHit()
+    ///
+    /// Returns whether the move hit at least one target
+    pub fn try_spread_move_hit_stub(
+        target_indices: &[usize],
+        pokemon_index: usize,
+        move_id: &ID,
+        not_active: bool,
+    ) -> bool {
+        // This is a stub - full implementation requires Battle context
+        let _ = (target_indices, pokemon_index, move_id, not_active);
+        true
+    }
+
+    /// Hit step: move hit loop
+    /// Processes each hit of a multi-hit move
+    /// Equivalent to battle-actions.ts hitStepMoveHitLoop()
+    pub fn hit_step_move_hit_loop_stub(
+        target_indices: &[usize],
+        pokemon_index: usize,
+        move_id: &ID,
+        multi_hit: Option<u32>,
+        gen: u8,
+    ) -> SpreadMoveDamage {
+        let target_hits = multi_hit.unwrap_or(1) as usize;
+        let mut damage = vec![SpreadMoveDamageValue::Damage(0); target_indices.len()];
+
+        // Stub implementation - just returns placeholder damage
+        for i in 0..target_hits {
+            if i >= target_indices.len() {
+                break;
+            }
+            damage[i] = SpreadMoveDamageValue::Damage(50);
+        }
+
+        let _ = (pokemon_index, move_id, gen);
+        damage
+    }
+
+    /// Spread move hit - handles the actual hit processing
+    /// Equivalent to battle-actions.ts spreadMoveHit()
+    ///
+    /// Returns (damage_array, updated_targets)
+    pub fn spread_move_hit_stub(
+        target_indices: &[usize],
+        pokemon_index: usize,
+        move_id: &ID,
+        is_secondary: bool,
+        is_self: bool,
+    ) -> (SpreadMoveDamage, SpreadMoveTargets) {
+        let mut damage: SpreadMoveDamage = vec![SpreadMoveDamageValue::Success; target_indices.len()];
+        let mut targets: SpreadMoveTargets = target_indices.iter()
+            .map(|&i| SpreadMoveTarget::Target(i))
+            .collect();
+
+        // Stub implementation
+        let _ = (pokemon_index, move_id, is_secondary, is_self);
+
+        // Set placeholder damage for each target
+        for i in 0..damage.len() {
+            damage[i] = SpreadMoveDamageValue::Damage(50);
+        }
+
+        (damage, targets)
+    }
+
+    /// Move hit - single target wrapper for spreadMoveHit
+    /// Equivalent to battle-actions.ts moveHit()
+    pub fn move_hit_stub(
+        target_index: Option<usize>,
+        pokemon_index: usize,
+        move_id: &ID,
+        is_secondary: bool,
+        is_self: bool,
+    ) -> Option<u32> {
+        let targets = match target_index {
+            Some(idx) => vec![idx],
+            None => vec![],
+        };
+
+        if targets.is_empty() {
+            return None;
+        }
+
+        let (damage, _) = Self::spread_move_hit_stub(
+            &targets,
+            pokemon_index,
+            move_id,
+            is_secondary,
+            is_self,
+        );
+
+        match damage.get(0) {
+            Some(SpreadMoveDamageValue::Damage(d)) => Some(*d),
+            Some(SpreadMoveDamageValue::Success) => None,
+            _ => None,
+        }
+    }
+
+    /// Get spread damage for each target
+    /// Equivalent to battle-actions.ts getSpreadDamage()
+    pub fn get_spread_damage_stub(
+        damage: &mut SpreadMoveDamage,
+        target_indices: &[usize],
+        source_index: usize,
+        move_id: &ID,
+        is_secondary: bool,
+        is_self: bool,
+    ) {
+        // Stub implementation - would call getDamage for each target
+        let _ = (target_indices, source_index, move_id, is_secondary, is_self);
+        for d in damage.iter_mut() {
+            *d = SpreadMoveDamageValue::Damage(50);
+        }
+    }
+
+    /// Force switch handling
+    /// Equivalent to battle-actions.ts forceSwitch()
+    pub fn force_switch_stub(
+        damage: &mut SpreadMoveDamage,
+        target_indices: &[usize],
+        source_index: usize,
+        move_id: &ID,
+    ) {
+        // Stub implementation - would set forceSwitchFlag on targets
+        let _ = (damage, target_indices, source_index, move_id);
+        // In real implementation:
+        // for target in targets where hp > 0 and can switch:
+        //   set target.force_switch_flag = true
+    }
+
+    /// Run Z-Power effect for status Z-moves
+    /// Equivalent to battle-actions.ts runZPower()
+    pub fn run_z_power(
+        move_category: &str,
+        z_move_boost: Option<&BoostsTable>,
+        z_move_effect: Option<&str>,
+        pokemon_has_ghost_type: bool,
+    ) -> ZPowerResult {
+        if move_category != "Status" {
+            // Damage Z-moves just add [zeffect] attribute
+            return ZPowerResult::DamageMove;
+        }
+
+        // Status Z-moves can have boosts or effects
+        if let Some(boosts) = z_move_boost {
+            return ZPowerResult::Boost(boosts.clone());
+        }
+
+        if let Some(effect) = z_move_effect {
+            match effect {
+                "heal" => ZPowerResult::Heal,
+                "healreplacement" => ZPowerResult::HealReplacement,
+                "clearnegativeboost" => ZPowerResult::ClearNegativeBoost,
+                "redirect" => ZPowerResult::Redirect,
+                "crit2" => ZPowerResult::Crit2,
+                "curse" => {
+                    if pokemon_has_ghost_type {
+                        ZPowerResult::Heal
+                    } else {
+                        ZPowerResult::Boost(BoostsTable {
+                            atk: Some(1),
+                            ..Default::default()
+                        })
+                    }
+                }
+                _ => ZPowerResult::None,
+            }
+        } else {
+            ZPowerResult::None
+        }
+    }
+
+    /// Run Mega Evolution
+    /// Equivalent to battle-actions.ts runMegaEvo()
+    pub fn run_mega_evo_stub(
+        pokemon_index: usize,
+        can_mega_evo: Option<&str>,
+        can_ultra_burst: Option<&str>,
+    ) -> Option<String> {
+        // Return the target forme if mega evolution is possible
+        let _ = pokemon_index;
+
+        if let Some(species_id) = can_mega_evo {
+            return Some(species_id.to_string());
+        }
+
+        if let Some(species_id) = can_ultra_burst {
+            return Some(species_id.to_string());
+        }
+
+        None
+    }
+
+    /// Terastallize a Pokemon
+    /// Equivalent to battle-actions.ts terastallize()
+    pub fn terastallize_stub(
+        pokemon_index: usize,
+        tera_type: &str,
+        species_base_species: &str,
+    ) -> TerastallizeResult {
+        let _ = pokemon_index;
+
+        // Handle Ogerpon special case
+        if species_base_species == "Ogerpon" {
+            if !["Fire", "Grass", "Rock", "Water"].contains(&tera_type) {
+                return TerastallizeResult::InvalidOgerpon;
+            }
+        }
+
+        TerastallizeResult::Success {
+            tera_type: tera_type.to_string(),
+            forme_change: if species_base_species == "Ogerpon" {
+                Some("ogerpontealtera".to_string())
+            } else if species_base_species == "Terapagos-Terastal" {
+                Some("Terapagos-Stellar".to_string())
+            } else {
+                None
+            },
+        }
+    }
+
+    /// Try move hit - wrapper for single/multi target moves
+    /// Equivalent to battle-actions.ts tryMoveHit()
+    pub fn try_move_hit_stub(
+        target_or_targets: &[usize],
+        pokemon_index: usize,
+        move_id: &ID,
+    ) -> Option<u32> {
+        // This calls hitStepMoveHitLoop and returns damage
+        let damage = Self::hit_step_move_hit_loop_stub(
+            target_or_targets,
+            pokemon_index,
+            move_id,
+            None,
+            9, // Default to gen 9
+        );
+
+        // Sum up damage
+        let mut total = 0u32;
+        for d in damage {
+            if let SpreadMoveDamageValue::Damage(dmg) = d {
+                total += dmg;
+            }
+        }
+
+        if total > 0 {
+            Some(total)
+        } else {
+            None
+        }
+    }
+
+    /// Secondaries handling
+    /// Equivalent to battle-actions.ts secondaries()
+    pub fn secondaries_stub(
+        target_indices: &[usize],
+        source_index: usize,
+        move_id: &ID,
+        is_self: bool,
+    ) {
+        // Stub - would apply secondary effects
+        let _ = (target_indices, source_index, move_id, is_self);
+    }
+}
+
+/// Result of run_move
+#[derive(Debug, Clone)]
+pub struct RunMoveResult {
+    pub move_id: ID,
+    pub pokemon_index: usize,
+    pub target_loc: i32,
+    pub z_move: Option<String>,
+    pub max_move: Option<String>,
+    pub external_move: bool,
+    pub success: bool,
+}
+
+/// Result of run_z_power
+#[derive(Debug, Clone)]
+pub enum ZPowerResult {
+    DamageMove,
+    Boost(BoostsTable),
+    Heal,
+    HealReplacement,
+    ClearNegativeBoost,
+    Redirect,
+    Crit2,
+    None,
+}
+
+/// Result of terastallize
+#[derive(Debug, Clone)]
+pub enum TerastallizeResult {
+    Success {
+        tera_type: String,
+        forme_change: Option<String>,
+    },
+    InvalidOgerpon,
+}
+
 // =========================================================================
 // TESTS
 // =========================================================================
