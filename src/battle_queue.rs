@@ -114,6 +114,8 @@ pub enum FieldActionType {
 pub struct PokemonAction {
     /// Action type
     pub choice: PokemonActionType,
+    /// Order for sorting
+    pub order: u32,
     /// Priority
     pub priority: i8,
     /// Speed
@@ -128,6 +130,8 @@ pub struct PokemonAction {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PokemonActionType {
+    Start,
+    BeforeTurn,
     MegaEvo,
     MegaEvoX,
     MegaEvoY,
@@ -136,6 +140,7 @@ pub enum PokemonActionType {
     Event,
     RunDynamax,
     Terastallize,
+    Residual,
 }
 
 /// All possible actions
@@ -161,15 +166,20 @@ impl Action {
                 FieldActionType::Pass => 200,
                 FieldActionType::Residual => 300,
             },
-            Action::Pokemon(a) => match a.choice {
-                PokemonActionType::RunSwitch => 101,
-                PokemonActionType::MegaEvo |
-                PokemonActionType::MegaEvoX |
-                PokemonActionType::MegaEvoY => 104,
-                PokemonActionType::RunDynamax => 105,
-                PokemonActionType::Terastallize => 106,
-                PokemonActionType::Shift => 200,
-                PokemonActionType::Event => 200,
+            Action::Pokemon(a) => if a.order != 0 { a.order } else {
+                match a.choice {
+                    PokemonActionType::Start => 2,
+                    PokemonActionType::BeforeTurn => 4,
+                    PokemonActionType::RunSwitch => 101,
+                    PokemonActionType::MegaEvo |
+                    PokemonActionType::MegaEvoX |
+                    PokemonActionType::MegaEvoY => 104,
+                    PokemonActionType::RunDynamax => 105,
+                    PokemonActionType::Terastallize => 106,
+                    PokemonActionType::Shift => 200,
+                    PokemonActionType::Event => 200,
+                    PokemonActionType::Residual => 300,
+                }
             },
         }
     }
@@ -367,6 +377,7 @@ impl BattleQueue {
     pub fn insert_run_switch(&mut self, side_index: usize, pokemon_index: usize) {
         let action = Action::Pokemon(PokemonAction {
             choice: PokemonActionType::RunSwitch,
+            order: 101,
             priority: 0,
             speed: 1, // Speed doesn't matter for runSwitch
             pokemon_index,
@@ -585,6 +596,126 @@ impl BattleQueue {
             true
         } else {
             false
+        }
+    }
+
+    /// Resolve an action choice into one or more actions
+    /// Equivalent to resolveAction in battle-queue.ts
+    /// This creates the appropriate order values and may add additional actions
+    /// (like megaEvo, terastallize, etc.) based on the choice
+    pub fn resolve_action(&self, action: &mut Action, mid_turn: bool) -> Vec<Action> {
+        let mut actions = Vec::new();
+
+        // Set order based on choice type
+        match action {
+            Action::Move(m) => {
+                // Set order if not already set
+                if m.order == 0 {
+                    m.order = match m.choice {
+                        MoveActionType::Move => 200,
+                        MoveActionType::BeforeTurnMove => 5,
+                        MoveActionType::PriorityChargeMove => 107,
+                    };
+                }
+
+                if !mid_turn {
+                    // Add mega evolution action if needed
+                    if m.mega {
+                        actions.push(Action::Pokemon(PokemonAction {
+                            choice: PokemonActionType::MegaEvo,
+                            order: 104,
+                            priority: 0,
+                            speed: m.speed,
+                            pokemon_index: m.pokemon_index,
+                            side_index: m.side_index,
+                            event: None,
+                        }));
+                    }
+
+                    // Add terastallize action if needed
+                    if m.terastallize.is_some() {
+                        actions.push(Action::Pokemon(PokemonAction {
+                            choice: PokemonActionType::Terastallize,
+                            order: 106,
+                            priority: 0,
+                            speed: m.speed,
+                            pokemon_index: m.pokemon_index,
+                            side_index: m.side_index,
+                            event: None,
+                        }));
+                    }
+
+                    // Add dynamax action if using max move
+                    if m.max_move.is_some() {
+                        actions.push(Action::Pokemon(PokemonAction {
+                            choice: PokemonActionType::RunDynamax,
+                            order: 105,
+                            priority: 0,
+                            speed: m.speed,
+                            pokemon_index: m.pokemon_index,
+                            side_index: m.side_index,
+                            event: None,
+                        }));
+                    }
+                }
+            }
+            Action::Switch(s) => {
+                if s.order == 0 {
+                    s.order = match s.choice {
+                        SwitchActionType::Switch => 103,
+                        SwitchActionType::InstaSwitch => 3,
+                        SwitchActionType::RevivalBlessing => 6,
+                    };
+                }
+            }
+            Action::Team(_) => {
+                // Team actions have order 1
+            }
+            Action::Field(_) => {
+                // Field actions keep their order
+            }
+            Action::Pokemon(p) => {
+                if p.order == 0 {
+                    p.order = match p.choice {
+                        PokemonActionType::Start => 2,
+                        PokemonActionType::BeforeTurn => 4,
+                        PokemonActionType::RunSwitch => 101,
+                        PokemonActionType::MegaEvo => 104,
+                        PokemonActionType::MegaEvoX => 104,
+                        PokemonActionType::MegaEvoY => 104,
+                        PokemonActionType::RunDynamax => 105,
+                        PokemonActionType::Terastallize => 106,
+                        PokemonActionType::Shift | PokemonActionType::Event => 200,
+                        PokemonActionType::Residual => 300,
+                    };
+                }
+            }
+        }
+
+        // Add the main action
+        actions.push(action.clone());
+
+        actions
+    }
+
+    /// Get the order value for a choice type
+    pub fn get_order_for_choice(choice: &str) -> u32 {
+        match choice {
+            "team" => 1,
+            "start" => 2,
+            "instaswitch" => 3,
+            "beforeTurn" => 4,
+            "beforeTurnMove" => 5,
+            "revivalblessing" => 6,
+            "runSwitch" => 101,
+            "switch" => 103,
+            "megaEvo" | "megaEvoX" | "megaEvoY" => 104,
+            "runDynamax" => 105,
+            "terastallize" => 106,
+            "priorityChargeMove" => 107,
+            "shift" | "move" => 200,
+            "residual" => 300,
+            _ => 200,
         }
     }
 }
