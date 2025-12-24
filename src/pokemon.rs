@@ -490,9 +490,18 @@ impl Pokemon {
         self.locked_move = None; // Clear Choice item lock
     }
 
-    /// Get the slot ID for protocol messages
+    /// Get the slot ID for protocol messages (e.g., "p1a", "p2b")
     pub fn get_slot(&self) -> String {
-        format!("p{}a", self.side_index + 1)
+        let position_letter = match self.position {
+            0 => 'a',
+            1 => 'b',
+            2 => 'c',
+            3 => 'd',
+            4 => 'e',
+            5 => 'f',
+            _ => 'a',
+        };
+        format!("p{}{}", self.side_index + 1, position_letter)
     }
 
     /// Check if Pokemon can switch out
@@ -734,20 +743,6 @@ impl Pokemon {
     // ==========================================
     // Methods ported from pokemon.ts
     // ==========================================
-
-    /// Get slot identifier for protocol messages (e.g., "p1a", "p2b")
-    pub fn get_slot(&self) -> String {
-        let position_letter = match self.position {
-            0 => 'a',
-            1 => 'b',
-            2 => 'c',
-            3 => 'd',
-            4 => 'e',
-            5 => 'f',
-            _ => 'a',
-        };
-        format!("p{}{}", self.side_index + 1, position_letter)
-    }
 
     /// String representation of Pokemon
     pub fn to_string(&self) -> String {
