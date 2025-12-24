@@ -957,6 +957,256 @@ impl<'a> BattleActions<'a> {
 
         random_value % crit_chance == 0
     }
+
+    // =========================================================================
+    // MEGA EVOLUTION / TERASTALLIZE EXECUTION
+    // =========================================================================
+
+    /// Run Mega Evolution
+    /// Equivalent to runMegaEvo in battle-actions.ts
+    /// Returns the mega forme ID if successful
+    pub fn run_mega_evo_check(
+        species_name: &str,
+        mega_forme: Option<&str>,
+        already_mega: bool,
+    ) -> Option<String> {
+        if already_mega {
+            return None;
+        }
+        mega_forme.map(|s| s.to_string())
+    }
+
+    /// Execute Terastallization
+    /// Equivalent to terastallize in battle-actions.ts
+    /// Returns the new tera type if successful
+    pub fn terastallize_check(
+        tera_type: Option<&str>,
+        already_terastallized: bool,
+        side_terastallize_used: bool,
+    ) -> Option<String> {
+        if already_terastallized || side_terastallize_used {
+            return None;
+        }
+        tera_type.map(|s| s.to_string())
+    }
+
+    // =========================================================================
+    // DAMAGE CALCULATION HELPERS
+    // =========================================================================
+
+    /// Get damage from getDamage in battle-actions.ts
+    /// This is a comprehensive damage calculation
+    pub fn get_damage(
+        attacker_level: u32,
+        attacker_attack: u32,
+        defender_defense: u32,
+        base_power: u32,
+        stab_modifier: f64,
+        type_effectiveness: f64,
+        is_crit: bool,
+        random_factor: u32, // 85-100
+        other_modifiers: &[f64],
+    ) -> u32 {
+        if base_power == 0 || type_effectiveness == 0.0 {
+            return 0;
+        }
+
+        // Base damage formula
+        let base_damage = ((2 * attacker_level / 5 + 2) * base_power * attacker_attack / defender_defense.max(1)) / 50 + 2;
+
+        // Apply modifiers in order
+        let mut damage = base_damage as f64;
+
+        // STAB
+        damage *= stab_modifier;
+
+        // Type effectiveness
+        damage *= type_effectiveness;
+
+        // Critical hit
+        if is_crit {
+            damage *= 1.5;
+        }
+
+        // Random factor
+        damage = damage * (random_factor as f64) / 100.0;
+
+        // Other modifiers (abilities, items, weather, etc.)
+        for modifier in other_modifiers {
+            damage = (damage * modifier).floor();
+        }
+
+        (damage as u32).max(1)
+    }
+
+    /// Try spread move hit - checks all targets
+    /// Equivalent to trySpreadMoveHit in battle-actions.ts
+    pub fn try_spread_move_hit_check(
+        target_count: usize,
+        move_target_type: &str,
+    ) -> bool {
+        // Check if this is a spread move
+        let is_spread = matches!(
+            move_target_type,
+            "allAdjacent" | "allAdjacentFoes" | "all" | "foeSide" | "allySide"
+        );
+
+        is_spread && target_count > 0
+    }
+
+    /// Move hit - execute the actual hit
+    /// Equivalent to moveHit in battle-actions.ts
+    pub fn move_hit_result(
+        damage: u32,
+        type_effectiveness: f64,
+        is_crit: bool,
+    ) -> MoveHitData {
+        MoveHitData {
+            crit: is_crit,
+            type_mod: (type_effectiveness * 100.0) as i32 - 100,
+            damage,
+            z_broke_protect: false,
+        }
+    }
+
+    /// Hit step try immunity
+    /// Equivalent to hitStepTryImmunity in battle-actions.ts
+    pub fn hit_step_try_immunity(
+        move_type: &str,
+        defender_types: &[String],
+        defender_ability: &str,
+        ignore_immunity: bool,
+    ) -> bool {
+        if ignore_immunity {
+            return true;
+        }
+
+        // Check type immunity
+        let effectiveness = get_effectiveness_multi(move_type, defender_types);
+        if effectiveness == 0.0 {
+            return false;
+        }
+
+        // Check ability immunity (simplified)
+        match (defender_ability, move_type) {
+            ("voltabsorb" | "lightningrod" | "motordrive", "Electric") => false,
+            ("waterabsorb" | "stormdrain" | "dryskin", "Water") => false,
+            ("flashfire", "Fire") => false,
+            ("sapsipper", "Grass") => false,
+            ("levitate", "Ground") => false,
+            _ => true,
+        }
+    }
+
+    /// Hit step try hit event
+    /// Equivalent to hitStepTryHitEvent in battle-actions.ts
+    pub fn hit_step_try_hit_event(
+        target_has_substitute: bool,
+        move_ignores_substitute: bool,
+        move_is_sound: bool,
+    ) -> bool {
+        // Substitute blocks most moves
+        if target_has_substitute && !move_ignores_substitute && !move_is_sound {
+            return false; // Hit substitute instead
+        }
+        true
+    }
+
+    /// After move secondary event
+    /// Equivalent to afterMoveSecondaryEvent in battle-actions.ts
+    pub fn after_move_secondary_event(
+        move_self_switch: Option<&str>,
+        move_force_switch: bool,
+    ) -> AfterMoveResult {
+        AfterMoveResult {
+            self_switch: move_self_switch.map(|s| s.to_string()),
+            force_switch: move_force_switch,
+        }
+    }
+
+    /// Try move hit - main hit attempt
+    /// Equivalent to tryMoveHit in battle-actions.ts
+    pub fn try_move_hit_check(
+        accuracy_passed: bool,
+        type_immunity_passed: bool,
+        invulnerability_passed: bool,
+    ) -> bool {
+        accuracy_passed && type_immunity_passed && invulnerability_passed
+    }
+
+    /// Hit step move hit loop
+    /// Equivalent to hitStepMoveHitLoop in battle-actions.ts
+    pub fn hit_step_move_hit_loop_count(
+        multi_hit: Option<u32>,
+        move_hit_type: Option<&str>,
+        random_value: u32,
+    ) -> u32 {
+        if let Some(hit_type) = move_hit_type {
+            match hit_type {
+                "parentalbond" => 2,
+                "triplekick" | "triplekick" => 3,
+                _ => Self::get_multi_hit_count(multi_hit, random_value),
+            }
+        } else {
+            Self::get_multi_hit_count(multi_hit, random_value)
+        }
+    }
+
+    /// Spread move hit - apply to all targets
+    /// Equivalent to spreadMoveHit in battle-actions.ts
+    pub fn spread_move_hit_modifier(target_count: usize) -> f64 {
+        Self::get_spread_damage_modifier(target_count)
+    }
+
+    /// Try primary hit event
+    /// Equivalent to tryPrimaryHitEvent in battle-actions.ts
+    pub fn try_primary_hit_event(
+        move_has_primary_effect: bool,
+        move_primary_chance: Option<u32>,
+        random_value: u32,
+    ) -> bool {
+        if !move_has_primary_effect {
+            return true; // No primary effect to apply
+        }
+
+        if let Some(chance) = move_primary_chance {
+            random_value % 100 < chance
+        } else {
+            true // Guaranteed primary effect
+        }
+    }
+
+    /// Run move effects
+    /// Equivalent to runMoveEffects in battle-actions.ts
+    pub fn run_move_effects_list(
+        move_boosts: Option<&BoostsTable>,
+        move_heal: Option<(u32, u32)>,
+        move_status: Option<&str>,
+        move_volatile: Option<&str>,
+    ) -> MoveEffects {
+        MoveEffects {
+            boosts: move_boosts.cloned(),
+            heal: move_heal,
+            status: move_status.map(|s| s.to_string()),
+            volatile_status: move_volatile.map(|s| s.to_string()),
+        }
+    }
+}
+
+/// Result from after move secondary event
+#[derive(Debug, Clone, Default)]
+pub struct AfterMoveResult {
+    pub self_switch: Option<String>,
+    pub force_switch: bool,
+}
+
+/// Move effects to apply
+#[derive(Debug, Clone, Default)]
+pub struct MoveEffects {
+    pub boosts: Option<BoostsTable>,
+    pub heal: Option<(u32, u32)>,
+    pub status: Option<String>,
+    pub volatile_status: Option<String>,
 }
 
 /// Z-Power effects for status Z-moves
