@@ -93,6 +93,8 @@ pub struct Battle {
 
     /// Last move used in battle
     pub last_move: Option<ID>,
+    /// Last move log line index (for attrLastMove)
+    pub last_move_line: i32,
     /// Last damage dealt (for Counter in Gen 1)
     pub last_damage: u32,
 
@@ -153,6 +155,7 @@ impl Battle {
             ended: false,
             winner: None,
             last_move: None,
+            last_move_line: -1,
             last_damage: 0,
             effect_order: 0,
             debug_mode: options.debug,
@@ -2413,6 +2416,154 @@ impl Battle {
         for side in &mut self.sides {
             side.request_state = RequestState::Move;
         }
+    }
+
+    // =========================================================================
+    // Methods ported from battle.ts
+    // =========================================================================
+
+    /// Log a debug message if debug mode is enabled
+    /// Equivalent to battle.ts debug()
+    pub fn debug(&mut self, activity: &str) {
+        if self.debug_mode {
+            self.add("debug", &[activity]);
+        }
+    }
+
+    /// Get the debug log (all lines)
+    pub fn get_debug_log(&self) -> String {
+        self.log.join("\n")
+    }
+
+    /// Add a log entry
+    /// This is the main logging function, equivalent to battle.ts add()
+    /// Supports variable number of parts that get joined with '|'
+    pub fn add(&mut self, event_type: &str, parts: &[&str]) {
+        let mut entry = format!("|{}", event_type);
+        for part in parts {
+            entry.push('|');
+            entry.push_str(part);
+        }
+        self.log.push(entry);
+    }
+
+    /// Add a move log entry and track the last move line
+    pub fn add_move(&mut self, parts: &[&str]) {
+        self.last_move_line = self.log.len() as i32;
+        let entry = format!("|{}", parts.join("|"));
+        self.log.push(entry);
+    }
+
+    /// Show a hint to the player
+    /// If once is true, only shows once per battle
+    pub fn hint(&mut self, hint_text: &str, once: bool, side_id: Option<SideID>) {
+        let hint_key = if let Some(sid) = side_id {
+            format!("{}|{}", sid.to_str(), hint_text)
+        } else {
+            hint_text.to_string()
+        };
+
+        if self.hints.contains(&hint_key) {
+            return;
+        }
+
+        self.add("-hint", &[hint_text]);
+
+        if once {
+            self.hints.insert(hint_key);
+        }
+    }
+
+    /// Truncate a number to an integer (equivalent to Math.trunc or this.trunc in JS)
+    #[inline]
+    pub fn trunc(&self, num: f64) -> i32 {
+        num.trunc() as i32
+    }
+
+    /// Chain two modifiers together using fixed-point arithmetic
+    /// Equivalent to battle.ts chain()
+    pub fn chain(&self, previous_mod: (i32, i32), next_mod: (i32, i32)) -> i32 {
+        let prev = (previous_mod.0 * 4096) / previous_mod.1;
+        let next = (next_mod.0 * 4096) / next_mod.1;
+        ((prev * next) + 2048) >> 12
+    }
+
+    /// Apply a modifier to a value
+    /// Equivalent to battle.ts modify()
+    /// Uses fixed-point arithmetic: modifier = numerator * 4096 / denominator
+    pub fn modify(&self, value: i32, numerator: i32, denominator: i32) -> i32 {
+        let modifier = (numerator * 4096) / denominator;
+        ((value * modifier) + 2048 - 1) / 4096
+    }
+
+    /// Apply a floating-point modifier to a value
+    pub fn modify_f(&self, value: i32, multiplier: f64) -> i32 {
+        let modifier = (multiplier * 4096.0) as i32;
+        ((value * modifier) + 2048 - 1) / 4096
+    }
+
+    /// Declare a tie
+    /// Equivalent to battle.ts tie()
+    pub fn tie(&mut self) -> bool {
+        self.win(None)
+    }
+
+    /// Declare a winner
+    /// Equivalent to battle.ts win()
+    /// Pass None for a tie, or Some(side_id) for a winner
+    pub fn win(&mut self, side: Option<SideID>) -> bool {
+        if self.ended {
+            return false;
+        }
+
+        let winner_name = side.and_then(|s| self.get_side(s).map(|side| side.name.clone()));
+
+        self.add("", &[]);
+        if let Some(ref name) = winner_name {
+            self.add("win", &[name]);
+        } else {
+            self.add("tie", &[]);
+        }
+
+        self.winner = winner_name;
+        self.ended = true;
+        self.request_state = BattleRequestState::None;
+
+        for side in &mut self.sides {
+            side.request_state = RequestState::None;
+        }
+
+        true
+    }
+
+    /// Force a side to lose
+    /// Equivalent to battle.ts lose()
+    pub fn lose(&mut self, side_id: SideID) {
+        let foe_id = match side_id {
+            SideID::P1 => SideID::P2,
+            SideID::P2 => SideID::P1,
+            SideID::P3 => SideID::P4,
+            SideID::P4 => SideID::P3,
+        };
+
+        if self.game_type == GameType::FreeForAll {
+            // In FFA, losing doesn't automatically make someone else win
+            if let Some(side) = self.sides.get_mut(side_id.index()) {
+                // Faint all Pokemon on this side
+                for pokemon in &mut side.pokemon {
+                    pokemon.hp = 0;
+                }
+            }
+            self.faint_messages();
+        } else {
+            self.win(Some(foe_id));
+        }
+    }
+
+    /// Force a win for a specific side
+    /// Equivalent to battle.ts forceWin()
+    pub fn force_win(&mut self, side: Option<SideID>) -> bool {
+        self.win(side)
     }
 }
 
