@@ -2706,6 +2706,225 @@ impl Battle {
             }
         }
     }
+
+    /// Deal damage to a Pokemon
+    /// Equivalent to battle.ts damage()
+    /// NOTE: This is a simplified version without event system integration
+    pub fn damage(&mut self, damage: u32, target: (usize, usize), _source: Option<(usize, usize)>, effect: Option<&str>) -> u32 {
+        let (target_side, target_idx) = target;
+
+        // Get side info first to avoid borrow conflicts
+        let (side_id, pokemon_name, pokemon_maxhp) = if let Some(side) = self.sides.get(target_side) {
+            if let Some(pokemon) = side.pokemon.get(target_idx) {
+                (side.id_str().to_string(), pokemon.name.clone(), pokemon.maxhp)
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        };
+
+        if let Some(side) = self.sides.get_mut(target_side) {
+            if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
+                if pokemon.hp == 0 {
+                    return 0;
+                }
+
+                let actual_damage = damage.min(pokemon.hp);
+                pokemon.hp = pokemon.hp.saturating_sub(damage);
+                let new_hp = pokemon.hp;
+
+                let full_name = format!("{}: {}", side_id, pokemon_name);
+                let hp_str = format!("{}/{}", new_hp, pokemon_maxhp);
+
+                if let Some(eff) = effect {
+                    self.add("-damage", &[&full_name, &hp_str, &format!("[from] {}", eff)]);
+                } else {
+                    self.add("-damage", &[&full_name, &hp_str]);
+                }
+
+                self.last_damage = actual_damage;
+                return actual_damage;
+            }
+        }
+        0
+    }
+
+    /// Deal direct damage (bypasses most effects)
+    /// Equivalent to battle.ts directDamage()
+    pub fn direct_damage(&mut self, damage: u32, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> u32 {
+        // Direct damage is similar to regular damage but bypasses certain effects
+        // For now, implementation is the same
+        self.damage(damage.max(1), target, source, effect)
+    }
+
+    /// Heal a Pokemon
+    /// Equivalent to battle.ts heal()
+    /// NOTE: This is a simplified version without event system integration
+    pub fn heal(&mut self, amount: u32, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> u32 {
+        let (target_side, target_idx) = target;
+
+        // Get info first to avoid borrow conflicts
+        let (side_id, pokemon_name, pokemon_maxhp, pokemon_hp, is_active) = if let Some(side) = self.sides.get(target_side) {
+            if let Some(pokemon) = side.pokemon.get(target_idx) {
+                (side.id_str().to_string(), pokemon.name.clone(), pokemon.maxhp, pokemon.hp, pokemon.is_active)
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        };
+
+        // Get source info if drain effect
+        let source_name = if let Some((src_side, src_idx)) = source {
+            if let Some(side) = self.sides.get(src_side) {
+                if let Some(pokemon) = side.pokemon.get(src_idx) {
+                    Some(format!("{}: {}", side.id_str(), pokemon.name))
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+
+        if pokemon_hp == 0 || !is_active {
+            return 0;
+        }
+        if pokemon_hp >= pokemon_maxhp {
+            return 0;
+        }
+
+        if let Some(side) = self.sides.get_mut(target_side) {
+            if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
+                let old_hp = pokemon.hp;
+                pokemon.hp = (pokemon.hp + amount).min(pokemon.maxhp);
+                let healed = pokemon.hp - old_hp;
+                let new_hp = pokemon.hp;
+
+                let full_name = format!("{}: {}", side_id, pokemon_name);
+                let hp_str = format!("{}/{}", new_hp, pokemon_maxhp);
+
+                if let Some(eff) = effect {
+                    if eff == "drain" {
+                        if let Some(ref src_name) = source_name {
+                            self.add("-heal", &[&full_name, &hp_str, "[from] drain", &format!("[of] {}", src_name)]);
+                            return healed;
+                        }
+                    }
+                    self.add("-heal", &[&full_name, &hp_str, &format!("[from] {}", eff)]);
+                } else {
+                    self.add("-heal", &[&full_name, &hp_str]);
+                }
+
+                return healed;
+            }
+        }
+        0
+    }
+
+    /// Boost a Pokemon's stats
+    /// Equivalent to battle.ts boost()
+    /// NOTE: This is a simplified version without event system integration
+    pub fn boost(&mut self, boosts: &[(& str, i8)], target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> bool {
+        let (target_side, target_idx) = target;
+
+        // Can't boost if no foes left (Gen 6+)
+        if self.gen > 5 {
+            let foe_side = if target_side == 0 { 1 } else { 0 };
+            if foe_side < self.sides.len() {
+                let foe_pokemon_left = self.sides[foe_side].pokemon.iter()
+                    .any(|p| p.hp > 0);
+                if !foe_pokemon_left {
+                    return false;
+                }
+            }
+        }
+
+        let mut success = false;
+
+        // Get Pokemon info for logging
+        let pokemon_name = if let Some(side) = self.sides.get(target_side) {
+            if let Some(pokemon) = side.pokemon.get(target_idx) {
+                if pokemon.hp == 0 || !pokemon.is_active {
+                    return false;
+                }
+                format!("{}: {}", side.id_str(), pokemon.name)
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        };
+
+        for (stat, amount) in boosts {
+            if let Some(side) = self.sides.get_mut(target_side) {
+                if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
+                    let current = match *stat {
+                        "atk" => &mut pokemon.boosts.atk,
+                        "def" => &mut pokemon.boosts.def,
+                        "spa" => &mut pokemon.boosts.spa,
+                        "spd" => &mut pokemon.boosts.spd,
+                        "spe" => &mut pokemon.boosts.spe,
+                        "accuracy" => &mut pokemon.boosts.accuracy,
+                        "evasion" => &mut pokemon.boosts.evasion,
+                        _ => continue,
+                    };
+
+                    let old = *current;
+                    *current = (*current + amount).clamp(-6, 6);
+                    let actual = *current - old;
+
+                    if actual != 0 {
+                        success = true;
+                        let msg = if actual > 0 { "-boost" } else { "-unboost" };
+                        let boost_str = actual.abs().to_string();
+
+                        if let Some(eff) = effect {
+                            self.add(msg, &[&pokemon_name, stat, &boost_str, &format!("[from] {}", eff)]);
+                        } else {
+                            self.add(msg, &[&pokemon_name, stat, &boost_str]);
+                        }
+                    }
+                }
+            }
+        }
+
+        success
+    }
+
+    /// Faint a Pokemon
+    /// Equivalent to battle.ts faint()
+    pub fn faint(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) {
+        let (target_side, target_idx) = target;
+        if let Some(side) = self.sides.get_mut(target_side) {
+            if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
+                if pokemon.hp > 0 {
+                    pokemon.hp = 0;
+                }
+            }
+        }
+        // faint_messages will handle the actual fainting logic
+    }
+
+    /// Check if a Pokemon has fainted
+    pub fn check_fainted(&self, target: (usize, usize)) -> bool {
+        let (target_side, target_idx) = target;
+        if let Some(side) = self.sides.get(target_side) {
+            if let Some(pokemon) = side.pokemon.get(target_idx) {
+                return pokemon.hp == 0;
+            }
+        }
+        false
+    }
+
+    /// Clamp a value to an integer range
+    /// Equivalent to Utils.clampIntRange in battle.ts
+    pub fn clamp_int_range(&self, num: i32, min: i32, max: i32) -> i32 {
+        num.clamp(min, max)
+    }
 }
 
 fn game_type_to_string(game_type: &GameType) -> String {
