@@ -5,17 +5,11 @@
 //! This module defines items as data structures with their properties,
 //! following the pattern from data/items.ts in the JS codebase.
 //!
-//! Items use a hybrid approach:
-//! - Most items (~80%) use data-driven ItemEffect for their behavior
-//! - Complex items (~20%) use handler functions in item_handlers.rs
-//!
-//! GENERATED FILE - Do not edit directly. Run generate_items.js to regenerate.
+//! Item callbacks are now in item_callbacks.rs for 1:1 JS porting.
 
 use std::collections::HashMap;
 use once_cell::sync::Lazy;
 use crate::dex_data::ID;
-use crate::event::EventType;
-use super::item_effects::{ItemEffect, Stat, Trigger};
 
 /// Helper to create boosts HashMap
 fn boosts(entries: &[(&str, i8)]) -> HashMap<String, i8> {
@@ -45,35 +39,6 @@ pub enum ItemCategory {
     TM,
     TR,
     Fossil,
-}
-
-/// Effect entry - pairs an event type with an effect and optional priority
-#[derive(Debug, Clone)]
-pub struct ItemEffectEntry {
-    /// The event that triggers this effect
-    pub event: EventType,
-    /// The effect to apply
-    pub effect: ItemEffect,
-    /// Priority for this handler (higher = earlier)
-    pub priority: i32,
-}
-
-impl ItemEffectEntry {
-    pub fn new(event: EventType, effect: ItemEffect) -> Self {
-        Self {
-            event,
-            effect,
-            priority: 0,
-        }
-    }
-
-    pub fn with_priority(event: EventType, effect: ItemEffect, priority: i32) -> Self {
-        Self {
-            event,
-            effect,
-            priority,
-        }
-    }
 }
 
 /// Item definition - data-driven item with all properties
@@ -148,11 +113,6 @@ pub struct ItemDef {
     /// Type granted by Drive
     pub on_drive: Option<String>,
 
-    // === Effects System ===
-    /// Data-driven effects for this item
-    pub effects: Vec<ItemEffectEntry>,
-    /// Flag indicating this item has custom handlers in item_handlers.rs
-    pub has_custom_handler: bool,
     /// Ignore Klutz ability
     pub ignore_klutz: bool,
 }
@@ -173,31 +133,10 @@ impl ItemDef {
             .map(|(_, mult)| *mult)
     }
 
-    /// Check if item grants type immunity
-    pub fn grants_type_immunity(&self, move_type: &str) -> bool {
-        // Check effects for TypeImmunity
-        for entry in &self.effects {
-            if let ItemEffect::TypeImmunity { immune_type } = &entry.effect {
-                if immune_type.eq_ignore_ascii_case(move_type) {
-                    return true;
-                }
-            }
-        }
+    /// Check if item grants type immunity (stub - to be implemented in item_callbacks)
+    pub fn grants_type_immunity(&self, _move_type: &str) -> bool {
+        // Type immunity is now handled in item_callbacks.rs
         false
-    }
-
-    /// Get effects for a specific event
-    pub fn get_effects_for_event(&self, event: &EventType) -> Vec<&ItemEffect> {
-        self.effects
-            .iter()
-            .filter(|e| &e.event == event)
-            .map(|e| &e.effect)
-            .collect()
-    }
-
-    /// Check if this item has any effect for a given event
-    pub fn has_effect_for_event(&self, event: &EventType) -> bool {
-        self.effects.iter().any(|e| &e.event == event)
     }
 }
 
@@ -335,15 +274,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Dragon".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Triggered {
-            trigger: Trigger::OnHPBelowGluttony(0.25),
-            effect: Box::new(ItemEffect::Compound { effects: vec![
-                ItemEffect::HealOnThreshold { threshold: 0.25, heal_fraction: 0.333 },
-                ItemEffect::ConsumeItem,
-            ] }),
-        }, 0),
-        ],
         ..Default::default()
     });
 
@@ -354,9 +284,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 5,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SwitchIn, ItemEffect::Airborne, 0),
-        ],
         ..Default::default()
     });
 
@@ -446,12 +373,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Ice".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Compound { effects: vec![
-                ItemEffect::CureStatus { status: "frz".to_string() },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -462,7 +383,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 6,
         category: ItemCategory::HeldItem,
         fling_power: Some(80),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -499,12 +419,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Steel".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Steel".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -647,7 +561,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -682,9 +595,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Fighting".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -695,9 +605,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Dark".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -708,9 +615,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Residual, ItemEffect::ResidualHealOrDamage { required_type: "Poison".to_string(), heal_fraction: 0.0625, damage_fraction: 0.125 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -772,7 +676,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 8,
         category: ItemCategory::HeldItem,
         fling_power: Some(80),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -783,7 +686,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 9,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -804,7 +706,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -917,9 +818,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Fire".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -959,12 +857,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Rock".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Rock".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -978,12 +870,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Fire".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Compound { effects: vec![
-                ItemEffect::CureStatus { status: "par".to_string() },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1021,12 +907,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Water".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Compound { effects: vec![
-                ItemEffect::CureStatus { status: "slp".to_string() },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1040,12 +920,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Normal".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Normal".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1093,9 +967,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Choice,
         fling_power: Some(10),
         is_choice: true,
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::ModifyMove, ItemEffect::ChoiceLock { stat: Stat::Atk, multiplier: 1.5 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1107,9 +978,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Choice,
         fling_power: Some(10),
         is_choice: true,
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::ModifyMove, ItemEffect::ChoiceLock { stat: Stat::Spe, multiplier: 1.5 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1121,9 +989,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Choice,
         fling_power: Some(10),
         is_choice: true,
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::ModifyMove, ItemEffect::ChoiceLock { stat: Stat::SpA, multiplier: 1.5 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1137,12 +1002,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Fighting".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Fighting".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1164,7 +1023,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 9,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -1201,12 +1059,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Flying".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Flying".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1220,12 +1072,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Dark".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Dark".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1511,9 +1357,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Dragon".to_string()),
         on_plate: Some("Dragon".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Dragon".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -1537,9 +1380,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(70),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Dragon".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -1625,9 +1465,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Dark".to_string()),
         on_plate: Some("Dark".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Dark".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -1693,9 +1530,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Ground".to_string()),
         on_plate: Some("Ground".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Ground".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -1732,9 +1566,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 5,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::DamagingHit, ItemEffect::Compound { effects: vec![ItemEffect::EjectOnHit, ItemEffect::ConsumeItem] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -1840,7 +1671,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 5,
         category: ItemCategory::HeldItem,
         fling_power: Some(40),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -1864,7 +1694,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -1888,9 +1717,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 9,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Fairy".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -2003,15 +1829,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Bug".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Triggered {
-            trigger: Trigger::OnHPBelowGluttony(0.25),
-            effect: Box::new(ItemEffect::Compound { effects: vec![
-                ItemEffect::HealOnThreshold { threshold: 0.25, heal_fraction: 0.333 },
-                ItemEffect::ConsumeItem,
-            ] }),
-        }, 0),
-        ],
         ..Default::default()
     });
 
@@ -2071,9 +1888,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Fighting".to_string()),
         on_plate: Some("Fighting".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Fighting".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -2095,9 +1909,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Fire".to_string()),
         on_plate: Some("Fire".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Fire".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -2188,9 +1999,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Damage, ItemEffect::Compound { effects: vec![ItemEffect::FocusSash, ItemEffect::ConsumeItem] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -2662,12 +2470,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Dragon".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Dragon".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -2678,9 +2480,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(100),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Rock".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -2759,9 +2558,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 8,
         category: ItemCategory::HeldItem,
         fling_power: Some(80),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SwitchIn, ItemEffect::HazardImmunity, 0),
-        ],
         ..Default::default()
     });
 
@@ -2825,15 +2621,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Dark".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Triggered {
-            trigger: Trigger::OnHPBelowGluttony(0.25),
-            effect: Box::new(ItemEffect::Compound { effects: vec![
-                ItemEffect::HealOnThreshold { threshold: 0.25, heal_fraction: 0.333 },
-                ItemEffect::ConsumeItem,
-            ] }),
-        }, 0),
-        ],
         ..Default::default()
     });
 
@@ -2894,9 +2681,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Ice".to_string()),
         on_plate: Some("Ice".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Ice".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -2944,9 +2728,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Bug".to_string()),
         on_plate: Some("Bug".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Bug".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -2957,10 +2738,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(130),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SwitchIn, ItemEffect::GroundHolder, 0),
-            ItemEffectEntry::with_priority(EventType::ModifySpe, ItemEffect::ModifyStat { stat: Stat::Spe, multiplier: 0.5 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -2972,9 +2749,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Steel".to_string()),
         on_plate: Some("Steel".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Steel".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -3025,12 +2799,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Ghost".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Ghost".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -3044,12 +2812,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Poison".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Poison".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -3191,9 +2953,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Residual, ItemEffect::ResidualHeal { fraction: 0.0625 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -3240,10 +2999,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::ModifyDamage, ItemEffect::BoostDamage { multiplier: 1.3 }, 0),
-            ItemEffectEntry::with_priority(EventType::AfterHit, ItemEffect::RecoilOnAttack { fraction: 0.1 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -3275,9 +3030,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 9,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::ModifyMove, ItemEffect::MaxMultiHit, 0),
-        ],
         ..Default::default()
     });
 
@@ -3362,9 +3114,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Flying".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Compound { effects: vec![ItemEffect::CureAllStatus, ItemEffect::ConsumeItem] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -3489,9 +3238,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Electric".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -3505,15 +3251,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Ghost".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Triggered {
-            trigger: Trigger::OnHPBelowGluttony(0.25),
-            effect: Box::new(ItemEffect::Compound { effects: vec![
-                ItemEffect::HealOnThreshold { threshold: 0.25, heal_fraction: 0.333 },
-                ItemEffect::ConsumeItem,
-            ] }),
-        }, 0),
-        ],
         ..Default::default()
     });
 
@@ -3644,9 +3381,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Grass".to_string()),
         on_plate: Some("Grass".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Grass".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -3683,9 +3417,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 3,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Compound { effects: vec![ItemEffect::MentalHerb, ItemEffect::ConsumeItem] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -3731,9 +3462,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Steel".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -3756,7 +3484,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -3833,9 +3560,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Psychic".to_string()),
         on_plate: Some("Psychic".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Psychic".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -3874,9 +3598,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Grass".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -3952,9 +3673,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Water".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -3999,9 +3717,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Ice".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -4051,12 +3766,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Fire".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Fire".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4068,9 +3777,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
         is_nonstandard: Some("Past".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Psychic".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -4143,12 +3849,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Water".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Water".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4162,12 +3862,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Psychic".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Psychic".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4181,12 +3875,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Electric".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Compound { effects: vec![
-                ItemEffect::CureStatus { status: "psn".to_string() },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4300,9 +3988,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Fairy".to_string()),
         on_plate: Some("Fairy".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Fairy".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -4324,9 +4009,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(70),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Poison".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -4452,9 +4134,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BeforeMove, ItemEffect::Compound { effects: vec![ItemEffect::SkipChargeTurn, ItemEffect::ConsumeItem] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4530,7 +4209,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 7,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        has_custom_handler: true,
         ..Default::default()
     });
 
@@ -4674,9 +4352,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(80),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BeforeMove, ItemEffect::PriorityChance { chance: 0.2 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4752,12 +4427,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Grass".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Compound { effects: vec![
-                ItemEffect::CureStatus { status: "brn".to_string() },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4768,9 +4437,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(80),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::ModifyCritRatio, ItemEffect::BoostCritRatio { stages: 1 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4815,9 +4481,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 5,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::DamagingHit, ItemEffect::Compound { effects: vec![ItemEffect::ForceOpponentSwitch, ItemEffect::ConsumeItem] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4862,12 +4525,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Grass".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Grass".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4901,9 +4558,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
         is_nonstandard: Some("Past".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Rock".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -4940,9 +4594,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 5,
         category: ItemCategory::HeldItem,
         fling_power: Some(60),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::DamagingHit, ItemEffect::ContactDamage { fraction: 0.167 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -4976,9 +4627,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
         is_nonstandard: Some("Past".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Grass".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -4992,12 +4640,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Fairy".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Fairy".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -5075,10 +4717,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 6,
         category: ItemCategory::HeldItem,
         fling_power: Some(80),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Residual, ItemEffect::WeatherImmunity, 0),
-            ItemEffectEntry::with_priority(EventType::TryHit, ItemEffect::PowderImmunity, 0),
-        ],
         ..Default::default()
     });
 
@@ -5165,9 +4803,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::ModifyCritRatio, ItemEffect::BoostCritRatio { stages: 1 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -5205,9 +4840,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
         is_nonstandard: Some("Past".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Water".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5218,9 +4850,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(50),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Flying".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5244,9 +4873,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SwitchOut, ItemEffect::EscapeTrapping, 0),
-        ],
         ..Default::default()
     });
 
@@ -5293,12 +4919,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Ground".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Ground".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -5309,9 +4929,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 3,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Normal".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5322,9 +4939,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Bug".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5338,15 +4952,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Psychic".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Triggered {
-            trigger: Trigger::OnHPBelow(0.5),
-            effect: Box::new(ItemEffect::Compound { effects: vec![
-                ItemEffect::HealOnThreshold { threshold: 0.5, heal_fraction: 0.25 },
-                ItemEffect::ConsumeItem,
-            ] }),
-        }, 0),
-        ],
         ..Default::default()
     });
 
@@ -5382,9 +4987,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Flying".to_string()),
         on_plate: Some("Flying".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Flying".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5442,9 +5044,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Ground".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5479,9 +5078,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Ghost".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5507,9 +5103,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Water".to_string()),
         on_plate: Some("Water".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Water".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5521,9 +5114,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Ghost".to_string()),
         on_plate: Some("Ghost".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Ghost".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5667,9 +5257,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Rock".to_string()),
         on_plate: Some("Rock".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Rock".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -5760,12 +5347,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Bug".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Bug".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -5876,9 +5457,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Poison".to_string()),
         on_plate: Some("Poison".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Poison".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -6989,9 +6567,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 2,
         category: ItemCategory::HeldItem,
         fling_power: Some(30),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Psychic".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -7110,12 +6685,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Electric".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Electric".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -7189,9 +6758,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
         is_nonstandard: Some("Past".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Water".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -7250,9 +6816,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 3,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::AfterBoost, ItemEffect::Compound { effects: vec![ItemEffect::RestoreLoweredStats, ItemEffect::ConsumeItem] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -7263,9 +6826,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         gen: 4,
         category: ItemCategory::HeldItem,
         fling_power: Some(10),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::ModifyAccuracy, ItemEffect::BoostAccuracy { multiplier: 1.1 }, 0),
-        ],
         ..Default::default()
     });
 
@@ -7279,15 +6839,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Rock".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::Update, ItemEffect::Triggered {
-            trigger: Trigger::OnHPBelowGluttony(0.25),
-            effect: Box::new(ItemEffect::Compound { effects: vec![
-                ItemEffect::HealOnThreshold { threshold: 0.25, heal_fraction: 0.333 },
-                ItemEffect::ConsumeItem,
-            ] }),
-        }, 0),
-        ],
         ..Default::default()
     });
 
@@ -7311,12 +6862,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         is_consumable: true,
         natural_gift_power: Some(80),
         natural_gift_type: Some("Ice".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::SourceModifyDamage, ItemEffect::Compound { effects: vec![
-                ItemEffect::ResistSuperEffective { resist_type: "Ice".to_string(), multiplier: 0.5 },
-                ItemEffect::ConsumeItem,
-            ] }, 0),
-        ],
         ..Default::default()
     });
 
@@ -7328,9 +6873,6 @@ pub static ITEMS: Lazy<HashMap<ID, ItemDef>> = Lazy::new(|| {
         category: ItemCategory::Plate,
         forced_forme: Some("Arceus-Electric".to_string()),
         on_plate: Some("Electric".to_string()),
-        effects: vec![
-            ItemEffectEntry::with_priority(EventType::BasePower, ItemEffect::BoostType { move_type: "Electric".to_string(), multiplier: 1.2 }, 15),
-        ],
         ..Default::default()
     });
 
@@ -7395,14 +6937,14 @@ pub fn is_berry(item_id: &ID) -> bool {
 
 /// Get residual healing for an item (returns fraction of max HP)
 pub fn get_residual_heal(item_id: &ID) -> Option<f64> {
-    let item = get_item(item_id)?;
-    // Check effects for ResidualHeal
-    for entry in &item.effects {
-        if let ItemEffect::ResidualHeal { fraction } = &entry.effect {
-            return Some(*fraction);
-        }
+    // Residual healing is now handled in item_callbacks.rs
+    // This function is kept for backward compatibility
+    let item = item_id.as_str();
+    match item {
+        "leftovers" => Some(0.0625), // 1/16 HP
+        "blacksludge" => Some(0.0625), // 1/16 HP for Poison types
+        _ => None,
     }
-    None
 }
 
 /// Check if an item grants type immunity
@@ -7428,27 +6970,24 @@ mod tests {
     fn test_leftovers() {
         let leftovers = ITEMS.get(&ID::new("leftovers")).expect("leftovers should exist");
         assert_eq!(leftovers.name, "Leftovers");
-        assert!(!leftovers.effects.is_empty());
     }
 
     #[test]
     fn test_choice_items() {
         let band = ITEMS.get(&ID::new("choiceband")).expect("choiceband");
         assert!(band.is_choice);
-        assert!(!band.effects.is_empty());
     }
 
     #[test]
     fn test_sitrus_berry() {
         let sitrus = ITEMS.get(&ID::new("sitrusberry")).expect("sitrusberry");
         assert!(sitrus.is_berry);
-        assert!(!sitrus.effects.is_empty());
     }
 
     #[test]
-    fn test_complex_items_flagged() {
-        let assault_vest = ITEMS.get(&ID::new("assaultvest")).expect("assaultvest");
-        assert!(assault_vest.has_custom_handler);
+    fn test_get_item() {
+        let assault_vest = get_item(&ID::new("assaultvest")).expect("assaultvest");
+        assert_eq!(assault_vest.name, "Assault Vest");
     }
 }
 

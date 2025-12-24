@@ -6,7 +6,6 @@
 pub mod abilities;
 pub mod moves;
 pub mod items;
-pub mod item_effects;
 pub mod conditions;
 pub mod typechart;
 pub mod species;
