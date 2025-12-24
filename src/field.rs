@@ -162,6 +162,67 @@ impl Field {
         self.pseudo_weather.remove(id).is_some()
     }
 
+    // ==========================================
+    // Methods ported from field.ts
+    // ==========================================
+
+    /// Get weather state
+    pub fn get_weather(&self) -> &ID {
+        &self.weather
+    }
+
+    /// Get weather state struct
+    pub fn get_weather_state(&self) -> &EffectState {
+        &self.weather_state
+    }
+
+    /// Get mutable weather state
+    pub fn get_weather_state_mut(&mut self) -> &mut EffectState {
+        &mut self.weather_state
+    }
+
+    /// Get terrain
+    pub fn get_terrain(&self) -> &ID {
+        &self.terrain
+    }
+
+    /// Get terrain state struct
+    pub fn get_terrain_state(&self) -> &EffectState {
+        &self.terrain_state
+    }
+
+    /// Get mutable terrain state
+    pub fn get_terrain_state_mut(&mut self) -> &mut EffectState {
+        &mut self.terrain_state
+    }
+
+    /// Effective terrain (accounts for Pokemon abilities)
+    /// For now, just returns the terrain (suppression at battle level)
+    pub fn effective_terrain(&self) -> &ID {
+        &self.terrain
+    }
+
+    /// Check if terrain matches any in list
+    pub fn is_terrain_any(&self, terrains: &[&str]) -> bool {
+        terrains.iter().any(|t| self.is_terrain(t))
+    }
+
+    /// Check if suppressing weather (would need battle context)
+    pub fn suppressing_weather(&self) -> bool {
+        // Would need to check active Pokemon abilities
+        // Stub implementation - battle handles this
+        false
+    }
+
+    /// Destroy field (cleanup)
+    pub fn destroy(&mut self) {
+        self.weather = ID::empty();
+        self.weather_state = EffectState::new(ID::empty());
+        self.terrain = ID::empty();
+        self.terrain_state = EffectState::new(ID::empty());
+        self.pseudo_weather.clear();
+    }
+
     /// Decrement durations and remove expired conditions
     /// Returns list of expired effect IDs
     pub fn decrement_durations(&mut self) -> Vec<ID> {
