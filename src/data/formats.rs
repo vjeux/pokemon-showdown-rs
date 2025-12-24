@@ -465,6 +465,605 @@ pub fn is_banned_in_format(format_id: &ID, thing: &str) -> bool {
     }
 }
 
+// =========================================================================
+// RULETABLE - Equivalent to dex-formats.ts RuleTable class
+// =========================================================================
+
+/// Complex ban entry: (rule, source, limit, bans)
+pub type ComplexBan = (String, String, u32, Vec<String>);
+
+/// Timer settings for battle
+#[derive(Debug, Clone, Default)]
+pub struct GameTimerSettings {
+    pub dc_timer: bool,
+    pub dc_timer_bank: bool,
+    pub starting: u32,
+    pub grace: u32,
+    pub add_per_turn: u32,
+    pub max_per_turn: u32,
+    pub max_first_turn: u32,
+    pub timeout_auto_choose: bool,
+    pub accelerate: bool,
+}
+
+/// RuleTable - tracks rules in effect for a format
+/// The key can be:
+/// - '[ruleid]' the ID of a rule in effect
+/// - '-[thing]' or '-[category]:[thing]' ban a thing
+/// - '+[thing]' or '+[category]:[thing]' allow a thing (override a ban)
+#[derive(Debug, Clone, Default)]
+pub struct RuleTable {
+    /// Map of rule ID to source format name
+    rules: HashMap<String, String>,
+    /// Complex bans (rule, source, limit, bans)
+    pub complex_bans: Vec<ComplexBan>,
+    /// Complex team bans
+    pub complex_team_bans: Vec<ComplexBan>,
+    /// Tag rules (pokemontag rules)
+    pub tag_rules: Vec<String>,
+    /// Value rules (rules with = values)
+    pub value_rules: HashMap<String, String>,
+    /// Timer settings
+    pub timer: Option<GameTimerSettings>,
+
+    // Resolved numeric properties
+    pub min_team_size: usize,
+    pub max_team_size: usize,
+    pub picked_team_size: Option<usize>,
+    pub max_total_level: Option<u32>,
+    pub max_move_count: usize,
+    pub min_source_gen: u8,
+    pub min_level: u8,
+    pub max_level: u8,
+    pub default_level: u8,
+    pub adjust_level: Option<u8>,
+    pub adjust_level_down: Option<u8>,
+    pub ev_limit: Option<u32>,
+}
+
+impl RuleTable {
+    /// Create a new empty RuleTable
+    pub fn new() -> Self {
+        Self {
+            rules: HashMap::new(),
+            complex_bans: Vec::new(),
+            complex_team_bans: Vec::new(),
+            tag_rules: Vec::new(),
+            value_rules: HashMap::new(),
+            timer: None,
+            min_team_size: 1,
+            max_team_size: 6,
+            picked_team_size: None,
+            max_total_level: None,
+            max_move_count: 4,
+            min_source_gen: 1,
+            min_level: 1,
+            max_level: 100,
+            default_level: 100,
+            adjust_level: None,
+            adjust_level_down: None,
+            ev_limit: None,
+        }
+    }
+
+    /// Check if a rule exists
+    pub fn has(&self, key: &str) -> bool {
+        self.rules.contains_key(key)
+    }
+
+    /// Get a rule's source
+    pub fn get(&self, key: &str) -> Option<&String> {
+        self.rules.get(key)
+    }
+
+    /// Set a rule
+    pub fn set(&mut self, key: &str, source: &str) {
+        self.rules.insert(key.to_string(), source.to_string());
+    }
+
+    /// Delete a rule
+    pub fn delete(&mut self, key: &str) {
+        self.rules.remove(key);
+    }
+
+    /// Get all rule keys
+    pub fn keys(&self) -> impl Iterator<Item = &String> {
+        self.rules.keys()
+    }
+
+    /// Check if something is banned
+    /// Equivalent to isBanned()
+    pub fn is_banned(&self, thing: &str) -> bool {
+        if self.has(&format!("+{}", thing)) {
+            return false;
+        }
+        self.has(&format!("-{}", thing))
+    }
+
+    /// Check if a species is banned
+    /// Equivalent to isBannedSpecies()
+    pub fn is_banned_species(&self, species_id: &str, base_species_id: &str) -> bool {
+        if self.has(&format!("+pokemon:{}", species_id)) {
+            return false;
+        }
+        if self.has(&format!("-pokemon:{}", species_id)) {
+            return true;
+        }
+        if self.has(&format!("+basepokemon:{}", base_species_id)) {
+            return false;
+        }
+        if self.has(&format!("-basepokemon:{}", base_species_id)) {
+            return true;
+        }
+        self.has("-pokemontag:allpokemon")
+    }
+
+    /// Check if something is restricted
+    /// Equivalent to isRestricted()
+    pub fn is_restricted(&self, thing: &str) -> bool {
+        if self.has(&format!("+{}", thing)) {
+            return false;
+        }
+        self.has(&format!("*{}", thing))
+    }
+
+    /// Check if a species is restricted
+    /// Equivalent to isRestrictedSpecies()
+    pub fn is_restricted_species(&self, species_id: &str, base_species_id: &str) -> bool {
+        if self.has(&format!("+pokemon:{}", species_id)) {
+            return false;
+        }
+        if self.has(&format!("*pokemon:{}", species_id)) {
+            return true;
+        }
+        if self.has(&format!("+basepokemon:{}", base_species_id)) {
+            return false;
+        }
+        if self.has(&format!("*basepokemon:{}", base_species_id)) {
+            return true;
+        }
+        self.has("*pokemontag:allpokemon")
+    }
+
+    /// Get tag rules
+    /// Equivalent to getTagRules()
+    pub fn get_tag_rules(&mut self) -> &Vec<String> {
+        let mut tag_rules = Vec::new();
+        for ruleid in self.rules.keys() {
+            if ruleid.starts_with("+pokemontag:") || ruleid.starts_with("*pokemontag:") || ruleid.starts_with("-pokemontag:") {
+                let banid = &ruleid[12..];
+                if banid != "allpokemon" && banid != "allitems" && banid != "allmoves"
+                    && banid != "allabilities" && banid != "allnatures" {
+                    tag_rules.push(ruleid.clone());
+                }
+            } else if ruleid.len() > 1 && "+*-".contains(&ruleid[..1]) && &ruleid[1..] == "nonexistent" {
+                tag_rules.push(format!("{}pokemontag:nonexistent", &ruleid[..1]));
+            }
+        }
+        tag_rules.reverse();
+        self.tag_rules = tag_rules;
+        &self.tag_rules
+    }
+
+    /// Check a thing for bans
+    /// Returns: empty string = whitelisted, Some(reason) = banned, None = neither
+    /// Equivalent to check()
+    pub fn check(&self, thing: &str) -> Option<String> {
+        if self.has(&format!("+{}", thing)) {
+            return Some(String::new()); // whitelisted
+        }
+        self.get_reason(&format!("-{}", thing))
+    }
+
+    /// Get reason for a rule
+    /// Equivalent to getReason()
+    pub fn get_reason(&self, key: &str) -> Option<String> {
+        match self.rules.get(key) {
+            None => None,
+            Some(source) => {
+                if key == "-nonexistent" || key.starts_with("obtainable") {
+                    Some("not obtainable".to_string())
+                } else if source.is_empty() {
+                    Some("banned".to_string())
+                } else {
+                    Some(format!("banned by {}", source))
+                }
+            }
+        }
+    }
+
+    /// Get blame string for a rule
+    /// Equivalent to blame()
+    pub fn blame(&self, key: &str) -> String {
+        match self.rules.get(key) {
+            Some(source) if !source.is_empty() => format!(" from {}", source),
+            _ => String::new(),
+        }
+    }
+
+    /// Get index of a complex ban
+    /// Equivalent to getComplexBanIndex()
+    pub fn get_complex_ban_index(&self, complex_bans: &[ComplexBan], rule: &str) -> Option<usize> {
+        let rule_id = ID::new(rule);
+        complex_bans.iter().position(|(r, _, _, _)| ID::new(r) == rule_id)
+    }
+
+    /// Add a complex ban
+    /// Equivalent to addComplexBan()
+    pub fn add_complex_ban(&mut self, rule: &str, source: &str, limit: u32, bans: Vec<String>) {
+        if let Some(idx) = self.get_complex_ban_index(&self.complex_bans, rule) {
+            if self.complex_bans[idx].2 == u32::MAX {
+                return; // Infinity
+            }
+            self.complex_bans[idx] = (rule.to_string(), source.to_string(), limit, bans);
+        } else {
+            self.complex_bans.push((rule.to_string(), source.to_string(), limit, bans));
+        }
+    }
+
+    /// Add a complex team ban
+    /// Equivalent to addComplexTeamBan()
+    pub fn add_complex_team_ban(&mut self, rule: &str, source: &str, limit: u32, bans: Vec<String>) {
+        if let Some(idx) = self.get_complex_ban_index(&self.complex_team_bans, rule) {
+            if self.complex_team_bans[idx].2 == u32::MAX {
+                return;
+            }
+            self.complex_team_bans[idx] = (rule.to_string(), source.to_string(), limit, bans);
+        } else {
+            self.complex_team_bans.push((rule.to_string(), source.to_string(), limit, bans));
+        }
+    }
+
+    /// Resolve numeric properties
+    /// Equivalent to resolveNumbers()
+    pub fn resolve_numbers(&mut self, format: &FormatDef) {
+        let game_type_min_team_size = match format.game_type {
+            GameType::Triples => 3,
+            GameType::Doubles => 2,
+            _ => 1,
+        };
+
+        self.min_team_size = self.value_rules.get("minteamsize")
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(0);
+        self.max_team_size = self.value_rules.get("maxteamsize")
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(6);
+        self.picked_team_size = self.value_rules.get("pickedteamsize")
+            .and_then(|v| v.parse().ok());
+        self.max_total_level = self.value_rules.get("maxtotallevel")
+            .and_then(|v| v.parse().ok());
+        self.max_move_count = self.value_rules.get("maxmovecount")
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(4);
+        self.min_source_gen = self.value_rules.get("minsourcegen")
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(1);
+        self.min_level = self.value_rules.get("minlevel")
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(1);
+        self.max_level = self.value_rules.get("maxlevel")
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(100);
+        self.default_level = self.value_rules.get("defaultlevel")
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(0);
+        self.adjust_level = self.value_rules.get("adjustlevel")
+            .and_then(|v| v.parse().ok());
+        self.adjust_level_down = self.value_rules.get("adjustleveldown")
+            .and_then(|v| v.parse().ok());
+        self.ev_limit = self.value_rules.get("evlimit")
+            .and_then(|v| v.parse().ok());
+
+        // Handle auto values for picked team size
+        if self.value_rules.get("pickedteamsize").map(|s| s.as_str()) == Some("Auto") {
+            self.picked_team_size = Some(match format.game_type {
+                GameType::Doubles => 4,
+                GameType::Triples => 6,
+                _ => 3,
+            });
+        }
+
+        // Set default level if not specified
+        if self.default_level == 0 {
+            self.default_level = self.max_level;
+        }
+
+        // Set min team size if not specified
+        if self.min_team_size == 0 {
+            self.min_team_size = game_type_min_team_size.max(self.picked_team_size.unwrap_or(0));
+        }
+    }
+
+    /// Check if there are complex bans
+    /// Equivalent to hasComplexBans()
+    pub fn has_complex_bans(&self) -> bool {
+        !self.complex_bans.is_empty() || !self.complex_team_bans.is_empty()
+    }
+}
+
+// =========================================================================
+// DEXFORMATS - Equivalent to dex-formats.ts DexFormats class
+// =========================================================================
+
+/// Format class - runtime format object
+#[derive(Debug, Clone)]
+pub struct Format {
+    pub id: String,
+    pub name: String,
+    pub mod_: String,
+    pub effect_type: String,
+    pub debug: bool,
+    pub rated: bool,
+    pub game_type: GameType,
+    pub player_count: u8,
+    pub ruleset: Vec<String>,
+    pub base_ruleset: Vec<String>,
+    pub banlist: Vec<String>,
+    pub restricted: Vec<String>,
+    pub unbanlist: Vec<String>,
+    pub custom_rules: Option<Vec<String>>,
+    pub rule_table: Option<RuleTable>,
+    pub exists: bool,
+}
+
+impl Format {
+    /// Create a new Format from a FormatDef
+    pub fn from_def(def: &FormatDef) -> Self {
+        Self {
+            id: def.id.to_string(),
+            name: def.name.to_string(),
+            mod_: format!("gen{}", def.mod_.number()),
+            effect_type: "Format".to_string(),
+            debug: false,
+            rated: def.rated,
+            game_type: def.game_type,
+            player_count: if matches!(def.game_type, GameType::Multi | GameType::FreeForAll) { 4 } else { 2 },
+            ruleset: def.rulesets.iter().map(|s| s.to_string()).collect(),
+            base_ruleset: def.rulesets.iter().map(|s| s.to_string()).collect(),
+            banlist: def.bans.iter().map(|s| s.to_string()).collect(),
+            restricted: Vec::new(),
+            unbanlist: def.unbans.iter().map(|s| s.to_string()).collect(),
+            custom_rules: None,
+            rule_table: None,
+            exists: true,
+        }
+    }
+
+    /// Create a non-existent format
+    pub fn non_existent(id: &str, name: &str) -> Self {
+        Self {
+            id: id.to_string(),
+            name: name.to_string(),
+            mod_: "gen9".to_string(),
+            effect_type: "Format".to_string(),
+            debug: false,
+            rated: false,
+            game_type: GameType::Singles,
+            player_count: 2,
+            ruleset: Vec::new(),
+            base_ruleset: Vec::new(),
+            banlist: Vec::new(),
+            restricted: Vec::new(),
+            unbanlist: Vec::new(),
+            custom_rules: None,
+            rule_table: None,
+            exists: false,
+        }
+    }
+}
+
+/// DexFormats - manages format loading and validation
+pub struct DexFormats {
+    /// Cache of loaded formats
+    pub formats_cache: HashMap<ID, Format>,
+    /// List of all formats
+    pub formats_list: Vec<Format>,
+    /// Whether formats have been loaded
+    loaded: bool,
+}
+
+impl DexFormats {
+    /// Create a new DexFormats
+    pub fn new() -> Self {
+        Self {
+            formats_cache: HashMap::new(),
+            formats_list: Vec::new(),
+            loaded: false,
+        }
+    }
+
+    /// Load formats from static definitions
+    /// Equivalent to load()
+    pub fn load(&mut self) {
+        if self.loaded {
+            return;
+        }
+
+        for (id, def) in FORMATS.iter() {
+            let format = Format::from_def(def);
+            self.formats_cache.insert(id.clone(), format.clone());
+            self.formats_list.push(format);
+        }
+
+        self.loaded = true;
+    }
+
+    /// Validate a format name and return sanitized ID
+    /// Equivalent to validate()
+    pub fn validate(&mut self, name: &str) -> Result<String, String> {
+        let parts: Vec<&str> = name.split("@@@").collect();
+        let format_name = parts[0];
+        let format = self.get(format_name);
+
+        if !format.exists {
+            return Err(format!("Unrecognized format \"{}\"", format_name));
+        }
+
+        if parts.len() == 1 {
+            return Ok(format.id.clone());
+        }
+
+        // Has custom rules
+        let custom_rules: Vec<String> = parts[1]
+            .split(',')
+            .map(|r| r.trim().to_string())
+            .collect();
+
+        Ok(format!("{}@@@{}", format.id, custom_rules.join(",")))
+    }
+
+    /// Get a format by name
+    /// Equivalent to get()
+    pub fn get(&mut self, name: &str) -> Format {
+        self.load();
+
+        let name = name.trim();
+        let id = ID::new(name);
+
+        // Check cache
+        if let Some(format) = self.formats_cache.get(&id) {
+            return format.clone();
+        }
+
+        // Check static formats
+        if let Some(def) = FORMATS.get(&id) {
+            let format = Format::from_def(def);
+            self.formats_cache.insert(id.clone(), format.clone());
+            return format;
+        }
+
+        // Return non-existent format
+        Format::non_existent(id.as_str(), name)
+    }
+
+    /// Get all formats
+    /// Equivalent to all()
+    pub fn all(&mut self) -> &Vec<Format> {
+        self.load();
+        &self.formats_list
+    }
+
+    /// Check if a rule spec is for Pokemon
+    /// Equivalent to isPokemonRule()
+    pub fn is_pokemon_rule(rule_spec: &str) -> bool {
+        let rest = if rule_spec.len() > 1 { &rule_spec[1..] } else { "" };
+        rest.starts_with("pokemontag:") || rest.starts_with("pokemon:") || rest.starts_with("basepokemon:")
+    }
+
+    /// Get rule table for a format
+    /// Equivalent to getRuleTable()
+    pub fn get_rule_table(&self, format: &Format) -> RuleTable {
+        let mut rule_table = RuleTable::new();
+
+        // Add rules from ruleset
+        for rule in &format.ruleset {
+            rule_table.set(rule, "");
+        }
+
+        // Add bans
+        for ban in &format.banlist {
+            rule_table.set(&format!("-{}", ban), "");
+        }
+
+        // Add unbans
+        for unban in &format.unbanlist {
+            rule_table.set(&format!("+{}", unban), "");
+        }
+
+        // Add restricted
+        for restricted in &format.restricted {
+            rule_table.set(&format!("*{}", restricted), "");
+        }
+
+        // Add custom rules
+        if let Some(custom_rules) = &format.custom_rules {
+            for rule in custom_rules {
+                rule_table.set(rule, "custom");
+            }
+        }
+
+        // Resolve numbers from a FormatDef if we can find one
+        if let Some(def) = get_format(&ID::new(&format.id)) {
+            rule_table.resolve_numbers(def);
+        }
+
+        rule_table.get_tag_rules();
+
+        rule_table
+    }
+
+    /// Validate a rule string
+    /// Equivalent to validateRule()
+    pub fn validate_rule(&self, rule: &str) -> Result<String, String> {
+        let rule = rule.trim();
+
+        if rule.is_empty() {
+            return Err("Empty rule".to_string());
+        }
+
+        let first_char = rule.chars().next().unwrap();
+
+        match first_char {
+            '-' | '*' | '+' => {
+                // Ban/unban/restrict rule
+                let rest = &rule[1..];
+                self.validate_ban_rule(rest).map(|r| format!("{}{}", first_char, r))
+            }
+            '!' => {
+                // Repeal rule
+                let rest = rule[1..].trim();
+                Ok(format!("!{}", ID::new(rest).as_str()))
+            }
+            _ => {
+                // Regular rule
+                if let Some((name, value)) = rule.split_once('=') {
+                    let id = ID::new(name.trim());
+                    Ok(format!("{}={}", id.as_str(), value.trim()))
+                } else {
+                    Ok(ID::new(rule).to_string())
+                }
+            }
+        }
+    }
+
+    /// Check if a tag is a valid Pokemon tag
+    /// Equivalent to validPokemonTag()
+    pub fn valid_pokemon_tag(&self, _tagid: &str) -> bool {
+        // Simplified - would check against Tags data
+        true
+    }
+
+    /// Validate a ban rule
+    /// Equivalent to validateBanRule()
+    pub fn validate_ban_rule(&self, rule: &str) -> Result<String, String> {
+        let id = ID::new(rule);
+        let id_str = id.as_str();
+
+        if id_str == "unreleased" || id_str == "nonexistent" {
+            return Ok(id_str.to_string());
+        }
+
+        // Check for category prefix
+        let categories = ["pokemon", "move", "ability", "item", "nature", "pokemontag"];
+        for cat in &categories {
+            if rule.starts_with(&format!("{}:", cat)) {
+                let rest = &rule[cat.len() + 1..];
+                return Ok(format!("{}:{}", cat, ID::new(rest).as_str()));
+            }
+        }
+
+        // Assume it's a pokemon for now (simplified)
+        Ok(format!("pokemon:{}", id_str))
+    }
+}
+
+impl Default for DexFormats {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
