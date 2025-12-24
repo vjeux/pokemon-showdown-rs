@@ -375,7 +375,7 @@ impl Battle {
         }
 
         for (side_idx, slot, pokemon_idx) in &switch_ops {
-            self.switch_in(*side_idx, *slot, *pokemon_idx);
+            self.switch_in(*side_idx, *slot, *pokemon_idx, None, false);
         }
 
         // Trigger switch-in abilities after all Pokemon are on the field
@@ -412,7 +412,7 @@ impl Battle {
         };
 
         if pokemon_is_active {
-            self.hint("A switch failed because the Pokémon trying to switch in is already in.");
+            self.hint("A switch failed because the Pokémon trying to switch in is already in.", false, None);
             return SwitchResult::Failed;
         }
 
@@ -435,9 +435,9 @@ impl Battle {
                 // Run BeforeSwitchOut event (unless skipBeforeSwitchOutEventFlag or is_drag)
                 let skip_event = self.sides[side_index].pokemon[old_idx].skip_before_switch_out_event_flag;
                 if !skip_event && !is_drag {
-                    self.run_event("BeforeSwitchOut", Some((side_index, old_idx)), None, None);
+                    self.run_event("BeforeSwitchOut", Some((side_index, old_idx)), None, None, None);
                     if self.gen >= 5 {
-                        self.each_event("Update");
+                        self.each_event_internal("Update");
                     }
                 }
 
@@ -511,7 +511,7 @@ impl Battle {
         }
 
         // Run BeforeSwitchIn event
-        self.run_event("BeforeSwitchIn", Some((side_index, pokemon_index)), None, None);
+        self.run_event("BeforeSwitchIn", Some((side_index, pokemon_index)), None, None, None);
 
         // Log the switch
         let (details, hp_display) = {
@@ -534,7 +534,7 @@ impl Battle {
 
         // Gen 2 drag tracking
         if is_drag && self.gen == 2 {
-            self.sides[side_index].pokemon[pokemon_index].dragged_in = Some(self.turn);
+            self.sides[side_index].pokemon[pokemon_index].dragged_in = Some(self.turn as usize);
         }
         self.sides[side_index].pokemon[pokemon_index].previously_switched_in += 1;
 
@@ -552,13 +552,8 @@ impl Battle {
         SwitchResult::Success
     }
 
-    /// Add a hint to the battle log
-    pub fn hint(&mut self, message: &str) {
-        self.log.push(format!("|hint|{}", message));
-    }
-
     /// Run each event for all active Pokemon
-    pub fn each_event(&mut self, event_name: &str) {
+    fn each_event_internal(&mut self, event_name: &str) {
         let active = self.get_all_active_indices();
         for (side_idx, poke_idx) in active {
             let effect_id = ID::new(event_name);
