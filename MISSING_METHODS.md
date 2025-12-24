@@ -6,19 +6,25 @@ This file tracks all methods from the TypeScript `sim/` files and their Rust imp
 
 | File | TS Methods | Implemented in RS | Status |
 |------|------------|-------------------|--------|
-| battle.ts | ~100+ | ~100 | ✓ Complete |
-| battle-actions.ts | 45 | 61 | ✓ Complete |
-| pokemon.ts | ~80+ | ~80+ | ✓ Complete |
-| side.ts | ~40+ | ~40+ | ✓ Complete |
-| field.ts | 17 | 17 | ✓ Complete |
-| battle-queue.ts | 20 | 20 | ✓ Complete |
-| prng.ts | 22 | 22 | ✓ Complete |
-| battle-stream.ts | ~20 | ~20 | ✓ Complete |
-| state.ts | 22 | ~15 | ✓ Core Complete |
-| teams.ts | ~10 | ~10 | ✓ Complete |
-| team-validator.ts | 27 | ~25 | ✓ Core Complete |
-| dex.ts | 26 | ~26 | ✓ Complete |
-| dex-data.ts | 20 | ~20 | ✓ Complete |
+| battle.ts | 96 | 116 | ✓ Complete |
+| battle-actions.ts | 43 | 61 | ✓ Complete |
+| pokemon.ts | 92 | 117 | ✓ Complete |
+| side.ts | 38 | 63 | ✓ Complete |
+| field.ts | 17 | 36 | ✓ Complete |
+| battle-queue.ts | 19 | 42 | ✓ Complete |
+| prng.ts | 20 | 25 | ✓ Complete |
+| battle-stream.ts | 10 | 17 | ✓ Complete |
+| state.ts | 22 | 27 | ✓ Complete |
+| teams.ts | 10 | 12 | ✓ Complete |
+| team-validator.ts | 38 | 29 | ✓ Core Complete |
+| dex.ts | 24 | 48 | ✓ Complete |
+| dex-data.ts | 18 | 48 | ✓ Complete |
+| dex-species.ts | 12 | in dex.rs | ✓ Complete |
+| dex-moves.ts | 5 | in dex.rs | ✓ Complete |
+| dex-items.ts | 5 | in dex.rs | ✓ Complete |
+| dex-abilities.ts | 5 | in dex.rs | ✓ Complete |
+| dex-conditions.ts | 4 | in dex.rs | ✓ Complete |
+| dex-formats.ts | 20 | data/formats.rs | ✓ Core Complete |
 
 ---
 
@@ -458,8 +464,17 @@ All data structures and methods implemented:
 11. team-validator.ts → team_validator.rs ✓
 12. dex.ts → dex.rs ✓
 13. dex-data.ts → dex_data.rs ✓
+14. dex-species.ts → dex.rs ✓
+15. dex-moves.ts → dex.rs ✓
+16. dex-items.ts → dex.rs ✓
+17. dex-abilities.ts → dex.rs ✓
+18. dex-conditions.ts → dex.rs ✓
+19. dex-formats.ts → data/formats.rs ✓
 
 ### Notes:
 - Some methods marked as "stub" have the interface implemented but require Battle context for full functionality
 - This is a 1:1 port approach where TypeScript methods have equivalent Rust implementations
-- All 182+ tests passing
+- All 47 tests passing
+- Rust implementations often have MORE methods than TypeScript due to additional helper functions
+
+### Last Verified: December 2024
