@@ -161,6 +161,9 @@ pub struct Pokemon {
     pub newly_switched: bool,
     pub being_called_back: bool,
     pub dragged_in: Option<usize>,
+    pub skip_before_switch_out_event_flag: bool,
+    pub stats_raised_this_turn: bool,
+    pub stats_lowered_this_turn: bool,
 
     // Turn state
     pub last_move: Option<ID>,
@@ -273,6 +276,9 @@ impl Pokemon {
             newly_switched: false,
             being_called_back: false,
             dragged_in: None,
+            skip_before_switch_out_event_flag: false,
+            stats_raised_this_turn: false,
+            stats_lowered_this_turn: false,
 
             last_move: None,
             last_move_used: None,

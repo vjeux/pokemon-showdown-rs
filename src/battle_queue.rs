@@ -349,6 +349,25 @@ impl BattleQueue {
         })
     }
 
+    /// Insert a runSwitch action for a pokemon
+    /// This queues the switch-in effects to happen at the right time
+    pub fn insert_run_switch(&mut self, side_index: usize, pokemon_index: usize) {
+        let action = Action::Pokemon(PokemonAction {
+            choice: PokemonActionType::RunSwitch,
+            priority: 0,
+            speed: 1, // Speed doesn't matter for runSwitch
+            pokemon_index,
+            side_index,
+            event: None,
+        });
+        self.list.push(action);
+    }
+
+    /// Insert a choice at the front of the queue (for immediate execution)
+    pub fn insert_choice(&mut self, action: Action) {
+        self.list.insert(0, action);
+    }
+
     /// Sort the queue by priority
     /// Order: order (lower first), priority (higher first), speed (higher first)
     pub fn sort(&mut self) {
