@@ -3849,6 +3849,43 @@ impl Battle {
         self.hints.clear();
     }
 
+    /// Reset the PRNG with a new seed
+    /// Equivalent to battle.ts resetRNG()
+    pub fn reset_rng(&mut self, seed: Option<crate::prng::PRNGSeed>) {
+        let new_seed = seed.unwrap_or(self.prng_seed.clone());
+        self.prng = PRNG::new(new_seed.clone());
+        self.prng_seed = new_seed;
+    }
+
+    /// Join a player to a battle slot
+    /// Equivalent to battle.ts join()
+    ///
+    /// This is a convenience method that wraps setPlayer
+    pub fn join(
+        &mut self,
+        slot: SideID,
+        name: &str,
+        avatar: &str,
+        team: Option<Vec<crate::pokemon::Pokemon>>,
+    ) {
+        // Create player options
+        let options = PlayerOptions {
+            name: name.to_string(),
+            avatar: avatar.to_string(),
+            team: vec![], // Team is handled separately
+        };
+
+        // Set the player
+        self.set_player(slot, options);
+
+        // If a team was provided, replace the side's pokemon
+        if let Some(pokemon_team) = team {
+            if let Some(side) = self.get_side_mut(slot) {
+                side.pokemon = pokemon_team;
+            }
+        }
+    }
+
     /// Destroy the battle (cleanup)
     pub fn destroy(&mut self) {
         // Clear all references
