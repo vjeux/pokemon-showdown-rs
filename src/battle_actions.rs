@@ -240,9 +240,6 @@ pub struct ZMoveOption {
     pub target: String,
 }
 
-/// Spread move damage result
-pub type SpreadMoveDamage = Vec<Option<DamageValue>>;
-
 /// Damage value (can be number, false, or undefined-like None)
 #[derive(Debug, Clone)]
 pub enum DamageValue {
@@ -1497,7 +1494,7 @@ impl<'a> BattleActions<'a> {
                         ZPowerResult::Heal
                     } else {
                         ZPowerResult::Boost(BoostsTable {
-                            atk: Some(1),
+                            atk: 1,
                             ..Default::default()
                         })
                     }
@@ -1600,6 +1597,68 @@ impl<'a> BattleActions<'a> {
         // Stub - would apply secondary effects
         let _ = (target_indices, source_index, move_id, is_self);
     }
+
+    // =========================================================================
+    // SWITCH METHODS - Ported from battle-actions.ts
+    // These require Battle context so they are stubs with proper interfaces
+    // =========================================================================
+
+    /// Switch in a Pokemon
+    /// Equivalent to battle-actions.ts switchIn()
+    ///
+    /// This is the main switch-in method that handles:
+    /// - Checking if Pokemon is already active
+    /// - Running BeforeSwitchOut/SwitchOut events on old active
+    /// - Handling switch copy flags (copyvolatile, shedtail)
+    /// - Clearing volatiles on old active
+    /// - Setting up the new active Pokemon
+    /// - Running BeforeSwitchIn events
+    /// - Adding the switch message
+    ///
+    /// Returns true if switch was successful, false if blocked,
+    /// or "pursuitfaint" if the Pokemon fainted from Pursuit before switching
+    pub fn switch_in_stub(
+        pokemon_index: usize,
+        side_index: usize,
+        pos: usize,
+        source_effect: Option<&ID>,
+        is_drag: bool,
+    ) -> SwitchInResult {
+        // This is a stub - full implementation requires Battle context
+        let _ = (pokemon_index, side_index, pos, source_effect, is_drag);
+
+        SwitchInResult::Success
+    }
+
+    /// Drag in a random Pokemon (from Whirlwind, Dragon Tail, etc.)
+    /// Equivalent to battle-actions.ts dragIn()
+    ///
+    /// This method:
+    /// - Gets a random switchable Pokemon from the side
+    /// - Runs the DragOut event on the current active
+    /// - Calls switchIn with isDrag=true
+    pub fn drag_in_stub(
+        side_index: usize,
+        pos: usize,
+    ) -> bool {
+        // This is a stub - full implementation requires Battle context
+        let _ = (side_index, pos);
+        true
+    }
+
+    /// Run switch-in effects
+    /// Equivalent to battle-actions.ts runSwitch()
+    ///
+    /// This method processes all pending runSwitch choices in the queue
+    /// and runs the SwitchIn field event for all switching Pokemon.
+    /// It also marks Pokemon as started and clears draggedIn.
+    pub fn run_switch_stub(
+        pokemon_index: usize,
+    ) -> bool {
+        // This is a stub - full implementation requires Battle context
+        let _ = pokemon_index;
+        true
+    }
 }
 
 /// Result of run_move
@@ -1635,6 +1694,18 @@ pub enum TerastallizeResult {
         forme_change: Option<String>,
     },
     InvalidOgerpon,
+}
+
+/// Result of switchIn
+/// Equivalent to the return value of battle-actions.ts switchIn()
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum SwitchInResult {
+    /// Switch was successful
+    Success,
+    /// Switch was blocked (e.g., by an event returning false)
+    Blocked,
+    /// Pokemon fainted from Pursuit before switching
+    PursuitFaint,
 }
 
 // =========================================================================

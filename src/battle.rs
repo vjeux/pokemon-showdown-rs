@@ -3852,8 +3852,8 @@ impl Battle {
     /// Reset the PRNG with a new seed
     /// Equivalent to battle.ts resetRNG()
     pub fn reset_rng(&mut self, seed: Option<crate::prng::PRNGSeed>) {
-        let new_seed = seed.unwrap_or(self.prng_seed.clone());
-        self.prng = PRNG::new(new_seed.clone());
+        let new_seed = seed.unwrap_or_else(|| self.prng_seed.clone());
+        self.prng = PRNG::new(Some(new_seed.clone()));
         self.prng_seed = new_seed;
     }
 
@@ -3871,7 +3871,7 @@ impl Battle {
         // Create player options
         let options = PlayerOptions {
             name: name.to_string(),
-            avatar: avatar.to_string(),
+            avatar: if avatar.is_empty() { None } else { Some(avatar.to_string()) },
             team: vec![], // Team is handled separately
         };
 

@@ -1563,8 +1563,8 @@ impl Pokemon {
     /// Clear the pokemon's status
     /// Equivalent to pokemon.ts clearStatus()
     pub fn clear_status(&mut self) -> bool {
-        if self.status.is_some() {
-            self.status = None;
+        if !self.status.is_empty() {
+            self.status = ID::empty();
             self.status_state = crate::dex_data::EffectState::new(ID::empty());
             true
         } else {
