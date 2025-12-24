@@ -417,6 +417,24 @@ impl Side {
             .unwrap_or(0)
     }
 
+    /// Check if choice for this turn is complete
+    /// Equivalent to side.ts isChoiceDone()
+    pub fn is_choice_done(&self) -> bool {
+        match self.request_state {
+            RequestState::None => true,
+            RequestState::TeamPreview => {
+                // For team preview, we need enough actions for the picked team size
+                // Simplified: just check if we have any actions
+                !self.choice.actions.is_empty()
+            }
+            RequestState::Move | RequestState::Switch => {
+                // Need one action per active slot
+                let active_slots = self.active.len();
+                self.choice.actions.len() >= active_slots
+            }
+        }
+    }
+
     /// Calculate Stealth Rock damage based on type effectiveness
     pub fn calc_stealth_rock_damage(defender_types: &[String], max_hp: u32) -> u32 {
         // Stealth Rock does 12.5% base, modified by Rock type effectiveness

@@ -2925,6 +2925,596 @@ impl Battle {
     pub fn clamp_int_range(&self, num: i32, min: i32, max: i32) -> i32 {
         num.clamp(min, max)
     }
+
+    // =========================================================================
+    // Priority and Speed Sorting Methods (ported from battle.ts)
+    // =========================================================================
+
+    /// Compare priority of two actions/handlers
+    /// Equivalent to battle.ts comparePriority()
+    /// Returns negative if a comes first, positive if b comes first, 0 if equal
+    pub fn compare_priority(a: &PriorityItem, b: &PriorityItem) -> std::cmp::Ordering {
+        // 1. Order, low to high (default last)
+        let order_cmp = a.order.unwrap_or(u32::MAX).cmp(&b.order.unwrap_or(u32::MAX));
+        if order_cmp != std::cmp::Ordering::Equal {
+            return order_cmp;
+        }
+
+        // 2. Priority, high to low (default 0)
+        let priority_cmp = b.priority.cmp(&a.priority);
+        if priority_cmp != std::cmp::Ordering::Equal {
+            return priority_cmp;
+        }
+
+        // 3. Speed, high to low (default 0)
+        let speed_cmp = b.speed.cmp(&a.speed);
+        if speed_cmp != std::cmp::Ordering::Equal {
+            return speed_cmp;
+        }
+
+        // 4. SubOrder, low to high (default 0)
+        let sub_order_cmp = a.sub_order.cmp(&b.sub_order);
+        if sub_order_cmp != std::cmp::Ordering::Equal {
+            return sub_order_cmp;
+        }
+
+        // 5. EffectOrder, low to high (default 0)
+        a.effect_order.cmp(&b.effect_order)
+    }
+
+    /// Compare for redirect order (abilities like Lightning Rod)
+    pub fn compare_redirect_order(a: &PriorityItem, b: &PriorityItem) -> std::cmp::Ordering {
+        // Priority first
+        let priority_cmp = b.priority.cmp(&a.priority);
+        if priority_cmp != std::cmp::Ordering::Equal {
+            return priority_cmp;
+        }
+
+        // Speed second
+        let speed_cmp = b.speed.cmp(&a.speed);
+        if speed_cmp != std::cmp::Ordering::Equal {
+            return speed_cmp;
+        }
+
+        // Effect order (for abilities with same priority/speed)
+        b.effect_order.cmp(&a.effect_order)
+    }
+
+    /// Compare for left-to-right order (hazards, etc.)
+    pub fn compare_left_to_right_order(a: &PriorityItem, b: &PriorityItem) -> std::cmp::Ordering {
+        // Order first
+        let order_cmp = a.order.unwrap_or(u32::MAX).cmp(&b.order.unwrap_or(u32::MAX));
+        if order_cmp != std::cmp::Ordering::Equal {
+            return order_cmp;
+        }
+
+        // Priority second
+        let priority_cmp = b.priority.cmp(&a.priority);
+        if priority_cmp != std::cmp::Ordering::Equal {
+            return priority_cmp;
+        }
+
+        // Index (position) - lower index first
+        a.index.cmp(&b.index)
+    }
+
+    /// Sort a list, resolving speed ties randomly (the way the games do)
+    /// Equivalent to battle.ts speedSort()
+    pub fn speed_sort<T, F>(&mut self, list: &mut [T], mut get_priority: F)
+    where
+        F: FnMut(&T) -> PriorityItem,
+    {
+        if list.len() < 2 {
+            return;
+        }
+
+        // Selection sort with random tie-breaking
+        let mut sorted = 0;
+        while sorted + 1 < list.len() {
+            let mut next_indexes = vec![sorted];
+
+            // Find the next item(s) with highest priority
+            for i in (sorted + 1)..list.len() {
+                let cmp = Self::compare_priority(&get_priority(&list[next_indexes[0]]), &get_priority(&list[i]));
+                match cmp {
+                    std::cmp::Ordering::Less => continue,
+                    std::cmp::Ordering::Greater => next_indexes = vec![i],
+                    std::cmp::Ordering::Equal => next_indexes.push(i),
+                }
+            }
+
+            // Put the next items where they belong
+            for (offset, &index) in next_indexes.iter().enumerate() {
+                if index != sorted + offset {
+                    list.swap(sorted + offset, index);
+                }
+            }
+
+            // If there were ties, shuffle them randomly
+            if next_indexes.len() > 1 {
+                let end = sorted + next_indexes.len();
+                self.shuffle_range(list, sorted, end);
+            }
+
+            sorted += next_indexes.len();
+        }
+    }
+
+    /// Shuffle a range of a slice in place
+    fn shuffle_range<T>(&mut self, list: &mut [T], start: usize, end: usize) {
+        for i in start..end {
+            let j = start + (self.random((end - start) as u32) as usize);
+            list.swap(i, j);
+        }
+    }
+
+    // =========================================================================
+    // Pokemon Lookup Methods (ported from battle.ts)
+    // =========================================================================
+
+    /// Get a Pokemon by its full name (e.g., "p1: Pikachu")
+    /// Equivalent to battle.ts getPokemon()
+    pub fn get_pokemon(&self, fullname: &str) -> Option<(usize, usize, &crate::pokemon::Pokemon)> {
+        for (side_idx, side) in self.sides.iter().enumerate() {
+            for (poke_idx, pokemon) in side.pokemon.iter().enumerate() {
+                let poke_fullname = format!("{}: {}", side.id_str(), pokemon.name);
+                if poke_fullname == fullname {
+                    return Some((side_idx, poke_idx, pokemon));
+                }
+            }
+        }
+        None
+    }
+
+    /// Get a Pokemon by its full name (mutable)
+    pub fn get_pokemon_mut(&mut self, fullname: &str) -> Option<(usize, usize)> {
+        for (side_idx, side) in self.sides.iter().enumerate() {
+            for (poke_idx, pokemon) in side.pokemon.iter().enumerate() {
+                let poke_fullname = format!("{}: {}", side.id_str(), pokemon.name);
+                if poke_fullname == fullname {
+                    return Some((side_idx, poke_idx));
+                }
+            }
+        }
+        None
+    }
+
+    /// Check if a side can switch
+    /// Equivalent to battle.ts canSwitch()
+    pub fn can_switch(&self, side_idx: usize) -> usize {
+        self.possible_switches(side_idx).len()
+    }
+
+    /// Get a random switchable Pokemon
+    /// Equivalent to battle.ts getRandomSwitchable()
+    pub fn get_random_switchable(&mut self, side_idx: usize) -> Option<usize> {
+        let switches = self.possible_switches(side_idx);
+        if switches.is_empty() {
+            return None;
+        }
+        let idx = self.random(switches.len() as u32) as usize;
+        Some(switches[idx])
+    }
+
+    /// Get list of Pokemon that can switch in
+    fn possible_switches(&self, side_idx: usize) -> Vec<usize> {
+        if let Some(side) = self.sides.get(side_idx) {
+            let mut can_switch_in = Vec::new();
+            for (idx, pokemon) in side.pokemon.iter().enumerate() {
+                // Skip active Pokemon
+                if pokemon.is_active {
+                    continue;
+                }
+                if !pokemon.is_fainted() {
+                    can_switch_in.push(idx);
+                }
+            }
+            return can_switch_in;
+        }
+        Vec::new()
+    }
+
+    // =========================================================================
+    // Targeting Methods (ported from battle.ts)
+    // =========================================================================
+
+    /// Check if a target location is valid
+    /// Equivalent to battle.ts validTargetLoc()
+    pub fn valid_target_loc(&self, target_loc: i8, source: (usize, usize), target_type: &str) -> bool {
+        let (source_side, _source_idx) = source;
+
+        if target_loc == 0 {
+            return false;
+        }
+
+        // Positive = foe side, negative = own side
+        let (target_side_idx, slot) = if target_loc > 0 {
+            let foe_side = if source_side == 0 { 1 } else { 0 };
+            (foe_side, (target_loc.abs() - 1) as usize)
+        } else {
+            (source_side, (target_loc.abs() - 1) as usize)
+        };
+
+        // Check if slot is valid
+        if target_side_idx >= self.sides.len() {
+            return false;
+        }
+        if slot >= self.active_per_half {
+            return false;
+        }
+
+        // Check if there's a Pokemon in that slot
+        if let Some(side) = self.sides.get(target_side_idx) {
+            if let Some(Some(poke_idx)) = side.active.get(slot) {
+                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                    if pokemon.is_fainted() {
+                        return false;
+                    }
+
+                    // Check adjacency for certain move types
+                    match target_type {
+                        "adjacentAlly" => target_side_idx == source_side && slot != _source_idx,
+                        "adjacentFoe" => target_side_idx != source_side,
+                        "adjacentAllyOrSelf" => target_side_idx == source_side,
+                        "any" => true,
+                        "normal" => true,
+                        _ => true,
+                    }
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+    }
+
+    /// Check if a target is valid for a move
+    /// Equivalent to battle.ts validTarget()
+    pub fn valid_target(&self, target: (usize, usize), source: (usize, usize), target_type: &str) -> bool {
+        let (target_side, target_idx) = target;
+        let (source_side, source_idx) = source;
+
+        // Check if target Pokemon exists and is active
+        if let Some(side) = self.sides.get(target_side) {
+            if let Some(pokemon) = side.pokemon.get(target_idx) {
+                if pokemon.is_fainted() || !pokemon.is_active {
+                    return false;
+                }
+
+                match target_type {
+                    "self" => target == source,
+                    "adjacentAlly" => target_side == source_side && target_idx != source_idx,
+                    "adjacentAllyOrSelf" => target_side == source_side,
+                    "adjacentFoe" => target_side != source_side,
+                    "any" => true,
+                    "normal" => target_side != source_side, // Default: target foe
+                    "allAdjacent" => true,
+                    "allAdjacentFoes" => target_side != source_side,
+                    "allies" => target_side == source_side,
+                    "allySide" => target_side == source_side,
+                    "allyTeam" => target_side == source_side,
+                    "foeSide" => target_side != source_side,
+                    "all" => true,
+                    _ => true,
+                }
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+    }
+
+    /// Get Pokemon at a specific slot location
+    /// Equivalent to battle.ts getAtSlot() (via Pokemon.getAtLoc)
+    pub fn get_at_slot(&self, side_idx: usize, slot: usize) -> Option<(usize, usize)> {
+        if let Some(side) = self.sides.get(side_idx) {
+            if let Some(Some(poke_idx)) = side.active.get(slot) {
+                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                    if !pokemon.is_fainted() {
+                        return Some((side_idx, *poke_idx));
+                    }
+                }
+            }
+        }
+        None
+    }
+
+    // =========================================================================
+    // Turn Management Methods (ported from battle.ts)
+    // =========================================================================
+
+    /// End the current turn
+    /// Equivalent to battle.ts endTurn()
+    pub fn end_turn(&mut self) {
+        self.turn += 1;
+
+        // Handle Dynamax ending (simplified)
+        // In full implementation, would check volatiles['dynamax'].turns === 3
+
+        // Gen 1 partial trapping cleanup would go here
+
+        self.add("", &[]);
+        self.add("turn", &[&self.turn.to_string()]);
+    }
+
+    /// Main turn loop
+    /// Equivalent to battle.ts turnLoop()
+    pub fn turn_loop(&mut self) {
+        self.add("", &[]);
+
+        if self.request_state != BattleRequestState::None {
+            self.request_state = BattleRequestState::None;
+        }
+
+        if !self.mid_turn {
+            // Would insert beforeTurn and residual actions into queue
+            self.mid_turn = true;
+        }
+
+        // Process the action queue
+        while let Some(action) = self.queue.shift() {
+            self.run_action(&action);
+            if self.request_state != BattleRequestState::None || self.ended {
+                return;
+            }
+        }
+
+        self.end_turn();
+        self.mid_turn = false;
+        self.queue.clear();
+    }
+
+    /// Run a single action from the queue
+    /// Equivalent to battle.ts runAction()
+    pub fn run_action(&mut self, action: &crate::battle_queue::Action) {
+        use crate::battle_queue::{Action, FieldActionType};
+
+        match action {
+            Action::Move(move_action) => {
+                let side_idx = move_action.side_index;
+                let poke_idx = move_action.pokemon_index;
+                let move_id = &move_action.move_id;
+                let target_loc = move_action.target_loc;
+
+                // Check if Pokemon can still act
+                if let Some(side) = self.sides.get(side_idx) {
+                    if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                        if pokemon.is_fainted() {
+                            return;
+                        }
+                    } else {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+
+                self.run_move(side_idx, poke_idx, move_id, target_loc);
+            }
+            Action::Switch(switch_action) => {
+                let side_idx = switch_action.side_index;
+                let poke_idx = switch_action.pokemon_index;
+                let target = switch_action.target_index;
+
+                self.do_switch(side_idx, poke_idx, target);
+            }
+            Action::Field(field_action) => {
+                match field_action.choice {
+                    FieldActionType::Residual => {
+                        self.run_residual();
+                    }
+                    FieldActionType::BeforeTurn => {
+                        // Handle before turn effects
+                    }
+                    FieldActionType::Start => {
+                        // Handle battle start
+                    }
+                    FieldActionType::Pass => {
+                        // Pass action
+                    }
+                }
+            }
+            Action::Team(_) => {
+                // Team preview action handled elsewhere
+            }
+            Action::Pokemon(_) => {
+                // Pokemon actions (mega evo, terastallize, etc.)
+            }
+        }
+    }
+
+    /// Check if all choices are done
+    /// Equivalent to battle.ts allChoicesDone()
+    pub fn all_choices_done(&self) -> bool {
+        for side in &self.sides {
+            if !side.is_choice_done() {
+                return false;
+            }
+        }
+        true
+    }
+
+    // =========================================================================
+    // Miscellaneous Methods (ported from battle.ts)
+    // =========================================================================
+
+    /// Check if move makes contact
+    /// Equivalent to battle.ts checkMoveMakesContact()
+    pub fn check_move_makes_contact(&self, move_id: &ID, attacker: (usize, usize)) -> bool {
+        // Check if move has contact flag
+        if let Some(move_def) = crate::data::moves::get_move(move_id) {
+            if !move_def.flags.contact {
+                return false;
+            }
+
+            // Check for abilities that prevent contact
+            let (side_idx, poke_idx) = attacker;
+            if let Some(side) = self.sides.get(side_idx) {
+                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                    // Long Reach prevents contact
+                    if pokemon.ability.as_str() == "longreach" {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+        false
+    }
+
+    /// Get the action speed for priority sorting
+    /// Equivalent to battle.ts getActionSpeed()
+    pub fn get_action_speed(&self, side_idx: usize, poke_idx: usize) -> u32 {
+        if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                // Apply speed boosts
+                let base_speed = pokemon.stored_stats.spe as u32;
+                let stage = pokemon.boosts.spe;
+                let multiplier = if stage >= 0 {
+                    (2 + stage as u32) as f64 / 2.0
+                } else {
+                    2.0 / (2 + (-stage) as u32) as f64
+                };
+                return (base_speed as f64 * multiplier) as u32;
+            }
+        }
+        0
+    }
+
+    /// Swap position of two Pokemon on the same side
+    /// Equivalent to battle.ts swapPosition()
+    pub fn swap_position(&mut self, pokemon1: (usize, usize), pokemon2: (usize, usize)) -> bool {
+        let (side1, idx1) = pokemon1;
+        let (side2, idx2) = pokemon2;
+
+        // Must be on same side
+        if side1 != side2 {
+            return false;
+        }
+
+        if let Some(side) = self.sides.get_mut(side1) {
+            // Find their active slots
+            let mut slot1 = None;
+            let mut slot2 = None;
+
+            for (slot, active_idx) in side.active.iter().enumerate() {
+                if let Some(poke_idx) = active_idx {
+                    if *poke_idx == idx1 {
+                        slot1 = Some(slot);
+                    } else if *poke_idx == idx2 {
+                        slot2 = Some(slot);
+                    }
+                }
+            }
+
+            if let (Some(s1), Some(s2)) = (slot1, slot2) {
+                side.active.swap(s1, s2);
+                // Update positions
+                if let Some(p1) = side.pokemon.get_mut(idx1) {
+                    p1.position = s2;
+                }
+                if let Some(p2) = side.pokemon.get_mut(idx2) {
+                    p2.position = s1;
+                }
+                return true;
+            }
+        }
+
+        false
+    }
+
+    /// Get category of a move
+    /// Equivalent to battle.ts getCategory()
+    pub fn get_category(&self, move_id: &ID) -> Option<String> {
+        if let Some(move_def) = crate::data::moves::get_move(move_id) {
+            return Some(match move_def.category {
+                crate::data::moves::MoveCategory::Physical => "Physical".to_string(),
+                crate::data::moves::MoveCategory::Special => "Special".to_string(),
+                crate::data::moves::MoveCategory::Status => "Status".to_string(),
+            });
+        }
+        None
+    }
+
+    /// Clear request state
+    pub fn clear_request(&mut self) {
+        self.request_state = BattleRequestState::None;
+        for side in &mut self.sides {
+            side.request_state = RequestState::None;
+        }
+    }
+
+    /// Make a request for player input
+    /// Equivalent to battle.ts makeRequest()
+    pub fn make_request(&mut self, request_type: BattleRequestState) {
+        self.request_state = request_type;
+        let side_request = match request_type {
+            BattleRequestState::Move => RequestState::Move,
+            BattleRequestState::Switch => RequestState::Switch,
+            BattleRequestState::TeamPreview => RequestState::TeamPreview,
+            BattleRequestState::None => RequestState::None,
+        };
+        for side in &mut self.sides {
+            side.request_state = side_request;
+        }
+    }
+
+    /// Check if endless battle clause should trigger
+    /// Equivalent to battle.ts maybeTriggerEndlessBattleClause()
+    pub fn maybe_trigger_endless_battle_clause(&mut self) -> bool {
+        // Simplified: check if turn count is very high
+        if self.turn >= 1000 {
+            self.add("-message", &["Endless Battle Clause triggered!"]);
+            self.tie();
+            return true;
+        }
+        false
+    }
+
+    /// Restart the battle (for testing)
+    pub fn restart(&mut self) {
+        self.turn = 0;
+        self.started = false;
+        self.ended = false;
+        self.winner = None;
+        self.log.clear();
+        self.input_log.clear();
+        self.queue.clear();
+        self.mid_turn = false;
+        self.request_state = BattleRequestState::None;
+        self.last_move = None;
+        self.last_damage = 0;
+        self.active_move = None;
+        self.active_pokemon = None;
+        self.active_target = None;
+        self.hints.clear();
+    }
+
+    /// Destroy the battle (cleanup)
+    pub fn destroy(&mut self) {
+        // Clear all references
+        self.sides.clear();
+        self.queue.clear();
+        self.log.clear();
+        self.input_log.clear();
+        self.hints.clear();
+    }
+}
+
+/// Priority item for sorting actions/handlers
+#[derive(Debug, Clone, Default)]
+pub struct PriorityItem {
+    pub order: Option<u32>,
+    pub priority: i32,
+    pub speed: u32,
+    pub sub_order: i32,
+    pub effect_order: u32,
+    pub index: usize,
 }
 
 fn game_type_to_string(game_type: &GameType) -> String {
