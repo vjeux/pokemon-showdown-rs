@@ -7,7 +7,7 @@ This file tracks all methods from the TypeScript `sim/` files and their Rust imp
 | File | TS Methods | Implemented in RS | Status |
 |------|------------|-------------------|--------|
 | battle.ts | ~100+ | ~100 | ✓ Complete |
-| battle-actions.ts | 42 | ~42 | ✓ Complete |
+| battle-actions.ts | 45 | 61 | ✓ Complete |
 | pokemon.ts | ~80+ | ~80+ | ✓ Complete |
 | side.ts | ~40+ | ~40+ | ✓ Complete |
 | field.ts | 17 | 17 | ✓ Complete |
@@ -186,6 +186,9 @@ This file tracks all methods from the TypeScript `sim/` files and their Rust imp
 - [x] terastallize_stub - Terastallize (stub)
 - [x] try_move_hit_stub - Try move hit (stub)
 - [x] secondaries_stub - Secondaries (stub)
+- [x] switch_in_stub - Switch in Pokemon (stub)
+- [x] drag_in_stub - Drag in Pokemon (stub)
+- [x] run_switch_stub - Run switch effects (stub)
 
 ---
 
