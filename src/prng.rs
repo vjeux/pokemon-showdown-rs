@@ -337,6 +337,64 @@ impl PRNG {
     pub fn generate_seed() -> PRNGSeed {
         PRNGSeed::Sodium(SodiumRNG::generate_seed())
     }
+
+    // ==========================================
+    // Methods ported from prng.ts
+    // ==========================================
+
+    /// Convert a seed to string format
+    pub fn convert_seed(seed: &PRNGSeed) -> String {
+        seed.to_string()
+    }
+
+    /// Static factory method - get a PRNG from various inputs
+    pub fn get(prng_or_seed: Option<PRNGOrSeed>) -> Self {
+        match prng_or_seed {
+            Some(PRNGOrSeed::PRNG(prng)) => prng,
+            Some(PRNGOrSeed::Seed(seed)) => PRNG::new(Some(seed)),
+            None => PRNG::new(None),
+        }
+    }
+
+    /// Get a random float in [0, 1)
+    pub fn random_float(&mut self) -> f64 {
+        self.random(None, None)
+    }
+
+    /// Sample and remove a random element from a vec
+    pub fn sample_remove<T>(&mut self, items: &mut Vec<T>) -> Option<T> {
+        if items.is_empty() {
+            return None;
+        }
+        let index = self.random_int(items.len() as u32) as usize;
+        Some(items.remove(index))
+    }
+
+    /// Sample n unique elements from a slice
+    pub fn sample_n<'a, T>(&mut self, items: &'a [T], n: usize) -> Vec<&'a T> {
+        if items.is_empty() || n == 0 {
+            return Vec::new();
+        }
+
+        let mut indices: Vec<usize> = (0..items.len()).collect();
+        self.shuffle(&mut indices);
+
+        indices.into_iter()
+            .take(n.min(items.len()))
+            .map(|i| &items[i])
+            .collect()
+    }
+
+    /// Get the starting seed
+    pub fn get_starting_seed(&self) -> &PRNGSeed {
+        &self.starting_seed
+    }
+}
+
+/// Helper enum for the get() factory method
+pub enum PRNGOrSeed {
+    PRNG(PRNG),
+    Seed(PRNGSeed),
 }
 
 #[cfg(test)]
