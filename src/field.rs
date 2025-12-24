@@ -223,6 +223,18 @@ impl Field {
         self.pseudo_weather.clear();
     }
 
+    /// Convert field to JSON
+    /// Equivalent to field.ts toJSON()
+    pub fn to_json(&self) -> serde_json::Value {
+        serde_json::json!({
+            "weather": if self.weather.is_empty() { serde_json::Value::Null } else { serde_json::Value::String(self.weather.as_str().to_string()) },
+            "weatherDuration": self.weather_state.duration,
+            "terrain": if self.terrain.is_empty() { serde_json::Value::Null } else { serde_json::Value::String(self.terrain.as_str().to_string()) },
+            "terrainDuration": self.terrain_state.duration,
+            "pseudoWeather": self.pseudo_weather.keys().map(|k| k.as_str().to_string()).collect::<Vec<_>>()
+        })
+    }
+
     /// Decrement durations and remove expired conditions
     /// Returns list of expired effect IDs
     pub fn decrement_durations(&mut self) -> Vec<ID> {
