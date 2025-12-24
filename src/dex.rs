@@ -569,6 +569,219 @@ impl Dex {
         dex.gen = gen;
         Ok(dex)
     }
+
+    // =========================================================================
+    // Collection methods (equivalent to DexAbilities.all(), DexMoves.all(), etc.)
+    // =========================================================================
+
+    /// Get all species data
+    /// Equivalent to DexSpecies.all() in dex-species.ts
+    pub fn all_species(&self) -> Vec<&SpeciesData> {
+        self.species.values().collect()
+    }
+
+    /// Get all moves data
+    /// Equivalent to DexMoves.all() in dex-moves.ts
+    pub fn all_moves(&self) -> Vec<&MoveData> {
+        self.moves.values().collect()
+    }
+
+    /// Get all abilities data
+    /// Equivalent to DexAbilities.all() in dex-abilities.ts
+    pub fn all_abilities(&self) -> Vec<&AbilityData> {
+        self.abilities.values().collect()
+    }
+
+    /// Get all items data
+    /// Equivalent to DexItems.all() in dex-items.ts
+    pub fn all_items(&self) -> Vec<&ItemData> {
+        self.items.values().collect()
+    }
+
+    /// Get all natures data
+    /// Equivalent to DexNatures.all() in dex-data.ts
+    pub fn all_natures(&self) -> Vec<&NatureData> {
+        self.natures.values().collect()
+    }
+
+    /// Get all type names
+    /// Equivalent to DexTypes.names() in dex-data.ts
+    pub fn all_type_names(&self) -> Vec<&String> {
+        self.types.keys().collect()
+    }
+
+    // =========================================================================
+    // Species-specific methods (from dex-species.ts)
+    // =========================================================================
+
+    /// Get species by ID (equivalent to DexSpecies.getByID)
+    pub fn get_species_by_id(&self, id: &ID) -> Option<&SpeciesData> {
+        self.species.get(id)
+    }
+
+    /// Get move by ID (equivalent to DexMoves.getByID)
+    pub fn get_move_by_id(&self, id: &ID) -> Option<&MoveData> {
+        self.moves.get(id)
+    }
+
+    /// Get ability by ID (equivalent to DexAbilities.getByID)
+    pub fn get_ability_by_id(&self, id: &ID) -> Option<&AbilityData> {
+        self.abilities.get(id)
+    }
+
+    /// Get item by ID (equivalent to DexItems.getByID)
+    pub fn get_item_by_id(&self, id: &ID) -> Option<&ItemData> {
+        self.items.get(id)
+    }
+
+    /// Check if a species is banned in a format
+    /// Simplified version - full implementation would need RuleTable
+    pub fn is_species_banned(&self, _species_name: &str, _format: &str) -> bool {
+        // Stub - would need format rules to implement
+        false
+    }
+
+    /// Get the base species name for a forme
+    /// Equivalent to species.baseSpecies access
+    pub fn get_base_species_name(&self, species_name: &str) -> Option<String> {
+        self.get_species(species_name)
+            .map(|s| s.base_species.clone().unwrap_or_else(|| s.name.clone()))
+    }
+
+    /// Check if a species is an alternate forme
+    pub fn is_alternate_forme(&self, species_name: &str) -> bool {
+        self.get_species(species_name)
+            .map(|s| s.forme.is_some())
+            .unwrap_or(false)
+    }
+
+    /// Get all formes for a base species
+    pub fn get_all_formes(&self, base_species: &str) -> Vec<&SpeciesData> {
+        let base_id = ID::new(base_species);
+        self.species.values()
+            .filter(|s| {
+                let species_base = s.base_species.as_ref()
+                    .map(|b| ID::new(b))
+                    .unwrap_or_else(|| ID::new(&s.name));
+                species_base == base_id
+            })
+            .collect()
+    }
+
+    /// Get evolutions for a species
+    pub fn get_evolutions(&self, species_name: &str) -> Vec<String> {
+        self.get_species(species_name)
+            .map(|s| s.evos.clone())
+            .unwrap_or_default()
+    }
+
+    /// Get the pre-evolution for a species
+    pub fn get_prevo(&self, species_name: &str) -> Option<String> {
+        self.get_species(species_name)
+            .and_then(|s| s.prevo.clone())
+    }
+
+    /// Check if a species can evolve
+    pub fn can_evolve(&self, species_name: &str) -> bool {
+        self.get_species(species_name)
+            .map(|s| !s.evos.is_empty())
+            .unwrap_or(false)
+    }
+
+    /// Calculate Base Stat Total for a species
+    pub fn get_bst(&self, species_name: &str) -> Option<u32> {
+        self.get_species(species_name).map(|s| {
+            s.base_stats.hp + s.base_stats.atk + s.base_stats.def +
+            s.base_stats.spa + s.base_stats.spd + s.base_stats.spe
+        })
+    }
+
+    // =========================================================================
+    // Move-specific methods (from dex-moves.ts)
+    // =========================================================================
+
+    /// Check if a move is a status move
+    pub fn is_status_move(&self, move_name: &str) -> bool {
+        self.get_move(move_name)
+            .map(|m| m.category == "Status")
+            .unwrap_or(false)
+    }
+
+    /// Check if a move is a special move
+    pub fn is_special_move(&self, move_name: &str) -> bool {
+        self.get_move(move_name)
+            .map(|m| m.category == "Special")
+            .unwrap_or(false)
+    }
+
+    /// Check if a move is a physical move
+    pub fn is_physical_move(&self, move_name: &str) -> bool {
+        self.get_move(move_name)
+            .map(|m| m.category == "Physical")
+            .unwrap_or(false)
+    }
+
+    /// Get move accuracy as Option<u32> (None if always hits)
+    pub fn get_move_accuracy(&self, move_name: &str) -> Option<u32> {
+        self.get_move(move_name).and_then(|m| match &m.accuracy {
+            Accuracy::Percent(p) => Some(*p),
+            Accuracy::AlwaysHits => None,
+        })
+    }
+
+    /// Check if a move always hits
+    pub fn move_always_hits(&self, move_name: &str) -> bool {
+        self.get_move(move_name)
+            .map(|m| matches!(m.accuracy, Accuracy::AlwaysHits))
+            .unwrap_or(false)
+    }
+
+    // =========================================================================
+    // Item-specific methods (from dex-items.ts)
+    // =========================================================================
+
+    /// Check if an item is a berry
+    pub fn is_berry(&self, item_name: &str) -> bool {
+        let id = ID::new(item_name);
+        id.as_str().ends_with("berry")
+    }
+
+    /// Check if an item is a choice item
+    pub fn is_choice_item(&self, item_name: &str) -> bool {
+        self.get_item(item_name)
+            .map(|i| i.is_choice)
+            .unwrap_or(false)
+    }
+
+    /// Get fling base power for an item
+    pub fn get_fling_power(&self, item_name: &str) -> u32 {
+        self.get_item(item_name)
+            .and_then(|i| i.fling.as_ref())
+            .map(|f| f.base_power)
+            .unwrap_or(0)
+    }
+
+    // =========================================================================
+    // Ability-specific methods (from dex-abilities.ts)
+    // =========================================================================
+
+    /// Get ability rating
+    pub fn get_ability_rating(&self, ability_name: &str) -> Option<f64> {
+        self.get_ability(ability_name)
+            .and_then(|a| a.rating)
+    }
+
+    /// Get ability description
+    pub fn get_ability_desc(&self, ability_name: &str) -> Option<&str> {
+        self.get_ability(ability_name)
+            .and_then(|a| a.desc.as_deref())
+    }
+
+    /// Get ability short description
+    pub fn get_ability_short_desc(&self, ability_name: &str) -> Option<&str> {
+        self.get_ability(ability_name)
+            .and_then(|a| a.short_desc.as_deref())
+    }
 }
 
 /// Embedded data for compile-time inclusion
@@ -682,5 +895,91 @@ mod tests {
         let hardy = dex.get_nature("Hardy").expect("Hardy not found");
         assert!(hardy.plus.is_none()); // Neutral nature
         assert!(hardy.minus.is_none());
+    }
+
+    #[test]
+    fn test_all_methods() {
+        let dex = Dex::load_default().expect("Failed to load dex");
+
+        // Test all_species - should have at least some species
+        let all_species = dex.all_species();
+        assert!(all_species.len() > 0);
+
+        // Test all_moves - should have at least some moves
+        let all_moves = dex.all_moves();
+        assert!(all_moves.len() > 0);
+
+        // Test all_abilities - should have abilities
+        let all_abilities = dex.all_abilities();
+        assert!(all_abilities.len() > 0);
+
+        // Test all_items
+        let all_items = dex.all_items();
+        assert!(all_items.len() > 0);
+    }
+
+    #[test]
+    fn test_species_methods() {
+        let dex = Dex::load_default().expect("Failed to load dex");
+
+        // Test get_base_species_name for Pikachu
+        let base = dex.get_base_species_name("Pikachu");
+        assert!(base.is_some());
+        assert_eq!(base.unwrap(), "Pikachu");
+
+        // Test can_evolve
+        if dex.get_species("Pikachu").is_some() {
+            // Only test if species exists in data
+            let evos = dex.get_evolutions("Pikachu");
+            if !evos.is_empty() {
+                assert!(dex.can_evolve("Pikachu"));
+            }
+        }
+
+        // Test get_bst
+        if let Some(bst) = dex.get_bst("Pikachu") {
+            assert!(bst > 0);
+        }
+    }
+
+    #[test]
+    fn test_move_methods() {
+        let dex = Dex::load_default().expect("Failed to load dex");
+
+        // Test moves that exist in our data
+        if dex.get_move("Thunder Wave").is_some() {
+            assert!(dex.is_status_move("Thunder Wave"));
+        }
+
+        assert!(!dex.is_status_move("Thunderbolt"));
+
+        assert!(dex.is_special_move("Thunderbolt"));
+
+        // Quick Attack is physical
+        assert!(dex.is_physical_move("Quick Attack"));
+        assert!(!dex.is_physical_move("Thunderbolt"));
+
+        // Test move with flags
+        assert!(dex.move_has_flag("Quick Attack", "contact"));
+    }
+
+    #[test]
+    fn test_item_methods() {
+        let dex = Dex::load_default().expect("Failed to load dex");
+
+        // Test with items in our data
+        if dex.get_item("Oran Berry").is_some() {
+            assert!(dex.is_berry("Oran Berry"));
+        }
+
+        assert!(!dex.is_berry("Leftovers"));
+
+        if dex.get_item("Choice Band").is_some() {
+            assert!(dex.is_choice_item("Choice Band"));
+        }
+
+        if dex.get_item("Leftovers").is_some() {
+            assert!(!dex.is_choice_item("Leftovers"));
+        }
     }
 }
