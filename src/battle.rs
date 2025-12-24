@@ -1070,6 +1070,7 @@ impl Battle {
 
     /// Drag in a random Pokemon (for moves like Whirlwind/Roar)
     /// Equivalent to battle-actions.ts dragIn()
+    /// 1:1 port of dragIn from battle-actions.ts
     pub fn drag_in(&mut self, side_idx: usize, slot: usize) -> bool {
         // Get a random switchable Pokemon
         let switch_target = match self.get_random_switchable(side_idx) {
@@ -1085,7 +1086,7 @@ impl Battle {
 
         // Check if the old Pokemon can be dragged out (not fainted)
         let old_poke_idx = old_active.unwrap();
-        if self.sides[side_idx].pokemon[old_poke_idx].is_fainted() {
+        if self.sides[side_idx].pokemon[old_poke_idx].hp == 0 {
             return false;
         }
 
@@ -1094,9 +1095,11 @@ impl Battle {
             return false;
         }
 
-        // Perform the switch with drag flag
-        self.do_switch_with_drag(side_idx, slot, switch_target, true);
-        true
+        // Call switchIn with is_drag = true
+        match self.switch_in(side_idx, slot, switch_target, None, true) {
+            SwitchResult::Success => true,
+            _ => false,
+        }
     }
 
     /// Execute a switch with optional drag flag
@@ -1141,19 +1144,45 @@ impl Battle {
     }
 
     /// Run switch-in effects for a Pokemon
-    /// Equivalent to battle-actions.ts runSwitch()
+    /// 1:1 port of battle-actions.ts runSwitch()
     pub fn run_switch(&mut self, side_idx: usize, poke_idx: usize) {
-        // Mark Pokemon as started
-        self.sides[side_idx].pokemon[poke_idx].is_started = true;
+        // Collect all switchers - consume all consecutive runSwitch actions
+        let mut switchers_in: Vec<(usize, usize)> = vec![(side_idx, poke_idx)];
+
+        // Collect any additional runSwitch actions from the queue
+        while let Some(action) = self.queue.peek() {
+            if action.is_run_switch() {
+                if let Some((s, p)) = action.get_switch_target() {
+                    switchers_in.push((s, p));
+                }
+                self.queue.shift();
+            } else {
+                break;
+            }
+        }
 
         // Speed sort all active Pokemon
         self.update_speed();
 
-        // Run SwitchIn event on all Pokemon (for things like Intimidate affecting switch-ins)
-        let active = self.get_all_active_incl_fainted(false);
-        for (s_idx, p_idx) in active {
+        // Run SwitchIn field event for all switchers
+        self.field_event_switch_in(&switchers_in);
+
+        // Mark all switchers as started and clear draggedIn
+        for (s_idx, p_idx) in &switchers_in {
+            if self.sides[*s_idx].pokemon[*p_idx].hp == 0 {
+                continue;
+            }
+            self.sides[*s_idx].pokemon[*p_idx].is_started = true;
+            self.sides[*s_idx].pokemon[*p_idx].dragged_in = None;
+        }
+    }
+
+    /// Run field event for switch-in (Intimidate, etc.)
+    fn field_event_switch_in(&mut self, switchers: &[(usize, usize)]) {
+        // Run SwitchIn event for each switcher
+        for (s_idx, p_idx) in switchers {
             let effect_id = ID::new("switchin");
-            self.single_event("SwitchIn", &effect_id, Some((s_idx, p_idx)), None, None);
+            self.single_event("SwitchIn", &effect_id, Some((*s_idx, *p_idx)), None, None);
         }
     }
 

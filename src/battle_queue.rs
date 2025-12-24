@@ -235,6 +235,19 @@ impl Action {
     pub fn is_switch(&self) -> bool {
         matches!(self, Action::Switch(_))
     }
+
+    /// Check if this is a runSwitch action
+    pub fn is_run_switch(&self) -> bool {
+        matches!(self, Action::Pokemon(p) if p.choice == PokemonActionType::RunSwitch)
+    }
+
+    /// Get the switch target (side_idx, pokemon_idx) for Pokemon actions
+    pub fn get_switch_target(&self) -> Option<(usize, usize)> {
+        match self {
+            Action::Pokemon(a) => Some((a.side_index, a.pokemon_index)),
+            _ => None,
+        }
+    }
 }
 
 /// The battle queue - manages the order of actions in a turn
