@@ -887,6 +887,95 @@ impl Battle {
         self.trigger_switch_in_abilities(side_idx, switch_to);
     }
 
+    /// Drag in a random Pokemon (for moves like Whirlwind/Roar)
+    /// Equivalent to battle-actions.ts dragIn()
+    pub fn drag_in(&mut self, side_idx: usize, slot: usize) -> bool {
+        // Get a random switchable Pokemon
+        let switch_target = match self.get_random_switchable(side_idx) {
+            Some(idx) => idx,
+            None => return false,
+        };
+
+        // Check if there's an active Pokemon in that slot
+        let old_active = self.sides[side_idx].active.get(slot).copied().flatten();
+        if old_active.is_none() {
+            return false;
+        }
+
+        // Check if the old Pokemon can be dragged out (not fainted)
+        let old_poke_idx = old_active.unwrap();
+        if self.sides[side_idx].pokemon[old_poke_idx].is_fainted() {
+            return false;
+        }
+
+        // Run DragOut event (abilities/items that prevent being dragged out)
+        if !self.run_event_bool("DragOut", Some((side_idx, old_poke_idx)), None, None) {
+            return false;
+        }
+
+        // Perform the switch with drag flag
+        self.do_switch_with_drag(side_idx, slot, switch_target, true);
+        true
+    }
+
+    /// Execute a switch with optional drag flag
+    fn do_switch_with_drag(&mut self, side_idx: usize, slot: usize, switch_to: usize, is_drag: bool) {
+        if side_idx >= self.sides.len() {
+            return;
+        }
+
+        // Check if switch_to Pokemon is valid
+        if switch_to >= self.sides[side_idx].pokemon.len() {
+            return;
+        }
+        if self.sides[side_idx].pokemon[switch_to].is_fainted() {
+            return;
+        }
+        if self.sides[side_idx].pokemon[switch_to].is_active {
+            return;
+        }
+
+        // Perform the switch
+        self.sides[side_idx].switch_in(slot, switch_to);
+
+        // Log the switch/drag
+        if let Some(pokemon) = self.sides[side_idx].get_active(slot) {
+            let side_id = self.sides[side_idx].id_str();
+            let details = pokemon.details();
+            let hp = format!("{}/{}", pokemon.hp, pokemon.maxhp);
+            let event = if is_drag { "drag" } else { "switch" };
+            self.log.push(format!("|{}|{}: {}|{}|{}", event, side_id, pokemon.name, details, hp));
+        }
+
+        // Apply entry hazard damage
+        self.apply_hazards(side_idx, slot, switch_to);
+
+        // Trigger switch-in abilities
+        self.trigger_switch_in_abilities(side_idx, switch_to);
+
+        // In Gen 5+, run switch immediately for drags
+        if is_drag && self.gen >= 5 {
+            self.run_switch(side_idx, switch_to);
+        }
+    }
+
+    /// Run switch-in effects for a Pokemon
+    /// Equivalent to battle-actions.ts runSwitch()
+    pub fn run_switch(&mut self, side_idx: usize, poke_idx: usize) {
+        // Mark Pokemon as started
+        self.sides[side_idx].pokemon[poke_idx].is_started = true;
+
+        // Speed sort all active Pokemon
+        self.update_speed();
+
+        // Run SwitchIn event on all Pokemon (for things like Intimidate affecting switch-ins)
+        let active = self.get_all_active_incl_fainted(false);
+        for (s_idx, p_idx) in active {
+            let effect_id = ID::new("switchin");
+            self.single_event("SwitchIn", &effect_id, Some((s_idx, p_idx)), None, None);
+        }
+    }
+
     /// Trigger abilities that activate on switch-in
     fn trigger_switch_in_abilities(&mut self, side_idx: usize, poke_idx: usize) {
         let (ability_id, pokemon_name) = {
@@ -4364,7 +4453,7 @@ mod tests {
 
         // Same seed should produce same random numbers
         for _ in 0..10 {
-            assert_eq!(battle1.random(100), battle2.random(100));
+                       assert_eq!(battle1.random(100), battle2.random(100));
         }
     }
 }

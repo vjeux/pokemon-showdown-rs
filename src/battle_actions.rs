@@ -2,11 +2,77 @@
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
 //!
+//! This is a 1:1 port of sim/battle-actions.ts
 //! Handles all battle actions: moves, switches, damage calculation, etc.
 
-use crate::dex::{Dex, MoveData, Accuracy};
+use std::collections::HashSet;
+
+use once_cell::sync::Lazy;
+
+use crate::dex_data::{ID, BoostsTable, EffectState};
 use crate::pokemon::Pokemon;
-use crate::dex_data::{ID, BoostsTable};
+
+/// Choosable target types for moves
+static CHOOSABLE_TARGETS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
+    let mut set = HashSet::new();
+    set.insert("normal");
+    set.insert("any");
+    set.insert("adjacentAlly");
+    set.insert("adjacentAllyOrSelf");
+    set.insert("adjacentFoe");
+    set
+});
+
+/// Max Move names by type
+pub fn get_max_move_name(move_type: &str) -> &'static str {
+    match move_type {
+        "Flying" => "Max Airstream",
+        "Dark" => "Max Darkness",
+        "Fire" => "Max Flare",
+        "Bug" => "Max Flutterby",
+        "Water" => "Max Geyser",
+        "Status" => "Max Guard",
+        "Ice" => "Max Hailstorm",
+        "Fighting" => "Max Knuckle",
+        "Electric" => "Max Lightning",
+        "Psychic" => "Max Mindstorm",
+        "Poison" => "Max Ooze",
+        "Grass" => "Max Overgrowth",
+        "Ghost" => "Max Phantasm",
+        "Ground" => "Max Quake",
+        "Rock" => "Max Rockfall",
+        "Fairy" => "Max Starfall",
+        "Steel" => "Max Steelspike",
+        "Normal" => "Max Strike",
+        "Dragon" => "Max Wyrmwind",
+        _ => "Max Strike",
+    }
+}
+
+/// Z-Move names by type
+pub fn get_z_move_name(move_type: &str) -> &'static str {
+    match move_type {
+        "Poison" => "Acid Downpour",
+        "Fighting" => "All-Out Pummeling",
+        "Dark" => "Black Hole Eclipse",
+        "Grass" => "Bloom Doom",
+        "Normal" => "Breakneck Blitz",
+        "Rock" => "Continental Crush",
+        "Steel" => "Corkscrew Crash",
+        "Dragon" => "Devastating Drake",
+        "Electric" => "Gigavolt Havoc",
+        "Water" => "Hydro Vortex",
+        "Fire" => "Inferno Overdrive",
+        "Ghost" => "Never-Ending Nightmare",
+        "Bug" => "Savage Spin-Out",
+        "Psychic" => "Shattered Psyche",
+        "Ice" => "Subzero Slammer",
+        "Flying" => "Supersonic Skystrike",
+        "Ground" => "Tectonic Rage",
+        "Fairy" => "Twinkle Tackle",
+        _ => "Breakneck Blitz",
+    }
+}
 
 /// Damage calculation result
 #[derive(Debug, Clone)]
@@ -24,125 +90,204 @@ pub enum DamageResult {
 }
 
 /// Move hit data for tracking crits, effectiveness, etc.
+/// Equivalent to MoveHitData in battle-actions.ts
 #[derive(Debug, Clone, Default)]
 pub struct MoveHitData {
     pub crit: bool,
-    pub type_mod: f64,
+    pub type_mod: i32,
     pub damage: u32,
+    pub z_broke_protect: bool,
 }
 
-/// Battle action handler
-pub struct BattleActions<'a> {
-    pub dex: &'a Dex,
+/// Active move state - represents a move being executed
+/// Equivalent to ActiveMove in battle-actions.ts
+#[derive(Debug, Clone, Default)]
+pub struct ActiveMove {
+    pub id: ID,
+    pub name: String,
+    pub base_power: u32,
+    pub category: String,
+    pub move_type: String,
+    pub accuracy: u32,
+    pub priority: i8,
+    pub target: String,
+    pub flags: MoveFlags,
+
+    // Active state
+    pub hit: u32,
+    pub total_damage: u32,
+    pub spread_hit: bool,
+    pub is_external: bool,
+    pub is_z: bool,
+    pub is_max: bool,
+    pub is_z_or_max_powered: bool,
+    pub prankster_boosted: bool,
+    pub has_bounced: bool,
+    pub source_effect: Option<ID>,
+    pub ignore_ability: bool,
+    pub ignore_immunity: Option<bool>,
+    pub ignore_accuracy: bool,
+    pub ignore_evasion: bool,
+    pub ignore_defensive: bool,
+    pub ignore_offensive: bool,
+    pub ignore_negative_offensive: bool,
+    pub ignore_positive_defensive: bool,
+    pub will_crit: Option<bool>,
+    pub force_stab: bool,
+    pub crit_ratio: i32,
+    pub crit_modifier: Option<f64>,
+    pub self_switch: Option<String>,
+    pub self_boost: Option<BoostsTable>,
+    pub has_sheer_force: bool,
+    pub mindblown_recoil: bool,
+    pub struggle_recoil: bool,
+    pub self_dropped: bool,
+    pub smart_target: Option<bool>,
+    pub stellar_boosted: bool,
+    pub multi_hit: Option<u32>,
+    pub multi_hit_type: Option<String>,
+    pub multi_accuracy: bool,
+    pub ohko: Option<String>,
+    pub always_hit: bool,
+    pub breaks_protect: bool,
+    pub steals_boosts: bool,
+    pub force_switch: bool,
+    pub self_destruct: Option<String>,
+    pub base_move: Option<ID>,
+    pub max_move: Option<MaxMoveData>,
+    pub z_move: Option<ZMoveData>,
+    pub sleep_usable: bool,
+
+    // Secondary effects
+    pub secondaries: Vec<SecondaryEffect>,
+    pub self_effect: Option<SelfEffect>,
+
+    // Move data effects
+    pub boosts: Option<BoostsTable>,
+    pub heal: Option<(u32, u32)>,
+    pub status: Option<String>,
+    pub force_status: Option<String>,
+    pub volatile_status: Option<String>,
+    pub side_condition: Option<String>,
+    pub slot_condition: Option<String>,
+    pub weather: Option<String>,
+    pub terrain: Option<String>,
+    pub pseudo_weather: Option<String>,
+
+    // Recoil
+    pub recoil: Option<(u32, u32)>,
+
+    // Hit targets (populated during execution)
+    pub hit_targets: Vec<(usize, usize)>,
+}
+
+/// Move flags
+#[derive(Debug, Clone, Default)]
+pub struct MoveFlags {
+    pub contact: bool,
+    pub protect: bool,
+    pub mirror: bool,
+    pub punch: bool,
+    pub bite: bool,
+    pub sound: bool,
+    pub powder: bool,
+    pub dance: bool,
+    pub pulse: bool,
+    pub bullet: bool,
+    pub slicing: bool,
+    pub wind: bool,
+    pub cant_use_twice: bool,
+    pub future_move: bool,
+}
+
+/// Max move data
+#[derive(Debug, Clone, Default)]
+pub struct MaxMoveData {
+    pub base_power: u32,
+}
+
+/// Z-move data
+#[derive(Debug, Clone, Default)]
+pub struct ZMoveData {
+    pub base_power: Option<u32>,
+    pub boost: Option<BoostsTable>,
+    pub effect: Option<String>,
+}
+
+/// Secondary effect data
+#[derive(Debug, Clone, Default)]
+pub struct SecondaryEffect {
+    pub chance: Option<u32>,
+    pub boosts: Option<BoostsTable>,
+    pub status: Option<String>,
+    pub volatile_status: Option<String>,
+    pub self_effect: bool,
+}
+
+/// Self effect data
+#[derive(Debug, Clone, Default)]
+pub struct SelfEffect {
+    pub boosts: Option<BoostsTable>,
+    pub chance: Option<u32>,
+}
+
+/// Z-Move request option
+#[derive(Debug, Clone)]
+pub struct ZMoveOption {
+    pub move_name: String,
+    pub target: String,
+}
+
+/// Spread move damage result
+pub type SpreadMoveDamage = Vec<Option<DamageValue>>;
+
+/// Damage value (can be number, false, or undefined-like None)
+#[derive(Debug, Clone)]
+pub enum DamageValue {
+    Damage(u32),
+    Failed,
+    Blocked,  // HIT_SUBSTITUTE
+}
+
+/// Switch copy flag type
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SwitchCopyFlag {
+    None,
+    CopyVolatile,
+    ShedTail,
+}
+
+/// Battle Actions struct - 1:1 port of BattleActions class
+/// Note: In Rust, this struct needs a reference to battle state.
+/// The actual methods that need battle access are implemented on Battle directly.
+pub struct BattleActions {
     pub gen: u8,
 }
 
-impl<'a> BattleActions<'a> {
-    pub fn new(dex: &'a Dex, gen: u8) -> Self {
-        Self { dex, gen }
+impl BattleActions {
+    pub fn new(gen: u8) -> Self {
+        Self { gen }
     }
 
-    /// Check if a move hits based on accuracy
-    pub fn accuracy_check(
-        &self,
-        attacker: &Pokemon,
-        defender: &Pokemon,
-        move_data: &MoveData,
-        random_value: u32,  // Random value in [0, 100)
-    ) -> bool {
-        match move_data.accuracy {
-            Accuracy::AlwaysHits => true,
-            Accuracy::Percent(acc) => {
-                if acc == 0 {
-                    return false;
-                }
+    // =========================================================================
+    // SWITCH METHODS - Ported from battle-actions.ts
+    // =========================================================================
+    // Note: switchIn, dragIn, runSwitch are implemented on Battle struct
+    // because they need mutable access to battle state.
 
-                // Apply accuracy/evasion modifiers
-                let mut accuracy = acc as i32;
+    // =========================================================================
+    // MOVE METHODS - Ported from battle-actions.ts
+    // =========================================================================
+    // Note: runMove, useMove, useMoveInner are implemented on Battle struct
+    // because they need mutable access to battle state.
 
-                // Get accuracy boost
-                let acc_boost = attacker.boosts.accuracy as i32;
-                if acc_boost > 0 {
-                    accuracy = accuracy * (3 + acc_boost) / 3;
-                } else if acc_boost < 0 {
-                    accuracy = accuracy * 3 / (3 - acc_boost);
-                }
-
-                // Get evasion boost
-                let eva_boost = defender.boosts.evasion as i32;
-                if eva_boost > 0 {
-                    accuracy = accuracy * 3 / (3 + eva_boost);
-                } else if eva_boost < 0 {
-                    accuracy = accuracy * (3 - eva_boost) / 3;
-                }
-
-                // Clamp to valid range
-                let accuracy = accuracy.clamp(0, 100) as u32;
-
-                random_value < accuracy
-            }
-        }
-    }
-
-    /// Check if a move scores a critical hit
-    pub fn crit_check(
-        &self,
-        _attacker: &Pokemon,
-        _move_data: &MoveData,
-        random_value: u32,  // Random value
-    ) -> bool {
-        // Base crit ratio (from move's critRatio field if any)
-        let crit_ratio = 1; // Default crit ratio is 1
-
-        // In Gen 7+, crit ratios: 0=1/24, 1=1/8, 2=1/2, 3+=always
-        let crit_chance = match self.gen {
-            1..=5 => {
-                // Gen 1-5 crit chances
-                match crit_ratio {
-                    0 => 0,
-                    1 => 16,  // 1/16
-                    2 => 8,   // 1/8
-                    3 => 4,   // 1/4
-                    4 => 3,   // 1/3
-                    _ => 2,   // 1/2
-                }
-            }
-            6 => {
-                // Gen 6 crit chances
-                match crit_ratio {
-                    0 => 0,
-                    1 => 16,
-                    2 => 8,
-                    3 => 2,
-                    _ => 1,
-                }
-            }
-            _ => {
-                // Gen 7+ crit chances
-                match crit_ratio {
-                    0 => 0,
-                    1 => 24,
-                    2 => 8,
-                    3 => 2,
-                    _ => 1,
-                }
-            }
-        };
-
-        if crit_chance == 0 {
-            return false;
-        }
-
-        random_value % crit_chance == 0
-    }
-
-    /// Get type effectiveness multiplier
-    pub fn get_type_effectiveness(&self, move_type: &str, defender_types: &[String]) -> f64 {
-        self.dex.get_type_effectiveness(move_type, defender_types)
-    }
+    // =========================================================================
+    // DAMAGE CALCULATION - These can be pure functions
+    // =========================================================================
 
     /// Calculate the stat modifier from boost stages
     /// Returns the multiplier as a fraction (numerator, denominator)
+    /// Equivalent to getBoostMod in Pokemon Showdown
     pub fn get_boost_modifier(boost: i8) -> (i32, i32) {
         match boost {
             -6 => (2, 8),
@@ -169,332 +314,215 @@ impl<'a> BattleActions<'a> {
         (base_stat as i32 * num / denom).max(1) as u32
     }
 
-    /// Main damage calculation function
-    ///
-    /// Implements the standard Pokemon damage formula:
-    /// damage = ((2L/5 + 2) * P * A/D) / 50 + 2
-    ///
-    /// Then applies modifiers for:
-    /// - STAB (Same Type Attack Bonus)
-    /// - Type effectiveness
-    /// - Critical hits
-    /// - Random factor (85-100%)
-    pub fn calculate_damage(
-        &self,
-        attacker: &Pokemon,
-        defender: &Pokemon,
-        move_data: &MoveData,
-        is_crit: bool,
-        random_factor: u32,  // Should be in range [85, 100]
-    ) -> DamageResult {
-        // Status moves don't deal damage
-        if move_data.category == "Status" {
-            return DamageResult::NoDamage;
+    /// Calculate recoil damage
+    /// Equivalent to calcRecoilDamage in battle-actions.ts
+    pub fn calc_recoil_damage(damage_dealt: u32, move_id: &str, recoil: Option<(u32, u32)>, pokemon_max_hp: u32) -> u32 {
+        if move_id == "chloroblast" {
+            return (pokemon_max_hp / 2).max(1);
         }
-
-        let base_power = move_data.base_power;
-        if base_power == 0 {
-            return DamageResult::NoDamage;
+        if let Some((num, denom)) = recoil {
+            let recoil_damage = (damage_dealt * num / denom).max(1);
+            return recoil_damage;
         }
+        0
+    }
 
-        // Get defender's types for immunity check
-        let defender_types = defender.types.clone();
-
-        // Check immunity
-        let type_effectiveness = self.get_type_effectiveness(&move_data.move_type, &defender_types);
-        if type_effectiveness == 0.0 {
-            return DamageResult::Immune;
-        }
-
-        // Determine if physical or special
-        let is_physical = move_data.category == "Physical";
-
-        // Get attack and defense stats
-        let (attack_stat, defense_stat) = if is_physical {
-            (attacker.stored_stats.atk as u32, defender.stored_stats.def as u32)
-        } else {
-            (attacker.stored_stats.spa as u32, defender.stored_stats.spd as u32)
-        };
-
-        // Get boosts
-        let (atk_boost, def_boost) = if is_physical {
-            (attacker.boosts.atk, defender.boosts.def)
-        } else {
-            (attacker.boosts.spa, defender.boosts.spd)
-        };
-
-        // Apply boosts (crits ignore negative atk boosts and positive def boosts)
-        let effective_atk_boost = if is_crit && atk_boost < 0 { 0 } else { atk_boost };
-        let effective_def_boost = if is_crit && def_boost > 0 { 0 } else { def_boost };
-
-        let attack = Self::calculate_stat_with_boost(attack_stat, effective_atk_boost);
-        let defense = Self::calculate_stat_with_boost(defense_stat, effective_def_boost);
-
-        // Prevent division by zero
-        let defense = defense.max(1);
-
-        // Level
-        let level = attacker.level as u32;
-
-        // Base damage calculation: ((2L/5 + 2) * P * A/D) / 50 + 2
+    /// Calculate confusion damage
+    /// Equivalent to getConfusionDamage in battle-actions.ts
+    pub fn get_confusion_damage(level: u32, attack: u32, defense: u32, base_power: u32, random_factor: u32) -> u32 {
+        // int(int(int(2 * L / 5 + 2) * P * A / D) / 50) + 2
         let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense) / 50 + 2;
 
-        // Apply critical hit modifier
-        let damage = if is_crit {
-            let crit_mult = if self.gen >= 6 { 1.5 } else { 2.0 };
-            (base_damage as f64 * crit_mult) as u32
-        } else {
-            base_damage
-        };
+        // Apply random factor (0.85 to 1.0)
+        let damage = base_damage * random_factor / 100;
 
-        // Apply random factor (85-100%)
-        let random_factor = random_factor.clamp(85, 100);
-        let damage = damage * random_factor / 100;
-
-        // Apply STAB (Same Type Attack Bonus)
-        let has_type = attacker.types.iter().any(|t| t == &move_data.move_type);
-        let stab = if has_type {
-            1.5
-        } else {
-            1.0
-        };
-        let damage = (damage as f64 * stab) as u32;
-
-        // Apply type effectiveness
-        let damage = (damage as f64 * type_effectiveness) as u32;
-
-        // Minimum damage is 1
-        let damage = damage.max(1);
-
-        DamageResult::Damage(damage)
+        damage.max(1)
     }
 
-    /// Apply damage to a Pokemon
-    pub fn apply_damage(defender: &mut Pokemon, damage: u32) -> u32 {
-        let actual_damage = damage.min(defender.hp);
-        defender.hp = defender.hp.saturating_sub(damage);
-        actual_damage
+    /// Check if a target type allows choosing
+    /// Equivalent to targetTypeChoices in battle-actions.ts
+    pub fn target_type_choices(target_type: &str) -> bool {
+        CHOOSABLE_TARGETS.contains(target_type)
     }
 
-    /// Apply stat boosts to a Pokemon
-    pub fn apply_boosts(pokemon: &mut Pokemon, boosts: &BoostsTable) -> bool {
-        let mut any_changed = false;
-
-        let old_atk = pokemon.boosts.atk;
-        pokemon.boosts.atk = (pokemon.boosts.atk + boosts.atk).clamp(-6, 6);
-        if pokemon.boosts.atk != old_atk {
-            any_changed = true;
+    /// Combine results for damage/effect calculations
+    /// Equivalent to combineResults in battle-actions.ts
+    pub fn combine_results(left: Option<DamageValue>, right: Option<DamageValue>) -> Option<DamageValue> {
+        // Priority: undefined < NOT_FAIL < null < boolean < number
+        match (&left, &right) {
+            (None, r) => r.clone(),
+            (l, None) => l.clone(),
+            (Some(DamageValue::Damage(l)), Some(DamageValue::Damage(r))) => {
+                Some(DamageValue::Damage(l + r))
+            }
+            (_, r) => r.clone(),
         }
-
-        let old_def = pokemon.boosts.def;
-        pokemon.boosts.def = (pokemon.boosts.def + boosts.def).clamp(-6, 6);
-        if pokemon.boosts.def != old_def {
-            any_changed = true;
-        }
-
-        let old_spa = pokemon.boosts.spa;
-        pokemon.boosts.spa = (pokemon.boosts.spa + boosts.spa).clamp(-6, 6);
-        if pokemon.boosts.spa != old_spa {
-            any_changed = true;
-        }
-
-        let old_spd = pokemon.boosts.spd;
-        pokemon.boosts.spd = (pokemon.boosts.spd + boosts.spd).clamp(-6, 6);
-        if pokemon.boosts.spd != old_spd {
-            any_changed = true;
-        }
-
-        let old_spe = pokemon.boosts.spe;
-        pokemon.boosts.spe = (pokemon.boosts.spe + boosts.spe).clamp(-6, 6);
-        if pokemon.boosts.spe != old_spe {
-            any_changed = true;
-        }
-
-        any_changed
     }
 
-    /// Apply a status condition
-    pub fn apply_status(&self, pokemon: &mut Pokemon, status: &str) -> bool {
-        if !pokemon.status.is_empty() {
-            return false;  // Already has a status
+    // =========================================================================
+    // Z-MOVE METHODS
+    // =========================================================================
+
+    /// Get Z-Move for a move
+    /// Equivalent to getZMove in battle-actions.ts
+    pub fn get_z_move(
+        move_name: &str,
+        move_type: &str,
+        move_category: &str,
+        z_move_base_power: Option<u32>,
+        item_z_move: Option<&str>,
+        item_z_move_from: Option<&str>,
+        item_z_move_type: Option<&str>,
+        z_move_used: bool,
+    ) -> Option<String> {
+        if z_move_used {
+            return None;
         }
 
-        // Helper to check type
-        let has_type = |type_name: &str| pokemon.types.iter().any(|t| t == type_name);
-
-        // Check type-based immunities
-        match status {
-            "brn" => {
-                if has_type("Fire") {
-                    return false;
-                }
+        // Check for signature Z-move
+        if let Some(z_move_from) = item_z_move_from {
+            if move_name == z_move_from {
+                return item_z_move.map(|s| s.to_string());
             }
-            "par" => {
-                if self.gen >= 6 && has_type("Electric") {
-                    return false;
-                }
-            }
-            "psn" | "tox" => {
-                if has_type("Poison") || has_type("Steel") {
-                    return false;
-                }
-            }
-            "frz" => {
-                if has_type("Ice") {
-                    return false;
-                }
-            }
-            _ => {}
         }
 
-        pokemon.set_status(ID::new(status));
+        // Check for type-based Z-move
+        if item_z_move.is_some() {
+            if let Some(z_type) = item_z_move_type {
+                if move_type == z_type {
+                    if move_category == "Status" {
+                        return Some(move_name.to_string());
+                    } else if z_move_base_power.is_some() {
+                        return Some(get_z_move_name(move_type).to_string());
+                    }
+                }
+            }
+        }
+
+        None
+    }
+
+    /// Check if Pokemon can use Z-Move
+    /// Equivalent to canZMove in battle-actions.ts
+    pub fn can_z_move(
+        z_move_used: bool,
+        is_transformed: bool,
+        species_is_mega: bool,
+        species_is_primal: bool,
+        species_forme: &str,
+        item_z_move: bool,
+        item_user: Option<&[String]>,
+        species_name: &str,
+    ) -> bool {
+        if z_move_used {
+            return false;
+        }
+        if is_transformed && (species_is_mega || species_is_primal || species_forme == "Ultra") {
+            return false;
+        }
+        if !item_z_move {
+            return false;
+        }
+        if let Some(users) = item_user {
+            if !users.iter().any(|u| u == species_name) {
+                return false;
+            }
+        }
         true
     }
 
-    /// Check if a Pokemon can move (not fully paralyzed, frozen, asleep, etc.)
-    pub fn can_move(&self, pokemon: &Pokemon, random_value: u32) -> bool {
-        let status = pokemon.status.as_str();
-        match status {
-            "slp" => {
-                // Check if sleep counter allows waking up
-                pokemon.status_state.duration.map(|t| t == 0).unwrap_or(false)
-            }
-            "frz" => {
-                // 20% chance to thaw in Gen 2+
-                if self.gen >= 2 {
-                    random_value % 5 == 0
-                } else {
-                    false
-                }
-            }
-            "par" => {
-                // 25% chance of full paralysis
-                random_value % 4 != 0
-            }
-            "fnt" => false,
-            "" => true,
-            _ => true,
+    // =========================================================================
+    // MAX MOVE METHODS
+    // =========================================================================
+
+    /// Get Max Move for a move
+    /// Equivalent to getMaxMove in battle-actions.ts
+    pub fn get_max_move(move_name: &str, move_type: &str, move_category: &str) -> Option<String> {
+        if move_name == "Struggle" {
+            return Some("Struggle".to_string());
         }
-    }
 
-    /// Calculate speed for turn order
-    pub fn get_effective_speed(&self, pokemon: &Pokemon) -> u32 {
-        let base_speed = pokemon.stored_stats.spe as u32;
-        let boosted_speed = Self::calculate_stat_with_boost(base_speed, pokemon.boosts.spe);
-
-        // Apply paralysis speed reduction
-        if pokemon.status.as_str() == "par" {
-            boosted_speed / 2
+        let max_type = if move_category == "Status" {
+            "Status"
         } else {
-            boosted_speed
-        }
+            move_type
+        };
+
+        Some(get_max_move_name(max_type).to_string())
     }
 
-    /// Compare speeds for turn order (returns true if a goes before b)
-    pub fn speed_compare(
-        &self,
-        a: &Pokemon,
-        b: &Pokemon,
-        a_priority: i8,
-        b_priority: i8,
-        speed_tie_random: bool,
-    ) -> bool {
-        // Higher priority goes first
-        if a_priority != b_priority {
-            return a_priority > b_priority;
-        }
+    // =========================================================================
+    // MEGA EVOLUTION METHODS
+    // =========================================================================
 
-        // Otherwise compare speed
-        let a_speed = self.get_effective_speed(a);
-        let b_speed = self.get_effective_speed(b);
-
-        if a_speed != b_speed {
-            return a_speed > b_speed;
-        }
-
-        // Speed tie - random
-        speed_tie_random
-    }
-
-    /// Process end-of-turn effects (burn damage, poison damage, leftovers, etc.)
-    pub fn process_residual(&self, pokemon: &mut Pokemon) -> Vec<(String, i32)> {
-        let mut effects = Vec::new();
-
-        if pokemon.is_fainted() {
-            return effects;
-        }
-
-        // Status damage
-        let status = pokemon.status.as_str().to_string();
-        match status.as_str() {
-            "brn" => {
-                // Burn does 1/16 (Gen 7+) or 1/8 (before) of max HP
-                let damage = if self.gen >= 7 {
-                    pokemon.maxhp / 16
-                } else {
-                    pokemon.maxhp / 8
-                }.max(1);
-                pokemon.hp = pokemon.hp.saturating_sub(damage);
-                effects.push(("burn_damage".to_string(), damage as i32));
-            }
-            "psn" => {
-                // Regular poison does 1/8 of max HP
-                let damage = (pokemon.maxhp / 8).max(1);
-                pokemon.hp = pokemon.hp.saturating_sub(damage);
-                effects.push(("poison_damage".to_string(), damage as i32));
-            }
-            "tox" => {
-                // Toxic damage increases each turn
-                let toxic_counter = pokemon.status_state.duration.unwrap_or(1);
-                let damage = (pokemon.maxhp * toxic_counter / 16).max(1);
-                pokemon.hp = pokemon.hp.saturating_sub(damage);
-                effects.push(("toxic_damage".to_string(), damage as i32));
-
-                // Increment toxic counter
-                pokemon.status_state.duration = Some(pokemon.status_state.duration.unwrap_or(1) + 1);
-            }
-            "slp" => {
-                // Decrement sleep counter
-                if let Some(duration) = pokemon.status_state.duration {
-                    if duration > 0 {
-                        pokemon.status_state.duration = Some(duration - 1);
-                    }
-                    if duration <= 1 {
-                        pokemon.status = ID::empty();
-                        effects.push(("wake_up".to_string(), 0));
+    /// Check if Pokemon can Mega Evolve
+    /// Equivalent to canMegaEvo in battle-actions.ts
+    pub fn can_mega_evo(
+        species_name: &str,
+        species_other_formes: Option<&[String]>,
+        item_mega_evolves: Option<&str>,
+        item_mega_stone: Option<&str>,
+        base_moves: &[ID],
+        item_is_z_move: bool,
+        gen: u8,
+    ) -> Option<String> {
+        // Check Mega Rayquaza (requires Dragon Ascent)
+        if let Some(other_formes) = species_other_formes {
+            if let Some(first_forme) = other_formes.first() {
+                if first_forme.ends_with("-Mega") {
+                    // Check if it requires a move (like Rayquaza)
+                    let required_move = ID::new("dragonascent");
+                    if base_moves.contains(&required_move) && !item_is_z_move {
+                        return Some(first_forme.clone());
                     }
                 }
             }
-            _ => {}
         }
 
-        effects
+        // Check item-based mega evolution
+        if let (Some(mega_evolves), Some(mega_stone)) = (item_mega_evolves, item_mega_stone) {
+            // Check if item's mega evolves matches species
+            if mega_evolves == species_name && mega_stone != species_name {
+                return Some(mega_stone.to_string());
+            }
+        }
+
+        None
+    }
+
+    /// Check if Pokemon can Ultra Burst
+    /// Equivalent to canUltraBurst in battle-actions.ts
+    pub fn can_ultra_burst(species_name: &str, item_id: &str) -> Option<String> {
+        if (species_name == "Necrozma-Dawn-Wings" || species_name == "Necrozma-Dusk-Mane")
+            && item_id == "ultranecroziumz"
+        {
+            return Some("Necrozma-Ultra".to_string());
+        }
+        None
+    }
+
+    /// Check if Pokemon can Terastallize
+    /// Equivalent to canTerastallize in battle-actions.ts
+    pub fn can_terastallize(
+        item_is_z_move: bool,
+        can_mega_evo: bool,
+        gen: u8,
+        tera_type: Option<&str>,
+    ) -> Option<String> {
+        if item_is_z_move || can_mega_evo || gen != 9 {
+            return None;
+        }
+        tera_type.map(|t| t.to_string())
     }
 }
+
+// =========================================================================
+// TESTS
+// =========================================================================
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::pokemon::PokemonSet;
-
-    fn create_test_pokemon(name: &str, level: u8, hp: u32) -> Pokemon {
-        let set = PokemonSet {
-            name: name.to_string(),
-            species: name.to_string(),
-            level,
-            ..Default::default()
-        };
-        let mut pokemon = Pokemon::new(&set, 0, 0);
-        pokemon.hp = hp;
-        pokemon.maxhp = hp;
-        pokemon.stored_stats.atk = 100;
-        pokemon.stored_stats.def = 100;
-        pokemon.stored_stats.spa = 100;
-        pokemon.stored_stats.spd = 100;
-        pokemon.stored_stats.spe = 100;
-        pokemon.types = vec!["Normal".to_string()];
-        pokemon
-    }
 
     #[test]
     fn test_boost_modifier() {
@@ -517,87 +545,88 @@ mod tests {
     }
 
     #[test]
-    fn test_damage_calculation() {
-        let dex = Dex::load_default().unwrap();
-        let actions = BattleActions::new(&dex, 9);
+    fn test_recoil_damage() {
+        // Chloroblast uses 50% HP
+        assert_eq!(BattleActions::calc_recoil_damage(100, "chloroblast", None, 200), 100);
 
-        let attacker = create_test_pokemon("Pikachu", 50, 100);
-        let mut defender = create_test_pokemon("Squirtle", 50, 100);
-        defender.types = vec!["Water".to_string()];
+        // Normal recoil (1/4)
+        assert_eq!(BattleActions::calc_recoil_damage(100, "doubleedge", Some((1, 4)), 200), 25);
 
-        let thunderbolt = dex.get_move("Thunderbolt").unwrap();
-
-        // Test with no crit, max random
-        match actions.calculate_damage(&attacker, &defender, thunderbolt, false, 100) {
-            DamageResult::Damage(dmg) => {
-                // Super effective (2x) against water
-                assert!(dmg > 0);
-            }
-            _ => panic!("Expected damage"),
-        }
+        // No recoil
+        assert_eq!(BattleActions::calc_recoil_damage(100, "tackle", None, 200), 0);
     }
 
     #[test]
-    fn test_immunity() {
-        let dex = Dex::load_default().unwrap();
-        let actions = BattleActions::new(&dex, 9);
-
-        let attacker = create_test_pokemon("Pikachu", 50, 100);
-        let mut defender = create_test_pokemon("Sandshrew", 50, 100);
-        defender.types = vec!["Ground".to_string()];
-
-        let thunderbolt = dex.get_move("Thunderbolt").unwrap();
-
-        match actions.calculate_damage(&attacker, &defender, thunderbolt, false, 100) {
-            DamageResult::Immune => (),
-            _ => panic!("Expected immunity"),
-        }
+    fn test_confusion_damage() {
+        // Level 50, 100 atk, 100 def, 40 base power, 100% random
+        let damage = BattleActions::get_confusion_damage(50, 100, 100, 40, 100);
+        assert!(damage > 0);
     }
 
     #[test]
-    fn test_apply_damage() {
-        let mut pokemon = create_test_pokemon("Test", 50, 100);
-        assert_eq!(pokemon.hp, 100);
-
-        BattleActions::apply_damage(&mut pokemon, 30);
-        assert_eq!(pokemon.hp, 70);
-
-        BattleActions::apply_damage(&mut pokemon, 100);
-        assert_eq!(pokemon.hp, 0);
-        assert!(pokemon.is_fainted());
+    fn test_target_type_choices() {
+        assert!(BattleActions::target_type_choices("normal"));
+        assert!(BattleActions::target_type_choices("any"));
+        assert!(BattleActions::target_type_choices("adjacentFoe"));
+        assert!(!BattleActions::target_type_choices("self"));
+        assert!(!BattleActions::target_type_choices("all"));
     }
 
     #[test]
-    fn test_apply_boosts() {
-        let mut pokemon = create_test_pokemon("Test", 50, 100);
-        assert_eq!(pokemon.boosts.atk, 0);
-
-        let boosts = BoostsTable { atk: 2, ..Default::default() };
-        BattleActions::apply_boosts(&mut pokemon, &boosts);
-        assert_eq!(pokemon.boosts.atk, 2);
-
-        // Test clamping at +6
-        let boosts = BoostsTable { atk: 10, ..Default::default() };
-        BattleActions::apply_boosts(&mut pokemon, &boosts);
-        assert_eq!(pokemon.boosts.atk, 6);
+    fn test_max_move_name() {
+        assert_eq!(get_max_move_name("Fire"), "Max Flare");
+        assert_eq!(get_max_move_name("Water"), "Max Geyser");
+        assert_eq!(get_max_move_name("Electric"), "Max Lightning");
+        assert_eq!(get_max_move_name("Status"), "Max Guard");
     }
 
     #[test]
-    fn test_speed_comparison() {
-        let dex = Dex::load_default().unwrap();
-        let actions = BattleActions::new(&dex, 9);
+    fn test_z_move_name() {
+        assert_eq!(get_z_move_name("Fire"), "Inferno Overdrive");
+        assert_eq!(get_z_move_name("Water"), "Hydro Vortex");
+        assert_eq!(get_z_move_name("Electric"), "Gigavolt Havoc");
+    }
 
-        let mut fast = create_test_pokemon("Fast", 50, 100);
-        fast.stored_stats.spe = 150;
+    #[test]
+    fn test_can_ultra_burst() {
+        assert_eq!(
+            BattleActions::can_ultra_burst("Necrozma-Dawn-Wings", "ultranecroziumz"),
+            Some("Necrozma-Ultra".to_string())
+        );
+        assert_eq!(
+            BattleActions::can_ultra_burst("Necrozma-Dusk-Mane", "ultranecroziumz"),
+            Some("Necrozma-Ultra".to_string())
+        );
+        assert_eq!(
+            BattleActions::can_ultra_burst("Necrozma", "ultranecroziumz"),
+            None
+        );
+    }
 
-        let mut slow = create_test_pokemon("Slow", 50, 100);
-        slow.stored_stats.spe = 50;
+    #[test]
+    fn test_can_terastallize() {
+        // Gen 9 with tera type
+        assert_eq!(
+            BattleActions::can_terastallize(false, false, 9, Some("Fire")),
+            Some("Fire".to_string())
+        );
 
-        // Higher speed goes first
-        assert!(actions.speed_compare(&fast, &slow, 0, 0, true));
-        assert!(!actions.speed_compare(&slow, &fast, 0, 0, true));
+        // Wrong gen
+        assert_eq!(
+            BattleActions::can_terastallize(false, false, 8, Some("Fire")),
+            None
+        );
 
-        // Priority overrides speed
-        assert!(actions.speed_compare(&slow, &fast, 1, 0, true));
+        // Has Z-Move
+        assert_eq!(
+            BattleActions::can_terastallize(true, false, 9, Some("Fire")),
+            None
+        );
+
+        // Can Mega Evo
+        assert_eq!(
+            BattleActions::can_terastallize(false, true, 9, Some("Fire")),
+            None
+        );
     }
 }

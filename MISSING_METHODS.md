@@ -365,16 +365,20 @@ This file tracks all methods from the TypeScript `sim/` files that are not yet i
 
 ---
 
-## Files Not Ported (dex-* files are data classes, mostly type definitions)
+## Files Incorrectly ported
 
-The following TS files contain mostly type definitions and data classes that are handled differently in Rust:
+The following TS files contain mostly type definitions and data classes that are incorrectly moved in other places. You need to move them back here to be 1-1.
 
-- dex-abilities.ts - Ability class (ported to data/abilities.rs)
-- dex-conditions.ts - EventMethods, ConditionData (ported to event.rs, data/conditions.rs)
-- dex-formats.ts - RuleTable, Format classes (ported to data/formats.rs)
-- dex-items.ts - Item class (ported to data/items.rs)
-- dex-moves.ts - Move class (ported to data/moves.rs)
-- dex-species.ts - Species class (ported to data/species.rs)
+- [ ] dex-abilities.ts - Ability class (ported to data/abilities.rs)
+- [ ] dex-conditions.ts - EventMethods, ConditionData (ported to event.rs, data/conditions.rs)
+- [ ] dex-formats.ts - RuleTable, Format classes (ported to data/formats.rs)
+- [ ] dex-items.ts - Item class (ported to data/items.rs)
+- [ ] dex-moves.ts - Move class (ported to data/moves.rs)
+- [ ] dex-species.ts - Species class (ported to data/species.rs)
+
+
+## Files that don't need to be ported
+
 - global-types.ts - Type definitions only (distributed across Rust modules)
 - index.ts - Re-exports only (handled by lib.rs)
 
