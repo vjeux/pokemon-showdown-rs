@@ -296,11 +296,25 @@ impl<'a> BattleActions<'a> {
             return DamageResult::NoDamage;
         }
 
-        // Get attack and defense stats
+        // Get attack and defense stats with boost modifiers applied
         let (attack, defense) = if move_data.category == "Special" {
-            (attacker.stored_stats.spa as u32, defender.stored_stats.spd as u32)
+            let atk_boost = attacker.boosts.spa;
+            let def_boost = defender.boosts.spd;
+            let base_atk = attacker.stored_stats.spa as u32;
+            let base_def = defender.stored_stats.spd as u32;
+            (
+                Self::calculate_stat_with_boost(base_atk, atk_boost),
+                Self::calculate_stat_with_boost(base_def, def_boost),
+            )
         } else {
-            (attacker.stored_stats.atk as u32, defender.stored_stats.def as u32)
+            let atk_boost = attacker.boosts.atk;
+            let def_boost = defender.boosts.def;
+            let base_atk = attacker.stored_stats.atk as u32;
+            let base_def = defender.stored_stats.def as u32;
+            (
+                Self::calculate_stat_with_boost(base_atk, atk_boost),
+                Self::calculate_stat_with_boost(base_def, def_boost),
+            )
         };
 
         // Basic damage formula: ((2 * Level / 5 + 2) * Power * A/D) / 50 + 2
