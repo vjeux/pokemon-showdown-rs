@@ -470,6 +470,7 @@ impl BattleMessage {
 }
 
 /// Battle stream for managing a battle with protocol I/O
+/// Equivalent to BattleStream class in battle-stream.ts
 pub struct BattleStream {
     /// The underlying battle
     battle: Option<Battle>,
@@ -477,6 +478,34 @@ pub struct BattleStream {
     output_queue: VecDeque<String>,
     /// Input buffer
     input_buffer: String,
+    /// Debug mode
+    pub debug: bool,
+    /// No-catch mode (propagate errors instead of catching)
+    pub no_catch: bool,
+    /// Replay mode
+    pub replay: ReplayMode,
+    /// Keep alive (don't end stream on battle end)
+    pub keep_alive: bool,
+}
+
+/// Replay mode options
+/// Equivalent to replay option in battle-stream.ts
+#[derive(Debug, Clone, Copy, PartialEq, Default)]
+pub enum ReplayMode {
+    #[default]
+    Off,
+    Spectator,
+    Full,
+}
+
+/// Stream options
+/// Equivalent to BattleStream constructor options in battle-stream.ts
+#[derive(Debug, Clone, Default)]
+pub struct BattleStreamOptions {
+    pub debug: bool,
+    pub no_catch: bool,
+    pub keep_alive: bool,
+    pub replay: ReplayMode,
 }
 
 impl BattleStream {
@@ -486,6 +515,24 @@ impl BattleStream {
             battle: None,
             output_queue: VecDeque::new(),
             input_buffer: String::new(),
+            debug: false,
+            no_catch: false,
+            replay: ReplayMode::Off,
+            keep_alive: false,
+        }
+    }
+
+    /// Create a new battle stream with options
+    /// Equivalent to BattleStream constructor in battle-stream.ts
+    pub fn with_options(options: BattleStreamOptions) -> Self {
+        Self {
+            battle: None,
+            output_queue: VecDeque::new(),
+            input_buffer: String::new(),
+            debug: options.debug,
+            no_catch: options.no_catch,
+            replay: options.replay,
+            keep_alive: options.keep_alive,
         }
     }
 
@@ -495,6 +542,10 @@ impl BattleStream {
             battle: Some(battle),
             output_queue: VecDeque::new(),
             input_buffer: String::new(),
+            debug: false,
+            no_catch: false,
+            replay: ReplayMode::Off,
+            keep_alive: false,
         }
     }
 
@@ -504,52 +555,163 @@ impl BattleStream {
     }
 
     /// Write input to the battle
+    /// Equivalent to _write() in battle-stream.ts
     pub fn write(&mut self, input: &str) {
         for line in input.lines() {
-            self.process_input(line.trim());
+            let line = line.trim();
+            if line.starts_with('>') {
+                let parts: Vec<&str> = line[1..].splitn(2, ' ').collect();
+                let cmd = parts.first().copied().unwrap_or("");
+                let args = parts.get(1).copied().unwrap_or("");
+                self.write_line(cmd, args);
+            }
         }
     }
 
-    /// Process a single input line
-    fn process_input(&mut self, line: &str) {
-        if line.is_empty() {
-            return;
-        }
-
-        // Parse command
-        let parts: Vec<&str> = line.splitn(2, ' ').collect();
-        let cmd = parts.first().copied().unwrap_or("");
-        let args = parts.get(1).copied().unwrap_or("");
-
+    /// Process a single command line
+    /// Equivalent to _writeLine() in battle-stream.ts
+    fn write_line(&mut self, cmd: &str, args: &str) {
         match cmd {
-            ">p1" | ">p2" => {
+            "start" => {
+                // Parse options from JSON and start battle
+                // Note: In full implementation, would parse JSON into BattleOptions
+                // For now, create default options
+                let _ = args; // Would parse args as JSON
+                // Would call: self.start(options);
+            }
+            "player" => {
+                // Set player info
+                let parts: Vec<&str> = args.splitn(2, ' ').collect();
+                let _slot = parts.first().copied().unwrap_or("");
+                let _options_text = parts.get(1).copied().unwrap_or("");
+                // Would call battle.set_player(slot, options)
+            }
+            "p1" | "p2" | "p3" | "p4" => {
                 // Player choice
-                let side_index = if cmd == ">p1" { 0 } else { 1 };
-                if let Some(ref mut battle) = self.battle {
-                    let (p1_choice, p2_choice) = if side_index == 0 {
-                        (args, "")
-                    } else {
-                        ("", args)
+                if args == "undo" {
+                    // Undo choice
+                    // Would call battle.undo_choice(cmd)
+                } else if let Some(ref mut battle) = self.battle {
+                    let (p1_choice, p2_choice) = match cmd {
+                        "p1" => (args, ""),
+                        "p2" => ("", args),
+                        _ => ("", ""),
                     };
                     battle.make_choices(p1_choice, p2_choice);
                 }
             }
-            ">forcewin" => {
-                // Force a winner - set ended flag
+            "forcewin" => {
                 if let Some(ref mut battle) = self.battle {
                     battle.ended = true;
                     battle.winner = Some(args.to_string());
+                    battle.input_log.push(format!(">forcewin {}", args));
                 }
             }
-            ">forcetie" => {
-                // Force a tie
+            "forcetie" => {
                 if let Some(ref mut battle) = self.battle {
                     battle.ended = true;
                     battle.winner = None;
+                    battle.input_log.push(">forcetie".to_string());
                 }
+            }
+            "forcelose" => {
+                if let Some(ref mut battle) = self.battle {
+                    // Mark the specified side as lost
+                    battle.input_log.push(format!(">forcelose {}", args));
+                    // Would determine winner based on who didn't lose
+                }
+            }
+            "reseed" => {
+                if let Some(ref mut battle) = self.battle {
+                    // Reset RNG with new seed
+                    battle.input_log.push(format!(">reseed {}", args));
+                    // Would call battle.reset_rng(args)
+                }
+            }
+            "tiebreak" => {
+                if let Some(ref mut _battle) = self.battle {
+                    // Tiebreak logic
+                    // Would call battle.tiebreak()
+                }
+            }
+            "chat" => {
+                if let Some(ref mut battle) = self.battle {
+                    battle.input_log.push(format!(">chat {}", args));
+                    // Add chat message to battle log
+                }
+            }
+            "chat-inputlogonly" => {
+                if let Some(ref mut battle) = self.battle {
+                    battle.input_log.push(format!(">chat {}", args));
+                }
+            }
+            "eval" => {
+                // Eval is not supported in Rust for security reasons
+                if let Some(ref mut battle) = self.battle {
+                    battle.input_log.push(format!(">eval {}", args));
+                }
+            }
+            "requestlog" => {
+                if let Some(ref battle) = self.battle {
+                    let log = battle.input_log.join("\n");
+                    self.output_queue.push_back(format!("requesteddata\n{}", log));
+                }
+            }
+            "requestexport" => {
+                if let Some(ref battle) = self.battle {
+                    // Would include PRNG seed and input log
+                    let log = battle.input_log.join("\n");
+                    self.output_queue.push_back(format!("requesteddata\n{}", log));
+                }
+            }
+            "requestteam" => {
+                if let Some(ref battle) = self.battle {
+                    let slot = args.trim();
+                    let side_idx = match slot {
+                        "p1" => 0,
+                        "p2" => 1,
+                        "p3" => 2,
+                        "p4" => 3,
+                        _ => 0,
+                    };
+                    if side_idx < battle.sides.len() {
+                        // Would pack team
+                        self.output_queue.push_back("requesteddata\n".to_string());
+                    }
+                }
+            }
+            "show-openteamsheets" => {
+                // Show open team sheets
+                // Would call battle.show_open_team_sheets()
+            }
+            "version" | "version-origin" => {
+                // Version info - ignored
             }
             _ => {
                 // Unknown command
+            }
+        }
+    }
+
+    /// Push a message to the output queue
+    /// Equivalent to pushMessage() in battle-stream.ts
+    pub fn push_message(&mut self, msg_type: &str, data: &str) {
+        match self.replay {
+            ReplayMode::Off => {
+                self.output_queue.push_back(format!("{}\n{}", msg_type, data));
+            }
+            ReplayMode::Spectator => {
+                // In spectator mode, filter channel messages
+                if msg_type == "update" {
+                    // Would extract channel 0 messages
+                    self.output_queue.push_back(data.to_string());
+                }
+            }
+            ReplayMode::Full => {
+                // In full replay mode, extract omniscient channel
+                if msg_type == "update" {
+                    self.output_queue.push_back(data.to_string());
+                }
             }
         }
     }
@@ -591,6 +753,91 @@ impl BattleStream {
     pub fn winner(&self) -> Option<String> {
         self.battle.as_ref().and_then(|b| b.winner.clone())
     }
+
+    /// Destroy the stream
+    /// Equivalent to _destroy() in battle-stream.ts
+    pub fn destroy(&mut self) {
+        self.battle = None;
+        self.output_queue.clear();
+    }
+}
+
+// =========================================================================
+// Player streams - split a BattleStream into per-player streams
+// Equivalent to getPlayerStreams() in battle-stream.ts
+// =========================================================================
+
+/// Player streams container
+/// Equivalent to the return type of getPlayerStreams() in battle-stream.ts
+pub struct PlayerStreams {
+    /// Omniscient stream (sees all)
+    pub omniscient: VecDeque<String>,
+    /// Spectator stream (public info only)
+    pub spectator: VecDeque<String>,
+    /// Player 1 stream
+    pub p1: VecDeque<String>,
+    /// Player 2 stream
+    pub p2: VecDeque<String>,
+    /// Player 3 stream (for multi battles)
+    pub p3: VecDeque<String>,
+    /// Player 4 stream (for multi battles)
+    pub p4: VecDeque<String>,
+}
+
+impl PlayerStreams {
+    /// Create new player streams
+    pub fn new() -> Self {
+        Self {
+            omniscient: VecDeque::new(),
+            spectator: VecDeque::new(),
+            p1: VecDeque::new(),
+            p2: VecDeque::new(),
+            p3: VecDeque::new(),
+            p4: VecDeque::new(),
+        }
+    }
+
+    /// Push update to appropriate channels
+    /// Equivalent to the stream processing in getPlayerStreams()
+    pub fn push_update(&mut self, data: &str, channels: &[i8]) {
+        for &channel in channels {
+            match channel {
+                -1 => self.omniscient.push_back(data.to_string()),
+                0 => self.spectator.push_back(data.to_string()),
+                1 => self.p1.push_back(data.to_string()),
+                2 => self.p2.push_back(data.to_string()),
+                3 => self.p3.push_back(data.to_string()),
+                4 => self.p4.push_back(data.to_string()),
+                _ => {}
+            }
+        }
+    }
+}
+
+impl Default for PlayerStreams {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+/// Split first utility function
+/// Equivalent to splitFirst() in battle-stream.ts
+pub fn split_first(s: &str, delimiter: &str, limit: usize) -> Vec<String> {
+    let mut result = Vec::new();
+    let mut remaining = s;
+
+    for _ in 0..limit {
+        if let Some(idx) = remaining.find(delimiter) {
+            result.push(remaining[..idx].to_string());
+            remaining = &remaining[idx + delimiter.len()..];
+        } else {
+            result.push(remaining.to_string());
+            remaining = "";
+            break;
+        }
+    }
+    result.push(remaining.to_string());
+    result
 }
 
 impl Default for BattleStream {
