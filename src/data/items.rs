@@ -7393,6 +7393,18 @@ pub fn is_berry(item_id: &ID) -> bool {
     get_item(item_id).map_or(false, |item| item.is_berry)
 }
 
+/// Get residual healing for an item (returns fraction of max HP)
+pub fn get_residual_heal(item_id: &ID) -> Option<f64> {
+    let item = get_item(item_id)?;
+    // Check effects for ResidualHeal
+    for entry in &item.effects {
+        if let ItemEffect::ResidualHeal { fraction } = &entry.effect {
+            return Some(*fraction);
+        }
+    }
+    None
+}
+
 /// Check if an item grants type immunity
 pub fn item_grants_type_immunity(item_id: &ID, move_type: &str) -> bool {
     get_item(item_id).map_or(false, |item| item.grants_type_immunity(move_type))
