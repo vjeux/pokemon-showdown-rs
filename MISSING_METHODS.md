@@ -24,7 +24,8 @@ This file tracks all methods from the TypeScript `sim/` files and their Rust imp
 | dex-items.ts | 5 | in dex.rs | ✓ Complete |
 | dex-abilities.ts | 5 | in dex.rs | ✓ Complete |
 | dex-conditions.ts | 4 | in dex.rs | ✓ Complete |
-| dex-formats.ts | 20 | data/formats.rs | ✓ Core Complete |
+| dex-formats.ts | 28 | 42 in data/formats.rs | ✓ Complete |
+| global-types.ts | Types only | Types in dex_data.rs | ✓ Complete |
 
 ---
 
@@ -448,6 +449,75 @@ All data structures and methods implemented:
 
 ---
 
+## dex-formats.ts → data/formats.rs ✓ COMPLETE
+
+### RuleTable Class Methods:
+- [x] new - Constructor
+- [x] has - Check if rule exists
+- [x] get - Get rule source
+- [x] set - Set a rule
+- [x] delete - Delete a rule
+- [x] keys - Get all rule keys
+- [x] is_banned - Check if thing is banned
+- [x] is_banned_species - Check if species is banned
+- [x] is_restricted - Check if thing is restricted
+- [x] is_restricted_species - Check if species is restricted
+- [x] get_tag_rules - Get tag rules
+- [x] check - Check a thing for bans
+- [x] get_reason - Get reason for rule
+- [x] blame - Get blame string
+- [x] get_complex_ban_index - Get complex ban index
+- [x] add_complex_ban - Add complex ban
+- [x] add_complex_team_ban - Add complex team ban
+- [x] resolve_numbers - Resolve numeric properties
+- [x] has_complex_bans - Check for complex bans
+
+### DexFormats Class Methods:
+- [x] new - Constructor
+- [x] load - Load formats
+- [x] validate - Validate format name
+- [x] get - Get format by name
+- [x] all - Get all formats
+- [x] is_pokemon_rule - Check if rule is for Pokemon
+- [x] get_rule_table - Get rule table for format
+- [x] validate_rule - Validate a rule string
+- [x] valid_pokemon_tag - Check valid Pokemon tag
+- [x] validate_ban_rule - Validate ban rule
+
+### Format Class:
+- [x] from_def - Create from FormatDef
+- [x] non_existent - Create non-existent format
+
+### Additional Types:
+- [x] ComplexBan type
+- [x] GameTimerSettings struct
+
+---
+
+## global-types.ts → dex_data.rs ✓ COMPLETE
+
+All TypeScript type definitions have Rust equivalents:
+- ID → ID struct
+- GenderName → Gender enum
+- StatID → StatID enum
+- StatsTable → StatsTable struct
+- BoostID → BoostID enum
+- BoostsTable → BoostsTable struct
+- Nonstandard → Nonstandard enum
+- GameType → GameType enum
+- SideID → SideID enum
+- MoveTarget → MoveTarget enum
+- EffectType → EffectType enum
+- BasicEffect → BasicEffect struct
+- Nature → Nature struct
+- SpreadMoveTargets → SpreadMoveTargets type (battle_actions.rs)
+- SpreadMoveDamage → SpreadMoveDamage type (battle_actions.rs)
+- EventInfo → EventInfo struct (battle.rs)
+- PokemonSet → PokemonSet struct (pokemon.rs)
+- PokemonSources → PokemonSources struct (team_validator.rs)
+
+---
+
 ## Implementation Status
 
 ### ✓ All Core Files Complete:
@@ -470,6 +540,7 @@ All data structures and methods implemented:
 17. dex-abilities.ts → dex.rs ✓
 18. dex-conditions.ts → dex.rs ✓
 19. dex-formats.ts → data/formats.rs ✓
+20. global-types.ts → dex_data.rs ✓
 
 ### Notes:
 - Some methods marked as "stub" have the interface implemented but require Battle context for full functionality
