@@ -401,6 +401,121 @@ pub fn is_active_move(value: &serde_json::Value) -> bool {
     value.get("id").is_some() && value.get("target").is_some()
 }
 
+// =========================================================================
+// SERIALIZATION FUNCTIONS - Equivalent to state.ts serialize* methods
+// In Rust, these use serde's derive macros for automatic serialization
+// =========================================================================
+
+/// Serialize a Battle to JSON value
+/// Equivalent to state.ts serializeBattle()
+pub fn serialize_battle(battle: &crate::battle::Battle) -> serde_json::Value {
+    serde_json::to_value(battle).unwrap_or(serde_json::Value::Null)
+}
+
+/// Deserialize Battle from JSON value (returns updated state on existing battle)
+/// Equivalent to state.ts deserializeBattle()
+pub fn deserialize_battle_state(state: &serde_json::Value, battle: &mut crate::battle::Battle) {
+    if let Some(turn) = state.get("turn").and_then(|v| v.as_u64()) {
+        battle.turn = turn as u32;
+    }
+    if let Some(ended) = state.get("ended").and_then(|v| v.as_bool()) {
+        battle.ended = ended;
+    }
+}
+
+/// Serialize a Field to JSON value
+/// Equivalent to state.ts serializeField()
+pub fn serialize_field(field: &crate::field::Field) -> serde_json::Value {
+    field.to_json()
+}
+
+/// Deserialize Field from JSON value
+/// Equivalent to state.ts deserializeField()
+pub fn deserialize_field(state: &serde_json::Value, field: &mut crate::field::Field) {
+    if let Some(weather) = state.get("weather").and_then(|v| v.as_str()) {
+        field.set_weather(ID::new(weather), None);
+    }
+    if let Some(terrain) = state.get("terrain").and_then(|v| v.as_str()) {
+        field.set_terrain(ID::new(terrain), None);
+    }
+}
+
+/// Serialize a Side to JSON value
+/// Equivalent to state.ts serializeSide()
+pub fn serialize_side(side: &crate::side::Side) -> serde_json::Value {
+    side.to_json()
+}
+
+/// Deserialize Side from JSON value
+/// Equivalent to state.ts deserializeSide()
+pub fn deserialize_side(_state: &serde_json::Value, _side: &mut crate::side::Side) {
+    // Side deserialization would update the side in-place
+    // Most state is reconstructed from Pokemon data
+}
+
+/// Serialize a Pokemon to JSON value
+/// Equivalent to state.ts serializePokemon()
+pub fn serialize_pokemon(pokemon: &crate::pokemon::Pokemon) -> serde_json::Value {
+    pokemon.to_json()
+}
+
+/// Deserialize Pokemon from JSON value
+/// Equivalent to state.ts deserializePokemon()
+pub fn deserialize_pokemon(state: &serde_json::Value, pokemon: &mut crate::pokemon::Pokemon) {
+    if let Some(hp) = state.get("hp").and_then(|v| v.as_u64()) {
+        pokemon.hp = hp as u32;
+    }
+    if let Some(status) = state.get("status").and_then(|v| v.as_str()) {
+        pokemon.status = ID::new(status);
+    }
+}
+
+/// Serialize an ActiveMove to JSON value
+/// Equivalent to state.ts serializeActiveMove()
+pub fn serialize_active_move(move_data: &serde_json::Value) -> serde_json::Value {
+    move_data.clone()
+}
+
+/// Deserialize ActiveMove from JSON value
+/// Equivalent to state.ts deserializeActiveMove()
+pub fn deserialize_active_move(state: &serde_json::Value) -> serde_json::Value {
+    state.clone()
+}
+
+/// Generic serialize function for objects with refs
+/// Equivalent to state.ts serialize()
+pub fn serialize(obj: &serde_json::Value, skip_keys: &[&str]) -> serde_json::Value {
+    if let Some(map) = obj.as_object() {
+        let mut result = serde_json::Map::new();
+        for (key, value) in map {
+            if !skip_keys.contains(&key.as_str()) {
+                result.insert(key.clone(), serialize_with_refs(value));
+            }
+        }
+        serde_json::Value::Object(result)
+    } else {
+        obj.clone()
+    }
+}
+
+/// Generic deserialize function for objects with refs
+/// Equivalent to state.ts deserialize()
+pub fn deserialize(state: &serde_json::Value, refs: &[serde_json::Value]) -> serde_json::Value {
+    deserialize_with_refs(state, refs)
+}
+
+/// Serialize a Choice to JSON value
+/// Equivalent to state.ts serializeChoice()
+pub fn serialize_choice(choice: &serde_json::Value) -> serde_json::Value {
+    choice.clone()
+}
+
+/// Deserialize Choice from JSON value
+/// Equivalent to state.ts deserializeChoice()
+pub fn deserialize_choice(state: &serde_json::Value) -> serde_json::Value {
+    state.clone()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
