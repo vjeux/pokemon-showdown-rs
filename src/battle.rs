@@ -98,6 +98,13 @@ pub struct Battle {
     /// Last damage dealt (for Counter in Gen 1)
     pub last_damage: u32,
 
+    /// Currently active move being executed
+    pub active_move: Option<ID>,
+    /// Pokemon currently using a move
+    pub active_pokemon: Option<(usize, usize)>, // (side_idx, poke_idx)
+    /// Target of the current move
+    pub active_target: Option<(usize, usize)>, // (side_idx, poke_idx)
+
     /// Effect order counter
     pub effect_order: u32,
 
@@ -157,6 +164,9 @@ impl Battle {
             last_move: None,
             last_move_line: -1,
             last_damage: 0,
+            active_move: None,
+            active_pokemon: None,
+            active_target: None,
             effect_order: 0,
             debug_mode: options.debug,
             rated: options.rated,
@@ -2564,6 +2574,137 @@ impl Battle {
     /// Equivalent to battle.ts forceWin()
     pub fn force_win(&mut self, side: Option<SideID>) -> bool {
         self.win(side)
+    }
+
+    /// Set the currently active move
+    /// Equivalent to battle.ts setActiveMove()
+    pub fn set_active_move(&mut self, move_id: Option<ID>, pokemon: Option<(usize, usize)>, target: Option<(usize, usize)>) {
+        self.active_move = move_id;
+        self.active_pokemon = pokemon;
+        self.active_target = target.or(pokemon);
+    }
+
+    /// Clear the currently active move
+    /// Equivalent to battle.ts clearActiveMove()
+    pub fn clear_active_move(&mut self, failed: bool) {
+        if self.active_move.is_some() {
+            if !failed {
+                self.last_move = self.active_move.take();
+            } else {
+                self.active_move = None;
+            }
+            self.active_pokemon = None;
+            self.active_target = None;
+        }
+    }
+
+    /// Check if an ability is being suppressed (Mold Breaker, etc.)
+    /// Equivalent to battle.ts suppressingAbility()
+    pub fn suppressing_ability(&self, target: Option<(usize, usize)>) -> bool {
+        // Check if there's an active Pokemon using a move that ignores abilities
+        if let Some((active_side, active_idx)) = self.active_pokemon {
+            if let Some(side) = self.sides.get(active_side) {
+                if let Some(pokemon) = side.pokemon.get(active_idx) {
+                    if !pokemon.is_active {
+                        return false;
+                    }
+
+                    // Check if active move ignores abilities
+                    if let Some(ref move_id) = self.active_move {
+                        // Mold Breaker, Teravolt, Turboblaze
+                        let ability = pokemon.ability.as_str();
+                        let ignores = ability == "moldbreaker" || ability == "teravolt" || ability == "turboblaze";
+
+                        // In Gen 8+, can't suppress your own ability
+                        if self.gen >= 8 {
+                            if let Some(t) = target {
+                                if t == (active_side, active_idx) {
+                                    return false;
+                                }
+                            }
+                        }
+
+                        // Check if target has Ability Shield
+                        if let Some((target_side, target_idx)) = target {
+                            if let Some(tside) = self.sides.get(target_side) {
+                                if let Some(tpoke) = tside.pokemon.get(target_idx) {
+                                    if tpoke.item.as_str() == "abilityshield" {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+
+                        return ignores;
+                    }
+                }
+            }
+        }
+        false
+    }
+
+    /// Get all Pokemon in the battle (not just active)
+    /// Equivalent to battle.ts getAllPokemon()
+    pub fn get_all_pokemon(&self) -> Vec<(usize, usize, &crate::pokemon::Pokemon)> {
+        let mut result = Vec::new();
+        for (side_idx, side) in self.sides.iter().enumerate() {
+            for (poke_idx, pokemon) in side.pokemon.iter().enumerate() {
+                result.push((side_idx, poke_idx, pokemon));
+            }
+        }
+        result
+    }
+
+    /// Get a random target for a move
+    /// Equivalent to battle.ts getRandomTarget()
+    pub fn get_random_target(&mut self, user_side: usize, user_idx: usize, move_target: &str) -> Option<(usize, usize)> {
+        // For self-targeting moves, return the user
+        if move_target == "self" || move_target == "allySide" || move_target == "allyTeam" {
+            return Some((user_side, user_idx));
+        }
+
+        // For adjacent ally moves in singles, no valid target
+        if move_target == "adjacentAlly" && self.game_type == GameType::Singles {
+            return None;
+        }
+
+        // For most moves, target a random foe
+        let foe_side = if user_side == 0 { 1 } else { 0 };
+        if foe_side < self.sides.len() {
+            let valid_targets: Vec<usize> = self.sides[foe_side].pokemon.iter()
+                .enumerate()
+                .filter(|(_, p)| p.is_active && !p.is_fainted())
+                .map(|(idx, _)| idx)
+                .collect();
+
+            if !valid_targets.is_empty() {
+                let random_idx = self.random(valid_targets.len() as u32) as usize;
+                return Some((foe_side, valid_targets[random_idx]));
+            }
+        }
+
+        None
+    }
+
+    /// Update speed for all active Pokemon
+    /// Equivalent to battle.ts updateSpeed()
+    pub fn update_speed(&mut self) {
+        // For now, just recalculate speed based on boosts
+        // In a full implementation, this would consider paralysis, items, abilities, etc.
+        for side in &mut self.sides {
+            for pokemon in &mut side.pokemon {
+                if pokemon.is_active {
+                    // Apply speed stage boosts
+                    let stage = pokemon.boosts.spe;
+                    let multiplier = if stage >= 0 {
+                        (2 + stage as i32) as f64 / 2.0
+                    } else {
+                        2.0 / (2 + (-stage) as i32) as f64
+                    };
+                    pokemon.stored_stats.spe = (pokemon.stored_stats.spe as f64 * multiplier) as i32;
+                }
+            }
+        }
     }
 }
 
