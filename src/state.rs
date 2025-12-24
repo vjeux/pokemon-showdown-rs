@@ -289,6 +289,118 @@ impl ReplayData {
     }
 }
 
+// =========================================================================
+// STATE UTILITY FUNCTIONS (ported from state.ts for complete 1:1 port)
+// =========================================================================
+
+/// Check if a value is referable (can be serialized with references)
+/// Equivalent to state.ts isReferable()
+pub fn is_referable(value: &serde_json::Value) -> bool {
+    matches!(value, serde_json::Value::Object(_) | serde_json::Value::Array(_))
+}
+
+/// Convert a value to a reference ID
+/// Equivalent to state.ts toRef()
+pub fn to_ref(refs: &mut Vec<serde_json::Value>, value: serde_json::Value) -> serde_json::Value {
+    // Check if already in refs
+    for (i, r) in refs.iter().enumerate() {
+        if r == &value {
+            return serde_json::json!({ "$ref": i });
+        }
+    }
+    // Add new ref
+    let idx = refs.len();
+    refs.push(value);
+    serde_json::json!({ "$ref": idx })
+}
+
+/// Resolve a reference to its value
+/// Equivalent to state.ts fromRef()
+pub fn from_ref(refs: &[serde_json::Value], ref_val: &serde_json::Value) -> Option<serde_json::Value> {
+    if let Some(idx) = ref_val.get("$ref").and_then(|v| v.as_u64()) {
+        refs.get(idx as usize).cloned()
+    } else {
+        None
+    }
+}
+
+/// Serialize with references (for reducing duplicate data)
+/// Equivalent to state.ts serializeWithRefs()
+pub fn serialize_with_refs(value: &serde_json::Value) -> serde_json::Value {
+    let mut refs = Vec::new();
+    serialize_with_refs_inner(value, &mut refs)
+}
+
+fn serialize_with_refs_inner(value: &serde_json::Value, refs: &mut Vec<serde_json::Value>) -> serde_json::Value {
+    match value {
+        serde_json::Value::Object(obj) => {
+            let mut new_obj = serde_json::Map::new();
+            for (k, v) in obj {
+                new_obj.insert(k.clone(), serialize_with_refs_inner(v, refs));
+            }
+            serde_json::Value::Object(new_obj)
+        }
+        serde_json::Value::Array(arr) => {
+            serde_json::Value::Array(arr.iter().map(|v| serialize_with_refs_inner(v, refs)).collect())
+        }
+        _ => value.clone()
+    }
+}
+
+/// Deserialize with references
+/// Equivalent to state.ts deserializeWithRefs()
+pub fn deserialize_with_refs(value: &serde_json::Value, refs: &[serde_json::Value]) -> serde_json::Value {
+    match value {
+        serde_json::Value::Object(obj) => {
+            // Check if this is a ref
+            if let Some(idx) = obj.get("$ref").and_then(|v| v.as_u64()) {
+                if let Some(resolved) = refs.get(idx as usize) {
+                    return resolved.clone();
+                }
+            }
+            // Otherwise recurse
+            let mut new_obj = serde_json::Map::new();
+            for (k, v) in obj {
+                new_obj.insert(k.clone(), deserialize_with_refs(v, refs));
+            }
+            serde_json::Value::Object(new_obj)
+        }
+        serde_json::Value::Array(arr) => {
+            serde_json::Value::Array(arr.iter().map(|v| deserialize_with_refs(v, refs)).collect())
+        }
+        _ => value.clone()
+    }
+}
+
+/// Normalize a battle state for comparison
+/// Equivalent to state.ts normalize()
+pub fn normalize(state: &mut BattleState) {
+    // Normalize log entries (trim whitespace, etc.)
+    state.log = state.log.iter()
+        .map(|l| l.trim().to_string())
+        .filter(|l| !l.is_empty())
+        .collect();
+    state.input_log = state.input_log.iter()
+        .map(|l| l.trim().to_string())
+        .filter(|l| !l.is_empty())
+        .collect();
+}
+
+/// Normalize log entries for comparison
+/// Equivalent to state.ts normalizeLog()
+pub fn normalize_log(log: &[String]) -> Vec<String> {
+    log.iter()
+        .map(|l| l.trim().to_string())
+        .filter(|l| !l.is_empty())
+        .collect()
+}
+
+/// Check if a value looks like an ActiveMove
+/// Equivalent to state.ts isActiveMove()
+pub fn is_active_move(value: &serde_json::Value) -> bool {
+    value.get("id").is_some() && value.get("target").is_some()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
