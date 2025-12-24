@@ -730,6 +730,477 @@ impl Pokemon {
             self.can_terastallize = None;
         }
     }
+
+    // ==========================================
+    // Methods ported from pokemon.ts
+    // ==========================================
+
+    /// Get slot identifier for protocol messages (e.g., "p1a", "p2b")
+    pub fn get_slot(&self) -> String {
+        let position_letter = match self.position {
+            0 => 'a',
+            1 => 'b',
+            2 => 'c',
+            3 => 'd',
+            4 => 'e',
+            5 => 'f',
+            _ => 'a',
+        };
+        format!("p{}{}", self.side_index + 1, position_letter)
+    }
+
+    /// String representation of Pokemon
+    pub fn to_string(&self) -> String {
+        if self.is_active {
+            format!("{}{}", self.get_slot(), &self.name)
+        } else {
+            self.fullname(&format!("p{}", self.side_index + 1))
+        }
+    }
+
+    /// Get updated details string for protocol
+    pub fn get_updated_details(&self) -> String {
+        let mut details = self.species_id.as_str().to_string();
+        if self.level != 100 {
+            details.push_str(&format!(", L{}", self.level));
+        }
+        if self.gender != Gender::None {
+            details.push_str(&format!(", {}", self.gender.to_str()));
+        }
+        details
+    }
+
+    /// Calculate a stat with boost
+    pub fn calculate_stat(&self, stat: StatID, boost: i8, modifier: f64) -> u32 {
+        if stat == StatID::HP {
+            return self.maxhp;
+        }
+
+        // Get base stat
+        let base_stat = self.stored_stats.get(stat) as u32;
+
+        // Apply boost
+        let clamped_boost = boost.clamp(-6, 6);
+        let boost_table: [f64; 7] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
+
+        let boosted_stat = if clamped_boost >= 0 {
+            (base_stat as f64 * boost_table[clamped_boost as usize]) as u32
+        } else {
+            (base_stat as f64 / boost_table[(-clamped_boost) as usize]) as u32
+        };
+
+        // Apply modifier
+        ((boosted_stat as f64) * modifier) as u32
+    }
+
+    /// Get best stat (for Beast Boost, Quark Drive, Protosynthesis)
+    pub fn get_best_stat(&self, unboosted: bool) -> StatID {
+        let stats = [StatID::Atk, StatID::Def, StatID::SpA, StatID::SpD, StatID::Spe];
+        let mut best_stat = StatID::Atk;
+        let mut best_value = 0;
+
+        for stat in stats {
+            let value = self.get_stat(stat, unboosted);
+            if value > best_value {
+                best_value = value;
+                best_stat = stat;
+            }
+        }
+
+        best_stat
+    }
+
+    /// Check if Pokemon has a specific type
+    pub fn has_type(&self, type_name: &str) -> bool {
+        self.get_types(false).iter().any(|t| t.to_lowercase() == type_name.to_lowercase())
+    }
+
+    /// Check if Pokemon has any of the given types
+    pub fn has_any_type(&self, types: &[&str]) -> bool {
+        let pokemon_types = self.get_types(false);
+        for t in types {
+            if pokemon_types.iter().any(|pt| pt.to_lowercase() == t.to_lowercase()) {
+                return true;
+            }
+        }
+        false
+    }
+
+    /// Mark Pokemon as fainted and queue faint
+    /// Returns the amount of damage dealt (HP before faint)
+    pub fn faint(&mut self) -> u32 {
+        if self.fainted || self.faint_queued {
+            return 0;
+        }
+        let damage = self.hp;
+        self.hp = 0;
+        self.switch_flag = false;
+        self.faint_queued = true;
+        damage
+    }
+
+    /// Apply damage to Pokemon
+    /// Returns actual damage dealt
+    pub fn damage(&mut self, amount: u32) -> u32 {
+        if self.hp == 0 || amount == 0 {
+            return 0;
+        }
+        let actual = amount.min(self.hp);
+        self.hp = self.hp.saturating_sub(amount);
+        if self.hp == 0 {
+            self.faint_queued = true;
+        }
+        actual
+    }
+
+    /// Check if this Pokemon is an ally of another
+    pub fn is_ally(&self, other_side_index: usize) -> bool {
+        self.side_index == other_side_index
+    }
+
+    /// Check if another Pokemon is adjacent (for targeting)
+    pub fn is_adjacent(&self, other_position: usize, other_fainted: bool, active_per_half: usize) -> bool {
+        if self.fainted || other_fainted {
+            return false;
+        }
+        if active_per_half <= 2 {
+            return self.position != other_position;
+        }
+        // For triples, only adjacent positions can target each other
+        (self.position as i32 - other_position as i32).abs() <= 1
+    }
+
+    /// Get capped boost - returns the actual change that would be applied
+    pub fn get_capped_boost(&self, stat: crate::dex_data::BoostID, amount: i8) -> i8 {
+        let current = self.boosts.get(stat);
+        let new_value = (current + amount).clamp(-6, 6);
+        new_value - current
+    }
+
+    /// Boost stat by amount, respecting caps
+    pub fn boost_by(&mut self, stat: crate::dex_data::BoostID, amount: i8) -> i8 {
+        let delta = self.get_capped_boost(stat, amount);
+        self.boosts.boost(stat, delta);
+        if delta > 0 {
+            self.stats_raised_this_turn = true;
+        } else if delta < 0 {
+            self.stats_lowered_this_turn = true;
+        }
+        delta
+    }
+
+    /// Set a specific boost value
+    pub fn set_boost(&mut self, stat: crate::dex_data::BoostID, value: i8) {
+        let clamped = value.clamp(-6, 6);
+        self.boosts.set(stat, clamped);
+    }
+
+    /// Clear ability (set to empty)
+    pub fn clear_ability(&mut self) -> ID {
+        let old = self.ability.clone();
+        self.ability = ID::empty();
+        self.ability_state = EffectState::new(ID::empty());
+        old
+    }
+
+    /// Set ability
+    pub fn set_ability(&mut self, ability_id: ID) -> ID {
+        let old = self.ability.clone();
+        self.ability = ability_id.clone();
+        self.ability_state = EffectState::new(ability_id);
+        old
+    }
+
+    /// Get ability ID
+    pub fn get_ability(&self) -> &ID {
+        &self.ability
+    }
+
+    /// Clear item
+    pub fn clear_item(&mut self) -> ID {
+        let old = self.item.clone();
+        self.item = ID::empty();
+        self.item_state = EffectState::new(ID::empty());
+        old
+    }
+
+    /// Set item
+    pub fn set_item(&mut self, item_id: ID) -> bool {
+        if self.hp == 0 || !self.is_active {
+            return false;
+        }
+        self.item = item_id.clone();
+        self.item_state = EffectState::new(item_id);
+        true
+    }
+
+    /// Take item (remove and return it)
+    pub fn take_item(&mut self) -> Option<ID> {
+        if self.item.is_empty() {
+            return None;
+        }
+        let item = self.item.clone();
+        self.item = ID::empty();
+        self.item_state = EffectState::new(ID::empty());
+        Some(item)
+    }
+
+    /// Get item ID
+    pub fn get_item(&self) -> &ID {
+        &self.item
+    }
+
+    /// Set HP directly, returns delta
+    pub fn set_hp(&mut self, hp: u32) -> i32 {
+        if self.hp == 0 {
+            return 0;
+        }
+        let clamped = hp.clamp(1, self.maxhp);
+        let delta = clamped as i32 - self.hp as i32;
+        self.hp = clamped;
+        delta
+    }
+
+    /// Record that a move was used
+    pub fn move_used(&mut self, move_id: ID, target_loc: Option<i8>) {
+        self.last_move = Some(move_id.clone());
+        self.last_move_used = Some(move_id.clone());
+        self.last_move_target_loc = target_loc;
+        self.move_this_turn = Some(move_id);
+    }
+
+    /// Check if this is the last active Pokemon on the side
+    pub fn is_last_active(&self) -> bool {
+        // This would need access to the side to properly implement
+        // For now, just return true if active
+        self.is_active
+    }
+
+    /// Check if ability is being suppressed
+    pub fn ignoring_ability(&self) -> bool {
+        // Gen 5+: inactive Pokemon have abilities suppressed
+        if !self.is_active {
+            return true;
+        }
+        // Transformed Pokemon with certain abilities
+        if self.transformed {
+            // Would need to check ability flags
+        }
+        // Gastro Acid volatile
+        if self.has_volatile(&ID::new("gastroacid")) {
+            return true;
+        }
+        false
+    }
+
+    /// Check if item is being ignored
+    pub fn ignoring_item(&self) -> bool {
+        // Gen 5+: inactive Pokemon have items suppressed
+        if !self.is_active {
+            return true;
+        }
+        // Embargo volatile
+        if self.has_volatile(&ID::new("embargo")) {
+            return true;
+        }
+        // Klutz ability
+        if self.ability.as_str() == "klutz" {
+            return true;
+        }
+        false
+    }
+
+    /// Update max HP (for forme changes)
+    pub fn update_max_hp(&mut self, new_base_max_hp: u32) {
+        if new_base_max_hp == self.base_maxhp {
+            return;
+        }
+        self.base_maxhp = new_base_max_hp;
+        let old_maxhp = self.maxhp;
+        self.maxhp = new_base_max_hp;
+
+        // Adjust current HP proportionally
+        if self.hp > 0 {
+            let hp_lost = old_maxhp - self.hp;
+            self.hp = self.maxhp.saturating_sub(hp_lost).max(1);
+        }
+    }
+
+    /// Check if Pokemon is in Sky Drop
+    pub fn is_sky_dropped(&self) -> bool {
+        self.has_volatile(&ID::new("skydrop"))
+    }
+
+    /// Get move slot data
+    pub fn get_move_data(&self, move_id: &ID) -> Option<&MoveSlot> {
+        self.move_slots.iter().find(|slot| &slot.id == move_id)
+    }
+
+    /// Get mutable move slot data
+    pub fn get_move_data_mut(&mut self, move_id: &ID) -> Option<&mut MoveSlot> {
+        self.move_slots.iter_mut().find(|slot| &slot.id == move_id)
+    }
+
+    /// Get positive boost count (for Stored Power)
+    pub fn get_positive_boosts(&self) -> i32 {
+        let mut count = 0;
+        if self.boosts.atk > 0 { count += self.boosts.atk as i32; }
+        if self.boosts.def > 0 { count += self.boosts.def as i32; }
+        if self.boosts.spa > 0 { count += self.boosts.spa as i32; }
+        if self.boosts.spd > 0 { count += self.boosts.spd as i32; }
+        if self.boosts.spe > 0 { count += self.boosts.spe as i32; }
+        if self.boosts.accuracy > 0 { count += self.boosts.accuracy as i32; }
+        if self.boosts.evasion > 0 { count += self.boosts.evasion as i32; }
+        count
+    }
+
+    /// Get HP as if not dynamaxed
+    pub fn get_undynamaxed_hp(&self) -> u32 {
+        if self.has_volatile(&ID::new("dynamax")) {
+            // Dynamaxed HP is doubled, so divide by 2
+            ((self.hp as f64) * (self.base_maxhp as f64) / (self.maxhp as f64)).ceil() as u32
+        } else {
+            self.hp
+        }
+    }
+
+    /// Try to trap the Pokemon
+    pub fn try_trap(&mut self, is_hidden: bool) -> bool {
+        if self.trapped && is_hidden {
+            return true;
+        }
+        self.trapped = true;
+        true
+    }
+
+    /// Record that this Pokemon was attacked
+    pub fn got_attacked(&mut self, move_id: ID, damage: u32, _source_side: usize, _source_pos: usize) {
+        self.last_damage = damage;
+        self.times_attacked += 1;
+        // Would store in attackedBy array in full implementation
+        let _ = move_id; // Use to avoid warning
+    }
+
+    /// Get locked move (for multi-turn moves)
+    pub fn get_locked_move(&self) -> Option<&ID> {
+        self.locked_move.as_ref()
+    }
+
+    /// Check if max move is disabled
+    pub fn max_move_disabled(&self, base_move_id: &ID) -> bool {
+        // Check if the base move has PP
+        if let Some(move_data) = self.get_move_data(base_move_id) {
+            if move_data.pp == 0 {
+                return true;
+            }
+        }
+        // Status moves are disabled by Assault Vest or Taunt when dynamaxed
+        // Would need move data to check category
+        false
+    }
+
+    /// Transform into another Pokemon
+    pub fn transform_into(&mut self, target: &Pokemon) -> bool {
+        if self.fainted || target.fainted || self.transformed {
+            return false;
+        }
+        if target.has_volatile(&ID::new("substitute")) {
+            return false;
+        }
+        if target.transformed {
+            return false;
+        }
+
+        // Copy species
+        self.species_id = target.species_id.clone();
+        self.transformed = true;
+        self.weight_hg = target.weight_hg;
+
+        // Copy types
+        self.types = target.types.clone();
+        self.added_type = target.added_type.clone();
+
+        // Copy stats
+        self.stored_stats = target.stored_stats.clone();
+
+        // Copy moves with reduced PP
+        self.move_slots = target.move_slots.iter().map(|slot| {
+            MoveSlot {
+                id: slot.id.clone(),
+                move_name: slot.move_name.clone(),
+                pp: 5.min(slot.maxpp),
+                maxpp: 5.min(slot.maxpp),
+                target: slot.target.clone(),
+                disabled: false,
+                disabled_source: None,
+                used: false,
+                virtual_move: true,
+            }
+        }).collect();
+
+        // Copy boosts
+        self.boosts = target.boosts.clone();
+
+        // Copy ability
+        self.ability = target.ability.clone();
+
+        true
+    }
+
+    /// Copy volatiles from another Pokemon (for Baton Pass)
+    pub fn copy_volatile_from_full(&mut self, source: &Pokemon, is_shed_tail: bool) {
+        // Copy boosts unless Shed Tail
+        if !is_shed_tail {
+            self.boosts = source.boosts.clone();
+        }
+
+        // List of volatiles that can be copied
+        let copyable_volatiles = [
+            "aquaring", "confusion", "curse", "embargo", "focusenergy",
+            "gmaxchistrike", "healblock", "ingrain", "laserfocus",
+            "leechseed", "magnetrise", "perishsong", "powertrick",
+            "substitute", "telekinesis", "torment",
+        ];
+
+        for volatile_name in copyable_volatiles {
+            if is_shed_tail && volatile_name != "substitute" {
+                continue;
+            }
+            let id = ID::new(volatile_name);
+            if let Some(state) = source.get_volatile(&id) {
+                self.volatiles.insert(id, state.clone());
+            }
+        }
+    }
+
+    /// Set species (for forme changes and Transform)
+    pub fn set_species(&mut self, species_id: ID, types: Vec<String>, weight_hg: u32) {
+        self.species_id = species_id;
+        self.types = types.clone();
+        self.base_types = types;
+        self.weight_hg = weight_hg;
+    }
+
+    /// Forme change
+    pub fn forme_change(&mut self, new_species_id: ID, new_types: Vec<String>, new_ability: Option<ID>) {
+        self.species_id = new_species_id;
+        self.types = new_types;
+        if let Some(ability) = new_ability {
+            self.ability = ability.clone();
+            self.ability_state = EffectState::new(ability);
+        }
+    }
+
+    /// Clear all turn state at end of turn
+    pub fn clear_turn_state_full(&mut self) {
+        self.move_last_turn_result = self.move_this_turn_result;
+        self.move_this_turn = None;
+        self.move_this_turn_result = None;
+        self.hurt_this_turn = None;
+        self.used_item_this_turn = false;
+        self.stats_raised_this_turn = false;
+        self.stats_lowered_this_turn = false;
+    }
 }
 
 #[cfg(test)]
