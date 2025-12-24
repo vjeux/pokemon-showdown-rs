@@ -468,6 +468,107 @@ impl Dex {
         self.get_species(species_name)
             .map(|s| s.base_stats.clone().into())
     }
+
+    /// Sanitize a username or Pokemon nickname
+    /// Equivalent to getName() in dex.ts
+    pub fn get_name(name: &str) -> String {
+        if name.is_empty() {
+            return String::new();
+        }
+        let name = name.trim();
+        // Remove any ASCII control characters and newlines
+        let name: String = name.chars()
+            .filter(|c| !c.is_control() || *c == ' ')
+            .collect();
+        // Collapse multiple spaces
+        let mut result = String::new();
+        let mut last_was_space = false;
+        for c in name.chars() {
+            if c == ' ' {
+                if !last_was_space {
+                    result.push(' ');
+                    last_was_space = true;
+                }
+            } else {
+                result.push(c);
+                last_was_space = false;
+            }
+        }
+        result.trim().to_string()
+    }
+
+    /// Check if source type is immune to target
+    /// Equivalent to getImmunity() in dex.ts
+    pub fn get_immunity(&self, source_type: &str, target_types: &[String]) -> bool {
+        for target_type in target_types {
+            if self.get_effectiveness(source_type, target_type) == 0.0 {
+                return false;
+            }
+        }
+        true
+    }
+
+    /// Calculate Hidden Power type from IVs
+    /// Equivalent to getHiddenPower() in dex.ts
+    pub fn get_hidden_power(ivs: &StatsTable) -> (&'static str, u32) {
+        // Gen 3+ formula
+        let hp_bits = (ivs.hp & 1) as u32;
+        let atk_bits = ((ivs.atk & 1) as u32) << 1;
+        let def_bits = ((ivs.def & 1) as u32) << 2;
+        let spe_bits = ((ivs.spe & 1) as u32) << 3;
+        let spa_bits = ((ivs.spa & 1) as u32) << 4;
+        let spd_bits = ((ivs.spd & 1) as u32) << 5;
+
+        let type_num = (hp_bits | atk_bits | def_bits | spe_bits | spa_bits | spd_bits) * 15 / 63;
+
+        let types = [
+            "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug",
+            "Ghost", "Steel", "Fire", "Water", "Grass", "Electric",
+            "Psychic", "Ice", "Dragon", "Dark"
+        ];
+
+        let hp_type = types.get(type_num as usize).unwrap_or(&"Dark");
+
+        // Calculate power (Gen 3-5: 30-70, Gen 6+: always 60)
+        let hp2_bits = ((ivs.hp >> 1) & 1) as u32;
+        let atk2_bits = (((ivs.atk >> 1) & 1) as u32) << 1;
+        let def2_bits = (((ivs.def >> 1) & 1) as u32) << 2;
+        let spe2_bits = (((ivs.spe >> 1) & 1) as u32) << 3;
+        let spa2_bits = (((ivs.spa >> 1) & 1) as u32) << 4;
+        let spd2_bits = (((ivs.spd >> 1) & 1) as u32) << 5;
+
+        let power = (hp2_bits | atk2_bits | def2_bits | spe2_bits | spa2_bits | spd2_bits) * 40 / 63 + 30;
+
+        (hp_type, power)
+    }
+
+    /// Truncate a number (floor towards zero)
+    /// Equivalent to trunc() in dex.ts
+    pub fn trunc(num: f64, bits: u32) -> i32 {
+        if bits == 0 {
+            if num > 0.0 {
+                num.floor() as i32
+            } else {
+                num.ceil() as i32
+            }
+        } else {
+            let mult = 1 << bits;
+            ((num * mult as f64) as i32) / mult
+        }
+    }
+
+    /// Get the generation for this Dex
+    pub fn get_gen(&self) -> u8 {
+        self.gen
+    }
+
+    /// Create a Dex for a specific generation
+    /// Equivalent to forGen() in dex.ts (simplified - always returns same data)
+    pub fn for_gen(gen: u8) -> Result<Self, serde_json::Error> {
+        let mut dex = Self::load_default()?;
+        dex.gen = gen;
+        Ok(dex)
+    }
 }
 
 /// Embedded data for compile-time inclusion
