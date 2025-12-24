@@ -10,7 +10,9 @@ use std::collections::HashSet;
 use once_cell::sync::Lazy;
 
 use crate::dex_data::{ID, BoostsTable, EffectState};
+use crate::dex::{Dex, MoveData};
 use crate::pokemon::Pokemon;
+use crate::data::typechart::get_effectiveness_multi;
 
 /// Choosable target types for moves
 static CHOOSABLE_TARGETS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
@@ -260,13 +262,73 @@ pub enum SwitchCopyFlag {
 /// Battle Actions struct - 1:1 port of BattleActions class
 /// Note: In Rust, this struct needs a reference to battle state.
 /// The actual methods that need battle access are implemented on Battle directly.
-pub struct BattleActions {
+pub struct BattleActions<'a> {
+    pub dex: &'a Dex,
     pub gen: u8,
 }
 
-impl BattleActions {
-    pub fn new(gen: u8) -> Self {
-        Self { gen }
+impl<'a> BattleActions<'a> {
+    pub fn new(dex: &'a Dex, gen: u8) -> Self {
+        Self { dex, gen }
+    }
+
+    /// Calculate damage for a move
+    /// This is a simplified damage calculation for testing purposes.
+    /// The full damage calculation is in getDamage in battle-actions.ts
+    pub fn calculate_damage(
+        &self,
+        attacker: &Pokemon,
+        defender: &Pokemon,
+        move_data: &MoveData,
+        is_crit: bool,
+        random_factor: u32,
+    ) -> DamageResult {
+        // Check for immunity first
+        let defender_types: Vec<&str> = defender.types.iter().map(|s| s.as_str()).collect();
+        let effectiveness = get_effectiveness_multi(&move_data.move_type, &defender_types);
+
+        if effectiveness == 0.0 {
+            return DamageResult::Immune;
+        }
+
+        // Get base power
+        let base_power = move_data.base_power;
+        if base_power == 0 {
+            return DamageResult::NoDamage;
+        }
+
+        // Get attack and defense stats
+        let (attack, defense) = if move_data.category == "Special" {
+            (attacker.stored_stats.spa, defender.stored_stats.spd)
+        } else {
+            (attacker.stored_stats.atk, defender.stored_stats.def)
+        };
+
+        // Basic damage formula: ((2 * Level / 5 + 2) * Power * A/D) / 50 + 2
+        let level = attacker.level as u32;
+        let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense) / 50 + 2;
+
+        // Apply STAB (Same Type Attack Bonus)
+        let stab = if attacker.types.iter().any(|t| t == &move_data.move_type) {
+            1.5
+        } else {
+            1.0
+        };
+
+        // Apply type effectiveness
+        let damage = (base_damage as f64 * stab * effectiveness) as u32;
+
+        // Apply critical hit (1.5x in Gen 6+)
+        let damage = if is_crit {
+            (damage as f64 * 1.5) as u32
+        } else {
+            damage
+        };
+
+        // Apply random factor (0.85 to 1.0, passed in as 85-100)
+        let damage = damage * random_factor / 100;
+
+        DamageResult::Damage(damage.max(1))
     }
 
     // =========================================================================
