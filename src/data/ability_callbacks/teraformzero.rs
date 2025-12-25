@@ -28,7 +28,15 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAfterTerastallization(...)
+/// onAfterTerastallization(pokemon)
+/// Clears weather and terrain when Terapagos-Stellar terastallizes
+///
+/// TODO: onAfterTerastallization handler not yet implemented
+/// When implemented, should:
+/// 1. Check if pokemon.baseSpecies.name === 'Terapagos-Stellar'
+/// 2. Check if this.field.weather || this.field.terrain exists
+/// 3. Add ability message
+/// 4. Call this.field.clearWeather() and this.field.clearTerrain()
 pub fn on_after_terastallization(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
