@@ -29,14 +29,10 @@ pub const ON_DRAG_OUT_PRIORITY: i32 = 1;
 
 /// onDragOut(pokemon)
 /// Prevents forced switching (Dragon Tail, Roar, Whirlwind, etc.)
-///
-/// TODO: onDragOut handler not yet implemented
-/// TODO: Needs battle.add()
-/// When implemented, should:
-/// 1. Add activate message: battle.add('-activate', pokemon, 'ability: Suction Cups')
-/// 2. Return Null to prevent the forced switch
-pub fn on_drag_out(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+pub fn on_drag_out(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // this.add('-activate', pokemon, 'ability: Suction Cups');
+    battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Suction Cups")]);
+    // return null;
+    AbilityHandlerResult::Null
 }
 
