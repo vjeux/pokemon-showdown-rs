@@ -2012,9 +2012,31 @@ pub mod defeatist {
 pub mod defiant {
     use super::*;
 
-    /// onAfterEachBoost(...)
-    pub fn on_after_each_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onAfterEachBoost(boost, target, source, effect)
+    pub fn on_after_each_boost(battle: &mut Battle, boosts: &[(&str, i8)], target: &Pokemon, source: Option<&Pokemon>) -> AbilityHandlerResult {
+        // if (!source || target.isAlly(source))
+        let source = match source {
+            Some(s) => s,
+            None => return AbilityHandlerResult::Undefined,
+        };
+        if target.side_index == source.side_index {
+            return AbilityHandlerResult::Undefined;
+        }
+        // let statsLowered = false;
+        let mut stats_lowered = false;
+        // for (i in boost) { if (boost[i]! < 0) { statsLowered = true; } }
+        for (_, change) in boosts {
+            if *change < 0 {
+                stats_lowered = true;
+                break;
+            }
+        }
+        // if (statsLowered)
+        if stats_lowered {
+            // this.boost({ atk: 2 }, target, target, null, false, true);
+            let target_ref = (target.side_index, target.position);
+            battle.boost(&[("atk", 2)], target_ref, Some(target_ref), None);
+        }
         AbilityHandlerResult::Undefined
     }
 }
