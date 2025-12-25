@@ -38,43 +38,60 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
+/// Strong weathers that can override each other
+const STRONG_WEATHERS: &[&str] = &["desolateland", "primordialsea", "deltastream"];
+
 /// onStart(source)
 /// Sets Primordial Sea weather
-///
-/// TODO: onStart handler not yet implemented
-/// TODO: Needs field.setWeather()
-/// When implemented, should:
-/// 1. Set weather to 'primordialsea'
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, _source: &Pokemon) -> AbilityHandlerResult {
+    // this.field.setWeather('primordialsea');
+    battle.field.set_weather(ID::from("primordialsea"), None);
     AbilityHandlerResult::Undefined
 }
 
 /// onAnySetWeather(target, source, weather)
 /// Prevents other weather from replacing strong weathers
-///
-/// TODO: onAnySetWeather handler not yet implemented
-/// TODO: Needs field.getWeather(), weather.id
-/// When implemented, should:
-/// 1. Define strong weathers: desolateland, primordialsea, deltastream
-/// 2. If current weather is primordialsea and new weather is not strong, return false to prevent it
-pub fn on_any_set_weather(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_any_set_weather(battle: &Battle, weather_id: &str) -> AbilityHandlerResult {
+    // const strongWeathers = ['desolateland', 'primordialsea', 'deltastream'];
+    // if (this.field.getWeather().id === 'primordialsea' && !strongWeathers.includes(weather.id)) return false;
+    if *battle.field.get_weather() == ID::from("primordialsea") && !STRONG_WEATHERS.contains(&weather_id) {
+        return AbilityHandlerResult::False;
+    }
     AbilityHandlerResult::Undefined
 }
 
 /// onEnd(pokemon)
 /// Clears weather when ability holder faints (unless another has the ability)
-///
-/// TODO: onEnd handler not yet implemented
-/// TODO: Needs field.weatherState.source, getAllActive(), target.hasAbility(), field.clearWeather()
-/// When implemented, should:
-/// 1. Skip if this Pokemon is not the weather source
-/// 2. Check all active Pokemon for another with Primordial Sea
-/// 3. If found, transfer weather source to them
-/// 4. Otherwise, clear the weather
-pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_end(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (this.field.weatherState.source !== pokemon) return;
+    let weather_state = battle.field.get_weather_state();
+    if let Some(ref source_slot) = weather_state.source_slot {
+        if source_slot != &pokemon.get_slot() {
+            return AbilityHandlerResult::Undefined;
+        }
+    } else {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // for (const target of this.getAllActive())
+    for (side_idx, slot, target) in battle.get_all_active() {
+        // if (target === pokemon) continue;
+        if (side_idx, slot) == (pokemon.side_index, pokemon.position) {
+            continue;
+        }
+
+        // if (target.hasAbility('primordialsea'))
+        if target.ability.as_str() == "primordialsea" {
+            // this.field.weatherState.source = target;
+            let target_slot = target.get_slot();
+            battle.field.get_weather_state_mut().source_slot = Some(target_slot);
+            // return;
+            return AbilityHandlerResult::Undefined;
+        }
+    }
+
+    // this.field.clearWeather();
+    battle.field.clear_weather();
     AbilityHandlerResult::Undefined
 }
 
