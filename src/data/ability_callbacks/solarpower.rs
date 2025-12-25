@@ -32,18 +32,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifySpAPriority: 5
 pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// onModifySpA(spa, pokemon)
 /// Boosts Special Attack by 1.5x in sunny weather
-///
-/// TODO: onModifySpA handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Check if pokemon.effectiveWeather() is 'sunnyday' or 'desolateland'
-/// 2. Return chainModify(1.5) which is ChainModify(6144, 4096)
-pub fn on_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: u32, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather()))
+    let weather = battle.field.effective_weather();
+    if *weather == ID::new("sunnyday") || *weather == ID::new("desolateland") {
+        // return this.chainModify(1.5);
+        return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
+    }
     AbilityHandlerResult::Undefined
 }
 
@@ -55,8 +54,15 @@ pub fn on_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> Abilit
 /// 1. Check if target has Utility Umbrella item (return early if so)
 /// 2. Check if effect.id is 'sunnyday' or 'desolateland'
 /// 3. Call battle.damage(target.baseMaxhp / 8, target, target)
-pub fn on_weather(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_weather(_battle: &mut Battle, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (target.hasItem('utilityumbrella')) return;
+    // TODO: Item checking not yet available
+
+    // if (effect.id === 'sunnyday' || effect.id === 'desolateland')
+    if effect.id == "sunnyday" || effect.id == "desolateland" {
+        // this.damage(target.baseMaxhp / 8, target, target);
+        // TODO: Damage call needs implementation
+    }
     AbilityHandlerResult::Undefined
 }
 
