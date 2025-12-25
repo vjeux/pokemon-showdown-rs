@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~137
-Documented stubs (with detailed TODOs): ~177
+Fully implemented (working code): ~139
+Documented stubs (with detailed TODOs): ~175
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -35,7 +35,13 @@ Each documented ability includes:
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
 
-## Recent Work (Current Session - Continued)
+## Recent Work (Current Session - Continued #2)
+
+New implementations (2 changes):
+1. **sandspit** - Sets sandstorm when hit by damaging move
+2. **seedsower** - Sets Grassy Terrain when hit by damaging move
+
+Note: Discovered weather and terrain systems already exist in field.rs!
 
 New implementations (4 changes):
 1. **poisonpoint** - 30% chance to poison attacker on contact (onDamagingHit handler)
