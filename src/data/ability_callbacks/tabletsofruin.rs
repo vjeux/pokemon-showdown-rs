@@ -34,27 +34,34 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onStart(pokemon)
 /// Announces Tablets of Ruin when sent out
-///
-/// TODO: Requires suppressingAbility check
-/// When implemented, should:
-/// 1. Check if this.suppressingAbility(pokemon) and return if true
-/// 2. Add ability announcement: this.add('-ability', pokemon, 'Tablets of Ruin')
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (this.suppressingAbility(pokemon)) return;
+    if battle.suppressing_ability(Some((pokemon.side_index, pokemon.position))) {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // this.add('-ability', pokemon, 'Tablets of Ruin');
+    battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Tablets of Ruin")]);
     AbilityHandlerResult::Undefined
 }
 
 /// onAnyModifyAtk(atk, source, target, move)
 /// Reduces all Pokemon's Attack by 25% except those with Tablets of Ruin
-///
-/// TODO: onAnyModifyAtk handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Get abilityHolder from effectState.target
-/// 2. Check if source.hasAbility('Tablets of Ruin'), return if true
-/// 3. Track move.ruinedAtk to ensure only one Tablets of Ruin applies per move
-/// 4. Return chainModify(0.75) to reduce Attack by 25%
-pub fn on_any_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// Note: onAnyModifyAtk handler needs to be wired into battle engine
+pub fn on_any_modify_atk(_battle: &mut Battle, _atk: u32, source: &Pokemon, _target: Option<&Pokemon>, _move: Option<&MoveDef>, _ability_holder: &Pokemon) -> AbilityHandlerResult {
+    // const abilityHolder = this.effectState.target;
+    // if (source.hasAbility('Tablets of Ruin')) return;
+    if source.ability.as_str() == "tabletsofruin" {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // if (!move.ruinedAtk) move.ruinedAtk = abilityHolder;
+    // if (move.ruinedAtk !== abilityHolder) return;
+    // TODO: Track ruinedAtk on move to ensure only one Tablets of Ruin applies
+
+    // this.debug('Tablets of Ruin Atk drop');
+    // return this.chainModify(0.75);
+    // 0.75 = 3/4
+    AbilityHandlerResult::ChainModify(3, 4)
 }
 
