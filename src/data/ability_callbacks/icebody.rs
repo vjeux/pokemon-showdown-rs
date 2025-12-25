@@ -31,24 +31,26 @@ use super::{AbilityHandlerResult, Status, Effect};
 /// onWeather(target, source, effect)
 /// Heals 1/16 HP in Hail or Snowscape weather
 ///
-/// TODO: onWeather handler not yet implemented in battle system
+/// TODO: onWeather handler needs healing infrastructure (battle.heal)
 /// When implemented, should:
 /// 1. Check if effect.id === 'hail' || effect.id === 'snowscape'
 /// 2. Call this.heal(target.baseMaxhp / 16) to restore HP
-pub fn on_weather(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_weather(_battle: &mut Battle, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (effect.id === 'hail' || effect.id === 'snowscape')
+    if effect.id == "hail" || effect.id == "snowscape" {
+        // this.heal(target.baseMaxhp / 16);
+        // TODO: Healing not yet implemented
+    }
     AbilityHandlerResult::Undefined
 }
 
 /// onImmunity(type, pokemon)
 /// Grants immunity to hail damage
-///
-/// TODO: onImmunity handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Check if type === 'hail'
-/// 2. Return false to grant immunity
-pub fn on_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_immunity(_battle: &mut Battle, immunity_type: &str, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (type === 'hail') return false;
+    if immunity_type == "hail" {
+        return AbilityHandlerResult::False;
+    }
     AbilityHandlerResult::Undefined
 }
 
