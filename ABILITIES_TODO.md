@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~203
-Documented stubs (with detailed TODOs): ~111
+Fully implemented (working code): ~205
+Documented stubs (with detailed TODOs): ~109
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 64.6% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 65.3% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -37,6 +37,18 @@ Each documented ability includes:
 2. Detailed TODO comments explaining required systems
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
+
+## Recent Work (Current Session - Continued #12)
+
+Completed implementations (3 changes):
+1. **unnerve** (partial) - Implemented onStart and onEnd handlers (onFoeTryEatItem needs handler infrastructure)
+2. **costar** - Copies ally's stat boosts and critical hit volatiles on switch-in
+3. **telepathy** - Blocks damage from ally attacks in doubles/triples
+
+Progress: 203 → 205 abilities implemented (65.3%)
+
+Note: Demonstrated boost copying across all 7 stats, volatile status copying with layers/data,
+and ally checking using is_ally() method.
 
 ## Recent Work (Current Session - Continued #11)
 
