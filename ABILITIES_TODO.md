@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~165
-Documented stubs (with detailed TODOs): ~149
+Fully implemented (working code): ~166
+Documented stubs (with detailed TODOs): ~148
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~164 abilities with full or partial working implementations
 - ~150 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 52.5% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 52.9% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -37,13 +37,14 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #7)
 
-New implementations (1 change):
+New implementations (2 changes):
 1. **windrider** - Immune to wind moves and boosts Attack, also boosts from Tailwind (onStart, onTryHit, onSideConditionStart handlers)
+2. **toxicdebris** - Sets Toxic Spikes on attacker's side when hit by Physical move (onDamagingHit handler)
 
 Updated implementations (1 change):
 1. **prankster** - Added prankster_boosted field to MoveDef, now sets it correctly (full 1-to-1 match with JS)
 
-Progress: 164 → 165 abilities implemented (52.5%)
+Progress: 164 → 166 abilities implemented (52.9%)
 
 ## Recent Work (Current Session - Continued #6)
 
