@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~125
-Documented stubs (with detailed TODOs): ~189
+Fully implemented (working code): ~126
+Documented stubs (with detailed TODOs): ~188
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,8 +12,8 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~125 abilities with full or partial working implementations (+7 this session)
-- ~189 abilities with detailed TODO documentation explaining what's needed
+- ~126 abilities with full or partial working implementations (+8 this session)
+- ~188 abilities with detailed TODO documentation explaining what's needed
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather)
@@ -34,7 +34,7 @@ Each documented ability includes:
 
 ## Recent Work (This Session)
 
-New implementations (7 abilities):
+New implementations (8 abilities):
 1. **motordrive** - Absorbs Electric moves and boosts Speed by 1
 2. **mountaineer** - Prevents Stealth Rock damage and grants immunity to Rock moves on switch-in
 3. **oblivious** (partial) - Blocks attract/captivate/taunt moves and Intimidate ability (onTryHit, onTryBoost handlers)
@@ -42,6 +42,7 @@ New implementations (7 abilities):
 5. **owntempo** (partial) - Blocks Intimidate ability (onTryBoost handler)
 6. **sapsipper** (partial) - Blocks Grass moves and boosts Attack (onTryHit handler)
 7. **scrappy** (partial) - Blocks Intimidate ability (onTryBoost handler)
+8. **stormdrain** (partial) - Absorbs Water moves and boosts Special Attack (onTryHit handler)
 
 ## Previous Session Implementations
 
