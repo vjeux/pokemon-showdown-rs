@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~208
-Documented stubs (with detailed TODOs): ~106
+Fully implemented (working code): ~209
+Documented stubs (with detailed TODOs): ~105
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 65.3% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 66.6% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -31,12 +31,23 @@ The majority of un-implemented abilities require infrastructure that doesn't exi
 - Healing system (battle.heal) - **EXISTS!**
 - Type-specific immunity ignoring (ignore_immunity_types) - **EXISTS!**
 - Accuracy modification (onModifyAccuracy) - **EXISTS!**
+- Random chance system (randomChance) - **EXISTS!**
 
 Each documented ability includes:
 1. Handler function signatures with proper priority constants
 2. Detailed TODO comments explaining required systems
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
+
+## Recent Work (Current Session - Continued #13)
+
+Completed implementations (1 change):
+1. **healer** - 30% chance to cure adjacent ally status at end of turn with onResidual handler
+
+Progress: 208 → 209 abilities implemented (66.6%)
+
+Note: Implemented using two-phase borrow pattern to avoid borrow checker issues when calling
+random_chance() while iterating over allies.
 
 ## Recent Work (Current Session - Continued #12)
 
