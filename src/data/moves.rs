@@ -148,6 +148,8 @@ pub struct MoveDef {
     pub self_destruct: Option<String>,
     /// Has crash damage
     pub has_crash_damage: bool,
+    /// Forces STAB bonus even if not matching type
+    pub force_stab: bool,
 }
 
 impl Default for MoveDef {
@@ -194,6 +196,7 @@ impl Default for MoveDef {
             ignore_immunity: false,
             self_destruct: None,
             has_crash_damage: false,
+            force_stab: false,
         }
     }
 }
