@@ -133,6 +133,7 @@ pub mod justified;
 pub mod keeneye;
 pub mod klutz;
 pub mod leafguard;
+pub mod levitate;
 pub mod libero;
 pub mod lightmetal;
 pub mod lightningrod;
