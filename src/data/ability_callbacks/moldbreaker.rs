@@ -26,15 +26,28 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
+/// onStart(pokemon)
+/// Shows message on switch-in
+///
+/// TODO: onStart handler not yet implemented
+/// When implemented, should:
+/// 1. Add '-ability' message for Mold Breaker
 pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // this.add('-ability', pokemon, 'Mold Breaker');
     AbilityHandlerResult::Undefined
 }
 
-/// onModifyMove(...)
+/// onModifyMove(move)
+/// Makes moves ignore target abilities
+///
+/// TODO: onModifyMove handler not yet implemented
+/// TODO: Needs move.ignoreAbility field
+/// When implemented, should:
+/// 1. Set move.ignoreAbility = true
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // move.ignoreAbility = true;
     AbilityHandlerResult::Undefined
 }
 
