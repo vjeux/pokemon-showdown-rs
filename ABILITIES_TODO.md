@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~154
-Documented stubs (with detailed TODOs): ~160
+Fully implemented (working code): ~157
+Documented stubs (with detailed TODOs): ~157
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -37,13 +37,16 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #3)
 
-New implementations (4 changes):
+New implementations (7 changes):
 1. **grasspelt** - Boosts Defense by 1.5x in Grassy Terrain (onModifyDef handler)
 2. **guarddog** (partial) - Blocks Intimidate and boosts Attack instead, prevents forced switches (onTryBoost and onDragOut handlers)
 3. **hadronengine** - Sets Electric Terrain on switch-in, boosts SpA by 1.333x in Electric Terrain (onStart and onModifySpA handlers)
 4. **orichalcumpulse** - Sets Sunny Day on switch-in, boosts Attack by 1.333x in sun (onStart and onModifyAtk handlers)
+5. **sandforce** - Boosts Rock/Ground/Steel moves by 1.3x in sandstorm, immune to sandstorm (onBasePower and onImmunity handlers)
+6. **sandveil** - Immune to sandstorm, reduces opponent accuracy by 20% in sandstorm (onImmunity and onModifyAccuracy handlers)
+7. **solarpower** (partial) - Boosts Special Attack by 1.5x in sun (onModifySpA handler, onWeather stub)
 
-Progress: 150 → 154 abilities implemented (49.0%)
+Progress: 150 → 157 abilities implemented (50.0%)
 
 ## Recent Work (Current Session - Continued #2)
 
