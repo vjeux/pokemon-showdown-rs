@@ -1521,27 +1521,30 @@ pub mod comatose {
 pub mod commander {
     use super::*;
 
-    /// onAnySwitchInPriority(...)
-    pub fn on_any_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// Priority for onAnySwitchIn
+    pub const ON_ANY_SWITCH_IN_PRIORITY: i32 = -2;
+
+    /// onAnySwitchIn() - triggers onUpdate
+    pub fn on_any_switch_in(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // ((this.effect as any).onUpdate as (p: Pokemon) => void).call(this, this.effectState.target);
+        on_update(battle, pokemon);
         AbilityHandlerResult::Undefined
     }
 
-    /// onAnySwitchIn(...)
-    pub fn on_any_switch_in(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon) - triggers onUpdate
+    pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // ((this.effect as any).onUpdate as (p: Pokemon) => void).call(this, pokemon);
+        on_update(battle, pokemon);
         AbilityHandlerResult::Undefined
     }
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
-
-    /// onUpdate(...)
-    pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onUpdate(pokemon) - main Commander logic
+    /// This is a complex doubles-only ability for Tatsugiri + Dondozo
+    /// Simplified implementation - full logic requires queue and volatile management
+    pub fn on_update(_battle: &mut Battle, _pokemon: &Pokemon) -> AbilityHandlerResult {
+        // TODO: Implement full Commander logic
+        // Requires: get_ally(), cancel_action(), add/remove_volatile on battle, game_type check
+        // This ability allows Tatsugiri to enter Dondozo's mouth in doubles battles
         AbilityHandlerResult::Undefined
     }
 }
@@ -1625,16 +1628,18 @@ pub mod competitive {
 pub mod compoundeyes {
     use super::*;
 
-    /// onSourceModifyAccuracyPriority(...)
-    pub fn on_source_modify_accuracy_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
+    /// onSourceModifyAccuracyPriority: -1
+    pub const ON_SOURCE_MODIFY_ACCURACY_PRIORITY: i32 = -1;
 
-    /// onSourceModifyAccuracy(...)
-    pub fn on_source_modify_accuracy(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
+    /// onSourceModifyAccuracy(accuracy)
+    /// Boosts accuracy by ~1.3x (5325/4096)
+    pub fn on_source_modify_accuracy(accuracy: Option<u32>) -> AbilityHandlerResult {
+        // if (typeof accuracy !== 'number') return;
+        if accuracy.is_none() {
+            return AbilityHandlerResult::Undefined;
+        }
+        // return this.chainModify([5325, 4096]);
+        AbilityHandlerResult::ChainModify(5325, 4096)
     }
 }
 
@@ -1659,9 +1664,19 @@ pub mod compoundeyes {
 pub mod contrary {
     use super::*;
 
-    /// onChangeBoost(...)
-    pub fn on_change_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onChangeBoost(boost, target, source, effect)
+    /// Inverts all stat changes
+    pub fn on_change_boost(boost: &mut std::collections::HashMap<String, i8>, effect_id: Option<&str>) -> AbilityHandlerResult {
+        // if (effect && effect.id === 'zpower') return;
+        if let Some(id) = effect_id {
+            if id == "zpower" {
+                return AbilityHandlerResult::Undefined;
+            }
+        }
+        // for (i in boost) { boost[i]! *= -1; }
+        for (_, val) in boost.iter_mut() {
+            *val *= -1;
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -1701,15 +1716,18 @@ pub mod contrary {
 pub mod costar {
     use super::*;
 
-    /// onSwitchInPriority(...)
-    pub fn on_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
+    /// onSwitchInPriority: -2
+    pub const ON_SWITCH_IN_PRIORITY: i32 = -2;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    /// Copies ally's stat boosts and certain critical-hit volatiles
+    pub fn on_start(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+        // const ally = pokemon.allies()[0];
+        // if (!ally) return;
+        // This is doubles-only and needs ally access
+        // TODO: Implement full costar logic when ally access is available
+        // For now, just announce the ability
+        battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Costar")]);
         AbilityHandlerResult::Undefined
     }
 }
@@ -1739,9 +1757,42 @@ pub mod costar {
 pub mod cottondown {
     use super::*;
 
-    /// onDamagingHit(...)
-    pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onDamagingHit(damage, target, source, move)
+    /// Lowers Speed of all other active Pokemon by 1 stage when hit
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
+        // let activated = false;
+        let mut activated = false;
+        // for (const pokemon of this.getAllActive())
+        let target_ref = (target.side_index, target.position);
+        let num_sides = battle.sides.len();
+        for side_idx in 0..num_sides {
+            let active_len = battle.sides[side_idx].active.len();
+            for pos in 0..active_len {
+                // if (pokemon === target || pokemon.fainted) continue;
+                if (side_idx, pos) == target_ref {
+                    continue;
+                }
+                // active contains Option<usize> - index into pokemon array
+                let pokemon_idx = match battle.sides[side_idx].active.get(pos) {
+                    Some(Some(idx)) => *idx,
+                    _ => continue,
+                };
+                let is_fainted = battle.sides[side_idx].pokemon.get(pokemon_idx)
+                    .map(|p| p.fainted)
+                    .unwrap_or(true);
+                if is_fainted {
+                    continue;
+                }
+                // if (!activated)
+                if !activated {
+                    // this.add('-ability', target, 'Cotton Down');
+                    battle.add("-ability", &[Arg::Pokemon(target), Arg::Str("Cotton Down")]);
+                    activated = true;
+                }
+                // this.boost({ spe: -1 }, pokemon, target, null, true);
+                battle.boost(&[("spe", -1)], (side_idx, pos), Some(target_ref), None);
+            }
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -1784,27 +1835,56 @@ pub mod cottondown {
 pub mod cudchew {
     use super::*;
 
-    /// onEatItem(...)
-    pub fn on_eat_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onResidualOrder: 28
+    pub const ON_RESIDUAL_ORDER: i32 = 28;
+    /// onResidualSubOrder: 2
+    pub const ON_RESIDUAL_SUB_ORDER: i32 = 2;
+
+    /// onEatItem(item, pokemon, source, effect)
+    /// Stores the berry to re-eat next turn
+    pub fn on_eat_item(pokemon: &mut Pokemon, item_id: &str, is_berry: bool, effect_id: Option<&str>) -> AbilityHandlerResult {
+        // if (item.isBerry && (!effect || !['bugbite', 'pluck'].includes(effect.id)))
+        if is_berry {
+            if let Some(eff) = effect_id {
+                if eff == "bugbite" || eff == "pluck" {
+                    return AbilityHandlerResult::Undefined;
+                }
+            }
+            // Store berry in ability state
+            pokemon.ability_state.data.insert("berry".to_string(), serde_json::Value::String(item_id.to_string()));
+            pokemon.ability_state.data.insert("counter".to_string(), serde_json::Value::Number(2.into()));
+        }
         AbilityHandlerResult::Undefined
     }
 
-    /// onResidualOrder(...)
-    pub fn on_residual_order(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
-
-    /// onResidualSubOrder(...)
-    pub fn on_residual_sub_order(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
-
-    /// onResidual(...)
-    pub fn on_residual(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onResidual(pokemon)
+    /// Re-eat the stored berry after countdown
+    pub fn on_residual(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+        // if (!this.effectState.berry || !pokemon.hp) return;
+        let berry = match pokemon.ability_state.data.get("berry") {
+            Some(serde_json::Value::String(b)) => b.clone(),
+            _ => return AbilityHandlerResult::Undefined,
+        };
+        if pokemon.hp == 0 {
+            return AbilityHandlerResult::Undefined;
+        }
+        // if (--this.effectState.counter <= 0)
+        let counter: i64 = pokemon.ability_state.data.get("counter")
+            .and_then(|v| v.as_i64())
+            .unwrap_or(0) - 1;
+        if counter <= 0 {
+            // this.add('-activate', pokemon, 'ability: Cud Chew');
+            battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Cud Chew")]);
+            // this.add('-enditem', pokemon, item.name, '[eat]');
+            battle.add("-enditem", &[Arg::Pokemon(pokemon), Arg::Str(&berry), Arg::Str("[eat]")]);
+            // Mark berry as eaten
+            pokemon.ate_berry = true;
+            // Clean up state
+            pokemon.ability_state.data.remove("berry");
+            pokemon.ability_state.data.remove("counter");
+        } else {
+            pokemon.ability_state.data.insert("counter".to_string(), serde_json::Value::Number(counter.into()));
+        }
         AbilityHandlerResult::Undefined
     }
 }
