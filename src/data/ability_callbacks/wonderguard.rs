@@ -31,11 +31,42 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
+use crate::data::typechart::get_effectiveness_multi;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onTryHit(...)
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onTryHit(target, source, move)
+pub fn on_try_hit(battle: &mut Battle, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (target === source || move.category === 'Status' || move.id === 'struggle') return;
+    if (target.side_index == source.side_index && target.position == source.position) ||
+       move_.category == MoveCategory::Status ||
+       move_.id.as_str() == "struggle" {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // if (move.id === 'skydrop' && !source.volatiles['skydrop']) return;
+    if move_.id.as_str() == "skydrop" && !source.volatiles.contains_key(&ID::new("skydrop")) {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // this.debug('Wonder Guard immunity: ' + move.id);
+    // if (target.runEffectiveness(move) <= 0 || !target.runImmunity(move))
+    let effectiveness = get_effectiveness_multi(&move_.move_type, &target.types);
+
+    if effectiveness <= 1.0 {
+        // if (move.smartTarget) {
+        //     move.smartTarget = false;
+        // } else {
+        //     this.add('-immune', target, '[from] ability: Wonder Guard');
+        // }
+        // Note: smartTarget handling would require mutable move
+        battle.add("-immune", &[
+            Arg::Pokemon(target),
+            Arg::Str("[from] ability: Wonder Guard")
+        ]);
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
+
     AbilityHandlerResult::Undefined
 }
 
