@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~133
-Documented stubs (with detailed TODOs): ~181
+Fully implemented (working code): ~136
+Documented stubs (with detailed TODOs): ~178
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,8 +12,8 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~133 abilities with full or partial working implementations (+6 this session)
-- ~181 abilities with detailed TODO documentation explaining what's needed
+- ~136 abilities with full or partial working implementations (+10 combined sessions today)
+- ~178 abilities with detailed TODO documentation explaining what's needed
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather)
@@ -33,7 +33,14 @@ Each documented ability includes:
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
 
-## Recent Work (Current Session)
+## Recent Work (Current Session - Continued)
+
+New implementations (3 changes):
+1. **poisonpoint** - 30% chance to poison attacker on contact (onDamagingHit handler)
+2. **roughskin** - Damages attacker by 1/8 max HP on contact (onDamagingHit handler)
+3. **rattled** (partial) - Boosts Speed when hit by Dark/Bug/Ghost moves (onDamagingHit handler)
+
+## Previous Session (Same Day)
 
 New implementations (7 changes):
 1. **fullmetalbody** - Prevents stat reduction (same as Clear Body/White Smoke)
