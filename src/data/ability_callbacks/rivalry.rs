@@ -32,13 +32,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onBasePowerPriority(...)
-pub fn on_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_BASE_POWER_PRIORITY: i32 = 24;
 
-/// onBasePower(...)
+/// onBasePower(basePower, attacker, defender, move)
+/// Boosts damage by 1.25x against same gender, weakens by 0.75x against opposite gender
+///
+/// TODO: onBasePower handler not yet implemented
+/// TODO: Needs attacker.gender, defender.gender
+/// When implemented, should:
+/// 1. Check if both attacker and defender have a gender
+/// 2. If genders match, multiply base power by 1.25x (5120/4096)
+/// 3. If genders differ, multiply base power by 0.75x (3072/4096)
 pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
