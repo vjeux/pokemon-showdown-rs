@@ -4289,6 +4289,35 @@ impl Battle {
                         }
                         return EventResult::Stop;
                     }
+                    if ability.id.as_str() == "shedskin" {
+                        // 33% chance to cure status
+                        // if (pokemon.hp && pokemon.status && this.randomChance(33, 100))
+                        let (has_hp, has_status) = {
+                            if let Some(side) = self.sides.get(side_idx) {
+                                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                    (pokemon.hp > 0, !pokemon.status.is_empty())
+                                } else {
+                                    (false, false)
+                                }
+                            } else {
+                                (false, false)
+                            }
+                        };
+                        if has_hp && has_status && self.random_chance(33, 100) {
+                            // this.add('-activate', pokemon, 'ability: Shed Skin');
+                            if let Some(side) = self.sides.get(side_idx) {
+                                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                    self.add("-activate", &[
+                                        Arg::String(pokemon.name.clone()),
+                                        Arg::Str("ability: Shed Skin")
+                                    ]);
+                                }
+                            }
+                            // pokemon.cureStatus();
+                            self.sides[side_idx].pokemon[poke_idx].cure_status();
+                        }
+                        return EventResult::Stop;
+                    }
                 }
             }
             _ => {}
