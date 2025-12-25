@@ -32,15 +32,28 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+/// onStart(pokemon)
+/// onAnyModifySpA(spa, source, target, move)
+/// Reduces all foes Special Attack by 25%
+///
+/// TODO: onAnyModifySpA handler not yet implemented
+/// TODO: suppressingAbility() check needed
+/// When implemented, should:
+/// onStart: Check suppressingAbility, announce ability
+/// onAnyModifySpA:
+/// 1. Get abilityHolder from effectState.target
+/// 2. If source.hasAbility('Vessel of Ruin'), return
+/// 3. Track move.ruinedSpA to prevent stacking multiple Vessel of Ruin
+/// 4. Return this.chainModify(0.75) to reduce SpA by 25%
+pub fn on_start(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // Needs suppressingAbility check
     AbilityHandlerResult::Undefined
 }
 
-/// onAnyModifySpA(...)
-pub fn on_any_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+pub fn on_any_modify_sp_a(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // Needs onAnyModifySpA handler, move.ruinedSpA tracking
     AbilityHandlerResult::Undefined
 }
 
