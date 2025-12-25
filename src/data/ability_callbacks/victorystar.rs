@@ -26,15 +26,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAnyModifyAccuracyPriority(...)
-pub fn on_any_modify_accuracy_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// onAnyModifyAccuracyPriority: -1
+pub const ON_ANY_MODIFY_ACCURACY_PRIORITY: i32 = -1;
 
-/// onAnyModifyAccuracy(...)
-pub fn on_any_modify_accuracy(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onAnyModifyAccuracy(accuracy, target, source)
+pub fn on_any_modify_accuracy(battle: &mut Battle, accuracy: u8, _target: &Pokemon, source: &Pokemon, ability_holder: &Pokemon) -> AbilityHandlerResult {
+    // if (source.isAlly(this.effectState.target) && typeof accuracy === 'number')
+    if source.is_ally(ability_holder.side_index) && accuracy > 0 {
+        // return this.chainModify([4506, 4096]);
+        // Increases accuracy by ~10% (4506/4096 ≈ 1.10)
+        return AbilityHandlerResult::ChainModify(4506, 4096);
+    }
     AbilityHandlerResult::Undefined
 }
 
