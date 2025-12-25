@@ -28,9 +28,19 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamagingHit(...)
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+/// onDamagingHit(damage, target, source, move)
+/// Sets Toxic Spikes on attacker's side when hit by physical move
+///
+/// TODO: Side conditions system not yet implemented
+/// When implemented, should:
+/// 1. Determine side: source.isAlly(target) ? source.side.foe : source.side
+/// 2. Get toxicSpikes = side.sideConditions['toxicspikes']
+/// 3. Check if move.category === 'Physical' && (!toxicSpikes || toxicSpikes.layers < 2)
+/// 4. Add activate message: this.add('-activate', target, 'ability: Toxic Debris')
+/// 5. Call side.addSideCondition('toxicspikes', target)
+pub fn on_damaging_hit(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // Requires side.sideConditions and side.addSideCondition infrastructure
     AbilityHandlerResult::Undefined
 }
 
