@@ -2402,6 +2402,14 @@ impl Battle {
                 }
                 // Note: This won't fully work until commit_choices is refactored to use the queue during execution
             }
+            "alluringvoice" => {
+                // This is handled as a secondary effect in the move data
+                // If target raised stats this turn, add confusion
+                if self.sides[target_side].pokemon[target_idx].stats_raised_this_turn {
+                    let confusion_id = ID::new("confusion");
+                    self.sides[target_side].pokemon[target_idx].add_volatile(confusion_id);
+                }
+            }
             // Entry hazard moves - set on opponent's side
             "stealthrock" => {
                 let hazard_id = ID::new("stealthrock");
