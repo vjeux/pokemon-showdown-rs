@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~207
-Documented stubs (with detailed TODOs): ~107
+Fully implemented (working code): ~208
+Documented stubs (with detailed TODOs): ~106
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -40,14 +40,15 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #12)
 
-Completed implementations (5 changes):
+Completed implementations (6 changes):
 1. **unnerve** (partial) - Implemented onStart and onEnd handlers (onFoeTryEatItem needs handler infrastructure)
 2. **costar** - Copies ally's stat boosts and critical hit volatiles on switch-in
 3. **telepathy** - Blocks damage from ally attacks in doubles/triples
 4. **pastelveil** (partial) - Implemented onStart (cures poison on allies) and onSetStatus (prevents poison on self)
 5. **hydration** - Cures status in rain at end of turn (implemented via battle engine onResidual infrastructure)
+6. **baddreams** - Damages sleeping foes by 1/8 max HP at end of turn
 
-Progress: 203 → 207 abilities implemented (65.9%)
+Progress: 203 → 208 abilities implemented (66.2%)
 
 Major infrastructure added:
 - onResidual event system now fires at end of each turn for all active Pokemon
