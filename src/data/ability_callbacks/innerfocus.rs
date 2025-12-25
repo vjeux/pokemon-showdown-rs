@@ -31,14 +31,11 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onTryAddVolatile(status, pokemon)
 /// Prevents flinching
-///
-/// TODO: onTryAddVolatile handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Check if status.id === 'flinch'
-/// 2. Return null to prevent the volatile status
-pub fn on_try_add_volatile(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    // Requires volatile status system
+pub fn on_try_add_volatile(_battle: &mut Battle, status: &Status, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (status.id === 'flinch') return null;
+    if status.id == "flinch" {
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
 
