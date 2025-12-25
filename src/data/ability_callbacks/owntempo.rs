@@ -40,25 +40,52 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onUpdate(...)
+/// onUpdate(pokemon)
+/// Cures confusion
+///
+/// TODO: onUpdate handler not yet implemented
+/// TODO: Needs pokemon.volatiles['confusion'], removeVolatile()
+/// When implemented, should:
+/// 1. Check for confusion volatile
+/// 2. Add activate message and remove it
 pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onTryAddVolatile(...)
+/// onTryAddVolatile(status, pokemon)
+/// Prevents confusion
+///
+/// TODO: onTryAddVolatile handler not yet implemented
+/// When implemented, should:
+/// 1. Check if status.id === 'confusion'
+/// 2. Return null to prevent it
 pub fn on_try_add_volatile(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onHit(...)
+/// onHit(target, source, move)
+/// Shows immune message for confusion moves
+///
+/// TODO: onHit handler not yet implemented
+/// TODO: Needs move.volatileStatus
+/// When implemented, should:
+/// 1. Check if move.volatileStatus === 'confusion'
+/// 2. Add immune message
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onTryBoost(...)
+/// onTryBoost(boost, target, source, effect)
+/// Blocks Intimidate
+///
+/// TODO: onTryBoost handler not yet implemented
+/// TODO: Needs boost object manipulation
+/// When implemented, should:
+/// 1. Check if effect.name === 'Intimidate' && boost.atk exists
+/// 2. Delete boost.atk and add fail message
 pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
