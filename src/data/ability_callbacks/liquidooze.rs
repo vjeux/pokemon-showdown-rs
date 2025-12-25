@@ -28,7 +28,14 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSourceTryHeal(...)
+/// onSourceTryHeal(damage, target, source, effect)
+/// Damages draining opponent instead of healing them
+///
+/// TODO: onSourceTryHeal handler not yet implemented
+/// When implemented, should:
+/// 1. Check if effect.id is 'drain', 'leechseed', or 'strengthsap'
+/// 2. Call this.damage(damage) to damage the healer
+/// 3. Return 0 to prevent healing
 pub fn on_source_try_heal(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
