@@ -152,6 +152,8 @@ pub struct MoveDef {
     pub force_stab: bool,
     /// Type was changed by an ability like Aerilate/Pixilate/etc.
     pub type_changer_boosted: bool,
+    /// Secondary effects removed by Sheer Force
+    pub has_sheer_force: bool,
 }
 
 impl Default for MoveDef {
@@ -200,6 +202,7 @@ impl Default for MoveDef {
             has_crash_damage: false,
             force_stab: false,
             type_changer_boosted: false,
+            has_sheer_force: false,
         }
     }
 }

@@ -36,16 +36,21 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyMove(move, pokemon)
 /// Removes secondary effects from moves to boost power
-///
-/// TODO: onModifyMove handler not yet implemented
-/// TODO: Needs move.secondaries, delete move.secondaries, delete move.self, move.selfBoost, move.hasSheerForce
-/// When implemented, should:
-/// 1. If move has secondaries
-/// 2. Delete move.secondaries and move.self
-/// 3. For Clangor Soul Blaze, also delete move.selfBoost
-/// 4. Set move.hasSheerForce = true
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(move_: &mut MoveDef, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (move.secondaries)
+    if !move_.secondaries.is_empty() {
+        // delete move.secondaries;
+        move_.secondaries.clear();
+        // delete move.self;
+        move_.self_boosts = None;
+        move_.self_drops = None;
+        move_.self_volatile = None;
+        // if (move.id === 'clangoroussoulblaze') delete move.selfBoost;
+        // Note: In Rust we just cleared self_boosts above which handles this
+
+        // move.hasSheerForce = true;
+        move_.has_sheer_force = true;
+    }
     AbilityHandlerResult::Undefined
 }
 
@@ -53,14 +58,11 @@ pub const ON_BASE_POWER_PRIORITY: i32 = 21;
 
 /// onBasePower(basePower, pokemon, target, move)
 /// Boosts moves with removed secondaries by 1.3x
-///
-/// TODO: onBasePower handler not yet implemented
-/// TODO: Needs move.hasSheerForce
-/// When implemented, should:
-/// 1. If move.hasSheerForce is true
-/// 2. Multiply base power by 5325/4096 (~1.3x)
-pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_base_power(_base_power: u32, _pokemon: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.hasSheerForce) return this.chainModify([5325, 4096]);
+    if move_.has_sheer_force {
+        return AbilityHandlerResult::ChainModify(5325, 4096); // ~1.3x
+    }
     AbilityHandlerResult::Undefined
 }
 
