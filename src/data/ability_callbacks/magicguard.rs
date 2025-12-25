@@ -28,14 +28,22 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamage(damage, target, source, effect)
 /// Prevents indirect damage (only takes damage from moves)
-///
-/// TODO: onDamage handler not yet implemented
-/// When implemented, should:
-/// 1. Check if effect.effectType !== 'Move'
-/// 2. If effectType === 'Ability', add activate message
-/// 3. Return false to prevent damage
-pub fn on_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damage(battle: &mut Battle, _damage: u32, _target: &Pokemon, source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (effect.effectType !== 'Move')
+    if effect.effect_type != "Move" {
+        // if (effect.effectType === 'Ability')
+        if effect.effect_type == "Ability" {
+            if let Some(src) = source {
+                // this.add('-activate', source, 'ability: ' + effect.name);
+                battle.add("-activate", &[
+                    Arg::Pokemon(src),
+                    Arg::Str(&format!("ability: {}", effect.id))
+                ]);
+            }
+        }
+        // return false;
+        return AbilityHandlerResult::False;
+    }
     AbilityHandlerResult::Undefined
 }
 
