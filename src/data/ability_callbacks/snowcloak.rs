@@ -32,12 +32,12 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onImmunity(type, pokemon)
-/// Provides immunity to hail damage
-///
-/// TODO: onImmunity handler not yet implemented in battle system
-/// When implemented, should check if type === 'hail' and return false
-pub fn on_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// Immune to hail damage
+pub fn on_immunity(_battle: &mut Battle, immunity_type: &str, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (type === 'hail') return false;
+    if immunity_type == "hail" {
+        return AbilityHandlerResult::False;
+    }
     AbilityHandlerResult::Undefined
 }
 
@@ -45,15 +45,18 @@ pub fn on_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHa
 pub const ON_MODIFY_ACCURACY_PRIORITY: i32 = -1;
 
 /// onModifyAccuracy(accuracy)
-/// Decreases opponent accuracy by ~20% in hail/snow
-///
-/// TODO: onModifyAccuracy handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Check if accuracy is a number (typeof accuracy !== 'number')
-/// 2. Check if weather is hail or snowscape
-/// 3. Return chainModify([3277, 4096]) which is ~0.8x accuracy for opponents
-pub fn on_modify_accuracy(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// Lowers opponent's accuracy by ~20% in hail/snowscape
+pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: u32) -> AbilityHandlerResult {
+    // if (typeof accuracy !== 'number') return;
+    // Note: In Rust, accuracy is always u32, so this check is implicit
+
+    // if (this.field.isWeather(['hail', 'snowscape']))
+    let weather = battle.field.get_weather();
+    if *weather == ID::new("hail") || *weather == ID::new("snowscape") {
+        // this.debug('Snow Cloak - decreasing accuracy');
+        // return this.chainModify([3277, 4096]);
+        return AbilityHandlerResult::ChainModify(3277, 4096); // ~0.8x
+    }
     AbilityHandlerResult::Undefined
 }
 
