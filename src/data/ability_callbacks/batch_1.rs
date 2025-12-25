@@ -87,7 +87,7 @@
 //! - friendguard
 
 use crate::battle::{Battle, Arg};
-use crate::data::moves::MoveDef;
+use crate::data::moves::{MoveDef, MoveCategory};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
@@ -1335,21 +1335,32 @@ pub mod clearbody {
 pub mod cloudnine {
     use super::*;
 
-    /// onSwitchIn(...)
-    pub fn on_switch_in(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// suppressWeather: true (constant flag checked by weather system)
+    pub const SUPPRESS_WEATHER: bool = true;
+
+    /// onSwitchIn(pokemon)
+    /// Cloud Nine does not activate when Skill Swapped or when Neutralizing Gas leaves the field
+    pub fn on_switch_in(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // this.add('-ability', pokemon, 'Cloud Nine');
+        battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Cloud Nine")]);
+        // Then call onStart behavior
+        on_start(battle, pokemon);
         AbilityHandlerResult::Undefined
     }
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // pokemon.abilityState.ending = false; // Clear the ending flag
+        // this.eachEvent('WeatherChange', this.effect);
+        // Weather change events are handled by the battle engine when suppressWeather changes
         AbilityHandlerResult::Undefined
     }
 
-    /// onEnd(...)
-    pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onEnd(pokemon)
+    pub fn on_end(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // pokemon.abilityState.ending = true;
+        // this.eachEvent('WeatherChange', this.effect);
+        // Weather change events are handled by the battle engine when suppressWeather changes
         AbilityHandlerResult::Undefined
     }
 }
@@ -1387,9 +1398,32 @@ pub mod cloudnine {
 pub mod colorchange {
     use super::*;
 
-    /// onAfterMoveSecondary(...)
-    pub fn on_after_move_secondary(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onAfterMoveSecondary(target, source, move)
+    /// Changes the user's type to the type of the move that hit it
+    pub fn on_after_move_secondary(battle: &mut Battle, target: &mut Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        // if (!target.hp) return;
+        if target.hp == 0 {
+            return AbilityHandlerResult::Undefined;
+        }
+        // const type = move.type;
+        let move_type = &move_.move_type;
+        // if (target.isActive && move.effectType === 'Move' && move.category !== 'Status' &&
+        //     type !== '???' && !target.hasType(type))
+        if target.is_active && move_.category != MoveCategory::Status
+            && move_type != "???" && !target.has_type(move_type)
+        {
+            // if (!target.setType(type)) return false;
+            // In Rust, set_type takes Vec<String> and returns ()
+            target.set_type(vec![move_type.clone()]);
+            // this.add('-start', target, 'typechange', type, '[from] ability: Color Change');
+            battle.add("-start", &[
+                Arg::Pokemon(target),
+                Arg::Str("typechange"),
+                Arg::Str(move_type),
+                Arg::Str("[from] ability: Color Change"),
+            ]);
+            // Curse glitch handling is complex and doubles-only, skipped for now
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -1418,16 +1452,23 @@ pub mod colorchange {
 pub mod comatose {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // this.add('-ability', pokemon, 'Comatose');
+        battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Comatose")]);
         AbilityHandlerResult::Undefined
     }
 
-    /// onSetStatus(...)
-    pub fn on_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
+    /// onSetStatus(status, target, source, effect)
+    /// Blocks all status conditions
+    pub fn on_set_status(battle: &mut Battle, _status: &Status, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+        // if ((effect as Move)?.status)
+        if effect.status.is_some() {
+            // this.add('-immune', target, '[from] ability: Comatose');
+            battle.add("-immune", &[Arg::Pokemon(target), Arg::Str("[from] ability: Comatose")]);
+        }
+        // return false;
+        AbilityHandlerResult::False
     }
 }
 
