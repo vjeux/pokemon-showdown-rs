@@ -23,7 +23,13 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamagingHit(...)
+/// onDamagingHit(damage, target, source, move)
+/// Sets sandstorm when hit by a damaging move
+///
+/// TODO: onDamagingHit handler not yet implemented
+/// TODO: Needs field.setWeather()
+/// When implemented, should:
+/// 1. Call field.setWeather('sandstorm') to set sandstorm weather
 pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
