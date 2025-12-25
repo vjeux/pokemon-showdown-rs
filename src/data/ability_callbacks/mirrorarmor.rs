@@ -39,20 +39,65 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onTryBoost(boost, target, source, effect)
 /// Bounces negative stat changes back to source
-///
-/// TODO: onTryBoost handler not yet implemented
-/// TODO: Needs boost object iteration and manipulation
-/// TODO: Needs target.boosts field, source.hp check
-/// When implemented, should:
-/// 1. Skip if no source, target === source, or effect.name === 'Mirror Armor'
-/// 2. Loop through boost stats
-/// 3. For each negative boost (boost[b] < 0):
-///    - Skip if target.boosts[b] === -6 (already at minimum)
-///    - Create negativeBoost object with that stat
-///    - Delete boost[b] to prevent affecting target
-///    - If source.hp > 0, add activate message and boost source instead
-pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_boost(battle: &mut Battle, boost: &mut std::collections::HashMap<String, i8>, target: &Pokemon, source: Option<&Pokemon>, effect_id: &str, _has_secondaries: bool) -> AbilityHandlerResult {
+    // Don't bounce self stat changes, or boosts that have already bounced
+    // if (!source || target === source || !boost || effect.name === 'Mirror Armor') return;
+    if source.is_none() {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    let src = source.unwrap();
+    if (target.side_index, target.position) == (src.side_index, src.position) {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    if effect_id == "mirrorarmor" {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    let mut showed_ability = false;
+
+    // Collect stats to bounce (need to clone keys to avoid borrow issues)
+    let stats: Vec<String> = boost.keys().cloned().collect();
+
+    for stat in stats {
+        if let Some(&boost_value) = boost.get(&stat) {
+            // if (boost[b]! < 0)
+            if boost_value < 0 {
+                // if (target.boosts[b] === -6) continue;
+                let current_boost = match stat.as_str() {
+                    "atk" => target.boosts.atk,
+                    "def" => target.boosts.def,
+                    "spa" => target.boosts.spa,
+                    "spd" => target.boosts.spd,
+                    "spe" => target.boosts.spe,
+                    "accuracy" => target.boosts.accuracy,
+                    "evasion" => target.boosts.evasion,
+                    _ => 0,
+                };
+
+                if current_boost == -6 {
+                    continue;
+                }
+
+                // Create negative boost and remove from original
+                // delete boost[b];
+                boost.remove(&stat);
+
+                // if (source.hp)
+                if src.hp > 0 {
+                    if !showed_ability {
+                        // this.add('-ability', target, 'Mirror Armor');
+                        battle.add("-ability", &[Arg::Pokemon(target), Arg::Str("Mirror Armor")]);
+                        showed_ability = true;
+                    }
+                    // this.boost(negativeBoost, source, target, null, true);
+                    battle.boost(&[(&stat, boost_value)], (src.side_index, src.position), Some((target.side_index, target.position)), None);
+                }
+            }
+        }
+    }
+
     AbilityHandlerResult::Undefined
 }
 
