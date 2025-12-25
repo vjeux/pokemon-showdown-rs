@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~105
-Documented stubs (with detailed TODOs): 209
+Fully implemented (working code): ~118
+Documented stubs (with detailed TODOs): 196
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,8 +12,8 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~105 abilities with full working implementations (+3 this session)
-- ~209 abilities with detailed TODO documentation explaining what's needed
+- ~118 abilities with full working implementations (+13 this session)
+- ~196 abilities with detailed TODO documentation explaining what's needed
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather)
@@ -34,16 +34,20 @@ Each documented ability includes:
 
 ## Recent Work (This Session)
 
-New implementations (3 abilities):
+New implementations (13 abilities):
 1. **normalize** - Changes most moves to Normal-type with 1.2x boost
 2. **rivalry** - Gender-based damage (1.25x same gender, 0.75x opposite)
 3. **sheerforce** - Removes secondary effects for 1.3x power boost (added has_sheer_force field to MoveDef)
-
-Previous documentation work:
-1. Completed full alphabetical review from watercompaction through zerotohero
-2. Improved documentation: hydration, hypercutter
-3. Previously documented: steelyspirit, stench, stickyhold, stormdrain, suctioncups, supersweetsyrup, sweetveil, turboblaze
-4. All tests passing throughout
+4. **hypercutter** - Prevents Attack from being lowered
+5. **keeneye** - Prevents accuracy reduction and ignores evasion (added ignores_evasion field to MoveDef)
+6. **illuminate** - Prevents accuracy reduction and ignores evasion
+7. **innerfocus** - Partially implemented, blocks Intimidate (flinch prevention needs volatile status system)
+8. **intimidate** - Lowers Attack of adjacent foes when entering battle, checks for substitute volatile status
+9. **intrepidsword** - Boosts Attack by 1 stage on first switch-in only (added sword_boost field to Pokemon struct)
+10. **klutz** - Calls singleEvent End on item to suppress item effects
+11. **lightningrod** - Partially implemented onTryHit to absorb Electric moves and boost SpA (onAnyRedirectTarget still needs implementation)
+12. **longreach** - Removes contact flag from all moves
+13. **magicguard** - Prevents indirect damage (only takes damage from moves)
 
 ## Previous Implementations
 
