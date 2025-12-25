@@ -23,6 +23,7 @@ pub mod asoneglastrier;
 pub mod asonespectrier;
 pub mod aurabreak;
 pub mod baddreams;
+pub mod ballfetch;
 pub mod battery;
 pub mod battlearmor;
 pub mod battlebond;
