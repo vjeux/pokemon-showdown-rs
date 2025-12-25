@@ -41,8 +41,9 @@ New implementations (2 changes):
 1. **windrider** - Immune to wind moves and boosts Attack, also boosts from Tailwind (onStart, onTryHit, onSideConditionStart handlers)
 2. **toxicdebris** - Sets Toxic Spikes on attacker's side when hit by Physical move (onDamagingHit handler)
 
-Updated implementations (1 change):
+Updated implementations (2 changes):
 1. **prankster** - Added prankster_boosted field to MoveDef, now sets it correctly (full 1-to-1 match with JS)
+2. **overcoat** - Added onImmunity handler for sandstorm/hail/powder immunity, complements existing onTryHit handler
 
 Progress: 164 → 166 abilities implemented (52.9%)
 
