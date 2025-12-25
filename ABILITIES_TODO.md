@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~181
-Documented stubs (with detailed TODOs): ~133
+Fully implemented (working code): ~182
+Documented stubs (with detailed TODOs): ~132
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 57.6% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 58.0% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,14 +40,15 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #10)
 
-Completed implementations (5 changes):
-1. **simple** - Now fully implemented with on_change_boost handler that doubles all stat changes
-2. **owntempo** - Now fully implemented by adding onHit handler for confusion immunity
-3. **synchronize** - Now fully implemented with on_after_set_status handler that reflects status conditions to attacker
-4. **liquidooze** - Now fully implemented with on_source_try_heal handler that damages draining opponents
-5. **noguard** - Now fully implemented with on_any_invulnerability and on_any_accuracy handlers for ensuring all moves hit
+Completed implementations (6 changes):
+1. **simple** - Doubles all stat changes with on_change_boost handler
+2. **owntempo** - Fully implemented by adding onHit handler for confusion immunity
+3. **synchronize** - Reflects status conditions to attacker with on_after_set_status handler
+4. **liquidooze** - Damages draining opponents with on_source_try_heal handler
+5. **noguard** - Ensures all moves hit with on_any_invulnerability and on_any_accuracy handlers
+6. **poisontouch** - 30% chance to poison on contact with on_source_damaging_hit handler
 
-Progress: 176 → 181 abilities implemented (57.6%)
+Progress: 176 → 182 abilities implemented (58.0%)
 
 ## Recent Work (Current Session - Continued #9)
 
