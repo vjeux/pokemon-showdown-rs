@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~166
-Documented stubs (with detailed TODOs): ~148
+Fully implemented (working code): ~167
+Documented stubs (with detailed TODOs): ~147
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,10 +12,10 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~164 abilities with full or partial working implementations
-- ~150 abilities with detailed TODO documentation explaining what's needed
+- ~167 abilities with full or partial working implementations
+- ~147 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 52.9% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 53.2% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -28,12 +28,20 @@ The majority of un-implemented abilities require infrastructure that doesn't exi
 - Transform system
 - Terrain system - **EXISTS!**
 - Allies system (pokemon.allies(), adjacentAllies(), isAlly()) - **is_ally EXISTS!**
+- Healing system (battle.heal) - **EXISTS!**
 
 Each documented ability includes:
 1. Handler function signatures with proper priority constants
 2. Detailed TODO comments explaining required systems
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
+
+## Recent Work (Current Session - Continued #8)
+
+Completed implementations (1 change):
+1. **icebody** - Now fully implemented with onWeather handler for healing in hail/snowscape (was partial, only had immunity)
+
+Progress: 166 → 167 abilities implemented (53.2%)
 
 ## Recent Work (Current Session - Continued #7)
 
