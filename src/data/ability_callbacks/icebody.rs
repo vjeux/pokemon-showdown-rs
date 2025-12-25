@@ -30,16 +30,13 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onWeather(target, source, effect)
 /// Heals 1/16 HP in Hail or Snowscape weather
-///
-/// TODO: onWeather handler needs healing infrastructure (battle.heal)
-/// When implemented, should:
-/// 1. Check if effect.id === 'hail' || effect.id === 'snowscape'
-/// 2. Call this.heal(target.baseMaxhp / 16) to restore HP
-pub fn on_weather(_battle: &mut Battle, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_weather(battle: &mut Battle, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
     // if (effect.id === 'hail' || effect.id === 'snowscape')
     if effect.id == "hail" || effect.id == "snowscape" {
         // this.heal(target.baseMaxhp / 16);
-        // TODO: Healing not yet implemented
+        let heal_amount = target.base_maxhp / 16;
+        let target_ref = (target.side_index, target.position);
+        battle.heal(heal_amount, target_ref, None, None);
     }
     AbilityHandlerResult::Undefined
 }
