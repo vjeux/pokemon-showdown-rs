@@ -38,19 +38,31 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onTryBoost(...)
+/// onTryBoost(boost, target, source, effect)
+/// Prevents accuracy drops
+///
+/// TODO: onTryBoost handler not yet implemented
+/// TODO: Needs boost object manipulation (delete boost.accuracy)
+/// When implemented, should:
+/// 1. Skip if source === target (self-inflicted)
+/// 2. If boost.accuracy < 0, delete boost.accuracy
+/// 3. Add fail message unless effect has secondaries
 pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onModifyMovePriority(...)
-pub fn on_modify_move_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_MODIFY_MOVE_PRIORITY: i32 = -5;
 
-/// onModifyMove(...)
+/// onModifyMove(move)
+/// Ignores evasion and Ghost immunity for Normal/Fighting moves
+///
+/// TODO: onModifyMove handler not yet implemented
+/// TODO: Needs move.ignoreEvasion, move.ignoreImmunity fields
+/// When implemented, should:
+/// 1. Set move.ignoreEvasion = true
+/// 2. Set move.ignoreImmunity['Fighting'] = true
+/// 3. Set move.ignoreImmunity['Normal'] = true
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
