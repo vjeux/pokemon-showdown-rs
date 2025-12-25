@@ -354,9 +354,20 @@ pub mod analytic {
 pub mod angerpoint {
     use super::*;
 
-    /// onHit(...)
-    pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onHit(target, source, move)
+    /// Note: crit info passed as parameter since getMoveHitData isn't directly accessible
+    pub fn on_hit(battle: &mut Battle, target: &Pokemon, _source: &Pokemon, _move: &MoveDef, was_crit: bool) -> AbilityHandlerResult {
+        // if (!target.hp) return;
+        if target.hp == 0 {
+            return AbilityHandlerResult::Undefined;
+        }
+        // if (move?.effectType === 'Move' && target.getMoveHitData(move).crit)
+        // Note: effectType check is implicit since we only call this for moves
+        if was_crit {
+            // this.boost({ atk: 12 }, target, target);
+            let target_ref = (target.side_index, target.position);
+            battle.boost(&[("atk", 12)], target_ref, Some(target_ref), None);
+        }
         AbilityHandlerResult::Undefined
     }
 }
