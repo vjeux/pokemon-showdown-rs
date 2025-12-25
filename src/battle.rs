@@ -1765,6 +1765,13 @@ impl Battle {
                         self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), "[from] ability: Aftermath"]);
                     }
                 }
+
+                // Flame Body: 30% chance to burn attacker on contact
+                if defender_ability == "flamebody" {
+                    if self.random_chance(3, 10) {
+                        self.apply_status(attacker_side, attacker_idx, "brn");
+                    }
+                }
             }
         }
 
