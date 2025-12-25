@@ -32,13 +32,11 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onImmunity(type, pokemon)
 /// Grants immunity to sandstorm, hail, and powder
-///
-/// TODO: onImmunity handler not yet implemented
-/// When implemented, should:
-/// 1. Check if type is sandstorm, hail, or powder
-/// 2. Return false to grant immunity
-pub fn on_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_immunity(_battle: &mut Battle, immunity_type: &str, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (type === 'sandstorm' || type === 'hail' || type === 'powder') return false;
+    if immunity_type == "sandstorm" || immunity_type == "hail" || immunity_type == "powder" {
+        return AbilityHandlerResult::False;
+    }
     AbilityHandlerResult::Undefined
 }
 
