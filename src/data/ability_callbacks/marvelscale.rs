@@ -26,15 +26,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyDefPriority(...)
-pub fn on_modify_def_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_MODIFY_DEF_PRIORITY: i32 = 6;
 
-/// onModifyDef(...)
-pub fn on_modify_def(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onModifyDef(def, pokemon)
+/// Boosts Defense by 1.5x when statused
+pub fn on_modify_def(_def: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (pokemon.status)
+    if !pokemon.status.is_empty() {
+        // return this.chainModify(1.5);
+        return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
+    }
     AbilityHandlerResult::Undefined
 }
 
