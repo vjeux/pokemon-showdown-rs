@@ -28,15 +28,14 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyDamage(damage, source, target, move)
 /// Doubles damage of not very effective moves
-///
-/// TODO: onModifyDamage handler not yet implemented in battle system
-/// TODO: target.getMoveHitData(move).typeMod not yet available
-/// When implemented, should:
-/// 1. Check if target.getMoveHitData(move).typeMod < 0 (not very effective)
-/// 2. Return this.chainModify(2) to double damage
-pub fn on_modify_damage(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    // Requires type effectiveness calculation system
+pub fn on_modify_damage(_damage: u32, _source: &Pokemon, target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (target.getMoveHitData(move).typeMod < 0)
+    let hit_data = target.get_move_hit_data(&move_.id);
+    if hit_data.type_mod < 0 {
+        // this.debug('Tinted Lens boost');
+        // return this.chainModify(2);
+        return AbilityHandlerResult::ChainModify(8192, 4096); // 2x
+    }
     AbilityHandlerResult::Undefined
 }
 
