@@ -41,17 +41,25 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onTryHit(target, source, move)
 /// Grants immunity to Water-type moves and boosts Special Attack when hit
-///
-/// TODO: onTryHit handler not yet implemented
-/// TODO: Needs target/source comparison, move.type, battle.boost(), battle.add()
-/// When implemented, should:
-/// 1. Skip if target === source (self-targeting moves)
-/// 2. Check if move.type is 'Water'
-/// 3. Attempt to boost SpA by 1 stage
-/// 4. If boost fails (already at +6), add immune message
-/// 5. Return Null to block the move
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    let target_loc = (target.side_index, target.position);
+    let source_loc = (source.side_index, source.position);
+
+    // if (target !== source && move.type === 'Water')
+    if target_loc != source_loc && move_.move_type == "Water" {
+        // if (!this.boost({ spa: 1 }))
+        let boost_success = battle.boost(&[("spa", 1)], target_loc, Some(target_loc), None);
+
+        if !boost_success {
+            // this.add('-immune', target, '[from] ability: Storm Drain');
+            battle.add("-immune", &[
+                Arg::Pokemon(target),
+                Arg::Str("[from] ability: Storm Drain")
+            ]);
+        }
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
 
