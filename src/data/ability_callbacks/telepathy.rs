@@ -28,16 +28,25 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onTryHit(target, source, move)
 /// Prevents damage from ally attacks
-///
-/// TODO: onTryHit handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Check if target !== source
-/// 2. Check if target.isAlly(source)
-/// 3. Check if move.category !== 'Status'
-/// 4. Add activate message: this.add('-activate', target, 'ability: Telepathy')
-/// 5. Return null to block the move
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    let target_loc = (target.side_index, target.position);
+    let source_loc = (source.side_index, source.position);
+
+    // if (target !== source && target.isAlly(source) && move.category !== 'Status')
+    if target_loc != source_loc
+        && target.is_ally(source.side_index)
+        && move_.category != MoveCategory::Status
+    {
+        // this.add('-activate', target, 'ability: Telepathy');
+        battle.add("-activate", &[
+            Arg::Pokemon(target),
+            Arg::Str("ability: Telepathy")
+        ]);
+
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
+
     AbilityHandlerResult::Undefined
 }
 
