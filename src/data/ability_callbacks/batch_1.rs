@@ -2838,9 +2838,15 @@ pub mod fairyaura {
 pub mod filter {
     use super::*;
 
-    /// onSourceModifyDamage(...)
-    pub fn on_source_modify_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onSourceModifyDamage(damage, source, target, move)
+    /// Reduces damage from super-effective moves by 25%
+    pub fn on_source_modify_damage(_damage: u32, _source: &Pokemon, target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        // Check if move is super effective (typeMod > 0 means super effective)
+        let hit_data = target.get_move_hit_data(&move_.id);
+        if hit_data.type_mod > 0 {
+            // 0.75x = 3072/4096
+            return AbilityHandlerResult::ChainModify(3072, 4096);
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -2866,9 +2872,14 @@ pub mod filter {
 pub mod flamebody {
     use super::*;
 
-    /// onDamagingHit(...)
-    pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onDamagingHit(damage, target, source, move)
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, _target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        let source_ref = (source.side_index, source.position);
+        if battle.check_move_makes_contact(&move_.id, source_ref) {
+            if battle.random_chance(3, 10) {
+                source.try_set_status(ID::new("brn"), None);
+            }
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -2892,16 +2903,15 @@ pub mod flamebody {
 
 pub mod flareboost {
     use super::*;
+    use crate::data::moves::MoveCategory;
 
-    /// onBasePowerPriority(...)
-    pub fn on_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
+    pub const ON_BASE_POWER_PRIORITY: i32 = 19;
 
-    /// onBasePower(...)
-    pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onBasePower(basePower, attacker, defender, move)
+    pub fn on_base_power(_base_power: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        if attacker.has_status("brn") && move_.category == MoveCategory::Special {
+            return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
+        }
         AbilityHandlerResult::Undefined
     }
 }
