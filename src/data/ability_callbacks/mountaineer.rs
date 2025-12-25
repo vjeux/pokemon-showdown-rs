@@ -34,27 +34,28 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamage(damage, target, source, effect)
 /// Prevents Stealth Rock damage
-///
-/// TODO: onDamage handler not yet implemented
-/// When implemented, should:
-/// 1. Check if effect.id === 'stealthrock'
-/// 2. Return false to prevent damage
-pub fn on_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damage(_battle: &mut Battle, _damage: u32, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (effect && effect.id === 'stealthrock')
+    if effect.id == "stealthrock" {
+        // return false;
+        return AbilityHandlerResult::False;
+    }
     AbilityHandlerResult::Undefined
 }
 
 /// onTryHit(target, source, move)
 /// Grants immunity to Rock moves on switch-in
-///
-/// TODO: onTryHit handler not yet implemented
-/// TODO: Needs target.activeTurns field
-/// When implemented, should:
-/// 1. Check if move.type === 'Rock' && !target.activeTurns (switch-in turn)
-/// 2. Add immune message
-/// 3. Return null to prevent move
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.type === 'Rock' && !target.activeTurns)
+    if move_.move_type == "Rock" && target.active_turns == 0 {
+        // this.add('-immune', target, '[from] ability: Mountaineer');
+        battle.add("-immune", &[
+            Arg::Pokemon(target),
+            Arg::Str("[from] ability: Mountaineer")
+        ]);
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
 
