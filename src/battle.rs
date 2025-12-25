@@ -4229,6 +4229,66 @@ impl Battle {
                             }
                         }
                     }
+                    if ability.id.as_str() == "moody" {
+                        // Moody: Randomly raises one stat by 2 and lowers another by 1 each turn
+                        // Phase 1: Collect boost data
+                        let (mut stats_to_raise, boosts_data) = {
+                            if let Some(side) = self.sides.get(side_idx) {
+                                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                    let mut stats = Vec::new();
+                                    if pokemon.boosts.atk < 6 { stats.push("atk"); }
+                                    if pokemon.boosts.def < 6 { stats.push("def"); }
+                                    if pokemon.boosts.spa < 6 { stats.push("spa"); }
+                                    if pokemon.boosts.spd < 6 { stats.push("spd"); }
+                                    if pokemon.boosts.spe < 6 { stats.push("spe"); }
+                                    (stats, (pokemon.boosts.atk, pokemon.boosts.def, pokemon.boosts.spa, pokemon.boosts.spd, pokemon.boosts.spe))
+                                } else {
+                                    (Vec::new(), (0, 0, 0, 0, 0))
+                                }
+                            } else {
+                                (Vec::new(), (0, 0, 0, 0, 0))
+                            }
+                        };
+
+                        // Phase 2: Random selection (mutable borrow)
+                        let raised_stat = if !stats_to_raise.is_empty() {
+                            let idx = self.random(stats_to_raise.len() as u32) as usize;
+                            Some(stats_to_raise[idx])
+                        } else {
+                            None
+                        };
+
+                        // Build list of stats that can be lowered
+                        let (atk, def, spa, spd, spe) = boosts_data;
+                        let mut stats_to_lower = Vec::new();
+                        if atk > -6 && Some("atk") != raised_stat { stats_to_lower.push("atk"); }
+                        if def > -6 && Some("def") != raised_stat { stats_to_lower.push("def"); }
+                        if spa > -6 && Some("spa") != raised_stat { stats_to_lower.push("spa"); }
+                        if spd > -6 && Some("spd") != raised_stat { stats_to_lower.push("spd"); }
+                        if spe > -6 && Some("spe") != raised_stat { stats_to_lower.push("spe"); }
+
+                        let lowered_stat = if !stats_to_lower.is_empty() {
+                            let idx = self.random(stats_to_lower.len() as u32) as usize;
+                            Some(stats_to_lower[idx])
+                        } else {
+                            None
+                        };
+
+                        // Build boost array
+                        let mut boosts = Vec::new();
+                        if let Some(stat) = raised_stat {
+                            boosts.push((stat, 2));
+                        }
+                        if let Some(stat) = lowered_stat {
+                            boosts.push((stat, -1));
+                        }
+
+                        // Apply boosts if any
+                        if !boosts.is_empty() {
+                            self.boost(&boosts, (side_idx, poke_idx), Some((side_idx, poke_idx)), None);
+                        }
+                        return EventResult::Stop;
+                    }
                 }
             }
             _ => {}
