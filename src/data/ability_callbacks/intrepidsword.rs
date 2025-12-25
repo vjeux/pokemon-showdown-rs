@@ -27,14 +27,26 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onStart(pokemon)
 /// Boosts Attack by 1 stage on first switch-in only
-///
-/// TODO: onStart handler exists but needs pokemon.swordBoost field
-/// When implemented, should:
-/// 1. Check if pokemon.swordBoost is set (return if true)
-/// 2. Set pokemon.swordBoost = true
-/// 3. Call this.boost({ atk: 1 }, pokemon)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    let pokemon_side = pokemon.side_index;
+    let pokemon_idx = pokemon.position;
+
+    // if (pokemon.swordBoost) return;
+    if pokemon.sword_boost {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // pokemon.swordBoost = true;
+    // Need to set the flag before boosting
+    if let Some(side) = battle.sides.get_mut(pokemon_side) {
+        if let Some(poke) = side.pokemon.get_mut(pokemon_idx) {
+            poke.sword_boost = true;
+        }
+    }
+
+    // this.boost({ atk: 1 }, pokemon);
+    battle.boost(&[("atk", 1)], (pokemon_side, pokemon_idx), Some((pokemon_side, pokemon_idx)), None);
+
     AbilityHandlerResult::Undefined
 }
 

@@ -166,6 +166,9 @@ pub struct Pokemon {
     pub stats_raised_this_turn: bool,
     pub stats_lowered_this_turn: bool,
 
+    // Ability-specific flags
+    pub sword_boost: bool,  // Intrepid Sword / Dauntless Shield
+
     // Turn state
     pub last_move: Option<ID>,
     pub last_move_used: Option<ID>,
@@ -280,6 +283,8 @@ impl Pokemon {
             skip_before_switch_out_event_flag: false,
             stats_raised_this_turn: false,
             stats_lowered_this_turn: false,
+
+            sword_boost: false,
 
             last_move: None,
             last_move_used: None,
