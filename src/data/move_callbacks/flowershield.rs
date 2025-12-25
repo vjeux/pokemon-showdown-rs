@@ -1,0 +1,56 @@
+//! Flower Shield Move
+//!
+//! Pokemon Showdown - http://pokemonshowdown.com/
+//!
+//! Generated from data/moves.ts
+//!
+//! ```text
+//! JS Source (data/moves.ts):
+//! 	flowershield: {
+//! 		num: 579,
+//! 		accuracy: true,
+//! 		basePower: 0,
+//! 		category: "Status",
+//! 		isNonstandard: "Past",
+//! 		name: "Flower Shield",
+//! 		pp: 10,
+//! 		priority: 0,
+//! 		flags: { distance: 1, metronome: 1 },
+//! 		onHitField(t, source, move) {
+//! 			const targets: Pokemon[] = [];
+//! 			for (const pokemon of this.getAllActive()) {
+//! 				if (
+//! 					pokemon.hasType('Grass') &&
+//! 					(!pokemon.volatiles['maxguard'] ||
+//! 						this.runEvent('TryHit', pokemon, source, move))
+//! 				) {
+//! 					// This move affects every Grass-type Pokemon in play.
+//! 					targets.push(pokemon);
+//! 				}
+//! 			}
+//! 			let success = false;
+//! 			for (const target of targets) {
+//! 				success = this.boost({ def: 1 }, target, source, move) || success;
+//! 			}
+//! 			return success;
+//! 		},
+//! 		secondary: null,
+//! 		target: "all",
+//! 		type: "Fairy",
+//! 		zMove: { boost: { def: 1 } },
+//! 		contestType: "Beautiful",
+//! 	},
+//! ```
+
+use crate::battle::{Battle, Arg};
+use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
+use crate::pokemon::Pokemon;
+use crate::dex_data::ID;
+use super::{MoveHandlerResult, Status, Effect};
+
+/// onHitField(...)
+pub fn on_hit_field(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
