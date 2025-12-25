@@ -97,13 +97,37 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onCheckShow(...)
+/// onCheckShow(pokemon)
+/// Complex logic to determine if Natural Cure activation should be shown
+///
+/// TODO: onCheckShow handler not yet implemented
+/// TODO: Very complex doubles/triples logic for revealing Natural Cure
+/// TODO: Needs pokemon.showCure field, side.active array, queue.willSwitch()
+/// TODO: Needs species.abilities lookup, hasAbility() check
+/// When implemented, should:
+/// 1. Skip if singles battle (side.active.length === 1)
+/// 2. Loop through side.active to find pokemon that:
+///    - Have status
+///    - Could have Natural Cure (in their ability pool)
+///    - Are switching out
+/// 3. If can uniquely identify which pokemon were cured, mark them with showCure = true
+/// 4. Otherwise, add message with count and mark showCure = false
 pub fn on_check_show(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onSwitchOut(...)
+/// onSwitchOut(pokemon)
+/// Cures status on switch-out
+///
+/// TODO: onSwitchOut handler not yet implemented
+/// TODO: Needs pokemon.showCure field, pokemon.clearStatus()
+/// When implemented, should:
+/// 1. Return if no status
+/// 2. Default showCure to true if undefined
+/// 3. If showCure is true, add curestatus message
+/// 4. Call pokemon.clearStatus()
+/// 5. Reset showCure to undefined if it was false
 pub fn on_switch_out(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
