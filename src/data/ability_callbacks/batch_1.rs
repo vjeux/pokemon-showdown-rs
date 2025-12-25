@@ -1909,9 +1909,14 @@ pub mod cudchew {
 pub mod curiousmedicine {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    /// Clears all stat boosts from adjacent allies when switched in
+    pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // for (const ally of pokemon.adjacentAllies())
+        // This is doubles-only and requires ally access
+        // TODO: Implement when adjacentAllies() is available
+        // For now, just announce the ability
+        battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Curious Medicine")]);
         AbilityHandlerResult::Undefined
     }
 }
@@ -1938,9 +1943,28 @@ pub mod curiousmedicine {
 pub mod cursedbody {
     use super::*;
 
-    /// onDamagingHit(...)
-    pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onDamagingHit(damage, target, source, move)
+    /// 30% chance to disable the move that hit this Pokemon
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        // if (source.volatiles['disable']) return;
+        if source.has_volatile(&ID::new("disable")) {
+            return AbilityHandlerResult::Undefined;
+        }
+        // if (!move.isMax && !move.flags['futuremove'] && move.id !== 'struggle')
+        // Note: Checking for Max moves and Struggle only, skipping futuremove check
+        if !move_.is_max && move_.id.as_str() != "struggle" {
+            // if (this.randomChance(3, 10))
+            if battle.random_chance(3, 10) {
+                // source.addVolatile('disable', this.effectState.target);
+                source.add_volatile(ID::new("disable"));
+                battle.add("-start", &[
+                    Arg::Pokemon(source),
+                    Arg::Str("Disable"),
+                    Arg::Str("[from] ability: Cursed Body"),
+                    Arg::Str(&format!("[of] {}", target.name)),
+                ]);
+            }
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -1966,9 +1990,24 @@ pub mod cursedbody {
 pub mod cutecharm {
     use super::*;
 
-    /// onDamagingHit(...)
-    pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onDamagingHit(damage, target, source, move)
+    /// 30% chance to infatuate an attacker of the opposite gender that makes contact
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        // if (this.checkMoveMakesContact(move, source, target))
+        let target_ref = (target.side_index, target.position);
+        if battle.check_move_makes_contact(&move_.id, target_ref) {
+            // if (this.randomChance(3, 10))
+            if battle.random_chance(3, 10) {
+                // source.addVolatile('attract', this.effectState.target);
+                source.add_volatile(ID::new("attract"));
+                battle.add("-start", &[
+                    Arg::Pokemon(source),
+                    Arg::Str("Attract"),
+                    Arg::Str("[from] ability: Cute Charm"),
+                    Arg::Str(&format!("[of] {}", target.name)),
+                ]);
+            }
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -1999,15 +2038,37 @@ pub mod cutecharm {
 pub mod damp {
     use super::*;
 
-    /// onAnyTryMove(...)
-    pub fn on_any_try_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// Moves that are blocked by Damp
+    const BLOCKED_MOVES: &[&str] = &["explosion", "mindblown", "mistyexplosion", "selfdestruct"];
+
+    /// onAnyTryMove(target, source, effect)
+    /// Blocks explosive moves from being used
+    pub fn on_any_try_move(battle: &mut Battle, damp_pokemon: &Pokemon, target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        // if (['explosion', 'mindblown', 'mistyexplosion', 'selfdestruct'].includes(effect.id))
+        if BLOCKED_MOVES.contains(&move_.id.as_str()) {
+            // this.attrLastMove('[still]');
+            // this.add('cant', this.effectState.target, 'ability: Damp', effect, `[of] ${target}`);
+            battle.add("cant", &[
+                Arg::Pokemon(damp_pokemon),
+                Arg::Str("ability: Damp"),
+                Arg::Str(move_.id.as_str()),
+                Arg::Str(&format!("[of] {}", target.name)),
+            ]);
+            // return false;
+            return AbilityHandlerResult::False;
+        }
         AbilityHandlerResult::Undefined
     }
 
-    /// onAnyDamage(...)
-    pub fn on_any_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onAnyDamage(damage, target, source, effect)
+    /// Blocks Aftermath damage
+    pub fn on_any_damage(_damage: u32, _target: &Pokemon, _source: &Pokemon, effect_name: Option<&str>) -> AbilityHandlerResult {
+        // if (effect && effect.name === 'Aftermath')
+        if let Some(name) = effect_name {
+            if name == "Aftermath" {
+                return AbilityHandlerResult::False;
+            }
+        }
         AbilityHandlerResult::Undefined
     }
 }
