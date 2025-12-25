@@ -33,15 +33,20 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onTryHit(target, source, move)
 /// Blocks sound-based moves
-///
-/// TODO: onTryHit handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Check if target !== source
-/// 2. Check if move.flags['sound'] is true
-/// 3. Add message: this.add('-immune', target, '[from] ability: Soundproof')
-/// 4. Return null to block the move
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    let target_loc = (target.side_index, target.position);
+    let source_loc = (source.side_index, source.position);
+
+    // if (target !== source && move.flags['sound'])
+    if target_loc != source_loc && move_.flags.sound {
+        // this.add('-immune', target, '[from] ability: Soundproof');
+        battle.add("-immune", &[
+            Arg::Pokemon(target),
+            Arg::Str("[from] ability: Soundproof")
+        ]);
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
 
