@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~193
-Documented stubs (with detailed TODOs): ~121
+Fully implemented (working code): ~194
+Documented stubs (with detailed TODOs): ~120
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 61.5% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 61.8% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,7 +40,7 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #10)
 
-Completed implementations (17 changes):
+Completed implementations (18 changes):
 1. **simple** - Doubles all stat changes with on_change_boost handler
 2. **owntempo** - Fully implemented by adding onHit handler for confusion immunity
 3. **synchronize** - Reflects status conditions to attacker with on_after_set_status handler
@@ -58,8 +58,9 @@ Completed implementations (17 changes):
 15. **forewarn** - Reveals opponent's strongest move on switch-in with on_start handler
 16. **frisk** - Reveals opponent's held items on switch-in with on_start handler
 17. **hospitality** - Heals adjacent allies by 1/4 max HP on switch-in with on_start handler
+18. **windpower** - Gets charged when hit by wind moves or Tailwind with on_damaging_hit and on_side_condition_start
 
-Progress: 176 → 193 abilities implemented (61.5%)
+Progress: 176 → 194 abilities implemented (61.8%)
 
 ## Recent Work (Current Session - Continued #9)
 
