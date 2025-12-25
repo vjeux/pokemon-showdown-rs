@@ -29,22 +29,27 @@
 use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
-use crate::dex_data::ID;
+use crate::dex_data::{ID, Gender};
 use super::{AbilityHandlerResult, Status, Effect};
 
 pub const ON_BASE_POWER_PRIORITY: i32 = 24;
 
 /// onBasePower(basePower, attacker, defender, move)
 /// Boosts damage by 1.25x against same gender, weakens by 0.75x against opposite gender
-///
-/// TODO: onBasePower handler not yet implemented
-/// TODO: Needs attacker.gender, defender.gender
-/// When implemented, should:
-/// 1. Check if both attacker and defender have a gender
-/// 2. If genders match, multiply base power by 1.25x (5120/4096)
-/// 3. If genders differ, multiply base power by 0.75x (3072/4096)
-pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_base_power(_base_power: u32, attacker: &Pokemon, defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+    // if (attacker.gender && defender.gender)
+    if attacker.gender != Gender::None && defender.gender != Gender::None {
+        // if (attacker.gender === defender.gender)
+        if attacker.gender == defender.gender {
+            // this.debug('Rivalry boost');
+            // return this.chainModify(1.25);
+            return AbilityHandlerResult::ChainModify(5120, 4096); // 1.25x
+        } else {
+            // this.debug('Rivalry weaken');
+            // return this.chainModify(0.75);
+            return AbilityHandlerResult::ChainModify(3072, 4096); // 0.75x
+        }
+    }
     AbilityHandlerResult::Undefined
 }
 
