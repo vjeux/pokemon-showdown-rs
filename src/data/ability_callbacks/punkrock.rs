@@ -33,21 +33,27 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onBasePowerPriority(...)
-pub fn on_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub const ON_BASE_POWER_PRIORITY: i32 = 7;
+
+/// onBasePower(basePower, attacker, defender, move)
+/// Boosts sound-based moves by 1.3x
+pub fn on_base_power(_base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.flags['sound'])
+    if move_.flags.sound {
+        // return this.chainModify([5325, 4096]);
+        return AbilityHandlerResult::ChainModify(5325, 4096); // ~1.3x
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onBasePower(...)
-pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onSourceModifyDamage(...)
-pub fn on_source_modify_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onSourceModifyDamage(damage, source, target, move)
+/// Halves damage from sound-based moves
+pub fn on_source_modify_damage(_damage: u32, _source: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.flags['sound'])
+    if move_.flags.sound {
+        // return this.chainModify(0.5);
+        return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
+    }
     AbilityHandlerResult::Undefined
 }
 
