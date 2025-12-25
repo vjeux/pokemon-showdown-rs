@@ -27,13 +27,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSwitchInPriority(...)
-pub fn on_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// onSwitchInPriority: 1
+pub const ON_SWITCH_IN_PRIORITY: i32 = 1;
 
-/// onStart(...)
+/// onStart(pokemon)
+/// Suppresses item - main logic in Pokemon.ignoringItem()
+///
+/// TODO: onStart handler exists but needs item system
+/// TODO: Needs pokemon.getItem() and singleEvent system
+/// When implemented, should:
+/// 1. Call this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon)
+/// Note: Main item suppression logic is in Pokemon.ignoringItem() method
 pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined

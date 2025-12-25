@@ -32,13 +32,20 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onTryBoost(...)
+/// onTryBoost(boost, target, source, effect)
+/// Prevents accuracy reduction - same as Illuminate
+///
+/// TODO: onTryBoost handler not yet implemented
+/// When implemented, should match Illuminate implementation
 pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onModifyMove(...)
+/// onModifyMove(move)
+/// Makes moves ignore evasion - same as Illuminate
+///
+/// TODO: onModifyMove handler not yet implemented
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
