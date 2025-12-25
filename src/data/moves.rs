@@ -142,8 +142,10 @@ pub struct MoveDef {
     pub breaks_protect: bool,
     /// Always crits
     pub will_crit: bool,
-    /// Ignores type immunity
+    /// Ignores type immunity (all types)
     pub ignore_immunity: bool,
+    /// Ignores type immunity for specific types (e.g., Fighting, Normal)
+    pub ignore_immunity_types: Vec<String>,
     /// Self destruct type
     pub self_destruct: Option<String>,
     /// Has crash damage
@@ -202,6 +204,7 @@ impl Default for MoveDef {
             breaks_protect: false,
             will_crit: false,
             ignore_immunity: false,
+            ignore_immunity_types: Vec::new(),
             self_destruct: None,
             has_crash_damage: false,
             force_stab: false,
