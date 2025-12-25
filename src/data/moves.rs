@@ -150,6 +150,8 @@ pub struct MoveDef {
     pub has_crash_damage: bool,
     /// Forces STAB bonus even if not matching type
     pub force_stab: bool,
+    /// Type was changed by an ability like Aerilate/Pixilate/etc.
+    pub type_changer_boosted: bool,
 }
 
 impl Default for MoveDef {
@@ -197,6 +199,7 @@ impl Default for MoveDef {
             self_destruct: None,
             has_crash_damage: false,
             force_stab: false,
+            type_changer_boosted: false,
         }
     }
 }
