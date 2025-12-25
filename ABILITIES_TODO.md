@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~196
-Documented stubs (with detailed TODOs): ~118
+Fully implemented (working code): ~200
+Documented stubs (with detailed TODOs): ~114
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 62.4% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 63.7% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,11 +40,15 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #11)
 
-Completed implementations (2 changes):
+Completed implementations (6 changes):
 1. **supremeoverlord** - Boosts damage based on fainted allies (max 5), uses EffectState.data HashMap to track fallen count
 2. **curiousmedicine** - Clears all stat boosts from adjacent allies on switch-in with on_start handler
+3. **minus** - Boosts Special Attack by 1.5x when ally has Plus or Minus ability
+4. **plus** - Boosts Special Attack by 1.5x when ally has Plus or Minus ability (same as Minus)
+5. **steelyspirit** - Boosts Steel-type moves used by allies by 1.5x with on_ally_base_power handler
+6. **supersweetsyrup** - Lowers Evasion of adjacent foes on switch-in, uses ability_state.data for syrupTriggered flag
 
-Progress: 194 → 196 abilities implemented (62.4%)
+Progress: 194 → 200 abilities implemented (63.7%)
 
 ## Recent Work (Current Session - Continued #10)
 
