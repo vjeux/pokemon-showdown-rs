@@ -161,6 +161,7 @@ pub mod motordrive;
 pub mod mountaineer;
 pub mod moxie;
 pub mod multiscale;
+pub mod multitype;
 pub mod mummy;
 pub mod myceliummight;
 pub mod naturalcure;
