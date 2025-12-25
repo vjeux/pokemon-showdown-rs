@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~167
-Documented stubs (with detailed TODOs): ~147
+Fully implemented (working code): ~168
+Documented stubs (with detailed TODOs): ~146
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,10 +12,10 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~167 abilities with full or partial working implementations
-- ~147 abilities with detailed TODO documentation explaining what's needed
+- ~168 abilities with full or partial working implementations
+- ~146 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 53.2% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 53.5% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -29,6 +29,7 @@ The majority of un-implemented abilities require infrastructure that doesn't exi
 - Terrain system - **EXISTS!**
 - Allies system (pokemon.allies(), adjacentAllies(), isAlly()) - **is_ally EXISTS!**
 - Healing system (battle.heal) - **EXISTS!**
+- Type-specific immunity ignoring (ignore_immunity_types) - **EXISTS!**
 
 Each documented ability includes:
 1. Handler function signatures with proper priority constants
@@ -38,10 +39,11 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #8)
 
-Completed implementations (1 change):
+Completed implementations (2 changes):
 1. **icebody** - Now fully implemented with onWeather handler for healing in hail/snowscape (was partial, only had immunity)
+2. **mindseye** - Now fully implemented with onModifyMove handler, added ignore_immunity_types field to MoveDef for type-specific immunity ignoring
 
-Progress: 166 → 167 abilities implemented (53.2%)
+Progress: 166 → 168 abilities implemented (53.5%)
 
 ## Recent Work (Current Session - Continued #7)
 
