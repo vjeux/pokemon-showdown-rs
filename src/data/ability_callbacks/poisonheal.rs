@@ -27,15 +27,19 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamagePriority(...)
-pub fn on_damage_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onDamagePriority: 1
+pub const ON_DAMAGE_PRIORITY: i32 = 1;
+
+/// onDamage(damage, target, source, effect)
+pub fn on_damage(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (effect.id === 'psn' || effect.id === 'tox')
+    if effect.id == "psn" || effect.id == "tox" {
+        // this.heal(target.baseMaxhp / 8);
+        let target_ref = (target.side_index, target.position);
+        let heal_amount = target.base_maxhp / 8;
+        battle.heal(heal_amount, target_ref, Some(target_ref), None);
+        // return false;
+        return AbilityHandlerResult::False;
+    }
     AbilityHandlerResult::Undefined
 }
-
-/// onDamage(...)
-pub fn on_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
