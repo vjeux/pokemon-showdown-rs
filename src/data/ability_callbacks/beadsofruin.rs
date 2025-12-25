@@ -35,7 +35,9 @@ use super::{AbilityHandlerResult, Status, Effect};
 /// onStart(pokemon)
 pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
     // if (this.suppressingAbility(pokemon)) return;
-    // TODO: Need suppressingAbility check
+    if battle.suppressing_ability(Some((pokemon.side_index, pokemon.position))) {
+        return AbilityHandlerResult::Undefined;
+    }
 
     // this.add('-ability', pokemon, 'Beads of Ruin');
     battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Beads of Ruin")]);

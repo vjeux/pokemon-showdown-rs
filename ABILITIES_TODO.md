@@ -37,10 +37,11 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #2)
 
-New implementations (3 changes):
+New implementations (4 changes):
 1. **sandspit** - Sets sandstorm when hit by damaging move
 2. **seedsower** - Sets Grassy Terrain when hit by damaging move
 3. **mummy** - Spreads Mummy ability to attackers on contact
+4. **battlebond** (partial) - Boosts stats on KO, sets Water Shuriken to 3 hits for Greninja-Ash (needs onSourceAfterFaint handler in battle engine)
 
 Note: Discovered weather and terrain systems already exist in field.rs!
 Note: Discovered ability manipulation (set_ability, get_ability) already exists in pokemon.rs!
