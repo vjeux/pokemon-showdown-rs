@@ -1160,9 +1160,13 @@ pub mod blaze {
 pub mod bulletproof {
     use super::*;
 
-    /// onTryHit(...)
-    pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onTryHit(pokemon, target, move)
+    /// Immune to ball/bomb moves
+    pub fn on_try_hit(battle: &mut Battle, pokemon: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        if move_.flags.bullet {
+            battle.add("-immune", &[Arg::Pokemon(pokemon), Arg::Str("[from] ability: Bulletproof")]);
+            return AbilityHandlerResult::Null;
+        }
         AbilityHandlerResult::Undefined
     }
 }
