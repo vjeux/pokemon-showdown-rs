@@ -34,17 +34,34 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Changes attacker's ability to Lingering Aroma on contact
-///
-/// TODO: onDamagingHit exists but needs ability system methods
-/// TODO: Needs source.getAbility(), source.setAbility(), source.isAlly()
-/// When implemented, should:
-/// 1. Get source's ability and check flags.cantsuppress
-/// 2. Skip if source already has lingeringaroma
-/// 3. Check if move makes contact
-/// 4. Call source.setAbility('lingeringaroma', target)
-/// 5. Add activate message with old ability name
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // const sourceAbility = source.getAbility();
+    let source_ability_id = source.get_ability();
+
+    // if (sourceAbility.flags['cantsuppress'] || sourceAbility.id === 'lingeringaroma')
+    if let Some(source_ability_def) = crate::data::abilities::get_ability(source_ability_id) {
+        if source_ability_def.flags.cannot_suppress || source_ability_id.as_str() == "lingeringaroma" {
+            return AbilityHandlerResult::Undefined;
+        }
+    }
+
+    // if (this.checkMoveMakesContact(move, source, target, !source.isAlly(target)))
+    let source_ref = (source.side_index, source.position);
+    if battle.check_move_makes_contact(&move_.id, source_ref) {
+        // const oldAbility = source.setAbility('lingeringaroma', target);
+        let old_ability = source.set_ability(ID::new("lingeringaroma"));
+
+        // if (oldAbility)
+        if !old_ability.is_empty() {
+            // this.add('-activate', target, 'ability: Lingering Aroma', this.dex.abilities.get(oldAbility).name, `[of] ${source}`);
+            battle.add("-activate", &[
+                Arg::Pokemon(target),
+                Arg::Str("ability: Lingering Aroma"),
+                Arg::String(old_ability.as_str().to_string()),
+                Arg::Str(&format!("[of] {}", source.name)),
+            ]);
+        }
+    }
     AbilityHandlerResult::Undefined
 }
 
