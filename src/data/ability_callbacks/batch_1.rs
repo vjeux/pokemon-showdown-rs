@@ -2749,9 +2749,14 @@ pub mod embodyaspectwellspring {
 pub mod emergencyexit {
     use super::*;
 
-    /// onEmergencyExit(...)
-    pub fn on_emergency_exit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onEmergencyExit(target)
+    pub fn on_emergency_exit(battle: &mut Battle, target: &mut Pokemon) -> AbilityHandlerResult {
+        if battle.can_switch(target.side_index) == 0 || target.force_switch_flag || target.switch_flag {
+            return AbilityHandlerResult::Undefined;
+        }
+        // Set switch flag on the target (other switch flags would be cleared in battle engine)
+        target.switch_flag = true;
+        battle.add("-activate", &[Arg::Pokemon(target), Arg::Str("ability: Emergency Exit")]);
         AbilityHandlerResult::Undefined
     }
 }
@@ -2780,22 +2785,35 @@ pub mod emergencyexit {
 
 pub mod fairyaura {
     use super::*;
+    use crate::data::moves::MoveCategory;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        let pokemon_ref = Some((pokemon.side_index, pokemon.position));
+        if battle.suppressing_ability(pokemon_ref) {
+            return AbilityHandlerResult::Undefined;
+        }
+        battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Fairy Aura")]);
         AbilityHandlerResult::Undefined
     }
 
-    /// onAnyBasePowerPriority(...)
-    pub fn on_any_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
+    pub const ON_ANY_BASE_POWER_PRIORITY: i32 = 20;
 
-    /// onAnyBasePower(...)
-    pub fn on_any_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onAnyBasePower(basePower, source, target, move)
+    pub fn on_any_base_power(_base_power: u32, source: &Pokemon, target: &Pokemon, move_: &MoveDef, aura_booster: Option<&Pokemon>, has_aura_break: bool) -> AbilityHandlerResult {
+        let source_ref = (source.side_index, source.position);
+        let target_ref = (target.side_index, target.position);
+        if target_ref == source_ref || move_.category == MoveCategory::Status || move_.move_type != "Fairy" {
+            return AbilityHandlerResult::Undefined;
+        }
+        // Simplified: apply boost if this is the aura booster
+        if aura_booster.is_some() {
+            if has_aura_break {
+                return AbilityHandlerResult::ChainModify(3072, 4096); // 0.75x
+            } else {
+                return AbilityHandlerResult::ChainModify(5448, 4096); // ~1.33x
+            }
+        }
         AbilityHandlerResult::Undefined
     }
 }
