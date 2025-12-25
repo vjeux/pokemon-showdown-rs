@@ -219,6 +219,7 @@ pub mod rkssystem;
 pub mod rockhead;
 pub mod rockypayload;
 pub mod roughskin;
+pub mod runaway;
 pub mod sandforce;
 pub mod sandrush;
 pub mod sandspit;
