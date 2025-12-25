@@ -35,9 +35,20 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAnyModifyBoost(...)
-pub fn on_any_modify_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+/// onAnyModifyBoost(boosts, pokemon)
+/// Ignores stat changes when calculating damage
+///
+/// TODO: onAnyModifyBoost handler not yet implemented in battle system
+/// When implemented, should:
+/// 1. Get unawareUser from this.effectState.target
+/// 2. If unawareUser === pokemon, return (don't ignore own boosts)
+/// 3. If unawareUser is attacker and pokemon is target:
+///    - Ignore target's def, spd, evasion boosts
+/// 4. If pokemon is attacker and unawareUser is target:
+///    - Ignore attacker's atk, def, spa, accuracy boosts
+pub fn on_any_modify_boost(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // Requires onAnyModifyBoost handler, activePokemon/activeTarget tracking
     AbilityHandlerResult::Undefined
 }
 
