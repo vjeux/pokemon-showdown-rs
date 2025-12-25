@@ -32,13 +32,27 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamage(...)
+/// onDamage(damage, target, source, effect)
+/// Prevents Stealth Rock damage
+///
+/// TODO: onDamage handler not yet implemented
+/// When implemented, should:
+/// 1. Check if effect.id === 'stealthrock'
+/// 2. Return false to prevent damage
 pub fn on_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onTryHit(...)
+/// onTryHit(target, source, move)
+/// Grants immunity to Rock moves on switch-in
+///
+/// TODO: onTryHit handler not yet implemented
+/// TODO: Needs target.activeTurns field
+/// When implemented, should:
+/// 1. Check if move.type === 'Rock' && !target.activeTurns (switch-in turn)
+/// 2. Add immune message
+/// 3. Return null to prevent move
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
