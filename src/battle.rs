@@ -4171,6 +4171,44 @@ impl Battle {
                             }
                         }
                     }
+                    if ability.id.as_str() == "healer" {
+                        // Healer: 30% chance to cure status of adjacent allies
+                        // Collect data first, then perform mutations
+                        let mut should_continue = false;
+                        let mut pokemon_name = String::new();
+                        let mut allies_with_status: Vec<usize> = Vec::new();
+
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                if pokemon.hp == 0 {
+                                    should_continue = true;
+                                } else {
+                                    pokemon_name = pokemon.name.clone();
+                                    for ally in side.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
+                                        if ally.position != pokemon.position && !ally.status.is_empty() {
+                                            allies_with_status.push(ally.position);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if should_continue {
+                            return EventResult::Continue;
+                        }
+
+                        // Now perform mutations
+                        for ally_pos in allies_with_status {
+                            if self.random_chance(3, 10) {
+                                self.add("-activate", &[
+                                    crate::battle::Arg::String(pokemon_name.clone()),
+                                    crate::battle::Arg::Str("ability: Healer")
+                                ]);
+                                self.sides[side_idx].pokemon[ally_pos].cure_status();
+                            }
+                        }
+                        return EventResult::Stop;
+                    }
                 }
             }
             _ => {}
