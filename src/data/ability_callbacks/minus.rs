@@ -32,15 +32,23 @@ pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// onModifySpA(spa, pokemon)
 /// Boosts SpA by 1.5x if ally has Plus or Minus
-///
-/// TODO: onModifySpA handler not yet implemented
-/// TODO: Needs pokemon.allies() iterator, hasAbility() check
-/// When implemented, should:
-/// 1. Loop through pokemon.allies()
-/// 2. Check if ally hasAbility(['minus', 'plus'])
-/// 3. Return chainModify(1.5)
-pub fn on_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // for (const allyActive of pokemon.allies())
+    let side = &battle.sides[pokemon.side_index];
+
+    for ally in side.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
+        // Skip self
+        if ally.position == pokemon.position {
+            continue;
+        }
+
+        // if (allyActive.hasAbility(['minus', 'plus']))
+        if ally.ability.as_str() == "minus" || ally.ability.as_str() == "plus" {
+            // return this.chainModify(1.5);
+            return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
+        }
+    }
+
     AbilityHandlerResult::Undefined
 }
 
