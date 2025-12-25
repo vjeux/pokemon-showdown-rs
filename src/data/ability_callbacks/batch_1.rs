@@ -828,10 +828,11 @@ pub mod battery {
 pub mod battlearmor {
     use super::*;
 
-    /// onCriticalHit(...)
-    pub fn on_critical_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
+    /// onCriticalHit: false
+    /// Prevents critical hits against this Pokemon
+    pub fn on_critical_hit() -> AbilityHandlerResult {
+        // onCriticalHit: false,
+        AbilityHandlerResult::False
     }
 }
 
