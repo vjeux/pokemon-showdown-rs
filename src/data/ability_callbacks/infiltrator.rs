@@ -25,12 +25,9 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyMove(move)
 /// Makes moves bypass screens and substitutes
-///
-/// TODO: onModifyMove handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Set move.infiltrates = true
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(_battle: &mut Battle, move_: &mut MoveDef) -> AbilityHandlerResult {
+    // move.infiltrates = true;
+    move_.infiltrates = true;
     AbilityHandlerResult::Undefined
 }
 

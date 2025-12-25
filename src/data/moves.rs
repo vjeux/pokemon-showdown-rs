@@ -160,6 +160,8 @@ pub struct MoveDef {
     pub has_sheer_force: bool,
     /// Ignores target's evasion stat (Keen Eye, Illuminate, etc.)
     pub ignores_evasion: bool,
+    /// Bypasses screens (Reflect, Light Screen, Aurora Veil) and Substitute
+    pub infiltrates: bool,
 }
 
 impl Default for MoveDef {
@@ -212,6 +214,7 @@ impl Default for MoveDef {
             prankster_boosted: false,
             has_sheer_force: false,
             ignores_evasion: false,
+            infiltrates: false,
         }
     }
 }
