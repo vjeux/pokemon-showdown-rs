@@ -2473,9 +2473,16 @@ pub mod dryskin {
 pub mod eartheater {
     use super::*;
 
-    /// onTryHit(...)
-    pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onTryHit(target, source, move)
+    pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        let target_ref = (target.side_index, target.position);
+        if target_ref != (source.side_index, source.position) && move_.move_type == "Ground" {
+            let heal_amount = target.maxhp / 4;
+            if battle.heal(heal_amount, target_ref, None, None) == 0 {
+                battle.add("-immune", &[Arg::Pokemon(target), Arg::Str("[from] ability: Earth Eater")]);
+            }
+            return AbilityHandlerResult::Null;
+        }
         AbilityHandlerResult::Undefined
     }
 }
