@@ -53,17 +53,55 @@ pub const ON_RESIDUAL_SUB_ORDER: i32 = 2;
 
 /// onResidual(pokemon)
 /// Randomly raises one stat by 2 and lowers another by 1 each turn
-///
-/// TODO: onResidual handler not yet implemented
-/// TODO: Needs pokemon.boosts iteration, random sampling
-/// When implemented, should:
-/// 1. Build list of stats (excluding accuracy/evasion) that can be raised (< 6)
-/// 2. Randomly select one stat and boost it by +2
-/// 3. Build list of stats (excluding accuracy/evasion) that can be lowered (> -6) and != raised stat
-/// 4. Randomly select one stat and boost it by -1
-/// 5. Apply both boosts with battle.boost()
-pub fn on_residual(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_residual(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    let pokemon_loc = (pokemon.side_index, pokemon.position);
+
+    // Build list of stats that can be raised (< 6), excluding accuracy/evasion
+    let mut stats_to_raise = Vec::new();
+    if pokemon.boosts.atk < 6 { stats_to_raise.push("atk"); }
+    if pokemon.boosts.def < 6 { stats_to_raise.push("def"); }
+    if pokemon.boosts.spa < 6 { stats_to_raise.push("spa"); }
+    if pokemon.boosts.spd < 6 { stats_to_raise.push("spd"); }
+    if pokemon.boosts.spe < 6 { stats_to_raise.push("spe"); }
+
+    // Randomly select stat to raise
+    let raised_stat = if !stats_to_raise.is_empty() {
+        let idx = battle.random(stats_to_raise.len() as u32) as usize;
+        Some(stats_to_raise[idx])
+    } else {
+        None
+    };
+
+    // Build list of stats that can be lowered (> -6), excluding accuracy/evasion and the raised stat
+    let mut stats_to_lower = Vec::new();
+    if pokemon.boosts.atk > -6 && Some("atk") != raised_stat { stats_to_lower.push("atk"); }
+    if pokemon.boosts.def > -6 && Some("def") != raised_stat { stats_to_lower.push("def"); }
+    if pokemon.boosts.spa > -6 && Some("spa") != raised_stat { stats_to_lower.push("spa"); }
+    if pokemon.boosts.spd > -6 && Some("spd") != raised_stat { stats_to_lower.push("spd"); }
+    if pokemon.boosts.spe > -6 && Some("spe") != raised_stat { stats_to_lower.push("spe"); }
+
+    // Randomly select stat to lower
+    let lowered_stat = if !stats_to_lower.is_empty() {
+        let idx = battle.random(stats_to_lower.len() as u32) as usize;
+        Some(stats_to_lower[idx])
+    } else {
+        None
+    };
+
+    // Build boost array
+    let mut boosts = Vec::new();
+    if let Some(stat) = raised_stat {
+        boosts.push((stat, 2));
+    }
+    if let Some(stat) = lowered_stat {
+        boosts.push((stat, -1));
+    }
+
+    // Apply boosts if any
+    if !boosts.is_empty() {
+        battle.boost(&boosts, pokemon_loc, Some(pokemon_loc), None);
+    }
+
     AbilityHandlerResult::Undefined
 }
 
