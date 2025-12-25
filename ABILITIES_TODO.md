@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~130
-Documented stubs (with detailed TODOs): ~184
+Fully implemented (working code): ~131
+Documented stubs (with detailed TODOs): ~183
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,8 +12,8 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~130 abilities with full or partial working implementations (+3 this session)
-- ~184 abilities with detailed TODO documentation explaining what's needed
+- ~131 abilities with full or partial working implementations (+4 this session)
+- ~183 abilities with detailed TODO documentation explaining what's needed
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather)
@@ -35,10 +35,11 @@ Each documented ability includes:
 
 ## Recent Work (Current Session)
 
-New implementations (3 abilities):
+New implementations (4 abilities):
 1. **fullmetalbody** - Prevents stat reduction (same as Clear Body/White Smoke)
 2. **whitesmoke** - Prevents stat reduction (same as Clear Body/Full Metal Body)
 3. **soundproof** (partial) - Blocks sound-based moves (onTryHit handler)
+4. **mindseye** (partial) - Prevents accuracy drops (onTryBoost handler)
 
 ## Previous Session Work
 
