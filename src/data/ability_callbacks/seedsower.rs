@@ -25,13 +25,9 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Sets Grassy Terrain when hit by a damaging move
-///
-/// TODO: onDamagingHit handler not yet implemented
-/// TODO: Needs field.setTerrain()
-/// When implemented, should:
-/// 1. Call field.setTerrain('grassyterrain') to set Grassy Terrain
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, _target: &Pokemon, _source: &mut Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+    // this.field.setTerrain('grassyterrain');
+    battle.field.set_terrain(ID::new("grassyterrain"), None);
     AbilityHandlerResult::Undefined
 }
 
