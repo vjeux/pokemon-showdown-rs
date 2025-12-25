@@ -1913,11 +1913,20 @@ impl Battle {
 
         // STAB
         let has_stab = attacker_types.iter().any(|t| t.to_lowercase() == move_type.to_lowercase());
-        let damage = if has_stab {
-            (damage as f64 * 1.5) as u32
-        } else {
-            damage
-        };
+        let mut stab = if has_stab { 1.5 } else { 1.0 };
+
+        // onModifySTAB handler for abilities like Adaptability
+        if has_stab {
+            if let Some(attacker_pokemon) = self.sides.get(attacker_side).and_then(|s| s.pokemon.get(attacker_idx)) {
+                let ability_id = attacker_pokemon.ability.as_str();
+                if ability_id == "adaptability" {
+                    // Adaptability increases STAB from 1.5x to 2x
+                    stab = 2.0;
+                }
+            }
+        }
+
+        let damage = (damage as f64 * stab) as u32;
 
         // Type effectiveness
         let damage = (damage as f64 * type_effectiveness) as u32;
