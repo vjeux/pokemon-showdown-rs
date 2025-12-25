@@ -26,7 +26,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAllyFaint(...)
+/// onAllyFaint(target)
+/// Copies the ability of a fainted ally
+///
+/// TODO: onAllyFaint handler not yet implemented
+/// TODO: Needs effectState.target.hp, target.getAbility(), ability.flags['noreceiver'], effectState.target.setAbility()
+/// When implemented, should:
+/// 1. Skip if ability holder is fainted
+/// 2. Get the fainted ally's ability
+/// 3. Skip if ability has noreceiver flag or is noability
+/// 4. Set the ability on this Pokemon
 pub fn on_ally_faint(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
