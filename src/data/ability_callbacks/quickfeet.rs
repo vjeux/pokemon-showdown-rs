@@ -25,9 +25,12 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifySpe(...)
-pub fn on_modify_spe(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onModifySpe(spe, pokemon)
+pub fn on_modify_spe(_battle: &Battle, _spe: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (pokemon.status)
+    if !pokemon.status.is_empty() {
+        // return this.chainModify(1.5);
+        return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
+    }
     AbilityHandlerResult::Undefined
 }
-
