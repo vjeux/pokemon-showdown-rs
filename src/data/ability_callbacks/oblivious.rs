@@ -47,25 +47,50 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onUpdate(...)
+/// onUpdate(pokemon)
+/// Cures attract and taunt
+///
+/// TODO: onUpdate handler not yet implemented
+/// TODO: Needs pokemon.volatiles['attract'], removeVolatile()
+/// When implemented, should:
+/// 1. Check for attract volatile, remove it with messages
+/// 2. Check for taunt volatile, remove it with activate message
 pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onImmunity(...)
+/// onImmunity(type, pokemon)
+/// Prevents attract
+///
+/// TODO: onImmunity handler not yet implemented
+/// When implemented, should:
+/// 1. If type === 'attract', return false
 pub fn on_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onTryHit(...)
+/// onTryHit(pokemon, target, move)
+/// Blocks attract, captivate, and taunt moves
+///
+/// TODO: onTryHit handler not yet implemented
+/// When implemented, should:
+/// 1. Check if move is attract, captivate, or taunt
+/// 2. Add immune message and return null
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onTryBoost(...)
+/// onTryBoost(boost, target, source, effect)
+/// Blocks Intimidate
+///
+/// TODO: onTryBoost handler not yet implemented
+/// TODO: Needs boost object manipulation
+/// When implemented, should:
+/// 1. Check if effect.name === 'Intimidate' && boost.atk exists
+/// 2. Delete boost.atk and add fail message
 pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
