@@ -152,6 +152,8 @@ pub struct MoveDef {
     pub force_stab: bool,
     /// Type was changed by an ability like Aerilate/Pixilate/etc.
     pub type_changer_boosted: bool,
+    /// Priority was boosted by Prankster
+    pub prankster_boosted: bool,
     /// Secondary effects removed by Sheer Force
     pub has_sheer_force: bool,
     /// Ignores target's evasion stat (Keen Eye, Illuminate, etc.)
@@ -204,6 +206,7 @@ impl Default for MoveDef {
             has_crash_damage: false,
             force_stab: false,
             type_changer_boosted: false,
+            prankster_boosted: false,
             has_sheer_force: false,
             ignores_evasion: false,
         }

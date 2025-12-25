@@ -27,11 +27,11 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyPriority(priority, pokemon, target, move)
-pub fn on_modify_priority(_battle: &Battle, priority: i32, _pokemon: &Pokemon, _target: Option<&Pokemon>, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_priority(_battle: &Battle, priority: i32, _pokemon: &Pokemon, _target: Option<&Pokemon>, move_: &mut MoveDef) -> AbilityHandlerResult {
     // if (move?.category === 'Status')
     if move_.category == MoveCategory::Status {
         // move.pranksterBoosted = true;
-        // TODO: Set prankster_boosted flag when field is added to MoveDef
+        move_.prankster_boosted = true;
         // return priority + 1;
         return AbilityHandlerResult::Number(priority + 1);
     }
