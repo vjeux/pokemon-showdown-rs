@@ -549,9 +549,14 @@ pub mod arenatrap {
 pub mod armortail {
     use super::*;
 
-    /// onFoeTryMove(...)
-    pub fn on_foe_try_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onFoeTryMove(source, target, move)
+    /// Blocks priority moves from opponents
+    pub fn on_foe_try_move(battle: &mut Battle, source: &Pokemon, target: &Pokemon, move_: &MoveDef, armor_tail_holder: &Pokemon) -> AbilityHandlerResult {
+        // Check if source is on same side as holder (ally) or move targets all, and has priority
+        if (source.side_index == armor_tail_holder.side_index || move_.target == crate::data::moves::MoveTargetType::All) && move_.priority > 0 {
+            battle.add("cant", &[Arg::Pokemon(armor_tail_holder), Arg::Str("ability: Armor Tail"), Arg::Str(&move_.name), Arg::Str(&format!("[of] {}", target.name))]);
+            return AbilityHandlerResult::False;
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -579,9 +584,18 @@ pub mod armortail {
 pub mod aromaveil {
     use super::*;
 
-    /// onAllyTryAddVolatile(...)
-    pub fn on_ally_try_add_volatile(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// Status effects blocked by Aroma Veil
+    const BLOCKED_STATUS: &[&str] = &["attract", "disable", "encore", "healblock", "taunt", "torment"];
+
+    /// onAllyTryAddVolatile(status, target, source, effect)
+    /// Blocks certain volatile status conditions from allies
+    pub fn on_ally_try_add_volatile(battle: &mut Battle, status_id: &str, target: &Pokemon, _source: Option<&Pokemon>, effect_type: &str, effect_holder: &Pokemon) -> AbilityHandlerResult {
+        if BLOCKED_STATUS.contains(&status_id) {
+            if effect_type == "Move" {
+                battle.add("-block", &[Arg::Pokemon(target), Arg::Str("ability: Aroma Veil"), Arg::Str(&format!("[of] {}", effect_holder.name))]);
+            }
+            return AbilityHandlerResult::Null;
+        }
         AbilityHandlerResult::Undefined
     }
 }
