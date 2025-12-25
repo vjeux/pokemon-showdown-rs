@@ -6,15 +6,16 @@
 //! translated from data/abilities.ts in the JavaScript codebase.
 //!
 //! Function signatures match the JS handlers exactly:
-//! - onStart(pokemon) -> on_start(pokemon)
-//! - onTryHit(target, source, move) -> on_try_hit(target, source, move_)
-//! - onDamagingHit(damage, target, source, move) -> on_damaging_hit(damage, target, source, move_)
+//! - onStart(pokemon) -> on_start(battle, pokemon)
+//! - onTryHit(target, source, move) -> on_try_hit(battle, target, source, move_)
+//! - onDamagingHit(damage, target, source, move) -> on_damaging_hit(battle, damage, target, source, move_)
 //! - etc.
 //!
 //! Note: Only a subset of abilities are implemented here as a proof of concept.
 //! The full implementation would be extensive given the 300+ abilities.
 
-use crate::battle::{Battle, Pokemon, Move};
+use crate::battle::{Battle, Move};
+use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 
 // =============================================================================
@@ -43,9 +44,6 @@ pub enum AbilityHandlerResult {
 // =============================================================================
 // TYPE ALIASES for cleaner signatures
 // =============================================================================
-
-/// Pokemon reference (side_index, pokemon_index)
-pub type PokemonRef = (usize, usize);
 
 /// Status object
 #[derive(Debug, Clone, Default)]
@@ -95,14 +93,12 @@ pub mod intimidate {
     use super::*;
 
     /// onStart(pokemon)
-    pub fn on_start(battle: &mut Battle, pokemon: PokemonRef) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = pokemon;
-
+    pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
         // let activated = false;
         let mut activated = false;
 
-        // Collect foe indices first to avoid borrow issues (Rust-specific)
-        let foe_side = 1 - side_idx;
+        // Collect foe data first to avoid borrow issues (Rust-specific)
+        let foe_side = 1 - pokemon.side_index;
         let foe_data: Vec<(usize, bool)> = if let Some(foe_side_data) = battle.sides.get(foe_side) {
             foe_side_data.pokemon.iter().enumerate()
                 .filter(|(_, foe)| foe.is_active && !foe.fainted)
@@ -117,10 +113,7 @@ pub mod intimidate {
             // if (!activated) {
             if !activated {
                 // this.add('-ability', pokemon, 'Intimidate', 'boost');
-                if let Some(poke) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                    let pokemon_pos = poke.position;
-                    battle.add_log("-ability", &[&format!("{}", pokemon_pos), "Intimidate", "boost"]);
-                }
+                battle.add_log("-ability", &[&format!("{}", pokemon.position), "Intimidate", "boost"]);
                 // activated = true;
                 activated = true;
             }
@@ -128,12 +121,11 @@ pub mod intimidate {
             if has_substitute {
                 // this.add('-immune', target);
                 if let Some(foe) = battle.sides.get(foe_side).and_then(|s| s.pokemon.get(foe_idx)) {
-                    let foe_pos = foe.position;
-                    battle.add_log("-immune", &[&format!("{}", foe_pos)]);
+                    battle.add_log("-immune", &[&format!("{}", foe.position)]);
                 }
             } else {
                 // this.boost({ atk: -1 }, target, pokemon, null, true);
-                battle.boost(&[("atk", -1)], (foe_side, foe_idx), Some(pokemon), None);
+                battle.boost(&[("atk", -1)], (foe_side, foe_idx), Some((pokemon.side_index, pokemon.position)), None);
             }
         }
         AbilityHandlerResult::Undefined
@@ -208,30 +200,18 @@ pub mod flashfire {
     use super::*;
 
     /// onTryHit(target, source, move)
-    pub fn on_try_hit(battle: &mut Battle, target: PokemonRef, source: PokemonRef, move_: &Move) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = target;
-
+    pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, source: &Pokemon, move_: &Move) -> AbilityHandlerResult {
         // if (target !== source && move.type === 'Fire')
-        if target != source && move_.move_type == "Fire" {
+        if target.position != source.position && move_.move_type == "Fire" {
             // move.accuracy = true; // (handled elsewhere in battle logic)
 
             // if (!target.addVolatile('flashfire'))
-            let already_had_flashfire = battle.sides.get(side_idx)
-                .and_then(|s| s.pokemon.get(poke_idx))
-                .map(|p| p.volatiles.contains_key(&ID::new("flashfire")))
-                .unwrap_or(false);
-
-            // Add the volatile
-            if let Some(pokemon) = battle.sides.get_mut(side_idx).and_then(|s| s.pokemon.get_mut(poke_idx)) {
-                pokemon.volatiles.insert(ID::new("flashfire"), Default::default());
-            }
+            let already_had_flashfire = target.volatiles.contains_key(&ID::new("flashfire"));
+            target.volatiles.insert(ID::new("flashfire"), Default::default());
 
             if already_had_flashfire {
                 // this.add('-immune', target, '[from] ability: Flash Fire');
-                if let Some(pokemon) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                    let pos = pokemon.position;
-                    battle.add_log("-immune", &[&format!("{}", pos), "[from] ability: Flash Fire"]);
-                }
+                battle.add_log("-immune", &[&format!("{}", target.position), "[from] ability: Flash Fire"]);
             }
             // return null;
             return AbilityHandlerResult::Null;
@@ -240,12 +220,9 @@ pub mod flashfire {
     }
 
     /// onEnd(pokemon)
-    pub fn on_end(battle: &mut Battle, pokemon: PokemonRef) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = pokemon;
+    pub fn on_end(pokemon: &mut Pokemon) -> AbilityHandlerResult {
         // pokemon.removeVolatile('flashfire');
-        if let Some(poke) = battle.sides.get_mut(side_idx).and_then(|s| s.pokemon.get_mut(poke_idx)) {
-            poke.volatiles.remove(&ID::new("flashfire"));
-        }
+        pokemon.volatiles.remove(&ID::new("flashfire"));
         AbilityHandlerResult::Undefined
     }
 
@@ -257,13 +234,9 @@ pub mod flashfire {
         pub const NO_COPY: bool = true;
 
         /// condition.onStart(target)
-        pub fn on_start(battle: &mut Battle, target: PokemonRef) -> AbilityHandlerResult {
-            let (side_idx, poke_idx) = target;
+        pub fn on_start(battle: &mut Battle, target: &Pokemon) -> AbilityHandlerResult {
             // this.add('-start', target, 'ability: Flash Fire');
-            if let Some(pokemon) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                let pos = pokemon.position;
-                battle.add_log("-start", &[&format!("{}", pos), "ability: Flash Fire"]);
-            }
+            battle.add_log("-start", &[&format!("{}", target.position), "ability: Flash Fire"]);
             AbilityHandlerResult::Undefined
         }
 
@@ -271,17 +244,12 @@ pub mod flashfire {
         pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
         /// condition.onModifyAtk(atk, attacker, defender, move)
-        pub fn on_modify_atk(battle: &Battle, _atk: u32, attacker: PokemonRef, _defender: PokemonRef, move_: &Move) -> AbilityHandlerResult {
-            let (side_idx, poke_idx) = attacker;
+        pub fn on_modify_atk(_atk: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &Move) -> AbilityHandlerResult {
             // if (move.type === 'Fire' && attacker.hasAbility('flashfire'))
-            if move_.move_type == "Fire" {
-                if let Some(pokemon) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                    if pokemon.ability == ID::new("flashfire") {
-                        // this.debug('Flash Fire boost');
-                        // return this.chainModify(1.5);
-                        return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
-                    }
-                }
+            if move_.move_type == "Fire" && attacker.ability == ID::new("flashfire") {
+                // this.debug('Flash Fire boost');
+                // return this.chainModify(1.5);
+                return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
             }
             AbilityHandlerResult::Undefined
         }
@@ -290,29 +258,20 @@ pub mod flashfire {
         pub const ON_MODIFY_SPA_PRIORITY: i32 = 5;
 
         /// condition.onModifySpA(atk, attacker, defender, move)
-        pub fn on_modify_spa(battle: &Battle, _atk: u32, attacker: PokemonRef, _defender: PokemonRef, move_: &Move) -> AbilityHandlerResult {
-            let (side_idx, poke_idx) = attacker;
+        pub fn on_modify_spa(_atk: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &Move) -> AbilityHandlerResult {
             // if (move.type === 'Fire' && attacker.hasAbility('flashfire'))
-            if move_.move_type == "Fire" {
-                if let Some(pokemon) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                    if pokemon.ability == ID::new("flashfire") {
-                        // this.debug('Flash Fire boost');
-                        // return this.chainModify(1.5);
-                        return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
-                    }
-                }
+            if move_.move_type == "Fire" && attacker.ability == ID::new("flashfire") {
+                // this.debug('Flash Fire boost');
+                // return this.chainModify(1.5);
+                return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
             }
             AbilityHandlerResult::Undefined
         }
 
         /// condition.onEnd(target)
-        pub fn on_end(battle: &mut Battle, target: PokemonRef) -> AbilityHandlerResult {
-            let (side_idx, poke_idx) = target;
+        pub fn on_end(battle: &mut Battle, target: &Pokemon) -> AbilityHandlerResult {
             // this.add('-end', target, 'ability: Flash Fire', '[silent]');
-            if let Some(pokemon) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                let pos = pokemon.position;
-                battle.add_log("-end", &[&format!("{}", pos), "ability: Flash Fire", "[silent]"]);
-            }
+            battle.add_log("-end", &[&format!("{}", target.position), "ability: Flash Fire", "[silent]"]);
             AbilityHandlerResult::Undefined
         }
     }
@@ -341,25 +300,17 @@ pub mod waterabsorb {
     use super::*;
 
     /// onTryHit(target, source, move)
-    pub fn on_try_hit(battle: &mut Battle, target: PokemonRef, source: PokemonRef, move_: &Move) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = target;
-
+    pub fn on_try_hit(battle: &mut Battle, target: &Pokemon, source: &Pokemon, move_: &Move) -> AbilityHandlerResult {
         // if (target !== source && move.type === 'Water')
-        if target != source && move_.move_type == "Water" {
+        if target.position != source.position && move_.move_type == "Water" {
             // if (!this.heal(target.baseMaxhp / 4))
-            let heal_amount = battle.sides.get(side_idx)
-                .and_then(|s| s.pokemon.get(poke_idx))
-                .map(|p| p.base_maxhp / 4)
-                .unwrap_or(0);
-
-            let healed = battle.heal(heal_amount, target, None, Some("ability: Water Absorb"));
+            let heal_amount = target.base_maxhp / 4;
+            let target_ref = (target.side_index, target.position);
+            let healed = battle.heal(heal_amount, target_ref, None, Some("ability: Water Absorb"));
 
             if !healed {
                 // this.add('-immune', target, '[from] ability: Water Absorb');
-                if let Some(pokemon) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                    let pos = pokemon.position;
-                    battle.add_log("-immune", &[&format!("{}", pos), "[from] ability: Water Absorb"]);
-                }
+                battle.add_log("-immune", &[&format!("{}", target.position), "[from] ability: Water Absorb"]);
             }
             // return null;
             return AbilityHandlerResult::Null;
@@ -395,18 +346,12 @@ pub mod speedboost {
     pub const ON_RESIDUAL_SUB_ORDER: i32 = 2;
 
     /// onResidual(pokemon)
-    pub fn on_residual(battle: &mut Battle, pokemon: PokemonRef) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = pokemon;
-
+    pub fn on_residual(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
         // if (pokemon.activeTurns)
-        let active_turns = battle.sides.get(side_idx)
-            .and_then(|s| s.pokemon.get(poke_idx))
-            .map(|p| p.active_turns)
-            .unwrap_or(0);
-
-        if active_turns > 0 {
+        if pokemon.active_turns > 0 {
             // this.boost({ spe: 1 });
-            battle.boost(&[("spe", 1)], pokemon, None, None);
+            let pokemon_ref = (pokemon.side_index, pokemon.position);
+            battle.boost(&[("spe", 1)], pokemon_ref, None, None);
         }
         AbilityHandlerResult::Undefined
     }
@@ -431,16 +376,9 @@ pub mod drizzle {
     use super::*;
 
     /// onStart(source)
-    pub fn on_start(battle: &mut Battle, source: PokemonRef) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = source;
-
+    pub fn on_start(battle: &mut Battle, source: &Pokemon) -> AbilityHandlerResult {
         // if (source.species.id === 'kyogre' && source.item === 'blueorb') return;
-        let should_skip = battle.sides.get(side_idx)
-            .and_then(|s| s.pokemon.get(poke_idx))
-            .map(|p| p.species == ID::new("kyogre") && p.item == ID::new("blueorb"))
-            .unwrap_or(false);
-
-        if should_skip {
+        if source.species_id == ID::new("kyogre") && source.item == ID::new("blueorb") {
             return AbilityHandlerResult::Undefined;
         }
 
@@ -478,7 +416,7 @@ pub mod technician {
 
     /// onBasePower(basePower, attacker, defender, move)
     /// Note: basePower should already have event.modifier applied (basePowerAfterMultiplier)
-    pub fn on_base_power(_battle: &Battle, base_power: u32, _attacker: PokemonRef, _defender: PokemonRef, _move: &Move) -> AbilityHandlerResult {
+    pub fn on_base_power(base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, _move: &Move) -> AbilityHandlerResult {
         // const basePowerAfterMultiplier = this.modify(basePower, this.event.modifier);
         // this.debug(`Base Power: ${basePowerAfterMultiplier}`);
         // if (basePowerAfterMultiplier <= 60) {
@@ -515,16 +453,9 @@ pub mod guts {
     pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
     /// onModifyAtk(atk, pokemon)
-    pub fn on_modify_atk(battle: &Battle, _atk: u32, pokemon: PokemonRef) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = pokemon;
-
+    pub fn on_modify_atk(_atk: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
         // if (pokemon.status)
-        let has_status = battle.sides.get(side_idx)
-            .and_then(|s| s.pokemon.get(poke_idx))
-            .map(|p| !p.status.is_empty())
-            .unwrap_or(false);
-
-        if has_status {
+        if !pokemon.status.is_empty() {
             // return this.chainModify(1.5);
             return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
         }
@@ -556,17 +487,14 @@ pub mod roughskin {
     pub const ON_DAMAGING_HIT_ORDER: i32 = 1;
 
     /// onDamagingHit(damage, target, source, move)
-    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: PokemonRef, source: PokemonRef, move_: &Move) -> AbilityHandlerResult {
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &Pokemon, move_: &Move) -> AbilityHandlerResult {
         // if (this.checkMoveMakesContact(move, source, target, true))
-        if battle.check_move_makes_contact(move_, source, target, true) {
+        let source_ref = (source.side_index, source.position);
+        let target_ref = (target.side_index, target.position);
+        if battle.check_move_makes_contact(move_, source_ref, target_ref, true) {
             // this.damage(source.baseMaxhp / 8, source, target);
-            let (source_side, source_idx) = source;
-            let damage = battle.sides.get(source_side)
-                .and_then(|s| s.pokemon.get(source_idx))
-                .map(|p| p.base_maxhp / 8)
-                .unwrap_or(0);
-
-            battle.damage(damage, source, Some(target), None);
+            let damage = source.base_maxhp / 8;
+            battle.damage(damage, source_ref, Some(target_ref), None);
         }
         AbilityHandlerResult::Undefined
     }
@@ -600,31 +528,20 @@ pub mod immunity {
     use super::*;
 
     /// onUpdate(pokemon)
-    pub fn on_update(battle: &mut Battle, pokemon: PokemonRef) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = pokemon;
-
+    pub fn on_update(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
         // if (pokemon.status === 'psn' || pokemon.status === 'tox')
-        let status = battle.sides.get(side_idx)
-            .and_then(|s| s.pokemon.get(poke_idx))
-            .map(|p| p.status.as_str())
-            .unwrap_or("");
-
-        if status == "psn" || status == "tox" {
+        if pokemon.status.as_str() == "psn" || pokemon.status.as_str() == "tox" {
             // this.add('-activate', pokemon, 'ability: Immunity');
-            if let Some(poke) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                let pos = poke.position;
-                battle.add_log("-activate", &[&format!("{}", pos), "ability: Immunity"]);
-            }
+            battle.add_log("-activate", &[&format!("{}", pokemon.position), "ability: Immunity"]);
             // pokemon.cureStatus();
-            battle.cure_status(pokemon);
+            let pokemon_ref = (pokemon.side_index, pokemon.position);
+            battle.cure_status(pokemon_ref);
         }
         AbilityHandlerResult::Undefined
     }
 
     /// onSetStatus(status, target, source, effect)
-    pub fn on_set_status(battle: &mut Battle, status: &Status, target: PokemonRef, _source: Option<PokemonRef>, effect: &Effect) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = target;
-
+    pub fn on_set_status(battle: &mut Battle, status: &Status, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
         // if (status.id !== 'psn' && status.id !== 'tox') return;
         if status.id != "psn" && status.id != "tox" {
             return AbilityHandlerResult::Undefined;
@@ -633,10 +550,7 @@ pub mod immunity {
         // if ((effect as Move)?.status)
         if effect.effect_type == "Move" && effect.status.is_some() {
             // this.add('-immune', target, '[from] ability: Immunity');
-            if let Some(pokemon) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                let pos = pokemon.position;
-                battle.add_log("-immune", &[&format!("{}", pos), "[from] ability: Immunity"]);
-            }
+            battle.add_log("-immune", &[&format!("{}", target.position), "[from] ability: Immunity"]);
         }
         // return false;
         AbilityHandlerResult::False
@@ -671,31 +585,20 @@ pub mod limber {
     use super::*;
 
     /// onUpdate(pokemon)
-    pub fn on_update(battle: &mut Battle, pokemon: PokemonRef) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = pokemon;
-
+    pub fn on_update(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
         // if (pokemon.status === 'par')
-        let status = battle.sides.get(side_idx)
-            .and_then(|s| s.pokemon.get(poke_idx))
-            .map(|p| p.status.as_str())
-            .unwrap_or("");
-
-        if status == "par" {
+        if pokemon.status.as_str() == "par" {
             // this.add('-activate', pokemon, 'ability: Limber');
-            if let Some(poke) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                let pos = poke.position;
-                battle.add_log("-activate", &[&format!("{}", pos), "ability: Limber"]);
-            }
+            battle.add_log("-activate", &[&format!("{}", pokemon.position), "ability: Limber"]);
             // pokemon.cureStatus();
-            battle.cure_status(pokemon);
+            let pokemon_ref = (pokemon.side_index, pokemon.position);
+            battle.cure_status(pokemon_ref);
         }
         AbilityHandlerResult::Undefined
     }
 
     /// onSetStatus(status, target, source, effect)
-    pub fn on_set_status(battle: &mut Battle, status: &Status, target: PokemonRef, _source: Option<PokemonRef>, effect: &Effect) -> AbilityHandlerResult {
-        let (side_idx, poke_idx) = target;
-
+    pub fn on_set_status(battle: &mut Battle, status: &Status, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
         // if (status.id !== 'par') return;
         if status.id != "par" {
             return AbilityHandlerResult::Undefined;
@@ -704,10 +607,7 @@ pub mod limber {
         // if ((effect as Move)?.status)
         if effect.effect_type == "Move" && effect.status.is_some() {
             // this.add('-immune', target, '[from] ability: Limber');
-            if let Some(pokemon) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
-                let pos = pokemon.position;
-                battle.add_log("-immune", &[&format!("{}", pos), "[from] ability: Limber"]);
-            }
+            battle.add_log("-immune", &[&format!("{}", target.position), "[from] ability: Limber"]);
         }
         // return false;
         AbilityHandlerResult::False
@@ -736,37 +636,54 @@ mod tests {
 
     #[test]
     fn test_technician_boost() {
-        let battle = create_mock_battle();
-        let pokemon = (0, 0);
+        let pokemon = create_mock_pokemon();
         let move_ = Move::default();
 
         // 40 BP should get boost
-        let result = technician::on_base_power(&battle, 40, pokemon, pokemon, &move_);
+        let result = technician::on_base_power(40, &pokemon, &pokemon, &move_);
         assert!(matches!(result, AbilityHandlerResult::ChainModify(6144, 4096)));
 
         // 80 BP should not get boost
-        let result2 = technician::on_base_power(&battle, 80, pokemon, pokemon, &move_);
+        let result2 = technician::on_base_power(80, &pokemon, &pokemon, &move_);
         assert!(matches!(result2, AbilityHandlerResult::Undefined));
+    }
+
+    #[test]
+    fn test_guts_boost() {
+        let mut pokemon = create_mock_pokemon();
+
+        // No status - no boost
+        let result = guts::on_modify_atk(100, &pokemon);
+        assert!(matches!(result, AbilityHandlerResult::Undefined));
+
+        // With status - boost
+        pokemon.status = ID::new("brn");
+        let result2 = guts::on_modify_atk(100, &pokemon);
+        assert!(matches!(result2, AbilityHandlerResult::ChainModify(6144, 4096)));
     }
 
     #[test]
     fn test_immunity_blocks_poison() {
         let mut battle = create_mock_battle();
-        let target = (0, 0);
+        let pokemon = create_mock_pokemon();
 
         let psn_status = Status { id: "psn".to_string() };
         let brn_status = Status { id: "brn".to_string() };
         let effect = Effect::default();
 
-        let result = immunity::on_set_status(&mut battle, &psn_status, target, None, &effect);
+        let result = immunity::on_set_status(&mut battle, &psn_status, &pokemon, None, &effect);
         assert!(matches!(result, AbilityHandlerResult::False));
 
-        let result2 = immunity::on_set_status(&mut battle, &brn_status, target, None, &effect);
+        let result2 = immunity::on_set_status(&mut battle, &brn_status, &pokemon, None, &effect);
         assert!(matches!(result2, AbilityHandlerResult::Undefined));
     }
 
     fn create_mock_battle() -> Battle {
         use crate::battle::BattleOptions;
         Battle::new(BattleOptions::default())
+    }
+
+    fn create_mock_pokemon() -> Pokemon {
+        Pokemon::default()
     }
 }
