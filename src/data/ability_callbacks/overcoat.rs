@@ -46,14 +46,21 @@ pub const ON_TRY_HIT_PRIORITY: i32 = 1;
 
 /// onTryHit(target, source, move)
 /// Blocks powder moves
-///
-/// TODO: onTryHit handler not yet implemented
-/// TODO: Needs move.flags['powder'], dex.getImmunity()
-/// When implemented, should:
-/// 1. Check if move has powder flag, target !== source, and getImmunity('powder', target)
-/// 2. Add immune message and return null
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    let target_loc = (target.side_index, target.position);
+    let source_loc = (source.side_index, source.position);
+
+    // if (move.flags['powder'] && target !== source && this.dex.getImmunity('powder', target))
+    // TODO: Missing dex.getImmunity() check - currently assuming powder immunity is respected
+    if move_.flags.powder && target_loc != source_loc {
+        // this.add('-immune', target, '[from] ability: Overcoat');
+        battle.add("-immune", &[
+            Arg::Pokemon(target),
+            Arg::Str("[from] ability: Overcoat")
+        ]);
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
 
