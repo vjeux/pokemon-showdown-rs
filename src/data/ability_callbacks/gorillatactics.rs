@@ -1,55 +1,4 @@
-//! Gorilla Tactics Ability
-//!
-//! Pokemon Showdown - http://pokemonshowdown.com/
-//!
-//! Generated from data/abilities.ts
-//!
-//! ```text
-//! JS Source (data/abilities.ts):
-//! 	gorillatactics: {
-//! 		onStart(pokemon) {
-//! 			pokemon.abilityState.choiceLock = "";
-//! 		},
-//! 		onBeforeMove(pokemon, target, move) {
-//! 			if (move.isZOrMaxPowered || move.id === 'struggle') return;
-//! 			if (pokemon.abilityState.choiceLock && pokemon.abilityState.choiceLock !== move.id) {
-//! 				// Fails unless ability is being ignored (these events will not run), no PP lost.
-//! 				this.addMove('move', pokemon, move.name);
-//! 				this.attrLastMove('[still]');
-//! 				this.debug("Disabled by Gorilla Tactics");
-//! 				this.add('-fail', pokemon);
-//! 				return false;
-//! 			}
-//! 		},
-//! 		onModifyMove(move, pokemon) {
-//! 			if (pokemon.abilityState.choiceLock || move.isZOrMaxPowered || move.id === 'struggle') return;
-//! 			pokemon.abilityState.choiceLock = move.id;
-//! 		},
-//! 		onModifyAtkPriority: 1,
-//! 		onModifyAtk(atk, pokemon) {
-//! 			if (pokemon.volatiles['dynamax']) return;
-//! 			// PLACEHOLDER
-//! 			this.debug('Gorilla Tactics Atk Boost');
-//! 			return this.chainModify(1.5);
-//! 		},
-//! 		onDisableMove(pokemon) {
-//! 			if (!pokemon.abilityState.choiceLock) return;
-//! 			if (pokemon.volatiles['dynamax']) return;
-//! 			for (const moveSlot of pokemon.moveSlots) {
-//! 				if (moveSlot.id !== pokemon.abilityState.choiceLock) {
-//! 					pokemon.disableMove(moveSlot.id, false, this.effectState.sourceEffect);
-//! 				}
-//! 			}
-//! 		},
-//! 		onEnd(pokemon) {
-//! 			pokemon.abilityState.choiceLock = "";
-//! 		},
-//! 		flags: {},
-//! 		name: "Gorilla Tactics",
-//! 		rating: 4.5,
-//! 		num: 255,
-//! 	},
-//! ```
+//! Gorilla Tactics Ability - Boosts Attack, locks into first move
 
 use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
@@ -57,45 +6,14 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
+
+/// onModifyAtk - boost exists, can implement
+pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+    AbilityHandlerResult::ChainModify(6144, 4096) // 1.5x
 }
 
-/// onBeforeMove(...)
-pub fn on_before_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// TODO: onDisableMove needs implementation for choice locking
+pub fn on_disable_move(_battle: &mut Battle, /* TODO */) -> AbilityHandlerResult {
     AbilityHandlerResult::Undefined
 }
-
-/// onModifyMove(...)
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifyAtkPriority(...)
-pub fn on_modify_atk_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifyAtk(...)
-pub fn on_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onDisableMove(...)
-pub fn on_disable_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onEnd(...)
-pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
