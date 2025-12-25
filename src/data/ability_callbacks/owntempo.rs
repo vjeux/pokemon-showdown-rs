@@ -80,14 +80,20 @@ pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandler
 
 /// onTryBoost(boost, target, source, effect)
 /// Blocks Intimidate
-///
-/// TODO: onTryBoost handler not yet implemented
-/// TODO: Needs boost object manipulation
-/// When implemented, should:
-/// 1. Check if effect.name === 'Intimidate' && boost.atk exists
-/// 2. Delete boost.atk and add fail message
-pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_boost(battle: &mut Battle, boost: &mut std::collections::HashMap<String, i8>, target: &Pokemon, _source: Option<&Pokemon>, effect_id: &str, _has_secondaries: bool) -> AbilityHandlerResult {
+    // if (effect.name === 'Intimidate' && boost.atk)
+    if effect_id == "intimidate" && boost.contains_key("atk") {
+        // delete boost.atk;
+        boost.remove("atk");
+        // this.add('-fail', target, 'unboost', 'Attack', '[from] ability: Own Tempo', `[of] ${target}`);
+        battle.add("-fail", &[
+            Arg::Pokemon(target),
+            Arg::Str("unboost"),
+            Arg::Str("Attack"),
+            Arg::Str("[from] ability: Own Tempo"),
+            Arg::Str(&format!("[of] {}", target.position))
+        ]);
+    }
     AbilityHandlerResult::Undefined
 }
 
