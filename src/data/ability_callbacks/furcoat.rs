@@ -24,15 +24,13 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyDefPriority(...)
-pub fn on_modify_def_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// onModifyDefPriority: 6
+pub const ON_MODIFY_DEF_PRIORITY: i32 = 6;
 
-/// onModifyDef(...)
-pub fn on_modify_def(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// onModifyDef(def)
+/// Doubles Defense
+pub fn on_modify_def(_def: u32) -> AbilityHandlerResult {
+    // return this.chainModify(2);
+    AbilityHandlerResult::ChainModify(8192, 4096) // 2x
 }
 
