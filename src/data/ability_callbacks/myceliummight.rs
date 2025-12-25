@@ -31,19 +31,28 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onFractionalPriorityPriority(...)
-pub fn on_fractional_priority_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_FRACTIONAL_PRIORITY_PRIORITY: i32 = -1;
 
-/// onFractionalPriority(...)
+/// onFractionalPriority(priority, pokemon, target, move)
+/// Makes status moves slower (fractional priority -0.1)
+///
+/// TODO: onFractionalPriority handler not yet implemented
+/// When implemented, should:
+/// 1. Check if move.category === 'Status'
+/// 2. Return -0.1 fractional priority
 pub fn on_fractional_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onModifyMove(...)
+/// onModifyMove(move)
+/// Makes status moves ignore abilities
+///
+/// TODO: onModifyMove handler not yet implemented
+/// TODO: Needs move.ignoreAbility field
+/// When implemented, should:
+/// 1. Check if move.category === 'Status'
+/// 2. Set move.ignoreAbility = true
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
