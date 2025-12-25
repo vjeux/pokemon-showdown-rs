@@ -35,27 +35,36 @@ pub const ON_ANY_INVULNERABILITY_PRIORITY: i32 = 1;
 /// onAnyInvulnerability(target, source, move)
 /// Ensures moves bypass invulnerability (Fly, Dig, etc.)
 ///
-/// TODO: onAnyInvulnerability handler not yet implemented
-/// TODO: Needs effectState.target access
-/// When implemented, should:
-/// 1. Check if move exists and (source or target is this pokemon)
-/// 2. Return 0 to bypass invulnerability
-pub fn on_any_invulnerability(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// TODO: onAnyInvulnerability handler not yet called by battle engine
+pub fn on_any_invulnerability(_battle: &mut Battle, target: &Pokemon, source: &Pokemon, move_: &MoveDef, ability_holder: &Pokemon) -> AbilityHandlerResult {
+    // if (move && (source === this.effectState.target || target === this.effectState.target)) return 0;
+    let holder_ref = (ability_holder.side_index, ability_holder.position);
+    let source_ref = (source.side_index, source.position);
+    let target_ref = (target.side_index, target.position);
+
+    if source_ref == holder_ref || target_ref == holder_ref {
+        return AbilityHandlerResult::Number(0);
+    }
+
     AbilityHandlerResult::Undefined
 }
 
 /// onAnyAccuracy(accuracy, target, source, move)
 /// Ensures all moves involving this pokemon always hit
 ///
-/// TODO: onAnyAccuracy handler not yet implemented
-/// TODO: Needs effectState.target access
-/// When implemented, should:
-/// 1. Check if move exists and (source or target is this pokemon)
-/// 2. Return true to guarantee hit
-/// 3. Otherwise return accuracy unchanged
-pub fn on_any_accuracy(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// TODO: onAnyAccuracy handler not yet called by battle engine
+pub fn on_any_accuracy(_battle: &mut Battle, accuracy: u32, target: &Pokemon, source: &Pokemon, move_: &MoveDef, ability_holder: &Pokemon) -> AbilityHandlerResult {
+    // if (move && (source === this.effectState.target || target === this.effectState.target))
+    let holder_ref = (ability_holder.side_index, ability_holder.position);
+    let source_ref = (source.side_index, source.position);
+    let target_ref = (target.side_index, target.position);
+
+    if source_ref == holder_ref || target_ref == holder_ref {
+        // return true;
+        return AbilityHandlerResult::True;
+    }
+
+    // return accuracy;
+    AbilityHandlerResult::Number(accuracy as i32)
 }
 
