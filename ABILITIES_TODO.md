@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~194
-Documented stubs (with detailed TODOs): ~120
+Fully implemented (working code): ~195
+Documented stubs (with detailed TODOs): ~119
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 61.8% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 62.1% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -37,6 +37,13 @@ Each documented ability includes:
 2. Detailed TODO comments explaining required systems
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
+
+## Recent Work (Current Session - Continued #11)
+
+Completed implementations (1 change):
+1. **supremeoverlord** - Boosts damage based on fainted allies (max 5), uses EffectState.data HashMap to track fallen count
+
+Progress: 194 → 195 abilities implemented (62.1%)
 
 ## Recent Work (Current Session - Continued #10)
 
