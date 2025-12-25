@@ -21,9 +21,5 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onFractionalPriority(...)
-pub fn on_fractional_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_FRACTIONAL_PRIORITY: f32 = -0.1;
 
