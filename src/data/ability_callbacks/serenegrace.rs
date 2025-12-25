@@ -34,14 +34,23 @@ pub const ON_MODIFY_MOVE_PRIORITY: i32 = -2;
 
 /// onModifyMove(move)
 /// Doubles the chance of secondary effects
-///
-/// TODO: onModifyMove handler not yet implemented
-/// TODO: Needs move.secondaries[], secondary.chance, move.self.chance
-/// When implemented, should:
-/// 1. If move has secondaries array, loop through and double each secondary.chance
-/// 2. If move has self.chance, double it
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(move_: &mut MoveDef, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (move.secondaries)
+    if !move_.secondaries.is_empty() {
+        // this.debug('doubling secondary chance');
+        // for (const secondary of move.secondaries)
+        for secondary in &mut move_.secondaries {
+            // if (secondary.chance) secondary.chance *= 2;
+            if secondary.chance > 0 {
+                secondary.chance = secondary.chance.saturating_mul(2).min(100);
+            }
+        }
+    }
+
+    // if (move.self?.chance) move.self.chance *= 2;
+    // Note: move.self is not implemented in MoveDef yet
+    // This would require a self_effect field similar to secondaries
+
     AbilityHandlerResult::Undefined
 }
 
