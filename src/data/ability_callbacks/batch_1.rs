@@ -87,7 +87,7 @@
 //! - friendguard
 
 use crate::battle::{Battle, Arg};
-use crate::data::moves::{MoveDef, MoveCategory};
+use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
@@ -2098,22 +2098,33 @@ pub mod damp {
 pub mod darkaura {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onAnyBasePowerPriority: 20
+    pub const ON_ANY_BASE_POWER_PRIORITY: i32 = 20;
+
+    /// onStart(pokemon)
+    pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // if (this.suppressingAbility(pokemon)) return;
+        // this.add('-ability', pokemon, 'Dark Aura');
+        battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Dark Aura")]);
         AbilityHandlerResult::Undefined
     }
 
-    /// onAnyBasePowerPriority(...)
-    pub fn on_any_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
-
-    /// onAnyBasePower(...)
-    pub fn on_any_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
+    /// onAnyBasePower(basePower, source, target, move)
+    /// Boosts Dark-type moves for all Pokemon
+    pub fn on_any_base_power(_base_power: u32, source: &Pokemon, target: &Pokemon, move_: &MoveDef, has_aura_break: bool) -> AbilityHandlerResult {
+        // if (target === source || move.category === 'Status' || move.type !== 'Dark') return;
+        let source_ref = (source.side_index, source.position);
+        let target_ref = (target.side_index, target.position);
+        if source_ref == target_ref || move_.category == MoveCategory::Status || move_.move_type != "Dark" {
+            return AbilityHandlerResult::Undefined;
+        }
+        // return this.chainModify([move.hasAuraBreak ? 3072 : 5448, 4096]);
+        // 5448/4096 = ~1.33x (boost), 3072/4096 = 0.75x (with Aura Break)
+        if has_aura_break {
+            AbilityHandlerResult::ChainModify(3072, 4096)
+        } else {
+            AbilityHandlerResult::ChainModify(5448, 4096)
+        }
     }
 }
 
@@ -2136,9 +2147,19 @@ pub mod darkaura {
 pub mod dauntlessshield {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    /// Raises Defense by 1 stage on first switch-in
+    pub fn on_start(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+        // if (pokemon.shieldBoost) return;
+        // Check if already boosted using ability state
+        if pokemon.ability_state.data.get("shieldBoost").is_some() {
+            return AbilityHandlerResult::Undefined;
+        }
+        // pokemon.shieldBoost = true;
+        pokemon.ability_state.data.insert("shieldBoost".to_string(), serde_json::Value::Bool(true));
+        // this.boost({ def: 1 }, pokemon);
+        let pokemon_ref = (pokemon.side_index, pokemon.position);
+        battle.boost(&[("def", 1)], pokemon_ref, Some(pokemon_ref), None);
         AbilityHandlerResult::Undefined
     }
 }
@@ -2170,9 +2191,29 @@ pub mod dauntlessshield {
 pub mod dazzling {
     use super::*;
 
-    /// onFoeTryMove(...)
-    pub fn on_foe_try_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// Moves that are exceptions to the priority blocking
+    const TARGET_ALL_EXCEPTIONS: &[&str] = &["perishsong", "flowershield", "rototiller"];
+
+    /// onFoeTryMove(target, source, move)
+    /// Blocks priority moves used by opponents
+    pub fn on_foe_try_move(battle: &mut Battle, dazzling_holder: &Pokemon, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        // if (move.target === 'foeSide' || (move.target === 'all' && !targetAllExceptions.includes(move.id)))
+        if move_.target == MoveTargetType::FoeSide || (move_.target == MoveTargetType::All && !TARGET_ALL_EXCEPTIONS.contains(&move_.id.as_str())) {
+            return AbilityHandlerResult::Undefined;
+        }
+        // if ((source.isAlly(dazzlingHolder) || move.target === 'all') && move.priority > 0.1)
+        let is_ally = source.side_index == dazzling_holder.side_index;
+        if (is_ally || move_.target == MoveTargetType::All) && move_.priority > 0 {
+            // this.attrLastMove('[still]');
+            // this.add('cant', dazzlingHolder, 'ability: Dazzling', move, `[of] ${target}`);
+            battle.add("cant", &[
+                Arg::Pokemon(dazzling_holder),
+                Arg::Str("ability: Dazzling"),
+                Arg::Str(move_.id.as_str()),
+                Arg::Str(&format!("[of] {}", target.name)),
+            ]);
+            return AbilityHandlerResult::False;
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -2203,27 +2244,30 @@ pub mod dazzling {
 pub mod defeatist {
     use super::*;
 
-    /// onModifyAtkPriority(...)
-    pub fn on_modify_atk_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onModifyAtkPriority: 5
+    pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
+    /// onModifySpAPriority: 5
+    pub const ON_MODIFY_SPA_PRIORITY: i32 = 5;
+
+    /// onModifyAtk(atk, pokemon)
+    /// Halves Attack when HP is at or below 50%
+    pub fn on_modify_atk(_atk: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // if (pokemon.hp <= pokemon.maxhp / 2)
+        if pokemon.hp <= pokemon.maxhp / 2 {
+            // return this.chainModify(0.5);
+            return AbilityHandlerResult::ChainModify(2048, 4096);
+        }
         AbilityHandlerResult::Undefined
     }
 
-    /// onModifyAtk(...)
-    pub fn on_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
-
-    /// onModifySpAPriority(...)
-    pub fn on_modify_sp_a_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
-
-    /// onModifySpA(...)
-    pub fn on_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onModifySpA(atk, pokemon)
+    /// Halves Special Attack when HP is at or below 50%
+    pub fn on_modify_sp_a(_spa: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // if (pokemon.hp <= pokemon.maxhp / 2)
+        if pokemon.hp <= pokemon.maxhp / 2 {
+            // return this.chainModify(0.5);
+            return AbilityHandlerResult::ChainModify(2048, 4096);
+        }
         AbilityHandlerResult::Undefined
     }
 }
