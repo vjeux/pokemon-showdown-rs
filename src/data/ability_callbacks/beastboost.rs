@@ -26,9 +26,20 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSourceAfterFaint(...)
-pub fn on_source_after_faint(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onSourceAfterFaint(length, target, source, effect)
+pub fn on_source_after_faint(battle: &mut Battle, length: i32, _target: &Pokemon, source: &Pokemon, effect: &Effect) -> AbilityHandlerResult {
+    // if (effect && effect.effectType === 'Move')
+    if effect.effect_type != "Move" {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // const bestStat = source.getBestStat(true, true);
+    let best_stat = source.get_best_stat(true);
+
+    // this.boost({ [bestStat]: length }, source);
+    let stat_str = best_stat.to_str();
+    battle.boost(&[(stat_str, length as i8)], (source.side_index, source.position), Some((source.side_index, source.position)), None);
+
     AbilityHandlerResult::Undefined
 }
 
