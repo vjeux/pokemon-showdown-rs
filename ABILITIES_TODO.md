@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~171
-Documented stubs (with detailed TODOs): ~143
+Fully implemented (working code): ~172
+Documented stubs (with detailed TODOs): ~142
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 54.5% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 54.8% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,10 +40,11 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #9)
 
-Completed implementations (1 change):
+Completed implementations (2 changes):
 1. **scrappy** - Now fully implemented with onModifyMove handler for Ghost immunity (was partial, only had Intimidate blocking)
+2. **infiltrator** - Now fully implemented with onModifyMove handler, added infiltrates field to MoveDef for bypassing screens/Substitute
 
-Progress: 170 → 171 abilities implemented (54.5%)
+Progress: 170 → 172 abilities implemented (54.8%)
 
 ## Recent Work (Current Session - Continued #8)
 
