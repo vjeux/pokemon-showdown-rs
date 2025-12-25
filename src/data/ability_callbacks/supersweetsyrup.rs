@@ -34,17 +34,52 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onStart(pokemon)
 /// Lowers Evasion of adjacent foes by 1 on switch-in (once per switch)
-///
-/// TODO: onStart handler not yet implemented
-/// TODO: Needs pokemon.syrupTriggered state tracking, pokemon.adjacentFoes(), target.volatiles['substitute'], battle.boost()
-/// When implemented, should:
-/// 1. Check if pokemon.syrupTriggered is true (already triggered this switch-in)
-/// 2. Set pokemon.syrupTriggered = true
-/// 3. Add ability message: battle.add('-ability', pokemon, 'Supersweet Syrup')
-/// 4. Loop through pokemon.adjacentFoes()
-/// 5. For each target: if has substitute, show immune, else boost evasion -1
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (pokemon.syrupTriggered) return;
+    let holder_ref = (pokemon.side_index, pokemon.position);
+    if let Some(triggered_value) = battle.sides[holder_ref.0].pokemon[holder_ref.1].ability_state.data.get("syrupTriggered") {
+        if triggered_value.as_bool() == Some(true) {
+            return AbilityHandlerResult::Undefined;
+        }
+    }
+
+    // pokemon.syrupTriggered = true;
+    battle.sides[holder_ref.0].pokemon[holder_ref.1].ability_state.data.insert(
+        "syrupTriggered".to_string(),
+        serde_json::json!(true)
+    );
+
+    // this.add('-ability', pokemon, 'Supersweet Syrup');
+    battle.add("-ability", &[
+        Arg::Pokemon(pokemon),
+        Arg::Str("Supersweet Syrup")
+    ]);
+
+    // for (const target of pokemon.adjacentFoes())
+    let foe_side_index = 1 - pokemon.side_index;
+
+    // Collect foe data first
+    let mut foes: Vec<(usize, usize, bool, String)> = Vec::new(); // (side, position, has_substitute, name)
+
+    if let Some(foe_side) = battle.sides.get(foe_side_index) {
+        for foe in foe_side.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
+            // if (target.volatiles['substitute'])
+            let has_substitute = foe.has_volatile(&ID::new("substitute"));
+            foes.push((foe.side_index, foe.position, has_substitute, foe.name.clone()));
+        }
+    }
+
+    // Apply evasion drop to foes
+    for (side_idx, pos, has_substitute, target_name) in foes {
+        if has_substitute {
+            // this.add('-immune', target);
+            battle.add("-immune", &[Arg::String(target_name)]);
+        } else {
+            // this.boost({ evasion: -1 }, target, pokemon, null, true);
+            battle.boost(&[("evasion", -1)], (side_idx, pos), Some(holder_ref), None);
+        }
+    }
+
     AbilityHandlerResult::Undefined
 }
 

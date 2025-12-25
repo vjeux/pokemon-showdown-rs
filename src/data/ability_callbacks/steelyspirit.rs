@@ -31,14 +31,20 @@ pub const ON_ALLY_BASE_POWER_PRIORITY: i32 = 22;
 
 /// onAllyBasePower(basePower, attacker, defender, move)
 /// Boosts Steel-type moves used by allies by 1.5x
-///
-/// TODO: onAllyBasePower handler not yet implemented
-/// TODO: Needs move.type checking
-/// When implemented, should:
-/// 1. Check if move.type is 'Steel'
-/// 2. Return ChainModify(1.5) = (6144, 4096)
-pub fn on_ally_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_ally_base_power(_battle: &mut Battle, _base_power: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef, ability_holder: &Pokemon) -> AbilityHandlerResult {
+    // Ensure this is an ally, not self
+    let attacker_ref = (attacker.side_index, attacker.position);
+    let holder_ref = (ability_holder.side_index, ability_holder.position);
+
+    if attacker_ref != holder_ref {
+        // if (move.type === 'Steel')
+        if move_.move_type == "Steel" {
+            // this.debug('Steely Spirit boost');
+            // return this.chainModify(1.5);
+            return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
+        }
+    }
+
     AbilityHandlerResult::Undefined
 }
 
