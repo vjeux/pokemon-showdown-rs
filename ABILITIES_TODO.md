@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~164
-Documented stubs (with detailed TODOs): ~150
+Fully implemented (working code): ~165
+Documented stubs (with detailed TODOs): ~149
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~164 abilities with full or partial working implementations
 - ~150 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 52.2% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 52.5% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -34,6 +34,13 @@ Each documented ability includes:
 2. Detailed TODO comments explaining required systems
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
+
+## Recent Work (Current Session - Continued #7)
+
+New implementations (1 change):
+1. **windrider** - Immune to wind moves and boosts Attack, also boosts from Tailwind (onStart, onTryHit, onSideConditionStart handlers)
+
+Progress: 164 → 165 abilities implemented (52.5%)
 
 ## Recent Work (Current Session - Continued #6)
 
