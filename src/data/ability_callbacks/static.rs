@@ -27,9 +27,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamagingHit(...)
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onDamagingHit(damage, target, source, move)
+pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, _target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (this.checkMoveMakesContact(move, source, target))
+    let source_ref = (source.side_index, source.position);
+    if battle.check_move_makes_contact(&move_.id, source_ref) {
+        // if (this.randomChance(3, 10))
+        if battle.random_chance(3, 10) {
+            // source.trySetStatus('par', target);
+            source.try_set_status(ID::new("par"), None);
+        }
+    }
     AbilityHandlerResult::Undefined
 }
 
