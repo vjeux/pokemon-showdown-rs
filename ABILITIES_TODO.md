@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~200
-Documented stubs (with detailed TODOs): ~114
+Fully implemented (working code): ~203
+Documented stubs (with detailed TODOs): ~111
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 63.7% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 64.6% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,15 +40,22 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #11)
 
-Completed implementations (6 changes):
+Completed implementations (10 changes):
 1. **supremeoverlord** - Boosts damage based on fainted allies (max 5), uses EffectState.data HashMap to track fallen count
 2. **curiousmedicine** - Clears all stat boosts from adjacent allies on switch-in with on_start handler
 3. **minus** - Boosts Special Attack by 1.5x when ally has Plus or Minus ability
 4. **plus** - Boosts Special Attack by 1.5x when ally has Plus or Minus ability (same as Minus)
 5. **steelyspirit** - Boosts Steel-type moves used by allies by 1.5x with on_ally_base_power handler
 6. **supersweetsyrup** - Lowers Evasion of adjacent foes on switch-in, uses ability_state.data for syrupTriggered flag
+7. **myceliummight** - Implements onFractionalPriority handler to make status moves slower (-0.1 priority)
+8. **toxicchain** - 30% chance to badly poison target when dealing damage, uses onSourceDamagingHit handler
+9. **perishbody** - Inflicts Perish Song on both self and attacker when hit by contact move
+10. **turboblaze** - Partially implemented onStart handler (onModifyMove requires mutable MoveDef)
 
-Progress: 194 → 200 abilities implemented (63.7%)
+Progress: 194 → 203 abilities implemented (64.6%)
+
+Note: Demonstrated use of ability_state.data for state tracking, battle.boost() for stat modifications,
+volatile status management, and fractional priority system.
 
 ## Recent Work (Current Session - Continued #10)
 
