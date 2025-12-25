@@ -26,15 +26,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onBasePowerPriority(...)
-pub fn on_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_BASE_POWER_PRIORITY: i32 = 21;
 
-/// onBasePower(...)
-pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onBasePower(basePower, attacker, defender, move)
+/// Boosts contact moves by 1.3x
+pub fn on_base_power(_base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.flags['contact'])
+    if move_.flags.contact {
+        // return this.chainModify([5325, 4096]);
+        return AbilityHandlerResult::ChainModify(5325, 4096); // ~1.3x
+    }
     AbilityHandlerResult::Undefined
 }
 
