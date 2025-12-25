@@ -27,13 +27,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onFractionalPriorityPriority(...)
-pub fn on_fractional_priority_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_FRACTIONAL_PRIORITY_PRIORITY: i32 = -1;
 
-/// onFractionalPriority(...)
+/// onFractionalPriority(priority, pokemon, target, move)
+/// 30% chance to move first in its priority bracket
+///
+/// TODO: onFractionalPriority handler not yet implemented
+/// TODO: Needs move.category, randomChance()
+/// When implemented, should:
+/// 1. If move is not Status category and randomChance(3, 10) succeeds
+/// 2. Add activate message
+/// 3. Return 0.1 for slight priority boost
 pub fn on_fractional_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
