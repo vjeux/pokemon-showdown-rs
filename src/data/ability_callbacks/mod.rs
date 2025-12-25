@@ -215,6 +215,7 @@ pub mod refrigerate;
 pub mod regenerator;
 pub mod ripen;
 pub mod rivalry;
+pub mod rkssystem;
 pub mod rockhead;
 pub mod rockypayload;
 pub mod roughskin;
