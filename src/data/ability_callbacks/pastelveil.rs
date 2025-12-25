@@ -54,66 +54,85 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onStart(pokemon)
 /// Cures poison/toxic on self and allies on switch-in
-///
-/// TODO: onStart handler not yet implemented
-/// TODO: Needs pokemon.alliesAndSelf(), ally.status, ally.cureStatus()
-/// When implemented, should:
-/// 1. Loop through all allies and self
-/// 2. If any have 'psn' or 'tox' status, add activate message and cure them
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // for (const ally of pokemon.alliesAndSelf())
+    let side_index = pokemon.side_index;
+    let mut allies_to_cure: Vec<(usize, String)> = Vec::new();
+    let mut activated = false;
+
+    // Collect allies (including self) with psn/tox status
+    if let Some(side) = battle.sides.get(side_index) {
+        for ally in side.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
+            // if (['psn', 'tox'].includes(ally.status))
+            if ally.status.as_str() == "psn" || ally.status.as_str() == "tox" {
+                if !activated {
+                    activated = true;
+                }
+                allies_to_cure.push((ally.position, ally.name.clone()));
+            }
+        }
+    }
+
+    if activated {
+        // this.add('-activate', pokemon, 'ability: Pastel Veil');
+        battle.add("-activate", &[
+            Arg::Pokemon(pokemon),
+            Arg::Str("ability: Pastel Veil")
+        ]);
+    }
+
+    // ally.cureStatus();
+    for (position, _ally_name) in allies_to_cure {
+        battle.sides[side_index].pokemon[position].cure_status();
+    }
+
     AbilityHandlerResult::Undefined
 }
 
 /// onUpdate(pokemon)
-/// Cures poison/toxic on self
-///
-/// TODO: onUpdate handler not yet implemented
-/// TODO: Needs pokemon.status, pokemon.cureStatus()
-/// When implemented, should:
-/// 1. If status is 'psn' or 'tox', add activate message and cure it
-pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// TODO: onUpdate handler not yet implemented in battle engine
+/// When implemented, should cure poison/toxic on self
+pub fn on_update(_battle: &mut Battle, /* TODO: Add parameters when handler exists */) -> AbilityHandlerResult {
+    // TODO: Implement 1-to-1 from JS when handler infrastructure exists
     AbilityHandlerResult::Undefined
 }
 
 /// onAnySwitchIn()
-/// Calls onStart when any Pokemon switches in
-///
-/// TODO: onAnySwitchIn handler not yet implemented
-/// TODO: Needs to call onStart with effectState.target
-/// When implemented, should:
-/// 1. Call onStart handler with the ability holder
-pub fn on_any_switch_in(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// TODO: onAnySwitchIn handler not yet implemented in battle engine
+/// When implemented, should call onStart with effectState.target
+pub fn on_any_switch_in(_battle: &mut Battle, /* TODO: Add parameters when handler exists */) -> AbilityHandlerResult {
+    // TODO: Implement 1-to-1 from JS when handler infrastructure exists
     AbilityHandlerResult::Undefined
 }
 
 /// onSetStatus(status, target, source, effect)
 /// Prevents poison/toxic on self
-///
-/// TODO: onSetStatus handler not yet implemented
-/// TODO: Needs status.id, effect checking
-/// When implemented, should:
-/// 1. If status is not 'psn' or 'tox', allow it
-/// 2. If effect has status property, add immune message
-/// 3. Return false to prevent the status
-pub fn on_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+pub fn on_set_status(battle: &mut Battle, status: &Status, target: &Pokemon, _source: Option<&Pokemon>, effect: Option<&Effect>) -> AbilityHandlerResult {
+    // if (!['psn', 'tox'].includes(status.id)) return;
+    if status.id != "psn" && status.id != "tox" {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // if ((effect as Move)?.status)
+    if let Some(eff) = effect {
+        if eff.effect_type == "Move" && eff.status.is_some() {
+            // this.add('-immune', target, '[from] ability: Pastel Veil');
+            battle.add("-immune", &[
+                Arg::Pokemon(target),
+                Arg::Str("[from] ability: Pastel Veil")
+            ]);
+        }
+    }
+
+    // return false;
+    AbilityHandlerResult::False
 }
 
 /// onAllySetStatus(status, target, source, effect)
-/// Prevents poison/toxic on allies
-///
-/// TODO: onAllySetStatus handler not yet implemented
-/// TODO: Needs status.id, effect checking, effectState.target
-/// When implemented, should:
-/// 1. If status is not 'psn' or 'tox', allow it
-/// 2. If effect has status property, add block message with ability holder
-/// 3. Return false to prevent the status
-pub fn on_ally_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// TODO: onAllySetStatus handler not yet implemented in battle engine
+/// When implemented, should prevent poison/toxic on allies
+pub fn on_ally_set_status(_battle: &mut Battle, /* TODO: Add parameters when handler exists */) -> AbilityHandlerResult {
+    // TODO: Implement 1-to-1 from JS when handler infrastructure exists
     AbilityHandlerResult::Undefined
 }
 
