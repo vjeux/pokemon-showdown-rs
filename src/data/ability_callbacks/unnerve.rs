@@ -32,27 +32,34 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSwitchInPriority(...)
-pub fn on_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+/// onSwitchInPriority: 1
+pub const ON_SWITCH_IN_PRIORITY: i32 = 1;
+
+/// onStart(pokemon)
+/// onEnd()
+/// onFoeTryEatItem()
+/// Prevents opponents from eating Berries
+///
+/// TODO: onFoeTryEatItem handler not yet implemented
+/// TODO: onEnd handler needs implementation
+/// When implemented, should:
+/// onStart: Check effectState.unnerved flag, announce ability, set flag
+/// onEnd: Clear effectState.unnerved flag
+/// onFoeTryEatItem: Return !this.effectState.unnerved to block berry usage
+pub fn on_start(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    // Needs effectState.unnerved tracking
+    AbilityHandlerResult::Undefined
+}
+
+pub fn on_end(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+pub fn on_foe_try_eat_item(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onEnd(...)
-pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onFoeTryEatItem(...)
-pub fn on_foe_try_eat_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+    // return !this.effectState.unnerved
     AbilityHandlerResult::Undefined
 }
 
