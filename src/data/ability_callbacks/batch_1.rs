@@ -205,15 +205,19 @@ pub mod aerilate {
 pub mod aftermath {
     use super::*;
 
-    /// onDamagingHitOrder(...)
-    pub fn on_damaging_hit_order(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
+    // onDamagingHitOrder: 1,
+    pub const ON_DAMAGING_HIT_ORDER: i32 = 1;
 
-    /// onDamagingHit(...)
-    pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onDamagingHit(damage, target, source, move)
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        // if (!target.hp && this.checkMoveMakesContact(move, source, target, true))
+        let source_ref = (source.side_index, source.position);
+        let target_ref = (target.side_index, target.position);
+        if target.hp == 0 && battle.check_move_makes_contact(&move_.id, source_ref) {
+            // this.damage(source.baseMaxhp / 4, source, target);
+            let damage = source.base_maxhp / 4;
+            battle.damage(damage, source_ref, Some(target_ref), None);
+        }
         AbilityHandlerResult::Undefined
     }
 }
