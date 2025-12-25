@@ -23,9 +23,10 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyWeight(...)
-pub fn on_modify_weight(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// onModifyWeight(weighthg)
+/// Halves the Pokemon's weight
+pub fn on_modify_weight(weighthg: u32) -> AbilityHandlerResult {
+    // return this.trunc(weighthg / 2);
+    AbilityHandlerResult::Number((weighthg / 2) as i32)
 }
 
