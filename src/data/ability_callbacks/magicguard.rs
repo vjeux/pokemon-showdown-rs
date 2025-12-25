@@ -26,7 +26,14 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamage(...)
+/// onDamage(damage, target, source, effect)
+/// Prevents indirect damage (only takes damage from moves)
+///
+/// TODO: onDamage handler not yet implemented
+/// When implemented, should:
+/// 1. Check if effect.effectType !== 'Move'
+/// 2. If effectType === 'Ability', add activate message
+/// 3. Return false to prevent damage
 pub fn on_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
