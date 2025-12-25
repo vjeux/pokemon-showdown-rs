@@ -55,25 +55,59 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onBeforeSwitchIn(...)
+/// onBeforeSwitchIn(pokemon)
+/// Sets up illusion disguise as rightmost non-fainted party member
+///
+/// TODO: onBeforeSwitchIn handler not yet implemented
+/// TODO: Needs pokemon.illusion field to track disguise
+/// TODO: Needs pokemon.side.pokemon array access
+/// When implemented, should:
+/// 1. Set pokemon.illusion = null initially
+/// 2. Loop from rightmost party member down to position+1
+/// 3. Find first non-fainted pokemon
+/// 4. Check terastallization exceptions for Ogerpon/Terapagos
+/// 5. Set pokemon.illusion = possibleTarget
 pub fn on_before_switch_in(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onDamagingHit(...)
+/// onDamagingHit(damage, target, source, move)
+/// Breaks illusion when hit by damaging move
+///
+/// TODO: Needs pokemon.illusion field
+/// TODO: Needs singleEvent system to trigger 'End' event
+/// When implemented, should:
+/// 1. Check if target.illusion exists
+/// 2. Call this.singleEvent('End', ability, target.abilityState, target, source, move)
 pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onEnd(...)
+/// onEnd(pokemon)
+/// Reveals true form when illusion ends
+///
+/// TODO: onEnd handler not yet implemented
+/// TODO: Needs pokemon.illusion field
+/// When implemented, should:
+/// 1. Check if pokemon.illusion exists
+/// 2. Set pokemon.illusion = null
+/// 3. Get updated details: pokemon.getUpdatedDetails()
+/// 4. Add replace and -end messages
+/// 5. Check for illusionlevelmod rule and show hint
 pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onFaint(...)
+/// onFaint(pokemon)
+/// Clears illusion on faint
+///
+/// TODO: onFaint handler not yet implemented
+/// TODO: Needs pokemon.illusion field
+/// When implemented, should:
+/// 1. Set pokemon.illusion = null
 pub fn on_faint(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
