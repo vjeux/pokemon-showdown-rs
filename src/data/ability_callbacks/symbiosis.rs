@@ -34,7 +34,18 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAllyAfterUseItem(...)
+/// onAllyAfterUseItem(item, pokemon)
+/// Passes own item to ally after they use their item
+///
+/// TODO: onAllyAfterUseItem handler not yet implemented in battle system
+/// When implemented, should:
+/// 1. Check if pokemon.switchFlag (don't activate if ally is switching)
+/// 2. Get source = effectState.target (the Pokemon with Symbiosis)
+/// 3. Call source.takeItem() to remove this Pokemon's item
+/// 4. Check if myItem exists
+/// 5. Call singleEvent('TakeItem') and pokemon.setItem(myItem) to give item to ally
+/// 6. If transfer fails, restore item to source
+/// 7. Add activate message with item name and ally
 pub fn on_ally_after_use_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
