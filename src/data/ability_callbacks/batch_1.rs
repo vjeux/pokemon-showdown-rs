@@ -2410,27 +2410,43 @@ pub mod drought {
 pub mod dryskin {
     use super::*;
 
-    /// onTryHit(...)
-    pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onTryHit(target, source, move)
+    pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        let target_ref = (target.side_index, target.position);
+        if target_ref != (source.side_index, source.position) && move_.move_type == "Water" {
+            let heal_amount = target.maxhp / 4;
+            if battle.heal(heal_amount, target_ref, None, None) == 0 {
+                battle.add("-immune", &[Arg::Pokemon(target), Arg::Str("[from] ability: Dry Skin")]);
+            }
+            return AbilityHandlerResult::Null;
+        }
         AbilityHandlerResult::Undefined
     }
 
-    /// onSourceBasePowerPriority(...)
-    pub fn on_source_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    pub const ON_SOURCE_BASE_POWER_PRIORITY: i32 = 17;
+
+    /// onSourceBasePower(basePower, attacker, defender, move)
+    pub fn on_source_base_power(_base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        if move_.move_type == "Fire" {
+            // 1.25x = 5120/4096
+            return AbilityHandlerResult::ChainModify(5120, 4096);
+        }
         AbilityHandlerResult::Undefined
     }
 
-    /// onSourceBasePower(...)
-    pub fn on_source_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
-
-    /// onWeather(...)
-    pub fn on_weather(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onWeather(target, source, effect)
+    pub fn on_weather(battle: &mut Battle, target: &mut Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+        if target.has_item(&["utilityumbrella"]) {
+            return AbilityHandlerResult::Undefined;
+        }
+        let target_ref = (target.side_index, target.position);
+        if effect.id == "raindance" || effect.id == "primordialsea" {
+            let heal_amount = target.maxhp / 8;
+            battle.heal(heal_amount, target_ref, None, None);
+        } else if effect.id == "sunnyday" || effect.id == "desolateland" {
+            let damage_amount = target.maxhp / 8;
+            battle.damage(damage_amount, target_ref, Some(target_ref), None);
+        }
         AbilityHandlerResult::Undefined
     }
 }
