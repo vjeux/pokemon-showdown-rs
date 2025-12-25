@@ -3626,6 +3626,17 @@ impl Battle {
     /// End the current turn
     /// Equivalent to battle.ts endTurn()
     pub fn end_turn(&mut self) {
+        // Fire Residual event for all active Pokemon before incrementing turn
+        // This matches JS behavior where Residual fires at end of turn
+        for side_idx in 0..self.sides.len() {
+            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
+                if self.sides[side_idx].pokemon[poke_idx].is_active
+                    && !self.sides[side_idx].pokemon[poke_idx].fainted {
+                    self.run_event("Residual", Some((side_idx, poke_idx)), None, None, None);
+                }
+            }
+        }
+
         self.turn += 1;
 
         // Handle Dynamax ending (simplified)
@@ -4101,7 +4112,7 @@ impl Battle {
                 }
             }
             "Residual" => {
-                // Residual abilities like Poison Heal, Rain Dish, etc.
+                // Residual abilities like Poison Heal, Rain Dish, Hydration, etc.
                 if let Some((side_idx, poke_idx)) = target {
                     if ability.id.as_str() == "poisonheal" {
                         if let Some(side) = self.sides.get(side_idx) {
@@ -4110,6 +4121,26 @@ impl Battle {
                                     let heal = pokemon.maxhp / 8;
                                     self.heal(heal, (side_idx, poke_idx), None, Some("Poison Heal"));
                                     return EventResult::Stop;
+                                }
+                            }
+                        }
+                    }
+                    if ability.id.as_str() == "hydration" {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                // Check if has status and weather is rain/primordialsea
+                                if !pokemon.status.is_empty() {
+                                    let weather = self.field.weather.as_str();
+                                    if weather == "raindance" || weather == "primordialsea" {
+                                        self.add("-activate", &[
+                                            crate::battle::Arg::String(pokemon.name.clone()),
+                                            crate::battle::Arg::Str("ability: Hydration")
+                                        ]);
+                                        let side_idx_mut = side_idx;
+                                        let poke_idx_mut = poke_idx;
+                                        self.sides[side_idx_mut].pokemon[poke_idx_mut].cure_status();
+                                        return EventResult::Stop;
+                                    }
                                 }
                             }
                         }
