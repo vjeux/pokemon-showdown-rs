@@ -53,45 +53,10 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onTryHeal(...)
-pub fn on_try_heal(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onChangeBoost(...)
-pub fn on_change_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onSourceModifyDamagePriority(...)
-pub fn on_source_modify_damage_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onSourceModifyDamage(...)
-pub fn on_source_modify_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onTryEatItemPriority(...)
-pub fn on_try_eat_item_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onTryEatItem(...)
-pub fn on_try_eat_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onEatItem(...)
-pub fn on_eat_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// Complex berry-enhancing ability
+/// TODO: Needs item system, berry detection, boost manipulation, abilityState tracking
+/// TODO: Multiple handlers: onTryHeal, onChangeBoost, onSourceModifyDamage, onTryEatItem, onEatItem
+/// TODO: Doubles berry healing, doubles berry stat boosts, tracks berry-weaken effects
+pub const ON_SOURCE_MODIFY_DAMAGE_PRIORITY: i32 = -1;
+pub const ON_TRY_EAT_ITEM_PRIORITY: i32 = -1;
 
