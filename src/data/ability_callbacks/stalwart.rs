@@ -29,14 +29,10 @@ pub const ON_MODIFY_MOVE_PRIORITY: i32 = 1;
 
 /// onModifyMove(move)
 /// Ignores target redirection (same as Propeller Tail)
-///
-/// TODO: onModifyMove handler not yet implemented
-/// TODO: Needs move.tracksTarget, move.target
-/// When implemented, should:
-/// 1. Set move.tracksTarget = true if move.target is not 'scripted'
-/// 2. Main implementation is in Battle#getTarget
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(_battle: &mut Battle, move_: &mut MoveDef) -> AbilityHandlerResult {
+    // most of the implementation is in Battle#getTarget
+    // move.tracksTarget = move.target !== 'scripted';
+    move_.tracks_target = move_.target != MoveTargetType::Scripted;
     AbilityHandlerResult::Undefined
 }
 
