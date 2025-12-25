@@ -34,19 +34,30 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
+/// onStart(pokemon)
+/// Sets sun on switch-in
+///
+/// TODO: onStart handler not yet implemented
+/// TODO: Needs field.setWeather(), field.isWeather()
+/// When implemented, should:
+/// 1. Try to set sunny day weather
+/// 2. Add activate message with source if successful
+/// 3. If already sunny, add activate message without source
 pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onModifyAtkPriority(...)
-pub fn on_modify_atk_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
-/// onModifyAtk(...)
+/// onModifyAtk(atk, pokemon)
+/// Boosts Attack by 1.33x in sun
+///
+/// TODO: onModifyAtk handler not yet implemented
+/// TODO: Needs pokemon.effectiveWeather()
+/// When implemented, should:
+/// 1. Check if effectiveWeather is sunnyday or desolateland
+/// 2. Return chainModify(5461, 4096) for 1.33x boost
 pub fn on_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
