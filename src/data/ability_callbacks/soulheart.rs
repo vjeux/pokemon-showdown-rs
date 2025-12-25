@@ -24,15 +24,12 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAnyFaintPriority(...)
-pub fn on_any_faint_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub const ON_ANY_FAINT_PRIORITY: i32 = 1;
+
+/// onAnyFaint()
+pub fn on_any_faint(battle: &mut Battle, target: &Pokemon) -> AbilityHandlerResult {
+    let target_ref = (target.side_index, target.position);
+    // this.boost({ spa: 1 }, this.effectState.target);
+    battle.boost(&[("spa", 1)], target_ref, Some(target_ref), None);
     AbilityHandlerResult::Undefined
 }
-
-/// onAnyFaint(...)
-pub fn on_any_faint(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-

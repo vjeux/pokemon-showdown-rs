@@ -23,9 +23,10 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSwitchOut(...)
-pub fn on_switch_out(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onSwitchOut(pokemon)
+pub fn on_switch_out(_battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    // pokemon.heal(pokemon.baseMaxhp / 3);
+    let heal_amount = pokemon.base_maxhp / 3;
+    pokemon.heal(heal_amount);
     AbilityHandlerResult::Undefined
 }
-

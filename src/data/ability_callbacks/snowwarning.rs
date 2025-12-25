@@ -23,9 +23,9 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onStart(source)
+pub fn on_start(battle: &mut Battle, _source: &Pokemon) -> AbilityHandlerResult {
+    // this.field.setWeather('snowscape');
+    battle.field.set_weather(ID::new("snowscape"), None);
     AbilityHandlerResult::Undefined
 }
-
