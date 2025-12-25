@@ -66,6 +66,7 @@ pub mod dragonsmaw;
 pub mod drizzle;
 pub mod drought;
 pub mod dryskin;
+pub mod earlybird;
 pub mod eartheater;
 pub mod effectspore;
 pub mod electricsurge;
