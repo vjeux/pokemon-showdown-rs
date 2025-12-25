@@ -31,15 +31,17 @@ pub const ON_FRACTIONAL_PRIORITY_PRIORITY: i32 = -1;
 
 /// onFractionalPriority(priority, pokemon, target, move)
 /// 30% chance to move first in its priority bracket
-///
-/// TODO: onFractionalPriority handler not yet implemented
-/// TODO: Needs move.category, randomChance()
-/// When implemented, should:
-/// 1. If move is not Status category and randomChance(3, 10) succeeds
-/// 2. Add activate message
-/// 3. Return 0.1 for slight priority boost
-pub fn on_fractional_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_fractional_priority(battle: &mut Battle, _priority: f64, pokemon: &Pokemon, _target: Option<&Pokemon>, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.category !== "Status" && this.randomChance(3, 10))
+    if move_.category != MoveCategory::Status && battle.random_chance(3, 10) {
+        // this.add('-activate', pokemon, 'ability: Quick Draw');
+        battle.add("-activate", &[
+            Arg::Pokemon(pokemon),
+            Arg::Str("ability: Quick Draw")
+        ]);
+        // return 0.1;
+        return AbilityHandlerResult::FractionalPriority(0.1);
+    }
     AbilityHandlerResult::Undefined
 }
 

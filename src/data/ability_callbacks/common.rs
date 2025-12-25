@@ -19,6 +19,8 @@ pub enum AbilityHandlerResult {
     Number(i32),
     /// Chain modifier (numerator, denominator)
     ChainModify(u32, u32),
+    /// Fractional priority (for onFractionalPriority handlers)
+    FractionalPriority(f64),
 }
 
 /// Status object
