@@ -28,9 +28,18 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSourceDamagingHit(...)
-pub fn on_source_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+/// onSourceDamagingHit(damage, target, source, move)
+/// 30% chance to badly poison target when source (with this ability) deals damage
+///
+/// TODO: onSourceDamagingHit handler not yet implemented in battle system
+/// This is different from onDamagingHit - onSourceDamagingHit triggers on the attacking Pokemon
+/// When implemented, should:
+/// 1. Check if target.hasAbility('shielddust') || target.hasItem('covertcloak'), return if true
+/// 2. Check this.randomChance(3, 10) for 30% chance
+/// 3. Call target.trySetStatus('tox', source) to badly poison
+pub fn on_source_damaging_hit(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // Requires onSourceDamagingHit handler, hasAbility/hasItem checks, randomChance, trySetStatus
     AbilityHandlerResult::Undefined
 }
 
