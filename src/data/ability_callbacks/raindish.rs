@@ -26,9 +26,20 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onWeather(...)
-pub fn on_weather(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onWeather(target, source, effect)
+pub fn on_weather(battle: &mut Battle, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    let target_ref = (target.side_index, target.position);
+
+    // if (target.hasItem('utilityumbrella')) return;
+    if target.has_item(&["utilityumbrella"]) {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // if (effect.id === 'raindance' || effect.id === 'primordialsea')
+    if effect.id == "raindance" || effect.id == "primordialsea" {
+        // this.heal(target.baseMaxhp / 16);
+        let heal_amount = target.base_maxhp / 16;
+        battle.heal(heal_amount, target_ref, Some(target_ref), None);
+    }
     AbilityHandlerResult::Undefined
 }
-
