@@ -2380,6 +2380,28 @@ impl Battle {
                 }
                 // If no stats available, the move fails (no effect)
             }
+            "afteryou" => {
+                // After You makes the target move immediately after the user
+                // Check if this is doubles/triples (activePerHalf > 1)
+                if self.active_per_half == 1 {
+                    // Fails in singles
+                    return;
+                }
+
+                // Check if target has a queued move action
+                if let Some(_move_action) = self.queue.will_move(target_side, target_idx) {
+                    // Prioritize the target's action to move next
+                    if self.queue.prioritize_action(target_side, target_idx) {
+                        // Add activation message
+                        let target_name = &self.sides[target_side].pokemon[target_idx].name.clone();
+                        self.add("-activate", &[
+                            Arg::String(target_name.clone()),
+                            Arg::Str("move: After You")
+                        ]);
+                    }
+                }
+                // Note: This won't fully work until commit_choices is refactored to use the queue during execution
+            }
             // Entry hazard moves - set on opponent's side
             "stealthrock" => {
                 let hazard_id = ID::new("stealthrock");

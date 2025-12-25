@@ -4,7 +4,7 @@ Total: 953 moves
 Moves with callbacks: 379
 
 ## Moves with Callbacks (alphabetically)
-- [ ] acupressure - Acupressure (Status, Normal) - 1 callback: onHit
+- [x] acupressure - Acupressure (Status, Normal) - 1 callback: onHit
 - [ ] afteryou - After You (Status, Normal) - 1 callback: onHit
 - [ ] alluringvoice - Alluring Voice (Special, Fairy) - 1 callback: onHit
 - [ ] allyswitch - Ally Switch (Status, Psychic) - 4 callbacks: onPrepareHit, onHit, onStart, onRestart
