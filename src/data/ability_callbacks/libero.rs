@@ -1,0 +1,38 @@
+//! Libero Ability
+//!
+//! Pokemon Showdown - http://pokemonshowdown.com/
+//!
+//! Generated from data/abilities.ts
+//!
+//! ```text
+//! JS Source (data/abilities.ts):
+//! 	libero: {
+//! 		onPrepareHit(source, target, move) {
+//! 			if (this.effectState.libero) return;
+//! 			if (move.hasBounced || move.flags['futuremove'] || move.sourceEffect === 'snatch' || move.callsMove) return;
+//! 			const type = move.type;
+//! 			if (type && type !== '???' && source.getTypes().join() !== type) {
+//! 				if (!source.setType(type)) return;
+//! 				this.effectState.libero = true;
+//! 				this.add('-start', source, 'typechange', type, '[from] ability: Libero');
+//! 			}
+//! 		},
+//! 		flags: {},
+//! 		name: "Libero",
+//! 		rating: 4,
+//! 		num: 236,
+//! 	},
+//! ```
+
+use crate::battle::{Battle, Arg};
+use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
+use crate::pokemon::Pokemon;
+use crate::dex_data::ID;
+use super::{AbilityHandlerResult, Status, Effect};
+
+/// onPrepareHit(...)
+pub fn on_prepare_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    AbilityHandlerResult::Undefined
+}
+

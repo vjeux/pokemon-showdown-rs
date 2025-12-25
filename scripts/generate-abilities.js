@@ -2,6 +2,7 @@
 
 /**
  * Generate Rust ability stubs from TypeScript abilities
+ * Each ability gets its own file
  * Run: docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && node scripts/generate-abilities.js"
  */
 
@@ -77,111 +78,79 @@ console.log(`Found ${abilities.length} abilities`);
 // Sort abilities alphabetically
 abilities.sort((a, b) => a.id.localeCompare(b.id));
 
-// Divide into 4 batches
-const batchSize = Math.ceil(abilities.length / 4);
-const batches = [
-    abilities.slice(0, batchSize),
-    abilities.slice(batchSize, batchSize * 2),
-    abilities.slice(batchSize * 2, batchSize * 3),
-    abilities.slice(batchSize * 3)
-];
+// Create ability_callbacks directory if it doesn't exist
+const abilitiesDir = path.join(workspaceRoot, 'src', 'data', 'ability_callbacks');
+if (!fs.existsSync(abilitiesDir)) {
+    fs.mkdirSync(abilitiesDir, { recursive: true });
+}
 
-// Generate ability_callbacks batch files
-for (let i = 0; i < 4; i++) {
-    const batch = batches[i];
-    const batchNum = i + 1;
+// Generate individual file for each ability
+let generatedCount = 0;
+for (const ability of abilities) {
+    // Skip abilities with no callbacks and no conditions
+    if (ability.callbacks.length === 0 && !ability.hasCondition) {
+        continue;
+    }
 
-    let rustCode = `//! Ability Callback Handlers - Batch ${batchNum}
+    const rustCode = `//! ${ability.name} Ability
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
 //!
-//! This file contains ability callback implementations for batch ${batchNum}.
 //! Generated from data/abilities.ts
 //!
-//! Abilities in this batch (${batch.length}):
-${batch.map(a => `//! - ${a.id}`).join('\n')}
+//! \`\`\`text
+//! JS Source (data/abilities.ts):
+${ability.fullContent.split('\n').map(line => '//! ' + line).join('\n')}
+//! \`\`\`
 
 use crate::battle::{Battle, Arg};
-use crate::data::moves::MoveDef;
+use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
+${ability.callbacks.map(callback => {
+    const rustFuncName = camelToSnake(callback);
+    return `/// ${callback}(...)
+pub fn ${rustFuncName}(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    AbilityHandlerResult::Undefined
+}
 `;
-
-    // Generate module for each ability with callbacks
-    for (const ability of batch) {
-        if (ability.callbacks.length === 0 && !ability.hasCondition) {
-            continue; // Skip abilities with no callbacks
-        }
-
-        rustCode += `
-// -----------------------------------------------------------------------------
-// ${ability.id.toUpperCase()}
-// -----------------------------------------------------------------------------
-// JS Source (data/abilities.ts):
-${ability.fullContent.split('\n').map(line => '// ' + line).join('\n')}
-
-pub mod ${rustModName(ability.id)} {
+}).join('\n')}
+${ability.hasCondition ? `
+// Condition handlers
+pub mod condition {
     use super::*;
-`;
 
-        // Generate stub for each callback
-        for (const callback of ability.callbacks) {
-            const rustFuncName = camelToSnake(callback);
-            rustCode += `
-    /// ${callback}(...)
-    pub fn ${rustFuncName}(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
-`;
-        }
+    // TODO: Implement condition handlers
+}
+` : ''}`;
 
-        if (ability.hasCondition) {
-            rustCode += `
-    // Condition handlers
-    pub mod condition {
-        use super::*;
-
-        // TODO: Implement condition handlers
-    }
-`;
-        }
-
-        rustCode += `}
-`;
-    }
-
-    // Write batch file
-    const batchPath = path.join(workspaceRoot, 'src', 'data', 'ability_callbacks', `batch_${batchNum}.rs`);
-    fs.writeFileSync(batchPath, rustCode);
-    console.log(`Generated ${batchPath} with ${batch.length} abilities`);
+    const filePath = path.join(abilitiesDir, `${ability.id}.rs`);
+    fs.writeFileSync(filePath, rustCode);
+    generatedCount++;
 }
 
-// Generate mod.rs to export all batches
+console.log(`Generated ${generatedCount} ability files`);
+
+// Generate mod.rs to export all abilities
 const modContent = `//! Ability Callback Handlers
 //!
-//! This module re-exports all ability callback implementations.
+//! This module exports all ability callback implementations.
+//! Each ability is in its own file.
 
 // Common types
 mod common;
 pub use common::*;
 
-// Batch modules
-mod batch_1;
-mod batch_2;
-mod batch_3;
-mod batch_4;
-
-// Re-export all ability modules
-pub use batch_1::*;
-pub use batch_2::*;
-pub use batch_3::*;
-pub use batch_4::*;
+// Individual ability modules
+${abilities.filter(a => a.callbacks.length > 0 || a.hasCondition).map(a =>
+    `pub mod ${rustModName(a.id)};`
+).join('\n')}
 `;
 
-const modPath = path.join(workspaceRoot, 'src', 'data', 'ability_callbacks', 'mod.rs');
+const modPath = path.join(abilitiesDir, 'mod.rs');
 fs.writeFileSync(modPath, modContent);
 console.log(`Generated ${modPath}`);
 
@@ -224,7 +193,7 @@ pub struct Effect {
 }
 `;
 
-const commonPath = path.join(workspaceRoot, 'src', 'data', 'ability_callbacks', 'common.rs');
+const commonPath = path.join(abilitiesDir, 'common.rs');
 fs.writeFileSync(commonPath, commonContent);
 console.log(`Generated ${commonPath}`);
 
@@ -233,17 +202,8 @@ let todoContent = `# Abilities Implementation Tracking
 
 Total: ${abilities.length} abilities
 
-## Batch 1 (${batches[0].length} abilities)
-${batches[0].map(a => `- [ ] ${a.id} ${a.callbacks.length > 0 ? `(${a.callbacks.length} callbacks)` : '(data only)'}`).join('\n')}
-
-## Batch 2 (${batches[1].length} abilities)
-${batches[1].map(a => `- [ ] ${a.id} ${a.callbacks.length > 0 ? `(${a.callbacks.length} callbacks)` : '(data only)'}`).join('\n')}
-
-## Batch 3 (${batches[2].length} abilities)
-${batches[2].map(a => `- [ ] ${a.id} ${a.callbacks.length > 0 ? `(${a.callbacks.length} callbacks)` : '(data only)'}`).join('\n')}
-
-## Batch 4 (${batches[3].length} abilities)
-${batches[3].map(a => `- [ ] ${a.id} ${a.callbacks.length > 0 ? `(${a.callbacks.length} callbacks)` : '(data only)'}`).join('\n')}
+## All Abilities (alphabetically)
+${abilities.map(a => `- [ ] ${a.id} ${a.callbacks.length > 0 ? `(${a.callbacks.length} callbacks)` : '(data only)'}`).join('\n')}
 `;
 
 const todoPath = path.join(workspaceRoot, 'ABILITIES_TODO.md');
@@ -252,6 +212,6 @@ console.log(`Generated ${todoPath}`);
 
 console.log('\nGeneration complete!');
 console.log(`- ${abilities.length} abilities processed`);
-console.log(`- 4 batch files created`);
+console.log(`- ${generatedCount} individual ability files created`);
 console.log(`- mod.rs and common.rs created`);
 console.log(`- ABILITIES_TODO.md created`);

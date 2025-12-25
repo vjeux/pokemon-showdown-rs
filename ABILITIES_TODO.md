@@ -2,7 +2,7 @@
 
 Total: 314 abilities
 
-## Batch 1 (79 abilities)
+## All Abilities (alphabetically)
 - [ ] adaptability (1 callbacks)
 - [ ] aerilate (4 callbacks)
 - [ ] aftermath (2 callbacks)
@@ -82,8 +82,6 @@ Total: 314 abilities
 - [ ] forecast (3 callbacks)
 - [ ] forewarn (1 callbacks)
 - [ ] friendguard (1 callbacks)
-
-## Batch 2 (79 abilities)
 - [ ] frisk (1 callbacks)
 - [ ] fullmetalbody (1 callbacks)
 - [ ] furcoat (2 callbacks)
@@ -163,8 +161,6 @@ Total: 314 abilities
 - [ ] myceliummight (3 callbacks)
 - [ ] naturalcure (2 callbacks)
 - [ ] neuroforce (1 callbacks)
-
-## Batch 3 (79 abilities)
 - [ ] neutralizinggas (3 callbacks)
 - [ ] noability (data only)
 - [ ] noguard (3 callbacks)
@@ -244,8 +240,6 @@ Total: 314 abilities
 - [ ] slushrush (1 callbacks)
 - [ ] sniper (1 callbacks)
 - [ ] snowcloak (3 callbacks)
-
-## Batch 4 (77 abilities)
 - [ ] snowwarning (1 callbacks)
 - [ ] solarpower (3 callbacks)
 - [ ] solidrock (1 callbacks)
