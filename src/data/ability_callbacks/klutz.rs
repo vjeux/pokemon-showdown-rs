@@ -33,13 +33,20 @@ pub const ON_SWITCH_IN_PRIORITY: i32 = 1;
 /// onStart(pokemon)
 /// Suppresses item - main logic in Pokemon.ignoringItem()
 ///
-/// TODO: onStart handler exists but needs item system
-/// TODO: Needs pokemon.getItem() and singleEvent system
-/// When implemented, should:
-/// 1. Call this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon)
-/// Note: Main item suppression logic is in Pokemon.ignoringItem() method
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// Note: Main item suppression logic should be in Pokemon.ignoringItem() method
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon);
+    let item_id = pokemon.get_item();
+    let pokemon_loc = (pokemon.side_index, pokemon.position);
+
+    battle.single_event(
+        "End",
+        item_id,
+        Some(pokemon_loc),
+        Some(pokemon_loc),
+        None
+    );
+
     AbilityHandlerResult::Undefined
 }
 
