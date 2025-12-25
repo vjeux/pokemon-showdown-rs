@@ -25,14 +25,14 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyCritRatio(critRatio, source, target)
 /// Always crits poisoned foes
-///
-/// TODO: onModifyCritRatio handler not yet implemented
-/// When implemented, should:
-/// 1. Check if target has status 'psn' or 'tox'
-/// 2. Return crit ratio 5 (guaranteed crit)
-pub fn on_modify_crit_ratio(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_crit_ratio(_crit_ratio: i32, _source: &Pokemon, target: Option<&Pokemon>) -> AbilityHandlerResult {
     // if (target && ['psn', 'tox'].includes(target.status)) return 5;
+    if let Some(target) = target {
+        let status = target.status.as_str();
+        if status == "psn" || status == "tox" {
+            return AbilityHandlerResult::Number(5); // Guaranteed crit
+        }
+    }
     AbilityHandlerResult::Undefined
 }
 
