@@ -1072,27 +1072,31 @@ pub mod bigpecks {
 pub mod blaze {
     use super::*;
 
-    /// onModifyAtkPriority(...)
-    pub fn on_modify_atk_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    // onModifyAtkPriority: 5,
+    pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
+
+    /// onModifyAtk(atk, attacker, defender, move)
+    pub fn on_modify_atk(_atk: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        // if (move.type === 'Fire' && attacker.hp <= attacker.maxhp / 3)
+        if move_.move_type == "Fire" && attacker.hp <= attacker.maxhp / 3 {
+            // this.debug('Blaze boost');
+            // return this.chainModify(1.5);
+            return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
+        }
         AbilityHandlerResult::Undefined
     }
 
-    /// onModifyAtk(...)
-    pub fn on_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
+    // onModifySpAPriority: 5,
+    pub const ON_MODIFY_SPA_PRIORITY: i32 = 5;
 
-    /// onModifySpAPriority(...)
-    pub fn on_modify_sp_a_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
-
-    /// onModifySpA(...)
-    pub fn on_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onModifySpA(atk, attacker, defender, move)
+    pub fn on_modify_spa(_atk: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+        // if (move.type === 'Fire' && attacker.hp <= attacker.maxhp / 3)
+        if move_.move_type == "Fire" && attacker.hp <= attacker.maxhp / 3 {
+            // this.debug('Blaze boost');
+            // return this.chainModify(1.5);
+            return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
+        }
         AbilityHandlerResult::Undefined
     }
 }
