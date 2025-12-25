@@ -23,9 +23,8 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyCritRatio(...)
-pub fn on_modify_crit_ratio(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// onModifyCritRatio(critRatio)
+pub fn on_modify_crit_ratio(crit_ratio: i32) -> AbilityHandlerResult {
+    // return critRatio + 1;
+    AbilityHandlerResult::Number(crit_ratio + 1)
 }
-
