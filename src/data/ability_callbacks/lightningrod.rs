@@ -41,14 +41,26 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onTryHit(target, source, move)
 /// Absorbs Electric moves and boosts SpA
-///
-/// TODO: onTryHit handler not yet implemented
-/// When implemented, should:
-/// 1. Check if target !== source && move.type === 'Electric'
-/// 2. Boost SpA by 1 (if boost fails, add immune message)
-/// 3. Return null to negate the move
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    let target_loc = (target.side_index, target.position);
+    let source_loc = (source.side_index, source.position);
+
+    // if (target !== source && move.type === 'Electric')
+    if target_loc != source_loc && move_.move_type == "Electric" {
+        // if (!this.boost({ spa: 1 }))
+        let boost_success = battle.boost(&[("spa", 1)], target_loc, Some(target_loc), None);
+
+        if !boost_success {
+            // this.add('-immune', target, '[from] ability: Lightning Rod');
+            battle.add("-immune", &[
+                Arg::Pokemon(target),
+                Arg::Str("[from] ability: Lightning Rod")
+            ]);
+        }
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
+
     AbilityHandlerResult::Undefined
 }
 
