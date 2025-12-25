@@ -28,13 +28,22 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAnyBeforeMove(...)
+/// onAnyBeforeMove()
+/// Resets effectiveness state before moves
+///
+/// TODO: onAnyBeforeMove handler not yet implemented
+/// NOTE: Main effectiveness logic in Pokemon#runEffectiveness
+/// When implemented, should: delete this.effectState.resisted
 pub fn on_any_before_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onAnyAfterMove(...)
+/// onAnyAfterMove()
+/// Resets effectiveness state after moves
+///
+/// TODO: onAnyAfterMove handler not yet implemented
+/// When implemented, should: delete this.effectState.resisted
 pub fn on_any_after_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
