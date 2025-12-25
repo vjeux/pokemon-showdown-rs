@@ -4,6 +4,7 @@
 //! items, and conditions, following the Pokemon Showdown JS architecture.
 
 pub mod abilities;
+pub mod ability_callbacks;
 pub mod moves;
 pub mod items;
 pub mod item_callbacks;
