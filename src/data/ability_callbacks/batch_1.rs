@@ -1061,9 +1061,24 @@ pub mod berserk {
 pub mod bigpecks {
     use super::*;
 
-    /// onTryBoost(...)
-    pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onTryBoost(boost, target, source, effect)
+    /// Prevents Defense stat from being lowered
+    pub fn on_try_boost(battle: &mut Battle, boost: &mut std::collections::HashMap<String, i8>, target: &Pokemon, source: Option<&Pokemon>, effect_id: &str, has_secondaries: bool) -> AbilityHandlerResult {
+        // If source exists and target is the source, do nothing
+        if let Some(src) = source {
+            if (target.side_index, target.position) == (src.side_index, src.position) {
+                return AbilityHandlerResult::Undefined;
+            }
+        }
+        // Check if Defense is being lowered
+        if let Some(&def_boost) = boost.get("def") {
+            if def_boost < 0 {
+                boost.remove("def");
+                if !has_secondaries && effect_id != "octolock" {
+                    battle.add("-fail", &[Arg::Pokemon(target), Arg::Str("unboost"), Arg::Str("Defense"), Arg::Str("[from] ability: Big Pecks"), Arg::Str(&format!("[of] {}", target.name))]);
+                }
+            }
+        }
         AbilityHandlerResult::Undefined
     }
 }
