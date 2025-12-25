@@ -2896,9 +2896,16 @@ impl Battle {
     }
 
     /// Apply a floating-point modifier to a value
+    /// Equivalent to battle.ts modify(value, modifier) when modifier is a float
     pub fn modify_f(&self, value: i32, multiplier: f64) -> i32 {
         let modifier = (multiplier * 4096.0) as i32;
         ((value * modifier) + 2048 - 1) / 4096
+    }
+
+    /// Get the current event's modifier
+    /// Equivalent to this.event.modifier in JS
+    pub fn event_modifier(&self) -> f64 {
+        self.current_event.as_ref().map(|e| e.modifier).unwrap_or(1.0)
     }
 
     /// Declare a tie

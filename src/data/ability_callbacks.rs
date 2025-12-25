@@ -414,12 +414,12 @@ pub mod technician {
     pub const ON_BASE_POWER_PRIORITY: i32 = 30;
 
     /// onBasePower(basePower, attacker, defender, move)
-    /// Note: basePower should already have event.modifier applied (basePowerAfterMultiplier)
-    pub fn on_base_power(base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_base_power(battle: &Battle, base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
         // const basePowerAfterMultiplier = this.modify(basePower, this.event.modifier);
+        let base_power_after_multiplier = battle.modify_f(base_power as i32, battle.event_modifier());
         // this.debug(`Base Power: ${basePowerAfterMultiplier}`);
         // if (basePowerAfterMultiplier <= 60) {
-        if base_power <= 60 {
+        if base_power_after_multiplier <= 60 {
             // this.debug('Technician boost');
             // return this.chainModify(1.5);
             return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
@@ -643,15 +643,16 @@ mod tests {
 
     #[test]
     fn test_technician_boost() {
+        let battle = create_mock_battle();
         let pokemon = create_mock_pokemon();
         let move_ = MoveDef::default();
 
-        // 40 BP should get boost
-        let result = technician::on_base_power(40, &pokemon, &pokemon, &move_);
+        // 40 BP should get boost (with default event modifier of 1.0)
+        let result = technician::on_base_power(&battle, 40, &pokemon, &pokemon, &move_);
         assert!(matches!(result, AbilityHandlerResult::ChainModify(6144, 4096)));
 
         // 80 BP should not get boost
-        let result2 = technician::on_base_power(80, &pokemon, &pokemon, &move_);
+        let result2 = technician::on_base_power(&battle, 80, &pokemon, &pokemon, &move_);
         assert!(matches!(result2, AbilityHandlerResult::Undefined));
     }
 
