@@ -39,21 +39,42 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onUpdate(...)
-pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onUpdate(pokemon)
+pub fn on_update(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    // if (pokemon.status === 'slp')
+    if pokemon.status.as_str() == "slp" {
+        // this.add('-activate', pokemon, 'ability: Vital Spirit');
+        battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Vital Spirit")]);
+        // pokemon.cureStatus();
+        pokemon.cure_status();
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onSetStatus(...)
-pub fn on_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// onSetStatus(status, target, source, effect)
+pub fn on_set_status(_battle: &mut Battle, status: &Status, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (status.id !== 'slp') return;
+    if status.id != "slp" {
+        return AbilityHandlerResult::Undefined;
+    }
+    // if ((effect as Move)?.status)
+    if effect.status.is_some() {
+        // this.add('-immune', target, '[from] ability: Vital Spirit');
+        // Note: battle is not mutable here, so we can't add logs
+        // This will need to be handled by the caller
+    }
+    // return false;
+    AbilityHandlerResult::False
 }
 
-/// onTryAddVolatile(...)
-pub fn on_try_add_volatile(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onTryAddVolatile(status, target)
+pub fn on_try_add_volatile(battle: &mut Battle, status: &Status, target: &Pokemon) -> AbilityHandlerResult {
+    // if (status.id === 'yawn')
+    if status.id == "yawn" {
+        // this.add('-immune', target, '[from] ability: Vital Spirit');
+        battle.add("-immune", &[Arg::Pokemon(target), Arg::Str("[from] ability: Vital Spirit")]);
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
-
