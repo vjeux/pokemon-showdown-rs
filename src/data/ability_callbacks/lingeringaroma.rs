@@ -32,7 +32,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamagingHit(...)
+/// onDamagingHit(damage, target, source, move)
+/// Changes attacker's ability to Lingering Aroma on contact
+///
+/// TODO: onDamagingHit exists but needs ability system methods
+/// TODO: Needs source.getAbility(), source.setAbility(), source.isAlly()
+/// When implemented, should:
+/// 1. Get source's ability and check flags.cantsuppress
+/// 2. Skip if source already has lingeringaroma
+/// 3. Check if move makes contact
+/// 4. Call source.setAbility('lingeringaroma', target)
+/// 5. Add activate message with old ability name
 pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
