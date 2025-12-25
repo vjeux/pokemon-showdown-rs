@@ -93,9 +93,7 @@ pub fn on_modify_atk(_battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerR
     if let Some(counter) = pokemon.ability_state.data.get("counter").and_then(|v| v.as_i64()) {
         if counter > 0 {
             // return this.chainModify(0.5);
-            // Note: This should return chainModify(0.5) to halve attack
-            // For now returning Undefined as stat modification infrastructure may not be complete
-            // TODO: Return chainModify when infrastructure supports it
+            return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
         }
     }
     AbilityHandlerResult::Undefined
@@ -107,9 +105,7 @@ pub fn on_modify_spe(_battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerR
     if let Some(counter) = pokemon.ability_state.data.get("counter").and_then(|v| v.as_i64()) {
         if counter > 0 {
             // return this.chainModify(0.5);
-            // Note: This should return chainModify(0.5) to halve speed
-            // For now returning Undefined as stat modification infrastructure may not be complete
-            // TODO: Return chainModify when infrastructure supports it
+            return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
         }
     }
     AbilityHandlerResult::Undefined
