@@ -27,7 +27,15 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onChangeBoost(...)
+/// onChangeBoost(boost, target, source, effect)
+/// Doubles all stat changes (both positive and negative)
+///
+/// TODO: onChangeBoost handler not yet implemented
+/// TODO: Needs boost object manipulation, effect.id checking
+/// When implemented, should:
+/// 1. Skip if effect is 'zpower' (Z-Move stat boosts aren't doubled)
+/// 2. Loop through all stat changes in boost object
+/// 3. Multiply each boost value by 2
 pub fn on_change_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
