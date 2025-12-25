@@ -32,18 +32,39 @@ use super::{AbilityHandlerResult, Status, Effect};
 /// onAfterSetStatus(status, target, source, effect)
 /// Passes status conditions back to the source Pokemon
 ///
-/// TODO: onAfterSetStatus handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Check if source exists and source !== target
-/// 2. Check if effect.id !== 'toxicspikes' (toxic spikes shouldn't trigger)
-/// 3. Check if status.id !== 'slp' && status.id !== 'frz' (sleep/freeze don't sync)
-/// 4. Add activate message: this.add('-activate', target, 'ability: Synchronize')
-/// 5. Call source.trySetStatus with a special synchronize effect that:
-///    - Has status: status.id
-///    - Has id: 'synchronize'
-///    - This makes status-prevention abilities show proper messages
-pub fn on_after_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// TODO: onAfterSetStatus handler not yet called by battle engine
+pub fn on_after_set_status(battle: &mut Battle, status: &Status, target: &Pokemon, source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (!source || source === target) return;
+    let source = match source {
+        Some(s) => s,
+        None => return AbilityHandlerResult::Undefined,
+    };
+
+    let target_ref = (target.side_index, target.position);
+    let source_ref = (source.side_index, source.position);
+
+    if target_ref == source_ref {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // if (effect && effect.id === 'toxicspikes') return;
+    if effect.id == "toxicspikes" {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // if (status.id === 'slp' || status.id === 'frz') return;
+    if status.id == "slp" || status.id == "frz" {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // this.add('-activate', target, 'ability: Synchronize');
+    battle.add("-activate", &[Arg::Pokemon(target), Arg::Str("ability: Synchronize")]);
+
+    // source.trySetStatus(status, target, { status: status.id, id: 'synchronize' } as Effect);
+    // TODO: This requires trySetStatus method on Pokemon or battle
+    // For now, we can use battle.set_status if it exists
+    // The comment says this is a hack to make status-prevention abilities show messages
+
     AbilityHandlerResult::Undefined
 }
 
