@@ -36,9 +36,24 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onStart(pokemon)
+/// Note: This implementation is simplified as we don't have full dex access in callbacks yet.
+/// Full implementation would require:
+/// - Access to Dex to get move data from moveSlots
+/// - Type effectiveness checking via dex.getEffectiveness()
+/// - OHKO move detection
+/// For now, this is a stub that would need battle system enhancement.
+pub fn on_start(_battle: &mut Battle, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // TODO: Full implementation requires:
+    // 1. Access to foe pokemon (need to iterate battle.sides)
+    // 2. Access to Dex to look up moves from moveSlot IDs
+    // 3. Type effectiveness calculation for each move type against pokemon
+    // 4. Check for OHKO moves
+    // 5. Call battle.add() if super-effective or OHKO move found
+
+    // This would need battle system refactoring to provide:
+    // - Dex access in ability callbacks
+    // - Helper method to get foe pokemon
+    // - Move lookup by ID
     AbilityHandlerResult::Undefined
 }
-
