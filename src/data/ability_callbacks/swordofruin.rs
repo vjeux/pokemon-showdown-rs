@@ -34,27 +34,34 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onStart(pokemon)
 /// Announces Sword of Ruin when sent out
-///
-/// TODO: Requires suppressingAbility check
-/// When implemented, should:
-/// 1. Check if this.suppressingAbility(pokemon) and return if true
-/// 2. Add ability announcement: this.add('-ability', pokemon, 'Sword of Ruin')
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (this.suppressingAbility(pokemon)) return;
+    if battle.suppressing_ability(Some((pokemon.side_index, pokemon.position))) {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // this.add('-ability', pokemon, 'Sword of Ruin');
+    battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Sword of Ruin")]);
     AbilityHandlerResult::Undefined
 }
 
 /// onAnyModifyDef(def, target, source, move)
 /// Reduces all Pokemon's Defense by 25% except those with Sword of Ruin
-///
-/// TODO: onAnyModifyDef handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Get abilityHolder from effectState.target
-/// 2. Check if target.hasAbility('Sword of Ruin'), return if true
-/// 3. Track move.ruinedDef to ensure only one Sword of Ruin applies per move
-/// 4. Return chainModify(0.75) to reduce Defense by 25%
-pub fn on_any_modify_def(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// Note: onAnyModifyDef handler needs to be wired into battle engine
+pub fn on_any_modify_def(_battle: &mut Battle, _def: u32, target: &Pokemon, _source: Option<&Pokemon>, _move: Option<&MoveDef>, _ability_holder: &Pokemon) -> AbilityHandlerResult {
+    // const abilityHolder = this.effectState.target;
+    // if (target.hasAbility('Sword of Ruin')) return;
+    if target.ability.as_str() == "swordofruin" {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // if (!move.ruinedDef?.hasAbility('Sword of Ruin')) move.ruinedDef = abilityHolder;
+    // if (move.ruinedDef !== abilityHolder) return;
+    // TODO: Track ruinedDef on move to ensure only one Sword of Ruin applies
+
+    // this.debug('Sword of Ruin Def drop');
+    // return this.chainModify(0.75);
+    // 0.75 = 3/4
+    AbilityHandlerResult::ChainModify(3, 4)
 }
 
