@@ -59,39 +59,12 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSwitchInPriority(...)
-pub fn on_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onResidualOrder(...)
-pub fn on_residual_order(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onResidual(...)
-pub fn on_residual(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onSetStatus(...)
-pub fn on_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onTryAddVolatile(...)
-pub fn on_try_add_volatile(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// Minior forme change ability - switches between Meteor (shielded) and Core (unshielded) formes
+/// TODO: Complex ability with multiple handlers
+/// TODO: Needs pokemon.baseSpecies, pokemon.transformed, pokemon.hp, pokemon.maxhp, pokemon.species.forme, pokemon.formeChange(), pokemon.set.species
+/// TODO: onStart and onResidual: Change to Meteor forme if HP > 50%, change to Core forme if HP <= 50%
+/// TODO: onSetStatus: While in Meteor forme, immune to status conditions
+/// TODO: onTryAddVolatile: While in Meteor forme, immune to Yawn
+pub const ON_SWITCH_IN_PRIORITY: i32 = -1;
+pub const ON_RESIDUAL_ORDER: i32 = 29;
 
