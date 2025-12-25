@@ -32,14 +32,14 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Boosts Speed when hit by Dark, Bug, or Ghost-type moves
-///
-/// TODO: onDamagingHit handler not yet implemented
-/// TODO: Needs move.type, boost()
-/// When implemented, should:
-/// 1. If move is Dark, Bug, or Ghost-type
-/// 2. Boost Speed by 1 stage
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (['Dark', 'Bug', 'Ghost'].includes(move.type))
+    let move_type = &move_.move_type;
+    if move_type == "Dark" || move_type == "Bug" || move_type == "Ghost" {
+        // this.boost({ spe: 1 });
+        let target_ref = (target.side_index, target.position);
+        battle.boost(&[("spe", 1)], target_ref, Some(target_ref), None);
+    }
     AbilityHandlerResult::Undefined
 }
 
