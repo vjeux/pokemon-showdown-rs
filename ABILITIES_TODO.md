@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~147
-Documented stubs (with detailed TODOs): ~167
+Fully implemented (working code): ~149
+Documented stubs (with detailed TODOs): ~165
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -37,15 +37,19 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #2)
 
-New implementations (8 changes):
+New implementations (10 changes):
 1. **sandspit** - Sets sandstorm when hit by damaging move
 2. **seedsower** - Sets Grassy Terrain when hit by damaging move
 3. **mummy** - Spreads Mummy ability to attackers on contact
-4. **battlebond** (partial) - Boosts stats on KO, sets Water Shuriken to 3 hits for Greninja-Ash (needs onSourceAfterFaint handler in battle engine)
-5. **beadsofruin** (improved) - Added suppressingAbility check, reduces SpD by 25% (needs onAnyModifySpD handler in battle engine)
+4. **battlebond** (partial) - Boosts stats on KO, sets Water Shuriken to 3 hits for Greninja-Ash (needs onSourceAfterFaint handler)
+5. **beadsofruin** (improved) - Added suppressingAbility check, reduces SpD by 25% (needs onAnyModifySpD handler)
 6. **screencleaner** - Removes Reflect/Light Screen/Aurora Veil from all sides on switch-in
 7. **serenegrace** (partial) - Doubles secondary effect chances (move.self.chance not yet supported)
-8. **tabletsofruin** (partial) - Added suppressingAbility check, reduces Attack by 25% (needs onAnyModifyAtk handler in battle engine)
+8. **tabletsofruin** (partial) - Added suppressingAbility check, reduces Attack by 25% (needs onAnyModifyAtk handler)
+9. **swordofruin** (partial) - Added suppressingAbility check, reduces Defense by 25% (needs onAnyModifyDef handler)
+10. **vesselofruin** (partial) - Added suppressingAbility check, reduces Special Attack by 25% (needs onAnyModifySpA handler)
+
+All four "Treasures of Ruin" legendary abilities now implemented!
 
 Note: Discovered weather and terrain systems already exist in field.rs!
 Note: Discovered ability manipulation (set_ability, get_ability) already exists in pokemon.rs!
