@@ -112,20 +112,26 @@ pub struct MoveFlags {
 // INTIMIDATE
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// intimidate: {
-//     onStart(pokemon) {
-//         let dominated = false;
-//         for (const target of pokemon.adjacentFoes()) {
-//             if (!target.volatiles['substitute']) {
-//                 this.boost({atk: -1}, target, pokemon, null, true);
-//                 dominated = true;
-//             }
-//         }
-//         if (dominated) this.hint("Intimidate lowered the Attack of all opposing Pokémon by 1 stage.");
-//     },
-//     name: "Intimidate",
-//     rating: 3.5,
-// },
+//   intimidate: {
+//       onStart(pokemon) {
+//           let activated = false;
+//           for (const target of pokemon.adjacentFoes()) {
+//               if (!activated) {
+//                   this.add('-ability', pokemon, 'Intimidate', 'boost');
+//                   activated = true;
+//               }
+//               if (target.volatiles['substitute']) {
+//                   this.add('-immune', target);
+//               } else {
+//                   this.boost({ atk: -1 }, target, pokemon, null, true);
+//               }
+//           }
+//       },
+//       flags: {},
+//       name: "Intimidate",
+//       rating: 3.5,
+//       num: 22,
+//   },
 
 pub mod intimidate {
     use super::*;
@@ -135,7 +141,7 @@ pub mod intimidate {
         let (side_idx, poke_idx) = ctx.pokemon;
         if let Some(pokemon) = battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
             let pokemon_pos = pokemon.position;
-            battle.add_log("-ability", &[&format!("{}", pokemon_pos), "Intimidate"]);
+            battle.add_log("-ability", &[&format!("{}", pokemon_pos), "Intimidate", "boost"]);
         }
         // Collect foe indices first to avoid borrow issues
         let foe_side = 1 - side_idx;
@@ -159,22 +165,19 @@ pub mod intimidate {
 // LEVITATE
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// levitate: {
-//     onTryHit(target, source, move) {
-//         if (target !== source && move.type === 'Ground') {
-//             this.add('-immune', target, '[from] ability: Levitate');
-//             return null;
-//         }
-//     },
-//     flags: {breakable: 1},
-//     name: "Levitate",
-//     rating: 3.5,
-// },
+//   levitate: {
+//       // airborneness implemented in sim/pokemon.js:Pokemon#isGrounded
+//       flags: { breakable: 1 },
+//       name: "Levitate",
+//       rating: 3.5,
+//       num: 26,
+//   },
 
 pub mod levitate {
     use super::*;
 
     /// onTryHit - immunity to Ground moves
+    /// Note: In JS, this is handled by isGrounded check, not an onTryHit handler
     pub fn on_try_hit(_battle: &mut Battle, ctx: &AbilityContext) -> AbilityHandlerResult {
         if ctx.move_type.as_deref() == Some("Ground") {
             return AbilityHandlerResult::Immune;
@@ -187,44 +190,47 @@ pub mod levitate {
 // FLASH FIRE
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// flashfire: {
-//     onTryHit(target, source, move) {
-//         if (target !== source && move.type === 'Fire') {
-//             move.accuracy = true;
-//             if (!target.addVolatile('flashfire')) {
-//                 this.add('-immune', target, '[from] ability: Flash Fire');
-//             }
-//             return null;
-//         }
-//     },
-//     onEnd(pokemon) {
-//         pokemon.removeVolatile('flashfire');
-//     },
-//     condition: {
-//         noCopy: true,
-//         onStart(target, source, effect) {
-//             this.add('-start', target, 'ability: Flash Fire');
-//         },
-//         onModifyAtkPriority: 5,
-//         onModifyAtk(atk, attacker, defender, move) {
-//             if (move.type === 'Fire' && attacker.hasAbility('flashfire')) {
-//                 return this.chainModify(1.5);
-//             }
-//         },
-//         onModifySpAPriority: 5,
-//         onModifySpA(atk, attacker, defender, move) {
-//             if (move.type === 'Fire' && attacker.hasAbility('flashfire')) {
-//                 return this.chainModify(1.5);
-//             }
-//         },
-//         onEnd(target) {
-//             this.add('-end', target, 'ability: Flash Fire', '[silent]');
-//         },
-//     },
-//     flags: {breakable: 1},
-//     name: "Flash Fire",
-//     rating: 3.5,
-// },
+//   flashfire: {
+//       onTryHit(target, source, move) {
+//           if (target !== source && move.type === 'Fire') {
+//               move.accuracy = true;
+//               if (!target.addVolatile('flashfire')) {
+//                   this.add('-immune', target, '[from] ability: Flash Fire');
+//               }
+//               return null;
+//           }
+//       },
+//       onEnd(pokemon) {
+//           pokemon.removeVolatile('flashfire');
+//       },
+//       condition: {
+//           noCopy: true, // doesn't get copied by Baton Pass
+//           onStart(target) {
+//               this.add('-start', target, 'ability: Flash Fire');
+//           },
+//           onModifyAtkPriority: 5,
+//           onModifyAtk(atk, attacker, defender, move) {
+//               if (move.type === 'Fire' && attacker.hasAbility('flashfire')) {
+//                   this.debug('Flash Fire boost');
+//                   return this.chainModify(1.5);
+//               }
+//           },
+//           onModifySpAPriority: 5,
+//           onModifySpA(atk, attacker, defender, move) {
+//               if (move.type === 'Fire' && attacker.hasAbility('flashfire')) {
+//                   this.debug('Flash Fire boost');
+//                   return this.chainModify(1.5);
+//               }
+//           },
+//           onEnd(target) {
+//               this.add('-end', target, 'ability: Flash Fire', '[silent]');
+//           },
+//       },
+//       flags: { breakable: 1 },
+//       name: "Flash Fire",
+//       rating: 3.5,
+//       num: 18,
+//   },
 
 pub mod flashfire {
     use super::*;
@@ -254,19 +260,20 @@ pub mod flashfire {
 // WATER ABSORB
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// waterabsorb: {
-//     onTryHit(target, source, move) {
-//         if (target !== source && move.type === 'Water') {
-//             if (!this.heal(target.baseMaxhp / 4)) {
-//                 this.add('-immune', target, '[from] ability: Water Absorb');
-//             }
-//             return null;
-//         }
-//     },
-//     flags: {breakable: 1},
-//     name: "Water Absorb",
-//     rating: 3.5,
-// },
+//   waterabsorb: {
+//       onTryHit(target, source, move) {
+//           if (target !== source && move.type === 'Water') {
+//               if (!this.heal(target.baseMaxhp / 4)) {
+//                   this.add('-immune', target, '[from] ability: Water Absorb');
+//               }
+//               return null;
+//           }
+//       },
+//       flags: { breakable: 1 },
+//       name: "Water Absorb",
+//       rating: 3.5,
+//       num: 11,
+//   },
 
 pub mod waterabsorb {
     use super::*;
@@ -291,17 +298,19 @@ pub mod waterabsorb {
 // SPEED BOOST
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// speedboost: {
-//     onResidualOrder: 28,
-//     onResidualSubOrder: 2,
-//     onResidual(pokemon) {
-//         if (pokemon.activeTurns) {
-//             this.boost({spe: 1});
-//         }
-//     },
-//     name: "Speed Boost",
-//     rating: 4.5,
-// },
+//   speedboost: {
+//       onResidualOrder: 28,
+//       onResidualSubOrder: 2,
+//       onResidual(pokemon) {
+//           if (pokemon.activeTurns) {
+//               this.boost({ spe: 1 });
+//           }
+//       },
+//       flags: {},
+//       name: "Speed Boost",
+//       rating: 4.5,
+//       num: 3,
+//   },
 
 pub mod speedboost {
     use super::*;
@@ -322,13 +331,16 @@ pub mod speedboost {
 // DRIZZLE
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// drizzle: {
-//     onStart(source) {
-//         this.field.setWeather('raindance');
-//     },
-//     name: "Drizzle",
-//     rating: 4,
-// },
+//   drizzle: {
+//       onStart(source) {
+//           if (source.species.id === 'kyogre' && source.item === 'blueorb') return;
+//           this.field.setWeather('raindance');
+//       },
+//       flags: {},
+//       name: "Drizzle",
+//       rating: 4,
+//       num: 2,
+//   },
 
 pub mod drizzle {
     use super::*;
@@ -349,17 +361,21 @@ pub mod drizzle {
 // TECHNICIAN
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// technician: {
-//     onBasePowerPriority: 30,
-//     onBasePower(basePower, attacker, defender, move) {
-//         const basePowerAfterMultiplier = this.modify(basePower, move.basePowerModifier || 1);
-//         if (basePowerAfterMultiplier <= 60) {
-//             return this.chainModify(1.5);
-//         }
-//     },
-//     name: "Technician",
-//     rating: 3.5,
-// },
+//   technician: {
+//       onBasePowerPriority: 30,
+//       onBasePower(basePower, attacker, defender, move) {
+//           const basePowerAfterMultiplier = this.modify(basePower, this.event.modifier);
+//           this.debug(`Base Power: ${basePowerAfterMultiplier}`);
+//           if (basePowerAfterMultiplier <= 60) {
+//               this.debug('Technician boost');
+//               return this.chainModify(1.5);
+//           }
+//       },
+//       flags: {},
+//       name: "Technician",
+//       rating: 3.5,
+//       num: 101,
+//   },
 
 pub mod technician {
     use super::*;
@@ -379,16 +395,18 @@ pub mod technician {
 // GUTS
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// guts: {
-//     onModifyAtkPriority: 5,
-//     onModifyAtk(atk, pokemon) {
-//         if (pokemon.status) {
-//             return this.chainModify(1.5);
-//         }
-//     },
-//     name: "Guts",
-//     rating: 3.5,
-// },
+//   guts: {
+//       onModifyAtkPriority: 5,
+//       onModifyAtk(atk, pokemon) {
+//           if (pokemon.status) {
+//               return this.chainModify(1.5);
+//           }
+//       },
+//       flags: {},
+//       name: "Guts",
+//       rating: 3.5,
+//       num: 62,
+//   },
 
 pub mod guts {
     use super::*;
@@ -409,16 +427,18 @@ pub mod guts {
 // ROUGH SKIN
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// roughskin: {
-//     onDamagingHitOrder: 1,
-//     onDamagingHit(damage, target, source, move) {
-//         if (this.checkMoveMakesContact(move, source, target, true)) {
-//             this.damage(source.baseMaxhp / 8, source, target);
-//         }
-//     },
-//     name: "Rough Skin",
-//     rating: 2.5,
-// },
+//   roughskin: {
+//       onDamagingHitOrder: 1,
+//       onDamagingHit(damage, target, source, move) {
+//           if (this.checkMoveMakesContact(move, source, target, true)) {
+//               this.damage(source.baseMaxhp / 8, source, target);
+//           }
+//       },
+//       flags: {},
+//       name: "Rough Skin",
+//       rating: 2.5,
+//       num: 24,
+//   },
 
 pub mod roughskin {
     use super::*;
@@ -442,24 +462,25 @@ pub mod roughskin {
 // IMMUNITY
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// immunity: {
-//     onUpdate(pokemon) {
-//         if (pokemon.status === 'psn' || pokemon.status === 'tox') {
-//             this.add('-activate', pokemon, 'ability: Immunity');
-//             pokemon.cureStatus();
-//         }
-//     },
-//     onSetStatus(status, target, source, effect) {
-//         if (status.id !== 'psn' && status.id !== 'tox') return;
-//         if ((effect as Move)?.status) {
-//             this.add('-immune', target, '[from] ability: Immunity');
-//         }
-//         return false;
-//     },
-//     flags: {breakable: 1},
-//     name: "Immunity",
-//     rating: 2,
-// },
+//   immunity: {
+//       onUpdate(pokemon) {
+//           if (pokemon.status === 'psn' || pokemon.status === 'tox') {
+//               this.add('-activate', pokemon, 'ability: Immunity');
+//               pokemon.cureStatus();
+//           }
+//       },
+//       onSetStatus(status, target, source, effect) {
+//           if (status.id !== 'psn' && status.id !== 'tox') return;
+//           if ((effect as Move)?.status) {
+//               this.add('-immune', target, '[from] ability: Immunity');
+//           }
+//           return false;
+//       },
+//       flags: { breakable: 1 },
+//       name: "Immunity",
+//       rating: 2,
+//       num: 17,
+//   },
 
 pub mod immunity {
     use super::*;
@@ -478,24 +499,25 @@ pub mod immunity {
 // LIMBER
 // -----------------------------------------------------------------------------
 // JS Source (data/abilities.ts):
-// limber: {
-//     onUpdate(pokemon) {
-//         if (pokemon.status === 'par') {
-//             this.add('-activate', pokemon, 'ability: Limber');
-//             pokemon.cureStatus();
-//         }
-//     },
-//     onSetStatus(status, target, source, effect) {
-//         if (status.id !== 'par') return;
-//         if ((effect as Move)?.status) {
-//             this.add('-immune', target, '[from] ability: Limber');
-//         }
-//         return false;
-//     },
-//     flags: {breakable: 1},
-//     name: "Limber",
-//     rating: 2,
-// },
+//   limber: {
+//       onUpdate(pokemon) {
+//           if (pokemon.status === 'par') {
+//               this.add('-activate', pokemon, 'ability: Limber');
+//               pokemon.cureStatus();
+//           }
+//       },
+//       onSetStatus(status, target, source, effect) {
+//           if (status.id !== 'par') return;
+//           if ((effect as Move)?.status) {
+//               this.add('-immune', target, '[from] ability: Limber');
+//           }
+//           return false;
+//       },
+//       flags: { breakable: 1 },
+//       name: "Limber",
+//       rating: 2,
+//       num: 7,
+//   },
 
 pub mod limber {
     use super::*;
