@@ -37,34 +37,34 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAfterUseItem(...)
-pub fn on_after_use_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+/// onAfterUseItem(item, pokemon)
+/// onTakeItem(item, pokemon)
+/// onEnd(pokemon)
+/// Doubles Speed after consuming or losing held item
+///
+/// TODO: Multiple systems needed:
+/// - onAfterUseItem handler (triggers after using consumable item)
+/// - onTakeItem handler (triggers when item is removed)
+/// - onEnd handler (triggers when Pokemon switches out)
+/// - Volatile status system (addVolatile/removeVolatile)
+/// - onModifySpe handler in condition
+/// - pokemon.item checking, pokemon.ignoringAbility()
+/// When implemented, volatile condition should double Speed if no item held
+pub fn on_after_use_item(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // pokemon.addVolatile('unburden')
     AbilityHandlerResult::Undefined
 }
 
-/// onTakeItem(...)
-pub fn on_take_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+pub fn on_take_item(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // pokemon.addVolatile('unburden')
     AbilityHandlerResult::Undefined
 }
 
-/// onEnd(...)
-pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+pub fn on_end(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // pokemon.removeVolatile('unburden')
     AbilityHandlerResult::Undefined
 }
 
-/// onModifySpe(...)
-pub fn on_modify_spe(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-
-// Condition handlers
-pub mod condition {
-    use super::*;
-
-    // TODO: Implement condition handlers
-}
