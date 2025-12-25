@@ -81,88 +81,11 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSwitchInPriority(...)
-pub fn on_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_SWITCH_IN_PRIORITY: i32 = -2;
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onWeatherChange(...)
-pub fn on_weather_change(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onEnd(...)
-pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifyAtkPriority(...)
-pub fn on_modify_atk_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifyAtk(...)
-pub fn on_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifyDefPriority(...)
-pub fn on_modify_def_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifyDef(...)
-pub fn on_modify_def(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifySpAPriority(...)
-pub fn on_modify_sp_a_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifySpA(...)
-pub fn on_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifySpDPriority(...)
-pub fn on_modify_sp_d_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifySpD(...)
-pub fn on_modify_sp_d(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifySpe(...)
-pub fn on_modify_spe(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-
-// Condition handlers
-pub mod condition {
-    use super::*;
-
-    // TODO: Implement condition handlers
-}
+/// Complex ability - boosts highest stat by 1.3x in sun or with Booster Energy
+/// TODO: Needs weather system, volatile conditions, effectState tracking, stat boosting
+/// TODO: Multiple handlers: onStart, onWeatherChange, onEnd
+/// TODO: Volatile condition with handlers: onStart, onModifyAtk/Def/SpA/SpD/Spe (with priorities), onEnd
+/// TODO: This ability requires extensive infrastructure for volatile conditions with nested handlers
+pub const ABILITY_DESCRIPTION: &str = "Protosynthesis: Boosts highest stat in sun or with Booster Energy";
