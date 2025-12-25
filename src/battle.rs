@@ -4112,7 +4112,7 @@ impl Battle {
                 }
             }
             "Residual" => {
-                // Residual abilities like Poison Heal, Rain Dish, Hydration, etc.
+                // Residual abilities like Poison Heal, Rain Dish, Hydration, Bad Dreams, etc.
                 if let Some((side_idx, poke_idx)) = target {
                     if ability.id.as_str() == "poisonheal" {
                         if let Some(side) = self.sides.get(side_idx) {
@@ -4142,6 +4142,32 @@ impl Battle {
                                         return EventResult::Stop;
                                     }
                                 }
+                            }
+                        }
+                    }
+                    if ability.id.as_str() == "baddreams" {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                if pokemon.hp == 0 {
+                                    return EventResult::Continue;
+                                }
+                                // Damage sleeping foes
+                                let foe_side = if side_idx == 0 { 1 } else { 0 };
+                                let mut foes_to_damage: Vec<(usize, u32)> = Vec::new();
+
+                                if let Some(foe_side_ref) = self.sides.get(foe_side) {
+                                    for foe in foe_side_ref.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
+                                        if foe.status.as_str() == "slp" || foe.ability.as_str() == "comatose" {
+                                            let damage = foe.maxhp / 8;
+                                            foes_to_damage.push((foe.position, damage));
+                                        }
+                                    }
+                                }
+
+                                for (foe_pos, dmg) in foes_to_damage {
+                                    self.damage(dmg, (foe_side, foe_pos), Some((side_idx, poke_idx)), None);
+                                }
+                                return EventResult::Stop;
                             }
                         }
                     }
