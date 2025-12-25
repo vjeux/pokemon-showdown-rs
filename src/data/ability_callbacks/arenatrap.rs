@@ -34,31 +34,36 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onFoeTrapPokemon(pokemon)
-/// Note: Simplified implementation - isAdjacent and isGrounded checks not available
-pub fn on_foe_trap_pokemon(_battle: &mut Battle, pokemon: &mut Pokemon, _arena_trap_holder: &Pokemon) -> AbilityHandlerResult {
+pub fn on_foe_trap_pokemon(battle: &mut Battle, pokemon: &mut Pokemon, arena_trap_holder: &Pokemon) -> AbilityHandlerResult {
     // if (!pokemon.isAdjacent(this.effectState.target)) return;
-    // TODO: Need isAdjacent check
+    // Check if the trapped pokemon is adjacent to the Arena Trap holder
+    let active_per_half = if battle.game_type == crate::dex_data::GameType::Singles { 1 } else { 2 };
+    if !pokemon.is_adjacent(arena_trap_holder.position, arena_trap_holder.fainted, active_per_half) {
+        return AbilityHandlerResult::Undefined;
+    }
 
     // if (pokemon.isGrounded())
-    // TODO: Need isGrounded check - for now assume grounded if not Flying type
-    let is_grounded = !pokemon.types.contains(&"Flying".to_string());
-    if is_grounded {
+    if pokemon.is_grounded() {
         // pokemon.tryTrap(true);
-        pokemon.trapped = true;
+        pokemon.try_trap(true);
     }
     AbilityHandlerResult::Undefined
 }
 
 /// onFoeMaybeTrapPokemon(pokemon, source)
-pub fn on_foe_maybe_trap_pokemon(_battle: &mut Battle, pokemon: &mut Pokemon, _source: Option<&Pokemon>, _arena_trap_holder: &Pokemon) -> AbilityHandlerResult {
+pub fn on_foe_maybe_trap_pokemon(battle: &mut Battle, pokemon: &mut Pokemon, source: Option<&Pokemon>, arena_trap_holder: &Pokemon) -> AbilityHandlerResult {
     // if (!source) source = this.effectState.target;
+    let source = source.unwrap_or(arena_trap_holder);
+
     // if (!source || !pokemon.isAdjacent(source)) return;
-    // TODO: Need isAdjacent check
+    let active_per_half = if battle.game_type == crate::dex_data::GameType::Singles { 1 } else { 2 };
+    if !pokemon.is_adjacent(source.position, source.fainted, active_per_half) {
+        return AbilityHandlerResult::Undefined;
+    }
 
     // if (pokemon.isGrounded(!pokemon.knownType))
-    // TODO: Need isGrounded check - for now assume grounded if not Flying type
-    let is_grounded = !pokemon.types.contains(&"Flying".to_string());
-    if is_grounded {
+    // Note: We don't have knownType tracking yet, so we just use is_grounded()
+    if pokemon.is_grounded() {
         // pokemon.maybeTrapped = true;
         pokemon.maybe_trapped = true;
     }
