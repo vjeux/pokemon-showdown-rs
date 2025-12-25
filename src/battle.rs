@@ -1730,6 +1730,25 @@ impl Battle {
                     let ability_name = if defender_ability == "ironbarbs" { "Iron Barbs" } else { "Rough Skin" };
                     self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), &format!("[from] ability: {}", ability_name)]);
                 }
+
+                // Aftermath: damages attacker by 1/4 max HP when KO'd by contact move
+                if defender_ability == "aftermath" {
+                    let defender_hp = self.sides[target_side].pokemon[target_idx].hp;
+                    if defender_hp == 0 {
+                        let attacker_maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
+                        let contact_damage = (attacker_maxhp / 4).max(1);
+                        self.sides[attacker_side].pokemon[attacker_idx].take_damage(contact_damage);
+
+                        let attacker_name = {
+                            let side_id = self.sides[attacker_side].id_str();
+                            let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                            format!("{}: {}", side_id, pokemon.name)
+                        };
+                        let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
+                        let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
+                        self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), "[from] ability: Aftermath"]);
+                    }
+                }
             }
         }
 
