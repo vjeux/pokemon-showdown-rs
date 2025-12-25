@@ -2358,6 +2358,28 @@ impl Battle {
             "agility" => {
                 self.apply_boost(attacker_side, target_idx, "spe", 2);
             }
+            "acupressure" => {
+                // Randomly boosts one stat that is below +6 by 2 stages
+                // Collect stats that are below +6
+                let mut available_stats: Vec<&str> = Vec::new();
+                let boosts = &self.sides[target_side].pokemon[target_idx].boosts;
+
+                if boosts.atk < 6 { available_stats.push("atk"); }
+                if boosts.def < 6 { available_stats.push("def"); }
+                if boosts.spa < 6 { available_stats.push("spa"); }
+                if boosts.spd < 6 { available_stats.push("spd"); }
+                if boosts.spe < 6 { available_stats.push("spe"); }
+                if boosts.accuracy < 6 { available_stats.push("accuracy"); }
+                if boosts.evasion < 6 { available_stats.push("evasion"); }
+
+                if !available_stats.is_empty() {
+                    // Randomly select one stat
+                    let idx = self.random(available_stats.len() as u32) as usize;
+                    let chosen_stat = available_stats[idx];
+                    self.apply_boost(target_side, target_idx, chosen_stat, 2);
+                }
+                // If no stats available, the move fails (no effect)
+            }
             // Entry hazard moves - set on opponent's side
             "stealthrock" => {
                 let hazard_id = ID::new("stealthrock");
