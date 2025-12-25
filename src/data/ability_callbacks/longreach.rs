@@ -25,12 +25,9 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyMove(move)
 /// Removes contact flag from all moves
-///
-/// TODO: onModifyMove handler not yet implemented
-/// When implemented, should:
-/// 1. Delete move.flags['contact'] to make moves non-contact
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(move_: &mut MoveDef, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // delete move.flags['contact'];
+    move_.flags.contact = false;
     AbilityHandlerResult::Undefined
 }
 
