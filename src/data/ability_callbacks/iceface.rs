@@ -71,49 +71,92 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSwitchInPriority(...)
-pub fn on_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// onSwitchInPriority: -2
+pub const ON_SWITCH_IN_PRIORITY: i32 = -2;
 
-/// onStart(...)
+/// onStart(pokemon)
+/// Restores Ice Face forme when switching in during hail/snowscape
+///
+/// TODO: onStart handler not yet fully implemented
+/// TODO: Needs weather system (this.field.isWeather)
+/// TODO: Needs forme change system (pokemon.formeChange)
+/// When implemented, should:
+/// 1. Check if field has hail or snowscape weather
+/// 2. Check if pokemon.species.id === 'eiscuenoice'
+/// 3. Add activate message and set effectState.busted = false
+/// 4. Call pokemon.formeChange('Eiscue', this.effect, true)
 pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onDamagePriority(...)
-pub fn on_damage_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// onDamagePriority: 1
+pub const ON_DAMAGE_PRIORITY: i32 = 1;
 
-/// onDamage(...)
+/// onDamage(damage, target, source, effect)
+/// Blocks first physical hit when in Ice Face forme (Eiscue)
+///
+/// TODO: onDamage handler not yet implemented in battle system
+/// When implemented, should:
+/// 1. Check if effect is a Move and category === 'Physical'
+/// 2. Check if target.species.id === 'eiscue'
+/// 3. Add activate message and set effectState.busted = true
+/// 4. Return 0 to negate all damage
 pub fn on_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onCriticalHit(...)
+/// onCriticalHit(target, type, move)
+/// Prevents critical hits from physical moves when in Ice Face forme
+///
+/// TODO: onCriticalHit handler not yet implemented in battle system
+/// When implemented, should:
+/// 1. Check if move.category === 'Physical' && target.species.id === 'eiscue'
+/// 2. Check for substitute and immunity
+/// 3. Return false to prevent critical hit
 pub fn on_critical_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onEffectiveness(...)
+/// onEffectiveness(typeMod, target, type, move)
+/// Sets effectiveness to 0 for physical moves when in Ice Face forme
+///
+/// TODO: onEffectiveness handler not yet implemented in battle system
+/// When implemented, should:
+/// 1. Check if move.category === 'Physical' && target.species.id === 'eiscue'
+/// 2. Check for substitute and immunity
+/// 3. Return 0 to neutralize type effectiveness
 pub fn on_effectiveness(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onUpdate(...)
+/// onUpdate(pokemon)
+/// Changes to Noice forme after taking physical damage
+///
+/// TODO: Needs forme change system (pokemon.formeChange)
+/// When implemented, should:
+/// 1. Check if pokemon.species.id === 'eiscue' && this.effectState.busted
+/// 2. Call pokemon.formeChange('Eiscue-Noice', this.effect, true)
 pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onWeatherChange(...)
+/// onWeatherChange(pokemon, source, sourceEffect)
+/// Restores Ice Face forme when hail/snowscape starts
+///
+/// TODO: onWeatherChange handler not yet implemented
+/// TODO: Needs weather system (this.field.isWeather)
+/// TODO: Needs forme change system (pokemon.formeChange)
+/// When implemented, should:
+/// 1. Check if sourceEffect.suppressWeather (Cloud Nine/Air Lock) - skip if true
+/// 2. Check if pokemon has HP
+/// 3. Check if field has hail or snowscape weather and species is 'eiscuenoice'
+/// 4. Add activate message and set effectState.busted = false
+/// 5. Call pokemon.formeChange('Eiscue', this.effect, true)
 pub fn on_weather_change(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
