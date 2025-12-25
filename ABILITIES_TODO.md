@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~168
-Documented stubs (with detailed TODOs): ~146
+Fully implemented (working code): ~169
+Documented stubs (with detailed TODOs): ~145
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,10 +12,10 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~168 abilities with full or partial working implementations
-- ~146 abilities with detailed TODO documentation explaining what's needed
+- ~169 abilities with full or partial working implementations
+- ~145 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 53.5% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 53.8% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -30,6 +30,7 @@ The majority of un-implemented abilities require infrastructure that doesn't exi
 - Allies system (pokemon.allies(), adjacentAllies(), isAlly()) - **is_ally EXISTS!**
 - Healing system (battle.heal) - **EXISTS!**
 - Type-specific immunity ignoring (ignore_immunity_types) - **EXISTS!**
+- Accuracy modification (onModifyAccuracy) - **EXISTS!**
 
 Each documented ability includes:
 1. Handler function signatures with proper priority constants
@@ -39,11 +40,12 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #8)
 
-Completed implementations (2 changes):
+Completed implementations (3 changes):
 1. **icebody** - Now fully implemented with onWeather handler for healing in hail/snowscape (was partial, only had immunity)
 2. **mindseye** - Now fully implemented with onModifyMove handler, added ignore_immunity_types field to MoveDef for type-specific immunity ignoring
+3. **tangledfeet** - Now fully implemented with onModifyAccuracy handler, halves opponent accuracy when confused
 
-Progress: 166 → 168 abilities implemented (53.5%)
+Progress: 166 → 169 abilities implemented (53.8%)
 
 ## Recent Work (Current Session - Continued #7)
 
