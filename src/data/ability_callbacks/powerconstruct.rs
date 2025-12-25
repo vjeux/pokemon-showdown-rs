@@ -29,13 +29,20 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onResidualOrder(...)
-pub fn on_residual_order(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_RESIDUAL_ORDER: i32 = 29;
 
-/// onResidual(...)
+/// onResidual(pokemon)
+/// Transforms Zygarde to Complete Forme when HP <= 50%
+///
+/// TODO: onResidual handler not yet implemented
+/// TODO: Needs pokemon.baseSpecies, pokemon.transformed, pokemon.hp, pokemon.maxhp, pokemon.species, formeChange(), pokemon.canMegaEvo, pokemon.formeRegression
+/// When implemented, should:
+/// 1. Skip if not Zygarde, transformed, or fainted
+/// 2. Skip if already Zygarde-Complete or HP > 50%
+/// 3. Add activate message
+/// 4. Change forme to Zygarde-Complete
+/// 5. Update canMegaEvo status
+/// 6. Set formeRegression flag
 pub fn on_residual(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
