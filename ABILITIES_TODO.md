@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~127
-Documented stubs (with detailed TODOs): ~187
+Fully implemented (working code): ~130
+Documented stubs (with detailed TODOs): ~184
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,8 +12,8 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~127 abilities with full or partial working implementations (+9 this session)
-- ~187 abilities with detailed TODO documentation explaining what's needed
+- ~130 abilities with full or partial working implementations (+3 this session)
+- ~184 abilities with detailed TODO documentation explaining what's needed
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather)
@@ -25,6 +25,7 @@ The majority of un-implemented abilities require infrastructure that doesn't exi
 - Event system (singleEvent)
 - Transform system
 - Terrain system
+- Allies system (pokemon.allies(), adjacentAllies(), isAlly())
 
 Each documented ability includes:
 1. Handler function signatures with proper priority constants
@@ -32,7 +33,14 @@ Each documented ability includes:
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
 
-## Recent Work (This Session)
+## Recent Work (Current Session)
+
+New implementations (3 abilities):
+1. **fullmetalbody** - Prevents stat reduction (same as Clear Body/White Smoke)
+2. **whitesmoke** - Prevents stat reduction (same as Clear Body/Full Metal Body)
+3. **soundproof** (partial) - Blocks sound-based moves (onTryHit handler)
+
+## Previous Session Work
 
 New implementations (9 abilities):
 1. **motordrive** - Absorbs Electric moves and boosts Speed by 1
