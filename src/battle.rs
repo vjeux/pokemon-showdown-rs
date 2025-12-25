@@ -1978,6 +1978,15 @@ impl Battle {
         let crit_roll = self.random(crit_ratio);
 
         if crit_roll == 0 {
+            // Check if target has an ability that blocks critical hits
+            // onCriticalHit event - if returns False, prevent the crit
+            if let Some(target_pokemon) = self.sides.get(target_side).and_then(|s| s.pokemon.get(target_idx)) {
+                if target_pokemon.ability.as_str() == "battlearmor" || target_pokemon.ability.as_str() == "shellarmor" {
+                    // Ability blocks critical hit - treat as non-crit
+                    return damage.max(1);
+                }
+            }
+
             let target_name = format!("{}: {}", self.sides[target_side].id_str(), defender_name);
             self.add_log("-crit", &[&target_name]);
             // Critical hits: 1.5x damage, ignore burn penalty (for physical), ignore stat drops
