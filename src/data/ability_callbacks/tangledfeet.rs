@@ -33,14 +33,17 @@ pub const ON_MODIFY_ACCURACY_PRIORITY: i32 = -1;
 
 /// onModifyAccuracy(accuracy, target)
 /// Halves opponent accuracy when confused
-///
-/// TODO: onModifyAccuracy handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Check if accuracy is a number (typeof accuracy !== 'number')
-/// 2. Check if target has 'confusion' volatile: target?.volatiles['confusion']
-/// 3. Return chainModify(0.5) to halve accuracy
-pub fn on_modify_accuracy(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_accuracy(_battle: &mut Battle, _accuracy: u32, target: &Pokemon) -> AbilityHandlerResult {
+    // if (typeof accuracy !== 'number') return;
+    // Note: In Rust, accuracy is always u32, so this check is implicit
+
+    // if (target?.volatiles['confusion'])
+    if target.has_volatile(&ID::new("confusion")) {
+        // this.debug('Tangled Feet - decreasing accuracy');
+        // return this.chainModify(0.5);
+        return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
+    }
     AbilityHandlerResult::Undefined
 }
+
 
