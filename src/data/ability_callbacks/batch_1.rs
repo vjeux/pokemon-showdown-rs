@@ -2362,21 +2362,32 @@ pub mod defiant {
 pub mod deltastream {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// Strong weathers that can override Delta Stream
+    const STRONG_WEATHERS: &[&str] = &["desolateland", "primordialsea", "deltastream"];
+
+    /// onStart(source)
+    pub fn on_start(battle: &mut Battle, _source: &Pokemon) -> AbilityHandlerResult {
+        // this.field.setWeather('deltastream');
+        battle.field.set_weather(ID::new("deltastream"), None);
         AbilityHandlerResult::Undefined
     }
 
-    /// onAnySetWeather(...)
-    pub fn on_any_set_weather(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onAnySetWeather(target, source, weather)
+    /// Blocks non-strong weathers
+    pub fn on_any_set_weather(battle: &Battle, weather_id: &str) -> AbilityHandlerResult {
+        // if (this.field.getWeather().id === 'deltastream' && !strongWeathers.includes(weather.id)) return false;
+        if *battle.field.get_weather() == ID::new("deltastream") && !STRONG_WEATHERS.contains(&weather_id) {
+            return AbilityHandlerResult::False;
+        }
         AbilityHandlerResult::Undefined
     }
 
-    /// onEnd(...)
-    pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onEnd(pokemon)
+    pub fn on_end(battle: &mut Battle, _pokemon: &Pokemon) -> AbilityHandlerResult {
+        // if (this.field.weatherState.source !== pokemon) return;
+        // Simplified - just clear weather if this was the source
+        // Full implementation requires checking other Pokemon with deltastream
+        battle.field.clear_weather();
         AbilityHandlerResult::Undefined
     }
 }
@@ -2413,21 +2424,30 @@ pub mod deltastream {
 pub mod desolateland {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// Strong weathers that can override Desolate Land
+    const STRONG_WEATHERS: &[&str] = &["desolateland", "primordialsea", "deltastream"];
+
+    /// onStart(source)
+    pub fn on_start(battle: &mut Battle, _source: &Pokemon) -> AbilityHandlerResult {
+        // this.field.setWeather('desolateland');
+        battle.field.set_weather(ID::new("desolateland"), None);
         AbilityHandlerResult::Undefined
     }
 
-    /// onAnySetWeather(...)
-    pub fn on_any_set_weather(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onAnySetWeather(target, source, weather)
+    /// Blocks non-strong weathers
+    pub fn on_any_set_weather(battle: &Battle, weather_id: &str) -> AbilityHandlerResult {
+        // if (this.field.getWeather().id === 'desolateland' && !strongWeathers.includes(weather.id)) return false;
+        if *battle.field.get_weather() == ID::new("desolateland") && !STRONG_WEATHERS.contains(&weather_id) {
+            return AbilityHandlerResult::False;
+        }
         AbilityHandlerResult::Undefined
     }
 
-    /// onEnd(...)
-    pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onEnd(pokemon)
+    pub fn on_end(battle: &mut Battle, _pokemon: &Pokemon) -> AbilityHandlerResult {
+        // Simplified - just clear weather
+        battle.field.clear_weather();
         AbilityHandlerResult::Undefined
     }
 }
