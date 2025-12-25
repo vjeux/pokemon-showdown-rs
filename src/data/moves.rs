@@ -38,6 +38,7 @@ pub enum MoveTargetType {
     Any,             // Any single Pokemon
     RandomNormal,    // Random adjacent foe
     AllAllies,       // User and all allies
+    Scripted,        // Target is determined by the move's script
 }
 
 impl Default for MoveTargetType {
@@ -162,6 +163,8 @@ pub struct MoveDef {
     pub ignores_evasion: bool,
     /// Bypasses screens (Reflect, Light Screen, Aurora Veil) and Substitute
     pub infiltrates: bool,
+    /// Ignores target redirection effects (Propeller Tail, Stalwart)
+    pub tracks_target: bool,
 }
 
 impl Default for MoveDef {
@@ -215,6 +218,7 @@ impl Default for MoveDef {
             has_sheer_force: false,
             ignores_evasion: false,
             infiltrates: false,
+            tracks_target: false,
         }
     }
 }
