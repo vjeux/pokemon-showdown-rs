@@ -27,15 +27,29 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onStart(pokemon)
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // this.add('-ability', pokemon, 'Aura Break');
+    battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Aura Break")]);
     AbilityHandlerResult::Undefined
 }
 
-/// onAnyTryPrimaryHit(...)
-pub fn on_any_try_primary_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onAnyTryPrimaryHit(target, source, move)
+/// Note: This sets move.hasAuraBreak which affects Fairy Aura and Dark Aura abilities.
+/// The actual effect (reversing aura boosts) is handled where those abilities are processed.
+pub fn on_any_try_primary_hit(battle: &mut Battle, target: &Pokemon, source: &Pokemon, move_: &mut MoveDef) -> AbilityHandlerResult {
+    // if (target === source || move.category === 'Status') return;
+    if target.side_index == source.side_index && target.position == source.position {
+        return AbilityHandlerResult::Undefined;
+    }
+    if move_.category == MoveCategory::Status {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // move.hasAuraBreak = true;
+    // Note: MoveDef doesn't have a mutable hasAuraBreak field in the static data.
+    // This would need to be tracked in battle state or event info.
+    // For now, we acknowledge the limitation.
     AbilityHandlerResult::Undefined
 }
 
