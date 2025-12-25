@@ -39,33 +39,41 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSourceModifyAtkPriority(...)
-pub fn on_source_modify_atk_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onSourceModifyAtkPriority: 6
+pub const ON_SOURCE_MODIFY_ATK_PRIORITY: i32 = 6;
+/// onSourceModifySpAPriority: 5
+pub const ON_SOURCE_MODIFY_SPA_PRIORITY: i32 = 5;
+
+/// onSourceModifyAtk(atk, attacker, defender, move)
+/// Halves Fire-type attack damage
+pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.type === 'Fire')
+    if move_.move_type == "Fire" {
+        // return this.chainModify(0.5);
+        return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onSourceModifyAtk(...)
-pub fn on_source_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onSourceModifySpA(atk, attacker, defender, move)
+/// Halves Fire-type special attack damage
+pub fn on_source_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.type === 'Fire')
+    if move_.move_type == "Fire" {
+        // return this.chainModify(0.5);
+        return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onSourceModifySpAPriority(...)
-pub fn on_source_modify_sp_a_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onSourceModifySpA(...)
-pub fn on_source_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onDamage(...)
-pub fn on_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onDamage(damage, target, source, effect)
+/// Halves burn damage
+pub fn on_damage(damage: u32, _target: &Pokemon, _source: &Pokemon, effect: &Effect) -> AbilityHandlerResult {
+    // if (effect && effect.id === 'brn')
+    if effect.id == "brn" {
+        // return damage / 2;
+        return AbilityHandlerResult::Number((damage / 2) as i32);
+    }
     AbilityHandlerResult::Undefined
 }
 
