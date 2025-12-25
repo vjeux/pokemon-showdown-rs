@@ -32,19 +32,29 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onBasePowerPriority(...)
-pub fn on_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_BASE_POWER_PRIORITY: i32 = 21;
 
-/// onBasePower(...)
+/// onBasePower(basePower, attacker, defender, move)
+/// Boosts Rock/Ground/Steel moves by 1.3x in sandstorm
+///
+/// TODO: onBasePower handler not yet implemented
+/// TODO: Needs field.isWeather(), move.type
+/// When implemented, should:
+/// 1. Check if weather is sandstorm
+/// 2. If move is Rock, Ground, or Steel type
+/// 3. Multiply base power by 5325/4096 (~1.3x)
 pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onImmunity(...)
+/// onImmunity(type, pokemon)
+/// Immune to sandstorm damage
+///
+/// TODO: onImmunity handler not yet implemented
+/// TODO: Needs immunity type checking
+/// When implemented, should:
+/// 1. If type is 'sandstorm', return false (immune)
 pub fn on_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
