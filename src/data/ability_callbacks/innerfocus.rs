@@ -44,7 +44,7 @@ pub fn on_try_add_volatile(battle: &mut Battle, /* TODO: Add parameters */) -> A
 
 /// onTryBoost(boost, target, source, effect)
 /// Prevents Attack reduction from Intimidate
-pub fn on_try_boost(battle: &mut Battle, boost: &mut std::collections::HashMap<String, i8>, target: &Pokemon, source: Option<&Pokemon>, effect_id: &str, has_secondaries: bool) -> AbilityHandlerResult {
+pub fn on_try_boost(battle: &mut Battle, boost: &mut std::collections::HashMap<String, i8>, target: &Pokemon, _source: Option<&Pokemon>, effect_id: &str, _has_secondaries: bool) -> AbilityHandlerResult {
     // if (effect.name === 'Intimidate' && boost.atk)
     if effect_id == "intimidate" {
         if let Some(&atk_boost) = boost.get("atk") {
