@@ -26,15 +26,20 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamagingHitOrder(...)
-pub fn on_damaging_hit_order(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// onDamagingHitOrder: 1
+pub const ON_DAMAGING_HIT_ORDER: i32 = 1;
 
-/// onDamagingHit(...)
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onDamagingHit(damage, target, source, move)
+/// Damages attacker for 1/8 max HP when hit by contact move
+pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (this.checkMoveMakesContact(move, source, target, true))
+    let source_ref = (source.side_index, source.position);
+    if battle.check_move_makes_contact(&move_.id, source_ref) {
+        // this.damage(source.baseMaxhp / 8, source, target);
+        let target_ref = (target.side_index, target.position);
+        let damage_amount = source.base_maxhp / 8;
+        battle.damage(damage_amount, source_ref, Some(target_ref), None);
+    }
     AbilityHandlerResult::Undefined
 }
 
