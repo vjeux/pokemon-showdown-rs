@@ -36,25 +36,35 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyTypePriority(...)
-pub fn on_modify_type_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_MODIFY_TYPE_PRIORITY: i32 = 1;
 
-/// onModifyType(...)
+/// onModifyType(move, pokemon)
+/// Changes most moves to Normal-type
+///
+/// TODO: onModifyType handler not yet implemented
+/// TODO: Needs move.isZ, move.category, move.typeChangerBoosted
+/// TODO: Needs pokemon.terastallized, activeMove.isMax
+/// When implemented, should:
+/// 1. Skip if Z-move (non-status), or certain special moves
+/// 2. Skip Hidden Power, Judgment, Multi-Attack, Natural Gift, etc.
+/// 3. Skip Tera Blast when terastallized
+/// 4. Set move.type = 'Normal'
+/// 5. Set move.typeChangerBoosted = this.effect
 pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onBasePowerPriority(...)
-pub fn on_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_BASE_POWER_PRIORITY: i32 = 23;
 
-/// onBasePower(...)
+/// onBasePower(basePower, pokemon, target, move)
+/// Boosts normalized moves by ~1.2x
+///
+/// TODO: onBasePower handler not yet implemented
+/// TODO: Needs move.typeChangerBoosted check
+/// When implemented, should:
+/// 1. Check if move.typeChangerBoosted === this.effect
+/// 2. Return chainModify(4915, 4096) for ~1.2x boost
 pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
