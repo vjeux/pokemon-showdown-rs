@@ -1863,7 +1863,7 @@ impl Battle {
             "stealthrock" | "spikes" | "toxicspikes" | "stickyweb" | "defog" | "rapidspin" |
             "protect" | "detect" | "substitute" | "recover" | "roost" | "softboiled" | "moonlight" | "synthesis" | "morningsun" |
             "wish" | "healbell" | "aromatherapy" | "haze" | "whirlwind" | "roar" | "dragontail" | "circlethrow" |
-            "taunt" | "encore" | "disable" | "trick" | "switcheroo" | "trickroom" => {
+            "taunt" | "encore" | "disable" | "trick" | "switcheroo" | "trickroom" | "confuseray" | "supersonic" | "sweetkiss" | "teeterdance" => {
                 return (0, false); // Status/hazard/utility moves - no damage
             }
             _ => (50, "Physical", "Normal"), // Default for unknown moves
@@ -2063,101 +2063,42 @@ impl Battle {
 
     /// Get move priority (-7 to +5)
     fn get_move_priority(&self, move_id: &ID) -> i8 {
-        match move_id.as_str() {
-            // +5 priority
-            "helpinghand" => 5,
-            // +4 priority
-            "protect" | "detect" | "endure" | "banefulbunker" | "kingsshield" |
-            "spikyshield" | "obstruct" | "silktrap" => 4,
-            // +3 priority
-            "fakeout" | "quickguard" | "wideguard" => 3,
-            // +2 priority
-            "extremespeed" | "feint" | "firstimpression" | "followme" | "ragepowder" => 2,
-            // +1 priority
-            "aquajet" | "bulletpunch" | "iceshard" | "machpunch" | "quickattack" |
-            "shadowsneak" | "suckerpunch" | "vacuumwave" | "watershuriken" |
-            "babydolleyes" | "accelerock" | "jetpunch" | "grassy glide" => 1,
-            // 0 priority - most moves
-            // -1 priority
-            "vitalthrow" => -1,
-            // -2 priority
-            // -3 priority
-            "focuspunch" => -3,
-            // -4 priority
-            "avalanche" | "revenge" => -4,
-            // -5 priority
-            "counter" | "mirrorcoat" => -5,
-            // -6 priority
-            "circlethrough" | "roar" | "whirlwind" | "dragontail" | "teleport" => -6,
-            // -7 priority
-            "trickroom" => -7,
-            // Default 0 priority
-            _ => 0,
+        // Use move data from MoveDef
+        if let Some(move_def) = crate::data::moves::get_move(move_id) {
+            move_def.priority
+        } else {
+            0 // Default priority for unknown moves
         }
     }
 
     /// Get number of hits for multi-hit moves
     fn get_multi_hit_count(&mut self, move_id: &ID) -> u32 {
-        match move_id.as_str() {
-            // Variable 2-5 hit moves (standard distribution: 35% 2, 35% 3, 15% 4, 15% 5)
-            "bulletseed" | "rockblast" | "iciclespear" | "pinmissile" | "tailslap" |
-            "scaleshot" | "populationbomb" | "watershuriken" => {
+        // Use move data from MoveDef
+        if let Some(move_def) = crate::data::moves::get_move(move_id) {
+            if let Some((min, max)) = move_def.multi_hit {
+                // Variable hit move - distribute as: 35% min, 35% min+1, 15% max-1, 15% max
                 let roll = self.random(100);
-                if roll < 35 { 2 }
-                else if roll < 70 { 3 }
-                else if roll < 85 { 4 }
-                else { 5 }
+                return if roll < 35 {
+                    min as u32
+                } else if roll < 70 {
+                    (min + 1).min(max) as u32
+                } else if roll < 85 {
+                    (max - 1).max(min) as u32
+                } else {
+                    max as u32
+                };
             }
-            // Fixed 2-hit moves
-            "doublekick" | "doublehit" | "dualwingbeat" | "dragondarts" |
-            "doubleironbash" | "geargrind" | "twineedle" | "bonemerang" => 2,
-            // Fixed 3-hit moves
-            "tripleaxel" | "triplekick" => 3,
-            // All other moves hit once
-            _ => 1,
         }
+        1 // Default: single hit
     }
 
     /// Get move accuracy (0-100, where 100+ means never miss)
     fn get_move_accuracy(&self, move_id: &ID) -> u32 {
-        match move_id.as_str() {
-            // Always hit moves (Aerial Ace, Swift, etc.)
-            "aerialace" | "swift" | "magnetbomb" | "shadowpunch" | "feintattack" |
-            "shockwave" | "aurasphere" | "clearsmog" | "disarmingvoice" => 101,
-
-            // Status moves that bypass accuracy
-            "thunderwave" => 90,
-            "willowisp" => 85,
-            "toxic" => 90,
-            "sleeppowder" | "stunspore" | "poisonpowder" => 75,
-            "spore" => 100,
-            "hypnosis" => 60,
-            "sing" | "grasswhistle" | "lovelykiss" => 55,
-
-            // High-power low-accuracy moves
-            "focusblast" => 70,
-            "thunder" => 70,  // Higher in rain
-            "blizzard" => 70, // Higher in hail
-            "fireblast" => 85,
-            "hydropump" => 80,
-            "hurricane" => 70, // Higher in rain
-            "stoneedge" => 80,
-            "crosschop" | "dynamicpunch" | "megakick" => 75,
-            "zapcannon" | "inferno" => 50,
-
-            // Multi-hit moves often have lower accuracy
-            "rockblast" => 90,
-            "bulletseed" => 100,
-            "iciclespear" => 100,
-            "pinmissile" => 95,
-            "tailslap" => 85,
-
-            // Fixed hit moves
-            "doublekick" => 100,
-            "bonemerang" => 90,
-
-            // Standard moves (most are 100%)
-            _ => 100,
+        // Use move data from MoveDef
+        if let Some(move_def) = crate::data::moves::get_move(move_id) {
+            move_def.accuracy as u32
+        } else {
+            100 // Default accuracy for unknown moves
         }
     }
 
@@ -2245,119 +2186,90 @@ impl Battle {
         (base * num / denom).max(1)
     }
 
-    /// Apply secondary effects from a move
-    fn apply_move_secondary(&mut self, attacker_side: usize, _attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) {
+    /// Apply secondary effects from a move (data-driven)
+    fn apply_move_secondary(&mut self, attacker_side: usize, attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) {
+        // Get move definition from data
+        let move_def = match crate::data::moves::get_move(move_id) {
+            Some(def) => def,
+            None => return, // Unknown move, no secondaries
+        };
+
+        // Apply primary move effects (for status moves)
+        // Apply primary status condition
+        if let Some(ref status) = move_def.status {
+            self.apply_status(target_side, target_idx, status);
+        }
+
+        // Apply primary volatile status
+        if let Some(ref volatile) = move_def.volatile_status {
+            self.sides[target_side].pokemon[target_idx].add_volatile(ID::new(volatile));
+        }
+
+        // Apply primary self volatile status
+        if let Some(ref self_volatile) = move_def.self_volatile {
+            self.sides[attacker_side].pokemon[attacker_idx].add_volatile(ID::new(self_volatile));
+        }
+
+        // Apply primary stat boosts to target
+        if let Some(ref boosts) = move_def.boosts {
+            for (stat, stages) in boosts {
+                self.apply_boost(target_side, target_idx, stat, *stages);
+            }
+        }
+
+        // Apply primary self stat boosts
+        if let Some(ref self_boosts) = move_def.self_boosts {
+            for (stat, stages) in self_boosts {
+                self.apply_boost(attacker_side, attacker_idx, stat, *stages);
+            }
+        }
+
+        // Apply primary self stat drops
+        if let Some(ref self_drops) = move_def.self_drops {
+            for (stat, stages) in self_drops {
+                self.apply_boost(attacker_side, attacker_idx, stat, *stages);
+            }
+        }
+
+        // Process secondary effects (with chance)
+        for secondary in &move_def.secondaries {
+            // Roll chance (secondary.chance is 1-100, random(100) gives 0-99)
+            if secondary.chance > 0 && self.random(100) >= secondary.chance as u32 {
+                continue; // Didn't proc
+            }
+
+            // Determine which Pokemon to affect (self_boost flag)
+            let (effect_side, effect_idx) = if secondary.self_boost {
+                (attacker_side, attacker_idx)
+            } else {
+                (target_side, target_idx)
+            };
+
+            // Apply status condition
+            if let Some(ref status) = secondary.status {
+                self.apply_status(effect_side, effect_idx, status);
+            }
+
+            // Apply volatile status
+            if let Some(ref volatile) = secondary.volatile_status {
+                self.sides[effect_side].pokemon[effect_idx].add_volatile(ID::new(volatile));
+            }
+
+            // Apply stat boosts
+            if let Some(ref boosts) = secondary.boosts {
+                for (stat, stages) in boosts {
+                    self.apply_boost(effect_side, effect_idx, stat, *stages);
+                }
+            }
+
+            // Apply flinch
+            if secondary.flinch {
+                self.sides[effect_side].pokemon[effect_idx].add_volatile(ID::new("flinch"));
+            }
+        }
+
+        // Handle move callbacks for complex move logic
         match move_id.as_str() {
-            "thunderbolt" | "thunder" => {
-                // 10% chance to paralyze
-                if self.random(10) == 0 {
-                    self.apply_status(target_side, target_idx, "par");
-                }
-            }
-            "flamethrower" | "fireblast" => {
-                // 10% chance to burn
-                if self.random(10) == 0 {
-                    self.apply_status(target_side, target_idx, "brn");
-                }
-            }
-            "icebeam" | "blizzard" => {
-                // 10% chance to freeze
-                if self.random(10) == 0 {
-                    self.apply_status(target_side, target_idx, "frz");
-                }
-            }
-            "scald" => {
-                // 30% chance to burn
-                if self.random(10) < 3 {
-                    self.apply_status(target_side, target_idx, "brn");
-                }
-            }
-            "bodyslam" => {
-                // 30% chance to paralyze
-                if self.random(10) < 3 {
-                    self.apply_status(target_side, target_idx, "par");
-                }
-            }
-            // Recoil moves
-            "bravebird" | "flareblitz" | "woodhammer" | "headsmash" | "doubleedge" | "takedown" | "wildcharge" => {
-                // These moves have recoil - but we need damage dealt first
-                // Recoil will be applied after damage in run_move
-            }
-            // Close Combat - lowers user's Def and SpD
-            "closecombat" => {
-                self.apply_boost(attacker_side, target_idx, "def", -1);
-                self.apply_boost(attacker_side, target_idx, "spd", -1);
-            }
-            // Crunch - 20% chance to lower Defense
-            "crunch" => {
-                if self.random(5) == 0 {
-                    self.apply_boost(target_side, target_idx, "def", -1);
-                }
-            }
-            // Psychic - 10% chance to lower SpD
-            "psychic" => {
-                if self.random(10) == 0 {
-                    self.apply_boost(target_side, target_idx, "spd", -1);
-                }
-            }
-            // Shadow Ball - 20% chance to lower SpD
-            "shadowball" => {
-                if self.random(5) == 0 {
-                    self.apply_boost(target_side, target_idx, "spd", -1);
-                }
-            }
-            // Sludge Bomb - 30% chance to poison
-            "sludgebomb" => {
-                if self.random(10) < 3 {
-                    self.apply_status(target_side, target_idx, "psn");
-                }
-            }
-            // Flinch moves - 30% flinch
-            "ironhead" | "airslash" | "zenheadbutt" | "bite" | "darkpulse" | "twister" |
-            "headbutt" | "rockslide" | "snore" | "waterfall" | "astonish" | "iciclecrash" => {
-                if self.random(10) < 3 {
-                    self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flinch"));
-                }
-            }
-            // Flinch moves - 10% flinch
-            "stomp" | "extrasensory" | "dragon rush" | "needle arm" => {
-                if self.random(10) == 0 {
-                    self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flinch"));
-                }
-            }
-            // Fake Out always flinches (but only works on first turn - not implemented)
-            "fakeout" => {
-                self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flinch"));
-            }
-            "thunderwave" => {
-                self.apply_status(target_side, target_idx, "par");
-            }
-            "willowisp" => {
-                self.apply_status(target_side, target_idx, "brn");
-            }
-            "toxic" => {
-                self.apply_status(target_side, target_idx, "tox");
-            }
-            "spore" | "sleeppowder" => {
-                self.apply_status(target_side, target_idx, "slp");
-            }
-            "swordsdance" => {
-                self.apply_boost(attacker_side, target_idx, "atk", 2);
-            }
-            "nastyplot" => {
-                self.apply_boost(attacker_side, target_idx, "spa", 2);
-            }
-            "calmmind" => {
-                self.apply_boost(attacker_side, target_idx, "spa", 1);
-                self.apply_boost(attacker_side, target_idx, "spd", 1);
-            }
-            "bulkup" => {
-                self.apply_boost(attacker_side, target_idx, "atk", 1);
-                self.apply_boost(attacker_side, target_idx, "def", 1);
-            }
-            "agility" => {
-                self.apply_boost(attacker_side, target_idx, "spe", 2);
-            }
             "acupressure" => {
                 // Randomly boosts one stat that is below +6 by 2 stages
                 // Collect stats that are below +6
@@ -2409,6 +2321,68 @@ impl Battle {
                     let confusion_id = ID::new("confusion");
                     self.sides[target_side].pokemon[target_idx].add_volatile(confusion_id);
                 }
+            }
+            "allyswitch" => {
+                // Ally Switch swaps positions with an ally in doubles/triples
+                // Fail if not doubles/triples
+                if self.active_per_half == 1 {
+                    let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
+                    self.add("-fail", &[
+                        Arg::String(pokemon_name.clone()),
+                        Arg::Str("move: Ally Switch")
+                    ]);
+                    return;
+                }
+
+                // Get current position
+                let current_position = self.sides[attacker_side].pokemon[attacker_idx].position;
+
+                // In doubles, swap with position 0 if at 1, or position 1 if at 0
+                // In triples, fail if in middle (position 1)
+                let new_position = if self.active_per_half == 3 && current_position == 1 {
+                    // Fail in triples if in the middle
+                    let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
+                    self.add("-fail", &[
+                        Arg::String(pokemon_name.clone()),
+                        Arg::Str("move: Ally Switch")
+                    ]);
+                    return;
+                } else if current_position == 0 {
+                    self.active_per_half - 1
+                } else {
+                    0
+                };
+
+                // Check if there's a Pokemon at the new position
+                if let Some(Some(ally_idx)) = self.sides[attacker_side].active.get(new_position) {
+                    let ally_fainted = self.sides[attacker_side].pokemon[*ally_idx].is_fainted();
+                    if ally_fainted {
+                        let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
+                        self.add("-fail", &[
+                            Arg::String(pokemon_name.clone()),
+                            Arg::Str("move: Ally Switch")
+                        ]);
+                        return;
+                    }
+
+                    // Perform the swap
+                    self.swap_position((attacker_side, attacker_idx), (attacker_side, *ally_idx));
+
+                    // Log the swap
+                    let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
+                    self.add("-activate", &[
+                        Arg::String(pokemon_name.clone()),
+                        Arg::Str("[from] move: Ally Switch")
+                    ]);
+                } else {
+                    // No ally at that position
+                    let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
+                    self.add("-fail", &[
+                        Arg::String(pokemon_name.clone()),
+                        Arg::Str("move: Ally Switch")
+                    ]);
+                }
+                // TODO: Implement diminishing returns mechanic (counter that triples on each use)
             }
             // Entry hazard moves - set on opponent's side
             "stealthrock" => {
