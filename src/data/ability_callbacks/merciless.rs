@@ -23,9 +23,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyCritRatio(...)
+/// onModifyCritRatio(critRatio, source, target)
+/// Always crits poisoned foes
+///
+/// TODO: onModifyCritRatio handler not yet implemented
+/// When implemented, should:
+/// 1. Check if target has status 'psn' or 'tox'
+/// 2. Return crit ratio 5 (guaranteed crit)
 pub fn on_modify_crit_ratio(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // if (target && ['psn', 'tox'].includes(target.status)) return 5;
     AbilityHandlerResult::Undefined
 }
 
