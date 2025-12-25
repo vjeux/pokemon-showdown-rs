@@ -23,9 +23,11 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onEatItem(...)
-pub fn on_eat_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onEatItem(item, pokemon)
+pub fn on_eat_item(battle: &mut Battle, _item_id: &str, pokemon: &Pokemon) -> AbilityHandlerResult {
+    let pokemon_ref = (pokemon.side_index, pokemon.position);
+    // this.heal(pokemon.baseMaxhp / 3);
+    let heal_amount = pokemon.base_maxhp / 3;
+    battle.heal(heal_amount, pokemon_ref, Some(pokemon_ref), None);
     AbilityHandlerResult::Undefined
 }
-
