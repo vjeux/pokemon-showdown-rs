@@ -1772,6 +1772,13 @@ impl Battle {
                         self.apply_status(attacker_side, attacker_idx, "brn");
                     }
                 }
+
+                // Poison Point: 30% chance to poison attacker on contact
+                if defender_ability == "poisonpoint" {
+                    if self.random_chance(3, 10) {
+                        self.apply_status(attacker_side, attacker_idx, "psn");
+                    }
+                }
             }
         }
 
