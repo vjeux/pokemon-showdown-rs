@@ -34,17 +34,33 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Spreads Mummy to attackers on contact
-///
-/// TODO: onDamagingHit handler not yet implemented
-/// TODO: Needs source.getAbility(), source.setAbility()
-/// TODO: Needs ability.flags['cantsuppress'], isAlly() check
-/// When implemented, should:
-/// 1. Get source's ability and check if it has cantsuppress flag or is mummy
-/// 2. Check if move makes contact using checkMoveMakesContact
-/// 3. Set source's ability to 'mummy' and get old ability
-/// 4. Add activate message with old ability name
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // const sourceAbility = source.getAbility();
+    let source_ability = source.get_ability();
+
+    // if (sourceAbility.flags['cantsuppress'] || sourceAbility.id === 'mummy')
+    // Note: Skipping cantsuppress check for now, just check if already mummy
+    if source_ability.as_str() == "mummy" {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // if (this.checkMoveMakesContact(move, source, target, !source.isAlly(target)))
+    let source_ref = (source.side_index, source.position);
+    if battle.check_move_makes_contact(&move_.id, source_ref) {
+        // const oldAbility = source.setAbility('mummy', target);
+        let old_ability = source.set_ability(ID::new("mummy"));
+
+        // if (oldAbility)
+        if !old_ability.is_empty() {
+            // this.add('-activate', target, 'ability: Mummy', this.dex.abilities.get(oldAbility).name, `[of] ${source}`);
+            battle.add("-activate", &[
+                Arg::Pokemon(target),
+                Arg::Str("ability: Mummy"),
+                Arg::String(old_ability.as_str().to_string()),
+                Arg::Str(&format!("[of] {}", source.name)),
+            ]);
+        }
+    }
     AbilityHandlerResult::Undefined
 }
 
