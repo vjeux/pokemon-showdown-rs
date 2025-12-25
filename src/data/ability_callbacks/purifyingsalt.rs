@@ -48,26 +48,26 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onSetStatus(status, target, source, effect)
 /// Prevents all status conditions
-///
-/// TODO: onSetStatus handler not yet implemented
-/// TODO: Needs effect checking
-/// When implemented, should:
-/// 1. If effect has status property, add immune message
-/// 2. Return false to prevent any status
-pub fn on_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+pub fn on_set_status(battle: &mut Battle, _status: &Status, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if ((effect as Move)?.status)
+    if effect.status.is_some() {
+        // this.add('-immune', target, '[from] ability: Purifying Salt');
+        battle.add("-immune", &[Arg::Pokemon(target), Arg::Str("[from] ability: Purifying Salt")]);
+    }
+    // return false;
+    AbilityHandlerResult::False
 }
 
 /// onTryAddVolatile(status, target)
 /// Prevents Yawn
-///
-/// TODO: onTryAddVolatile handler not yet implemented
-/// TODO: Needs status.id
-/// When implemented, should:
-/// 1. If status is yawn, add immune message and return null to prevent it
-pub fn on_try_add_volatile(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_add_volatile(battle: &mut Battle, status: &Status, target: &Pokemon) -> AbilityHandlerResult {
+    // if (status.id === 'yawn')
+    if status.id == "yawn" {
+        // this.add('-immune', target, '[from] ability: Purifying Salt');
+        battle.add("-immune", &[Arg::Pokemon(target), Arg::Str("[from] ability: Purifying Salt")]);
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
 
@@ -75,13 +75,13 @@ pub const ON_SOURCE_MODIFY_ATK_PRIORITY: i32 = 6;
 
 /// onSourceModifyAtk(atk, attacker, defender, move)
 /// Halves damage from Ghost-type moves (Atk)
-///
-/// TODO: onSourceModifyAtk handler not yet implemented
-/// TODO: Needs move.type
-/// When implemented, should:
-/// 1. If move is Ghost-type, return chainModify(0.5)
-pub fn on_source_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.type === 'Ghost')
+    if move_.move_type == "Ghost" {
+        // this.debug('Purifying Salt weaken');
+        // return this.chainModify(0.5);
+        return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
+    }
     AbilityHandlerResult::Undefined
 }
 
@@ -89,13 +89,13 @@ pub const ON_SOURCE_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// onSourceModifySpA(spa, attacker, defender, move)
 /// Halves damage from Ghost-type moves (SpA)
-///
-/// TODO: onSourceModifySpA handler not yet implemented
-/// TODO: Needs move.type
-/// When implemented, should:
-/// 1. If move is Ghost-type, return chainModify(0.5)
-pub fn on_source_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_source_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.type === 'Ghost')
+    if move_.move_type == "Ghost" {
+        // this.debug('Purifying Salt weaken');
+        // return this.chainModify(0.5);
+        return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
+    }
     AbilityHandlerResult::Undefined
 }
 
