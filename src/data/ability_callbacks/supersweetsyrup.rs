@@ -32,7 +32,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
+/// onStart(pokemon)
+/// Lowers Evasion of adjacent foes by 1 on switch-in (once per switch)
+///
+/// TODO: onStart handler not yet implemented
+/// TODO: Needs pokemon.syrupTriggered state tracking, pokemon.adjacentFoes(), target.volatiles['substitute'], battle.boost()
+/// When implemented, should:
+/// 1. Check if pokemon.syrupTriggered is true (already triggered this switch-in)
+/// 2. Set pokemon.syrupTriggered = true
+/// 3. Add ability message: battle.add('-ability', pokemon, 'Supersweet Syrup')
+/// 4. Loop through pokemon.adjacentFoes()
+/// 5. For each target: if has substitute, show immune, else boost evasion -1
 pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
