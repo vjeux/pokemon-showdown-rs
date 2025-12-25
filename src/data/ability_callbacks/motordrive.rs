@@ -28,7 +28,15 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onTryHit(...)
+/// onTryHit(target, source, move)
+/// Absorbs Electric moves and boosts Speed by 1
+///
+/// TODO: onTryHit handler not yet implemented
+/// When implemented, should:
+/// 1. Check if target !== source && move.type === 'Electric'
+/// 2. Try to boost Speed by 1
+/// 3. If boost fails (already at +6), add immune message
+/// 4. Return null to prevent move from hitting
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
