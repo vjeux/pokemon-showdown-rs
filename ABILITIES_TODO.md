@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~184
-Documented stubs (with detailed TODOs): ~130
+Fully implemented (working code): ~185
+Documented stubs (with detailed TODOs): ~129
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 58.6% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 58.9% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,7 +40,7 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #10)
 
-Completed implementations (8 changes):
+Completed implementations (9 changes):
 1. **simple** - Doubles all stat changes with on_change_boost handler
 2. **owntempo** - Fully implemented by adding onHit handler for confusion immunity
 3. **synchronize** - Reflects status conditions to attacker with on_after_set_status handler
@@ -49,8 +49,9 @@ Completed implementations (8 changes):
 6. **poisontouch** - 30% chance to poison on contact with on_source_damaging_hit handler
 7. **powerspot** - Boosts ally moves by 1.3x with on_ally_base_power handler
 8. **primordialsea** - Sets Primordial Sea weather, prevents override, transfers source on end
+9. **queenlymajesty** - Blocks priority moves from opponents and allies with on_foe_try_move handler
 
-Progress: 176 → 184 abilities implemented (58.6%)
+Progress: 176 → 185 abilities implemented (58.9%)
 
 ## Recent Work (Current Session - Continued #9)
 
