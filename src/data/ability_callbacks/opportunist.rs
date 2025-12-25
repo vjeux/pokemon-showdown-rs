@@ -61,57 +61,9 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onFoeAfterBoost(...)
-pub fn on_foe_after_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onAnySwitchInPriority(...)
-pub fn on_any_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onAnySwitchIn(...)
-pub fn on_any_switch_in(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onAnyAfterMega(...)
-pub fn on_any_after_mega(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onAnyAfterTerastallization(...)
-pub fn on_any_after_terastallization(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onAnyAfterMove(...)
-pub fn on_any_after_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onResidualOrder(...)
-pub fn on_residual_order(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onResidual(...)
-pub fn on_residual(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onEnd(...)
-pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// Complex ability - copies positive stat boosts from opponents
+/// TODO: Needs effectState.boosts tracking across multiple handlers
+/// TODO: onFoeAfterBoost, onAnySwitchIn, onAnyAfterMega, onAnyAfterTerastallization, onAnyAfterMove, onResidual, onEnd
+pub const ON_ANY_SWITCH_IN_PRIORITY: i32 = -3;
+pub const ON_RESIDUAL_ORDER: i32 = 29;
 
