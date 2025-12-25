@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~149
-Documented stubs (with detailed TODOs): ~165
+Fully implemented (working code): ~150
+Documented stubs (with detailed TODOs): ~164
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -37,7 +37,7 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #2)
 
-New implementations (10 changes):
+New implementations (11 changes):
 1. **sandspit** - Sets sandstorm when hit by damaging move
 2. **seedsower** - Sets Grassy Terrain when hit by damaging move
 3. **mummy** - Spreads Mummy ability to attackers on contact
@@ -45,9 +45,10 @@ New implementations (10 changes):
 5. **beadsofruin** (improved) - Added suppressingAbility check, reduces SpD by 25% (needs onAnyModifySpD handler)
 6. **screencleaner** - Removes Reflect/Light Screen/Aurora Veil from all sides on switch-in
 7. **serenegrace** (partial) - Doubles secondary effect chances (move.self.chance not yet supported)
-8. **tabletsofruin** (partial) - Added suppressingAbility check, reduces Attack by 25% (needs onAnyModifyAtk handler)
-9. **swordofruin** (partial) - Added suppressingAbility check, reduces Defense by 25% (needs onAnyModifyDef handler)
-10. **vesselofruin** (partial) - Added suppressingAbility check, reduces Special Attack by 25% (needs onAnyModifySpA handler)
+8. **tabletsofruin** (partial) - Reduces Attack by 25% (needs onAnyModifyAtk handler)
+9. **swordofruin** (partial) - Reduces Defense by 25% (needs onAnyModifyDef handler)
+10. **vesselofruin** (partial) - Reduces Special Attack by 25% (needs onAnyModifySpA handler)
+11. **hydration** (partial) - Cures status in rain (needs onResidual handler)
 
 All four "Treasures of Ruin" legendary abilities now implemented!
 
@@ -55,6 +56,7 @@ Note: Discovered weather and terrain systems already exist in field.rs!
 Note: Discovered ability manipulation (set_ability, get_ability) already exists in pokemon.rs!
 Note: Discovered suppressingAbility method already exists in battle.rs!
 Note: Discovered side condition system (has_side_condition, remove_side_condition) already exists in side.rs!
+Note: Discovered Pokemon status system (status field, cure_status method) already exists in pokemon.rs!
 
 New implementations (4 changes):
 1. **poisonpoint** - 30% chance to poison attacker on contact (onDamagingHit handler)
