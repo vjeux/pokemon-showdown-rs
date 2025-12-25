@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~160
-Documented stubs (with detailed TODOs): ~154
+Fully implemented (working code): ~161
+Documented stubs (with detailed TODOs): ~153
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,10 +12,10 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~160 abilities with full or partial working implementations
-- ~154 abilities with detailed TODO documentation explaining what's needed
+- ~161 abilities with full or partial working implementations
+- ~153 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: All abilities that can be implemented with existing handler infrastructure have been completed. The remaining 154 abilities require battle engine infrastructure that doesn't exist yet (see below).
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 51.3% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -34,6 +34,13 @@ Each documented ability includes:
 2. Detailed TODO comments explaining required systems
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
+
+## Recent Work (Current Session - Continued #5)
+
+New implementations (1 change):
+1. **merciless** - Always crits poisoned foes (onModifyCritRatio handler)
+
+Progress: 160 → 161 abilities implemented (51.3%)
 
 ## Recent Work (Current Session - Continued #4)
 
