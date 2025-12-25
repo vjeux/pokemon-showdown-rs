@@ -37,10 +37,11 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #5)
 
-New implementations (1 change):
+New implementations (2 changes):
 1. **merciless** - Always crits poisoned foes (onModifyCritRatio handler)
+2. **sniper** - Boosts damage by 1.5x on critical hits (onModifyDamage handler)
 
-Progress: 160 → 161 abilities implemented (51.3%)
+Progress: 160 → 162 abilities implemented (51.6%)
 
 ## Recent Work (Current Session - Continued #4)
 
