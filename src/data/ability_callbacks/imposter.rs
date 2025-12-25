@@ -30,7 +30,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSwitchIn(...)
+/// onSwitchIn(pokemon)
+/// Transforms into opponent across from it when switching in
+///
+/// TODO: onSwitchIn handler not yet implemented
+/// TODO: Needs pokemon.side.foe.active array access
+/// TODO: Needs pokemon.transformInto() method
+/// When implemented, should:
+/// 1. Get target from opposite side: pokemon.side.foe.active[foe.active.length - 1 - pokemon.position]
+/// 2. If target exists, call pokemon.transformInto(target, ability)
+/// Note: Only activates on natural switch-in, not Skill Swap or Neutralizing Gas
 pub fn on_switch_in(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
