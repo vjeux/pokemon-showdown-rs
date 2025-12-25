@@ -32,13 +32,26 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onTryBoost(...)
+/// onTryBoost(boost, target, source, effect)
+/// Prevents accuracy reduction from opponents
+///
+/// TODO: onTryBoost handler not yet implemented in battle system
+/// When implemented, should:
+/// 1. Return early if source && target === source (self-inflicted)
+/// 2. Check if boost.accuracy exists and is negative
+/// 3. Delete boost.accuracy to prevent the reduction
+/// 4. Add fail message if not from a secondary effect
 pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
 }
 
-/// onModifyMove(...)
+/// onModifyMove(move)
+/// Makes all moves ignore evasion
+///
+/// TODO: onModifyMove handler not yet implemented in battle system
+/// When implemented, should:
+/// 1. Set move.ignoreEvasion = true
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
