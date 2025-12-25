@@ -32,14 +32,28 @@ use super::{AbilityHandlerResult, Status, Effect};
 /// onSourceDamagingHit(damage, target, source, move)
 /// 30% chance to poison the target when hitting with a contact move
 ///
-/// TODO: onSourceDamagingHit handler not yet implemented
-/// TODO: Needs target.hasAbility(), target.hasItem(), checkMoveMakesContact(), randomChance(), target.trySetStatus()
-/// When implemented, should:
-/// 1. Skip if target has Shield Dust ability or Covert Cloak item
-/// 2. Check if move makes contact
-/// 3. If so, 30% chance (3/10) to try to poison the target
-pub fn on_source_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// TODO: onSourceDamagingHit handler not yet called by battle engine
+/// TODO: Item checking (hasItem) not yet available
+/// TODO: Needs mutable target reference to call try_set_status
+pub fn on_source_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // Despite not being a secondary, Shield Dust / Covert Cloak block Poison Touch's effect
+    // if (target.hasAbility('shielddust') || target.hasItem('covertcloak')) return;
+    if target.ability.as_str() == "shielddust" {
+        return AbilityHandlerResult::Undefined;
+    }
+    // TODO: target.hasItem('covertcloak') check not yet available
+
+    // if (this.checkMoveMakesContact(move, target, source))
+    let source_ref = (source.side_index, source.position);
+    if battle.check_move_makes_contact(&move_.id, source_ref) {
+        // if (this.randomChance(3, 10))
+        if battle.random_chance(3, 10) {
+            // target.trySetStatus('psn', source);
+            // TODO: Would need mutable target to call try_set_status
+            // For now, this is implemented as far as possible without that
+        }
+    }
+
     AbilityHandlerResult::Undefined
 }
 
