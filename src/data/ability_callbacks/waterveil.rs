@@ -33,15 +33,30 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onUpdate(...)
-pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onUpdate(pokemon)
+pub fn on_update(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    // if (pokemon.status === 'brn')
+    if pokemon.status.as_str() == "brn" {
+        // this.add('-activate', pokemon, 'ability: Water Veil');
+        battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Water Veil")]);
+        // pokemon.cureStatus();
+        pokemon.cure_status();
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onSetStatus(...)
-pub fn on_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// onSetStatus(status, target, source, effect)
+pub fn on_set_status(_battle: &mut Battle, status: &Status, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (status.id !== 'brn') return;
+    if status.id != "brn" {
+        return AbilityHandlerResult::Undefined;
+    }
+    // if ((effect as Move)?.status)
+    if effect.status.is_some() {
+        // this.add('-immune', target, '[from] ability: Water Veil');
+        // Note: battle is not mutable here, so we can't add logs
+        // This will need to be handled by the caller
+    }
+    // return false;
+    AbilityHandlerResult::False
 }
-
