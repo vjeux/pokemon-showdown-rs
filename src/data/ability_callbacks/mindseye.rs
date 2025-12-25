@@ -40,15 +40,31 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onTryBoost(boost, target, source, effect)
 /// Prevents accuracy drops
-///
-/// TODO: onTryBoost handler not yet implemented
-/// TODO: Needs boost object manipulation (delete boost.accuracy)
-/// When implemented, should:
-/// 1. Skip if source === target (self-inflicted)
-/// 2. If boost.accuracy < 0, delete boost.accuracy
-/// 3. Add fail message unless effect has secondaries
-pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_boost(battle: &mut Battle, boost: &mut std::collections::HashMap<String, i8>, target: &Pokemon, source: Option<&Pokemon>, _effect_id: &str, has_secondaries: bool) -> AbilityHandlerResult {
+    // if (source && target === source) return;
+    if let Some(src) = source {
+        if (target.side_index, target.position) == (src.side_index, src.position) {
+            return AbilityHandlerResult::Undefined;
+        }
+    }
+    // if (boost.accuracy && boost.accuracy < 0)
+    if let Some(&accuracy_boost) = boost.get("accuracy") {
+        if accuracy_boost < 0 {
+            // delete boost.accuracy;
+            boost.remove("accuracy");
+            // if (!(effect as ActiveMove).secondaries)
+            if !has_secondaries {
+                // this.add("-fail", target, "unboost", "accuracy", "[from] ability: Mind's Eye", `[of] ${target}`);
+                battle.add("-fail", &[
+                    Arg::Pokemon(target),
+                    Arg::Str("unboost"),
+                    Arg::Str("accuracy"),
+                    Arg::Str("[from] ability: Mind's Eye"),
+                    Arg::Str(&format!("[of] {}", target.position))
+                ]);
+            }
+        }
+    }
     AbilityHandlerResult::Undefined
 }
 
