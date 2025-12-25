@@ -24,7 +24,14 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifySecondaries(...)
+/// onModifySecondaries(secondaries)
+/// Blocks secondary effects from opponent's moves
+///
+/// TODO: onModifySecondaries handler not yet implemented
+/// TODO: Needs secondaries array filtering, effect.self checking
+/// When implemented, should:
+/// 1. Filter secondaries array to only keep effects with effect.self (self-targeting effects)
+/// 2. Return filtered array to block opponent-targeting secondaries
 pub fn on_modify_secondaries(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
