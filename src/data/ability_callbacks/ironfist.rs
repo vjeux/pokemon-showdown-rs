@@ -27,15 +27,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onBasePowerPriority(...)
-pub fn on_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_BASE_POWER_PRIORITY: i32 = 23;
 
-/// onBasePower(...)
-pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onBasePower(basePower, attacker, defender, move)
+/// Boosts punching moves by 1.2x
+pub fn on_base_power(_base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.flags['punch'])
+    if move_.flags.punch {
+        // return this.chainModify([4915, 4096]);
+        return AbilityHandlerResult::ChainModify(4915, 4096); // ~1.2x
+    }
     AbilityHandlerResult::Undefined
 }
 
