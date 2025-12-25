@@ -2602,9 +2602,17 @@ pub mod electromorphosis {
 pub mod embodyaspectcornerstone {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    pub fn on_start(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+        // Check if Ogerpon-Cornerstone-Tera and terastallized
+        if pokemon.species_id == ID::new("ogerponcornerstontera")
+            && pokemon.terastallized.is_some()
+            && !pokemon.ability_state.data.contains_key("embodied")
+        {
+            pokemon.ability_state.data.insert("embodied".to_string(), serde_json::Value::Bool(true));
+            let pokemon_ref = (pokemon.side_index, pokemon.position);
+            battle.boost(&[("def", 1)], pokemon_ref, None, None);
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -2630,9 +2638,17 @@ pub mod embodyaspectcornerstone {
 pub mod embodyaspecthearthflame {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    pub fn on_start(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+        // Check if Ogerpon-Hearthflame-Tera and terastallized
+        if pokemon.species_id == ID::new("ogerponhearthflametera")
+            && pokemon.terastallized.is_some()
+            && !pokemon.ability_state.data.contains_key("embodied")
+        {
+            pokemon.ability_state.data.insert("embodied".to_string(), serde_json::Value::Bool(true));
+            let pokemon_ref = (pokemon.side_index, pokemon.position);
+            battle.boost(&[("atk", 1)], pokemon_ref, None, None);
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -2658,9 +2674,17 @@ pub mod embodyaspecthearthflame {
 pub mod embodyaspectteal {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    pub fn on_start(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+        // Check if Ogerpon-Teal-Tera and terastallized
+        if pokemon.species_id == ID::new("ogerpontealtera")
+            && pokemon.terastallized.is_some()
+            && !pokemon.ability_state.data.contains_key("embodied")
+        {
+            pokemon.ability_state.data.insert("embodied".to_string(), serde_json::Value::Bool(true));
+            let pokemon_ref = (pokemon.side_index, pokemon.position);
+            battle.boost(&[("spe", 1)], pokemon_ref, None, None);
+        }
         AbilityHandlerResult::Undefined
     }
 }
@@ -2686,9 +2710,17 @@ pub mod embodyaspectteal {
 pub mod embodyaspectwellspring {
     use super::*;
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    pub fn on_start(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+        // Check if Ogerpon-Wellspring-Tera and terastallized
+        if pokemon.species_id == ID::new("ogerponwellspringtera")
+            && pokemon.terastallized.is_some()
+            && !pokemon.ability_state.data.contains_key("embodied")
+        {
+            pokemon.ability_state.data.insert("embodied".to_string(), serde_json::Value::Bool(true));
+            let pokemon_ref = (pokemon.side_index, pokemon.position);
+            battle.boost(&[("spd", 1)], pokemon_ref, None, None);
+        }
         AbilityHandlerResult::Undefined
     }
 }
