@@ -23,9 +23,10 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamagingHit(...)
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onDamagingHit(damage, target, source, effect)
+pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &Pokemon, _effect: &Effect) -> AbilityHandlerResult {
+    let target_ref = (target.side_index, target.position);
+    // this.boost({ def: 1 });
+    battle.boost(&[("def", 1)], target_ref, Some(target_ref), None);
     AbilityHandlerResult::Undefined
 }
-
