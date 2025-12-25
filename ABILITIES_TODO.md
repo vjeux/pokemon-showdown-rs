@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~211
-Documented stubs (with detailed TODOs): ~103
+Fully implemented (working code): ~213
+Documented stubs (with detailed TODOs): ~101
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 67.2% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 67.8% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -33,6 +33,7 @@ The majority of un-implemented abilities require infrastructure that doesn't exi
 - Accuracy modification (onModifyAccuracy) - **EXISTS!**
 - Random chance system (randomChance) - **EXISTS!**
 - Critical hit blocking (onCriticalHit) - **EXISTS!**
+- Random selection (battle.random) - **EXISTS!**
 
 Each documented ability includes:
 1. Handler function signatures with proper priority constants
@@ -42,20 +43,22 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #13)
 
-Completed implementations (3 changes):
+Completed implementations (5 changes):
 1. **healer** - 30% chance to cure adjacent ally status at end of turn with onResidual handler
 2. **battlearmor** - Blocks critical hits with onCriticalHit infrastructure
 3. **shellarmor** - Blocks critical hits (same as Battle Armor)
+4. **speedboost** - Boosts Speed by 1 stage at end of turn (after first turn)
+5. **moody** - Randomly raises one stat by 2 and lowers another by 1 each turn
 
-Progress: 208 → 211 abilities implemented (67.2%)
+Progress: 208 → 213 abilities implemented (67.8%)
 
 Major infrastructure added:
 - onCriticalHit event checking in damage calculation
 - Checks for battlearmor and shellarmor abilities before applying critical hit multiplier
+- Continued leveraging onResidual infrastructure for more abilities
 
-Note: Implemented using two-phase borrow pattern for healer to avoid borrow checker issues when calling
-random_chance() while iterating over allies. Added critical hit blocking infrastructure that can be
-extended to support other abilities that modify critical hit behavior.
+Note: Demonstrated two-phase borrow pattern for moody to handle random selection while collecting
+boost data. All onResidual abilities use inline implementations to avoid borrow checker issues.
 
 ## Recent Work (Current Session - Continued #12)
 
