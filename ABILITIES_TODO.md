@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~146
-Documented stubs (with detailed TODOs): ~168
+Fully implemented (working code): ~147
+Documented stubs (with detailed TODOs): ~167
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -37,7 +37,7 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #2)
 
-New implementations (7 changes):
+New implementations (8 changes):
 1. **sandspit** - Sets sandstorm when hit by damaging move
 2. **seedsower** - Sets Grassy Terrain when hit by damaging move
 3. **mummy** - Spreads Mummy ability to attackers on contact
@@ -45,6 +45,7 @@ New implementations (7 changes):
 5. **beadsofruin** (improved) - Added suppressingAbility check, reduces SpD by 25% (needs onAnyModifySpD handler in battle engine)
 6. **screencleaner** - Removes Reflect/Light Screen/Aurora Veil from all sides on switch-in
 7. **serenegrace** (partial) - Doubles secondary effect chances (move.self.chance not yet supported)
+8. **tabletsofruin** (partial) - Added suppressingAbility check, reduces Attack by 25% (needs onAnyModifyAtk handler in battle engine)
 
 Note: Discovered weather and terrain systems already exist in field.rs!
 Note: Discovered ability manipulation (set_ability, get_ability) already exists in pokemon.rs!
