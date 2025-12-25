@@ -107,6 +107,7 @@ pub mod harvest;
 pub mod healer;
 pub mod heatproof;
 pub mod heavymetal;
+pub mod honeygather;
 pub mod hospitality;
 pub mod hugepower;
 pub mod hungerswitch;
