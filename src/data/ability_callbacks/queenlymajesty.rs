@@ -33,7 +33,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onFoeTryMove(...)
+/// onFoeTryMove(target, source, move)
+/// Blocks priority moves from opponents and allies (similar to Dazzling)
+///
+/// TODO: onFoeTryMove handler not yet implemented
+/// TODO: Needs move.target, move.id, source.isAlly(), move.priority, effectState.target
+/// When implemented, should:
+/// 1. Allow moves targeting foeSide or all (except perishsong, flowershield, rototiller)
+/// 2. If source is ally or move targets all, and move priority > 0.1
+/// 3. Set move to [still], add cant message with ability holder
+/// 4. Return false to block the move
 pub fn on_foe_try_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
