@@ -167,6 +167,7 @@ pub mod myceliummight;
 pub mod naturalcure;
 pub mod neuroforce;
 pub mod neutralizinggas;
+pub mod noability;
 pub mod noguard;
 pub mod normalize;
 pub mod oblivious;
