@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~213
-Documented stubs (with detailed TODOs): ~101
+Fully implemented (working code): ~216
+Documented stubs (with detailed TODOs): ~98
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 67.8% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 68.8% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,6 +40,20 @@ Each documented ability includes:
 2. Detailed TODO comments explaining required systems
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
+
+## Recent Work (Current Session - Continued #14)
+
+Completed implementations (4 changes):
+1. **shedskin** - 33% chance to cure status each turn with onResidual handler
+2. **adaptability** - Increases STAB from 1.5x to 2x with onModifySTAB infrastructure
+3. **aftermath** - Damages attacker by 1/4 max HP when KO'd by contact move
+
+Progress: 213 → 216 abilities implemented (68.8%)
+
+Major infrastructure added:
+- onModifySTAB event system in damage calculation for STAB multiplier modification
+- Allows abilities like Adaptability to change STAB bonus from default 1.5x
+- Added aftermath to contact move damage handling section
 
 ## Recent Work (Current Session - Continued #13)
 
