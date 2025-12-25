@@ -1621,6 +1621,7 @@ impl Battle {
         let hit_count = self.get_multi_hit_count(move_id);
         let mut total_damage = 0u32;
         let mut hits_landed = 0u32;
+        let mut was_crit = false;
 
         for _hit in 0..hit_count {
             // Check if target fainted during multi-hit
@@ -1629,7 +1630,10 @@ impl Battle {
             }
 
             // Calculate damage for this hit
-            let damage = self.calculate_move_damage(attacker_side, attacker_idx, target_side, target_idx, move_id);
+            let (damage, is_crit) = self.calculate_move_damage(attacker_side, attacker_idx, target_side, target_idx, move_id);
+            if is_crit {
+                was_crit = true;
+            }
 
             if damage > 0 {
                 hits_landed += 1;
@@ -1646,6 +1650,18 @@ impl Battle {
                 let hp = self.sides[target_side].pokemon[target_idx].hp;
                 let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
                 self.add_log("-damage", &[&target_name, &format!("{}/{}", hp, maxhp)]);
+            }
+        }
+
+        // Anger Point: Maximizes Attack when hit by a critical hit
+        if was_crit {
+            let target_ability = self.sides[target_side].pokemon[target_idx].ability.as_str();
+            if target_ability == "angerpoint" {
+                let target_hp = self.sides[target_side].pokemon[target_idx].hp;
+                if target_hp > 0 {
+                    // Boost Attack to +6 (12 stages since each boost is +0.5)
+                    self.boost(&[("atk", 12)], (target_side, target_idx), Some((target_side, target_idx)), None);
+                }
             }
         }
 
@@ -1767,7 +1783,7 @@ impl Battle {
     }
 
     /// Calculate damage for a move (basic implementation)
-    fn calculate_move_damage(&mut self, attacker_side: usize, attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) -> u32 {
+    fn calculate_move_damage(&mut self, attacker_side: usize, attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) -> (u32, bool) {
         // Get base power from common moves (simplified)
         let (base_power, category, move_type): (u32, &str, &str) = match move_id.as_str() {
             "thunderbolt" => (90, "Special", "Electric"),
@@ -1827,13 +1843,13 @@ impl Battle {
             "protect" | "detect" | "substitute" | "recover" | "roost" | "softboiled" | "moonlight" | "synthesis" | "morningsun" |
             "wish" | "healbell" | "aromatherapy" | "haze" | "whirlwind" | "roar" | "dragontail" | "circlethrow" |
             "taunt" | "encore" | "disable" | "trick" | "switcheroo" | "trickroom" => {
-                return 0; // Status/hazard/utility moves - no damage
+                return (0, false); // Status/hazard/utility moves - no damage
             }
             _ => (50, "Physical", "Normal"), // Default for unknown moves
         };
 
         if base_power == 0 {
-            return 0;
+            return (0, false);
         }
 
         // Extract all needed data from Pokemon before any mutable operations
@@ -1883,7 +1899,7 @@ impl Battle {
                     self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flashfire"));
                     self.add_log("-start", &[&target_name, &format!("ability: {}", ability_def.name)]);
                 }
-                return 0;
+                return (0, false);
             }
 
             // Check absorb abilities (Water Absorb, Volt Absorb, etc.)
@@ -1906,7 +1922,7 @@ impl Battle {
                     self.apply_boost(target_side, target_idx, stat, *stages as i8);
                 }
 
-                return 0;
+                return (0, false);
             }
         }
 
@@ -1916,7 +1932,7 @@ impl Battle {
             let side_id = self.sides[target_side].id_str();
             let target_name = format!("{}: {}", side_id, defender_name);
             self.add_log("-immune", &[&target_name]);
-            return 0;
+            return (0, false);
         }
 
         // Calculate boosted stats
@@ -2011,17 +2027,17 @@ impl Battle {
             if let Some(target_pokemon) = self.sides.get(target_side).and_then(|s| s.pokemon.get(target_idx)) {
                 if target_pokemon.ability.as_str() == "battlearmor" || target_pokemon.ability.as_str() == "shellarmor" {
                     // Ability blocks critical hit - treat as non-crit
-                    return damage.max(1);
+                    return (damage.max(1), false);
                 }
             }
 
             let target_name = format!("{}: {}", self.sides[target_side].id_str(), defender_name);
             self.add_log("-crit", &[&target_name]);
             // Critical hits: 1.5x damage, ignore burn penalty (for physical), ignore stat drops
-            return ((damage as f64 * 1.5) as u32).max(1);
+            return (((damage as f64 * 1.5) as u32).max(1), true);
         }
 
-        damage.max(1)
+        (damage.max(1), false)
     }
 
     /// Get move priority (-7 to +5)
