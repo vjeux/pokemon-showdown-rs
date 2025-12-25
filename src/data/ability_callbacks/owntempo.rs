@@ -42,14 +42,14 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onUpdate(pokemon)
 /// Cures confusion
-///
-/// TODO: onUpdate handler not yet implemented
-/// TODO: Needs pokemon.volatiles['confusion'], removeVolatile()
-/// When implemented, should:
-/// 1. Check for confusion volatile
-/// 2. Add activate message and remove it
-pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_update(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    // if (pokemon.volatiles['confusion'])
+    if pokemon.has_volatile(&ID::new("confusion")) {
+        // this.add('-activate', pokemon, 'ability: Own Tempo');
+        battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Own Tempo")]);
+        // pokemon.removeVolatile('confusion');
+        pokemon.remove_volatile(&ID::new("confusion"));
+    }
     AbilityHandlerResult::Undefined
 }
 
