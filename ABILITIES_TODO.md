@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~169
-Documented stubs (with detailed TODOs): ~145
+Fully implemented (working code): ~170
+Documented stubs (with detailed TODOs): ~144
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,10 +12,10 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~169 abilities with full or partial working implementations
-- ~145 abilities with detailed TODO documentation explaining what's needed
+- ~170 abilities with full or partial working implementations
+- ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 53.8% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 54.1% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,12 +40,13 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #8)
 
-Completed implementations (3 changes):
+Completed implementations (4 changes):
 1. **icebody** - Now fully implemented with onWeather handler for healing in hail/snowscape (was partial, only had immunity)
 2. **mindseye** - Now fully implemented with onModifyMove handler, added ignore_immunity_types field to MoveDef for type-specific immunity ignoring
 3. **tangledfeet** - Now fully implemented with onModifyAccuracy handler, halves opponent accuracy when confused
+4. **wonderskin** - Now fully implemented with onModifyAccuracy handler, reduces status move accuracy to 50%
 
-Progress: 166 → 169 abilities implemented (53.8%)
+Progress: 166 → 170 abilities implemented (54.1%)
 
 ## Recent Work (Current Session - Continued #7)
 
