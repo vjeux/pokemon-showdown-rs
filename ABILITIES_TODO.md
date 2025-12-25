@@ -37,11 +37,13 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #2)
 
-New implementations (2 changes):
+New implementations (3 changes):
 1. **sandspit** - Sets sandstorm when hit by damaging move
 2. **seedsower** - Sets Grassy Terrain when hit by damaging move
+3. **mummy** - Spreads Mummy ability to attackers on contact
 
 Note: Discovered weather and terrain systems already exist in field.rs!
+Note: Discovered ability manipulation (set_ability, get_ability) already exists in pokemon.rs!
 
 New implementations (4 changes):
 1. **poisonpoint** - 30% chance to poison attacker on contact (onDamagingHit handler)

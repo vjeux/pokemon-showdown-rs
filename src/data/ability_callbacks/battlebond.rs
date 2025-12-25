@@ -37,7 +37,7 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onSourceAfterFaint(length, target, source, effect)
-pub fn on_source_after_faint(battle: &mut Battle, _length: i32, _target: &Pokemon, source: &Pokemon, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_source_after_faint(battle: &mut Battle, _length: i32, _target: &Pokemon, source: &mut Pokemon, effect: &Effect) -> AbilityHandlerResult {
     // if (source.bondTriggered) return;
     if source.ability_state.data.get("bondTriggered").and_then(|v| v.as_bool()).unwrap_or(false) {
         return AbilityHandlerResult::Undefined;
@@ -72,11 +72,7 @@ pub fn on_source_after_faint(battle: &mut Battle, _length: i32, _target: &Pokemo
             ]);
 
             // source.bondTriggered = true;
-            // Note: We need to set bondTriggered in the source pokemon's ability_state
-            // This requires mutable access to source, which we don't have here.
-            // In practice, this would need to be handled by the battle system.
-            // For now, we'll leave a comment about this limitation.
-            // TODO: Set source.ability_state.data["bondTriggered"] = true
+            source.ability_state.data.insert("bondTriggered".to_string(), serde_json::Value::Bool(true));
         }
     }
 
@@ -90,17 +86,13 @@ pub fn on_modify_move_priority(_battle: &mut Battle) -> AbilityHandlerResult {
 }
 
 /// onModifyMove(move, attacker)
-pub fn on_modify_move(_battle: &mut Battle, move_: &MoveDef, attacker: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_move(move_: &mut MoveDef, attacker: &Pokemon) -> AbilityHandlerResult {
     // if (move.id === 'watershuriken' && attacker.species.name === 'Greninja-Ash' && !attacker.transformed)
-    // Note: This requires mutable move to modify multihit, which is not currently
-    // supported in the Rust implementation. The JS version sets move.multihit = 3.
-    // This functionality would need infrastructure changes to support move modification.
-
-    // Check the conditions even though we can't modify the move yet
     if move_.id.as_str() == "watershuriken" &&
        attacker.species_id.as_str() == "greninjaash" &&
        !attacker.transformed {
-        // TODO: Set move.multihit = 3 once move modification is supported
+        // move.multihit = 3;
+        move_.multi_hit = Some((3, 3)); // Exactly 3 hits
     }
 
     AbilityHandlerResult::Undefined
