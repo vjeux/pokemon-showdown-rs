@@ -35,28 +35,34 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+/// onBeforeMovePriority: 9
+pub const ON_BEFORE_MOVE_PRIORITY: i32 = 9;
+
+/// onStart(pokemon)
+/// onBeforeMove(pokemon)
+/// Pokemon can only move every other turn (loafing around)
+///
+/// TODO: Volatile status system not yet implemented
+/// TODO: onBeforeMove handler not yet implemented
+/// When implemented, should:
+/// onStart:
+/// 1. pokemon.removeVolatile('truant')
+/// 2. Check if pokemon.activeTurns && (pokemon.moveThisTurnResult !== undefined || !this.queue.willMove(pokemon))
+/// 3. If true, pokemon.addVolatile('truant')
+/// onBeforeMove:
+/// 1. If pokemon.removeVolatile('truant') returns true:
+///    - this.add('cant', pokemon, 'ability: Truant')
+///    - return false
+/// 2. Otherwise pokemon.addVolatile('truant')
+pub fn on_start(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // Requires volatile status system, queue.willMove
     AbilityHandlerResult::Undefined
 }
 
-/// onBeforeMovePriority(...)
-pub fn on_before_move_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+pub fn on_before_move(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // Requires volatile status system, onBeforeMove handler
     AbilityHandlerResult::Undefined
 }
 
-/// onBeforeMove(...)
-pub fn on_before_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-
-// Condition handlers
-pub mod condition {
-    use super::*;
-
-    // TODO: Implement condition handlers
-}
