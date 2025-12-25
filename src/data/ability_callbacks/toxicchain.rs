@@ -30,16 +30,21 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onSourceDamagingHit(damage, target, source, move)
 /// 30% chance to badly poison target when source (with this ability) deals damage
-///
-/// TODO: onSourceDamagingHit handler not yet implemented in battle system
-/// This is different from onDamagingHit - onSourceDamagingHit triggers on the attacking Pokemon
-/// When implemented, should:
-/// 1. Check if target.hasAbility('shielddust') || target.hasItem('covertcloak'), return if true
-/// 2. Check this.randomChance(3, 10) for 30% chance
-/// 3. Call target.trySetStatus('tox', source) to badly poison
-pub fn on_source_damaging_hit(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    // Requires onSourceDamagingHit handler, hasAbility/hasItem checks, randomChance, trySetStatus
+pub fn on_source_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
+    // Despite not being a secondary, Shield Dust / Covert Cloak block Toxic Chain's effect
+    // if (target.hasAbility('shielddust') || target.hasItem('covertcloak')) return;
+    if target.ability.as_str() == "shielddust" {
+        return AbilityHandlerResult::Undefined;
+    }
+    // TODO: Item checking (hasItem('covertcloak')) not yet available
+
+    // if (this.randomChance(3, 10))
+    if battle.prng.random_chance(3, 10) {
+        // target.trySetStatus('tox', source);
+        let target_ref = (target.side_index, target.position);
+        battle.sides[target_ref.0].pokemon[target_ref.1].try_set_status(ID::new("tox"), None);
+    }
+
     AbilityHandlerResult::Undefined
 }
 

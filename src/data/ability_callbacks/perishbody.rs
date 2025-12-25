@@ -28,15 +28,30 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Inflicts Perish Song on both self and attacker when hit by contact move
-///
-/// TODO: onDamagingHit handler not yet implemented
-/// TODO: Needs checkMoveMakesContact(), source.volatiles, addVolatile()
-/// When implemented, should:
-/// 1. Skip if move doesn't make contact or source already has perishsong
-/// 2. Add ability message
-/// 3. Add perishsong volatile to both source and target
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (!this.checkMoveMakesContact(move, source, target) || source.volatiles['perishsong']) return;
+    if !move_.flags.contact {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    if source.has_volatile(&ID::new("perishsong")) {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // this.add('-ability', target, 'Perish Body');
+    battle.add("-ability", &[
+        Arg::Pokemon(target),
+        Arg::Str("Perish Body")
+    ]);
+
+    // source.addVolatile('perishsong');
+    let source_ref = (source.side_index, source.position);
+    battle.sides[source_ref.0].pokemon[source_ref.1].add_volatile(ID::new("perishsong"));
+
+    // target.addVolatile('perishsong');
+    let target_ref = (target.side_index, target.position);
+    battle.sides[target_ref.0].pokemon[target_ref.1].add_volatile(ID::new("perishsong"));
+
     AbilityHandlerResult::Undefined
 }
 

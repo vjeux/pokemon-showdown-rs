@@ -35,13 +35,12 @@ pub const ON_FRACTIONAL_PRIORITY_PRIORITY: i32 = -1;
 
 /// onFractionalPriority(priority, pokemon, target, move)
 /// Makes status moves slower (fractional priority -0.1)
-///
-/// TODO: onFractionalPriority handler not yet implemented
-/// When implemented, should:
-/// 1. Check if move.category === 'Status'
-/// 2. Return -0.1 fractional priority
-pub fn on_fractional_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_fractional_priority(_battle: &mut Battle, _priority: f64, _pokemon: &Pokemon, _target: Option<&Pokemon>, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.category === 'Status')
+    if move_.category == MoveCategory::Status {
+        // return -0.1;
+        return AbilityHandlerResult::FractionalPriority(-0.1);
+    }
     AbilityHandlerResult::Undefined
 }
 
