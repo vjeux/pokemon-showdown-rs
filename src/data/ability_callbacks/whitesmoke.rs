@@ -7,10 +7,27 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onTryBoost(boost, target, source, effect)
-/// Prevents opponent from lowering stats
-///
-/// TODO: onTryBoost handler not yet implemented
-/// When implemented, should loop through boost object and delete negative boosts from opponents
-pub fn on_try_boost(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+/// Prevents opponent from lowering stats (same as Clear Body/Full Metal Body)
+pub fn on_try_boost(battle: &mut Battle, boost: &mut std::collections::HashMap<String, i8>, target: &Pokemon, source: Option<&Pokemon>, effect_id: &str, has_secondaries: bool) -> AbilityHandlerResult {
+    // If source exists and target is the source, do nothing
+    if let Some(src) = source {
+        if (target.side_index, target.position) == (src.side_index, src.position) {
+            return AbilityHandlerResult::Undefined;
+        }
+    }
+    let mut show_msg = false;
+    // Remove all negative boosts
+    let stats: Vec<String> = boost.keys().cloned().collect();
+    for stat in stats {
+        if let Some(&val) = boost.get(&stat) {
+            if val < 0 {
+                boost.remove(&stat);
+                show_msg = true;
+            }
+        }
+    }
+    if show_msg && !has_secondaries && effect_id != "octolock" {
+        battle.add("-fail", &[Arg::Pokemon(target), Arg::Str("unboost"), Arg::Str("[from] ability: White Smoke"), Arg::Str(&format!("[of] {}", target.name))]);
+    }
     AbilityHandlerResult::Undefined
 }
