@@ -179,6 +179,7 @@ pub mod owntempo;
 pub mod parentalbond;
 pub mod pastelveil;
 pub mod perishbody;
+pub mod persistent;
 pub mod pickpocket;
 pub mod pickup;
 pub mod pixilate;
