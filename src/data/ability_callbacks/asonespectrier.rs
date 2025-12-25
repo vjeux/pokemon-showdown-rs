@@ -38,33 +38,56 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSwitchInPriority(...)
-pub fn on_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onSwitchInPriority: 1
+pub const ON_SWITCH_IN_PRIORITY: i32 = 1;
+
+/// onStart(pokemon)
+pub fn on_start(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    // if (this.effectState.unnerved) return;
+    let unnerved = pokemon.ability_state.data.get("unnerved")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(false);
+    if unnerved {
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // this.add('-ability', pokemon, 'As One');
+    battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("As One")]);
+    // this.add('-ability', pokemon, 'Unnerve');
+    battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Unnerve")]);
+    // this.effectState.unnerved = true;
+    pokemon.ability_state.data.insert("unnerved".to_string(), serde_json::Value::Bool(true));
+
     AbilityHandlerResult::Undefined
 }
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onEnd()
+pub fn on_end(_battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    // this.effectState.unnerved = false;
+    pokemon.ability_state.data.insert("unnerved".to_string(), serde_json::Value::Bool(false));
     AbilityHandlerResult::Undefined
 }
 
-/// onEnd(...)
-pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// onFoeTryEatItem()
+pub fn on_foe_try_eat_item(pokemon: &Pokemon) -> AbilityHandlerResult {
+    // return !this.effectState.unnerved;
+    let unnerved = pokemon.ability_state.data.get("unnerved")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(false);
+    if !unnerved {
+        AbilityHandlerResult::True
+    } else {
+        AbilityHandlerResult::False
+    }
 }
 
-/// onFoeTryEatItem(...)
-pub fn on_foe_try_eat_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onSourceAfterFaint(length, target, source, effect)
+pub fn on_source_after_faint(battle: &mut Battle, length: i32, _target: &Pokemon, source: &Pokemon, effect: &Effect) -> AbilityHandlerResult {
+    // if (effect && effect.effectType === 'Move')
+    if effect.effect_type == "Move" {
+        // this.boost({ spa: length }, source, source, this.dex.abilities.get('grimneigh'));
+        let source_ref = (source.side_index, source.position);
+        battle.boost(&[("spa", length as i8)], source_ref, Some(source_ref), None);
+    }
     AbilityHandlerResult::Undefined
 }
-
-/// onSourceAfterFaint(...)
-pub fn on_source_after_faint(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
