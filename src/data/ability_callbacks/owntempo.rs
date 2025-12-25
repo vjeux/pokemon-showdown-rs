@@ -55,13 +55,11 @@ pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHand
 
 /// onTryAddVolatile(status, pokemon)
 /// Prevents confusion
-///
-/// TODO: onTryAddVolatile handler not yet implemented
-/// When implemented, should:
-/// 1. Check if status.id === 'confusion'
-/// 2. Return null to prevent it
-pub fn on_try_add_volatile(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_add_volatile(_battle: &mut Battle, status: &Status, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (status.id === 'confusion') return null;
+    if status.id == "confusion" {
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
 
