@@ -48,19 +48,20 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onResidualOrder(...)
-pub fn on_residual_order(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_RESIDUAL_ORDER: i32 = 28;
+pub const ON_RESIDUAL_SUB_ORDER: i32 = 2;
 
-/// onResidualSubOrder(...)
-pub fn on_residual_sub_order(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onResidual(...)
+/// onResidual(pokemon)
+/// Randomly raises one stat by 2 and lowers another by 1 each turn
+///
+/// TODO: onResidual handler not yet implemented
+/// TODO: Needs pokemon.boosts iteration, random sampling
+/// When implemented, should:
+/// 1. Build list of stats (excluding accuracy/evasion) that can be raised (< 6)
+/// 2. Randomly select one stat and boost it by +2
+/// 3. Build list of stats (excluding accuracy/evasion) that can be lowered (> -6) and != raised stat
+/// 4. Randomly select one stat and boost it by -1
+/// 5. Apply both boosts with battle.boost()
 pub fn on_residual(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
