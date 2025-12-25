@@ -49,14 +49,28 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onUpdate(pokemon)
 /// Cures attract and taunt
-///
-/// TODO: onUpdate handler not yet implemented
-/// TODO: Needs pokemon.volatiles['attract'], removeVolatile()
-/// When implemented, should:
-/// 1. Check for attract volatile, remove it with messages
-/// 2. Check for taunt volatile, remove it with activate message
-pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_update(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    // if (pokemon.volatiles['attract'])
+    if pokemon.has_volatile(&ID::new("attract")) {
+        // this.add('-activate', pokemon, 'ability: Oblivious');
+        battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Oblivious")]);
+        // pokemon.removeVolatile('attract');
+        pokemon.remove_volatile(&ID::new("attract"));
+        // this.add('-end', pokemon, 'move: Attract', '[from] ability: Oblivious');
+        battle.add("-end", &[
+            Arg::Pokemon(pokemon),
+            Arg::Str("move: Attract"),
+            Arg::Str("[from] ability: Oblivious")
+        ]);
+    }
+    // if (pokemon.volatiles['taunt'])
+    if pokemon.has_volatile(&ID::new("taunt")) {
+        // this.add('-activate', pokemon, 'ability: Oblivious');
+        battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Oblivious")]);
+        // pokemon.removeVolatile('taunt');
+        pokemon.remove_volatile(&ID::new("taunt"));
+        // Taunt's volatile already sends the -end message when removed
+    }
     AbilityHandlerResult::Undefined
 }
 
