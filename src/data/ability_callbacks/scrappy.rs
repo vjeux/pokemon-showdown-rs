@@ -38,14 +38,19 @@ pub const ON_MODIFY_MOVE_PRIORITY: i32 = -5;
 
 /// onModifyMove(move)
 /// Allows Fighting and Normal moves to hit Ghost types
-///
-/// TODO: onModifyMove handler not yet implemented
-/// TODO: Needs move.ignoreImmunity field manipulation
-/// When implemented, should:
-/// 1. Initialize move.ignoreImmunity as empty object if not set
-/// 2. If not set to true (all immunities), set Fighting and Normal to true
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(_battle: &mut Battle, move_: &mut MoveDef) -> AbilityHandlerResult {
+    // if (!move.ignoreImmunity) move.ignoreImmunity = {};
+    // if (move.ignoreImmunity !== true)
+    if !move_.ignore_immunity {
+        // move.ignoreImmunity['Fighting'] = true;
+        // move.ignoreImmunity['Normal'] = true;
+        if !move_.ignore_immunity_types.contains(&"Fighting".to_string()) {
+            move_.ignore_immunity_types.push("Fighting".to_string());
+        }
+        if !move_.ignore_immunity_types.contains(&"Normal".to_string()) {
+            move_.ignore_immunity_types.push("Normal".to_string());
+        }
+    }
     AbilityHandlerResult::Undefined
 }
 
