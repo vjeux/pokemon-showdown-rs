@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~190
-Documented stubs (with detailed TODOs): ~124
+Fully implemented (working code): ~191
+Documented stubs (with detailed TODOs): ~123
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 60.5% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 60.8% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,7 +40,7 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #10)
 
-Completed implementations (14 changes):
+Completed implementations (15 changes):
 1. **simple** - Doubles all stat changes with on_change_boost handler
 2. **owntempo** - Fully implemented by adding onHit handler for confusion immunity
 3. **synchronize** - Reflects status conditions to attacker with on_after_set_status handler
@@ -55,8 +55,9 @@ Completed implementations (14 changes):
 12. **neuroforce** - Boosts super-effective damage by 1.25x with on_modify_damage handler
 13. **tintedlens** - Doubles not-very-effective damage with on_modify_damage handler
 14. **unseenfist** - Contact moves bypass protect with on_modify_move handler
+15. **forewarn** - Reveals opponent's strongest move on switch-in with on_start handler
 
-Progress: 176 → 190 abilities implemented (60.5%)
+Progress: 176 → 191 abilities implemented (60.8%)
 
 ## Recent Work (Current Session - Continued #9)
 
