@@ -52,6 +52,7 @@ pub mod curiousmedicine;
 pub mod cursedbody;
 pub mod cutecharm;
 pub mod damp;
+pub mod dancer;
 pub mod darkaura;
 pub mod dauntlessshield;
 pub mod dazzling;
