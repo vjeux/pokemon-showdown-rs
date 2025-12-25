@@ -25,9 +25,13 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifySpe(...)
-pub fn on_modify_spe(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onModifySpe(spe, pokemon)
+pub fn on_modify_spe(battle: &Battle, _spe: u32, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (this.field.isWeather(['hail', 'snowscape']))
+    let weather = battle.field.get_weather();
+    if *weather == ID::new("hail") || *weather == ID::new("snowscape") {
+        // return this.chainModify(2);
+        return AbilityHandlerResult::ChainModify(2, 1);
+    }
     AbilityHandlerResult::Undefined
 }
-

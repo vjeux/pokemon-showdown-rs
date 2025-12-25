@@ -28,15 +28,21 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifySpe(...)
-pub fn on_modify_spe(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onModifySpe(spe, pokemon)
+pub fn on_modify_spe(battle: &Battle, _spe: u32, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (this.field.isWeather('sandstorm'))
+    if *battle.field.get_weather() == ID::new("sandstorm") {
+        // return this.chainModify(2);
+        return AbilityHandlerResult::ChainModify(2, 1);
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onImmunity(...)
-pub fn on_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onImmunity(type, pokemon)
+pub fn on_immunity(_battle: &Battle, immunity_type: &str, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (type === 'sandstorm') return false;
+    if immunity_type == "sandstorm" {
+        return AbilityHandlerResult::False;
+    }
     AbilityHandlerResult::Undefined
 }
-
