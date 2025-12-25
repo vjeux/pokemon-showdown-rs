@@ -31,13 +31,23 @@ use super::{AbilityHandlerResult, Status, Effect};
 /// onSourceTryHeal(damage, target, source, effect)
 /// Damages draining opponent instead of healing them
 ///
-/// TODO: onSourceTryHeal handler not yet implemented
-/// When implemented, should:
-/// 1. Check if effect.id is 'drain', 'leechseed', or 'strengthsap'
-/// 2. Call this.damage(damage) to damage the healer
-/// 3. Return 0 to prevent healing
-pub fn on_source_try_heal(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// TODO: onSourceTryHeal handler not yet called by battle engine
+pub fn on_source_try_heal(battle: &mut Battle, damage: u32, target: &Pokemon, source: &Pokemon, effect: &Effect) -> AbilityHandlerResult {
+    // this.debug(`Heal is occurring: ${target} <- ${source} :: ${effect.id}`);
+    // const canOoze = ['drain', 'leechseed', 'strengthsap'];
+    const CAN_OOZE: &[&str] = &["drain", "leechseed", "strengthsap"];
+
+    // if (canOoze.includes(effect.id))
+    if CAN_OOZE.contains(&effect.id.as_str()) {
+        // this.damage(damage);
+        let source_ref = (source.side_index, source.position);
+        let target_ref = (target.side_index, target.position);
+        battle.damage(damage, source_ref, Some(target_ref), None);
+
+        // return 0;
+        return AbilityHandlerResult::Number(0);
+    }
+
     AbilityHandlerResult::Undefined
 }
 
