@@ -44,6 +44,7 @@ pub mod commander;
 pub mod competitive;
 pub mod compoundeyes;
 pub mod contrary;
+pub mod corrosion;
 pub mod costar;
 pub mod cottondown;
 pub mod cudchew;
