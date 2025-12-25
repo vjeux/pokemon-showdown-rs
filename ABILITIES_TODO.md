@@ -40,6 +40,9 @@ Each documented ability includes:
 New implementations (1 change):
 1. **windrider** - Immune to wind moves and boosts Attack, also boosts from Tailwind (onStart, onTryHit, onSideConditionStart handlers)
 
+Updated implementations (1 change):
+1. **prankster** - Added prankster_boosted field to MoveDef, now sets it correctly (full 1-to-1 match with JS)
+
 Progress: 164 → 165 abilities implemented (52.5%)
 
 ## Recent Work (Current Session - Continued #6)
