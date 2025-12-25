@@ -35,16 +35,34 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onFoeTryMove(target, source, move)
 /// Blocks priority moves from opponents and allies (similar to Dazzling)
-///
-/// TODO: onFoeTryMove handler not yet implemented
-/// TODO: Needs move.target, move.id, source.isAlly(), move.priority, effectState.target
-/// When implemented, should:
-/// 1. Allow moves targeting foeSide or all (except perishsong, flowershield, rototiller)
-/// 2. If source is ally or move targets all, and move priority > 0.1
-/// 3. Set move to [still], add cant message with ability holder
-/// 4. Return false to block the move
-pub fn on_foe_try_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_foe_try_move(battle: &mut Battle, target: &Pokemon, source: &Pokemon, move_: &MoveDef, ability_holder: &Pokemon) -> AbilityHandlerResult {
+    // const targetAllExceptions = ['perishsong', 'flowershield', 'rototiller'];
+    const TARGET_ALL_EXCEPTIONS: &[&str] = &["perishsong", "flowershield", "rototiller"];
+
+    // if (move.target === 'foeSide' || (move.target === 'all' && !targetAllExceptions.includes(move.id)))
+    if move_.target == MoveTargetType::FoeSide
+        || (move_.target == MoveTargetType::All && !TARGET_ALL_EXCEPTIONS.contains(&move_.id.as_str())) {
+        // return;
+        return AbilityHandlerResult::Undefined;
+    }
+
+    // const dazzlingHolder = this.effectState.target;
+    let dazzling_holder = ability_holder;
+
+    // if ((source.isAlly(dazzlingHolder) || move.target === 'all') && move.priority > 0.1)
+    if (source.is_ally(dazzling_holder.side_index) || move_.target == MoveTargetType::All) && move_.priority > 0 {
+        // this.attrLastMove('[still]');
+        // this.add('cant', dazzlingHolder, 'ability: Queenly Majesty', move, `[of] ${target}`);
+        battle.add("-cant", &[
+            Arg::Pokemon(dazzling_holder),
+            Arg::Str("ability: Queenly Majesty"),
+            Arg::Str(&move_.id.to_string()),
+            Arg::String(format!("[of] {}", target.get_slot()))
+        ]);
+        // return false;
+        return AbilityHandlerResult::False;
+    }
+
     AbilityHandlerResult::Undefined
 }
 
