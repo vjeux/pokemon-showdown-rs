@@ -34,27 +34,29 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyAtkPriority(...)
-pub fn on_modify_atk_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
+
+/// onModifyAtk(atk, attacker, defender, move)
+/// Boosts Electric-type moves by 1.3x
+pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.type === 'Electric')
+    if move_.move_type == "Electric" {
+        // return this.chainModify([5325, 4096]);
+        return AbilityHandlerResult::ChainModify(5325, 4096); // ~1.3x
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onModifyAtk(...)
-pub fn on_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
-/// onModifySpAPriority(...)
-pub fn on_modify_sp_a_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onModifySpA(...)
-pub fn on_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onModifySpA(atk, attacker, defender, move)
+/// Boosts Electric-type moves by 1.3x
+pub fn on_modify_sp_a(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.type === 'Electric')
+    if move_.move_type == "Electric" {
+        // return this.chainModify([5325, 4096]);
+        return AbilityHandlerResult::ChainModify(5325, 4096); // ~1.3x
+    }
     AbilityHandlerResult::Undefined
 }
 
