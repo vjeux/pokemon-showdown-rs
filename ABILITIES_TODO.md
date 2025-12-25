@@ -15,6 +15,8 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~137 abilities with full or partial working implementations (+11 combined sessions today)
 - ~177 abilities with detailed TODO documentation explaining what's needed
 
+**Current Status**: All abilities that can be implemented with existing handler infrastructure have been completed. The remaining 177 abilities require battle engine infrastructure that doesn't exist yet (see below).
+
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather)
 - Forme change system (formeChange, species tracking)
