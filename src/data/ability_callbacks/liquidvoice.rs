@@ -26,15 +26,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyTypePriority(...)
-pub fn on_modify_type_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_MODIFY_TYPE_PRIORITY: i32 = -1;
 
-/// onModifyType(...)
-pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onModifyType(move, pokemon)
+/// Changes sound moves to Water-type
+pub fn on_modify_type(move_: &mut MoveDef, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (move.flags['sound'] && !pokemon.volatiles['dynamax'])
+    if move_.flags.sound && !pokemon.volatiles.contains_key(&ID::new("dynamax")) {
+        // move.type = 'Water';
+        move_.move_type = "Water".to_string();
+    }
     AbilityHandlerResult::Undefined
 }
 
