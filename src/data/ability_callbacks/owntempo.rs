@@ -65,14 +65,18 @@ pub fn on_try_add_volatile(_battle: &mut Battle, status: &Status, _pokemon: &Pok
 
 /// onHit(target, source, move)
 /// Shows immune message for confusion moves
-///
-/// TODO: onHit handler not yet implemented
-/// TODO: Needs move.volatileStatus
-/// When implemented, should:
-/// 1. Check if move.volatileStatus === 'confusion'
-/// 2. Add immune message
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_hit(battle: &mut Battle, target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move?.volatileStatus === 'confusion')
+    if let Some(ref volatile) = move_.volatile_status {
+        if volatile == "confusion" {
+            // this.add('-immune', target, 'confusion', '[from] ability: Own Tempo');
+            battle.add("-immune", &[
+                Arg::Pokemon(target),
+                Arg::Str("confusion"),
+                Arg::Str("[from] ability: Own Tempo")
+            ]);
+        }
+    }
     AbilityHandlerResult::Undefined
 }
 
