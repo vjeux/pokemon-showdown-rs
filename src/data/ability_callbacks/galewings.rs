@@ -23,9 +23,11 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyPriority(...)
-pub fn on_modify_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onModifyPriority(priority, pokemon, target, move)
+pub fn on_modify_priority(_battle: &Battle, priority: i32, pokemon: &Pokemon, _target: Option<&Pokemon>, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move?.type === 'Flying' && pokemon.hp === pokemon.maxhp) return priority + 1;
+    if move_.move_type == "Flying" && pokemon.hp == pokemon.maxhp {
+        return AbilityHandlerResult::Number(priority + 1);
+    }
     AbilityHandlerResult::Undefined
 }
-
