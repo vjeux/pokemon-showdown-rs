@@ -30,13 +30,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyMovePriority(...)
-pub fn on_modify_move_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_MODIFY_MOVE_PRIORITY: i32 = -2;
 
-/// onModifyMove(...)
+/// onModifyMove(move)
+/// Doubles the chance of secondary effects
+///
+/// TODO: onModifyMove handler not yet implemented
+/// TODO: Needs move.secondaries[], secondary.chance, move.self.chance
+/// When implemented, should:
+/// 1. If move has secondaries array, loop through and double each secondary.chance
+/// 2. If move has self.chance, double it
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
