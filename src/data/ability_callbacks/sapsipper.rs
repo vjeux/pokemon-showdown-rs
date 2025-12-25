@@ -39,16 +39,25 @@ pub const ON_TRY_HIT_PRIORITY: i32 = 1;
 
 /// onTryHit(target, source, move)
 /// Blocks Grass moves and boosts Attack instead
-///
-/// TODO: onTryHit handler not yet implemented
-/// TODO: Needs target, source, move.type, boost(), battle.add()
-/// When implemented, should:
-/// 1. Check if target is not source and move is Grass-type
-/// 2. Try to boost Attack by 1 stage
-/// 3. If boost fails (already maxed), show immune message
-/// 4. Return null to block the move
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_hit(battle: &mut Battle, target: &mut Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    let target_loc = (target.side_index, target.position);
+    let source_loc = (source.side_index, source.position);
+
+    // if (target !== source && move.type === 'Grass')
+    if target_loc != source_loc && move_.move_type == "Grass" {
+        // if (!this.boost({ atk: 1 }))
+        let boost_success = battle.boost(&[("atk", 1)], target_loc, Some(target_loc), None);
+
+        if !boost_success {
+            // this.add('-immune', target, '[from] ability: Sap Sipper');
+            battle.add("-immune", &[
+                Arg::Pokemon(target),
+                Arg::Str("[from] ability: Sap Sipper")
+            ]);
+        }
+        // return null;
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
 
