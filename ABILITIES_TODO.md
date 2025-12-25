@@ -41,6 +41,9 @@ New implementations (2 changes):
 1. **leafguard** - Prevents status conditions in sun (sunnyday/desolateland), blocks yawn (onSetStatus and onTryAddVolatile handlers)
 2. **purifyingsalt** - Prevents all status conditions and yawn, halves Ghost-type damage (onSetStatus, onTryAddVolatile, onSourceModifyAtk, onSourceModifySpA handlers)
 
+Updated implementations (1 change):
+1. **innerfocus** - Added flinch prevention (onTryAddVolatile handler), complements existing Intimidate blocking
+
 Progress: 162 → 164 abilities implemented (52.2%)
 
 ## Recent Work (Current Session - Continued #4)
