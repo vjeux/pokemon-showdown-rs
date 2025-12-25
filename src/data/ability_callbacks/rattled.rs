@@ -45,14 +45,13 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _sou
 
 /// onAfterBoost(boost, target, source, effect)
 /// Boosts Speed when affected by Intimidate
-///
-/// TODO: onAfterBoost handler not yet implemented
-/// TODO: Needs effect.name, boost.atk, boost()
-/// When implemented, should:
-/// 1. If effect is Intimidate and boost.atk exists
-/// 2. Boost Speed by 1 stage
-pub fn on_after_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_after_boost(battle: &mut Battle, boost: &std::collections::HashMap<String, i8>, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (effect?.name === 'Intimidate' && boost.atk)
+    if effect.id == "intimidate" && boost.contains_key("atk") {
+        // this.boost({ spe: 1 });
+        let target_ref = (target.side_index, target.position);
+        battle.boost(&[("spe", 1)], target_ref, Some(target_ref), None);
+    }
     AbilityHandlerResult::Undefined
 }
 
