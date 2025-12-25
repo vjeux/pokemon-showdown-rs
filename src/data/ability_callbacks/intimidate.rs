@@ -34,7 +34,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
+/// onStart(pokemon)
+/// Lowers Attack of adjacent foes when entering battle
+///
+/// TODO: onStart handler exists but needs adjacentFoes() iterator
+/// TODO: Needs volatile status check (target.volatiles['substitute'])
+/// When implemented, should:
+/// 1. Loop through pokemon.adjacentFoes()
+/// 2. Add ability message on first foe
+/// 3. Check for substitute - add immune if present
+/// 4. Otherwise boost({ atk: -1 }, target, pokemon, null, true)
 pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
