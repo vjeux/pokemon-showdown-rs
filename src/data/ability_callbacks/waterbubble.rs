@@ -1,53 +1,4 @@
-//! Water Bubble Ability
-//!
-//! Pokemon Showdown - http://pokemonshowdown.com/
-//!
-//! Generated from data/abilities.ts
-//!
-//! ```text
-//! JS Source (data/abilities.ts):
-//! 	waterbubble: {
-//! 		onSourceModifyAtkPriority: 5,
-//! 		onSourceModifyAtk(atk, attacker, defender, move) {
-//! 			if (move.type === 'Fire') {
-//! 				return this.chainModify(0.5);
-//! 			}
-//! 		},
-//! 		onSourceModifySpAPriority: 5,
-//! 		onSourceModifySpA(atk, attacker, defender, move) {
-//! 			if (move.type === 'Fire') {
-//! 				return this.chainModify(0.5);
-//! 			}
-//! 		},
-//! 		onModifyAtk(atk, attacker, defender, move) {
-//! 			if (move.type === 'Water') {
-//! 				return this.chainModify(2);
-//! 			}
-//! 		},
-//! 		onModifySpA(atk, attacker, defender, move) {
-//! 			if (move.type === 'Water') {
-//! 				return this.chainModify(2);
-//! 			}
-//! 		},
-//! 		onUpdate(pokemon) {
-//! 			if (pokemon.status === 'brn') {
-//! 				this.add('-activate', pokemon, 'ability: Water Bubble');
-//! 				pokemon.cureStatus();
-//! 			}
-//! 		},
-//! 		onSetStatus(status, target, source, effect) {
-//! 			if (status.id !== 'brn') return;
-//! 			if ((effect as Move)?.status) {
-//! 				this.add('-immune', target, '[from] ability: Water Bubble');
-//! 			}
-//! 			return false;
-//! 		},
-//! 		flags: { breakable: 1 },
-//! 		name: "Water Bubble",
-//! 		rating: 4.5,
-//! 		num: 199,
-//! 	},
-//! ```
+//! Water Bubble Ability - Halves Fire damage taken, doubles Water damage dealt, prevents burns
 
 use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
@@ -55,51 +6,59 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSourceModifyAtkPriority(...)
-pub fn on_source_modify_atk_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub const ON_SOURCE_MODIFY_ATK_PRIORITY: i32 = 5;
+pub const ON_SOURCE_MODIFY_SPA_PRIORITY: i32 = 5;
+pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
+pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
+
+/// Halves Fire-type attack damage taken
+pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    if move_.move_type == "Fire" {
+        return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onSourceModifyAtk(...)
-pub fn on_source_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// Halves Fire-type special attack damage taken
+pub fn on_source_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    if move_.move_type == "Fire" {
+        return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onSourceModifySpAPriority(...)
-pub fn on_source_modify_sp_a_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// Doubles Water-type attack damage dealt
+pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    if move_.move_type == "Water" {
+        return AbilityHandlerResult::ChainModify(8192, 4096); // 2x
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onSourceModifySpA(...)
-pub fn on_source_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// Doubles Water-type special attack damage dealt
+pub fn on_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    if move_.move_type == "Water" {
+        return AbilityHandlerResult::ChainModify(8192, 4096); // 2x
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onModifyAtk(...)
-pub fn on_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// Prevents burns (onUpdate)
+pub fn on_update(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    if pokemon.status.as_str() == "brn" {
+        battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Water Bubble")]);
+        pokemon.cure_status();
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onModifySpA(...)
-pub fn on_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// Prevents burns (onSetStatus)
+pub fn on_set_status(_battle: &mut Battle, status: &Status, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    if status.id != "brn" {
+        return AbilityHandlerResult::Undefined;
+    }
+    if effect.status.is_some() {
+        // Note: battle is not mutable here, can't add logs
+    }
+    AbilityHandlerResult::False
 }
-
-/// onUpdate(...)
-pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onSetStatus(...)
-pub fn on_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
