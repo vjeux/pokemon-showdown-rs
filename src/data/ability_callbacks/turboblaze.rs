@@ -28,12 +28,12 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onStart(pokemon)
 /// Announces the ability when Pokemon enters battle
-///
-/// TODO: onStart handler needs Pokemon parameter
-/// When implemented, should:
-/// 1. Add message: this.add('-ability', pokemon, 'Turboblaze')
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // this.add('-ability', pokemon, 'Turboblaze');
+    battle.add("-ability", &[
+        Arg::Pokemon(pokemon),
+        Arg::Str("Turboblaze")
+    ]);
     AbilityHandlerResult::Undefined
 }
 
