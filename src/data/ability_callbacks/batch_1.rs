@@ -298,15 +298,38 @@ pub mod airlock {
 pub mod analytic {
     use super::*;
 
-    /// onBasePowerPriority(...)
-    pub fn on_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
-        AbilityHandlerResult::Undefined
-    }
+    // onBasePowerPriority: 21,
+    pub const ON_BASE_POWER_PRIORITY: i32 = 21;
 
-    /// onBasePower(...)
-    pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onBasePower(basePower, pokemon)
+    pub fn on_base_power(battle: &Battle, _base_power: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+        // let boosted = true;
+        let mut boosted = true;
+        // for (const target of this.getAllActive())
+        for side in &battle.sides {
+            for active in side.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
+                // if (target === pokemon) continue;
+                if active.side_index == pokemon.side_index && active.position == pokemon.position {
+                    continue;
+                }
+                // if (this.queue.willMove(target))
+                if battle.queue.will_move(active.side_index, active.position).is_some() {
+                    // boosted = false;
+                    boosted = false;
+                    // break;
+                    break;
+                }
+            }
+            if !boosted {
+                break;
+            }
+        }
+        // if (boosted)
+        if boosted {
+            // this.debug('Analytic boost');
+            // return this.chainModify([5325, 4096]);
+            return AbilityHandlerResult::ChainModify(5325, 4096); // ~1.3x
+        }
         AbilityHandlerResult::Undefined
     }
 }
