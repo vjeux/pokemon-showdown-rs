@@ -31,27 +31,27 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyAtkPriority(...)
-pub fn on_modify_atk_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// onModifyAtkPriority: 5
+pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
+/// onSourceModifyAccuracyPriority: -1
+pub const ON_SOURCE_MODIFY_ACCURACY_PRIORITY: i32 = -1;
+
+/// onModifyAtk(atk)
+/// Multiplies Attack by 1.5
+pub fn on_modify_atk(atk: u32) -> AbilityHandlerResult {
+    // return this.modify(atk, 1.5);
+    // Note: this.modify() directly multiplies, not chainModify
+    AbilityHandlerResult::Number((atk as f64 * 1.5) as i32)
 }
 
-/// onModifyAtk(...)
-pub fn on_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onSourceModifyAccuracyPriority(...)
-pub fn on_source_modify_accuracy_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
-/// onSourceModifyAccuracy(...)
-pub fn on_source_modify_accuracy(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onSourceModifyAccuracy(accuracy, target, source, move)
+/// Reduces accuracy of Physical moves
+pub fn on_source_modify_accuracy(accuracy: Option<u32>, _target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.category === 'Physical' && typeof accuracy === 'number')
+    if move_.category == MoveCategory::Physical && accuracy.is_some() {
+        // return this.chainModify([3277, 4096]);
+        return AbilityHandlerResult::ChainModify(3277, 4096); // ~0.8x accuracy
+    }
     AbilityHandlerResult::Undefined
 }
 
