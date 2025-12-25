@@ -34,13 +34,18 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyMovePriority(...)
-pub fn on_modify_move_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_MODIFY_MOVE_PRIORITY: i32 = -1;
 
-/// onModifyMove(...)
+/// onModifyMove(move)
+/// Adds 10% flinch chance to all attacking moves
+///
+/// TODO: onModifyMove handler not yet implemented
+/// TODO: Needs move.category, move.secondaries array manipulation
+/// When implemented, should:
+/// 1. Skip if move.category is 'Status'
+/// 2. Initialize move.secondaries array if it doesn't exist
+/// 3. Check if flinch secondary already exists in the array
+/// 4. If not, add {chance: 10, volatileStatus: 'flinch'} to move.secondaries
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
