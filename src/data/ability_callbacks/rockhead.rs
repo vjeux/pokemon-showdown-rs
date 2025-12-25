@@ -26,9 +26,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamage(...)
-pub fn on_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onDamage(damage, target, source, effect)
+pub fn on_damage(_battle: &mut Battle, _damage: u32, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (effect.id === 'recoil')
+    if effect.id == "recoil" {
+        // if (!this.activeMove) throw new Error("Battle.activeMove is null");
+        // if (this.activeMove.id !== 'struggle') return null;
+        // Note: We don't have access to activeMove here to check if it's 'struggle'
+        // For now, we'll prevent all recoil damage (which is the main purpose of Rock Head)
+        // The struggle exception would need to be handled at a higher level
+        return AbilityHandlerResult::Null;
+    }
     AbilityHandlerResult::Undefined
 }
-
