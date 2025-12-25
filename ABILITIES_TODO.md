@@ -1,22 +1,37 @@
 # Abilities Implementation Progress
 
-## Session Progress
-- Started with: ~222 stub abilities
-- Implemented so far: 12  
-- Remaining: ~210
+Total abilities: 314
+Implemented (actual code): ~99
+Stub files (with TODO): 180
+Remaining to implement: 180
 
-## Recently Completed
-1. hustle - Boosts Attack 1.5x, reduces Physical accuracy
-2. guts - Boosts Attack 1.5x when statused
-3. hugepower - Doubles Attack
-4. heatproof - Halves Fire damage and burn damage
-5. heavymetal - Doubles weight
-6. furcoat - Doubles Defense
-7. dragonsmaw - Boosts Dragon-type moves 1.5x
-8. galvanize - Converts Normal to Electric with 1.2x boost
-9. fluffy - Halves contact damage, doubles Fire damage
-10. icescales - Halves Special damage
-11. goodasgold - Immune to Status moves
-12. ironfist - Boosts punching moves 1.2x
+## Progress Tracking
 
-## Status: Continuing systematically
+This file tracks the implementation of Pokemon abilities from stub files to complete implementations.
+
+## Status
+
+Working on implementing abilities one by one, matching the JavaScript implementation 1-to-1.
+
+Each ability needs to be:
+1. Implemented with actual logic (not TODO stubs)
+2. Tested to ensure no regressions
+3. Committed individually
+
+## Recent Implementations
+
+Session progress (10 abilities implemented):
+1. angershell - Stat changes when HP drops below 50%, berry eating control
+2. immunity - Prevents/cures poison status
+3. insomnia - Prevents/cures sleep status, blocks yawn
+4. limber - Prevents/cures paralysis status
+5. vitalspirit - Prevents/cures sleep status, blocks yawn (same as insomnia)
+6. waterveil - Prevents/cures burn status
+7. magmaarmor - Prevents/cures freeze status
+8. toxicboost - 1.5x Physical power when poisoned
+9. sturdy - Prevents OHKO from full HP
+10. poisonheal - Heals instead of taking poison damage
+
+## Next to implement
+
+Starting with the alphabetically first stubs...
