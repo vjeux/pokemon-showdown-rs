@@ -28,7 +28,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onTakeItem(...)
+/// onTakeItem(item, pokemon, source)
+/// Prevents item removal by opponents (blocks Knock Off, Thief, etc.)
+///
+/// TODO: onTakeItem handler not yet implemented
+/// TODO: Needs battle.activeMove, pokemon.hp, pokemon.item, source checking
+/// When implemented, should:
+/// 1. Skip if pokemon.hp is 0 (fainted)
+/// 2. Skip if pokemon.item is 'stickybarb' (Sticky Barb can still transfer)
+/// 3. If source exists and differs from pokemon, or activeMove is 'knockoff':
+///    - Add message: battle.add('-activate', pokemon, 'ability: Sticky Hold')
+///    - Return False to prevent item removal
 pub fn on_take_item(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
