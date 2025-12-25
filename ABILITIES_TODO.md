@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~217
-Documented stubs (with detailed TODOs): ~97
+Fully implemented (working code): ~220
+Documented stubs (with detailed TODOs): ~94
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 69.1% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 70.1% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -43,13 +43,16 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #14)
 
-Completed implementations (4 changes):
+Completed implementations (7 changes):
 1. **shedskin** - 33% chance to cure status each turn with onResidual handler
 2. **adaptability** - Increases STAB from 1.5x to 2x with onModifySTAB infrastructure
 3. **aftermath** - Damages attacker by 1/4 max HP when KO'd by contact move
 4. **angerpoint** - Maximizes Attack (+12 stages to +6) when hit by critical hit
+5. **flamebody** - 30% chance to burn attacker on contact
+6. **poisonpoint** - 30% chance to poison attacker on contact
+7. **static** - 30% chance to paralyze attacker on contact
 
-Progress: 213 → 217 abilities implemented (69.1%)
+Progress: 213 → 220 abilities implemented (70.1%)
 
 Major infrastructure added:
 - onModifySTAB event system in damage calculation for STAB multiplier modification
@@ -57,6 +60,7 @@ Major infrastructure added:
 - Added aftermath to contact move damage handling section
 - **Modified calculate_move_damage to return (damage, was_crit) tuple** - critical infrastructure change
 - This unlocks all abilities that need to check if a hit was critical (angerpoint, etc.)
+- Expanded contact damage handling to support multiple status-inflicting abilities (flamebody, poisonpoint, static)
 
 ## Recent Work (Current Session - Continued #13)
 
