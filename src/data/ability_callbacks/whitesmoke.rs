@@ -1,32 +1,4 @@
-//! White Smoke Ability
-//!
-//! Pokemon Showdown - http://pokemonshowdown.com/
-//!
-//! Generated from data/abilities.ts
-//!
-//! ```text
-//! JS Source (data/abilities.ts):
-//! 	whitesmoke: {
-//! 		onTryBoost(boost, target, source, effect) {
-//! 			if (source && target === source) return;
-//! 			let showMsg = false;
-//! 			let i: BoostID;
-//! 			for (i in boost) {
-//! 				if (boost[i]! < 0) {
-//! 					delete boost[i];
-//! 					showMsg = true;
-//! 				}
-//! 			}
-//! 			if (showMsg && !(effect as ActiveMove).secondaries && effect.id !== 'octolock') {
-//! 				this.add("-fail", target, "unboost", "[from] ability: White Smoke", `[of] ${target}`);
-//! 			}
-//! 		},
-//! 		flags: { breakable: 1 },
-//! 		name: "White Smoke",
-//! 		rating: 2,
-//! 		num: 73,
-//! 	},
-//! ```
+//! White Smoke Ability - Prevents stat reduction from opponents
 
 use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
@@ -34,9 +6,11 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onTryBoost(...)
-pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onTryBoost(boost, target, source, effect)
+/// Prevents opponent from lowering stats
+///
+/// TODO: onTryBoost handler not yet implemented
+/// When implemented, should loop through boost object and delete negative boosts from opponents
+pub fn on_try_boost(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     AbilityHandlerResult::Undefined
 }
-
