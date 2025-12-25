@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~150
-Documented stubs (with detailed TODOs): ~164
+Fully implemented (working code): ~153
+Documented stubs (with detailed TODOs): ~161
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -34,6 +34,13 @@ Each documented ability includes:
 2. Detailed TODO comments explaining required systems
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
+
+## Recent Work (Current Session - Continued #3)
+
+New implementations (3 changes):
+1. **grasspelt** - Boosts Defense by 1.5x in Grassy Terrain (onModifyDef handler)
+2. **guarddog** (partial) - Blocks Intimidate and boosts Attack instead, prevents forced switches (onTryBoost and onDragOut handlers)
+3. **hadronengine** - Sets Electric Terrain on switch-in, boosts SpA by 1.333x in Electric Terrain (onStart and onModifySpA handlers)
 
 ## Recent Work (Current Session - Continued #2)
 

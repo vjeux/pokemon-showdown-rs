@@ -34,32 +34,34 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
+pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
+
 /// onStart(pokemon)
-/// Sets sun on switch-in
-///
-/// TODO: onStart handler not yet implemented
-/// TODO: Needs field.setWeather(), field.isWeather()
-/// When implemented, should:
-/// 1. Try to set sunny day weather
-/// 2. Add activate message with source if successful
-/// 3. If already sunny, add activate message without source
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// Sets Sunny Day on switch-in
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (this.field.setWeather('sunnyday'))
+    let weather_changed = battle.field.set_weather(ID::new("sunnyday"), None);
+    if weather_changed {
+        // this.add('-activate', pokemon, 'Orichalcum Pulse', '[source]');
+        battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("Orichalcum Pulse"), Arg::Str("[source]")]);
+    } else if battle.field.is_weather("sunnyday") {
+        // else if (this.field.isWeather('sunnyday'))
+        // this.add('-activate', pokemon, 'ability: Orichalcum Pulse');
+        battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Orichalcum Pulse")]);
+    }
     AbilityHandlerResult::Undefined
 }
 
-pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
-
 /// onModifyAtk(atk, pokemon)
-/// Boosts Attack by 1.33x in sun
-///
-/// TODO: onModifyAtk handler not yet implemented
-/// TODO: Needs pokemon.effectiveWeather()
-/// When implemented, should:
-/// 1. Check if effectiveWeather is sunnyday or desolateland
-/// 2. Return chainModify(5461, 4096) for 1.33x boost
-pub fn on_modify_atk(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// Boosts Attack by 1.333x in sun
+pub fn on_modify_atk(battle: &mut Battle, _atk: u32, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather()))
+    let weather = battle.field.effective_weather();
+    if *weather == ID::new("sunnyday") || *weather == ID::new("desolateland") {
+        // this.debug('Orichalcum boost');
+        // return this.chainModify([5461, 4096]);
+        return AbilityHandlerResult::ChainModify(5461, 4096); // ~1.333x
+    }
     AbilityHandlerResult::Undefined
 }
 
