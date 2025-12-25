@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~205
-Documented stubs (with detailed TODOs): ~109
+Fully implemented (working code): ~206
+Documented stubs (with detailed TODOs): ~108
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -40,15 +40,17 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #12)
 
-Completed implementations (3 changes):
+Completed implementations (4 changes):
 1. **unnerve** (partial) - Implemented onStart and onEnd handlers (onFoeTryEatItem needs handler infrastructure)
 2. **costar** - Copies ally's stat boosts and critical hit volatiles on switch-in
 3. **telepathy** - Blocks damage from ally attacks in doubles/triples
+4. **pastelveil** (partial) - Implemented onStart (cures poison on allies) and onSetStatus (prevents poison on self)
 
-Progress: 203 → 205 abilities implemented (65.3%)
+Progress: 203 → 206 abilities implemented (65.6%)
 
 Note: Demonstrated boost copying across all 7 stats, volatile status copying with layers/data,
-and ally checking using is_ally() method.
+ally checking using is_ally() method, and status curing with cure_status().
+Partial implementations don't count toward total (only full implementations).
 
 ## Recent Work (Current Session - Continued #11)
 
