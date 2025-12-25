@@ -26,9 +26,13 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSourceModifyDamage(...)
-pub fn on_source_modify_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onSourceModifyDamage(damage, source, target, move)
+pub fn on_source_modify_damage(_damage: u32, _source: &Pokemon, target: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+    // if (target.hp >= target.maxhp)
+    if target.hp >= target.maxhp {
+        // this.debug('Shadow Shield weaken');
+        // return this.chainModify(0.5);
+        return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
+    }
     AbilityHandlerResult::Undefined
 }
-
