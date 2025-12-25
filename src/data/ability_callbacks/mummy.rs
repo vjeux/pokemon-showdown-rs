@@ -32,7 +32,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamagingHit(...)
+/// onDamagingHit(damage, target, source, move)
+/// Spreads Mummy to attackers on contact
+///
+/// TODO: onDamagingHit handler not yet implemented
+/// TODO: Needs source.getAbility(), source.setAbility()
+/// TODO: Needs ability.flags['cantsuppress'], isAlly() check
+/// When implemented, should:
+/// 1. Get source's ability and check if it has cantsuppress flag or is mummy
+/// 2. Check if move makes contact using checkMoveMakesContact
+/// 3. Set source's ability to 'mummy' and get old ability
+/// 4. Add activate message with old ability name
 pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
