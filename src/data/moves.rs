@@ -154,6 +154,8 @@ pub struct MoveDef {
     pub type_changer_boosted: bool,
     /// Secondary effects removed by Sheer Force
     pub has_sheer_force: bool,
+    /// Ignores target's evasion stat (Keen Eye, Illuminate, etc.)
+    pub ignores_evasion: bool,
 }
 
 impl Default for MoveDef {
@@ -203,6 +205,7 @@ impl Default for MoveDef {
             force_stab: false,
             type_changer_boosted: false,
             has_sheer_force: false,
+            ignores_evasion: false,
         }
     }
 }
