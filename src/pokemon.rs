@@ -5,6 +5,7 @@
 //! This module contains the Pokemon struct and related types.
 
 use std::collections::HashMap;
+use std::fmt;
 use serde::{Deserialize, Serialize};
 
 use crate::dex_data::{ID, Gender, StatsTable, BoostsTable, EffectState, StatID};
@@ -1621,6 +1622,26 @@ pub struct MoveHitData {
     pub damage: u32,
     /// Did the move hit the substitute instead?
     pub hit_substitute: bool,
+}
+
+// =============================================================================
+// Display implementation for Pokemon
+// =============================================================================
+// In JS: this.fullname = `${this.side.id}: ${this.name}`;
+// and toString() returns the position + name for active pokemon
+
+impl fmt::Display for Pokemon {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        // Format: "p1a: Pikachu" for active, "p1: Pikachu" for inactive
+        let side_id = format!("p{}", self.side_index + 1);
+        if self.is_active {
+            // Active pokemon include position letter (a, b, c, etc.)
+            let pos_letter = (b'a' + self.position as u8) as char;
+            write!(f, "{}{}: {}", side_id, pos_letter, self.name)
+        } else {
+            write!(f, "{}: {}", side_id, self.name)
+        }
+    }
 }
 
 #[cfg(test)]

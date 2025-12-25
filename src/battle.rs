@@ -11,10 +11,46 @@ use serde::{Deserialize, Serialize};
 use crate::dex_data::{ID, GameType, SideID, EffectState};
 use crate::field::{Field, get_weather_type_modifier, get_terrain_damage_modifier, get_weather_damage_fraction, get_grassy_terrain_heal};
 use crate::battle_queue::BattleQueue;
-use crate::pokemon::PokemonSet;
+use crate::pokemon::{Pokemon, PokemonSet};
 use crate::side::{Side, RequestState};
 use crate::prng::{PRNG, PRNGSeed};
 use crate::data::abilities::{get_ability, AbilityDef};
+
+/// Argument type for battle.add() - can be a Pokemon reference or a string
+/// This allows mixing types like: battle.add("-activate", &[pokemon.into(), "ability: Immunity".into()])
+pub enum Arg<'a> {
+    Pokemon(&'a Pokemon),
+    Str(&'a str),
+    String(String),
+}
+
+impl<'a> From<&'a Pokemon> for Arg<'a> {
+    fn from(p: &'a Pokemon) -> Self {
+        Arg::Pokemon(p)
+    }
+}
+
+impl<'a> From<&'a str> for Arg<'a> {
+    fn from(s: &'a str) -> Self {
+        Arg::Str(s)
+    }
+}
+
+impl<'a> From<String> for Arg<'a> {
+    fn from(s: String) -> Self {
+        Arg::String(s)
+    }
+}
+
+impl std::fmt::Display for Arg<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Arg::Pokemon(p) => write!(f, "{}", p),
+            Arg::Str(s) => write!(f, "{}", s),
+            Arg::String(s) => write!(f, "{}", s),
+        }
+    }
+}
 
 /// Result of a switch operation
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -2790,7 +2826,7 @@ impl Battle {
     /// Equivalent to battle.ts debug()
     pub fn debug(&mut self, activity: &str) {
         if self.debug_mode {
-            self.add("debug", &[activity]);
+            self.add_log("debug", &[activity]);
         }
     }
 
@@ -2799,14 +2835,13 @@ impl Battle {
         self.log.join("\n")
     }
 
-    /// Add a log entry
-    /// This is the main logging function, equivalent to battle.ts add()
-    /// Supports variable number of parts that get joined with '|'
-    pub fn add(&mut self, event_type: &str, parts: &[&str]) {
+    /// Add a log entry - matches JS this.add()
+    /// Usage: battle.add("-activate", &[pokemon.into(), "ability: Immunity".into()])
+    pub fn add(&mut self, event_type: &str, args: &[Arg]) {
         let mut entry = format!("|{}", event_type);
-        for part in parts {
+        for arg in args {
             entry.push('|');
-            entry.push_str(part);
+            entry.push_str(&arg.to_string());
         }
         self.log.push(entry);
     }
@@ -2831,7 +2866,7 @@ impl Battle {
             return;
         }
 
-        self.add("-hint", &[hint_text]);
+        self.add_log("-hint", &[hint_text]);
 
         if once {
             self.hints.insert(hint_key);
@@ -2882,11 +2917,11 @@ impl Battle {
 
         let winner_name = side.and_then(|s| self.get_side(s).map(|side| side.name.clone()));
 
-        self.add("", &[]);
+        self.add_log("", &[]);
         if let Some(ref name) = winner_name {
-            self.add("win", &[name]);
+            self.add_log("win", &[name]);
         } else {
-            self.add("tie", &[]);
+            self.add_log("tie", &[]);
         }
 
         self.winner = winner_name;
@@ -3092,9 +3127,9 @@ impl Battle {
                 let hp_str = format!("{}/{}", new_hp, pokemon_maxhp);
 
                 if let Some(eff) = effect {
-                    self.add("-damage", &[&full_name, &hp_str, &format!("[from] {}", eff)]);
+                    self.add_log("-damage", &[&full_name, &hp_str, &format!("[from] {}", eff)]);
                 } else {
-                    self.add("-damage", &[&full_name, &hp_str]);
+                    self.add_log("-damage", &[&full_name, &hp_str]);
                 }
 
                 self.last_damage = actual_damage;
@@ -3164,13 +3199,13 @@ impl Battle {
                 if let Some(eff) = effect {
                     if eff == "drain" {
                         if let Some(ref src_name) = source_name {
-                            self.add("-heal", &[&full_name, &hp_str, "[from] drain", &format!("[of] {}", src_name)]);
+                            self.add_log("-heal", &[&full_name, &hp_str, "[from] drain", &format!("[of] {}", src_name)]);
                             return healed;
                         }
                     }
-                    self.add("-heal", &[&full_name, &hp_str, &format!("[from] {}", eff)]);
+                    self.add_log("-heal", &[&full_name, &hp_str, &format!("[from] {}", eff)]);
                 } else {
-                    self.add("-heal", &[&full_name, &hp_str]);
+                    self.add_log("-heal", &[&full_name, &hp_str]);
                 }
 
                 return healed;
@@ -3237,9 +3272,9 @@ impl Battle {
                         let boost_str = actual.abs().to_string();
 
                         if let Some(eff) = effect {
-                            self.add(msg, &[&pokemon_name, stat, &boost_str, &format!("[from] {}", eff)]);
+                            self.add_log(msg, &[&pokemon_name, stat, &boost_str, &format!("[from] {}", eff)]);
                         } else {
-                            self.add(msg, &[&pokemon_name, stat, &boost_str]);
+                            self.add_log(msg, &[&pokemon_name, stat, &boost_str]);
                         }
                     }
                 }
@@ -3591,14 +3626,14 @@ impl Battle {
 
         // Gen 1 partial trapping cleanup would go here
 
-        self.add("", &[]);
-        self.add("turn", &[&self.turn.to_string()]);
+        self.add_log("", &[]);
+        self.add_log("turn", &[&self.turn.to_string()]);
     }
 
     /// Main turn loop
     /// Equivalent to battle.ts turnLoop()
     pub fn turn_loop(&mut self) {
-        self.add("", &[]);
+        self.add_log("", &[]);
 
         if self.request_state != BattleRequestState::None {
             self.request_state = BattleRequestState::None;
@@ -3823,7 +3858,7 @@ impl Battle {
     pub fn maybe_trigger_endless_battle_clause(&mut self) -> bool {
         // Simplified: check if turn count is very high
         if self.turn >= 1000 {
-            self.add("-message", &["Endless Battle Clause triggered!"]);
+            self.add_log("-message", &["Endless Battle Clause triggered!"]);
             self.tie();
             return true;
         }
@@ -3917,15 +3952,15 @@ impl Battle {
 
         // Check stack depth
         if self.event_depth >= 8 {
-            self.add("message", &["STACK LIMIT EXCEEDED"]);
-            self.add("message", &["PLEASE REPORT IN BUG THREAD"]);
-            self.add("message", &[&format!("Event: {}", event_id)]);
+            self.add_log("message", &["STACK LIMIT EXCEEDED"]);
+            self.add_log("message", &["PLEASE REPORT IN BUG THREAD"]);
+            self.add_log("message", &[&format!("Event: {}", event_id)]);
             return EventResult::Fail;
         }
 
         // Check log line limit
         if self.log.len() - self.sent_log_pos > 1000 {
-            self.add("message", &["LINE LIMIT EXCEEDED"]);
+            self.add_log("message", &["LINE LIMIT EXCEEDED"]);
             return EventResult::Fail;
         }
 
@@ -4222,7 +4257,7 @@ impl Battle {
 
         // Check stack depth
         if self.event_depth >= 8 {
-            self.add("message", &["STACK LIMIT EXCEEDED"]);
+            self.add_log("message", &["STACK LIMIT EXCEEDED"]);
             return None;
         }
 
@@ -4626,7 +4661,7 @@ impl Battle {
     /// Equivalent to battle.ts debugError()
     pub fn debug_error(&mut self, activity: &str) {
         if self.debug_mode {
-            self.add("error", &[activity]);
+            self.add_log("error", &[activity]);
         }
     }
 
@@ -4736,7 +4771,7 @@ impl Battle {
     /// Equivalent to battle.ts showOpenTeamSheets()
     pub fn show_open_team_sheets(&mut self, _side_idx: Option<usize>) {
         // In the full implementation, this would reveal team sheets
-        self.add("-message", &["Team sheets revealed"]);
+        self.add_log("-message", &["Team sheets revealed"]);
     }
 
     /// Spread modify damage across multiple targets
