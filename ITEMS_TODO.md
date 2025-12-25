@@ -1,0 +1,486 @@
+# Items Implementation Tracking
+
+Total: 583 items
+Items with callbacks: 384
+
+## Items with Callbacks (alphabetically)
+- [ ] abilityshield - Ability Shield (Gen 9) - 1 callback: onSetAbility
+- [ ] abomasite - Abomasite (Gen 6) - 1 callback: onTakeItem
+- [ ] absolite - Absolite (Gen 6) - 1 callback: onTakeItem
+- [ ] absolitez - Absolite Z (Gen 9) - 1 callback: onTakeItem
+- [ ] absorbbulb - Absorb Bulb (Gen 5) - 1 callback: onDamagingHit
+- [ ] adamantcrystal - Adamant Crystal (Gen 8) - 3 callbacks: onBasePowerPriority, onBasePower, onTakeItem
+- [ ] adamantorb - Adamant Orb (Gen 4) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] adrenalineorb - Adrenaline Orb (Gen 7) - 1 callback: onAfterBoost
+- [ ] aerodactylite - Aerodactylite (Gen 6) - 1 callback: onTakeItem
+- [ ] aggronite - Aggronite (Gen 6) - 1 callback: onTakeItem
+- [ ] aguavberry - Aguav Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [ ] airballoon - Air Balloon (Gen 5) - 3 callbacks: onStart, onDamagingHit, onAfterSubDamage
+- [ ] alakazite - Alakazite (Gen 6) - 1 callback: onTakeItem
+- [ ] aloraichiumz - Aloraichium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] altarianite - Altarianite (Gen 6) - 1 callback: onTakeItem
+- [ ] ampharosite - Ampharosite (Gen 6) - 1 callback: onTakeItem
+- [ ] apicotberry - Apicot Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] aspearberry - Aspear Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] assaultvest - Assault Vest (Gen 6) - 3 callbacks: onModifySpDPriority, onModifySpD, onDisableMove
+- [ ] audinite - Audinite (Gen 6) - 1 callback: onTakeItem
+- [ ] babiriberry - Babiri Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] banettite - Banettite (Gen 6) - 1 callback: onTakeItem
+- [ ] barbaracite - Barbaracite (Gen 9) - 1 callback: onTakeItem
+- [ ] baxcalibrite - Baxcalibrite (Gen 9) - 1 callback: onTakeItem
+- [ ] beedrillite - Beedrillite (Gen 6) - 1 callback: onTakeItem
+- [ ] belueberry - Belue Berry (Gen 3) - 1 callback: onEat
+- [ ] berry - Berry (Gen 2) - 4 callbacks: onResidualOrder, onResidual, onTryEatItem, onEat
+- [ ] berryjuice - Berry Juice (Gen 2) - 1 callback: onUpdate
+- [ ] berserkgene - Berserk Gene (Gen 2) - 1 callback: onUpdate
+- [ ] bigroot - Big Root (Gen 4) - 2 callbacks: onTryHealPriority, onTryHeal
+- [ ] bitterberry - Bitter Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [ ] blackbelt - Black Belt (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] blackglasses - Black Glasses (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] blacksludge - Black Sludge (Gen 4) - 3 callbacks: onResidualOrder, onResidualSubOrder, onResidual
+- [ ] blastoisinite - Blastoisinite (Gen 6) - 1 callback: onTakeItem
+- [ ] blazikenite - Blazikenite (Gen 6) - 1 callback: onTakeItem
+- [ ] blueorb - Blue Orb (Gen 6) - 3 callbacks: onSwitchInPriority, onSwitchIn, onTakeItem
+- [ ] blukberry - Bluk Berry (Gen 3) - 1 callback: onEat
+- [ ] boosterenergy - Booster Energy (Gen 9) - 4 callbacks: onSwitchInPriority, onStart, onUpdate, onTakeItem
+- [ ] brightpowder - Bright Powder (Gen 2) - 2 callbacks: onModifyAccuracyPriority, onModifyAccuracy
+- [ ] buggem - Bug Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] buginiumz - Buginium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] bugmemory - Bug Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] burndrive - Burn Drive (Gen 5) - 2 callbacks: onTakeItem, onDrive
+- [ ] burntberry - Burnt Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [ ] cameruptite - Cameruptite (Gen 6) - 1 callback: onTakeItem
+- [ ] cellbattery - Cell Battery (Gen 5) - 1 callback: onDamagingHit
+- [ ] chandelurite - Chandelurite (Gen 9) - 1 callback: onTakeItem
+- [ ] charcoal - Charcoal (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] charizarditex - Charizardite X (Gen 6) - 1 callback: onTakeItem
+- [ ] charizarditey - Charizardite Y (Gen 6) - 1 callback: onTakeItem
+- [ ] chartiberry - Charti Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] cheriberry - Cheri Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] chesnaughtite - Chesnaughtite (Gen 9) - 1 callback: onTakeItem
+- [ ] chestoberry - Chesto Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] chilanberry - Chilan Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] chilldrive - Chill Drive (Gen 5) - 2 callbacks: onTakeItem, onDrive
+- [ ] chimechite - Chimechite (Gen 9) - 1 callback: onTakeItem
+- [ ] choiceband - Choice Band (Gen 3) - 4 callbacks: onStart, onModifyMove, onModifyAtkPriority, onModifyAtk
+- [ ] choicescarf - Choice Scarf (Gen 4) - 3 callbacks: onStart, onModifyMove, onModifySpe
+- [ ] choicespecs - Choice Specs (Gen 4) - 4 callbacks: onStart, onModifyMove, onModifySpAPriority, onModifySpA
+- [ ] chopleberry - Chople Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] clearamulet - Clear Amulet (Gen 9) - 2 callbacks: onTryBoostPriority, onTryBoost
+- [ ] clefablite - Clefablite (Gen 9) - 1 callback: onTakeItem
+- [ ] cobaberry - Coba Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] colburberry - Colbur Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] cornerstonemask - Cornerstone Mask (Gen 9) - 3 callbacks: onBasePowerPriority, onBasePower, onTakeItem
+- [ ] cornnberry - Cornn Berry (Gen 3) - 1 callback: onEat
+- [ ] covertcloak - Covert Cloak (Gen 9) - 1 callback: onModifySecondaries
+- [ ] crabominite - Crabominite (Gen 9) - 1 callback: onTakeItem
+- [ ] crucibellite - Crucibellite (Gen 6) - 1 callback: onTakeItem
+- [ ] custapberry - Custap Berry (Gen 4) - 3 callbacks: onFractionalPriorityPriority, onFractionalPriority, onEat
+- [ ] darkgem - Dark Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] darkiniumz - Darkinium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] darkmemory - Dark Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] darkranite - Darkranite (Gen 9) - 1 callback: onTakeItem
+- [ ] decidiumz - Decidium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] deepseascale - Deep Sea Scale (Gen 3) - 2 callbacks: onModifySpDPriority, onModifySpD
+- [ ] deepseatooth - Deep Sea Tooth (Gen 3) - 2 callbacks: onModifySpAPriority, onModifySpA
+- [ ] delphoxite - Delphoxite (Gen 9) - 1 callback: onTakeItem
+- [ ] destinyknot - Destiny Knot (Gen 4) - 2 callbacks: onAttractPriority, onAttract
+- [ ] diancite - Diancite (Gen 6) - 1 callback: onTakeItem
+- [ ] dousedrive - Douse Drive (Gen 5) - 2 callbacks: onTakeItem, onDrive
+- [ ] dracoplate - Draco Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] dragalgite - Dragalgite (Gen 9) - 1 callback: onTakeItem
+- [ ] dragonfang - Dragon Fang (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] dragongem - Dragon Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] dragoninite - Dragoninite (Gen 9) - 1 callback: onTakeItem
+- [ ] dragoniumz - Dragonium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] dragonmemory - Dragon Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] drampanite - Drampanite (Gen 9) - 1 callback: onTakeItem
+- [ ] dreadplate - Dread Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] durinberry - Durin Berry (Gen 3) - 1 callback: onEat
+- [ ] earthplate - Earth Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] eelektrossite - Eelektrossite (Gen 9) - 1 callback: onTakeItem
+- [ ] eeviumz - Eevium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] ejectbutton - Eject Button (Gen 5) - 2 callbacks: onAfterMoveSecondaryPriority, onAfterMoveSecondary
+- [ ] ejectpack - Eject Pack (Gen 8) - 10 callbacks: onAfterBoost, onAnySwitchInPriority, onAnySwitchIn, onAnyAfterMega, onAnyAfterMove, onResidualOrder, onResidual, onUseItem, onUse, onEnd
+- [ ] electricgem - Electric Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] electricmemory - Electric Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] electricseed - Electric Seed (Gen 7) - 3 callbacks: onSwitchInPriority, onStart, onTerrainChange
+- [ ] electriumz - Electrium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] emboarite - Emboarite (Gen 9) - 1 callback: onTakeItem
+- [ ] enigmaberry - Enigma Berry (Gen 3) - 3 callbacks: onHit, onTryEatItem, onEat
+- [ ] eviolite - Eviolite (Gen 5) - 4 callbacks: onModifyDefPriority, onModifyDef, onModifySpDPriority, onModifySpD
+- [ ] excadrite - Excadrite (Gen 9) - 1 callback: onTakeItem
+- [ ] expertbelt - Expert Belt (Gen 4) - 1 callback: onModifyDamage
+- [ ] fairiumz - Fairium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] fairyfeather - Fairy Feather (Gen 9) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] fairygem - Fairy Gem (Gen 6) - 1 callback: onSourceTryPrimaryHit
+- [ ] fairymemory - Fairy Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] falinksite - Falinksite (Gen 9) - 1 callback: onTakeItem
+- [ ] feraligite - Feraligite (Gen 9) - 1 callback: onTakeItem
+- [ ] fightinggem - Fighting Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] fightingmemory - Fighting Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] fightiniumz - Fightinium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] figyberry - Figy Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [ ] firegem - Fire Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] firememory - Fire Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] firiumz - Firium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] fistplate - Fist Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] flameorb - Flame Orb (Gen 4) - 3 callbacks: onResidualOrder, onResidualSubOrder, onResidual
+- [ ] flameplate - Flame Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] floatstone - Float Stone (Gen 5) - 1 callback: onModifyWeight
+- [ ] floettite - Floettite (Gen 9) - 1 callback: onTakeItem
+- [ ] flyinggem - Flying Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] flyingmemory - Flying Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] flyiniumz - Flyinium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] focusband - Focus Band (Gen 2) - 2 callbacks: onDamagePriority, onDamage
+- [ ] focussash - Focus Sash (Gen 4) - 2 callbacks: onDamagePriority, onDamage
+- [ ] froslassite - Froslassite (Gen 9) - 1 callback: onTakeItem
+- [ ] fullincense - Full Incense (Gen 4) - 1 callback: onFractionalPriority
+- [ ] galladite - Galladite (Gen 6) - 1 callback: onTakeItem
+- [ ] ganlonberry - Ganlon Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] garchompite - Garchompite (Gen 6) - 1 callback: onTakeItem
+- [ ] garchompitez - Garchompite Z (Gen 9) - 1 callback: onTakeItem
+- [ ] gardevoirite - Gardevoirite (Gen 6) - 1 callback: onTakeItem
+- [ ] gengarite - Gengarite (Gen 6) - 1 callback: onTakeItem
+- [ ] ghostgem - Ghost Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] ghostiumz - Ghostium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] ghostmemory - Ghost Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] glalitite - Glalitite (Gen 6) - 1 callback: onTakeItem
+- [ ] glimmoranite - Glimmoranite (Gen 9) - 1 callback: onTakeItem
+- [ ] goldberry - Gold Berry (Gen 2) - 4 callbacks: onResidualOrder, onResidual, onTryEatItem, onEat
+- [ ] golisopite - Golisopite (Gen 9) - 1 callback: onTakeItem
+- [ ] golurkite - Golurkite (Gen 9) - 1 callback: onTakeItem
+- [ ] grassgem - Grass Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] grassiumz - Grassium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] grassmemory - Grass Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] grassyseed - Grassy Seed (Gen 7) - 3 callbacks: onSwitchInPriority, onStart, onTerrainChange
+- [ ] greninjite - Greninjite (Gen 9) - 1 callback: onTakeItem
+- [ ] grepaberry - Grepa Berry (Gen 3) - 1 callback: onEat
+- [ ] griseouscore - Griseous Core (Gen 8) - 3 callbacks: onBasePowerPriority, onBasePower, onTakeItem
+- [ ] griseousorb - Griseous Orb (Gen 4) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] groundgem - Ground Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] groundiumz - Groundium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] groundmemory - Ground Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] gyaradosite - Gyaradosite (Gen 6) - 1 callback: onTakeItem
+- [ ] habanberry - Haban Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] hardstone - Hard Stone (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] hawluchanite - Hawluchanite (Gen 9) - 1 callback: onTakeItem
+- [ ] hearthflamemask - Hearthflame Mask (Gen 9) - 3 callbacks: onBasePowerPriority, onBasePower, onTakeItem
+- [ ] heatranite - Heatranite (Gen 9) - 1 callback: onTakeItem
+- [ ] heracronite - Heracronite (Gen 6) - 1 callback: onTakeItem
+- [ ] hondewberry - Hondew Berry (Gen 3) - 1 callback: onEat
+- [ ] houndoominite - Houndoominite (Gen 6) - 1 callback: onTakeItem
+- [ ] iapapaberry - Iapapa Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [ ] iceberry - Ice Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [ ] icegem - Ice Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] icememory - Ice Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] icicleplate - Icicle Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] iciumz - Icium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] inciniumz - Incinium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] insectplate - Insect Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] ironball - Iron Ball (Gen 4) - 2 callbacks: onEffectiveness, onModifySpe
+- [ ] ironplate - Iron Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] jabocaberry - Jaboca Berry (Gen 4) - 2 callbacks: onDamagingHit, onEat
+- [ ] kangaskhanite - Kangaskhanite (Gen 6) - 1 callback: onTakeItem
+- [ ] kasibberry - Kasib Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] kebiaberry - Kebia Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] keeberry - Kee Berry (Gen 6) - 2 callbacks: onAfterMoveSecondary, onEat
+- [ ] kelpsyberry - Kelpsy Berry (Gen 3) - 1 callback: onEat
+- [ ] kingsrock - King's Rock (Gen 2) - 2 callbacks: onModifyMovePriority, onModifyMove
+- [ ] kommoniumz - Kommonium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] laggingtail - Lagging Tail (Gen 4) - 1 callback: onFractionalPriority
+- [ ] lansatberry - Lansat Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] latiasite - Latiasite (Gen 6) - 1 callback: onTakeItem
+- [ ] latiosite - Latiosite (Gen 6) - 1 callback: onTakeItem
+- [ ] laxincense - Lax Incense (Gen 3) - 2 callbacks: onModifyAccuracyPriority, onModifyAccuracy
+- [ ] leek - Leek (Gen 8) - 1 callback: onModifyCritRatio
+- [ ] leftovers - Leftovers (Gen 2) - 3 callbacks: onResidualOrder, onResidualSubOrder, onResidual
+- [ ] leppaberry - Leppa Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] liechiberry - Liechi Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] lifeorb - Life Orb (Gen 4) - 2 callbacks: onModifyDamage, onAfterMoveSecondarySelf
+- [ ] lightball - Light Ball (Gen 2) - 4 callbacks: onModifyAtkPriority, onModifyAtk, onModifySpAPriority, onModifySpA
+- [ ] loadeddice - Loaded Dice (Gen 9) - 1 callback: onModifyMove
+- [ ] lopunnite - Lopunnite (Gen 6) - 1 callback: onTakeItem
+- [ ] lucarionite - Lucarionite (Gen 6) - 1 callback: onTakeItem
+- [ ] lucarionitez - Lucarionite Z (Gen 9) - 1 callback: onTakeItem
+- [ ] luckypunch - Lucky Punch (Gen 2) - 1 callback: onModifyCritRatio
+- [ ] lumberry - Lum Berry (Gen 3) - 4 callbacks: onAfterSetStatusPriority, onAfterSetStatus, onUpdate, onEat
+- [ ] luminousmoss - Luminous Moss (Gen 6) - 1 callback: onDamagingHit
+- [ ] lunaliumz - Lunalium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] lustrousglobe - Lustrous Globe (Gen 8) - 3 callbacks: onBasePowerPriority, onBasePower, onTakeItem
+- [ ] lustrousorb - Lustrous Orb (Gen 4) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] lycaniumz - Lycanium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] machobrace - Macho Brace (Gen 3) - 1 callback: onModifySpe
+- [ ] magearnite - Magearnite (Gen 9) - 1 callback: onTakeItem
+- [ ] magnet - Magnet (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] magoberry - Mago Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [ ] magostberry - Magost Berry (Gen 3) - 1 callback: onEat
+- [ ] mail - Mail (Gen 2) - 1 callback: onTakeItem
+- [ ] malamarite - Malamarite (Gen 9) - 1 callback: onTakeItem
+- [ ] manectite - Manectite (Gen 6) - 1 callback: onTakeItem
+- [ ] marangaberry - Maranga Berry (Gen 6) - 2 callbacks: onAfterMoveSecondary, onEat
+- [ ] marshadiumz - Marshadium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] mawilite - Mawilite (Gen 6) - 1 callback: onTakeItem
+- [ ] meadowplate - Meadow Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] medichamite - Medichamite (Gen 6) - 1 callback: onTakeItem
+- [ ] meganiumite - Meganiumite (Gen 9) - 1 callback: onTakeItem
+- [ ] mentalherb - Mental Herb (Gen 3) - 1 callback: onUpdate
+- [ ] meowsticite - Meowsticite (Gen 9) - 1 callback: onTakeItem
+- [ ] metagrossite - Metagrossite (Gen 6) - 1 callback: onTakeItem
+- [ ] metalcoat - Metal Coat (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] metalpowder - Metal Powder (Gen 2) - 2 callbacks: onModifyDefPriority, onModifyDef
+- [ ] metronome - Metronome (Gen 4) - 4 callbacks: onStart, onTryMovePriority, onTryMove, onModifyDamage
+- [ ] mewniumz - Mewnium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] mewtwonitex - Mewtwonite X (Gen 6) - 1 callback: onTakeItem
+- [ ] mewtwonitey - Mewtwonite Y (Gen 6) - 1 callback: onTakeItem
+- [ ] micleberry - Micle Berry (Gen 4) - 3 callbacks: onResidual, onEat, onSourceAccuracy
+- [ ] mimikiumz - Mimikium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] mindplate - Mind Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] mintberry - Mint Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [ ] miracleberry - Miracle Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [ ] miracleseed - Miracle Seed (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] mirrorherb - Mirror Herb (Gen 9) - 10 callbacks: onFoeAfterBoost, onAnySwitchInPriority, onAnySwitchIn, onAnyAfterMega, onAnyAfterTerastallization, onAnyAfterMove, onResidualOrder, onResidual, onUse, onEnd
+- [ ] mistyseed - Misty Seed (Gen 7) - 3 callbacks: onSwitchInPriority, onStart, onTerrainChange
+- [ ] muscleband - Muscle Band (Gen 4) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] mysteryberry - Mystery Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [ ] mysticwater - Mystic Water (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] nanabberry - Nanab Berry (Gen 3) - 1 callback: onEat
+- [ ] nevermeltice - Never-Melt Ice (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] nomelberry - Nomel Berry (Gen 3) - 1 callback: onEat
+- [ ] normalgem - Normal Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] normaliumz - Normalium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] occaberry - Occa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] oddincense - Odd Incense (Gen 4) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] oranberry - Oran Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [ ] pamtreberry - Pamtre Berry (Gen 3) - 1 callback: onEat
+- [ ] passhoberry - Passho Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] payapaberry - Payapa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] pechaberry - Pecha Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] persimberry - Persim Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] petayaberry - Petaya Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] pidgeotite - Pidgeotite (Gen 6) - 1 callback: onTakeItem
+- [ ] pikaniumz - Pikanium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] pikashuniumz - Pikashunium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] pinapberry - Pinap Berry (Gen 3) - 1 callback: onEat
+- [ ] pinkbow - Pink Bow (Gen 2) - 1 callback: onBasePower
+- [ ] pinsirite - Pinsirite (Gen 6) - 1 callback: onTakeItem
+- [ ] pixieplate - Pixie Plate (Gen 6) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] poisonbarb - Poison Barb (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] poisongem - Poison Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] poisoniumz - Poisonium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] poisonmemory - Poison Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] polkadotbow - Polkadot Bow (Gen 2) - 1 callback: onBasePower
+- [ ] pomegberry - Pomeg Berry (Gen 3) - 1 callback: onEat
+- [ ] poweranklet - Power Anklet (Gen 4) - 1 callback: onModifySpe
+- [ ] powerband - Power Band (Gen 4) - 1 callback: onModifySpe
+- [ ] powerbelt - Power Belt (Gen 4) - 1 callback: onModifySpe
+- [ ] powerbracer - Power Bracer (Gen 4) - 1 callback: onModifySpe
+- [ ] powerherb - Power Herb (Gen 4) - 1 callback: onChargeMove
+- [ ] powerlens - Power Lens (Gen 4) - 1 callback: onModifySpe
+- [ ] powerweight - Power Weight (Gen 4) - 1 callback: onModifySpe
+- [ ] primariumz - Primarium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] przcureberry - PRZ Cure Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [ ] psncureberry - PSN Cure Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [ ] psychicgem - Psychic Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] psychicmemory - Psychic Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] psychicseed - Psychic Seed (Gen 7) - 3 callbacks: onSwitchInPriority, onStart, onTerrainChange
+- [ ] psychiumz - Psychium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] punchingglove - Punching Glove (Gen 9) - 4 callbacks: onBasePowerPriority, onBasePower, onModifyMovePriority, onModifyMove
+- [ ] pyroarite - Pyroarite (Gen 9) - 1 callback: onTakeItem
+- [ ] qualotberry - Qualot Berry (Gen 3) - 1 callback: onEat
+- [ ] quickclaw - Quick Claw (Gen 2) - 2 callbacks: onFractionalPriorityPriority, onFractionalPriority
+- [ ] quickpowder - Quick Powder (Gen 4) - 1 callback: onModifySpe
+- [ ] rabutaberry - Rabuta Berry (Gen 3) - 1 callback: onEat
+- [ ] raichunitex - Raichunite X (Gen 9) - 1 callback: onTakeItem
+- [ ] raichunitey - Raichunite Y (Gen 9) - 1 callback: onTakeItem
+- [ ] rawstberry - Rawst Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] razorclaw - Razor Claw (Gen 4) - 1 callback: onModifyCritRatio
+- [ ] razorfang - Razor Fang (Gen 4) - 2 callbacks: onModifyMovePriority, onModifyMove
+- [ ] razzberry - Razz Berry (Gen 3) - 1 callback: onEat
+- [ ] redcard - Red Card (Gen 5) - 1 callback: onAfterMoveSecondary
+- [ ] redorb - Red Orb (Gen 6) - 3 callbacks: onSwitchInPriority, onSwitchIn, onTakeItem
+- [ ] rindoberry - Rindo Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] ringtarget - Ring Target (Gen 5) - 1 callback: onNegateImmunity
+- [ ] rockgem - Rock Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] rockincense - Rock Incense (Gen 4) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] rockiumz - Rockium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] rockmemory - Rock Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] rockyhelmet - Rocky Helmet (Gen 5) - 2 callbacks: onDamagingHitOrder, onDamagingHit
+- [ ] roomservice - Room Service (Gen 8) - 3 callbacks: onSwitchInPriority, onStart, onAnyPseudoWeatherChange
+- [ ] roseincense - Rose Incense (Gen 4) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] roseliberry - Roseli Berry (Gen 6) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] rowapberry - Rowap Berry (Gen 4) - 2 callbacks: onDamagingHit, onEat
+- [ ] rustedshield - Rusted Shield (Gen 8) - 1 callback: onTakeItem
+- [ ] rustedsword - Rusted Sword (Gen 8) - 1 callback: onTakeItem
+- [ ] sablenite - Sablenite (Gen 6) - 1 callback: onTakeItem
+- [ ] safetygoggles - Safety Goggles (Gen 6) - 2 callbacks: onImmunity, onTryHit
+- [ ] salacberry - Salac Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] salamencite - Salamencite (Gen 6) - 1 callback: onTakeItem
+- [ ] sceptilite - Sceptilite (Gen 6) - 1 callback: onTakeItem
+- [ ] scizorite - Scizorite (Gen 6) - 1 callback: onTakeItem
+- [ ] scolipite - Scolipite (Gen 9) - 1 callback: onTakeItem
+- [ ] scopelens - Scope Lens (Gen 2) - 1 callback: onModifyCritRatio
+- [ ] scovillainite - Scovillainite (Gen 9) - 1 callback: onTakeItem
+- [ ] scraftinite - Scraftinite (Gen 9) - 1 callback: onTakeItem
+- [ ] seaincense - Sea Incense (Gen 3) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] sharpbeak - Sharp Beak (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] sharpedonite - Sharpedonite (Gen 6) - 1 callback: onTakeItem
+- [ ] shedshell - Shed Shell (Gen 4) - 4 callbacks: onTrapPokemonPriority, onTrapPokemon, onMaybeTrapPokemonPriority, onMaybeTrapPokemon
+- [ ] shellbell - Shell Bell (Gen 3) - 2 callbacks: onAfterMoveSecondarySelfPriority, onAfterMoveSecondarySelf
+- [ ] shockdrive - Shock Drive (Gen 5) - 2 callbacks: onTakeItem, onDrive
+- [ ] shucaberry - Shuca Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] silkscarf - Silk Scarf (Gen 3) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] silverpowder - Silver Powder (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] sitrusberry - Sitrus Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [ ] skarmorite - Skarmorite (Gen 9) - 1 callback: onTakeItem
+- [ ] skyplate - Sky Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] slowbronite - Slowbronite (Gen 6) - 1 callback: onTakeItem
+- [ ] snorliumz - Snorlium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] snowball - Snowball (Gen 6) - 1 callback: onDamagingHit
+- [ ] softsand - Soft Sand (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] solganiumz - Solganium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] souldew - Soul Dew (Gen 3) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] spelltag - Spell Tag (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] spelonberry - Spelon Berry (Gen 3) - 1 callback: onEat
+- [ ] splashplate - Splash Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] spookyplate - Spooky Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] staraptite - Staraptite (Gen 9) - 1 callback: onTakeItem
+- [ ] starfberry - Starf Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [ ] starminite - Starminite (Gen 9) - 1 callback: onTakeItem
+- [ ] steelgem - Steel Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] steeliumz - Steelium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] steelixite - Steelixite (Gen 6) - 1 callback: onTakeItem
+- [ ] steelmemory - Steel Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] stick - Stick (Gen 2) - 1 callback: onModifyCritRatio
+- [ ] stickybarb - Sticky Barb (Gen 4) - 4 callbacks: onResidualOrder, onResidualSubOrder, onResidual, onHit
+- [ ] stoneplate - Stone Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] swampertite - Swampertite (Gen 6) - 1 callback: onTakeItem
+- [ ] tamatoberry - Tamato Berry (Gen 3) - 1 callback: onEat
+- [ ] tangaberry - Tanga Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] tapuniumz - Tapunium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] tatsugirinite - Tatsugirinite (Gen 9) - 1 callback: onTakeItem
+- [ ] thickclub - Thick Club (Gen 2) - 2 callbacks: onModifyAtkPriority, onModifyAtk
+- [ ] throatspray - Throat Spray (Gen 8) - 1 callback: onAfterMoveSecondarySelf
+- [ ] toxicorb - Toxic Orb (Gen 4) - 3 callbacks: onResidualOrder, onResidualSubOrder, onResidual
+- [ ] toxicplate - Toxic Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] twistedspoon - Twisted Spoon (Gen 2) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] tyranitarite - Tyranitarite (Gen 6) - 1 callback: onTakeItem
+- [ ] ultranecroziumz - Ultranecrozium Z (Gen 7) - 1 callback: onTakeItem
+- [ ] utilityumbrella - Utility Umbrella (Gen 8) - 3 callbacks: onStart, onUpdate, onEnd
+- [ ] venusaurite - Venusaurite (Gen 6) - 1 callback: onTakeItem
+- [ ] victreebelite - Victreebelite (Gen 9) - 1 callback: onTakeItem
+- [ ] vilevial - Vile Vial (Gen 8) - 3 callbacks: onBasePowerPriority, onBasePower, onTakeItem
+- [ ] wacanberry - Wacan Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] watergem - Water Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [ ] wateriumz - Waterium Z (Gen 7) - 2 callbacks: onPlate, onTakeItem
+- [ ] watermemory - Water Memory (Gen 7) - 2 callbacks: onMemory, onTakeItem
+- [ ] watmelberry - Watmel Berry (Gen 3) - 1 callback: onEat
+- [ ] waveincense - Wave Incense (Gen 4) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] weaknesspolicy - Weakness Policy (Gen 6) - 1 callback: onDamagingHit
+- [ ] wellspringmask - Wellspring Mask (Gen 9) - 3 callbacks: onBasePowerPriority, onBasePower, onTakeItem
+- [ ] wepearberry - Wepear Berry (Gen 3) - 1 callback: onEat
+- [ ] whiteherb - White Herb (Gen 3) - 8 callbacks: onStart, onAnySwitchInPriority, onAnySwitchIn, onAnyAfterMega, onAnyAfterMove, onResidualOrder, onResidual, onUse
+- [ ] widelens - Wide Lens (Gen 4) - 2 callbacks: onSourceModifyAccuracyPriority, onSourceModifyAccuracy
+- [ ] wikiberry - Wiki Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [ ] wiseglasses - Wise Glasses (Gen 4) - 2 callbacks: onBasePowerPriority, onBasePower
+- [ ] yacheberry - Yache Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [ ] zapplate - Zap Plate (Gen 4) - 4 callbacks: onPlate, onBasePowerPriority, onBasePower, onTakeItem
+- [ ] zeraorite - Zeraorite (Gen 9) - 1 callback: onTakeItem
+- [ ] zoomlens - Zoom Lens (Gen 4) - 2 callbacks: onSourceModifyAccuracyPriority, onSourceModifyAccuracy
+- [ ] zygardite - Zygardite (Gen 9) - 1 callback: onTakeItem
+
+## Statistics
+
+By callback type:
+- onTakeItem: 179 items
+- onEat: 77 items
+- onBasePower: 56 items
+- onBasePowerPriority: 54 items
+- onUpdate: 35 items
+- onPlate: 34 items
+- onSourceModifyDamage: 18 items
+- onSourceTryPrimaryHit: 18 items
+- onMemory: 17 items
+- onStart: 13 items
+- onResidual: 11 items
+- onTryEatItem: 10 items
+- onResidualOrder: 10 items
+- onModifySpe: 10 items
+- onDamagingHit: 9 items
+- onSwitchInPriority: 8 items
+- onModifyMove: 7 items
+- onResidualSubOrder: 5 items
+- onModifyCritRatio: 5 items
+- onDrive: 4 items
+- onFractionalPriority: 4 items
+- onAfterMoveSecondary: 4 items
+- onTerrainChange: 4 items
+- onModifySpDPriority: 3 items
+- onModifySpD: 3 items
+- onModifyAtkPriority: 3 items
+- onModifyAtk: 3 items
+- onModifySpAPriority: 3 items
+- onModifySpA: 3 items
+- onAnySwitchInPriority: 3 items
+- onAnySwitchIn: 3 items
+- onAnyAfterMega: 3 items
+- onAnyAfterMove: 3 items
+- onUse: 3 items
+- onEnd: 3 items
+- onModifyDamage: 3 items
+- onModifyMovePriority: 3 items
+- onAfterMoveSecondarySelf: 3 items
+- onAfterBoost: 2 items
+- onSwitchIn: 2 items
+- onModifyAccuracyPriority: 2 items
+- onModifyAccuracy: 2 items
+- onFractionalPriorityPriority: 2 items
+- onHit: 2 items
+- onModifyDefPriority: 2 items
+- onModifyDef: 2 items
+- onDamagePriority: 2 items
+- onDamage: 2 items
+- onSourceModifyAccuracyPriority: 2 items
+- onSourceModifyAccuracy: 2 items
+- onSetAbility: 1 items
+- onAfterSubDamage: 1 items
+- onDisableMove: 1 items
+- onTryHealPriority: 1 items
+- onTryHeal: 1 items
+- onTryBoostPriority: 1 items
+- onTryBoost: 1 items
+- onModifySecondaries: 1 items
+- onAttractPriority: 1 items
+- onAttract: 1 items
+- onAfterMoveSecondaryPriority: 1 items
+- onUseItem: 1 items
+- onModifyWeight: 1 items
+- onEffectiveness: 1 items
+- onAfterSetStatusPriority: 1 items
+- onAfterSetStatus: 1 items
+- onTryMovePriority: 1 items
+- onTryMove: 1 items
+- onSourceAccuracy: 1 items
+- onFoeAfterBoost: 1 items
+- onAnyAfterTerastallization: 1 items
+- onChargeMove: 1 items
+- onNegateImmunity: 1 items
+- onDamagingHitOrder: 1 items
+- onAnyPseudoWeatherChange: 1 items
+- onImmunity: 1 items
+- onTryHit: 1 items
+- onTrapPokemonPriority: 1 items
+- onTrapPokemon: 1 items
+- onMaybeTrapPokemonPriority: 1 items
+- onMaybeTrapPokemon: 1 items
+- onAfterMoveSecondarySelfPriority: 1 items
+
+## Items by Generation
+- Gen 2: 42 items
+- Gen 3: 54 items
+- Gen 4: 74 items
+- Gen 5: 30 items
+- Gen 6: 60 items
+- Gen 7: 57 items
+- Gen 8: 11 items
+- Gen 9: 56 items
