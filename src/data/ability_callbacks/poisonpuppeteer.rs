@@ -27,7 +27,15 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAnyAfterSetStatus(...)
+/// onAnyAfterSetStatus(status, target, source, effect)
+/// Confuses poisoned opponents (Pecharunt only)
+///
+/// TODO: onAnyAfterSetStatus handler not yet implemented
+/// TODO: Needs source.baseSpecies.name, effectState.target, effect.effectType, target.addVolatile()
+/// When implemented, should:
+/// 1. Skip if source is not Pecharunt
+/// 2. Skip if source is not the ability holder, target is source, or effect is not a Move
+/// 3. If status is psn or tox, add confusion volatile to target
 pub fn on_any_after_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
