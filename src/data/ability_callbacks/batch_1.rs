@@ -257,21 +257,24 @@ pub mod aftermath {
 pub mod airlock {
     use super::*;
 
-    /// onSwitchIn(...)
-    pub fn on_switch_in(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    pub const SUPPRESS_WEATHER: bool = true;
+
+    /// onSwitchIn(pokemon)
+    pub fn on_switch_in(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+        battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Air Lock")]);
         AbilityHandlerResult::Undefined
     }
 
-    /// onStart(...)
-    pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onStart(pokemon)
+    pub fn on_start(_battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+        pokemon.ability_state.data.insert("ending".to_string(), serde_json::Value::Bool(false));
+        // Weather suppression is handled by the SUPPRESS_WEATHER flag
         AbilityHandlerResult::Undefined
     }
 
-    /// onEnd(...)
-    pub fn on_end(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-        // TODO: Implement 1-to-1 from JS
+    /// onEnd(pokemon)
+    pub fn on_end(_battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+        pokemon.ability_state.data.insert("ending".to_string(), serde_json::Value::Bool(true));
         AbilityHandlerResult::Undefined
     }
 }
