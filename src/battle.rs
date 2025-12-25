@@ -4218,6 +4218,17 @@ impl Battle {
                         }
                         return EventResult::Stop;
                     }
+                    if ability.id.as_str() == "speedboost" {
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                // Speed Boost: Boosts Speed by 1 stage at end of turn (if active_turns > 0)
+                                if pokemon.active_turns > 0 {
+                                    self.boost(&[("spe", 1)], (side_idx, poke_idx), Some((side_idx, poke_idx)), None);
+                                }
+                                return EventResult::Stop;
+                            }
+                        }
+                    }
                 }
             }
             _ => {}
