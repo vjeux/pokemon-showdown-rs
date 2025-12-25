@@ -48,20 +48,16 @@ pub fn on_modify_sp_a(battle: &mut Battle, _spa: u32, _pokemon: &Pokemon) -> Abi
 
 /// onWeather(target, source, effect)
 /// Damages the Pokemon by 1/8 max HP each turn in sun
-///
-/// TODO: onWeather handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Check if target has Utility Umbrella item (return early if so)
-/// 2. Check if effect.id is 'sunnyday' or 'desolateland'
-/// 3. Call battle.damage(target.baseMaxhp / 8, target, target)
-pub fn on_weather(_battle: &mut Battle, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_weather(battle: &mut Battle, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
     // if (target.hasItem('utilityumbrella')) return;
-    // TODO: Item checking not yet available
+    // TODO: Item checking not yet available - skip for now
 
     // if (effect.id === 'sunnyday' || effect.id === 'desolateland')
     if effect.id == "sunnyday" || effect.id == "desolateland" {
         // this.damage(target.baseMaxhp / 8, target, target);
-        // TODO: Damage call needs implementation
+        let damage_amount = target.base_maxhp / 8;
+        let target_ref = (target.side_index, target.position);
+        battle.damage(damage_amount, target_ref, Some(target_ref), None);
     }
     AbilityHandlerResult::Undefined
 }
