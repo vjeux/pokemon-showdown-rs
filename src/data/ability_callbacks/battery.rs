@@ -27,15 +27,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAllyBasePowerPriority(...)
-pub fn on_ally_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_ALLY_BASE_POWER_PRIORITY: i32 = 22;
 
-/// onAllyBasePower(...)
-pub fn on_ally_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onAllyBasePower(basePower, attacker, defender, move)
+/// Boosts allies' Special moves by 1.3x
+pub fn on_ally_base_power(_base_power: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef, ability_holder: &Pokemon) -> AbilityHandlerResult {
+    // if (attacker !== this.effectState.target && move.category === 'Special')
+    if attacker.position != ability_holder.position && move_.category == MoveCategory::Special {
+        // return this.chainModify([5325, 4096]);
+        return AbilityHandlerResult::ChainModify(5325, 4096); // ~1.3x
+    }
     AbilityHandlerResult::Undefined
 }
 
