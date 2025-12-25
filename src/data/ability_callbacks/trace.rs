@@ -48,15 +48,29 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+/// onStart(pokemon)
+/// onUpdate(pokemon)
+/// Copies ability from an adjacent foe on switch-in
+///
+/// TODO: Complex implementation requiring multiple systems:
+/// - pokemon.adjacentFoes() to get adjacent opponents
+/// - pokemon.hasItem() to check for Ability Shield
+/// - this.singleEvent() to trigger onUpdate
+/// - target.getAbility() and pokemon.setAbility() for ability copying
+/// - this.sample() for random selection
+/// - ability_state.data for effectState.seek flag
+/// When implemented, should:
+/// 1. onStart: Set effectState.seek = true, check for noability/Ability Shield
+/// 2. onUpdate: Filter adjacent foes without notrace flag, randomly select one, copy ability
+pub fn on_start(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // Requires adjacentFoes, hasItem, singleEvent systems
     AbilityHandlerResult::Undefined
 }
 
-/// onUpdate(...)
-pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
+pub fn on_update(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
+    // Requires adjacentFoes, getAbility, setAbility, sample systems
     AbilityHandlerResult::Undefined
 }
 
