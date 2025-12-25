@@ -1779,6 +1779,13 @@ impl Battle {
                         self.apply_status(attacker_side, attacker_idx, "psn");
                     }
                 }
+
+                // Static: 30% chance to paralyze attacker on contact
+                if defender_ability == "static" {
+                    if self.random_chance(3, 10) {
+                        self.apply_status(attacker_side, attacker_idx, "par");
+                    }
+                }
             }
         }
 
