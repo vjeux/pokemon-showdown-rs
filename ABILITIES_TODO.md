@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~163
-Documented stubs (with detailed TODOs): ~151
+Fully implemented (working code): ~164
+Documented stubs (with detailed TODOs): ~150
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,10 +12,10 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~163 abilities with full or partial working implementations
-- ~151 abilities with detailed TODO documentation explaining what's needed
+- ~164 abilities with full or partial working implementations
+- ~150 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 51.9% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 52.2% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -37,10 +37,11 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #6)
 
-New implementations (1 change):
+New implementations (2 changes):
 1. **leafguard** - Prevents status conditions in sun (sunnyday/desolateland), blocks yawn (onSetStatus and onTryAddVolatile handlers)
+2. **purifyingsalt** - Prevents all status conditions and yawn, halves Ghost-type damage (onSetStatus, onTryAddVolatile, onSourceModifyAtk, onSourceModifySpA handlers)
 
-Progress: 162 → 163 abilities implemented (51.9%)
+Progress: 162 → 164 abilities implemented (52.2%)
 
 ## Recent Work (Current Session - Continued #4)
 
