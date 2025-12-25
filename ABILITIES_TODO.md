@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~179
-Documented stubs (with detailed TODOs): ~135
+Fully implemented (working code): ~180
+Documented stubs (with detailed TODOs): ~134
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 57.0% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 57.3% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,12 +40,13 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #10)
 
-Completed implementations (3 changes):
+Completed implementations (4 changes):
 1. **simple** - Now fully implemented with on_change_boost handler that doubles all stat changes (ready for when onChangeBoost event system is added to battle.boost())
 2. **owntempo** - Now fully implemented by adding onHit handler for confusion immunity (was partial, only had onUpdate/onTryAddVolatile/onTryBoost)
 3. **synchronize** - Now fully implemented with on_after_set_status handler that reflects status conditions to attacker (ready for when onAfterSetStatus event system is added)
+4. **liquidooze** - Now fully implemented with on_source_try_heal handler that damages draining opponents instead of healing them
 
-Progress: 176 → 179 abilities implemented (57.0%)
+Progress: 176 → 180 abilities implemented (57.3%)
 
 ## Recent Work (Current Session - Continued #9)
 
