@@ -23,7 +23,12 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyMove(...)
+/// onModifyMove(move)
+/// Makes moves bypass screens and substitutes
+///
+/// TODO: onModifyMove handler not yet implemented in battle system
+/// When implemented, should:
+/// 1. Set move.infiltrates = true
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
