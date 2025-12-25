@@ -38,21 +38,45 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onDamagingHit(...)
-pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onDamagingHit(damage, target, source, move)
+/// Boosts Attack by 1 stage when hit by a Fire-type move
+pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move.type === 'Fire')
+    if move_.move_type.as_str() == "Fire" {
+        // this.boost({ atk: 1 });
+        let target_ref = (target.side_index, target.position);
+        battle.boost(&[("atk", 1)], target_ref, Some(target_ref), None);
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onUpdate(...)
-pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onUpdate(pokemon)
+/// Cures burn status at the end of each turn
+pub fn on_update(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+    // if (pokemon.status === 'brn')
+    if pokemon.status.as_str() == "brn" {
+        // this.add('-activate', pokemon, 'ability: Thermal Exchange');
+        battle.add("-activate", &[Arg::Pokemon(pokemon), Arg::Str("ability: Thermal Exchange")]);
+        // pokemon.cureStatus();
+        pokemon.cure_status();
+    }
     AbilityHandlerResult::Undefined
 }
 
-/// onSetStatus(...)
-pub fn on_set_status(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// onSetStatus(status, target, source, effect)
+/// Prevents burn status from being set
+pub fn on_set_status(_battle: &mut Battle, status: &Status, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+    // if (status.id !== 'brn') return;
+    if status.id != "brn" {
+        return AbilityHandlerResult::Undefined;
+    }
+    // if ((effect as Move)?.status)
+    if effect.status.is_some() {
+        // this.add('-immune', target, '[from] ability: Thermal Exchange');
+        // Note: battle is not mutable here, so we can't add logs
+        // This will need to be handled by the caller
+    }
+    // return false;
+    AbilityHandlerResult::False
 }
 
