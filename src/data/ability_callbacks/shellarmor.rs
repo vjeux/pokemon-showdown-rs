@@ -21,9 +21,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onCriticalHit(...)
+/// onCriticalHit
+/// Prevents critical hits
+///
+/// TODO: onCriticalHit handler not yet implemented
+/// TODO: Returns false to block critical hits
+/// When implemented, should:
+/// 1. Return false to prevent any critical hits
 pub fn on_critical_hit(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+    // In JS: onCriticalHit: false
+    AbilityHandlerResult::False
 }
 
