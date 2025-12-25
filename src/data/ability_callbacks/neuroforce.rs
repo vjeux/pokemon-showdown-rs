@@ -27,14 +27,13 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyDamage(damage, source, target, move)
 /// Boosts super-effective damage by 1.25x
-///
-/// TODO: onModifyDamage handler not yet implemented
-/// TODO: Needs target.getMoveHitData(move).typeMod
-/// When implemented, should:
-/// 1. Check if move && target.getMoveHitData(move).typeMod > 0 (super-effective)
-/// 2. Return chainModify(5120, 4096) for 1.25x multiplier
-pub fn on_modify_damage(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_damage(_damage: u32, _source: &Pokemon, target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    // if (move && target.getMoveHitData(move).typeMod > 0)
+    let hit_data = target.get_move_hit_data(&move_.id);
+    if hit_data.type_mod > 0 {
+        // return this.chainModify([5120, 4096]);
+        return AbilityHandlerResult::ChainModify(5120, 4096); // 1.25x
+    }
     AbilityHandlerResult::Undefined
 }
 
