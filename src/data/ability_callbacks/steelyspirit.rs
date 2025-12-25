@@ -27,13 +27,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onAllyBasePowerPriority(...)
-pub fn on_ally_base_power_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_ALLY_BASE_POWER_PRIORITY: i32 = 22;
 
-/// onAllyBasePower(...)
+/// onAllyBasePower(basePower, attacker, defender, move)
+/// Boosts Steel-type moves used by allies by 1.5x
+///
+/// TODO: onAllyBasePower handler not yet implemented
+/// TODO: Needs move.type checking
+/// When implemented, should:
+/// 1. Check if move.type is 'Steel'
+/// 2. Return ChainModify(1.5) = (6144, 4096)
 pub fn on_ally_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
