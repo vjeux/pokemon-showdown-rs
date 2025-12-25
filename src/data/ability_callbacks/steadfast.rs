@@ -23,9 +23,10 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onFlinch(...)
-pub fn on_flinch(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onFlinch(pokemon)
+pub fn on_flinch(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    let pokemon_ref = (pokemon.side_index, pokemon.position);
+    // this.boost({ spe: 1 });
+    battle.boost(&[("spe", 1)], pokemon_ref, Some(pokemon_ref), None);
     AbilityHandlerResult::Undefined
 }
-
