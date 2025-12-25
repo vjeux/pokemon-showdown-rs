@@ -28,13 +28,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifySpAPriority(...)
-pub fn on_modify_sp_a_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
-/// onModifySpA(...)
+/// onModifySpA(spa, pokemon)
+/// Boosts SpA by 1.5x if ally has Plus or Minus
+///
+/// TODO: onModifySpA handler not yet implemented
+/// TODO: Needs pokemon.allies() iterator, hasAbility() check
+/// When implemented, should:
+/// 1. Loop through pokemon.allies()
+/// 2. Check if ally hasAbility(['minus', 'plus'])
+/// 3. Return chainModify(1.5)
 pub fn on_modify_sp_a(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
