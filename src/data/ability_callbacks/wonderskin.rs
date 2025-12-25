@@ -1,25 +1,4 @@
-//! Wonder Skin Ability
-//!
-//! Pokemon Showdown - http://pokemonshowdown.com/
-//!
-//! Generated from data/abilities.ts
-//!
-//! ```text
-//! JS Source (data/abilities.ts):
-//! 	wonderskin: {
-//! 		onModifyAccuracyPriority: 10,
-//! 		onModifyAccuracy(accuracy, target, source, move) {
-//! 			if (move.category === 'Status' && typeof accuracy === 'number') {
-//! 				this.debug('Wonder Skin - setting accuracy to 50');
-//! 				return 50;
-//! 			}
-//! 		},
-//! 		flags: { breakable: 1 },
-//! 		name: "Wonder Skin",
-//! 		rating: 2,
-//! 		num: 147,
-//! 	},
-//! ```
+//! Wonder Skin Ability - Status moves have 50% accuracy
 
 use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
@@ -27,15 +6,13 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onModifyAccuracyPriority(...)
-pub fn on_modify_accuracy_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub const ON_MODIFY_ACCURACY_PRIORITY: i32 = 10;
+
+/// onModifyAccuracy(accuracy, target, source, move)
+/// Reduces accuracy of status moves to 50%
+///
+/// TODO: onModifyAccuracy handler not yet implemented
+/// When implemented: if move.category === Status, return 50
+pub fn on_modify_accuracy(_battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     AbilityHandlerResult::Undefined
 }
-
-/// onModifyAccuracy(...)
-pub fn on_modify_accuracy(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
-
