@@ -62,12 +62,11 @@ pub fn on_update(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHand
 
 /// onImmunity(type, pokemon)
 /// Prevents attract
-///
-/// TODO: onImmunity handler not yet implemented
-/// When implemented, should:
-/// 1. If type === 'attract', return false
-pub fn on_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_immunity(_battle: &mut Battle, immunity_type: &str, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // if (type === 'attract') return false;
+    if immunity_type == "attract" {
+        return AbilityHandlerResult::False;
+    }
     AbilityHandlerResult::Undefined
 }
 
