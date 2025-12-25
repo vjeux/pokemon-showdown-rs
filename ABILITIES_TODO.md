@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~192
-Documented stubs (with detailed TODOs): ~122
+Fully implemented (working code): ~193
+Documented stubs (with detailed TODOs): ~121
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -15,7 +15,7 @@ All 314 abilities have been reviewed and documented. The codebase now has:
 - ~170 abilities with full or partial working implementations
 - ~144 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 61.1% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 61.5% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
@@ -40,7 +40,7 @@ Each documented ability includes:
 
 ## Recent Work (Current Session - Continued #10)
 
-Completed implementations (16 changes):
+Completed implementations (17 changes):
 1. **simple** - Doubles all stat changes with on_change_boost handler
 2. **owntempo** - Fully implemented by adding onHit handler for confusion immunity
 3. **synchronize** - Reflects status conditions to attacker with on_after_set_status handler
@@ -57,8 +57,9 @@ Completed implementations (16 changes):
 14. **unseenfist** - Contact moves bypass protect with on_modify_move handler
 15. **forewarn** - Reveals opponent's strongest move on switch-in with on_start handler
 16. **frisk** - Reveals opponent's held items on switch-in with on_start handler
+17. **hospitality** - Heals adjacent allies by 1/4 max HP on switch-in with on_start handler
 
-Progress: 176 → 192 abilities implemented (61.1%)
+Progress: 176 → 193 abilities implemented (61.5%)
 
 ## Recent Work (Current Session - Continued #9)
 
