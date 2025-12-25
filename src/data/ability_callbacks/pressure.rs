@@ -27,15 +27,22 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onStart(...)
-pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onStart(pokemon)
+pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
+    // this.add('-ability', pokemon, 'Pressure');
+    battle.add("-ability", &[Arg::Pokemon(pokemon), Arg::Str("Pressure")]);
     AbilityHandlerResult::Undefined
 }
 
-/// onDeductPP(...)
-pub fn on_deduct_p_p(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
+/// onDeductPP(target, source)
+pub fn on_deduct_p_p(_battle: &mut Battle, target: &Pokemon, source: &Pokemon) -> AbilityHandlerResult {
+    // if (target.isAlly(source)) return;
+    if target.side_index == source.side_index {
+        return AbilityHandlerResult::Undefined;
+    }
+    // return 1;
+    // Note: This should return 1 to deduct an extra PP, but PP deduction infrastructure
+    // may not be fully implemented yet. Returning Number(1) for when it's supported.
+    AbilityHandlerResult::Number(1)
 }
 
