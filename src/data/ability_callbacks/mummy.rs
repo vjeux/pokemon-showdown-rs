@@ -36,12 +36,13 @@ use super::{AbilityHandlerResult, Status, Effect};
 /// Spreads Mummy to attackers on contact
 pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // const sourceAbility = source.getAbility();
-    let source_ability = source.get_ability();
+    let source_ability_id = source.get_ability();
 
     // if (sourceAbility.flags['cantsuppress'] || sourceAbility.id === 'mummy')
-    // Note: Skipping cantsuppress check for now, just check if already mummy
-    if source_ability.as_str() == "mummy" {
-        return AbilityHandlerResult::Undefined;
+    if let Some(source_ability_def) = crate::data::abilities::get_ability(source_ability_id) {
+        if source_ability_def.flags.cannot_suppress || source_ability_id.as_str() == "mummy" {
+            return AbilityHandlerResult::Undefined;
+        }
     }
 
     // if (this.checkMoveMakesContact(move, source, target, !source.isAlly(target)))
