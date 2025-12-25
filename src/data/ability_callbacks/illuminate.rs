@@ -34,26 +34,38 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onTryBoost(boost, target, source, effect)
 /// Prevents accuracy reduction from opponents
-///
-/// TODO: onTryBoost handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Return early if source && target === source (self-inflicted)
-/// 2. Check if boost.accuracy exists and is negative
-/// 3. Delete boost.accuracy to prevent the reduction
-/// 4. Add fail message if not from a secondary effect
-pub fn on_try_boost(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_boost(battle: &mut Battle, boost: &mut std::collections::HashMap<String, i8>, target: &Pokemon, source: Option<&Pokemon>, effect_id: &str, has_secondaries: bool) -> AbilityHandlerResult {
+    // Return early if source && target === source (self-inflicted)
+    if let Some(src) = source {
+        if (target.side_index, target.position) == (src.side_index, src.position) {
+            return AbilityHandlerResult::Undefined;
+        }
+    }
+    // Check if boost.accuracy exists and is negative
+    if let Some(&acc_boost) = boost.get("accuracy") {
+        if acc_boost < 0 {
+            // Delete boost.accuracy to prevent the reduction
+            boost.remove("accuracy");
+            // Add fail message if not from a secondary effect
+            if !has_secondaries {
+                battle.add("-fail", &[
+                    Arg::Pokemon(target),
+                    Arg::Str("unboost"),
+                    Arg::Str("accuracy"),
+                    Arg::Str("[from] ability: Illuminate"),
+                    Arg::Str(&format!("[of] {}", target.name))
+                ]);
+            }
+        }
+    }
     AbilityHandlerResult::Undefined
 }
 
 /// onModifyMove(move)
 /// Makes all moves ignore evasion
-///
-/// TODO: onModifyMove handler not yet implemented in battle system
-/// When implemented, should:
-/// 1. Set move.ignoreEvasion = true
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(move_: &mut MoveDef, _pokemon: &Pokemon) -> AbilityHandlerResult {
+    // Set move.ignoreEvasion = true
+    move_.ignores_evasion = true;
     AbilityHandlerResult::Undefined
 }
 
