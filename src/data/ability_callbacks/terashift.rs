@@ -1,7 +1,6 @@
 //! Tera Shift Ability
 //!
-//! Pokemon Showdown - http://pokemonshowdown.com/
-//!
+//! Pokemon Showdown - http://pokemonshowdown.com/!
 //! Generated from data/abilities.ts
 //!
 //! ```text
@@ -28,13 +27,19 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
-/// onSwitchInPriority(...)
-pub fn on_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    AbilityHandlerResult::Undefined
-}
+/// onSwitchInPriority: 2
+pub const ON_SWITCH_IN_PRIORITY: i32 = 2;
 
-/// onSwitchIn(...)
+/// onSwitchIn(pokemon)
+/// Transforms Terapagos into Terastal forme on switch in
+///
+/// TODO: onSwitchIn handler not yet implemented in battle system
+/// TODO: Forme change system (pokemon.formeChange) not yet implemented
+/// When implemented, should:
+/// 1. Check if pokemon.baseSpecies.baseSpecies !== 'Terapagos', return if not
+/// 2. Check if pokemon.species.forme !== 'Terastal'
+/// 3. Add activate message: this.add('-activate', pokemon, 'ability: Tera Shift')
+/// 4. Call pokemon.formeChange('Terapagos-Terastal', this.effect, true)
 pub fn on_switch_in(battle: &mut Battle, /* TODO: Add parameters */) -> AbilityHandlerResult {
     // TODO: Implement 1-to-1 from JS
     AbilityHandlerResult::Undefined
