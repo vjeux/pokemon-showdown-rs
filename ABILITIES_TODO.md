@@ -1,8 +1,8 @@
 # Abilities Implementation Progress
 
 Total abilities: 314
-Fully implemented (working code): ~161
-Documented stubs (with detailed TODOs): ~153
+Fully implemented (working code): ~163
+Documented stubs (with detailed TODOs): ~151
 Remaining to document/implement: 0
 
 ## Progress Tracking
@@ -12,15 +12,15 @@ This file tracks the implementation of Pokemon abilities from stub files to comp
 ## Status
 
 All 314 abilities have been reviewed and documented. The codebase now has:
-- ~161 abilities with full or partial working implementations
-- ~153 abilities with detailed TODO documentation explaining what's needed
+- ~163 abilities with full or partial working implementations
+- ~151 abilities with detailed TODO documentation explaining what's needed
 
-**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 51.3% completion!
+**Current Status**: Continuing to implement abilities even when they require new handler infrastructure. Now at 51.9% completion!
 
 The majority of un-implemented abilities require infrastructure that doesn't exist yet:
 - Weather system (effectiveWeather, field.isWeather) - **MANY NOW EXIST!**
 - Forme change system (formeChange, species tracking)
-- Volatile status system (volatiles, addVolatile, removeVolatile)
+- Volatile status system (volatiles, addVolatile, removeVolatile) - **EXISTS!**
 - Item system (getItem, hasItem, takeItem) - **MANY NOW EXIST!**
 - Ability manipulation (setAbility, hasAbility, suppressAbility) - **ALL EXIST!**
 - Side conditions (sideConditions) - **EXISTS!**
@@ -35,13 +35,12 @@ Each documented ability includes:
 3. Step-by-step implementation notes from JavaScript source
 4. References to similar abilities for implementation patterns
 
-## Recent Work (Current Session - Continued #5)
+## Recent Work (Current Session - Continued #6)
 
-New implementations (2 changes):
-1. **merciless** - Always crits poisoned foes (onModifyCritRatio handler)
-2. **sniper** - Boosts damage by 1.5x on critical hits (onModifyDamage handler)
+New implementations (1 change):
+1. **leafguard** - Prevents status conditions in sun (sunnyday/desolateland), blocks yawn (onSetStatus and onTryAddVolatile handlers)
 
-Progress: 160 → 162 abilities implemented (51.6%)
+Progress: 162 → 163 abilities implemented (51.9%)
 
 ## Recent Work (Current Session - Continued #4)
 
