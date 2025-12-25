@@ -554,7 +554,7 @@ fn test_status_paralysis_speed() {
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
-        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        seed: Some(PRNGSeed::Gen5([5, 6, 7, 8])),
         p1: Some(PlayerOptions {
             name: "Alice".to_string(),
             team: team1,
@@ -816,7 +816,7 @@ fn test_paralysis_cant_move() {
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
-        seed: Some(PRNGSeed::Gen5([1, 2, 3, 4])),
+        seed: Some(PRNGSeed::Gen5([5, 6, 7, 8])),
         p1: Some(PlayerOptions {
             name: "Alice".to_string(),
             team: team1,
