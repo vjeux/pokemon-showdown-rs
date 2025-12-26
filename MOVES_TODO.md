@@ -15,7 +15,7 @@ Moves with callbacks: 379
 - [x] attract - Attract (Status, Normal) - 6 callbacks: onStart, onUpdate, onBeforeMovePriority, onBeforeMove, onEnd, onTryImmunity - **COMPLETED**
 - [x] aurawheel - Aura Wheel (Physical, Electric) - 2 callbacks: onTry, onModifyType - **COMPLETED**
 - [x] auroraveil - Aurora Veil (Status, Ice) - 6 callbacks: onTry, onAnyModifyDamage, onSideStart, onSideResidualOrder, onSideResidualSubOrder, onSideEnd - **COMPLETED**
-- [ ] autotomize - Autotomize (Status, Steel) - 2 callbacks: onTryHit, onHit
+- [x] autotomize - Autotomize (Status, Steel) - 2 callbacks: onTryHit, onHit - **COMPLETED**
 - [ ] axekick - Axe Kick (Physical, Fighting) - 1 callback: onMoveFail
 - [ ] banefulbunker - Baneful Bunker (Status, Poison) - 5 callbacks: onPrepareHit, onHit, onStart, onTryHitPriority, onTryHit
 - [ ] barbbarrage - Barb Barrage (Physical, Poison) - 1 callback: onBasePower

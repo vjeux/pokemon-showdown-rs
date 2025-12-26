@@ -2666,6 +2666,19 @@ impl Battle {
             None => return, // Unknown move, no secondaries
         };
 
+        // Call onTryHit event to check if move can be used (for moves that have onTryHit callback)
+        // JavaScript: if (!this.singleEvent('TryHit', move, {}, target, pokemon, move)) { return 'fail'; }
+        match move_id.as_str() {
+            "autotomize" => {
+                let try_hit_result = self.run_event("TryHit", Some((target_side, target_idx)), Some((attacker_side, attacker_idx)), Some(&move_id), None);
+                if try_hit_result.is_none() {
+                    // onTryHit returned false/fail, move fails
+                    return;
+                }
+            }
+            _ => {}
+        }
+
         // Apply primary move effects (for status moves)
         // Apply primary status condition
         if let Some(ref status) = move_def.status {
@@ -3096,6 +3109,15 @@ impl Battle {
                     self.field.add_pseudo_weather(trick_room_id, Some(5));
                     self.add_log("-fieldstart", &["Trick Room"]);
                 }
+            }
+            _ => {}
+        }
+
+        // Call onHit event after move effects are applied (for moves that have onHit callback)
+        // JavaScript: this.singleEvent('Hit', move, {}, target, pokemon, move);
+        match move_id.as_str() {
+            "autotomize" => {
+                let _hit_result = self.run_event("Hit", Some((target_side, target_idx)), Some((attacker_side, attacker_idx)), Some(&move_id), None);
             }
             _ => {}
         }
@@ -6921,6 +6943,46 @@ impl Battle {
                             );
                             // TODO: Actually modify the active move's type based on result
                             // For now, the callback is informational only
+                            return EventResult::Continue;
+                        }
+                    }
+                    _ => {}
+                }
+            }
+            "TryHit" => {
+                // onTryHit callbacks - check if move can be used
+                match move_id {
+                    "autotomize" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            let result = crate::data::move_callbacks::autotomize::on_try_hit(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
+                            // If onTryHit returns False, the move fails
+                            match result {
+                                crate::data::move_callbacks::MoveHandlerResult::False => {
+                                    return EventResult::Fail;
+                                }
+                                _ => return EventResult::Continue,
+                            }
+                        }
+                    }
+                    _ => {}
+                }
+            }
+            "Hit" => {
+                // onHit callbacks - called when move hits
+                match move_id {
+                    "autotomize" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            let _result = crate::data::move_callbacks::autotomize::on_hit(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
                             return EventResult::Continue;
                         }
                     }
