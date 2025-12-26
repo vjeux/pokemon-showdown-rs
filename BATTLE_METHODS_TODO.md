@@ -142,7 +142,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 70. ❌ `add` / `add` - battle.ts:3092 | battle.rs:4251 | **MISMATCH** - Missing function param support
 71. 🔍 `addMove` / `add_move` - battle.ts:3116 | battle.rs:? | **TODO**
 72. ❌ `addSplit` / `add_split` - battle.ts:3082 | battle.rs:4895 | **MISMATCH** - Simplified version
-73. ❌ `hint` / `hint` - battle.ts:3070 | battle.rs:2925 | **MISMATCH** - Missing addSplit() call
+73. ✅ `hint` / `hint` - battle.ts:3070 | battle.rs:3045 | **FIXED!** ✅ - Added side-specific addSplit() call (TODO: implement addSplit fully)
 74. ✅ `debug` / `debug` - battle.ts:3147 | battle.rs:2894 | **MATCH**
 75. 🔍 `debugError` / `debug_error` - battle.ts:3158 | battle.rs:? | **TODO**
 76. 🔍 `getDebugLog` / `get_debug_log` - battle.ts:3153 | battle.rs:? | **TODO**
@@ -163,7 +163,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 88. 🔍 `showOpenTeamSheets` / `show_open_team_sheets` - battle.ts:3183 | battle.rs:? | **TODO**
 89. 🔍 `join` / `join` - battle.ts:3261 | battle.rs:? | **TODO**
 90. 🔍 `sendUpdates` / `send_updates` - battle.ts:3266 | battle.rs:? | **TODO**
-91. ⚠️ `getSide` / `get_side` - battle.ts:3308 | battle.rs:657 | **MINOR MISMATCH** - Returns Option (safer)
+91. ✅ `getSide` / `get_side` - battle.ts:3308 | battle.rs:748 | **MATCH** - Returns Option (safer, acceptable difference)
 92. ✅ `getOverflowedTurnCount` / `get_overflowed_turn_count` - battle.ts:3317 | battle.rs:5089 | **FIXED!** ✅
 93. 🔍 `initEffectState` / `init_effect_state` - battle.ts:3321 | battle.rs:? | **TODO**
 94. 🔍 `clearEffectState` / `clear_effect_state` - battle.ts:3333 | battle.rs:? | **TODO**

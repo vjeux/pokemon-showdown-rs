@@ -3043,7 +3043,22 @@ impl Battle {
     }
 
     /// Show a hint to the player
-    /// If once is true, only shows once per battle
+    /// Equivalent to battle.ts hint(hint, once?, side?)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// hint(hint: string, once?: boolean, side?: Side) {
+    ///     if (this.hints.has(side ? `${side.id}|${hint}` : hint)) return;
+    ///
+    ///     if (side) {
+    ///         this.addSplit(side.id, ['-hint', hint]);
+    ///     } else {
+    ///         this.add('-hint', hint);
+    ///     }
+    ///
+    ///     if (once) this.hints.add(side ? `${side.id}|${hint}` : hint);
+    /// }
+    /// ```
     pub fn hint(&mut self, hint_text: &str, once: bool, side_id: Option<SideID>) {
         let hint_key = if let Some(sid) = side_id {
             format!("{}|{}", sid.to_str(), hint_text)
@@ -3055,7 +3070,13 @@ impl Battle {
             return;
         }
 
-        self.add_log("-hint", &[hint_text]);
+        if let Some(sid) = side_id {
+            // TODO: Implement addSplit() for side-specific messages
+            // For now, just use regular add()
+            self.add("-hint", &[Arg::Str(hint_text)]);
+        } else {
+            self.add("-hint", &[Arg::Str(hint_text)]);
+        }
 
         if once {
             self.hints.insert(hint_key);
