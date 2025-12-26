@@ -52,7 +52,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 10. ✅ `updateSpeed` / `update_speed` - battle.ts:387 | battle.rs:3399 | **FIXED!** ✅ - Simplified to just call pokemon.update_speed() on all active
 11. ✅ `comparePriority` / `compare_priority` - battle.ts:404 | battle.rs:3406 | **MATCH**
 12. ❌ `resolvePriority` / `resolve_priority` - battle.ts:950 | battle.rs:5892 | **MISMATCH** - JS sets handler priority/order, Rust just sorts queue
-13. ❌ `getActionSpeed` / `get_action_speed` - battle.ts:2590 | battle.rs:? | **MISMATCH** - Needs ModifyPriority event
+13. ❌ `getActionSpeed` / `get_action_speed` - battle.ts:2590 | battle.rs:4384 | **MISMATCH** - Rust calculates Pokemon speed; JS calculates action speed with priority/ModifyPriority events
 
 ### Event System Core (11 methods) - **CRITICAL**
 
