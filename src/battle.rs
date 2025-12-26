@@ -2938,6 +2938,73 @@ impl Battle {
         self.add_log("-status", &[&full_name, status]);
     }
 
+    /// Cure status condition of a pokemon
+    /// Matches JavaScript pokemon.ts cureStatus(silent = false)
+    ///
+    /// JS Source (pokemon.ts:~490-498):
+    /// ```js
+    /// cureStatus(silent = false) {
+    ///     if (!this.hp || !this.status) return false;
+    ///     this.battle.add('-curestatus', this, this.status, silent ? '[silent]' : '[msg]');
+    ///     if (this.status === 'slp' && this.removeVolatile('nightmare')) {
+    ///         this.battle.add('-end', this, 'Nightmare', '[silent]');
+    ///     }
+    ///     this.setStatus('');
+    ///     return true;
+    /// }
+    /// ```
+    pub fn cure_status(&mut self, target: (usize, usize)) -> bool {
+        let (side_idx, poke_idx) = target;
+
+        // JS: if (!this.hp || !this.status) return false;
+        let (has_hp, has_status, status, name) = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                (pokemon.hp > 0, !pokemon.status.is_empty(), pokemon.status.as_str().to_string(), pokemon.name.clone())
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        };
+
+        if !has_hp || !has_status {
+            return false;
+        }
+
+        // JS: this.battle.add('-curestatus', this, this.status, silent ? '[silent]' : '[msg]');
+        let side_id = self.sides[side_idx].id_str();
+        let full_name = format!("{}: {}", side_id, name);
+        self.add_log("-curestatus", &[&full_name, &status, "[msg]"]);
+
+        // JS: if (this.status === 'slp' && this.removeVolatile('nightmare')) { ... }
+        if status == "slp" {
+            let removed_nightmare = if let Some(side) = self.sides.get_mut(side_idx) {
+                if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                    pokemon.volatiles.remove(&ID::new("nightmare")).is_some()
+                } else {
+                    false
+                }
+            } else {
+                false
+            };
+
+            if removed_nightmare {
+                self.add_log("-end", &[&full_name, "Nightmare", "[silent]"]);
+            }
+        }
+
+        // JS: this.setStatus('');
+        if let Some(side) = self.sides.get_mut(side_idx) {
+            if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                pokemon.set_status(ID::new(""));
+                pokemon.status_state.duration = None;
+            }
+        }
+
+        // JS: return true;
+        true
+    }
+
     /// Apply a stat boost
     fn apply_boost(&mut self, side_idx: usize, poke_idx: usize, stat: &str, amount: i8) {
         if side_idx >= self.sides.len() || poke_idx >= self.sides[side_idx].pokemon.len() {
@@ -6435,6 +6502,17 @@ impl Battle {
                     "anchorshot" => {
                         if let (Some(target), Some(source)) = (target, source) {
                             crate::data::move_callbacks::anchorshot::on_hit(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
+                        }
+                        return EventResult::Continue;
+                    }
+                    "aromatherapy" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            crate::data::move_callbacks::aromatherapy::on_hit(
                                 self,
                                 target,
                                 source,

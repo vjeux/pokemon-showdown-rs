@@ -10,7 +10,7 @@ Moves with callbacks: 379
 - [x] allyswitch - Ally Switch (Status, Psychic) - 4 callbacks: onPrepareHit, onHit, onStart, onRestart - **COMPLETED**
 - [x] anchorshot - Anchor Shot (Physical, Steel) - 1 callback: onHit - **COMPLETED**
 - [x] aquaring - Aqua Ring (Status, Water) - 3 callbacks: onStart, onResidualOrder, onResidual - **COMPLETED**
-- [ ] aromatherapy - Aromatherapy (Status, Grass) - 1 callback: onHit
+- [x] aromatherapy - Aromatherapy (Status, Grass) - 1 callback: onHit - **COMPLETED**
 - [ ] assist - Assist (Status, Normal) - 1 callback: onHit
 - [ ] attract - Attract (Status, Normal) - 6 callbacks: onStart, onUpdate, onBeforeMovePriority, onBeforeMove, onEnd, onTryImmunity
 - [ ] aurawheel - Aura Wheel (Physical, Electric) - 2 callbacks: onTry, onModifyType
