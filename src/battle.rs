@@ -1183,6 +1183,10 @@ impl Battle {
                 if parts.len() < 2 {
                     return Err("Switch choice requires Pokemon number".to_string());
                 }
+                // Validate that the argument is a number
+                if parts[1].parse::<usize>().is_err() {
+                    return Err(format!("[Invalid choice] Can't switch: You must specify a Pokemon by number"));
+                }
                 // Would validate and add to queue here
                 Ok(())
             }

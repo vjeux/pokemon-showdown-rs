@@ -141,3 +141,38 @@ fn test_team_preview_should_reject_zero_based_choice_details() {
         }
     }
 }
+
+// JavaScript:     describe('Switch requests', () => {
+// JavaScript:         describe('Generic', () => {
+// JavaScript:             it('should reject non-numerical input for `switch` choices', () => {
+#[test]
+fn test_switch_generic_should_reject_non_numerical_input() {
+    // JavaScript:                 battle = common.createBattle();
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions::default(),
+        [
+            // JavaScript:                 battle.setPlayer('p1', { team: [
+            // JavaScript:                     { species: "Mew", ability: 'synchronize', moves: ['lunardance'] },
+            // JavaScript:                     { species: "Bulbasaur", ability: 'overgrow', moves: ['tackle', 'growl'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Mew", ability: "synchronize", moves: ["lunardance"]),
+                pokemon!(species: "Bulbasaur", ability: "overgrow", moves: ["tackle", "growl"]),
+            ],
+            // JavaScript:                 battle.setPlayer('p2', { team: [{ species: "Rhydon", ability: 'prankster', moves: ['splash'] }] });
+            vec![
+                pokemon!(species: "Rhydon", ability: "prankster", moves: ["splash"]),
+            ],
+        ],
+    );
+
+    // JavaScript:                 battle.makeChoices('move lunardance', 'move splash');
+    battle.make_choices("move lunardance", "move splash");
+
+    // JavaScript:                 assert.throws(() => battle.choose('p1', 'switch first'));
+    assert!(battle.choose(SideID::P1, "switch first").is_err(), "Expected 'switch first' to be rejected");
+
+    // JavaScript:                 assert.throws(() => battle.choose('p1', 'switch second'));
+    assert!(battle.choose(SideID::P1, "switch second").is_err(), "Expected 'switch second' to be rejected");
+}
+
