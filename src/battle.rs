@@ -5803,11 +5803,16 @@ impl Battle {
     }
 
     /// Log a debug error message
-    /// Equivalent to battle.ts debugError()
+    /// Equivalent to battle.ts debugError() (battle.ts:3158-3160)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// debugError(activity: string) {
+    ///     this.add('debug', activity);
+    /// }
+    /// ```
     pub fn debug_error(&mut self, activity: &str) {
-        if self.debug_mode {
-            self.add_log("error", &[activity]);
-        }
+        self.add("debug", &[Arg::Str(activity)]);
     }
 
     /// Run event on field (weather, terrain, pseudo-weather)
