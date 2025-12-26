@@ -1569,12 +1569,21 @@ impl Battle {
                     }
                     crate::side::ChoiceType::Switch => {
                         // Switches happen before moves (priority 7 effectively)
+                        // When switching into an empty slot (after fainting), there's no current Pokemon
                         let pokemon_idx = self.sides[side_idx].active.get(action.pokemon_index)
                             .and_then(|opt| *opt);
-                        if let Some(poke_idx) = pokemon_idx {
-                            let speed = self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as u32;
-                            actions.push((side_idx, poke_idx, action.clone(), 7, speed));
-                        }
+
+                        // Get speed for ordering (use 0 if slot is empty)
+                        let speed = if let Some(poke_idx) = pokemon_idx {
+                            self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as u32
+                        } else {
+                            0 // Empty slot - use speed 0 for ordering
+                        };
+
+                        // Use pokemon_idx if available, otherwise use 0 as placeholder
+                        // The actual switch will use action.switch_index to determine what to switch in
+                        let poke_idx_for_queue = pokemon_idx.unwrap_or(0);
+                        actions.push((side_idx, poke_idx_for_queue, action.clone(), 7, speed));
                     }
                     _ => {}
                 }
@@ -1618,10 +1627,9 @@ impl Battle {
             match action.choice {
                 crate::side::ChoiceType::Switch => {
                     if let Some(switch_to) = action.switch_index {
-                        // Get slot from the Pokemon's position
-                        let slot = self.sides[side_idx].pokemon.get(poke_idx)
-                            .map(|p| p.position)
-                            .unwrap_or(0);
+                        // Use the slot from action.pokemon_index directly
+                        // This works for both occupied and empty slots (after fainting)
+                        let slot = action.pokemon_index;
                         self.do_switch(side_idx, slot, switch_to);
                     }
                 }
@@ -2185,6 +2193,30 @@ impl Battle {
         let target_fainted = self.sides[target_side].pokemon[target_idx].is_fainted();
         if target_fainted {
             self.add_log("-notarget", &[]);
+
+            // Self-KO moves (Selfdestruct, Explosion) should still cause user to faint
+            // even if there's no target
+            match move_id.as_str() {
+                "selfdestruct" | "explosion" => {
+                    if !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
+                        let attacker_name = {
+                            let side_id = self.sides[attacker_side].id_str();
+                            let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                            format!("{}: {}", side_id, pokemon.name)
+                        };
+
+                        self.sides[attacker_side].pokemon[attacker_idx].hp = 0;
+                        self.add_log("-damage", &[&attacker_name, "0 fnt"]);
+                        self.add_log("faint", &[&attacker_name]);
+                    }
+                }
+                "lunardance" | "healingwish" | "memento" => {
+                    // Other self-KO moves - handle similarly if needed
+                    // For now, only implementing selfdestruct/explosion
+                }
+                _ => {}
+            }
+
             return;
         }
 
@@ -3993,15 +4025,19 @@ impl Battle {
                 // JS: pokemon.isActive = false;
                 self.sides[side_idx].pokemon[poke_idx].is_active = false;
 
-                // Remove from active slots
-                for slot in 0..self.sides[side_idx].active.len() {
-                    if let Some(idx) = self.sides[side_idx].active[slot] {
-                        if idx == poke_idx {
-                            self.sides[side_idx].active[slot] = None;
-                            break;
-                        }
-                    }
-                }
+                // Note: In Pokemon Showdown, fainted Pokemon remain in the active array
+                // until they are explicitly replaced by a switch. They are not removed immediately.
+                // This allows the battle to track which slots need replacement.
+                // The old code removed them here, but that's incorrect:
+                // // Remove from active slots
+                // for slot in 0..self.sides[side_idx].active.len() {
+                //     if let Some(idx) = self.sides[side_idx].active[slot] {
+                //         if idx == poke_idx {
+                //             self.sides[side_idx].active[slot] = None;
+                //             break;
+                //         }
+                //     }
+                // }
 
                 // JS: pokemon.isStarted = false;
                 // TODO: Implement is_started field (tracks if pokemon has been sent out)
@@ -4055,19 +4091,21 @@ impl Battle {
         // Check if any side has fainted active Pokemon that need to be replaced
         let mut needs_switch = false;
         for side in &self.sides {
-            for &active_idx in &side.active {
-                // Check if slot is empty (Pokemon fainted) OR if the Pokemon in slot is fainted
-                if active_idx.is_none() {
-                    // Slot is empty, need to check if there are non-fainted Pokemon available
-                    let has_available_pokemon = side.pokemon.iter().any(|p| !p.is_fainted() && !p.is_active);
-                    if has_available_pokemon {
+            // First check if this side has any available Pokemon to switch in
+            let has_available_pokemon = side.pokemon.iter().any(|p| !p.is_fainted() && !p.is_active);
+
+            if has_available_pokemon {
+                // Only require switches if there are Pokemon available to switch in
+                for &active_idx in &side.active {
+                    // Check if slot is empty (Pokemon fainted) OR if the Pokemon in slot is fainted
+                    if active_idx.is_none() {
                         needs_switch = true;
                         break;
-                    }
-                } else if let Some(poke_idx) = active_idx {
-                    if side.pokemon.get(poke_idx).map(|p| p.is_fainted()).unwrap_or(false) {
-                        needs_switch = true;
-                        break;
+                    } else if let Some(poke_idx) = active_idx {
+                        if side.pokemon.get(poke_idx).map(|p| p.is_fainted()).unwrap_or(false) {
+                            needs_switch = true;
+                            break;
+                        }
                     }
                 }
             }

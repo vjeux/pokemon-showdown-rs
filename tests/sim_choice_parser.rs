@@ -537,5 +537,73 @@ fn test_move_singles_should_accept_only_move_and_switch() {
     }
 }
 
+// JavaScript:         describe('Doubles', () => {
+// JavaScript:             it('should enforce `pass` choices for fainted Pokémon', () => {
+#[test]
+fn test_move_doubles_should_enforce_pass_for_fainted() {
+    // JavaScript:                 battle = common.createBattle({ gameType: 'doubles' });
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions {
+            game_type: Some("doubles".to_string()),
+            ..Default::default()
+        },
+        [
+            // JavaScript:                 battle.setPlayer('p1', { team: [
+            // JavaScript:                     { species: "Pineco", ability: 'sturdy', moves: ['selfdestruct'] },
+            // JavaScript:                     { species: "Geodude", ability: 'sturdy', moves: ['selfdestruct'] },
+            // JavaScript:                     { species: "Koffing", ability: 'levitate', moves: ['smog'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Pineco", ability: "sturdy", moves: ["selfdestruct"]),
+                pokemon!(species: "Geodude", ability: "sturdy", moves: ["selfdestruct"]),
+                pokemon!(species: "Koffing", ability: "levitate", moves: ["smog"]),
+            ],
+            // JavaScript:                 battle.setPlayer('p2', { team: [
+            // JavaScript:                     { species: "Skarmory", ability: 'sturdy', moves: ['roost'] },
+            // JavaScript:                     { species: "Aggron", ability: 'sturdy', moves: ['irondefense'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Skarmory", ability: "sturdy", moves: ["roost"]),
+                pokemon!(species: "Aggron", ability: "sturdy", moves: ["irondefense"]),
+            ],
+        ],
+    );
+
+    // JavaScript:                 const p1 = battle.p1;
+    // JavaScript:                 battle.makeChoices('move selfdestruct, move selfdestruct', 'move roost, move irondefense'); // Both p1 active Pokémon faint
+    battle.make_choices("move selfdestruct, move selfdestruct", "move roost, move irondefense");
+
+    // JavaScript:                 battle.makeChoices('pass, switch 3', ''); // Koffing switches in at slot #2
+    battle.make_choices("pass, switch 3", "");
+
+    // JavaScript:                 assert.fainted(p1.active[0]);
+    // Check that first active Pokemon is fainted
+    let p1_active_0_fainted = battle.sides[0].active[0]
+        .and_then(|idx| Some(battle.sides[0].pokemon[idx].is_fainted()))
+        .unwrap_or(false);
+    assert!(p1_active_0_fainted, "P1's first active Pokemon should be fainted");
+
+    // JavaScript:                 assert.species(p1.active[1], 'Koffing');
+    // Check that second active Pokemon is Koffing
+    let p1_active_1_species = battle.sides[0].active[1]
+        .and_then(|idx| Some(battle.sides[0].pokemon[idx].species_id.as_str().to_string()))
+        .unwrap_or_default();
+    assert_eq!(p1_active_1_species, "koffing", "P1's second active Pokemon should be Koffing");
+
+    // JavaScript:                 assert.false.fainted(p1.active[1]);
+    // Check that second active Pokemon is not fainted
+    let p1_active_1_fainted = battle.sides[0].active[1]
+        .and_then(|idx| Some(battle.sides[0].pokemon[idx].is_fainted()))
+        .unwrap_or(true);
+    assert!(!p1_active_1_fainted, "P1's second active Pokemon should not be fainted");
+
+    // JavaScript:                 assert(battle.choose('p1', 'move smog 2'));
+    assert!(battle.choose(SideID::P1, "move smog 2").is_ok(), "Choice 'move smog 2' should be valid");
+
+    // JavaScript:                 assert.equal(battle.p1.getChoice(), `pass, move smog +2`, `Choice mismatch`);
+    // TODO: Implement getChoice() to verify the normalized choice format
+    // The expected behavior is that "move smog 2" for P1 in doubles with a fainted Pokemon at slot 0
+    // should be normalized to "pass, move smog +2" (pass for fainted slot, move with relative target)
+}
 
 
