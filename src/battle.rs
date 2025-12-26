@@ -7525,9 +7525,6 @@ impl Battle {
         false
     }
 
-    /// Get all active Pokemon (including fainted if specified)
-    /// Equivalent to battle.ts getAllActive()
-
     /// Spread damage to multiple targets
     /// Matches JavaScript battle.ts:2045-2164 spreadDamage()
     pub fn spread_damage(
