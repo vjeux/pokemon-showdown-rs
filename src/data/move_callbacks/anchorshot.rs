@@ -34,9 +34,39 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onHit(...)
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onHit callback for Anchor Shot
+/// Traps the target if source is still active
+pub fn on_hit(
+    battle: &mut Battle,
+    target: (usize, usize),
+    source: (usize, usize),
+    move_id: &ID,
+) -> MoveHandlerResult {
+    // JavaScript: if (source.isActive) target.addVolatile('trapped', source, move, 'trapper');
+
+    // Check if source is active
+    let source_is_active = if let Some(side) = battle.sides.get(source.0) {
+        if let Some(pokemon) = side.pokemon.get(source.1) {
+            pokemon.is_active
+        } else {
+            false
+        }
+    } else {
+        false
+    };
+
+    if source_is_active {
+        // Add trapped volatile
+        // TODO: Support linkedStatus parameter ('trapper' in JS)
+        // For now, just add the trapped volatile
+        battle.add_volatile_to_pokemon(
+            target,
+            &ID::new("trapped"),
+            Some(source),
+            Some(move_id),
+        );
+    }
+
     MoveHandlerResult::Undefined
 }
 

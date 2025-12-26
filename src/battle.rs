@@ -6399,6 +6399,17 @@ impl Battle {
                         }
                         return EventResult::Continue;
                     }
+                    "anchorshot" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            crate::data::move_callbacks::anchorshot::on_hit(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
+                        }
+                        return EventResult::Continue;
+                    }
                     _ => {}
                 }
             }
