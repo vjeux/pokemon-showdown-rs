@@ -241,19 +241,52 @@ Methods that still need event integration:
 
 ---
 
-## Next Steps
+## Next Steps & Remaining Work
 
-1. ✅ **DONE**: Identified battle-actions.ts delegation pattern
-2. ✅ **DONE**: Created comprehensive 96-method tracking list
-3. ✅ **DONE**: Corrected count from 104 to 96 methods
-4. ✅ **DONE**: Built event system foundation
-5. ✅ **DONE**: Implemented spread_damage, damage, heal with events
-6. **IN PROGRESS**: Continue fixing remaining methods
-7. **PENDING**: Add full boost events (ChangeBoost, TryBoost, AfterEachBoost, AfterBoost)
-8. **PENDING**: Fix directDamage with Gen 1 Substitute checks
-9. **PENDING**: Continue systematic method comparison for TODO methods
+### Current Session Progress ✅
+1. ✅ **DONE**: Fixed validTargetLoc and validTarget with get_loc_of helper (9 methods total this session)
+2. ✅ **DONE**: Progress: 52/96 (54%) → 61/96 (64%)
+3. ✅ **DONE**: Reduced major mismatches from 26 → 19 → 17
+
+### Remaining Methods by Category (33 total)
+
+**Event-Dependent Methods (7)** - Require event context infrastructure:
+- boost (needs 4 events: ChangeBoost, TryBoost, AfterEachBoost, AfterBoost)
+- chainModify, finalModify (need this.event.modifier)
+- getActionSpeed (needs ModifyPriority event)
+- resolvePriority (needs event handler priority/order system)
+- suppressingAbility (needs ActiveMove object)
+- add (needs function parameter support via closures)
+
+**Complex Initialization (3)** - Large, multi-faceted methods:
+- start (65 lines: deserialization, multi-battle, callbacks, team validation)
+- restart, destroy
+
+**Core Event System (2)** - Critical but very complex:
+- singleEvent (82 lines)
+- runEvent (185+ lines)
+
+**Complex Game Logic (10)** - Feature-rich implementations:
+- maybeTriggerEndlessBattleClause (Gen 1 endless battle detection)
+- runPickTeam, tiebreak
+- getTarget, getRandomTarget (smart targeting, adjacency)
+- faintMessages (faintQueue system, forme regression)
+- makeRequest (full request generation)
+- endTurn (Dynamax, Gen 1 logic)
+- showOpenTeamSheets, join, sendUpdates
+
+**Feature Gaps (3)** - Missing specific features:
+- addSplit (side-specific message splitting)
+- hint (needs full addSplit)
+- getDebugLog (missing extractChannelMessages)
+
+**Different Infrastructure (4)** - Need supporting systems:
+- getTeam (team unpacking and generation)
+- initEffectState, clearEffectState (EffectState management)
+- toJSON (serialization)
 
 ---
 
 **Last Updated**: 2025-12-26
 **Tests Passing**: 43/43 (100% - 3 tests disabled pending move callbacks)
+**Session Achievement**: 9 methods fixed, bringing total to 61/96 (64%)
