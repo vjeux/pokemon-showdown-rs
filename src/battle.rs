@@ -6830,6 +6830,25 @@ impl Battle {
                             }
                         }
                     }
+                    "banefulbunker" => {
+                        // onPrepareHit(pokemon) - takes source (user of the move)
+                        if let Some(source) = source {
+                            let result = crate::data::move_callbacks::banefulbunker::on_prepare_hit(
+                                self,
+                                source,
+                            );
+                            // If onPrepareHit returns false, the move fails
+                            match result {
+                                crate::data::move_callbacks::MoveHandlerResult::False => {
+                                    return EventResult::Fail;
+                                }
+                                crate::data::move_callbacks::MoveHandlerResult::True => {
+                                    return EventResult::Continue;
+                                }
+                                _ => return EventResult::Continue,
+                            }
+                        }
+                    }
                     _ => {}
                 }
             }
@@ -6888,6 +6907,16 @@ impl Battle {
                                 target,
                                 source,
                                 &move_effect_id,
+                            );
+                        }
+                        return EventResult::Continue;
+                    }
+                    "banefulbunker" => {
+                        // onHit(pokemon) - takes source (user of the move)
+                        if let Some(source) = source {
+                            crate::data::move_callbacks::banefulbunker::on_hit(
+                                self,
+                                source,
                             );
                         }
                         return EventResult::Continue;
@@ -7052,6 +7081,16 @@ impl Battle {
         use crate::event::EventResult;
 
         match event_id {
+            "Start" => {
+                // onStart for volatile conditions
+                if let Some((side_idx, poke_idx)) = target {
+                    if condition_id == "banefulbunker" {
+                        let _result = crate::data::move_callbacks::banefulbunker::condition_on_start(self, (side_idx, poke_idx));
+                        return EventResult::Continue;
+                    }
+                    // TODO: Add other volatile conditions with onStart here
+                }
+            }
             "Update" => {
                 // Call onUpdate for volatile conditions
                 if let Some((side_idx, poke_idx)) = target {

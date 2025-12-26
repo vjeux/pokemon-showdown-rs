@@ -17,7 +17,7 @@ Moves with callbacks: 379
 - [x] auroraveil - Aurora Veil (Status, Ice) - 6 callbacks: onTry, onAnyModifyDamage, onSideStart, onSideResidualOrder, onSideResidualSubOrder, onSideEnd - **COMPLETED**
 - [x] autotomize - Autotomize (Status, Steel) - 2 callbacks: onTryHit, onHit - **COMPLETED**
 - [x] axekick - Axe Kick (Physical, Fighting) - 1 callback: onMoveFail - **COMPLETED**
-- [ ] banefulbunker - Baneful Bunker (Status, Poison) - 5 callbacks: onPrepareHit, onHit, onStart, onTryHitPriority, onTryHit
+- [x] banefulbunker - Baneful Bunker (Status, Poison) - 5 callbacks: onPrepareHit, onHit, onStart, onTryHitPriority, onTryHit - **COMPLETED**
 - [ ] barbbarrage - Barb Barrage (Physical, Poison) - 1 callback: onBasePower
 - [ ] batonpass - Baton Pass (Status, Normal) - 1 callback: onHit
 - [ ] beakblast - Beak Blast (Physical, Flying) - 4 callbacks: onStart, onHit, onMoveAborted, onAfterMove
