@@ -6674,7 +6674,7 @@ impl Battle {
             return "Ability";
         }
         // Check if it's an item
-        if crate::data::items::get_item(effect_id).is_some() {
+        if self.dex.get_item(effect_id.as_str()).is_some() {
             return "Item";
         }
         // Check if it's a move
@@ -6721,8 +6721,13 @@ impl Battle {
         }
 
         // Handle item events
-        if let Some(item_def) = crate::data::items::get_item(effect_id) {
-            return self.handle_item_event(event_id, item_def, target);
+        if self.dex.get_item(effect_id.as_str()).is_some() {
+            let item_def = crate::data::items::ItemDef::from_id(
+                effect_id.clone(),
+                self.dex.get_item(effect_id.as_str()).unwrap().name.clone(),
+                self.dex.get_item(effect_id.as_str()).unwrap().is_choice,
+            );
+            return self.handle_item_event(event_id, &item_def, target);
         }
 
         // Handle move events
