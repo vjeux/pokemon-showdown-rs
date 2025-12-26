@@ -109,6 +109,8 @@ pub struct MoveData {
     #[serde(default)]
     pub num: i32,
     pub name: String,
+    #[serde(default)]
+    pub id: ID,  // Move ID (computed from name or provided)
     #[serde(rename = "type")]
     pub move_type: String,
     pub category: String,
@@ -144,6 +146,8 @@ pub struct MoveData {
     pub is_z: Option<String>,
     #[serde(rename = "isMax", default, deserialize_with = "deserialize_is_max")]
     pub is_max: Option<IsMax>,
+    #[serde(default)]
+    pub ohko: Option<String>,  // OHKO move type (e.g., "Normal", "Ice")
 }
 
 /// Accuracy can be a number or true (always hits)

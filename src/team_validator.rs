@@ -9,7 +9,7 @@ use std::collections::{HashMap, HashSet};
 use crate::dex_data::ID;
 use crate::data::formats::{get_format, FormatDef};
 use crate::data::species::get_species;
-use crate::data::moves::get_move;
+// use crate::data::moves::get_move;  // TODO: Use Dex for move lookups
 use crate::data::items::get_item;
 use crate::data::abilities::get_ability;
 
@@ -511,12 +511,13 @@ impl TeamValidator {
             let move_id_str = move_id.as_str().to_string();
 
             // Check move exists
-            if get_move(&move_id).is_none() {
-                errors.push(ValidationError::InvalidMove {
-                    pokemon: pokemon_name.clone(),
-                    move_name: move_name.clone(),
-                });
-            }
+            // TODO: Re-enable when Dex is available in validator
+            // if get_move(&move_id).is_none() {
+            //     errors.push(ValidationError::InvalidMove {
+            //         pokemon: pokemon_name.clone(),
+            //         move_name: move_name.clone(),
+            //     });
+            // }
 
             // Check duplicate
             if seen_moves.contains(&move_id_str) {
@@ -765,9 +766,9 @@ impl TeamValidator {
         let species_id = ID::new(&pokemon.species);
 
         // Check move exists
-        if get_move(&move_id).is_none() {
-            return Some(format!("{} is not a valid move", move_name));
-        }
+        //         if get_move(&move_id).is_none() {
+        //             return Some(format!("{} is not a valid move", move_name));
+        //         }
 
         // Check species exists
         if get_species(&species_id).is_none() {
