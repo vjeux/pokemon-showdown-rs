@@ -44,21 +44,16 @@ use super::{AbilityHandlerResult, Status, Effect};
         // let boosted = true;
         let mut boosted = true;
         // for (const target of this.getAllActive())
-        for side in &battle.sides {
-            for active in side.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
-                // if (target === pokemon) continue;
-                if active.side_index == pokemon.side_index && active.position == pokemon.position {
-                    continue;
-                }
-                // if (this.queue.willMove(target))
-                if battle.queue.will_move(active.side_index, active.position).is_some() {
-                    // boosted = false;
-                    boosted = false;
-                    // break;
-                    break;
-                }
+        for (side_idx, slot, target) in battle.get_all_active(false) {
+            // if (target === pokemon) continue;
+            if side_idx == pokemon.side_index && slot == pokemon.position {
+                continue;
             }
-            if !boosted {
+            // if (this.queue.willMove(target))
+            if battle.queue.will_move(side_idx, slot).is_some() {
+                // boosted = false;
+                boosted = false;
+                // break;
                 break;
             }
         }
