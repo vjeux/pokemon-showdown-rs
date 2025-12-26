@@ -14,8 +14,7 @@ use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
 use crate::side::{Side, RequestState, Choice};
 use crate::prng::{PRNG, PRNGSeed};
-use crate::data::abilities::{get_ability, AbilityDef};
-use crate::event_system::EventResult;
+use crate::data::abilities::get_ability;
 
 /// Argument type for battle.add() - can be a Pokemon reference or a string
 /// This allows mixing types like: battle.add("-activate", &[pokemon.into(), "ability: Immunity".into()])
@@ -5984,12 +5983,12 @@ impl Battle {
         if stat_name == "hp" {
             // HP formula
             let temp = 2 * base_stat + iv + (ev / 4) + 100;
-            return ((temp * set.level as i32 / 100) + 10);
+            return (temp * set.level as i32 / 100) + 10;
         }
 
         // Non-HP stats
         let temp = 2 * base_stat + iv + (ev / 4);
-        let mut stat = ((temp * set.level as i32 / 100) + 5);
+        let mut stat = (temp * set.level as i32 / 100) + 5;
 
         // Apply nature
         // TODO: Need Dex.natures access to apply nature modifiers
