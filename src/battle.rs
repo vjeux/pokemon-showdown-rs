@@ -2454,7 +2454,7 @@ impl Battle {
                     }
 
                     // Perform the swap
-                    self.swap_position((attacker_side, attacker_idx), (attacker_side, *ally_idx));
+                    self.swap_position((attacker_side, attacker_idx), new_position, Some("[from] move: Ally Switch"));
 
                     // Log the swap
                     let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
@@ -4359,46 +4359,95 @@ impl Battle {
         0
     }
 
-    /// Swap position of two Pokemon on the same side
+    /// Swap position of a Pokemon to a new position on their side
     /// Equivalent to battle.ts swapPosition()
-    pub fn swap_position(&mut self, pokemon1: (usize, usize), pokemon2: (usize, usize)) -> bool {
-        let (side1, idx1) = pokemon1;
-        let (side2, idx2) = pokemon2;
+    pub fn swap_position(&mut self, pokemon: (usize, usize), new_position: usize, attributes: Option<&str>) -> bool {
+        let (side_idx, poke_idx) = pokemon;
 
-        // Must be on same side
-        if side1 != side2 {
+        // JS: if (newPosition >= pokemon.side.active.length)
+        if side_idx >= self.sides.len() {
             return false;
         }
 
-        if let Some(side) = self.sides.get_mut(side1) {
-            // Find their active slots
-            let mut slot1 = None;
-            let mut slot2 = None;
+        let active_len = self.active_per_half;
+        if new_position >= active_len {
+            return false; // throw new Error("Invalid swap position");
+        }
 
-            for (slot, active_idx) in side.active.iter().enumerate() {
-                if let Some(poke_idx) = active_idx {
-                    if *poke_idx == idx1 {
-                        slot1 = Some(slot);
-                    } else if *poke_idx == idx2 {
-                        slot2 = Some(slot);
-                    }
-                }
+        // Get pokemon's current position
+        let current_pos = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                pokemon.position
+            } else {
+                return false;
             }
+        } else {
+            return false;
+        };
 
-            if let (Some(s1), Some(s2)) = (slot1, slot2) {
-                side.active.swap(s1, s2);
-                // Update positions
-                if let Some(p1) = side.pokemon.get_mut(idx1) {
-                    p1.position = s2;
+        // JS: const target = pokemon.side.active[newPosition];
+        // JS: if (newPosition !== 1 && (!target || target.fainted)) return false;
+        let target_idx = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(target_active) = side.active.get(new_position) {
+                if new_position != 1 {
+                    if let Some(&idx) = target_active.as_ref() {
+                        if let Some(target_poke) = side.pokemon.get(idx) {
+                            if target_poke.fainted {
+                                return false;
+                            }
+                        }
+                        Some(idx)
+                    } else {
+                        return false;
+                    }
+                } else {
+                    target_active.clone()
                 }
-                if let Some(p2) = side.pokemon.get_mut(idx2) {
-                    p2.position = s1;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        };
+
+        // Log the swap
+        let pokemon_str = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                format!("{}: {}", side.id_str(), pokemon.name)
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        };
+
+        self.add("swap", &[Arg::String(pokemon_str), Arg::String(new_position.to_string()), Arg::Str(attributes.unwrap_or(""))]);
+
+        // Perform the swap
+        // JS: side.pokemon[pokemon.position] = target;
+        // JS: side.pokemon[newPosition] = pokemon;
+        // JS: side.active[pokemon.position] = side.pokemon[pokemon.position];
+        // JS: side.active[newPosition] = side.pokemon[newPosition];
+        if let Some(side) = self.sides.get_mut(side_idx) {
+            // Swap in active array
+            side.active.swap(current_pos, new_position);
+
+            // Update positions
+            if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                pokemon.position = new_position;
+            }
+            if let Some(target_idx) = target_idx {
+                if let Some(target) = side.pokemon.get_mut(target_idx) {
+                    target.position = current_pos;
                 }
-                return true;
             }
         }
 
-        false
+        // JS: this.runEvent('Swap', target, pokemon);
+        // JS: this.runEvent('Swap', pokemon, target);
+        // TODO: Fire Swap events when event system is ready
+
+        true
     }
 
     /// Get move category, defaulting to "Physical" if move not found

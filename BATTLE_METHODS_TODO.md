@@ -127,7 +127,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 62. ✅ `canSwitch` / `can_switch` - battle.ts:1520 | battle.rs:4038 | **MATCH** - Verified correct
 63. ✅ `getRandomSwitchable` / `get_random_switchable` - battle.ts:1524 | battle.rs:4044 | **MATCH** - Verified correct
-64. 🔍 `swapPosition` / `swap_position` - battle.ts:1542 | battle.rs:4356 | **MISMATCH** - Different signature and logic
+64. ✅ `swapPosition` / `swap_position` - battle.ts:1542 | battle.rs:4362 | **FIXED!** ✅ - Rewrote to match JS signature (pokemon, newPosition, attributes)
 65. 🔍 `faintMessages` / `faint_messages` - battle.ts:2498 | battle.rs:2968 | **MISMATCH** - Rust version is simplified (22 lines vs 78 lines), missing faintQueue, events (BeforeFaint, Faint, AfterFaint), forme regression
 
 ### Target Selection (4 methods)
@@ -175,33 +175,33 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching**: 57 (59%) - Nearly 60% direct translations!
+**Methods Matching**: 58 (60%) - Crossed 60% milestone! 🎉
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
 - Util: getPokemon, getAllPokemon, getAllActive, getOverflowedTurnCount, getCategory, checkFainted, randomizer
 - Logging: debug, addMove, debugError, **attrLastMove, retargetLastMove**
 - **Requests & Choices**: clearRequest, allChoicesDone, getRequests, choose, makeChoices, commitChoices, undoChoice
-- Switching: getRandomSwitchable, canSwitch
+- Switching: getRandomSwitchable, canSwitch, **swapPosition**
 - **Damage/Heal**: damage, spreadDamage, heal, directDamage
 - **Active Move**: setActiveMove, clearActiveMove
 - **Display**: toString (Display trait)
 - **Event System**: eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
 - **Turn Flow**: turnLoop, runAction
-- **NEW FIXES**: checkMoveMakesContact (Protective Pads), faint (delegation), attrLastMove, retargetLastMove
+- **SESSION FIXES**: checkMoveMakesContact (Protective Pads), faint (delegation), attrLastMove, retargetLastMove, swapPosition
 - And more
 
 **Methods with Minor Mismatches**: 2 (2%)
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 21 (22%) - DOWN from 26!
+**Methods with Major Mismatches**: 20 (21%) - DOWN from 26!
 - Event-dependent: boost, chainModify, getActionSpeed
 - Simplified: makeRequest, endTurn, getDebugLog, faintMessages
 - Missing features: add, hint, addSplit
 - Complex: suppressingAbility
 - Stubs: finalModify (needs event.modifier)
-- Different signature/logic: swapPosition, getAtSlot, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState, resolvePriority
+- Different signature/logic: getAtSlot, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState, resolvePriority
 
 **Methods Needing Deep Comparison**: 16 (17%)
 - start, restart, destroy (initialization/teardown)
