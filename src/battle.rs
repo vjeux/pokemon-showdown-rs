@@ -1207,11 +1207,71 @@ impl Battle {
 
         match choice_type {
             "move" => {
-                // Parse move choice
+                // Parse move choice: move <move> [target] [modifier]
+                // Examples: "move 1", "move tackle 2", "move 1 +1 mega", "move shadowball zmove 1"
                 if parts.len() < 2 {
                     return Err("Move choice requires move name/number".to_string());
                 }
-                // Would validate and add to queue here
+
+                // Parse the remaining parts after "move" and the move name/number
+                let move_identifier = parts[1];
+                let mut target_count = 0;
+                let mut has_mega = false;
+                let mut has_zmove = false;
+                let mut has_dynamax = false;
+                let mut has_ultra = false;
+
+                // Scan through remaining parts
+                let mut i = 2;
+                while i < parts.len() {
+                    let part = parts[i];
+
+                    // Check if it's a modifier
+                    match part.to_lowercase().as_str() {
+                        "mega" => {
+                            if has_mega || has_zmove || has_ultra {
+                                return Err("[Invalid choice] Can't combine multiple evolution/burst modifiers".to_string());
+                            }
+                            has_mega = true;
+                        }
+                        "zmove" => {
+                            if has_mega || has_zmove || has_dynamax {
+                                return Err("[Invalid choice] Can't combine multiple move modifiers".to_string());
+                            }
+                            has_zmove = true;
+                        }
+                        "dynamax" | "max" => {
+                            if has_zmove || has_dynamax {
+                                return Err("[Invalid choice] Can't combine multiple move modifiers".to_string());
+                            }
+                            has_dynamax = true;
+                        }
+                        "ultra" => {
+                            if has_mega || has_ultra {
+                                return Err("[Invalid choice] Can't combine multiple evolution/burst modifiers".to_string());
+                            }
+                            has_ultra = true;
+                        }
+                        _ => {
+                            // Check if it's a target (number or +/- number)
+                            let is_target = part.parse::<i32>().is_ok() ||
+                                           (part.starts_with('+') && part[1..].parse::<i32>().is_ok()) ||
+                                           (part.starts_with('-') && part[1..].parse::<i32>().is_ok());
+
+                            if is_target {
+                                target_count += 1;
+                                if target_count > 1 {
+                                    return Err("[Invalid choice] Move can only have one target".to_string());
+                                }
+                            } else {
+                                // Not a modifier or target - might be part of move name
+                                // For now, we'll allow it (multi-word move names)
+                            }
+                        }
+                    }
+                    i += 1;
+                }
+
                 Ok(())
             }
             "switch" => {

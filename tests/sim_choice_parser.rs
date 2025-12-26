@@ -354,4 +354,52 @@ fn test_move_generic_should_reject_pass_for_non_fainted() {
     }
 }
 
+// JavaScript:             it('should allow mega evolving and targeting in the same move in either order', () => {
+#[test]
+fn test_move_generic_should_allow_mega_and_targeting() {
+    // JavaScript:                 battle = common.createBattle({ gameType: 'doubles' });
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions {
+            game_type: Some("doubles".to_string()),
+            ..Default::default()
+        },
+        [
+            // JavaScript:                 battle.setPlayer('p1', { team: [
+            // JavaScript:                     { species: "Gengar", ability: 'cursedbody', item: 'gengarite', moves: ['shadowball'] },
+            // JavaScript:                     { species: "Zigzagoon", ability: 'pickup', moves: ['tackle'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Gengar", ability: "cursedbody", moves: ["shadowball"], item: "gengarite"),
+                pokemon!(species: "Zigzagoon", ability: "pickup", moves: ["tackle"]),
+            ],
+            // JavaScript:                 battle.setPlayer('p2', { team: [
+            // JavaScript:                     { species: "Blaziken", ability: 'blaze', item: 'firiumz', moves: ['blazekick'] },
+            // JavaScript:                     { species: "Aggron", ability: 'sturdy', moves: ['irondefense'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Blaziken", ability: "blaze", moves: ["blazekick"], item: "firiumz"),
+                pokemon!(species: "Aggron", ability: "sturdy", moves: ["irondefense"]),
+            ],
+        ],
+    );
+
+    // JavaScript:                 const badChoices = [`move 1 1 2`, `move 1 1 mega ultra`, `move 1 mega zmove 2`];
+    let bad_choices = vec!["move 1 1 2", "move 1 1 mega ultra", "move 1 mega zmove 2"];
+
+    // JavaScript:                 for (const badChoice of badChoices) {
+    // JavaScript:                     const choice = `${badChoice}, move tackle 1`;
+    // JavaScript:                     assert.throws(() => battle.choose('p1', choice));
+    // JavaScript:                 }
+    for bad_choice in bad_choices {
+        let choice = format!("{}, move tackle 1", bad_choice);
+        assert!(battle.choose(SideID::P1, &choice).is_err(), "Expected '{}' to be rejected", choice);
+    }
+
+    // JavaScript:                 assert(battle.choose('p1', `move 1 +1 mega, move tackle 1`));
+    assert!(battle.choose(SideID::P1, "move 1 +1 mega, move tackle 1").is_ok(), "Expected 'move 1 +1 mega, move tackle 1' to be accepted");
+
+    // JavaScript:                 assert(battle.choose('p2', `move Blaze Kick zmove 1, move irondefense`));
+    assert!(battle.choose(SideID::P2, "move Blaze Kick zmove 1, move irondefense").is_ok(), "Expected 'move Blaze Kick zmove 1, move irondefense' to be accepted");
+}
+
 
