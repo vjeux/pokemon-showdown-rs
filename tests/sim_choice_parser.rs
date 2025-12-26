@@ -60,3 +60,41 @@ fn test_team_preview_should_accept_only_team_choices() {
         assert!(battle.choose(SideID::P1, bad_choice).is_err(), "Expected '{}' to be rejected", bad_choice);
     }
 }
+
+// JavaScript:         it('should reject non-numerical choice details', () => {
+#[test]
+fn test_team_preview_should_reject_non_numerical_choice_details() {
+    // JavaScript:             battle = common.createBattle({ preview: true }, [
+    // JavaScript:                 [{ species: "Mew", ability: 'synchronize', moves: ['recover'] }],
+    // JavaScript:                 [{ species: "Rhydon", ability: 'prankster', moves: ['splash'] }],
+    // JavaScript:             ]);
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions {
+            preview: true,
+            ..Default::default()
+        },
+        [
+            vec![pokemon!(
+                species: "Mew",
+                ability: "synchronize",
+                moves: ["recover"]
+            )],
+            vec![pokemon!(
+                species: "Rhydon",
+                ability: "prankster",
+                moves: ["splash"]
+            )],
+        ],
+    );
+
+    // JavaScript:             for (const side of battle.sides) {
+    // JavaScript:                 assert.throws(() => battle.choose(side.id, 'team Rhydon'));
+    // JavaScript:                 assert.throws(() => battle.choose(side.id, 'team Mew'));
+    // JavaScript:                 assert.throws(() => battle.choose(side.id, 'team first'));
+    // JavaScript:             }
+    for side_id in [SideID::P1, SideID::P2] {
+        assert!(battle.choose(side_id, "team Rhydon").is_err(), "Expected 'team Rhydon' to be rejected");
+        assert!(battle.choose(side_id, "team Mew").is_err(), "Expected 'team Mew' to be rejected");
+        assert!(battle.choose(side_id, "team first").is_err(), "Expected 'team first' to be rejected");
+    }
+}
