@@ -46,7 +46,7 @@ use super::{AbilityHandlerResult, Status, Effect};
         // for (const target of this.getAllActive())
         for (side_idx, slot, target) in battle.get_all_active(false) {
             // if (target === pokemon) continue;
-            if side_idx == pokemon.side_index && slot == pokemon.position {
+            if target.is_same(pokemon) {
                 continue;
             }
             // if (this.queue.willMove(target))

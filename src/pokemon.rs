@@ -861,6 +861,12 @@ impl Pokemon {
         self.side_index == other_side_index
     }
 
+    /// Check if this is the same Pokemon (by position and side)
+    /// JavaScript pattern: if (target === pokemon) continue;
+    pub fn is_same(&self, other: &Pokemon) -> bool {
+        self.side_index == other.side_index && self.position == other.position
+    }
+
     /// Check if another Pokemon is adjacent (for targeting)
     pub fn is_adjacent(&self, other_position: usize, other_fainted: bool, active_per_half: usize) -> bool {
         if self.fainted || other_fainted {
