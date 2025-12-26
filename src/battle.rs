@@ -2503,6 +2503,33 @@ impl Battle {
             return (((damage as f64 * 1.5) as u32).max(1), true);
         }
 
+        // Apply side condition damage modifiers (Aurora Veil, Reflect, Light Screen)
+        // onAnyModifyDamage for side conditions
+        let damage = if let Some(side) = self.sides.get(target_side) {
+            if side.has_side_condition(&ID::new("auroraveil")) {
+                // Call onAnyModifyDamage callback
+                let result = crate::data::move_callbacks::auroraveil::on_any_modify_damage(
+                    self,
+                    damage as i32,
+                    (attacker_side, attacker_idx),
+                    (target_side, target_idx),
+                    move_id
+                );
+
+                match result {
+                    crate::data::move_callbacks::MoveHandlerResult::ChainModify(num, den) => {
+                        // Apply the modification: damage * num / den
+                        (damage * num / den).max(1)
+                    }
+                    _ => damage
+                }
+            } else {
+                damage
+            }
+        } else {
+            damage
+        };
+
         (damage.max(1), false)
     }
 
@@ -2653,6 +2680,71 @@ impl Battle {
         // Apply primary self volatile status
         if let Some(ref self_volatile) = move_def.self_volatile {
             self.add_volatile_to_pokemon((attacker_side, attacker_idx), &ID::new(self_volatile), Some((attacker_side, attacker_idx)), Some(&move_id));
+        }
+
+        // Apply side condition
+        // JS: if (moveData.sideCondition) { hitResult = target.side.addSideCondition(moveData.sideCondition, source, move); }
+        if let Some(ref side_condition) = move_def.side_condition {
+            // Determine which side to apply the condition to based on move target
+            let condition_side_idx = match move_def.target {
+                crate::data::moves::MoveTargetType::AllySide => {
+                    // Apply to attacker's side
+                    attacker_side
+                }
+                _ => {
+                    // Apply to target's side (default for most hazards/screens)
+                    target_side
+                }
+            };
+
+            // Call the move's onTry callback first to check if it can be used
+            // For Aurora Veil, this checks the weather
+            let try_result = self.run_event("Try", Some((target_side, target_idx)), Some((attacker_side, attacker_idx)), Some(&move_id), None);
+
+            // Only add the side condition if onTry didn't fail (returned Some value, not None)
+            if try_result.is_some() {
+                let condition_id = ID::new(side_condition);
+
+                // Check if side condition already exists
+                let already_exists = if let Some(side) = self.sides.get(condition_side_idx) {
+                    side.has_side_condition(&condition_id)
+                } else {
+                    false
+                };
+
+                if !already_exists {
+                    // Calculate duration (default 5 turns for Aurora Veil, Reflect, Light Screen)
+                    // Check if source has Light Clay item
+                    let duration = if side_condition == "auroraveil" || side_condition == "reflect" || side_condition == "lightscreen" {
+                        // Check if attacker has Light Clay
+                        let has_light_clay = if let Some(side) = self.sides.get(attacker_side) {
+                            if let Some(pokemon) = side.pokemon.get(attacker_idx) {
+                                pokemon.item.as_str() == "lightclay"
+                            } else {
+                                false
+                            }
+                        } else {
+                            false
+                        };
+
+                        if has_light_clay {
+                            Some(8)
+                        } else {
+                            Some(5)
+                        }
+                    } else {
+                        None
+                    };
+
+                    // Add the side condition
+                    if let Some(side) = self.sides.get_mut(condition_side_idx) {
+                        side.add_side_condition(condition_id.clone(), duration);
+                    }
+
+                    // Call onSideStart callback
+                    self.handle_side_condition_event("SideStart", condition_side_idx, &condition_id);
+                }
+            }
         }
 
         // Apply primary stat boosts to target
@@ -3414,6 +3506,52 @@ impl Battle {
         let expired = self.field.decrement_durations();
         for effect_id in expired {
             self.add_log("-fieldend", &[effect_id.as_str()]);
+        }
+
+        // Decrement side condition durations
+        for side_idx in 0..self.sides.len() {
+            // Collect side condition IDs that need duration decrements
+            let side_condition_ids: Vec<ID> = self.sides[side_idx]
+                .side_conditions
+                .keys()
+                .cloned()
+                .collect();
+
+            for condition_id in side_condition_ids {
+                // Get current duration
+                let current_duration = if let Some(side) = self.sides.get(side_idx) {
+                    if let Some(condition) = side.get_side_condition(&condition_id) {
+                        condition.duration
+                    } else {
+                        None
+                    }
+                } else {
+                    None
+                };
+
+                // Decrement if there's a duration
+                if let Some(dur) = current_duration {
+                    if dur > 0 {
+                        let new_duration = dur - 1;
+
+                        if new_duration == 0 {
+                            // Duration expired, call onSideEnd and remove condition
+                            self.handle_side_condition_event("SideEnd", side_idx, &condition_id);
+
+                            if let Some(side) = self.sides.get_mut(side_idx) {
+                                side.remove_side_condition(&condition_id);
+                            }
+                        } else {
+                            // Update duration
+                            if let Some(side) = self.sides.get_mut(side_idx) {
+                                if let Some(condition) = side.get_side_condition_mut(&condition_id) {
+                                    condition.duration = Some(new_duration);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -6751,6 +6889,23 @@ impl Battle {
                             }
                         }
                     }
+                    "auroraveil" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            let result = crate::data::move_callbacks::auroraveil::on_try(
+                                self,
+                                source,
+                                target,
+                                &move_effect_id,
+                            );
+                            // If onTry returns False, the move fails
+                            match result {
+                                crate::data::move_callbacks::MoveHandlerResult::False => {
+                                    return EventResult::Fail;
+                                }
+                                _ => return EventResult::Continue,
+                            }
+                        }
+                    }
                     _ => {}
                 }
             }
@@ -6853,6 +7008,30 @@ impl Battle {
         }
 
         EventResult::Continue
+    }
+
+    /// Handle side condition events (SideStart, SideEnd, AnyModifyDamage, etc.)
+    /// Calls the appropriate callback for each side condition
+    fn handle_side_condition_event(
+        &mut self,
+        event_id: &str,
+        side_idx: usize,
+        condition_id: &ID,
+    ) {
+        match condition_id.as_str() {
+            "auroraveil" => {
+                match event_id {
+                    "SideStart" => {
+                        let _result = crate::data::move_callbacks::auroraveil::on_side_start(self, side_idx);
+                    }
+                    "SideEnd" => {
+                        let _result = crate::data::move_callbacks::auroraveil::on_side_end(self, side_idx);
+                    }
+                    _ => {}
+                }
+            }
+            _ => {}
+        }
     }
 
     /// Run event on all relevant handlers
