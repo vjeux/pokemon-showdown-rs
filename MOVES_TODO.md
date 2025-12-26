@@ -12,7 +12,7 @@ Moves with callbacks: 379
 - [x] aquaring - Aqua Ring (Status, Water) - 3 callbacks: onStart, onResidualOrder, onResidual - **COMPLETED**
 - [x] aromatherapy - Aromatherapy (Status, Grass) - 1 callback: onHit - **COMPLETED**
 - [x] assist - Assist (Status, Normal) - 1 callback: onHit - **COMPLETED**
-- [ ] attract - Attract (Status, Normal) - 6 callbacks: onStart, onUpdate, onBeforeMovePriority, onBeforeMove, onEnd, onTryImmunity
+- [x] attract - Attract (Status, Normal) - 6 callbacks: onStart, onUpdate, onBeforeMovePriority, onBeforeMove, onEnd, onTryImmunity - **COMPLETED**
 - [ ] aurawheel - Aura Wheel (Physical, Electric) - 2 callbacks: onTry, onModifyType
 - [ ] auroraveil - Aurora Veil (Status, Ice) - 6 callbacks: onTry, onAnyModifyDamage, onSideStart, onSideResidualOrder, onSideResidualSubOrder, onSideEnd
 - [ ] autotomize - Autotomize (Status, Steel) - 2 callbacks: onTryHit, onHit

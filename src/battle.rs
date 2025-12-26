@@ -1887,6 +1887,14 @@ impl Battle {
             return;
         }
 
+        // Run BeforeMove event for volatile conditions (e.g., attract)
+        // JS: const willTryMove = this.battle.runEvent('BeforeMove', pokemon, target, move);
+        let will_try_move = self.run_before_move_event((attacker_side, attacker_idx), (target_side, target_idx), move_id);
+        if !will_try_move {
+            // BeforeMove returned false, move is prevented
+            return;
+        }
+
         // Check accuracy
         let mut accuracy = self.get_move_accuracy(move_id);
 
@@ -2113,6 +2121,85 @@ impl Battle {
                 self.sides[attacker_side].pokemon[attacker_idx].add_volatile(ID::new("pivotswitch"));
             }
         }
+    }
+
+    /// Remove a volatile condition from a Pokemon
+    /// Matches JavaScript pokemon.removeVolatile()
+    ///
+    /// Calls onEnd callback before removing the volatile
+    pub fn remove_volatile_from_pokemon(&mut self, target: (usize, usize), volatile_id: &ID) -> bool {
+        let (side_idx, poke_idx) = target;
+
+        // Check if pokemon has the volatile
+        let has_volatile = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                pokemon.has_volatile(volatile_id)
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        };
+
+        if !has_volatile {
+            return false;
+        }
+
+        // Call onEnd callback before removing
+        // JS: this.battle.singleEvent('End', status, this.volatiles[status.id], this);
+        if volatile_id.as_str() == "attract" {
+            let _result = crate::data::move_callbacks::attract::on_end(self, target);
+        }
+        // TODO: Add other volatile conditions with onEnd here
+
+        // Remove the volatile
+        if let Some(side) = self.sides.get_mut(side_idx) {
+            if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                pokemon.remove_volatile(volatile_id)
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+    }
+
+    /// Run BeforeMove event for all volatile conditions on a Pokemon
+    /// Matches JavaScript battle.runEvent('BeforeMove', pokemon, target, move)
+    ///
+    /// Returns false if any volatile prevents the move, true otherwise
+    fn run_before_move_event(
+        &mut self,
+        pokemon: (usize, usize),
+        target: (usize, usize),
+        move_id: &ID,
+    ) -> bool {
+        let (side_idx, poke_idx) = pokemon;
+
+        // Get list of volatiles (need to collect first to avoid borrow issues)
+        let volatile_ids: Vec<ID> = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(poke) = side.pokemon.get(poke_idx) {
+                poke.volatiles.keys().cloned().collect()
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        };
+
+        // Call onBeforeMove for each volatile
+        for volatile_id in volatile_ids {
+            if volatile_id.as_str() == "attract" {
+                let result = crate::data::move_callbacks::attract::on_before_move(self, pokemon);
+                match result {
+                    crate::data::move_callbacks::MoveHandlerResult::False => return false,
+                    _ => {}
+                }
+            }
+            // TODO: Add other volatile conditions with onBeforeMove here
+        }
+
+        true
     }
 
     /// Execute a move immediately (for moves that call other moves like Assist, Copycat, etc.)
@@ -4573,7 +4660,18 @@ impl Battle {
         }
 
         // JS: if (!this.runStatusImmunity(status.id)) { this.battle.debug('immune to volatile status'); if (sourceEffect?.status) { this.battle.add('-immune', this); } return false; }
-        // TODO: Implement runStatusImmunity check
+        // Run TryImmunity event for moves like attract
+        if status.as_str() == "attract" {
+            if let Some(src) = source {
+                let immunity_result = self.run_event_bool("TryImmunity", Some(target), Some(src), Some(status));
+                if !immunity_result {
+                    self.debug("immune to volatile status");
+                    // JS: if (sourceEffect?.status) { this.battle.add('-immune', this); }
+                    // TODO: Check sourceEffect.status
+                    return false;
+                }
+            }
+        }
 
         // JS: result = this.battle.runEvent('TryAddVolatile', this, source, sourceEffect, status);
         // TODO: Implement TryAddVolatile event
@@ -4617,6 +4715,14 @@ impl Battle {
         // Call onStart for aquaring
         if status.as_str() == "aquaring" {
             crate::data::move_callbacks::aquaring::on_start(self, target);
+        }
+        // Call onStart for attract
+        if status.as_str() == "attract" {
+            let result = crate::data::move_callbacks::attract::on_start(self, target);
+            match result {
+                crate::data::move_callbacks::MoveHandlerResult::False => return false,
+                _ => {}
+            }
         }
 
         true
@@ -6625,6 +6731,32 @@ impl Battle {
                     _ => {}
                 }
             }
+            "TryImmunity" => {
+                // onTryImmunity callbacks - check if target is immune to the move
+                match move_id {
+                    "attract" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            let result = crate::data::move_callbacks::attract::on_try_immunity(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
+                            // If onTryImmunity returns False, the target is immune
+                            match result {
+                                crate::data::move_callbacks::MoveHandlerResult::False => {
+                                    return EventResult::Fail;
+                                }
+                                crate::data::move_callbacks::MoveHandlerResult::True => {
+                                    return EventResult::Continue;
+                                }
+                                _ => {}
+                            }
+                        }
+                    }
+                    _ => {}
+                }
+            }
             _ => {}
         }
 
@@ -6641,6 +6773,17 @@ impl Battle {
         use crate::event::EventResult;
 
         match event_id {
+            "Update" => {
+                // Call onUpdate for volatile conditions
+                if let Some((side_idx, poke_idx)) = target {
+                    if condition_id == "attract" {
+                        let _result = crate::data::move_callbacks::attract::on_update(self, (side_idx, poke_idx));
+                        // onUpdate typically returns Undefined, continue to other volatiles
+                        return EventResult::Continue;
+                    }
+                    // TODO: Add other volatile conditions with onUpdate here
+                }
+            }
             "Residual" => {
                 if let Some((side_idx, poke_idx)) = target {
                     // Burn damage
