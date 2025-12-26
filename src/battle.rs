@@ -14,7 +14,6 @@ use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
 use crate::side::{Side, RequestState, Choice};
 use crate::prng::{PRNG, PRNGSeed};
-use crate::data::abilities::get_ability;
 
 /// Split message for side-specific content
 /// JavaScript equivalent: { side: SideID, secret: string, shared: string }
@@ -1907,72 +1906,12 @@ impl Battle {
 
     /// Trigger abilities that activate on switch-in
     fn trigger_switch_in_abilities(&mut self, side_idx: usize, poke_idx: usize) {
-        let (ability_id, pokemon_name) = {
-            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-            (pokemon.ability.clone(), pokemon.name.clone())
-        };
-        let side_id = self.sides[side_idx].id_str();
-        let full_name = format!("{}: {}", side_id, pokemon_name);
+        // Use event system to trigger SwitchIn abilities
+        // This will call handle_ability_event which handles Intimidate, Drizzle, etc.
+        self.run_event("SwitchIn", Some((side_idx, poke_idx)), None, None, None);
 
-        // Use data-driven ability handling
-        let ability_key = ID::new(ability_id.as_str());
-        if let Some(ability_def) = get_ability(&ability_key) {
-            // Weather setters (Drizzle, Drought, Sand Stream, Snow Warning)
-            if let Some(weather_id) = &ability_def.on_switch_in_weather {
-                let weather_display = match weather_id.as_str() {
-                    "raindance" => "RainDance",
-                    "sunnyday" => "SunnyDay",
-                    "sandstorm" => "Sandstorm",
-                    "snow" | "hail" => "Hail",
-                    _ => weather_id.as_str(),
-                };
-                self.field.set_weather(ID::new(weather_id), Some(5));
-                self.add_log("-weather", &[weather_display, &format!("[from] ability: {}", ability_def.name), &format!("[of] {}", full_name)]);
-                return;
-            }
-
-            // Terrain setters (Electric/Grassy/Psychic/Misty Surge)
-            if let Some(terrain_id) = &ability_def.on_switch_in_terrain {
-                let terrain_display = match terrain_id.as_str() {
-                    "electricterrain" => "Electric Terrain",
-                    "grassyterrain" => "Grassy Terrain",
-                    "psychicterrain" => "Psychic Terrain",
-                    "mistyterrain" => "Misty Terrain",
-                    _ => terrain_id.as_str(),
-                };
-                self.field.set_terrain(ID::new(terrain_id), Some(5));
-                self.add_log("-fieldstart", &[terrain_display, &format!("[from] ability: {}", ability_def.name), &format!("[of] {}", full_name)]);
-                return;
-            }
-
-            // Stat boost on switch-in (Intimidate targets foes)
-            if let Some((stat, stages, target_foe)) = &ability_def.on_switch_in_boost {
-                if *target_foe {
-                    // Apply to foes (Intimidate)
-                    let foe_side_idx = 1 - side_idx;
-                    for foe_poke_idx in 0..self.sides[foe_side_idx].pokemon.len() {
-                        if self.sides[foe_side_idx].pokemon[foe_poke_idx].is_active {
-                            // Check for abilities that block Intimidate
-                            let foe_ability = self.sides[foe_side_idx].pokemon[foe_poke_idx].ability.as_str();
-                            if foe_ability == "innerfocus" || foe_ability == "owntempo" ||
-                               foe_ability == "oblivious" || foe_ability == "scrappy" {
-                                let foe_name = &self.sides[foe_side_idx].pokemon[foe_poke_idx].name;
-                                let foe_side_id = self.sides[foe_side_idx].id_str();
-                                let foe_full_name = format!("{}: {}", foe_side_id, foe_name);
-                                self.add_log("-fail", &[&foe_full_name]);
-                            } else {
-                                self.apply_boost(foe_side_idx, foe_poke_idx, stat, *stages as i8);
-                                self.add_log("-ability", &[&full_name, &ability_def.name]);
-                            }
-                        }
-                    }
-                } else {
-                    // Apply to self
-                    self.apply_boost(side_idx, poke_idx, stat, *stages as i8);
-                    self.add_log("-ability", &[&full_name, &ability_def.name]);
-                }
-            }
-        }
+        // TODO: Migrate all switch-in ability logic to ability_callbacks/
+        // Old data-driven code removed - abilities should use event handlers instead
     }
 
     /// Apply entry hazard damage to a Pokemon that just switched in
@@ -2776,48 +2715,9 @@ impl Battle {
             )
         };
 
-        // Check ability-based immunities using data-driven approach
-        let ability_id = ID::new(&defender_ability);
-        if let Some(ability_def) = get_ability(&ability_id) {
-            let move_type_lower = move_type.to_lowercase();
-
-            // Check type immunity (Levitate, Flash Fire)
-            if ability_def.grants_type_immunity(&move_type_lower) {
-                let side_id = self.sides[target_side].id_str();
-                let target_name = format!("{}: {}", side_id, defender_name);
-                self.add_log("-immune", &[&target_name, &format!("[from] ability: {}", ability_def.name)]);
-
-                // Flash Fire adds a volatile for boosted Fire moves
-                if defender_ability == "flashfire" {
-                    self.sides[target_side].pokemon[target_idx].add_volatile(ID::new("flashfire"));
-                    self.add_log("-start", &[&target_name, &format!("ability: {}", ability_def.name)]);
-                }
-                return (0, false);
-            }
-
-            // Check absorb abilities (Water Absorb, Volt Absorb, etc.)
-            if ability_def.absorbs_type(&move_type_lower) {
-                let side_id = self.sides[target_side].id_str();
-                let target_name = format!("{}: {}", side_id, defender_name);
-                self.add_log("-immune", &[&target_name, &format!("[from] ability: {}", ability_def.name)]);
-
-                // Healing absorb (Water Absorb, Volt Absorb, Dry Skin)
-                if let Some(heal_fraction) = ability_def.absorb_heal {
-                    let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
-                    let heal = ((maxhp as f64 * heal_fraction) as u32).max(1);
-                    self.sides[target_side].pokemon[target_idx].heal(heal);
-                    let hp = self.sides[target_side].pokemon[target_idx].hp;
-                    self.add_log("-heal", &[&target_name, &format!("{}/{}", hp, maxhp), &format!("[from] ability: {}", ability_def.name)]);
-                }
-
-                // Boost absorb (Motor Drive, Lightning Rod, Storm Drain, Sap Sipper)
-                if let Some((stat, stages)) = &ability_def.absorb_boost {
-                    self.apply_boost(target_side, target_idx, stat, *stages as i8);
-                }
-
-                return (0, false);
-            }
-        }
+        // TODO: Re-implement ability-based immunities using ability_callbacks/
+        // Old data-driven code that accessed AbilityDef fields has been removed
+        // Abilities like Levitate, Flash Fire, Water Absorb should be in ability_callbacks/
 
         // Check type immunity
         let type_effectiveness = self.get_type_effectiveness(&move_type, &defender_types);
@@ -6770,7 +6670,7 @@ impl Battle {
     /// Get effect type for an effect ID
     fn get_effect_type(&self, effect_id: &ID) -> &str {
         // Check if it's an ability
-        if crate::data::abilities::get_ability(effect_id).is_some() {
+        if self.dex.get_ability(effect_id.as_str()).is_some() {
             return "Ability";
         }
         // Check if it's an item
@@ -6815,8 +6715,9 @@ impl Battle {
         let effect_str = effect_id.as_str();
 
         // Handle ability events
-        if let Some(ability_def) = crate::data::abilities::get_ability(effect_id) {
-            return self.handle_ability_event(event_id, ability_def, target);
+        if self.dex.get_ability(effect_id.as_str()).is_some() {
+            let ability_def = crate::data::abilities::AbilityDef::from_id(effect_id.clone());
+            return self.handle_ability_event(event_id, &ability_def, target);
         }
 
         // Handle item events
