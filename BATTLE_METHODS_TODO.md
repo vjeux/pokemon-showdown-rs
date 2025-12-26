@@ -168,14 +168,14 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 93. 🔍 `initEffectState` / `init_effect_state` - battle.ts:3321 | battle.rs:? | **TODO**
 94. 🔍 `clearEffectState` / `clear_effect_state` - battle.ts:3333 | battle.rs:? | **TODO**
 95. 🔍 `toJSON` / (serialization) - battle.ts:318 | battle.rs:? | **TODO**
-96. 🔍 `toString` / (Display trait) - battle.ts:342 | battle.rs:? | **TODO**
+96. ✅ `toString` / (Display trait) - battle.ts:342 | battle.rs:6285 | **FIXED!** ✅ - Added Display impl returning "Battle: {format}"
 
 ---
 
 ## Progress Summary
 
-**Methods Compared**: 67 / 96 (70%) - 14 methods this session
-**Methods Matching**: 32 (33%) - 8 more this session
+**Methods Compared**: 68 / 96 (71%) - 1 more method this session
+**Methods Matching**: 33 (34%) - 1 more this session
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
@@ -185,13 +185,14 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - Switching: getRandomSwitchable, canSwitch
 - **Damage/Heal**: damage, spreadDamage, heal, directDamage
 - **Active Move**: setActiveMove, clearActiveMove
+- **Display**: toString (Display trait)
 - And more
 
 **Methods with Minor Mismatches**: 2 (2%)
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 18 (19%) - up from 16 (found 2 more)
+**Methods with Major Mismatches**: 18 (19%)
 - Event-dependent: boost, chainModify, getActionSpeed
 - Simplified: makeRequest, endTurn, getDebugLog
 - Missing features: add, hint, addSplit
