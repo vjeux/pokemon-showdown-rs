@@ -1151,19 +1151,21 @@ impl Battle {
             // Split by comma and validate each sub-choice
             let sub_choices: Vec<&str> = choice.split(',').map(|s| s.trim()).collect();
 
-            // Validate each sub-choice individually
-            for sub_choice in sub_choices {
-                self.validate_single_choice(side_id, sub_choice)?;
+            // Validate each sub-choice individually with its pokemon_index
+            for (pokemon_index, sub_choice) in sub_choices.iter().enumerate() {
+                self.validate_single_choice(side_id, sub_choice, Some(pokemon_index))?;
             }
             Ok(())
         } else {
             // Single choice (Singles or single slot in Doubles/Triples)
-            self.validate_single_choice(side_id, choice)
+            // In singles, pokemon_index is 0
+            self.validate_single_choice(side_id, choice, Some(0))
         }
     }
 
     /// Validate a single choice (not comma-separated)
-    fn validate_single_choice(&mut self, side_id: SideID, choice: &str) -> Result<(), String> {
+    /// pokemon_index: Which active slot this choice is for (0-2 in triples, 0-1 in doubles, 0 in singles)
+    fn validate_single_choice(&mut self, side_id: SideID, choice: &str, pokemon_index: Option<usize>) -> Result<(), String> {
         // Parse and validate choice
         let parts: Vec<&str> = choice.split_whitespace().collect();
         if parts.is_empty() {
@@ -1329,6 +1331,34 @@ impl Battle {
                     }
                 }
 
+                // Validate that Pokemon has required item for zmove/mega
+                if has_zmove || has_mega {
+                    let side_idx = side_id.index();
+                    if let Some(poke_idx) = pokemon_index {
+                        // Get the active Pokemon at this slot
+                        if let Some(active_poke_idx) = self.sides[side_idx].active.get(poke_idx).and_then(|&x| x) {
+                            let pokemon = &self.sides[side_idx].pokemon[active_poke_idx];
+                            let item_id = pokemon.item.as_str();
+
+                            if has_zmove {
+                                // Check if Pokemon has a Z-crystal
+                                // Z-crystals end with "iumz" (e.g., "normaliumz", "firiumz")
+                                if !item_id.ends_with("iumz") {
+                                    return Err("[Invalid choice] Can't use Z-Move: Pokemon doesn't have a Z-Crystal".to_string());
+                                }
+                            }
+
+                            if has_mega {
+                                // Check if Pokemon has a mega stone
+                                // Mega stones end with "ite" (e.g., "gengarite", "charizarditex")
+                                if !item_id.ends_with("ite") && !item_id.ends_with("itex") && !item_id.ends_with("itey") {
+                                    return Err("[Invalid choice] Can't Mega Evolve: Pokemon doesn't have a Mega Stone".to_string());
+                                }
+                            }
+                        }
+                    }
+                }
+
                 Ok(())
             }
             "switch" => {
@@ -1382,6 +1412,12 @@ impl Battle {
                 // Shift is only valid in triples
                 if !matches!(self.game_type, GameType::Triples) {
                     return Err("[Invalid choice] Shift is only valid in Triple Battles".to_string());
+                }
+                // Shift cannot be used in the center position (slot 1)
+                if let Some(poke_idx) = pokemon_index {
+                    if poke_idx == 1 {
+                        return Err("[Invalid choice] The center Pokemon cannot shift position".to_string());
+                    }
                 }
                 Ok(())
             }
