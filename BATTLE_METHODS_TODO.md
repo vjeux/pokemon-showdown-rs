@@ -151,13 +151,13 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ### Miscellaneous (12 methods)
 
-79. 🔍 `suppressingAbility` / `suppressing_ability` - battle.ts:365 | battle.rs:? | **TODO**
-80. 🔍 `setActiveMove` / `set_active_move` - battle.ts:370 | battle.rs:? | **TODO**
-81. 🔍 `clearActiveMove` / `clear_active_move` - battle.ts:376 | battle.rs:? | **TODO**
-82. 🔍 `checkMoveMakesContact` / `check_move_makes_contact` - battle.ts:1290 | battle.rs:? | **TODO**
+79. 🔍 `suppressingAbility` / `suppressing_ability` - battle.ts:365 | battle.rs:3333 | **TODO** - Complex (needs ActiveMove object)
+80. ✅ `setActiveMove` / `set_active_move` - battle.ts:370 | battle.rs:3311 | **MATCH** - Verified correct
+81. ✅ `clearActiveMove` / `clear_active_move` - battle.ts:376 | battle.rs:3319 | **MATCH** - Verified correct
+82. 🔍 `checkMoveMakesContact` / `check_move_makes_contact` - battle.ts:1290 | battle.rs:4296 | **MISMATCH** - Missing Protective Pads check
 83. 🔍 `checkFainted` / `check_fainted` - battle.ts:2487 | battle.rs:? | **TODO**
 84. ✅ `checkEVBalance` / `check_ev_balance` - battle.ts:1960 | battle.rs:5724 | **FIXED!** ✅ - Rewrote to check for 510 EV limit mismatch
-85. 🔍 `getCategory` / `get_category` - battle.ts:2350 | battle.rs:? | **TODO**
+85. ✅ `getCategory` / `get_category` - battle.ts:2350 | battle.rs:4382 | **FIXED!** ✅ - Changed to return String (defaulting to "Physical")
 86. ✅ `randomizer` / `randomizer` - battle.ts:2354 | battle.rs:5270 | **MATCH** - Verified implementation correct
 87. 🔍 `getTeam` / `get_team` - battle.ts:3164 | battle.rs:? | **TODO**
 88. 🔍 `showOpenTeamSheets` / `show_open_team_sheets` - battle.ts:3183 | battle.rs:? | **TODO**
@@ -174,27 +174,29 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ## Progress Summary
 
-**Methods Compared**: 53 / 96 (55%) - 4 more this session
-**Methods Matching**: 24 (25%) - 11 fixed total (4 this session: damage, spreadDamage, heal, directDamage)
+**Methods Compared**: 57 / 96 (59%) - 4 more this session
+**Methods Matching**: 27 (28%) - 3 more (setActiveMove, clearActiveMove, getCategory)
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin (FIXED!), tie, win (FIXED!), forceWin (FIXED!), lose (FIXED!)
-- Util: getPokemon, getAllPokemon, getAllActive (FIXED!), getOverflowedTurnCount (FIXED!)
+- Util: getPokemon, getAllPokemon, getAllActive (FIXED!), getOverflowedTurnCount (FIXED!), getCategory (FIXED!)
 - Logging: debug
 - Requests: clearRequest (FIXED!)
 - **Damage/Heal**: damage (FIXED!), spreadDamage (FIXED!), heal (FIXED!), directDamage (FIXED!)
-- And 4 more
+- **Active Move**: setActiveMove (MATCH!), clearActiveMove (MATCH!)
+- And more
 
 **Methods with Minor Mismatches**: 2 (2%)
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 10 (10%) - down from 13
+**Methods with Major Mismatches**: 11 (11%) - up from 10
 - Event-dependent: ~~damage~~, ~~heal~~, boost, chainModify, getActionSpeed
 - Simplified: makeRequest, endTurn
 - Missing features: setPlayer, ~~spreadDamage~~, ~~directDamage~~, add, hint, addSplit
+- Complex: suppressingAbility, checkMoveMakesContact
 
-**Methods Still TODO**: 46 (48%)
+**Methods Still TODO**: 42 (44%)
 
 **Critical Achievement**: Event system now actively used! ✅
 - spread_damage fires Damage event

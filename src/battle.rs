@@ -3847,15 +3847,31 @@ impl Battle {
         // faint_messages will handle the actual fainting logic
     }
 
-    /// Check if a Pokemon has fainted
-    pub fn check_fainted(&self, target: (usize, usize)) -> bool {
-        let (target_side, target_idx) = target;
-        if let Some(side) = self.sides.get(target_side) {
-            if let Some(pokemon) = side.pokemon.get(target_idx) {
-                return pokemon.hp == 0;
+    /// Check all active Pokemon for fainting and update their status
+    /// Equivalent to battle.ts checkFainted() (battle.ts:2487-2496)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// checkFainted() {
+    ///     for (const side of this.sides) {
+    ///         for (const pokemon of side.active) {
+    ///             if (pokemon.fainted) {
+    ///                 pokemon.status = 'fnt' as ID;
+    ///                 pokemon.switchFlag = true;
+    ///             }
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    pub fn check_fainted(&mut self) {
+        for side in &mut self.sides {
+            for pokemon in &mut side.pokemon {
+                if pokemon.is_active && pokemon.fainted {
+                    pokemon.status = ID::new("fnt");
+                    pokemon.switch_flag = true;
+                }
             }
         }
-        false
     }
 
     /// Clamp a value to an integer range
