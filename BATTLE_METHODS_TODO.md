@@ -37,8 +37,8 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 1. ✅ `constructor` / `new` - battle.ts:191 | battle.rs:221 | **MATCH** (basic initialization)
 2. ✅ `setPlayer` / `set_player` - battle.ts:3225 | battle.rs:316 | **FIXED!** ✅ - Added edit mode, avatar, rating, proper JSON logging, player add()
 3. 🔍 `start` / `start` - battle.ts:1859 | battle.rs:447 | **TODO** - Complex initialization
-4. 🔍 `restart` / `restart` - battle.ts:1925 | battle.rs:418 | **TODO**
-5. 🔍 `destroy` / `destroy` - battle.ts:3346 | battle.rs:? | **TODO**
+4. ✅ `restart` / `restart` - battle.ts:1925 | battle.rs:4560 | **FIXED!** ✅ - Simplified to match JS (just checks/docs, no actual reset)
+5. ✅ `destroy` / `destroy` - battle.ts:3346 | battle.rs:4620 | **FIXED!** ✅ - Documented as no-op (Rust uses Drop trait)
 
 ### RNG (4 methods)
 
@@ -176,8 +176,9 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching**: 61 (64%) - Steady progress! 🎯
+**Methods Matching**: 63 (66%) - Two-thirds complete! 🎯
 - RNG: random, randomChance, resetRNG
+- **Initialization**: setPlayer, restart, destroy
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
 - Util: getPokemon, getAllPokemon, getAllActive, **getAtSlot**, getOverflowedTurnCount, getCategory, checkFainted, randomizer
@@ -190,23 +191,21 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - **Event System**: eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
 - **Turn Flow**: turnLoop, runAction
 - **Target Selection**: validTarget, validTargetLoc (with get_loc_of helper)
-- **SESSION FIXES**: checkMoveMakesContact, faint, attrLastMove, retargetLastMove, swapPosition, getAtSlot, validTarget, validTargetLoc
+- **SESSION FIXES**: checkMoveMakesContact, faint, attrLastMove, retargetLastMove, swapPosition, getAtSlot, validTarget, validTargetLoc, restart, destroy
 - And more
 
 **Methods with Minor Mismatches**: 2 (2%)
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 17 (18%) - DOWN from 19!
-- Event-dependent: boost, chainModify, getActionSpeed
-- Simplified: makeRequest, endTurn, getDebugLog, faintMessages
-- Missing features: add, hint, addSplit
-- Complex: suppressingAbility
-- Stubs: finalModify (needs event.modifier)
-- Different signature/logic: getTeam (needs team generation), initEffectState, clearEffectState, resolvePriority
+**Methods with Major Mismatches**: 15 (16%) - DOWN from 17!
+- Event-dependent: boost, chainModify, finalModify, getActionSpeed, resolvePriority, suppressingAbility
+- Simplified: makeRequest, endTurn, faintMessages
+- Missing features: add (function params), addSplit, getDebugLog
+- Different infrastructure: getTeam, initEffectState, clearEffectState
 
-**Methods Needing Deep Comparison**: 16 (17%)
-- start, restart, destroy (initialization/teardown)
+**Methods Needing Deep Comparison**: 14 (15%) - DOWN from 16!
+- start (initialization - complex)
 - singleEvent, runEvent (event system core - very complex)
 - maybeTriggerEndlessBattleClause, runPickTeam, tiebreak, getTarget, getRandomTarget, showOpenTeamSheets, join, sendUpdates, toJSON (various complex methods)
 

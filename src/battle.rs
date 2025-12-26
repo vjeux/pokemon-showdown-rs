@@ -4550,22 +4550,20 @@ impl Battle {
     }
 
     /// Restart the battle (for testing)
+    /// Restart a deserialized battle
+    /// Equivalent to battle.ts restart() (battle.ts:1925-1929)
+    ///
+    /// JS: restart(send?: (type: string, data: string | string[]) => void) {
+    ///   if (!this.deserialized) throw new Error('Attempt to restart a battle which has not been deserialized');
+    ///   (this as any).send = send;
+    /// }
     pub fn restart(&mut self) {
-        self.turn = 0;
-        self.started = false;
-        self.ended = false;
-        self.winner = None;
-        self.log.clear();
-        self.input_log.clear();
-        self.queue.clear();
-        self.mid_turn = false;
-        self.request_state = BattleRequestState::None;
-        self.last_move = None;
-        self.last_damage = 0;
-        self.active_move = None;
-        self.active_pokemon = None;
-        self.active_target = None;
-        self.hints.clear();
+        // JS: if (!this.deserialized) throw new Error(...)
+        // Note: Rust doesn't have battle deserialization yet, so we skip this check
+
+        // JS: (this as any).send = send;
+        // Note: Rust doesn't have a send function parameter like JS, so this is a no-op
+        // The send function in JS is used for sending updates to clients
     }
 
     /// Reset the PRNG with a new seed
@@ -4607,14 +4605,27 @@ impl Battle {
         }
     }
 
-    /// Destroy the battle (cleanup)
+    /// Destroy the battle (cleanup for garbage collection)
+    /// Equivalent to battle.ts destroy() (battle.ts:3346-3367)
+    ///
+    /// JS: destroy() {
+    ///   this.field.destroy();
+    ///   for (let i = 0; i < this.sides.length; i++) {
+    ///     if (this.sides[i]) this.sides[i].destroy();
+    ///   }
+    ///   for (const action of this.queue.list) delete (action as any).pokemon;
+    ///   this.queue.battle = null!;
+    ///   (this as any).log = [];
+    /// }
     pub fn destroy(&mut self) {
-        // Clear all references
+        // Note: In Rust, cleanup is handled automatically by the Drop trait
+        // The JS version manually breaks circular references for garbage collection
+        // This is not needed in Rust, so this method is effectively a no-op
+
+        // We can still clear collections to free memory explicitly if desired
         self.sides.clear();
         self.queue.clear();
         self.log.clear();
-        self.input_log.clear();
-        self.hints.clear();
     }
 
     // =========================================================================
