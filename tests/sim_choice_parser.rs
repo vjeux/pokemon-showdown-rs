@@ -326,4 +326,32 @@ fn test_switch_doubles_should_reject_pass_with_choice_details() {
     assert!(battle.choose(SideID::P1, &format!("{} a, {}", pass_choice, switch_choice)).is_err(), "Expected 'pass a, switch 3' to be rejected");
 }
 
+// JavaScript:     describe('Move requests', () => {
+// JavaScript:         describe('Generic', () => {
+// JavaScript:             it('should reject `pass` choices for non-fainted Pokémon', () => {
+#[test]
+fn test_move_generic_should_reject_pass_for_non_fainted() {
+    // JavaScript:                 battle = common.createBattle();
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions::default(),
+        [
+            // JavaScript:                 battle.setPlayer('p1', { team: [{ species: "Mew", ability: 'synchronize', moves: ['recover'] }] });
+            vec![
+                pokemon!(species: "Mew", ability: "synchronize", moves: ["recover"]),
+            ],
+            // JavaScript:                 battle.setPlayer('p2', { team: [{ species: "Rhydon", ability: 'prankster', moves: ['splash'] }] });
+            vec![
+                pokemon!(species: "Rhydon", ability: "prankster", moves: ["splash"]),
+            ],
+        ],
+    );
+
+    // JavaScript:                 for (const side of battle.sides) {
+    // JavaScript:                     assert.throws(() => battle.choose(side.id, 'pass'));
+    // JavaScript:                 }
+    for side_id in [SideID::P1, SideID::P2] {
+        assert!(battle.choose(side_id, "pass").is_err(), "Expected 'pass' to be rejected for {:?}", side_id);
+    }
+}
+
 

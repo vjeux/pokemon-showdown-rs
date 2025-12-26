@@ -1194,9 +1194,13 @@ impl Battle {
                 }
             }
             _ => {
-                // In other states, 'team' choices are not valid
+                // In other states (Move, None), certain choices are not valid
                 if choice_type == "team" && !matches!(self.request_state, BattleRequestState::TeamPreview) {
                     return Err("[Invalid choice] Team choices are only valid during Team Preview".to_string());
+                }
+                // Pass is only valid during Switch requests
+                if choice_type == "pass" && !matches!(self.request_state, BattleRequestState::Switch) {
+                    return Err("[Invalid choice] Can't pass: You can only pass during switch requests".to_string());
                 }
             }
         }
