@@ -7035,6 +7035,23 @@ impl Battle {
                     _ => {}
                 }
             }
+            "MoveFail" => {
+                // onMoveFail callbacks - called when a move fails (misses, is blocked, etc.)
+                match move_id {
+                    "axekick" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            let _result = crate::data::move_callbacks::axekick::on_move_fail(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
+                            return EventResult::Continue;
+                        }
+                    }
+                    _ => {}
+                }
+            }
             _ => {}
         }
 
