@@ -4377,17 +4377,24 @@ impl Battle {
         false
     }
 
-    /// Get category of a move
-    /// Equivalent to battle.ts getCategory()
-    pub fn get_category(&self, move_id: &ID) -> Option<String> {
+    /// Get move category, defaulting to "Physical" if move not found
+    /// Equivalent to battle.ts getCategory() (battle.ts:2350-2352)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// getCategory(move: string | Move) {
+    ///     return this.dex.moves.get(move).category || 'Physical';
+    /// }
+    /// ```
+    pub fn get_category(&self, move_id: &ID) -> String {
         if let Some(move_def) = crate::data::moves::get_move(move_id) {
-            return Some(match move_def.category {
+            return match move_def.category {
                 crate::data::moves::MoveCategory::Physical => "Physical".to_string(),
                 crate::data::moves::MoveCategory::Special => "Special".to_string(),
                 crate::data::moves::MoveCategory::Status => "Status".to_string(),
-            });
+            };
         }
-        None
+        "Physical".to_string()
     }
 
     /// Clear request state
