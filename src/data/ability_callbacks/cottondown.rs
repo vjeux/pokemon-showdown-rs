@@ -38,35 +38,22 @@ use super::{AbilityHandlerResult, Status, Effect};
         // let activated = false;
         let mut activated = false;
         // for (const pokemon of this.getAllActive())
-        let target_ref = (target.side_index, target.position);
-        let num_sides = battle.sides.len();
-        for side_idx in 0..num_sides {
-            let active_len = battle.sides[side_idx].active.len();
-            for pos in 0..active_len {
-                // if (pokemon === target || pokemon.fainted) continue;
-                if (side_idx, pos) == target_ref {
-                    continue;
-                }
-                // active contains Option<usize> - index into pokemon array
-                let pokemon_idx = match battle.sides[side_idx].active.get(pos) {
-                    Some(Some(idx)) => *idx,
-                    _ => continue,
-                };
-                let is_fainted = battle.sides[side_idx].pokemon.get(pokemon_idx)
-                    .map(|p| p.fainted)
-                    .unwrap_or(true);
-                if is_fainted {
-                    continue;
-                }
-                // if (!activated)
-                if !activated {
-                    // this.add('-ability', target, 'Cotton Down');
-                    battle.add("-ability", &[Arg::Pokemon(target), Arg::Str("Cotton Down")]);
-                    activated = true;
-                }
-                // this.boost({ spe: -1 }, pokemon, target, null, true);
-                battle.boost(&[("spe", -1)], (side_idx, pos), Some(target_ref), None);
+        // Collect Pokemon indices first to avoid borrow checker issues
+        let pokemon_to_boost: Vec<(usize, usize)> = battle.get_all_active(false)
+            .iter()
+            .filter(|pokemon| !pokemon.is_same(target))
+            .map(|pokemon| (pokemon.side_index, pokemon.position))
+            .collect();
+
+        for (side_idx, poke_idx) in pokemon_to_boost {
+            // if (!activated)
+            if !activated {
+                // this.add('-ability', target, 'Cotton Down');
+                battle.add("-ability", &[Arg::Pokemon(target), Arg::Str("Cotton Down")]);
+                activated = true;
             }
+            // this.boost({ spe: -1 }, pokemon, target, null, true);
+            battle.boost(&[("spe", -1)], (side_idx, poke_idx), Some((target.side_index, target.position)), None);
         }
         AbilityHandlerResult::Undefined
     }
