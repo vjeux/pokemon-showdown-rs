@@ -2732,6 +2732,53 @@ impl Battle {
         let attack = self.calculate_boosted_stat(attack_stat, atk_boost);
         let defense = self.calculate_boosted_stat(defense_stat, def_boost).max(1);
 
+        // Apply stat modification events
+        // ModifyAtk/ModifySpA for attacker (items like Choice Band/Choice Specs, abilities like Huge Power)
+        let attack = if category.as_str() == "Physical" {
+            let base_attack = (attack * 100) as i32; // Convert to percentage
+            let modified_attack = self.run_event(
+                "ModifyAtk",
+                Some((attacker_side, attacker_idx)),
+                Some((target_side, target_idx)),
+                Some(move_id),
+                Some(base_attack)
+            ).unwrap_or(base_attack);
+            (modified_attack as u32) / 100 // Convert back from percentage
+        } else {
+            let base_attack = (attack * 100) as i32; // Convert to percentage
+            let modified_attack = self.run_event(
+                "ModifySpA",
+                Some((attacker_side, attacker_idx)),
+                Some((target_side, target_idx)),
+                Some(move_id),
+                Some(base_attack)
+            ).unwrap_or(base_attack);
+            (modified_attack as u32) / 100 // Convert back from percentage
+        };
+
+        // ModifyDef/ModifySpD for defender (items like Eviolite, Assault Vest)
+        let defense = if category.as_str() == "Physical" {
+            let base_defense = (defense * 100) as i32; // Convert to percentage
+            let modified_defense = self.run_event(
+                "ModifyDef",
+                Some((target_side, target_idx)),
+                Some((attacker_side, attacker_idx)),
+                Some(move_id),
+                Some(base_defense)
+            ).unwrap_or(base_defense);
+            ((modified_defense as u32) / 100).max(1) // Convert back from percentage, minimum 1
+        } else {
+            let base_defense = (defense * 100) as i32; // Convert to percentage
+            let modified_defense = self.run_event(
+                "ModifySpD",
+                Some((target_side, target_idx)),
+                Some((attacker_side, attacker_idx)),
+                Some(move_id),
+                Some(base_defense)
+            ).unwrap_or(base_defense);
+            ((modified_defense as u32) / 100).max(1) // Convert back from percentage, minimum 1
+        };
+
         // Base damage calculation: ((2L/5 + 2) * P * A/D) / 50 + 2
         let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense) / 50 + 2;
 
@@ -7047,10 +7094,50 @@ impl Battle {
                     }
                 }
             }
+            "ModifyAtk" => {
+                // Choice Band: 1.5x Attack
+                if item_id.as_str() == "choiceband" {
+                    return EventResult::Modify(1.5);
+                }
+            }
+            "ModifySpA" => {
+                // Choice Specs: 1.5x Special Attack
+                if item_id.as_str() == "choicespecs" {
+                    return EventResult::Modify(1.5);
+                }
+            }
+            "ModifyDef" => {
+                // Eviolite: 1.5x Defense (for NFE Pokemon)
+                if item_id.as_str() == "eviolite" {
+                    // TODO: Check if Pokemon is NFE (Not Fully Evolved)
+                    // For now, always apply the boost
+                    return EventResult::Modify(1.5);
+                }
+            }
+            "ModifySpD" => {
+                // Assault Vest: 1.5x Special Defense
+                if item_id.as_str() == "assaultvest" {
+                    return EventResult::Modify(1.5);
+                }
+                // Eviolite: 1.5x Special Defense (for NFE Pokemon)
+                if item_id.as_str() == "eviolite" {
+                    // TODO: Check if Pokemon is NFE (Not Fully Evolved)
+                    // For now, always apply the boost
+                    return EventResult::Modify(1.5);
+                }
+            }
             "ModifyDamage" => {
                 // Life Orb
                 if item_id.as_str() == "lifeorb" {
                     return EventResult::Modify(1.3);
+                }
+                // Expert Belt: 1.2x for super effective moves
+                // TODO: Implement type effectiveness check
+                // JS: if (move && target.getMoveHitData(move).typeMod > 0) return this.chainModify([4915, 4096]);
+                // This requires passing type effectiveness context to the event
+                if item_id.as_str() == "expertbelt" {
+                    // TODO: Check if move is super effective
+                    // For now, cannot implement without type effectiveness context
                 }
             }
             "AfterMoveSecondarySelf" => {
