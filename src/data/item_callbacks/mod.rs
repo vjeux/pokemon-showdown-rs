@@ -396,6 +396,15 @@ use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
 
+// ===========================================
+// Item Callback Dispatch Functions
+// ===========================================
+// These functions route item events to their specific callback implementations.
+// Each function matches on item_id and calls the corresponding module's callback.
+//
+// Note: Only items with properly implemented callbacks are included.
+// TODO: Add more items as their callbacks are implemented.
+
 /// Dispatch onModifyAtk callbacks (read-only)
 pub fn dispatch_on_modify_atk(
     battle: &Battle,
@@ -404,6 +413,7 @@ pub fn dispatch_on_modify_atk(
 ) -> Option<EventResult> {
     match item_id {
         "choiceband" => Some(choiceband::on_modify_atk(battle, pokemon_pos)),
+        // TODO: Add lightball, thickclub when implemented
         _ => None,
     }
 }
@@ -416,6 +426,7 @@ pub fn dispatch_on_modify_sp_a(
 ) -> Option<EventResult> {
     match item_id {
         "choicespecs" => Some(choicespecs::on_modify_sp_a(battle, pokemon_pos)),
+        // TODO: Add deepseatooth, lightball when implemented
         _ => None,
     }
 }
@@ -428,6 +439,7 @@ pub fn dispatch_on_modify_def(
 ) -> Option<EventResult> {
     match item_id {
         "eviolite" => Some(eviolite::on_modify_def(battle, pokemon_pos)),
+        // TODO: Add metalpowder when implemented
         _ => None,
     }
 }
@@ -439,8 +451,21 @@ pub fn dispatch_on_modify_sp_d(
     pokemon_pos: (usize, usize),
 ) -> Option<EventResult> {
     match item_id {
-        "eviolite" => Some(eviolite::on_modify_sp_d(battle, pokemon_pos)),
         "assaultvest" => Some(assaultvest::on_modify_sp_d(battle, pokemon_pos)),
+        "eviolite" => Some(eviolite::on_modify_sp_d(battle, pokemon_pos)),
+        // TODO: Add deepseascale when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onModifySpe callbacks (read-only)
+pub fn dispatch_on_modify_spe(
+    battle: &Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add choicescarf, ironball, machobrace, power items, quickpowder when implemented
         _ => None,
     }
 }
@@ -454,6 +479,7 @@ pub fn dispatch_on_modify_damage(
 ) -> Option<EventResult> {
     match item_id {
         "lifeorb" => Some(lifeorb::on_modify_damage(battle, target_pos, source_pos)),
+        // TODO: Add expertbelt, metronome when implemented
         _ => None,
     }
 }
@@ -465,9 +491,46 @@ pub fn dispatch_on_source_modify_damage(
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> Option<EventResult> {
-    // For SourceModifyDamage, target is the defender (item holder)
-    // source is the attacker
     match item_id {
+        // TODO: Add type-resist berries when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onBasePower callbacks (read-only)
+pub fn dispatch_on_base_power(
+    battle: &Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add type-boost items (blackbelt, charcoal, etc.) when implemented
+        // TODO: Add plates when implemented
+        // TODO: Add special items (adamantorb, etc.) when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onModifyCritRatio callbacks (read-only)
+pub fn dispatch_on_modify_crit_ratio(
+    battle: &Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add leek, luckypunch, razorclaw, scopelens, stick when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onModifyAccuracy callbacks (read-only)
+pub fn dispatch_on_modify_accuracy(
+    battle: &Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add brightpowder, laxincense, widelens, zoomlens when implemented
         _ => None,
     }
 }
@@ -481,6 +544,7 @@ pub fn dispatch_on_after_move_secondary_self(
 ) -> Option<EventResult> {
     match item_id {
         "lifeorb" => Some(lifeorb::on_after_move_secondary_self(battle, source_pos, target_pos)),
+        // TODO: Add shellbell, throatspray when implemented
         _ => None,
     }
 }
@@ -492,8 +556,84 @@ pub fn dispatch_on_residual(
     pokemon_pos: (usize, usize),
 ) -> Option<EventResult> {
     match item_id {
-        "leftovers" => Some(leftovers::on_residual(battle, pokemon_pos)),
         "blacksludge" => Some(blacksludge::on_residual(battle, pokemon_pos)),
+        "leftovers" => Some(leftovers::on_residual(battle, pokemon_pos)),
+        // TODO: Add flameorb, stickybarb, toxicorb when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onUpdate callbacks (mutates battle)
+pub fn dispatch_on_update(
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add healing berries (aguavberry, aspearberry, etc.) when implemented
+        // TODO: Add berryjuice, mentalherb, whiteherb when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onStart callbacks (mutates battle)
+pub fn dispatch_on_start(
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add airballoon, boosterenergy, choice items, seeds, metronome when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onDamagingHit callbacks (mutates battle)
+pub fn dispatch_on_damaging_hit(
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    source_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add absorbbulb, airballoon, cellbattery, ejectbutton, etc. when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onTakeItem callbacks (read-only)
+pub fn dispatch_on_take_item(
+    battle: &Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add mega stones, Z-crystals, memories, drives when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onEat callbacks (mutates battle)
+pub fn dispatch_on_eat(
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add berries with onEat when implemented
+        _ => None,
+    }
+}
+
+/// Dispatch onSourceTryPrimaryHit callbacks (mutates battle)
+pub fn dispatch_on_source_try_primary_hit(
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    source_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        // TODO: Add type gems when implemented
         _ => None,
     }
 }
