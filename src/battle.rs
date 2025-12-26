@@ -250,6 +250,7 @@ pub struct FaintData {
 pub struct BattleOptions {
     pub format_id: ID,
     pub format_name: Option<String>,
+    pub game_type: Option<GameType>,
     pub seed: Option<PRNGSeed>,
     pub rated: Option<String>,
     pub debug: bool,
@@ -393,7 +394,7 @@ impl Battle {
         let format_id_str = options.format_id.as_str().to_string();
 
         // Determine game settings from format
-        let game_type = GameType::Singles; // Default, would be parsed from format
+        let game_type = options.game_type.unwrap_or(GameType::Singles);
         let gen = 9; // Default to latest gen
         let active_per_half = match game_type {
             GameType::Triples => 3,
@@ -1145,6 +1146,24 @@ impl Battle {
 
         self.input_log.push(format!(">{} {}", side_id.to_str(), choice));
 
+        // Check if this is a comma-separated choice (for Doubles/Triples with multiple active Pokemon)
+        if choice.contains(',') {
+            // Split by comma and validate each sub-choice
+            let sub_choices: Vec<&str> = choice.split(',').map(|s| s.trim()).collect();
+
+            // Validate each sub-choice individually
+            for sub_choice in sub_choices {
+                self.validate_single_choice(side_id, sub_choice)?;
+            }
+            Ok(())
+        } else {
+            // Single choice (Singles or single slot in Doubles/Triples)
+            self.validate_single_choice(side_id, choice)
+        }
+    }
+
+    /// Validate a single choice (not comma-separated)
+    fn validate_single_choice(&mut self, side_id: SideID, choice: &str) -> Result<(), String> {
         // Parse and validate choice
         let parts: Vec<&str> = choice.split_whitespace().collect();
         if parts.is_empty() {
@@ -2276,7 +2295,7 @@ impl Battle {
         // Apply secondary effects based on move
         self.apply_move_secondary(attacker_side, attacker_idx, target_side, target_idx, move_id);
 
-        // Handle self-KO moves (Lunar Dance, Healing Wish, Memento, etc.)
+        // Handle self-KO moves (Lunar Dance, Healing Wish, Memento, Selfdestruct, Explosion, etc.)
         match move_id.as_str() {
             "lunardance" => {
                 // Lunar Dance: User faints, next Pokemon that switches in is fully healed
@@ -2294,6 +2313,21 @@ impl Battle {
 
                     // TODO: Add side effect to heal next switch-in
                     // self.sides[attacker_side].add_side_condition(ID::new("lunardance"));
+                }
+            }
+            "selfdestruct" | "explosion" => {
+                // Selfdestruct/Explosion: User faints after dealing damage
+                // Note: Damage was already dealt earlier in this function
+                if !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
+                    let attacker_name = {
+                        let side_id = self.sides[attacker_side].id_str();
+                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                        format!("{}: {}", side_id, pokemon.name)
+                    };
+
+                    self.sides[attacker_side].pokemon[attacker_idx].hp = 0;
+                    self.add_log("-damage", &[&attacker_name, "0 fnt"]);
+                    self.add_log("faint", &[&attacker_name]);
                 }
             }
             _ => {}

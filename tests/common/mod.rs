@@ -1,7 +1,7 @@
 //! Common test utilities
 //! Equivalent to pokemon-showdown-js/test/common.js
 
-use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, ID, PRNGSeed, Gender};
+use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, ID, PRNGSeed, Gender, GameType};
 
 /// Default PRNG seed for consistent test results
 pub const DEFAULT_SEED: PRNGSeed = PRNGSeed::Gen5([1, 2, 3, 4]);
@@ -25,8 +25,19 @@ pub fn create_battle(
     let team1: Vec<PokemonSet> = team1_specs.into_iter().map(|spec| spec.into()).collect();
     let team2: Vec<PokemonSet> = team2_specs.into_iter().map(|spec| spec.into()).collect();
 
+    // Parse game_type string to GameType enum
+    let game_type_enum = options.game_type.as_ref().map(|gt| match gt.as_str() {
+        "doubles" => GameType::Doubles,
+        "triples" => GameType::Triples,
+        "rotation" => GameType::Rotation,
+        "multi" => GameType::Multi,
+        "freeforall" => GameType::FreeForAll,
+        _ => GameType::Singles,
+    });
+
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9customgame"),
+        game_type: game_type_enum,
         seed: options.seed.or(Some(DEFAULT_SEED)),
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
