@@ -2741,18 +2741,23 @@ impl Battle {
 
         // STAB
         let has_stab = attacker_types.iter().any(|t| t.to_lowercase() == move_type.to_lowercase());
-        let mut stab = if has_stab { 1.5 } else { 1.0 };
+        let stab = if has_stab {
+            // onModifySTAB event - allows abilities like Adaptability to modify STAB multiplier
+            // Pass base STAB as percentage (150 for 1.5x)
+            let base_stab = 150;
+            let modified_stab = self.run_event(
+                "ModifySTAB",
+                Some((attacker_side, attacker_idx)),
+                Some((target_side, target_idx)),
+                Some(move_id),
+                Some(base_stab)
+            ).unwrap_or(base_stab);
 
-        // onModifySTAB handler for abilities like Adaptability
-        if has_stab {
-            if let Some(attacker_pokemon) = self.sides.get(attacker_side).and_then(|s| s.pokemon.get(attacker_idx)) {
-                let ability_id = attacker_pokemon.ability.as_str();
-                if ability_id == "adaptability" {
-                    // Adaptability increases STAB from 1.5x to 2x
-                    stab = 2.0;
-                }
-            }
-        }
+            // Convert from percentage to multiplier
+            (modified_stab as f64) / 100.0
+        } else {
+            1.0
+        };
 
         let damage = (damage as f64 * stab) as u32;
 
@@ -2777,25 +2782,6 @@ impl Battle {
         let terrain = self.field.terrain.as_str();
         let terrain_mod = get_terrain_damage_modifier(terrain, &move_type, attacker_grounded);
         let damage = (damage as f64 * terrain_mod) as u32;
-
-        // Item damage modifiers
-        let item = self.sides[attacker_side].pokemon[attacker_idx].item.as_str();
-        let item_mod = match item {
-            // Life Orb: 1.3x damage boost
-            "lifeorb" => 1.3,
-            // Choice Band: 1.5x Attack (physical moves only)
-            "choiceband" if category == "Physical" => 1.5,
-            // Choice Specs: 1.5x Sp. Attack (special moves only)
-            "choicespecs" if category == "Special" => 1.5,
-            // Expert Belt: 1.2x for super effective moves
-            "expertbelt" if type_effectiveness > 1.0 => 1.2,
-            // Muscle Band: 1.1x for physical moves
-            "muscleband" if category == "Physical" => 1.1,
-            // Wise Glasses: 1.1x for special moves
-            "wiseglasses" if category == "Special" => 1.1,
-            _ => 1.0,
-        };
-        let damage = (damage as f64 * item_mod) as u32;
 
         // Log effectiveness
         if type_effectiveness > 1.0 {
@@ -6747,6 +6733,14 @@ impl Battle {
         use crate::event::EventResult;
 
         match event_id {
+            "ModifySTAB" => {
+                // STAB modifying abilities
+                if ability_id.as_str() == "adaptability" {
+                    // Adaptability increases STAB from 1.5x to 2x
+                    // Multiply by 2.0/1.5 = 1.333...
+                    return EventResult::Modify(2.0 / 1.5);
+                }
+            }
             "SwitchIn" => {
                 // Handle switch-in abilities
                 if let Some((side_idx, poke_idx)) = target {
