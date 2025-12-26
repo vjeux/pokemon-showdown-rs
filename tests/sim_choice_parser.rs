@@ -1,0 +1,62 @@
+//! Test choice parser
+//! Line-by-line port of pokemon-showdown-ts/test/sim/choice-parser.js
+
+mod common;
+
+use pokemon_showdown::SideID;
+
+// JavaScript: describe('Choice parser', () => {
+// JavaScript:     afterEach(() => battle.destroy());
+
+// JavaScript:     describe('Team Preview requests', () => {
+// JavaScript:         it('should accept only `team` choices', () => {
+#[test]
+fn test_team_preview_should_accept_only_team_choices() {
+    // JavaScript:             battle = common.createBattle({ preview: true }, [
+    // JavaScript:                 [{ species: "Mew", ability: 'synchronize', moves: ['recover'] }],
+    // JavaScript:                 [{ species: "Rhydon", ability: 'prankster', moves: ['splash'] }],
+    // JavaScript:             ]);
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions {
+            preview: true,
+            ..Default::default()
+        },
+        [
+            vec![pokemon!(
+                species: "Mew",
+                ability: "synchronize",
+                moves: ["recover"]
+            )],
+            vec![pokemon!(
+                species: "Rhydon",
+                ability: "prankster",
+                moves: ["splash"]
+            )],
+        ],
+    );
+
+    // JavaScript:             const validChoice = 'team 1';
+    let valid_choice = "team 1";
+
+    // JavaScript:             assert(battle.choose('p1', validChoice));
+    assert!(battle.choose(SideID::P1, valid_choice).is_ok());
+
+    // JavaScript:             battle.p1.clearChoice();
+    // TODO: Need to implement simple clear_choice API
+
+    // JavaScript:             assert(battle.choose('p2', validChoice));
+    assert!(battle.choose(SideID::P2, valid_choice).is_ok());
+
+    // JavaScript:             battle.p1.clearChoice();
+    // TODO: Need to implement simple clear_choice API
+
+    // JavaScript:             const badChoices = ['move 1', 'move 2 mega', 'switch 1', 'pass', 'shift'];
+    let bad_choices = vec!["move 1", "move 2 mega", "switch 1", "pass", "shift"];
+
+    // JavaScript:             for (const badChoice of badChoices) {
+    // JavaScript:                 assert.throws(() => battle.choose('p1', badChoice));
+    // JavaScript:             }
+    for bad_choice in bad_choices {
+        assert!(battle.choose(SideID::P1, bad_choice).is_err(), "Expected '{}' to be rejected", bad_choice);
+    }
+}

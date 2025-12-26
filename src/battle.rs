@@ -1151,7 +1151,25 @@ impl Battle {
             return Err("Empty choice".to_string());
         }
 
-        match parts[0] {
+        let choice_type = parts[0];
+
+        // Validate choice based on current request state
+        match self.request_state {
+            BattleRequestState::TeamPreview => {
+                // During team preview, only 'team' choices are valid
+                if choice_type != "team" {
+                    return Err(format!("[Invalid choice] Can't {} for Team Preview: You must select a team order", choice_type));
+                }
+            }
+            _ => {
+                // In other states, 'team' choices are not valid
+                if choice_type == "team" && !matches!(self.request_state, BattleRequestState::TeamPreview) {
+                    return Err("[Invalid choice] Team choices are only valid during Team Preview".to_string());
+                }
+            }
+        }
+
+        match choice_type {
             "move" => {
                 // Parse move choice
                 if parts.len() < 2 {
@@ -1170,12 +1188,26 @@ impl Battle {
             }
             "team" => {
                 // Parse team order choice (for team preview)
+                if parts.len() < 2 {
+                    return Err("Team choice requires Pokemon order".to_string());
+                }
+                // Validate that the argument is a number
+                if parts[1].parse::<usize>().is_err() {
+                    return Err("[Invalid choice] Can't choose for Team Preview: You must select a team order".to_string());
+                }
                 Ok(())
             }
             "pass" => {
                 Ok(())
             }
-            _ => Err(format!("Unknown choice type: {}", parts[0])),
+            "shift" => {
+                // Shift is only valid in triples
+                if !matches!(self.game_type, GameType::Triples) {
+                    return Err("[Invalid choice] Shift is only valid in Triple Battles".to_string());
+                }
+                Ok(())
+            }
+            _ => Err(format!("Unknown choice type: {}", choice_type)),
         }
     }
 

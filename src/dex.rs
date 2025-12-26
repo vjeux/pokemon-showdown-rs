@@ -146,8 +146,8 @@ pub struct MoveData {
     pub is_z: Option<String>,
     #[serde(rename = "isMax", default, deserialize_with = "deserialize_is_max")]
     pub is_max: Option<IsMax>,
-    #[serde(default)]
-    pub ohko: Option<String>,  // OHKO move type (e.g., "Normal", "Ice")
+    #[serde(default, deserialize_with = "deserialize_ohko")]
+    pub ohko: Option<Ohko>,
 }
 
 /// Accuracy can be a number or true (always hits)
@@ -282,6 +282,83 @@ where
     }
 
     deserializer.deserialize_any(IsMaxVisitor)
+}
+
+/// OHKO can be true (generic OHKO) or a string (type-based OHKO like "Ice")
+#[derive(Debug, Clone)]
+pub enum Ohko {
+    Generic,  // true
+    TypeBased(String),  // Type name like "Ice", "Normal"
+}
+
+impl Serialize for Ohko {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        match self {
+            Ohko::Generic => serializer.serialize_bool(true),
+            Ohko::TypeBased(s) => serializer.serialize_str(s),
+        }
+    }
+}
+
+fn deserialize_ohko<'de, D>(deserializer: D) -> Result<Option<Ohko>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    use serde::de::{self, Visitor};
+
+    struct OhkoVisitor;
+
+    impl<'de> Visitor<'de> for OhkoVisitor {
+        type Value = Option<Ohko>;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+            formatter.write_str("a boolean or string")
+        }
+
+        fn visit_none<E>(self) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok(None)
+        }
+
+        fn visit_some<D>(self, deserializer: D) -> Result<Self::Value, D::Error>
+        where
+            D: serde::Deserializer<'de>,
+        {
+            deserializer.deserialize_any(self)
+        }
+
+        fn visit_bool<E>(self, value: bool) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            if value {
+                Ok(Some(Ohko::Generic))
+            } else {
+                Err(E::custom("ohko cannot be false"))
+            }
+        }
+
+        fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok(Some(Ohko::TypeBased(value.to_string())))
+        }
+
+        fn visit_string<E>(self, value: String) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok(Some(Ohko::TypeBased(value)))
+        }
+    }
+
+    deserializer.deserialize_any(OhkoVisitor)
 }
 
 /// Multihit can be a single number or range [min, max]
