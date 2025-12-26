@@ -1200,9 +1200,31 @@ impl Battle {
                 if choice_type == "team" && !matches!(self.request_state, BattleRequestState::TeamPreview) {
                     return Err("[Invalid choice] Team choices are only valid during Team Preview".to_string());
                 }
-                // Pass is only valid during Switch requests
-                if choice_type == "pass" && !matches!(self.request_state, BattleRequestState::Switch) {
-                    return Err("[Invalid choice] Can't pass: You can only pass during switch requests".to_string());
+                // Pass validation:
+                // - During Switch requests: always valid (except in Singles)
+                // - During Move requests in Doubles/Triples: valid for fainted Pokemon slots
+                // - Otherwise: invalid
+                if choice_type == "pass" {
+                    if matches!(self.request_state, BattleRequestState::Switch) {
+                        // Already handled above in the Switch case
+                    } else if matches!(self.request_state, BattleRequestState::Move) {
+                        // In doubles/triples during Move request, pass is valid for fainted Pokemon
+                        if !matches!(self.game_type, GameType::Doubles | GameType::Triples) {
+                            return Err("[Invalid choice] Can't pass: You can only pass during switch requests".to_string());
+                        }
+                        // Check if this slot has a fainted Pokemon
+                        let side_idx = side_id.index();
+                        if let Some(poke_idx) = pokemon_index {
+                            if let Some(active_poke_idx) = self.sides[side_idx].active.get(poke_idx).and_then(|&x| x) {
+                                let pokemon = &self.sides[side_idx].pokemon[active_poke_idx];
+                                if !pokemon.is_fainted() {
+                                    return Err("[Invalid choice] Can't pass: Pokemon is not fainted".to_string());
+                                }
+                            }
+                        }
+                    } else {
+                        return Err("[Invalid choice] Can't pass: You can only pass during switch requests".to_string());
+                    }
                 }
             }
         }
