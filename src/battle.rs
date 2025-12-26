@@ -6277,3 +6277,13 @@ mod tests {
         }
     }
 }
+
+// =========================================================================
+// Display trait (equivalent to battle.ts toString())
+// =========================================================================
+
+impl std::fmt::Display for Battle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Battle: {}", self.format_id.as_str())
+    }
+}
