@@ -25,7 +25,7 @@ pub fn create_battle(
     let team1: Vec<PokemonSet> = team1_specs.into_iter().map(|spec| spec.into()).collect();
     let team2: Vec<PokemonSet> = team2_specs.into_iter().map(|spec| spec.into()).collect();
 
-    Battle::new(BattleOptions {
+    let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9customgame"),
         seed: options.seed.or(Some(DEFAULT_SEED)),
         p1: Some(PlayerOptions {
@@ -41,7 +41,20 @@ pub fn create_battle(
             rating: None,
         }),
         ..Default::default()
-    })
+    });
+
+    // If preview is false, automatically submit team choices and start the battle
+    if !options.preview {
+        use pokemon_showdown::SideID;
+        // Submit team choices for both sides (using default order)
+        let _ = battle.choose(SideID::P1, "team 1");
+        let _ = battle.choose(SideID::P2, "team 1");
+
+        // Actually start the battle (send out Pokemon, transition to Move state)
+        battle.start_battle();
+    }
+
+    battle
 }
 
 /// Simplified Pokemon specification for tests

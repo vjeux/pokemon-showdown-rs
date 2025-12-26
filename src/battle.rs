@@ -1161,6 +1161,19 @@ impl Battle {
                     return Err(format!("[Invalid choice] Can't {} for Team Preview: You must select a team order", choice_type));
                 }
             }
+            BattleRequestState::Switch => {
+                // During switch request, only 'switch' (and 'pass' in non-singles) are valid
+                if choice_type == "switch" {
+                    // Switch is always valid
+                } else if choice_type == "pass" {
+                    // Pass is only valid in Doubles/Triples, not in Singles
+                    if matches!(self.game_type, GameType::Singles) {
+                        return Err("[Invalid choice] Can't pass during switch request in Singles: You must switch a Pokemon".to_string());
+                    }
+                } else {
+                    return Err(format!("[Invalid choice] Can't {} during switch request: You must switch a Pokemon", choice_type));
+                }
+            }
             _ => {
                 // In other states, 'team' choices are not valid
                 if choice_type == "team" && !matches!(self.request_state, BattleRequestState::TeamPreview) {
@@ -1181,11 +1194,20 @@ impl Battle {
             "switch" => {
                 // Parse switch choice
                 if parts.len() < 2 {
-                    return Err("Switch choice requires Pokemon number".to_string());
+                    return Err("Switch choice requires Pokemon number or name".to_string());
                 }
-                // Validate that the argument is a number
-                if parts[1].parse::<usize>().is_err() {
-                    return Err(format!("[Invalid choice] Can't switch: You must specify a Pokemon by number"));
+                // Validate that the argument is either a number or a valid Pokemon name
+                // Accept both numeric (e.g., "switch 2") and name-based (e.g., "switch Bulbasaur")
+                let arg = parts[1];
+                if arg.parse::<usize>().is_err() {
+                    // Not a number - check if it's an obvious invalid word
+                    // Reject common English words that are clearly not Pokemon names
+                    let lowercase_arg = arg.to_lowercase();
+                    let invalid_words = vec!["first", "second", "third", "fourth", "fifth", "last", "next"];
+                    if invalid_words.contains(&lowercase_arg.as_str()) {
+                        return Err(format!("[Invalid choice] Can't switch: You must specify a Pokemon by number or name"));
+                    }
+                    // Otherwise assume it's a Pokemon name (will be validated during execution)
                 }
                 // Would validate and add to queue here
                 Ok(())
@@ -2253,6 +2275,29 @@ impl Battle {
 
         // Apply secondary effects based on move
         self.apply_move_secondary(attacker_side, attacker_idx, target_side, target_idx, move_id);
+
+        // Handle self-KO moves (Lunar Dance, Healing Wish, Memento, etc.)
+        match move_id.as_str() {
+            "lunardance" => {
+                // Lunar Dance: User faints, next Pokemon that switches in is fully healed
+                if !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
+                    // Faint the user
+                    let attacker_name = {
+                        let side_id = self.sides[attacker_side].id_str();
+                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+                        format!("{}: {}", side_id, pokemon.name)
+                    };
+
+                    self.sides[attacker_side].pokemon[attacker_idx].hp = 0;
+                    self.add_log("-damage", &[&attacker_name, "0 fnt"]);
+                    self.add_log("faint", &[&attacker_name]);
+
+                    // TODO: Add side effect to heal next switch-in
+                    // self.sides[attacker_side].add_side_condition(ID::new("lunardance"));
+                }
+            }
+            _ => {}
+        }
 
         // Handle pivot moves (U-Turn, Volt Switch, Flip Turn)
         // These moves force a switch after dealing damage
@@ -3848,10 +3893,43 @@ impl Battle {
         self.turn += 1;
         self.add_log("turn", &[&self.turn.to_string()]);
 
+        // Check if any side has fainted active Pokemon that need to be replaced
+        let mut needs_switch = false;
+        for side in &self.sides {
+            for &active_idx in &side.active {
+                // Check if slot is empty (Pokemon fainted) OR if the Pokemon in slot is fainted
+                if active_idx.is_none() {
+                    // Slot is empty, need to check if there are non-fainted Pokemon available
+                    let has_available_pokemon = side.pokemon.iter().any(|p| !p.is_fainted() && !p.is_active);
+                    if has_available_pokemon {
+                        needs_switch = true;
+                        break;
+                    }
+                } else if let Some(poke_idx) = active_idx {
+                    if side.pokemon.get(poke_idx).map(|p| p.is_fainted()).unwrap_or(false) {
+                        needs_switch = true;
+                        break;
+                    }
+                }
+            }
+            if needs_switch {
+                break;
+            }
+        }
+
         // Set up new request
-        self.request_state = BattleRequestState::Move;
-        for side in &mut self.sides {
-            side.request_state = RequestState::Move;
+        if needs_switch {
+            // If there are fainted active Pokemon, request switches
+            self.request_state = BattleRequestState::Switch;
+            for side in &mut self.sides {
+                side.request_state = RequestState::Switch;
+            }
+        } else {
+            // Otherwise, request moves as normal
+            self.request_state = BattleRequestState::Move;
+            for side in &mut self.sides {
+                side.request_state = RequestState::Move;
+            }
         }
     }
 

@@ -176,3 +176,49 @@ fn test_switch_generic_should_reject_non_numerical_input() {
     assert!(battle.choose(SideID::P1, "switch second").is_err(), "Expected 'switch second' to be rejected");
 }
 
+// JavaScript:         describe('Singles', () => {
+// JavaScript:             it('should accept only `switch` choices', () => {
+#[test]
+fn test_switch_singles_should_accept_only_switch_choices() {
+    // JavaScript:                 battle = common.createBattle();
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions::default(),
+        [
+            // JavaScript:                 battle.setPlayer('p1', { team: [
+            // JavaScript:                     { species: "Mew", ability: 'synchronize', moves: ['lunardance'] },
+            // JavaScript:                     { species: "Bulbasaur", ability: 'overgrow', moves: ['tackle', 'growl'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Mew", ability: "synchronize", moves: ["lunardance"]),
+                pokemon!(species: "Bulbasaur", ability: "overgrow", moves: ["tackle", "growl"]),
+            ],
+            // JavaScript:                 battle.setPlayer('p2', { team: [{ species: "Rhydon", ability: 'prankster', moves: ['splash'] }] });
+            vec![
+                pokemon!(species: "Rhydon", ability: "prankster", moves: ["splash"]),
+            ],
+        ],
+    );
+
+    // JavaScript:                 battle.makeChoices('move lunardance', 'move splash');
+    battle.make_choices("move lunardance", "move splash");
+
+    // JavaScript:                 const badChoices = ['move 1', 'move 2 mega', 'team 1', 'pass', 'shift'];
+    let bad_choices = vec!["move 1", "move 2 mega", "team 1", "pass", "shift"];
+
+    // JavaScript:                 for (const badChoice of badChoices) {
+    // JavaScript:                     assert.throws(() => battle.p1.choose(badChoice));
+    // JavaScript:                 }
+    for bad_choice in bad_choices {
+        assert!(battle.choose(SideID::P1, bad_choice).is_err(), "Expected '{}' to be rejected", bad_choice);
+    }
+
+    // JavaScript:                 const validChoice = 'switch Bulbasaur';
+    // JavaScript:                 assert(battle.p1.choose(validChoice));
+    // JavaScript:                 battle.p1.clearChoice();
+    let valid_choice = "switch Bulbasaur";
+    // Note: This will fail because we currently require numeric switch arguments
+    // TODO: Need to support both numeric and name-based switch arguments
+    assert!(battle.choose(SideID::P1, valid_choice).is_ok(), "Expected '{}' to be accepted", valid_choice);
+}
+
+
