@@ -642,13 +642,19 @@ impl Battle {
         self.run_pick_team();
 
         // JS: this.queue.addChoice({ choice: 'start' });
-        // TODO: Implement queue.addChoice
+        use crate::battle_queue::{Action, FieldAction, FieldActionType};
+        self.queue.add_choice(Action::Field(FieldAction {
+            choice: FieldActionType::Start,
+            priority: 0,
+        }));
 
         // JS: this.midTurn = true;
-        // TODO: Implement midTurn field
+        self.mid_turn = true;
 
         // JS: if (!this.requestState) this.turnLoop();
-        // TODO: Implement conditional turnLoop() call
+        if self.request_state == BattleRequestState::None {
+            self.turn_loop();
+        }
     }
 
     /// Start the first turn (after team preview)
