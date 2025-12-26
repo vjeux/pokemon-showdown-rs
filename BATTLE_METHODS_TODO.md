@@ -140,7 +140,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ### Logging & Messages (9 methods)
 
-70. ❌ `add` / `add` - battle.ts:3092 | battle.rs:4251 | **MISMATCH** - Missing function param support
+70. ✅ `add` / `add` - battle.ts:3092 | battle.rs:3324 | **FIXED!** ✅ - Full implementation with function/closure parameter support using Arg::SplitFn enum variant, matches JS signature perfectly
 71. ✅ `addMove` / `add_move` - battle.ts:3116 | battle.rs:3038 | **MATCH** - Verified correct
 72. ✅ `addSplit` / `add_split` - battle.ts:3082 | battle.rs:5918 | **FIXED!** ✅ - Full implementation with array parameters
 73. ✅ `hint` / `hint` - battle.ts:3070 | battle.rs:3045 | **FIXED!** ✅ - Full implementation using addSplit with arrays
@@ -176,13 +176,13 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching or Acceptable**: 89 (93%) - NEW MILESTONE! 🎯✨🎉
+**Methods Matching or Acceptable**: 90 (94%) - NEW MILESTONE! 🎯✨🎉🚀
 - RNG: random, randomChance, **sample**, resetRNG
 - **Initialization**: setPlayer, **start** (significantly improved), restart, destroy
 - Priority: comparePriority, **getActionSpeed** (significantly improved)
 - Win: checkWin, tie, win, forceWin, lose
 - Util: getPokemon, getAllPokemon, getAllActive, **getAtSlot**, getOverflowedTurnCount, getCategory, checkFainted, randomizer
-- **Logging**: debug, **addMove**, debugError, **attrLastMove**, **retargetLastMove**, **addSplit**, **hint**, **getDebugLog** (acceptable difference)
+- **Logging**: debug, **addMove**, debugError, **attrLastMove**, **retargetLastMove**, **addSplit**, **hint**, **getDebugLog** (acceptable difference), **add** (with closure support!) ✅ NEW
 - **Requests & Choices**: clearRequest, allChoicesDone, getRequests, choose, makeChoices, commitChoices, undoChoice, **tiebreak**, **join**, **makeRequest**
 - Switching: getRandomSwitchable, canSwitch, **swapPosition**, **faintMessages** (95% complete)
 - **Damage/Heal**: damage, spreadDamage, heal, directDamage, **boost**
@@ -193,12 +193,11 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - **Turn Flow**: turnLoop, runAction, **runPickTeam**, **endTurn** (expanded with field resets)
 - **Target Selection**: validTarget, validTargetLoc (with get_loc_of helper), **getTarget**, **getRandomTarget**
 - **Acceptable Architectural Differences**: getSide (Option<&Side>), getTeam (different approach), initEffectState (ID vs Partial<EffectState>), clearEffectState (ownership), toJSON (Serde), **start** (TODOs documented), **getDebugLog** (simplified channel handling)
-- **THIS SESSION**: **getActionSpeed** (rewrote to match JS signature with &mut Action parameter), **getDebugLog** (reclassified as acceptable difference)
+- **THIS SESSION**: **getActionSpeed** (rewrote to match JS signature with &mut Action parameter), **getDebugLog** (reclassified as acceptable difference), **add** (implemented closure support with Arg::SplitFn!) ✅🎉
 - And more
 
-**Methods with Major Mismatches - Infrastructure Blocked**: 2 (2%) - DOWN from 3!
+**Methods with Major Mismatches - Infrastructure Blocked**: 1 (1%) - DOWN from 2!
 - Event state system required: resolvePriority
-- Function/closure parameters: add
 
 **Methods with Simplified Implementations**: 0 (0%) - DOWN from 1!
 - (Previously: maybeTriggerEndlessBattleClause - now IMPROVED with turn limit warnings)
@@ -289,6 +288,6 @@ Methods that still need event integration:
 
 **Last Updated**: 2025-12-26
 **Tests Passing**: 43/43 (100% - 3 tests disabled pending move callbacks)
-**Current Session Achievement**: Improved getActionSpeed (rewrote signature to match JS: takes &mut Action, sets priority and speed) + reclassified getDebugLog as acceptable difference, raising effective completion to **89/96 = 93%** ✅🎉
+**Current Session Achievement**: Improved getActionSpeed (rewrote signature to match JS: takes &mut Action, sets priority and speed) + reclassified getDebugLog as acceptable difference + **IMPLEMENTED add() with closure support using Arg::SplitFn!** ✅🎉🚀, raising effective completion to **90/96 = 94%** ✅🎉
 **Previous Achievements**: chainModify, finalModify, faintMessages (faintQueue), start (gen/tier/rated logging), maybeTriggerEndlessBattleClause (turn limits); addSplit, hint, getTarget, getRandomTarget, makeRequest, runPickTeam, endTurn; tiebreak, join, boost, validTarget/validTargetLoc
-**Remaining**: 7 methods total = 2 infrastructure-blocked + 5 acceptable differences counted separately above (total 89 matching/acceptable + 2 blocked + 5 more acceptable = 96)
+**Remaining**: 6 methods total = 1 infrastructure-blocked (resolvePriority) + 7 acceptable architectural differences (part of the 90)
