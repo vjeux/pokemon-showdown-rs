@@ -9,7 +9,7 @@ Moves with callbacks: 379
 - [x] alluringvoice - Alluring Voice (Special, Fairy) - 1 callback: onHit - **COMPLETED**
 - [x] allyswitch - Ally Switch (Status, Psychic) - 4 callbacks: onPrepareHit, onHit, onStart, onRestart - **COMPLETED**
 - [x] anchorshot - Anchor Shot (Physical, Steel) - 1 callback: onHit - **COMPLETED**
-- [ ] aquaring - Aqua Ring (Status, Water) - 3 callbacks: onStart, onResidualOrder, onResidual
+- [x] aquaring - Aqua Ring (Status, Water) - 3 callbacks: onStart, onResidualOrder, onResidual - **COMPLETED**
 - [ ] aromatherapy - Aromatherapy (Status, Grass) - 1 callback: onHit
 - [ ] assist - Assist (Status, Normal) - 1 callback: onHit
 - [ ] attract - Attract (Status, Normal) - 6 callbacks: onStart, onUpdate, onBeforeMovePriority, onBeforeMove, onEnd, onTryImmunity

@@ -2470,12 +2470,12 @@ impl Battle {
 
         // Apply primary volatile status
         if let Some(ref volatile) = move_def.volatile_status {
-            self.sides[target_side].pokemon[target_idx].add_volatile(ID::new(volatile));
+            self.add_volatile_to_pokemon((target_side, target_idx), &ID::new(volatile), Some((attacker_side, attacker_idx)), Some(&move_id));
         }
 
         // Apply primary self volatile status
         if let Some(ref self_volatile) = move_def.self_volatile {
-            self.sides[attacker_side].pokemon[attacker_idx].add_volatile(ID::new(self_volatile));
+            self.add_volatile_to_pokemon((attacker_side, attacker_idx), &ID::new(self_volatile), Some((attacker_side, attacker_idx)), Some(&move_id));
         }
 
         // Apply primary stat boosts to target
@@ -2520,7 +2520,7 @@ impl Battle {
 
             // Apply volatile status
             if let Some(ref volatile) = secondary.volatile_status {
-                self.sides[effect_side].pokemon[effect_idx].add_volatile(ID::new(volatile));
+                self.add_volatile_to_pokemon((effect_side, effect_idx), &ID::new(volatile), Some((attacker_side, attacker_idx)), Some(&move_id));
             }
 
             // Apply stat boosts
@@ -3133,6 +3133,35 @@ impl Battle {
                         }
                     }
                     _ => {}
+                }
+            }
+        }
+
+        // Process volatile condition residuals (onResidual callbacks)
+        // JavaScript: this.fieldEvent('Residual') processes all pokemon volatiles
+        for side_idx in 0..self.sides.len() {
+            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
+                let is_active = self.sides[side_idx].pokemon[poke_idx].is_active;
+                if !is_active {
+                    continue;
+                }
+
+                if self.sides[side_idx].pokemon[poke_idx].is_fainted() {
+                    continue;
+                }
+
+                // Collect volatile IDs to process (to avoid borrow issues)
+                let volatile_ids: Vec<ID> = self.sides[side_idx].pokemon[poke_idx]
+                    .volatiles
+                    .keys()
+                    .cloned()
+                    .collect();
+
+                for volatile_id in volatile_ids {
+                    // Call onResidual callback for aquaring
+                    if volatile_id.as_str() == "aquaring" {
+                        crate::data::move_callbacks::aquaring::on_residual(self, (side_idx, poke_idx));
+                    }
                 }
             }
         }
@@ -4427,6 +4456,10 @@ impl Battle {
         // Call onStart for allyswitch
         if status.as_str() == "allyswitch" {
             crate::data::move_callbacks::allyswitch::on_start(self, target);
+        }
+        // Call onStart for aquaring
+        if status.as_str() == "aquaring" {
+            crate::data::move_callbacks::aquaring::on_start(self, target);
         }
 
         true
