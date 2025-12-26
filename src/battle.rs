@@ -7527,23 +7527,6 @@ impl Battle {
 
     /// Get all active Pokemon (including fainted if specified)
     /// Equivalent to battle.ts getAllActive()
-    pub fn get_all_active_incl_fainted(&self, include_fainted: bool) -> Vec<(usize, usize)> {
-        let mut result = Vec::new();
-
-        for (side_idx, side) in self.sides.iter().enumerate() {
-            for active_idx in &side.active {
-                if let Some(poke_idx) = active_idx {
-                    if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                        if include_fainted || !pokemon.fainted {
-                            result.push((side_idx, *poke_idx));
-                        }
-                    }
-                }
-            }
-        }
-
-        result
-    }
 
     /// Spread damage to multiple targets
     /// Matches JavaScript battle.ts:2045-2164 spreadDamage()
