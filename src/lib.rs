@@ -16,6 +16,7 @@ pub mod battle_actions;
 pub mod abilities;
 pub mod items;
 pub mod event;
+pub mod event_system;
 pub mod data;
 pub mod state;
 pub mod team_validator;

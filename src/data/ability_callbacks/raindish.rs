@@ -39,7 +39,7 @@ pub fn on_weather(battle: &mut Battle, target: &Pokemon, _source: Option<&Pokemo
     if effect.id == "raindance" || effect.id == "primordialsea" {
         // this.heal(target.baseMaxhp / 16);
         let heal_amount = target.base_maxhp / 16;
-        battle.heal(heal_amount, target_ref, Some(target_ref), None);
+        battle.heal(heal_amount as i32, Some(target_ref), Some(target_ref), None);
     }
     AbilityHandlerResult::Undefined
 }

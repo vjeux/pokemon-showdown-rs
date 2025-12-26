@@ -36,7 +36,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, _target: &Pokemon, sou
     if battle.check_move_makes_contact(&move_.id, source_ref) {
         // this.damage(source.baseMaxhp / 8, source, target);
         let damage_amount = source.base_maxhp / 8;
-        battle.damage(damage_amount, source_ref, Some(source_ref), None);
+        battle.damage(damage_amount as i32, Some(source_ref), Some(source_ref), None, false);
     }
     AbilityHandlerResult::Undefined
 }

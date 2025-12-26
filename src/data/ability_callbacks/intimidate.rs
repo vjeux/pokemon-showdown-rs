@@ -49,7 +49,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
     let foe_side = if pokemon_side == 0 { 1 } else { 0 };
 
     // Get all active Pokemon
-    let all_active = battle.get_all_active();
+    let all_active = battle.get_all_active(false);
 
     // Collect foe targets along with substitute status (need to collect first to avoid borrow issues)
     let foe_targets: Vec<(usize, usize, bool)> = all_active.iter()

@@ -57,7 +57,7 @@ pub fn on_weather(battle: &mut Battle, target: &Pokemon, _source: Option<&Pokemo
         // this.damage(target.baseMaxhp / 8, target, target);
         let damage_amount = target.base_maxhp / 8;
         let target_ref = (target.side_index, target.position);
-        battle.damage(damage_amount, target_ref, Some(target_ref), None);
+        battle.damage(damage_amount as i32, Some(target_ref), Some(target_ref), None, false);
     }
     AbilityHandlerResult::Undefined
 }

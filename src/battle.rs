@@ -12,9 +12,10 @@ use crate::dex_data::{ID, GameType, SideID, EffectState};
 use crate::field::{Field, get_weather_type_modifier, get_terrain_damage_modifier, get_weather_damage_fraction, get_grassy_terrain_heal};
 use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
-use crate::side::{Side, RequestState};
+use crate::side::{Side, RequestState, Choice};
 use crate::prng::{PRNG, PRNGSeed};
 use crate::data::abilities::{get_ability, AbilityDef};
+use crate::event_system::EventResult;
 
 /// Argument type for battle.add() - can be a Pokemon reference or a string
 /// This allows mixing types like: battle.add("-activate", &[pokemon.into(), "ability: Immunity".into()])
@@ -110,6 +111,7 @@ pub struct BattleOptions {
     pub rated: bool,
     pub debug: bool,
     pub strict_choices: bool,
+    pub force_random_chance: Option<bool>,
     pub p1: Option<PlayerOptions>,
     pub p2: Option<PlayerOptions>,
     pub p3: Option<PlayerOptions>,
@@ -211,6 +213,8 @@ pub struct Battle {
     pub rated: bool,
     /// Strict choices (errors on invalid choices)
     pub strict_choices: bool,
+    /// Force random chance outcome (for testing)
+    pub force_random_chance: Option<bool>,
 
     /// Hints shown to players
     pub hints: HashSet<String>,
@@ -273,6 +277,11 @@ impl Battle {
             debug_mode: options.debug,
             rated: options.rated,
             strict_choices: options.strict_choices,
+            force_random_chance: if options.debug {
+                options.force_random_chance
+            } else {
+                None
+            },
             hints: HashSet::new(),
         };
 
@@ -629,6 +638,9 @@ impl Battle {
 
     /// Random chance
     pub fn random_chance(&mut self, numerator: u32, denominator: u32) -> bool {
+        if let Some(forced) = self.force_random_chance {
+            return forced;
+        }
         self.prng.random_chance(numerator, denominator)
     }
 
@@ -663,13 +675,15 @@ impl Battle {
     }
 
     /// Get all active Pokemon
-    pub fn get_all_active(&self) -> Vec<(usize, usize, &crate::pokemon::Pokemon)> {
+    /// Get all active Pokemon, optionally including fainted ones
+    /// Equivalent to battle.ts getAllActive(includeFainted?)
+    pub fn get_all_active(&self, include_fainted: bool) -> Vec<(usize, usize, &crate::pokemon::Pokemon)> {
         let mut result = Vec::new();
         for (side_idx, side) in self.sides.iter().enumerate() {
             for (slot, opt_idx) in side.active.iter().enumerate() {
                 if let Some(poke_idx) = opt_idx {
                     if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                        if !pokemon.is_fainted() {
+                        if include_fainted || !pokemon.is_fainted() {
                             result.push((side_idx, slot, pokemon));
                         }
                     }
@@ -680,31 +694,60 @@ impl Battle {
     }
 
     /// Check if battle is over
-    pub fn check_win(&mut self) -> Option<SideID> {
-        let mut alive_sides = Vec::new();
+    /// Check if the battle has a winner
+    /// Equivalent to battle.ts checkWin()
+    pub fn check_win(&mut self) -> bool {
+        // Check if all sides have no Pokemon left - tie/draw scenario
+        if self.sides.iter().all(|side| side.pokemon_left == 0) {
+            // In Gen 5+, the side that fainted last wins, but we don't track faintData
+            // For now, just call win with None for a tie
+            self.win(None);
+            return true;
+        }
+
+        // Check each side to see if all their foes have no Pokemon left
         for (i, side) in self.sides.iter().enumerate() {
-            if !side.has_lost() {
-                alive_sides.push(i);
+            // Check if this side's foes have no Pokemon left
+            let foe_pokemon_left = self.get_foe_pokemon_left(i);
+            if foe_pokemon_left == 0 {
+                // This side wins
+                self.win(Some(side.id));
+                return true;
             }
         }
 
-        if alive_sides.len() == 1 {
-            let winner_idx = alive_sides[0];
-            self.ended = true;
-            self.winner = Some(self.sides[winner_idx].id_str().to_string());
-            return match winner_idx {
-                0 => Some(SideID::P1),
-                1 => Some(SideID::P2),
-                2 => Some(SideID::P3),
-                _ => Some(SideID::P4),
-            };
-        } else if alive_sides.is_empty() {
-            // Tie
-            self.ended = true;
-            self.winner = None;
-        }
+        false
+    }
 
-        None
+    /// Get total Pokemon left for all foes of a side
+    fn get_foe_pokemon_left(&self, side_idx: usize) -> usize {
+        match self.game_type {
+            GameType::FreeForAll => {
+                // In FFA, all other sides are foes
+                self.sides.iter().enumerate()
+                    .filter(|(i, _)| *i != side_idx)
+                    .map(|(_, s)| s.pokemon_left)
+                    .sum()
+            }
+            GameType::Multi => {
+                // In multi battles, the opposing team is the foe
+                // P1/P3 are a team, P2/P4 are a team
+                if side_idx == 0 || side_idx == 2 {
+                    // Foes are P2 and P4
+                    self.sides.get(1).map(|s| s.pokemon_left).unwrap_or(0) +
+                    self.sides.get(3).map(|s| s.pokemon_left).unwrap_or(0)
+                } else {
+                    // Foes are P1 and P3
+                    self.sides.get(0).map(|s| s.pokemon_left).unwrap_or(0) +
+                    self.sides.get(2).map(|s| s.pokemon_left).unwrap_or(0)
+                }
+            }
+            _ => {
+                // Singles or doubles - foe is the opposite side
+                let foe_idx = if side_idx == 0 { 1 } else { 0 };
+                self.sides.get(foe_idx).map(|s| s.pokemon_left).unwrap_or(0)
+            }
+        }
     }
 
     /// End the battle
@@ -1045,7 +1088,7 @@ impl Battle {
         self.faint_messages();
 
         // Check win condition
-        if self.check_win().is_some() {
+        if self.check_win() {
             return;
         }
 
@@ -1805,70 +1848,20 @@ impl Battle {
 
     /// Calculate damage for a move (basic implementation)
     fn calculate_move_damage(&mut self, attacker_side: usize, attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) -> (u32, bool) {
-        // Get base power from common moves (simplified)
-        let (base_power, category, move_type): (u32, &str, &str) = match move_id.as_str() {
-            "thunderbolt" => (90, "Special", "Electric"),
-            "flamethrower" => (90, "Special", "Fire"),
-            "icebeam" => (90, "Special", "Ice"),
-            "surf" => (90, "Special", "Water"),
-            "psychic" => (90, "Special", "Psychic"),
-            "earthquake" => (100, "Physical", "Ground"),
-            "tackle" => (40, "Physical", "Normal"),
-            "quickattack" => (40, "Physical", "Normal"),
-            "slash" => (70, "Physical", "Normal"),
-            "bodyslam" => (85, "Physical", "Normal"),
-            "hyperbeam" => (150, "Special", "Normal"),
-            "dragonclaw" => (80, "Physical", "Dragon"),
-            "crunch" => (80, "Physical", "Dark"),
-            "shadowball" => (80, "Special", "Ghost"),
-            "sludgebomb" => (90, "Special", "Poison"),
-            "closecombat" => (120, "Physical", "Fighting"),
-            "stoneedge" => (100, "Physical", "Rock"),
-            "ironhead" => (80, "Physical", "Steel"),
-            "energyball" => (90, "Special", "Grass"),
-            "scald" => (80, "Special", "Water"),
-            "uturn" => (70, "Physical", "Bug"),
-            "voltswitch" => (70, "Special", "Electric"),
-            "flipturn" => (60, "Physical", "Water"),
-            "knockoff" => (65, "Physical", "Dark"),
-            "bravebird" => (120, "Physical", "Flying"),
-            "flareblitz" => (120, "Physical", "Fire"),
-            "woodhammer" => (120, "Physical", "Grass"),
-            "headsmash" => (150, "Physical", "Rock"),
-            "doubleedge" => (120, "Physical", "Normal"),
-            "takedown" => (90, "Physical", "Normal"),
-            "wildcharge" => (90, "Physical", "Electric"),
-            // Multi-hit moves
-            "bulletseed" => (25, "Physical", "Grass"),
-            "rockblast" => (25, "Physical", "Rock"),
-            "iciclespear" => (25, "Physical", "Ice"),
-            "pinmissile" => (25, "Physical", "Bug"),
-            "tailslap" => (25, "Physical", "Normal"),
-            "scaleshot" => (25, "Physical", "Dragon"),
-            "tripleaxel" => (20, "Physical", "Ice"),
-            "populationbomb" => (20, "Physical", "Normal"),
-            // Fixed multi-hit
-            "doublekick" => (30, "Physical", "Fighting"),
-            "doublehit" => (35, "Physical", "Normal"),
-            "bonemerang" => (50, "Physical", "Ground"),
-            "dualwingbeat" => (40, "Physical", "Flying"),
-            // Low accuracy high power
-            "focusblast" => (120, "Special", "Fighting"),
-            "thunder" => (110, "Special", "Electric"),
-            "blizzard" => (110, "Special", "Ice"),
-            "fireblast" => (110, "Special", "Fire"),
-            "hydropump" => (110, "Special", "Water"),
-            "hurricane" => (110, "Special", "Flying"),
-            "thunderwave" | "willowisp" | "toxic" | "spore" | "sleeppowder" | "bulkup" | "swordsdance" | "nastyplot" | "calmmind" | "agility" | "irondefense" |
-            "stealthrock" | "spikes" | "toxicspikes" | "stickyweb" | "defog" | "rapidspin" |
-            "protect" | "detect" | "substitute" | "recover" | "roost" | "softboiled" | "moonlight" | "synthesis" | "morningsun" |
-            "wish" | "healbell" | "aromatherapy" | "haze" | "whirlwind" | "roar" | "dragontail" | "circlethrow" |
-            "taunt" | "encore" | "disable" | "trick" | "switcheroo" | "trickroom" | "confuseray" | "supersonic" | "sweetkiss" | "teeterdance" => {
-                return (0, false); // Status/hazard/utility moves - no damage
+        // Get move data from MoveDef
+        let move_def = match crate::data::moves::get_move(move_id) {
+            Some(def) => def,
+            None => {
+                // Unknown move - return 0 damage
+                return (0, false);
             }
-            _ => (50, "Physical", "Normal"), // Default for unknown moves
         };
 
+        let base_power = move_def.base_power;
+        let category = &move_def.category;
+        let move_type = &move_def.move_type;
+
+        // Status moves don't deal damage
         if base_power == 0 {
             return (0, false);
         }
@@ -1878,16 +1871,22 @@ impl Battle {
             let attacker = &self.sides[attacker_side].pokemon[attacker_idx];
             let defender = &self.sides[target_side].pokemon[target_idx];
 
-            let (attack_stat, defense_stat) = if category == "Physical" {
-                (attacker.stored_stats.atk as u32, defender.stored_stats.def as u32)
-            } else {
-                (attacker.stored_stats.spa as u32, defender.stored_stats.spd as u32)
+            let (attack_stat, defense_stat) = match category {
+                crate::data::moves::MoveCategory::Physical => {
+                    (attacker.stored_stats.atk as u32, defender.stored_stats.def as u32)
+                }
+                _ => {
+                    (attacker.stored_stats.spa as u32, defender.stored_stats.spd as u32)
+                }
             };
 
-            let (atk_boost, def_boost) = if category == "Physical" {
-                (attacker.boosts.atk, defender.boosts.def)
-            } else {
-                (attacker.boosts.spa, defender.boosts.spd)
+            let (atk_boost, def_boost) = match category {
+                crate::data::moves::MoveCategory::Physical => {
+                    (attacker.boosts.atk, defender.boosts.def)
+                }
+                _ => {
+                    (attacker.boosts.spa, defender.boosts.spd)
+                }
             };
 
             (
@@ -1988,7 +1987,7 @@ impl Battle {
         let damage = (damage as f64 * type_effectiveness) as u32;
 
         // Burn reduces physical damage
-        let damage = if category == "Physical" && attacker_status == "brn" {
+        let damage = if matches!(category, crate::data::moves::MoveCategory::Physical) && attacker_status == "brn" {
             damage / 2
         } else {
             damage
@@ -2012,15 +2011,15 @@ impl Battle {
             // Life Orb: 1.3x damage boost
             "lifeorb" => 1.3,
             // Choice Band: 1.5x Attack (physical moves only)
-            "choiceband" if category == "Physical" => 1.5,
+            "choiceband" if matches!(category, crate::data::moves::MoveCategory::Physical) => 1.5,
             // Choice Specs: 1.5x Sp. Attack (special moves only)
-            "choicespecs" if category == "Special" => 1.5,
+            "choicespecs" if matches!(category, crate::data::moves::MoveCategory::Special) => 1.5,
             // Expert Belt: 1.2x for super effective moves
             "expertbelt" if type_effectiveness > 1.0 => 1.2,
             // Muscle Band: 1.1x for physical moves
-            "muscleband" if category == "Physical" => 1.1,
+            "muscleband" if matches!(category, crate::data::moves::MoveCategory::Physical) => 1.1,
             // Wise Glasses: 1.1x for special moves
-            "wiseglasses" if category == "Special" => 1.1,
+            "wiseglasses" if matches!(category, crate::data::moves::MoveCategory::Special) => 1.1,
             _ => 1.0,
         };
         let damage = (damage as f64 * item_mod) as u32;
@@ -3015,60 +3014,135 @@ impl Battle {
     }
 
     /// Declare a winner
-    /// Equivalent to battle.ts win()
+    /// Equivalent to battle.ts win() (battle.ts:1474-1497)
     /// Pass None for a tie, or Some(side_id) for a winner
     pub fn win(&mut self, side: Option<SideID>) -> bool {
+        // JavaScript: if (this.ended) return false;
         if self.ended {
             return false;
         }
 
-        let winner_name = side.and_then(|s| self.get_side(s).map(|side| side.name.clone()));
+        // JavaScript: if (side && typeof side === 'string') side = this.getSide(side);
+        // (Rust uses SideID enum, not string)
 
+        // JavaScript: else if (!side || !this.sides.includes(side)) side = null;
+        // (Rust Option<SideID> handles this)
+
+        // JavaScript: this.winner = side ? side.name : '';
+        let (winner_name, ally_name) = if let Some(side_id) = side {
+            if let Some(side) = self.get_side(side_id) {
+                let ally = side.ally_index
+                    .and_then(|idx| self.sides.get(idx))
+                    .map(|s| s.name.clone());
+                (Some(side.name.clone()), ally)
+            } else {
+                (None, None)
+            }
+        } else {
+            (None, None)
+        };
+
+        self.winner = winner_name.clone();
+
+        // JavaScript: this.add('');
         self.add_log("", &[]);
-        if let Some(ref name) = winner_name {
+
+        // JavaScript: if (side?.allySide) { this.add('win', side.name + ' & ' + side.allySide.name); }
+        if let (Some(ref name), Some(ref ally)) = (&winner_name, &ally_name) {
+            let combined = format!("{} & {}", name, ally);
+            self.add_log("win", &[&combined]);
+        } else if let Some(ref name) = winner_name {
+            // JavaScript: else if (side) { this.add('win', side.name); }
             self.add_log("win", &[name]);
         } else {
+            // JavaScript: else { this.add('tie'); }
             self.add_log("tie", &[]);
         }
 
-        self.winner = winner_name;
+        // JavaScript: this.ended = true;
         self.ended = true;
+
+        // JavaScript: this.requestState = '';
         self.request_state = BattleRequestState::None;
 
+        // JavaScript: for (const s of this.sides) { if (s) s.activeRequest = null; }
         for side in &mut self.sides {
             side.request_state = RequestState::None;
         }
 
+        // JavaScript: return true;
         true
     }
 
     /// Force a side to lose
-    /// Equivalent to battle.ts lose()
+    /// Equivalent to battle.ts lose() (battle.ts:1499-1518)
     pub fn lose(&mut self, side_id: SideID) {
-        let foe_id = match side_id {
-            SideID::P1 => SideID::P2,
-            SideID::P2 => SideID::P1,
-            SideID::P3 => SideID::P4,
-            SideID::P4 => SideID::P3,
-        };
+        // JavaScript: if (typeof side === 'string') side = this.getSide(side);
+        // (Rust already has SideID, no conversion needed)
 
-        if self.game_type == GameType::FreeForAll {
-            // In FFA, losing doesn't automatically make someone else win
-            if let Some(side) = self.sides.get_mut(side_id.index()) {
-                // Faint all Pokemon on this side
-                for pokemon in &mut side.pokemon {
-                    pokemon.hp = 0;
+        // JavaScript: if (!side) return; // can happen if a battle crashes
+        // (Rust SideID is always valid)
+
+        // JavaScript: if (this.gameType !== 'freeforall') return this.win(side.foe);
+        if self.game_type != GameType::FreeForAll {
+            let foe_id = match side_id {
+                SideID::P1 => SideID::P2,
+                SideID::P2 => SideID::P1,
+                SideID::P3 => SideID::P4,
+                SideID::P4 => SideID::P3,
+            };
+            self.win(Some(foe_id));
+            return;
+        }
+
+        // JavaScript: if (!side.pokemonLeft) return;
+        if let Some(side) = self.sides.get(side_id.index()) {
+            if side.pokemon_left == 0 {
+                return;
+            }
+        }
+
+        // JavaScript: side.pokemonLeft = 0;
+        if let Some(side) = self.sides.get_mut(side_id.index()) {
+            side.pokemon_left = 0;
+
+            // JavaScript: side.active[0]?.faint();
+            if let Some(Some(poke_idx)) = side.active.get(0) {
+                if let Some(pokemon) = side.pokemon.get_mut(*poke_idx) {
+                    pokemon.faint();
                 }
             }
-            self.faint_messages();
-        } else {
-            self.win(Some(foe_id));
+        }
+
+        // JavaScript: this.faintMessages(false, true);
+        // Rust doesn't have the parameters yet, use basic version
+        self.faint_messages();
+
+        // JavaScript: if (!this.ended && side.requestState) { ... }
+        if !self.ended {
+            if let Some(side) = self.sides.get_mut(side_id.index()) {
+                if side.request_state != RequestState::None {
+                    // JavaScript: side.emitRequest({ wait: true, side: side.getRequestData() });
+                    // (We don't have emitRequest in Rust, skip for now)
+
+                    // JavaScript: side.clearChoice();
+                    side.choice = Choice::new();
+
+                    // JavaScript: if (this.allChoicesDone()) this.commitChoices();
+                    // (Would need to implement allChoicesDone and commitChoices)
+                }
+            }
         }
     }
 
     /// Force a win for a specific side
     /// Equivalent to battle.ts forceWin()
     pub fn force_win(&mut self, side: Option<SideID>) -> bool {
+        if self.ended {
+            return false;
+        }
+        // Log to inputLog (if we had inputLog field, would log here)
+        // JavaScript: this.inputLog.push(side ? `>forcewin ${side}` : `>forcetie`);
         self.win(side)
     }
 
@@ -3204,66 +3278,46 @@ impl Battle {
     }
 
     /// Deal damage to a Pokemon
-    /// Equivalent to battle.ts damage()
-    /// NOTE: This is a simplified version without event system integration
-    pub fn damage(&mut self, damage: u32, target: (usize, usize), _source: Option<(usize, usize)>, effect: Option<&str>) -> u32 {
-        let (target_side, target_idx) = target;
-
-        // Get side info first to avoid borrow conflicts
-        let (side_id, pokemon_name, pokemon_maxhp) = if let Some(side) = self.sides.get(target_side) {
-            if let Some(pokemon) = side.pokemon.get(target_idx) {
-                (side.id_str().to_string(), pokemon.name.clone(), pokemon.maxhp)
-            } else {
-                return 0;
-            }
-        } else {
-            return 0;
-        };
-
-        if let Some(side) = self.sides.get_mut(target_side) {
-            if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
-                if pokemon.hp == 0 {
-                    return 0;
-                }
-
-                let actual_damage = damage.min(pokemon.hp);
-                pokemon.hp = pokemon.hp.saturating_sub(damage);
-                let new_hp = pokemon.hp;
-
-                let full_name = format!("{}: {}", side_id, pokemon_name);
-                let hp_str = format!("{}/{}", new_hp, pokemon_maxhp);
-
-                if let Some(eff) = effect {
-                    self.add_log("-damage", &[&full_name, &hp_str, &format!("[from] {}", eff)]);
-                } else {
-                    self.add_log("-damage", &[&full_name, &hp_str]);
-                }
-
-                self.last_damage = actual_damage;
-                return actual_damage;
-            }
-        }
-        0
+    /// Matches JavaScript battle.ts:2165-2176 damage()
+    /// This is a wrapper around spreadDamage for a single target
+    pub fn damage(
+        &mut self,
+        damage: i32,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        effect: Option<&ID>,
+        instafaint: bool,
+    ) -> Option<i32> {
+        // JavaScript: return this.spreadDamage([damage], [target], source, effect, instafaint)[0];
+        let result = self.spread_damage(
+            &[Some(damage)],
+            &[target],
+            source,
+            effect,
+            instafaint,
+        );
+        result.get(0).copied().flatten()
     }
 
     /// Deal direct damage (bypasses most effects)
-    /// Equivalent to battle.ts directDamage()
-    pub fn direct_damage(&mut self, damage: u32, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> u32 {
-        // Direct damage is similar to regular damage but bypasses certain effects
-        // For now, implementation is the same
-        self.damage(damage.max(1), target, source, effect)
-    }
+    /// Matches JavaScript battle.ts:2177-2230 directDamage()
+    pub fn direct_damage(
+        &mut self,
+        mut damage: i32,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        effect: Option<&ID>,
+    ) -> i32 {
+        // Get target, handle None case
+        let target_pos = match target {
+            Some(pos) => pos,
+            None => return 0,
+        };
 
-    /// Heal a Pokemon
-    /// Equivalent to battle.ts heal()
-    /// NOTE: This is a simplified version without event system integration
-    pub fn heal(&mut self, amount: u32, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> u32 {
-        let (target_side, target_idx) = target;
-
-        // Get info first to avoid borrow conflicts
-        let (side_id, pokemon_name, pokemon_maxhp, pokemon_hp, is_active) = if let Some(side) = self.sides.get(target_side) {
-            if let Some(pokemon) = side.pokemon.get(target_idx) {
-                (side.id_str().to_string(), pokemon.name.clone(), pokemon.maxhp, pokemon.hp, pokemon.is_active)
+        // Check if target has HP
+        let (has_hp, _) = if let Some(side) = self.sides.get(target_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                (pokemon.hp > 0, pokemon.is_active)
             } else {
                 return 0;
             }
@@ -3271,59 +3325,276 @@ impl Battle {
             return 0;
         };
 
-        // Get source info if drain effect
-        let source_name = if let Some((src_side, src_idx)) = source {
-            if let Some(side) = self.sides.get(src_side) {
-                if let Some(pokemon) = side.pokemon.get(src_idx) {
-                    Some(format!("{}: {}", side.id_str(), pokemon.name))
+        if !has_hp {
+            return 0;
+        }
+        if damage == 0 {
+            return 0;
+        }
+
+        // Clamp damage to at least 1
+        damage = damage.max(1);
+
+        let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+
+        // Gen 1 special case: Substitute takes confusion and HJK recoil damage
+        // JavaScript: if (this.gen <= 1 && this.dex.currentMod !== 'gen1stadium' && ...)
+        if self.gen <= 1 && ["confusion", "jumpkick", "highjumpkick"].contains(&effect_id) {
+            // Confusion and recoil damage can be countered
+            self.last_damage = damage as u32;
+
+            // Check if target has Substitute volatile
+            let substitute_id = ID::new("substitute");
+            let has_substitute = if let Some(side) = self.sides.get(target_pos.0) {
+                if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                    pokemon.volatiles.contains_key(&substitute_id)
                 } else {
-                    None
+                    false
                 }
             } else {
-                None
+                false
+            };
+
+            if has_substitute {
+                // Check if foe has Substitute
+                let foe_side = if target_pos.0 == 0 { 1 } else { 0 };
+                let foe_has_substitute = if foe_side < self.sides.len() {
+                    if let Some(side) = self.sides.get(foe_side) {
+                        if let Some(active_idx) = side.active.get(0) {
+                            if let Some(poke_idx) = active_idx {
+                                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                                    pokemon.volatiles.contains_key(&substitute_id)
+                                } else {
+                                    false
+                                }
+                            } else {
+                                false
+                            }
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                };
+
+                let hint = "In Gen 1, if a Pokemon with a Substitute hurts itself due to confusion or Jump Kick/Hi Jump Kick recoil and the target";
+
+                if foe_has_substitute {
+                    // Damage foe's substitute
+                    // TODO: Implement substitute HP tracking
+                    self.hint(&format!("{} has a Substitute, the target's Substitute takes the damage.", hint), false, None);
+                    return damage;
+                } else {
+                    self.hint(&format!("{} does not have a Substitute there is no damage dealt.", hint), false, None);
+                    return 0;
+                }
+            }
+        }
+
+        // Apply damage using Pokemon's damage method
+        let actual_damage = if let Some(side) = self.sides.get_mut(target_pos.0) {
+            if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                let old_hp = pokemon.hp;
+                pokemon.hp = pokemon.hp.saturating_sub(damage as u32);
+                (old_hp - pokemon.hp) as i32
+            } else {
+                0
             }
         } else {
-            None
+            0
         };
 
-        if pokemon_hp == 0 || !is_active {
-            return 0;
-        }
-        if pokemon_hp >= pokemon_maxhp {
-            return 0;
-        }
+        // Add damage log message based on effect
+        self.add_direct_damage_log(target_pos, effect);
 
-        if let Some(side) = self.sides.get_mut(target_side) {
-            if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
-                let old_hp = pokemon.hp;
-                pokemon.hp = (pokemon.hp + amount).min(pokemon.maxhp);
-                let healed = pokemon.hp - old_hp;
-                let new_hp = pokemon.hp;
-
-                let full_name = format!("{}: {}", side_id, pokemon_name);
-                let hp_str = format!("{}/{}", new_hp, pokemon_maxhp);
-
-                if let Some(eff) = effect {
-                    if eff == "drain" {
-                        if let Some(ref src_name) = source_name {
-                            self.add_log("-heal", &[&full_name, &hp_str, "[from] drain", &format!("[of] {}", src_name)]);
-                            return healed;
-                        }
-                    }
-                    self.add_log("-heal", &[&full_name, &hp_str, &format!("[from] {}", eff)]);
-                } else {
-                    self.add_log("-heal", &[&full_name, &hp_str]);
+        // Check if target fainted
+        if let Some(side) = self.sides.get(target_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                if pokemon.hp == 0 {
+                    // TODO: Call self.faint(target_pos, source, effect);
                 }
-
-                return healed;
             }
         }
-        0
+
+        actual_damage
     }
 
-    /// Boost a Pokemon's stats
-    /// Equivalent to battle.ts boost()
-    /// NOTE: This is a simplified version without event system integration
+    /// Helper to add direct damage log messages
+    /// Matches JavaScript battle.ts:2217-2226
+    fn add_direct_damage_log(&mut self, target: (usize, usize), effect: Option<&ID>) {
+        let (side_idx, poke_idx) = target;
+
+        // Get target health string
+        let health_str = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                format!("{}/{}", pokemon.hp, pokemon.maxhp)
+            } else {
+                return;
+            }
+        } else {
+            return;
+        };
+
+        let target_str = format!("p{}a", side_idx + 1);
+        let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+
+        // Special case handling
+        match effect_id {
+            "strugglerecoil" => {
+                self.add_log("-damage", &[&target_str, &health_str, "[from] recoil"]);
+            }
+            "confusion" => {
+                self.add_log("-damage", &[&target_str, &health_str, "[from] confusion"]);
+            }
+            _ => {
+                self.add_log("-damage", &[&target_str, &health_str]);
+            }
+        }
+    }
+
+    /// Heal a Pokemon
+    /// Matches JavaScript battle.ts:2231-2274 heal()
+    pub fn heal(
+        &mut self,
+        mut damage: i32,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        effect: Option<&ID>,
+    ) -> Option<i32> {
+        // Clamp damage to at least 1
+        if damage > 0 && damage <= 1 {
+            damage = 1;
+        }
+        // JavaScript: damage = this.trunc(damage);
+        // Already an integer in Rust
+
+        // Get target, handle None case
+        let target_pos = match target {
+            Some(pos) => pos,
+            None => return Some(0),
+        };
+
+        // Fire TryHeal event
+        // JavaScript: damage = this.runEvent('TryHeal', target, source, effect, damage);
+        let event_result = self.run_event("TryHeal", Some(target_pos), source, effect, Some(damage));
+        damage = match event_result {
+            Some(d) => d,
+            None => return None,  // Event cancelled healing
+        };
+
+        if damage == 0 {
+            return Some(0);
+        }
+
+        // Check target validity
+        let (side_idx, poke_idx) = target_pos;
+        let (has_hp, is_active, at_max_hp) = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                (pokemon.hp > 0, pokemon.is_active, pokemon.hp >= pokemon.maxhp)
+            } else {
+                return None;  // JavaScript returns false
+            }
+        } else {
+            return None;
+        };
+
+        if !has_hp {
+            return None;
+        }
+        if !is_active {
+            return None;
+        }
+        if at_max_hp {
+            return None;
+        }
+
+        // Apply healing using Pokemon's heal method
+        let final_damage = if let Some(side) = self.sides.get_mut(side_idx) {
+            if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                let old_hp = pokemon.hp;
+                pokemon.hp = (pokemon.hp + damage as u32).min(pokemon.maxhp);
+                (pokemon.hp - old_hp) as i32
+            } else {
+                0
+            }
+        } else {
+            0
+        };
+
+        // Add heal log message
+        self.add_heal_log(target_pos, source, effect);
+
+        // Fire Heal event
+        // JavaScript: this.runEvent('Heal', target, source, effect, finalDamage);
+        self.run_event("Heal", Some(target_pos), source, effect, Some(final_damage));
+
+        Some(final_damage)
+    }
+
+    /// Helper to add heal log messages
+    /// Matches JavaScript battle.ts:2246-2268
+    fn add_heal_log(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&ID>) {
+        let (side_idx, poke_idx) = target;
+
+        // Get target health string
+        let health_str = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                format!("{}/{}", pokemon.hp, pokemon.maxhp)
+            } else {
+                return;
+            }
+        } else {
+            return;
+        };
+
+        let target_str = format!("p{}a", side_idx + 1);
+        let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+
+        // Special case handling
+        match effect_id {
+            "leechseed" | "rest" => {
+                self.add_log("-heal", &[&target_str, &health_str, "[silent]"]);
+            }
+            "drain" => {
+                if let Some(src) = source {
+                    let src_str = format!("p{}a", src.0 + 1);
+                    let of_str = format!("[of] {}", src_str);
+                    self.add_log("-heal", &[&target_str, &health_str, "[from] drain", &of_str]);
+                } else {
+                    self.add_log("-heal", &[&target_str, &health_str, "[from] drain"]);
+                }
+            }
+            "wish" => {
+                // Don't add any log for wish
+            }
+            "zpower" => {
+                self.add_log("-heal", &[&target_str, &health_str, "[zeffect]"]);
+            }
+            "" => {
+                // No effect - no log
+            }
+            _ => {
+                // Default heal log
+                // TODO: Check if effect.effectType === 'Move'
+                if let Some(src) = source {
+                    let src_str = format!("p{}a", src.0 + 1);
+                    let from_str = format!("[from] {}", effect_id);
+                    let of_str = format!("[of] {}", src_str);
+                    self.add_log("-heal", &[&target_str, &health_str, &from_str, &of_str]);
+                } else {
+                    let from_str = format!("[from] {}", effect_id);
+                    self.add_log("-heal", &[&target_str, &health_str, &from_str]);
+                }
+            }
+        }
+    }
+
+
+    /// Boost a Pokemon's stats (legacy signature for compatibility)
+    /// TODO: This should be migrated to use the new boost_new() method
     pub fn boost(&mut self, boosts: &[(& str, i8)], target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> bool {
         let (target_side, target_idx) = target;
 
@@ -3949,10 +4220,15 @@ impl Battle {
     }
 
     /// Clear request state
+    /// Equivalent to battle.ts clearRequest() (battle.ts:1364-1370)
     pub fn clear_request(&mut self) {
+        // JavaScript: this.requestState = '';
         self.request_state = BattleRequestState::None;
+
+        // JavaScript: for (const side of this.sides) { side.activeRequest = null; side.clearChoice(); }
         for side in &mut self.sides {
             side.request_state = RequestState::None;
+            side.choice = Choice::new();  // clearChoice()
         }
     }
 
@@ -4008,6 +4284,7 @@ impl Battle {
         let new_seed = seed.unwrap_or_else(|| self.prng_seed.clone());
         self.prng = PRNG::new(Some(new_seed.clone()));
         self.prng_seed = new_seed;
+        self.add_log("message", &["The battle's RNG was reset."]);
     }
 
     /// Join a player to a battle slot
@@ -4054,10 +4331,9 @@ impl Battle {
     // =========================================================================
 
     /// Single event - runs a single callback on an effect
-    /// Equivalent to battle.ts singleEvent()
+    /// Equivalent to battle.ts singleEvent() (lines 571-652)
     ///
-    /// This is a simplified version that handles common event patterns.
-    /// In the full implementation, this would dynamically call effect handlers.
+    /// This fires a single event handler with full suppression logic.
     pub fn single_event(
         &mut self,
         event_id: &str,
@@ -4068,18 +4344,88 @@ impl Battle {
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
-        // Check stack depth
+        // JavaScript: if (this.eventDepth >= 8) throw Error
         if self.event_depth >= 8 {
             self.add_log("message", &["STACK LIMIT EXCEEDED"]);
             self.add_log("message", &["PLEASE REPORT IN BUG THREAD"]);
             self.add_log("message", &[&format!("Event: {}", event_id)]);
+            if let Some(ref evt) = self.current_event {
+                self.add_log("message", &[&format!("Parent event: {}", evt.id)]);
+            }
             return EventResult::Fail;
         }
 
-        // Check log line limit
+        // JavaScript: if (this.log.length - this.sentLogPos > 1000) throw Error
         if self.log.len() - self.sent_log_pos > 1000 {
             self.add_log("message", &["LINE LIMIT EXCEEDED"]);
+            self.add_log("message", &["PLEASE REPORT IN BUG THREAD"]);
+            self.add_log("message", &[&format!("Event: {}", event_id)]);
+            if let Some(ref evt) = self.current_event {
+                self.add_log("message", &[&format!("Parent event: {}", evt.id)]);
+            }
             return EventResult::Fail;
+        }
+
+        // Determine effect type for suppression checks
+        let effect_type = self.get_effect_type(effect_id);
+
+        // SUPPRESSION CHECKS (from JavaScript battle.ts:598-622)
+
+        // JavaScript: if (effect.effectType === 'Status' && target.status !== effect.id) return relayVar
+        if effect_type == "Status" {
+            if let Some((side_idx, poke_idx)) = target {
+                if let Some(side) = self.sides.get(side_idx) {
+                    if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                        if pokemon.status != *effect_id {
+                            return EventResult::Continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        // JavaScript: if (eventid === 'SwitchIn' && effect.effectType === 'Ability' && effect.flags['breakable'] && this.suppressingAbility(target))
+        if event_id == "SwitchIn" && effect_type == "Ability" {
+            if self.suppressing_ability(target) {
+                self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
+                return EventResult::Continue;
+            }
+        }
+
+        // JavaScript: if (eventid !== 'Start' && eventid !== 'TakeItem' && effect.effectType === 'Item' && target.ignoringItem())
+        if event_id != "Start" && event_id != "TakeItem" && effect_type == "Item" {
+            if let Some((side_idx, poke_idx)) = target {
+                if let Some(side) = self.sides.get(side_idx) {
+                    if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                        if pokemon.ignoring_item() {
+                            self.debug(&format!("{} handler suppressed by Embargo, Klutz or Magic Room", event_id));
+                            return EventResult::Continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        // JavaScript: if (eventid !== 'End' && effect.effectType === 'Ability' && target.ignoringAbility())
+        if event_id != "End" && effect_type == "Ability" {
+            if let Some((side_idx, poke_idx)) = target {
+                if let Some(side) = self.sides.get(side_idx) {
+                    if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                        if pokemon.ignoring_ability() {
+                            self.debug(&format!("{} handler suppressed by Gastro Acid or Neutralizing Gas", event_id));
+                            return EventResult::Continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        // JavaScript: if (effect.effectType === 'Weather' && eventid !== 'FieldStart' && eventid !== 'FieldResidual' && eventid !== 'FieldEnd' && this.field.suppressingWeather())
+        if effect_type == "Weather" && event_id != "FieldStart" && event_id != "FieldResidual" && event_id != "FieldEnd" {
+            if self.field.suppressing_weather() {
+                self.debug(&format!("{} handler suppressed by Air Lock", event_id));
+                return EventResult::Continue;
+            }
         }
 
         // Save parent event context
@@ -4108,6 +4454,41 @@ impl Battle {
         self.current_effect_state = parent_effect_state;
 
         result
+    }
+
+    /// Get effect type for an effect ID
+    fn get_effect_type(&self, effect_id: &ID) -> &str {
+        // Check if it's an ability
+        if crate::data::abilities::get_ability(effect_id).is_some() {
+            return "Ability";
+        }
+        // Check if it's an item
+        if crate::data::items::get_item(effect_id).is_some() {
+            return "Item";
+        }
+        // Check if it's a move
+        if crate::data::moves::get_move(effect_id).is_some() {
+            return "Move";
+        }
+        // Check if it's a condition
+        if let Some(condition) = crate::data::conditions::get_condition(effect_id) {
+            // Conditions can be Status, Volatile, Weather, Terrain, etc.
+            if crate::data::conditions::is_status_condition(effect_id) {
+                return "Status";
+            }
+            if crate::data::conditions::is_volatile_condition(effect_id) {
+                return "Volatile";
+            }
+            // Check for weather/terrain by ID
+            let id_str = effect_id.as_str();
+            if ["sunnyday", "raindance", "sandstorm", "hail", "snow", "harsh sunshine", "heavy rain", "strong winds"].contains(&id_str) {
+                return "Weather";
+            }
+            if ["electricterrain", "grassyterrain", "mistyterrain", "psychicterrain"].contains(&id_str) {
+                return "Terrain";
+            }
+        }
+        "Unknown"
     }
 
     /// Dispatch a single event to the appropriate handler
@@ -4219,7 +4600,7 @@ impl Battle {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 if pokemon.status.as_str() == "tox" || pokemon.status.as_str() == "psn" {
                                     let heal = pokemon.maxhp / 8;
-                                    self.heal(heal, (side_idx, poke_idx), None, Some("Poison Heal"));
+                                    self.heal(heal as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Poison Heal")));
                                     return EventResult::Stop;
                                 }
                             }
@@ -4265,7 +4646,7 @@ impl Battle {
                                 }
 
                                 for (foe_pos, dmg) in foes_to_damage {
-                                    self.damage(dmg, (foe_side, foe_pos), Some((side_idx, poke_idx)), None);
+                                    self.damage(dmg as i32, Some((foe_side, foe_pos)), Some((side_idx, poke_idx)), None, false);
                                 }
                                 return EventResult::Stop;
                             }
@@ -4435,7 +4816,7 @@ impl Battle {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 if pokemon.hp < pokemon.maxhp {
                                     let heal = pokemon.maxhp / 16;
-                                    self.heal(heal.max(1), (side_idx, poke_idx), None, Some("Leftovers"));
+                                    self.heal(heal.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Leftovers")));
                                     return EventResult::Stop;
                                 }
                             }
@@ -4449,11 +4830,11 @@ impl Battle {
                                 if is_poison {
                                     if pokemon.hp < pokemon.maxhp {
                                         let heal = pokemon.maxhp / 16;
-                                        self.heal(heal.max(1), (side_idx, poke_idx), None, Some("Black Sludge"));
+                                        self.heal(heal.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Black Sludge")));
                                     }
                                 } else {
                                     let damage = pokemon.maxhp / 8;
-                                    self.damage(damage.max(1), (side_idx, poke_idx), None, Some("Black Sludge"));
+                                    self.damage(damage.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Black Sludge")), false);
                                 }
                                 return EventResult::Stop;
                             }
@@ -4474,7 +4855,7 @@ impl Battle {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 let recoil = pokemon.maxhp / 10;
-                                self.damage(recoil.max(1), (side_idx, poke_idx), None, Some("Life Orb"));
+                                self.damage(recoil.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Life Orb")), false);
                             }
                         }
                     }
@@ -4520,7 +4901,7 @@ impl Battle {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 let damage = pokemon.maxhp / 16;
-                                self.damage(damage.max(1), (side_idx, poke_idx), None, Some("burn"));
+                                self.damage(damage.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("burn")), false);
                                 return EventResult::Stop;
                             }
                         }
@@ -4530,7 +4911,7 @@ impl Battle {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 let damage = pokemon.maxhp / 8;
-                                self.damage(damage.max(1), (side_idx, poke_idx), None, Some("poison"));
+                                self.damage(damage.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("poison")), false);
                                 return EventResult::Stop;
                             }
                         }
@@ -4881,26 +5262,244 @@ impl Battle {
     }
 
     /// Spread damage to multiple targets
-    /// Equivalent to battle.ts spreadDamage()
+    /// Matches JavaScript battle.ts:2045-2164 spreadDamage()
     pub fn spread_damage(
         &mut self,
-        damages: &[Option<u32>],
-        targets: &[(usize, usize)],
+        damages: &[Option<i32>],  // Can be true (max damage), false, number, or undefined
+        targets: &[Option<(usize, usize)>],
         source: Option<(usize, usize)>,
-        effect: Option<&str>,
-    ) -> Vec<u32> {
-        let mut results = Vec::new();
+        effect: Option<&ID>,
+        instafaint: bool,
+    ) -> Vec<Option<i32>> {
+        let mut ret_vals: Vec<Option<i32>> = Vec::new();
 
-        for (i, damage) in damages.iter().enumerate() {
-            if let (Some(dmg), Some(&target)) = (damage, targets.get(i)) {
-                let actual_damage = self.damage(*dmg, target, source, effect);
-                results.push(actual_damage);
+        // Process damage for each target
+        for i in 0..damages.len() {
+            let cur_damage = damages.get(i).copied().flatten();
+            let target = targets.get(i).copied().flatten();
+
+            // Handle undefined/null damage
+            if cur_damage.is_none() {
+                ret_vals.push(None);
+                continue;
+            }
+
+            let mut target_damage = cur_damage.unwrap();
+
+            // Handle missing or fainted target
+            if target.is_none() {
+                ret_vals.push(Some(0));
+                continue;
+            }
+
+            let target_pos = target.unwrap();
+            let (side_idx, poke_idx) = target_pos;
+
+            // Check if target exists and has HP
+            let (has_hp, is_active) = if let Some(side) = self.sides.get(side_idx) {
+                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                    (pokemon.hp > 0, pokemon.is_active)
+                } else {
+                    (false, false)
+                }
             } else {
-                results.push(0);
+                (false, false)
+            };
+
+            if !has_hp {
+                ret_vals.push(Some(0));
+                continue;
+            }
+
+            if !is_active {
+                ret_vals.push(None);  // JavaScript returns false
+                continue;
+            }
+
+            // Clamp damage to at least 1 if non-zero
+            if target_damage != 0 {
+                target_damage = target_damage.max(1);
+            }
+
+            // JavaScript: if (effect.id !== 'struggle-recoil')
+            let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+            if effect_id != "strugglerecoil" {
+                // Check weather immunity
+                // JavaScript: if (effect.effectType === 'Weather' && !target.runStatusImmunity(effect.id))
+                // TODO: Need to implement effect type checking and status immunity
+                // For now, skip this check
+
+                // Fire Damage event
+                // JavaScript: targetDamage = this.runEvent('Damage', target, source, effect, targetDamage, true);
+                let event_result = self.run_event(
+                    "Damage",
+                    Some(target_pos),
+                    source,
+                    effect,
+                    Some(target_damage)
+                );
+
+                if let Some(modified_damage) = event_result {
+                    target_damage = modified_damage;
+                } else {
+                    // Event failed
+                    self.debug("damage event failed");
+                    ret_vals.push(None);
+                    continue;
+                }
+            }
+
+            // Clamp damage again after event
+            if target_damage != 0 {
+                target_damage = target_damage.max(1);
+            }
+
+            // Gen 1: set lastDamage for certain effects
+            if self.gen <= 1 {
+                // JavaScript: if (!['recoil', 'drain', 'leechseed'].includes(effect.id) && effect.effectType !== 'Status')
+                if effect_id != "recoil" && effect_id != "drain" && effect_id != "leechseed" {
+                    self.last_damage = target_damage as u32;
+                }
+            }
+
+            // Apply damage using Pokemon's damage method
+            let actual_damage = if let Some(side) = self.sides.get_mut(side_idx) {
+                if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                    let dmg = pokemon.damage(target_damage as u32);
+                    dmg as i32
+                } else {
+                    0
+                }
+            } else {
+                0
+            };
+
+            target_damage = actual_damage;
+            ret_vals.push(Some(target_damage));
+
+            // Set hurtThisTurn
+            if target_damage != 0 {
+                if let Some(side) = self.sides.get_mut(side_idx) {
+                    if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                        pokemon.hurt_this_turn = Some(pokemon.hp);
+                    }
+                }
+            }
+
+            // Set source.lastDamage for moves
+            if source.is_some() {
+                // TODO: Check if effect.effectType === 'Move'
+                if let Some((src_side, src_idx)) = source {
+                    if let Some(side) = self.sides.get_mut(src_side) {
+                        if let Some(pokemon) = side.pokemon.get_mut(src_idx) {
+                            pokemon.last_damage = target_damage as u32;
+                        }
+                    }
+                }
+            }
+
+            // Add damage log message
+            self.add_damage_log(target_pos, source, effect);
+
+            // Handle recoil and drain for moves
+            // JavaScript: if (targetDamage && effect.effectType === 'Move')
+            if target_damage > 0 {
+                // TODO: Check if effect is a move and has recoil/drain
+                // For now, skip recoil/drain handling
             }
         }
 
-        results
+        // Handle instafaint
+        if instafaint {
+            for i in 0..targets.len() {
+                if ret_vals.get(i).copied().flatten().is_none() {
+                    continue;
+                }
+                if let Some(Some(target_pos)) = targets.get(i) {
+                    let should_faint = if let Some(side) = self.sides.get(target_pos.0) {
+                        if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                            pokemon.hp == 0
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    };
+
+                    if should_faint {
+                        self.debug(&format!("instafaint"));
+                        // TODO: Call self.faint_messages(true) when implemented
+                        // self.faint_messages(true);
+
+                        // Gen 1-2 special handling
+                        if self.gen <= 2 {
+                            if let Some(side) = self.sides.get_mut(target_pos.0) {
+                                if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                                    pokemon.faint();
+                                }
+                            }
+
+                            // Gen 1: Clear queue and reset Bide
+                            if self.gen <= 1 {
+                                self.queue.clear();
+                                // Reset Bide damage for all active Pokemon
+                                // TODO: Implement Bide volatile check
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        ret_vals
+    }
+
+    /// Helper to add damage log messages
+    /// Matches JavaScript battle.ts:2088-2112
+    fn add_damage_log(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&ID>) {
+        let (side_idx, poke_idx) = target;
+
+        // Get target health string
+        let health_str = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                format!("{}/{}", pokemon.hp, pokemon.maxhp)
+            } else {
+                return;
+            }
+        } else {
+            return;
+        };
+
+        let target_str = format!("p{}a", side_idx + 1);
+        let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+
+        // Special case handling
+        match effect_id {
+            "partiallytrapped" => {
+                // TODO: Get source effect name from volatiles
+                self.add_log("-damage", &[&target_str, &health_str, "[from] partiallytrapped", "[partiallytrapped]"]);
+            }
+            "powder" => {
+                self.add_log("-damage", &[&target_str, &health_str, "[silent]"]);
+            }
+            "confused" => {
+                self.add_log("-damage", &[&target_str, &health_str, "[from] confusion"]);
+            }
+            _ => {
+                // Default damage log
+                if effect.is_none() {
+                    self.add_log("-damage", &[&target_str, &health_str]);
+                } else if let Some(src) = source {
+                    let src_str = format!("p{}a", src.0 + 1);
+                    let from_str = format!("[from] {}", effect_id);
+                    let of_str = format!("[of] {}", src_str);
+                    self.add_log("-damage", &[&target_str, &health_str, &from_str, &of_str]);
+                } else {
+                    let from_str = format!("[from] {}", effect_id);
+                    self.add_log("-damage", &[&target_str, &health_str, &from_str]);
+                }
+            }
+        }
     }
 
     /// Final stat modification with 4096 denominator
@@ -4997,13 +5596,15 @@ impl Battle {
         None
     }
 
-    /// Get overflowed turn count (for endless battle detection)
-    /// Equivalent to battle.ts getOverflowedTurnCount()
+    /// Get overflowed turn count (for endless battle detection and Gen 8+ move timing)
+    /// Equivalent to battle.ts getOverflowedTurnCount() (battle.ts:3317-3319)
+    /// Used by Wish, Future Sight, and other delayed moves
     pub fn get_overflowed_turn_count(&self) -> u32 {
-        if self.turn >= 1000 {
-            self.turn - 1000
+        // JavaScript: return this.gen >= 8 ? (this.turn - 1) % 256 : this.turn - 1;
+        if self.gen >= 8 {
+            (self.turn.saturating_sub(1)) % 256
         } else {
-            0
+            self.turn.saturating_sub(1)
         }
     }
 

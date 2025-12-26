@@ -54,7 +54,7 @@ pub fn on_residual(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResu
         if target.status.as_str() == "slp" || target.ability.as_str() == "comatose" {
             // this.damage(target.baseMaxhp / 8, target, pokemon);
             let damage = target.base_maxhp / 8;
-            battle.damage(damage, (target_side_idx, target_pos), Some((pokemon.side_index, pokemon.position)), None);
+            battle.damage(damage as i32, Some((target_side_idx, target_pos)), Some((pokemon.side_index, pokemon.position)), None, false);
         }
     }
 

@@ -38,7 +38,7 @@ use super::{AbilityHandlerResult, Status, Effect};
         if target.hp == 0 && battle.check_move_makes_contact(&move_.id, source_ref) {
             // this.damage(source.baseMaxhp / 4, source, target);
             let damage = source.base_maxhp / 4;
-            battle.damage(damage, source_ref, Some(target_ref), None);
+            battle.damage(damage as i32, Some(source_ref), Some(target_ref), None, false);
         }
         AbilityHandlerResult::Undefined
     }

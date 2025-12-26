@@ -42,7 +42,7 @@ pub fn on_source_try_heal(battle: &mut Battle, damage: u32, target: &Pokemon, so
         // this.damage(damage);
         let source_ref = (source.side_index, source.position);
         let target_ref = (target.side_index, target.position);
-        battle.damage(damage, source_ref, Some(target_ref), None);
+        battle.damage(damage as i32, Some(source_ref), Some(target_ref), None, false);
 
         // return 0;
         return AbilityHandlerResult::Number(0);

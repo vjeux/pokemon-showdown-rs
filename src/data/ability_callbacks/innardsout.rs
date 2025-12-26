@@ -39,7 +39,7 @@ pub fn on_damaging_hit(battle: &mut Battle, damage: u32, target: &Pokemon, sourc
         // In Rust, we just use the damage value directly since Dynamax isn't implemented
         let source_ref = (source.side_index, source.position);
         let target_ref = (target.side_index, target.position);
-        battle.damage(damage, source_ref, Some(target_ref), None);
+        battle.damage(damage as i32, Some(source_ref), Some(target_ref), None, false);
     }
     AbilityHandlerResult::Undefined
 }

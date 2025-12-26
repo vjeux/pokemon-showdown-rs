@@ -74,7 +74,7 @@ pub fn on_end(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult {
     }
 
     // for (const target of this.getAllActive())
-    for (side_idx, slot, target) in battle.get_all_active() {
+    for (side_idx, slot, target) in battle.get_all_active(false) {
         // if (target === pokemon) continue;
         if (side_idx, slot) == (pokemon.side_index, pokemon.position) {
             continue;

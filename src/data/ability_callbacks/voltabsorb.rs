@@ -37,9 +37,9 @@ pub fn on_try_hit(battle: &mut Battle, target: &Pokemon, source: &Pokemon, move_
     if target_ref != source_ref && move_.move_type == "Electric" {
         // if (!this.heal(target.baseMaxhp / 4))
         let heal_amount = target.base_maxhp / 4;
-        let healed = battle.heal(heal_amount, target_ref, Some(target_ref), None);
+        let healed = battle.heal(heal_amount as i32, Some(target_ref), Some(target_ref), None);
 
-        if healed == 0 {
+        if healed == Some(0) {
             // this.add('-immune', target, '[from] ability: Volt Absorb');
             battle.add("-immune", &[Arg::Pokemon(target), Arg::Str("[from] ability: Volt Absorb")]);
         }

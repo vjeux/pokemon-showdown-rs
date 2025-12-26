@@ -49,7 +49,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
 
     // Now heal allies
     for (position, heal_amount) in allies_to_heal {
-        battle.heal(heal_amount, (side_index, position), Some((pokemon.side_index, pokemon.position)), None);
+        battle.heal(heal_amount as i32, Some((side_index, position)), Some((pokemon.side_index, pokemon.position)), None);
     }
 
     AbilityHandlerResult::Undefined

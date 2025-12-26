@@ -37,7 +37,7 @@ pub fn on_damage(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: O
         // this.heal(target.baseMaxhp / 8);
         let target_ref = (target.side_index, target.position);
         let heal_amount = target.base_maxhp / 8;
-        battle.heal(heal_amount, target_ref, Some(target_ref), None);
+        battle.heal(heal_amount as i32, Some(target_ref), Some(target_ref), None);
         // return false;
         return AbilityHandlerResult::False;
     }

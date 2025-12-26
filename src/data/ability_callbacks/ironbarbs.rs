@@ -38,7 +38,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, sour
         // this.damage(source.baseMaxhp / 8, source, target);
         let target_ref = (target.side_index, target.position);
         let damage_amount = source.base_maxhp / 8;
-        battle.damage(damage_amount, source_ref, Some(target_ref), None);
+        battle.damage(damage_amount as i32, Some(source_ref), Some(target_ref), None, false);
     }
     AbilityHandlerResult::Undefined
 }

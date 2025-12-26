@@ -48,7 +48,7 @@ use super::{AbilityHandlerResult, Status, Effect};
         let target_ref = (target.side_index, target.position);
         if target_ref != (source.side_index, source.position) && move_.move_type == "Water" {
             let heal_amount = target.maxhp / 4;
-            if battle.heal(heal_amount, target_ref, None, None) == 0 {
+            if battle.heal(heal_amount as i32, Some(target_ref), None, None) == Some(0) {
                 battle.add("-immune", &[Arg::Pokemon(target), Arg::Str("[from] ability: Dry Skin")]);
             }
             return AbilityHandlerResult::Null;
@@ -75,10 +75,10 @@ use super::{AbilityHandlerResult, Status, Effect};
         let target_ref = (target.side_index, target.position);
         if effect.id == "raindance" || effect.id == "primordialsea" {
             let heal_amount = target.maxhp / 8;
-            battle.heal(heal_amount, target_ref, None, None);
+            battle.heal(heal_amount as i32, Some(target_ref), None, None);
         } else if effect.id == "sunnyday" || effect.id == "desolateland" {
             let damage_amount = target.maxhp / 8;
-            battle.damage(damage_amount, target_ref, Some(target_ref), None);
+            battle.damage(damage_amount as i32, Some(target_ref), Some(target_ref), None, false);
         }
         AbilityHandlerResult::Undefined
     }

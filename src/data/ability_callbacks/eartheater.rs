@@ -34,7 +34,7 @@ use super::{AbilityHandlerResult, Status, Effect};
         let target_ref = (target.side_index, target.position);
         if target_ref != (source.side_index, source.position) && move_.move_type == "Ground" {
             let heal_amount = target.maxhp / 4;
-            if battle.heal(heal_amount, target_ref, None, None) == 0 {
+            if battle.heal(heal_amount as i32, Some(target_ref), None, None) == Some(0) {
                 battle.add("-immune", &[Arg::Pokemon(target), Arg::Str("[from] ability: Earth Eater")]);
             }
             return AbilityHandlerResult::Null;

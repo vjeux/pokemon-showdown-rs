@@ -713,7 +713,7 @@ fn test_faint_detection() {
 
     // Battle should have ended (only 1 Pokemon per side)
     assert!(battle.ended, "Battle should have ended");
-    assert_eq!(battle.winner.as_deref(), Some("Alice"), "Alice should have won");
+    assert_eq!(battle.winner.as_deref(), Some("p1"), "Alice (p1) should have won");
 }
 
 #[test]
@@ -1637,9 +1637,7 @@ fn test_protect_blocks_damage() {
     assert!(log.contains("Protect"), "Protect should be logged");
 }
 
-// TODO: Re-enable once Substitute move callback is implemented
 #[test]
-#[ignore]
 fn test_substitute_creation() {
     // Substitute should cost 1/4 HP and create a substitute
     let team1 = vec![
@@ -1762,9 +1760,7 @@ fn test_recovery_move() {
     assert!(log.contains("-heal"), "Recover should heal and log it");
 }
 
-// TODO: Re-enable once Haze move callback is implemented
 #[test]
-#[ignore]
 fn test_haze_clears_boosts() {
     // Haze should clear all stat boosts
     let team1 = vec![
@@ -1966,10 +1962,8 @@ fn test_move_accuracy_miss() {
     assert!(missed, "Focus Blast should miss sometimes (70% accuracy)");
 }
 
-// TODO: Re-enable once Confuse Ray move callback is implemented
 /// Test confusion (confuse ray and self-damage)
 #[test]
-#[ignore]
 fn test_confusion_volatile() {
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
