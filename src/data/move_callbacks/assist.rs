@@ -118,9 +118,7 @@ pub fn on_hit(
     let random_move = random_move.unwrap();
 
     // JavaScript: this.actions.useMove(randomMove, target);
-    // TODO: Need to implement Battle::use_move_from_callback or similar
-    // For now, this is a partial implementation that will need infrastructure
-    battle.debug(&format!("Assist would use move: {}", random_move.as_str()));
+    battle.use_move_immediately(&random_move, target, None);
 
     MoveHandlerResult::Undefined
 }

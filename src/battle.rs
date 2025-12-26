@@ -2115,6 +2115,96 @@ impl Battle {
         }
     }
 
+    /// Execute a move immediately (for moves that call other moves like Assist, Copycat, etc.)
+    /// Matches JavaScript battle-actions.ts useMove()
+    ///
+    /// This is a simplified version that executes a move in the current context
+    /// without going through the full queue system
+    pub fn use_move_immediately(
+        &mut self,
+        move_id: &ID,
+        user: (usize, usize),
+        target: Option<(usize, usize)>,
+    ) {
+        let (attacker_side, attacker_idx) = user;
+
+        // Determine target if not provided
+        let (target_side, target_idx) = if let Some(t) = target {
+            t
+        } else {
+            // Get random target based on move targeting
+            if let Some(move_def) = crate::data::moves::get_move(move_id) {
+                let target_type = match move_def.target {
+                    crate::data::moves::MoveTargetType::Normal => "Normal",
+                    crate::data::moves::MoveTargetType::Self_ => "Self",
+                    crate::data::moves::MoveTargetType::AllySide => "AllySide",
+                    crate::data::moves::MoveTargetType::FoeSide => "FoeSide",
+                    crate::data::moves::MoveTargetType::All => "All",
+                    crate::data::moves::MoveTargetType::AllAdjacent => "AllAdjacent",
+                    crate::data::moves::MoveTargetType::AllAdjacentFoes => "AllAdjacentFoes",
+                    crate::data::moves::MoveTargetType::Ally => "Ally",
+                    crate::data::moves::MoveTargetType::Any => "Any",
+                    crate::data::moves::MoveTargetType::RandomNormal => "RandomNormal",
+                    crate::data::moves::MoveTargetType::AllAllies => "AllAllies",
+                    crate::data::moves::MoveTargetType::Scripted => "Scripted",
+                };
+                if let Some(t) = self.get_random_target(attacker_side, attacker_idx, target_type) {
+                    t
+                } else {
+                    return; // No valid target
+                }
+            } else {
+                return; // Unknown move
+            }
+        };
+
+        // Use log to show the move being used
+        let attacker_name = {
+            let side_id = self.sides[attacker_side].id_str();
+            let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
+            format!("{}: {}", side_id, pokemon.name)
+        };
+        self.add_log("move", &[&attacker_name, move_id.as_str()]);
+
+        // Check if target is valid
+        if target_side >= self.sides.len() || target_idx >= self.sides[target_side].pokemon.len() {
+            return;
+        }
+
+        let target_fainted = self.sides[target_side].pokemon[target_idx].is_fainted();
+        if target_fainted {
+            self.add_log("-notarget", &[]);
+            return;
+        }
+
+        // For damaging moves, calculate and apply damage
+        let move_def = if let Some(def) = crate::data::moves::get_move(move_id) {
+            def
+        } else {
+            return;
+        };
+
+        if move_def.base_power > 0 {
+            // Damaging move
+            let (damage, _is_crit) = self.calculate_move_damage(attacker_side, attacker_idx, target_side, target_idx, move_id);
+            if damage > 0 {
+                self.sides[target_side].pokemon[target_idx].take_damage(damage);
+
+                let target_name = {
+                    let side_id = self.sides[target_side].id_str();
+                    let pokemon = &self.sides[target_side].pokemon[target_idx];
+                    format!("{}: {}", side_id, pokemon.name)
+                };
+                let hp = self.sides[target_side].pokemon[target_idx].hp;
+                let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
+                self.add_log("-damage", &[&target_name, &format!("{}/{}", hp, maxhp)]);
+            }
+        }
+
+        // Apply secondary effects
+        self.apply_move_secondary(attacker_side, attacker_idx, target_side, target_idx, move_id);
+    }
+
     /// Calculate damage for a move (basic implementation)
     fn calculate_move_damage(&mut self, attacker_side: usize, attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) -> (u32, bool) {
         // Get move data from MoveDef
