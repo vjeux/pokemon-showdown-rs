@@ -733,4 +733,68 @@ fn test_move_triples_should_accept_move_switch_and_shift_for_left() {
     }
 }
 
+// JavaScript:             it('should accept only `move`, `switch` and `shift` choices for a healthy Pokémon on the right', () => {
+#[test]
+fn test_move_triples_should_accept_move_switch_and_shift_for_right() {
+    // JavaScript:                 battle = common.gen(5).createBattle({ gameType: 'triples' });
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions {
+            game_type: Some("triples".to_string()),
+            ..Default::default()
+        },
+        [
+            // JavaScript:                 battle.setPlayer('p1', { team: [
+            // JavaScript:                     { species: "Pineco", ability: 'sturdy', moves: ['selfdestruct'] },
+            // JavaScript:                     { species: "Geodude", ability: 'sturdy', moves: ['selfdestruct'] },
+            // JavaScript:                     { species: "Gastly", ability: 'levitate', moves: ['lick'] },
+            // JavaScript:                     { species: "Forretress", ability: 'levitate', moves: ['spikes'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Pineco", ability: "sturdy", moves: ["selfdestruct"]),
+                pokemon!(species: "Geodude", ability: "sturdy", moves: ["selfdestruct"]),
+                pokemon!(species: "Gastly", ability: "levitate", moves: ["lick"]),
+                pokemon!(species: "Forretress", ability: "levitate", moves: ["spikes"]),
+            ],
+            // JavaScript:                 battle.setPlayer('p2', { team: [
+            // JavaScript:                     { species: "Skarmory", ability: 'sturdy', moves: ['roost'] },
+            // JavaScript:                     { species: "Aggron", ability: 'sturdy', moves: ['irondefense'] },
+            // JavaScript:                     { species: "Golem", ability: 'sturdy', moves: ['defensecurl'] },
+            // JavaScript:                     { species: "Magnezone", ability: 'magnetpull', moves: ['discharge'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Skarmory", ability: "sturdy", moves: ["roost"]),
+                pokemon!(species: "Aggron", ability: "sturdy", moves: ["irondefense"]),
+                pokemon!(species: "Golem", ability: "sturdy", moves: ["defensecurl"]),
+                pokemon!(species: "Magnezone", ability: "magnetpull", moves: ["discharge"]),
+            ],
+        ],
+    );
+
+    // JavaScript:                 const validChoices = ['move 1 1', 'switch 4', 'shift'];
+    let valid_choices = vec!["move 1 1", "switch 4", "shift"];
+
+    // JavaScript:                 for (const action of validChoices) {
+    // JavaScript:                     const choiceString = `move 1, move 1, ${action}`;
+    // JavaScript:                     assert(battle.choose('p1', choiceString), `Choice '${choiceString}' should be valid`);
+    // JavaScript:                     battle.p1.clearChoice();
+    // JavaScript:                 }
+    for action in valid_choices {
+        let choice_string = format!("move 1, move 1, {}", action);
+        assert!(battle.choose(SideID::P1, &choice_string).is_ok(), "Choice '{}' should be valid", choice_string);
+        // TODO: Implement clearChoice() API
+    }
+
+    // JavaScript:                 const badChoices = ['move 1 zmove', 'move 2 mega', 'team 1', 'pass', 'shift blah'];
+    let bad_choices = vec!["move 1 zmove", "move 2 mega", "team 1", "pass", "shift blah"];
+
+    // JavaScript:                 for (const badChoice of badChoices) {
+    // JavaScript:                     const choiceString = `move 1, move 1, ${badChoice}`;
+    // JavaScript:                     assert.throws(() => battle.choose('p1', choiceString));
+    // JavaScript:                 }
+    for bad_choice in bad_choices {
+        let choice_string = format!("move 1, move 1, {}", bad_choice);
+        assert!(battle.choose(SideID::P1, &choice_string).is_err(), "Expected '{}' to be rejected", choice_string);
+    }
+}
+
 

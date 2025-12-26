@@ -1419,6 +1419,10 @@ impl Battle {
                         return Err("[Invalid choice] The center Pokemon cannot shift position".to_string());
                     }
                 }
+                // Shift does not accept any arguments
+                if parts.len() > 1 {
+                    return Err("[Invalid choice] Shift does not accept any arguments".to_string());
+                }
                 Ok(())
             }
             _ => Err(format!("Unknown choice type: {}", choice_type)),
