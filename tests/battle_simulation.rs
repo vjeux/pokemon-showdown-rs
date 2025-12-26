@@ -37,11 +37,13 @@ fn create_test_battle() -> Battle {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     })
@@ -366,11 +368,13 @@ fn test_make_choices_basic() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -421,11 +425,13 @@ fn test_damage_dealt() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -489,11 +495,13 @@ fn test_status_burn() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -559,11 +567,13 @@ fn test_status_paralysis_speed() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -622,11 +632,13 @@ fn test_switch_in_battle() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -678,11 +690,13 @@ fn test_faint_detection() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -747,11 +761,13 @@ fn test_toxic_damage_progression() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -821,11 +837,13 @@ fn test_paralysis_cant_move() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -890,11 +908,13 @@ fn test_stat_boosts_sword_dance() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -961,11 +981,13 @@ fn test_speed_order() {
             name: "Alice".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Bob".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1030,11 +1052,13 @@ fn test_weather_rain_boost() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1088,11 +1112,13 @@ fn test_weather_sandstorm_damage() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1164,11 +1190,13 @@ fn test_terrain_electric_boost() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1225,11 +1253,13 @@ fn test_terrain_grassy_healing() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1312,11 +1342,13 @@ fn test_stealth_rock_damage() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1391,11 +1423,13 @@ fn test_spikes_damage_layers() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1473,11 +1507,13 @@ fn test_toxic_spikes_poison() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1549,11 +1585,13 @@ fn test_flying_immune_to_spikes() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1617,11 +1655,13 @@ fn test_protect_blocks_damage() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1671,11 +1711,13 @@ fn test_substitute_creation() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1734,11 +1776,13 @@ fn test_recovery_move() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1796,11 +1840,13 @@ fn test_haze_clears_boosts() {
             name: "Player 1".to_string(),
             team: team1,
             avatar: None,
+            rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: team2,
             avatar: None,
+            rating: None,
         }),
         ..Default::default()
     });
@@ -1828,6 +1874,7 @@ fn test_multi_hit_moves() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Breloom".to_string(),
                 species: "Breloom".to_string(),
@@ -1840,6 +1887,7 @@ fn test_multi_hit_moves() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Blissey".to_string(),
                 species: "Blissey".to_string(),
@@ -1879,6 +1927,7 @@ fn test_fixed_double_hit_move() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Hitmonlee".to_string(),
                 species: "Hitmonlee".to_string(),
@@ -1891,6 +1940,7 @@ fn test_fixed_double_hit_move() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Snorlax".to_string(),
                 species: "Snorlax".to_string(),
@@ -1928,6 +1978,7 @@ fn test_move_accuracy_miss() {
             p1: Some(PlayerOptions {
                 name: "Player 1".to_string(),
                 avatar: None,
+            rating: None,
                 team: vec![PokemonSet {
                     name: "Gengar".to_string(),
                     species: "Gengar".to_string(),
@@ -1940,6 +1991,7 @@ fn test_move_accuracy_miss() {
             p2: Some(PlayerOptions {
                 name: "Player 2".to_string(),
                 avatar: None,
+            rating: None,
                 team: vec![PokemonSet {
                     name: "Blissey".to_string(),
                     species: "Blissey".to_string(),
@@ -1977,6 +2029,7 @@ fn test_confusion_volatile() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Gengar".to_string(),
                 species: "Gengar".to_string(),
@@ -1989,6 +2042,7 @@ fn test_confusion_volatile() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Machamp".to_string(),
                 species: "Machamp".to_string(),
@@ -2025,6 +2079,7 @@ fn test_flinch_prevents_move() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Persian".to_string(),
                 species: "Persian".to_string(),
@@ -2037,6 +2092,7 @@ fn test_flinch_prevents_move() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Machamp".to_string(),
                 species: "Machamp".to_string(),
@@ -2076,6 +2132,7 @@ fn test_choice_band_locking() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Garchomp".to_string(),
                 species: "Garchomp".to_string(),
@@ -2089,6 +2146,7 @@ fn test_choice_band_locking() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Bronzong".to_string(),
                 species: "Bronzong".to_string(),
@@ -2131,6 +2189,7 @@ fn test_intimidate_ability() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Gyarados".to_string(),
                 species: "Gyarados".to_string(),
@@ -2143,6 +2202,7 @@ fn test_intimidate_ability() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Machamp".to_string(),
                 species: "Machamp".to_string(),
@@ -2176,6 +2236,7 @@ fn test_drizzle_ability() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Politoed".to_string(),
                 species: "Politoed".to_string(),
@@ -2188,6 +2249,7 @@ fn test_drizzle_ability() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Pikachu".to_string(),
                 species: "Pikachu".to_string(),
@@ -2221,6 +2283,7 @@ fn test_leftovers_healing() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Blissey".to_string(),
                 species: "Blissey".to_string(),
@@ -2234,6 +2297,7 @@ fn test_leftovers_healing() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Pikachu".to_string(),
                 species: "Pikachu".to_string(),
@@ -2271,6 +2335,7 @@ fn test_life_orb_damage() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Alakazam".to_string(),
                 species: "Alakazam".to_string(),
@@ -2284,6 +2349,7 @@ fn test_life_orb_damage() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Machamp".to_string(),
                 species: "Machamp".to_string(),
@@ -2322,6 +2388,7 @@ fn test_uturn_pivot_switch() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![
                 PokemonSet {
                     name: "Scizor".to_string(),
@@ -2344,6 +2411,7 @@ fn test_uturn_pivot_switch() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Ferrothorn".to_string(),
                 species: "Ferrothorn".to_string(),
@@ -2392,6 +2460,7 @@ fn test_trick_room_speed_reversal() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Reuniclus".to_string(),
                 species: "Reuniclus".to_string(),
@@ -2404,6 +2473,7 @@ fn test_trick_room_speed_reversal() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Jolteon".to_string(),
                 species: "Jolteon".to_string(),
@@ -2459,6 +2529,7 @@ fn test_water_absorb_ability() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Vaporeon".to_string(),
                 species: "Vaporeon".to_string(),
@@ -2471,6 +2542,7 @@ fn test_water_absorb_ability() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Blastoise".to_string(),
                 species: "Blastoise".to_string(),
@@ -2515,6 +2587,7 @@ fn test_iron_barbs_contact_damage() {
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Machamp".to_string(),
                 species: "Machamp".to_string(),
@@ -2527,6 +2600,7 @@ fn test_iron_barbs_contact_damage() {
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             avatar: None,
+            rating: None,
             team: vec![PokemonSet {
                 name: "Ferrothorn".to_string(),
                 species: "Ferrothorn".to_string(),

@@ -35,8 +35,8 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ### Core Initialization (5 methods)
 
 1. ✅ `constructor` / `new` - battle.ts:191 | battle.rs:221 | **MATCH** (basic initialization)
-2. ❌ `setPlayer` / `set_player` - battle.ts:3225 | battle.rs:315 | **MISMATCH** - Missing avatar, edit support, JSON logging, "player" log
-3. 🔍 `start` / `start` - battle.ts:1859 | battle.rs:354 | **TODO** - Complex initialization
+2. ✅ `setPlayer` / `set_player` - battle.ts:3225 | battle.rs:316 | **FIXED!** ✅ - Added edit mode, avatar, rating, proper JSON logging, player add()
+3. 🔍 `start` / `start` - battle.ts:1859 | battle.rs:447 | **TODO** - Complex initialization
 4. 🔍 `restart` / `restart` - battle.ts:1925 | battle.rs:418 | **TODO**
 5. 🔍 `destroy` / `destroy` - battle.ts:3346 | battle.rs:? | **TODO**
 
@@ -49,7 +49,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ### Speed & Priority (4 methods)
 
-10. 🔍 `updateSpeed` / `update_speed` - battle.ts:387 | battle.rs:? | **TODO**
+10. ✅ `updateSpeed` / `update_speed` - battle.ts:387 | battle.rs:3399 | **FIXED!** ✅ - Simplified to just call pokemon.update_speed() on all active
 11. ✅ `comparePriority` / `compare_priority` - battle.ts:404 | battle.rs:3406 | **MATCH**
 12. 🔍 `resolvePriority` / `resolve_priority` - battle.ts:950 | battle.rs:? | **TODO**
 13. ❌ `getActionSpeed` / `get_action_speed` - battle.ts:2590 | battle.rs:? | **MISMATCH** - Needs ModifyPriority event
@@ -76,9 +76,9 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 28. ✅ `directDamage` / `direct_damage` - battle.ts:2177 | battle.rs:3319 | **FIXED!** ✅ - Added Gen 1 Substitute checks
 29. ✅ `heal` / `heal` - battle.ts:2231 | battle.rs:3472 | **FIXED!** ✅ - Added TryHeal/Heal events
 30. ❌ `boost` / `boost` - battle.ts:1974 | battle.rs:3477 | **MISMATCH** - Missing 4 boost events (ChangeBoost, TryBoost, AfterEachBoost, AfterBoost)
-31. 🔍 `chain` / `chain` - battle.ts:2275 | battle.rs:? | **TODO**
+31. ✅ `chain` / `chain` - battle.ts:2275 | battle.rs:3071 | **FIXED!** ✅ - Returns f64, added chain_f() for number variant
 32. ❌ `chainModify` / `chain_modify` - battle.ts:2291 | battle.rs:4911 | **MISMATCH** - Event state mutation missing
-33. ⚠️ `modify` / `modify` - battle.ts:2302 | battle.rs:2960 | **MINOR MISMATCH** - Missing array param support
+33. ✅ `modify` / `modify` - battle.ts:2302 | battle.rs:3079 | **FIXED!** ✅ - Added modify_tuple() for array param support
 
 ### Stats & Modifiers (4 methods)
 

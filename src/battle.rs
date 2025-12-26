@@ -124,6 +124,7 @@ pub struct PlayerOptions {
     pub name: String,
     pub team: Vec<PokemonSet>,
     pub avatar: Option<String>,
+    pub rating: Option<String>,
 }
 
 /// Request state for the whole battle
@@ -312,12 +313,51 @@ impl Battle {
         battle
     }
 
-    /// Add a player to the battle
+    /// Add or update a player in the battle
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// setPlayer(slot: SideID, options: PlayerOptions) {
+    ///     let side;
+    ///     let didSomething = true;
+    ///     const slotNum = parseInt(slot[1]) - 1;
+    ///     if (!this.sides[slotNum]) {
+    ///         // create player
+    ///         const team = this.getTeam(options);
+    ///         side = new Side(options.name || `Player ${slotNum + 1}`, this, slotNum, team);
+    ///         if (options.avatar) side.avatar = `${options.avatar}`;
+    ///         this.sides[slotNum] = side;
+    ///     } else {
+    ///         // edit player
+    ///         side = this.sides[slotNum];
+    ///         didSomething = false;
+    ///         if (options.name && side.name !== options.name) {
+    ///             side.name = options.name;
+    ///             didSomething = true;
+    ///         }
+    ///         if (options.avatar && side.avatar !== `${options.avatar}`) {
+    ///             side.avatar = `${options.avatar}`;
+    ///             didSomething = true;
+    ///         }
+    ///         if (options.team) throw new Error(`Player ${slot} already has a team!`);
+    ///     }
+    ///     if (options.team && typeof options.team !== 'string') {
+    ///         options.team = Teams.pack(options.team);
+    ///     }
+    ///     if (!didSomething) return;
+    ///     this.inputLog.push(`>player ${slot} ` + JSON.stringify(options));
+    ///     this.add('player', side.id, side.name, side.avatar, options.rating || '');
+    ///
+    ///     // Start the battle if it's ready to start
+    ///     if (this.sides.every(playerSide => !!playerSide) && !this.started) this.start();
+    /// }
+    /// ```
     pub fn set_player(&mut self, side_id: SideID, options: PlayerOptions) {
-        let n = side_id.index();
+        let slot_num = side_id.index();
+        let mut did_something = true;
 
         // Ensure sides vector is large enough
-        while self.sides.len() <= n {
+        while self.sides.len() <= slot_num {
             self.sides.push(Side::new(
                 match self.sides.len() {
                     0 => SideID::P1,
@@ -332,29 +372,79 @@ impl Battle {
             ));
         }
 
-        let side = Side::new(side_id, n, options.name, options.team, self.active_per_half);
-        self.sides[n] = side;
+        // Check if this is a new player or editing existing
+        let is_new = self.sides[slot_num].name.is_empty() && self.sides[slot_num].pokemon.is_empty();
 
-        self.input_log.push(format!(">player {} {{\"name\":\"{}\"}}",
-            side_id.to_str(), self.sides[n].name));
+        if is_new {
+            // Create player
+            let team = options.team.clone(); // For now, assume team is already unpacked
+            let name = if !options.name.is_empty() {
+                options.name.clone()
+            } else {
+                format!("Player {}", slot_num + 1)
+            };
 
-        // Check if we can start
-        self.check_start();
-    }
+            let mut side = Side::new(side_id, slot_num, name, team, self.active_per_half);
+            if let Some(avatar) = &options.avatar {
+                side.avatar = avatar.clone();
+            }
+            self.sides[slot_num] = side;
+        } else {
+            // Edit player
+            did_something = false;
 
-    /// Check if we can start the battle
-    fn check_start(&mut self) {
-        // Need at least 2 players with Pokemon
-        let ready_count = self.sides.iter()
-            .filter(|s| !s.name.is_empty() && !s.pokemon.is_empty())
-            .count();
+            if !options.name.is_empty() && self.sides[slot_num].name != options.name {
+                self.sides[slot_num].name = options.name.clone();
+                did_something = true;
+            }
 
-        let needed = match self.game_type {
-            GameType::Multi | GameType::FreeForAll => 4,
-            _ => 2,
-        };
+            if let Some(avatar) = &options.avatar {
+                if self.sides[slot_num].avatar != *avatar {
+                    self.sides[slot_num].avatar = avatar.clone();
+                    did_something = true;
+                }
+            }
 
-        if ready_count >= needed && !self.started {
+            if !options.team.is_empty() {
+                panic!("Player {} already has a team!", side_id.to_str());
+            }
+        }
+
+        if !did_something {
+            return;
+        }
+
+        // Log to inputLog
+        // Format options as JSON - simplified version for now
+        let mut options_json = format!("{{\"name\":\"{}\"", options.name);
+        if let Some(avatar) = &options.avatar {
+            options_json.push_str(&format!(",\"avatar\":\"{}\"", avatar));
+        }
+        if let Some(rating) = &options.rating {
+            options_json.push_str(&format!(",\"rating\":\"{}\"", rating));
+        }
+        options_json.push_str("}");
+
+        self.input_log.push(format!(">player {} {}", side_id.to_str(), options_json));
+
+        // this.add('player', side.id, side.name, side.avatar, options.rating || '');
+        // Clone the values to avoid borrow checker issues
+        let side_id_str = self.sides[slot_num].id_str().to_string();
+        let side_name = self.sides[slot_num].name.clone();
+        let side_avatar = self.sides[slot_num].avatar.clone();
+        let rating_str = options.rating.as_deref().unwrap_or("").to_string();
+
+        self.add("player", &[
+            Arg::Str(&side_id_str),
+            Arg::Str(&side_name),
+            Arg::Str(&side_avatar),
+            Arg::Str(&rating_str),
+        ]);
+
+        // Start the battle if it's ready to start
+        // if (this.sides.every(playerSide => !!playerSide) && !this.started)
+        let all_sides_ready = self.sides.iter().all(|s| !s.name.is_empty() && !s.pokemon.is_empty());
+        if all_sides_ready && !self.started {
             self.start();
         }
     }
@@ -2978,20 +3068,70 @@ impl Battle {
         num.trunc() as i32
     }
 
-    /// Chain two modifiers together using fixed-point arithmetic
-    /// Equivalent to battle.ts chain()
-    pub fn chain(&self, previous_mod: (i32, i32), next_mod: (i32, i32)) -> i32 {
+    /// Chain two modifiers together
+    /// Equivalent to battle.ts chain(previousMod, nextMod)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// chain(previousMod: number | number[], nextMod: number | number[]) {
+    ///     // previousMod or nextMod can be either a number or an array [numerator, denominator]
+    ///     if (Array.isArray(previousMod)) {
+    ///         previousMod = this.trunc(previousMod[0] * 4096 / previousMod[1]);
+    ///     } else {
+    ///         previousMod = this.trunc(previousMod * 4096);
+    ///     }
+    ///
+    ///     if (Array.isArray(nextMod)) {
+    ///         nextMod = this.trunc(nextMod[0] * 4096 / nextMod[1]);
+    ///     } else {
+    ///         nextMod = this.trunc(nextMod * 4096);
+    ///     }
+    ///     return ((previousMod * nextMod + 2048) >> 12) / 4096; // M'' = ((M * M') + 0x800) >> 12
+    /// }
+    /// ```
+    pub fn chain(&self, previous_mod: (i32, i32), next_mod: (i32, i32)) -> f64 {
         let prev = (previous_mod.0 * 4096) / previous_mod.1;
         let next = (next_mod.0 * 4096) / next_mod.1;
-        ((prev * next) + 2048) >> 12
+        let result = ((prev * next) + 2048) >> 12;
+        result as f64 / 4096.0
+    }
+
+    /// Chain two modifiers together (number variant)
+    /// When both modifiers are simple multipliers (not fractions)
+    pub fn chain_f(&self, previous_mod: f64, next_mod: f64) -> f64 {
+        let prev = (previous_mod * 4096.0) as i32;
+        let next = (next_mod * 4096.0) as i32;
+        let result = ((prev * next) + 2048) >> 12;
+        result as f64 / 4096.0
     }
 
     /// Apply a modifier to a value
-    /// Equivalent to battle.ts modify()
-    /// Uses fixed-point arithmetic: modifier = numerator * 4096 / denominator
+    /// Equivalent to battle.ts modify(value, numerator, denominator)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// modify(value: number, numerator: number | number[], denominator = 1) {
+    ///     // You can also use:
+    ///     // modify(value, [numerator, denominator])
+    ///     // modify(value, fraction) - assuming you trust JavaScript's floating-point handler
+    ///     if (Array.isArray(numerator)) {
+    ///         denominator = numerator[1];
+    ///         numerator = numerator[0];
+    ///     }
+    ///     const tr = this.trunc;
+    ///     const modifier = tr(numerator * 4096 / denominator);
+    ///     return tr((tr(value * modifier) + 2048 - 1) / 4096);
+    /// }
+    /// ```
     pub fn modify(&self, value: i32, numerator: i32, denominator: i32) -> i32 {
         let modifier = (numerator * 4096) / denominator;
         ((value * modifier) + 2048 - 1) / 4096
+    }
+
+    /// Apply a modifier to a value using a tuple for numerator/denominator
+    /// Equivalent to battle.ts modify(value, [numerator, denominator])
+    pub fn modify_tuple(&self, value: i32, fraction: (i32, i32)) -> i32 {
+        self.modify(value, fraction.0, fraction.1)
     }
 
     /// Apply a floating-point modifier to a value
@@ -3258,20 +3398,31 @@ impl Battle {
 
     /// Update speed for all active Pokemon
     /// Equivalent to battle.ts updateSpeed()
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// updateSpeed() {
+    ///     for (const pokemon of this.getAllActive()) {
+    ///         pokemon.updateSpeed();
+    ///     }
+    /// }
+    /// ```
     pub fn update_speed(&mut self) {
-        // For now, just recalculate speed based on boosts
-        // In a full implementation, this would consider paralysis, items, abilities, etc.
-        for side in &mut self.sides {
-            for pokemon in &mut side.pokemon {
+        // Collect active Pokemon to update (avoid borrow checker issues)
+        let mut updates = Vec::new();
+        for (side_idx, side) in self.sides.iter().enumerate() {
+            for (poke_idx, pokemon) in side.pokemon.iter().enumerate() {
                 if pokemon.is_active {
-                    // Apply speed stage boosts
-                    let stage = pokemon.boosts.spe;
-                    let multiplier = if stage >= 0 {
-                        (2 + stage as i32) as f64 / 2.0
-                    } else {
-                        2.0 / (2 + (-stage) as i32) as f64
-                    };
-                    pokemon.stored_stats.spe = (pokemon.stored_stats.spe as f64 * multiplier) as i32;
+                    updates.push((side_idx, poke_idx));
+                }
+            }
+        }
+
+        // Update each active Pokemon's speed
+        for (side_idx, poke_idx) in updates {
+            if let Some(side) = self.sides.get_mut(side_idx) {
+                if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                    pokemon.update_speed();
                 }
             }
         }
@@ -4303,6 +4454,7 @@ impl Battle {
             name: name.to_string(),
             avatar: if avatar.is_empty() { None } else { Some(avatar.to_string()) },
             team: vec![], // Team is handled separately
+            rating: None,
         };
 
         // Set the player
@@ -5881,11 +6033,13 @@ mod tests {
                 name: "Alice".to_string(),
                 team: create_test_team(),
                 avatar: None,
+                rating: None,
             }),
             p2: Some(PlayerOptions {
                 name: "Bob".to_string(),
                 team: create_test_team(),
                 avatar: None,
+                rating: None,
             }),
             ..Default::default()
         });
@@ -5904,11 +6058,13 @@ mod tests {
                 name: "Alice".to_string(),
                 team: create_test_team(),
                 avatar: None,
+                rating: None,
             }),
             p2: Some(PlayerOptions {
                 name: "Bob".to_string(),
                 team: create_test_team(),
                 avatar: None,
+                rating: None,
             }),
             ..Default::default()
         });
