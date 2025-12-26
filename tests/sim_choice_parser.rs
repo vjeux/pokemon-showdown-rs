@@ -98,3 +98,46 @@ fn test_team_preview_should_reject_non_numerical_choice_details() {
         assert!(battle.choose(side_id, "team first").is_err(), "Expected 'team first' to be rejected");
     }
 }
+
+// JavaScript:         it('should reject zero-based choice details', () => {
+#[test]
+fn test_team_preview_should_reject_zero_based_choice_details() {
+    // JavaScript:             battle = common.createBattle({ preview: true }, [
+    // JavaScript:                 [{ species: "Mew", ability: 'synchronize', moves: ['recover'] }],
+    // JavaScript:                 [{ species: "Rhydon", ability: 'prankster', moves: ['splash'] }],
+    // JavaScript:             ]);
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions {
+            preview: true,
+            ..Default::default()
+        },
+        [
+            vec![pokemon!(
+                species: "Mew",
+                ability: "synchronize",
+                moves: ["recover"]
+            )],
+            vec![pokemon!(
+                species: "Rhydon",
+                ability: "prankster",
+                moves: ["splash"]
+            )],
+        ],
+    );
+
+    // JavaScript:             for (const side of battle.sides) {
+    // JavaScript:                 assert.throws(
+    // JavaScript:                     () => battle.choose(side.id, 'team 0'),
+    // JavaScript:                     /\[Invalid choice\] Can't choose for Team Preview:/i,
+    // JavaScript:                     `Input should have been rejected`
+    // JavaScript:                 );
+    // JavaScript:             }
+    for side_id in [SideID::P1, SideID::P2] {
+        let result = battle.choose(side_id, "team 0");
+        assert!(result.is_err(), "Input should have been rejected");
+        if let Err(msg) = result {
+            assert!(msg.to_lowercase().contains("[invalid choice]"), "Error should contain '[Invalid choice]': {}", msg);
+            assert!(msg.to_lowercase().contains("team preview"), "Error should mention 'Team Preview': {}", msg);
+        }
+    }
+}

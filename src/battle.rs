@@ -1192,10 +1192,18 @@ impl Battle {
                     return Err("Team choice requires Pokemon order".to_string());
                 }
                 // Validate that the argument is a number
-                if parts[1].parse::<usize>().is_err() {
-                    return Err("[Invalid choice] Can't choose for Team Preview: You must select a team order".to_string());
+                match parts[1].parse::<usize>() {
+                    Ok(num) => {
+                        // Pokemon numbering is 1-based, reject 0
+                        if num == 0 {
+                            return Err("[Invalid choice] Can't choose for Team Preview: You must select a team order".to_string());
+                        }
+                        Ok(())
+                    }
+                    Err(_) => {
+                        return Err("[Invalid choice] Can't choose for Team Preview: You must select a team order".to_string());
+                    }
                 }
-                Ok(())
             }
             "pass" => {
                 Ok(())
