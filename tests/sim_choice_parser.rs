@@ -402,4 +402,59 @@ fn test_move_generic_should_allow_mega_and_targeting() {
     assert!(battle.choose(SideID::P2, "move Blaze Kick zmove 1, move irondefense").is_ok(), "Expected 'move Blaze Kick zmove 1, move irondefense' to be accepted");
 }
 
+// NOTE: Skipping Test 10 (Dynamax) and Test 11 (Conversion 2) as they require substantial
+// infrastructure (Gen 8 support, Dynamax mechanics, move name resolution) that would take
+// significant time to implement. Will return to these after completing simpler tests.
+
+// JavaScript:         describe('Singles', () => {
+// JavaScript:             it('should accept only `move` and `switch` choices', () => {
+#[test]
+fn test_move_singles_should_accept_only_move_and_switch() {
+    // JavaScript:                 battle = common.createBattle();
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions::default(),
+        [
+            // JavaScript:                 battle.setPlayer('p1', { team: [
+            // JavaScript:                     { species: "Mew", ability: 'synchronize', moves: ['lunardance', 'recover'] },
+            // JavaScript:                     { species: "Bulbasaur", ability: 'overgrow', moves: ['tackle', 'growl'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Mew", ability: "synchronize", moves: ["lunardance", "recover"]),
+                pokemon!(species: "Bulbasaur", ability: "overgrow", moves: ["tackle", "growl"]),
+            ],
+            // JavaScript:                 battle.setPlayer('p2', { team: [
+            // JavaScript:                     { species: "Rhydon", ability: 'prankster', moves: ['splash', 'horndrill'] },
+            // JavaScript:                     { species: "Charmander", ability: 'blaze', moves: ['tackle', 'growl'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Rhydon", ability: "prankster", moves: ["splash", "horndrill"]),
+                pokemon!(species: "Charmander", ability: "blaze", moves: ["tackle", "growl"]),
+            ],
+        ],
+    );
+
+    // JavaScript:                 const validChoices = ['move 1', 'move 2', 'switch 2'];
+    let valid_choices = vec!["move 1", "move 2", "switch 2"];
+
+    // JavaScript:                 for (const action of validChoices) {
+    // JavaScript:                     assert(battle.choose('p1', action), `Choice '${action}' should be valid`);
+    // JavaScript:                     battle.p1.clearChoice();
+    // JavaScript:                 }
+    for action in valid_choices {
+        assert!(battle.choose(SideID::P1, action).is_ok(), "Choice '{}' should be valid", action);
+        // TODO: Implement clearChoice() - for now choices are validated but not stored
+    }
+
+    // JavaScript:                 const badChoices = ['move 1 zmove', 'move 2 mega', 'team 1', 'pass', 'shift'];
+    let bad_choices = vec!["move 1 zmove", "move 2 mega", "team 1", "pass", "shift"];
+
+    // JavaScript:                 for (const badChoice of badChoices) {
+    // JavaScript:                     assert.throws(() => battle.choose('p1', badChoice));
+    // JavaScript:                 }
+    for bad_choice in bad_choices {
+        assert!(battle.choose(SideID::P1, bad_choice).is_err(), "Expected '{}' to be rejected", bad_choice);
+    }
+}
+
+
 

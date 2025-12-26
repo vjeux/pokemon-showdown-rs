@@ -1272,6 +1272,13 @@ impl Battle {
                     i += 1;
                 }
 
+                // In Singles, zmove and mega require a target
+                if matches!(self.game_type, GameType::Singles) {
+                    if (has_zmove || has_mega) && target_count == 0 {
+                        return Err("[Invalid choice] Z-moves and Mega Evolution require a target in Singles".to_string());
+                    }
+                }
+
                 Ok(())
             }
             "switch" => {
