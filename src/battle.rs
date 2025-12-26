@@ -4373,7 +4373,16 @@ impl Battle {
         };
 
         if already_has {
-            // TODO: Check for onRestart handler and call single_event
+            // JS: if (!status.onRestart) return false; return this.battle.singleEvent('Restart', status, this.volatiles[status.id], this, source, sourceEffect);
+            // Call onRestart for allyswitch
+            if status.as_str() == "allyswitch" {
+                let result = crate::data::move_callbacks::allyswitch::on_restart(self, target);
+                match result {
+                    crate::data::move_callbacks::MoveHandlerResult::False => return false,
+                    crate::data::move_callbacks::MoveHandlerResult::True => return true,
+                    _ => return false,
+                }
+            }
             return false;
         }
 
@@ -4412,6 +4421,12 @@ impl Battle {
             }
         } else {
             return false;
+        }
+
+        // JS: result = this.battle.singleEvent('Start', status, this.volatiles[status.id], this, source, sourceEffect);
+        // Call onStart for allyswitch
+        if status.as_str() == "allyswitch" {
+            crate::data::move_callbacks::allyswitch::on_start(self, target);
         }
 
         true
@@ -6335,6 +6350,29 @@ impl Battle {
         let move_effect_id = ID::new(move_id);
 
         match event_id {
+            "PrepareHit" => {
+                // onPrepareHit callbacks
+                match move_id {
+                    "allyswitch" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            let result = crate::data::move_callbacks::allyswitch::on_prepare_hit(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
+                            // If onPrepareHit returns false, the move fails
+                            match result {
+                                crate::data::move_callbacks::MoveHandlerResult::False => {
+                                    return EventResult::Fail;
+                                }
+                                _ => return EventResult::Continue,
+                            }
+                        }
+                    }
+                    _ => {}
+                }
+            }
             "Hit" => {
                 // Secondary effect onHit callbacks
                 // These are invoked when a move hits
@@ -6342,6 +6380,17 @@ impl Battle {
                     "alluringvoice" => {
                         if let (Some(target), Some(source)) = (target, source) {
                             crate::data::move_callbacks::alluringvoice::on_hit(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
+                        }
+                        return EventResult::Continue;
+                    }
+                    "allyswitch" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            crate::data::move_callbacks::allyswitch::on_hit(
                                 self,
                                 target,
                                 source,
