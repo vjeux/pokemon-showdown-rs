@@ -497,6 +497,8 @@ pub struct Dex {
     pub natures: HashMap<ID, NatureData>,
     /// Aliases map from alias ID to canonical name
     pub aliases: HashMap<ID, String>,
+    /// Compound word names with extra hyphens to mark word boundaries
+    pub compound_word_names: Vec<String>,
     pub gen: u8,
 }
 
@@ -511,6 +513,7 @@ impl Dex {
             types: HashMap::new(),
             natures: HashMap::new(),
             aliases: HashMap::new(),
+            compound_word_names: Vec::new(),
             gen,
         }
     }
@@ -524,6 +527,7 @@ impl Dex {
         types_json: &str,
         natures_json: &str,
         aliases_json: &str,
+        compound_word_names_json: &str,
     ) -> Result<Self, serde_json::Error> {
         let species_raw: HashMap<String, SpeciesData> = serde_json::from_str(species_json)?;
         let moves_raw: HashMap<String, MoveData> = serde_json::from_str(moves_json)?;
@@ -532,6 +536,7 @@ impl Dex {
         let types: HashMap<String, TypeData> = serde_json::from_str(types_json)?;
         let natures_raw: HashMap<String, NatureData> = serde_json::from_str(natures_json)?;
         let aliases_raw: HashMap<String, String> = serde_json::from_str(aliases_json)?;
+        let compound_word_names: Vec<String> = serde_json::from_str(compound_word_names_json)?;
 
         // Convert string keys to ID keys
         let species = species_raw.into_iter()
@@ -561,6 +566,7 @@ impl Dex {
             types,
             natures,
             aliases,
+            compound_word_names,
             gen: 9, // Default to gen 9
         })
     }
@@ -1003,6 +1009,7 @@ pub mod embedded {
     pub const TYPES_JSON: &str = include_str!("../data/typechart.json");
     pub const NATURES_JSON: &str = include_str!("../data/natures.json");
     pub const ALIASES_JSON: &str = include_str!("../data/aliases.json");
+    pub const COMPOUNDWORDNAMES_JSON: &str = include_str!("../data/compoundwordnames.json");
 }
 
 impl Dex {
@@ -1016,6 +1023,7 @@ impl Dex {
             embedded::TYPES_JSON,
             embedded::NATURES_JSON,
             embedded::ALIASES_JSON,
+            embedded::COMPOUNDWORDNAMES_JSON,
         )
     }
 }

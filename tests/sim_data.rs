@@ -383,8 +383,84 @@ fn test_should_have_valid_aliases_entries() {
     }
 }
 
+/// Test: should have valid CompoundWordNames entries
+/// JavaScript: it('should have valid CompoundWordNames entries', () => { ... })
+#[test]
+fn test_should_have_valid_compound_word_names_entries() {
+    let dex = Dex::load_default().unwrap();
+
+    // JavaScript: const CompoundWordNames = require('../../dist/data/aliases').CompoundWordNames;
+    // JavaScript: const used = new Map();
+    let mut used: std::collections::HashMap<String, String> = std::collections::HashMap::new();
+
+    // JavaScript: for (const name of CompoundWordNames) {
+    for name in &dex.compound_word_names {
+        // JavaScript: const targetid = toID(name);
+        let targetid = ID::new(name);
+
+        // JavaScript: assert(!used.has(targetid), `CompoundWordNames entry "${name}" already exists as "${used.get(targetid)}"`);
+        assert!(
+            !used.contains_key(targetid.as_str()),
+            "CompoundWordNames entry '{}' already exists as '{}'",
+            name,
+            used.get(targetid.as_str()).unwrap_or(&String::new())
+        );
+
+        // JavaScript: used.set(targetid, name);
+        used.insert(targetid.as_str().to_string(), name.clone());
+
+        // JavaScript: let actualName = Dex.data.Pokedex[targetid]?.name || Dex.data.Moves[targetid]?.name ||
+        // JavaScript:     Dex.data.Abilities[targetid]?.name || Dex.data.Items[targetid]?.name;
+        let mut actual_name = dex.species.get(&targetid).map(|s| &s.name)
+            .or_else(|| dex.moves.get(&targetid).map(|m| &m.name))
+            .or_else(|| dex.abilities.get(&targetid).map(|a| &a.name))
+            .or_else(|| dex.items.get(&targetid).map(|i| &i.name))
+            .map(|s| s.clone());
+
+        // JavaScript: if (Dex.data.Pokedex[targetid]?.name) {
+        if let Some(species) = dex.species.get(&targetid) {
+            // JavaScript: const species = Dex.species.get(targetid);
+            // JavaScript: if (species.forme) actualName = species.baseSpecies + ' ' + species.forme;
+            if let Some(ref forme) = species.forme {
+                if let Some(ref base_species) = species.base_species {
+                    actual_name = Some(format!("{} {}", base_species, forme));
+                }
+            }
+        }
+
+        // JavaScript: assert(actualName, `CompoundWordNames entry "${name}" must be a pokemon/move/ability/item`);
+        assert!(
+            actual_name.is_some(),
+            "CompoundWordNames entry '{}' must be a pokemon/move/ability/item",
+            name
+        );
+
+        let actual_name = actual_name.unwrap();
+
+        // JavaScript: assert.equal(actualName.replace(/-/g, ''), name.replace(/-/g, ''), `CompoundWordNames entry "${name}" should be the same as its target name (ignoring hyphens)`);
+        let actual_name_no_hyphen = actual_name.replace("-", "");
+        let name_no_hyphen = name.replace("-", "");
+        assert_eq!(
+            actual_name_no_hyphen,
+            name_no_hyphen,
+            "CompoundWordNames entry '{}' should be the same as its target name '{}' (ignoring hyphens)",
+            name,
+            actual_name
+        );
+
+        // JavaScript: assert(name.split('-').length > actualName.split('-').length, `CompoundWordNames entry "${name}" should have at least one more hyphen than "${actualName}" (to mark a word boundary)`);
+        let name_hyphen_count = name.matches('-').count();
+        let actual_name_hyphen_count = actual_name.matches('-').count();
+        assert!(
+            name_hyphen_count > actual_name_hyphen_count,
+            "CompoundWordNames entry '{}' should have at least one more hyphen than '{}' (to mark a word boundary)",
+            name,
+            actual_name
+        );
+    }
+}
+
 // Note: The following tests from data.js are not ported yet:
-// - it('should have valid CompoundWordNames entries') - requires CompoundWordNames data
 // - it('should have valid Rulesets entries') - requires Rulesets data
 // - it('should have valid Formats (slow)') - requires format loading
 // - it('should have valid Learnsets entries', function () { ... }) - requires learnsets
