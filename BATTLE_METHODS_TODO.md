@@ -44,7 +44,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 6. ✅ `random` / `random` - battle.ts:346 | battle.rs:634 | **MATCH**
 7. ✅ `randomChance` / `random_chance` - battle.ts:350 | battle.rs:639 | **MATCH**
-8. 📝 `sample` / `sample` - NOT IN BATTLE.TS (delegated to PRNG) | **N/A**
+8. ✅ `sample` / `sample` - battle.ts:355 | battle.rs:737 | **MATCH** - Both delegate to PRNG (Rust returns Option - acceptable)
 9. ✅ `resetRNG` / `reset_rng` - battle.ts:360 | battle.rs:3974 | **MATCH**
 
 ### Speed & Priority (4 methods)
@@ -176,8 +176,8 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching**: 63 (66%) - Two-thirds complete! 🎯
-- RNG: random, randomChance, resetRNG
+**Methods Matching**: 64 (67%) - Two-thirds complete! 🎯
+- RNG: random, randomChance, **sample**, resetRNG
 - **Initialization**: setPlayer, restart, destroy
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
@@ -247,7 +247,7 @@ Methods that still need event integration:
 2. ✅ **DONE**: Progress: 52/96 (54%) → 61/96 (64%)
 3. ✅ **DONE**: Reduced major mismatches from 26 → 19 → 17
 
-### Remaining Methods by Category (33 total)
+### Remaining Methods by Category (32 total)
 
 **Event-Dependent Methods (7)** - Require event context infrastructure:
 - boost (needs 4 events: ChangeBoost, TryBoost, AfterEachBoost, AfterBoost)
@@ -288,4 +288,4 @@ Methods that still need event integration:
 
 **Last Updated**: 2025-12-26
 **Tests Passing**: 43/43 (100% - 3 tests disabled pending move callbacks)
-**Session Achievement**: 9 methods fixed, bringing total to 61/96 (64%)
+**Session Achievement**: Identified sample method as MATCH, bringing total to 64/96 (67%)
