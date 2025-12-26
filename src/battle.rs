@@ -6731,6 +6731,47 @@ impl Battle {
                     _ => {}
                 }
             }
+            "Try" => {
+                // onTry callbacks - check if move can be used
+                match move_id {
+                    "aurawheel" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            let result = crate::data::move_callbacks::aurawheel::on_try(
+                                self,
+                                source,
+                                target,
+                                &move_effect_id,
+                            );
+                            // If onTry returns Null, the move fails
+                            match result {
+                                crate::data::move_callbacks::MoveHandlerResult::Null => {
+                                    return EventResult::Fail;
+                                }
+                                _ => return EventResult::Continue,
+                            }
+                        }
+                    }
+                    _ => {}
+                }
+            }
+            "ModifyType" => {
+                // onModifyType callbacks - modify the move's type
+                match move_id {
+                    "aurawheel" => {
+                        if let Some(source) = source {
+                            let _result = crate::data::move_callbacks::aurawheel::on_modify_type(
+                                self,
+                                source,
+                                &move_effect_id,
+                            );
+                            // TODO: Actually modify the active move's type based on result
+                            // For now, the callback is informational only
+                            return EventResult::Continue;
+                        }
+                    }
+                    _ => {}
+                }
+            }
             "TryImmunity" => {
                 // onTryImmunity callbacks - check if target is immune to the move
                 match move_id {
