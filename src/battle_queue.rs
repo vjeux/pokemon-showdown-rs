@@ -353,6 +353,12 @@ impl BattleQueue {
         None
     }
 
+    /// Check if a pokemon will move this turn (by Pokemon reference)
+    /// JavaScript pattern: this.queue.willMove(target)
+    pub fn will_move_pokemon(&self, pokemon: &crate::pokemon::Pokemon) -> Option<&MoveAction> {
+        self.will_move(pokemon.side_index, pokemon.position)
+    }
+
     /// Check if a pokemon will switch this turn
     pub fn will_switch(&self, side_index: usize, pokemon_index: usize) -> Option<&SwitchAction> {
         for action in &self.list {
