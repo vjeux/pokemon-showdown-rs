@@ -156,9 +156,9 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 81. 🔍 `clearActiveMove` / `clear_active_move` - battle.ts:376 | battle.rs:? | **TODO**
 82. 🔍 `checkMoveMakesContact` / `check_move_makes_contact` - battle.ts:1290 | battle.rs:? | **TODO**
 83. 🔍 `checkFainted` / `check_fainted` - battle.ts:2487 | battle.rs:? | **TODO**
-84. 🔍 `checkEVBalance` / `check_ev_balance` - battle.ts:1960 | battle.rs:? | **TODO**
+84. ✅ `checkEVBalance` / `check_ev_balance` - battle.ts:1960 | battle.rs:5724 | **FIXED!** ✅ - Rewrote to check for 510 EV limit mismatch
 85. 🔍 `getCategory` / `get_category` - battle.ts:2350 | battle.rs:? | **TODO**
-86. 🔍 `randomizer` / `randomizer` - battle.ts:2354 | battle.rs:? | **TODO**
+86. ✅ `randomizer` / `randomizer` - battle.ts:2354 | battle.rs:5270 | **MATCH** - Verified implementation correct
 87. 🔍 `getTeam` / `get_team` - battle.ts:3164 | battle.rs:? | **TODO**
 88. 🔍 `showOpenTeamSheets` / `show_open_team_sheets` - battle.ts:3183 | battle.rs:? | **TODO**
 89. 🔍 `join` / `join` - battle.ts:3261 | battle.rs:? | **TODO**
