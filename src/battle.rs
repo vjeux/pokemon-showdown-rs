@@ -3836,15 +3836,16 @@ impl Battle {
     /// Faint a Pokemon
     /// Equivalent to battle.ts faint()
     pub fn faint(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) {
+        // JS: pokemon.faint(source, effect)
+        // Delegate to pokemon.faint() method
         let (target_side, target_idx) = target;
         if let Some(side) = self.sides.get_mut(target_side) {
             if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
-                if pokemon.hp > 0 {
-                    pokemon.hp = 0;
-                }
+                pokemon.faint();
+                // TODO: Implement faintQueue system like JavaScript
+                // JS pushes {target, source, effect} to battle.faintQueue
             }
         }
-        // faint_messages will handle the actual fainting logic
     }
 
     /// Check all active Pokemon for fainting and update their status
@@ -4211,6 +4212,13 @@ impl Battle {
     pub fn turn_loop(&mut self) {
         self.add_log("", &[]);
 
+        // Add timestamp (JS: this.add('t:', Math.floor(Date.now() / 1000)))
+        let timestamp = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_secs();
+        self.add_log("t:", &[&timestamp.to_string()]);
+
         if self.request_state != BattleRequestState::None {
             self.request_state = BattleRequestState::None;
         }
@@ -4316,12 +4324,12 @@ impl Battle {
                 return false;
             }
 
-            // Check for abilities that prevent contact
+            // JS: if (move.flags['contact'] && attacker.hasItem('protectivepads'))
             let (side_idx, poke_idx) = attacker;
             if let Some(side) = self.sides.get(side_idx) {
                 if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                    // Long Reach prevents contact
-                    if pokemon.ability.as_str() == "longreach" {
+                    // Protective Pads prevents contact
+                    if pokemon.item.as_str() == "protectivepads" {
                         return false;
                     }
                 }
@@ -5729,10 +5737,39 @@ impl Battle {
 
     /// Attribute damage to last move
     /// Equivalent to battle.ts attrLastMove()
-    pub fn attr_last_move(&mut self, attr: &str) {
-        // In the full implementation, this would set an attribute on the last move
-        // For now, this is a no-op placeholder
-        let _ = attr;
+    pub fn attr_last_move(&mut self, args: &[&str]) {
+        // JS: if (this.lastMoveLine < 0) return;
+        if self.last_move_line < 0 {
+            return;
+        }
+
+        let line_idx = self.last_move_line as usize;
+        if line_idx >= self.log.len() {
+            return;
+        }
+
+        // Check if it's an animation line
+        if self.log[line_idx].starts_with("|-anim|") {
+            // JS: if (args.includes('[still]'))
+            if args.contains(&"[still]") {
+                // Remove the animation line
+                self.log.remove(line_idx);
+                self.last_move_line = -1;
+                return;
+            }
+        } else if args.contains(&"[still]") {
+            // If no animation plays, the target should never be known
+            let parts: Vec<&str> = self.log[line_idx].split('|').collect();
+            let mut new_parts = parts.clone();
+            if new_parts.len() > 4 {
+                new_parts[4] = "";
+            }
+            self.log[line_idx] = new_parts.join("|");
+        }
+
+        // Append attributes to the log line
+        let attrs = args.join("|");
+        self.log[line_idx] = format!("{}|{}", self.log[line_idx], attrs);
     }
 
     /// Chain modify a value by a multiplier (4096-based)
@@ -5896,10 +5933,37 @@ impl Battle {
 
     /// Retarget the last executed move
     /// Equivalent to battle.ts retargetLastMove()
-    pub fn retarget_last_move(&mut self, source: (usize, usize), new_target: (usize, usize)) {
-        // In the full implementation, this would redirect the last move
-        // For now, just store the info
-        let _ = (source, new_target);
+    pub fn retarget_last_move(&mut self, new_target: (usize, usize)) {
+        // JS: if (this.lastMoveLine < 0) return;
+        if self.last_move_line < 0 {
+            return;
+        }
+
+        let line_idx = self.last_move_line as usize;
+        if line_idx >= self.log.len() {
+            return;
+        }
+
+        // Get the new target's string representation
+        let new_target_str = if let Some(side) = self.sides.get(new_target.0) {
+            if let Some(pokemon) = side.pokemon.get(new_target.1) {
+                format!("{}: {}", side.id_str(), pokemon.name)
+            } else {
+                return;
+            }
+        } else {
+            return;
+        };
+
+        // Split the log line and update target (part 4)
+        // JS: const parts = this.log[this.lastMoveLine].split('|');
+        // JS: parts[4] = newTarget.toString();
+        let parts: Vec<&str> = self.log[line_idx].split('|').collect();
+        let mut new_parts: Vec<String> = parts.iter().map(|s| s.to_string()).collect();
+        if new_parts.len() > 4 {
+            new_parts[4] = new_target_str;
+        }
+        self.log[line_idx] = new_parts.join("|");
     }
 
     /// Run team preview phase

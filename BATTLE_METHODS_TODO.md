@@ -98,7 +98,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ### Turn Flow (5 methods)
 
 43. ❌ `endTurn` / `end_turn` - battle.ts:1577 | battle.rs:3731 | **MISMATCH** - Highly simplified (missing Dynamax, Gen 1 logic)
-44. ✅ `turnLoop` / `turn_loop` - battle.ts:2937 | battle.rs:4211 | **MATCH** - Missing timestamp but structure matches
+44. ✅ `turnLoop` / `turn_loop` - battle.ts:2937 | battle.rs:4211 | **FIXED!** ✅ - Added timestamp
 45. ✅ `runAction` / `run_action` - battle.ts:2629 | battle.rs:4238 | **MATCH** - Exists (likely simplified but present)
 46. 🔍 `maybeTriggerEndlessBattleClause` / `maybe_trigger_endless_battle_clause` - battle.ts:1757 | battle.rs:? | **TODO**
 47. 🔍 `runPickTeam` / `run_pick_team` - battle.ts:1931 | battle.rs:? | **TODO**
@@ -121,7 +121,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 58. ✅ `getAllPokemon` / `get_all_pokemon` - battle.ts:1311 | battle.rs:3111 | **MATCH**
 59. ✅ `getAllActive` / `get_all_active` - battle.ts:1319 | battle.rs:679 | **FIXED!** ✅ (Previous session - merged 2 methods into 1)
 60. 🔍 `getAtSlot` / `get_at_slot` - battle.ts:1563 | battle.rs:4167 | **MISMATCH** - Different signature (takes PokemonSlot vs side/slot)
-61. 🔍 `faint` / `faint` - battle.ts:1573 | battle.rs:3838 | **MISMATCH** - Doesn't delegate to pokemon.faint(), just sets hp=0
+61. ✅ `faint` / `faint` - battle.ts:1573 | battle.rs:3838 | **FIXED!** ✅ - Now delegates to pokemon.faint() (TODO: implement faintQueue system)
 
 ### Switching (4 methods)
 
@@ -146,15 +146,15 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 74. ✅ `debug` / `debug` - battle.ts:3147 | battle.rs:2894 | **MATCH**
 75. ✅ `debugError` / `debug_error` - battle.ts:3158 | battle.rs:5807 | **FIXED!** ✅ - Now calls add("debug") matching JS
 76. 🔍 `getDebugLog` / `get_debug_log` - battle.ts:3153 | battle.rs:3022 | **MISMATCH** - Simplified (missing extractChannelMessages)
-77. 🔍 `attrLastMove` / `attr_last_move` - battle.ts:3122 | battle.rs:5732 | **MISMATCH** - Stub (needs full log manipulation)
-78. 🔍 `retargetLastMove` / `retarget_last_move` - battle.ts:3140 | battle.rs:5899 | **MISMATCH** - Stub (needs full implementation)
+77. ✅ `attrLastMove` / `attr_last_move` - battle.ts:3122 | battle.rs:5738 | **FIXED!** ✅ - Full implementation with log manipulation
+78. ✅ `retargetLastMove` / `retarget_last_move` - battle.ts:3140 | battle.rs:5936 | **FIXED!** ✅ - Full implementation updating log line
 
 ### Miscellaneous (12 methods)
 
 79. 🔍 `suppressingAbility` / `suppressing_ability` - battle.ts:365 | battle.rs:3333 | **TODO** - Complex (needs ActiveMove object)
 80. ✅ `setActiveMove` / `set_active_move` - battle.ts:370 | battle.rs:3311 | **MATCH** - Verified correct
 81. ✅ `clearActiveMove` / `clear_active_move` - battle.ts:376 | battle.rs:3319 | **MATCH** - Verified correct
-82. 🔍 `checkMoveMakesContact` / `check_move_makes_contact` - battle.ts:1290 | battle.rs:4296 | **MISMATCH** - Missing Protective Pads check
+82. ✅ `checkMoveMakesContact` / `check_move_makes_contact` - battle.ts:1290 | battle.rs:4319 | **FIXED!** ✅ - Now checks for Protective Pads item
 83. ✅ `checkFainted` / `check_fainted` - battle.ts:2487 | battle.rs:3850 | **FIXED!** ✅ - Rewrote to match JS (loops through active, sets fnt status)
 84. ✅ `checkEVBalance` / `check_ev_balance` - battle.ts:1960 | battle.rs:5724 | **FIXED!** ✅ - Rewrote to check for 510 EV limit mismatch
 85. ✅ `getCategory` / `get_category` - battle.ts:2350 | battle.rs:4382 | **FIXED!** ✅ - Changed to return String (defaulting to "Physical")
@@ -175,12 +175,12 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching**: 52 (54%) - Over half are direct translations!
+**Methods Matching**: 57 (59%) - Nearly 60% direct translations!
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
 - Util: getPokemon, getAllPokemon, getAllActive, getOverflowedTurnCount, getCategory, checkFainted, randomizer
-- Logging: debug, addMove, debugError
+- Logging: debug, addMove, debugError, **attrLastMove, retargetLastMove**
 - **Requests & Choices**: clearRequest, allChoicesDone, getRequests, choose, makeChoices, commitChoices, undoChoice
 - Switching: getRandomSwitchable, canSwitch
 - **Damage/Heal**: damage, spreadDamage, heal, directDamage
@@ -188,19 +188,20 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - **Display**: toString (Display trait)
 - **Event System**: eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
 - **Turn Flow**: turnLoop, runAction
+- **NEW FIXES**: checkMoveMakesContact (Protective Pads), faint (delegation), attrLastMove, retargetLastMove
 - And more
 
 **Methods with Minor Mismatches**: 2 (2%)
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 26 (27%)
+**Methods with Major Mismatches**: 21 (22%) - DOWN from 26!
 - Event-dependent: boost, chainModify, getActionSpeed
 - Simplified: makeRequest, endTurn, getDebugLog, faintMessages
 - Missing features: add, hint, addSplit
-- Complex: suppressingAbility, checkMoveMakesContact
-- Stubs: attrLastMove, retargetLastMove, finalModify
-- Different signature/logic: swapPosition, getAtSlot, faint, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState, resolvePriority
+- Complex: suppressingAbility
+- Stubs: finalModify (needs event.modifier)
+- Different signature/logic: swapPosition, getAtSlot, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState, resolvePriority
 
 **Methods Needing Deep Comparison**: 16 (17%)
 - start, restart, destroy (initialization/teardown)
