@@ -67,7 +67,7 @@ use crate::battle::{Battle, Arg};
 use crate::move_types::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{ItemHandlerResult, ItemDef};
+use super::ItemHandlerResult;
 
 /// onStart(...)
 pub fn on_start(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {

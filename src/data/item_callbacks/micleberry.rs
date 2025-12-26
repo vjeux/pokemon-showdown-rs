@@ -44,7 +44,7 @@ use crate::battle::{Battle, Arg};
 use crate::move_types::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{ItemHandlerResult, ItemDef};
+use super::ItemHandlerResult;
 
 /// onResidual(...)
 pub fn on_residual(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {

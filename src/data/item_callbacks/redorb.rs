@@ -31,7 +31,7 @@ use crate::battle::{Battle, Arg};
 use crate::move_types::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{ItemHandlerResult, ItemDef};
+use super::ItemHandlerResult;
 
 /// onSwitchInPriority(...)
 pub fn on_switch_in_priority(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {

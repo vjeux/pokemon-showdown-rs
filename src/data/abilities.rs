@@ -12,15 +12,3 @@ use crate::dex_data::ID;
 // Re-export ability data type from dex
 pub use crate::dex::AbilityData;
 
-// Minimal compatibility struct for existing code
-#[derive(Debug, Clone)]
-pub struct AbilityDef {
-    pub id: ID,
-}
-
-impl AbilityDef {
-    pub fn from_id(id: ID) -> Self {
-        Self { id }
-    }
-}
-

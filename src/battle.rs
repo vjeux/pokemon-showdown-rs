@@ -6716,18 +6716,12 @@ impl Battle {
 
         // Handle ability events
         if self.dex.get_ability(effect_id.as_str()).is_some() {
-            let ability_def = crate::data::abilities::AbilityDef::from_id(effect_id.clone());
-            return self.handle_ability_event(event_id, &ability_def, target);
+            return self.handle_ability_event(event_id, effect_id, target);
         }
 
         // Handle item events
         if self.dex.get_item(effect_id.as_str()).is_some() {
-            let item_def = crate::data::items::ItemDef::from_id(
-                effect_id.clone(),
-                self.dex.get_item(effect_id.as_str()).unwrap().name.clone(),
-                self.dex.get_item(effect_id.as_str()).unwrap().is_choice,
-            );
-            return self.handle_item_event(event_id, &item_def, target);
+            return self.handle_item_event(event_id, effect_id, target);
         }
 
         // Handle move events
@@ -6747,7 +6741,7 @@ impl Battle {
     fn handle_ability_event(
         &mut self,
         event_id: &str,
-        ability: &crate::data::abilities::AbilityDef,
+        ability_id: &ID,
         target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
@@ -6757,7 +6751,7 @@ impl Battle {
                 // Handle switch-in abilities
                 if let Some((side_idx, poke_idx)) = target {
                     // Intimidate
-                    if ability.id.as_str() == "intimidate" {
+                    if ability_id.as_str() == "intimidate" {
                         // Lower foe's Attack - collect targets first to avoid borrow issues
                         let foe_side = if side_idx == 0 { 1 } else { 0 };
                         let mut targets = Vec::new();
@@ -6774,22 +6768,22 @@ impl Battle {
                         return EventResult::Stop;
                     }
                     // Drizzle
-                    if ability.id.as_str() == "drizzle" {
+                    if ability_id.as_str() == "drizzle" {
                         self.field.set_weather(ID::new("rain"), None);
                         return EventResult::Stop;
                     }
                     // Drought
-                    if ability.id.as_str() == "drought" {
+                    if ability_id.as_str() == "drought" {
                         self.field.set_weather(ID::new("sunnyday"), None);
                         return EventResult::Stop;
                     }
                     // Sand Stream
-                    if ability.id.as_str() == "sandstream" {
+                    if ability_id.as_str() == "sandstream" {
                         self.field.set_weather(ID::new("sandstorm"), None);
                         return EventResult::Stop;
                     }
                     // Snow Warning
-                    if ability.id.as_str() == "snowwarning" {
+                    if ability_id.as_str() == "snowwarning" {
                         self.field.set_weather(ID::new("snow"), None);
                         return EventResult::Stop;
                     }
@@ -6797,7 +6791,7 @@ impl Battle {
             }
             "ModifyDamage" => {
                 // Damage modifying abilities
-                if ability.id.as_str() == "multiscale" {
+                if ability_id.as_str() == "multiscale" {
                     if let Some((side_idx, poke_idx)) = target {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
@@ -6812,7 +6806,7 @@ impl Battle {
             "Residual" => {
                 // Residual abilities like Poison Heal, Rain Dish, Hydration, Bad Dreams, etc.
                 if let Some((side_idx, poke_idx)) = target {
-                    if ability.id.as_str() == "poisonheal" {
+                    if ability_id.as_str() == "poisonheal" {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 if pokemon.status.as_str() == "tox" || pokemon.status.as_str() == "psn" {
@@ -6823,7 +6817,7 @@ impl Battle {
                             }
                         }
                     }
-                    if ability.id.as_str() == "hydration" {
+                    if ability_id.as_str() == "hydration" {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 // Check if has status and weather is rain/primordialsea
@@ -6843,7 +6837,7 @@ impl Battle {
                             }
                         }
                     }
-                    if ability.id.as_str() == "baddreams" {
+                    if ability_id.as_str() == "baddreams" {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 if pokemon.hp == 0 {
@@ -6869,7 +6863,7 @@ impl Battle {
                             }
                         }
                     }
-                    if ability.id.as_str() == "healer" {
+                    if ability_id.as_str() == "healer" {
                         // Healer: 30% chance to cure status of adjacent allies
                         // Collect data first, then perform mutations
                         let mut should_continue = false;
@@ -6907,7 +6901,7 @@ impl Battle {
                         }
                         return EventResult::Stop;
                     }
-                    if ability.id.as_str() == "speedboost" {
+                    if ability_id.as_str() == "speedboost" {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 // Speed Boost: Boosts Speed by 1 stage at end of turn (if active_turns > 0)
@@ -6918,7 +6912,7 @@ impl Battle {
                             }
                         }
                     }
-                    if ability.id.as_str() == "moody" {
+                    if ability_id.as_str() == "moody" {
                         // Moody: Randomly raises one stat by 2 and lowers another by 1 each turn
                         // Phase 1: Collect boost data
                         let (mut stats_to_raise, boosts_data) = {
@@ -6978,7 +6972,7 @@ impl Battle {
                         }
                         return EventResult::Stop;
                     }
-                    if ability.id.as_str() == "shedskin" {
+                    if ability_id.as_str() == "shedskin" {
                         // 33% chance to cure status
                         // if (pokemon.hp && pokemon.status && this.randomChance(33, 100))
                         let (has_hp, has_status) = {
@@ -7019,7 +7013,7 @@ impl Battle {
     fn handle_item_event(
         &mut self,
         event_id: &str,
-        item: &crate::data::items::ItemDef,
+        item_id: &ID,
         target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
@@ -7028,7 +7022,7 @@ impl Battle {
             "Residual" => {
                 if let Some((side_idx, poke_idx)) = target {
                     // Leftovers
-                    if item.id.as_str() == "leftovers" {
+                    if item_id.as_str() == "leftovers" {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 if pokemon.hp < pokemon.maxhp {
@@ -7040,7 +7034,7 @@ impl Battle {
                         }
                     }
                     // Black Sludge
-                    if item.id.as_str() == "blacksludge" {
+                    if item_id.as_str() == "blacksludge" {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 let is_poison = pokemon.types.iter().any(|t| t.to_lowercase() == "poison");
@@ -7061,13 +7055,13 @@ impl Battle {
             }
             "ModifyDamage" => {
                 // Life Orb
-                if item.id.as_str() == "lifeorb" {
+                if item_id.as_str() == "lifeorb" {
                     return EventResult::Modify(1.3);
                 }
             }
             "AfterMoveSecondarySelf" => {
                 // Life Orb recoil
-                if item.id.as_str() == "lifeorb" {
+                if item_id.as_str() == "lifeorb" {
                     if let Some((side_idx, poke_idx)) = target {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {

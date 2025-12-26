@@ -37,20 +37,6 @@ pub enum ItemCategory {
     Fossil,
 }
 
-// Minimal compatibility struct for existing code
-#[derive(Debug, Clone)]
-pub struct ItemDef {
-    pub id: ID,
-    pub name: String,
-    pub is_choice: bool,
-}
-
-impl ItemDef {
-    pub fn from_id(id: ID, name: String, is_choice: bool) -> Self {
-        Self { id, name, is_choice }
-    }
-}
-
 /// Check if an item boosts a specific type
 pub fn item_boosts_type(_item_id: &ID, _move_type: &str) -> bool {
     // TODO: Implement by checking item data

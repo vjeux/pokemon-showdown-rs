@@ -31,7 +31,7 @@ use crate::battle::{Battle, Arg};
 use crate::move_types::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{ItemHandlerResult, ItemDef};
+use super::ItemHandlerResult;
 
 /// onDamagingHit(...)
 pub fn on_damaging_hit(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
