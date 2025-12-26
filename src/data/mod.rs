@@ -6,6 +6,7 @@
 pub mod abilities;
 pub mod ability_callbacks;
 pub mod moves;
+pub mod move_callbacks;
 pub mod items;
 pub mod item_callbacks;
 pub mod conditions;

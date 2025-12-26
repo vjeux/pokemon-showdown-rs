@@ -4313,6 +4313,110 @@ impl Battle {
         Some(final_damage)
     }
 
+    /// Add a volatile condition to a Pokemon
+    /// Matches JavaScript pokemon.ts:1937-1995 (Pokemon.addVolatile)
+    pub fn add_volatile_to_pokemon(
+        &mut self,
+        target: (usize, usize),
+        status: &ID,
+        source: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
+    ) -> bool {
+        // JS: if (!this.hp && !status.affectsFainted) return false;
+        let (side_idx, poke_idx) = target;
+        let has_hp = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                pokemon.hp > 0
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        };
+
+        if !has_hp {
+            // TODO: Check status.affectsFainted
+            return false;
+        }
+
+        // JS: if (linkedStatus && source && !source.hp) return false;
+        // TODO: Implement linkedStatus support
+
+        // JS: if (this.battle.event) { if (!source) source = this.battle.event.source; if (!sourceEffect) sourceEffect = this.battle.effect; }
+        let (event_source, event_effect) = if let Some(ref event) = self.current_event {
+            (event.source, event.effect.clone())
+        } else {
+            (None, None)
+        };
+
+        let source = source.or(event_source);
+        let source_effect_owned: Option<ID>;
+        let source_effect = if source_effect.is_none() {
+            source_effect_owned = event_effect;
+            source_effect_owned.as_ref()
+        } else {
+            source_effect
+        };
+
+        // JS: if (!source) source = this;
+        let source = source.or(Some(target));
+
+        // JS: if (this.volatiles[status.id]) { if (!status.onRestart) return false; return this.battle.singleEvent('Restart', status, this.volatiles[status.id], this, source, sourceEffect); }
+        let already_has = if let Some(side) = self.sides.get(side_idx) {
+            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                pokemon.has_volatile(status)
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        };
+
+        if already_has {
+            // TODO: Check for onRestart handler and call single_event
+            return false;
+        }
+
+        // JS: if (!this.runStatusImmunity(status.id)) { this.battle.debug('immune to volatile status'); if (sourceEffect?.status) { this.battle.add('-immune', this); } return false; }
+        // TODO: Implement runStatusImmunity check
+
+        // JS: result = this.battle.runEvent('TryAddVolatile', this, source, sourceEffect, status);
+        // TODO: Implement TryAddVolatile event
+
+        // JS: this.volatiles[status.id] = this.battle.initEffectState({ id: status.id, name: status.name, target: this });
+        let mut effect_state = EffectState::new(status.clone());
+
+        // JS: if (source) { this.volatiles[status.id].source = source; this.volatiles[status.id].sourceSlot = source.getSlot(); }
+        if let Some((src_side, src_poke)) = source {
+            effect_state.source_slot = Some(format!("{}:{}", src_side, src_poke));
+        }
+
+        // JS: if (sourceEffect) this.volatiles[status.id].sourceEffect = sourceEffect;
+        // Store in effect_state.data
+        if let Some(eff) = source_effect {
+            effect_state.data.insert("sourceEffect".to_string(), serde_json::json!(eff.as_str()));
+        }
+
+        // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
+        // TODO: Look up condition duration from dex
+
+        // JS: result = this.battle.singleEvent('Start', status, this.volatiles[status.id], this, source, sourceEffect);
+        // TODO: Implement Start event
+
+        // Add volatile to Pokemon
+        if let Some(side) = self.sides.get_mut(side_idx) {
+            if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                pokemon.volatiles.insert(status.clone(), effect_state);
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        true
+    }
+
     /// Helper to add heal log messages
     /// Matches JavaScript battle.ts:2246-2268
     fn add_heal_log(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&ID>) {
@@ -6215,13 +6319,40 @@ impl Battle {
     fn handle_move_event(
         &mut self,
         event_id: &str,
-        _move_id: &str,
-        _target: Option<(usize, usize)>,
+        move_id: &str,
+        target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
+        // Get source from current event
+        let source = if let Some(ref event) = self.current_event {
+            event.source
+        } else {
+            None
+        };
+
+        // Get move effect ID
+        let move_effect_id = ID::new(move_id);
+
         match event_id {
-            // Move-specific handlers would go here
+            "Hit" => {
+                // Secondary effect onHit callbacks
+                // These are invoked when a move hits
+                match move_id {
+                    "alluringvoice" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            crate::data::move_callbacks::alluringvoice::on_hit(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
+                        }
+                        return EventResult::Continue;
+                    }
+                    _ => {}
+                }
+            }
             _ => {}
         }
 

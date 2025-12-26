@@ -34,9 +34,36 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onHit(...)
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+/// onHit callback for Alluring Voice
+/// Adds confusion if target raised stats this turn
+pub fn on_hit(
+    battle: &mut Battle,
+    target: (usize, usize),
+    source: (usize, usize),
+    move_id: &ID,
+) -> MoveHandlerResult {
+    // JavaScript: if (target?.statsRaisedThisTurn) { target.addVolatile('confusion', source, move); }
+
+    let stats_raised = if let Some(side) = battle.sides.get(target.0) {
+        if let Some(pokemon) = side.pokemon.get(target.1) {
+            pokemon.stats_raised_this_turn
+        } else {
+            false
+        }
+    } else {
+        false
+    };
+
+    if stats_raised {
+        battle.add_volatile_to_pokemon(
+            target,
+            &ID::new("confusion"),
+            Some(source),
+            Some(move_id),
+        );
+    }
+
     MoveHandlerResult::Undefined
 }
+
 
