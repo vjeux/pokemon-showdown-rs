@@ -4243,11 +4243,11 @@ impl Battle {
 
     /// Get all Pokemon in the battle (not just active)
     /// Equivalent to battle.ts getAllPokemon()
-    pub fn get_all_pokemon(&self) -> Vec<(usize, usize, &crate::pokemon::Pokemon)> {
+    pub fn get_all_pokemon(&self) -> Vec<&crate::pokemon::Pokemon> {
         let mut result = Vec::new();
-        for (side_idx, side) in self.sides.iter().enumerate() {
-            for (poke_idx, pokemon) in side.pokemon.iter().enumerate() {
-                result.push((side_idx, poke_idx, pokemon));
+        for side in &self.sides {
+            for pokemon in &side.pokemon {
+                result.push(pokemon);
             }
         }
         result
