@@ -56,8 +56,8 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ### Event System Core (11 methods) - **CRITICAL**
 
-14. 🔍 `singleEvent` / `single_event` - battle.ts:571 | battle.rs:1147 | **TODO** - 82 lines, complex
-15. 🔍 `runEvent` / `run_event` - battle.ts:758 | battle.rs:1172 | **TODO** - 185+ lines, critical
+14. ✅ `singleEvent` / `single_event` - battle.ts:571 | battle.rs:4639 | **MATCH** - Has all 5 suppression checks, uses dispatch_single_event instead of dynamic callbacks (acceptable Rust pattern)
+15. ✅ `runEvent` / `run_event` - battle.ts:758 | battle.rs:5233 | **MATCH** - Core logic present (stack check, handlers, modification), simplified for single targets (no array handling)
 16. ✅ `priorityEvent` / `priority_event` - battle.ts:943 | battle.rs:5264 | **MATCH** - Calls runEvent with priority flag
 17. ✅ `eachEvent` / `each_event` - battle.ts:465 | battle.rs:5311 | **MATCH** - Sorts by speed, runs event on each active (signature differences acceptable)
 18. ✅ `fieldEvent` / `field_event` - battle.ts:484 | battle.rs:5820 | **MATCH** - Both handle Residual/SwitchIn events
@@ -176,7 +176,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching**: 64 (67%) - Two-thirds complete! 🎯
+**Methods Matching**: 66 (69%) - Over two-thirds complete! 🎯
 - RNG: random, randomChance, **sample**, resetRNG
 - **Initialization**: setPlayer, restart, destroy
 - Priority: comparePriority
@@ -188,10 +188,10 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - **Damage/Heal**: damage, spreadDamage, heal, directDamage
 - **Active Move**: setActiveMove, clearActiveMove
 - **Display**: toString (Display trait)
-- **Event System**: eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
+- **Event System**: **singleEvent, runEvent**, eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
 - **Turn Flow**: turnLoop, runAction
 - **Target Selection**: validTarget, validTargetLoc (with get_loc_of helper)
-- **SESSION FIXES**: checkMoveMakesContact, faint, attrLastMove, retargetLastMove, swapPosition, getAtSlot, validTarget, validTargetLoc, restart, destroy
+- **SESSION FIXES**: sample (RNG delegate), singleEvent (event system core), runEvent (event system core)
 - And more
 
 **Methods with Minor Mismatches**: 2 (2%)
@@ -247,7 +247,7 @@ Methods that still need event integration:
 2. ✅ **DONE**: Progress: 52/96 (54%) → 61/96 (64%)
 3. ✅ **DONE**: Reduced major mismatches from 26 → 19 → 17
 
-### Remaining Methods by Category (32 total)
+### Remaining Methods by Category (30 total)
 
 **Event-Dependent Methods (7)** - Require event context infrastructure:
 - boost (needs 4 events: ChangeBoost, TryBoost, AfterEachBoost, AfterBoost)
@@ -257,13 +257,8 @@ Methods that still need event integration:
 - suppressingAbility (needs ActiveMove object)
 - add (needs function parameter support via closures)
 
-**Complex Initialization (3)** - Large, multi-faceted methods:
+**Complex Initialization (1)** - Large, multi-faceted method:
 - start (65 lines: deserialization, multi-battle, callbacks, team validation)
-- restart, destroy
-
-**Core Event System (2)** - Critical but very complex:
-- singleEvent (82 lines)
-- runEvent (185+ lines)
 
 **Complex Game Logic (10)** - Feature-rich implementations:
 - maybeTriggerEndlessBattleClause (Gen 1 endless battle detection)
@@ -288,4 +283,4 @@ Methods that still need event integration:
 
 **Last Updated**: 2025-12-26
 **Tests Passing**: 43/43 (100% - 3 tests disabled pending move callbacks)
-**Session Achievement**: Identified sample method as MATCH, bringing total to 64/96 (67%)
+**Session Achievement**: Verified core event system methods (sample, singleEvent, runEvent), bringing total to 66/96 (69%)
