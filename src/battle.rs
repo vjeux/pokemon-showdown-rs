@@ -102,12 +102,25 @@ impl Default for EventInfo {
     }
 }
 
+/// Faint queue entry data
+/// Equivalent to battle.ts FaintQueue entry
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FaintData {
+    /// Pokemon that fainted (side_idx, poke_idx)
+    pub target: (usize, usize),
+    /// Source of the faint (side_idx, poke_idx) or None
+    pub source: Option<(usize, usize)>,
+    /// Effect that caused the faint
+    pub effect: Option<ID>,
+}
+
 /// Battle options
 #[derive(Debug, Clone, Default)]
 pub struct BattleOptions {
     pub format_id: ID,
+    pub format_name: Option<String>,
     pub seed: Option<PRNGSeed>,
-    pub rated: bool,
+    pub rated: Option<String>,
     pub debug: bool,
     pub strict_choices: bool,
     pub force_random_chance: Option<bool>,
@@ -141,6 +154,8 @@ pub enum BattleRequestState {
 pub struct Battle {
     /// Format ID
     pub format_id: ID,
+    /// Format name (e.g., "Gen 9 OU")
+    pub format_name: String,
     /// Game type (singles, doubles, etc.)
     pub game_type: GameType,
     /// Generation
@@ -209,8 +224,8 @@ pub struct Battle {
 
     /// Debug mode
     pub debug_mode: bool,
-    /// Rated match
-    pub rated: bool,
+    /// Rated match (boolean true or string description)
+    pub rated: Option<String>,
     /// Strict choices (errors on invalid choices)
     pub strict_choices: bool,
     /// Force random chance outcome (for testing)
@@ -218,6 +233,10 @@ pub struct Battle {
 
     /// Hints shown to players
     pub hints: HashSet<String>,
+
+    /// Faint queue - Pokemon waiting to faint
+    /// Equivalent to battle.ts faintQueue
+    pub faint_queue: Vec<FaintData>,
 }
 
 impl Battle {
@@ -246,6 +265,7 @@ impl Battle {
 
         let mut battle = Self {
             format_id: options.format_id,
+            format_name: options.format_name.unwrap_or_else(|| format_id_str.clone()),
             game_type,
             gen,
             active_per_half,
@@ -283,6 +303,7 @@ impl Battle {
                 None
             },
             hints: HashSet::new(),
+            faint_queue: Vec::new(),
         };
 
         // Initialize sides vector
@@ -449,43 +470,126 @@ impl Battle {
     }
 
     /// Start the battle
+    /// Source: battle.ts:1859
+    /// Deserialized games should use restart()
     pub fn start(&mut self) {
-        if self.started {
-            return;
+        // JS: if (this.deserialized) return;
+        // TODO: Implement deserialized field
+
+        // JS: if (!this.sides.every(side => !!side)) throw new Error(`Missing sides`);
+        // Rust: Check that all sides exist and are valid
+        if self.sides.is_empty() {
+            panic!("Missing sides");
         }
+
+        // JS: if (this.started) throw new Error(`Battle already started`);
+        if self.started {
+            panic!("Battle already started");
+        }
+
+        // JS: this.started = true;
         self.started = true;
 
-        // Set up foe references
-        if self.sides.len() >= 2 {
-            self.sides[0].foe_index = Some(1);
-            self.sides[1].foe_index = Some(0);
-            if self.sides.len() >= 4 {
-                self.sides[0].ally_index = Some(2);
-                self.sides[1].ally_index = Some(3);
-                self.sides[2].foe_index = Some(1);
-                self.sides[3].foe_index = Some(0);
-                self.sides[2].ally_index = Some(0);
-                self.sides[3].ally_index = Some(1);
+        // JS: Set up foe and ally references based on game type
+        match self.game_type {
+            GameType::Multi => {
+                // JS: Multi battles (4 sides)
+                if self.sides.len() >= 4 {
+                    // JS: this.sides[1].foe = this.sides[2];
+                    self.sides[1].foe_index = Some(2);
+                    // JS: this.sides[0].foe = this.sides[3];
+                    self.sides[0].foe_index = Some(3);
+                    // JS: this.sides[2].foe = this.sides[1];
+                    self.sides[2].foe_index = Some(1);
+                    // JS: this.sides[3].foe = this.sides[0];
+                    self.sides[3].foe_index = Some(0);
+
+                    // JS: this.sides[1].allySide = this.sides[3];
+                    self.sides[1].ally_index = Some(3);
+                    // JS: this.sides[0].allySide = this.sides[2];
+                    self.sides[0].ally_index = Some(2);
+                    // JS: this.sides[2].allySide = this.sides[0];
+                    self.sides[2].ally_index = Some(0);
+                    // JS: this.sides[3].allySide = this.sides[1];
+                    self.sides[3].ally_index = Some(1);
+
+                    // JS: sync side conditions
+                    // TODO: this.sides[2].sideConditions = this.sides[0].sideConditions;
+                    // TODO: this.sides[3].sideConditions = this.sides[1].sideConditions;
+                }
+            }
+            GameType::FreeForAll => {
+                // JS: FFA battles
+                if self.sides.len() >= 4 {
+                    // JS: this.sides[2].foe = this.sides[3];
+                    self.sides[2].foe_index = Some(3);
+                    // JS: this.sides[3].foe = this.sides[2];
+                    self.sides[3].foe_index = Some(2);
+                }
+                // Fall through to set up sides 0 and 1
+                if self.sides.len() >= 2 {
+                    // JS: this.sides[1].foe = this.sides[0];
+                    self.sides[1].foe_index = Some(0);
+                    // JS: this.sides[0].foe = this.sides[1];
+                    self.sides[0].foe_index = Some(1);
+                }
+            }
+            _ => {
+                // JS: Singles/Doubles battles (2 sides)
+                if self.sides.len() >= 2 {
+                    // JS: this.sides[1].foe = this.sides[0];
+                    self.sides[1].foe_index = Some(0);
+                    // JS: this.sides[0].foe = this.sides[1];
+                    self.sides[0].foe_index = Some(1);
+                }
             }
         }
 
-        // Log player info - collect first to avoid borrow conflict
-        let side_info: Vec<_> = self.sides.iter()
-            .map(|s| (s.id_str(), s.name.clone()))
-            .collect();
-        for (id_str, name) in side_info {
-            self.add_log("player", &[id_str, &name, "", ""]);
+        // JS: this.add('gen', this.gen);
+        self.add_log("gen", &[&self.gen.to_string()]);
+
+        // JS: this.add('tier', format.name);
+        let format_name = self.format_name.clone();
+        self.add_log("tier", &[&format_name]);
+
+        // JS: if (this.rated) { ... }
+        if let Some(ref rated) = self.rated.clone() {
+            // JS: if (this.rated === 'Rated battle') this.rated = true;
+            let rated_str = if rated == "Rated battle" { "" } else { rated };
+            // JS: this.add('rated', typeof this.rated === 'string' ? this.rated : '');
+            self.add_log("rated", &[rated_str]);
         }
 
-        // Team preview or direct start
-        self.add_log("teampreview", &[]);
-        self.request_state = BattleRequestState::TeamPreview;
-        for side in &mut self.sides {
-            side.request_state = RequestState::TeamPreview;
+        // JS: format.onBegin?.call(this);
+        // TODO: Implement format callbacks (onBegin)
+
+        // JS: for (const rule of this.ruleTable.keys()) { subFormat.onBegin?.call(this); }
+        // TODO: Implement ruleTable iteration and subformat callbacks
+
+        // JS: if (this.sides.some(side => !side.pokemon[0])) { throw new Error('...'); }
+        if self.sides.iter().any(|side| side.pokemon.is_empty()) {
+            panic!("Battle not started: A player has an empty team.");
         }
 
-        // For now, skip team preview and go straight to battle
-        // In a full implementation, we'd wait for team choices
+        // JS: if (this.debugMode) { this.checkEVBalance(); }
+        if self.debug_mode {
+            self.check_ev_balance();
+        }
+
+        // JS: if (format.customRules) { this.add(`raw|...`); }
+        // TODO: Implement customRules display
+
+        // JS: this.runPickTeam();
+        self.run_pick_team();
+
+        // JS: this.queue.addChoice({ choice: 'start' });
+        // TODO: Implement queue.addChoice
+
+        // JS: this.midTurn = true;
+        // TODO: Implement midTurn field
+
+        // JS: if (!this.requestState) this.turnLoop();
+        // TODO: Implement conditional turnLoop() call
     }
 
     /// Start the first turn (after team preview)
@@ -785,7 +889,10 @@ impl Battle {
     /// Check if battle is over
     /// Check if the battle has a winner
     /// Equivalent to battle.ts checkWin()
-    pub fn check_win(&mut self) -> bool {
+    pub fn check_win(&mut self, _faint_data: Option<FaintData>) -> bool {
+        // TODO: In Gen 5+, use faintData to determine which side fainted last
+        // For now, ignore faint_data parameter
+
         // Check if all sides have no Pokemon left - tie/draw scenario
         if self.sides.iter().all(|side| side.pokemon_left == 0) {
             // In Gen 5+, the side that fainted last wins, but we don't track faintData
@@ -1174,10 +1281,10 @@ impl Battle {
         self.run_residual();
 
         // Check for fainted Pokemon
-        self.faint_messages();
+        self.faint_messages(false, false, true);
 
         // Check win condition
-        if self.check_win() {
+        if self.check_win(None) {
             return;
         }
 
@@ -2965,28 +3072,204 @@ impl Battle {
     }
 
     /// Process faint messages
-    fn faint_messages(&mut self) {
-        for side_idx in 0..self.sides.len() {
-            let mut slots_to_faint = Vec::new();
+    /// Equivalent to battle.ts faintMessages(lastFirst?, forceCheck?, checkWin?)
+    ///
+    /// JS Source (battle.ts:2498-2575):
+    /// ```js
+    /// faintMessages(lastFirst = false, forceCheck = false, checkWin = true) {
+    ///     if (this.ended) return;
+    ///     const length = this.faintQueue.length;
+    ///     if (!length) {
+    ///         if (forceCheck && this.checkWin()) return true;
+    ///         return false;
+    ///     }
+    ///     if (lastFirst) {
+    ///         this.faintQueue.unshift(this.faintQueue[this.faintQueue.length - 1]);
+    ///         this.faintQueue.pop();
+    ///     }
+    ///     let faintQueueLeft, faintData;
+    ///     while (this.faintQueue.length) {
+    ///         faintQueueLeft = this.faintQueue.length;
+    ///         faintData = this.faintQueue.shift()!;
+    ///         const pokemon: Pokemon = faintData.target;
+    ///         if (!pokemon.fainted && this.runEvent('BeforeFaint', pokemon, faintData.source, faintData.effect)) {
+    ///             this.add('faint', pokemon);
+    ///             if (pokemon.side.pokemonLeft) pokemon.side.pokemonLeft--;
+    ///             if (pokemon.side.totalFainted < 100) pokemon.side.totalFainted++;
+    ///             this.runEvent('Faint', pokemon, faintData.source, faintData.effect);
+    ///             this.singleEvent('End', pokemon.getAbility(), pokemon.abilityState, pokemon);
+    ///             this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon);
+    ///             if (pokemon.formeRegression && !pokemon.transformed) {
+    ///                 pokemon.baseSpecies = this.dex.species.get(pokemon.set.species || pokemon.set.name);
+    ///                 pokemon.baseAbility = toID(pokemon.set.ability);
+    ///             }
+    ///             pokemon.clearVolatile(false);
+    ///             pokemon.fainted = true;
+    ///             pokemon.illusion = null;
+    ///             pokemon.isActive = false;
+    ///             pokemon.isStarted = false;
+    ///             delete pokemon.terastallized;
+    ///             if (pokemon.formeRegression) {
+    ///                 pokemon.details = pokemon.getUpdatedDetails();
+    ///                 this.add('detailschange', pokemon, pokemon.details, '[silent]');
+    ///                 pokemon.updateMaxHp();
+    ///                 pokemon.formeRegression = false;
+    ///             }
+    ///             pokemon.side.faintedThisTurn = pokemon;
+    ///             if (this.faintQueue.length >= faintQueueLeft) checkWin = true;
+    ///         }
+    ///     }
+    ///     if (this.gen <= 1) { /* Gen 1 logic */ }
+    ///     else if (this.gen <= 3 && this.gameType === 'singles') { /* Gen 2-3 logic */ }
+    ///     if (checkWin && this.checkWin(faintData)) return true;
+    ///     if (faintData && length) {
+    ///         this.runEvent('AfterFaint', faintData.target, faintData.source, faintData.effect, length);
+    ///     }
+    ///     return false;
+    /// }
+    /// ```
+    fn faint_messages(&mut self, last_first: bool, force_check: bool, mut check_win: bool) -> bool {
+        // JS: if (this.ended) return;
+        if self.ended {
+            return false;
+        }
 
-            for slot in 0..self.sides[side_idx].active.len() {
-                if let Some(poke_idx) = self.sides[side_idx].active[slot] {
-                    if self.sides[side_idx].pokemon[poke_idx].hp == 0 {
-                        slots_to_faint.push((slot, poke_idx));
+        // For compatibility: Add any Pokemon with HP=0 to faint_queue if they're not already there
+        // This handles cases where damage was applied without calling Battle.faint()
+        for side_idx in 0..self.sides.len() {
+            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
+                if self.sides[side_idx].pokemon[poke_idx].hp == 0 &&
+                   !self.sides[side_idx].pokemon[poke_idx].fainted {
+                    // Check if already in queue
+                    let already_queued = self.faint_queue.iter().any(|fd| fd.target == (side_idx, poke_idx));
+                    if !already_queued {
+                        self.faint_queue.push(FaintData {
+                            target: (side_idx, poke_idx),
+                            source: None,
+                            effect: None,
+                        });
                     }
                 }
             }
+        }
 
-            for (slot, poke_idx) in slots_to_faint {
-                let name = {
+        // JS: const length = this.faintQueue.length;
+        let length = self.faint_queue.len();
+
+        // JS: if (!length) { if (forceCheck && this.checkWin()) return true; return false; }
+        if length == 0 {
+            if force_check && self.check_win(None) {
+                return true;
+            }
+            return false;
+        }
+
+        // JS: if (lastFirst) { this.faintQueue.unshift(this.faintQueue[this.faintQueue.length - 1]); this.faintQueue.pop(); }
+        if last_first && !self.faint_queue.is_empty() {
+            let last = self.faint_queue.pop().unwrap();
+            self.faint_queue.insert(0, last);
+        }
+
+        let mut last_faint_data: Option<FaintData> = None;
+
+        // JS: while (this.faintQueue.length)
+        while !self.faint_queue.is_empty() {
+            let faint_queue_left = self.faint_queue.len();
+            let faint_data = self.faint_queue.remove(0); // JS: faintData = this.faintQueue.shift()!;
+            let (side_idx, poke_idx) = faint_data.target;
+
+            // Check if pokemon is already fainted
+            let already_fainted = self.sides[side_idx].pokemon[poke_idx].fainted;
+
+            // JS: if (!pokemon.fainted && this.runEvent('BeforeFaint', pokemon, faintData.source, faintData.effect))
+            if !already_fainted {
+                // TODO: runEvent('BeforeFaint', pokemon, source, effect)
+                // For now, assume it returns true
+
+                // JS: this.add('faint', pokemon);
+                let pokemon_name = {
                     let side_id = self.sides[side_idx].id_str();
                     let pokemon = &self.sides[side_idx].pokemon[poke_idx];
                     format!("{}: {}", side_id, pokemon.name)
                 };
-                self.add_log("faint", &[&name]);
-                self.sides[side_idx].faint_pokemon(slot);
+                self.add_log("faint", &[&pokemon_name]);
+
+                // JS: if (pokemon.side.pokemonLeft) pokemon.side.pokemonLeft--;
+                if self.sides[side_idx].pokemon_left > 0 {
+                    self.sides[side_idx].pokemon_left -= 1;
+                }
+
+                // JS: if (pokemon.side.totalFainted < 100) pokemon.side.totalFainted++;
+                if self.sides[side_idx].total_fainted < 100 {
+                    self.sides[side_idx].total_fainted += 1;
+                }
+
+                // JS: this.runEvent('Faint', pokemon, faintData.source, faintData.effect);
+                // TODO: runEvent('Faint')
+
+                // JS: this.singleEvent('End', pokemon.getAbility(), pokemon.abilityState, pokemon);
+                // JS: this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon);
+                // TODO: singleEvent('End') for ability and item
+
+                // JS: pokemon.clearVolatile(false);
+                self.sides[side_idx].pokemon[poke_idx].clear_volatile_full(false);
+
+                // JS: pokemon.fainted = true;
+                self.sides[side_idx].pokemon[poke_idx].fainted = true;
+
+                // JS: pokemon.illusion = null;
+                // TODO: Implement illusion field
+
+                // JS: pokemon.isActive = false;
+                self.sides[side_idx].pokemon[poke_idx].is_active = false;
+
+                // Remove from active slots
+                for slot in 0..self.sides[side_idx].active.len() {
+                    if let Some(idx) = self.sides[side_idx].active[slot] {
+                        if idx == poke_idx {
+                            self.sides[side_idx].active[slot] = None;
+                            break;
+                        }
+                    }
+                }
+
+                // JS: pokemon.isStarted = false;
+                // TODO: Implement is_started field
+
+                // JS: delete pokemon.terastallized;
+                // TODO: Implement terastallized field
+
+                // JS: if (this.faintQueue.length >= faintQueueLeft) checkWin = true;
+                if self.faint_queue.len() >= faint_queue_left {
+                    check_win = true;
+                }
             }
+
+            last_faint_data = Some(faint_data);
         }
+
+        // JS: if (this.gen <= 1) { this.queue.clear(); ... }
+        if self.gen <= 1 {
+            // Gen 1: fainting skips the rest of the turn
+            // TODO: this.queue.clear();
+            // TODO: Clear Bide accumulated damage
+        }
+
+        // JS: else if (this.gen <= 3 && this.gameType === 'singles') { ... }
+        // TODO: Gen 2-3 queue cancellation
+
+        // JS: if (checkWin && this.checkWin(faintData)) return true;
+        if check_win && self.check_win(last_faint_data.clone()) {
+            return true;
+        }
+
+        // JS: if (faintData && length) { this.runEvent('AfterFaint', faintData.target, faintData.source, faintData.effect, length); }
+        if last_faint_data.is_some() && length > 0 {
+            // TODO: runEvent('AfterFaint')
+        }
+
+        // JS: return false;
+        false
     }
 
     /// Start the next turn
@@ -3059,6 +3342,7 @@ impl Battle {
     /// }
     /// ```
     pub fn hint(&mut self, hint_text: &str, once: bool, side_id: Option<SideID>) {
+        // JS: if (this.hints.has(side ? `${side.id}|${hint}` : hint)) return;
         let hint_key = if let Some(sid) = side_id {
             format!("{}|{}", sid.to_str(), hint_text)
         } else {
@@ -3069,14 +3353,14 @@ impl Battle {
             return;
         }
 
+        // JS: if (side) { this.addSplit(side.id, ['-hint', hint]); } else { this.add('-hint', hint); }
         if let Some(sid) = side_id {
-            // TODO: Implement addSplit() for side-specific messages
-            // For now, just use regular add()
-            self.add("-hint", &[Arg::Str(hint_text)]);
+            self.add_split(sid.to_str(), &["-hint", hint_text], None);
         } else {
             self.add("-hint", &[Arg::Str(hint_text)]);
         }
 
+        // JS: if (once) this.hints.add(side ? `${side.id}|${hint}` : hint);
         if once {
             self.hints.insert(hint_key);
         }
@@ -3275,8 +3559,7 @@ impl Battle {
         }
 
         // JavaScript: this.faintMessages(false, true);
-        // Rust doesn't have the parameters yet, use basic version
-        self.faint_messages();
+        self.faint_messages(false, true, true);
 
         // JavaScript: if (!this.ended && side.requestState) { ... }
         if !self.ended {
@@ -3385,22 +3668,100 @@ impl Battle {
         result
     }
 
-    /// Get a random target for a move
+    /// Get random target for a move
     /// Equivalent to battle.ts getRandomTarget()
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// getRandomTarget(pokemon: Pokemon, move: string | Move) {
+    ///     move = this.dex.moves.get(move);
+    ///     if (['self', 'all', 'allySide', 'allyTeam', 'adjacentAllyOrSelf'].includes(move.target)) {
+    ///         return pokemon;
+    ///     } else if (move.target === 'adjacentAlly') {
+    ///         if (this.gameType === 'singles') return null;
+    ///         const adjacentAllies = pokemon.adjacentAllies();
+    ///         return adjacentAllies.length ? this.sample(adjacentAllies) : null;
+    ///     }
+    ///     if (this.gameType === 'singles') return pokemon.side.foe.active[0];
+    ///
+    ///     if (this.activePerHalf > 2) {
+    ///         if (move.target === 'adjacentFoe' || move.target === 'normal' || move.target === 'randomNormal') {
+    ///             const adjacentFoes = pokemon.adjacentFoes();
+    ///             if (adjacentFoes.length) return this.sample(adjacentFoes);
+    ///             return pokemon.side.foe.active[pokemon.side.foe.active.length - 1 - pokemon.position];
+    ///         }
+    ///     }
+    ///     return pokemon.side.randomFoe() || pokemon.side.foe.active[0];
+    /// }
+    /// ```
     pub fn get_random_target(&mut self, user_side: usize, user_idx: usize, move_target: &str) -> Option<(usize, usize)> {
-        // For self-targeting moves, return the user
-        if move_target == "self" || move_target == "allySide" || move_target == "allyTeam" {
+        // JS: if (['self', 'all', 'allySide', 'allyTeam', 'adjacentAllyOrSelf'].includes(move.target)) return pokemon;
+        if move_target == "Self" || move_target == "All" || move_target == "AllySide"
+            || move_target == "AllyTeam" || move_target == "AdjacentAllyOrSelf" {
             return Some((user_side, user_idx));
         }
 
-        // For adjacent ally moves in singles, no valid target
-        if move_target == "adjacentAlly" && self.game_type == GameType::Singles {
+        // JS: else if (move.target === 'adjacentAlly') {
+        // JS:     if (this.gameType === 'singles') return null;
+        // JS:     const adjacentAllies = pokemon.adjacentAllies();
+        // JS:     return adjacentAllies.length ? this.sample(adjacentAllies) : null;
+        // JS: }
+        if move_target == "AdjacentAlly" {
+            if self.game_type == GameType::Singles {
+                return None;
+            }
+            // TODO: adjacentAllies() requires Pokemon helper method
+            // For now, just return None
             return None;
         }
 
-        // For most moves, target a random foe
+        // JS: if (this.gameType === 'singles') return pokemon.side.foe.active[0];
+        if self.game_type == GameType::Singles {
+            let foe_side = if user_side == 0 { 1 } else { 0 };
+            if foe_side < self.sides.len() {
+                if let Some(side) = self.sides.get(foe_side) {
+                    if let Some(Some(poke_idx)) = side.active.get(0) {
+                        return Some((foe_side, *poke_idx));
+                    }
+                }
+            }
+            return None;
+        }
+
+        // JS: if (this.activePerHalf > 2) {
+        if self.active_per_half > 2 {
+            // JS: if (move.target === 'adjacentFoe' || move.target === 'normal' || move.target === 'randomNormal') {
+            if move_target == "AdjacentFoe" || move_target == "Normal" || move_target == "RandomNormal" {
+                // JS: const adjacentFoes = pokemon.adjacentFoes();
+                // JS: if (adjacentFoes.length) return this.sample(adjacentFoes);
+                // TODO: adjacentFoes() requires Pokemon helper method
+
+                // JS: return pokemon.side.foe.active[pokemon.side.foe.active.length - 1 - pokemon.position];
+                let foe_side = if user_side == 0 { 1 } else { 0 };
+                if foe_side < self.sides.len() {
+                    if let Some(side) = self.sides.get(foe_side) {
+                        let position = if let Some(user_side_ref) = self.sides.get(user_side) {
+                            if let Some(pokemon) = user_side_ref.pokemon.get(user_idx) {
+                                pokemon.position
+                            } else {
+                                0
+                            }
+                        } else {
+                            0
+                        };
+                        let target_slot = side.active.len().saturating_sub(1).saturating_sub(position);
+                        if let Some(Some(poke_idx)) = side.active.get(target_slot) {
+                            return Some((foe_side, *poke_idx));
+                        }
+                    }
+                }
+            }
+        }
+
+        // JS: return pokemon.side.randomFoe() || pokemon.side.foe.active[0];
         let foe_side = if user_side == 0 { 1 } else { 0 };
         if foe_side < self.sides.len() {
+            // Try to get a random active foe
             let valid_targets: Vec<usize> = self.sides[foe_side].pokemon.iter()
                 .enumerate()
                 .filter(|(_, p)| p.is_active && !p.is_fainted())
@@ -3410,6 +3771,11 @@ impl Battle {
             if !valid_targets.is_empty() {
                 let random_idx = self.random(valid_targets.len() as u32) as usize;
                 return Some((foe_side, valid_targets[random_idx]));
+            }
+
+            // Fallback: return first active
+            if let Some(Some(poke_idx)) = self.sides[foe_side].active.get(0) {
+                return Some((foe_side, *poke_idx));
             }
         }
 
@@ -3585,7 +3951,9 @@ impl Battle {
         if let Some(side) = self.sides.get(target_pos.0) {
             if let Some(pokemon) = side.pokemon.get(target_pos.1) {
                 if pokemon.hp == 0 {
-                    // TODO: Call self.faint(target_pos, source, effect);
+                    // JS: if (pokemon.hp <= 0) pokemon.faint(source, effect);
+                    let effect_str = effect.map(|e| e.as_str());
+                    self.faint(target_pos, source, effect_str);
                 }
             }
         }
@@ -3913,13 +4281,24 @@ impl Battle {
     /// Equivalent to battle.ts faint()
     pub fn faint(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) {
         // JS: pokemon.faint(source, effect)
-        // Delegate to pokemon.faint() method
+        // JS: battle.faintQueue.push({target: pokemon, source, effect})
+
         let (target_side, target_idx) = target;
         if let Some(side) = self.sides.get_mut(target_side) {
             if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
                 pokemon.faint();
-                // TODO: Implement faintQueue system like JavaScript
-                // JS pushes {target, source, effect} to battle.faintQueue
+
+                // In JavaScript, pokemon.faint() sets fainted=true immediately
+                // In Rust, we need to set it here as well for compatibility
+                pokemon.fainted = true;
+
+                // JS: this.faintQueue.push({target, source, effect});
+                let effect_id = effect.map(|e| ID::new(e));
+                self.faint_queue.push(FaintData {
+                    target,
+                    source,
+                    effect: effect_id,
+                });
             }
         }
     }
@@ -4298,25 +4677,110 @@ impl Battle {
     // =========================================================================
 
     /// End the current turn
-    /// Equivalent to battle.ts endTurn()
+    /// Equivalent to battle.ts endTurn() (battle.ts:1577-1754)
+    ///
+    /// JS Source (battle.ts:1577-1754):
+    /// ```js
+    /// endTurn() {
+    ///     this.turn++;
+    ///     this.lastSuccessfulMoveThisTurn = null;
+    ///
+    ///     const dynamaxEnding: Pokemon[] = [];
+    ///     for (const pokemon of this.getAllActive()) {
+    ///         if (pokemon.volatiles['dynamax']?.turns === 3) {
+    ///             dynamaxEnding.push(pokemon);
+    ///         }
+    ///     }
+    ///     if (dynamaxEnding.length > 1) {
+    ///         this.updateSpeed();
+    ///         this.speedSort(dynamaxEnding);
+    ///     }
+    ///     for (const pokemon of dynamaxEnding) {
+    ///         pokemon.removeVolatile('dynamax');
+    ///     }
+    ///
+    ///     // Gen 1 partial trapping cleanup...
+    ///     // Pokemon field resets (moveThisTurn, newlySwitched, etc.)...
+    ///     // DisableMove event processing...
+    ///     // Type appearance tracking (Gen 7+)...
+    ///     // Trap checking...
+    /// }
+    /// ```
     pub fn end_turn(&mut self) {
-        // Fire Residual event for all active Pokemon before incrementing turn
-        // This matches JS behavior where Residual fires at end of turn
-        for side_idx in 0..self.sides.len() {
-            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
-                if self.sides[side_idx].pokemon[poke_idx].is_active
-                    && !self.sides[side_idx].pokemon[poke_idx].fainted {
-                    self.run_event("Residual", Some((side_idx, poke_idx)), None, None, None);
+        self.turn += 1;
+
+        // JS: this.lastSuccessfulMoveThisTurn = null;
+        // TODO: Implement last_successful_move_this_turn field
+
+        // TODO: Dynamax 3-turn removal (requires volatile.turns tracking)
+        // JS: Check volatiles['dynamax']?.turns === 3, updateSpeed(), speedSort(), removeVolatile()
+
+        // TODO: Gen 1 partial trapping cleanup (requires partialtrappinglock/partiallytrapped volatiles)
+
+        // Reset Pokemon turn-specific fields
+        for side in &mut self.sides {
+            for pokemon in &mut side.pokemon {
+                if !pokemon.is_active {
+                    continue;
                 }
+
+                // JS: pokemon.moveThisTurn = '';
+                pokemon.move_this_turn = None;
+
+                // JS: pokemon.newlySwitched = false;
+                pokemon.newly_switched = false;
+
+                // JS: pokemon.moveLastTurnResult = pokemon.moveThisTurnResult;
+                // JS: pokemon.moveThisTurnResult = undefined;
+                // TODO: Implement move_last_turn_result field
+                pokemon.move_this_turn_result = None;
+
+                if self.turn != 1 {
+                    // JS: pokemon.usedItemThisTurn = false;
+                    pokemon.used_item_this_turn = false;
+
+                    // JS: pokemon.statsRaisedThisTurn = false;
+                    pokemon.stats_raised_this_turn = false;
+
+                    // JS: pokemon.statsLoweredThisTurn = false;
+                    pokemon.stats_lowered_this_turn = false;
+
+                    // JS: pokemon.hurtThisTurn = null;
+                    pokemon.hurt_this_turn = None;
+                }
+
+                // JS: pokemon.maybeDisabled = false;
+                pokemon.maybe_disabled = false;
+
+                // JS: pokemon.maybeLocked = false;
+                // TODO: Implement maybe_locked field
+
+                // TODO: DisableMove event processing (requires moveSlots.disabled field and disableMove() method)
+                // JS: for (const moveSlot of pokemon.moveSlots) { moveSlot.disabled = false; }
+                // JS: this.runEvent('DisableMove', pokemon);
+                // JS: for (const moveSlot of pokemon.moveSlots) { this.singleEvent('DisableMove', activeMove, null, pokemon); }
+
+                // TODO: Illusion/type appearance tracking (Gen 7+)
+                // JS: if (pokemon.getLastAttackedBy() && this.gen >= 7) pokemon.knownType = true;
+
+                // TODO: attackedBy array cleanup
+                // JS: for (let i = pokemon.attackedBy.length - 1; i >= 0; i--) { ... }
+
+                // TODO: Type change messages (Gen 7+)
+                // JS: if (this.gen >= 7 && !pokemon.terastallized) { ... }
+
+                // JS: pokemon.trapped = pokemon.maybeTrapped = false;
+                pokemon.trapped = false;
+                // TODO: Implement maybeTrapped field
             }
         }
 
-        self.turn += 1;
+        // TODO: TrapPokemon and MaybeTrapPokemon events
+        // JS: this.runEvent('TrapPokemon', pokemon);
+        // JS: if (!pokemon.knownType || this.dex.getImmunity('trapped', pokemon)) { this.runEvent('MaybeTrapPokemon', pokemon); }
 
-        // Handle Dynamax ending (simplified)
-        // In full implementation, would check volatiles['dynamax'].turns === 3
-
-        // Gen 1 partial trapping cleanup would go here
+        // TODO: Foe ability trapping check (Gen 3+)
+        // JS: for (const source of pokemon.foes()) { ... check abilities ... }
 
         self.add_log("", &[]);
         self.add_log("turn", &[&self.turn.to_string()]);
@@ -4600,9 +5064,61 @@ impl Battle {
 
     /// Make a request for player input
     /// Equivalent to battle.ts makeRequest()
-    pub fn make_request(&mut self, request_type: BattleRequestState) {
-        self.request_state = request_type;
-        let side_request = match request_type {
+    ///
+    /// JS Source (battle.ts:1331-1363):
+    /// ```js
+    /// makeRequest(type?: RequestState) {
+    ///     if (type) {
+    ///         this.requestState = type;
+    ///         for (const side of this.sides) {
+    ///             side.clearChoice();
+    ///         }
+    ///     } else {
+    ///         type = this.requestState;
+    ///     }
+    ///     for (const side of this.sides) {
+    ///         side.activeRequest = null;
+    ///     }
+    ///     if (type === 'teampreview') {
+    ///         const pickedTeamSize = this.ruleTable.pickedTeamSize;
+    ///         this.add(`teampreview${pickedTeamSize ? `|${pickedTeamSize}` : ''}`);
+    ///     }
+    ///     const requests = this.getRequests(type);
+    ///     for (let i = 0; i < this.sides.length; i++) {
+    ///         this.sides[i].activeRequest = requests[i];
+    ///     }
+    ///     this.sentRequests = false;
+    ///     if (this.sides.every(side => side.isChoiceDone())) {
+    ///         throw new Error(`Choices are done immediately after a request`);
+    ///     }
+    /// }
+    /// ```
+    pub fn make_request(&mut self, request_type: Option<BattleRequestState>) {
+        // JS: if (type) { this.requestState = type; ... } else { type = this.requestState; }
+        let req_type = if let Some(rt) = request_type {
+            self.request_state = rt;
+            // JS: for (const side of this.sides) { side.clearChoice(); }
+            // TODO: Implement side.clearChoice() - requires different signature in Rust
+            rt
+        } else {
+            self.request_state
+        };
+
+        // JS: for (const side of this.sides) { side.activeRequest = null; }
+        // TODO: Implement side.activeRequest field
+
+        // JS: if (type === 'teampreview') { ... this.add(`teampreview${pickedTeamSize ? `|${pickedTeamSize}` : ''}`); }
+        if matches!(req_type, BattleRequestState::TeamPreview) {
+            // TODO: Implement ruleTable.pickedTeamSize
+            // For now, just add 'teampreview' without size
+            self.add("-", &[Arg::Str("teampreview")]);
+        }
+
+        // JS: const requests = this.getRequests(type);
+        // JS: for (let i = 0; i < this.sides.length; i++) { this.sides[i].activeRequest = requests[i]; }
+        // TODO: Implement full getRequests() logic and activeRequest assignment
+        // For now, just set request state
+        let side_request = match req_type {
             BattleRequestState::Move => RequestState::Move,
             BattleRequestState::Switch => RequestState::Switch,
             BattleRequestState::TeamPreview => RequestState::TeamPreview,
@@ -4611,17 +5127,67 @@ impl Battle {
         for side in &mut self.sides {
             side.request_state = side_request;
         }
+
+        // JS: this.sentRequests = false;
+        // TODO: Implement sentRequests field
+
+        // JS: if (this.sides.every(side => side.isChoiceDone())) { throw new Error(...); }
+        // TODO: Implement isChoiceDone() check
+        // This is a safety check to prevent infinite loops
     }
 
-    /// Check if endless battle clause should trigger
-    /// Equivalent to battle.ts maybeTriggerEndlessBattleClause()
+    /// Check and trigger Endless Battle Clause
+    /// Equivalent to battle.ts maybeTriggerEndlessBattleClause() (battle.ts:1757-1856)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// maybeTriggerEndlessBattleClause(trappedBySide, stalenessBySide) {
+    ///   // Gen 1 checks (omitted in Rust - requires Pokemon.hasType(), staleness tracking)
+    ///   if (this.turn <= 100) return;
+    ///   if (this.turn >= 1000) { ... tie(); return true; }
+    ///   if ((turn >= 500 && turn % 100 === 0) || (turn >= 900 && turn % 10 === 0) || turn >= 990) {
+    ///     this.add('bigerror', `You will auto-tie if the battle doesn't end in ${turnsLeft} turns...`);
+    ///   }
+    ///   // staleness checks (omitted in Rust - requires Pokemon.volatileStaleness/staleness)
+    ///   // berry cycling checks (omitted in Rust - requires Harvest, Recycle, RESTORATIVE_BERRIES)
+    /// }
+    /// ```
+    ///
+    /// TODO: Missing features (requires infrastructure):
+    /// - Gen 1 no-progress checks (needs Pokemon.hasType(), frozen status checks, Transform move checks)
+    /// - Staleness tracking (needs Pokemon.volatileStaleness, Pokemon.staleness fields)
+    /// - Berry cycling detection (needs Harvest/Pickup abilities, Recycle move, RESTORATIVE_BERRIES constant)
     pub fn maybe_trigger_endless_battle_clause(&mut self) -> bool {
-        // Simplified: check if turn count is very high
+        // JS: if (this.turn <= 100) return;
+        if self.turn <= 100 {
+            return false;
+        }
+
+        // JS: if (this.turn >= 1000) { this.add('message', ...); this.tie(); return true; }
         if self.turn >= 1000 {
-            self.add_log("-message", &["Endless Battle Clause triggered!"]);
+            self.add_log("message", &["It is turn 1000. You have hit the turn limit!"]);
             self.tie();
             return true;
         }
+
+        // JS: Turn limit warnings
+        // if ((turn >= 500 && turn % 100 === 0) || (turn >= 900 && turn % 10 === 0) || turn >= 990)
+        if (self.turn >= 500 && self.turn % 100 == 0) ||
+           (self.turn >= 900 && self.turn % 10 == 0) ||
+           self.turn >= 990 {
+            let turns_left = 1000 - self.turn;
+            let turns_text = if turns_left == 1 {
+                "1 turn".to_string()
+            } else {
+                format!("{} turns", turns_left)
+            };
+            self.add_log("bigerror", &[&format!("You will auto-tie if the battle doesn't end in {} (on turn 1000).", turns_text)]);
+        }
+
+        // TODO: Gen 1 no-progress checks (requires Pokemon.hasType())
+        // TODO: Staleness checks (requires Pokemon.volatileStaleness, Pokemon.staleness)
+        // TODO: Berry cycling checks (requires Harvest, Recycle, RESTORATIVE_BERRIES)
+
         false
     }
 
@@ -5533,8 +6099,44 @@ impl Battle {
         }
     }
 
-    /// Get the target for a move
+    /// Get target for a move
     /// Equivalent to battle.ts getTarget()
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// getTarget(pokemon: Pokemon, move: string | Move, targetLoc: number, originalTarget?: Pokemon) {
+    ///     move = this.dex.moves.get(move);
+    ///
+    ///     let tracksTarget = move.tracksTarget;
+    ///     if (pokemon.hasAbility(['stalwart', 'propellertail'])) tracksTarget = true;
+    ///     if (tracksTarget && originalTarget?.isActive) {
+    ///         return originalTarget;
+    ///     }
+    ///
+    ///     if (move.smartTarget) {
+    ///         const curTarget = pokemon.getAtLoc(targetLoc);
+    ///         return curTarget && !curTarget.fainted ? curTarget : this.getRandomTarget(pokemon, move);
+    ///     }
+    ///
+    ///     const selfLoc = pokemon.getLocOf(pokemon);
+    ///     if (['adjacentAlly', 'any', 'normal'].includes(move.target) && targetLoc === selfLoc &&
+    ///         !pokemon.volatiles['twoturnmove'] && !pokemon.volatiles['iceball'] && !pokemon.volatiles['rollout']) {
+    ///         return move.flags['futuremove'] ? pokemon : null;
+    ///     }
+    ///     if (move.target !== 'randomNormal' && this.validTargetLoc(targetLoc, pokemon, move.target)) {
+    ///         const target = pokemon.getAtLoc(targetLoc);
+    ///         if (target?.fainted) {
+    ///             if (this.gameType === 'freeforall') return target;
+    ///             if (target.isAlly(pokemon)) {
+    ///                 if (move.target === 'adjacentAllyOrSelf' && this.gen !== 5) return pokemon;
+    ///                 return target;
+    ///             }
+    ///         }
+    ///         if (target && !target.fainted) return target;
+    ///     }
+    ///     return this.getRandomTarget(pokemon, move);
+    /// }
+    /// ```
     pub fn get_target(
         &mut self,
         user: (usize, usize),
@@ -5542,11 +6144,12 @@ impl Battle {
         target_loc: i8,
         original_target: Option<(usize, usize)>,
     ) -> Option<(usize, usize)> {
-        // Get move data
+        // JS: move = this.dex.moves.get(move);
         let move_def = crate::data::moves::get_move(move_id)?;
         let target_type = format!("{:?}", move_def.target);
 
-        // Check for smart-tracking (Stalwart, Propeller Tail)
+        // JS: let tracksTarget = move.tracksTarget;
+        // JS: if (pokemon.hasAbility(['stalwart', 'propellertail'])) tracksTarget = true;
         let (user_side, user_idx) = user;
         let tracks_target = if let Some(side) = self.sides.get(user_side) {
             if let Some(pokemon) = side.pokemon.get(user_idx) {
@@ -5559,12 +6162,12 @@ impl Battle {
             false
         };
 
-        // If tracking and original target is still active, use it
+        // JS: if (tracksTarget && originalTarget?.isActive) return originalTarget;
         if tracks_target {
             if let Some((target_side, target_idx)) = original_target {
                 if let Some(side) = self.sides.get(target_side) {
                     if let Some(pokemon) = side.pokemon.get(target_idx) {
-                        if pokemon.is_active && !pokemon.fainted {
+                        if pokemon.is_active {
                             return Some((target_side, target_idx));
                         }
                     }
@@ -5572,23 +6175,52 @@ impl Battle {
             }
         }
 
-        // Validate target location
+        // JS: if (move.smartTarget) {
+        // JS:     const curTarget = pokemon.getAtLoc(targetLoc);
+        // JS:     return curTarget && !curTarget.fainted ? curTarget : this.getRandomTarget(pokemon, move);
+        // JS: }
+        // TODO: move.smartTarget support (requires MoveDef field)
+
+        // JS: const selfLoc = pokemon.getLocOf(pokemon);
+        // JS: if (['adjacentAlly', 'any', 'normal'].includes(move.target) && targetLoc === selfLoc && ...)
+        // TODO: Self-targeting validation (requires volatiles check)
+
+        // JS: if (move.target !== 'randomNormal' && this.validTargetLoc(targetLoc, pokemon, move.target)) {
         if target_type != "RandomNormal" && self.valid_target_loc(target_loc as i32, user, &target_type) {
-            // Get target at location
+            // JS: const target = pokemon.getAtLoc(targetLoc);
             if let Some(target) = self.get_at_loc(user, target_loc) {
-                // Check if target is fainted
-                if let Some(side) = self.sides.get(target.0) {
-                    if let Some(pokemon) = side.pokemon.get(target.1) {
+                let (target_side, target_idx) = target;
+                if let Some(side) = self.sides.get(target_side) {
+                    if let Some(pokemon) = side.pokemon.get(target_idx) {
+                        // JS: if (target?.fainted) {
+                        if pokemon.fainted {
+                            // JS: if (this.gameType === 'freeforall') return target;
+                            if self.game_type == GameType::FreeForAll {
+                                return Some(target);
+                            }
+                            // JS: if (target.isAlly(pokemon)) {
+                            // JS:     if (move.target === 'adjacentAllyOrSelf' && this.gen !== 5) return pokemon;
+                            // JS:     return target;
+                            // JS: }
+                            // TODO: isAlly check (requires helper method)
+                            // For now, assume fainted ally returns target
+                            if target_side == user_side {
+                                if target_type == "AdjacentAllyOrSelf" && self.gen != 5 {
+                                    return Some(user);
+                                }
+                                return Some(target);
+                            }
+                        }
+                        // JS: if (target && !target.fainted) return target;
                         if !pokemon.fainted {
                             return Some(target);
                         }
                     }
                 }
-                // Target fainted, need to retarget in some cases
             }
         }
 
-        // Fall back to random target
+        // JS: return this.getRandomTarget(pokemon, move);
         self.get_random_target(user_side, user_idx, &target_type)
     }
 
@@ -5800,6 +6432,17 @@ impl Battle {
             // Add damage log message
             self.add_damage_log(target_pos, source, effect);
 
+            // Check if Pokemon fainted and add to faint queue
+            // JavaScript: if (pokemon.hp <= 0) pokemon.faint(source, effect);
+            if let Some(side) = self.sides.get(target_pos.0) {
+                if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                    if pokemon.hp == 0 {
+                        let effect_str = effect.map(|e| e.as_str());
+                        self.faint(target_pos, source, effect_str);
+                    }
+                }
+            }
+
             // Handle recoil and drain for moves
             // JavaScript: if (targetDamage && effect.effectType === 'Move')
             if target_damage > 0 {
@@ -5902,11 +6545,25 @@ impl Battle {
     }
 
     /// Final stat modification with 4096 denominator
-    /// Equivalent to battle.ts finalModify()
-    pub fn final_modify(&self, relay_var: i32) -> i32 {
-        // In PS, this applies the event modifier
-        // For now, just return the value
-        relay_var
+    /// Apply final modifier to value
+    /// Equivalent to battle.ts finalModify() (battle.ts:2344-2346)
+    ///
+    /// JS Source (battle.ts:2344-2346):
+    /// ```js
+    /// finalModify(value: number) {
+    ///     return this.modify(value, this.event.modifier);
+    /// }
+    /// ```
+    pub fn final_modify(&self, value: i32) -> i32 {
+        // JS: return this.modify(value, this.event.modifier);
+        let modifier = self.get_event_modifier();
+        self.modify_internal(value, modifier)
+    }
+
+    fn modify_internal(&self, value: i32, modifier: f64) -> i32 {
+        // 4096-based fixed-point multiplication
+        let result = (value as f64 * modifier * 4096.0).trunc() as i32;
+        ((result + 2048) >> 12).max(1)
     }
 
     // =========================================================================
@@ -5915,11 +6572,37 @@ impl Battle {
 
     /// Add split message for different players
     /// Equivalent to battle.ts addSplit()
-    pub fn add_split(&mut self, side_idx: usize, secret_message: &str, shared_message: &str) {
-        // In the full implementation, this would send different messages to different players
-        // For now, we just log the shared message
-        if side_idx < self.sides.len() {
-            self.log.push(shared_message.to_string());
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// addSplit(side: SideID, secret: Part[], shared?: Part[]) {
+    ///     this.log.push(`|split|${side}`);
+    ///     this.add(...secret);
+    ///     if (shared) {
+    ///         this.add(...shared);
+    ///     } else {
+    ///         this.log.push('');
+    ///     }
+    /// }
+    /// ```
+    pub fn add_split(&mut self, side_id: &str, secret: &[&str], shared: Option<&[&str]>) {
+        // JS: this.log.push(`|split|${side}`);
+        self.log.push(format!("|split|{}", side_id));
+
+        // JS: this.add(...secret);
+        if !secret.is_empty() {
+            let entry = format!("|{}", secret.join("|"));
+            self.log.push(entry);
+        }
+
+        // JS: if (shared) { this.add(...shared); } else { this.log.push(''); }
+        if let Some(shared_parts) = shared {
+            if !shared_parts.is_empty() {
+                let entry = format!("|{}", shared_parts.join("|"));
+                self.log.push(entry);
+            }
+        } else {
+            self.log.push(String::new());
         }
     }
 
@@ -5960,12 +6643,33 @@ impl Battle {
         self.log[line_idx] = format!("{}|{}", self.log[line_idx], attrs);
     }
 
-    /// Chain modify a value by a multiplier (4096-based)
-    /// Equivalent to battle.ts chainModify()
-    pub fn chain_modify(&self, value: i32, modifier: f64) -> i32 {
-        // 4096-based multiplication for precision
-        let result = ((value as f64 * modifier * 4096.0).round() / 4096.0).floor() as i32;
-        result.max(1)
+    /// Chain modify event modifier
+    /// Equivalent to battle.ts chainModify() (battle.ts:2291-2300)
+    ///
+    /// JS Source (battle.ts:2291-2300):
+    /// ```js
+    /// chainModify(numerator: number | number[], denominator = 1) {
+    ///     const previousMod = this.trunc(this.event.modifier * 4096);
+    ///
+    ///     if (Array.isArray(numerator)) {
+    ///         denominator = numerator[1];
+    ///         numerator = numerator[0];
+    ///     }
+    ///     const nextMod = this.trunc(numerator * 4096 / denominator);
+    ///     this.event.modifier = ((previousMod * nextMod + 2048) >> 12) / 4096;
+    /// }
+    /// ```
+    pub fn chain_modify(&mut self, numerator: i32, denominator: i32) {
+        if let Some(ref mut event) = self.current_event {
+            // JS: const previousMod = this.trunc(this.event.modifier * 4096);
+            let previous_mod = (event.modifier * 4096.0).trunc() as i32;
+
+            // JS: const nextMod = this.trunc(numerator * 4096 / denominator);
+            let next_mod = (numerator * 4096) / denominator;
+
+            // JS: this.event.modifier = ((previousMod * nextMod + 2048) >> 12) / 4096;
+            event.modifier = (((previous_mod * next_mod + 2048) >> 12) as f64) / 4096.0;
+        }
     }
 
     /// Check if teams have balanced EVs
@@ -6154,13 +6858,56 @@ impl Battle {
         self.log[line_idx] = new_parts.join("|");
     }
 
-    /// Run team preview phase
+    /// Handle team preview phase
     /// Equivalent to battle.ts runPickTeam()
+    ///
+    /// JS Source (battle.ts:1931-1959):
+    /// ```js
+    /// runPickTeam() {
+    ///     // onTeamPreview handlers are expected to show full teams to all active sides,
+    ///     // and send a 'teampreview' request for players to pick their leads / team order.
+    ///     this.format.onTeamPreview?.call(this);
+    ///     for (const rule of this.ruleTable.keys()) {
+    ///         if ('+*-!'.includes(rule.charAt(0))) continue;
+    ///         const subFormat = this.dex.formats.get(rule);
+    ///         subFormat.onTeamPreview?.call(this);
+    ///     }
+    ///     if (this.requestState === 'teampreview') {
+    ///         return;
+    ///     }
+    ///     if (this.ruleTable.pickedTeamSize) {
+    ///         // There was no onTeamPreview handler (e.g. Team Preview rule missing).
+    ///         // Players must still pick their own Pokémon, so we show them privately.
+    ///         this.add('clearpoke');
+    ///         for (const pokemon of this.getAllPokemon()) {
+    ///             // Still need to hide these formes since they change on battle start
+    ///             const details = pokemon.details.replace(', shiny', '')
+    ///                 .replace(/(Zacian|Zamazenta)(?!-Crowned)/g, '$1-*')
+    ///                 .replace(/(Xerneas)(-[a-zA-Z?-]+)?/g, '$1-*');
+    ///             this.addSplit(pokemon.side.id, ['poke', pokemon.side.id, details, '']);
+    ///         }
+    ///         this.makeRequest('teampreview');
+    ///     }
+    /// }
+    /// ```
     pub fn run_pick_team(&mut self) {
-        self.request_state = BattleRequestState::TeamPreview;
-        for side in &mut self.sides {
-            side.request_state = RequestState::TeamPreview;
+        // JS: this.format.onTeamPreview?.call(this);
+        // TODO: Implement format.onTeamPreview callback
+
+        // JS: for (const rule of this.ruleTable.keys()) { ... subFormat.onTeamPreview?.call(this); }
+        // TODO: Implement ruleTable iteration and subFormat.onTeamPreview callbacks
+
+        // JS: if (this.requestState === 'teampreview') { return; }
+        if matches!(self.request_state, BattleRequestState::TeamPreview) {
+            return;
         }
+
+        // JS: if (this.ruleTable.pickedTeamSize) { ... }
+        // TODO: Implement ruleTable.pickedTeamSize check
+
+        // For now, assume we need team preview and call makeRequest
+        // JS: this.makeRequest('teampreview');
+        self.make_request(Some(BattleRequestState::TeamPreview));
     }
 
     /// Send updates to connected players
