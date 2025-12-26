@@ -6521,6 +6521,17 @@ impl Battle {
                         }
                         return EventResult::Continue;
                     }
+                    "assist" => {
+                        if let (Some(target), Some(source)) = (target, source) {
+                            crate::data::move_callbacks::assist::on_hit(
+                                self,
+                                target,
+                                source,
+                                &move_effect_id,
+                            );
+                        }
+                        return EventResult::Continue;
+                    }
                     _ => {}
                 }
             }
