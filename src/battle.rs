@@ -82,6 +82,31 @@ pub enum EffectType {
     Status,
 }
 
+/// Custom event handler registered via onEvent (for testing)
+/// JavaScript: { callback, target, priority, order, subOrder }
+pub struct CustomEventHandler {
+    /// The callback function - now receives EventContext instead of &mut Battle
+    /// This eliminates the circular reference and unsafe code
+    pub callback: Box<dyn Fn(&EventContext) -> Option<i32> + Send + Sync>,
+    /// Priority for event ordering (higher = earlier)
+    pub priority: i32,
+    /// Order value
+    pub order: bool,
+    /// Sub-order for same priority
+    pub sub_order: i32,
+}
+
+impl std::fmt::Debug for CustomEventHandler {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("CustomEventHandler")
+            .field("priority", &self.priority)
+            .field("order", &self.order)
+            .field("sub_order", &self.sub_order)
+            .field("callback", &"<closure>")
+            .finish()
+    }
+}
+
 impl<'a> From<&'a Pokemon> for Arg<'a> {
     fn from(p: &'a Pokemon) -> Self {
         Arg::Pokemon(p)
@@ -161,6 +186,53 @@ impl Default for EventInfo {
     }
 }
 
+/// Context provided to custom event handlers
+/// Contains read-only event information that callbacks can access
+/// Equivalent to JavaScript's `this` context in event callbacks
+#[derive(Debug, Clone)]
+pub struct EventContext {
+    /// Event ID/name (e.g., "Hit", "ModifyDamage")
+    pub event_id: String,
+    /// Target of the event (side_idx, poke_idx)
+    pub target: Option<(usize, usize)>,
+    /// Source of the event
+    pub source: Option<(usize, usize)>,
+    /// Effect that caused the event
+    pub effect: Option<ID>,
+    /// Modifier accumulated during event processing
+    /// In JavaScript: this.event.modifier
+    pub modifier: f64,
+    /// Relay variable passed to the event
+    /// This is the value being modified through the event chain
+    pub relay_var: Option<i32>,
+}
+
+impl EventContext {
+    /// Create EventContext from EventInfo and relay_var
+    fn from_event_info(event_id: &str, event_info: &EventInfo, relay_var: Option<i32>) -> Self {
+        Self {
+            event_id: event_id.to_string(),
+            target: event_info.target,
+            source: event_info.source,
+            effect: event_info.effect.clone(),
+            modifier: event_info.modifier,
+            relay_var,
+        }
+    }
+
+    /// Create minimal context for event without full EventInfo
+    fn minimal(event_id: &str) -> Self {
+        Self {
+            event_id: event_id.to_string(),
+            target: None,
+            source: None,
+            effect: None,
+            modifier: 1.0,
+            relay_var: None,
+        }
+    }
+}
+
 /// Faint queue entry data
 /// Equivalent to battle.ts FaintQueue entry
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -209,7 +281,7 @@ pub enum BattleRequestState {
 }
 
 /// The main Battle struct
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Battle {
     /// Format ID
     pub format_id: ID,
@@ -297,6 +369,12 @@ pub struct Battle {
     /// Hints shown to players
     pub hints: HashSet<String>,
 
+    /// Custom event handlers (for testing)
+    /// Maps event name (e.g., "onHit") to list of handlers
+    /// JavaScript: events?: {[eventid: string]: EventHandler[]}
+    #[serde(skip)]
+    pub events: std::collections::HashMap<String, Vec<CustomEventHandler>>,
+
     /// Faint queue - Pokemon waiting to faint
     /// Equivalent to battle.ts faintQueue
     pub faint_queue: Vec<FaintData>,
@@ -368,6 +446,7 @@ impl Battle {
                 None
             },
             hints: HashSet::new(),
+            events: std::collections::HashMap::new(),
             faint_queue: Vec::new(),
         };
 
@@ -2545,6 +2624,20 @@ impl Battle {
             damage
         };
 
+        // Fire ModifyDamage event to allow custom handlers to modify final damage
+        // JavaScript: baseDamage = this.battle.runEvent('ModifyDamage', pokemon, target, move, baseDamage);
+        let damage = if let Some(modified) = self.run_event(
+            "ModifyDamage",
+            Some((target_side, target_idx)),
+            Some((attacker_side, attacker_idx)),
+            Some(move_id),
+            Some(damage as i32)
+        ) {
+            modified as u32
+        } else {
+            damage
+        };
+
         (damage.max(1), false)
     }
 
@@ -3128,14 +3221,16 @@ impl Battle {
             _ => {}
         }
 
-        // Call onHit event after move effects are applied (for moves that have onHit callback)
-        // JavaScript: this.singleEvent('Hit', move, {}, target, pokemon, move);
-        match move_id.as_str() {
-            "autotomize" => {
-                let _hit_result = self.run_event("Hit", Some((target_side, target_idx)), Some((attacker_side, attacker_idx)), Some(&move_id), None);
-            }
-            _ => {}
-        }
+        // Fire Hit event after all move effects are applied
+        // JavaScript: this.battle.runEvent('Hit', target, source, move);
+        // This fires for ALL moves, not just specific ones
+        self.run_event(
+            "Hit",
+            Some((target_side, target_idx)),
+            Some((attacker_side, attacker_idx)),
+            Some(move_id),
+            None
+        );
     }
 
     /// Apply confusion volatile to a Pokemon
@@ -7274,6 +7369,11 @@ impl Battle {
             }
         }
 
+        // Run custom event handlers (registered via onEvent in tests)
+        if let Some(custom_result) = self.run_custom_event_handlers(event_id) {
+            result = Some(custom_result);
+        }
+
         // Apply event modifier if we have a numeric result
         if let (Some(ref mut r), Some(ref event)) = (&mut result, &self.current_event) {
             if event.modifier != 1.0 {
@@ -8146,13 +8246,6 @@ impl Battle {
         self.sides.get(side_idx).map(|s| s.pokemon.as_slice())
     }
 
-    /// Register an event listener
-    /// Equivalent to battle.ts onEvent()
-    pub fn on_event(&mut self, _event_id: &str, _callback: fn()) {
-        // In the full implementation, this would register a callback
-        // For now, this is a no-op
-    }
-
     /// Resolve event handler priority
     /// Equivalent to battle.ts resolvePriority()
     ///
@@ -8781,6 +8874,113 @@ fn game_type_to_string(game_type: &GameType) -> String {
         GameType::Rotation => "rotation".to_string(),
         GameType::Multi => "multi".to_string(),
         GameType::FreeForAll => "freeforall".to_string(),
+    }
+}
+
+impl Battle {
+    /// Register a custom event handler (for testing)
+    /// JavaScript: onEvent(eventid: string, target: Format, ...rest: AnyObject[])
+    ///
+    /// # Arguments
+    /// * `event_id` - Event name (e.g., "Hit", "ModifyDamage")
+    /// * `callback` - Function to call when event fires
+    ///
+    /// # Example
+    /// ```ignore
+    /// battle.on_event("Hit", |ctx| {
+    ///     println!("Hit event on {:?}", ctx.target);
+    ///     None // Return None for no value, Some(n) to return a value
+    /// });
+    /// ```
+    pub fn on_event<F>(&mut self, event_id: &str, callback: F)
+    where
+        F: Fn(&EventContext) -> Option<i32> + Send + Sync + 'static,
+    {
+        self.on_event_priority(event_id, 0, callback);
+    }
+
+    /// Register a custom event handler with priority (for testing)
+    /// JavaScript: onEvent(eventid: string, target: Format, priority: number, callback)
+    ///
+    /// # Arguments
+    /// * `event_id` - Event name (e.g., "Hit", "ModifyDamage")
+    /// * `priority` - Priority value (higher = called earlier)
+    /// * `callback` - Function to call when event fires
+    pub fn on_event_priority<F>(&mut self, event_id: &str, priority: i32, callback: F)
+    where
+        F: Fn(&EventContext) -> Option<i32> + Send + Sync + 'static,
+    {
+        if event_id.is_empty() {
+            panic!("Event handlers must have an event to listen to");
+        }
+
+        let callback_name = format!("on{}", event_id);
+
+        let handler = CustomEventHandler {
+            callback: Box::new(callback),
+            priority,
+            order: false,
+            sub_order: 0,
+        };
+
+        self.events.entry(callback_name)
+            .or_insert_with(Vec::new)
+            .push(handler);
+    }
+
+    /// Call custom event handlers for a given event
+    /// Returns the last non-None value returned by a handler, if any
+    ///
+    /// This version is SAFE - no unsafe code needed because callbacks
+    /// receive EventContext instead of &mut Battle, breaking the circular reference
+    fn run_custom_event_handlers(&mut self, event_name: &str) -> Option<i32> {
+        let callback_name = format!("on{}", event_name);
+
+        // Check if there are any custom handlers for this event
+        if !self.events.contains_key(&callback_name) {
+            return None;
+        }
+
+        // Get sorted indices by priority (higher priority first)
+        let sorted_indices: Vec<usize> = {
+            let handlers = self.events.get(&callback_name).unwrap();
+            let mut indices: Vec<usize> = (0..handlers.len()).collect();
+            indices.sort_by(|&a, &b| {
+                let pa = handlers[a].priority;
+                let pb = handlers[b].priority;
+                pb.cmp(&pa).then_with(|| a.cmp(&b)) // Descending priority, stable sort
+            });
+            indices
+        };
+
+        // Create EventContext from current state
+        // We extract this before iterating to avoid borrow checker issues
+        let event_context = if let Some(ref event_info) = self.current_event {
+            EventContext::from_event_info(event_name, event_info, None)
+        } else {
+            EventContext::minimal(event_name)
+        };
+
+        let mut last_result = None;
+
+        // SAFE: No unsafe code needed!
+        // We can borrow self.events immutably and call callbacks safely
+        // because callbacks don't receive &mut Battle anymore
+        let handlers = self.events.get(&callback_name).unwrap();
+
+        for &index in &sorted_indices {
+            if index >= handlers.len() {
+                continue;
+            }
+
+            // Call the callback with EventContext
+            // This is completely safe - no circular borrowing!
+            if let Some(result) = (handlers[index].callback)(&event_context) {
+                last_result = Some(result);
+            }
+        }
+
+        last_result
     }
 }
 

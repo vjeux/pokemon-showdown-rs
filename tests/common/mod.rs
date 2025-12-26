@@ -1,7 +1,7 @@
 //! Common test utilities
 //! Equivalent to pokemon-showdown-js/test/common.js
 
-use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, ID, PRNGSeed};
+use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, ID, PRNGSeed, Gender};
 
 /// Default PRNG seed for consistent test results
 pub const DEFAULT_SEED: PRNGSeed = PRNGSeed::Gen5([1, 2, 3, 4]);
@@ -52,7 +52,7 @@ pub struct PokemonSpec {
     pub moves: Vec<String>,
     pub level: Option<u8>,
     pub item: Option<String>,
-    pub gender: Option<String>,
+    pub gender: Option<Gender>,
     pub nature: Option<String>,
     pub evs: Option<EVs>,
     pub ivs: Option<IVs>,
@@ -87,7 +87,7 @@ impl From<PokemonSpec> for PokemonSet {
             ability: spec.ability,
             moves: spec.moves,
             item: spec.item.unwrap_or_default(),
-            gender: spec.gender.unwrap_or_default(),
+            gender: spec.gender.unwrap_or(Gender::None),
             nature: spec.nature.unwrap_or_default(),
             ..Default::default()
         }
@@ -112,7 +112,7 @@ macro_rules! pokemon {
             moves: vec![$($move.to_string()),*],
             level: None $(.or(Some($level)))?,
             item: None $(.or(Some($item.to_string())))?,
-            gender: None $(.or(Some($gender.to_string())))?,
+            gender: None $(.or(Some($gender)))?,
             nature: None $(.or(Some($nature.to_string())))?,
             evs: None,
             ivs: None,
