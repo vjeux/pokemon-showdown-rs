@@ -885,26 +885,14 @@ impl Battle {
 
     /// Run each event for all active Pokemon
     fn each_event_internal(&mut self, event_name: &str) {
-        let active = self.get_all_active_indices();
+        let active: Vec<(usize, usize)> = self.get_all_active(false)
+            .iter()
+            .map(|pokemon| (pokemon.side_index, pokemon.position))
+            .collect();
         for (side_idx, poke_idx) in active {
             let effect_id = ID::new(event_name);
             self.single_event(event_name, &effect_id, Some((side_idx, poke_idx)), None, None);
         }
-    }
-
-    /// Get all active Pokemon indices
-    fn get_all_active_indices(&self) -> Vec<(usize, usize)> {
-        let mut result = Vec::new();
-        for (side_idx, side) in self.sides.iter().enumerate() {
-            for opt_idx in &side.active {
-                if let Some(poke_idx) = opt_idx {
-                    if !self.sides[side_idx].pokemon[*poke_idx].is_fainted() {
-                        result.push((side_idx, *poke_idx));
-                    }
-                }
-            }
-        }
-        result
     }
 
     /// Add a log entry
