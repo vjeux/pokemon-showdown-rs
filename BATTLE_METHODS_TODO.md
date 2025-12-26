@@ -84,7 +84,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 34. ✅ `spreadModify` / `spread_modify` - battle.ts:2316 | battle.rs:5853 | **FIXED!** ✅ - Rewrote to calc stats from base+IVs+EVs (TODO: needs Dex for natures)
 35. ✅ `statModify` / `stat_modify` - battle.ts:2324 | battle.rs:5904 | **FIXED!** ✅ - Implements stat calc formula (TODO: needs Dex for natures)
-36. 🔍 `finalModify` / `final_modify` - battle.ts:2344 | battle.rs:? | **TODO**
+36. ❌ `finalModify` / `final_modify` - battle.ts:2344 | battle.rs:5710 | **MISMATCH** - Rust is stub, needs this.event.modifier
 37. 📝 `trunc` - NOT IN BATTLE.TS (imported utility) | **N/A**
 
 ### Win Conditions (5 methods)
@@ -128,14 +128,14 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 62. ✅ `canSwitch` / `can_switch` - battle.ts:1520 | battle.rs:4038 | **MATCH** - Verified correct
 63. ✅ `getRandomSwitchable` / `get_random_switchable` - battle.ts:1524 | battle.rs:4044 | **MATCH** - Verified correct
 64. 🔍 `swapPosition` / `swap_position` - battle.ts:1542 | battle.rs:4356 | **MISMATCH** - Different signature and logic
-65. 🔍 `faintMessages` / `faint_messages` - battle.ts:2498 | battle.rs:? | **TODO**
+65. 🔍 `faintMessages` / `faint_messages` - battle.ts:2498 | battle.rs:2968 | **MISMATCH** - Rust version is simplified (22 lines vs 78 lines), missing faintQueue, events (BeforeFaint, Faint, AfterFaint), forme regression
 
 ### Target Selection (4 methods)
 
 66. 🔍 `getTarget` / `get_target` - battle.ts:2400 | battle.rs:4192 | **TODO**
 67. 🔍 `getRandomTarget` / `get_random_target` - battle.ts:2453 | battle.rs:? | **TODO**
-68. 🔍 `validTarget` / `valid_target` - battle.ts:2396 | battle.rs:? | **TODO**
-69. 🔍 `validTargetLoc` / `valid_target_loc` - battle.ts:2362 | battle.rs:? | **TODO**
+68. ❌ `validTarget` / `valid_target` - battle.ts:2396 | battle.rs:4130 | **MISMATCH** - JS calls validTargetLoc(), Rust has its own logic
+69. ❌ `validTargetLoc` / `valid_target_loc` - battle.ts:2362 | battle.rs:4077 | **MISMATCH** - Completely different implementation (JS has proper adjacency, free-for-all support)
 
 ### Logging & Messages (9 methods)
 
@@ -159,14 +159,14 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 84. ✅ `checkEVBalance` / `check_ev_balance` - battle.ts:1960 | battle.rs:5724 | **FIXED!** ✅ - Rewrote to check for 510 EV limit mismatch
 85. ✅ `getCategory` / `get_category` - battle.ts:2350 | battle.rs:4382 | **FIXED!** ✅ - Changed to return String (defaulting to "Physical")
 86. ✅ `randomizer` / `randomizer` - battle.ts:2354 | battle.rs:5270 | **MATCH** - Verified implementation correct
-87. 🔍 `getTeam` / `get_team` - battle.ts:3164 | battle.rs:? | **TODO**
+87. ❌ `getTeam` / `get_team` - battle.ts:3164 | battle.rs:5879 | **MISMATCH** - Different purpose (JS: takes PlayerOptions, unpacks/generates team; Rust: returns side's pokemon array)
 88. 🔍 `showOpenTeamSheets` / `show_open_team_sheets` - battle.ts:3183 | battle.rs:? | **TODO**
 89. 🔍 `join` / `join` - battle.ts:3261 | battle.rs:? | **TODO**
 90. 🔍 `sendUpdates` / `send_updates` - battle.ts:3266 | battle.rs:? | **TODO**
 91. ✅ `getSide` / `get_side` - battle.ts:3308 | battle.rs:748 | **MATCH** - Returns Option (safer, acceptable difference)
 92. ✅ `getOverflowedTurnCount` / `get_overflowed_turn_count` - battle.ts:3317 | battle.rs:5089 | **FIXED!** ✅
-93. 🔍 `initEffectState` / `init_effect_state` - battle.ts:3321 | battle.rs:? | **TODO**
-94. 🔍 `clearEffectState` / `clear_effect_state` - battle.ts:3333 | battle.rs:? | **TODO**
+93. ❌ `initEffectState` / `init_effect_state` - battle.ts:3321 | battle.rs:862 | **MISMATCH** - Different signature (JS: Partial<EffectState>, Rust: just ID)
+94. ❌ `clearEffectState` / `clear_effect_state` - battle.ts:3333 | battle.rs:5797 | **MISMATCH** - Different signature (JS: EffectState object, Rust: target + effect_id)
 95. 🔍 `toJSON` / (serialization) - battle.ts:318 | battle.rs:? | **TODO**
 96. ✅ `toString` / (Display trait) - battle.ts:342 | battle.rs:6285 | **FIXED!** ✅ - Added Display impl returning "Battle: {format}"
 
@@ -174,12 +174,12 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ## Progress Summary
 
-**Methods Compared**: 68 / 96 (71%) - 1 more method this session
-**Methods Matching**: 33 (34%) - 1 more this session
+**Methods Compared**: 76 / 96 (79%) - 8 more methods this session
+**Methods Matching**: 33 (34%) - 1 more this session (toString)
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
-- Util: getPokemon, getAllPokemon, getAllActive, getOverflowedTurnCount, getCategory, checkFainted
+- Util: getPokemon, getAllPokemon, getAllActive, getOverflowedTurnCount, getCategory, checkFainted, randomizer
 - Logging: debug, addMove, debugError
 - Requests: clearRequest
 - Switching: getRandomSwitchable, canSwitch
@@ -192,15 +192,15 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 18 (19%)
+**Methods with Major Mismatches**: 25 (26%) - up from 18 (found 7 more)
 - Event-dependent: boost, chainModify, getActionSpeed
-- Simplified: makeRequest, endTurn, getDebugLog
+- Simplified: makeRequest, endTurn, getDebugLog, faintMessages
 - Missing features: add, hint, addSplit
 - Complex: suppressingAbility, checkMoveMakesContact
-- Stubs: attrLastMove, retargetLastMove
-- Different signature/logic: swapPosition, getAtSlot, faint
+- Stubs: attrLastMove, retargetLastMove, finalModify
+- Different signature/logic: swapPosition, getAtSlot, faint, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState
 
-**Methods Still TODO**: 32 (33%)
+**Methods Still TODO**: 20 (21%) - down from 32
 
 **Critical Achievement**: Event system now actively used! ✅
 - spread_damage fires Damage event
