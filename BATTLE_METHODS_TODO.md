@@ -63,11 +63,11 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 18. ✅ `fieldEvent` / `field_event` - battle.ts:484 | battle.rs:5820 | **MATCH** - Both handle Residual/SwitchIn events
 19. ✅ `onEvent` / `on_event` - battle.ts:1250 | battle.rs:5885 | **MATCH** - Event registration stub (acceptable for now)
 20. ✅ `getCallback` / `get_callback` - battle.ts:1019 | battle.rs:5842 | **MATCH** - Returns callback name stub
-21. 🔍 `findEventHandlers` / `find_event_handlers` - battle.ts:1036 | battle.rs:? | **TODO**
-22. 🔍 `findPokemonEventHandlers` / `find_pokemon_event_handlers` - battle.ts:1098 | battle.rs:? | **TODO**
-23. 🔍 `findBattleEventHandlers` / `find_battle_event_handlers` - battle.ts:1159 | battle.rs:? | **TODO**
-24. 🔍 `findSideEventHandlers` / `find_side_event_handlers` - battle.ts:1217 | battle.rs:? | **TODO**
-25. 🔍 `findFieldEventHandlers` / `find_field_event_handlers` - battle.ts:1182 | battle.rs:? | **TODO**
+21. ✅ `findEventHandlers` / `find_event_handlers` - battle.ts:1036 | battle.rs:5212 | **MATCH** - Collects event handlers
+22. ✅ `findPokemonEventHandlers` / `find_pokemon_event_handlers` - battle.ts:1098 | battle.rs:6118 | **MATCH** - Finds Pokemon-specific handlers
+23. ✅ `findBattleEventHandlers` / `find_battle_event_handlers` - battle.ts:1159 | battle.rs:6071 | **MATCH** - Finds battle-level handlers
+24. ✅ `findSideEventHandlers` / `find_side_event_handlers` - battle.ts:1217 | battle.rs:6103 | **MATCH** - Finds side-specific handlers
+25. ✅ `findFieldEventHandlers` / `find_field_event_handlers` - battle.ts:1182 | battle.rs:6079 | **MATCH** - Finds field-level handlers
 
 ### Damage & Healing (8 methods)
 
@@ -174,8 +174,8 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ## Progress Summary
 
-**Methods Compared**: 90 / 96 (94%) - 9 more methods verified!
-**Methods Matching**: 47 (49%) - 9 more matches! 🎉
+**Methods Compared**: 95 / 96 (99%) - Only 1 method remains! 🎯
+**Methods Matching**: 52 (54%) - Over half are direct translations! 🎉
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
@@ -186,7 +186,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - **Damage/Heal**: damage, spreadDamage, heal, directDamage
 - **Active Move**: setActiveMove, clearActiveMove
 - **Display**: toString (Display trait)
-- **Event System**: eachEvent, fieldEvent, priorityEvent, onEvent, getCallback
+- **Event System**: eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
 - **Turn Flow**: turnLoop, runAction
 - And more
 
@@ -202,7 +202,10 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - Stubs: attrLastMove, retargetLastMove, finalModify
 - Different signature/logic: swapPosition, getAtSlot, faint, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState
 
-**Methods Still TODO**: 6 (6%) - almost done!
+**Methods Needing Deep Comparison**: 17 (18%)
+- start, restart, destroy (initialization/teardown)
+- singleEvent, runEvent, resolvePriority (event system core)
+- maybeTriggerEndlessBattleClause, runPickTeam, tiebreak, getTarget, getRandomTarget, showOpenTeamSheets, join, sendUpdates, toJSON (various complex methods)
 
 **Critical Achievement**: Event system now actively used! ✅
 - spread_damage fires Damage event
