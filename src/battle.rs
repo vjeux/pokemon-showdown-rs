@@ -4919,9 +4919,92 @@ impl Battle {
         false
     }
 
-    /// Get the action speed for priority sorting
-    /// Equivalent to battle.ts getActionSpeed()
-    pub fn get_action_speed(&self, side_idx: usize, poke_idx: usize) -> u32 {
+    /// Get action speed for sorting the action queue
+    /// Equivalent to battle.ts getActionSpeed() (battle.ts:2590-2627)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// getActionSpeed(action: AnyObject) {
+    ///     if (action.choice === 'move') {
+    ///         let move = action.move;
+    ///         if (action.zmove) { move = this.dex.getActiveMove(zMoveName); }
+    ///         if (action.maxMove) { move = this.actions.getActiveMaxMove(...); }
+    ///         let priority = this.dex.moves.get(move.id).priority;
+    ///         priority = this.singleEvent('ModifyPriority', move, null, action.pokemon, null, null, priority);
+    ///         priority = this.runEvent('ModifyPriority', action.pokemon, null, move, priority);
+    ///         action.priority = priority + action.fractionalPriority;
+    ///         if (this.gen > 5) action.move.priority = priority;
+    ///     }
+    ///     if (!action.pokemon) { action.speed = 1; }
+    ///     else { action.speed = action.pokemon.getActionSpeed(); }
+    /// }
+    /// ```
+    ///
+    /// Note: This method MUTATES the action object by setting priority and speed fields
+    pub fn get_action_speed(&mut self, action: &mut crate::battle_queue::Action) {
+        use crate::battle_queue::Action;
+
+        match action {
+            Action::Move(ref mut move_action) => {
+                // JS: if (action.choice === 'move')
+
+                // Get the move (considering Z-Move/Max Move transformations)
+                let move_id = move_action.move_id.clone();
+
+                // JS: if (action.zmove) { ... }
+                // TODO: Implement Z-Move transformation
+                // Requires: this.actions.getZMove(), this.dex.getActiveMove()
+
+                // JS: if (action.maxMove) { ... }
+                // TODO: Implement Max Move transformation
+                // Requires: this.actions.getMaxMove(), this.actions.getActiveMaxMove()
+
+                // JS: let priority = this.dex.moves.get(move.id).priority;
+                // TODO: Get move priority from Dex
+                // For now, use the priority already set in move_action (from when action was created)
+                // Full implementation requires: Battle to have reference to Dex
+                let base_priority = move_action.priority;
+
+                // JS: priority = this.singleEvent('ModifyPriority', move, null, action.pokemon, null, null, priority);
+                // TODO: Implement ModifyPriority single event
+                // Requires: singleEvent with move context
+
+                // JS: priority = this.runEvent('ModifyPriority', action.pokemon, null, move, priority);
+                // TODO: Implement ModifyPriority run event
+                // Requires: runEvent with move context, pokemon from action
+
+                // JS: action.priority = priority + action.fractionalPriority;
+                // Note: fractionalPriority is already applied when action is created
+                // Just ensure priority is set correctly
+                move_action.priority = base_priority;
+
+                // JS: if (this.gen > 5) action.move.priority = priority;
+                // TODO: Set move.priority field (requires mutable move reference)
+
+                // JS: action.speed = action.pokemon.getActionSpeed();
+                let pokemon_speed = self.get_pokemon_action_speed(move_action.side_index, move_action.pokemon_index);
+                move_action.speed = pokemon_speed;
+            }
+            Action::Switch(ref mut switch_action) => {
+                // JS: if (!action.pokemon) { action.speed = 1; }
+                // For switches, get the pokemon's speed
+                let pokemon_speed = self.get_pokemon_action_speed(switch_action.side_index, switch_action.pokemon_index);
+                switch_action.speed = pokemon_speed;
+            }
+            Action::Pokemon(ref mut poke_action) => {
+                // Get pokemon speed for pokemon actions
+                let pokemon_speed = self.get_pokemon_action_speed(poke_action.side_index, poke_action.pokemon_index);
+                poke_action.speed = pokemon_speed;
+            }
+            _ => {
+                // Field and Team actions don't have speed
+            }
+        }
+    }
+
+    /// Get a Pokemon's action speed (called by pokemon.getActionSpeed() in JS)
+    /// This is the helper method for getting base Pokemon speed
+    fn get_pokemon_action_speed(&self, side_idx: usize, poke_idx: usize) -> u32 {
         if let Some(side) = self.sides.get(side_idx) {
             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                 // Apply speed boosts
