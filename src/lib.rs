@@ -42,7 +42,7 @@ pub use abilities::{AbilityEvent, AbilityModifier, get_ability_effect, check_abi
 pub use items::{ItemEvent, ItemModifier, get_item_effect, get_item_type_boost, check_item_prevents_status};
 pub use event::{EventType, EventResult, EffectType as EventEffectType, HandlerPriority, EventHandler, MoveFlags, AbilityFlags, ConditionData};
 pub use move_types::{MoveDef, MoveCategory, MoveTargetType};
-pub use data::items::{ItemCategory, item_boosts_type, is_choice_item, is_berry, get_residual_heal, item_grants_type_immunity};
+pub use data::items::{ItemCategory};
 pub use data::conditions::{ConditionDef, ConditionType, MoveRestriction, get_condition, is_status_condition, is_volatile_condition, condition_traps, get_condition_damage};
 pub use data::typechart::{TYPES, Effectiveness, TYPE_CHART, get_effectiveness, get_effectiveness_multi, is_immune, is_super_effective, is_not_very_effective};
 pub use data::species::{SpeciesDef, BaseStats, GenderRatio, SPECIES, get_species, get_species_by_name, species_exists, get_species_by_type, get_species_by_tier};

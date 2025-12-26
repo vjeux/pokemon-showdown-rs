@@ -36,34 +36,3 @@ pub enum ItemCategory {
     TR,
     Fossil,
 }
-
-/// Check if an item boosts a specific type
-pub fn item_boosts_type(_item_id: &ID, _move_type: &str) -> bool {
-    // TODO: Implement by checking item data
-    false
-}
-
-/// Check if an item is a choice item
-pub fn is_choice_item(item_id: &ID) -> bool {
-    // Simplified check - just check if name starts with "Choice"
-    let name = item_id.as_str();
-    name.starts_with("choice")
-}
-
-/// Check if an item is a berry
-pub fn is_berry(item_id: &ID) -> bool {
-    // Berry items have names ending in "berry"
-    item_id.as_str().ends_with("berry")
-}
-
-/// Get residual heal fraction for an item (Leftovers, etc.)
-pub fn get_residual_heal(_item_id: &ID) -> Option<f64> {
-    // TODO: Implement by checking item data
-    None
-}
-
-/// Check if an item grants type immunity
-pub fn item_grants_type_immunity(_item_id: &ID, _move_type: &str) -> bool {
-    // TODO: Implement by checking item data (e.g., Air Balloon for Ground immunity)
-    false
-}
