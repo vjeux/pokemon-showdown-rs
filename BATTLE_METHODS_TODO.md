@@ -155,7 +155,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 80. ✅ `setActiveMove` / `set_active_move` - battle.ts:370 | battle.rs:3311 | **MATCH** - Verified correct
 81. ✅ `clearActiveMove` / `clear_active_move` - battle.ts:376 | battle.rs:3319 | **MATCH** - Verified correct
 82. 🔍 `checkMoveMakesContact` / `check_move_makes_contact` - battle.ts:1290 | battle.rs:4296 | **MISMATCH** - Missing Protective Pads check
-83. 🔍 `checkFainted` / `check_fainted` - battle.ts:2487 | battle.rs:? | **TODO**
+83. ✅ `checkFainted` / `check_fainted` - battle.ts:2487 | battle.rs:3850 | **FIXED!** ✅ - Rewrote to match JS (loops through active, sets fnt status)
 84. ✅ `checkEVBalance` / `check_ev_balance` - battle.ts:1960 | battle.rs:5724 | **FIXED!** ✅ - Rewrote to check for 510 EV limit mismatch
 85. ✅ `getCategory` / `get_category` - battle.ts:2350 | battle.rs:4382 | **FIXED!** ✅ - Changed to return String (defaulting to "Physical")
 86. ✅ `randomizer` / `randomizer` - battle.ts:2354 | battle.rs:5270 | **MATCH** - Verified implementation correct
@@ -174,12 +174,12 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ## Progress Summary
 
-**Methods Compared**: 57 / 96 (59%) - 4 more this session
-**Methods Matching**: 27 (28%) - 3 more (setActiveMove, clearActiveMove, getCategory)
+**Methods Compared**: 58 / 96 (60%) - 5 more this session (warnings fix + 4 methods)
+**Methods Matching**: 28 (29%) - 4 more (setActiveMove, clearActiveMove, getCategory, checkFainted)
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin (FIXED!), tie, win (FIXED!), forceWin (FIXED!), lose (FIXED!)
-- Util: getPokemon, getAllPokemon, getAllActive (FIXED!), getOverflowedTurnCount (FIXED!), getCategory (FIXED!)
+- Util: getPokemon, getAllPokemon, getAllActive (FIXED!), getOverflowedTurnCount (FIXED!), getCategory (FIXED!), checkFainted (FIXED!)
 - Logging: debug
 - Requests: clearRequest (FIXED!)
 - **Damage/Heal**: damage (FIXED!), spreadDamage (FIXED!), heal (FIXED!), directDamage (FIXED!)
@@ -190,13 +190,13 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 11 (11%) - up from 10
+**Methods with Major Mismatches**: 11 (11%) - same as before
 - Event-dependent: ~~damage~~, ~~heal~~, boost, chainModify, getActionSpeed
 - Simplified: makeRequest, endTurn
 - Missing features: setPlayer, ~~spreadDamage~~, ~~directDamage~~, add, hint, addSplit
 - Complex: suppressingAbility, checkMoveMakesContact
 
-**Methods Still TODO**: 42 (44%)
+**Methods Still TODO**: 41 (43%)
 
 **Critical Achievement**: Event system now actively used! ✅
 - spread_damage fires Damage event
