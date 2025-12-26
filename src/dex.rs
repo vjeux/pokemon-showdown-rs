@@ -1012,13 +1012,27 @@ impl Dex {
 
             // JavaScript: Gen-specific mods override tier/isNonstandard for species available in this gen
             // e.g., gen1/formats-data.js sets caterpie tier: "LC" (not "Illegal")
-            // This applies to both base species AND formes that are available in this gen
-            // (Castform formes have isNonstandard: "Past" but are available in Gen 3+)
-            if species.is_nonstandard.as_deref() == Some("Past") {
-                species.is_nonstandard = None;
-            }
-            if species.tier.as_deref() == Some("Illegal") {
-                species.tier = None;
+            //
+            // IMPORTANT: Only clear "Past" and "Illegal" for species that are actually available in this gen
+            // Species with gen field + isNonstandard: "Past" are gen-exclusive (e.g., Pichu-Spiky-eared in Gen 4 only)
+            // Clear Past/Illegal ONLY if:
+            // 1. No explicit gen field (base species from early gens), OR
+            // 2. Explicit gen field matches requested gen (gen-exclusive formes)
+            let should_clear_past = if let Some(species_gen) = species.gen {
+                // Has explicit gen field - only clear if it matches requested gen
+                species_gen == gen
+            } else {
+                // No explicit gen field - this is a base species, always clear for its gen range
+                true
+            };
+
+            if should_clear_past {
+                if species.is_nonstandard.as_deref() == Some("Past") {
+                    species.is_nonstandard = None;
+                }
+                if species.tier.as_deref() == Some("Illegal") {
+                    species.tier = None;
+                }
             }
         }
 
