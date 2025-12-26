@@ -57,17 +57,13 @@ pub fn on_try_hit(
     // JavaScript: const hasContrary = pokemon.hasAbility('contrary');
     let (side_idx, poke_idx) = target;
 
-    let (has_contrary, current_spe_boost) = if let Some(side) = battle.sides.get(side_idx) {
-        if let Some(pokemon) = side.pokemon.get(poke_idx) {
-            let has_contrary = pokemon.ability.as_str() == "contrary";
-            let spe_boost = pokemon.boosts.spe;
-            (has_contrary, spe_boost)
-        } else {
-            return MoveHandlerResult::Undefined;
-        }
-    } else {
-        return MoveHandlerResult::Undefined;
+    let pokemon = match battle.pokemon_at(side_idx, poke_idx) {
+        Some(p) => p,
+        None => return MoveHandlerResult::Undefined,
     };
+
+    let has_contrary = pokemon.ability.as_str() == "contrary";
+    let current_spe_boost = pokemon.boosts.spe;
 
     // JavaScript: if ((!hasContrary && pokemon.boosts.spe === 6) || (hasContrary && pokemon.boosts.spe === -6)) { return false; }
     if (!has_contrary && current_spe_boost == 6) || (has_contrary && current_spe_boost == -6) {
@@ -90,33 +86,27 @@ pub fn on_hit(
     // JavaScript: if (pokemon.weighthg > 1) { pokemon.weighthg = Math.max(1, pokemon.weighthg - 1000); this.add('-start', pokemon, 'Autotomize'); }
     let (side_idx, poke_idx) = target;
 
-    let current_weight = if let Some(side) = battle.sides.get(side_idx) {
-        if let Some(pokemon) = side.pokemon.get(poke_idx) {
-            pokemon.weight_hg
-        } else {
-            return MoveHandlerResult::Undefined;
-        }
-    } else {
-        return MoveHandlerResult::Undefined;
+    let current_weight = match battle.pokemon_at(side_idx, poke_idx) {
+        Some(pokemon) => pokemon.weight_hg,
+        None => return MoveHandlerResult::Undefined,
     };
 
     if current_weight > 1 {
         // Reduce weight by 100 kg (1000 hectograms), minimum 0.1 kg (1 hectogram)
         let new_weight = (current_weight - 1000).max(1);
 
-        if let Some(side) = battle.sides.get_mut(side_idx) {
-            if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
-                pokemon.weight_hg = new_weight;
-            }
+        if let Some(pokemon) = battle.pokemon_at_mut(side_idx, poke_idx) {
+            pokemon.weight_hg = new_weight;
         }
 
         // JavaScript: this.add('-start', pokemon, 'Autotomize');
-        let pokemon_id = if let Some(side) = battle.sides.get(side_idx) {
-            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                format!("{}: {}", side.id_str(), pokemon.name)
+        let pokemon_id = if let Some(pokemon) = battle.pokemon_at(side_idx, poke_idx) {
+            let side_str = if let Some(side) = battle.sides.get(side_idx) {
+                side.id_str()
             } else {
-                String::from("unknown")
-            }
+                "p?"
+            };
+            format!("{}: {}", side_str, pokemon.name)
         } else {
             String::from("unknown")
         };
