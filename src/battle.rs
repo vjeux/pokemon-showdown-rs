@@ -4379,14 +4379,14 @@ impl Battle {
     /// }
     /// ```
     pub fn update_speed(&mut self) {
-        // Collect active Pokemon indices to update (avoid borrow checker issues)
-        let updates: Vec<(usize, usize)> = self.get_all_active(false)
+        // Collect indices first to avoid borrow checker issues
+        let indices: Vec<(usize, usize)> = self.get_all_active(false)
             .iter()
             .map(|pokemon| (pokemon.side_index, pokemon.position))
             .collect();
 
         // Update each active Pokemon's speed
-        for (side_idx, poke_idx) in updates {
+        for (side_idx, poke_idx) in indices {
             if let Some(side) = self.sides.get_mut(side_idx) {
                 if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
                     pokemon.update_speed();
