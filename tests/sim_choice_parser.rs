@@ -272,4 +272,58 @@ fn test_switch_doubles_should_accept_switch_and_pass() {
     assert!(battle.choose(SideID::P1, "pass, switch 3").is_ok(), "Choice 'pass, switch 3' should be valid");
 }
 
+// JavaScript:         it('should reject choice details for `pass` choices', () => {
+#[test]
+fn test_switch_doubles_should_reject_pass_with_choice_details() {
+    // JavaScript:             battle = common.createBattle({ gameType: 'doubles' });
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions {
+            game_type: Some("doubles".to_string()),
+            ..Default::default()
+        },
+        [
+            // JavaScript:             battle.setPlayer('p1', { team: [
+            // JavaScript:                 { species: "Pineco", ability: 'sturdy', moves: ['selfdestruct'] },
+            // JavaScript:                 { species: "Geodude", ability: 'sturdy', moves: ['selfdestruct'] },
+            // JavaScript:                 { species: "Koffing", ability: 'levitate', moves: ['smog'] },
+            // JavaScript:             ] });
+            vec![
+                pokemon!(species: "Pineco", ability: "sturdy", moves: ["selfdestruct"]),
+                pokemon!(species: "Geodude", ability: "sturdy", moves: ["selfdestruct"]),
+                pokemon!(species: "Koffing", ability: "levitate", moves: ["smog"]),
+            ],
+            // JavaScript:             battle.setPlayer('p2', { team: [
+            // JavaScript:                 { species: "Skarmory", ability: 'sturdy', moves: ['roost'] },
+            // JavaScript:                 { species: "Aggron", ability: 'sturdy', moves: ['irondefense'] },
+            // JavaScript:                 { species: "Ekans", ability: 'shedskin', moves: ['wrap'] },
+            // JavaScript:             ] });
+            vec![
+                pokemon!(species: "Skarmory", ability: "sturdy", moves: ["roost"]),
+                pokemon!(species: "Aggron", ability: "sturdy", moves: ["irondefense"]),
+                pokemon!(species: "Ekans", ability: "shedskin", moves: ["wrap"]),
+            ],
+        ],
+    );
+
+    // JavaScript:             battle.makeChoices('move selfdestruct, move selfdestruct', 'move roost, move irondefense'); // Both p1 active Pokémon faint
+    battle.make_choices("move selfdestruct, move selfdestruct", "move roost, move irondefense");
+
+    // JavaScript:             const switchChoice = 'switch 3';
+    // JavaScript:             const passChoice = 'pass';
+    let switch_choice = "switch 3";
+    let pass_choice = "pass";
+
+    // JavaScript:             assert.throws(() => battle.choose('p1', `${switchChoice}, ${passChoice} 1`));
+    assert!(battle.choose(SideID::P1, &format!("{}, {} 1", switch_choice, pass_choice)).is_err(), "Expected 'switch 3, pass 1' to be rejected");
+
+    // JavaScript:             assert.throws(() => battle.choose('p1', `${passChoice} 1, ${switchChoice}`));
+    assert!(battle.choose(SideID::P1, &format!("{} 1, {}", pass_choice, switch_choice)).is_err(), "Expected 'pass 1, switch 3' to be rejected");
+
+    // JavaScript:             assert.throws(() => battle.choose('p1', `${switchChoice}, ${passChoice} a`));
+    assert!(battle.choose(SideID::P1, &format!("{}, {} a", switch_choice, pass_choice)).is_err(), "Expected 'switch 3, pass a' to be rejected");
+
+    // JavaScript:             assert.throws(() => battle.choose('p1', `${passChoice} a, ${switchChoice}`));
+    assert!(battle.choose(SideID::P1, &format!("{} a, {}", pass_choice, switch_choice)).is_err(), "Expected 'pass a, switch 3' to be rejected");
+}
+
 

@@ -1251,6 +1251,10 @@ impl Battle {
                 }
             }
             "pass" => {
+                // Pass should not have any choice details
+                if parts.len() > 1 {
+                    return Err("[Invalid choice] Pass does not accept any arguments".to_string());
+                }
                 Ok(())
             }
             "shift" => {
