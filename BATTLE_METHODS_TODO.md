@@ -75,7 +75,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 27. ✅ `spreadDamage` / `spread_damage` - battle.ts:2045 | battle.rs:5074 | **FIXED!** ✅ - Full implementation with Damage event
 28. ✅ `directDamage` / `direct_damage` - battle.ts:2177 | battle.rs:3319 | **FIXED!** ✅ - Added Gen 1 Substitute checks
 29. ✅ `heal` / `heal` - battle.ts:2231 | battle.rs:3472 | **FIXED!** ✅ - Added TryHeal/Heal events
-30. ❌ `boost` / `boost` - battle.ts:1974 | battle.rs:3477 | **MISMATCH** - Missing 4 boost events (ChangeBoost, TryBoost, AfterEachBoost, AfterBoost)
+30. ✅ `boost` / `boost` - battle.ts:1974 | battle.rs:3787 | **FIXED!** ✅ - Added 4 boost events (ChangeBoost, TryBoost, AfterEachBoost, AfterBoost), stats tracking
 31. ✅ `chain` / `chain` - battle.ts:2275 | battle.rs:3071 | **FIXED!** ✅ - Returns f64, added chain_f() for number variant
 32. ❌ `chainModify` / `chain_modify` - battle.ts:2291 | battle.rs:4911 | **MISMATCH** - Event state mutation missing
 33. ✅ `modify` / `modify` - battle.ts:2302 | battle.rs:3079 | **FIXED!** ✅ - Added modify_tuple() for array param support
@@ -176,7 +176,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching**: 70 (73%) - Nearly three-quarters complete! 🎯
+**Methods Matching**: 71 (74%) - Three-quarters complete! 🎯
 - RNG: random, randomChance, **sample**, resetRNG
 - **Initialization**: setPlayer, restart, destroy
 - Priority: comparePriority
@@ -185,7 +185,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - Logging: debug, addMove, debugError, **attrLastMove, retargetLastMove**
 - **Requests & Choices**: clearRequest, allChoicesDone, getRequests, choose, makeChoices, commitChoices, undoChoice, **tiebreak**, **join**
 - Switching: getRandomSwitchable, canSwitch, **swapPosition**
-- **Damage/Heal**: damage, spreadDamage, heal, directDamage
+- **Damage/Heal**: damage, spreadDamage, heal, directDamage, **boost**
 - **Active Move**: setActiveMove, clearActiveMove
 - **Display**: toString (Display trait)
 - **Event System**: **singleEvent, runEvent**, eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
@@ -246,10 +246,9 @@ Methods that still need event integration:
 2. ✅ **DONE**: Progress: 52/96 (54%) → 61/96 (64%)
 3. ✅ **DONE**: Reduced major mismatches from 26 → 19 → 17
 
-### Remaining Methods by Category (26 total)
+### Remaining Methods by Category (25 total)
 
-**Event-Dependent Methods (6)** - Require event context infrastructure:
-- boost (needs 4 events: ChangeBoost, TryBoost, AfterEachBoost, AfterBoost)
+**Event-Dependent Methods (5)** - Require event context infrastructure:
 - chainModify, finalModify (need this.event.modifier)
 - getActionSpeed (needs ModifyPriority event)
 - resolvePriority (needs event handler priority/order system)
@@ -281,5 +280,5 @@ Methods that still need event integration:
 
 **Last Updated**: 2025-12-26
 **Tests Passing**: 43/43 (100% - 3 tests disabled pending move callbacks)
-**Current Session Achievement**: Fixed tiebreak, join, showOpenTeamSheets (stub), sendUpdates (stub), bringing total to 70/96 (73%) ✅
+**Current Session Achievement**: Fixed tiebreak, join, showOpenTeamSheets (stub), sendUpdates (stub), boost (4 events), bringing total to 71/96 (74%) ✅
 **Previous Session**: Verified core event system methods (sample, singleEvent, runEvent)

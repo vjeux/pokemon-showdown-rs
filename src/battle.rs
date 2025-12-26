@@ -3766,10 +3766,44 @@ impl Battle {
 
     /// Boost a Pokemon's stats (legacy signature for compatibility)
     /// TODO: This should be migrated to use the new boost_new() method
-    pub fn boost(&mut self, boosts: &[(& str, i8)], target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> bool {
+    /// Apply stat boosts to a Pokemon
+    /// Equivalent to battle.ts boost() (battle.ts:1974-2043)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// boost(boost, target, source, effect, isSecondary, isSelf) {
+    ///     if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
+    ///     if (!target?.hp) return 0;
+    ///     if (!target.isActive) return false;
+    ///     if (this.gen > 5 && !target.side.foePokemonLeft()) return false;
+    ///     boost = this.runEvent('ChangeBoost', target, source, effect, { ...boost });
+    ///     boost = target.getCappedBoost(boost);
+    ///     boost = this.runEvent('TryBoost', target, source, effect, { ...boost });
+    ///     // ... apply boosts, log, fire AfterEachBoost
+    ///     this.runEvent('AfterBoost', target, source, effect, boost);
+    ///     return success;
+    /// }
+    /// ```
+    pub fn boost(&mut self, boosts: &[(&str, i8)], target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> bool {
         let (target_side, target_idx) = target;
 
-        // Can't boost if no foes left (Gen 6+)
+        // JS: if (!target?.hp) return 0;
+        // JS: if (!target.isActive) return false;
+        {
+            let side = match self.sides.get(target_side) {
+                Some(s) => s,
+                None => return false,
+            };
+            let pokemon = match side.pokemon.get(target_idx) {
+                Some(p) => p,
+                None => return false,
+            };
+            if pokemon.hp == 0 || !pokemon.is_active {
+                return false;
+            }
+        }
+
+        // JS: if (this.gen > 5 && !target.side.foePokemonLeft()) return false;
         if self.gen > 5 {
             let foe_side = if target_side == 0 { 1 } else { 0 };
             if foe_side < self.sides.len() {
@@ -3781,14 +3815,24 @@ impl Battle {
             }
         }
 
-        let mut success = false;
+        // JS: boost = this.runEvent('ChangeBoost', target, source, effect, { ...boost });
+        // TODO: Implement ChangeBoost event to modify boosts before applying
+        self.run_event("ChangeBoost", Some(target), source, None, None);
 
-        // Get Pokemon info for logging
+        // JS: boost = target.getCappedBoost(boost);
+        // Clamp boosts to [-6, 6] range - done per-stat below
+
+        // JS: boost = this.runEvent('TryBoost', target, source, effect, { ...boost });
+        // TODO: Implement TryBoost event to prevent boosts
+        self.run_event("TryBoost", Some(target), source, None, None);
+
+        let mut success = false;
+        let mut stats_raised = false;
+        let mut stats_lowered = false;
+
+        // Get Pokemon name for logging
         let pokemon_name = if let Some(side) = self.sides.get(target_side) {
             if let Some(pokemon) = side.pokemon.get(target_idx) {
-                if pokemon.hp == 0 || !pokemon.is_active {
-                    return false;
-                }
                 format!("{}: {}", side.id_str(), pokemon.name)
             } else {
                 return false;
@@ -3797,6 +3841,7 @@ impl Battle {
             return false;
         };
 
+        // JS: for (boostName in boost) { ... }
         for (stat, amount) in boosts {
             if let Some(side) = self.sides.get_mut(target_side) {
                 if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
@@ -3812,19 +3857,50 @@ impl Battle {
                     };
 
                     let old = *current;
+                    // JS: boostBy = target.boostBy(currentBoost);
                     *current = (*current + amount).clamp(-6, 6);
                     let actual = *current - old;
 
+                    // JS: if (boostBy) { success = true; ... }
                     if actual != 0 {
                         success = true;
+                        if actual > 0 {
+                            stats_raised = true;
+                        } else {
+                            stats_lowered = true;
+                        }
+
                         let msg = if actual > 0 { "-boost" } else { "-unboost" };
                         let boost_str = actual.abs().to_string();
 
+                        // JS: Special effect handling (bellydrum, angerpoint, zpower, etc.)
+                        // For now, simplified logging
                         if let Some(eff) = effect {
                             self.add_log(msg, &[&pokemon_name, stat, &boost_str, &format!("[from] {}", eff)]);
                         } else {
                             self.add_log(msg, &[&pokemon_name, stat, &boost_str]);
                         }
+
+                        // JS: this.runEvent('AfterEachBoost', target, source, effect, currentBoost);
+                        self.run_event("AfterEachBoost", Some(target), source, None, None);
+                    }
+                }
+            }
+        }
+
+        // JS: this.runEvent('AfterBoost', target, source, effect, boost);
+        self.run_event("AfterBoost", Some(target), source, None, None);
+
+        // JS: if (Object.values(boost).some(x => x > 0)) target.statsRaisedThisTurn = true;
+        // JS: if (Object.values(boost).some(x => x < 0)) target.statsLoweredThisTurn = true;
+        if success {
+            if let Some(side) = self.sides.get_mut(target_side) {
+                if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
+                    if stats_raised {
+                        pokemon.stats_raised_this_turn = true;
+                    }
+                    if stats_lowered {
+                        pokemon.stats_lowered_this_turn = true;
                     }
                 }
             }
