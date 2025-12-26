@@ -9,9 +9,7 @@ use std::collections::{HashMap, HashSet};
 use crate::dex_data::ID;
 use crate::data::formats::{get_format, FormatDef};
 use crate::data::species::get_species;
-// use crate::data::moves::get_move;  // TODO: Use Dex for move lookups
-use crate::data::items::get_item;
-use crate::data::abilities::get_ability;
+use crate::dex::Dex;
 
 // =========================================================================
 // PokemonSources - tracks possible ways to get a Pokemon with a given set
@@ -368,6 +366,7 @@ impl IVSpread {
 pub struct TeamValidator {
     format_id: ID,
     format: Option<&'static FormatDef>,
+    dex: Dex,
 }
 
 impl TeamValidator {
@@ -375,9 +374,11 @@ impl TeamValidator {
     pub fn new(format: &str) -> Self {
         let format_id = ID::new(format);
         let format_def = get_format(&format_id);
+        let dex = Dex::load_default().expect("Failed to load dex");
         Self {
             format_id,
             format: format_def,
+            dex,
         }
     }
 
@@ -539,7 +540,7 @@ impl TeamValidator {
 
         // Check ability
         let ability_id = ID::new(&pokemon.ability);
-        if get_ability(&ability_id).is_none() && !pokemon.ability.is_empty() {
+        if self.dex.get_ability(&pokemon.ability).is_none() && !pokemon.ability.is_empty() {
             errors.push(ValidationError::InvalidAbility {
                 pokemon: pokemon_name.clone(),
                 ability: pokemon.ability.clone(),
@@ -555,7 +556,7 @@ impl TeamValidator {
         // Check item
         if let Some(ref item) = pokemon.item {
             let item_id = ID::new(item);
-            if get_item(&item_id).is_none() && !item.is_empty() {
+            if self.dex.get_item(item).is_none() && !item.is_empty() {
                 errors.push(ValidationError::InvalidItem {
                     pokemon: pokemon_name.clone(),
                     item: item.clone(),
@@ -825,7 +826,7 @@ impl TeamValidator {
 
         if !pokemon.ability.is_empty() {
             let ability_id = ID::new(&pokemon.ability);
-            if get_ability(&ability_id).is_none() {
+            if self.dex.get_ability(&pokemon.ability).is_none() {
                 errors.push(ValidationError::InvalidAbility {
                     pokemon: pokemon_name.clone(),
                     ability: pokemon.ability.clone(),
@@ -852,7 +853,7 @@ impl TeamValidator {
         if let Some(ref item) = pokemon.item {
             if !item.is_empty() {
                 let item_id = ID::new(item);
-                if get_item(&item_id).is_none() {
+                if self.dex.get_item(item).is_none() {
                     errors.push(ValidationError::InvalidItem {
                         pokemon: pokemon_name.clone(),
                         item: item.clone(),

@@ -38,7 +38,6 @@ pub enum ItemCategory {
 }
 
 // Minimal compatibility struct for existing code
-// TODO: Refactor handle_item_event to use item_callbacks instead
 #[derive(Debug, Clone)]
 pub struct ItemDef {
     pub id: ID,
@@ -52,23 +51,6 @@ impl ItemDef {
     }
 }
 
-/// Temporary compatibility function for code that doesn't have access to dex
-/// TODO: Refactor callers to use dex.get_item() instead
-pub fn get_item(id: &ID) -> Option<ItemDef> {
-    use once_cell::sync::Lazy;
-    use crate::dex::Dex;
-
-    static DEX: Lazy<Dex> = Lazy::new(|| {
-        Dex::load_default().expect("Failed to load default dex")
-    });
-
-    if let Some(item_data) = DEX.get_item(id.as_str()) {
-        Some(ItemDef::from_id(id.clone(), item_data.name.clone(), item_data.is_choice))
-    } else {
-        None
-    }
-}
-
 /// Check if an item boosts a specific type
 pub fn item_boosts_type(_item_id: &ID, _move_type: &str) -> bool {
     // TODO: Implement by checking item data
@@ -77,7 +59,9 @@ pub fn item_boosts_type(_item_id: &ID, _move_type: &str) -> bool {
 
 /// Check if an item is a choice item
 pub fn is_choice_item(item_id: &ID) -> bool {
-    get_item(item_id).map_or(false, |i| i.is_choice)
+    // Simplified check - just check if name starts with "Choice"
+    let name = item_id.as_str();
+    name.starts_with("choice")
 }
 
 /// Check if an item is a berry
