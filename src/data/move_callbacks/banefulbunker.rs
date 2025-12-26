@@ -126,14 +126,12 @@ pub const ON_TRY_HIT_PRIORITY: i32 = 3;
 /// onTryHit(target, source, move) - condition callback
 /// Protects from moves with the 'protect' flag and poisons attackers that make contact
 ///
-/// TODO: This condition callback needs to be wired up in the event system.
-/// It should be called when any move tries to hit a Pokemon with the banefulbunker volatile status.
-/// This requires implementing a general volatile condition TryHit event system.
+/// This is called when a move tries to hit a Pokemon with the banefulbunker volatile status.
 pub fn condition_on_try_hit(
     battle: &mut Battle,
-    target: &Pokemon,
-    source: &Pokemon,
-    move_: &MoveDef,
+    target: (usize, usize),
+    source: (usize, usize),
+    move_id: &ID,
 ) -> MoveHandlerResult {
     // TODO: Full implementation requires:
     // 1. Check move.flags['protect']
@@ -143,13 +141,16 @@ pub fn condition_on_try_hit(
     // 5. Return NOT_FAIL to prevent the move
 
     // For now, just add a placeholder message
-    battle.add(
-        "-activate",
-        &[
-            Arg::Pokemon(target),
-            Arg::Str("move: Protect"),
-        ],
-    );
+    if let Some(target_pokemon) = battle.pokemon_at(target.0, target.1) {
+        let pokemon_str = format!("p{}a: {}", target_pokemon.side_index + 1, target_pokemon.name);
+        battle.add(
+            "-activate",
+            &[
+                Arg::Str(&pokemon_str),
+                Arg::Str("move: Protect"),
+            ],
+        );
+    }
 
     // Return Undefined for now (full implementation needs NOT_FAIL constant)
     MoveHandlerResult::Undefined
@@ -161,9 +162,9 @@ pub fn condition_on_try_hit(
 /// TODO: This requires Z-move/Max move detection to be implemented
 pub fn condition_on_hit(
     battle: &mut Battle,
-    _target: &Pokemon,
-    _source: &Pokemon,
-    _move_: &MoveDef,
+    _target: (usize, usize),
+    _source: (usize, usize),
+    _move_id: &ID,
 ) -> MoveHandlerResult {
     // TODO: Check for Z-move or Max move and poison if makes contact
     MoveHandlerResult::Undefined

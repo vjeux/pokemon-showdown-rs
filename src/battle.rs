@@ -1945,6 +1945,13 @@ impl Battle {
             }
         }
 
+        // Check volatile condition TryHit events (Protect, Baneful Bunker, etc.)
+        // This must happen before damage calculation
+        if !self.check_volatile_try_hit((target_side, target_idx), (attacker_side, attacker_idx), move_id) {
+            // Move was blocked by a volatile condition (e.g., Protect)
+            return;
+        }
+
         // Determine number of hits for multi-hit moves
         let hit_count = self.get_multi_hit_count(move_id);
         let mut total_damage = 0u32;
@@ -7069,6 +7076,54 @@ impl Battle {
         }
 
         EventResult::Continue
+    }
+
+    /// Check volatile condition TryHit events
+    /// Returns true if the move should proceed, false if blocked (e.g., by Protect)
+    fn check_volatile_try_hit(
+        &mut self,
+        target: (usize, usize),
+        source: (usize, usize),
+        move_id: &ID,
+    ) -> bool {
+        let (target_side, target_idx) = target;
+
+        // Get list of volatiles on the target
+        let volatile_ids: Vec<ID> = if let Some(side) = self.sides.get(target_side) {
+            if let Some(pokemon) = side.pokemon.get(target_idx) {
+                pokemon.volatiles.keys().cloned().collect()
+            } else {
+                return true; // No target, let move proceed
+            }
+        } else {
+            return true; // No target, let move proceed
+        };
+
+        // Check each volatile for onTryHit callback
+        for volatile_id in volatile_ids {
+            match volatile_id.as_str() {
+                "banefulbunker" | "protect" => {
+                    // Call the condition's onTryHit callback
+                    if volatile_id.as_str() == "banefulbunker" {
+                        let _result = crate::data::move_callbacks::banefulbunker::condition_on_try_hit(
+                            self,
+                            target,
+                            source,
+                            move_id,
+                        );
+
+                        // TODO: Check if result is NOT_FAIL to block the move
+                        // For now, Protect-like moves don't fully block in this stub
+                    }
+                }
+                _ => {
+                    // TODO: Add other volatile conditions with onTryHit here
+                }
+            }
+        }
+
+        // Move proceeds
+        true
     }
 
     /// Handle condition events (status, volatile, weather, terrain)
