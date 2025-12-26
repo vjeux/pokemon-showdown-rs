@@ -7,6 +7,11 @@ use serde::{Deserialize, Serialize};
 
 use crate::dex_data::{ID, StatsTable};
 
+/// Helper function for default value of true
+fn default_true() -> bool {
+    true
+}
+
 /// Gender ratio structure
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
@@ -87,6 +92,17 @@ pub struct SpeciesData {
     pub other_formes: Vec<String>,
     #[serde(default)]
     pub is_cosmetic_forme: bool,
+    // Format data fields
+    #[serde(default)]
+    pub tier: Option<String>,
+    #[serde(default)]
+    pub doubles_tier: Option<String>,
+    #[serde(rename = "natDexTier", default)]
+    pub nat_dex_tier: Option<String>,
+    #[serde(default)]
+    pub is_nonstandard: Option<String>,
+    #[serde(default = "default_true")]
+    pub exists: bool,
 }
 
 /// Move secondary effect
@@ -494,6 +510,34 @@ pub struct NatureData {
     pub minus: Option<String>,
 }
 
+/// Event data for learnsets
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct EventData {
+    #[serde(default)]
+    pub generation: Option<u8>,
+    #[serde(default)]
+    pub level: Option<u8>,
+    #[serde(default)]
+    pub moves: Vec<String>,
+    #[serde(default)]
+    pub source: Option<String>,
+}
+
+/// Learnset data for a single species
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct LearnsetData {
+    /// Map from move ID to learn methods (e.g., "9M", "8L15", "7E")
+    #[serde(default)]
+    pub learnset: HashMap<String, Vec<String>>,
+    /// Event-only moves
+    #[serde(default)]
+    pub event_data: Option<Vec<EventData>>,
+    #[serde(default)]
+    pub event_only: Option<bool>,
+}
+
 /// Format data
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -578,8 +622,9 @@ impl Dex {
         aliases_json: &str,
         compound_word_names_json: &str,
         formats_json: &str,
+        formats_data_json: &str,
     ) -> Result<Self, serde_json::Error> {
-        let species_raw: HashMap<String, SpeciesData> = serde_json::from_str(species_json)?;
+        let mut species_raw: HashMap<String, SpeciesData> = serde_json::from_str(species_json)?;
         let moves_raw: HashMap<String, MoveData> = serde_json::from_str(moves_json)?;
         let abilities_raw: HashMap<String, AbilityData> = serde_json::from_str(abilities_json)?;
         let items_raw: HashMap<String, ItemData> = serde_json::from_str(items_json)?;
@@ -589,6 +634,30 @@ impl Dex {
         let aliases_raw: HashMap<String, String> = serde_json::from_str(aliases_json)?;
         let compound_word_names: Vec<String> = serde_json::from_str(compound_word_names_json)?;
         let formats: Vec<FormatData> = serde_json::from_str(formats_json)?;
+
+        // Load formats data and merge into species
+        #[derive(Deserialize)]
+        struct FormatsDataEntry {
+            #[serde(default)]
+            tier: Option<String>,
+            #[serde(rename = "doublesTier", default)]
+            doubles_tier: Option<String>,
+            #[serde(rename = "natDexTier", default)]
+            nat_dex_tier: Option<String>,
+            #[serde(rename = "isNonstandard", default)]
+            is_nonstandard: Option<String>,
+        }
+        let formats_data: HashMap<String, FormatsDataEntry> = serde_json::from_str(formats_data_json)?;
+
+        // Merge formats data into species data
+        for (species_id, formats_entry) in formats_data {
+            if let Some(species) = species_raw.get_mut(&species_id) {
+                species.tier = formats_entry.tier;
+                species.doubles_tier = formats_entry.doubles_tier;
+                species.nat_dex_tier = formats_entry.nat_dex_tier;
+                species.is_nonstandard = formats_entry.is_nonstandard;
+            }
+        }
 
         // Convert string keys to ID keys
         let species = species_raw.into_iter()
@@ -836,10 +905,84 @@ impl Dex {
     }
 
     /// Create a Dex for a specific generation
-    /// Equivalent to forGen() in dex.ts (simplified - always returns same data)
+    /// Equivalent to forGen() in dex.ts
     pub fn for_gen(gen: u8) -> Result<Self, serde_json::Error> {
         let mut dex = Self::load_default()?;
         dex.gen = gen;
+
+        // Mark Pokemon from future generations as Illegal/Future
+        // Generation ranges based on national dex numbers:
+        // Gen 1: 1-151, Gen 2: 152-251, Gen 3: 252-386, Gen 4: 387-493,
+        // Gen 5: 494-649, Gen 6: 650-721, Gen 7: 722-809, Gen 8: complex, Gen 9: 906+
+        let max_num = match gen {
+            1 => 151,
+            2 => 251,
+            3 => 386,
+            4 => 493,
+            5 => 649,
+            6 => 721,
+            7 => 809,
+            8 => 905, // Enamorus is 905
+            9 => 1025, // Current max
+            _ => 1025,
+        };
+
+        for species in dex.species.values_mut() {
+            // Pokemon with num > max_num are from future generations
+            if species.num > max_num {
+                species.tier = Some("Illegal".to_string());
+                species.is_nonstandard = Some("Future".to_string());
+                continue;
+            }
+
+            // Check if this is a forme from a future generation
+            // Regional formes: Alola (Gen 7), Galar (Gen 8), Hisui (Gen 8), Paldea (Gen 9)
+            // Other formes: Check by name patterns
+            let is_future_forme = if let Some(ref forme) = species.forme {
+                match gen {
+                    1 | 2 | 3 | 4 | 5 | 6 => {
+                        // Gen 1-6: All Alola, Galar, Hisui, Paldea formes are future
+                        // Plus any special event formes (Pikachu caps, etc.)
+                        forme.contains("Alola") || forme.contains("Galar") ||
+                        forme.contains("Hisui") || forme.contains("Paldea") ||
+                        forme.contains("Sinnoh") || forme.contains("Kalos") ||
+                        forme.contains("Hoenn") || forme.contains("Unova") ||
+                        forme.contains("Partner") || forme.contains("Alolan") ||
+                        forme.contains("Galarian") ||
+                        // Mega evolutions are from Gen 6+
+                        (forme.contains("Mega") && gen < 6) ||
+                        // G-Max is from Gen 8+
+                        (forme.contains("Gmax") && gen < 8)
+                    }
+                    7 => {
+                        // Gen 7: Galar, Hisui, Paldea, G-Max are future
+                        forme.contains("Galar") || forme.contains("Hisui") ||
+                        forme.contains("Paldea") || forme.contains("Galarian") ||
+                        forme.contains("Gmax")
+                    }
+                    8 => {
+                        // Gen 8: Paldea is future
+                        forme.contains("Paldea")
+                    }
+                    _ => false,
+                }
+            } else {
+                false
+            };
+
+            if is_future_forme {
+                species.tier = Some("Illegal".to_string());
+                species.is_nonstandard = Some("Future".to_string());
+            } else if species.num <= max_num {
+                // Pokemon that exist in this generation should not be marked as nonstandard
+                // (unless they're special forms we've already marked as future)
+                // Clear "Past" marking from formats-data.json
+                if species.is_nonstandard.as_deref() == Some("Past") {
+                    species.is_nonstandard = None;
+                }
+            }
+        }
+
         Ok(dex)
     }
 
@@ -1128,6 +1271,7 @@ pub mod embedded {
     pub const ALIASES_JSON: &str = include_str!("../data/aliases.json");
     pub const COMPOUNDWORDNAMES_JSON: &str = include_str!("../data/compoundwordnames.json");
     pub const FORMATS_JSON: &str = include_str!("../data/formats.json");
+    pub const FORMATS_DATA_JSON: &str = include_str!("../data/formats-data.json");
 }
 
 impl Dex {
@@ -1144,6 +1288,7 @@ impl Dex {
             embedded::ALIASES_JSON,
             embedded::COMPOUNDWORDNAMES_JSON,
             embedded::FORMATS_JSON,
+            embedded::FORMATS_DATA_JSON,
         )
     }
 }
