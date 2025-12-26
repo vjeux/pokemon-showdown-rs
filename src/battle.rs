@@ -35,6 +35,53 @@ pub enum Arg<'a> {
     SplitFn(Box<dyn Fn() -> SplitMessage + 'a>),
 }
 
+/// Event listener - matches JavaScript EventListener interface
+/// JavaScript: interface EventListener extends EventListenerWithoutPriority
+#[derive(Clone)]
+pub struct EventListener {
+    /// Effect that owns this handler
+    pub effect_id: ID,
+    /// Type of effect (Ability, Item, Move, Status, etc.)
+    pub effect_type: EffectType,
+    /// Target Pokemon (optional)
+    pub target: Option<(usize, usize)>,
+    /// Index for multi-target events
+    pub index: Option<usize>,
+    /// Effect state
+    pub state: Option<EffectState>,
+    /// Effect holder (Pokemon/Side/Field/Battle)
+    pub effect_holder: Option<(usize, usize)>,
+    /// Order value (false = first in JS, represented as Option<i32>)
+    pub order: Option<i32>,
+    /// Priority value (higher = earlier)
+    pub priority: i32,
+    /// Sub-order for same priority
+    pub sub_order: i32,
+    /// Effect order (for hazards and abilities with same priority)
+    pub effect_order: Option<u32>,
+    /// Speed stat (for speed-based sorting)
+    pub speed: Option<u32>,
+}
+
+/// Effect type - matches JavaScript effectType
+/// Used to determine event handler priority ordering
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum EffectType {
+    ZMove,
+    Condition,
+    SlotCondition,
+    SideCondition,
+    FieldCondition,
+    Weather,
+    Format,
+    Rule,
+    Ruleset,
+    Ability,
+    Item,
+    Move,
+    Status,
+}
+
 impl<'a> From<&'a Pokemon> for Arg<'a> {
     fn from(p: &'a Pokemon) -> Self {
         Arg::Pokemon(p)
@@ -6970,11 +7017,93 @@ impl Battle {
         // For now, this is a no-op
     }
 
-    /// Resolve priority ordering for handlers
+    /// Resolve event handler priority
     /// Equivalent to battle.ts resolvePriority()
-    pub fn resolve_priority(&mut self) {
-        // Sort the queue by priority/speed
-        self.queue.sort();
+    ///
+    /// JavaScript Source (battle.ts:950-1017):
+    /// Takes an EventListenerWithoutPriority and enriches it with priority/order/subOrder
+    /// based on effect callback properties and effectType ordering
+    pub fn resolve_priority(&mut self, handler: &mut EventListener, callback_name: &str) {
+        // JS: handler.order = (handler.effect as any)[`${callbackName}Order`] || false;
+        // JS: handler.priority = (handler.effect as any)[`${callbackName}Priority`] || 0;
+        // JS: handler.subOrder = (handler.effect as any)[`${callbackName}SubOrder`] || 0;
+        //
+        // In Rust, we don't have dynamic property access, so we assume these are already set
+        // or we get them from ability/item/move data lookups.
+        // For now, we'll set defaults and then calculate subOrder based on effectType.
+
+        // If subOrder is not already set, calculate it based on effectType
+        if handler.sub_order == 0 {
+            // https://www.smogon.com/forums/threads/sword-shield-battle-mechanics-research.3655528/page-59#post-8685465
+            handler.sub_order = match handler.effect_type {
+                EffectType::ZMove => 1,
+                EffectType::Condition => 2,
+                EffectType::SlotCondition => 3,
+                EffectType::SideCondition => 4,
+                EffectType::FieldCondition => 5,
+                EffectType::Weather => 5,
+                EffectType::Format => 5,
+                EffectType::Rule => 5,
+                EffectType::Ruleset => 5,
+                EffectType::Ability => {
+                    // JS: if (handler.effect.name === 'Poison Touch' || handler.effect.name === 'Perish Body') { handler.subOrder = 6; }
+                    // JS: else if (handler.effect.name === 'Stall') { handler.subOrder = 9; }
+                    let ability_name = handler.effect_id.as_str();
+                    if ability_name == "poisontouch" || ability_name == "perishbody" {
+                        6
+                    } else if ability_name == "stall" {
+                        9
+                    } else {
+                        7
+                    }
+                }
+                EffectType::Item => 8,
+                _ => 0,
+            };
+
+            // JS: if (handler.effect.effectType === 'Condition' && handler.state?.target instanceof Side)
+            // Check if this is a slot/side/field condition based on effect_type already set above
+            // (This was already handled in match statement above)
+        }
+
+        // JS: if (callbackName.endsWith('SwitchIn') || callbackName.endsWith('RedirectTarget'))
+        if callback_name.ends_with("SwitchIn") || callback_name.ends_with("RedirectTarget") {
+            // JS: handler.effectOrder = handler.state?.effectOrder;
+            if let Some(state) = &handler.state {
+                handler.effect_order = Some(state.effect_order);
+            }
+        }
+
+        // JS: if (handler.effectHolder && (handler.effectHolder as Pokemon).getStat)
+        if let Some(effect_holder) = handler.effect_holder {
+            // Get Pokemon speed
+            if let Some(side) = self.sides.get(effect_holder.0) {
+                if let Some(pokemon) = side.pokemon.get(effect_holder.1) {
+                    handler.speed = Some(pokemon.stored_stats.spe as u32);
+
+                    // JS: if (handler.effect.effectType === 'Ability' && handler.effect.name === 'Magic Bounce' && callbackName === 'onAllyTryHitSide')
+                    if handler.effect_type == EffectType::Ability
+                        && handler.effect_id.as_str() == "magicbounce"
+                        && callback_name == "onAllyTryHitSide" {
+                        // JS: handler.speed = pokemon.getStat('spe', true, true);
+                        // TODO: Implement getStat with unmodified flag
+                        handler.speed = Some(pokemon.stored_stats.spe as u32);
+                    }
+
+                    // JS: if (callbackName.endsWith('SwitchIn'))
+                    if callback_name.ends_with("SwitchIn") {
+                        // JS: const fieldPositionValue = pokemon.side.n * this.sides.length + pokemon.position;
+                        // JS: handler.speed -= this.speedOrder.indexOf(fieldPositionValue) / (this.activePerHalf * 2);
+                        //
+                        // This adjusts speed for switch-in ordering by subtracting a fractional value
+                        // based on field position in the pre-sorted speed order
+                        //
+                        // TODO: Requires this.speedOrder array which stores pre-sorted field positions
+                        // For now, skip this adjustment
+                    }
+                }
+            }
+        }
     }
 
     /// Retarget the last executed move

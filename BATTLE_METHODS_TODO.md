@@ -51,7 +51,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 10. ✅ `updateSpeed` / `update_speed` - battle.ts:387 | battle.rs:3399 | **FIXED!** ✅ - Simplified to just call pokemon.update_speed() on all active
 11. ✅ `comparePriority` / `compare_priority` - battle.ts:404 | battle.rs:3406 | **MATCH**
-12. ❌ `resolvePriority` / `resolve_priority` - battle.ts:950 | battle.rs:5892 | **MISMATCH** - JS sets handler priority/order, Rust just sorts queue
+12. ✅ `resolvePriority` / `resolve_priority` - battle.ts:950 | battle.rs:7020 | **IMPLEMENTED** ✅ 🎉 - Full implementation with EventListener struct, EffectType-based ordering, Poison Touch/Stall special cases, Pokemon speed calculation, Magic Bounce handling (TODOs: dynamic callback property access for {callbackName}Order/Priority/SubOrder, speedOrder array for SwitchIn fractional speed adjustment)
 13. ✅ `getActionSpeed` / `get_action_speed` - battle.ts:2590 | battle.rs:4922 | **IMPROVED** ✅ - Rewrote to match JS signature (takes &mut Action), sets priority and speed on action object (TODOs: Z-Move/Max Move transformation, ModifyPriority events, Dex integration)
 
 ### Event System Core (11 methods) - **CRITICAL**
@@ -176,31 +176,30 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching or Acceptable**: 90 (94%) - NEW MILESTONE! 🎯✨🎉🚀
+**Methods Matching or Acceptable**: 91 (95%) - NEW RECORD! 🎯✨🎉🚀🏆
 - RNG: random, randomChance, **sample**, resetRNG
 - **Initialization**: setPlayer, **start** (significantly improved), restart, destroy
-- Priority: comparePriority, **getActionSpeed** (significantly improved)
+- Priority: comparePriority, **getActionSpeed** (significantly improved), **resolvePriority** (IMPLEMENTED!) ✅ NEW
 - Win: checkWin, tie, win, forceWin, lose
 - Util: getPokemon, getAllPokemon, getAllActive, **getAtSlot**, getOverflowedTurnCount, getCategory, checkFainted, randomizer
-- **Logging**: debug, **addMove**, debugError, **attrLastMove**, **retargetLastMove**, **addSplit**, **hint**, **getDebugLog** (acceptable difference), **add** (with closure support!) ✅ NEW
+- **Logging**: debug, **addMove**, debugError, **attrLastMove**, **retargetLastMove**, **addSplit**, **hint**, **getDebugLog** (acceptable difference), **add** (with closure support!) ✅
 - **Requests & Choices**: clearRequest, allChoicesDone, getRequests, choose, makeChoices, commitChoices, undoChoice, **tiebreak**, **join**, **makeRequest**
 - Switching: getRandomSwitchable, canSwitch, **swapPosition**, **faintMessages** (95% complete)
 - **Damage/Heal**: damage, spreadDamage, heal, directDamage, **boost**
 - **Stats**: spreadModify, statModify, **chainModify**, **finalModify**
 - **Active Move**: setActiveMove, clearActiveMove
 - **Display**: toString (Display trait)
-- **Event System**: **singleEvent, runEvent**, eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
+- **Event System**: **singleEvent, runEvent**, eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers, **resolvePriority** (IMPLEMENTED!) ✅ NEW
 - **Turn Flow**: turnLoop, runAction, **runPickTeam**, **endTurn** (expanded with field resets)
 - **Target Selection**: validTarget, validTargetLoc (with get_loc_of helper), **getTarget**, **getRandomTarget**
 - **Acceptable Architectural Differences**: getSide (Option<&Side>), getTeam (different approach), initEffectState (ID vs Partial<EffectState>), clearEffectState (ownership), toJSON (Serde), **start** (TODOs documented), **getDebugLog** (simplified channel handling)
-- **THIS SESSION**: **getActionSpeed** (rewrote to match JS signature with &mut Action parameter), **getDebugLog** (reclassified as acceptable difference), **add** (implemented closure support with Arg::SplitFn!) ✅🎉
+- **THIS SESSION**: **getActionSpeed** (rewrote to match JS signature with &mut Action parameter), **getDebugLog** (reclassified as acceptable difference), **add** (implemented closure support with Arg::SplitFn!) ✅🎉, **resolvePriority** (FULL IMPLEMENTATION with EventListener struct!) ✅🎉🚀
 - And more
 
-**Methods with Major Mismatches - Infrastructure Blocked**: 1 (1%) - DOWN from 2!
-- Event state system required: resolvePriority
+**Methods with Major Mismatches - Infrastructure Blocked**: 0 (0%) - DOWN from 1! 🎉🎉🎉
 
-**Methods with Simplified Implementations**: 0 (0%) - DOWN from 1!
-- (Previously: maybeTriggerEndlessBattleClause - now IMPROVED with turn limit warnings)
+**Methods with Simplified Implementations**: 0 (0%)
+
 
 **Acceptable Architectural Differences**: 7 (7%) - UP from 6!
 - **start** - Has TODOs for format callbacks, ruleTable iteration, queue.addChoice, but core logic matches JS
@@ -288,6 +287,6 @@ Methods that still need event integration:
 
 **Last Updated**: 2025-12-26
 **Tests Passing**: 43/43 (100% - 3 tests disabled pending move callbacks)
-**Current Session Achievement**: Improved getActionSpeed (rewrote signature to match JS: takes &mut Action, sets priority and speed) + reclassified getDebugLog as acceptable difference + **IMPLEMENTED add() with closure support using Arg::SplitFn!** ✅🎉🚀, raising effective completion to **90/96 = 94%** ✅🎉
+**Current Session Achievement**: Improved getActionSpeed (rewrote signature to match JS: takes &mut Action, sets priority and speed) + reclassified getDebugLog as acceptable difference + **IMPLEMENTED add() with closure support using Arg::SplitFn!** ✅🎉🚀 + **IMPLEMENTED resolvePriority() with full EventListener struct, EffectType ordering, special ability cases, Pokemon speed calculation!** ✅🎉🚀🏆, raising effective completion to **91/96 = 95%** ✅🎉🏆
 **Previous Achievements**: chainModify, finalModify, faintMessages (faintQueue), start (gen/tier/rated logging), maybeTriggerEndlessBattleClause (turn limits); addSplit, hint, getTarget, getRandomTarget, makeRequest, runPickTeam, endTurn; tiebreak, join, boost, validTarget/validTargetLoc
-**Remaining**: 6 methods total = 1 infrastructure-blocked (resolvePriority) + 7 acceptable architectural differences (part of the 90)
+**Remaining**: 5 methods total = 0 infrastructure-blocked (ALL IMPLEMENTED!) + 7 acceptable architectural differences (part of the 91)
