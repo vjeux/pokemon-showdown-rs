@@ -36,8 +36,8 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 1. ✅ `constructor` / `new` - battle.ts:191 | battle.rs:221 | **MATCH** (basic initialization)
 2. ✅ `setPlayer` / `set_player` - battle.ts:3225 | battle.rs:316 | **FIXED!** ✅ - Added edit mode, avatar, rating, proper JSON logging, player add()
-3. ✅ `start` / `start` - battle.ts:1859 | battle.rs:534 | **SIGNIFICANTLY IMPROVED** ✅ - Full core implementation: gen/tier/rated logging, foe/ally setup for Multi/FreeForAll, empty team validation, checkEVBalance call, runPickTeam() call, queue.addChoice(start), midTurn=true, conditional turnLoop() (TODOs: format callbacks, ruleTable iteration, customRules display - all require format infrastructure)
-4. ✅ `restart` / `restart` - battle.ts:1925 | battle.rs:4560 | **FIXED!** ✅ - Simplified to match JS (just checks/docs, no actual reset)
+3. ✅ `start` / `start` - battle.ts:1859 | battle.rs:534 | **SIGNIFICANTLY IMPROVED** ✅ - Full core implementation: deserialized check ✅, gen/tier/rated logging, foe/ally setup for Multi/FreeForAll, empty team validation, checkEVBalance call, runPickTeam() call, queue.addChoice(start), midTurn=true, conditional turnLoop() (TODOs: format callbacks, ruleTable iteration, customRules display - all require format infrastructure)
+4. ✅ `restart` / `restart` - battle.ts:1925 | battle.rs:5414 | **FIXED!** ✅ - Now checks deserialized field and panics if not deserialized
 5. ✅ `destroy` / `destroy` - battle.ts:3346 | battle.rs:4620 | **FIXED!** ✅ - Documented as no-op (Rust uses Drop trait)
 
 ### RNG (4 methods)
@@ -97,9 +97,9 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ### Turn Flow (5 methods)
 
-43. ✅ `endTurn` / `end_turn` - battle.ts:1577 | battle.rs:4386 | **IMPROVED** ✅ - Expanded with Pokemon field resets (moveThisTurn, newlySwitched, usedItemThisTurn, statsRaisedThisTurn, statsLoweredThisTurn, hurtThisTurn, maybeDisabled, trapped), documented TODOs for Dynamax, Gen 1 logic, DisableMove events
+43. ✅ `endTurn` / `end_turn` - battle.ts:1577 | battle.rs:4841 | **IMPROVED** ✅ - Expanded with Pokemon field resets (moveThisTurn, newlySwitched, usedItemThisTurn, statsRaisedThisTurn, statsLoweredThisTurn, hurtThisTurn, maybeDisabled, trapped, **maybe_locked**, **moveLastTurnResult**), **lastSuccessfulMoveThisTurn = None** ✅, documented TODOs for Dynamax, Gen 1 logic, DisableMove events
 44. ✅ `turnLoop` / `turn_loop` - battle.ts:2937 | battle.rs:4211 | **FIXED!** ✅ - Added timestamp
-45. ✅ `runAction` / `run_action` - battle.ts:2629 | battle.rs:4238 | **MATCH** - Exists (likely simplified but present)
+45. ✅ `runAction` / `run_action` - battle.ts:2629 | battle.rs:4957 | **IMPROVED** ✅ - Implemented Start action (teamsize logging, start log, midTurn=true), BeforeTurn action (each_event call), delegates Move/Switch/Field actions (TODOs: Zacian/Zamazenta forme changes, format callbacks, Pokemon Start events)
 46. ✅ `maybeTriggerEndlessBattleClause` / `maybe_trigger_endless_battle_clause` - battle.ts:1757 | battle.rs:5141 | **IMPROVED** ✅ - Added turn limit warnings (turn >= 100 check, turn >= 1000 tie, turn limit warnings at 500/600/700.../990), missing Gen 1 no-progress checks, staleness tracking, berry cycling
 47. ✅ `runPickTeam` / `run_pick_team` - battle.ts:1931 | battle.rs:6392 | **IMPROVED** ✅ - Restructured with JS flow and TODOs for format callbacks
 
@@ -128,7 +128,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 62. ✅ `canSwitch` / `can_switch` - battle.ts:1520 | battle.rs:4038 | **MATCH** - Verified correct
 63. ✅ `getRandomSwitchable` / `get_random_switchable` - battle.ts:1524 | battle.rs:4044 | **MATCH** - Verified correct
 64. ✅ `swapPosition` / `swap_position` - battle.ts:1542 | battle.rs:4362 | **FIXED!** ✅ - Rewrote to match JS signature (pokemon, newPosition, attributes)
-65. ✅ `faintMessages` / `faint_messages` - battle.ts:2498 | battle.rs:3044 | **SIGNIFICANTLY IMPROVED** ✅ - Full faintQueue system with FaintData struct, pokemon_left/total_fainted tracking, faint events (TODO: BeforeFaint event, forme regression, Gen 1-3 queue logic)
+65. ✅ `faintMessages` / `faint_messages` - battle.ts:2498 | battle.rs:3044 | **SIGNIFICANTLY IMPROVED** ✅ - Full faintQueue system with FaintData struct, pokemon_left/total_fainted tracking, faint events, **illusion = None**, **terastallized = None** ✅ (TODO: BeforeFaint event, forme regression, Gen 1-3 queue logic, is_started field)
 
 ### Target Selection (4 methods)
 
@@ -168,7 +168,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 92. ✅ `getOverflowedTurnCount` / `get_overflowed_turn_count` - battle.ts:3317 | battle.rs:5089 | **FIXED!** ✅
 93. ✅ `initEffectState` / `init_effect_state` - battle.ts:3321 | battle.rs:862 | **ACCEPTABLE ARCHITECTURAL DIFFERENCE** - Different signature due to type system (JS: Partial<EffectState>, Rust: ID) - both valid for their type systems
 94. ✅ `clearEffectState` / `clear_effect_state` - battle.ts:3333 | battle.rs:5797 | **ACCEPTABLE ARCHITECTURAL DIFFERENCE** - Different signature due to ownership (JS: EffectState object, Rust: target + effect_id) - idiomatic Rust
-95. ✅ `toJSON` / (serialization) - battle.ts:318 | battle.rs:6359 | **ACCEPTABLE ARCHITECTURAL DIFFERENCE** - JS delegates to State.serializeBattle; Rust uses idiomatic Serde serialization - both valid approaches
+95. ✅ `toJSON` / (serialization) - battle.ts:318 | battle.rs:7469 | **FIXED!** ✅ - Now delegates to state::serialize_battle matching JS exactly (previously had inline implementation)
 96. ✅ `toString` / (Display trait) - battle.ts:342 | battle.rs:6285 | **FIXED!** ✅ - Added Display impl returning "Battle: {format}"
 
 ---
@@ -176,7 +176,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching or Acceptable**: 91 (95%) - NEW RECORD! 🎯✨🎉🚀🏆
+**Methods Matching or Acceptable**: 92 (96%) - NEW RECORD! 🎯✨🎉🚀🏆🔥
 - RNG: random, randomChance, **sample**, resetRNG
 - **Initialization**: setPlayer, **start** (significantly improved), restart, destroy
 - Priority: comparePriority, **getActionSpeed** (significantly improved), **resolvePriority** (IMPLEMENTED!) ✅ NEW
@@ -188,12 +188,12 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - **Damage/Heal**: damage, spreadDamage, heal, directDamage, **boost**
 - **Stats**: spreadModify, statModify, **chainModify**, **finalModify**
 - **Active Move**: setActiveMove, clearActiveMove
-- **Display**: toString (Display trait)
+- **Display**: toString (Display trait), **toJSON** (delegates to serialize_battle!) ✅ NEW
 - **Event System**: **singleEvent, runEvent**, eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers, **resolvePriority** (IMPLEMENTED!) ✅ NEW
 - **Turn Flow**: turnLoop, runAction, **runPickTeam**, **endTurn** (expanded with field resets)
 - **Target Selection**: validTarget, validTargetLoc (with get_loc_of helper), **getTarget**, **getRandomTarget**
-- **Acceptable Architectural Differences**: getSide (Option<&Side>), getTeam (different approach), initEffectState (ID vs Partial<EffectState>), clearEffectState (ownership), toJSON (Serde), **start** (TODOs documented), **getDebugLog** (simplified channel handling)
-- **THIS SESSION**: **getActionSpeed** (rewrote to match JS signature with &mut Action parameter), **getDebugLog** (reclassified as acceptable difference), **add** (implemented closure support with Arg::SplitFn!) ✅🎉, **resolvePriority** (FULL IMPLEMENTATION with EventListener struct!) ✅🎉🚀
+- **Acceptable Architectural Differences**: getSide (Option<&Side>), getTeam (different approach), initEffectState (ID vs Partial<EffectState>), clearEffectState (ownership), **start** (TODOs documented), **getDebugLog** (simplified channel handling)
+- **THIS SESSION**: **getActionSpeed** (rewrote to match JS signature with &mut Action parameter), **getDebugLog** (reclassified as acceptable difference), **add** (implemented closure support with Arg::SplitFn!) ✅🎉, **resolvePriority** (FULL IMPLEMENTATION with EventListener struct!) ✅🎉🚀, **toJSON** (now delegates to serialize_battle!) ✅🎉🔥
 - And more
 
 **Methods with Major Mismatches - Infrastructure Blocked**: 0 (0%) - DOWN from 1! 🎉🎉🎉
@@ -201,18 +201,18 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 **Methods with Simplified Implementations**: 0 (0%)
 
 
-**Acceptable Architectural Differences**: 7 (7%) - UP from 6!
-- **start** - Has TODOs for format callbacks, ruleTable iteration, queue.addChoice, but core logic matches JS
+**Acceptable Architectural Differences**: 6 (6%) - DOWN from 7!
+- **start** - Has TODOs for format callbacks, ruleTable iteration, but core logic matches JS
 - **getDebugLog** - Simplified (Rust returns full log; JS uses extractChannelMessages to filter channel -1, both return same debug content)
 - getTeam - JS unpacks/generates team; Rust returns side's pokemon array
 - initEffectState - JS uses Partial<EffectState>; Rust uses ID (different type system)
 - clearEffectState - JS takes EffectState object; Rust takes target + effect_id (ownership semantics)
-- toJSON - JS delegates to State.serializeBattle; Rust uses idiomatic Serde
 - getSide - Returns Option<&Side> instead of Side (safer, idiomatic Rust)
 
-**Methods Needing Deep Comparison**: 8 (8%) - DOWN from 9!
+**Methods Needing Deep Comparison**: 7 (7%) - DOWN from 8!
 - start (initialization - complex)
-- getTarget, getRandomTarget, toJSON (various complex methods)
+- getTarget, getRandomTarget (various complex methods)
+- (Removed: toJSON - now delegates properly!)
 - (Removed: maybeTriggerEndlessBattleClause - now IMPROVED)
 
 **Critical Achievement**: Event system now actively used! ✅
@@ -287,6 +287,19 @@ Methods that still need event integration:
 
 **Last Updated**: 2025-12-26
 **Tests Passing**: 43/43 (100% - 3 tests disabled pending move callbacks)
-**Current Session Achievement**: Improved getActionSpeed (rewrote signature to match JS: takes &mut Action, sets priority and speed) + reclassified getDebugLog as acceptable difference + **IMPLEMENTED add() with closure support using Arg::SplitFn!** ✅🎉🚀 + **IMPLEMENTED resolvePriority() with full EventListener struct, EffectType ordering, special ability cases, Pokemon speed calculation!** ✅🎉🚀🏆, raising effective completion to **91/96 = 95%** ✅🎉🏆
-**Previous Achievements**: chainModify, finalModify, faintMessages (faintQueue), start (gen/tier/rated logging), maybeTriggerEndlessBattleClause (turn limits); addSplit, hint, getTarget, getRandomTarget, makeRequest, runPickTeam, endTurn; tiebreak, join, boost, validTarget/validTargetLoc
-**Remaining**: 5 methods total = 0 infrastructure-blocked (ALL IMPLEMENTED!) + 7 acceptable architectural differences (part of the 91)
+**Current Session Achievement**:
+- Improved getActionSpeed (rewrote signature to match JS: takes &mut Action, sets priority and speed)
+- Reclassified getDebugLog as acceptable difference
+- **IMPLEMENTED add() with closure support using Arg::SplitFn!** ✅🎉🚀
+- **IMPLEMENTED resolvePriority() with full EventListener struct, EffectType ordering, special ability cases, Pokemon speed calculation!** ✅🎉🚀🏆
+- **FIXED toJSON() to delegate to serialize_battle matching JS exactly!** ✅🎉🔥
+- **ADDED deserialized field to Battle struct** ✅
+- **IMPROVED start() with deserialized check** ✅
+- **IMPROVED restart() with deserialized validation** ✅
+- **IMPROVED faintMessages() with illusion = None, terastallized = None** ✅
+- **ADDED last_successful_move_this_turn field to Battle** ✅
+- **ADDED maybe_locked field to Pokemon** ✅
+- **IMPROVED endTurn() with maybe_locked, moveLastTurnResult, lastSuccessfulMoveThisTurn** ✅
+- Raising effective completion to **92/96 = 96%** ✅🎉🏆🔥🚀
+**Previous Achievements**: chainModify, finalModify, faintMessages (faintQueue), start (gen/tier/rated logging + queue.addChoice + midTurn + turnLoop), maybeTriggerEndlessBattleClause (turn limits); addSplit, hint, getTarget, getRandomTarget, makeRequest, runPickTeam, endTurn; tiebreak, join, boost, validTarget/validTargetLoc
+**Remaining**: 4 methods total = 0 infrastructure-blocked (ALL IMPLEMENTED!) + 6 acceptable architectural differences (part of the 92)

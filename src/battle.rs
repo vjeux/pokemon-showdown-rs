@@ -250,11 +250,15 @@ pub struct Battle {
     pub started: bool,
     /// Has the battle ended?
     pub ended: bool,
+    /// Was this battle deserialized from saved state?
+    pub deserialized: bool,
     /// Winner (side ID string)
     pub winner: Option<String>,
 
     /// Last move used in battle
     pub last_move: Option<ID>,
+    /// Last successful move this turn (for Dancer ability)
+    pub last_successful_move_this_turn: Option<ID>,
     /// Last move log line index (for attrLastMove)
     pub last_move_line: i32,
     /// Last damage dealt (for Counter in Gen 1)
@@ -340,8 +344,10 @@ impl Battle {
             mid_turn: false,
             started: false,
             ended: false,
+            deserialized: false,
             winner: None,
             last_move: None,
+            last_successful_move_this_turn: None,
             last_move_line: -1,
             last_damage: 0,
             active_move: None,
@@ -533,7 +539,9 @@ impl Battle {
     /// Deserialized games should use restart()
     pub fn start(&mut self) {
         // JS: if (this.deserialized) return;
-        // TODO: Implement deserialized field
+        if self.deserialized {
+            return;
+        }
 
         // JS: if (!this.sides.every(side => !!side)) throw new Error(`Missing sides`);
         // Rust: Check that all sides exist and are valid
@@ -3283,7 +3291,7 @@ impl Battle {
                 self.sides[side_idx].pokemon[poke_idx].fainted = true;
 
                 // JS: pokemon.illusion = null;
-                // TODO: Implement illusion field
+                self.sides[side_idx].pokemon[poke_idx].illusion = None;
 
                 // JS: pokemon.isActive = false;
                 self.sides[side_idx].pokemon[poke_idx].is_active = false;
@@ -3299,10 +3307,10 @@ impl Battle {
                 }
 
                 // JS: pokemon.isStarted = false;
-                // TODO: Implement is_started field
+                // TODO: Implement is_started field (tracks if pokemon has been sent out)
 
                 // JS: delete pokemon.terastallized;
-                // TODO: Implement terastallized field
+                self.sides[side_idx].pokemon[poke_idx].terastallized = None;
 
                 // JS: if (this.faintQueue.length >= faintQueueLeft) checkWin = true;
                 if self.faint_queue.len() >= faint_queue_left {
@@ -3518,8 +3526,11 @@ impl Battle {
     /// }
     /// ```
     pub fn chain(&self, previous_mod: (i32, i32), next_mod: (i32, i32)) -> f64 {
-        let prev = (previous_mod.0 * 4096) / previous_mod.1;
-        let next = (next_mod.0 * 4096) / next_mod.1;
+        // JS: previousMod = this.trunc(previousMod[0] * 4096 / previousMod[1]);
+        let prev = self.trunc((previous_mod.0 * 4096) as f64 / previous_mod.1 as f64);
+        // JS: nextMod = this.trunc(nextMod[0] * 4096 / nextMod[1]);
+        let next = self.trunc((next_mod.0 * 4096) as f64 / next_mod.1 as f64);
+        // JS: return ((previousMod * nextMod + 2048) >> 12) / 4096;
         let result = ((prev * next) + 2048) >> 12;
         result as f64 / 4096.0
     }
@@ -3527,8 +3538,11 @@ impl Battle {
     /// Chain two modifiers together (number variant)
     /// When both modifiers are simple multipliers (not fractions)
     pub fn chain_f(&self, previous_mod: f64, next_mod: f64) -> f64 {
-        let prev = (previous_mod * 4096.0) as i32;
-        let next = (next_mod * 4096.0) as i32;
+        // JS: previousMod = this.trunc(previousMod * 4096);
+        let prev = self.trunc(previous_mod * 4096.0);
+        // JS: nextMod = this.trunc(nextMod * 4096);
+        let next = self.trunc(next_mod * 4096.0);
+        // JS: return ((previousMod * nextMod + 2048) >> 12) / 4096;
         let result = ((prev * next) + 2048) >> 12;
         result as f64 / 4096.0
     }
@@ -3552,8 +3566,11 @@ impl Battle {
     /// }
     /// ```
     pub fn modify(&self, value: i32, numerator: i32, denominator: i32) -> i32 {
-        let modifier = (numerator * 4096) / denominator;
-        ((value * modifier) + 2048 - 1) / 4096
+        // JS: const modifier = tr(numerator * 4096 / denominator);
+        let modifier = self.trunc((numerator * 4096) as f64 / denominator as f64);
+        // JS: return tr((tr(value * modifier) + 2048 - 1) / 4096);
+        let inner = self.trunc((value * modifier) as f64);
+        self.trunc((inner + 2048 - 1) as f64 / 4096.0)
     }
 
     /// Apply a modifier to a value using a tuple for numerator/denominator
@@ -3565,8 +3582,11 @@ impl Battle {
     /// Apply a floating-point modifier to a value
     /// Equivalent to battle.ts modify(value, modifier) when modifier is a float
     pub fn modify_f(&self, value: i32, multiplier: f64) -> i32 {
-        let modifier = (multiplier * 4096.0) as i32;
-        ((value * modifier) + 2048 - 1) / 4096
+        // JS: const modifier = tr(numerator * 4096 / denominator);
+        let modifier = self.trunc(multiplier * 4096.0);
+        // JS: return tr((tr(value * modifier) + 2048 - 1) / 4096);
+        let inner = self.trunc((value * modifier) as f64);
+        self.trunc((inner + 2048 - 1) as f64 / 4096.0)
     }
 
     /// Get the current event's modifier
@@ -3941,6 +3961,20 @@ impl Battle {
     /// Deal damage to a Pokemon
     /// Matches JavaScript battle.ts:2165-2176 damage()
     /// This is a wrapper around spreadDamage for a single target
+    /// Deal damage to Pokemon
+    /// Equivalent to battle.ts damage() (battle.ts:2165-2175)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// damage(damage: number, target: Pokemon | null = null, source: Pokemon | null = null, effect: 'drain' | 'recoil' | Effect | null = null, instafaint = false) {
+    ///     if (this.event) {
+    ///         target ||= this.event.target;
+    ///         source ||= this.event.source;
+    ///         effect ||= this.effect;
+    ///     }
+    ///     return this.spreadDamage([damage], [target], source, effect, instafaint)[0];
+    /// }
+    /// ```
     pub fn damage(
         &mut self,
         damage: i32,
@@ -3949,6 +3983,24 @@ impl Battle {
         effect: Option<&ID>,
         instafaint: bool,
     ) -> Option<i32> {
+        // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
+        // Extract event context values first to avoid borrow checker issues
+        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event {
+            (event.target, event.source, event.effect.clone())
+        } else {
+            (None, None, None)
+        };
+
+        let target = target.or(event_target);
+        let source = source.or(event_source);
+        let effect_owned: Option<ID>;
+        let effect = if effect.is_none() {
+            effect_owned = event_effect;
+            effect_owned.as_ref()
+        } else {
+            effect
+        };
+
         // JavaScript: return this.spreadDamage([damage], [target], source, effect, instafaint)[0];
         let result = self.spread_damage(
             &[Some(damage)],
@@ -3962,6 +4014,20 @@ impl Battle {
 
     /// Deal direct damage (bypasses most effects)
     /// Matches JavaScript battle.ts:2177-2230 directDamage()
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// directDamage(damage: number, target?: Pokemon, source: Pokemon | null = null, effect: Effect | null = null) {
+    ///     if (this.event) {
+    ///         target ||= this.event.target;
+    ///         source ||= this.event.source;
+    ///         effect ||= this.effect;
+    ///     }
+    ///     if (!target?.hp) return 0;
+    ///     if (!damage) return 0;
+    ///     // ...
+    /// }
+    /// ```
     pub fn direct_damage(
         &mut self,
         mut damage: i32,
@@ -3969,6 +4035,24 @@ impl Battle {
         source: Option<(usize, usize)>,
         effect: Option<&ID>,
     ) -> i32 {
+        // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
+        // Extract event context values first to avoid borrow checker issues
+        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event {
+            (event.target, event.source, event.effect.clone())
+        } else {
+            (None, None, None)
+        };
+
+        let target = target.or(event_target);
+        let _source = source.or(event_source);  // Not used in current implementation but matches JS signature
+        let effect_owned: Option<ID>;
+        let effect = if effect.is_none() {
+            effect_owned = event_effect;
+            effect_owned.as_ref()
+        } else {
+            effect
+        };
+
         // Get target, handle None case
         let target_pos = match target {
             Some(pos) => pos,
@@ -4120,6 +4204,20 @@ impl Battle {
 
     /// Heal a Pokemon
     /// Matches JavaScript battle.ts:2231-2274 heal()
+    /// Heal HP
+    /// Equivalent to battle.ts heal() (battle.ts:2231-2273)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// heal(damage: number, target?: Pokemon, source: Pokemon | null = null, effect: 'drain' | Effect | null = null) {
+    ///     if (this.event) {
+    ///         target ||= this.event.target;
+    ///         source ||= this.event.source;
+    ///         effect ||= this.effect;
+    ///     }
+    ///     // ... rest of implementation
+    /// }
+    /// ```
     pub fn heal(
         &mut self,
         mut damage: i32,
@@ -4127,6 +4225,24 @@ impl Battle {
         source: Option<(usize, usize)>,
         effect: Option<&ID>,
     ) -> Option<i32> {
+        // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
+        // Extract event context values first to avoid borrow checker issues
+        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event {
+            (event.target, event.source, event.effect.clone())
+        } else {
+            (None, None, None)
+        };
+
+        let target = target.or(event_target);
+        let source = source.or(event_source);
+        let effect_owned: Option<ID>;
+        let effect = if effect.is_none() {
+            effect_owned = event_effect;
+            effect_owned.as_ref()
+        } else {
+            effect
+        };
+
         // Clamp damage to at least 1
         if damage > 0 && damage <= 1 {
             damage = 1;
@@ -4834,7 +4950,7 @@ impl Battle {
         self.turn += 1;
 
         // JS: this.lastSuccessfulMoveThisTurn = null;
-        // TODO: Implement last_successful_move_this_turn field
+        self.last_successful_move_this_turn = None;
 
         // TODO: Dynamax 3-turn removal (requires volatile.turns tracking)
         // JS: Check volatiles['dynamax']?.turns === 3, updateSpeed(), speedSort(), removeVolatile()
@@ -4856,7 +4972,7 @@ impl Battle {
 
                 // JS: pokemon.moveLastTurnResult = pokemon.moveThisTurnResult;
                 // JS: pokemon.moveThisTurnResult = undefined;
-                // TODO: Implement move_last_turn_result field
+                pokemon.move_last_turn_result = pokemon.move_this_turn_result;
                 pokemon.move_this_turn_result = None;
 
                 if self.turn != 1 {
@@ -4877,7 +4993,7 @@ impl Battle {
                 pokemon.maybe_disabled = false;
 
                 // JS: pokemon.maybeLocked = false;
-                // TODO: Implement maybe_locked field
+                pokemon.maybe_locked = false;
 
                 // TODO: DisableMove event processing (requires moveSlots.disabled field and disableMove() method)
                 // JS: for (const moveSlot of pokemon.moveSlots) { moveSlot.disabled = false; }
@@ -4895,7 +5011,7 @@ impl Battle {
 
                 // JS: pokemon.trapped = pokemon.maybeTrapped = false;
                 pokemon.trapped = false;
-                // TODO: Implement maybeTrapped field
+                pokemon.maybe_trapped = false;
             }
         }
 
@@ -4984,13 +5100,46 @@ impl Battle {
                         self.run_residual();
                     }
                     FieldActionType::BeforeTurn => {
-                        // Handle before turn effects
+                        // JS: this.eachEvent('BeforeTurn');
+                        self.each_event("BeforeTurn", None);
                     }
                     FieldActionType::Start => {
-                        // Handle battle start
+                        // JS: for (const side of this.sides) { if (side.pokemonLeft) side.pokemonLeft = side.pokemon.length; this.add('teamsize', side.id, side.pokemon.length); }
+                        for side_idx in 0..self.sides.len() {
+                            let team_size = self.sides[side_idx].pokemon.len();
+                            if self.sides[side_idx].pokemon_left > 0 {
+                                self.sides[side_idx].pokemon_left = team_size;
+                            }
+                            let side_id = format!("p{}", side_idx + 1);
+                            self.add_log("teamsize", &[&side_id, &team_size.to_string()]);
+                        }
+
+                        // JS: this.add('start');
+                        self.add_log("start", &[]);
+
+                        // TODO: Zacian/Zamazenta forme changes (requires species transformation logic)
+                        // JS: Change Zacian/Zamazenta into their Crowned formes
+                        // This requires:
+                        // - Species data lookup (dex.species.get)
+                        // - pokemon.setSpecies()
+                        // - pokemon.setAbility()
+                        // - Move slot modification (behemothblade/behemothbash replacement)
+
+                        // TODO: Format callbacks (requires format infrastructure)
+                        // JS: this.format.onBattleStart?.call(this);
+                        // JS: for (const rule of this.ruleTable.keys()) { ... }
+
+                        // TODO: Switch in all active Pokemon (requires battle_actions integration)
+                        // JS: for (const side of this.sides) { for (let i = 0; i < side.active.length; i++) { this.actions.switchIn(side.pokemon[i], i); } }
+
+                        // TODO: Start events for each Pokemon
+                        // JS: for (const pokemon of this.getAllPokemon()) { this.singleEvent('Start', ...); }
+
+                        // JS: this.midTurn = true;
+                        self.mid_turn = true;
                     }
                     FieldActionType::Pass => {
-                        // Pass action
+                        // Pass action - do nothing
                     }
                 }
             }
@@ -5005,13 +5154,42 @@ impl Battle {
 
     /// Check if all choices are done
     /// Equivalent to battle.ts allChoicesDone()
-    pub fn all_choices_done(&self) -> bool {
-        for side in &self.sides {
-            if !side.is_choice_done() {
-                return false;
+    /// Check if all players have made their choices
+    /// Equivalent to battle.ts allChoicesDone() (battle.ts:3059-3068)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// allChoicesDone() {
+    ///     let totalActions = 0;
+    ///     for (const side of this.sides) {
+    ///         if (side.isChoiceDone()) {
+    ///             if (!this.supportCancel) side.choice.cantUndo = true;
+    ///             totalActions++;
+    ///         }
+    ///     }
+    ///     return totalActions >= this.sides.length;
+    /// }
+    /// ```
+    pub fn all_choices_done(&mut self) -> bool {
+        // JS: let totalActions = 0;
+        let mut total_actions = 0;
+
+        // JS: for (const side of this.sides)
+        for side in &mut self.sides {
+            // JS: if (side.isChoiceDone())
+            if side.is_choice_done() {
+                // JS: if (!this.supportCancel) side.choice.cantUndo = true;
+                // TODO: Add support_cancel field to Battle struct
+                // For now, always set cantUndo to true (equivalent to supportCancel = false)
+                side.choice.cant_undo = true;
+
+                // JS: totalActions++;
+                total_actions += 1;
             }
         }
-        true
+
+        // JS: return totalActions >= this.sides.length;
+        total_actions >= self.sides.len()
     }
 
     // =========================================================================
@@ -5408,7 +5586,9 @@ impl Battle {
     /// }
     pub fn restart(&mut self) {
         // JS: if (!this.deserialized) throw new Error(...)
-        // Note: Rust doesn't have battle deserialization yet, so we skip this check
+        if !self.deserialized {
+            panic!("Attempt to restart a battle which has not been deserialized");
+        }
 
         // JS: (this as any).send = send;
         // Note: Rust doesn't have a send function parameter like JS, so this is a no-op
@@ -6178,52 +6358,63 @@ impl Battle {
 
     /// Find all event handlers for an event
     /// Equivalent to battle.ts findEventHandlers()
+    ///
+    /// JavaScript (battle.ts:1036-1096):
+    /// - Handles array targets recursively
+    /// - Distinguishes Pokemon/Side/Battle types
+    /// - Implements bubble down for Side events
+    /// - Adds prefixed handlers (onAlly, onFoe, onAny, onSource)
+    ///
+    /// Rust Implementation Notes:
+    /// - Currently simplified: only handles Pokemon targets (no Side/Battle distinction)
+    /// - No array recursion (not used in current Rust codebase)
+    /// - Calls specialized find*EventHandlers methods
+    /// - TODO: Add prefixed handler support when needed
     fn find_event_handlers(
         &self,
         event_id: &str,
         target: Option<(usize, usize)>,
-        _source: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
     ) -> Vec<(ID, Option<(usize, usize)>)> {
         let mut handlers = Vec::new();
 
-        // Add handlers from target Pokemon (abilities, items, volatiles, status)
-        if let Some((side_idx, poke_idx)) = target {
-            if let Some(side) = self.sides.get(side_idx) {
-                if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                    // Add ability handler
-                    if !pokemon.ability.is_empty() {
-                        handlers.push((pokemon.ability.clone(), Some((side_idx, poke_idx))));
-                    }
-                    // Add item handler
-                    if !pokemon.item.is_empty() {
-                        handlers.push((pokemon.item.clone(), Some((side_idx, poke_idx))));
-                    }
-                    // Add status handler
-                    if !pokemon.status.is_empty() {
-                        handlers.push((pokemon.status.clone(), Some((side_idx, poke_idx))));
-                    }
-                    // Add volatile handlers
-                    for volatile_id in pokemon.volatiles.keys() {
-                        handlers.push((volatile_id.clone(), Some((side_idx, poke_idx))));
-                    }
-                }
-            }
+        // JavaScript: const prefixedHandlers = !['BeforeTurn', 'Update', 'Weather', 'WeatherChange', 'TerrainChange'].includes(eventName);
+        let event_name = event_id.trim_start_matches("on");
+        let _prefixed_handlers = !matches!(event_name, "BeforeTurn" | "Update" | "Weather" | "WeatherChange" | "TerrainChange");
+
+        // JavaScript: if (target instanceof Pokemon && (target.isActive || source?.isActive))
+        // Rust: We only handle Pokemon targets currently
+        if let Some(target_pos) = target {
+            // JavaScript: handlers = this.findPokemonEventHandlers(target, `on${eventName}`);
+            let mut pokemon_handlers = self.find_pokemon_event_handlers(event_id, target_pos);
+            handlers.append(&mut pokemon_handlers);
+
+            // TODO: Add prefixed handlers (onAlly, onFoe, onAny) when needed
+            // JavaScript does:
+            // for (const allyActive of target.alliesAndSelf()) {
+            //     handlers.push(...this.findPokemonEventHandlers(allyActive, `onAlly${eventName}`));
+            //     handlers.push(...this.findPokemonEventHandlers(allyActive, `onAny${eventName}`));
+            // }
+            // for (const foeActive of target.foes()) {
+            //     handlers.push(...this.findPokemonEventHandlers(foeActive, `onFoe${eventName}`));
+            //     handlers.push(...this.findPokemonEventHandlers(foeActive, `onAny${eventName}`));
+            // }
         }
 
-        // Add field condition handlers (weather, terrain, pseudo-weather)
-        if !self.field.weather.is_empty() {
-            handlers.push((self.field.weather.clone(), None));
-        }
-        if !self.field.terrain.is_empty() {
-            handlers.push((self.field.terrain.clone(), None));
-        }
+        // JavaScript: if (source && prefixedHandlers) {
+        //     handlers.push(...this.findPokemonEventHandlers(source, `onSource${eventName}`));
+        // }
+        // TODO: Add source handlers when prefixed handler support is implemented
 
-        // Add format/rule handlers
-        // (would check format rules here)
+        // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
+        let mut field_handlers = self.find_field_event_handlers(event_id);
+        handlers.append(&mut field_handlers);
 
-        // Sort by priority
-        // In the full implementation, this would use compare_priority
-        // For now, we keep the insertion order
+        // JavaScript: handlers.push(...this.findBattleEventHandlers(`on${eventName}`));
+        let battle_handler_ids = self.find_battle_event_handlers(event_id);
+        for id in battle_handler_ids {
+            handlers.push((id, None));
+        }
 
         handlers
     }
@@ -6269,10 +6460,12 @@ impl Battle {
     /// }
     /// ```
     pub fn randomizer(&mut self, base_damage: i32) -> i32 {
+        // JS: return tr(tr(baseDamage * (100 - this.random(16))) / 100);
         // Damage = baseDamage * (100 - random(16)) / 100
         // This gives range 85% to 100% damage
         let roll = 100 - self.prng.random_int(16) as i32;
-        self.trunc(base_damage as f64 * roll as f64 / 100.0)
+        let inner = self.trunc(base_damage as f64 * roll as f64);
+        self.trunc(inner as f64 / 100.0)
     }
 
     /// Run an event on each active Pokemon in speed order
@@ -6753,18 +6946,27 @@ impl Battle {
 
     /// Final stat modification with 4096 denominator
     /// Apply final modifier to value
-    /// Equivalent to battle.ts finalModify() (battle.ts:2344-2346)
+    /// Equivalent to battle.ts finalModify() (battle.ts:2344-2347)
     ///
-    /// JS Source (battle.ts:2344-2346):
+    /// JS Source (battle.ts:2344-2347):
     /// ```js
-    /// finalModify(value: number) {
-    ///     return this.modify(value, this.event.modifier);
+    /// finalModify(relayVar: number) {
+    ///     relayVar = this.modify(relayVar, this.event.modifier);
+    ///     this.event.modifier = 1;
+    ///     return relayVar;
     /// }
     /// ```
-    pub fn final_modify(&self, value: i32) -> i32 {
-        // JS: return this.modify(value, this.event.modifier);
+    pub fn final_modify(&mut self, value: i32) -> i32 {
+        // JS: relayVar = this.modify(relayVar, this.event.modifier);
         let modifier = self.get_event_modifier();
-        self.modify_internal(value, modifier)
+        let result = self.modify_internal(value, modifier);
+
+        // JS: this.event.modifier = 1;
+        if let Some(ref mut event) = self.current_event {
+            event.modifier = 1.0;
+        }
+
+        result
     }
 
     fn modify_internal(&self, value: i32, modifier: f64) -> i32 {
@@ -6868,11 +7070,16 @@ impl Battle {
     /// ```
     pub fn chain_modify(&mut self, numerator: i32, denominator: i32) {
         if let Some(ref mut event) = self.current_event {
+            // Extract modifier value first to avoid borrow checker issues
+            let modifier = event.modifier;
+
             // JS: const previousMod = this.trunc(this.event.modifier * 4096);
-            let previous_mod = (event.modifier * 4096.0).trunc() as i32;
+            // Inline trunc() to avoid borrow checker issues
+            let previous_mod = (modifier * 4096.0).trunc() as i32;
 
             // JS: const nextMod = this.trunc(numerator * 4096 / denominator);
-            let next_mod = (numerator * 4096) / denominator;
+            // Inline trunc() to avoid borrow checker issues
+            let next_mod = ((numerator * 4096) as f64 / denominator as f64).trunc() as i32;
 
             // JS: this.event.modifier = ((previousMod * nextMod + 2048) >> 12) / 4096;
             event.modifier = (((previous_mod * next_mod + 2048) >> 12) as f64) / 4096.0;
@@ -7297,21 +7504,26 @@ impl Battle {
         } as i32;
 
         if stat_name == "hp" {
-            // HP formula
-            let temp = 2 * base_stat + iv + (ev / 4) + 100;
-            return (temp * set.level as i32 / 100) + 10;
+            // JS: return tr(tr(2 * stat + set.ivs[statName] + tr(set.evs[statName] / 4) + 100) * set.level / 100 + 10);
+            let ev_contrib = self.trunc(ev as f64 / 4.0);
+            let inner = self.trunc((2 * base_stat + iv + ev_contrib + 100) as f64);
+            return self.trunc(inner as f64 * set.level as f64 / 100.0 + 10.0);
         }
 
         // Non-HP stats
-        let temp = 2 * base_stat + iv + (ev / 4);
-        let mut stat = (temp * set.level as i32 / 100) + 5;
+        // JS: stat = tr(tr(2 * stat + set.ivs[statName] + tr(set.evs[statName] / 4)) * set.level / 100 + 5);
+        let ev_contrib = self.trunc(ev as f64 / 4.0);
+        let inner = self.trunc((2 * base_stat + iv + ev_contrib) as f64);
+        let mut stat = self.trunc(inner as f64 * set.level as f64 / 100.0 + 5.0);
 
         // Apply nature
         // TODO: Need Dex.natures access to apply nature modifiers
-        // For now, just return the base stat without nature
+        // JS: const nature = this.dex.natures.get(set.nature);
+        // JS: if (nature.plus === statName) { stat = tr(tr(stat * 110, 16) / 100); }
+        // JS: else if (nature.minus === statName) { stat = tr(tr(stat * 90, 16) / 100); }
         if !set.nature.is_empty() {
             // nature_data = self.dex.natures.get(&set.nature);
-            // Apply 1.1x or 0.9x multiplier based on nature.plus/minus
+            // Apply 1.1x or 0.9x multiplier based on nature.plus/minus with 16-bit truncation
         }
 
         stat.max(0)
@@ -7466,22 +7678,18 @@ impl Battle {
         None
     }
 
-    /// Convert battle to JSON
+    /// Convert battle to JSON value
     /// Equivalent to battle.ts toJSON()
+    ///
+    /// JS Source (battle.ts:318):
+    /// ```javascript
+    /// toJSON(): AnyObject {
+    ///     return State.serializeBattle(this);
+    /// }
+    /// ```
     pub fn to_json(&self) -> serde_json::Value {
-        serde_json::json!({
-            "turn": self.turn,
-            "started": self.started,
-            "ended": self.ended,
-            "winner": self.winner,
-            "sides": self.sides.iter().map(|s| {
-                serde_json::json!({
-                    "id": s.id_str(),
-                    "name": s.name,
-                    "pokemon": s.pokemon.len()
-                })
-            }).collect::<Vec<_>>()
-        })
+        // Delegate to state::serialize_battle just like JavaScript
+        crate::state::serialize_battle(self)
     }
 
     /// Convert battle to string representation
@@ -7543,28 +7751,86 @@ impl Battle {
     }
 
     /// Find Pokemon event handlers
-    /// Equivalent to battle.ts findPokemonEventHandlers()
+    /// Equivalent to battle.ts findPokemonEventHandlers() (battle.ts:1098-1157)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// findPokemonEventHandlers(pokemon: Pokemon, callbackName: string, getKey?: 'duration') {
+    ///     const handlers: EventListener[] = [];
+    ///
+    ///     const status = pokemon.getStatus();
+    ///     let callback = this.getCallback(pokemon, status, callbackName);
+    ///     if (callback !== undefined || (getKey && pokemon.statusState[getKey])) {
+    ///         handlers.push(this.resolvePriority({ effect: status, callback, state: pokemon.statusState, end: pokemon.clearStatus, effectHolder: pokemon }, callbackName));
+    ///     }
+    ///
+    ///     for (const id in pokemon.volatiles) { /* ... */ }
+    ///
+    ///     const ability = pokemon.getAbility();
+    ///     // ... ability handler ...
+    ///
+    ///     const item = pokemon.getItem();
+    ///     // ... item handler ...
+    ///
+    ///     const species = pokemon.baseSpecies;
+    ///     callback = this.getCallback(pokemon, species, callbackName);
+    ///     if (callback !== undefined) {
+    ///         handlers.push(this.resolvePriority({ effect: species, callback, state: pokemon.speciesState, end() {}, effectHolder: pokemon }, callbackName));
+    ///     }
+    ///
+    ///     const side = pokemon.side;
+    ///     for (const conditionid in side.slotConditions[pokemon.position]) {
+    ///         const slotConditionState = side.slotConditions[pokemon.position][conditionid];
+    ///         const slotCondition = this.dex.conditions.getByID(conditionid as ID);
+    ///         callback = this.getCallback(pokemon, slotCondition, callbackName);
+    ///         if (callback !== undefined || (getKey && slotConditionState[getKey])) {
+    ///             handlers.push(this.resolvePriority({ effect: slotCondition, callback, state: slotConditionState, end: side.removeSlotCondition, endCallArgs: [side, pokemon, slotCondition.id], effectHolder: pokemon }, callbackName));
+    ///         }
+    ///     }
+    ///
+    ///     return handlers;
+    /// }
+    /// ```
     pub fn find_pokemon_event_handlers(&self, _event_id: &str, target: (usize, usize)) -> Vec<(ID, Option<(usize, usize)>)> {
         let mut handlers = Vec::new();
         let (side_idx, poke_idx) = target;
 
         if let Some(side) = self.sides.get(side_idx) {
             if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                // Add ability handler
-                if !pokemon.ability.is_empty() {
-                    handlers.push((pokemon.ability.clone(), Some(target)));
-                }
-                // Add item handler
-                if !pokemon.item.is_empty() {
-                    handlers.push((pokemon.item.clone(), Some(target)));
-                }
+                // JS: const status = pokemon.getStatus();
                 // Add status handler
                 if !pokemon.status.is_empty() {
                     handlers.push((pokemon.status.clone(), Some(target)));
                 }
+
+                // JS: for (const id in pokemon.volatiles)
                 // Add volatile handlers
                 for volatile_id in pokemon.volatiles.keys() {
                     handlers.push((volatile_id.clone(), Some(target)));
+                }
+
+                // JS: const ability = pokemon.getAbility();
+                // Add ability handler
+                if !pokemon.ability.is_empty() {
+                    handlers.push((pokemon.ability.clone(), Some(target)));
+                }
+
+                // JS: const item = pokemon.getItem();
+                // Add item handler
+                if !pokemon.item.is_empty() {
+                    handlers.push((pokemon.item.clone(), Some(target)));
+                }
+
+                // JS: const species = pokemon.baseSpecies;
+                // Add species handler (NEW! - was missing)
+                handlers.push((pokemon.species_id.clone(), Some(target)));
+
+                // JS: for (const conditionid in side.slotConditions[pokemon.position])
+                // Add slot condition handlers (NEW! - was missing)
+                if let Some(slot_conds) = side.slot_conditions.get(pokemon.position) {
+                    for slot_cond_id in slot_conds.keys() {
+                        handlers.push((slot_cond_id.clone(), Some(target)));
+                    }
                 }
             }
         }

@@ -157,6 +157,7 @@ pub struct Pokemon {
     pub trapped: bool,
     pub maybe_trapped: bool,
     pub maybe_disabled: bool,
+    pub maybe_locked: bool, // Choice items may lock next turn
     pub switch_flag: bool,
     pub force_switch_flag: bool,
     pub newly_switched: bool,
@@ -275,6 +276,7 @@ impl Pokemon {
             trapped: false,
             maybe_trapped: false,
             maybe_disabled: false,
+            maybe_locked: false,
             switch_flag: false,
             force_switch_flag: false,
             newly_switched: false,
