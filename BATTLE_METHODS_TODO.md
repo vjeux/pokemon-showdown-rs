@@ -120,7 +120,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 57. ✅ `getPokemon` / `get_pokemon` - battle.ts:1301 | battle.rs:4319 | **MATCH** (tuple vs object - acceptable)
 58. ✅ `getAllPokemon` / `get_all_pokemon` - battle.ts:1311 | battle.rs:3111 | **MATCH**
 59. ✅ `getAllActive` / `get_all_active` - battle.ts:1319 | battle.rs:679 | **FIXED!** ✅ (Previous session - merged 2 methods into 1)
-60. 🔍 `getAtSlot` / `get_at_slot` - battle.ts:1563 | battle.rs:4167 | **MISMATCH** - Different signature (takes PokemonSlot vs side/slot)
+60. ✅ `getAtSlot` / `get_at_slot` - battle.ts:1563 | battle.rs:4167 | **FIXED!** ✅ - Rewrote to parse slot strings like "p1a", "p2b"
 61. ✅ `faint` / `faint` - battle.ts:1573 | battle.rs:3838 | **FIXED!** ✅ - Now delegates to pokemon.faint() (TODO: implement faintQueue system)
 
 ### Switching (4 methods)
@@ -175,11 +175,11 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching**: 58 (60%) - Crossed 60% milestone! 🎉
+**Methods Matching**: 59 (61%) - Progressing steadily!
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
-- Util: getPokemon, getAllPokemon, getAllActive, getOverflowedTurnCount, getCategory, checkFainted, randomizer
+- Util: getPokemon, getAllPokemon, getAllActive, **getAtSlot**, getOverflowedTurnCount, getCategory, checkFainted, randomizer
 - Logging: debug, addMove, debugError, **attrLastMove, retargetLastMove**
 - **Requests & Choices**: clearRequest, allChoicesDone, getRequests, choose, makeChoices, commitChoices, undoChoice
 - Switching: getRandomSwitchable, canSwitch, **swapPosition**
@@ -188,20 +188,20 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - **Display**: toString (Display trait)
 - **Event System**: eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
 - **Turn Flow**: turnLoop, runAction
-- **SESSION FIXES**: checkMoveMakesContact (Protective Pads), faint (delegation), attrLastMove, retargetLastMove, swapPosition
+- **SESSION FIXES**: checkMoveMakesContact, faint, attrLastMove, retargetLastMove, swapPosition, getAtSlot
 - And more
 
 **Methods with Minor Mismatches**: 2 (2%)
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 20 (21%) - DOWN from 26!
+**Methods with Major Mismatches**: 19 (20%) - DOWN from 26!
 - Event-dependent: boost, chainModify, getActionSpeed
 - Simplified: makeRequest, endTurn, getDebugLog, faintMessages
 - Missing features: add, hint, addSplit
 - Complex: suppressingAbility
 - Stubs: finalModify (needs event.modifier)
-- Different signature/logic: getAtSlot, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState, resolvePriority
+- Different signature/logic: validTarget, validTargetLoc, getTeam (needs team generation), initEffectState, clearEffectState, resolvePriority
 
 **Methods Needing Deep Comparison**: 16 (17%)
 - start, restart, destroy (initialization/teardown)

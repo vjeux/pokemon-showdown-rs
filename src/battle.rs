@@ -4164,18 +4164,32 @@ impl Battle {
     }
 
     /// Get Pokemon at a specific slot location
-    /// Equivalent to battle.ts getAtSlot() (via Pokemon.getAtLoc)
-    pub fn get_at_slot(&self, side_idx: usize, slot: usize) -> Option<(usize, usize)> {
-        if let Some(side) = self.sides.get(side_idx) {
-            if let Some(Some(poke_idx)) = side.active.get(slot) {
-                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                    if !pokemon.is_fainted() {
-                        return Some((side_idx, *poke_idx));
-                    }
-                }
-            }
+    /// Get Pokemon at a slot string (e.g., "p1a", "p2b")
+    /// Equivalent to battle.ts getAtSlot()
+    pub fn get_at_slot(&self, slot: Option<&str>) -> Option<&Pokemon> {
+        // JS: if (!slot) return null;
+        let slot_str = slot?;
+
+        if slot_str.len() < 3 {
+            return None;
         }
-        None
+
+        // JS: const side = this.sides[slot.charCodeAt(1) - 49]; // 49 is '1'
+        let side_char = slot_str.chars().nth(1)?;
+        let side_idx = (side_char as u32).checked_sub(49)? as usize; // 49 is '1'
+
+        // JS: const position = slot.charCodeAt(2) - 97; // 97 is 'a'
+        let pos_char = slot_str.chars().nth(2)?;
+        let position = (pos_char as u32).checked_sub(97)? as usize; // 97 is 'a'
+
+        // JS: const positionOffset = Math.floor(side.n / 2) * side.active.length;
+        // JS: return side.active[position - positionOffset];
+        let side = self.sides.get(side_idx)?;
+        let position_offset = (side.n / 2) * side.active.len();
+        let adjusted_position = position.checked_sub(position_offset)?;
+
+        let poke_idx = side.active.get(adjusted_position)?.as_ref()?;
+        side.pokemon.get(*poke_idx)
     }
 
     // =========================================================================
