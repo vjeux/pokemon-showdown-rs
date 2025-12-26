@@ -2756,6 +2756,30 @@ impl Battle {
             (modified_attack as u32) / 100 // Convert back from percentage
         };
 
+        // SourceModifyAtk/SourceModifySpA - defender's abilities that modify attacker's stats
+        // (e.g., Thick Fat, Heatproof reduce Fire/Ice attacker stats)
+        let attack = if category.as_str() == "Physical" {
+            let base_attack = (attack * 100) as i32; // Convert to percentage
+            let modified_attack = self.run_event(
+                "SourceModifyAtk",
+                Some((target_side, target_idx)),  // Defender is the target
+                Some((attacker_side, attacker_idx)),  // Attacker is the source
+                Some(move_id),
+                Some(base_attack)
+            ).unwrap_or(base_attack);
+            (modified_attack as u32) / 100 // Convert back from percentage
+        } else {
+            let base_attack = (attack * 100) as i32; // Convert to percentage
+            let modified_attack = self.run_event(
+                "SourceModifySpA",
+                Some((target_side, target_idx)),  // Defender is the target
+                Some((attacker_side, attacker_idx)),  // Attacker is the source
+                Some(move_id),
+                Some(base_attack)
+            ).unwrap_or(base_attack);
+            (modified_attack as u32) / 100 // Convert back from percentage
+        };
+
         // ModifyDef/ModifySpD for defender (items like Eviolite, Assault Vest)
         let defense = if category.as_str() == "Physical" {
             let base_defense = (defense * 100) as i32; // Convert to percentage
@@ -2883,6 +2907,21 @@ impl Battle {
             "ModifyDamage",
             Some((target_side, target_idx)),
             Some((attacker_side, attacker_idx)),
+            Some(move_id),
+            Some(damage as i32)
+        ) {
+            modified as u32
+        } else {
+            damage
+        };
+
+        // Fire SourceModifyDamage event for defender's abilities to modify incoming damage
+        // JavaScript: baseDamage = this.battle.runEvent('SourceModifyDamage', pokemon, target, move, baseDamage);
+        // This allows abilities like Multiscale, Filter, Solid Rock to reduce damage
+        let damage = if let Some(modified) = self.run_event(
+            "SourceModifyDamage",
+            Some((target_side, target_idx)),  // Defender is the target (ability holder)
+            Some((attacker_side, attacker_idx)),  // Attacker is the source
             Some(move_id),
             Some(damage as i32)
         ) {
@@ -6830,8 +6869,9 @@ impl Battle {
                     }
                 }
             }
-            "ModifyDamage" => {
-                // Damage modifying abilities
+            "SourceModifyDamage" => {
+                // Defender's abilities that reduce incoming damage
+                // Multiscale: Halve damage when at full HP
                 if ability_id.as_str() == "multiscale" {
                     if let Some((side_idx, poke_idx)) = target {
                         if let Some(side) = self.sides.get(side_idx) {
@@ -6843,6 +6883,20 @@ impl Battle {
                         }
                     }
                 }
+                // Filter / Solid Rock: Reduce super effective damage to 0.75x
+                if ability_id.as_str() == "filter" || ability_id.as_str() == "solidrock" {
+                    // TODO: Check if move is super effective
+                    // For now, cannot check type effectiveness in event context
+                    // Would need to pass type effectiveness as additional context
+                }
+                // Prism Armor: Reduce super effective damage to 0.75x
+                if ability_id.as_str() == "prismarmor" {
+                    // TODO: Check if move is super effective
+                }
+            }
+            "ModifyDamage" => {
+                // Attacker's damage modifying abilities
+                // (Multiscale moved to SourceModifyDamage)
             }
             "Residual" => {
                 // Residual abilities like Poison Heal, Rain Dish, Hydration, Bad Dreams, etc.
