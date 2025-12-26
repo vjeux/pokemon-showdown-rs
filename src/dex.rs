@@ -92,6 +92,8 @@ pub struct SpeciesData {
     pub other_formes: Vec<String>,
     #[serde(default)]
     pub is_cosmetic_forme: bool,
+    #[serde(default)]
+    pub gen: Option<u8>,
     // Format data fields
     #[serde(default)]
     pub tier: Option<String>,
@@ -910,7 +912,10 @@ impl Dex {
         let mut dex = Self::load_default()?;
         dex.gen = gen;
 
-        // Mark Pokemon from future generations as Illegal/Future
+        // JavaScript: Dex.forGen() uses mod system where gen1/pokedex.js, gen2/pokedex.js, etc.
+        // physically don't include formes from future generations
+        // We replicate this by pattern-matching forme names and marking as Future
+
         // Generation ranges based on national dex numbers:
         // Gen 1: 1-151, Gen 2: 152-251, Gen 3: 252-386, Gen 4: 387-493,
         // Gen 5: 494-649, Gen 6: 650-721, Gen 7: 722-809, Gen 8: complex, Gen 9: 906+
@@ -928,57 +933,91 @@ impl Dex {
         };
 
         for species in dex.species.values_mut() {
-            // Pokemon with num > max_num are from future generations
-            if species.num > max_num {
+            // JavaScript: Check if this Pokemon/forme was introduced after requested gen
+            let is_future = if let Some(species_gen) = species.gen {
+                // Explicit gen field (e.g., Pikachu-World has gen: 8)
+                species_gen > gen
+            } else if species.num > max_num {
+                // JavaScript: Pokemon from future generation (base num check)
+                // This catches both base species AND their formes
+                true
+            } else if let Some(ref forme) = species.forme {
+                // JavaScript: gen-specific mods don't include certain formes
+                // Forme name patterns indicate which generation they were introduced
+
+                // Paldea formes (Gen 9+): Tauros-Paldea, Wooper-Paldea, etc.
+                if forme.contains("Paldea") {
+                    gen < 9
+                // Hisui formes (Gen 8+ Legends Arceus): Growlithe-Hisui, Zorua-Hisui, etc.
+                } else if forme.contains("Hisui") {
+                    gen < 8
+                // Galar formes (Gen 8+): Ponyta-Galar, Mr. Mime-Galar, etc.
+                } else if forme.contains("Galar") || forme.contains("Galarian") {
+                    gen < 8
+                // Gmax/Gigantamax formes (Gen 8+)
+                } else if forme.contains("Gmax") {
+                    gen < 8
+                // Alola formes (Gen 7+): Vulpix-Alola, Rattata-Alola, etc.
+                } else if forme.contains("Alola") || forme.contains("Alolan") {
+                    gen < 7
+                // Totem formes (Gen 7+)
+                } else if forme.contains("Totem") {
+                    gen < 7
+                // Mega Evolution (Gen 6+)
+                } else if forme.contains("Mega") || forme.contains("Primal") {
+                    gen < 6
+                // Cap Pikachu formes (Gen 6-7 event Pokemon)
+                // Original, Hoenn, Sinnoh, Kalos, Unova (Gen 7), Alola (Gen 7), Partner (Gen 7), World (Gen 8)
+                } else if forme == "Original" || forme == "Hoenn" || forme == "Sinnoh" ||
+                          forme == "Kalos" || forme == "Unova" || forme == "Partner" ||
+                          forme == "World" {
+                    gen < 6  // Conservative: assume all cap Pikachus are Gen 6+
+                // Cosplay Pikachu (Gen 6 ORAS)
+                } else if forme == "Rock-Star" || forme == "Belle" || forme == "Pop-Star" ||
+                          forme == "PhD" || forme == "Libre" || forme == "Cosplay" {
+                    gen < 6
+                // Starter/Let's Go formes (Gen 7+)
+                } else if forme == "Starter" {
+                    gen < 7
+                // Gen 5: Therian formes, Black/White Kyurem, forme Keldeo, etc.
+                } else if forme.contains("Therian") || forme.contains("Black") && species.name.contains("Kyurem") ||
+                          forme.contains("White") && species.name.contains("Kyurem") ||
+                          forme == "Resolute" {
+                    gen < 5
+                // Gen 4: Rotom formes, Giratina-Origin, Shaymin-Sky, Arceus types
+                } else if (forme.contains("Heat") || forme.contains("Wash") || forme.contains("Frost") ||
+                           forme.contains("Fan") || forme.contains("Mow")) && species.name.contains("Rotom") ||
+                          forme == "Origin" ||
+                          forme == "Sky" ||
+                          // Arceus plate formes
+                          (species.num == 493 && forme != "Normal") {
+                    gen < 4
+                // Gen 3: Deoxys formes
+                } else if (forme == "Attack" || forme == "Defense" || forme == "Speed") && species.name.contains("Deoxys") {
+                    gen < 3
+                } else {
+                    false  // Forme exists in all gens or is gen-appropriate
+                }
+            } else {
+                false  // Base species within gen range
+            };
+
+            if is_future {
+                // JavaScript: gen1/pokedex.js doesn't include these entries
                 species.tier = Some("Illegal".to_string());
                 species.is_nonstandard = Some("Future".to_string());
                 continue;
             }
 
-            // Check if this is a forme from a future generation
-            // Regional formes: Alola (Gen 7), Galar (Gen 8), Hisui (Gen 8), Paldea (Gen 9)
-            // Other formes: Check by name patterns
-            let is_future_forme = if let Some(ref forme) = species.forme {
-                match gen {
-                    1 | 2 | 3 | 4 | 5 | 6 => {
-                        // Gen 1-6: All Alola, Galar, Hisui, Paldea formes are future
-                        // Plus any special event formes (Pikachu caps, etc.)
-                        forme.contains("Alola") || forme.contains("Galar") ||
-                        forme.contains("Hisui") || forme.contains("Paldea") ||
-                        forme.contains("Sinnoh") || forme.contains("Kalos") ||
-                        forme.contains("Hoenn") || forme.contains("Unova") ||
-                        forme.contains("Partner") || forme.contains("Alolan") ||
-                        forme.contains("Galarian") ||
-                        // Mega evolutions are from Gen 6+
-                        (forme.contains("Mega") && gen < 6) ||
-                        // G-Max is from Gen 8+
-                        (forme.contains("Gmax") && gen < 8)
-                    }
-                    7 => {
-                        // Gen 7: Galar, Hisui, Paldea, G-Max are future
-                        forme.contains("Galar") || forme.contains("Hisui") ||
-                        forme.contains("Paldea") || forme.contains("Galarian") ||
-                        forme.contains("Gmax")
-                    }
-                    8 => {
-                        // Gen 8: Paldea is future
-                        forme.contains("Paldea")
-                    }
-                    _ => false,
-                }
-            } else {
-                false
-            };
-
-            if is_future_forme {
-                species.tier = Some("Illegal".to_string());
-                species.is_nonstandard = Some("Future".to_string());
-            } else if species.num <= max_num {
-                // Pokemon that exist in this generation should not be marked as nonstandard
-                // (unless they're special forms we've already marked as future)
-                // Clear "Past" marking from formats-data.json
+            // JavaScript: Gen-specific mods override tier/isNonstandard for BASE species
+            // e.g., gen1/formats-data.js sets caterpie tier: "LC" (not "Illegal")
+            if species.forme.is_none() {
+                // Base species - clear Past/Illegal markings
                 if species.is_nonstandard.as_deref() == Some("Past") {
                     species.is_nonstandard = None;
+                }
+                if species.tier.as_deref() == Some("Illegal") {
+                    species.tier = None;
                 }
             }
         }

@@ -518,7 +518,74 @@ fn test_should_have_valid_formats() {
     }
 }
 
+// JavaScript: function countPokemon(dex, existenceFunction = s => s.exists && !s.isNonstandard && s.tier !== 'Illegal') {
+// JavaScript:     const count = { species: 0, formes: 0 };
+// JavaScript:     for (const pkmn of dex.species.all()) {
+// JavaScript:         if (!existenceFunction(pkmn)) continue;
+// JavaScript:         if (pkmn.isCosmeticForme) continue;
+// JavaScript:         if (pkmn.name !== pkmn.baseSpecies) {
+// JavaScript:             count.formes++;
+// JavaScript:         } else {
+// JavaScript:             count.species++;
+// JavaScript:         }
+// JavaScript:     }
+// JavaScript:     return count;
+// JavaScript: }
+fn count_pokemon(dex: &Dex) -> (usize, usize) {
+    let mut species_count = 0;
+    let mut formes_count = 0;
+
+    for (_id, pkmn) in dex.species.iter() {
+        // JavaScript: if (!existenceFunction(pkmn)) continue;
+        // JavaScript: existenceFunction = s => s.exists && !s.isNonstandard && s.tier !== 'Illegal'
+        if !pkmn.exists {
+            continue;
+        }
+        if pkmn.is_nonstandard.is_some() {
+            continue;
+        }
+        if pkmn.tier.as_deref() == Some("Illegal") {
+            continue;
+        }
+
+        // JavaScript: if (pkmn.isCosmeticForme) continue;
+        if pkmn.is_cosmetic_forme {
+            continue;
+        }
+
+        // JavaScript: if (pkmn.name !== pkmn.baseSpecies) {
+        let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
+        if &pkmn.name != base {
+            // JavaScript: count.formes++;
+            formes_count += 1;
+        } else {
+            // JavaScript: count.species++;
+            species_count += 1;
+        }
+    }
+
+    (species_count, formes_count)
+}
+
+/// Test: Gen 1 should have 151 species and 0 formes
+/// JavaScript: it(`Gen ${gen} should have ${species[gen]} species and ${formes[gen]} formes`, () => {
+/// JavaScript:     const count = countPokemon(Dex.forGen(gen));
+/// JavaScript:     assert.equal(count.species, species[gen]);
+/// JavaScript:     assert.equal(count.formes, formes[gen]);
+/// JavaScript: });
+#[test]
+fn test_gen1_should_have_151_species_and_0_formes() {
+    // JavaScript: const count = countPokemon(Dex.forGen(gen));
+    let dex = Dex::for_gen(1).unwrap();
+    let (species_count, formes_count) = count_pokemon(&dex);
+
+    // JavaScript: assert.equal(count.species, species[gen]);
+    assert_eq!(species_count, 151, "Gen 1 should have 151 species");
+    // JavaScript: assert.equal(count.formes, formes[gen]);
+    assert_eq!(formes_count, 0, "Gen 1 should have 0 formes");
+}
+
 // Note: The following tests from data.js are not ported yet:
 // - it('should have valid Learnsets entries', function () { ... }) - requires learnsets
-// - Gen-specific Pokemon count tests - requires gen-specific filtering
+// - Gen 2-9 Pokemon count tests - will be added after Gen 1 passes
 // - it('should never import') - file system check, not applicable to Rust
