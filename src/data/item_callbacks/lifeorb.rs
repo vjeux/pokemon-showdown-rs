@@ -29,16 +29,26 @@ use crate::battle::{Battle, Arg};
 use crate::move_types::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::ItemHandlerResult;
+use crate::event::EventResult;
 
-/// onModifyDamage(...)
-pub fn on_modify_damage(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+/// onModifyDamage(damage, source, target, move)
+pub fn on_modify_damage(_battle: &Battle, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
+    // JS: return this.chainModify([5324, 4096]);
+    EventResult::Modify(5324.0 / 4096.0)
 }
 
-/// onAfterMoveSecondarySelf(...)
-pub fn on_after_move_secondary_self(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+/// onAfterMoveSecondarySelf(source, target, move)
+pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    // JS: if (source && source !== target && move && move.category !== 'Status' && !source.forceSwitchFlag)
+    // TODO: Need to check move category and forceSwitchFlag
+
+    let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // JS: this.damage(source.baseMaxhp / 10, source, source, this.dex.items.get('lifeorb'));
+    let damage = source.maxhp / 10;
+    battle.damage(damage as i32, Some(source_pos), Some(source_pos), Some(&ID::new("lifeorb")), false);
+    EventResult::Continue
 }

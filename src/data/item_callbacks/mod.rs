@@ -394,82 +394,106 @@ pub mod zoomlens;
 pub mod zygardite;
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
-/// Dispatch an item event to the appropriate callback
-/// Returns EventResult based on the callback's return value
-pub fn dispatch_item_event(
-    battle: &mut Battle,
+/// Dispatch onModifyAtk callbacks (read-only)
+pub fn dispatch_on_modify_atk(
+    battle: &Battle,
     item_id: &str,
-    event_name: &str,
+    pokemon_pos: (usize, usize),
 ) -> Option<EventResult> {
-    // Convert event name to callback function name
-    // e.g., "ModifyAtk" -> "on_modify_atk"
-    let callback_name = event_name_to_callback(event_name);
-    
-    // Dispatch to the appropriate item module based on item_id
-    // For now, we'll implement a subset of items that are commonly used
     match item_id {
-        "choiceband" => match callback_name {
-            "on_modify_atk" => Some(convert_result(choiceband::on_modify_atk(battle))),
-            _ => None,
-        },
-        "choicespecs" => match callback_name {
-            "on_modify_sp_a" => Some(convert_result(choicespecs::on_modify_sp_a(battle))),
-            _ => None,
-        },
-        "lifeorb" => match callback_name {
-            "on_modify_damage" => Some(convert_result(lifeorb::on_modify_damage(battle))),
-            "on_after_move_secondary_self" => Some(convert_result(lifeorb::on_after_move_secondary_self(battle))),
-            _ => None,
-        },
-        "eviolite" => match callback_name {
-            "on_modify_def" => Some(convert_result(eviolite::on_modify_def(battle))),
-            "on_modify_sp_d" => Some(convert_result(eviolite::on_modify_sp_d(battle))),
-            _ => None,
-        },
-        "assaultvest" => match callback_name {
-            "on_modify_sp_d" => Some(convert_result(assaultvest::on_modify_sp_d(battle))),
-            _ => None,
-        },
-        "leftovers" => match callback_name {
-            "on_residual" => Some(convert_result(leftovers::on_residual(battle))),
-            _ => None,
-        },
-        "blacksludge" => match callback_name {
-            "on_residual" => Some(convert_result(blacksludge::on_residual(battle))),
-            _ => None,
-        },
-        // TODO: Add more items as their callbacks are implemented
+        "choiceband" => Some(choiceband::on_modify_atk(battle, pokemon_pos)),
         _ => None,
     }
 }
 
-/// Convert event name (e.g., "ModifyAtk") to callback name (e.g., "on_modify_atk")
-fn event_name_to_callback(event_name: &str) -> &str {
-    match event_name {
-        "ModifyAtk" => "on_modify_atk",
-        "ModifySpA" => "on_modify_sp_a",
-        "ModifyDef" => "on_modify_def",
-        "ModifySpD" => "on_modify_sp_d",
-        "ModifyDamage" => "on_modify_damage",
-        "SourceModifyDamage" => "on_source_modify_damage",
-        "AfterMoveSecondarySelf" => "on_after_move_secondary_self",
-        "Residual" => "on_residual",
-        _ => "",
+/// Dispatch onModifySpA callbacks (read-only)
+pub fn dispatch_on_modify_sp_a(
+    battle: &Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        "choicespecs" => Some(choicespecs::on_modify_sp_a(battle, pokemon_pos)),
+        _ => None,
     }
 }
 
-/// Convert ItemHandlerResult to EventResult
-fn convert_result(result: ItemHandlerResult) -> EventResult {
-    match result {
-        ItemHandlerResult::Undefined => EventResult::Continue,
-        ItemHandlerResult::False => EventResult::Fail,
-        ItemHandlerResult::True => EventResult::Continue,
-        ItemHandlerResult::Null => EventResult::Fail,
-        ItemHandlerResult::Zero => EventResult::ModifyInt(0),
-        ItemHandlerResult::Number(n) => EventResult::ModifyInt(n),
-        ItemHandlerResult::ChainModify(num, denom) => {
-            EventResult::Modify(num as f64 / denom as f64)
-        }
+/// Dispatch onModifyDef callbacks (read-only)
+pub fn dispatch_on_modify_def(
+    battle: &Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        "eviolite" => Some(eviolite::on_modify_def(battle, pokemon_pos)),
+        _ => None,
+    }
+}
+
+/// Dispatch onModifySpD callbacks (read-only)
+pub fn dispatch_on_modify_sp_d(
+    battle: &Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        "eviolite" => Some(eviolite::on_modify_sp_d(battle, pokemon_pos)),
+        "assaultvest" => Some(assaultvest::on_modify_sp_d(battle, pokemon_pos)),
+        _ => None,
+    }
+}
+
+/// Dispatch onModifyDamage callbacks (read-only)
+pub fn dispatch_on_modify_damage(
+    battle: &Battle,
+    item_id: &str,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+) -> Option<EventResult> {
+    match item_id {
+        "lifeorb" => Some(lifeorb::on_modify_damage(battle, target_pos, source_pos)),
+        _ => None,
+    }
+}
+
+/// Dispatch onSourceModifyDamage callbacks (read-only)
+pub fn dispatch_on_source_modify_damage(
+    battle: &Battle,
+    item_id: &str,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+) -> Option<EventResult> {
+    // For SourceModifyDamage, target is the defender (item holder)
+    // source is the attacker
+    match item_id {
+        _ => None,
+    }
+}
+
+/// Dispatch onAfterMoveSecondarySelf callbacks (mutates battle)
+pub fn dispatch_on_after_move_secondary_self(
+    battle: &mut Battle,
+    item_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> Option<EventResult> {
+    match item_id {
+        "lifeorb" => Some(lifeorb::on_after_move_secondary_self(battle, source_pos, target_pos)),
+        _ => None,
+    }
+}
+
+/// Dispatch onResidual callbacks (mutates battle)
+pub fn dispatch_on_residual(
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+) -> Option<EventResult> {
+    match item_id {
+        "leftovers" => Some(leftovers::on_residual(battle, pokemon_pos)),
+        "blacksludge" => Some(blacksludge::on_residual(battle, pokemon_pos)),
+        _ => None,
     }
 }

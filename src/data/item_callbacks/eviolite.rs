@@ -33,28 +33,52 @@ use crate::battle::{Battle, Arg};
 use crate::move_types::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::ItemHandlerResult;
+use crate::event::EventResult;
 
 /// onModifyDefPriority(...)
-pub fn on_modify_def_priority(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
+pub fn on_modify_def_priority(battle: &mut Battle, /* TODO: Add parameters */) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+    EventResult::Continue
 }
 
-/// onModifyDef(...)
-pub fn on_modify_def(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+/// onModifyDef(def, pokemon)
+pub fn on_modify_def(battle: &Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // JS: if (pokemon.baseSpecies.nfe)
+    if let Some(species) = battle.dex.get_species(pokemon.species_id.as_str()) {
+        // Check if species can still evolve (nfe = not fully evolved)
+        if !species.evos.is_empty() {
+            // JS: return this.chainModify(1.5);
+            return EventResult::Modify(1.5);
+        }
+    }
+    EventResult::Continue
 }
 
 /// onModifySpDPriority(...)
-pub fn on_modify_sp_d_priority(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
+pub fn on_modify_sp_d_priority(battle: &mut Battle, /* TODO: Add parameters */) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+    EventResult::Continue
 }
 
-/// onModifySpD(...)
-pub fn on_modify_sp_d(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+/// onModifySpD(spd, pokemon)
+pub fn on_modify_sp_d(battle: &Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // JS: if (pokemon.baseSpecies.nfe)
+    if let Some(species) = battle.dex.get_species(pokemon.species_id.as_str()) {
+        // Check if species can still evolve (nfe = not fully evolved)
+        if !species.evos.is_empty() {
+            // JS: return this.chainModify(1.5);
+            return EventResult::Modify(1.5);
+        }
+    }
+    EventResult::Continue
 }

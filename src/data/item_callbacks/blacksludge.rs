@@ -30,22 +30,36 @@ use crate::battle::{Battle, Arg};
 use crate::move_types::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::ItemHandlerResult;
+use crate::event::EventResult;
 
 /// onResidualOrder(...)
-pub fn on_residual_order(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
+pub fn on_residual_order(battle: &mut Battle, /* TODO: Add parameters */) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onResidualSubOrder(...)
-pub fn on_residual_sub_order(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
+pub fn on_residual_sub_order(battle: &mut Battle, /* TODO: Add parameters */) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+    EventResult::Continue
 }
 
-/// onResidual(...)
-pub fn on_residual(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+/// onResidual(pokemon)
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // JS: if (pokemon.hasType('Poison'))
+    if pokemon.has_type("Poison") {
+        // JS: this.heal(pokemon.baseMaxhp / 16);
+        let heal = pokemon.maxhp / 16;
+        battle.heal(heal as i32, Some(pokemon_pos), None, Some(&ID::new("blacksludge")));
+    } else {
+        // JS: this.damage(pokemon.baseMaxhp / 8);
+        let damage = pokemon.maxhp / 8;
+        battle.damage(damage as i32, Some(pokemon_pos), None, Some(&ID::new("blacksludge")), false);
+    }
+    EventResult::Continue
 }
