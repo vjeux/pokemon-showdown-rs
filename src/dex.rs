@@ -476,6 +476,14 @@ pub struct TypeData {
     pub damage_taken: HashMap<String, u8>,
 }
 
+/// Ruleset data
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RulesetData {
+    pub name: String,
+    #[serde(default, rename = "mod")]
+    pub mod_id: Option<String>,
+}
+
 /// Nature data
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NatureData {
@@ -495,6 +503,7 @@ pub struct Dex {
     pub items: HashMap<ID, ItemData>,
     pub types: HashMap<String, TypeData>,
     pub natures: HashMap<ID, NatureData>,
+    pub rulesets: HashMap<ID, RulesetData>,
     /// Aliases map from alias ID to canonical name
     pub aliases: HashMap<ID, String>,
     /// Compound word names with extra hyphens to mark word boundaries
@@ -512,6 +521,7 @@ impl Dex {
             items: HashMap::new(),
             types: HashMap::new(),
             natures: HashMap::new(),
+            rulesets: HashMap::new(),
             aliases: HashMap::new(),
             compound_word_names: Vec::new(),
             gen,
@@ -526,6 +536,7 @@ impl Dex {
         items_json: &str,
         types_json: &str,
         natures_json: &str,
+        rulesets_json: &str,
         aliases_json: &str,
         compound_word_names_json: &str,
     ) -> Result<Self, serde_json::Error> {
@@ -535,6 +546,7 @@ impl Dex {
         let items_raw: HashMap<String, ItemData> = serde_json::from_str(items_json)?;
         let types: HashMap<String, TypeData> = serde_json::from_str(types_json)?;
         let natures_raw: HashMap<String, NatureData> = serde_json::from_str(natures_json)?;
+        let rulesets_raw: HashMap<String, RulesetData> = serde_json::from_str(rulesets_json)?;
         let aliases_raw: HashMap<String, String> = serde_json::from_str(aliases_json)?;
         let compound_word_names: Vec<String> = serde_json::from_str(compound_word_names_json)?;
 
@@ -554,6 +566,9 @@ impl Dex {
         let natures = natures_raw.into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
+        let rulesets = rulesets_raw.into_iter()
+            .map(|(k, v)| (ID::new(&k), v))
+            .collect();
         let aliases = aliases_raw.into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
@@ -565,6 +580,7 @@ impl Dex {
             items,
             types,
             natures,
+            rulesets,
             aliases,
             compound_word_names,
             gen: 9, // Default to gen 9
@@ -1008,6 +1024,7 @@ pub mod embedded {
     pub const ITEMS_JSON: &str = include_str!("../data/items.json");
     pub const TYPES_JSON: &str = include_str!("../data/typechart.json");
     pub const NATURES_JSON: &str = include_str!("../data/natures.json");
+    pub const RULESETS_JSON: &str = include_str!("../data/rulesets.json");
     pub const ALIASES_JSON: &str = include_str!("../data/aliases.json");
     pub const COMPOUNDWORDNAMES_JSON: &str = include_str!("../data/compoundwordnames.json");
 }
@@ -1022,6 +1039,7 @@ impl Dex {
             embedded::ITEMS_JSON,
             embedded::TYPES_JSON,
             embedded::NATURES_JSON,
+            embedded::RULESETS_JSON,
             embedded::ALIASES_JSON,
             embedded::COMPOUNDWORDNAMES_JSON,
         )

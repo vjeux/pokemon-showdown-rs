@@ -1,0 +1,488 @@
+{
+  "standardag": {
+    "name": "Standard AG"
+  },
+  "standard": {
+    "name": "Standard"
+  },
+  "standardnext": {
+    "name": "Standard NEXT"
+  },
+  "flatrules": {
+    "name": "Flat Rules"
+  },
+  "limittworestricted": {
+    "name": "Limit Two Restricted"
+  },
+  "limitonerestricted": {
+    "name": "Limit One Restricted"
+  },
+  "standarddoubles": {
+    "name": "Standard Doubles"
+  },
+  "standardoms": {
+    "name": "Standard OMs"
+  },
+  "standardnatdex": {
+    "name": "Standard NatDex"
+  },
+  "natdexmod": {
+    "name": "NatDex Mod"
+  },
+  "standarddraft": {
+    "name": "Standard Draft"
+  },
+  "obtainable": {
+    "name": "Obtainable"
+  },
+  "obtainablemoves": {
+    "name": "Obtainable Moves"
+  },
+  "obtainableabilities": {
+    "name": "Obtainable Abilities"
+  },
+  "obtainableformes": {
+    "name": "Obtainable Formes"
+  },
+  "obtainablemisc": {
+    "name": "Obtainable Misc"
+  },
+  "hoennpokedex": {
+    "name": "Hoenn Pokedex"
+  },
+  "sinnohpokedex": {
+    "name": "Sinnoh Pokedex"
+  },
+  "oldunovapokedex": {
+    "name": "Old Unova Pokedex"
+  },
+  "newunovapokedex": {
+    "name": "New Unova Pokedex"
+  },
+  "kalospokedex": {
+    "name": "Kalos Pokedex"
+  },
+  "oldalolapokedex": {
+    "name": "Old Alola Pokedex"
+  },
+  "newalolapokedex": {
+    "name": "New Alola Pokedex"
+  },
+  "galarpokedex": {
+    "name": "Galar Pokedex"
+  },
+  "isleofarmorpokedex": {
+    "name": "Isle of Armor Pokedex"
+  },
+  "crowntundrapokedex": {
+    "name": "Crown Tundra Pokedex"
+  },
+  "galarexpansionpokedex": {
+    "name": "Galar Expansion Pokedex"
+  },
+  "paldeapokedex": {
+    "name": "Paldea Pokedex"
+  },
+  "kitakamipokedex": {
+    "name": "Kitakami Pokedex"
+  },
+  "blueberrypokedex": {
+    "name": "Blueberry Pokedex"
+  },
+  "potd": {
+    "name": "PotD"
+  },
+  "forcemonotype": {
+    "name": "Force Monotype"
+  },
+  "forcemonocolor": {
+    "name": "Force Monocolor"
+  },
+  "forceteratype": {
+    "name": "Force Tera Type"
+  },
+  "forceselect": {
+    "name": "Force Select"
+  },
+  "evlimits": {
+    "name": "EV Limits"
+  },
+  "teampreview": {
+    "name": "Team Preview"
+  },
+  "teratypepreview": {
+    "name": "Tera Type Preview"
+  },
+  "onevsone": {
+    "name": "One vs One"
+  },
+  "twovstwo": {
+    "name": "Two vs Two"
+  },
+  "littlecup": {
+    "name": "Little Cup"
+  },
+  "timerstarting": {
+    "name": "Timer Starting"
+  },
+  "dctimer": {
+    "name": "DC Timer"
+  },
+  "dctimerbank": {
+    "name": "DC Timer Bank"
+  },
+  "timergrace": {
+    "name": "Timer Grace"
+  },
+  "timeraddperturn": {
+    "name": "Timer Add Per Turn"
+  },
+  "timermaxperturn": {
+    "name": "Timer Max Per Turn"
+  },
+  "timermaxfirstturn": {
+    "name": "Timer Max First Turn"
+  },
+  "timeoutautochoose": {
+    "name": "Timeout Auto Choose"
+  },
+  "timeraccelerate": {
+    "name": "Timer Accelerate"
+  },
+  "blitz": {
+    "name": "Blitz"
+  },
+  "vgctimer": {
+    "name": "VGC Timer"
+  },
+  "speciesclause": {
+    "name": "Species Clause"
+  },
+  "nicknameclause": {
+    "name": "Nickname Clause"
+  },
+  "itemclause": {
+    "name": "Item Clause"
+  },
+  "abilityclause": {
+    "name": "Ability Clause"
+  },
+  "ohkoclause": {
+    "name": "OHKO Clause"
+  },
+  "evasionclause": {
+    "name": "Evasion Clause"
+  },
+  "evasionabilitiesclause": {
+    "name": "Evasion Abilities Clause"
+  },
+  "evasionitemsclause": {
+    "name": "Evasion Items Clause"
+  },
+  "evasionmovesclause": {
+    "name": "Evasion Moves Clause"
+  },
+  "accuracymovesclause": {
+    "name": "Accuracy Moves Clause"
+  },
+  "accuracytrapclause": {
+    "name": "Accuracy Trap Clause"
+  },
+  "sleepmovesclause": {
+    "name": "Sleep Moves Clause"
+  },
+  "gravitysleepclause": {
+    "name": "Gravity Sleep Clause"
+  },
+  "endlessbattleclause": {
+    "name": "Endless Battle Clause"
+  },
+  "moodyclause": {
+    "name": "Moody Clause"
+  },
+  "swaggerclause": {
+    "name": "Swagger Clause"
+  },
+  "drypassclause": {
+    "name": "DryPass Clause"
+  },
+  "batonpassclause": {
+    "name": "Baton Pass Clause"
+  },
+  "onebatonpassclause": {
+    "name": "One Baton Pass Clause"
+  },
+  "oneboostpasserclause": {
+    "name": "One Boost Passer Clause"
+  },
+  "batonpassstatclause": {
+    "name": "Baton Pass Stat Clause"
+  },
+  "speedpassclause": {
+    "name": "Speed Pass Clause"
+  },
+  "batonpasstrapclause": {
+    "name": "Baton Pass Trap Clause"
+  },
+  "batonpassstattrapclause": {
+    "name": "Baton Pass Stat Trap Clause"
+  },
+  "cfzclause": {
+    "name": "CFZ Clause"
+  },
+  "zmoveclause": {
+    "name": "Z-Move Clause"
+  },
+  "notfullyevolved": {
+    "name": "Not Fully Evolved"
+  },
+  "hppercentagemod": {
+    "name": "HP Percentage Mod"
+  },
+  "exacthpmod": {
+    "name": "Exact HP Mod"
+  },
+  "cancelmod": {
+    "name": "Cancel Mod"
+  },
+  "sleepclausemod": {
+    "name": "Sleep Clause Mod"
+  },
+  "stadiumsleepclause": {
+    "name": "Stadium Sleep Clause"
+  },
+  "switchpriorityclausemod": {
+    "name": "Switch Priority Clause Mod"
+  },
+  "desyncclausemod": {
+    "name": "Desync Clause Mod"
+  },
+  "deoxyscamouflageclause": {
+    "name": "Deoxys Camouflage Clause"
+  },
+  "freezeclausemod": {
+    "name": "Freeze Clause Mod"
+  },
+  "nofreezemod": {
+    "name": "No Freeze Mod"
+  },
+  "sametypeclause": {
+    "name": "Same Type Clause"
+  },
+  "enforcesameteratype": {
+    "name": "Enforce Same Tera Type"
+  },
+  "samecolorclause": {
+    "name": "Same Color Clause"
+  },
+  "megarayquazaclause": {
+    "name": "Mega Rayquaza Clause"
+  },
+  "dynamaxclause": {
+    "name": "Dynamax Clause"
+  },
+  "terastalclause": {
+    "name": "Terastal Clause"
+  },
+  "arceusevlimit": {
+    "name": "Arceus EV Limit"
+  },
+  "inversemod": {
+    "name": "Inverse Mod"
+  },
+  "minsourcegen": {
+    "name": "Min Source Gen"
+  },
+  "omunobtainablemoves": {
+    "name": "OM Unobtainable Moves"
+  },
+  "stabmonsmovelegality": {
+    "name": "STABmons Move Legality"
+  },
+  "alphabetcupmovelegality": {
+    "name": "Alphabet Cup Move Legality"
+  },
+  "sketchmonsmovelegality": {
+    "name": "Sketchmons Move Legality"
+  },
+  "camomonsmod": {
+    "name": "Camomons Mod"
+  },
+  "allowtradeback": {
+    "name": "Allow Tradeback"
+  },
+  "lgpenormalrules": {
+    "name": "LGPE Normal Rules"
+  },
+  "nfeclause": {
+    "name": "NFE Clause"
+  },
+  "gemsclause": {
+    "name": "Gems Clause"
+  },
+  "sketchpostgen7moves": {
+    "name": "Sketch Post-Gen 7 Moves"
+  },
+  "mimicglitch": {
+    "name": "Mimic Glitch"
+  },
+  "overflowstatmod": {
+    "name": "Overflow Stat Mod"
+  },
+  "formeclause": {
+    "name": "Forme Clause"
+  },
+  "350cupmod": {
+    "name": "350 Cup Mod"
+  },
+  "flippedmod": {
+    "name": "Flipped Mod"
+  },
+  "scalemonsmod": {
+    "name": "Scalemons Mod"
+  },
+  "teamtypepreview": {
+    "name": "Team Type Preview"
+  },
+  "openteamsheets": {
+    "name": "Open Team Sheets"
+  },
+  "forceopenteamsheets": {
+    "name": "Force Open Team Sheets"
+  },
+  "aaarestrictedabilities": {
+    "name": "AAA Restricted Abilities"
+  },
+  "eventmovesclause": {
+    "name": "Event Moves Clause"
+  },
+  "pickedteamsize": {
+    "name": "Picked Team Size"
+  },
+  "minteamsize": {
+    "name": "Min Team Size"
+  },
+  "evlimit": {
+    "name": "EV Limit"
+  },
+  "maxteamsize": {
+    "name": "Max Team Size"
+  },
+  "maxmovecount": {
+    "name": "Max Move Count"
+  },
+  "maxtotallevel": {
+    "name": "Max Total Level"
+  },
+  "minlevel": {
+    "name": "Min Level"
+  },
+  "maxlevel": {
+    "name": "Max Level"
+  },
+  "defaultlevel": {
+    "name": "Default Level"
+  },
+  "adjustlevel": {
+    "name": "Adjust Level"
+  },
+  "adjustleveldown": {
+    "name": "Adjust Level Down"
+  },
+  "stadiumitemsclause": {
+    "name": "Stadium Items Clause"
+  },
+  "nc2000movelegality": {
+    "name": "NC 2000 Move Legality"
+  },
+  "aptclause": {
+    "name": "APT Clause"
+  },
+  "nc1997movelegality": {
+    "name": "NC 1997 Move Legality"
+  },
+  "noswitching": {
+    "name": "No Switching"
+  },
+  "guaranteedsecondarymod": {
+    "name": "Guaranteed Secondary Mod"
+  },
+  "chimera1v1rule": {
+    "name": "Chimera 1v1 Rule"
+  },
+  "bonustypemod": {
+    "name": "Bonus Type Mod"
+  },
+  "firstbloodrule": {
+    "name": "First Blood Rule"
+  },
+  "tiershiftmod": {
+    "name": "Tier Shift Mod"
+  },
+  "revelationmonsmod": {
+    "name": "Revelationmons Mod"
+  },
+  "reevolutionmod": {
+    "name": "Re-Evolution Mod"
+  },
+  "brokenrecordmod": {
+    "name": "Broken Record Mod"
+  },
+  "forceofthefallenmod": {
+    "name": "Force of the Fallen Mod"
+  },
+  "categoryswapmod": {
+    "name": "Category Swap Mod"
+  },
+  "godlygiftmod": {
+    "name": "Godly Gift Mod"
+  },
+  "voltturnmayhemmod": {
+    "name": "VoltTurn Mayhem Mod"
+  },
+  "convergencelegality": {
+    "name": "Convergence Legality"
+  },
+  "hackmonsformelegality": {
+    "name": "Hackmons Forme Legality"
+  },
+  "speciesrevealclause": {
+    "name": "Species Reveal Clause"
+  },
+  "franticfusionsmod": {
+    "name": "Frantic Fusions Mod"
+  },
+  "proteanpalacemod": {
+    "name": "Protean Palace Mod"
+  },
+  "bestof": {
+    "name": "Best Of"
+  },
+  "illusionlevelmod": {
+    "name": "Illusion Level Mod"
+  },
+  "allowedpokemoves": {
+    "name": "Allowed Pokemoves"
+  },
+  "uniquepokemoves": {
+    "name": "Unique Pokemoves"
+  },
+  "ferventimpersonationmod": {
+    "name": "Fervent Impersonation Mod"
+  },
+  "twisteddimensionmod": {
+    "name": "Twisted Dimension Mod"
+  },
+  "mixandmegaoldaggronite": {
+    "name": "Mix and Mega Old Aggronite"
+  },
+  "badnboostedmod": {
+    "name": "Bad 'n Boosted Mod"
+  },
+  "datapreview": {
+    "name": "Data Preview"
+  },
+  "rebalancelevels": {
+    "name": "Rebalance Levels"
+  }
+}

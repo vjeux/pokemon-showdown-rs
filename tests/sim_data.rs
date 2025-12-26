@@ -460,8 +460,39 @@ fn test_should_have_valid_compound_word_names_entries() {
     }
 }
 
+/// Test: should have valid Rulesets entries
+/// JavaScript: it('should have valid Rulesets entries', () => { ... })
+#[test]
+fn test_should_have_valid_rulesets_entries() {
+    let dex = Dex::load_default().unwrap();
+
+    // JavaScript: const Rulesets = Dex.data.Rulesets;
+    // JavaScript: for (const formatid in Rulesets) {
+    for (formatid, entry) in dex.rulesets.iter() {
+        // JavaScript: const entry = Rulesets[formatid];
+
+        // JavaScript: assert.equal(toID(entry.name), formatid, `Mismatched Ruleset key "${formatid}" of "${entry.name}"`);
+        let expected_id = ID::new(&entry.name);
+        assert_eq!(
+            formatid, &expected_id,
+            "Mismatched Ruleset key '{}' of '{}'",
+            formatid.as_str(), entry.name
+        );
+
+        // JavaScript: if (entry.mod) {
+        if let Some(ref mod_id) = entry.mod_id {
+            // JavaScript: assert.equal(toID(entry.mod) || undefined, entry.mod, `Mod of "${formatid}" must be an ID"`);
+            let to_id_result = ID::new(mod_id);
+            assert_eq!(
+                to_id_result.as_str(), mod_id,
+                "Mod of '{}' must be an ID",
+                formatid.as_str()
+            );
+        }
+    }
+}
+
 // Note: The following tests from data.js are not ported yet:
-// - it('should have valid Rulesets entries') - requires Rulesets data
 // - it('should have valid Formats (slow)') - requires format loading
 // - it('should have valid Learnsets entries', function () { ... }) - requires learnsets
 // - Gen-specific Pokemon count tests - requires gen-specific filtering
