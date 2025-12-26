@@ -134,8 +134,9 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 66. 🔍 `getTarget` / `get_target` - battle.ts:2400 | battle.rs:4192 | **TODO**
 67. 🔍 `getRandomTarget` / `get_random_target` - battle.ts:2453 | battle.rs:? | **TODO**
-68. ❌ `validTarget` / `valid_target` - battle.ts:2396 | battle.rs:4130 | **MISMATCH** - JS calls validTargetLoc(), Rust has its own logic
-69. ❌ `validTargetLoc` / `valid_target_loc` - battle.ts:2362 | battle.rs:4077 | **MISMATCH** - Completely different implementation (JS has proper adjacency, free-for-all support)
+68. ✅ `validTarget` / `valid_target` - battle.ts:2396 | battle.rs:4185 | **FIXED!** ✅ - Now calls valid_target_loc() matching JS
+69. ✅ `validTargetLoc` / `valid_target_loc` - battle.ts:2362 | battle.rs:4108 | **FIXED!** ✅ - Full implementation with adjacency, free-for-all support, added get_loc_of helper
+
 
 ### Logging & Messages (9 methods)
 
@@ -175,7 +176,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ## Progress Summary
 
 **Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
-**Methods Matching**: 59 (61%) - Progressing steadily!
+**Methods Matching**: 61 (64%) - Steady progress! 🎯
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
@@ -188,20 +189,21 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - **Display**: toString (Display trait)
 - **Event System**: eachEvent, fieldEvent, priorityEvent, onEvent, getCallback, findEventHandlers, findPokemonEventHandlers, findBattleEventHandlers, findSideEventHandlers, findFieldEventHandlers
 - **Turn Flow**: turnLoop, runAction
-- **SESSION FIXES**: checkMoveMakesContact, faint, attrLastMove, retargetLastMove, swapPosition, getAtSlot
+- **Target Selection**: validTarget, validTargetLoc (with get_loc_of helper)
+- **SESSION FIXES**: checkMoveMakesContact, faint, attrLastMove, retargetLastMove, swapPosition, getAtSlot, validTarget, validTargetLoc
 - And more
 
 **Methods with Minor Mismatches**: 2 (2%)
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 19 (20%) - DOWN from 26!
+**Methods with Major Mismatches**: 17 (18%) - DOWN from 19!
 - Event-dependent: boost, chainModify, getActionSpeed
 - Simplified: makeRequest, endTurn, getDebugLog, faintMessages
 - Missing features: add, hint, addSplit
 - Complex: suppressingAbility
 - Stubs: finalModify (needs event.modifier)
-- Different signature/logic: validTarget, validTargetLoc, getTeam (needs team generation), initEffectState, clearEffectState, resolvePriority
+- Different signature/logic: getTeam (needs team generation), initEffectState, clearEffectState, resolvePriority
 
 **Methods Needing Deep Comparison**: 16 (17%)
 - start, restart, destroy (initialization/teardown)

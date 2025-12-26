@@ -4073,94 +4073,119 @@ impl Battle {
     // Targeting Methods (ported from battle.ts)
     // =========================================================================
 
+    /// Get the location of a target Pokemon from a source Pokemon's perspective
+    /// Equivalent to pokemon.ts getLocOf() (pokemon.ts:768-773)
+    ///
+    /// JS: getLocOf(target: Pokemon) {
+    ///   const positionOffset = Math.floor(target.side.n / 2) * target.side.active.length;
+    ///   const position = target.position + positionOffset + 1;
+    ///   const sameHalf = (this.side.n % 2) === (target.side.n % 2);
+    ///   return sameHalf ? -position : position;
+    /// }
+    pub fn get_loc_of(&self, source: (usize, usize), target: (usize, usize)) -> i32 {
+        let (target_side_idx, target_poke_idx) = target;
+
+        if let Some(target_side) = self.sides.get(target_side_idx) {
+            if let Some(target_pokemon) = target_side.pokemon.get(target_poke_idx) {
+                // const positionOffset = Math.floor(target.side.n / 2) * target.side.active.length;
+                let position_offset = (target_side.n / 2) * target_side.active.len();
+                // const position = target.position + positionOffset + 1;
+                let position = (target_pokemon.position + position_offset + 1) as i32;
+
+                // const sameHalf = (this.side.n % 2) === (target.side.n % 2);
+                if let Some(source_side) = self.sides.get(source.0) {
+                    let same_half = (source_side.n % 2) == (target_side.n % 2);
+                    // return sameHalf ? -position : position;
+                    return if same_half { -position } else { position };
+                }
+            }
+        }
+        0
+    }
+
     /// Check if a target location is valid
     /// Equivalent to battle.ts validTargetLoc()
-    pub fn valid_target_loc(&self, target_loc: i8, source: (usize, usize), target_type: &str) -> bool {
-        let (source_side, _source_idx) = source;
-
+    pub fn valid_target_loc(&self, target_loc: i32, source: (usize, usize), target_type: &str) -> bool {
+        // JS: if (targetLoc === 0) return true;
         if target_loc == 0 {
+            return true;
+        }
+
+        // JS: const numSlots = this.activePerHalf;
+        let num_slots = self.active_per_half as i32;
+
+        // JS: const sourceLoc = source.getLocOf(source);
+        let source_loc = self.get_loc_of(source, source);
+
+        // JS: if (Math.abs(targetLoc) > numSlots) return false;
+        if target_loc.abs() > num_slots {
             return false;
         }
 
-        // Positive = foe side, negative = own side
-        let (target_side_idx, slot) = if target_loc > 0 {
-            let foe_side = if source_side == 0 { 1 } else { 0 };
-            (foe_side, (target_loc.abs() - 1) as usize)
+        // JS: const isSelf = (sourceLoc === targetLoc);
+        let is_self = source_loc == target_loc;
+
+        // JS: const isFoe = (this.gameType === 'freeforall' ? !isSelf : targetLoc > 0);
+        let is_foe = if self.game_type == GameType::FreeForAll {
+            !is_self
         } else {
-            (source_side, (target_loc.abs() - 1) as usize)
+            target_loc > 0
         };
 
-        // Check if slot is valid
-        if target_side_idx >= self.sides.len() {
-            return false;
-        }
-        if slot >= self.active_per_half {
-            return false;
+        // JS: const acrossFromTargetLoc = -(numSlots + 1 - targetLoc);
+        let across_from_target_loc = -(num_slots + 1 - target_loc);
+
+        // JS: const isAdjacent = (targetLoc > 0 ?
+        //        Math.abs(acrossFromTargetLoc - sourceLoc) <= 1 :
+        //        Math.abs(targetLoc - sourceLoc) === 1);
+        let is_adjacent = if target_loc > 0 {
+            (across_from_target_loc - source_loc).abs() <= 1
+        } else {
+            (target_loc - source_loc).abs() == 1
+        };
+
+        // JS: if (this.gameType === 'freeforall' && targetType === 'adjacentAlly') {
+        //       return isAdjacent;
+        //     }
+        if self.game_type == GameType::FreeForAll && target_type == "adjacentAlly" {
+            return is_adjacent;
         }
 
-        // Check if there's a Pokemon in that slot
-        if let Some(side) = self.sides.get(target_side_idx) {
-            if let Some(Some(poke_idx)) = side.active.get(slot) {
-                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                    if pokemon.is_fainted() {
-                        return false;
-                    }
-
-                    // Check adjacency for certain move types
-                    match target_type {
-                        "adjacentAlly" => target_side_idx == source_side && slot != _source_idx,
-                        "adjacentFoe" => target_side_idx != source_side,
-                        "adjacentAllyOrSelf" => target_side_idx == source_side,
-                        "any" => true,
-                        "normal" => true,
-                        _ => true,
-                    }
-                } else {
-                    false
-                }
-            } else {
+        // JS: switch (targetType)
+        match target_type {
+            "randomNormal" | "scripted" | "normal" => {
+                // JS: return isAdjacent;
+                is_adjacent
+            }
+            "adjacentAlly" => {
+                // JS: return isAdjacent && !isFoe;
+                is_adjacent && !is_foe
+            }
+            "adjacentAllyOrSelf" => {
+                // JS: return isAdjacent && !isFoe || isSelf;
+                (is_adjacent && !is_foe) || is_self
+            }
+            "adjacentFoe" => {
+                // JS: return isAdjacent && isFoe;
+                is_adjacent && is_foe
+            }
+            "any" => {
+                // JS: return !isSelf;
+                !is_self
+            }
+            _ => {
+                // JS: return false;
                 false
             }
-        } else {
-            false
         }
     }
 
     /// Check if a target is valid for a move
     /// Equivalent to battle.ts validTarget()
     pub fn valid_target(&self, target: (usize, usize), source: (usize, usize), target_type: &str) -> bool {
-        let (target_side, target_idx) = target;
-        let (source_side, source_idx) = source;
-
-        // Check if target Pokemon exists and is active
-        if let Some(side) = self.sides.get(target_side) {
-            if let Some(pokemon) = side.pokemon.get(target_idx) {
-                if pokemon.is_fainted() || !pokemon.is_active {
-                    return false;
-                }
-
-                match target_type {
-                    "self" => target == source,
-                    "adjacentAlly" => target_side == source_side && target_idx != source_idx,
-                    "adjacentAllyOrSelf" => target_side == source_side,
-                    "adjacentFoe" => target_side != source_side,
-                    "any" => true,
-                    "normal" => target_side != source_side, // Default: target foe
-                    "allAdjacent" => true,
-                    "allAdjacentFoes" => target_side != source_side,
-                    "allies" => target_side == source_side,
-                    "allySide" => target_side == source_side,
-                    "allyTeam" => target_side == source_side,
-                    "foeSide" => target_side != source_side,
-                    "all" => true,
-                    _ => true,
-                }
-            } else {
-                false
-            }
-        } else {
-            false
-        }
+        // JS: return this.validTargetLoc(source.getLocOf(target), source, targetType);
+        let target_loc = self.get_loc_of(source, target);
+        self.valid_target_loc(target_loc, source, target_type)
     }
 
     /// Get Pokemon at a specific slot location
@@ -5448,7 +5473,7 @@ impl Battle {
         }
 
         // Validate target location
-        if target_type != "RandomNormal" && self.valid_target_loc(target_loc, user, &target_type) {
+        if target_type != "RandomNormal" && self.valid_target_loc(target_loc as i32, user, &target_type) {
             // Get target at location
             if let Some(target) = self.get_at_loc(user, target_loc) {
                 // Check if target is fainted
