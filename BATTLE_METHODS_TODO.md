@@ -51,7 +51,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 10. ✅ `updateSpeed` / `update_speed` - battle.ts:387 | battle.rs:3399 | **FIXED!** ✅ - Simplified to just call pokemon.update_speed() on all active
 11. ✅ `comparePriority` / `compare_priority` - battle.ts:404 | battle.rs:3406 | **MATCH**
-12. 🔍 `resolvePriority` / `resolve_priority` - battle.ts:950 | battle.rs:? | **TODO**
+12. ❌ `resolvePriority` / `resolve_priority` - battle.ts:950 | battle.rs:5892 | **MISMATCH** - JS sets handler priority/order, Rust just sorts queue
 13. ❌ `getActionSpeed` / `get_action_speed` - battle.ts:2590 | battle.rs:? | **MISMATCH** - Needs ModifyPriority event
 
 ### Event System Core (11 methods) - **CRITICAL**
@@ -174,8 +174,8 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ## Progress Summary
 
-**Methods Compared**: 95 / 96 (99%) - Only 1 method remains! 🎯
-**Methods Matching**: 52 (54%) - Over half are direct translations! 🎉
+**Methods Compared**: 96 / 96 (100%) - COMPLETE! ✅🎉
+**Methods Matching**: 52 (54%) - Over half are direct translations!
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
@@ -194,17 +194,17 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 25 (26%)
+**Methods with Major Mismatches**: 26 (27%)
 - Event-dependent: boost, chainModify, getActionSpeed
 - Simplified: makeRequest, endTurn, getDebugLog, faintMessages
 - Missing features: add, hint, addSplit
 - Complex: suppressingAbility, checkMoveMakesContact
 - Stubs: attrLastMove, retargetLastMove, finalModify
-- Different signature/logic: swapPosition, getAtSlot, faint, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState
+- Different signature/logic: swapPosition, getAtSlot, faint, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState, resolvePriority
 
-**Methods Needing Deep Comparison**: 17 (18%)
+**Methods Needing Deep Comparison**: 16 (17%)
 - start, restart, destroy (initialization/teardown)
-- singleEvent, runEvent, resolvePriority (event system core)
+- singleEvent, runEvent (event system core - very complex)
 - maybeTriggerEndlessBattleClause, runPickTeam, tiebreak, getTarget, getRandomTarget, showOpenTeamSheets, join, sendUpdates, toJSON (various complex methods)
 
 **Critical Achievement**: Event system now actively used! ✅
