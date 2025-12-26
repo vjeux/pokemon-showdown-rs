@@ -58,8 +58,10 @@ impl From<BaseStatsData> for StatsTable {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpeciesData {
+    #[serde(default)]
     pub num: i32,
     pub name: String,
+    #[serde(default)]
     pub types: Vec<String>,
     #[serde(default)]
     pub base_stats: BaseStatsData,
@@ -83,6 +85,8 @@ pub struct SpeciesData {
     pub forme: Option<String>,
     #[serde(default)]
     pub other_formes: Vec<String>,
+    #[serde(default)]
+    pub is_cosmetic_forme: bool,
 }
 
 /// Move secondary effect
@@ -102,6 +106,7 @@ pub struct MoveSecondary {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MoveData {
+    #[serde(default)]
     pub num: i32,
     pub name: String,
     #[serde(rename = "type")]
@@ -137,8 +142,8 @@ pub struct MoveData {
     pub multihit: Option<Multihit>,
     #[serde(rename = "isZ", default)]
     pub is_z: Option<String>,
-    #[serde(rename = "isMax", default)]
-    pub is_max: Option<bool>,
+    #[serde(rename = "isMax", default, deserialize_with = "deserialize_is_max")]
+    pub is_max: Option<IsMax>,
 }
 
 /// Accuracy can be a number or true (always hits)
@@ -196,6 +201,83 @@ where
     }
 
     deserializer.deserialize_any(AccuracyVisitor)
+}
+
+/// IsMax can be true (generic Max move) or a string (species-specific G-Max move)
+#[derive(Debug, Clone)]
+pub enum IsMax {
+    Generic,  // true
+    Species(String),  // Pokemon name like "Butterfree"
+}
+
+impl Serialize for IsMax {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        match self {
+            IsMax::Generic => serializer.serialize_bool(true),
+            IsMax::Species(s) => serializer.serialize_str(s),
+        }
+    }
+}
+
+fn deserialize_is_max<'de, D>(deserializer: D) -> Result<Option<IsMax>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    use serde::de::{self, Visitor};
+
+    struct IsMaxVisitor;
+
+    impl<'de> Visitor<'de> for IsMaxVisitor {
+        type Value = Option<IsMax>;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+            formatter.write_str("a boolean or string")
+        }
+
+        fn visit_none<E>(self) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok(None)
+        }
+
+        fn visit_some<D>(self, deserializer: D) -> Result<Self::Value, D::Error>
+        where
+            D: serde::Deserializer<'de>,
+        {
+            deserializer.deserialize_any(self)
+        }
+
+        fn visit_bool<E>(self, value: bool) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            if value {
+                Ok(Some(IsMax::Generic))
+            } else {
+                Err(E::custom("isMax cannot be false"))
+            }
+        }
+
+        fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok(Some(IsMax::Species(value.to_string())))
+        }
+
+        fn visit_string<E>(self, value: String) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok(Some(IsMax::Species(value)))
+        }
+    }
+
+    deserializer.deserialize_any(IsMaxVisitor)
 }
 
 /// Multihit can be a single number or range [min, max]
@@ -275,6 +357,7 @@ impl Serialize for Accuracy {
 /// Ability data
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AbilityData {
+    #[serde(default)]
     pub num: i32,
     pub name: String,
     #[serde(default)]
@@ -288,6 +371,7 @@ pub struct AbilityData {
 /// Item data
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemData {
+    #[serde(default)]
     pub num: i32,
     pub name: String,
     #[serde(default)]
@@ -330,6 +414,8 @@ pub struct Dex {
     pub items: HashMap<ID, ItemData>,
     pub types: HashMap<String, TypeData>,
     pub natures: HashMap<ID, NatureData>,
+    /// Aliases map from alias ID to canonical name
+    pub aliases: HashMap<ID, String>,
     pub gen: u8,
 }
 
@@ -343,6 +429,7 @@ impl Dex {
             items: HashMap::new(),
             types: HashMap::new(),
             natures: HashMap::new(),
+            aliases: HashMap::new(),
             gen,
         }
     }
@@ -355,6 +442,7 @@ impl Dex {
         items_json: &str,
         types_json: &str,
         natures_json: &str,
+        aliases_json: &str,
     ) -> Result<Self, serde_json::Error> {
         let species_raw: HashMap<String, SpeciesData> = serde_json::from_str(species_json)?;
         let moves_raw: HashMap<String, MoveData> = serde_json::from_str(moves_json)?;
@@ -362,6 +450,7 @@ impl Dex {
         let items_raw: HashMap<String, ItemData> = serde_json::from_str(items_json)?;
         let types: HashMap<String, TypeData> = serde_json::from_str(types_json)?;
         let natures_raw: HashMap<String, NatureData> = serde_json::from_str(natures_json)?;
+        let aliases_raw: HashMap<String, String> = serde_json::from_str(aliases_json)?;
 
         // Convert string keys to ID keys
         let species = species_raw.into_iter()
@@ -379,6 +468,9 @@ impl Dex {
         let natures = natures_raw.into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
+        let aliases = aliases_raw.into_iter()
+            .map(|(k, v)| (ID::new(&k), v))
+            .collect();
 
         Ok(Self {
             species,
@@ -387,6 +479,7 @@ impl Dex {
             items,
             types,
             natures,
+            aliases,
             gen: 9, // Default to gen 9
         })
     }
@@ -394,25 +487,61 @@ impl Dex {
     /// Get species data by name or ID
     pub fn get_species(&self, name: &str) -> Option<&SpeciesData> {
         let id = ID::new(name);
-        self.species.get(&id)
+        // Try direct lookup first
+        if let Some(species) = self.species.get(&id) {
+            return Some(species);
+        }
+        // Try alias lookup
+        if let Some(canonical_name) = self.aliases.get(&id) {
+            let canonical_id = ID::new(canonical_name);
+            return self.species.get(&canonical_id);
+        }
+        None
     }
 
     /// Get move data by name or ID
     pub fn get_move(&self, name: &str) -> Option<&MoveData> {
         let id = ID::new(name);
-        self.moves.get(&id)
+        // Try direct lookup first
+        if let Some(move_data) = self.moves.get(&id) {
+            return Some(move_data);
+        }
+        // Try alias lookup
+        if let Some(canonical_name) = self.aliases.get(&id) {
+            let canonical_id = ID::new(canonical_name);
+            return self.moves.get(&canonical_id);
+        }
+        None
     }
 
     /// Get ability data by name or ID
     pub fn get_ability(&self, name: &str) -> Option<&AbilityData> {
         let id = ID::new(name);
-        self.abilities.get(&id)
+        // Try direct lookup first
+        if let Some(ability) = self.abilities.get(&id) {
+            return Some(ability);
+        }
+        // Try alias lookup
+        if let Some(canonical_name) = self.aliases.get(&id) {
+            let canonical_id = ID::new(canonical_name);
+            return self.abilities.get(&canonical_id);
+        }
+        None
     }
 
     /// Get item data by name or ID
     pub fn get_item(&self, name: &str) -> Option<&ItemData> {
         let id = ID::new(name);
-        self.items.get(&id)
+        // Try direct lookup first
+        if let Some(item) = self.items.get(&id) {
+            return Some(item);
+        }
+        // Try alias lookup
+        if let Some(canonical_name) = self.aliases.get(&id) {
+            let canonical_id = ID::new(canonical_name);
+            return self.items.get(&canonical_id);
+        }
+        None
     }
 
     /// Get type data by name
@@ -792,6 +921,7 @@ pub mod embedded {
     pub const ITEMS_JSON: &str = include_str!("../data/items.json");
     pub const TYPES_JSON: &str = include_str!("../data/typechart.json");
     pub const NATURES_JSON: &str = include_str!("../data/natures.json");
+    pub const ALIASES_JSON: &str = include_str!("../data/aliases.json");
 }
 
 impl Dex {
@@ -804,6 +934,7 @@ impl Dex {
             embedded::ITEMS_JSON,
             embedded::TYPES_JSON,
             embedded::NATURES_JSON,
+            embedded::ALIASES_JSON,
         )
     }
 }
