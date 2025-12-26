@@ -1015,14 +1015,46 @@ impl Dex {
             //
             // IMPORTANT: Only clear "Past" and "Illegal" for species that are actually available in this gen
             // Species with gen field + isNonstandard: "Past" are gen-exclusive (e.g., Pichu-Spiky-eared in Gen 4 only)
-            // Clear Past/Illegal ONLY if:
-            // 1. No explicit gen field (base species from early gens), OR
-            // 2. Explicit gen field matches requested gen (gen-exclusive formes)
-            let should_clear_past = if let Some(species_gen) = species.gen {
-                // Has explicit gen field - only clear if it matches requested gen
+            // Species with isNonstandard: "Past" + tier: "Illegal" are unreleased (e.g., Floette-Eternal)
+            // Clear Past/Illegal ONLY if not unreleased
+
+            // Check if marked as unreleased: both Past and Illegal in original formats-data
+            // Normal formes have ONLY isNonstandard: "Past" (no tier), unreleased have BOTH
+            // Only applies to FORMES introduced in the CURRENT gen (not base species or earlier gens)
+            // e.g., Floette-Eternal (forme, num 670, Gen 6) is unreleased in Gen 6
+            // EXCEPTION: Don't apply to Mega/Primal formes - they have Past+Illegal because they were
+            // removed in Gen 8+, but they WERE available in Gen 6-7
+            let gen_min_num = match gen {
+                1 => 1,
+                2 => 152,
+                3 => 252,
+                4 => 387,
+                5 => 494,
+                6 => 650,
+                7 => 722,
+                8 => 810,
+                9 => 906,
+                _ => 1,
+            };
+
+            let is_mega_or_primal = species.forme.as_ref()
+                .map(|f| f.starts_with("Mega") || f == "Primal")
+                .unwrap_or(false);
+
+            let is_unreleased = species.forme.is_some()  // Must be a forme
+                             && !is_mega_or_primal  // Megas/Primals are not unreleased, just removed later
+                             && species.num >= gen_min_num && species.num <= max_num
+                             && species.is_nonstandard.as_deref() == Some("Past")
+                             && species.tier.as_deref() == Some("Illegal");
+
+            let should_clear_past = if is_unreleased {
+                // Unreleased Pokemon/forme (e.g., Floette-Eternal) - never clear
+                false
+            } else if let Some(species_gen) = species.gen {
+                // Has explicit gen field - only clear if it matches requested gen (gen-exclusive)
                 species_gen == gen
             } else {
-                // No explicit gen field - this is a base species, always clear for its gen range
+                // No explicit gen field - this is a normal forme/species, always clear for its gen range
                 true
             };
 
