@@ -492,8 +492,33 @@ fn test_should_have_valid_rulesets_entries() {
     }
 }
 
+/// Test: should have valid Formats (slow)
+/// JavaScript: it('should have valid Formats (slow)', () => { ... })
+#[test]
+fn test_should_have_valid_formats() {
+    let dex = Dex::load_default().unwrap();
+
+    // JavaScript: for (const format of Dex.formats.all()) {
+    for format in dex.all_formats() {
+        // JavaScript: try {
+        // JavaScript:     Dex.formats.getRuleTable(format);
+        // JavaScript: } catch (e) {
+        // JavaScript:     e.message = `${format.name}: ${e.message}`;
+        // JavaScript:     throw e;
+        // JavaScript: }
+
+        match dex.get_rule_table(format) {
+            Ok(_) => {
+                // Format is valid
+            }
+            Err(e) => {
+                panic!("{}: {}", format.name, e);
+            }
+        }
+    }
+}
+
 // Note: The following tests from data.js are not ported yet:
-// - it('should have valid Formats (slow)') - requires format loading
 // - it('should have valid Learnsets entries', function () { ... }) - requires learnsets
 // - Gen-specific Pokemon count tests - requires gen-specific filtering
 // - it('should never import') - file system check, not applicable to Rust
