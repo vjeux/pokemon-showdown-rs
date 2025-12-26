@@ -82,8 +82,8 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ### Stats & Modifiers (4 methods)
 
-34. 🔍 `spreadModify` / `spread_modify` - battle.ts:2316 | battle.rs:? | **TODO**
-35. 🔍 `statModify` / `stat_modify` - battle.ts:2324 | battle.rs:? | **TODO**
+34. ✅ `spreadModify` / `spread_modify` - battle.ts:2316 | battle.rs:5853 | **FIXED!** ✅ - Rewrote to calc stats from base+IVs+EVs (TODO: needs Dex for natures)
+35. ✅ `statModify` / `stat_modify` - battle.ts:2324 | battle.rs:5904 | **FIXED!** ✅ - Implements stat calc formula (TODO: needs Dex for natures)
 36. 🔍 `finalModify` / `final_modify` - battle.ts:2344 | battle.rs:? | **TODO**
 37. 📝 `trunc` - NOT IN BATTLE.TS (imported utility) | **N/A**
 

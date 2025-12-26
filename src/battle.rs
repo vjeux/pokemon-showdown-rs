@@ -8,7 +8,7 @@
 use std::collections::HashSet;
 use serde::{Deserialize, Serialize};
 
-use crate::dex_data::{ID, GameType, SideID, EffectState};
+use crate::dex_data::{ID, GameType, SideID, EffectState, StatsTable};
 use crate::field::{Field, get_weather_type_modifier, get_terrain_damage_modifier, get_weather_damage_fraction, get_grassy_terrain_heal};
 use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
@@ -5850,26 +5850,107 @@ impl Battle {
         self.add_log("-message", &["Team sheets revealed"]);
     }
 
-    /// Spread modify damage across multiple targets
-    /// Equivalent to battle.ts spreadModify()
-    pub fn spread_modify(&self, base_damage: i32, target_count: usize) -> i32 {
-        if target_count > 1 {
-            // In doubles/triples, spread moves do 75% damage
-            self.chain_modify(base_damage, 0.75)
-        } else {
-            base_damage
+    /// Calculate modified stats from base stats
+    /// Equivalent to battle.ts spreadModify(baseStats, set)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// spreadModify(baseStats: StatsTable, set: PokemonSet): StatsTable {
+    ///     const modStats: StatsTable = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+    ///     for (const statName in baseStats) {
+    ///         modStats[statName as StatID] = this.statModify(baseStats, set, statName as StatID);
+    ///     }
+    ///     return modStats;
+    /// }
+    /// ```
+    ///
+    /// TODO: This requires Dex access which Battle doesn't currently have
+    pub fn spread_modify(&self, base_stats: &StatsTable, set: &PokemonSet) -> StatsTable {
+        StatsTable {
+            hp: self.stat_modify(base_stats, set, "hp"),
+            atk: self.stat_modify(base_stats, set, "atk"),
+            def: self.stat_modify(base_stats, set, "def"),
+            spa: self.stat_modify(base_stats, set, "spa"),
+            spd: self.stat_modify(base_stats, set, "spd"),
+            spe: self.stat_modify(base_stats, set, "spe"),
         }
     }
 
-    /// Modify stat with stage multipliers
-    /// Equivalent to battle.ts statModify()
-    pub fn stat_modify(&self, stat: i32, stage: i8) -> i32 {
-        let multiplier = if stage >= 0 {
-            (2 + stage as i32) as f64 / 2.0
-        } else {
-            2.0 / (2 + (-stage) as i32) as f64
+    /// Calculate a single stat from base stat, IVs, EVs, level, and nature
+    /// Equivalent to battle.ts statModify(baseStats, set, statName)
+    ///
+    /// JS Source (battle.ts):
+    /// ```js
+    /// statModify(baseStats: StatsTable, set: PokemonSet, statName: StatID): number {
+    ///     const tr = this.trunc;
+    ///     let stat = baseStats[statName];
+    ///     if (statName === 'hp') {
+    ///         return tr(tr(2 * stat + set.ivs[statName] + tr(set.evs[statName] / 4) + 100) * set.level / 100 + 10);
+    ///     }
+    ///     stat = tr(tr(2 * stat + set.ivs[statName] + tr(set.evs[statName] / 4)) * set.level / 100 + 5);
+    ///     const nature = this.dex.natures.get(set.nature);
+    ///     if (nature.plus === statName) {
+    ///         stat = this.ruleTable.has('overflowstatmod') ? Math.min(stat, 595) : stat;
+    ///         stat = tr(tr(stat * 110, 16) / 100);
+    ///     } else if (nature.minus === statName) {
+    ///         stat = this.ruleTable.has('overflowstatmod') ? Math.min(stat, 728) : stat;
+    ///         stat = tr(tr(stat * 90, 16) / 100);
+    ///     }
+    ///     return stat;
+    /// }
+    /// ```
+    ///
+    /// TODO: This requires Dex.natures access which Battle doesn't currently have
+    pub fn stat_modify(&self, base_stats: &StatsTable, set: &PokemonSet, stat_name: &str) -> i32 {
+        let base_stat = match stat_name {
+            "hp" => base_stats.hp,
+            "atk" => base_stats.atk,
+            "def" => base_stats.def,
+            "spa" => base_stats.spa,
+            "spd" => base_stats.spd,
+            "spe" => base_stats.spe,
+            _ => return 0,
         };
-        (stat as f64 * multiplier) as i32
+
+        let iv = match stat_name {
+            "hp" => set.ivs.hp,
+            "atk" => set.ivs.atk,
+            "def" => set.ivs.def,
+            "spa" => set.ivs.spa,
+            "spd" => set.ivs.spd,
+            "spe" => set.ivs.spe,
+            _ => 31,
+        } as i32;
+
+        let ev = match stat_name {
+            "hp" => set.evs.hp,
+            "atk" => set.evs.atk,
+            "def" => set.evs.def,
+            "spa" => set.evs.spa,
+            "spd" => set.evs.spd,
+            "spe" => set.evs.spe,
+            _ => 0,
+        } as i32;
+
+        if stat_name == "hp" {
+            // HP formula
+            let temp = 2 * base_stat + iv + (ev / 4) + 100;
+            return ((temp * set.level as i32 / 100) + 10);
+        }
+
+        // Non-HP stats
+        let temp = 2 * base_stat + iv + (ev / 4);
+        let mut stat = ((temp * set.level as i32 / 100) + 5);
+
+        // Apply nature
+        // TODO: Need Dex.natures access to apply nature modifiers
+        // For now, just return the base stat without nature
+        if !set.nature.is_empty() {
+            // nature_data = self.dex.natures.get(&set.nature);
+            // Apply 1.1x or 0.9x multiplier based on nature.plus/minus
+        }
+
+        stat.max(0)
     }
 
     /// Execute tiebreak logic
