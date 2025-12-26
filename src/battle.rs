@@ -7113,101 +7113,13 @@ impl Battle {
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
-        match event_id {
-            "Residual" => {
-                if let Some((side_idx, poke_idx)) = target {
-                    // Leftovers
-                    if item_id.as_str() == "leftovers" {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                if pokemon.hp < pokemon.maxhp {
-                                    let heal = pokemon.maxhp / 16;
-                                    self.heal(heal.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Leftovers")));
-                                    return EventResult::Stop;
-                                }
-                            }
-                        }
-                    }
-                    // Black Sludge
-                    if item_id.as_str() == "blacksludge" {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                let is_poison = pokemon.types.iter().any(|t| t.to_lowercase() == "poison");
-                                if is_poison {
-                                    if pokemon.hp < pokemon.maxhp {
-                                        let heal = pokemon.maxhp / 16;
-                                        self.heal(heal.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Black Sludge")));
-                                    }
-                                } else {
-                                    let damage = pokemon.maxhp / 8;
-                                    self.damage(damage.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Black Sludge")), false);
-                                }
-                                return EventResult::Stop;
-                            }
-                        }
-                    }
-                }
-            }
-            "ModifyAtk" => {
-                // Choice Band: 1.5x Attack
-                if item_id.as_str() == "choiceband" {
-                    return EventResult::Modify(1.5);
-                }
-            }
-            "ModifySpA" => {
-                // Choice Specs: 1.5x Special Attack
-                if item_id.as_str() == "choicespecs" {
-                    return EventResult::Modify(1.5);
-                }
-            }
-            "ModifyDef" => {
-                // Eviolite: 1.5x Defense (for NFE Pokemon)
-                if item_id.as_str() == "eviolite" {
-                    // TODO: Check if Pokemon is NFE (Not Fully Evolved)
-                    // For now, always apply the boost
-                    return EventResult::Modify(1.5);
-                }
-            }
-            "ModifySpD" => {
-                // Assault Vest: 1.5x Special Defense
-                if item_id.as_str() == "assaultvest" {
-                    return EventResult::Modify(1.5);
-                }
-                // Eviolite: 1.5x Special Defense (for NFE Pokemon)
-                if item_id.as_str() == "eviolite" {
-                    // TODO: Check if Pokemon is NFE (Not Fully Evolved)
-                    // For now, always apply the boost
-                    return EventResult::Modify(1.5);
-                }
-            }
-            "ModifyDamage" => {
-                // Life Orb
-                if item_id.as_str() == "lifeorb" {
-                    return EventResult::Modify(1.3);
-                }
-                // Expert Belt: 1.2x for super effective moves
-                // TODO: Implement type effectiveness check
-                // JS: if (move && target.getMoveHitData(move).typeMod > 0) return this.chainModify([4915, 4096]);
-                // This requires passing type effectiveness context to the event
-                if item_id.as_str() == "expertbelt" {
-                    // TODO: Check if move is super effective
-                    // For now, cannot implement without type effectiveness context
-                }
-            }
-            "AfterMoveSecondarySelf" => {
-                // Life Orb recoil
-                if item_id.as_str() == "lifeorb" {
-                    if let Some((side_idx, poke_idx)) = target {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                let recoil = pokemon.maxhp / 10;
-                                self.damage(recoil.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Life Orb")), false);
-                            }
-                        }
-                    }
-                }
-            }
-            _ => {}
+        // Dispatch to item callback system
+        if let Some(result) = crate::data::item_callbacks::dispatch_item_event(
+            self,
+            item_id.as_str(),
+            event_id
+        ) {
+            return result;
         }
 
         EventResult::Continue

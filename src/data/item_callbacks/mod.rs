@@ -392,3 +392,84 @@ pub mod zapplate;
 pub mod zeraorite;
 pub mod zoomlens;
 pub mod zygardite;
+use crate::battle::Battle;
+use crate::event::EventResult;
+
+/// Dispatch an item event to the appropriate callback
+/// Returns EventResult based on the callback's return value
+pub fn dispatch_item_event(
+    battle: &mut Battle,
+    item_id: &str,
+    event_name: &str,
+) -> Option<EventResult> {
+    // Convert event name to callback function name
+    // e.g., "ModifyAtk" -> "on_modify_atk"
+    let callback_name = event_name_to_callback(event_name);
+    
+    // Dispatch to the appropriate item module based on item_id
+    // For now, we'll implement a subset of items that are commonly used
+    match item_id {
+        "choiceband" => match callback_name {
+            "on_modify_atk" => Some(convert_result(choiceband::on_modify_atk(battle))),
+            _ => None,
+        },
+        "choicespecs" => match callback_name {
+            "on_modify_sp_a" => Some(convert_result(choicespecs::on_modify_sp_a(battle))),
+            _ => None,
+        },
+        "lifeorb" => match callback_name {
+            "on_modify_damage" => Some(convert_result(lifeorb::on_modify_damage(battle))),
+            "on_after_move_secondary_self" => Some(convert_result(lifeorb::on_after_move_secondary_self(battle))),
+            _ => None,
+        },
+        "eviolite" => match callback_name {
+            "on_modify_def" => Some(convert_result(eviolite::on_modify_def(battle))),
+            "on_modify_sp_d" => Some(convert_result(eviolite::on_modify_sp_d(battle))),
+            _ => None,
+        },
+        "assaultvest" => match callback_name {
+            "on_modify_sp_d" => Some(convert_result(assaultvest::on_modify_sp_d(battle))),
+            _ => None,
+        },
+        "leftovers" => match callback_name {
+            "on_residual" => Some(convert_result(leftovers::on_residual(battle))),
+            _ => None,
+        },
+        "blacksludge" => match callback_name {
+            "on_residual" => Some(convert_result(blacksludge::on_residual(battle))),
+            _ => None,
+        },
+        // TODO: Add more items as their callbacks are implemented
+        _ => None,
+    }
+}
+
+/// Convert event name (e.g., "ModifyAtk") to callback name (e.g., "on_modify_atk")
+fn event_name_to_callback(event_name: &str) -> &str {
+    match event_name {
+        "ModifyAtk" => "on_modify_atk",
+        "ModifySpA" => "on_modify_sp_a",
+        "ModifyDef" => "on_modify_def",
+        "ModifySpD" => "on_modify_sp_d",
+        "ModifyDamage" => "on_modify_damage",
+        "SourceModifyDamage" => "on_source_modify_damage",
+        "AfterMoveSecondarySelf" => "on_after_move_secondary_self",
+        "Residual" => "on_residual",
+        _ => "",
+    }
+}
+
+/// Convert ItemHandlerResult to EventResult
+fn convert_result(result: ItemHandlerResult) -> EventResult {
+    match result {
+        ItemHandlerResult::Undefined => EventResult::Continue,
+        ItemHandlerResult::False => EventResult::Fail,
+        ItemHandlerResult::True => EventResult::Continue,
+        ItemHandlerResult::Null => EventResult::Fail,
+        ItemHandlerResult::Zero => EventResult::ModifyInt(0),
+        ItemHandlerResult::Number(n) => EventResult::ModifyInt(n),
+        ItemHandlerResult::ChainModify(num, denom) => {
+            EventResult::Modify(num as f64 / denom as f64)
+        }
+    }
+}
