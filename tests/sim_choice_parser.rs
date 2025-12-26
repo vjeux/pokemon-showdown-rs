@@ -432,6 +432,61 @@ fn test_move_generic_should_allow_dynamax() {
     // For now, we're testing that the choice parsing works
 }
 
+// JavaScript:             it('should handle Conversion 2', () => {
+#[test]
+fn test_move_generic_should_handle_conversion_2() {
+    // JavaScript:                 battle = common.createBattle({ gameType: 'doubles' });
+    let mut battle = common::create_battle(
+        common::CreateBattleOptions {
+            game_type: Some("doubles".to_string()),
+            ..Default::default()
+        },
+        [
+            // JavaScript:                 battle.setPlayer('p1', { team: [
+            // JavaScript:                     { species: "Porygon-Z", ability: 'adaptability', item: 'normaliumz', moves: ['conversion', 'conversion2'] },
+            // JavaScript:                     { species: "Porygon", ability: 'download', moves: ['conversion', 'conversion2'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Porygon-Z", ability: "adaptability", moves: ["conversion", "conversion2"], item: "normaliumz"),
+                pokemon!(species: "Porygon", ability: "download", moves: ["conversion", "conversion2"]),
+            ],
+            // JavaScript:                 battle.setPlayer('p2', { team: [
+            // JavaScript:                     { species: "Gengar", ability: 'cursedbody', moves: ['lick'] },
+            // JavaScript:                     { species: "Aggron", ability: 'sturdy', moves: ['irondefense'] },
+            // JavaScript:                 ] });
+            vec![
+                pokemon!(species: "Gengar", ability: "cursedbody", moves: ["lick"]),
+                pokemon!(species: "Aggron", ability: "sturdy", moves: ["irondefense"]),
+            ],
+        ],
+    );
+
+    // JavaScript:                 assert(battle.choose('p1', `move 1, move Conversion 2 2`));
+    // Should parse "Conversion 2" as move name, "2" as target (+2 in relative coords)
+    assert!(battle.choose(SideID::P1, "move 1, move Conversion 2 2").is_ok(),
+            "Expected 'move 1, move Conversion 2 2' to be accepted");
+
+    // JavaScript:                 assert.equal(battle.p1.getChoice(), `move conversion, move conversion2 +2`);
+    // JavaScript:                 battle.p1.clearChoice();
+    // TODO: Implement getChoice() and clearChoice() to verify parsed choice format
+
+    // JavaScript:                 assert.throws(() => battle.choose('p1', `move 1, move Conversion -2`));
+    // Should reject negative target without absolute positioning
+    assert!(battle.choose(SideID::P1, "move 1, move Conversion -2").is_err(),
+            "Expected 'move 1, move Conversion -2' to be rejected");
+
+    // JavaScript:                 battle.p1.clearChoice();
+
+    // JavaScript:                 assert(battle.choose('p1', `move Conversion 2 zmove 2, move 1`));
+    // Should parse "Conversion 2" as move name with zmove modifier and target
+    assert!(battle.choose(SideID::P1, "move Conversion 2 zmove 2, move 1").is_ok(),
+            "Expected 'move Conversion 2 zmove 2, move 1' to be accepted");
+
+    // JavaScript:                 assert.equal(battle.p1.getChoice(), `move conversion2 +2 zmove, move conversion`);
+    // JavaScript:                 battle.p1.clearChoice();
+    // TODO: Implement getChoice() to verify parsed choice format
+}
+
 // JavaScript:         describe('Singles', () => {
 // JavaScript:             it('should accept only `move` and `switch` choices', () => {
 #[test]

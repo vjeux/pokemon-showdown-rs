@@ -1209,20 +1209,62 @@ impl Battle {
             "move" => {
                 // Parse move choice: move <move> [target] [modifier]
                 // Examples: "move 1", "move tackle 2", "move 1 +1 mega", "move shadowball zmove 1"
+                // Handle multi-word moves like "Conversion 2"
                 if parts.len() < 2 {
                     return Err("Move choice requires move name/number".to_string());
                 }
 
-                // Parse the remaining parts after "move" and the move name/number
-                let move_identifier = parts[1];
+                // Try to parse move name - could be multi-word like "Conversion 2"
+                // Start with the longest possible name and work backwards
+                let mut move_name_parts = 1;
                 let mut target_count = 0;
                 let mut has_mega = false;
                 let mut has_zmove = false;
                 let mut has_dynamax = false;
                 let mut has_ultra = false;
 
-                // Scan through remaining parts
-                let mut i = 2;
+                // If first part after "move" is a number, it's move slot (1, 2, 3, 4)
+                // Otherwise, try to match move names
+                if parts[1].parse::<usize>().is_err() {
+                    // Not a number - could be multi-word move name
+                    // Try matching progressively longer names
+                    // e.g. "move Conversion 2 zmove 2" could be:
+                    //   - "Conversion" (move) + "2" (target) + "zmove" + "2" (target again - error)
+                    //   - "Conversion 2" (move) + "zmove" + "2" (target)
+
+                    // For now, simple heuristic: if next part is numeric and not a modifier, include it in move name
+                    // This handles cases like "Conversion 2" where "2" is part of the move name
+                    let mut i = 2;
+                    while i < parts.len() && move_name_parts < 3 { // Limit to 3 words max
+                        let part = parts[i];
+                        // If it's a number and we don't have modifiers yet, could be part of move name
+                        let is_modifier = matches!(part.to_lowercase().as_str(),
+                            "mega" | "zmove" | "dynamax" | "max" | "ultra");
+
+                        // Targets are: positive numbers, or explicit + relative (not -)
+                        let is_explicit_relative = part.starts_with('+') &&
+                                                   part.len() > 1 &&
+                                                   part[1..].parse::<i32>().is_ok();
+                        let is_absolute = part.parse::<usize>().is_ok() && !part.starts_with('-');
+                        let is_likely_target = is_explicit_relative || (is_absolute && i > 2);
+
+                        if is_modifier || is_likely_target {
+                            break; // Stop extending move name
+                        }
+
+                        // Check if this could be part of move name (number in position 2 could be like "2" in "Conversion 2")
+                        if i == 2 && part.parse::<usize>().is_ok() {
+                            // Might be "Conversion 2" - include it
+                            move_name_parts += 1;
+                            i += 1;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+
+                // Now scan modifiers and targets starting after move name
+                let mut i = 1 + move_name_parts;
                 while i < parts.len() {
                     let part = parts[i];
 
@@ -1253,10 +1295,14 @@ impl Battle {
                             has_ultra = true;
                         }
                         _ => {
-                            // Check if it's a target (number or +/- number)
-                            let is_target = part.parse::<i32>().is_ok() ||
-                                           (part.starts_with('+') && part[1..].parse::<i32>().is_ok()) ||
-                                           (part.starts_with('-') && part[1..].parse::<i32>().is_ok());
+                            // Check if it's a target (positive number or explicit + relative target)
+                            // Only + prefix is valid for relative targets, not -
+                            let is_explicit_relative = part.starts_with('+') &&
+                                                       part.len() > 1 &&
+                                                       part[1..].parse::<i32>().is_ok();
+                            let is_absolute = part.parse::<usize>().is_ok() && !part.starts_with('-');
+
+                            let is_target = is_explicit_relative || is_absolute;
 
                             if is_target {
                                 target_count += 1;
@@ -1264,6 +1310,10 @@ impl Battle {
                                     return Err("[Invalid choice] Move can only have one target".to_string());
                                 }
                             } else {
+                                // Check if it looks like an invalid target (negative number)
+                                if part.starts_with('-') && part[1..].parse::<i32>().is_ok() {
+                                    return Err("[Invalid choice] Invalid target format".to_string());
+                                }
                                 // Not a modifier or target - might be part of move name
                                 // For now, we'll allow it (multi-word move names)
                             }
