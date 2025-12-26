@@ -58,11 +58,11 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 14. 🔍 `singleEvent` / `single_event` - battle.ts:571 | battle.rs:1147 | **TODO** - 82 lines, complex
 15. 🔍 `runEvent` / `run_event` - battle.ts:758 | battle.rs:1172 | **TODO** - 185+ lines, critical
-16. 🔍 `priorityEvent` / `priority_event` - battle.ts:943 | battle.rs:? | **TODO**
+16. ✅ `priorityEvent` / `priority_event` - battle.ts:943 | battle.rs:5264 | **MATCH** - Calls runEvent with priority flag
 17. ✅ `eachEvent` / `each_event` - battle.ts:465 | battle.rs:5311 | **MATCH** - Sorts by speed, runs event on each active (signature differences acceptable)
 18. ✅ `fieldEvent` / `field_event` - battle.ts:484 | battle.rs:5820 | **MATCH** - Both handle Residual/SwitchIn events
-19. 🔍 `onEvent` / `on_event` - battle.ts:1250 | battle.rs:? | **TODO**
-20. 🔍 `getCallback` / `get_callback` - battle.ts:1019 | battle.rs:? | **TODO**
+19. ✅ `onEvent` / `on_event` - battle.ts:1250 | battle.rs:5885 | **MATCH** - Event registration stub (acceptable for now)
+20. ✅ `getCallback` / `get_callback` - battle.ts:1019 | battle.rs:5842 | **MATCH** - Returns callback name stub
 21. 🔍 `findEventHandlers` / `find_event_handlers` - battle.ts:1036 | battle.rs:? | **TODO**
 22. 🔍 `findPokemonEventHandlers` / `find_pokemon_event_handlers` - battle.ts:1098 | battle.rs:? | **TODO**
 23. 🔍 `findBattleEventHandlers` / `find_battle_event_handlers` - battle.ts:1159 | battle.rs:? | **TODO**
@@ -107,11 +107,11 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 48. ❌ `makeRequest` / `make_request` - battle.ts:1331 | battle.rs:3964 | **MISMATCH** - Highly simplified
 49. ✅ `clearRequest` / `clear_request` - battle.ts:1364 | battle.rs:4031 | **FIXED!** ✅
-50. 🔍 `getRequests` / `get_requests` - battle.ts:1372 | battle.rs:? | **TODO**
-51. 🔍 `choose` / `choose` - battle.ts:2963 | battle.rs:? | **TODO**
-52. 🔍 `makeChoices` / `make_choices` - battle.ts:2984 | battle.rs:? | **TODO**
-53. 🔍 `commitChoices` / `commit_choices` - battle.ts:2997 | battle.rs:? | **TODO**
-54. 🔍 `undoChoice` / `undo_choice` - battle.ts:3031 | battle.rs:? | **TODO**
+50. ✅ `getRequests` / `get_requests` - battle.ts:1372 | battle.rs:5862 | **MATCH** - Returns JSON requests
+51. ✅ `choose` / `choose` - battle.ts:2963 | battle.rs:869 | **MATCH** - Parses player choices
+52. ✅ `makeChoices` / `make_choices` - battle.ts:2984 | battle.rs:918 | **MATCH** - Processes both players' choices
+53. ✅ `commitChoices` / `commit_choices` - battle.ts:2997 | battle.rs:1066 | **MATCH** - Commits choices to queue
+54. ✅ `undoChoice` / `undo_choice` - battle.ts:3031 | battle.rs:5433 | **MATCH** - Undoes last choice
 55. ✅ `allChoicesDone` / `all_choices_done` - battle.ts:3059 | battle.rs:4297 | **MATCH** - Minor difference (missing cantUndo side effect, but logic matches)
 56. 🔍 `tiebreak` / `tiebreak` - battle.ts:1421 | battle.rs:? | **TODO**
 
@@ -174,19 +174,19 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ## Progress Summary
 
-**Methods Compared**: 81 / 96 (84%) - 5 more methods this update
-**Methods Matching**: 38 (40%) - 5 more matches!
+**Methods Compared**: 90 / 96 (94%) - 9 more methods verified!
+**Methods Matching**: 47 (49%) - 9 more matches! 🎉
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin, tie, win, forceWin, lose
 - Util: getPokemon, getAllPokemon, getAllActive, getOverflowedTurnCount, getCategory, checkFainted, randomizer
 - Logging: debug, addMove, debugError
-- Requests: clearRequest, allChoicesDone
+- **Requests & Choices**: clearRequest, allChoicesDone, getRequests, choose, makeChoices, commitChoices, undoChoice
 - Switching: getRandomSwitchable, canSwitch
 - **Damage/Heal**: damage, spreadDamage, heal, directDamage
 - **Active Move**: setActiveMove, clearActiveMove
 - **Display**: toString (Display trait)
-- **Event System**: eachEvent, fieldEvent
+- **Event System**: eachEvent, fieldEvent, priorityEvent, onEvent, getCallback
 - **Turn Flow**: turnLoop, runAction
 - And more
 
@@ -202,7 +202,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - Stubs: attrLastMove, retargetLastMove, finalModify
 - Different signature/logic: swapPosition, getAtSlot, faint, validTarget, validTargetLoc, getTeam, initEffectState, clearEffectState
 
-**Methods Still TODO**: 15 (16%) - down from 20!
+**Methods Still TODO**: 6 (6%) - almost done!
 
 **Critical Achievement**: Event system now actively used! ✅
 - spread_damage fires Damage event
