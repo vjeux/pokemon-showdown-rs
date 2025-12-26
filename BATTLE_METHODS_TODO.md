@@ -144,10 +144,10 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 72. ❌ `addSplit` / `add_split` - battle.ts:3082 | battle.rs:4895 | **MISMATCH** - Simplified version
 73. ✅ `hint` / `hint` - battle.ts:3070 | battle.rs:3045 | **FIXED!** ✅ - Added side-specific addSplit() call (TODO: implement addSplit fully)
 74. ✅ `debug` / `debug` - battle.ts:3147 | battle.rs:2894 | **MATCH**
-75. 🔍 `debugError` / `debug_error` - battle.ts:3158 | battle.rs:? | **TODO**
-76. 🔍 `getDebugLog` / `get_debug_log` - battle.ts:3153 | battle.rs:? | **TODO**
-77. 🔍 `attrLastMove` / `attr_last_move` - battle.ts:3122 | battle.rs:? | **TODO**
-78. 🔍 `retargetLastMove` / `retarget_last_move` - battle.ts:3140 | battle.rs:? | **TODO**
+75. ✅ `debugError` / `debug_error` - battle.ts:3158 | battle.rs:5807 | **FIXED!** ✅ - Now calls add("debug") matching JS
+76. 🔍 `getDebugLog` / `get_debug_log` - battle.ts:3153 | battle.rs:3022 | **MISMATCH** - Simplified (missing extractChannelMessages)
+77. 🔍 `attrLastMove` / `attr_last_move` - battle.ts:3122 | battle.rs:5732 | **MISMATCH** - Stub (needs full log manipulation)
+78. 🔍 `retargetLastMove` / `retarget_last_move` - battle.ts:3140 | battle.rs:5899 | **MISMATCH** - Stub (needs full implementation)
 
 ### Miscellaneous (12 methods)
 
@@ -174,13 +174,13 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ## Progress Summary
 
-**Methods Compared**: 59 / 96 (61%) - 6 methods this session
-**Methods Matching**: 29 (30%) - 5 more this session (setActiveMove, clearActiveMove, getCategory, checkFainted, addMove)
+**Methods Compared**: 63 / 96 (66%) - 10 methods this session
+**Methods Matching**: 30 (31%) - 6 more this session (setActiveMove, clearActiveMove, getCategory, checkFainted, addMove, debugError)
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin (FIXED!), tie, win (FIXED!), forceWin (FIXED!), lose (FIXED!)
 - Util: getPokemon, getAllPokemon, getAllActive (FIXED!), getOverflowedTurnCount (FIXED!), getCategory (FIXED!), checkFainted (FIXED!)
-- Logging: debug, addMove (MATCH!)
+- Logging: debug, addMove (MATCH!), debugError (FIXED!)
 - Requests: clearRequest (FIXED!)
 - **Damage/Heal**: damage (FIXED!), spreadDamage (FIXED!), heal (FIXED!), directDamage (FIXED!)
 - **Active Move**: setActiveMove (MATCH!), clearActiveMove (MATCH!)
@@ -190,13 +190,14 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 11 (11%) - same as before
+**Methods with Major Mismatches**: 14 (15%) - up from 11 (found 3 more stubs)
 - Event-dependent: ~~damage~~, ~~heal~~, boost, chainModify, getActionSpeed
-- Simplified: makeRequest, endTurn
+- Simplified: makeRequest, endTurn, getDebugLog
 - Missing features: setPlayer, ~~spreadDamage~~, ~~directDamage~~, add, hint, addSplit
 - Complex: suppressingAbility, checkMoveMakesContact
+- Stubs: attrLastMove, retargetLastMove
 
-**Methods Still TODO**: 40 (42%)
+**Methods Still TODO**: 36 (38%)
 
 **Critical Achievement**: Event system now actively used! ✅
 - spread_damage fires Damage event
