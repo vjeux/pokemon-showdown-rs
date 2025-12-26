@@ -963,14 +963,14 @@ impl Battle {
     /// Get all active Pokemon
     /// Get all active Pokemon, optionally including fainted ones
     /// Equivalent to battle.ts getAllActive(includeFainted?)
-    pub fn get_all_active(&self, include_fainted: bool) -> Vec<(usize, usize, &crate::pokemon::Pokemon)> {
+    pub fn get_all_active(&self, include_fainted: bool) -> Vec<&crate::pokemon::Pokemon> {
         let mut result = Vec::new();
         for (side_idx, side) in self.sides.iter().enumerate() {
             for (slot, opt_idx) in side.active.iter().enumerate() {
                 if let Some(poke_idx) = opt_idx {
                     if let Some(pokemon) = side.pokemon.get(*poke_idx) {
                         if include_fainted || !pokemon.is_fainted() {
-                            result.push((side_idx, slot, pokemon));
+                            result.push(pokemon);
                         }
                     }
                 }

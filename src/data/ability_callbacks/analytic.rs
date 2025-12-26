@@ -44,7 +44,7 @@ use super::{AbilityHandlerResult, Status, Effect};
         // let boosted = true;
         let mut boosted = true;
         // for (const target of this.getAllActive())
-        for (_side_idx, _slot, target) in battle.get_all_active(false) {
+        for target in battle.get_all_active(false) {
             // if (target === pokemon) continue;
             if target.is_same(pokemon) {
                 continue;

@@ -53,10 +53,10 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
 
     // Collect foe targets along with substitute status (need to collect first to avoid borrow issues)
     let foe_targets: Vec<(usize, usize, bool)> = all_active.iter()
-        .filter(|(side_idx, _slot, _pokemon)| *side_idx == foe_side)
-        .map(|(side_idx, _slot, foe_pokemon)| {
+        .filter(|foe_pokemon| foe_pokemon.side_index == foe_side)
+        .map(|foe_pokemon| {
             let has_substitute = foe_pokemon.volatiles.contains_key(&ID::from("substitute"));
-            (*side_idx, foe_pokemon.position, has_substitute)
+            (foe_pokemon.side_index, foe_pokemon.position, has_substitute)
         })
         .collect();
 
