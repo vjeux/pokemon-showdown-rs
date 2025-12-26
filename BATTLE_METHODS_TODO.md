@@ -36,7 +36,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 1. ✅ `constructor` / `new` - battle.ts:191 | battle.rs:221 | **MATCH** (basic initialization)
 2. ✅ `setPlayer` / `set_player` - battle.ts:3225 | battle.rs:316 | **FIXED!** ✅ - Added edit mode, avatar, rating, proper JSON logging, player add()
-3. ✅ `start` / `start` - battle.ts:1859 | battle.rs:471 | **SIGNIFICANTLY IMPROVED** ✅ - Added gen/tier/rated logging, foe/ally setup for Multi/FreeForAll, empty team validation, checkEVBalance call, proper runPickTeam() call (TODOs: format callbacks, ruleTable iteration, queue.addChoice, conditional turnLoop)
+3. ✅ `start` / `start` - battle.ts:1859 | battle.rs:534 | **SIGNIFICANTLY IMPROVED** ✅ - Full core implementation: gen/tier/rated logging, foe/ally setup for Multi/FreeForAll, empty team validation, checkEVBalance call, runPickTeam() call, queue.addChoice(start), midTurn=true, conditional turnLoop() (TODOs: format callbacks, ruleTable iteration, customRules display - all require format infrastructure)
 4. ✅ `restart` / `restart` - battle.ts:1925 | battle.rs:4560 | **FIXED!** ✅ - Simplified to match JS (just checks/docs, no actual reset)
 5. ✅ `destroy` / `destroy` - battle.ts:3346 | battle.rs:4620 | **FIXED!** ✅ - Documented as no-op (Rust uses Drop trait)
 
