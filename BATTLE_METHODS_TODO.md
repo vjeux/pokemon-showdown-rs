@@ -120,14 +120,14 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 57. ✅ `getPokemon` / `get_pokemon` - battle.ts:1301 | battle.rs:4319 | **MATCH** (tuple vs object - acceptable)
 58. ✅ `getAllPokemon` / `get_all_pokemon` - battle.ts:1311 | battle.rs:3111 | **MATCH**
 59. ✅ `getAllActive` / `get_all_active` - battle.ts:1319 | battle.rs:679 | **FIXED!** ✅ (Previous session - merged 2 methods into 1)
-60. 🔍 `getAtSlot` / `get_at_slot` - battle.ts:1563 | battle.rs:? | **TODO**
+60. 🔍 `getAtSlot` / `get_at_slot` - battle.ts:1563 | battle.rs:4167 | **MISMATCH** - Different signature (takes PokemonSlot vs side/slot)
 61. 🔍 `faint` / `faint` - battle.ts:1573 | battle.rs:? | **TODO**
 
 ### Switching (4 methods)
 
 62. 🔍 `canSwitch` / `can_switch` - battle.ts:1520 | battle.rs:3748 | **TODO**
-63. 🔍 `getRandomSwitchable` / `get_random_switchable` - battle.ts:1524 | battle.rs:? | **TODO**
-64. 🔍 `swapPosition` / `swap_position` - battle.ts:1542 | battle.rs:? | **TODO**
+63. ✅ `getRandomSwitchable` / `get_random_switchable` - battle.ts:1524 | battle.rs:4044 | **MATCH** - Verified correct
+64. 🔍 `swapPosition` / `swap_position` - battle.ts:1542 | battle.rs:4356 | **MISMATCH** - Different signature and logic
 65. 🔍 `faintMessages` / `faint_messages` - battle.ts:2498 | battle.rs:? | **TODO**
 
 ### Target Selection (4 methods)
@@ -174,14 +174,15 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ## Progress Summary
 
-**Methods Compared**: 63 / 96 (66%) - 10 methods this session
-**Methods Matching**: 30 (31%) - 6 more this session (setActiveMove, clearActiveMove, getCategory, checkFainted, addMove, debugError)
+**Methods Compared**: 65 / 96 (68%) - 12 methods this session
+**Methods Matching**: 31 (32%) - 7 more this session (setActiveMove, clearActiveMove, getCategory, checkFainted, addMove, debugError, getRandomSwitchable)
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin (FIXED!), tie, win (FIXED!), forceWin (FIXED!), lose (FIXED!)
 - Util: getPokemon, getAllPokemon, getAllActive (FIXED!), getOverflowedTurnCount (FIXED!), getCategory (FIXED!), checkFainted (FIXED!)
 - Logging: debug, addMove (MATCH!), debugError (FIXED!)
 - Requests: clearRequest (FIXED!)
+- Switching: getRandomSwitchable (MATCH!)
 - **Damage/Heal**: damage (FIXED!), spreadDamage (FIXED!), heal (FIXED!), directDamage (FIXED!)
 - **Active Move**: setActiveMove (MATCH!), clearActiveMove (MATCH!)
 - And more
@@ -190,14 +191,15 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - modify (missing array param)
 - getSide (returns Option - safer, acceptable)
 
-**Methods with Major Mismatches**: 14 (15%) - up from 11 (found 3 more stubs)
+**Methods with Major Mismatches**: 16 (17%) - up from 14 (found 2 more)
 - Event-dependent: ~~damage~~, ~~heal~~, boost, chainModify, getActionSpeed
 - Simplified: makeRequest, endTurn, getDebugLog
 - Missing features: setPlayer, ~~spreadDamage~~, ~~directDamage~~, add, hint, addSplit
 - Complex: suppressingAbility, checkMoveMakesContact
 - Stubs: attrLastMove, retargetLastMove
+- Different signature: swapPosition, getAtSlot
 
-**Methods Still TODO**: 36 (38%)
+**Methods Still TODO**: 34 (35%)
 
 **Critical Achievement**: Event system now actively used! ✅
 - spread_damage fires Damage event
