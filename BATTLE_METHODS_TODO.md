@@ -140,7 +140,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 ### Logging & Messages (9 methods)
 
 70. ❌ `add` / `add` - battle.ts:3092 | battle.rs:4251 | **MISMATCH** - Missing function param support
-71. 🔍 `addMove` / `add_move` - battle.ts:3116 | battle.rs:? | **TODO**
+71. ✅ `addMove` / `add_move` - battle.ts:3116 | battle.rs:3038 | **MATCH** - Verified correct
 72. ❌ `addSplit` / `add_split` - battle.ts:3082 | battle.rs:4895 | **MISMATCH** - Simplified version
 73. ✅ `hint` / `hint` - battle.ts:3070 | battle.rs:3045 | **FIXED!** ✅ - Added side-specific addSplit() call (TODO: implement addSplit fully)
 74. ✅ `debug` / `debug` - battle.ts:3147 | battle.rs:2894 | **MATCH**
@@ -174,13 +174,13 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 
 ## Progress Summary
 
-**Methods Compared**: 58 / 96 (60%) - 5 more this session (warnings fix + 4 methods)
-**Methods Matching**: 28 (29%) - 4 more (setActiveMove, clearActiveMove, getCategory, checkFainted)
+**Methods Compared**: 59 / 96 (61%) - 6 methods this session
+**Methods Matching**: 29 (30%) - 5 more this session (setActiveMove, clearActiveMove, getCategory, checkFainted, addMove)
 - RNG: random, randomChance, resetRNG
 - Priority: comparePriority
 - Win: checkWin (FIXED!), tie, win (FIXED!), forceWin (FIXED!), lose (FIXED!)
 - Util: getPokemon, getAllPokemon, getAllActive (FIXED!), getOverflowedTurnCount (FIXED!), getCategory (FIXED!), checkFainted (FIXED!)
-- Logging: debug
+- Logging: debug, addMove (MATCH!)
 - Requests: clearRequest (FIXED!)
 - **Damage/Heal**: damage (FIXED!), spreadDamage (FIXED!), heal (FIXED!), directDamage (FIXED!)
 - **Active Move**: setActiveMove (MATCH!), clearActiveMove (MATCH!)
@@ -196,7 +196,7 @@ This is the SAME pattern in Rust - battle_actions.rs exists with similar delegat
 - Missing features: setPlayer, ~~spreadDamage~~, ~~directDamage~~, add, hint, addSplit
 - Complex: suppressingAbility, checkMoveMakesContact
 
-**Methods Still TODO**: 41 (43%)
+**Methods Still TODO**: 40 (42%)
 
 **Critical Achievement**: Event system now actively used! ✅
 - spread_damage fires Damage event
