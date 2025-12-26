@@ -992,8 +992,9 @@ impl Dex {
                           // Arceus plate formes
                           (species.num == 493 && forme != "Normal") {
                     gen < 4
-                // Gen 3: Deoxys formes
-                } else if (forme == "Attack" || forme == "Defense" || forme == "Speed") && species.name.contains("Deoxys") {
+                // Gen 3: Deoxys formes, Castform formes
+                } else if ((forme == "Attack" || forme == "Defense" || forme == "Speed") && species.name.contains("Deoxys")) ||
+                          ((forme == "Sunny" || forme == "Rainy" || forme == "Snowy") && species.name.contains("Castform")) {
                     gen < 3
                 } else {
                     false  // Forme exists in all gens or is gen-appropriate
@@ -1009,16 +1010,15 @@ impl Dex {
                 continue;
             }
 
-            // JavaScript: Gen-specific mods override tier/isNonstandard for BASE species
+            // JavaScript: Gen-specific mods override tier/isNonstandard for species available in this gen
             // e.g., gen1/formats-data.js sets caterpie tier: "LC" (not "Illegal")
-            if species.forme.is_none() {
-                // Base species - clear Past/Illegal markings
-                if species.is_nonstandard.as_deref() == Some("Past") {
-                    species.is_nonstandard = None;
-                }
-                if species.tier.as_deref() == Some("Illegal") {
-                    species.tier = None;
-                }
+            // This applies to both base species AND formes that are available in this gen
+            // (Castform formes have isNonstandard: "Past" but are available in Gen 3+)
+            if species.is_nonstandard.as_deref() == Some("Past") {
+                species.is_nonstandard = None;
+            }
+            if species.tier.as_deref() == Some("Illegal") {
+                species.tier = None;
             }
         }
 

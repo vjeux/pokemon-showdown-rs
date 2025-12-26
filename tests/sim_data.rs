@@ -585,7 +585,129 @@ fn test_gen1_should_have_151_species_and_0_formes() {
     assert_eq!(formes_count, 0, "Gen 1 should have 0 formes");
 }
 
+/// Test: Gen 2 should have 251 species and 0 formes
+/// JavaScript: // Gens 1 and 2 have no alternate formes
+/// JavaScript: formes[2] = 0;
+#[test]
+fn test_gen2_should_have_251_species_and_0_formes() {
+    let dex = Dex::for_gen(2).unwrap();
+    let (species_count, formes_count) = count_pokemon(&dex);
+
+    assert_eq!(species_count, 251, "Gen 2 should have 251 species");
+    assert_eq!(formes_count, 0, "Gen 2 should have 0 formes");
+}
+
+/// Test: Gen 3 should have 386 species and 6 formes
+/// JavaScript: formes[3] = 3 + 3; // Deoxys (3) + Castform (3)
+#[test]
+fn test_gen3_should_have_386_species_and_6_formes() {
+    let dex = Dex::for_gen(3).unwrap();
+    let (species_count, formes_count) = count_pokemon(&dex);
+
+    assert_eq!(species_count, 386, "Gen 3 should have 386 species");
+    assert_eq!(formes_count, 6, "Gen 3 should have 6 formes"); // Deoxys (3) + Castform (3)
+}
+
+/// Test: Gen 4 should have 493 species and 33 formes
+/// JavaScript: // Wormadam (2) + Cherrim (1) + Arceus (16) + Pichu (1) +
+/// JavaScript: // Rotom (5) + Giratina (1) + Shaymin (1)
+/// JavaScript: formes[4] = formes[3] + 2 + 1 + 16 + 1 + 5 + 1 + 1;
+#[test]
+fn test_gen4_should_have_493_species_and_33_formes() {
+    let dex = Dex::for_gen(4).unwrap();
+    let (species_count, formes_count) = count_pokemon(&dex);
+
+    assert_eq!(species_count, 493, "Gen 4 should have 493 species");
+    // Wormadam (2) + Cherrim (1) + Arceus (16) + Pichu (1) + Rotom (5) + Giratina (1) + Shaymin (1)
+    assert_eq!(formes_count, 33, "Gen 4 should have 33 formes"); // formes[3] + 2 + 1 + 16 + 1 + 5 + 1 + 1
+}
+
+/// Test: Gen 5 should have 649 species and 45 formes
+/// JavaScript: // Basculin (1) + Darmanitan (1) + *-Therian (3) + Keldeo (1) +
+/// JavaScript: // Kyurem (2) + Meloetta (1) + Genesect (4) - Pichu (1)
+/// JavaScript: formes[5] = formes[4] + 1 + 1 + 3 + 1 + 2 + 1 + 4 - 1;
+#[test]
+fn test_gen5_should_have_649_species_and_45_formes() {
+    let dex = Dex::for_gen(5).unwrap();
+    let (species_count, formes_count) = count_pokemon(&dex);
+
+    assert_eq!(species_count, 649, "Gen 5 should have 649 species");
+    // Basculin (1) + Darmanitan (1) + *-Therian (3) + Keldeo (1) + Kyurem (2) + Meloetta (1) + Genesect (4) - Pichu (1)
+    assert_eq!(formes_count, 45, "Gen 5 should have 45 formes"); // formes[4] + 1 + 1 + 3 + 1 + 2 + 1 + 4 - 1
+}
+
+/// Test: Gen 6 should have 721 species and 113 formes
+/// JavaScript: // Arceus (1) + Vivillon (2) + Meowstic (1) + Primal (2) +
+/// JavaScript: // Aegislash (1) + Pumpkaboo (3) + Gourgeist (3) + Hoopa (1) +
+/// JavaScript: // Pikachu (6) + Mega (48) [Floette (1)]
+/// JavaScript: formes[6] = formes[5] + 1 + 2 + 1 + 2 + 1 + 3 + 3 + 1 + 6 + 48;
+#[test]
+fn test_gen6_should_have_721_species_and_113_formes() {
+    let dex = Dex::for_gen(6).unwrap();
+    let (species_count, formes_count) = count_pokemon(&dex);
+
+    assert_eq!(species_count, 721, "Gen 6 should have 721 species");
+    // Arceus (1) + Vivillon (2) + Meowstic (1) + Primal (2) + Aegislash (1) + Pumpkaboo (3) + Gourgeist (3) + Hoopa (1) + Pikachu (6) + Mega (48)
+    assert_eq!(formes_count, 113, "Gen 6 should have 113 formes"); // formes[5] + 1 + 2 + 1 + 2 + 1 + 3 + 3 + 1 + 6 + 48
+}
+
+/// Test: Gen 7 should have 807 species and 177 formes
+/// JavaScript: // Alola (18) + Totem (12) + Pikachu (7) - Pikachu (6) + Greninja (2) + Zygarde (2) +
+/// JavaScript: // Oricorio (3) + Rockruff (1) + Lycanroc (2) + Wishiwashi (1) + Silvally (17) + Minior (1) +
+/// JavaScript: // Mimikyu (1) + Necrozma (3) [Magearna (1) + LGPE Starters/Meltan/Melmetal (4)]
+/// JavaScript: formes[7] = formes[6] + 18 + 12 + 7 - 6 + 2 + 2 + 3 + 1 + 2 + 1 + 17 + 1 + 1 + 3;
+#[test]
+fn test_gen7_should_have_807_species_and_177_formes() {
+    let dex = Dex::for_gen(7).unwrap();
+    let (species_count, formes_count) = count_pokemon(&dex);
+
+    assert_eq!(species_count, 807, "Gen 7 should have 807 species");
+    // Alola (18) + Totem (12) + Pikachu (7) - Pikachu (6) + Greninja (2) + Zygarde (2) + Oricorio (3) + Rockruff (1) + Lycanroc (2) + Wishiwashi (1) + Silvally (17) + Minior (1) + Mimikyu (1) + Necrozma (3)
+    assert_eq!(formes_count, 177, "Gen 7 should have 177 formes"); // formes[6] + 18 + 12 + 7 - 6 + 2 + 2 + 3 + 1 + 2 + 1 + 17 + 1 + 1 + 3
+}
+
+/// Test: Gen 8 should have 664 species and 107 formes
+/// JavaScript: formes[8] = 17 + 5 + 1 + 1 + 1 + 3 + 3 + 7 + 14 + 8 +
+/// JavaScript:     1 + 1 + 1 + 2 + 1 + 2 + 2 + 2 + 1 + 1 + 2 + 2 + 1 +
+/// JavaScript:     (4 + 1 + 1 + 1 + 1 + 2 + (1 + 1)) + (1 + 3 + 4 + 2 + 3 + 1 + 2);
+#[test]
+fn test_gen8_should_have_664_species_and_107_formes() {
+    let dex = Dex::for_gen(8).unwrap();
+    let (species_count, formes_count) = count_pokemon(&dex);
+
+    assert_eq!(species_count, 664, "Gen 8 should have 664 species");
+    // Silvally (17) + Rotom (5) + Basculin (1) + Meowstic (1) + Aegislash (1) + Pumpkaboo (3) + Gourgeist (3) + Pikachu (7) + Galar (14) + Alola (8) +
+    // Indeedee (1) + Morpeko (1) + Eiscue (1) + Zacian/Zamazenta (2) + Toxtricity (1) + Cramorant (2) + Necrozma (2) + Mimikyu (2) + Wishiwashi (1) +
+    // Keldeo (1) + Kyurem (2) + Darmanitan (2) + Cherrim (1) +
+    // {DLC1} Alola (4) + Galar (1) + Magearna (1) + Urshifu (1) + Rockruff (1) + Lycanroc (2) + [Pikachu (1) + Zarude (1)] +
+    // {DLC2} Giratina (1) + *-Therian (3) + Genesect (4) + Zygarde (2) + Birds (3) + Slowking (1) + Calyrex (2)
+    // {GMax} 26 + 7
+    assert_eq!(formes_count, 107, "Gen 8 should have 107 formes");
+}
+
+/// Test: Gen 9 should have 733 species and 143 formes
+/// JavaScript: formes[9] = 8 + 3 + 4 + 16 + 7 + 4 + 16 + 3 + 5 + 1 + 17 +
+/// JavaScript:     2 + 2 + 1 + 1 + 1 + 2 + 1 + 1 + 3 + 1 + 2 + 1 + 1 + 2 +
+/// JavaScript:     1 + 1 + 2 + 1 + 1 + 2 + 1 + 2 + 1 + 1 + 1 + 2 + 1 + 1 +
+/// JavaScript:     1 + 1 + 3 + 2 + 1 + 1 + 2 + 7 + 2;
+#[test]
+fn test_gen9_should_have_733_species_and_143_formes() {
+    let dex = Dex::for_gen(9).unwrap();
+    let (species_count, formes_count) = count_pokemon(&dex);
+
+    assert_eq!(species_count, 733, "Gen 9 should have 733 species");
+    // Pikachu (8) + Origin (3) + Therian (4) + Alola (16) + Galar (7) + Paldea (4) + Hisui (16) +
+    // Deoxys (3) + Rotom (5) + Shaymin (1) + Arceus (17) + Basculin (2) + Kyurem (2) + Keldeo (1) +
+    // Meloetta (1) + Greninja (1) + Vivillon (2) + Meowstic (1) + Hoopa (1) + Oricorio (3) + Rockruff (1) +
+    // Lycanroc (2) + Minior (1) + Mimikyu (1) + Necrozma (2) + Magearna (1) + Toxtricity (1) +
+    // Antique (2) + Eiscue (1) + Indeedee (1) + Cramorant (2) + Morpeko (1) + Crowned (2) +
+    // Urshifu (1) + Zarude (1) + Calyrex (2) + Oinkologne (1) + Ursaluna (1) + Dudunsparce (1) +
+    // Palafin (1) + Maushold (1) + Squawkabilly (3) + Tatsugiri (2) + Gimmighoul (1) + Basculegion (1) +
+    // Masterpiece (2) + Ogerpon (7) + Terapagos (2)
+    assert_eq!(formes_count, 143, "Gen 9 should have 143 formes");
+}
+
 // Note: The following tests from data.js are not ported yet:
 // - it('should have valid Learnsets entries', function () { ... }) - requires learnsets
-// - Gen 2-9 Pokemon count tests - will be added after Gen 1 passes
+// - gen7letsgo, gen8bdsp, gen8legends, gen9legends Pokemon count tests - will be added after Gen 1-9 pass
 // - it('should never import') - file system check, not applicable to Rust
