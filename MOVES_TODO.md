@@ -31,7 +31,7 @@ Moves with callbacks: 373
 - [x] blizzard - Blizzard (Special, Ice) - 1 callback: onModifyMove
 - [x] block - Block (Status, Normal) - 1 callback: onHit
 - [x] boltbeak - Bolt Beak (Physical, Electric) - 1 callback: basePowerCallback
-- [ ] bounce - Bounce (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceBasePower
+- [x] bounce - Bounce (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceBasePower
 - [ ] brickbreak - Brick Break (Physical, Fighting) - 1 callback: onTryHit
 - [ ] brine - Brine (Special, Water) - 1 callback: onBasePower
 - [ ] bugbite - Bug Bite (Physical, Bug) - 1 callback: onHit
