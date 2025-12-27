@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 53/79 TODOs (67.1%)
+**Feature Implementation:** ⚠️ 54/79 TODOs (68.4%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -435,11 +435,34 @@
 
 **Enables:** Correct Gen 1 Bide mechanics, prevents accumulated damage from carrying over after faints
 
+#### Custom Rules Display (1/1) ✅
+- [x] **Add customRules field to FormatData** (dex.rs:580) - Added optional custom_rules field
+- [x] **Implement customRules display** (battle.rs:871-887) - Display custom rules in battle log
+
+**Implementation Details:**
+- Added `custom_rules: Option<Vec<String>>` field to FormatData struct in dex.rs
+- Implemented display logic in battle.rs start() method
+- Finds format by format_id in dex.formats Vec
+- Checks if format.customRules exists and is non-empty
+- Calculates plural suffix: "" for 1 rule, "s" for multiple
+- Calculates open attribute: " open" for <= 5 rules, "" for more
+- Generates HTML with infobox details: `<div class="infobox"><details class="readmore"${open}><summary><strong>${count} custom rule${plural}:</strong></summary> ${rules.join(', ')}</details></div>`
+- Matches JavaScript:
+  ```javascript
+  if (format.customRules) {
+      const plural = format.customRules.length === 1 ? '' : 's';
+      const open = format.customRules.length <= 5 ? ' open' : '';
+      this.add(`raw|<div class="infobox">...`);
+  }
+  ```
+
+**Enables:** Display of custom rules in battle log, proper format information communication to players
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (26 TODOs)
+## Remaining P2 Nice-to-have (25 TODOs)
 
 ### Gen-Specific (2 TODOs)
 - Gen 2-3 queue cancellation
@@ -454,7 +477,7 @@
 - Format callbacks
 - Switch in all active Pokemon
 
-### Infrastructure (20 TODOs)
+### Infrastructure (19 TODOs)
 - Various missing infrastructure pieces
 - Boost migration
 - Request handling improvements

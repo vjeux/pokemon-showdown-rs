@@ -576,6 +576,8 @@ pub struct FormatData {
     pub restricted: Vec<String>,
     #[serde(default)]
     pub unbanlist: Vec<String>,
+    #[serde(default)]
+    pub custom_rules: Option<Vec<String>>,
 }
 
 /// The main Dex structure

@@ -869,7 +869,22 @@ impl Battle {
         }
 
         // JS: if (format.customRules) { this.add(`raw|...`); }
-        // TODO: Implement customRules display
+        // Find the format and display custom rules if they exist
+        if let Some(format) = self.dex.formats.iter().find(|f| {
+            ID::new(&f.name.to_lowercase().replace(" ", "").replace("-", "")) == self.format_id
+        }) {
+            if let Some(custom_rules) = &format.custom_rules {
+                if !custom_rules.is_empty() {
+                    // JS: const plural = format.customRules.length === 1 ? '' : 's';
+                    let plural = if custom_rules.len() == 1 { "" } else { "s" };
+                    // JS: const open = format.customRules.length <= 5 ? ' open' : '';
+                    let open = if custom_rules.len() <= 5 { " open" } else { "" };
+                    // JS: this.add(`raw|<div class="infobox"><details class="readmore"${open}><summary><strong>${format.customRules.length} custom rule${plural}:</strong></summary> ${format.customRules.join(', ')}</details></div>`);
+                    let rules_joined = custom_rules.join(", ");
+                    self.add_log("raw", &[&format!("<div class=\"infobox\"><details class=\"readmore\"{open}><summary><strong>{} custom rule{plural}:</strong></summary> {rules_joined}</details></div>", custom_rules.len())]);
+                }
+            }
+        }
 
         // JS: this.runPickTeam();
         self.run_pick_team();
