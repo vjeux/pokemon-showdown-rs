@@ -85,20 +85,16 @@ function generateMarkdown() {
             markdown += '### Public Methods\n\n';
             for (const method of publicMethods) {
                 markdown += `- [ ] \`${method.name}\` (line ${method.lineNumber})\n`;
-                markdown += `  \`\`\`rust\n`;
-                markdown += `  ${method.signature}\n`;
-                markdown += `  \`\`\`\n\n`;
             }
+            markdown += '\n';
         }
 
         if (privateMethods.length > 0) {
             markdown += '### Private Methods\n\n';
             for (const method of privateMethods) {
                 markdown += `- [ ] \`${method.name}\` (line ${method.lineNumber})\n`;
-                markdown += `  \`\`\`rust\n`;
-                markdown += `  ${method.signature}\n`;
-                markdown += `  \`\`\`\n\n`;
             }
+            markdown += '\n';
         }
 
         markdown += '---\n\n';
