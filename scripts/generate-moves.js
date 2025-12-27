@@ -328,6 +328,17 @@ movesWithCallbacks.forEach(move => {
     });
 });
 
+// Build a map of condition callback -> moves for dispatcher generation
+const conditionCallbackMap = new Map();
+movesWithCallbacks.forEach(move => {
+    move.conditionCallbacks.forEach(callback => {
+        if (!conditionCallbackMap.has(callback.name)) {
+            conditionCallbackMap.set(callback.name, []);
+        }
+        conditionCallbackMap.get(callback.name).push(move.id);
+    });
+});
+
 // Generate dispatch functions
 const sortedCallbacks = Array.from(callbackMap.keys()).sort();
 const dispatchers = sortedCallbacks.map(callback => {
@@ -346,6 +357,31 @@ const dispatchers = sortedCallbacks.map(callback => {
     }
 
     return `/// Dispatch ${callback} callbacks
+pub fn ${funcName}(
+    _battle: &mut Battle${params},
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}`;
+}).join('\n\n');
+
+// Generate condition dispatch functions
+const sortedConditionCallbacks = Array.from(conditionCallbackMap.keys()).sort();
+const conditionDispatchers = sortedConditionCallbacks.map(callback => {
+    const funcName = `dispatch_condition_${camelToSnake(callback)}`;
+
+    // Determine parameters based on callback type
+    let params = '';
+    if (callback.includes('Damage') || callback === 'onTryHit' || callback === 'onHit' || callback === 'onAfterHit') {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: (usize, usize)';
+    } else if (callback === 'onTryMove' || callback === 'onModifyType') {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
+    } else if (callback === 'onBasePower' || callback === 'onAfterMove') {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: Option<(usize, usize)>';
+    } else {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
+    }
+
+    return `/// Dispatch condition ${callback} callbacks
 pub fn ${funcName}(
     _battle: &mut Battle${params},
 ) -> MoveHandlerResult {
@@ -372,6 +408,9 @@ ${movesWithCallbacks.map(m =>
 
 // Dispatch functions
 ${dispatchers}
+
+// Condition dispatch functions
+${conditionDispatchers}
 `;
 
 const modPath = path.join(movesDir, 'mod.rs');
