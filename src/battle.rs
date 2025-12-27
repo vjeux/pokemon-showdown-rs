@@ -9249,8 +9249,32 @@ impl Battle {
         // Special case handling
         match effect_id {
             "partiallytrapped" => {
-                // TODO: Get source effect name from volatiles
-                self.add_log("-damage", &[&target_str, &health_str, "[from] partiallytrapped", "[partiallytrapped]"]);
+                // Get source effect name from volatiles
+                // JS: '[from] ' + target.volatiles['partiallytrapped'].sourceEffect.fullname
+                let source_effect_name = if let Some(side) = self.sides.get(side_idx) {
+                    if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                        let trap_id = ID::new("partiallytrapped");
+                        if let Some(trap_state) = pokemon.volatiles.get(&trap_id) {
+                            // Extract sourceEffect.fullname from data HashMap
+                            if let Some(source_effect) = trap_state.data.get("sourceEffect") {
+                                source_effect.get("fullname")
+                                    .and_then(|v| v.as_str())
+                                    .unwrap_or("partiallytrapped")
+                            } else {
+                                "partiallytrapped"
+                            }
+                        } else {
+                            "partiallytrapped"
+                        }
+                    } else {
+                        "partiallytrapped"
+                    }
+                } else {
+                    "partiallytrapped"
+                };
+
+                let from_str = format!("[from] {}", source_effect_name);
+                self.add_log("-damage", &[&target_str, &health_str, &from_str, "[partiallytrapped]"]);
             }
             "powder" => {
                 self.add_log("-damage", &[&target_str, &health_str, "[silent]"]);

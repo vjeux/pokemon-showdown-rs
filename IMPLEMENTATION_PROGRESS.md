@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 63/79 TODOs (79.7%)
+**Feature Implementation:** ⚠️ 64/79 TODOs (81.0%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -652,11 +652,30 @@
 
 **Enables:** Correct Magic Bounce ability priority ordering in onAllyTryHitSide callbacks
 
+### Session 10 - Partiallytrapped Source Effect (1 implementation)
+
+#### Partiallytrapped Source Effect Name (1/1) ✅
+- [x] **Get source effect from volatiles** (battle.rs:9251-9278) - Extract sourceEffect.fullname from partiallytrapped volatile
+
+**Implementation Details:**
+- Accesses target Pokemon's volatiles HashMap to get 'partiallytrapped' state
+- Extracts sourceEffect object from EffectState.data HashMap
+- Gets fullname property from sourceEffect (e.g., "Bind", "Fire Spin", "Whirlpool")
+- Uses fullname in damage log message instead of generic "partiallytrapped"
+- Matches JavaScript battle.ts:8848:
+  ```javascript
+  this.add('-damage', target, target.getHealth, '[from] ' + target.volatiles['partiallytrapped'].sourceEffect.fullname, '[partiallytrapped]');
+  ```
+- Falls back to "partiallytrapped" if sourceEffect or fullname not found
+- Uses nested Option chaining to safely access volatile data
+
+**Enables:** Correct protocol logging for partial trapping moves showing which specific move is causing damage (Bind, Fire Spin, Whirlpool, etc.)
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (16 TODOs)
+## Remaining P2 Nice-to-have (15 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks
