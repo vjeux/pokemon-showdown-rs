@@ -1,11 +1,5 @@
-# Battle Module TODO - Method Reference
+# Battle Module TODO
 
-This file contains all Rust methods from battle*.rs files.
-Use this as a reference to track which methods need TypeScript source comments.
-
-Generated: 2025-12-27
-
----
 
 ## battle.rs
 
@@ -197,10 +191,6 @@ Generated: 2025-12-27
 - [ ] `game_type_to_string` (line 10147)
 - [ ] `run_custom_event_handlers` (line 10271)
 - [ ] `create_test_team` (line 10326)
-- [ ] `test_battle_creation` (line 10348)
-- [ ] `test_battle_with_players` (line 10360)
-- [ ] `test_battle_start` (line 10385)
-- [ ] `test_battle_prng_deterministic` (line 10412)
 - [ ] `fmt` (line 10439)
 
 ---
@@ -342,61 +332,3 @@ Generated: 2025-12-27
 - [ ] `prioritize_action_ref` (line 772)
 - [ ] `resolve_action` (line 912)
 - [ ] `get_order_for_choice` (line 1008)
-
-### Private Methods
-
-- [ ] `test_queue_basic_operations` (line 1034)
-- [ ] `test_queue_sorting` (line 1051)
-
----
-
-## battle_stream.rs
-
-**Total methods:** 30 (17 public, 13 private)
-
-### Public Methods
-
-- [ ] `parse` (line 125)
-- [ ] `to_protocol` (line 386)
-- [ ] `new` (line 513)
-- [ ] `with_options` (line 527)
-- [ ] `with_battle` (line 540)
-- [ ] `start` (line 562)
-- [ ] `write` (line 572)
-- [ ] `push_message` (line 728)
-- [ ] `read` (line 752)
-- [ ] `battle` (line 770)
-- [ ] `battle_mut` (line 775)
-- [ ] `ended` (line 780)
-- [ ] `winner` (line 785)
-- [ ] `destroy` (line 791)
-- [ ] `new` (line 821)
-- [ ] `push_update` (line 834)
-- [ ] `split_first` (line 884)
-
-### Private Methods
-
-- [ ] `write_line` (line 586)
-- [ ] `default` (line 850)
-- [ ] `default` (line 903)
-- [ ] `test_parse_turn` (line 913)
-- [ ] `test_parse_switch` (line 919)
-- [ ] `test_parse_move` (line 930)
-- [ ] `test_parse_damage` (line 941)
-- [ ] `test_parse_boost` (line 947)
-- [ ] `test_parse_weather` (line 957)
-- [ ] `test_parse_status` (line 963)
-- [ ] `test_to_protocol` (line 972)
-- [ ] `test_battle_stream_creation` (line 985)
-- [ ] `test_parse_terastallize` (line 992)
-
----
-
-## Summary Statistics
-
-- **battle.rs**: 186 methods (125 public, 61 private)
-- **battle_actions.rs**: 76 methods (63 public, 13 private)
-- **battle_queue.rs**: 45 methods (43 public, 2 private)
-- **battle_stream.rs**: 30 methods (17 public, 13 private)
-
-**Grand Total:** 337 methods (248 public, 89 private)
