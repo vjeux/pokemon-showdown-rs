@@ -277,7 +277,7 @@ Moves with callbacks: 373
 - [x] ruination - Ruination (Special, Dark) - 1 callback: damageCallback
 - [x] safeguard - Safeguard (Status, Normal) - 5 callbacks: condition::durationCallback, condition::onSetStatus, condition::onTryAddVolatile, condition::onSideStart, condition::onSideEnd
 - [x] saltcure - Salt Cure (Physical, Rock) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
-- [ ] sandsearstorm - Sandsear Storm (Special, Ground) - 1 callback: onModifyMove
+- [x] sandsearstorm - Sandsear Storm (Special, Ground) - 1 callback: onModifyMove
 - [ ] sappyseed - Sappy Seed (Physical, Grass) - 1 callback: onHit
 - [ ] secretpower - Secret Power (Physical, Normal) - 1 callback: onModifyMove
 - [ ] shadowforce - Shadow Force (Physical, Ghost) - 1 callback: onTryMove
