@@ -1029,6 +1029,24 @@ impl BattleQueue {
             _ => 200,
         }
     }
+
+    /// Get an iterator over (index, action) tuples
+    /// Equivalent to JavaScript array.entries()
+    /// TypeScript: for (const [i, action] of battle.queue.list.entries())
+    pub fn entries(&self) -> impl Iterator<Item = (usize, &Action)> {
+        self.list.iter().enumerate()
+    }
+
+    /// Remove count entries starting at index
+    /// Equivalent to JavaScript array.splice(index, count)
+    /// TypeScript: battle.queue.list.splice(index, count)
+    pub fn splice(&mut self, index: usize, count: usize) {
+        if index >= self.list.len() {
+            return;
+        }
+        let end = std::cmp::min(index + count, self.list.len());
+        self.list.drain(index..end);
+    }
 }
 
 #[cfg(test)]
