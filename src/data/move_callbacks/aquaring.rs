@@ -15,7 +15,7 @@ pub mod condition {
     ///     this.add('-start', pokemon, 'Aqua Ring');
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // TODO: battle.add('-start', pokemon, 'Aqua Ring');
         EventResult::Continue
     }
 
@@ -23,7 +23,16 @@ pub mod condition {
     ///     this.heal(pokemon.baseMaxhp / 16);
     /// }
     pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let base_maxhp = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.base_maxhp
+        } else {
+            return EventResult::Continue;
+        };
+
+        // Heal 1/16 of base max HP each turn
+        let heal_amount = base_maxhp / 16;
+        battle.heal(heal_amount, Some(pokemon_pos), None, None);
+
         EventResult::Continue
     }
 }
