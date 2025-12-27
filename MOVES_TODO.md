@@ -345,6 +345,10 @@ The following moves require infrastructure that doesn't exist yet:
 - `source.moveThisTurnResult`: healblock - Mutable field tracking move result (true/false/null)
 - `move.flags['heal']`: healblock - Heal flag for healing moves
 - `effect.name`: healblock, grudge - Effect name string field (can be from effect parameter)
+- `effect.effectType`: grudge, disable - Effect type string ('Ability', 'Move', etc.)
+- `move.flags['futuremove']`: grudge - Future move flag for Future Sight/Doom Desire
+- `move.flags['gravity']`: gravity - Gravity flag for moves affected by gravity
+- `moveSlot.pp`: grudge - PP field (mutable) for setting PP directly
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
