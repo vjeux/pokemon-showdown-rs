@@ -186,7 +186,7 @@ Moves with callbacks: 373
 - [x] magiccoat - Magic Coat (Status, Psychic) - 3 callbacks: condition::onStart, condition::onTryHit, condition::onAllyTryHitSide
 - [x] magicpowder - Magic Powder (Status, Psychic) - 1 callback: onHit
 - [x] magicroom - Magic Room (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
-- [ ] magneticflux - Magnetic Flux (Status, Electric) - 1 callback: onHitSide
+- [x] magneticflux - Magnetic Flux (Status, Electric) - 1 callback: onHitSide
 - [ ] magnetrise - Magnet Rise (Status, Electric) - 4 callbacks: onTry, condition::onStart, condition::onImmunity, condition::onEnd
 - [ ] magnitude - Magnitude (Physical, Ground) - 2 callbacks: onModifyMove, onUseMoveMessage
 - [ ] matblock - Mat Block (Status, Fighting) - 3 callbacks: onTry, condition::onSideStart, condition::onTryHit
