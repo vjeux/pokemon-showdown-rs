@@ -27,7 +27,49 @@ use crate::event::EventResult;
 ///     return bp;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let pokemon = pokemon_pos;
+
+    // const ratio = Math.max(Math.floor(pokemon.hp * 48 / pokemon.maxhp), 1);
+    let ratio = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        ((pokemon_pokemon.hp * 48) / pokemon_pokemon.maxhp).max(1)
+    };
+
+    // let bp;
+    // if (ratio < 2) {
+    //     bp = 200;
+    // } else if (ratio < 5) {
+    //     bp = 150;
+    // } else if (ratio < 10) {
+    //     bp = 100;
+    // } else if (ratio < 17) {
+    //     bp = 80;
+    // } else if (ratio < 33) {
+    //     bp = 40;
+    // } else {
+    //     bp = 20;
+    // }
+    let bp = if ratio < 2 {
+        200
+    } else if ratio < 5 {
+        150
+    } else if ratio < 10 {
+        100
+    } else if ratio < 17 {
+        80
+    } else if ratio < 33 {
+        40
+    } else {
+        20
+    };
+
+    // this.debug(`BP: ${bp}`);
+    battle.debug(&format!("BP: {}", bp));
+
+    // return bp;
+    EventResult::Int(bp)
 }
 
