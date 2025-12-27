@@ -2961,7 +2961,9 @@ pub fn use_move_inner(
                 }
                 ZPowerResult::HealReplacement => {
                     // JS: pokemon.side.addSlotCondition(pokemon, 'healreplacement', pokemon, move);
-                    // TODO: Implement addSlotCondition for healreplacement
+                    let healreplacement_id = ID::new("healreplacement");
+                    let slot = battle.sides[side_idx].pokemon[poke_idx].position;
+                    battle.sides[side_idx].add_slot_condition(slot, healreplacement_id, None);
                 }
                 ZPowerResult::ClearNegativeBoost => {
                     // JS: Clear all negative boosts and add '-clearnegativeboost' message
@@ -2988,11 +2990,13 @@ pub fn use_move_inner(
                 }
                 ZPowerResult::Redirect => {
                     // JS: pokemon.addVolatile('followme', pokemon, zPower);
-                    // TODO: Implement addVolatile for followme (Follow Me redirect)
+                    let followme_id = ID::new("followme");
+                    battle.sides[side_idx].pokemon[poke_idx].add_volatile(followme_id);
                 }
                 ZPowerResult::Crit2 => {
                     // JS: pokemon.addVolatile('focusenergy', pokemon, zPower);
-                    // TODO: Implement addVolatile for focusenergy (critical hit boost)
+                    let focusenergy_id = ID::new("focusenergy");
+                    battle.sides[side_idx].pokemon[poke_idx].add_volatile(focusenergy_id);
                 }
                 ZPowerResult::None => {
                     // No Z-Power effect to apply

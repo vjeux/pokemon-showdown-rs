@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 43/79 TODOs (54.4%)
+**Feature Implementation:** ⚠️ 46/79 TODOs (58.2%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -334,11 +334,30 @@
 
 **Enables:** Proper protocol logging for damage Z-moves, distinguishes Z-powered damaging moves in battle log
 
+#### Z-Move Status Effects (3/3) ✅
+- [x] **addVolatile for followme** (battle_actions.rs:2991) - Z-Move redirect effect
+- [x] **addVolatile for focusenergy** (battle_actions.rs:2996) - Z-Move critical hit boost
+- [x] **addSlotCondition for healreplacement** (battle_actions.rs:2965) - Z-Move healing replacement
+
+**Implementation Details:**
+- Followme: Adds 'followme' volatile using pokemon.add_volatile()
+- Focusenergy: Adds 'focusenergy' volatile using pokemon.add_volatile()
+- Healreplacement: Calls side.add_slot_condition() with pokemon's position slot
+- Uses existing add_volatile() method (pokemon.rs:560-566)
+- Uses existing add_slot_condition() method (side.rs:373-384)
+- Matches JavaScript: `pokemon.addVolatile('followme')`, `pokemon.addVolatile('focusenergy')`, `pokemon.side.addSlotCondition(pokemon, 'healreplacement')`
+
+**Enables:**
+- Follow Me redirect effect (Z-Splash, Z-Celebrate, etc.)
+- Critical hit boost (Z-Foresight, Z-Acupressure, etc.)
+- Healing replacement on switch (Z-Parting Shot, Z-Memento, etc.)
+- Full status Z-Move effect support
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (36 TODOs)
+## Remaining P2 Nice-to-have (33 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions
