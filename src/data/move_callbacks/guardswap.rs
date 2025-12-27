@@ -23,7 +23,77 @@ use crate::event::EventResult;
 ///     this.add('-swapboost', source, target, 'def, spd', '[from] move: Guard Swap');
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let source = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // const targetBoosts: SparseBoostsTable = {};
+    // const sourceBoosts: SparseBoostsTable = {};
+    // const defSpd: BoostID[] = ['def', 'spd'];
+    // for (const stat of defSpd) {
+    //     targetBoosts[stat] = target.boosts[stat];
+    //     sourceBoosts[stat] = source.boosts[stat];
+    // }
+
+    let target_def_boost = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        *target_pokemon.boosts.get("def").unwrap_or(&0)
+    };
+
+    let target_spd_boost = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        *target_pokemon.boosts.get("spd").unwrap_or(&0)
+    };
+
+    let source_def_boost = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        *source_pokemon.boosts.get("def").unwrap_or(&0)
+    };
+
+    let source_spd_boost = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        *source_pokemon.boosts.get("spd").unwrap_or(&0)
+    };
+
+    // source.setBoost(targetBoosts);
+    {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.boosts.insert("def".to_string(), target_def_boost);
+        source_pokemon.boosts.insert("spd".to_string(), target_spd_boost);
+    }
+
+    // target.setBoost(sourceBoosts);
+    {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.boosts.insert("def".to_string(), source_def_boost);
+        target_pokemon.boosts.insert("spd".to_string(), source_spd_boost);
+    }
+
+    // this.add('-swapboost', source, target, 'def, spd', '[from] move: Guard Swap');
+    let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+    let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+    battle.add("-swapboost", &[source_arg, target_arg, "def, spd".into(), "[from] move: Guard Swap".into()]);
+
     EventResult::Continue
 }
 
