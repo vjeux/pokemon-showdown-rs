@@ -7602,6 +7602,442 @@ impl Battle {
 
         handlers
     }
+
+    // =========================================================================
+    // MOVE EXECUTION - Core damage and hit logic
+    // Ported from battle-actions.ts
+    // =========================================================================
+
+    /// Get damage for a move
+    /// Equivalent to getDamage() in battle-actions.ts:1583
+    ///
+    /// Returns:
+    /// - Some(damage) - amount of damage to deal
+    /// - Some(0) - move succeeds but deals 0 damage
+    /// - None - move fails (no message)
+    ///
+    /// The false case (with error message) is handled by returning 0 and
+    /// letting the caller add the fail message.
+    pub fn get_damage(
+        &mut self,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
+        move_id: &ID,
+    ) -> Option<i32> {
+        // Get move data
+        let move_data = match self.dex.get_move(move_id.as_str()) {
+            Some(m) => m.clone(),
+            None => return None,
+        };
+
+        // Check immunity first
+        // JavaScript: if (!target.runImmunity(move, !suppressMessages))
+        // For now, we'll do a basic type check (full immunity checking would be more complex)
+        let (target_side, target_poke) = target_pos;
+        let target_types = if let Some(side) = self.sides.get(target_side) {
+            if let Some(pokemon) = side.pokemon.get(target_poke) {
+                pokemon.types.clone()
+            } else {
+                return None;
+            }
+        } else {
+            return None;
+        };
+
+        // Check type immunity
+        let effectiveness = crate::data::typechart::get_effectiveness_multi(&move_data.move_type, &target_types);
+        if effectiveness == 0.0 {
+            return None; // Immune
+        }
+
+        // OHKO moves
+        if move_data.ohko.is_some() {
+            let target_hp = if let Some(side) = self.sides.get(target_side) {
+                if let Some(pokemon) = side.pokemon.get(target_poke) {
+                    if self.gen == 3 {
+                        pokemon.hp
+                    } else {
+                        pokemon.maxhp
+                    }
+                } else {
+                    return None;
+                }
+            } else {
+                return None;
+            };
+            return Some(target_hp);
+        }
+
+        // Fixed damage moves
+        if let Some(ref heal_tuple) = move_data.heal {
+            // Heal moves have (numerator, denominator) format
+            // But damage field would be different - this is actually heal, not damage
+            // For actual fixed damage, we'd check move.damage field
+            // For now, skip this
+        }
+
+        let base_power = move_data.base_power;
+        if base_power == 0 {
+            return Some(0); // undefined in JS - no damage dealt, move continues
+        }
+
+        // Get attacker level
+        let level = if let Some(side) = self.sides.get(source_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+                pokemon.level as i32
+            } else {
+                return None;
+            }
+        } else {
+            return None;
+        };
+
+        // Determine attack and defense stats
+        let is_physical = move_data.category == "Physical";
+
+        // Get attack stat with boosts
+        let attack = if let Some(side) = self.sides.get(source_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+                if is_physical {
+                    let boost = pokemon.boosts.atk;
+                    let base_stat = pokemon.stored_stats.atk as i32;
+                    crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
+                } else {
+                    let boost = pokemon.boosts.spa;
+                    let base_stat = pokemon.stored_stats.spa as i32;
+                    crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
+                }
+            } else {
+                return None;
+            }
+        } else {
+            return None;
+        };
+
+        // Get defense stat with boosts
+        let defense = if let Some(side) = self.sides.get(target_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                if is_physical {
+                    let boost = pokemon.boosts.def;
+                    let base_stat = pokemon.stored_stats.def as i32;
+                    crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
+                } else {
+                    let boost = pokemon.boosts.spd;
+                    let base_stat = pokemon.stored_stats.spd as i32;
+                    crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
+                }
+            } else {
+                return None;
+            }
+        } else {
+            return None;
+        };
+
+        // Base damage calculation
+        // JavaScript: int(int(int(2 * L / 5 + 2) * A * P / D) / 50)
+        let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense.max(1)) / 50;
+
+        // Call modifyDamage for the full calculation
+        let damage = self.modify_damage(base_damage, source_pos, target_pos, &move_data);
+
+        Some(damage)
+    }
+
+    /// Apply damage modifiers
+    /// Equivalent to modifyDamage() in battle-actions.ts:1722
+    fn modify_damage(
+        &mut self,
+        mut base_damage: i32,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
+        move_data: &crate::dex::MoveData,
+    ) -> i32 {
+        // Add 2 to base damage
+        base_damage += 2;
+
+        // Get source and target data
+        let (source_types, target_types) = {
+            let source_types = if let Some(side) = self.sides.get(source_pos.0) {
+                if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+                    pokemon.types.clone()
+                } else {
+                    vec![]
+                }
+            } else {
+                vec![]
+            };
+
+            let target_types = if let Some(side) = self.sides.get(target_pos.0) {
+                if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                    pokemon.types.clone()
+                } else {
+                    vec![]
+                }
+            } else {
+                vec![]
+            };
+
+            (source_types, target_types)
+        };
+
+        // Apply STAB (Same Type Attack Bonus)
+        let has_stab = source_types.iter().any(|t| t == &move_data.move_type);
+        if has_stab {
+            base_damage = (base_damage as f64 * 1.5) as i32;
+        }
+
+        // Apply type effectiveness
+        let effectiveness = crate::data::typechart::get_effectiveness_multi(&move_data.move_type, &target_types);
+        base_damage = (base_damage as f64 * effectiveness) as i32;
+
+        // Random factor (85-100%)
+        let random_factor = 85 + self.random(16);
+        base_damage = base_damage * random_factor / 100;
+
+        base_damage.max(1)
+    }
+
+    /// Try to hit targets with a spread move
+    /// Equivalent to trySpreadMoveHit() in battle-actions.ts:545
+    ///
+    /// This is the main entry point for move execution with the 7-step pipeline
+    pub fn try_spread_move_hit(
+        &mut self,
+        targets: &[(usize, usize)],
+        pokemon_pos: (usize, usize),
+        move_id: &ID,
+    ) -> bool {
+        if targets.is_empty() {
+            return false;
+        }
+
+        // For now, implement a simplified version that just calls spreadMoveHit
+        // The full implementation would have the 7-step pipeline
+
+        let mut target_list: Vec<Option<(usize, usize)>> = targets.iter().map(|&t| Some(t)).collect();
+
+        let (damages, final_targets) = self.spread_move_hit(&target_list, pokemon_pos, move_id, false, false);
+
+        // Check if any target was hit
+        for (i, damage) in damages.iter().enumerate() {
+            if let Some(dmg) = damage {
+                if *dmg != 0 || final_targets.get(i).and_then(|t| *t).is_some() {
+                    return true;
+                }
+            }
+        }
+
+        false
+    }
+
+    /// Spread move hit - handles individual target hit processing
+    /// Equivalent to spreadMoveHit() in battle-actions.ts:1043
+    ///
+    /// Returns (damages, targets) where damages[i] corresponds to targets[i]
+    fn spread_move_hit(
+        &mut self,
+        targets: &[Option<(usize, usize)>],
+        source_pos: (usize, usize),
+        move_id: &ID,
+        is_secondary: bool,
+        is_self: bool,
+    ) -> (Vec<Option<i32>>, Vec<Option<(usize, usize)>>) {
+        let mut damages: Vec<Option<i32>> = vec![Some(0); targets.len()];
+        let mut final_targets = targets.to_vec();
+
+        // Get move data
+        let move_data = match self.dex.get_move(move_id.as_str()) {
+            Some(m) => m.clone(),
+            None => return (damages, final_targets),
+        };
+
+        // Step 1: TryHit event
+        if !is_secondary && !is_self {
+            for (i, &target) in targets.iter().enumerate() {
+                if let Some(target_pos) = target {
+                    // JavaScript: hitResult = this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
+                    let hit_result = self.single_event("TryHit", move_id, Some(target_pos), Some(source_pos), Some(move_id));
+
+                    // If TryHit returns false, the move fails
+                    if matches!(hit_result, crate::event::EventResult::Boolean(false) | crate::event::EventResult::Fail) {
+                        damages[i] = None;
+                        final_targets[i] = None;
+                    }
+                }
+            }
+        }
+
+        // Step 2: Get damage for each target
+        damages = self.get_spread_damage(&damages, targets, source_pos, move_id, is_secondary, is_self);
+
+        // Step 3: Apply damage using spread_damage
+        let damage_vals: Vec<Option<i32>> = damages.clone();
+        let applied_damages = self.spread_damage(
+            &damage_vals,
+            &final_targets,
+            Some(source_pos),
+            Some(move_id),
+            false,
+        );
+
+        for (i, &applied) in applied_damages.iter().enumerate() {
+            damages[i] = applied;
+            if applied.is_none() || applied == Some(0) {
+                // Don't clear target on 0 damage - that's still a hit
+                // Only clear on None (failed)
+                if applied.is_none() {
+                    final_targets[i] = None;
+                }
+            }
+        }
+
+        // Step 4: Run move effects (boosts, status, healing, etc.)
+        damages = self.run_move_effects(&damages, &final_targets, source_pos, &move_data, is_secondary, is_self);
+
+        (damages, final_targets)
+    }
+
+    /// Get damage for each target in a spread move
+    /// Equivalent to getSpreadDamage() in battle-actions.ts:1163
+    fn get_spread_damage(
+        &mut self,
+        damages: &[Option<i32>],
+        targets: &[Option<(usize, usize)>],
+        source_pos: (usize, usize),
+        move_id: &ID,
+        _is_secondary: bool,
+        _is_self: bool,
+    ) -> Vec<Option<i32>> {
+        let mut result_damages = damages.to_vec();
+
+        for (i, &target) in targets.iter().enumerate() {
+            if let Some(target_pos) = target {
+                // Calculate damage using getDamage
+                let cur_damage = self.get_damage(source_pos, target_pos, move_id);
+                result_damages[i] = cur_damage;
+            } else {
+                result_damages[i] = None;
+            }
+        }
+
+        result_damages
+    }
+
+    /// Run move effects (boosts, healing, status, etc.)
+    /// Equivalent to runMoveEffects() in battle-actions.ts:1201
+    fn run_move_effects(
+        &mut self,
+        damages: &[Option<i32>],
+        targets: &[Option<(usize, usize)>],
+        _source_pos: (usize, usize),
+        move_data: &crate::dex::MoveData,
+        _is_secondary: bool,
+        _is_self: bool,
+    ) -> Vec<Option<i32>> {
+        let mut result_damages = damages.to_vec();
+
+        for (i, &target) in targets.iter().enumerate() {
+            if target.is_none() {
+                continue;
+            }
+
+            let target_pos = target.unwrap();
+
+            // Apply boosts
+            if let Some(ref boosts_map) = move_data.boosts {
+                // Convert HashMap<String, i32> to BoostsTable
+                let mut boosts_table = crate::dex_data::BoostsTable::default();
+                for (stat_name, &value) in boosts_map.iter() {
+                    match stat_name.to_lowercase().as_str() {
+                        "atk" => boosts_table.atk = value as i8,
+                        "def" => boosts_table.def = value as i8,
+                        "spa" => boosts_table.spa = value as i8,
+                        "spd" => boosts_table.spd = value as i8,
+                        "spe" => boosts_table.spe = value as i8,
+                        "accuracy" => boosts_table.accuracy = value as i8,
+                        "evasion" => boosts_table.evasion = value as i8,
+                        _ => {}
+                    }
+                }
+
+                // Apply boosts to target
+                if let Some(side) = self.sides.get_mut(target_pos.0) {
+                    if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                        for boost_id in crate::dex_data::BoostID::all() {
+                            let change = boosts_table.get(*boost_id);
+                            if change != 0 {
+                                pokemon.boosts.boost(*boost_id, change);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Apply healing
+            if let Some((heal_num, heal_denom)) = move_data.heal {
+                let target_maxhp = if let Some(side) = self.sides.get(target_pos.0) {
+                    if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                        pokemon.maxhp
+                    } else {
+                        0
+                    }
+                } else {
+                    0
+                };
+
+                if target_maxhp > 0 {
+                    let heal_amount = target_maxhp * heal_num / heal_denom;
+                    // Apply healing
+                    let (current_hp, max_hp) = if let Some(side) = self.sides.get_mut(target_pos.0) {
+                        if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                            let old_hp = pokemon.hp;
+                            pokemon.hp = (pokemon.hp + heal_amount).min(pokemon.maxhp);
+                            let healed = pokemon.hp - old_hp;
+                            if healed > 0 {
+                                (pokemon.hp, pokemon.maxhp)
+                            } else {
+                                (0, 0) // No healing occurred
+                            }
+                        } else {
+                            (0, 0)
+                        }
+                    } else {
+                        (0, 0)
+                    };
+
+                    // Log healing after releasing mutable borrow
+                    if current_hp > 0 {
+                        self.add_log("-heal", &[
+                            &format!("p{}a", target_pos.0 + 1),
+                            &format!("{}/{}", current_hp, max_hp),
+                        ]);
+                    }
+                }
+            }
+
+            // Apply status
+            if let Some(ref status) = move_data.status {
+                if let Some(side) = self.sides.get_mut(target_pos.0) {
+                    if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                        // Simple status application (full version would check immunity)
+                        if pokemon.status.is_empty() {
+                            pokemon.status = crate::dex_data::ID::new(status);
+                            self.add_log("-status", &[
+                                &format!("p{}a", target_pos.0 + 1),
+                                status,
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            // Keep damage result
+            // In the real implementation, we'd check if any effects failed
+            // and update result_damages[i] accordingly
+        }
+
+        result_damages
+    }
 }
 
 /// Priority item for sorting actions/handlers

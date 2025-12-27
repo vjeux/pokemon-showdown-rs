@@ -2000,33 +2000,16 @@ pub fn use_move_inner(
     }
 
     // let damage: number | false | undefined | '' = false;
-    // if (move.target === 'all' || move.target === 'foeSide' || move.target === 'allySide' || move.target === 'allyTeam') {
-    //     damage = this.tryMoveHit(targets, pokemon, move);
-    //     if (damage === this.battle.NOT_FAIL) pokemon.moveThisTurnResult = null;
-    //     if (damage || damage === 0 || damage === undefined) moveResult = true;
-    // } else {
-    //     if (!targets.length) {
-    //         this.battle.attrLastMove('[notarget]');
-    //         this.battle.add(this.battle.gen >= 5 ? '-fail' : '-notarget', pokemon);
-    //         return false;
-    //     }
-    //     if (this.battle.gen === 4 && move.selfdestruct === 'always') {
-    //         this.battle.faint(pokemon, pokemon, move);
-    //     }
-    //     moveResult = this.trySpreadMoveHit(targets, pokemon, move);
-    // }
-    // TODO: Implement tryMoveHit and trySpreadMoveHit - CORE MOVE EXECUTION
-    // This is the heart of move execution:
-    // - tryMoveHit: for field-wide moves (all, foeSide, allySide, allyTeam)
-    // - trySpreadMoveHit: for targeted moves (normal, any, adjacentFoe, etc.)
-    // These methods handle:
-    // - Damage calculation via getDamage
-    // - Hit checks (accuracy, immunity, invulnerability)
-    // - Applying move effects (status, stat changes, etc.)
-    // - Secondary effects
-    // - Force switch/self switch
-    // This is a major implementation that requires porting from battle-actions.ts
-    // For now, using placeholder that always fails
+    // Execute move based on target type
+    if matches!(move_data.target.as_str(), "all" | "foeSide" | "allySide" | "allyTeam") {
+        // Field-wide moves - for now, treat like targeted moves with single target
+        // Full implementation would use tryMoveHit instead of trySpreadMoveHit
+        move_result = battle.try_spread_move_hit(&[target_pos], pokemon_pos, move_or_move_name);
+    } else {
+        // Targeted moves - use trySpreadMoveHit
+        // For now, we're using a single target (proper implementation would get all targets)
+        move_result = battle.try_spread_move_hit(&[target_pos], pokemon_pos, move_or_move_name);
+    }
 
     // if (move.selfBoost && moveResult) this.moveHit(pokemon, pokemon, move, move.selfBoost, false, true);
     // Self-boost is handled through move data and event system
