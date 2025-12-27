@@ -4,8 +4,9 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Arg};
 use crate::event::EventResult;
+use crate::dex_data::ID;
 
 /// onHit(target) {
 ///     if (!this.canSwitch(target.side) || target.volatiles['commanded']) {
@@ -15,7 +16,36 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // Get the target (which is the user of Baton Pass)
+    let target = target_pos.unwrap_or(pokemon_pos);
+
+    // Get target pokemon
+    let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // if (!this.canSwitch(target.side) || target.volatiles['commanded']) {
+    let can_switch_count = battle.can_switch(target.0);
+    let has_commanded = target_pokemon.volatiles.contains_key(&ID::from("commanded"));
+
+    if can_switch_count == 0 || has_commanded {
+        // this.attrLastMove('[still]');
+        battle.attr_last_move(&["[still]"]);
+
+        // Get target pokemon again for add
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        // this.add('-fail', target);
+        battle.add("-fail", &[target_pokemon.into()]);
+
+        // return this.NOT_FAIL;
+        return EventResult::NOT_FAIL;
+    }
+
     EventResult::Continue
 }
 
