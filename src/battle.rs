@@ -7378,7 +7378,7 @@ impl Battle {
 
         // JavaScript: const prefixedHandlers = !['BeforeTurn', 'Update', 'Weather', 'WeatherChange', 'TerrainChange'].includes(eventName);
         let event_name = event_id.trim_start_matches("on");
-        let _prefixed_handlers = !matches!(event_name, "BeforeTurn" | "Update" | "Weather" | "WeatherChange" | "TerrainChange");
+        let prefixed_handlers = !matches!(event_name, "BeforeTurn" | "Update" | "Weather" | "WeatherChange" | "TerrainChange");
 
         // JavaScript: if (target instanceof Pokemon && (target.isActive || source?.isActive))
         // Rust: We only handle Pokemon targets currently
@@ -7387,22 +7387,72 @@ impl Battle {
             let mut pokemon_handlers = self.find_pokemon_event_handlers(event_id, target_pos);
             handlers.append(&mut pokemon_handlers);
 
-            // TODO: Add prefixed handlers (onAlly, onFoe, onAny) when needed
-            // JavaScript does:
-            // for (const allyActive of target.alliesAndSelf()) {
-            //     handlers.push(...this.findPokemonEventHandlers(allyActive, `onAlly${eventName}`));
-            //     handlers.push(...this.findPokemonEventHandlers(allyActive, `onAny${eventName}`));
-            // }
-            // for (const foeActive of target.foes()) {
-            //     handlers.push(...this.findPokemonEventHandlers(foeActive, `onFoe${eventName}`));
-            //     handlers.push(...this.findPokemonEventHandlers(foeActive, `onAny${eventName}`));
-            // }
+            if prefixed_handlers {
+                let (target_side, _target_idx) = target_pos;
+
+                // Add prefixed handlers (onAlly, onFoe, onAny)
+                // JavaScript:
+                // for (const allyActive of target.alliesAndSelf()) {
+                //     handlers.push(...this.findPokemonEventHandlers(allyActive, `onAlly${eventName}`));
+                //     handlers.push(...this.findPokemonEventHandlers(allyActive, `onAny${eventName}`));
+                // }
+
+                // Get all active Pokemon on target's side (allies and self)
+                if let Some(side) = self.sides.get(target_side) {
+                    for (slot_idx, opt_poke_idx) in side.active.iter().enumerate() {
+                        if let Some(poke_idx) = opt_poke_idx {
+                            let ally_pos = (target_side, *poke_idx);
+                            // onAlly handlers
+                            let ally_event = format!("onAlly{}", event_name);
+                            let mut ally_handlers = self.find_pokemon_event_handlers(&ally_event, ally_pos);
+                            handlers.append(&mut ally_handlers);
+
+                            // onAny handlers
+                            let any_event = format!("onAny{}", event_name);
+                            let mut any_handlers = self.find_pokemon_event_handlers(&any_event, ally_pos);
+                            handlers.append(&mut any_handlers);
+                        }
+                    }
+                }
+
+                // JavaScript:
+                // for (const foeActive of target.foes()) {
+                //     handlers.push(...this.findPokemonEventHandlers(foeActive, `onFoe${eventName}`));
+                //     handlers.push(...this.findPokemonEventHandlers(foeActive, `onAny${eventName}`));
+                // }
+
+                // Get all active Pokemon on opposing side(s) (foes)
+                for (side_idx, side) in self.sides.iter().enumerate() {
+                    if side_idx != target_side {
+                        for (slot_idx, opt_poke_idx) in side.active.iter().enumerate() {
+                            if let Some(poke_idx) = opt_poke_idx {
+                                let foe_pos = (side_idx, *poke_idx);
+                                // onFoe handlers
+                                let foe_event = format!("onFoe{}", event_name);
+                                let mut foe_handlers = self.find_pokemon_event_handlers(&foe_event, foe_pos);
+                                handlers.append(&mut foe_handlers);
+
+                                // onAny handlers
+                                let any_event = format!("onAny{}", event_name);
+                                let mut any_handlers = self.find_pokemon_event_handlers(&any_event, foe_pos);
+                                handlers.append(&mut any_handlers);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // JavaScript: if (source && prefixedHandlers) {
         //     handlers.push(...this.findPokemonEventHandlers(source, `onSource${eventName}`));
         // }
-        // TODO: Add source handlers when prefixed handler support is implemented
+        if let Some(source_pos) = source {
+            if prefixed_handlers {
+                let source_event = format!("onSource{}", event_name);
+                let mut source_handlers = self.find_pokemon_event_handlers(&source_event, source_pos);
+                handlers.append(&mut source_handlers);
+            }
+        }
 
         // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
         let mut field_handlers = self.find_field_event_handlers(event_id);
