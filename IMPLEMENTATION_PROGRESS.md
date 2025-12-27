@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 74/79 TODOs (93.7%)
+**Feature Implementation:** ⚠️ 75/79 TODOs (94.9%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -868,6 +868,31 @@
 - Side ID mapping: side_index 0 -> "p1", side_index 1 -> "p2"
 
 **Enables:** Team preview when pickedTeamSize is set, proper forme hiding for legendary Pokemon during team selection, correct side-specific message splitting
+
+### Session 16 - Battle Start Switch In (1 implementation)
+
+#### Switch In All Active Pokemon (1/1) ✅
+- [x] **Switch in active Pokemon at battle start** (battle.rs:6353-6362) - Switch in all active Pokemon when battle starts
+
+**Implementation Details:**
+- Iterates through all sides
+- For each side, iterates through active.length positions
+- Calls switch_in(side_idx, i, i, None, false) for each position where:
+  - side_idx: Side index
+  - pos: i (position in active array)
+  - pokemon_index: i (assumes first N Pokemon are the active ones)
+  - source_effect: None (no specific effect triggering switch)
+  - is_drag: false (not a forced switch/drag)
+- Matches JavaScript: battle.ts (for loop over sides and active positions)
+
+**Technical Notes:**
+- Extracts active_length before loop to avoid borrow checker issues
+- Switches in Pokemon in order (0th Pokemon to 0th position, 1st to 1st, etc.)
+- Runs before the Start event for each Pokemon's species
+- Sets up initial battle state with all active Pokemon on field
+
+**Enables:** Proper battle initialization with all active Pokemon switched in, triggers switch-in abilities and events, correct battle start sequence
+
 
 
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE

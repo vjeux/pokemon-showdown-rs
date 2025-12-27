@@ -6350,8 +6350,16 @@ impl Battle {
                             }
                         }
 
-                        // TODO: Switch in all active Pokemon (requires battle_actions integration)
                         // JS: for (const side of this.sides) { for (let i = 0; i < side.active.length; i++) { this.actions.switchIn(side.pokemon[i], i); } }
+                        // Switch in all active Pokemon at battle start
+                        for side_idx in 0..self.sides.len() {
+                            let active_length = self.sides[side_idx].active.len();
+                            for i in 0..active_length {
+                                // Switch in the ith Pokemon from the team into the ith active position
+                                // JS: this.actions.switchIn(side.pokemon[i], i);
+                                self.switch_in(side_idx, i, i, None, false);
+                            }
+                        }
 
                         // JS: for (const pokemon of this.getAllPokemon()) { this.singleEvent('Start', ...); }
                         // Call Start event for each Pokemon's species
