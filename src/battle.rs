@@ -11276,9 +11276,52 @@ impl Battle {
             // For now, skip this
         }
 
-        let base_power = move_data.base_power;
+        let mut base_power = move_data.base_power;
         if base_power == 0 {
             return Some(0); // undefined in JS - no damage dealt, move continues
+        }
+
+        // Calculate critical hit
+        // JavaScript: let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
+        let mut crit_ratio = move_data.crit_ratio;
+
+        // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
+        if let Some(modified_crit) = self.run_event("ModifyCritRatio", Some(source_pos), Some(target_pos), Some(&move_data.id), Some(crit_ratio)) {
+            crit_ratio = modified_crit;
+        }
+
+        // Clamp crit ratio based on generation
+        let crit_mult = if self.gen <= 5 {
+            crit_ratio = crit_ratio.clamp(0, 5);
+            [0, 16, 8, 4, 3, 2]
+        } else if self.gen == 6 {
+            crit_ratio = crit_ratio.clamp(0, 4);
+            [0, 16, 8, 2, 1]
+        } else {
+            crit_ratio = crit_ratio.clamp(0, 4);
+            [0, 24, 8, 2, 1]
+        };
+
+        // Determine if this is a critical hit
+        // JavaScript: moveHit.crit = move.willCrit || false; if (move.willCrit === undefined && critRatio) moveHit.crit = this.battle.randomChance(1, critMult[critRatio]);
+        let mut is_crit = false;
+        if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
+            let crit_chance = crit_mult[crit_ratio as usize];
+            if crit_chance > 0 {
+                is_crit = self.random(crit_chance) == 0;
+            }
+        }
+
+        // Trigger CriticalHit event to allow abilities to prevent/modify crit
+        // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
+        if is_crit {
+            is_crit = self.run_event_bool("CriticalHit", Some(target_pos), None, Some(&move_data.id));
+        }
+
+        // Trigger BasePower event to allow abilities/items to modify base power
+        // JavaScript: basePower = this.battle.runEvent('BasePower', source, target, move, basePower, true);
+        if let Some(modified_bp) = self.run_event("BasePower", Some(source_pos), Some(target_pos), Some(&move_data.id), Some(base_power)) {
+            base_power = modified_bp;
         }
 
         // Get attacker level
@@ -11337,8 +11380,8 @@ impl Battle {
         // JavaScript: int(int(int(2 * L / 5 + 2) * A * P / D) / 50)
         let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense.max(1)) / 50;
 
-        // Call modifyDamage for the full calculation
-        let damage = self.modify_damage(base_damage, source_pos, target_pos, &move_data);
+        // Call modifyDamage for the full calculation (pass is_crit for damage multiplier)
+        let damage = self.modify_damage(base_damage, source_pos, target_pos, &move_data, is_crit);
 
         Some(damage)
     }
@@ -11351,9 +11394,17 @@ impl Battle {
         source_pos: (usize, usize),
         target_pos: (usize, usize),
         move_data: &crate::dex::MoveData,
+        is_crit: bool,
     ) -> i32 {
         // Add 2 to base damage
         base_damage += 2;
+
+        // Apply critical hit multiplier
+        // JavaScript: if (isCrit) baseDamage = tr(baseDamage * (move.critModifier || (this.battle.gen >= 6 ? 1.5 : 2)));
+        if is_crit {
+            let crit_multiplier = if self.gen >= 6 { 1.5 } else { 2.0 };
+            base_damage = (base_damage as f64 * crit_multiplier) as i32;
+        }
 
         // Get source and target data
         let (source_types, target_types) = {
@@ -11468,6 +11519,50 @@ impl Battle {
                     if matches!(hit_result, crate::event::EventResult::Boolean(false) | crate::event::EventResult::Fail) {
                         damages[i] = None;
                         final_targets[i] = None;
+                    }
+                }
+            }
+        }
+
+        // Step 1.5: Accuracy check
+        // JavaScript: accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+        if !is_secondary && !is_self {
+            for (i, &target) in targets.iter().enumerate() {
+                if let Some(target_pos) = target {
+                    // Skip if already failed TryHit
+                    if damages[i].is_none() {
+                        continue;
+                    }
+
+                    // Get base accuracy from move
+                    let base_accuracy = match self.dex.get_move(move_id.as_str()) {
+                        Some(m) => match m.accuracy {
+                            crate::dex::Accuracy::Percent(p) => p,
+                            crate::dex::Accuracy::AlwaysHits => {
+                                // Always hits, skip accuracy check
+                                continue;
+                            }
+                        },
+                        None => continue,
+                    };
+
+                    // Trigger Accuracy event to allow abilities/items to modify accuracy
+                    // JavaScript: accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+                    let mut accuracy = base_accuracy;
+                    if let Some(modified_acc) = self.run_event("Accuracy", Some(target_pos), Some(source_pos), Some(move_id), Some(accuracy)) {
+                        accuracy = modified_acc;
+                    }
+
+                    // Check if move hits based on accuracy
+                    // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
+                    if accuracy < 100 {
+                        let roll = self.random(100);
+                        if roll >= accuracy {
+                            // Move missed
+                            damages[i] = None;
+                            final_targets[i] = None;
+                            // TODO: Add miss message: this.battle.add('-miss', pokemon, target);
+                        }
                     }
                 }
             }
