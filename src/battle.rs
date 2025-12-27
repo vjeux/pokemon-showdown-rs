@@ -1126,6 +1126,12 @@ impl Battle {
     }
 
     /// Add a log entry
+    /// Equivalent to Battle.add() in battle.ts (called throughout for protocol logging)
+    //
+    // 	add(...args: (ProtocolArg | ProtocolArgs)[]) {
+    // 		this.log.push(`|${args.join('|')}`);
+    // 	}
+    //
     pub fn add_log(&mut self, event_type: &str, args: &[&str]) {
         let mut entry = format!("|{}", event_type);
         for arg in args {
@@ -1170,6 +1176,8 @@ impl Battle {
     }
 
     /// Shuffle a slice in place
+    /// JavaScript calls this.prng.shuffle() directly (no Battle wrapper method)
+    /// This is a Rust convenience wrapper following the pattern of sample/random/random_chance
     pub fn shuffle<T>(&mut self, items: &mut [T]) {
         self.prng.shuffle(items);
     }
@@ -1185,16 +1193,27 @@ impl Battle {
     }
 
     /// Get a mutable side by ID
+    /// Rust-specific helper for mutable access (JavaScript doesn't need this due to no borrow checker)
     pub fn get_side_mut(&mut self, side_id: SideID) -> Option<&mut Side> {
         self.sides.get_mut(side_id.index())
     }
 
     /// Get P1
+    //
+    // 	get p1() {
+    // 		return this.sides[0];
+    // 	}
+    //
     pub fn p1(&self) -> Option<&Side> {
         self.sides.get(0)
     }
 
     /// Get P2
+    //
+    // 	get p2() {
+    // 		return this.sides[1];
+    // 	}
+    //
     pub fn p2(&self) -> Option<&Side> {
         self.sides.get(1)
     }
