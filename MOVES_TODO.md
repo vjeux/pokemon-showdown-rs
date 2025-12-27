@@ -173,7 +173,7 @@ Moves with callbacks: 373
 - [x] knockoff - Knock Off (Physical, Dark) - 2 callbacks: onBasePower, onAfterHit
 - [x] laserfocus - Laser Focus (Status, Normal) - 4 callbacks: condition::onStart, condition::onRestart, condition::onModifyCritRatio, condition::onEnd
 - [x] lashout - Lash Out (Physical, Dark) - 1 callback: onBasePower
-- [ ] lastresort - Last Resort (Physical, Normal) - 1 callback: onTry
+- [x] lastresort - Last Resort (Physical, Normal) - 1 callback: onTry
 - [ ] lastrespects - Last Respects (Physical, Ghost) - 1 callback: basePowerCallback
 - [ ] leechseed - Leech Seed (Status, Grass) - 3 callbacks: onTryImmunity, condition::onStart, condition::onResidual
 - [ ] lightscreen - Light Screen (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
