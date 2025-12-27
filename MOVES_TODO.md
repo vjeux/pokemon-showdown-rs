@@ -65,7 +65,7 @@ Moves with callbacks: 373
 - [x] dig - Dig (Physical, Ground) - 4 callbacks: onTryMove, condition::onImmunity, condition::onInvulnerability, condition::onSourceModifyDamage
 - [x] disable - Disable (Status, Normal) - 5 callbacks: onTryHit, condition::onStart, condition::onEnd, condition::onBeforeMove, condition::onDisableMove
 - [x] dive - Dive (Physical, Water) - 4 callbacks: onTryMove, condition::onImmunity, condition::onInvulnerability, condition::onSourceModifyDamage
-- [ ] doodle - Doodle (Status, Normal) - 1 callback: onHit
+- [x] doodle - Doodle (Status, Normal) - 1 callback: onHit
 - [ ] doomdesire - Doom Desire (Special, Steel) - 1 callback: onTry
 - [ ] doubleshock - Double Shock (Physical, Electric) - 1 callback: onTryMove
 - [ ] dragoncheer - Dragon Cheer (Status, Dragon) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
