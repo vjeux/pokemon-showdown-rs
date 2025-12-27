@@ -45,8 +45,11 @@ pub mod condition {
     ///     return false;
     /// }
     pub fn on_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        // Dive makes the user invulnerable, except to Surf and Whirlpool
+        if move_id == "surf" || move_id == "whirlpool" {
+            return EventResult::Continue;
+        }
+        EventResult::Bool(false)
     }
 
     /// onSourceModifyDamage(damage, source, target, move) {
@@ -55,7 +58,11 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        // Surf and Whirlpool deal double damage to diving Pokemon
+        if move_id == "surf" || move_id == "whirlpool" {
+            EventResult::Number(damage * 2)
+        } else {
+            EventResult::Continue
+        }
     }
 }
