@@ -503,43 +503,6 @@ impl Battle {
 
     /// Add or update a player in the battle
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// setPlayer(slot: SideID, options: PlayerOptions) {
-    ///     let side;
-    ///     let didSomething = true;
-    ///     const slotNum = parseInt(slot[1]) - 1;
-    ///     if (!this.sides[slotNum]) {
-    ///         // create player
-    ///         const team = this.getTeam(options);
-    ///         side = new Side(options.name || `Player ${slotNum + 1}`, this, slotNum, team);
-    ///         if (options.avatar) side.avatar = `${options.avatar}`;
-    ///         this.sides[slotNum] = side;
-    ///     } else {
-    ///         // edit player
-    ///         side = this.sides[slotNum];
-    ///         didSomething = false;
-    ///         if (options.name && side.name !== options.name) {
-    ///             side.name = options.name;
-    ///             didSomething = true;
-    ///         }
-    ///         if (options.avatar && side.avatar !== `${options.avatar}`) {
-    ///             side.avatar = `${options.avatar}`;
-    ///             didSomething = true;
-    ///         }
-    ///         if (options.team) throw new Error(`Player ${slot} already has a team!`);
-    ///     }
-    ///     if (options.team && typeof options.team !== 'string') {
-    ///         options.team = Teams.pack(options.team);
-    ///     }
-    ///     if (!didSomething) return;
-    ///     this.inputLog.push(`>player ${slot} ` + JSON.stringify(options));
-    ///     this.add('player', side.id, side.name, side.avatar, options.rating || '');
-    ///
-    ///     // Start the battle if it's ready to start
-    ///     if (this.sides.every(playerSide => !!playerSide) && !this.started) this.start();
-    /// }
-    /// ```
     // TypeScript source:
     // 
     // 
@@ -2734,18 +2697,6 @@ impl Battle {
     /// Cure status condition of a pokemon
     /// Matches JavaScript pokemon.ts cureStatus(silent = false)
     ///
-    /// JS Source (pokemon.ts:~490-498):
-    /// ```js
-    /// cureStatus(silent = false) {
-    ///     if (!this.hp || !this.status) return false;
-    ///     this.battle.add('-curestatus', this, this.status, silent ? '[silent]' : '[msg]');
-    ///     if (this.status === 'slp' && this.removeVolatile('nightmare')) {
-    ///         this.battle.add('-end', this, 'Nightmare', '[silent]');
-    ///     }
-    ///     this.setStatus('');
-    ///     return true;
-    /// }
-    /// ```
     pub fn cure_status(&mut self, target: (usize, usize)) -> bool {
         let (side_idx, poke_idx) = target;
 
@@ -2867,60 +2818,6 @@ impl Battle {
     /// Process faint messages
     /// Equivalent to battle.ts faintMessages(lastFirst?, forceCheck?, checkWin?)
     ///
-    /// JS Source (battle.ts:2498-2575):
-    /// ```js
-    /// faintMessages(lastFirst = false, forceCheck = false, checkWin = true) {
-    ///     if (this.ended) return;
-    ///     const length = this.faintQueue.length;
-    ///     if (!length) {
-    ///         if (forceCheck && this.checkWin()) return true;
-    ///         return false;
-    ///     }
-    ///     if (lastFirst) {
-    ///         this.faintQueue.unshift(this.faintQueue[this.faintQueue.length - 1]);
-    ///         this.faintQueue.pop();
-    ///     }
-    ///     let faintQueueLeft, faintData;
-    ///     while (this.faintQueue.length) {
-    ///         faintQueueLeft = this.faintQueue.length;
-    ///         faintData = this.faintQueue.shift()!;
-    ///         const pokemon: Pokemon = faintData.target;
-    ///         if (!pokemon.fainted && this.runEvent('BeforeFaint', pokemon, faintData.source, faintData.effect)) {
-    ///             this.add('faint', pokemon);
-    ///             if (pokemon.side.pokemonLeft) pokemon.side.pokemonLeft--;
-    ///             if (pokemon.side.totalFainted < 100) pokemon.side.totalFainted++;
-    ///             this.runEvent('Faint', pokemon, faintData.source, faintData.effect);
-    ///             this.singleEvent('End', pokemon.getAbility(), pokemon.abilityState, pokemon);
-    ///             this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon);
-    ///             if (pokemon.formeRegression && !pokemon.transformed) {
-    ///                 pokemon.baseSpecies = this.dex.species.get(pokemon.set.species || pokemon.set.name);
-    ///                 pokemon.baseAbility = toID(pokemon.set.ability);
-    ///             }
-    ///             pokemon.clearVolatile(false);
-    ///             pokemon.fainted = true;
-    ///             pokemon.illusion = null;
-    ///             pokemon.isActive = false;
-    ///             pokemon.isStarted = false;
-    ///             delete pokemon.terastallized;
-    ///             if (pokemon.formeRegression) {
-    ///                 pokemon.details = pokemon.getUpdatedDetails();
-    ///                 this.add('detailschange', pokemon, pokemon.details, '[silent]');
-    ///                 pokemon.updateMaxHp();
-    ///                 pokemon.formeRegression = false;
-    ///             }
-    ///             pokemon.side.faintedThisTurn = pokemon;
-    ///             if (this.faintQueue.length >= faintQueueLeft) checkWin = true;
-    ///         }
-    ///     }
-    ///     if (this.gen <= 1) { /* Gen 1 logic */ }
-    ///     else if (this.gen <= 3 && this.gameType === 'singles') { /* Gen 2-3 logic */ }
-    ///     if (checkWin && this.checkWin(faintData)) return true;
-    ///     if (faintData && length) {
-    ///         this.runEvent('AfterFaint', faintData.target, faintData.source, faintData.effect, length);
-    ///     }
-    ///     return false;
-    /// }
-    /// ```
     // 
     // 	faintMessages(lastFirst = false, forceCheck = false, checkWin = true) {
     // 		if (this.ended) return;
@@ -3355,20 +3252,6 @@ impl Battle {
     /// Show a hint to the player
     /// Equivalent to battle.ts hint(hint, once?, side?)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// hint(hint: string, once?: boolean, side?: Side) {
-    ///     if (this.hints.has(side ? `${side.id}|${hint}` : hint)) return;
-    ///
-    ///     if (side) {
-    ///         this.addSplit(side.id, ['-hint', hint]);
-    ///     } else {
-    ///         this.add('-hint', hint);
-    ///     }
-    ///
-    ///     if (once) this.hints.add(side ? `${side.id}|${hint}` : hint);
-    /// }
-    /// ```
     // 
     // 	hint(hint: string, once?: boolean, side?: Side) {
     // 		if (this.hints.has(side ? `${side.id}|${hint}` : hint)) return;
@@ -3416,24 +3299,6 @@ impl Battle {
     /// Chain two modifiers together
     /// Equivalent to battle.ts chain(previousMod, nextMod)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// chain(previousMod: number | number[], nextMod: number | number[]) {
-    ///     // previousMod or nextMod can be either a number or an array [numerator, denominator]
-    ///     if (Array.isArray(previousMod)) {
-    ///         previousMod = this.trunc(previousMod[0] * 4096 / previousMod[1]);
-    ///     } else {
-    ///         previousMod = this.trunc(previousMod * 4096);
-    ///     }
-    ///
-    ///     if (Array.isArray(nextMod)) {
-    ///         nextMod = this.trunc(nextMod[0] * 4096 / nextMod[1]);
-    ///     } else {
-    ///         nextMod = this.trunc(nextMod * 4096);
-    ///     }
-    ///     return ((previousMod * nextMod + 2048) >> 12) / 4096; // M'' = ((M * M') + 0x800) >> 12
-    /// }
-    /// ```
     // 
     // 	chain(previousMod: number | number[], nextMod: number | number[]) {
     // 		// previousMod or nextMod can be either a number or an array [numerator, denominator]
@@ -3476,21 +3341,6 @@ impl Battle {
     /// Apply a modifier to a value
     /// Equivalent to battle.ts modify(value, numerator, denominator)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// modify(value: number, numerator: number | number[], denominator = 1) {
-    ///     // You can also use:
-    ///     // modify(value, [numerator, denominator])
-    ///     // modify(value, fraction) - assuming you trust JavaScript's floating-point handler
-    ///     if (Array.isArray(numerator)) {
-    ///         denominator = numerator[1];
-    ///         numerator = numerator[0];
-    ///     }
-    ///     const tr = this.trunc;
-    ///     const modifier = tr(numerator * 4096 / denominator);
-    ///     return tr((tr(value * modifier) + 2048 - 1) / 4096);
-    /// }
-    /// ```
     // 
     // 	modify(value: number, numerator: number | number[], denominator = 1) {
     // 		// You can also use:
@@ -3849,29 +3699,6 @@ impl Battle {
     /// Get random target for a move
     /// Equivalent to battle.ts getRandomTarget()
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// getRandomTarget(pokemon: Pokemon, move: string | Move) {
-    ///     move = this.dex.moves.get(move);
-    ///     if (['self', 'all', 'allySide', 'allyTeam', 'adjacentAllyOrSelf'].includes(move.target)) {
-    ///         return pokemon;
-    ///     } else if (move.target === 'adjacentAlly') {
-    ///         if (this.gameType === 'singles') return null;
-    ///         const adjacentAllies = pokemon.adjacentAllies();
-    ///         return adjacentAllies.length ? this.sample(adjacentAllies) : null;
-    ///     }
-    ///     if (this.gameType === 'singles') return pokemon.side.foe.active[0];
-    ///
-    ///     if (this.activePerHalf > 2) {
-    ///         if (move.target === 'adjacentFoe' || move.target === 'normal' || move.target === 'randomNormal') {
-    ///             const adjacentFoes = pokemon.adjacentFoes();
-    ///             if (adjacentFoes.length) return this.sample(adjacentFoes);
-    ///             return pokemon.side.foe.active[pokemon.side.foe.active.length - 1 - pokemon.position];
-    ///         }
-    ///     }
-    ///     return pokemon.side.randomFoe() || pokemon.side.foe.active[0];
-    /// }
-    /// ```
     // 
     // 	getRandomTarget(pokemon: Pokemon, move: string | Move) {
     // 		// A move was used without a chosen target
@@ -3998,14 +3825,6 @@ impl Battle {
     /// Update speed for all active Pokemon
     /// Equivalent to battle.ts updateSpeed()
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// updateSpeed() {
-    ///     for (const pokemon of this.getAllActive()) {
-    ///         pokemon.updateSpeed();
-    ///     }
-    /// }
-    /// ```
     // 
     // 	updateSpeed() {
     // 		for (const pokemon of this.getAllActive()) {
@@ -4036,17 +3855,6 @@ impl Battle {
     /// Deal damage to Pokemon
     /// Equivalent to battle.ts damage() (battle.ts:2165-2175)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// damage(damage: number, target: Pokemon | null = null, source: Pokemon | null = null, effect: 'drain' | 'recoil' | Effect | null = null, instafaint = false) {
-    ///     if (this.event) {
-    ///         target ||= this.event.target;
-    ///         source ||= this.event.source;
-    ///         effect ||= this.effect;
-    ///     }
-    ///     return this.spreadDamage([damage], [target], source, effect, instafaint)[0];
-    /// }
-    /// ```
     // 
     // 	damage(
     // 		damage: number, target: Pokemon | null = null, source: Pokemon | null = null,
@@ -4100,19 +3908,6 @@ impl Battle {
     /// Deal direct damage (bypasses most effects)
     /// Matches JavaScript battle.ts:2177-2230 directDamage()
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// directDamage(damage: number, target?: Pokemon, source: Pokemon | null = null, effect: Effect | null = null) {
-    ///     if (this.event) {
-    ///         target ||= this.event.target;
-    ///         source ||= this.event.source;
-    ///         effect ||= this.effect;
-    ///     }
-    ///     if (!target?.hp) return 0;
-    ///     if (!damage) return 0;
-    ///     // ...
-    /// }
-    /// ```
     // 
     // 	directDamage(damage: number, target?: Pokemon, source: Pokemon | null = null, effect: Effect | null = null) {
     // 		if (this.event) {
@@ -4347,17 +4142,6 @@ impl Battle {
     /// Heal HP
     /// Equivalent to battle.ts heal() (battle.ts:2231-2273)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// heal(damage: number, target?: Pokemon, source: Pokemon | null = null, effect: 'drain' | Effect | null = null) {
-    ///     if (this.event) {
-    ///         target ||= this.event.target;
-    ///         source ||= this.event.source;
-    ///         effect ||= this.effect;
-    ///     }
-    ///     // ... rest of implementation
-    /// }
-    /// ```
     // 
     // 	heal(damage: number, target?: Pokemon, source: Pokemon | null = null, effect: 'drain' | Effect | null = null) {
     // 		if (this.event) {
@@ -4696,21 +4480,6 @@ impl Battle {
     /// Apply stat boosts to a Pokemon
     /// Equivalent to battle.ts boost() (battle.ts:1974-2043)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// boost(boost, target, source, effect, isSecondary, isSelf) {
-    ///     if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
-    ///     if (!target?.hp) return 0;
-    ///     if (!target.isActive) return false;
-    ///     if (this.gen > 5 && !target.side.foePokemonLeft()) return false;
-    ///     boost = this.runEvent('ChangeBoost', target, source, effect, { ...boost });
-    ///     boost = target.getCappedBoost(boost);
-    ///     boost = this.runEvent('TryBoost', target, source, effect, { ...boost });
-    ///     // ... apply boosts, log, fire AfterEachBoost
-    ///     this.runEvent('AfterBoost', target, source, effect, boost);
-    ///     return success;
-    /// }
-    /// ```
     // 
     // 	boost(
     // 		boost: SparseBoostsTable, target: Pokemon | null = null, source: Pokemon | null = null,
@@ -4953,19 +4722,6 @@ impl Battle {
     /// Check all active Pokemon for fainting and update their status
     /// Equivalent to battle.ts checkFainted() (battle.ts:2487-2496)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// checkFainted() {
-    ///     for (const side of this.sides) {
-    ///         for (const pokemon of side.active) {
-    ///             if (pokemon.fainted) {
-    ///                 pokemon.status = 'fnt' as ID;
-    ///                 pokemon.switchFlag = true;
-    ///             }
-    ///         }
-    ///     }
-    /// }
-    /// ```
     // 
     // 	checkFainted() {
     // 		for (const side of this.sides) {
@@ -5493,33 +5249,6 @@ impl Battle {
     /// End the current turn
     /// Equivalent to battle.ts endTurn() (battle.ts:1577-1754)
     ///
-    /// JS Source (battle.ts:1577-1754):
-    /// ```js
-    /// endTurn() {
-    ///     this.turn++;
-    ///     this.lastSuccessfulMoveThisTurn = null;
-    ///
-    ///     const dynamaxEnding: Pokemon[] = [];
-    ///     for (const pokemon of this.getAllActive()) {
-    ///         if (pokemon.volatiles['dynamax']?.turns === 3) {
-    ///             dynamaxEnding.push(pokemon);
-    ///         }
-    ///     }
-    ///     if (dynamaxEnding.length > 1) {
-    ///         this.updateSpeed();
-    ///         this.speedSort(dynamaxEnding);
-    ///     }
-    ///     for (const pokemon of dynamaxEnding) {
-    ///         pokemon.removeVolatile('dynamax');
-    ///     }
-    ///
-    ///     // Gen 1 partial trapping cleanup...
-    ///     // Pokemon field resets (moveThisTurn, newlySwitched, etc.)...
-    ///     // DisableMove event processing...
-    ///     // Type appearance tracking (Gen 7+)...
-    ///     // Trap checking...
-    /// }
-    /// ```
     // 
     // 	endTurn() {
     // 		this.turn++;
@@ -6255,19 +5984,6 @@ impl Battle {
     /// Check if all players have made their choices
     /// Equivalent to battle.ts allChoicesDone() (battle.ts:3059-3068)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// allChoicesDone() {
-    ///     let totalActions = 0;
-    ///     for (const side of this.sides) {
-    ///         if (side.isChoiceDone()) {
-    ///             if (!this.supportCancel) side.choice.cantUndo = true;
-    ///             totalActions++;
-    ///         }
-    ///     }
-    ///     return totalActions >= this.sides.length;
-    /// }
-    /// ```
     // TypeScript source:
     // /**
     // 	 * returns true if both decisions are complete
@@ -6349,25 +6065,6 @@ impl Battle {
     /// Get action speed for sorting the action queue
     /// Equivalent to battle.ts getActionSpeed() (battle.ts:2590-2627)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// getActionSpeed(action: AnyObject) {
-    ///     if (action.choice === 'move') {
-    ///         let move = action.move;
-    ///         if (action.zmove) { move = this.dex.getActiveMove(zMoveName); }
-    ///         if (action.maxMove) { move = this.actions.getActiveMaxMove(...); }
-    ///         let priority = this.dex.moves.get(move.id).priority;
-    ///         priority = this.singleEvent('ModifyPriority', move, null, action.pokemon, null, null, priority);
-    ///         priority = this.runEvent('ModifyPriority', action.pokemon, null, move, priority);
-    ///         action.priority = priority + action.fractionalPriority;
-    ///         if (this.gen > 5) action.move.priority = priority;
-    ///     }
-    ///     if (!action.pokemon) { action.speed = 1; }
-    ///     else { action.speed = action.pokemon.getActionSpeed(); }
-    /// }
-    /// ```
-    ///
-    /// Note: This method MUTATES the action object by setting priority and speed fields
     // 
     // 	getActionSpeed(action: AnyObject) {
     // 		if (action.choice === 'move') {
@@ -6605,12 +6302,6 @@ impl Battle {
     /// Get move category, defaulting to "Physical" if move not found
     /// Equivalent to battle.ts getCategory() (battle.ts:2350-2352)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// getCategory(move: string | Move) {
-    ///     return this.dex.moves.get(move).category || 'Physical';
-    /// }
-    /// ```
     // 
     // 	getCategory(move: string | Move) {
     // 		return this.dex.moves.get(move).category || 'Physical';
@@ -6648,34 +6339,6 @@ impl Battle {
     /// Make a request for player input
     /// Equivalent to battle.ts makeRequest()
     ///
-    /// JS Source (battle.ts:1331-1363):
-    /// ```js
-    /// makeRequest(type?: RequestState) {
-    ///     if (type) {
-    ///         this.requestState = type;
-    ///         for (const side of this.sides) {
-    ///             side.clearChoice();
-    ///         }
-    ///     } else {
-    ///         type = this.requestState;
-    ///     }
-    ///     for (const side of this.sides) {
-    ///         side.activeRequest = null;
-    ///     }
-    ///     if (type === 'teampreview') {
-    ///         const pickedTeamSize = this.ruleTable.pickedTeamSize;
-    ///         this.add(`teampreview${pickedTeamSize ? `|${pickedTeamSize}` : ''}`);
-    ///     }
-    ///     const requests = this.getRequests(type);
-    ///     for (let i = 0; i < this.sides.length; i++) {
-    ///         this.sides[i].activeRequest = requests[i];
-    ///     }
-    ///     this.sentRequests = false;
-    ///     if (this.sides.every(side => side.isChoiceDone())) {
-    ///         throw new Error(`Choices are done immediately after a request`);
-    ///     }
-    /// }
-    /// ```
     // 
     // 	makeRequest(type?: RequestState) {
     // 		if (type) {
@@ -6756,24 +6419,6 @@ impl Battle {
     /// Check and trigger Endless Battle Clause
     /// Equivalent to battle.ts maybeTriggerEndlessBattleClause() (battle.ts:1757-1856)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// maybeTriggerEndlessBattleClause(trappedBySide, stalenessBySide) {
-    ///   // Gen 1 checks (omitted in Rust - requires Pokemon.hasType(), staleness tracking)
-    ///   if (this.turn <= 100) return;
-    ///   if (this.turn >= 1000) { ... tie(); return true; }
-    ///   if ((turn >= 500 && turn % 100 === 0) || (turn >= 900 && turn % 10 === 0) || turn >= 990) {
-    ///     this.add('bigerror', `You will auto-tie if the battle doesn't end in ${turnsLeft} turns...`);
-    ///   }
-    ///   // staleness checks (omitted in Rust - requires Pokemon.volatileStaleness/staleness)
-    ///   // berry cycling checks (omitted in Rust - requires Harvest, Recycle, RESTORATIVE_BERRIES)
-    /// }
-    /// ```
-    ///
-    /// TODO: Missing features (requires infrastructure):
-    /// - Gen 1 no-progress checks (needs Pokemon.hasType(), frozen status checks, Transform move checks)
-    /// - Staleness tracking (needs Pokemon.volatileStaleness, Pokemon.staleness fields)
-    /// - Berry cycling detection (needs Harvest/Pickup abilities, Recycle move, RESTORATIVE_BERRIES constant)
     // 
     // 	maybeTriggerEndlessBattleClause(
     // 		trappedBySide: boolean[], stalenessBySide: ('internal' | 'external' | undefined)[]
@@ -6960,13 +6605,6 @@ impl Battle {
     /// Join a player to the battle
     /// Equivalent to battle.ts join() (battle.ts:3261-3264)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// join(slot: SideID, name: string, avatar: string, team: PokemonSet[] | string | null) {
-    ///     this.setPlayer(slot, { name, avatar, team });
-    ///     return this.getSide(slot);
-    /// }
-    /// ```
     // TypeScript source:
     // /** @deprecated */
     // 	join(slot: SideID, name: string, avatar: string, team: PokemonSet[] | string | null) {
@@ -8393,13 +8031,6 @@ impl Battle {
     /// Apply damage randomization (85%-100%)
     /// Equivalent to battle.ts randomizer(baseDamage)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// randomizer(baseDamage: number) {
-    ///     const tr = this.trunc;
-    ///     return tr(tr(baseDamage * (100 - this.random(16))) / 100);
-    /// }
-    /// ```
     // 
     // 	randomizer(baseDamage: number) {
     // 		const tr = this.trunc;
@@ -8466,41 +8097,6 @@ impl Battle {
     /// Get target for a move
     /// Equivalent to battle.ts getTarget()
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// getTarget(pokemon: Pokemon, move: string | Move, targetLoc: number, originalTarget?: Pokemon) {
-    ///     move = this.dex.moves.get(move);
-    ///
-    ///     let tracksTarget = move.tracksTarget;
-    ///     if (pokemon.hasAbility(['stalwart', 'propellertail'])) tracksTarget = true;
-    ///     if (tracksTarget && originalTarget?.isActive) {
-    ///         return originalTarget;
-    ///     }
-    ///
-    ///     if (move.smartTarget) {
-    ///         const curTarget = pokemon.getAtLoc(targetLoc);
-    ///         return curTarget && !curTarget.fainted ? curTarget : this.getRandomTarget(pokemon, move);
-    ///     }
-    ///
-    ///     const selfLoc = pokemon.getLocOf(pokemon);
-    ///     if (['adjacentAlly', 'any', 'normal'].includes(move.target) && targetLoc === selfLoc &&
-    ///         !pokemon.volatiles['twoturnmove'] && !pokemon.volatiles['iceball'] && !pokemon.volatiles['rollout']) {
-    ///         return move.flags['futuremove'] ? pokemon : null;
-    ///     }
-    ///     if (move.target !== 'randomNormal' && this.validTargetLoc(targetLoc, pokemon, move.target)) {
-    ///         const target = pokemon.getAtLoc(targetLoc);
-    ///         if (target?.fainted) {
-    ///             if (this.gameType === 'freeforall') return target;
-    ///             if (target.isAlly(pokemon)) {
-    ///                 if (move.target === 'adjacentAllyOrSelf' && this.gen !== 5) return pokemon;
-    ///                 return target;
-    ///             }
-    ///         }
-    ///         if (target && !target.fainted) return target;
-    ///     }
-    ///     return this.getRandomTarget(pokemon, move);
-    /// }
-    /// ```
     // 
     // 	getTarget(pokemon: Pokemon, move: string | Move, targetLoc: number, originalTarget?: Pokemon) {
     // 		move = this.dex.moves.get(move);
@@ -9093,14 +8689,6 @@ impl Battle {
     /// Apply final modifier to value
     /// Equivalent to battle.ts finalModify() (battle.ts:2344-2347)
     ///
-    /// JS Source (battle.ts:2344-2347):
-    /// ```js
-    /// finalModify(relayVar: number) {
-    ///     relayVar = this.modify(relayVar, this.event.modifier);
-    ///     this.event.modifier = 1;
-    ///     return relayVar;
-    /// }
-    /// ```
     // 
     // 	finalModify(relayVar: number) {
     // 		relayVar = this.modify(relayVar, this.event.modifier);
@@ -9135,18 +8723,6 @@ impl Battle {
     /// Add split message for different players
     /// Equivalent to battle.ts addSplit()
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// addSplit(side: SideID, secret: Part[], shared?: Part[]) {
-    ///     this.log.push(`|split|${side}`);
-    ///     this.add(...secret);
-    ///     if (shared) {
-    ///         this.add(...shared);
-    ///     } else {
-    ///         this.log.push('');
-    ///     }
-    /// }
-    /// ```
     // 
     // 	addSplit(side: SideID, secret: Part[], shared?: Part[]) {
     // 		this.log.push(`|split|${side}`);
@@ -9238,19 +8814,6 @@ impl Battle {
     /// Chain modify event modifier
     /// Equivalent to battle.ts chainModify() (battle.ts:2291-2300)
     ///
-    /// JS Source (battle.ts:2291-2300):
-    /// ```js
-    /// chainModify(numerator: number | number[], denominator = 1) {
-    ///     const previousMod = this.trunc(this.event.modifier * 4096);
-    ///
-    ///     if (Array.isArray(numerator)) {
-    ///         denominator = numerator[1];
-    ///         numerator = numerator[0];
-    ///     }
-    ///     const nextMod = this.trunc(numerator * 4096 / denominator);
-    ///     this.event.modifier = ((previousMod * nextMod + 2048) >> 12) / 4096;
-    /// }
-    /// ```
     // 
     // 	chainModify(numerator: number | number[], denominator = 1) {
     // 		const previousMod = this.trunc(this.event.modifier * 4096);
@@ -9284,22 +8847,6 @@ impl Battle {
     /// Check if teams have balanced EVs
     /// Equivalent to battle.ts checkEVBalance()
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// checkEVBalance() {
-    ///     let limitedEVs: boolean | null = null;
-    ///     for (const side of this.sides) {
-    ///         const sideLimitedEVs = !side.pokemon.some(
-    ///             pokemon => Object.values(pokemon.set.evs).reduce((a, b) => a + b, 0) > 510
-    ///         );
-    ///         if (limitedEVs === null) {
-    ///             limitedEVs = sideLimitedEVs;
-    ///         } else if (limitedEVs !== sideLimitedEVs) {
-    ///             this.add('bigerror', "Warning: One player isn't adhering to a 510 EV limit, and the other player is.");
-    ///         }
-    ///     }
-    /// }
-    /// ```
     // 
     // 	checkEVBalance() {
     // 		let limitedEVs: boolean | null = null;
@@ -9372,12 +8919,6 @@ impl Battle {
     /// Log a debug error message
     /// Equivalent to battle.ts debugError() (battle.ts:3158-3160)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// debugError(activity: string) {
-    ///     this.add('debug', activity);
-    /// }
-    /// ```
     // 
     // 	debugError(activity: string) {
     // 		this.add('debug', activity);
@@ -9850,35 +9391,6 @@ impl Battle {
     /// Handle team preview phase
     /// Equivalent to battle.ts runPickTeam()
     ///
-    /// JS Source (battle.ts:1931-1959):
-    /// ```js
-    /// runPickTeam() {
-    ///     // onTeamPreview handlers are expected to show full teams to all active sides,
-    ///     // and send a 'teampreview' request for players to pick their leads / team order.
-    ///     this.format.onTeamPreview?.call(this);
-    ///     for (const rule of this.ruleTable.keys()) {
-    ///         if ('+*-!'.includes(rule.charAt(0))) continue;
-    ///         const subFormat = this.dex.formats.get(rule);
-    ///         subFormat.onTeamPreview?.call(this);
-    ///     }
-    ///     if (this.requestState === 'teampreview') {
-    ///         return;
-    ///     }
-    ///     if (this.ruleTable.pickedTeamSize) {
-    ///         // There was no onTeamPreview handler (e.g. Team Preview rule missing).
-    ///         // Players must still pick their own Pokémon, so we show them privately.
-    ///         this.add('clearpoke');
-    ///         for (const pokemon of this.getAllPokemon()) {
-    ///             // Still need to hide these formes since they change on battle start
-    ///             const details = pokemon.details.replace(', shiny', '')
-    ///                 .replace(/(Zacian|Zamazenta)(?!-Crowned)/g, '$1-*')
-    ///                 .replace(/(Xerneas)(-[a-zA-Z?-]+)?/g, '$1-*');
-    ///             this.addSplit(pokemon.side.id, ['poke', pokemon.side.id, details, '']);
-    ///         }
-    ///         this.makeRequest('teampreview');
-    ///     }
-    /// }
-    /// ```
     // 
     // 	runPickTeam() {
     // 		// onTeamPreview handlers are expected to show full teams to all active sides,
@@ -10033,18 +9545,6 @@ impl Battle {
     /// Calculate modified stats from base stats
     /// Equivalent to battle.ts spreadModify(baseStats, set)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// spreadModify(baseStats: StatsTable, set: PokemonSet): StatsTable {
-    ///     const modStats: StatsTable = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
-    ///     for (const statName in baseStats) {
-    ///         modStats[statName as StatID] = this.statModify(baseStats, set, statName as StatID);
-    ///     }
-    ///     return modStats;
-    /// }
-    /// ```
-    ///
-    /// TODO: This requires Dex access which Battle doesn't currently have
     // TypeScript source:
     // /** Given a table of base stats and a pokemon set, return the actual stats. */
     // 	spreadModify(baseStats: StatsTable, set: PokemonSet): StatsTable {
@@ -10069,28 +9569,6 @@ impl Battle {
     /// Calculate a single stat from base stat, IVs, EVs, level, and nature
     /// Equivalent to battle.ts statModify(baseStats, set, statName)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// statModify(baseStats: StatsTable, set: PokemonSet, statName: StatID): number {
-    ///     const tr = this.trunc;
-    ///     let stat = baseStats[statName];
-    ///     if (statName === 'hp') {
-    ///         return tr(tr(2 * stat + set.ivs[statName] + tr(set.evs[statName] / 4) + 100) * set.level / 100 + 10);
-    ///     }
-    ///     stat = tr(tr(2 * stat + set.ivs[statName] + tr(set.evs[statName] / 4)) * set.level / 100 + 5);
-    ///     const nature = this.dex.natures.get(set.nature);
-    ///     if (nature.plus === statName) {
-    ///         stat = this.ruleTable.has('overflowstatmod') ? Math.min(stat, 595) : stat;
-    ///         stat = tr(tr(stat * 110, 16) / 100);
-    ///     } else if (nature.minus === statName) {
-    ///         stat = this.ruleTable.has('overflowstatmod') ? Math.min(stat, 728) : stat;
-    ///         stat = tr(tr(stat * 90, 16) / 100);
-    ///     }
-    ///     return stat;
-    /// }
-    /// ```
-    ///
-    /// TODO: This requires Dex.natures access which Battle doesn't currently have
     // 
     // 	statModify(baseStats: StatsTable, set: PokemonSet, statName: StatID): number {
     // 		const tr = this.trunc;
@@ -10174,19 +9652,6 @@ impl Battle {
     /// Tiebreaker logic for determining winner when time runs out
     /// Equivalent to battle.ts tiebreak() (battle.ts:1421-1462)
     ///
-    /// JS Source:
-    /// ```js
-    /// tiebreak() {
-    ///     if (this.ended) return false;
-    ///     this.inputLog.push(`>tiebreak`);
-    ///     this.add('message', "Time's up! Going to tiebreaker...");
-    ///     const notFainted = this.sides.map(side => (
-    ///         side.pokemon.filter(pokemon => !pokemon.fainted).length
-    ///     ));
-    ///     // ... (tiebreak logic: Pokemon count, HP percentage, HP total)
-    ///     return this.tie();
-    /// }
-    /// ```
     // 
     // 	tiebreak() {
     // 		if (this.ended) return false;
@@ -10365,12 +9830,6 @@ impl Battle {
     /// Convert battle to JSON value
     /// Equivalent to battle.ts toJSON()
     ///
-    /// JS Source (battle.ts:318):
-    /// ```javascript
-    /// toJSON(): AnyObject {
-    ///     return State.serializeBattle(this);
-    /// }
-    /// ```
     // 
     // 	toJSON(): AnyObject {
     // 		return State.serializeBattle(this);
@@ -10525,44 +9984,6 @@ impl Battle {
     /// Find Pokemon event handlers
     /// Equivalent to battle.ts findPokemonEventHandlers() (battle.ts:1098-1157)
     ///
-    /// JS Source (battle.ts):
-    /// ```js
-    /// findPokemonEventHandlers(pokemon: Pokemon, callbackName: string, getKey?: 'duration') {
-    ///     const handlers: EventListener[] = [];
-    ///
-    ///     const status = pokemon.getStatus();
-    ///     let callback = this.getCallback(pokemon, status, callbackName);
-    ///     if (callback !== undefined || (getKey && pokemon.statusState[getKey])) {
-    ///         handlers.push(this.resolvePriority({ effect: status, callback, state: pokemon.statusState, end: pokemon.clearStatus, effectHolder: pokemon }, callbackName));
-    ///     }
-    ///
-    ///     for (const id in pokemon.volatiles) { /* ... */ }
-    ///
-    ///     const ability = pokemon.getAbility();
-    ///     // ... ability handler ...
-    ///
-    ///     const item = pokemon.getItem();
-    ///     // ... item handler ...
-    ///
-    ///     const species = pokemon.baseSpecies;
-    ///     callback = this.getCallback(pokemon, species, callbackName);
-    ///     if (callback !== undefined) {
-    ///         handlers.push(this.resolvePriority({ effect: species, callback, state: pokemon.speciesState, end() {}, effectHolder: pokemon }, callbackName));
-    ///     }
-    ///
-    ///     const side = pokemon.side;
-    ///     for (const conditionid in side.slotConditions[pokemon.position]) {
-    ///         const slotConditionState = side.slotConditions[pokemon.position][conditionid];
-    ///         const slotCondition = this.dex.conditions.getByID(conditionid as ID);
-    ///         callback = this.getCallback(pokemon, slotCondition, callbackName);
-    ///         if (callback !== undefined || (getKey && slotConditionState[getKey])) {
-    ///             handlers.push(this.resolvePriority({ effect: slotCondition, callback, state: slotConditionState, end: side.removeSlotCondition, endCallArgs: [side, pokemon, slotCondition.id], effectHolder: pokemon }, callbackName));
-    ///         }
-    ///     }
-    ///
-    ///     return handlers;
-    /// }
-    /// ```
     // 
     // 	findPokemonEventHandlers(pokemon: Pokemon, callbackName: string, getKey?: 'duration') {
     // 		const handlers: EventListener[] = [];
