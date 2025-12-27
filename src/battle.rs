@@ -320,6 +320,9 @@ pub struct Battle {
 
     /// Current request state
     pub request_state: BattleRequestState,
+    /// Whether requests have been sent to players
+    /// JavaScript: sentRequests
+    pub sent_requests: bool,
     /// Current turn number
     pub turn: i32,
     /// Is it mid-turn?
@@ -438,6 +441,7 @@ impl Battle {
             log: Vec::new(),
             input_log: Vec::new(),
             request_state: BattleRequestState::None,
+            sent_requests: false,  // JavaScript: sentRequests defaults to false
             turn: 0,
             mid_turn: false,
             started: false,
@@ -6709,7 +6713,7 @@ impl Battle {
         }
 
         // JS: this.sentRequests = false;
-        // TODO: Implement sentRequests field
+        self.sent_requests = false;
 
         // JS: if (this.sides.every(side => side.isChoiceDone())) { throw new Error(...); }
         // Safety check to prevent infinite loops

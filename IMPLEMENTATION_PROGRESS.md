@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 39/79 TODOs (49.4%)
+**Feature Implementation:** ⚠️ 40/79 TODOs (50.6%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -287,11 +287,23 @@
 
 **Enables:** Proper tracking of Pokemon battle state, essential for various battle mechanics
 
+#### SentRequests Field (1/1) ✅
+- [x] **sentRequests field in Battle struct** (battle.rs:325, 444, 6716) - Track whether requests have been sent
+
+**Implementation Details:**
+- Added sent_requests: bool field to Battle struct (line 325)
+- Initialized to false in Battle::new() (line 444)
+- Set to false in make_request() (line 6716)
+- Matches JavaScript: `this.sentRequests = false;`
+- Tracks whether battle requests have been sent to players
+
+**Enables:** Proper request state tracking for battle flow control
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (40 TODOs)
+## Remaining P2 Nice-to-have (39 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions
@@ -307,7 +319,7 @@
 - Format callbacks
 - Switch in all active Pokemon
 
-### Infrastructure (30 TODOs)
+### Infrastructure (29 TODOs)
 - Various missing infrastructure pieces
 - Effect type checks
 - Boost migration
