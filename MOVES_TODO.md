@@ -38,7 +38,7 @@ Moves with callbacks: 373
 - [x] burningbulwark - Burning Bulwark (Status, Fire) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [x] burnup - Burn Up (Special, Fire) - 1 callback: onTryMove
 - [x] camouflage - Camouflage (Status, Normal) - 1 callback: onHit
-- [ ] captivate - Captivate (Status, Normal) - 1 callback: onTryImmunity
+- [x] captivate - Captivate (Status, Normal) - 1 callback: onTryImmunity
 - [ ] ceaselessedge - Ceaseless Edge (Physical, Dark) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [ ] celebrate - Celebrate (Status, Normal) - 1 callback: onTryHit
 - [ ] charge - Charge (Status, Electric) - 6 callbacks: condition::onStart, condition::onRestart, condition::onBasePower, condition::onMoveAborted, condition::onAfterMove, condition::onEnd
