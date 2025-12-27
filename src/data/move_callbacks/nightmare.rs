@@ -18,7 +18,37 @@ pub mod condition {
     ///     this.add('-start', pokemon, 'Nightmare');
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // if (pokemon.status !== 'slp' && !pokemon.hasAbility('comatose')) {
+        let (status, has_comatose) = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Bool(false),
+            };
+            let status = pokemon_pokemon.status.clone();
+            let has_comatose = pokemon_pokemon.has_ability(&ID::from("comatose"));
+            (status, has_comatose)
+        };
+
+        if status != Some(ID::from("slp")) && !has_comatose {
+            // return false;
+            return EventResult::Bool(false);
+        }
+
+        // this.add('-start', pokemon, 'Nightmare');
+        let pokemon_arg = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon_pokemon)
+        };
+
+        battle.add("-start", &[pokemon_arg, "Nightmare".into()]);
+
         EventResult::Continue
     }
 
@@ -26,7 +56,19 @@ pub mod condition {
     ///     this.damage(pokemon.baseMaxhp / 4);
     /// }
     pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // this.damage(pokemon.baseMaxhp / 4);
+        let damage = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.base_max_hp / 4
+        };
+
+        battle.damage(damage, pokemon, None, None);
+
         EventResult::Continue
     }
 }
