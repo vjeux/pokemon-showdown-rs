@@ -314,6 +314,12 @@ The following moves require infrastructure that doesn't exist yet:
 - `secondary.volatileStatus`: waterpledge - Volatile status from secondary effect
 - `move.priority` read: upperhand, suckerpunch - Move priority value for checking
 - `action.targetLoc`: trickortreat - Target location field on action (mutable)
+- `battle.field.getPseudoWeather(name)`: telekinesis - Get pseudo-weather condition, returns truthy/falsy
+- `pokemon.baseSpecies.baseSpecies`: telekinesis - Base species of base species (for forms like Gengar-Mega)
+- `pokemon.baseSpecies.name`: telekinesis - Base species name
+- `target.runImmunity(type)`: thousandarrows - Check if pokemon is immune to a type (different from status immunity)
+- `pokemon.moveLastTurnResult`: temperflare, stompingtantrum - Result of last move (false if move failed)
+- `pokemon.eatItem(force)`: teatime - Make pokemon eat held item, force parameter bypasses checks
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
