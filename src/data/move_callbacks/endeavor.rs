@@ -11,8 +11,24 @@ use crate::event::EventResult;
 ///     return target.getUndynamaxedHP() - pokemon.hp;
 /// }
 pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Endeavor deals damage to bring target's HP down to match user's HP
+    let damage = target.get_undynamaxed_hp() - pokemon.hp;
+    EventResult::Number(damage)
 }
 
 /// onTryImmunity(target, pokemon) {
