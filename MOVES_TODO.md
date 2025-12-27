@@ -156,7 +156,7 @@ Moves with callbacks: 373
 - [x] hurricane - Hurricane (Special, Flying) - 1 callback: onModifyMove
 - [x] hyperspacefury - Hyperspace Fury (Physical, Dark) - 1 callback: onTry
 - [x] iceball - Ice Ball (Physical, Ice) - 5 callbacks: basePowerCallback, onModifyMove, onAfterMove, condition::onStart, condition::onResidual
-- [ ] iceburn - Ice Burn (Special, Ice) - 1 callback: onTryMove
+- [x] iceburn - Ice Burn (Special, Ice) - 1 callback: onTryMove
 - [ ] icespinner - Ice Spinner (Physical, Ice) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [ ] imprison - Imprison (Status, Psychic) - 3 callbacks: condition::onStart, condition::onFoeDisableMove, condition::onFoeBeforeMove
 - [ ] incinerate - Incinerate (Special, Fire) - 1 callback: onHit
