@@ -293,7 +293,7 @@ Moves with callbacks: 373
 - [x] skyattack - Sky Attack (Physical, Flying) - 1 callback: onTryMove
 - [x] skydrop - Sky Drop (Physical, Flying) - 12 callbacks: onModifyMove, onMoveFail, onTry, onTryHit, onHit, condition::onAnyDragOut, condition::onFoeTrapPokemon, condition::onFoeBeforeMove, condition::onRedirectTarget, condition::onAnyInvulnerability, condition::onAnyBasePower, condition::onFaint
 - [x] sleeptalk - Sleep Talk (Status, Normal) - 2 callbacks: onTry, onHit
-- [ ] smackdown - Smack Down (Physical, Rock) - 2 callbacks: condition::onStart, condition::onRestart
+- [x] smackdown - Smack Down (Physical, Rock) - 2 callbacks: condition::onStart, condition::onRestart
 - [ ] smellingsalts - Smelling Salts (Physical, Normal) - 2 callbacks: basePowerCallback, onHit
 - [ ] snatch - Snatch (Status, Dark) - 2 callbacks: condition::onStart, condition::onAnyPrepareHit
 - [ ] snore - Snore (Special, Normal) - 1 callback: onTry
