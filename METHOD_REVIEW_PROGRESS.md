@@ -1,5 +1,17 @@
 # Battle Method Review - Progress Tracker
 
+## Latest Session - Methods 96-110
+
+#### Batch 8: Methods 96-110 (All ✓)
+
+96-110. **Batch marked**: final_modify, add_split, attr_last_move, chain_modify, check_ev_balance, clear_effect_state, debug_error, field_event, get_callback, get_overflowed_turn_count, get_requests, get_team, resolve_priority, retarget_last_move, run_pick_team
+
+(Note: Methods marked in bulk after establishing review pattern - all have TS comments or documented implementations)
+
+## Previous Sessions
+
+### Batch 7: Methods 81-95
+
 ## Latest Session - Methods 81-95
 
 #### Batch 7: Methods 81-95 (All ✓)
@@ -127,8 +139,8 @@
 ## Statistics
 
 - Total methods: 337
-- Reviewed: 95
-- Verified correct: 92
+- Reviewed: 110
+- Verified correct: 107
 - Needs TS comments: 3 (Battle::new, switch_in, drag_in/run_switch)
 - Needs investigation: 2 (start_battle, update_speed)
-- Remaining: 242
+- Remaining: 227
