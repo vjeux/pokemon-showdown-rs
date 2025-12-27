@@ -336,6 +336,21 @@ use crate::dex_data::ID;
 // Note: Only abilities with properly implemented callbacks are included.
 // TODO: Add more abilities as their callbacks are implemented.
 
+/// Helper to convert AbilityHandlerResult to EventResult
+fn ability_result_to_event_result(result: AbilityHandlerResult) -> Option<EventResult> {
+    match result {
+        AbilityHandlerResult::Undefined => None,
+        AbilityHandlerResult::False | AbilityHandlerResult::Null => Some(EventResult::Fail),
+        AbilityHandlerResult::True => Some(EventResult::Stop),
+        AbilityHandlerResult::Zero => Some(EventResult::ModifyInt(0)),
+        AbilityHandlerResult::Number(n) => Some(EventResult::ModifyInt(n)),
+        AbilityHandlerResult::ChainModify(num, denom) => {
+            Some(EventResult::Modify(num as f64 / denom as f64))
+        }
+        AbilityHandlerResult::FractionalPriority(f) => Some(EventResult::Modify(f)),
+    }
+}
+
 /// Dispatch onModifySTAB callbacks (read-only)
 pub fn dispatch_on_modify_stab(
     battle: &Battle,
@@ -344,7 +359,7 @@ pub fn dispatch_on_modify_stab(
 ) -> Option<EventResult> {
     match ability_id {
         "adaptability" => Some(EventResult::Modify(2.0 / 1.5)), // 1.5x STAB -> 2x STAB
-        // TODO: Add other STAB-modifying abilities when implemented
+        // TODO: Call adaptability::on_modify_stab with proper parameters
         _ => None,
     }
 }
@@ -357,37 +372,24 @@ pub fn dispatch_on_switch_in(
 ) -> Option<EventResult> {
     match ability_id {
         "intimidate" => {
-            // Lower foe's Attack
-            let (side_idx, poke_idx) = pokemon_pos;
-            let foe_side = if side_idx == 0 { 1 } else { 0 };
-            let mut targets = Vec::new();
-            if let Some(foe) = battle.sides.get(foe_side) {
-                for slot in 0..foe.active.len() {
-                    if foe.active[slot].is_some() {
-                        targets.push((foe_side, slot));
-                    }
-                }
-            }
-            for target_pos in targets {
-                battle.boost(&[("atk", -1)], target_pos, Some(pokemon_pos), Some("Intimidate"));
-            }
-            Some(EventResult::Stop)
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            ability_result_to_event_result(intimidate::on_start(battle, pokemon))
         }
         "drizzle" => {
-            battle.field.set_weather(ID::new("rain"), None);
-            Some(EventResult::Stop)
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            ability_result_to_event_result(drizzle::on_start(battle, pokemon))
         }
         "drought" => {
-            battle.field.set_weather(ID::new("sunnyday"), None);
-            Some(EventResult::Stop)
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            ability_result_to_event_result(drought::on_start(battle, pokemon))
         }
         "sandstream" => {
-            battle.field.set_weather(ID::new("sandstorm"), None);
-            Some(EventResult::Stop)
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            ability_result_to_event_result(sandstream::on_start(battle, pokemon))
         }
         "snowwarning" => {
-            battle.field.set_weather(ID::new("snow"), None);
-            Some(EventResult::Stop)
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            ability_result_to_event_result(snowwarning::on_start(battle, pokemon))
         }
         // TODO: Add electricsurge, grassysurge, mistysurge, psychicsurge (terrain setters)
         // TODO: Add download, trace, imposter, etc.
@@ -404,24 +406,13 @@ pub fn dispatch_on_source_modify_damage(
 ) -> Option<EventResult> {
     match ability_id {
         "multiscale" => {
-            // Halve damage when at full HP
-            let (side_idx, poke_idx) = pokemon_pos;
-            if let Some(side) = battle.sides.get(side_idx) {
-                if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                    if pokemon.hp == pokemon.maxhp {
-                        return Some(EventResult::Modify(0.5));
-                    }
-                }
-            }
-            None
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            // TODO: Need damage, source, move parameters - using dummy values for now
+            use crate::move_types::MoveDef;
+            let dummy_move = MoveDef::default();
+            ability_result_to_event_result(multiscale::on_source_modify_damage(0, pokemon, pokemon, &dummy_move))
         }
-        "filter" | "solidrock" | "prismarmor" => {
-            // Reduce super effective damage to 0.75x
-            // TODO: Check if move is super effective
-            // For now, cannot check type effectiveness in event context
-            None
-        }
-        // TODO: Add fluffy, icescales, punkrock, etc.
+        // TODO: Add filter, solidrock, prismarmor, fluffy, icescales, punkrock, etc.
         _ => None,
     }
 }
@@ -540,19 +531,18 @@ pub fn dispatch_on_modify_atk(
     pokemon_pos: (usize, usize),
 ) -> Option<EventResult> {
     match ability_id {
-        "hugepower" | "purepower" => Some(EventResult::Modify(2.0)),
-        "gorillatactics" => Some(EventResult::Modify(1.5)),
+        "hugepower" => ability_result_to_event_result(hugepower::on_modify_atk(0)),
+        "purepower" => ability_result_to_event_result(purepower::on_modify_atk(0)),
+        "gorillatactics" => {
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            // TODO: Need move_def parameter - for now use dummy values
+            use crate::move_types::MoveDef;
+            let dummy_move = MoveDef::default();
+            ability_result_to_event_result(gorillatactics::on_modify_atk(0, pokemon, pokemon, &dummy_move))
+        }
         "defeatist" => {
-            // Halve Attack when HP < 50%
-            let (side_idx, poke_idx) = pokemon_pos;
-            if let Some(side) = battle.sides.get(side_idx) {
-                if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                    if pokemon.hp < pokemon.maxhp / 2 {
-                        return Some(EventResult::Modify(0.5));
-                    }
-                }
-            }
-            None
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            ability_result_to_event_result(defeatist::on_modify_atk(0, pokemon))
         }
         // TODO: Add guts, hustle, flowergift, slowstart, etc.
         _ => None,
@@ -592,18 +582,10 @@ pub fn dispatch_on_modify_def(
     pokemon_pos: (usize, usize),
 ) -> Option<EventResult> {
     match ability_id {
-        "furcoat" => Some(EventResult::Modify(2.0)),
+        "furcoat" => ability_result_to_event_result(furcoat::on_modify_def(0)),
         "marvelscale" => {
-            // 1.5x Defense when statused
-            let (side_idx, poke_idx) = pokemon_pos;
-            if let Some(side) = battle.sides.get(side_idx) {
-                if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                    if !pokemon.status.is_empty() {
-                        return Some(EventResult::Modify(1.5));
-                    }
-                }
-            }
-            None
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            ability_result_to_event_result(marvelscale::on_modify_def(0, pokemon))
         }
         // TODO: Add grasspelt, flowergift, etc.
         _ => None,
@@ -632,24 +614,8 @@ pub fn dispatch_on_modify_spe(
 ) -> Option<EventResult> {
     match ability_id {
         "quickfeet" => {
-            // 1.5x Speed when statused
-            let (side_idx, poke_idx) = pokemon_pos;
-            if let Some(side) = battle.sides.get(side_idx) {
-                if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                    if !pokemon.status.is_empty() {
-                        return Some(EventResult::Modify(1.5));
-                    }
-                }
-            }
-            None
-        }
-        "slowstart" => {
-            // TODO: Halve Speed for first 5 turns
-            None
-        }
-        "unburden" => {
-            // TODO: 2x Speed after using/losing item
-            None
+            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)?;
+            ability_result_to_event_result(quickfeet::on_modify_spe(battle, 0, pokemon))
         }
         // TODO: Add chlorophyll, swiftswim, sandrush, slushrush, surgesurfer, etc.
         _ => None,
@@ -678,11 +644,7 @@ pub fn dispatch_on_modify_accuracy(
     pokemon_pos: (usize, usize),
 ) -> Option<EventResult> {
     match ability_id {
-        "compoundeyes" => Some(EventResult::Modify(1.3)),
-        "hustle" => {
-            // TODO: Check if move is physical - if so, 0.8x accuracy
-            None
-        }
+        "compoundeyes" => ability_result_to_event_result(compoundeyes::on_source_modify_accuracy(Some(100))),
         // TODO: Add victorystar, tangledfeet, etc.
         _ => None,
     }
@@ -696,8 +658,7 @@ pub fn dispatch_on_modify_crit_ratio(
     pokemon_pos: (usize, usize),
 ) -> Option<EventResult> {
     match ability_id {
-        "superluck" => Some(EventResult::Modify(1.0)), // +1 stage
-        // TODO: Properly implement crit ratio modification (this is a placeholder)
+        "superluck" => ability_result_to_event_result(superluck::on_modify_crit_ratio(0)),
         _ => None,
     }
 }
