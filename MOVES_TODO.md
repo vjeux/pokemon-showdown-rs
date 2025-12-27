@@ -18,6 +18,15 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.cureStatus()`: wakeupslap, smellingsalts - Cure pokemon status condition
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
+- `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
+- `pokemon.statsRaisedThisTurn`: alluringvoice, burningjealousy - Track if stats were raised this turn
+- `pokemon.addVolatile(condition, source, move)`: Many moves - Add volatile status condition
+- `battle.add(message, ...)`: Nearly all moves - Add battle log message
+- `battle.damage(amount, target, source, effect)`: highjumpkick, jumpkick, etc - Deal damage to pokemon
+- `pokemon.attackedBy`: avalanche, revenge - Track damage sources with {source, damage, thisTurn} info
+- `pokemon.newlySwitched`: boltbeak, fishiousrend, payback - Check if just switched in this turn
+- `battle.queue.willMove(pokemon)`: boltbeak, fishiousrend, payback, suckerpunch - Check if pokemon has queued action
+- `pokemon.activeMoveActions`: fakeout, firstimpression - Track number of move actions since switch-in
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
