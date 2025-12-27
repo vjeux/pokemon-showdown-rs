@@ -38,6 +38,23 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.dex.items.get(id)`: recycle - Get item data by ID
 - `EventResult::NOT_FAIL`: purify - Constant for not-fail result
 - Active move modification: psychoshift - Ability to modify active move data (move.status)
+- `pokemon.effectiveWeather()`: weatherball, moonlight, morningsun, synthesis - Get effective weather condition
+- `battle.modify(value, factor)`: moonlight, morningsun, synthesis - Modify value by factor (e.g., multiply HP by 0.5, 0.667, 0.25)
+- `battle.debug(message)`: weatherball, terrainpulse - Debug logging
+- `pokemon.isGrounded()`: terrainpulse - Check if pokemon is grounded
+- `battle.field.terrain`: terrainpulse - Current terrain field
+- `battle.field.isTerrain(name)`: camouflage - Check if specific terrain is active
+- `pokemon.getTypes()`: camouflage, reflecttype - Get pokemon types as array
+- `pokemon.setType(type)`: camouflage, conversion, reflecttype - Set pokemon type(s), returns bool
+- `pokemon.hasType(type)`: conversion - Check if pokemon has a type
+- `pokemon.moveSlots`: conversion - Array of move slots with id field
+- `battle.dex.moves.get(id)`: conversion - Get move data by ID
+- `pokemon.species.num`: reflecttype - Species number (e.g., 493 for Arceus)
+- `pokemon.terastallized`: reflecttype - Tera state boolean
+- `pokemon.apparentType`: reflecttype - Apparent type (mutable)
+- `pokemon.addedType`: reflecttype - Added type field (mutable)
+- `pokemon.knownType`: reflecttype - Known type field (mutable)
+- `pokemon.isAlly(other)`: reflecttype - Check if pokemon is ally
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
