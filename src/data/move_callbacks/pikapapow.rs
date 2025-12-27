@@ -13,7 +13,23 @@ use crate::event::EventResult;
 ///     return bp;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let pokemon = pokemon_pos;
+
+    // const bp = Math.floor((pokemon.happiness * 10) / 25) || 1;
+    let bp = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let happiness = pokemon_pokemon.happiness;
+        let calculated_bp = (happiness * 10) / 25;
+        if calculated_bp == 0 { 1 } else { calculated_bp }
+    };
+
+    // this.debug(`BP: ${bp}`);
+    // (debug is typically not needed in Rust implementation)
+
+    // return bp;
+    EventResult::Int(bp)
 }
 
