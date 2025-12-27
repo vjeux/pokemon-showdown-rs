@@ -14,7 +14,53 @@ use crate::event::EventResult;
 ///     move.type = item.naturalGift.type;
 /// }
 pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+
+    // if (pokemon.ignoringItem()) return;
+    let ignoring_item = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.ignoring_item()
+    };
+
+    if ignoring_item {
+        return EventResult::Continue;
+    }
+
+    // const item = pokemon.getItem();
+    let item_id = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.item.clone()
+    };
+
+    let item_id = match item_id {
+        Some(id) => id,
+        None => return EventResult::Continue,
+    };
+
+    let item_data = match battle.dex.get_item_by_id(&item_id) {
+        Some(item) => item,
+        None => return EventResult::Continue,
+    };
+
+    // if (!item.naturalGift) return;
+    let natural_gift = match &item_data.natural_gift {
+        Some(ng) => ng,
+        None => return EventResult::Continue,
+    };
+
+    // move.type = item.naturalGift.type;
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.move_type = Some(natural_gift.move_type.clone());
+    }
+
     EventResult::Continue
 }
 
@@ -30,7 +76,73 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 ///     this.runEvent('AfterUseItem', pokemon, null, null, item);
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+
+    // if (pokemon.ignoringItem()) return false;
+    let ignoring_item = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Bool(false),
+        };
+        pokemon_pokemon.ignoring_item()
+    };
+
+    if ignoring_item {
+        return EventResult::Bool(false);
+    }
+
+    // const item = pokemon.getItem();
+    let item_id = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Bool(false),
+        };
+        pokemon_pokemon.item.clone()
+    };
+
+    let item_id = match item_id {
+        Some(id) => id,
+        None => return EventResult::Bool(false),
+    };
+
+    let item_data = match battle.dex.get_item_by_id(&item_id) {
+        Some(item) => item,
+        None => return EventResult::Bool(false),
+    };
+
+    // if (!item.naturalGift) return false;
+    let natural_gift = match &item_data.natural_gift {
+        Some(ng) => ng,
+        None => return EventResult::Bool(false),
+    };
+
+    // move.basePower = item.naturalGift.basePower;
+    let base_power = natural_gift.base_power;
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.base_power = base_power;
+    }
+
+    // this.debug(`BP: ${move.basePower}`);
+    // (debug is typically not needed in Rust implementation)
+
+    // pokemon.setItem('');
+    // pokemon.lastItem = item.id;
+    // pokemon.usedItemThisTurn = true;
+    {
+        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.item = None;
+        pokemon_pokemon.last_item = Some(item_id.clone());
+        pokemon_pokemon.used_item_this_turn = true;
+    }
+
+    // this.runEvent('AfterUseItem', pokemon, null, null, item);
+    battle.run_event("AfterUseItem", pokemon, None, Some(&item_id));
+
     EventResult::Continue
 }
 
