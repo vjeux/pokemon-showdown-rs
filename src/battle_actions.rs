@@ -2796,16 +2796,34 @@ pub fn use_move_inner(
     // let targetRelayVar = { target };
     // targetRelayVar = this.battle.runEvent('ModifyTarget', pokemon, target, move, targetRelayVar, true);
     // if (targetRelayVar.target !== undefined) target = targetRelayVar.target;
-    // TODO: Implement ModifyTarget event
-    // This event allows moves to change their target (e.g., Storm Drain, Lightning Rod)
-    // Would need to implement relay variable pattern in run_event
-    // For now, target remains unchanged
+    // Implement ModifyTarget event using encoded target positions
+    // This event allows moves to change their target (e.g., Payback, Metal Burst retargeting)
+    // We encode target positions as integers: side_idx * 10 + pokemon_idx
+    // Event handlers can return a new encoded position to redirect the move
+    if let Some((target_side, target_pos)) = target {
+        let encoded_target = (target_side as i32 * 10) + target_pos as i32;
+        let modified_target = battle.run_event(
+            "ModifyTarget",
+            Some(pokemon_pos),
+            Some((target_side, target_pos)),
+            Some(move_or_move_name),
+            Some(encoded_target),
+        );
+        if let Some(encoded) = modified_target {
+            // Decode the modified target position
+            let new_side = (encoded / 10) as usize;
+            let new_pos = (encoded % 10) as usize;
+            target = Some((new_side, new_pos));
+        }
+    }
 
     // if (target === undefined) target = this.battle.getRandomTarget(pokemon, move);
-    // TODO: Implement getRandomTarget
+    // Call getRandomTarget if target is None
     // Gets a random valid target for a move based on its target type
     // Needed for moves with target="normal" or when original target is invalid
-    // For now, assuming target is always valid
+    if target.is_none() {
+        target = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &move_data.target);
+    }
 
     // if (move.target === 'self' || move.target === 'allies') {
     //     target = pokemon;
@@ -2836,10 +2854,12 @@ pub fn use_move_inner(
     // if (baseTarget !== move.target) {
     //     target = this.battle.getRandomTarget(pokemon, move);
     // }
-    // TODO: Handle target adjustment after ModifyMove
+    // Handle target adjustment after ModifyMove
     // If the move's target type changed in ModifyMove, need to get new target
-    // Requires implementing battle.getRandomTarget() first
-    // For now, assuming target doesn't change
+    let current_target = battle.dex.get_move(move_or_move_name.as_str()).unwrap().target.clone();
+    if base_target != current_target {
+        target = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &current_target);
+    }
 
     // move = this.battle.runEvent('ModifyType', pokemon, target, move, move);
     // move = this.battle.runEvent('ModifyMove', pokemon, target, move, move);
@@ -2849,9 +2869,12 @@ pub fn use_move_inner(
     // if (baseTarget !== move.target) {
     //     target = this.battle.getRandomTarget(pokemon, move);
     // }
-    // TODO: Handle second target adjustment
-    // If the move's target type changed after runEvent('ModifyMove'), adjust target
-    // Requires implementing battle.getRandomTarget() first
+    // Handle second target adjustment
+    // If the move's target type changed after runEvent('ModifyMove'), adjust target again
+    let current_target = battle.dex.get_move(move_or_move_name.as_str()).unwrap().target.clone();
+    if base_target != current_target {
+        target = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &current_target);
+    }
 
     // if (!move || pokemon.fainted) {
     //     return false;

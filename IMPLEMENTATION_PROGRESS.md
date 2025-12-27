@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 13/79 TODOs (16.5%)
+**Feature Implementation:** ⚠️ 16/79 TODOs (20.3%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -53,15 +53,28 @@
 
 **Enables:** Assault Vest, Gorilla Tactics move restrictions, Mean Look trapping
 
+### Session 5 - Move Target Events (3 implementations)
+
+#### ModifyTarget Event (1/1) ✅
+- [x] **ModifyTarget event** (battle_actions.rs:2799-2818) - Allows moves to redirect targets
+
+**Enables:** Payback, Metal Burst retargeting to last attacker
+
+#### Target Resolution (2/2) ✅
+- [x] **getRandomTarget calls** (battle_actions.rs:2820-2826) - Get valid target when None
+- [x] **Target adjustment after ModifyMove** (battle_actions.rs:2854-2877) - Retarget if move type changes
+
+**Enables:** Proper target selection for moves without explicit targets, dynamic retargeting
+
 ## Remaining P0 Critical (High Priority)
 
-### Move Events (5 remaining TODOs)
-- [ ] ModifyTarget event (battle_actions.rs:2799)
+### Move Events (2 remaining TODOs)
+- [x] ~~ModifyTarget event (battle_actions.rs:2799)~~ ✅ Completed
 - [x] ~~ModifyPriority event (battle.rs:5747)~~ ✅ Completed
 - [~] ~~Set move.priority field (battle.rs:5755)~~ ⚠️ Documented limitation
 - [x] ~~Get move priority from Dex (battle.rs:5735)~~ ✅ Completed
-- [ ] getRandomTarget (battle_actions.rs:2805)
-- [ ] Set move source effect (battle_actions.rs:2821)
+- [x] ~~getRandomTarget (battle_actions.rs:2805)~~ ✅ Completed
+- [~] ~~Set move source effect (battle_actions.rs:2821)~~ ⚠️ Documented - handled via event parameters
 - [ ] getMoveTargets multi-target (battle_actions.rs:2899)
 - [ ] PP deduction with Pressure (battle_actions.rs:2918)
 
