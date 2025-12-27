@@ -166,7 +166,7 @@ Moves with callbacks: 373
 - [x] iondeluge - Ion Deluge (Status, Electric) - 2 callbacks: condition::onFieldStart, condition::onModifyType
 - [x] ivycudgel - Ivy Cudgel (Physical, Grass) - 2 callbacks: onPrepareHit, onModifyType
 - [x] jawlock - Jaw Lock (Physical, Dark) - 1 callback: onHit
-- [ ] judgment - Judgment (Special, Normal) - 1 callback: onModifyType
+- [x] judgment - Judgment (Special, Normal) - 1 callback: onModifyType
 - [ ] jumpkick - Jump Kick (Physical, Fighting) - 1 callback: onMoveFail
 - [ ] junglehealing - Jungle Healing (Status, Grass) - 1 callback: onHit
 - [ ] kingsshield - King's Shield (Status, Steel) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
