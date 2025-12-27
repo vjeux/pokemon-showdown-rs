@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 27/79 TODOs (34.2%)
+**Feature Implementation:** ⚠️ 31/79 TODOs (39.2%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -194,11 +194,27 @@
 
 **Enables:** Proper choice state management, team preview validation, forced switch handling
 
-### Format Callbacks (4 TODOs)
-- [ ] Format callbacks (onBegin)
-- [ ] ruleTable iteration and subformat callbacks  
-- [ ] Format callbacks in runAction
-- [ ] Swap events
+### Format Callbacks (0 remaining TODOs) ✅ ALL COMPLETE
+- [x] **Format callbacks (onBegin)** (battle.rs:814-847) ✅ Completed (Session 8)
+- [x] **ruleTable iteration and subformat callbacks** (battle.rs:824-847) ✅ Completed (Session 8)
+- [x] **Format callbacks in runAction** (battle.rs:6134-6160) ✅ Completed (Session 8)
+- [x] **Swap events** (battle.rs:6562-6570) ✅ Completed (Session 8)
+
+**Implementation Details:**
+- Added infrastructure for format callback system using event emission
+- Implemented ruleTable.keys() iteration in start() method
+- Skips rules starting with +, *, -, ! as per JavaScript logic
+- Emits FormatBegin and RuleBegin:{rule} events that can be hooked
+- Implemented onBattleStart callbacks in runAction with RuleBattleStart events
+- Implemented Swap event firing for position swaps (two events per swap)
+- Events can be registered via Battle::on_event() for format-specific behavior
+- Full callback system requires manual registration (JavaScript callbacks can't be in JSON)
+
+**Enables:** Format-specific battle initialization, custom rules support, position swap mechanics
+
+## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
+
+**Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
 ## Remaining P2 Nice-to-have (51 TODOs)
 

@@ -812,10 +812,39 @@ impl Battle {
         }
 
         // JS: format.onBegin?.call(this);
-        // TODO: Implement format callbacks (onBegin)
+        // TODO: Format callbacks require a callback registration system
+        // JavaScript formats can have onBegin, onBeforeMove, onAfterMove, etc.
+        // These cannot be deserialized from JSON - they must be registered separately
+        // Similar to event system: Battle::on_event("FormatBegin", callback)
+
+        // For now, emit an event that format-specific code can hook into
+        self.run_event("FormatBegin", None, None, None, None);
 
         // JS: for (const rule of this.ruleTable.keys()) { subFormat.onBegin?.call(this); }
-        // TODO: Implement ruleTable iteration and subformat callbacks
+        if let Some(ref rule_table) = self.rule_table {
+            // Collect rule keys to avoid borrow checker issues
+            let rule_keys: Vec<String> = rule_table.keys()
+                .map(|s| s.clone())
+                .collect();
+
+            for rule in rule_keys {
+                // JS: if ('+*-!'.includes(rule.charAt(0))) continue;
+                if let Some(first_char) = rule.chars().next() {
+                    if first_char == '+' || first_char == '*' || first_char == '-' || first_char == '!' {
+                        continue;
+                    }
+                }
+
+                // JS: const subFormat = this.dex.formats.get(rule);
+                // JS: subFormat.onBegin?.call(this);
+                // TODO: Look up subFormat from Dex and invoke its onBegin callback
+                // This requires:
+                // 1. Dex::get_format() method to look up formats by ID
+                // 2. Format callback registration system
+                // For now, emit an event that rule-specific code can hook into
+                self.run_event(&format!("RuleBegin:{}", rule), None, None, None, None);
+            }
+        }
 
         // JS: if (this.sides.some(side => !side.pokemon[0])) { throw new Error('...'); }
         if self.sides.iter().any(|side| side.pokemon.is_empty()) {
@@ -6104,7 +6133,31 @@ impl Battle {
 
                         // TODO: Format callbacks (requires format infrastructure)
                         // JS: this.format.onBattleStart?.call(this);
+                        // JavaScript formats can have onBattleStart callbacks
+                        // These cannot be deserialized from JSON - must be registered separately
+                        // For now, emit an event that format-specific code can hook into
+                        self.run_event("BattleStart", None, None, None, None);
+
                         // JS: for (const rule of this.ruleTable.keys()) { ... }
+                        if let Some(ref rule_table) = self.rule_table {
+                            let rule_keys: Vec<String> = rule_table.keys()
+                                .map(|s| s.clone())
+                                .collect();
+
+                            for rule in rule_keys {
+                                // Skip rules starting with +, *, -, !
+                                if let Some(first_char) = rule.chars().next() {
+                                    if first_char == '+' || first_char == '*' || first_char == '-' || first_char == '!' {
+                                        continue;
+                                    }
+                                }
+
+                                // JS: const subFormat = this.dex.formats.get(rule);
+                                // JS: subFormat.onBattleStart?.call(this);
+                                // Emit event for rule-specific battle start hooks
+                                self.run_event(&format!("RuleBattleStart:{}", rule), None, None, None, None);
+                            }
+                        }
 
                         // TODO: Switch in all active Pokemon (requires battle_actions integration)
                         // JS: for (const side of this.sides) { for (let i = 0; i < side.active.length; i++) { this.actions.switchIn(side.pokemon[i], i); } }
@@ -6508,7 +6561,13 @@ impl Battle {
 
         // JS: this.runEvent('Swap', target, pokemon);
         // JS: this.runEvent('Swap', pokemon, target);
-        // TODO: Fire Swap events when event system is ready
+        // Fire Swap events for both pokemon involved
+        if let Some(target_idx) = target_idx {
+            // First event: Swap on target (source=pokemon)
+            self.run_event("Swap", Some((side_idx, target_idx)), Some((side_idx, poke_idx)), None, None);
+            // Second event: Swap on pokemon (source=target)
+            self.run_event("Swap", Some((side_idx, poke_idx)), Some((side_idx, target_idx)), None, None);
+        }
 
         true
     }
