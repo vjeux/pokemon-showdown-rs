@@ -257,7 +257,7 @@ Moves with callbacks: 373
 - [ ] rapidspin - Rapid Spin (Physical, Normal) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [x] razorwind - Razor Wind (Special, Normal) - 1 callback: onTryMove
 - [x] recycle - Recycle (Status, Normal) - 1 callback: onHit
-- [ ] reflect - Reflect (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
+- [x] reflect - Reflect (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [x] reflecttype - Reflect Type (Status, Normal) - 1 callback: onHit
 - [x] refresh - Refresh (Status, Normal) - 1 callback: onHit
 - [x] relicsong - Relic Song (Special, Normal) - 2 callbacks: onHit, onAfterMoveSecondarySelf
