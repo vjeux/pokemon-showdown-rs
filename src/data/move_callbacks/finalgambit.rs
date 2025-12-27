@@ -13,7 +13,26 @@ use crate::event::EventResult;
 ///     return damage;
 /// }
 pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let pokemon = pokemon_pos;
+
+    // const damage = pokemon.hp;
+    let damage = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.hp
+    };
+
+    // pokemon.faint();
+    let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    pokemon_pokemon.faint();
+
+    // return damage;
+    EventResult::Int(damage)
 }
 
