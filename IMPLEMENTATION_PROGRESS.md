@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 76/79 TODOs (96.2%)
+**Feature Implementation:** ⚠️ 77/79 TODOs (97.5%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -916,6 +916,28 @@
 
 **Enables:** Illusion/Disguise type tracking, correct trap mechanics based on type knowledge, optimized event system (skips events when Pokemon is immune)
 
+### Session 18 - Gen 1 Substitute HP Tracking (1 implementation)
+
+#### Substitute HP Damage System (1/1) ✅
+- [x] **sub_fainted field** (pokemon.rs:170, 291) - Track substitute faint separately from Pokemon faint
+- [x] **Substitute HP tracking** (battle.rs:4523-4582) - Track and update substitute HP when damaged
+
+**Implementation Details:**
+- Added `sub_fainted: bool` field to Pokemon struct (Gen 1 specific flag)
+- Initialized to false in Pokemon::new()
+- Implemented Gen 1 special case: confusion and HJK recoil damage affects foe's substitute
+- Accesses substitute HP from volatile's data HashMap: `sub_state.data.get("hp")`
+- Deducts damage from substitute HP: `new_hp = current_hp - damage`
+- If HP <= 0:
+  - Removes substitute volatile
+  - Sets `foe.sub_fainted = true`
+- Otherwise:
+  - Updates HP in volatile data
+  - Adds activate log: `add_log("-activate", foe_slot, "Substitute", "[damage]")`
+- Matches JavaScript: `foe.volatiles['substitute'].hp -= damage;`
+- Uses Pokemon.get_slot() to construct identifier for logs
+
+**Enables:** Gen 1 substitute damage mechanics, proper substitute HP tracking, correct substitute destruction, Gen 1 confusion/HJK recoil interaction with substitutes
 
 
 

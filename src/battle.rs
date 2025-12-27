@@ -4520,7 +4520,68 @@ impl Battle {
 
                 if foe_has_substitute {
                     // Damage foe's substitute
-                    // TODO: Implement substitute HP tracking
+                    // JS: foe.volatiles['substitute'].hp -= damage;
+                    // Get foe position
+                    let foe_pos = if foe_side < self.sides.len() {
+                        if let Some(side) = self.sides.get(foe_side) {
+                            if let Some(active_idx) = side.active.get(0) {
+                                active_idx.map(|idx| (foe_side, idx))
+                            } else {
+                                None
+                            }
+                        } else {
+                            None
+                        }
+                    } else {
+                        None
+                    };
+
+                    if let Some((foe_side_idx, foe_poke_idx)) = foe_pos {
+                        // Deduct damage from substitute HP
+                        let mut sub_destroyed = false;
+                        if let Some(foe_pokemon) = self.sides.get_mut(foe_side_idx)
+                            .and_then(|s| s.pokemon.get_mut(foe_poke_idx)) {
+
+                            if let Some(sub_state) = foe_pokemon.volatiles.get_mut(&substitute_id) {
+                                // Get current HP from volatile data
+                                let current_hp = sub_state.data.get("hp")
+                                    .and_then(|v| v.as_i64())
+                                    .unwrap_or(0) as i32;
+
+                                let new_hp = current_hp - damage as i32;
+
+                                if new_hp <= 0 {
+                                    // JS: foe.volatiles['substitute'].hp <= 0
+                                    sub_destroyed = true;
+                                } else {
+                                    // Update HP
+                                    sub_state.data.insert("hp".to_string(), serde_json::json!(new_hp));
+                                }
+                            }
+                        }
+
+                        // Handle substitute destruction or damage log
+                        if sub_destroyed {
+                            // JS: foe.removeVolatile('substitute'); foe.subFainted = true;
+                            if let Some(foe_pokemon) = self.sides.get_mut(foe_side_idx)
+                                .and_then(|s| s.pokemon.get_mut(foe_poke_idx)) {
+                                foe_pokemon.volatiles.remove(&substitute_id);
+                                foe_pokemon.sub_fainted = true;
+                            }
+                        } else {
+                            // JS: this.add('-activate', foe, 'Substitute', '[damage]');
+                            let foe_ident = if let Some(foe_pokemon) = self.sides.get(foe_side_idx)
+                                .and_then(|s| s.pokemon.get(foe_poke_idx)) {
+                                foe_pokemon.get_slot()
+                            } else {
+                                String::new()
+                            };
+                            if !foe_ident.is_empty() {
+                                self.add_log("-activate", &[&foe_ident, "Substitute", "[damage]"]);
+                            }
+                        }
+                    }
+
                     self.hint(&format!("{} has a Substitute, the target's Substitute takes the damage.", hint), false, None);
                     return damage;
                 } else {

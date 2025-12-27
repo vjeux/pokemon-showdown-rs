@@ -167,6 +167,7 @@ pub struct Pokemon {
     pub skip_before_switch_out_event_flag: bool,
     pub stats_raised_this_turn: bool,
     pub stats_lowered_this_turn: bool,
+    pub sub_fainted: bool,  // Gen 1: Substitute fainted (different from main faint)
 
     // Ability-specific flags
     pub sword_boost: bool,  // Intrepid Sword / Dauntless Shield
@@ -287,6 +288,7 @@ impl Pokemon {
             skip_before_switch_out_event_flag: false,
             stats_raised_this_turn: false,
             stats_lowered_this_turn: false,
+            sub_fainted: false,
 
             sword_boost: false,
 
