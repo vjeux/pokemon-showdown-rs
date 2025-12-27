@@ -50,7 +50,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.moveSlots`: conversion - Array of move slots with id field
 - `battle.dex.moves.get(id)`: conversion - Get move data by ID
 - `pokemon.species.num`: reflecttype - Species number (e.g., 493 for Arceus)
-- `pokemon.terastallized`: reflecttype - Tera state boolean
+- `pokemon.terastallized`: reflecttype, terablast - Tera state (boolean or string like 'Stellar')
 - `pokemon.apparentType`: reflecttype - Apparent type (mutable)
 - `pokemon.addedType`: reflecttype - Added type field (mutable)
 - `pokemon.knownType`: reflecttype - Known type field (mutable)
@@ -296,6 +296,8 @@ The following moves require infrastructure that doesn't exist yet:
 - `item.onPlate`: judgment - Plate type string field
 - `item.zMove`: judgment - Z-move boolean or data flag
 - `battle.runEvent(eventName, pokemon, null, move, defaultValue)`: multiattack - Run event with default return value
+- `pokemon.teraType`: terablast - Tera type string field
+- `pokemon.hpType`: hiddenpower - Hidden Power type string field
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
