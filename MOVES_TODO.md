@@ -202,7 +202,7 @@ Moves with callbacks: 373
 - [x] minimize - Minimize (Status, Normal) - 2 callbacks: condition::onSourceModifyDamage, condition::onAccuracy
 - [x] miracleeye - Miracle Eye (Status, Psychic) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
 - [x] mirrorcoat - Mirror Coat (Special, Psychic) - 6 callbacks: damageCallback, beforeTurnCallback, onTry, condition::onStart, condition::onRedirectTarget, condition::onDamagingHit
-- [ ] mirrormove - Mirror Move (Status, Flying) - 1 callback: onTryHit
+- [x] mirrormove - Mirror Move (Status, Flying) - 1 callback: onTryHit
 - [ ] mist - Mist (Status, Ice) - 3 callbacks: condition::onTryBoost, condition::onSideStart, condition::onSideEnd
 - [ ] mistyexplosion - Misty Explosion (Special, Fairy) - 1 callback: onBasePower
 - [ ] mistyterrain - Misty Terrain (Status, Fairy) - 6 callbacks: condition::durationCallback, condition::onSetStatus, condition::onTryAddVolatile, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
