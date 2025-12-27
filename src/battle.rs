@@ -3326,6 +3326,30 @@ impl Battle {
         self.trunc((inner + 2048 - 1) as f64 / 4096.0)
     }
 
+    /// Clamp an integer to a minimum value
+    /// Equivalent to battle.ts clampIntRange(value, min, max)
+    ///
+    // TypeScript source:
+    // 	clampIntRange(num: any, min?: number, max?: number) {
+    // 		if (typeof num !== 'number') return 0;
+    // 		num = Math.floor(num);
+    // 		if (min !== undefined) num = Math.max(num, min);
+    // 		if (max !== undefined) num = Math.min(num, max);
+    // 		return num;
+    // 	}
+    //
+    pub fn clamp_int_range(&self, value: i32, min: Option<i32>, max: Option<i32>) -> i32 {
+        let mut result = value;
+        if let Some(min_val) = min {
+            result = result.max(min_val);
+        }
+        if let Some(max_val) = max {
+            result = result.min(max_val);
+        }
+        result
+    }
+
+
     /// Get the current event's modifier (4096 = 1.0x)
     /// Rust accessor method - JavaScript directly accesses this.event.modifier field
     /// Used in event handlers to get the current relay variable modifier
