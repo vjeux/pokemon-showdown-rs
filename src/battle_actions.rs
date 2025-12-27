@@ -2918,7 +2918,88 @@ pub fn use_move_inner(
     ]);
 
     // if (zMove) this.runZPower(move, pokemon);
-    // TODO: Implement runZPower for status Z-moves
+    // Implement runZPower for status Z-moves
+    if z_move.is_some() {
+        // Get Pokemon's types for Ghost type check (curse effect)
+        let pokemon_has_ghost_type = battle.sides[side_idx].pokemon[poke_idx].types.contains(&"Ghost".to_string());
+
+        // Get z_move data from active_move (if it was transformed to Z-Move)
+        if let Some(ref z_move_data) = active_move.z_move {
+            // Call the run_z_power helper
+            let z_power_result = BattleActions::run_z_power(
+                &active_move.category,
+                z_move_data.boost.as_ref(),
+                z_move_data.effect.as_deref(),
+                pokemon_has_ghost_type,
+            );
+
+            // Apply the Z-Power effect based on result
+            match z_power_result {
+                ZPowerResult::DamageMove => {
+                    // JS: this.battle.attrLastMove('[zeffect]');
+                    // TODO: Implement attrLastMove for [zeffect] attribute
+                }
+                ZPowerResult::Boost(ref boosts) => {
+                    // JS: this.battle.boost(move.zMove.boost, pokemon, pokemon, zPower);
+                    // Convert BoostsTable to array of (stat_name, value) tuples
+                    let mut boost_array = Vec::new();
+                    if boosts.atk != 0 { boost_array.push(("atk", boosts.atk)); }
+                    if boosts.def != 0 { boost_array.push(("def", boosts.def)); }
+                    if boosts.spa != 0 { boost_array.push(("spa", boosts.spa)); }
+                    if boosts.spd != 0 { boost_array.push(("spd", boosts.spd)); }
+                    if boosts.spe != 0 { boost_array.push(("spe", boosts.spe)); }
+                    if boosts.accuracy != 0 { boost_array.push(("accuracy", boosts.accuracy)); }
+                    if boosts.evasion != 0 { boost_array.push(("evasion", boosts.evasion)); }
+
+                    battle.boost(&boost_array, pokemon_pos, Some(pokemon_pos), Some("zpower"));
+                }
+                ZPowerResult::Heal => {
+                    // JS: this.battle.heal(pokemon.maxhp, pokemon, pokemon, zPower);
+                    let max_hp = battle.sides[side_idx].pokemon[poke_idx].maxhp;
+                    let zpower_id = ID::new("zpower");
+                    battle.heal(max_hp, Some(pokemon_pos), Some(pokemon_pos), Some(&zpower_id));
+                }
+                ZPowerResult::HealReplacement => {
+                    // JS: pokemon.side.addSlotCondition(pokemon, 'healreplacement', pokemon, move);
+                    // TODO: Implement addSlotCondition for healreplacement
+                }
+                ZPowerResult::ClearNegativeBoost => {
+                    // JS: Clear all negative boosts and add '-clearnegativeboost' message
+                    let boosts_to_clear = {
+                        let pokemon = &battle.sides[side_idx].pokemon[poke_idx];
+                        let mut clear_boosts = Vec::new();
+                        if pokemon.boosts.atk < 0 { clear_boosts.push(("atk", -pokemon.boosts.atk)); }
+                        if pokemon.boosts.def < 0 { clear_boosts.push(("def", -pokemon.boosts.def)); }
+                        if pokemon.boosts.spa < 0 { clear_boosts.push(("spa", -pokemon.boosts.spa)); }
+                        if pokemon.boosts.spd < 0 { clear_boosts.push(("spd", -pokemon.boosts.spd)); }
+                        if pokemon.boosts.spe < 0 { clear_boosts.push(("spe", -pokemon.boosts.spe)); }
+                        if pokemon.boosts.accuracy < 0 { clear_boosts.push(("accuracy", -pokemon.boosts.accuracy)); }
+                        if pokemon.boosts.evasion < 0 { clear_boosts.push(("evasion", -pokemon.boosts.evasion)); }
+                        clear_boosts
+                    };
+
+                    if !boosts_to_clear.is_empty() {
+                        battle.boost(&boosts_to_clear, pokemon_pos, Some(pokemon_pos), Some("zpower"));
+                        battle.add_log("-clearnegativeboost", &[
+                            &format!("{}: {}", battle.sides[side_idx].id_str(), battle.sides[side_idx].pokemon[poke_idx].name),
+                            "[zeffect]"
+                        ]);
+                    }
+                }
+                ZPowerResult::Redirect => {
+                    // JS: pokemon.addVolatile('followme', pokemon, zPower);
+                    // TODO: Implement addVolatile for followme (Follow Me redirect)
+                }
+                ZPowerResult::Crit2 => {
+                    // JS: pokemon.addVolatile('focusenergy', pokemon, zPower);
+                    // TODO: Implement addVolatile for focusenergy (critical hit boost)
+                }
+                ZPowerResult::None => {
+                    // No Z-Power effect to apply
+                }
+            }
+        }
+    }
 
     // if (!target) {
     //     this.battle.attrLastMove('[notarget]');
