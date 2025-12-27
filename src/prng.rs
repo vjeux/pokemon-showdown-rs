@@ -67,7 +67,7 @@ pub trait RNG {
     /// Get the current seed
     fn get_seed(&self) -> PRNGSeed;
     /// Get the next random 32-bit number
-    fn next(&mut self) -> i32;
+    fn next(&mut self) -> u32;
 }
 
 /// A PRNG intended to emulate the on-cartridge PRNG for Gen 5 with a 64-bit
@@ -97,14 +97,14 @@ impl Gen5RNG {
     /// Calculates `a * b + c` (with 64-bit 2's complement integers)
     fn multiply_add(a: [u16; 4], b: [u16; 4], c: [u16; 4]) -> [u16; 4] {
         let mut out = [0u16; 4];
-        let mut carry: i32 = 0;
+        let mut carry: u32 = 0;
 
         for out_index in (0..4).rev() {
             for b_index in out_index..4 {
                 let a_index = 3 - (b_index - out_index);
-                carry = carry.wrapping_add((a[a_index] as i32).wrapping_mul(b[b_index] as i32));
+                carry = carry.wrapping_add((a[a_index] as u32).wrapping_mul(b[b_index] as u32));
             }
-            carry = carry.wrapping_add(c[out_index] as i32);
+            carry = carry.wrapping_add(c[out_index] as u32);
             out[out_index] = (carry & 0xFFFF) as u16;
             carry >>= 16;
         }
@@ -133,10 +133,10 @@ impl RNG for Gen5RNG {
         PRNGSeed::Gen5(self.seed)
     }
 
-    fn next(&mut self) -> i32 {
+    fn next(&mut self) -> u32 {
         self.next_frame();
         // Use the upper 32 bits
-        ((self.seed[0] as i32) << 16) | (self.seed[1] as i32)
+        ((self.seed[0] as u32) << 16) | (self.seed[1] as u32)
     }
 }
 
@@ -167,7 +167,7 @@ impl SodiumRNG {
     /// Generate a random seed
     pub fn generate_seed() -> String {
         let mut rng = rand::thread_rng();
-        let seed: [i32; 4] = [rng.gen(), rng.gen(), rng.gen(), rng.gen()];
+        let seed: [u32; 4] = [rng.gen(), rng.gen(), rng.gen(), rng.gen()];
         format!(
             "{:08x}{:08x}{:08x}{:08x}",
             seed[0], seed[1], seed[2], seed[3]
@@ -181,7 +181,7 @@ impl RNG for SodiumRNG {
         PRNGSeed::Sodium(hex)
     }
 
-    fn next(&mut self) -> i32 {
+    fn next(&mut self) -> u32 {
         // Create 36 bytes of zeros, encrypt to get random bytes
         let mut buf = [0u8; 36];
 
@@ -193,10 +193,10 @@ impl RNG for SodiumRNG {
         self.seed.copy_from_slice(&buf[0..32]);
 
         // Use bytes 32-36 for the output (big-endian)
-        ((buf[32] as i32) << 24)
-            | ((buf[33] as i32) << 16)
-            | ((buf[34] as i32) << 8)
-            | (buf[35] as i32)
+        ((buf[32] as u32) << 24)
+            | ((buf[33] as u32) << 16)
+            | ((buf[34] as u32) << 8)
+            | (buf[35] as u32)
     }
 }
 
@@ -266,7 +266,7 @@ impl PRNG {
     }
 
     /// Get the next random 32-bit number
-    fn next_raw(&mut self) -> i32 {
+    fn next_raw(&mut self) -> u32 {
         match &mut self.rng {
             PRNGImpl::Gen5(rng) => rng.next(),
             PRNGImpl::Sodium(rng) => rng.next(),
@@ -337,64 +337,6 @@ impl PRNG {
     pub fn generate_seed() -> PRNGSeed {
         PRNGSeed::Sodium(SodiumRNG::generate_seed())
     }
-
-    // ==========================================
-    // Methods ported from prng.ts
-    // ==========================================
-
-    /// Convert a seed to string format
-    pub fn convert_seed(seed: &PRNGSeed) -> String {
-        seed.to_string()
-    }
-
-    /// Static factory method - get a PRNG from various inputs
-    pub fn get(prng_or_seed: Option<PRNGOrSeed>) -> Self {
-        match prng_or_seed {
-            Some(PRNGOrSeed::PRNG(prng)) => prng,
-            Some(PRNGOrSeed::Seed(seed)) => PRNG::new(Some(seed)),
-            None => PRNG::new(None),
-        }
-    }
-
-    /// Get a random float in [0, 1)
-    pub fn random_float(&mut self) -> f64 {
-        self.random(None, None)
-    }
-
-    /// Sample and remove a random element from a vec
-    pub fn sample_remove<T>(&mut self, items: &mut Vec<T>) -> Option<T> {
-        if items.is_empty() {
-            return None;
-        }
-        let index = self.random_int(items.len() as i32) as usize;
-        Some(items.remove(index))
-    }
-
-    /// Sample n unique elements from a slice
-    pub fn sample_n<'a, T>(&mut self, items: &'a [T], n: usize) -> Vec<&'a T> {
-        if items.is_empty() || n == 0 {
-            return Vec::new();
-        }
-
-        let mut indices: Vec<usize> = (0..items.len()).collect();
-        self.shuffle(&mut indices);
-
-        indices.into_iter()
-            .take(n.min(items.len()))
-            .map(|i| &items[i])
-            .collect()
-    }
-
-    /// Get the starting seed
-    pub fn get_starting_seed(&self) -> &PRNGSeed {
-        &self.starting_seed
-    }
-}
-
-/// Helper enum for the get() factory method
-pub enum PRNGOrSeed {
-    PRNG(PRNG),
-    Seed(PRNGSeed),
 }
 
 #[cfg(test)]

@@ -157,8 +157,8 @@ pub struct EventInfo {
     pub source: Option<(usize, usize)>,
     /// Effect that caused the event
     pub effect: Option<ID>,
-    /// Modifier accumulated during event processing
-    pub modifier: f64,
+    /// Modifier accumulated during event processing (4096 = 1.0x)
+    pub modifier: i32,
 }
 
 impl EventInfo {
@@ -168,7 +168,7 @@ impl EventInfo {
             target: None,
             source: None,
             effect: None,
-            modifier: 1.0,
+            modifier: 4096,
         }
     }
 }
@@ -180,7 +180,7 @@ impl Default for EventInfo {
             target: None,
             source: None,
             effect: None,
-            modifier: 1.0,
+            modifier: 4096,
         }
     }
 }
@@ -198,9 +198,9 @@ pub struct EventContext {
     pub source: Option<(usize, usize)>,
     /// Effect that caused the event
     pub effect: Option<ID>,
-    /// Modifier accumulated during event processing
+    /// Modifier accumulated during event processing (4096 = 1.0x)
     /// In JavaScript: this.event.modifier
-    pub modifier: f64,
+    pub modifier: i32,
     /// Relay variable passed to the event
     /// This is the value being modified through the event chain
     pub relay_var: Option<i32>,
@@ -226,7 +226,7 @@ impl EventContext {
             target: None,
             source: None,
             effect: None,
-            modifier: 1.0,
+            modifier: 4096,
             relay_var: None,
         }
     }
@@ -4391,10 +4391,10 @@ impl Battle {
         self.trunc((inner + 2048 - 1) as f64 / 4096.0)
     }
 
-    /// Get the current event's modifier
+    /// Get the current event's modifier (4096 = 1.0x)
     /// Equivalent to this.event.modifier in JS
-    pub fn event_modifier(&self) -> f64 {
-        self.current_event.as_ref().map(|e| e.modifier).unwrap_or(1.0)
+    pub fn event_modifier(&self) -> i32 {
+        self.current_event.as_ref().map(|e| e.modifier).unwrap_or(4096)
     }
 
     /// Declare a tie
@@ -6722,7 +6722,7 @@ impl Battle {
             target,
             source,
             effect: Some(effect_id.clone()),
-            modifier: 1.0,
+            modifier: 4096,
         });
         self.current_effect = Some(effect_id.clone());
         self.event_depth += 1;
@@ -7393,7 +7393,7 @@ impl Battle {
             target,
             source,
             effect: source_effect.cloned(),
-            modifier: 1.0,
+            modifier: 4096,
         });
 
         let mut result = relay_var;
@@ -7429,8 +7429,8 @@ impl Battle {
 
         // Apply event modifier if we have a numeric result
         if let (Some(ref mut r), Some(ref event)) = (&mut result, &self.current_event) {
-            if event.modifier != 1.0 {
-                *r = self.modify_f(*r, event.modifier);
+            if event.modifier != 4096 {
+                *r = self.modify_internal(*r, event.modifier);
             }
         }
 
@@ -7528,16 +7528,18 @@ impl Battle {
         self.run_event(event_id, target, source, effect, None)
     }
 
-    /// Get event modifier
-    pub fn get_event_modifier(&self) -> f64 {
-        self.current_event.as_ref().map(|e| e.modifier).unwrap_or(1.0)
+    /// Get event modifier (4096 = 1.0x)
+    pub fn get_event_modifier(&self) -> i32 {
+        self.current_event.as_ref().map(|e| e.modifier).unwrap_or(4096)
     }
 
-    /// Set event modifier (for chainModify pattern)
-    pub fn set_event_modifier(&mut self, modifier: f64) {
+    /// Set event modifier (for chainModify pattern, 4096 = 1.0x)
+    pub fn set_event_modifier(&mut self, modifier: i32) {
         if let Some(ref mut event) = self.current_event {
-            // Chain modifiers by multiplying (simplified version)
-            event.modifier = event.modifier * modifier;
+            // Chain modifiers by multiplying in 4096 basis points
+            let current = event.modifier as i64;
+            let new = modifier as i64;
+            event.modifier = ((current * new + 2048) >> 12) as i32;
         }
     }
 
@@ -8039,16 +8041,17 @@ impl Battle {
 
         // JS: this.event.modifier = 1;
         if let Some(ref mut event) = self.current_event {
-            event.modifier = 1.0;
+            event.modifier = 4096;
         }
 
         result
     }
 
-    fn modify_internal(&self, value: i32, modifier: f64) -> i32 {
+    fn modify_internal(&self, value: i32, modifier: i32) -> i32 {
         // 4096-based fixed-point multiplication
-        let result = (value as f64 * modifier * 4096.0).trunc() as i32;
-        ((result + 2048) >> 12).max(1)
+        // modifier is already in 4096 basis (e.g., 6144 = 1.5x)
+        let result = (value as i64 * modifier as i64);
+        ((result + 2048) >> 12).max(1) as i32
     }
 
     // =========================================================================
@@ -8150,15 +8153,15 @@ impl Battle {
             let modifier = event.modifier;
 
             // JS: const previousMod = this.trunc(this.event.modifier * 4096);
-            // Inline trunc() to avoid borrow checker issues
-            let previous_mod = (modifier * 4096.0).trunc() as i32;
+            // Modifier is already in 4096 basis points
+            let previous_mod = modifier;
 
             // JS: const nextMod = this.trunc(numerator * 4096 / denominator);
-            // Inline trunc() to avoid borrow checker issues
-            let next_mod = ((numerator * 4096) as f64 / denominator as f64).trunc() as i32;
+            let next_mod = ((numerator as i64 * 4096) / denominator as i64) as i32;
 
             // JS: this.event.modifier = ((previousMod * nextMod + 2048) >> 12) / 4096;
-            event.modifier = (((previous_mod * next_mod + 2048) >> 12) as f64) / 4096.0;
+            // Result stays in 4096 basis points
+            event.modifier = ((previous_mod as i64 * next_mod as i64 + 2048) >> 12) as i32;
         }
     }
 
