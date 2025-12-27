@@ -121,7 +121,7 @@ Moves with callbacks: 373
 - [x] glaiverush - Glaive Rush (Physical, Dragon) - 4 callbacks: condition::onStart, condition::onAccuracy, condition::onSourceModifyDamage, condition::onBeforeMove
 - [x] gmaxcannonade - G-Max Cannonade (Physical, Water) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [x] gmaxchistrike - G-Max Chi Strike (Physical, Fighting) - 3 callbacks: condition::onStart, condition::onRestart, condition::onModifyCritRatio
-- [ ] gmaxsnooze - G-Max Snooze (Physical, Dark) - 2 callbacks: onHit, onAfterSubDamage
+- [x] gmaxsnooze - G-Max Snooze (Physical, Dark) - 2 callbacks: onHit, onAfterSubDamage
 - [ ] gmaxsteelsurge - G-Max Steelsurge (Physical, Steel) - 2 callbacks: condition::onSideStart, condition::onSwitchIn
 - [ ] gmaxvinelash - G-Max Vine Lash (Physical, Grass) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [ ] gmaxvolcalith - G-Max Volcalith (Physical, Rock) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
