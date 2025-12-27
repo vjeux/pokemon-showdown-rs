@@ -25,15 +25,84 @@ pub mod condition {
     ///     this.effectState.hasDragonType = target.hasType("Dragon");
     /// }
     pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (target.volatiles['focusenergy']) return false;
+        let has_focus_energy = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.volatiles.contains_key(&ID::from("focusenergy"))
+        };
+
+        if has_focus_energy {
+            // return false;
+            return EventResult::Bool(false);
+        }
+
+        // if (effect && (['costar', 'imposter', 'psychup', 'transform'].includes(effect.id))) {
+        //     this.add('-start', target, 'move: Dragon Cheer', '[silent]');
+        // } else {
+        //     this.add('-start', target, 'move: Dragon Cheer');
+        // }
+        let target_arg = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(target_pokemon)
+        };
+
+        if let Some(effect) = effect_id {
+            if effect == "costar" || effect == "imposter" || effect == "psychup" || effect == "transform" {
+                // this.add('-start', target, 'move: Dragon Cheer', '[silent]');
+                battle.add("-start", &[target_arg, "move: Dragon Cheer".into(), "[silent]".into()]);
+            } else {
+                // this.add('-start', target, 'move: Dragon Cheer');
+                battle.add("-start", &[target_arg, "move: Dragon Cheer".into()]);
+            }
+        } else {
+            // this.add('-start', target, 'move: Dragon Cheer');
+            battle.add("-start", &[target_arg, "move: Dragon Cheer".into()]);
+        }
+
+        // this.effectState.hasDragonType = target.hasType("Dragon");
+        let has_dragon_type = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.has_type(&ID::from("dragon"), battle)
+        };
+
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            effect_state.data.insert("hasDragonType".to_string(), serde_json::Value::Bool(has_dragon_type));
+        }
+
         EventResult::Continue
     }
 
     /// onModifyCritRatio(critRatio, source) {
     ///     return critRatio + (this.effectState.hasDragonType ? 2 : 1);
     /// }
-    pub fn on_modify_crit_ratio(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+    pub fn on_modify_crit_ratio(battle: &mut Battle, crit_ratio: i32, source_pos: Option<(usize, usize)>) -> EventResult {
+        // return critRatio + (this.effectState.hasDragonType ? 2 : 1);
+        let has_dragon_type = if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.data.get("hasDragonType")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        };
+
+        let boost = if has_dragon_type { 2 } else { 1 };
+
+        EventResult::Int(crit_ratio + boost)
     }
 }
