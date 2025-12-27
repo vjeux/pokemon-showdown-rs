@@ -27,7 +27,32 @@ use crate::event::EventResult;
 ///     return bp;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    let ratio = if pokemon.maxhp > 0 {
+        std::cmp::max((pokemon.hp * 48) / pokemon.maxhp, 1)
+    } else {
+        1
+    };
+
+    let bp = if ratio < 2 {
+        200
+    } else if ratio < 5 {
+        150
+    } else if ratio < 10 {
+        100
+    } else if ratio < 17 {
+        80
+    } else if ratio < 33 {
+        40
+    } else {
+        20
+    };
+
+    // TODO: battle.debug(`BP: ${bp}`);
+    EventResult::Number(bp)
 }
 
