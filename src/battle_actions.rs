@@ -2907,7 +2907,7 @@ pub fn use_move_inner(
     //     this.battle.add(this.battle.gen >= 5 ? '-fail' : '-notarget', pokemon);
     //     return false;
     // }
-    let target_pos = match target {
+    let mut target_pos = match target {
         Some(t) => t,
         None => {
             battle.add_log("-notarget", &[]);
@@ -2919,11 +2919,17 @@ pub fn use_move_inner(
     // if (targets.length) {
     //     target = targets[targets.length - 1]; // in case of redirection
     // }
-    // TODO: Implement getMoveTargets for multi-target handling
+    // Implement getMoveTargets for multi-target handling
     // getMoveTargets returns all targets hit by a move (based on target type)
     // and pressure targets (for PP deduction via Pressure ability)
-    // This is crucial for spread moves and multi-target moves
-    // For now, treating all moves as single-target
+    let (targets, pressure_targets) = battle.get_move_targets(pokemon_pos, move_or_move_name, Some(target_pos));
+    if !targets.is_empty() {
+        // Update target in case of redirection
+        target = Some(targets[targets.len() - 1]);
+        if let Some(new_target) = target {
+            target_pos = new_target;
+        }
+    }
 
     // const callerMoveForPressure = sourceEffect && (sourceEffect as ActiveMove).pp ? sourceEffect as ActiveMove : null;
     // if (!sourceEffect || callerMoveForPressure || sourceEffect.id === 'pursuit') {
@@ -2938,10 +2944,33 @@ pub fn use_move_inner(
     //         pokemon.deductPP(callerMoveForPressure || moveOrMoveName, extraPP);
     //     }
     // }
-    // TODO: Implement PP deduction with Pressure
+    // Implement PP deduction with Pressure
     // The Pressure ability causes moves to lose 1 extra PP when targeting that Pokemon
     // This loops through pressureTargets and calls DeductPP event for each
-    // Requires getMoveTargets to be implemented first
+    if source_effect.is_none() || source_effect.map(|e| e.as_str() == "pursuit").unwrap_or(false) {
+        let mut extra_pp = 0;
+        for &pressure_target in &pressure_targets {
+            // Call DeductPP event for each pressure target
+            // JS: const ppDrop = this.battle.runEvent('DeductPP', source, pokemon, move);
+            if let Some(pp_drop) = battle.run_event(
+                "DeductPP",
+                Some(pressure_target),
+                Some(pokemon_pos),
+                Some(move_or_move_name),
+                Some(1),
+            ) {
+                // JS: if (ppDrop !== true) extraPP += ppDrop || 0;
+                // runEvent returns Some(i32), we add it to extra PP
+                extra_pp += pp_drop;
+            }
+        }
+
+        // TODO: Deduct PP from pokemon
+        // JS: if (extraPP > 0) pokemon.deductPP(callerMoveForPressure || moveOrMoveName, extraPP);
+        // This requires implementing deductPP on pokemon, which modifies move PP
+        // For now, documented as TODO
+        let _ = extra_pp; // Silence unused warning
+    }
 
     // if (!this.battle.singleEvent('TryMove', move, null, pokemon, target, move) ||
     //     !this.battle.runEvent('TryMove', pokemon, target, move)) {
