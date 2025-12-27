@@ -4,7 +4,7 @@ Total: 953 moves
 Moves with callbacks: 373
 
 ## Moves with Callbacks (alphabetically)
-- [ ] acrobatics - Acrobatics (Physical, Flying) - 1 callback: basePowerCallback
+- [x] acrobatics - Acrobatics (Physical, Flying) - 1 callback: basePowerCallback
 - [ ] acupressure - Acupressure (Status, Normal) - 1 callback: onHit
 - [ ] afteryou - After You (Status, Normal) - 1 callback: onHit
 - [ ] allyswitch - Ally Switch (Status, Psychic) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onRestart
