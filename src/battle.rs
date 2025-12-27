@@ -2692,8 +2692,18 @@ impl Battle {
 
             // JS: if (!pokemon.fainted && this.runEvent('BeforeFaint', pokemon, faintData.source, faintData.effect))
             if !already_fainted {
-                // TODO: runEvent('BeforeFaint', pokemon, source, effect)
-                // For now, assume it returns true
+                // Run BeforeFaint event - can be cancelled by returning false
+                let before_faint_result = self.run_event_bool(
+                    "BeforeFaint",
+                    Some((side_idx, poke_idx)),
+                    faint_data.source,
+                    faint_data.effect.as_ref(),
+                );
+
+                if !before_faint_result {
+                    // BeforeFaint was cancelled, skip this faint
+                    continue;
+                }
 
                 // JS: this.add('faint', pokemon);
                 let pokemon_name = {
@@ -2714,7 +2724,13 @@ impl Battle {
                 }
 
                 // JS: this.runEvent('Faint', pokemon, faintData.source, faintData.effect);
-                // TODO: runEvent('Faint')
+                self.run_event(
+                    "Faint",
+                    Some((side_idx, poke_idx)),
+                    faint_data.source,
+                    faint_data.effect.as_ref(),
+                    None,  // relay_var
+                );
 
                 // JS: this.singleEvent('End', pokemon.getAbility(), pokemon.abilityState, pokemon);
                 // JS: this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon);
@@ -2789,8 +2805,16 @@ impl Battle {
         }
 
         // JS: if (faintData && length) { this.runEvent('AfterFaint', faintData.target, faintData.source, faintData.effect, length); }
-        if last_faint_data.is_some() && length > 0 {
-            // TODO: runEvent('AfterFaint')
+        if let Some(ref faint_data) = last_faint_data {
+            if length > 0 {
+                self.run_event(
+                    "AfterFaint",
+                    Some(faint_data.target),
+                    faint_data.source,
+                    faint_data.effect.as_ref(),
+                    None,  // relay_var
+                );
+            }
         }
 
         // JS: return false;
