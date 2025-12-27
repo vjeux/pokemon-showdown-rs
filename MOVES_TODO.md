@@ -303,7 +303,7 @@ Moves with callbacks: 373
 - [x] sparklingaria - Sparkling Aria (Special, Water) - 1 callback: onAfterMove
 - [x] speedswap - Speed Swap (Status, Psychic) - 1 callback: onHit
 - [x] spiderweb - Spider Web (Status, Bug) - 1 callback: onHit
-- [ ] spikes - Spikes (Status, Ground) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
+- [x] spikes - Spikes (Status, Ground) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
 - [ ] spikyshield - Spiky Shield (Status, Grass) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] spite - Spite (Status, Ghost) - 1 callback: onHit
 - [ ] spitup - Spit Up (Special, Normal) - 3 callbacks: basePowerCallback, onTry, onAfterMove
