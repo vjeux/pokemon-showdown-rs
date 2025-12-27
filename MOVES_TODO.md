@@ -73,7 +73,7 @@ Moves with callbacks: 373
 - [x] dreameater - Dream Eater (Special, Psychic) - 1 callback: onTryImmunity
 - [x] echoedvoice - Echoed Voice (Special, Normal) - 4 callbacks: basePowerCallback, onTryMove, condition::onFieldStart, condition::onFieldRestart
 - [x] electricterrain - Electric Terrain (Status, Electric) - 6 callbacks: condition::durationCallback, condition::onSetStatus, condition::onTryAddVolatile, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
-- [ ] electrify - Electrify (Status, Electric) - 3 callbacks: onTryHit, condition::onStart, condition::onModifyType
+- [x] electrify - Electrify (Status, Electric) - 3 callbacks: onTryHit, condition::onStart, condition::onModifyType
 - [ ] electroball - Electro Ball (Special, Electric) - 1 callback: basePowerCallback
 - [ ] electrodrift - Electro Drift (Special, Electric) - 1 callback: onBasePower
 - [ ] electroshot - Electro Shot (Special, Electric) - 1 callback: onTryMove
