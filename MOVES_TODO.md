@@ -67,7 +67,7 @@ Moves with callbacks: 373
 - [x] dive - Dive (Physical, Water) - 4 callbacks: onTryMove, condition::onImmunity, condition::onInvulnerability, condition::onSourceModifyDamage
 - [x] doodle - Doodle (Status, Normal) - 1 callback: onHit
 - [x] doomdesire - Doom Desire (Special, Steel) - 1 callback: onTry
-- [ ] doubleshock - Double Shock (Physical, Electric) - 1 callback: onTryMove
+- [x] doubleshock - Double Shock (Physical, Electric) - 1 callback: onTryMove
 - [ ] dragoncheer - Dragon Cheer (Status, Dragon) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
 - [ ] dragonenergy - Dragon Energy (Special, Dragon) - 1 callback: basePowerCallback
 - [ ] dreameater - Dream Eater (Special, Psychic) - 1 callback: onTryImmunity
