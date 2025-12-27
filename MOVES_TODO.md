@@ -192,7 +192,7 @@ Moves with callbacks: 373
 - [x] matblock - Mat Block (Status, Fighting) - 3 callbacks: onTry, condition::onSideStart, condition::onTryHit
 - [x] maxguard - Max Guard (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit
 - [x] meanlook - Mean Look (Status, Normal) - 1 callback: onHit
-- [ ] mefirst - Me First (Status, Normal) - 2 callbacks: onTryHit, condition::onBasePower
+- [x] mefirst - Me First (Status, Normal) - 2 callbacks: onTryHit, condition::onBasePower
 - [ ] metalburst - Metal Burst (Physical, Steel) - 3 callbacks: damageCallback, onTry, onModifyTarget
 - [ ] meteorbeam - Meteor Beam (Special, Rock) - 1 callback: onTryMove
 - [ ] metronome - Metronome (Status, Normal) - 1 callback: onHit
