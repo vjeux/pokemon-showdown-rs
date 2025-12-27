@@ -30,7 +30,7 @@ Moves with callbacks: 373
 - [x] bleakwindstorm - Bleakwind Storm (Special, Flying) - 1 callback: onModifyMove
 - [x] blizzard - Blizzard (Special, Ice) - 1 callback: onModifyMove
 - [x] block - Block (Status, Normal) - 1 callback: onHit
-- [ ] boltbeak - Bolt Beak (Physical, Electric) - 1 callback: basePowerCallback
+- [x] boltbeak - Bolt Beak (Physical, Electric) - 1 callback: basePowerCallback
 - [ ] bounce - Bounce (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceBasePower
 - [ ] brickbreak - Brick Break (Physical, Fighting) - 1 callback: onTryHit
 - [ ] brine - Brine (Special, Water) - 1 callback: onBasePower
