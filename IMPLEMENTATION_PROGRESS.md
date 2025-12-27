@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 61/79 TODOs (77.2%)
+**Feature Implementation:** ⚠️ 62/79 TODOs (78.5%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -606,11 +606,39 @@
 
 **Enables:** Recoil damage (Take Down, Double-Edge, Submission), Drain healing (Absorb, Mega Drain, Giga Drain), gen-specific damage calculations
 
+### Session 9 Continued Part 2 - Gen 1 Bide Instafaint Handling (1 implementation)
+
+#### Gen 1 Bide Instafaint Clearing (1/1) ✅
+- [x] **Clear Bide accumulated damage in instafaint** (battle.rs:9176-9220) - Reset Bide damage to 0 for all active Pokemon when instafaint occurs in Gen 1
+
+**Implementation Details:**
+- Iterates through all active Pokemon when instafaint occurs in Gen 1
+- Checks pokemon.volatiles['bide'] for damage field
+- Resets damage to 0 if it exists and is > 0
+- Adds hint messages when Bide damage is cleared
+- Matches JavaScript battle.ts:8897-8901:
+  ```javascript
+  if (this.gen <= 1) {
+      this.queue.clear();
+      for (const pokemon of this.getAllActive()) {
+          if (pokemon.volatiles['bide']?.damage) {
+              pokemon.volatiles['bide'].damage = 0;
+              this.hint("Desync Clause Mod activated!");
+              this.hint("In Gen 1, Bide's accumulated damage is reset to 0 when a Pokemon faints.");
+          }
+      }
+  }
+  ```
+- Uses EffectState.data HashMap to access/modify Bide damage field
+- Identical logic to faint_messages() implementation but in instafaint context
+
+**Enables:** Correct Gen 1 Bide mechanics during instafaint, prevents accumulated damage from carrying over after instafaints
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (18 TODOs)
+## Remaining P2 Nice-to-have (17 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks
