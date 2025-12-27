@@ -87,7 +87,7 @@ Moves with callbacks: 373
 - [x] facade - Facade (Physical, Normal) - 1 callback: onBasePower
 - [x] fairylock - Fairy Lock (Status, Fairy) - 2 callbacks: condition::onFieldStart, condition::onTrapPokemon
 - [x] fakeout - Fake Out (Physical, Normal) - 1 callback: onTry
-- [ ] falseswipe - False Swipe (Physical, Normal) - 1 callback: onDamage
+- [x] falseswipe - False Swipe (Physical, Normal) - 1 callback: onDamage
 - [ ] fellstinger - Fell Stinger (Physical, Bug) - 1 callback: onAfterMoveSecondarySelf
 - [ ] ficklebeam - Fickle Beam (Special, Dragon) - 1 callback: onBasePower
 - [ ] filletaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
