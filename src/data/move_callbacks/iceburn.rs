@@ -19,7 +19,41 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    let attacker = source_pos;
+    let defender = target_pos;
+
+    // if (attacker.removeVolatile(move.id)) {
+    //     return;
+    // }
+    let move_id = match battle.active_move.as_ref() {
+        Some(m) => m.id.clone(),
+        None => return EventResult::Continue,
+    };
+
+    let removed = battle.remove_volatile(attacker, &move_id);
+    if removed {
+        return EventResult::Continue;
+    }
+
+    // this.add('-prepare', attacker, move.name);
+    let move_name = battle.active_move.as_ref().map(|m| m.name.clone()).unwrap_or_default();
+    let attacker_arg = crate::battle::Arg::Pos(attacker.0, attacker.1);
+    battle.add("-prepare", &[attacker_arg, move_name.into()]);
+
+    // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+    //     return;
+    // }
+    let charge_result = battle.run_event("ChargeMove", attacker, defender, None);
+    if !charge_result {
+        return EventResult::Continue;
+    }
+
+    // attacker.addVolatile('twoturnmove', defender);
+    battle.add_volatile(attacker, &ID::from("twoturnmove"), defender, None);
+
+    // return null;
+    EventResult::Null
 }
 
