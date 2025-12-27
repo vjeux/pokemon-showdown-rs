@@ -286,7 +286,7 @@ Moves with callbacks: 373
 - [x] shelltrap - Shell Trap (Special, Fire) - 4 callbacks: priorityChargeCallback, onTryMove, condition::onStart, condition::onHit
 - [x] shoreup - Shore Up (Status, Ground) - 1 callback: onHit
 - [x] silktrap - Silk Trap (Status, Bug) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
-- [ ] simplebeam - Simple Beam (Status, Normal) - 2 callbacks: onTryHit, onHit
+- [x] simplebeam - Simple Beam (Status, Normal) - 2 callbacks: onTryHit, onHit
 - [ ] sketch - Sketch (Status, Normal) - 1 callback: onHit
 - [ ] skillswap - Skill Swap (Status, Psychic) - 2 callbacks: onTryHit, onHit
 - [ ] skullbash - Skull Bash (Physical, Normal) - 1 callback: onTryMove
