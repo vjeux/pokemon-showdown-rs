@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Arg};
 use crate::event::EventResult;
 
 
@@ -15,7 +15,12 @@ pub mod condition {
     ///     this.add('-start', pokemon, 'Aqua Ring');
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // this.add('-start', pokemon, 'Aqua Ring');
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        battle.add("-start", &[pokemon.into(), "Aqua Ring".into()]);
         EventResult::Continue
     }
 
@@ -23,7 +28,15 @@ pub mod condition {
     ///     this.heal(pokemon.baseMaxhp / 16);
     /// }
     pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // Get the pokemon to access its base max hp
+        let base_maxhp = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p.base_maxhp,
+            None => return EventResult::Continue,
+        };
+
+        // this.heal(pokemon.baseMaxhp / 16);
+        battle.heal(base_maxhp / 16, Some(pokemon_pos), None, None);
+
         EventResult::Continue
     }
 }
