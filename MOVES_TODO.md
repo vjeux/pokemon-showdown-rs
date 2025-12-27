@@ -109,7 +109,7 @@ Moves with callbacks: 373
 - [x] forestscurse - Forest's Curse (Status, Grass) - 1 callback: onHit
 - [x] freezedry - Freeze-Dry (Special, Ice) - 1 callback: onEffectiveness
 - [ ] freezeshock - Freeze Shock (Physical, Ice) - 1 callback: onTryMove
-- [ ] freezyfrost - Freezy Frost (Special, Ice) - 1 callback: onHit
+- [x] freezyfrost - Freezy Frost (Special, Ice) - 1 callback: onHit
 - [ ] frustration - Frustration (Physical, Normal) - 1 callback: basePowerCallback
 - [ ] furycutter - Fury Cutter (Physical, Bug) - 3 callbacks: basePowerCallback, condition::onStart, condition::onRestart
 - [ ] fusionbolt - Fusion Bolt (Physical, Electric) - 1 callback: onBasePower
