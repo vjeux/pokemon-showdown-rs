@@ -59,10 +59,10 @@ The following are advanced features that require more complex infrastructure:
 - `battle.effectState.pranksterBoosted`: magiccoat - Effect state prankster field (mutable)
 
 **Species Data Structure**:
-- `pokemon.baseSpecies.baseSpecies`: telekinesis - Base species of base species (for forms like Gengar-Mega)
-- `pokemon.baseSpecies.name`: telekinesis - Base species name
-- `pokemon.baseSpecies.forme`: orderup - Forme name string field (e.g., 'Droopy', 'Stretchy')
-- `pokemon.species.id`: relicsong - Species ID string field
+- ✓ `pokemon.baseSpecies.baseSpecies`: telekinesis - Base species of base species (for forms like Gengar-Mega) (DONE via get_base_species_base_species)
+- ✓ `pokemon.baseSpecies.name`: telekinesis - Base species name (DONE via get_base_species_name)
+- ✓ `pokemon.baseSpecies.forme`: orderup - Forme name string field (e.g., 'Droopy', 'Stretchy') (DONE via get_forme)
+- ✓ `pokemon.species.id`: relicsong - Species ID string field (DONE - use pokemon.species_id field)
 
 **Item Data Fields**:
 - ✓ `item.onPlate`: judgment - Plate type string field (DONE)

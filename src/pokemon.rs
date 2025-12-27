@@ -2399,6 +2399,34 @@ impl Pokemon {
         }
     }
 
+    /// Get base species name for this Pokemon
+    /// For formes like "Pikachu-Alola", returns "Pikachu"
+    /// For base species like "Pikachu", returns "Pikachu"
+    /// Equivalent to pokemon.baseSpecies.name in TypeScript
+    pub fn get_base_species_name(&self, dex: &crate::dex::Dex) -> Option<String> {
+        let species = dex.get_species(self.species_id.as_str())?;
+        Some(species.base_species.clone().unwrap_or_else(|| species.name.clone()))
+    }
+
+    /// Get base species of base species for this Pokemon
+    /// For complex formes like "Gengar-Mega", returns "Gengar"
+    /// Equivalent to pokemon.baseSpecies.baseSpecies in TypeScript
+    pub fn get_base_species_base_species(&self, dex: &crate::dex::Dex) -> Option<String> {
+        let species = dex.get_species(self.species_id.as_str())?;
+        let base_species_name = species.base_species.as_ref().unwrap_or(&species.name);
+        let base_species = dex.get_species(base_species_name)?;
+        Some(base_species.base_species.clone().unwrap_or_else(|| base_species.name.clone()))
+    }
+
+    /// Get forme name for this Pokemon
+    /// For "Pikachu-Alola", returns Some("Alola")
+    /// For "Pikachu", returns None
+    /// Equivalent to pokemon.baseSpecies.forme or pokemon.species.forme in TypeScript
+    pub fn get_forme(&self, dex: &crate::dex::Dex) -> Option<String> {
+        let species = dex.get_species(self.species_id.as_str())?;
+        species.forme.clone()
+    }
+
     /// Clear all turn state at end of turn
     pub fn clear_turn_state_full(&mut self) {
         self.move_last_turn_result = self.move_this_turn_result;
