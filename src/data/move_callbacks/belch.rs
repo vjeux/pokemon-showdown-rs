@@ -11,7 +11,15 @@ use crate::event::EventResult;
 ///     if (!pokemon.ateBerry) pokemon.disableMove('belch');
 /// }
 pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    if !pokemon.ate_berry {
+        // TODO: pokemon.disableMove('belch');
+    }
+
     EventResult::Continue
 }
 
