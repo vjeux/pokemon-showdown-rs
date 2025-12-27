@@ -236,6 +236,34 @@ The following moves require infrastructure that doesn't exist yet:
 - `side.getSideCondition(name)`: auroraveil - Get side condition from a side
 - `pokemon.getMoveHitData(move).crit`: auroraveil - Access crit field from move hit data
 - `pokemon.addVolatile(condition, source, move, label)`: anchorshot - Add volatile with trapper label
+- `move.target` mutable: curse - Change move target
+- `move.nonGhostTarget`: curse - Non-ghost target field
+- `move.volatileStatus` deletion: curse - Delete volatile status field from move
+- `move.onHit` deletion: curse - Delete onHit callback from move
+- `move.self` mutable: curse - Modify move self-effects with boosts
+- `pokemon.lastMoveUsed`: conversion2 - Last move used by pokemon (with .type field)
+- `battle.dex.types.names()`: conversion2 - Get all type names iterator
+- `battle.dex.types.get(typeName).damageTaken[attackType]`: conversion2 - Type chart effectiveness
+- `battle.sample(array)`: conversion2 - Random element from array
+- `pokemon.volatiles[name].duration`: perishsong - Access duration field of volatile
+- `pokemon.faint()`: perishsong - Faint the pokemon
+- `pokemon.beingCalledBack`: pursuit - Boolean flag for being called back
+- `pokemon.switchFlag`: pursuit - Boolean flag for switching out
+- `side.hasAlly(pokemon)`: pursuit - Check if side has pokemon as ally
+- `side.addSideCondition(name, source)`: pursuit - Add side condition with source
+- `side.getSideConditionData(name)`: pursuit - Get mutable side condition data object
+- `pokemon.isAdjacent(other)`: pursuit - Check if pokemon is adjacent to another
+- `pokemon.canMegaEvo`: pursuit - Boolean flag for Mega Evolution availability
+- `pokemon.canUltraBurst`: pursuit - Boolean flag for Ultra Burst availability
+- `pokemon.canTerastallize`: pursuit - Boolean flag for Terastallization availability
+- `battle.queue.entries()`: pursuit - Queue entries iterator with (index, action) tuples
+- `action.pokemon`: pursuit - Action's pokemon reference
+- `action.choice`: pursuit - Action choice string (megaEvo, terastallize, etc.)
+- `battle.actions.runMegaEvo(pokemon)`: pursuit - Execute Mega Evolution
+- `battle.actions.terastallize(pokemon)`: pursuit - Execute Terastallization
+- `battle.queue.list.splice(index, count)`: pursuit - Remove entries from queue list
+- `battle.actions.runMove(moveId, pokemon, targetLoc)`: pursuit - Run specific move
+- `pokemon.getLocOf(pokemon)`: pursuit - Get location of target pokemon
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
