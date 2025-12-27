@@ -217,7 +217,7 @@ Moves with callbacks: 373
 - [x] nightmare - Nightmare (Status, Ghost) - 2 callbacks: condition::onStart, condition::onResidual
 - [x] noretreat - No Retreat (Status, Fighting) - 3 callbacks: onTry, condition::onStart, condition::onTrapPokemon
 - [x] obstruct - Obstruct (Status, Dark) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
-- [ ] octolock - Octolock (Status, Fighting) - 4 callbacks: onTryImmunity, condition::onStart, condition::onResidual, condition::onTrapPokemon
+- [x] octolock - Octolock (Status, Fighting) - 4 callbacks: onTryImmunity, condition::onStart, condition::onResidual, condition::onTrapPokemon
 - [ ] odorsleuth - Odor Sleuth (Status, Normal) - 1 callback: onTryHit
 - [ ] orderup - Order Up (Physical, Dragon) - 1 callback: onAfterMoveSecondarySelf
 - [ ] painsplit - Pain Split (Status, Normal) - 1 callback: onHit
