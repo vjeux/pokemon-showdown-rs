@@ -195,7 +195,7 @@ Moves with callbacks: 373
 - [x] mefirst - Me First (Status, Normal) - 2 callbacks: onTryHit, condition::onBasePower
 - [x] metalburst - Metal Burst (Physical, Steel) - 3 callbacks: damageCallback, onTry, onModifyTarget
 - [x] meteorbeam - Meteor Beam (Special, Rock) - 1 callback: onTryMove
-- [ ] metronome - Metronome (Status, Normal) - 1 callback: onHit
+- [x] metronome - Metronome (Status, Normal) - 1 callback: onHit
 - [ ] mimic - Mimic (Status, Normal) - 1 callback: onHit
 - [ ] mindblown - Mind Blown (Special, Fire) - 1 callback: onAfterMove
 - [ ] mindreader - Mind Reader (Status, Normal) - 2 callbacks: onTryHit, onHit
