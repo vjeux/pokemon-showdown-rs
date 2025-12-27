@@ -15,7 +15,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.faint()`: finalgambit - Faint the pokemon
 - `battle.random(min, max)`: EXISTS ✓
 - `pokemon.getUndynamaxedHP()`: endeavor, superfang, ruination, naturesmadness, guardianofalola - Get HP ignoring Dynamax
-- `pokemon.cureStatus()`: wakeupslap, smellingsalts - Cure pokemon status condition
+- `pokemon.cureStatus()`: wakeupslap, smellingsalts, aromatherapy - Cure pokemon status condition
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
@@ -27,6 +27,18 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.newlySwitched`: boltbeak, fishiousrend, payback - Check if just switched in this turn
 - `battle.queue.willMove(pokemon)`: boltbeak, fishiousrend, payback, suckerpunch - Check if pokemon has queued action
 - `pokemon.activeMoveActions`: fakeout, firstimpression - Track number of move actions since switch-in
+- `pokemon.hasAbility(name)`: aromatherapy, autotomize, many others - Check if pokemon has ability
+- `battle.suppressingAbility(pokemon)`: aromatherapy - Check if ability is suppressed
+- `pokemon.side.pokemon`: aromatherapy - Array of all pokemon on a side
+- `pokemon.side.allySide`: aromatherapy - Ally side in doubles/triples
+- `pokemon.volatiles[name]`: aromatherapy, many - Check/access volatile conditions
+- `move.infiltrates`: aromatherapy - Check if move bypasses substitute
+- `pokemon.weighthg`: autotomize - Pokemon weight in hectograms (mutable)
+- `pokemon.species.baseSpecies`: aurawheel - Base species name
+- `pokemon.species.name`: aurawheel - Current species/form name
+- `battle.attrLastMove(attr)`: aurawheel, allyswitch - Modify last move attributes
+- `battle.hint(message)`: aurawheel - Add hint message
+- `EventResult::Null`: aurawheel - Return null to prevent move execution
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
