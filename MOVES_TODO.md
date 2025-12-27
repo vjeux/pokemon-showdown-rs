@@ -77,7 +77,7 @@ Moves with callbacks: 373
 - [x] electroball - Electro Ball (Special, Electric) - 1 callback: basePowerCallback
 - [x] electrodrift - Electro Drift (Special, Electric) - 1 callback: onBasePower
 - [x] electroshot - Electro Shot (Special, Electric) - 1 callback: onTryMove
-- [ ] embargo - Embargo (Status, Dark) - 2 callbacks: condition::onStart, condition::onEnd
+- [x] embargo - Embargo (Status, Dark) - 2 callbacks: condition::onStart, condition::onEnd
 - [ ] encore - Encore (Status, Normal) - 5 callbacks: condition::onStart, condition::onOverrideAction, condition::onResidual, condition::onEnd, condition::onDisableMove
 - [ ] endeavor - Endeavor (Physical, Normal) - 2 callbacks: damageCallback, onTryImmunity
 - [ ] endure - Endure (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onDamage
