@@ -6,10 +6,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-// Common types
-mod common;
-pub use common::*;
-
 // Individual move modules
 pub mod acrobatics;
 pub mod acupressure;

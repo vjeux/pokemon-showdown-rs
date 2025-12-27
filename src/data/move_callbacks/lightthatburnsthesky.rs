@@ -4,12 +4,8 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
-use crate::dex_data::ID;
+use crate::battle::Battle;
 use crate::event::EventResult;
-use super::{Status, Effect};
 
 /// onModifyMove(move, pokemon) {
 ///     if (pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) move.category = 'Physical';

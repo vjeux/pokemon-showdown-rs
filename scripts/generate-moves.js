@@ -263,12 +263,8 @@ for (const move of movesWithCallbacks) {
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
-use crate::dex_data::ID;
+use crate::battle::Battle;
 use crate::event::EventResult;
-use super::{Status, Effect};
 
 ${move.callbacks.map(callback => {
     const rustFuncName = camelToSnake(callback.name);
@@ -399,10 +395,6 @@ const modContent = `//! Move Callback Handlers
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-// Common types
-mod common;
-pub use common::*;
-
 // Individual move modules
 ${movesWithCallbacks.map(m =>
     `pub mod ${rustModName(m.id)};`
@@ -418,30 +410,6 @@ ${conditionDispatchers}
 const modPath = path.join(movesDir, 'mod.rs');
 fs.writeFileSync(modPath, modContent);
 console.log(`Generated ${modPath}`);
-
-// Generate common.rs with shared types
-const commonContent = `//! Common types for move callbacks
-
-use crate::dex_data::ID;
-
-/// Status object
-#[derive(Debug, Clone, Default)]
-pub struct Status {
-    pub id: String,
-}
-
-/// Effect object
-#[derive(Debug, Clone, Default)]
-pub struct Effect {
-    pub id: String,
-    pub effect_type: String,
-    pub status: Option<String>,
-}
-`;
-
-const commonPath = path.join(movesDir, 'common.rs');
-fs.writeFileSync(commonPath, commonContent);
-console.log(`Generated ${commonPath}`);
 
 // Generate MOVES_TODO.md
 let todoContent = `# Moves Implementation Tracking
@@ -488,5 +456,5 @@ console.log('\nGeneration complete!');
 console.log(`- ${moves.length} moves processed`);
 console.log(`- ${movesWithCallbacks.length} moves with callbacks`);
 console.log(`- ${generatedCount} individual move files created`);
-console.log(`- mod.rs and common.rs created`);
+console.log(`- mod.rs created`);
 console.log(`- MOVES_TODO.md created`);

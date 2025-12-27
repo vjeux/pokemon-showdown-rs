@@ -4,12 +4,8 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
-use crate::dex_data::ID;
+use crate::battle::Battle;
 use crate::event::EventResult;
-use super::{Status, Effect};
 
 /// basePowerCallback(pokemon, target) {
 ///     let power = Math.floor(25 * target.getStat('spe') / pokemon.getStat('spe')) + 1;

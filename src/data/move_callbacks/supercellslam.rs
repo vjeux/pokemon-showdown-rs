@@ -4,12 +4,8 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
-use crate::dex_data::ID;
+use crate::battle::Battle;
 use crate::event::EventResult;
-use super::{Status, Effect};
 
 /// onMoveFail(target, source, move) {
 ///     this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('Supercell Slam'));
