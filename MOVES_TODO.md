@@ -71,7 +71,7 @@ Moves with callbacks: 373
 - [x] dragoncheer - Dragon Cheer (Status, Dragon) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
 - [x] dragonenergy - Dragon Energy (Special, Dragon) - 1 callback: basePowerCallback
 - [x] dreameater - Dream Eater (Special, Psychic) - 1 callback: onTryImmunity
-- [ ] echoedvoice - Echoed Voice (Special, Normal) - 4 callbacks: basePowerCallback, onTryMove, condition::onFieldStart, condition::onFieldRestart
+- [x] echoedvoice - Echoed Voice (Special, Normal) - 4 callbacks: basePowerCallback, onTryMove, condition::onFieldStart, condition::onFieldRestart
 - [ ] electricterrain - Electric Terrain (Status, Electric) - 6 callbacks: condition::durationCallback, condition::onSetStatus, condition::onTryAddVolatile, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
 - [ ] electrify - Electrify (Status, Electric) - 3 callbacks: onTryHit, condition::onStart, condition::onModifyType
 - [ ] electroball - Electro Ball (Special, Electric) - 1 callback: basePowerCallback
