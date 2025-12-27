@@ -117,6 +117,20 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.trySetStatus(status, source)`: toxicspikes - Try to set status condition
 - `pokemon.runEffectiveness(move)`: stealthrock - Calculate type effectiveness
 - `battle.dex.getActiveMove(name)`: stealthrock, stickyweb - Get active move data
+- `battle.dex.conditions.get(name)`: defog, rapidspin, tidyup, courtchange - Get condition data by name
+- `battle.field.clearTerrain()`: defog - Clear terrain field
+- `move.hasSheerForce`: rapidspin - Sheer force flag
+- `pokemon.side.foeSidesWithConditions()`: tidyup - Get foe sides that have conditions
+- `battle.gameType`: courtchange - Game type (singles, doubles, triples, freeforall)
+- `battle.sides`: courtchange - Array of all sides in battle
+- `side.sideConditions`: courtchange - Side conditions object (mutable hashmap)
+- `side.n`: courtchange - Side number/index
+- `battle.queue.cancelMove(pokemon)`: gravity - Cancel queued move for pokemon
+- `pokemon.disableMove(moveId)`: gravity - Disable a specific move
+- `battle.field.removePseudoWeather(name)`: trickroom, magicroom, wonderroom - Remove pseudo-weather condition
+- `pokemon.getItem()`: magicroom - Get item data object
+- `move.overrideOffensiveStat`: wonderroom - Override offensive stat field (mutable, can be 'def', 'spd', etc.)
+- `battle.effectState.source`: magicroom - Effect state source field
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
