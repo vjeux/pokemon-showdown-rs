@@ -340,14 +340,24 @@ use crate::dex_data::ID;
 fn ability_result_to_event_result(result: AbilityHandlerResult) -> Option<EventResult> {
     match result {
         AbilityHandlerResult::Undefined => None,
-        AbilityHandlerResult::False | AbilityHandlerResult::Null => Some(EventResult::Fail),
-        AbilityHandlerResult::True => Some(EventResult::Stop),
-        AbilityHandlerResult::Zero => Some(EventResult::ModifyInt(0)),
-        AbilityHandlerResult::Number(n) => Some(EventResult::ModifyInt(n)),
+        AbilityHandlerResult::False => Some(EventResult::Boolean(false)),
+        AbilityHandlerResult::Null => Some(EventResult::Fail),
+        AbilityHandlerResult::True => Some(EventResult::Boolean(true)),
+        AbilityHandlerResult::Zero => Some(EventResult::Number(0)),
+        AbilityHandlerResult::Number(n) => Some(EventResult::Number(n)),
         AbilityHandlerResult::ChainModify(num, denom) => {
-            Some(EventResult::Modify(num as f64 / denom as f64))
+            // Normalize to 4096 base (JS uses 4096 as the standard denominator)
+            let normalized = if denom == 4096 {
+                num as i32
+            } else {
+                ((num as i64 * 4096) / denom as i64) as i32
+            };
+            Some(EventResult::Number(normalized))
         }
-        AbilityHandlerResult::FractionalPriority(f) => Some(EventResult::Modify(f)),
+        AbilityHandlerResult::FractionalPriority(f) => {
+            // Convert float to basis points (4096 = 1.0)
+            Some(EventResult::Number((f * 4096.0) as i32))
+        }
     }
 }
 
@@ -358,7 +368,12 @@ pub fn dispatch_on_modify_stab(
     pokemon_pos: (usize, usize),
 ) -> Option<EventResult> {
     match ability_id {
-        "adaptability" => Some(EventResult::Modify(2.0 / 1.5)), // 1.5x STAB -> 2x STAB
+        "adaptability" => {
+            // Adaptability changes STAB from 1.5x to 2x
+            // Modifier: 2.0/1.5 = 4/3 = 1.333...
+            // In 4096 basis: (4096 * 4) / 3 = 5461
+            Some(EventResult::Number(5461))
+        }
         // TODO: Call adaptability::on_modify_stab with proper parameters
         _ => None,
     }
@@ -563,7 +578,8 @@ pub fn dispatch_on_modify_sp_a(
             if let Some(side) = battle.sides.get(side_idx) {
                 if let Some(pokemon) = side.pokemon.get(poke_idx) {
                     if pokemon.hp < pokemon.maxhp / 2 {
-                        return Some(EventResult::Modify(0.5));
+                        // Halve SpA (0.5x) in 4096 basis: 2048
+                        return Some(EventResult::Number(2048));
                     }
                 }
             }

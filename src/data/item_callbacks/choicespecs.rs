@@ -68,5 +68,5 @@ pub fn on_modify_sp_a(battle: &Battle, pokemon_pos: (usize, usize)) -> EventResu
         return EventResult::Continue;
     }
     // JS: return this.chainModify(1.5);
-    EventResult::Modify(1.5)
+    EventResult::Number(6144) // 1.5x in 4096 basis points
 }

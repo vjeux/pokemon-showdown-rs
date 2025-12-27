@@ -34,7 +34,7 @@ use crate::event::EventResult;
 /// onModifyDamage(damage, source, target, move)
 pub fn on_modify_damage(_battle: &Battle, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
     // JS: return this.chainModify([5324, 4096]);
-    EventResult::Modify(5324.0 / 4096.0)
+    EventResult::Number(5324) // 5324/4096 = ~1.3x
 }
 
 /// onAfterMoveSecondarySelf(source, target, move)

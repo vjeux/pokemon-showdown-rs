@@ -44,7 +44,7 @@ pub fn on_modify_sp_d_priority(battle: &mut Battle, /* TODO: Add parameters */) 
 /// onModifySpD(spd, pokemon)
 pub fn on_modify_sp_d(_battle: &Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // JS: return this.chainModify(1.5);
-    EventResult::Modify(1.5)
+    EventResult::Number(6144) // 1.5x in 4096 basis points
 }
 
 /// onDisableMove(...)

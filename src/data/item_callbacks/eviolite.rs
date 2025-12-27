@@ -53,7 +53,7 @@ pub fn on_modify_def(battle: &Battle, pokemon_pos: (usize, usize)) -> EventResul
         // Check if species can still evolve (nfe = not fully evolved)
         if !species.evos.is_empty() {
             // JS: return this.chainModify(1.5);
-            return EventResult::Modify(1.5);
+            return EventResult::Number(6144); // 1.5x in 4096 basis points
         }
     }
     EventResult::Continue
@@ -77,7 +77,7 @@ pub fn on_modify_sp_d(battle: &Battle, pokemon_pos: (usize, usize)) -> EventResu
         // Check if species can still evolve (nfe = not fully evolved)
         if !species.evos.is_empty() {
             // JS: return this.chainModify(1.5);
-            return EventResult::Modify(1.5);
+            return EventResult::Number(6144); // 1.5x in 4096 basis points
         }
     }
     EventResult::Continue

@@ -130,20 +130,12 @@ pub enum EventResult {
     Stop,
     /// Stop event processing, event failed (move blocked, etc.)
     Fail,
-    /// Modify a numeric value
-    Modify(f64),
-    /// Modify with an integer value
-    ModifyInt(i32),
-    /// Override with a different value (e.g., move ID for Encore)
-    Override(String),
-    /// Return true (immunity granted, etc.)
-    True,
-    /// Return false (not immune, etc.)
-    False,
-    /// Apply damage
-    Damage(u32),
-    /// Heal HP
-    Heal(u32),
+    /// Return a number value
+    Number(i32),
+    /// Return a string value
+    String(String),
+    /// Return a boolean value
+    Boolean(bool),
 }
 
 impl Default for EventResult {
@@ -157,16 +149,32 @@ impl EventResult {
     pub fn is_fail(&self) -> bool {
         matches!(self, EventResult::Fail)
     }
-    
+
     /// Check if the result indicates stopping
     pub fn should_stop(&self) -> bool {
         matches!(self, EventResult::Stop | EventResult::Fail)
     }
-    
-    /// Get the f64 modifier if present
-    pub fn modifier(&self) -> Option<f64> {
+
+    /// Get the number value if present
+    pub fn number(&self) -> Option<i32> {
         match self {
-            EventResult::Modify(m) => Some(*m),
+            EventResult::Number(n) => Some(*n),
+            _ => None,
+        }
+    }
+
+    /// Get the string value if present
+    pub fn string(&self) -> Option<&str> {
+        match self {
+            EventResult::String(s) => Some(s.as_str()),
+            _ => None,
+        }
+    }
+
+    /// Get the boolean value if present
+    pub fn boolean(&self) -> Option<bool> {
+        match self {
+            EventResult::Boolean(b) => Some(*b),
             _ => None,
         }
     }
@@ -455,10 +463,16 @@ mod tests {
     
     #[test]
     fn test_event_result() {
-        let result = EventResult::Modify(1.5);
-        assert_eq!(result.modifier(), Some(1.5));
+        let result = EventResult::Number(150);
+        assert_eq!(result.number(), Some(150));
         assert!(!result.is_fail());
-        
+
+        let string_result = EventResult::String("test".to_string());
+        assert_eq!(string_result.string(), Some("test"));
+
+        let bool_result = EventResult::Boolean(true);
+        assert_eq!(bool_result.boolean(), Some(true));
+
         let fail = EventResult::Fail;
         assert!(fail.is_fail());
         assert!(fail.should_stop());

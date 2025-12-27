@@ -6823,8 +6823,9 @@ impl Battle {
                 // STAB modifying abilities
                 if ability_id.as_str() == "adaptability" {
                     // Adaptability increases STAB from 1.5x to 2x
-                    // Multiply by 2.0/1.5 = 1.333...
-                    return EventResult::Modify(2.0 / 1.5);
+                    // Multiply by 2.0/1.5 = 4/3 = 1.333...
+                    // In 4096 basis: (4096 * 4) / 3 = 5461
+                    return EventResult::Number(5461);
                 }
             }
             "SwitchIn" => {
@@ -6877,7 +6878,9 @@ impl Battle {
                         if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 if pokemon.hp == pokemon.maxhp {
-                                    return EventResult::Modify(0.5);
+                                    // Halve damage (0.5x)
+                                    // In 4096 basis: 0.5 * 4096 = 2048
+                                    return EventResult::Number(2048);
                                 }
                             }
                         }
@@ -7409,14 +7412,10 @@ impl Battle {
                 EventResult::Stop => {
                     break;
                 }
-                EventResult::Modify(m) => {
+                EventResult::Number(n) => {
+                    // Numbers are in 4096 basis points (e.g., 4096 = 1.0x, 6144 = 1.5x, 2048 = 0.5x)
                     if let Some(ref mut r) = result {
-                        *r = (*r as f64 * m) as i32;
-                    }
-                }
-                EventResult::ModifyInt(m) => {
-                    if let Some(ref mut r) = result {
-                        *r = m;
+                        *r = (*r as f64 * (n as f64 / 4096.0)) as i32;
                     }
                 }
                 _ => {}
