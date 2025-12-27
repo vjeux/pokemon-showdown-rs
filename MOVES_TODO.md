@@ -246,7 +246,7 @@ Moves with callbacks: 373
 - [x] psychup - Psych Up (Status, Normal) - 1 callback: onHit
 - [x] psywave - Psywave (Special, Psychic) - 1 callback: damageCallback
 - [x] punishment - Punishment (Physical, Dark) - 1 callback: basePowerCallback
-- [ ] purify - Purify (Status, Poison) - 1 callback: onHit
+- [x] purify - Purify (Status, Poison) - 1 callback: onHit
 - [ ] pursuit - Pursuit (Physical, Dark) - 5 callbacks: basePowerCallback, beforeTurnCallback, onModifyMove, onTryHit, condition::onBeforeSwitchOut
 - [ ] quash - Quash (Status, Dark) - 1 callback: onHit
 - [ ] quickguard - Quick Guard (Status, Fighting) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
