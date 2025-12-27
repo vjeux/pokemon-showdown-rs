@@ -131,6 +131,15 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.getItem()`: magicroom - Get item data object
 - `move.overrideOffensiveStat`: wonderroom - Override offensive stat field (mutable, can be 'def', 'spd', etc.)
 - `battle.effectState.source`: magicroom - Effect state source field
+- `battle.addMove(format, pokemon, moveName, target)`: solarbeam - Add move animation message
+- `battle.runEvent(eventName, ...)`: solarbeam, fly - Run event with custom name (e.g., 'ChargeMove')
+- `pokemon.volatiles[name].slot`: counter, mirrorcoat - Access volatile condition fields (slot, damage, etc.)
+- `pokemon.volatiles[name].damage`: counter, mirrorcoat - Access volatile damage field
+- `battle.effectState.slot`: counter, mirrorcoat - Effect state slot field (mutable)
+- `battle.effectState.damage`: counter, mirrorcoat - Effect state damage field (mutable)
+- `battle.getAtSlot(slot)`: counter, mirrorcoat - Get pokemon at specific slot
+- `battle.getCategory(move)`: counter, mirrorcoat - Get move category (Physical, Special, Status)
+- `pokemon.getSlot()`: counter, mirrorcoat - Get pokemon's slot/position
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
