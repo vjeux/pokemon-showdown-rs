@@ -21,7 +21,33 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // const rand = this.random(10);
+    let rand = battle.random(10);
+
+    if rand < 2 {
+        // move.heal = [1, 4];
+        // move.infiltrates = true;
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.heal = Some(vec![1, 4]);
+            active_move.infiltrates = true;
+        }
+    } else if rand < 6 {
+        // move.basePower = 40;
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.base_power = 40;
+        }
+    } else if rand < 9 {
+        // move.basePower = 80;
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.base_power = 80;
+        }
+    } else {
+        // move.basePower = 120;
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.base_power = 120;
+        }
+    }
+
     EventResult::Continue
 }
 
