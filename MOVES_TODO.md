@@ -160,7 +160,7 @@ Moves with callbacks: 373
 - [x] icespinner - Ice Spinner (Physical, Ice) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [x] imprison - Imprison (Status, Psychic) - 3 callbacks: condition::onStart, condition::onFoeDisableMove, condition::onFoeBeforeMove
 - [x] incinerate - Incinerate (Special, Fire) - 1 callback: onHit
-- [ ] infernalparade - Infernal Parade (Special, Ghost) - 1 callback: basePowerCallback
+- [x] infernalparade - Infernal Parade (Special, Ghost) - 1 callback: basePowerCallback
 - [ ] ingrain - Ingrain (Status, Grass) - 4 callbacks: condition::onStart, condition::onResidual, condition::onTrapPokemon, condition::onDragOut
 - [ ] instruct - Instruct (Status, Psychic) - 1 callback: onHit
 - [ ] iondeluge - Ion Deluge (Status, Electric) - 2 callbacks: condition::onFieldStart, condition::onModifyType
