@@ -11,7 +11,7 @@ Moves with callbacks: 373
 - [x] aquaring - Aqua Ring (Status, Water) - 2 callbacks: condition::onStart, condition::onResidual
 - [x] aromatherapy - Aromatherapy (Status, Grass) - 1 callback: onHit
 - [x] assist - Assist (Status, Normal) - 1 callback: onHit
-- [ ] assurance - Assurance (Physical, Dark) - 1 callback: basePowerCallback
+- [x] assurance - Assurance (Physical, Dark) - 1 callback: basePowerCallback
 - [ ] attract - Attract (Status, Normal) - 5 callbacks: onTryImmunity, condition::onStart, condition::onUpdate, condition::onBeforeMove, condition::onEnd
 - [ ] aurawheel - Aura Wheel (Physical, Electric) - 2 callbacks: onTry, onModifyType
 - [ ] auroraveil - Aurora Veil (Status, Ice) - 5 callbacks: onTry, condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
