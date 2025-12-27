@@ -189,7 +189,7 @@ Moves with callbacks: 373
 - [x] magneticflux - Magnetic Flux (Status, Electric) - 1 callback: onHitSide
 - [x] magnetrise - Magnet Rise (Status, Electric) - 4 callbacks: onTry, condition::onStart, condition::onImmunity, condition::onEnd
 - [x] magnitude - Magnitude (Physical, Ground) - 2 callbacks: onModifyMove, onUseMoveMessage
-- [ ] matblock - Mat Block (Status, Fighting) - 3 callbacks: onTry, condition::onSideStart, condition::onTryHit
+- [x] matblock - Mat Block (Status, Fighting) - 3 callbacks: onTry, condition::onSideStart, condition::onTryHit
 - [ ] maxguard - Max Guard (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit
 - [ ] meanlook - Mean Look (Status, Normal) - 1 callback: onHit
 - [ ] mefirst - Me First (Status, Normal) - 2 callbacks: onTryHit, condition::onBasePower
