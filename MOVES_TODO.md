@@ -145,13 +145,13 @@ Moves with callbacks: 373
 - [ ] healblock - Heal Block (Status, Psychic) - 8 callbacks: condition::durationCallback, condition::onStart, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onEnd, condition::onTryHeal, condition::onRestart
 - [ ] healingwish - Healing Wish (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
 - [x] healpulse - Heal Pulse (Status, Psychic) - 1 callback: onHit
-- [ ] heartswap - Heart Swap (Status, Psychic) - 1 callback: onHit
+- [x] heartswap - Heart Swap (Status, Psychic) - 1 callback: onHit
 - [ ] heatcrash - Heat Crash (Physical, Fire) - 2 callbacks: basePowerCallback, onTryHit
 - [ ] heavyslam - Heavy Slam (Physical, Steel) - 2 callbacks: basePowerCallback, onTryHit
-- [ ] helpinghand - Helping Hand (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onRestart, condition::onBasePower
-- [ ] hex - Hex (Special, Ghost) - 1 callback: basePowerCallback
-- [ ] hiddenpower - Hidden Power (Special, Normal) - 1 callback: onModifyType
-- [ ] highjumpkick - High Jump Kick (Physical, Fighting) - 1 callback: onMoveFail
+- [x] helpinghand - Helping Hand (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onRestart, condition::onBasePower
+- [x] hex - Hex (Special, Ghost) - 1 callback: basePowerCallback
+- [x] hiddenpower - Hidden Power (Special, Normal) - 1 callback: onModifyType
+- [x] highjumpkick - High Jump Kick (Physical, Fighting) - 1 callback: onMoveFail
 - [ ] holdback - Hold Back (Physical, Normal) - 1 callback: onDamage
 - [ ] hurricane - Hurricane (Special, Flying) - 1 callback: onModifyMove
 - [ ] hyperspacefury - Hyperspace Fury (Physical, Dark) - 1 callback: onTry
