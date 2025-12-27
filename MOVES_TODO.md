@@ -283,7 +283,7 @@ Moves with callbacks: 373
 - [x] shadowforce - Shadow Force (Physical, Ghost) - 1 callback: onTryMove
 - [x] shedtail - Shed Tail (Status, Normal) - 2 callbacks: onTryHit, onHit
 - [x] shellsidearm - Shell Side Arm (Special, Poison) - 4 callbacks: onPrepareHit, onModifyMove, onHit, onAfterSubDamage
-- [ ] shelltrap - Shell Trap (Special, Fire) - 4 callbacks: priorityChargeCallback, onTryMove, condition::onStart, condition::onHit
+- [x] shelltrap - Shell Trap (Special, Fire) - 4 callbacks: priorityChargeCallback, onTryMove, condition::onStart, condition::onHit
 - [ ] shoreup - Shore Up (Status, Ground) - 1 callback: onHit
 - [ ] silktrap - Silk Trap (Status, Bug) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] simplebeam - Simple Beam (Status, Normal) - 2 callbacks: onTryHit, onHit
