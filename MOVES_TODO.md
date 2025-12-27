@@ -9,7 +9,7 @@ Moves with callbacks: 373
 - [x] afteryou - After You (Status, Normal) - 1 callback: onHit
 - [x] allyswitch - Ally Switch (Status, Psychic) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onRestart
 - [x] aquaring - Aqua Ring (Status, Water) - 2 callbacks: condition::onStart, condition::onResidual
-- [ ] aromatherapy - Aromatherapy (Status, Grass) - 1 callback: onHit
+- [x] aromatherapy - Aromatherapy (Status, Grass) - 1 callback: onHit
 - [ ] assist - Assist (Status, Normal) - 1 callback: onHit
 - [ ] assurance - Assurance (Physical, Dark) - 1 callback: basePowerCallback
 - [ ] attract - Attract (Status, Normal) - 5 callbacks: onTryImmunity, condition::onStart, condition::onUpdate, condition::onBeforeMove, condition::onEnd
