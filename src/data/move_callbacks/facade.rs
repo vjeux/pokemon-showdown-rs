@@ -13,7 +13,26 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+
+    // if (pokemon.status && pokemon.status !== 'slp') {
+    let status = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.status.clone()
+    };
+
+    if let Some(status_id) = status {
+        if status_id != ID::from("slp") {
+            // return this.chainModify(2);
+            return EventResult::ChainModify(2.0);
+        }
+    }
+
     EventResult::Continue
 }
 
