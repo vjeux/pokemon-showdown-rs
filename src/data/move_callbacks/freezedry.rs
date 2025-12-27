@@ -10,8 +10,12 @@ use crate::event::EventResult;
 /// onEffectiveness(typeMod, target, type) {
 ///     if (type === 'Water') return 1;
 /// }
-pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_effectiveness(battle: &mut Battle, type_mod: i32, target_type: &str) -> EventResult {
+    // if (type === 'Water') return 1;
+    if target_type == "water" {
+        return EventResult::Int(1);
+    }
+
     EventResult::Continue
 }
 
