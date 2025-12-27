@@ -25,6 +25,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onResidual(pokemon) {
     ///     const source = this.effectState.source;
     ///     if (source && (!source.isActive || source.hp <= 0 || !source.activeTurns)) {
@@ -38,6 +39,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onTrapPokemon(pokemon) {
     ///     if (this.effectState.source?.isActive) pokemon.tryTrap();
     /// }

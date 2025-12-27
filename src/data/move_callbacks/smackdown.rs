@@ -36,6 +36,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onRestart(pokemon) {
     ///     if (pokemon.removeVolatile('fly') || pokemon.removeVolatile('bounce')) {
     ///         this.queue.cancelMove(pokemon);

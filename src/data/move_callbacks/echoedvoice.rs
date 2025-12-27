@@ -38,6 +38,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldRestart() {
     ///     if (this.effectState.duration !== 2) {
     ///         this.effectState.duration = 2;

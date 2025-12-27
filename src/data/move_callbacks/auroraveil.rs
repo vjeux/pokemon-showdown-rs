@@ -28,6 +28,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onAnyModifyDamage(damage, source, target, move) {
     ///     if (target !== source && this.effectState.target.hasAlly(target)) {
     ///         if ((target.side.getSideCondition('reflect') && this.getCategory(move) === 'Physical') ||
@@ -45,6 +46,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSideStart(side) {
     ///     this.add('-sidestart', side, 'move: Aurora Veil');
     /// }
@@ -52,6 +54,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSideEnd(side) {
     ///     this.add('-sideend', side, 'move: Aurora Veil');
     /// }

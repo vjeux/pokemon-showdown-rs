@@ -18,6 +18,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onHit(target, source, move) {
     ///     if (target !== source && move.category !== 'Status') {
     ///         this.boost({ atk: 1 });
@@ -27,6 +28,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onBeforeMove(pokemon) {
     ///     this.debug('removing Rage before attack');
     ///     pokemon.removeVolatile('rage');

@@ -40,6 +40,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onUpdate(pokemon) {
     ///     if (this.effectState.source && !this.effectState.source.isActive && pokemon.volatiles['attract']) {
     ///         this.debug(`Removing Attract volatile on ${pokemon}`);
@@ -50,6 +51,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onBeforeMove(pokemon, target, move) {
     ///     this.add('-activate', pokemon, 'move: Attract', '[of] ' + this.effectState.source);
     ///     if (this.randomChance(1, 2)) {
@@ -61,6 +63,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Attract', '[silent]');
     /// }

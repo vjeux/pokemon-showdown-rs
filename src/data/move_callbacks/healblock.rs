@@ -25,6 +25,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onStart(pokemon, source) {
     ///     this.add('-start', pokemon, 'move: Heal Block');
     ///     source.moveThisTurnResult = true;
@@ -33,6 +34,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onDisableMove(pokemon) {
     ///     for (const moveSlot of pokemon.moveSlots) {
     ///         if (this.dex.moves.get(moveSlot.id).flags['heal']) {
@@ -44,6 +46,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onBeforeMove(pokemon, target, move) {
     ///     if (move.flags['heal'] && !move.isZ && !move.isMax) {
     ///         this.add('cant', pokemon, 'move: Heal Block', move);
@@ -54,6 +57,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onModifyMove(move, pokemon, target) {
     ///     if (move.flags['heal'] && !move.isZ && !move.isMax) {
     ///         this.add('cant', pokemon, 'move: Heal Block', move);
@@ -64,6 +68,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'move: Heal Block');
     /// }
@@ -71,6 +76,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onTryHeal(damage, target, source, effect) {
     ///     if (effect && (effect.id === 'zpower' || (effect as Move).isZ)) return damage;
     ///     if (source && target !== source && target.hp !== target.maxhp && effect.name === "Pollen Puff") {
@@ -85,6 +91,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onRestart(target, source, effect) {
     ///     if (effect?.name === 'Psychic Noise') return;
     /// 

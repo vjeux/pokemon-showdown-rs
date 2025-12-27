@@ -29,6 +29,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSwap(target) {
     ///     if (!target.fainted && (target.hp < target.maxhp || target.status)) {
     ///         target.heal(target.maxhp);

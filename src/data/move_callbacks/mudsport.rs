@@ -18,6 +18,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onBasePower(basePower, attacker, defender, move) {
     ///     if (move.type === 'Electric') {
     ///         this.debug('mud sport weaken');
@@ -28,6 +29,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Mud Sport');
     /// }

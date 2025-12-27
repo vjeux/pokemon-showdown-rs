@@ -21,6 +21,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSetStatus(status, target, source, effect) {
     ///     if (!target.isGrounded() || target.isSemiInvulnerable()) return;
     ///     if (effect && ((effect as Move).status || effect.id === 'yawn')) {
@@ -32,6 +33,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onTryAddVolatile(status, target, source, effect) {
     ///     if (!target.isGrounded() || target.isSemiInvulnerable()) return;
     ///     if (status.id === 'confusion') {
@@ -43,6 +45,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onBasePower(basePower, attacker, defender, move) {
     ///     if (move.type === 'Dragon' && defender.isGrounded() && !defender.isSemiInvulnerable()) {
     ///         this.debug('misty terrain weaken');
@@ -53,6 +56,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldStart(field, source, effect) {
     ///     if (effect?.effectType === 'Ability') {
     ///         this.add('-fieldstart', 'move: Misty Terrain', '[from] ability: ' + effect.name, `[of] ${source}`);
@@ -64,6 +68,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'Misty Terrain');
     /// }

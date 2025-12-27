@@ -23,6 +23,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Torment');
     /// }
@@ -30,6 +31,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onDisableMove(pokemon) {
     ///     if (pokemon.lastMove && pokemon.lastMove.id !== 'struggle') pokemon.disableMove(pokemon.lastMove.id);
     /// }

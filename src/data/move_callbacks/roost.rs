@@ -24,6 +24,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onType(types, pokemon) {
     ///     this.effectState.typeWas = types;
     ///     return types.filter(type => type !== 'Flying');

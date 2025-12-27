@@ -44,6 +44,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onRedirectTarget(target, source, source2, move) {
     ///     if (move.id !== 'mirrorcoat') return;
     ///     if (source !== this.effectState.target || !this.effectState.slot) return;
@@ -53,6 +54,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onDamagingHit(damage, target, source, move) {
     ///     if (!source.isAlly(target) && this.getCategory(move) === 'Special') {
     ///         this.effectState.slot = source.getSlot();

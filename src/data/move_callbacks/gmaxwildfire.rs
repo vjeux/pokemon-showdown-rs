@@ -18,6 +18,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onResidual(target) {
     ///     if (!target.hasType('Fire')) this.damage(target.baseMaxhp / 6, target);
     /// }
@@ -25,6 +26,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSideEnd(targetSide) {
     ///     this.add('-sideend', targetSide, 'G-Max Wildfire');
     /// }

@@ -37,6 +37,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onHit(pokemon, source, move) {
     ///     if (!pokemon.isAlly(source) && move.category === 'Physical') {
     ///         this.effectState.gotHit = true;

@@ -25,6 +25,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onNegateImmunity(pokemon, type) {
     ///     if (pokemon.hasType('Dark') && type === 'Psychic') return false;
     /// }
@@ -32,6 +33,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onModifyBoost(boosts) {
     ///     if (boosts.evasion && boosts.evasion > 0) {
     ///         boosts.evasion = 0;

@@ -66,6 +66,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSideEnd(targetSide) {
     ///     this.add('-sideend', targetSide, 'Grass Pledge');
     /// }
@@ -73,6 +74,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onModifySpe(spe, pokemon) {
     ///     return this.chainModify(0.25);
     /// }

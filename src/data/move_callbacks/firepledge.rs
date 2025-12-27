@@ -66,6 +66,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onResidual(pokemon) {
     ///     if (!pokemon.hasType('Fire')) this.damage(pokemon.baseMaxhp / 8, pokemon);
     /// }
@@ -73,6 +74,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSideEnd(targetSide) {
     ///     this.add('-sideend', targetSide, 'Fire Pledge');
     /// }

@@ -21,6 +21,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onRestart(target, source, effect) {
     ///     if (this.effectState.layers >= 3) return false;
     ///     this.effectState.layers++;
@@ -32,6 +33,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onModifyCritRatio(critRatio) {
     ///     return critRatio + this.effectState.layers;
     /// }

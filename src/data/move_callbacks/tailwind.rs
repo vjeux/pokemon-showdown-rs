@@ -22,6 +22,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSideStart(side, source) {
     ///     if (source?.hasAbility('persistent')) {
     ///         this.add('-sidestart', side, 'move: Tailwind', '[persistent]');
@@ -33,6 +34,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onModifySpe(spe, pokemon) {
     ///     return this.chainModify(2);
     /// }
@@ -40,6 +42,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSideEnd(side) {
     ///     this.add('-sideend', side, 'move: Tailwind');
     /// }

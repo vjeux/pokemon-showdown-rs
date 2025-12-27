@@ -26,6 +26,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onDamage(damage, target, source, move) {
     ///     if (!move || move.effectType !== 'Move' || !source) return;
     ///     this.effectState.totalDamage += damage;
@@ -35,6 +36,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onBeforeMove(pokemon, target, move) {
     ///     if (this.effectState.duration === 1) {
     ///         this.add('-end', pokemon, 'move: Bide');
@@ -73,6 +75,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onMoveAborted(pokemon) {
     ///     pokemon.removeVolatile('bide');
     /// }
@@ -80,6 +83,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'move: Bide', '[silent]');
     /// }

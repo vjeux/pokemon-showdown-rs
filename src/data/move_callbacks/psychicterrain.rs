@@ -21,6 +21,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onTryHit(target, source, effect) {
     ///     if (effect && (effect.priority <= 0.1 || effect.target === 'self')) {
     ///         return;
@@ -40,6 +41,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onBasePower(basePower, attacker, defender, move) {
     ///     if (move.type === 'Psychic' && attacker.isGrounded() && !attacker.isSemiInvulnerable()) {
     ///         this.debug('psychic terrain boost');
@@ -50,6 +52,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldStart(field, source, effect) {
     ///     if (effect?.effectType === 'Ability') {
     ///         this.add('-fieldstart', 'move: Psychic Terrain', '[from] ability: ' + effect.name, `[of] ${source}`);
@@ -61,6 +64,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Psychic Terrain');
     /// }

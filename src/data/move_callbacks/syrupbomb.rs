@@ -18,6 +18,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onUpdate(pokemon) {
     ///     if (this.effectState.source && !this.effectState.source.isActive) {
     ///         pokemon.removeVolatile('syrupbomb');
@@ -27,6 +28,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onResidual(pokemon) {
     ///     this.boost({ spe: -1 }, pokemon, this.effectState.source);
     /// }
@@ -34,6 +36,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Syrup Bomb', '[silent]');
     /// }

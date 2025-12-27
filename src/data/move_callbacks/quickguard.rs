@@ -33,6 +33,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onTryHit(target, source, move) {
     ///     // Quick Guard blocks moves with positive priority, even those given increased priority by Prankster or Gale Wings.
     ///     // (e.g. it blocks 0 priority moves boosted by Prankster or Gale Wings; Quick Claw/Custap Berry do not count)

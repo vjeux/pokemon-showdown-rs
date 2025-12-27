@@ -49,6 +49,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onTryPrimaryHit(target, source, move) {
     ///     if (target === source || move.flags['bypasssub'] || move.infiltrates) {
     ///         return;
@@ -84,6 +85,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onEnd(target) {
     ///     this.add('-end', target, 'Substitute');
     /// }

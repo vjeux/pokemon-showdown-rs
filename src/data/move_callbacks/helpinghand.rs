@@ -26,6 +26,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onRestart(target, source) {
     ///     this.effectState.multiplier *= 1.5;
     ///     this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
@@ -34,6 +35,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onBasePower(basePower) {
     ///     this.debug('Boosting from Helping Hand: ' + this.effectState.multiplier);
     ///     return this.chainModify(this.effectState.multiplier);

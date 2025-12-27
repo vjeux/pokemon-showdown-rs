@@ -22,6 +22,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onResidual(target: Pokemon) {
     ///     if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
     ///     target.side.removeSlotCondition(this.getAtSlot(this.effectState.sourceSlot), 'wish');
@@ -30,6 +31,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onEnd(target) {
     ///     if (target && !target.fainted) {
     ///         const damage = this.heal(this.effectState.hp, target, target);

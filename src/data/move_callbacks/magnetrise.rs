@@ -31,6 +31,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onImmunity(type) {
     ///     if (type === 'Ground') return false;
     /// }
@@ -38,6 +39,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onEnd(target) {
     ///     this.add('-end', target, 'Magnet Rise');
     /// }

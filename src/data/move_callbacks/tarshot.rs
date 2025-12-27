@@ -19,6 +19,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onEffectiveness(typeMod, target, type, move) {
     ///     if (move.type !== 'Fire') return;
     ///     if (!target) return;

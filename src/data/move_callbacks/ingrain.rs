@@ -18,6 +18,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onResidual(pokemon) {
     ///     this.heal(pokemon.baseMaxhp / 16);
     /// }
@@ -25,6 +26,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onTrapPokemon(pokemon) {
     ///     pokemon.tryTrap();
     /// }
@@ -32,6 +34,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onDragOut(pokemon) {
     ///     this.add('-activate', pokemon, 'move: Ingrain');
     ///     return null;

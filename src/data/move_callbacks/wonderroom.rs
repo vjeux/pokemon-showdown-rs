@@ -22,6 +22,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onModifyMove(move, source, target) {
     ///     // This code is for moves that use defensive stats as the attacking stat; see below for most of the implementation
     ///     if (!move.overrideOffensiveStat) return;
@@ -34,6 +35,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldStart(field, source) {
     ///     if (source?.hasAbility('persistent')) {
     ///         this.add('-fieldstart', 'move: Wonder Room', `[of] ${source}`, '[persistent]');
@@ -45,6 +47,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldRestart(target, source) {
     ///     this.field.removePseudoWeather('wonderroom');
     /// }
@@ -52,6 +55,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Wonder Room');
     /// }

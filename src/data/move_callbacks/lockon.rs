@@ -34,6 +34,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSourceAccuracy(accuracy, target, source, move) {
     ///     if (move && source === this.effectState.target && target === this.effectState.source) return true;
     /// }

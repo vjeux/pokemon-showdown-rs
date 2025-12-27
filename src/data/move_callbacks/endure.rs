@@ -33,6 +33,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onDamage(damage, target, source, effect) {
     ///     if (effect?.effectType === 'Move' && damage >= target.hp) {
     ///         this.add('-activate', target, 'move: Endure');

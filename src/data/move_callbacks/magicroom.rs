@@ -22,6 +22,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldStart(target, source) {
     ///     if (source?.hasAbility('persistent')) {
     ///         this.add('-fieldstart', 'move: Magic Room', `[of] ${source}`, '[persistent]');
@@ -36,6 +37,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldRestart(target, source) {
     ///     this.field.removePseudoWeather('magicroom');
     /// }
@@ -43,6 +45,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Magic Room', '[of] ' + this.effectState.source);
     /// }

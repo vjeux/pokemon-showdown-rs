@@ -19,6 +19,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSideRestart(side) {
     ///     if (this.effectState.layers >= 3) return false;
     ///     this.add('-sidestart', side, 'Spikes');
@@ -28,6 +29,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSwitchIn(pokemon) {
     ///     if (!pokemon.isGrounded() || pokemon.hasItem('heavydutyboots')) return;
     ///     const damageAmounts = [0, 3, 4, 6]; // 1/8, 1/6, 1/4

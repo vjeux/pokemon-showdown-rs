@@ -30,6 +30,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onRestart() {
     ///     if (this.effectState.multiplier < 4) {
     ///         this.effectState.multiplier <<= 1;

@@ -69,6 +69,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onSideEnd(targetSide) {
     ///     this.add('-sideend', targetSide, 'Water Pledge');
     /// }
@@ -76,6 +77,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onModifyMove(move, pokemon) {
     ///     if (move.secondaries && move.id !== 'secretpower') {
     ///         this.debug('doubling secondary chance');

@@ -25,6 +25,7 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
+
     /// onFoeRedirectTarget(target, source, source2, move) {
     ///     if (this.validTarget(this.effectState.target, source, move.target)) {
     ///         this.debug("Spotlight redirected target of move");
