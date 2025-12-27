@@ -13,7 +13,37 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // for (const ally of target.adjacentAllies()) {
+    let adjacent_allies = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.adjacent_allies(battle)
+    };
+
+    for ally_pos in adjacent_allies {
+        // this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
+        let base_max_hp = {
+            let ally_pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                Some(p) => p,
+                None => continue,
+            };
+            ally_pokemon.base_max_hp
+        };
+
+        let condition = battle.dex.get_condition(&ID::from("flameburst"));
+        battle.damage(base_max_hp / 16, ally_pos, Some(source), condition.as_ref());
+    }
+
     EventResult::Continue
 }
 
@@ -23,7 +53,41 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 ///     }
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // for (const ally of target.adjacentAllies()) {
+    let adjacent_allies = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.adjacent_allies(battle)
+    };
+
+    for ally_pos in adjacent_allies {
+        // this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
+        let base_max_hp = {
+            let ally_pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                Some(p) => p,
+                None => continue,
+            };
+            ally_pokemon.base_max_hp
+        };
+
+        let condition = battle.dex.get_condition(&ID::from("flameburst"));
+        battle.damage(base_max_hp / 16, ally_pos, Some(source), condition.as_ref());
+    }
+
     EventResult::Continue
 }
 
