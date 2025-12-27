@@ -1712,6 +1712,7 @@ impl Battle {
     }
 
     /// Get the battle log as a string
+    /// Rust convenience method - JavaScript directly accesses this.log array
     pub fn get_log(&self) -> String {
         self.log.join("\n")
     }
@@ -1753,6 +1754,8 @@ impl Battle {
     }
 
     /// Parse a choice string and store the actions
+    /// Rust helper - JavaScript has side.choose() which handles parsing
+    /// This is split out in Rust to work around borrow checker constraints
     fn parse_choice(&mut self, side_id: SideID, choice: &str) {
         let side_idx = side_id.index();
         if side_idx >= self.sides.len() {
@@ -2146,6 +2149,8 @@ impl Battle {
     }
 
     /// Execute a switch with optional drag flag
+    /// Rust helper - breaks down switch logic for borrow checker
+    /// JavaScript integrates this into switch/drag handling
     fn do_switch_with_drag(&mut self, side_idx: usize, slot: usize, switch_to: usize, is_drag: bool) {
         if side_idx >= self.sides.len() {
             return;
