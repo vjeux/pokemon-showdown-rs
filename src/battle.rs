@@ -14,6 +14,7 @@ use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
 use crate::side::{Side, RequestState, Choice};
 use crate::prng::{PRNG, PRNGSeed};
+use crate::data::formats::{get_format, Format, DexFormats};
 
 /// Split message for side-specific content
 /// JavaScript equivalent: { side: SideID, secret: string, shared: string }
@@ -420,10 +421,17 @@ impl Battle {
         // Load dex
         let dex = crate::dex::Dex::load_default().expect("Failed to load Dex");
 
-        // TODO: Load rule_table from format
-        // Requires implementing Dex::get_format() method to search formats by ID
+        // Load rule_table from format
         // JavaScript: this.ruleTable = this.dex.formats.getRuleTable(this.format);
-        let rule_table = None;
+        let rule_table = if let Some(format_def) = get_format(&ID::new(&format_id_str)) {
+            // Create a Format from the FormatDef
+            let format = Format::from_def(format_def);
+            // Create DexFormats and get the rule table
+            let dex_formats = DexFormats::new();
+            Some(dex_formats.get_rule_table(&format))
+        } else {
+            None
+        };
 
         let mut battle = Self {
             format_id: options.format_id,

@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 72/79 TODOs (91.1%)
+**Feature Implementation:** ⚠️ 73/79 TODOs (92.4%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -827,6 +827,21 @@
   ```
 
 **Enables:** Correct stat calculation with nature modifiers (Adamant, Modest, Timid, etc.), Pure Hackmons edge case handling
+
+### Session 14 - Rule Table Loading (1 implementation)
+
+#### Rule Table from Format (1/1) ✅
+- [x] **Load rule_table from format** (battle.rs:424-434) - Load and build rule table during Battle construction
+
+**Implementation Details:**
+- Added import for `crate::data::formats::{get_format, Format, DexFormats}`
+- Uses `get_format(&ID::new(&format_id_str))` to retrieve FormatDef
+- Creates Format instance using `Format::from_def(format_def)`
+- Creates DexFormats instance and calls `get_rule_table(&format)`
+- Stores result in Battle.rule_table field
+- Matches JavaScript: `this.ruleTable = this.dex.formats.getRuleTable(this.format);`
+
+**Enables:** Rule-based format validation, overflow stat modifiers (used in nature calculations), ban/restriction checking, custom format rules
 
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
