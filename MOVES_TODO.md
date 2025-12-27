@@ -28,7 +28,7 @@ Moves with callbacks: 373
 - [x] bestow - Bestow (Status, Normal) - 1 callback: onHit
 - [x] bide - Bide (Physical, Normal) - 6 callbacks: beforeMoveCallback, condition::onStart, condition::onDamage, condition::onBeforeMove, condition::onMoveAborted, condition::onEnd
 - [x] bleakwindstorm - Bleakwind Storm (Special, Flying) - 1 callback: onModifyMove
-- [ ] blizzard - Blizzard (Special, Ice) - 1 callback: onModifyMove
+- [x] blizzard - Blizzard (Special, Ice) - 1 callback: onModifyMove
 - [ ] block - Block (Status, Normal) - 1 callback: onHit
 - [ ] boltbeak - Bolt Beak (Physical, Electric) - 1 callback: basePowerCallback
 - [ ] bounce - Bounce (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceBasePower
