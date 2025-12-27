@@ -248,6 +248,8 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.sample(array)`: conversion2 - Random element from array
 - `pokemon.volatiles[name].duration`: perishsong - Access duration field of volatile
 - `pokemon.faint()`: perishsong - Faint the pokemon
+- `pokemon.tryTrap()`: noretreat, octolock - Try to trap the pokemon (prevents switching)
+- `battle.dex.getImmunity(effect, target)`: octolock - Check if target has immunity to an effect (e.g., 'trapped')
 - `pokemon.beingCalledBack`: pursuit - Boolean flag for being called back
 - `pokemon.switchFlag`: pursuit - Boolean flag for switching out
 - `side.hasAlly(pokemon)`: pursuit - Check if side has pokemon as ally
