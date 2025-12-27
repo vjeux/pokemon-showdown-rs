@@ -3050,7 +3050,7 @@ impl Battle {
 
     /// Log a debug message if debug mode is enabled
     /// Equivalent to battle.ts debug()
-    // 
+    //
     // 	debug(activity: string) {
     // 		if (this.debugMode) {
     // 			this.add('debug', activity);
@@ -3225,6 +3225,16 @@ impl Battle {
     }
 
     /// Truncate a number to an integer (equivalent to Math.trunc or this.trunc in JS)
+    /// Note: JavaScript's dex.trunc() uses bitwise operations for 32-bit integer conversion
+    /// Dex.trunc implementation from dex.ts:
+    //
+    // 	trunc(this: void, num: number, bits = 0) {
+    // 		if (bits) return (num >>> 0) % (2 ** bits);
+    // 		return num >>> 0;
+    // 	}
+    //
+    /// Battle assigns: this.trunc = this.dex.trunc; (battle.ts:201)
+    /// Rust uses num.trunc() as i32 which is functionally equivalent for positive values
     #[inline]
     pub fn trunc(&self, num: f64) -> i32 {
         num.trunc() as i32
@@ -3261,7 +3271,8 @@ impl Battle {
     }
 
     /// Chain two modifiers together (number variant)
-    /// When both modifiers are simple multipliers (not fractions)
+    /// Rust convenience method - JavaScript chain() accepts both numbers and arrays via dynamic typing
+    /// When both modifiers are simple multipliers (not fractions), this avoids tuple construction
     pub fn chain_f(&self, previous_mod: f64, next_mod: f64) -> f64 {
         // JS: previousMod = this.trunc(previousMod * 4096);
         let prev = self.trunc(previous_mod * 4096.0);
@@ -3298,13 +3309,15 @@ impl Battle {
     }
 
     /// Apply a modifier to a value using a tuple for numerator/denominator
-    /// Equivalent to battle.ts modify(value, [numerator, denominator])
+    /// Rust convenience method - JavaScript modify() accepts arrays: modify(value, [numerator, denominator])
+    /// This provides a type-safe alternative using Rust tuples
     pub fn modify_tuple(&self, value: i32, fraction: (i32, i32)) -> i32 {
         self.modify(value, fraction.0, fraction.1)
     }
 
     /// Apply a floating-point modifier to a value
-    /// Equivalent to battle.ts modify(value, modifier) when modifier is a float
+    /// Rust convenience method - JavaScript modify() accepts floats directly: modify(value, 1.5)
+    /// This provides type-safe handling when the modifier is already a float
     pub fn modify_f(&self, value: i32, multiplier: f64) -> i32 {
         // JS: const modifier = tr(numerator * 4096 / denominator);
         let modifier = self.trunc(multiplier * 4096.0);
@@ -3314,7 +3327,8 @@ impl Battle {
     }
 
     /// Get the current event's modifier (4096 = 1.0x)
-    /// Equivalent to this.event.modifier in JS
+    /// Rust accessor method - JavaScript directly accesses this.event.modifier field
+    /// Used in event handlers to get the current relay variable modifier
     pub fn event_modifier(&self) -> i32 {
         self.current_event.as_ref().map(|e| e.modifier).unwrap_or(4096)
     }
