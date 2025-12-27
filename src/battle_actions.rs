@@ -2733,8 +2733,8 @@ pub fn use_move_inner(
     // Would require adding current_effect field to Battle struct
 
     // let move = this.dex.getActiveMove(moveOrMoveName);
-    let mut move_data = match battle.dex.get_move(move_or_move_name.as_str()) {
-        Some(m) => m.clone(),
+    let mut active_move = match battle.dex.get_active_move(move_or_move_name.as_str()) {
+        Some(m) => m,
         None => return false,
     };
 
@@ -2759,16 +2759,25 @@ pub fn use_move_inner(
     // if (zMove || (move.category !== 'Status' && sourceEffect && (sourceEffect as ActiveMove).isZ)) {
     //     move = this.getActiveZMove(move, pokemon);
     // }
-    // TODO: Implement Z-move transformation
-    // Converts a normal move into its Z-move version using getActiveZMove
-    // Z-moves have boosted power, always hit, and special effects
-    // Requires implementing BattleActions::getActiveZMove (already exists at line 750)
+    if z_move.is_some() || (active_move.category != "Status" && source_effect.as_ref().map_or(false, |eff| {
+        // Check if source effect is a Z-move
+        battle.dex.get_active_move(eff.as_str()).map_or(false, |m| m.is_z)
+    })) {
+        // Transform to Z-move
+        active_move = BattleActions::get_active_z_move(
+            &active_move.id.to_string(),
+            &active_move.move_type,
+            &active_move.category,
+            active_move.base_power,
+            None, // z_crystal_base_power would come from move's z_move data
+        );
+    }
 
     // if (maxMove && move.category !== 'Status') {
     //     this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
     //     this.battle.runEvent('ModifyType', pokemon, target, move, move);
     // }
-    if max_move.is_some() && move_data.category != "Status" {
+    if max_move.is_some() && active_move.category != "Status" {
         battle.single_event("ModifyType", move_or_move_name, Some(pokemon_pos), target, Some(move_or_move_name));
         battle.run_event("ModifyType", Some(pokemon_pos), target, Some(move_or_move_name), None);
     }
@@ -2776,10 +2785,19 @@ pub fn use_move_inner(
     // if (maxMove || (move.category !== 'Status' && sourceEffect && (sourceEffect as ActiveMove).isMax)) {
     //     move = this.getActiveMaxMove(move, pokemon);
     // }
-    // TODO: Implement max move transformation
-    // Converts a normal move into its Max/G-Max move version using getActiveMaxMove
-    // Max moves have boosted power, always hit, and special effects
-    // Requires implementing BattleActions::getActiveMaxMove (already exists at line 799)
+    if max_move.is_some() || (active_move.category != "Status" && source_effect.as_ref().map_or(false, |eff| {
+        // Check if source effect is a Max move
+        battle.dex.get_active_move(eff.as_str()).map_or(false, |m| m.is_max)
+    })) {
+        // Transform to Max move
+        active_move = BattleActions::get_active_max_move(
+            &active_move.id.to_string(),
+            &active_move.move_type,
+            &active_move.category,
+            active_move.base_power,
+            None, // gmax_move would come from pokemon's gigantamax data
+        );
+    }
 
     // if (this.battle.activeMove) {
     //     move.priority = this.battle.activeMove.priority;
@@ -2791,7 +2809,7 @@ pub fn use_move_inner(
     // Would require tracking active_move state in Battle struct
 
     // const baseTarget = move.target;
-    let base_target = move_data.target.clone();
+    let base_target = active_move.target.clone();
 
     // let targetRelayVar = { target };
     // targetRelayVar = this.battle.runEvent('ModifyTarget', pokemon, target, move, targetRelayVar, true);
@@ -2822,13 +2840,13 @@ pub fn use_move_inner(
     // Gets a random valid target for a move based on its target type
     // Needed for moves with target="normal" or when original target is invalid
     if target.is_none() {
-        target = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &move_data.target);
+        target = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &active_move.target);
     }
 
     // if (move.target === 'self' || move.target === 'allies') {
     //     target = pokemon;
     // }
-    if move_data.target == "self" || move_data.target == "allies" {
+    if active_move.target == "self" || active_move.target == "allies" {
         target = Some(pokemon_pos);
     }
 
@@ -2893,7 +2911,7 @@ pub fn use_move_inner(
     //     movename = `Z-${movename}`;
     // }
     // this.battle.addMove('move', pokemon, movename, `${target}${attrs}`);
-    let move_name = move_data.name.clone();
+    let move_name = active_move.name.clone();
     battle.add_log("move", &[
         &format!("{}: {}", battle.sides[side_idx].id_str(), battle.sides[side_idx].pokemon[poke_idx].name),
         &move_name,
@@ -3002,13 +3020,13 @@ pub fn use_move_inner(
     // if (this.battle.gen !== 4 && move.selfdestruct === 'always') {
     //     this.battle.faint(pokemon, pokemon, move);
     // }
-    if battle.gen != 4 && move_data.selfdestruct == Some("always".to_string()) {
+    if battle.gen != 4 && active_move.self_destruct == Some("always".to_string()) {
         battle.faint(pokemon_pos, Some(pokemon_pos), Some(move_or_move_name.as_str()));
     }
 
     // let damage: number | false | undefined | '' = false;
     // Execute move based on target type
-    if matches!(move_data.target.as_str(), "all" | "foeSide" | "allySide" | "allyTeam") {
+    if matches!(active_move.target.as_str(), "all" | "foeSide" | "allySide" | "allyTeam") {
         // Field-wide moves - for now, treat like targeted moves with single target
         // Full implementation would use tryMoveHit instead of trySpreadMoveHit
         move_result = battle.try_spread_move_hit(&[target_pos], pokemon_pos, move_or_move_name);
@@ -3056,7 +3074,7 @@ pub fn use_move_inner(
     battle.run_event("AfterMoveSecondarySelf", Some(pokemon_pos), target_pos.into(), Some(move_or_move_name), None);
 
     // Check for Emergency Exit (abilities that trigger when HP drops below 50%)
-    if target_pos != pokemon_pos && move_data.category != "Status" {
+    if target_pos != pokemon_pos && active_move.category != "Status" {
         let current_hp = battle.sides[side_idx].pokemon[poke_idx].hp;
         let max_hp = battle.sides[side_idx].pokemon[poke_idx].maxhp;
         if current_hp <= max_hp / 2 && original_hp > max_hp / 2 {
