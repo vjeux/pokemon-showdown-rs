@@ -15,15 +15,84 @@ use crate::event::EventResult;
 ///     return move.basePower;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    // basePowerCallback(pokemon, target, move) {
+    //     if (target.status === 'par') {
+    //         this.debug('BP doubled on paralyzed target');
+    //         return move.basePower * 2;
+    //     }
+    //     return move.basePower;
+    // }
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.status === 'par') {
+    let has_paralysis = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.status == Some(ID::from("par"))
+    };
+
+    if has_paralysis {
+        // this.debug('BP doubled on paralyzed target');
+        battle.debug("BP doubled on paralyzed target");
+
+        // return move.basePower * 2;
+        let base_power = {
+            let active_move = match &battle.active_move {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+            active_move.base_power
+        };
+
+        return EventResult::Int(base_power * 2);
+    }
+
+    // return move.basePower;
+    let base_power = {
+        let active_move = match &battle.active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+        active_move.base_power
+    };
+
+    EventResult::Int(base_power)
 }
 
 /// onHit(target) {
 ///     if (target.status === 'par') target.cureStatus();
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // onHit(target) {
+    //     if (target.status === 'par') target.cureStatus();
+    // }
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.status === 'par') target.cureStatus();
+    let has_paralysis = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.status == Some(ID::from("par"))
+    };
+
+    if has_paralysis {
+        battle.cure_status(target);
+    }
+
     EventResult::Continue
 }
 
