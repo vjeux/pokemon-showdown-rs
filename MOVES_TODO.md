@@ -23,7 +23,7 @@ Moves with callbacks: 373
 - [x] batonpass - Baton Pass (Status, Normal) - 1 callback: onHit
 - [x] beakblast - Beak Blast (Physical, Flying) - 4 callbacks: priorityChargeCallback, onAfterMove, condition::onStart, condition::onHit
 - [x] beatup - Beat Up (Physical, Dark) - 2 callbacks: basePowerCallback, onModifyMove
-- [ ] belch - Belch (Special, Poison) - 1 callback: onDisableMove
+- [x] belch - Belch (Special, Poison) - 1 callback: onDisableMove
 - [ ] bellydrum - Belly Drum (Status, Normal) - 1 callback: onHit
 - [ ] bestow - Bestow (Status, Normal) - 1 callback: onHit
 - [ ] bide - Bide (Physical, Normal) - 6 callbacks: beforeMoveCallback, condition::onStart, condition::onDamage, condition::onBeforeMove, condition::onMoveAborted, condition::onEnd
