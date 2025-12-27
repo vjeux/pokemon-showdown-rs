@@ -84,9 +84,9 @@ The following are advanced features that require more complex infrastructure:
 **Other**:
 - ✓ `battle.queue.entries()`: pursuit - Queue entries iterator with (index, action) tuples (DONE)
 - ✓ `battle.queue.list.splice(index, count)`: pursuit - Remove entries from queue list (DONE via splice method)
-- `battle.actions.runMegaEvo(pokemon)`: pursuit - Execute Mega Evolution (stubs exist)
-- `battle.actions.terastallize(pokemon)`: pursuit - Execute Terastallization (stubs exist)
-- `battle.runEvent(eventName, pokemon, null, move, defaultValue)`: multiattack - Run event with default return value
+- ✓ `battle.actions.runMegaEvo(pokemon)`: pursuit - Execute Mega Evolution (DONE - stubs exist at run_mega_evo_stub)
+- ✓ `battle.actions.terastallize(pokemon)`: pursuit - Execute Terastallization (DONE - stubs exist at terastallize_stub)
+- ✓ `battle.runEvent(eventName, pokemon, null, move, defaultValue)`: multiattack - Run event with default return value (DONE - relay_var parameter)
 - `action.move`: waterpledge, upperhand, trickortreat - Action's move reference
 - ✓ `target.side.active.length`: trickortreat - Number of active pokemon on a side (DONE - use side.active.len())
 - ✓ `array.entries()`: uproar - Array entries() iterator with [index, pokemon] tuples (DONE - use .iter().enumerate())
