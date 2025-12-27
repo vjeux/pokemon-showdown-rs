@@ -143,6 +143,9 @@ pub struct Pokemon {
     pub base_move_slots: Vec<MoveSlot>,
     pub move_slots: Vec<MoveSlot>,
 
+    // Hidden Power type
+    pub hp_type: Option<String>,
+
     // Status
     pub status: ID,
     pub status_state: EffectState,
@@ -266,6 +269,8 @@ impl Pokemon {
 
             base_move_slots: move_slots.clone(),
             move_slots,
+
+            hp_type: set.hptype.clone(),
 
             status: ID::empty(),
             status_state: EffectState::new(ID::empty()),
