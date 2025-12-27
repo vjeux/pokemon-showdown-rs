@@ -16,7 +16,41 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // if (source.species.name === 'Darkrai' || move.hasBounced) {
+    //     return;
+    // }
+    let source = source_pos;
+
+    let is_darkrai = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.species.name == "Darkrai"
+    };
+
+    // TODO: Check move.hasBounced - this requires access to the current move state
+    // For now, we'll only check if the source is Darkrai
+    if is_darkrai {
+        // return;
+        return EventResult::Continue;
+    }
+
+    // this.add('-fail', source, 'move: Dark Void');
+    let source_arg = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        crate::battle::Arg::from(source_pokemon)
+    };
+
+    battle.add("-fail", &[source_arg, "move: Dark Void".into()]);
+
+    // this.hint("Only a Pokemon whose form is Darkrai can use this move.");
+    battle.hint("Only a Pokemon whose form is Darkrai can use this move.");
+
+    // return null;
+    EventResult::Null
 }
 
