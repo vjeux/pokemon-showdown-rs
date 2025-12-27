@@ -14,18 +14,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    // TODO: Add hasAbility('contrary') check when ability system is ready
-    let has_contrary = false; // Placeholder
-
-    if (!has_contrary && pokemon.boosts.spe == 6) || (has_contrary && pokemon.boosts.spe == -6) {
-        return EventResult::Bool(false);
-    }
-
+    // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
 

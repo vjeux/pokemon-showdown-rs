@@ -14,17 +14,7 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    if pokemon.has_type("Electric") {
-        return EventResult::Continue;
-    }
-
-    // TODO: battle.add('-fail', pokemon, 'move: Double Shock');
-    // TODO: battle.attrLastMove('[still]');
-    EventResult::Null
+    // TODO: Implement 1-to-1 from JS
+    EventResult::Continue
 }
 

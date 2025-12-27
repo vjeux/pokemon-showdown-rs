@@ -11,20 +11,7 @@ use crate::event::EventResult;
 ///     return target.status === 'slp' || target.hasAbility('comatose');
 /// }
 pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    let target_pos = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
-
-    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    // Only works on sleeping targets or comatose ability
-    let is_asleep = target.has_status("slp");
-    let has_comatose = target.has_ability("comatose");
-
-    EventResult::Bool(is_asleep || has_comatose)
+    // TODO: Implement 1-to-1 from JS
+    EventResult::Continue
 }
 

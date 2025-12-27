@@ -608,11 +608,14 @@ pub fn dispatch_on_base_power(
 pub fn dispatch_on_damage(
     battle: &mut Battle,
     move_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match move_id {
-        "falseswipe" => falseswipe::on_damage(battle, pokemon_pos),
-        "holdback" => holdback::on_damage(battle, pokemon_pos),
+        "falseswipe" => falseswipe::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "holdback" => holdback::on_damage(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }

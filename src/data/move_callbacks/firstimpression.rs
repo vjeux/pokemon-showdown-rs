@@ -14,16 +14,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    if source.active_move_actions > 1 {
-        battle.hint("First Impression only works on your first turn out.", false, None);
-        return EventResult::Bool(false);
-    }
-
+    // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
 

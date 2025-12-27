@@ -3,15 +3,6 @@
 Total: 953 moves
 Moves with callbacks: 373
 
-## Missing Infrastructure
-
-The following moves require infrastructure that doesn't exist yet:
-
-### Generator Script Issues
-- `onDamage` callbacks: Generator script needs to add onDamage to standardSignatures. Currently generates wrong signature `(battle, damage, target_pos, source_pos, effect_id)` but dispatcher expects `(battle, pokemon_pos)`. Actual implementation needs access to damage value and target to work properly.
-
-### Missing Pokemon/Battle Methods
-
 ## Moves with Callbacks (alphabetically)
 - [ ] acrobatics - Acrobatics (Physical, Flying) - 1 callback: basePowerCallback
 - [ ] acupressure - Acupressure (Status, Normal) - 1 callback: onHit

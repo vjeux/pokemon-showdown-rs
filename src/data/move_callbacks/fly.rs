@@ -33,13 +33,8 @@ pub mod condition {
     ///     return false;
     /// }
     pub fn on_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-        // Fly makes the user invulnerable, except to specific moves
-        match move_id {
-            "gust" | "twister" | "skyuppercut" | "thunder" | "hurricane" | "smackdown" | "thousandarrows" => {
-                EventResult::Continue
-            }
-            _ => EventResult::Bool(false)
-        }
+        // TODO: Implement 1-to-1 from JS
+        EventResult::Continue
     }
 
     /// onSourceModifyDamage(damage, source, target, move) {
@@ -48,11 +43,7 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-        // Gust and Twister deal double damage to flying Pokemon
-        if move_id == "gust" || move_id == "twister" {
-            EventResult::Number(damage * 2)
-        } else {
-            EventResult::Continue
-        }
+        // TODO: Implement 1-to-1 from JS
+        EventResult::Continue
     }
 }

@@ -33,6 +33,8 @@ function generateParameters(callbackName, jsArgs) {
         'onTryMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
         'onPrepareHit': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
         'onAfterMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        // onDamage callback - TypeScript: onDamage(damage, target, source, effect)
+        'onDamage': ['damage: i32', 'target_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
     };
 
     // Use standard signature if available, otherwise parse JS args

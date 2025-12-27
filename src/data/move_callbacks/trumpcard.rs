@@ -32,39 +32,12 @@ use crate::event::EventResult;
 ///             break;
 ///         }
 ///     }
-///
+/// 
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    let move_id = match &battle.active_move {
-        Some(id) => id,
-        None => return EventResult::Continue,
-    };
-
-    // Get move slot data to check PP
-    // Trump Card's power depends on remaining PP
-    let move_slot = pokemon.get_move_data(move_id);
-
-    let bp = if let Some(slot) = move_slot {
-        match slot.pp {
-            0 => 200,
-            1 => 80,
-            2 => 60,
-            3 => 50,
-            _ => 40,
-        }
-    } else {
-        40
-    };
-
-    battle.debug(&format!("BP: {}", bp));
-    EventResult::Number(bp)
+    // TODO: Implement 1-to-1 from JS
+    EventResult::Continue
 }
-
 
