@@ -13,7 +13,22 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Double base power if target HP is 50% or less
+    if target.hp * 2 <= target.maxhp {
+        // chainModify(2) means multiply base power by 2
+        EventResult::Number(base_power * 2)
+    } else {
+        EventResult::Continue
+    }
 }
 
