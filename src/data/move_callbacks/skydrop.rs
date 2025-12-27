@@ -36,8 +36,18 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 ///     return !target.fainted;
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Sky Drop fails if target is fainted
+    EventResult::Bool(!target.fainted)
 }
 
 /// onTryHit(target, source, move) {
