@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 59/79 TODOs (74.7%)
+**Feature Implementation:** ⚠️ 60/79 TODOs (75.9%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -560,11 +560,25 @@
 
 **Enables:** Correct ally detection in multi-battle formats (doubles, triples, multi), proper fainted ally targeting
 
+#### Weather Immunity Check in spread_damage (1/1) ✅
+- [x] **Weather damage immunity** (battle.rs:8978-8992) - Check weather immunity before applying damage
+
+**Implementation Details:**
+- Uses get_effect_type() to check if effect is 'Weather'
+- Calls pokemon.run_status_immunity(effect_id) to check immunity
+- Returns 0 damage if Pokemon is immune to weather (e.g., Ice types in Hail)
+- Matches JavaScript:
+  ```javascript
+  if (effect.effectType === 'Weather' && !target.runStatusImmunity(effect.id))
+  ```
+
+**Enables:** Correct weather damage immunity (Ice types in Hail/Snow, Rock/Ground/Steel in Sandstorm, weather-immune abilities)
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (20 TODOs)
+## Remaining P2 Nice-to-have (19 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks

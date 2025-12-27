@@ -8975,8 +8975,21 @@ impl Battle {
             if effect_id != "strugglerecoil" {
                 // Check weather immunity
                 // JavaScript: if (effect.effectType === 'Weather' && !target.runStatusImmunity(effect.id))
-                // TODO: Need to implement effect type checking and status immunity
-                // For now, skip this check
+                if let Some(eff) = effect {
+                    let effect_type = self.get_effect_type(eff);
+                    if effect_type == "Weather" {
+                        // Check if target is immune to this weather effect
+                        if let Some(side) = self.sides.get(side_idx) {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                if !pokemon.run_status_immunity(effect_id) {
+                                    // Target is immune to this weather damage
+                                    ret_vals.push(Some(0));
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
 
                 // Fire Damage event
                 // JavaScript: targetDamage = this.runEvent('Damage', target, source, effect, targetDamage, true);
