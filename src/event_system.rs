@@ -64,6 +64,50 @@ impl EffectType {
             _ => None,
         }
     }
+
+    pub fn to_str(&self) -> &'static str {
+        match self {
+            Self::Ability => "Ability",
+            Self::Item => "Item",
+            Self::Move => "Move",
+            Self::Status => "Status",
+            Self::Volatile => "Volatile",
+            Self::Weather => "Weather",
+            Self::Terrain => "Terrain",
+            Self::SideCondition => "SideCondition",
+            Self::FieldCondition => "FieldCondition",
+            Self::Format => "Format",
+            Self::Rule => "Rule",
+            Self::ValidatorRule => "ValidatorRule",
+        }
+    }
+}
+
+/// Effect metadata - represents an effect with its properties
+/// Equivalent to Effect interface in TypeScript
+#[derive(Debug, Clone)]
+pub struct EffectData {
+    /// Effect name/ID
+    pub name: String,
+    /// Effect type (Ability, Move, Item, etc.)
+    pub effect_type: EffectType,
+    /// Whether this effect was Prankster boosted
+    pub prankster_boosted: bool,
+}
+
+impl EffectData {
+    pub fn new(name: String, effect_type: EffectType) -> Self {
+        Self {
+            name,
+            effect_type,
+            prankster_boosted: false,
+        }
+    }
+
+    pub fn with_prankster(mut self, prankster_boosted: bool) -> Self {
+        self.prankster_boosted = prankster_boosted;
+        self
+    }
 }
 
 // EventInfo is defined in battle.rs - use that instead of duplicating

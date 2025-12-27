@@ -73,9 +73,9 @@ The following are advanced features that require more complex infrastructure:
 - ✓ `moveSlot.pp`: grudge - PP field (mutable) for setting PP directly (DONE via set_pp)
 
 **Effect Data Access**:
-- `effect.name`: healblock, grudge - Effect name string field (can be from effect parameter)
-- `effect.effectType`: grudge, disable - Effect type string ('Ability', 'Move', etc.)
-- `effect.pranksterBoosted`: magiccoat - Effect prankster boosted field
+- ✓ `effect.name`: healblock, grudge - Effect name string field (can be from effect parameter) (DONE via EffectData)
+- ✓ `effect.effectType`: grudge, disable - Effect type string ('Ability', 'Move', etc.) (DONE via EffectData.effect_type)
+- ✓ `effect.pranksterBoosted`: magiccoat - Effect prankster boosted field (DONE via EffectData.prankster_boosted)
 
 **Secondary Effect Fields**:
 - `secondary.chance`: waterpledge - Secondary effect chance field (mutable)

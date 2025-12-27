@@ -364,6 +364,8 @@ pub struct Battle {
     pub current_effect: Option<ID>,
     /// Current effect state
     pub current_effect_state: Option<crate::dex_data::EffectState>,
+    /// Current effect metadata (name, type, pranksterBoosted, etc.)
+    pub current_effect_data: Option<crate::event_system::EffectData>,
     /// Log position for line limit checking
     pub sent_log_pos: usize,
 
@@ -468,6 +470,7 @@ impl Battle {
             current_event: None,
             current_effect: None,
             current_effect_state: None,
+            current_effect_data: None,
             sent_log_pos: 0,
             debug_mode: options.debug,
             rated: options.rated,
