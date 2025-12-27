@@ -274,7 +274,7 @@ Moves with callbacks: 373
 - [x] roost - Roost (Status, Flying) - 2 callbacks: condition::onStart, condition::onType
 - [x] rototiller - Rototiller (Status, Ground) - 1 callback: onHitField
 - [x] round - Round (Special, Normal) - 2 callbacks: basePowerCallback, onTry
-- [ ] ruination - Ruination (Special, Dark) - 1 callback: damageCallback
+- [x] ruination - Ruination (Special, Dark) - 1 callback: damageCallback
 - [ ] safeguard - Safeguard (Status, Normal) - 5 callbacks: condition::durationCallback, condition::onSetStatus, condition::onTryAddVolatile, condition::onSideStart, condition::onSideEnd
 - [ ] saltcure - Salt Cure (Physical, Rock) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
 - [ ] sandsearstorm - Sandsear Storm (Special, Ground) - 1 callback: onModifyMove
