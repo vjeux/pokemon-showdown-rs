@@ -138,9 +138,9 @@ Moves with callbacks: 373
 - [x] guardsplit - Guard Split (Status, Psychic) - 1 callback: onHit
 - [x] guardswap - Guard Swap (Status, Psychic) - 1 callback: onHit
 - [x] gyroball - Gyro Ball (Physical, Steel) - 1 callback: basePowerCallback
-- [ ] happyhour - Happy Hour (Status, Normal) - 1 callback: onTryHit
-- [ ] hardpress - Hard Press (Physical, Steel) - 1 callback: basePowerCallback
-- [ ] haze - Haze (Status, Ice) - 1 callback: onHitField
+- [x] happyhour - Happy Hour (Status, Normal) - 1 callback: onTryHit
+- [x] hardpress - Hard Press (Physical, Steel) - 1 callback: basePowerCallback
+- [x] haze - Haze (Status, Ice) - 1 callback: onHitField
 - [ ] healbell - Heal Bell (Status, Normal) - 1 callback: onHit
 - [ ] healblock - Heal Block (Status, Psychic) - 8 callbacks: condition::durationCallback, condition::onStart, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onEnd, condition::onTryHeal, condition::onRestart
 - [ ] healingwish - Healing Wish (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
