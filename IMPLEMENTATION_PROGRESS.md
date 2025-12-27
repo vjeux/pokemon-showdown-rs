@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 54/79 TODOs (68.4%)
+**Feature Implementation:** ⚠️ 55/79 TODOs (69.6%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -458,14 +458,37 @@
 
 **Enables:** Display of custom rules in battle log, proper format information communication to players
 
+#### Gen 2-3 Queue Cancellation (1/1) ✅
+- [x] **Gen 2-3 queue cancellation in faint_messages** (battle.rs:2917-2942) - Cancel queued actions when Pokemon faints
+
+**Implementation Details:**
+- Checks if gen <= 3 and gameType is Singles
+- Collects all active Pokemon positions (side_idx, pokemon_idx)
+- For each active Pokemon:
+  - Gen 2: Calls queue.cancel_move() to skip moves only
+  - Gen 3: Calls queue.cancel_action() to skip all moves and switches
+- Matches JavaScript:
+  ```javascript
+  else if (this.gen <= 3 && this.gameType === 'singles') {
+      for (const pokemon of this.getAllActive()) {
+          if (this.gen <= 2) {
+              this.queue.cancelMove(pokemon);
+          } else {
+              this.queue.cancelAction(pokemon);
+          }
+      }
+  }
+  ```
+
+**Enables:** Correct Gen 2-3 faint behavior in singles battles, proper turn skipping mechanics
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (25 TODOs)
+## Remaining P2 Nice-to-have (24 TODOs)
 
-### Gen-Specific (2 TODOs)
-- Gen 2-3 queue cancellation
+### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks
 - Staleness checks  
 - Berry cycling checks

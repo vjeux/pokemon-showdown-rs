@@ -2914,7 +2914,32 @@ impl Battle {
         }
 
         // JS: else if (this.gen <= 3 && this.gameType === 'singles') { ... }
-        // TODO: Gen 2-3 queue cancellation
+        else if self.gen <= 3 && self.game_type == GameType::Singles {
+            // in gen 3 or earlier, fainting in singles skips to residuals
+            // JS: for (const pokemon of this.getAllActive()) { ... }
+
+            // Collect active pokemon positions to avoid borrow checker issues
+            let active_positions: Vec<(usize, usize)> = self.sides.iter().enumerate()
+                .flat_map(|(side_idx, side)| {
+                    side.active.iter()
+                        .filter_map(move |&opt_idx| {
+                            opt_idx.map(|poke_idx| (side_idx, poke_idx))
+                        })
+                })
+                .collect();
+
+            for (side_idx, pokemon_idx) in active_positions {
+                if self.gen <= 2 {
+                    // in gen 2, fainting skips moves only
+                    // JS: this.queue.cancelMove(pokemon);
+                    self.queue.cancel_move(side_idx, pokemon_idx);
+                } else {
+                    // in gen 3, fainting skips all moves and switches
+                    // JS: this.queue.cancelAction(pokemon);
+                    self.queue.cancel_action(side_idx, pokemon_idx);
+                }
+            }
+        }
 
         // JS: if (checkWin && this.checkWin(faintData)) return true;
         if check_win && self.check_win(last_faint_data.clone()) {
