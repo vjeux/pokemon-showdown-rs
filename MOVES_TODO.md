@@ -260,7 +260,7 @@ Moves with callbacks: 373
 - [ ] reflect - Reflect (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [x] reflecttype - Reflect Type (Status, Normal) - 1 callback: onHit
 - [x] refresh - Refresh (Status, Normal) - 1 callback: onHit
-- [ ] relicsong - Relic Song (Special, Normal) - 2 callbacks: onHit, onAfterMoveSecondarySelf
+- [x] relicsong - Relic Song (Special, Normal) - 2 callbacks: onHit, onAfterMoveSecondarySelf
 - [ ] rest - Rest (Status, Psychic) - 2 callbacks: onTry, onHit
 - [x] retaliate - Retaliate (Physical, Normal) - 1 callback: onBasePower
 - [ ] return - Return (Physical, Normal) - 1 callback: basePowerCallback
