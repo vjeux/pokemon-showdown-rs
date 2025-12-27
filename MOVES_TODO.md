@@ -349,6 +349,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `move.flags['futuremove']`: grudge - Future move flag for Future Sight/Doom Desire
 - `move.flags['gravity']`: gravity - Gravity flag for moves affected by gravity
 - `moveSlot.pp`: grudge - PP field (mutable) for setting PP directly
+- `battle.dex.getEffectiveness(type1, type2)`: flyingpress - Get type effectiveness modifier between two types
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
