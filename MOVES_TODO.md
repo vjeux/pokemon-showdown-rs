@@ -289,7 +289,7 @@ Moves with callbacks: 373
 - [x] simplebeam - Simple Beam (Status, Normal) - 2 callbacks: onTryHit, onHit
 - [x] sketch - Sketch (Status, Normal) - 1 callback: onHit
 - [x] skillswap - Skill Swap (Status, Psychic) - 2 callbacks: onTryHit, onHit
-- [ ] skullbash - Skull Bash (Physical, Normal) - 1 callback: onTryMove
+- [x] skullbash - Skull Bash (Physical, Normal) - 1 callback: onTryMove
 - [ ] skyattack - Sky Attack (Physical, Flying) - 1 callback: onTryMove
 - [ ] skydrop - Sky Drop (Physical, Flying) - 12 callbacks: onModifyMove, onMoveFail, onTry, onTryHit, onHit, condition::onAnyDragOut, condition::onFoeTrapPokemon, condition::onFoeBeforeMove, condition::onRedirectTarget, condition::onAnyInvulnerability, condition::onAnyBasePower, condition::onFaint
 - [ ] sleeptalk - Sleep Talk (Status, Normal) - 2 callbacks: onTry, onHit
