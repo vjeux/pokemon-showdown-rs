@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 34/79 TODOs (43.0%)
+**Feature Implementation:** ⚠️ 35/79 TODOs (44.3%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -229,11 +229,22 @@
 
 **Enables:** Proper request state management, choice validation, team preview protocol messages
 
+#### Multi-Battle Ally Check (1/1) ✅
+- [x] **allySide check in is_ally()** (battle.rs:3954-3961) - Checks ally_index for multi-battle ally detection
+
+**Implementation Details:**
+- Added ally_index check to is_ally() method
+- Returns true if pos2's side matches pos1's ally_index
+- Matches JavaScript: this.side === pokemon.side || this.side.allySide === pokemon.side
+- Essential for 2v2 and multi-battle formats
+
+**Enables:** Correct ally detection in multi-battle formats (doubles, triples, multi)
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (45 TODOs)
+## Remaining P2 Nice-to-have (44 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions
