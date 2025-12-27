@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 18/79 TODOs (22.8%)
+**Feature Implementation:** ⚠️ 20/79 TODOs (25.3%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -78,6 +78,24 @@
 
 **Enables:** Spread moves, multi-target damage, Pressure ability PP mechanics
 
+### Session 6 - Z-Move & Max Move Infrastructure (2 implementations)
+
+#### ActiveMove Architecture (1/1) ✅
+- [x] **Dex::get_active_move()** (dex.rs:750-857) - Converts MoveData to mutable ActiveMove
+- [x] **convert_move_flags()** (dex.rs:840-857) - Helper to map HashMap flags to MoveFlags struct
+
+**Enables:** Mutable move state for Z-Move/Max Move transformation
+
+#### Z-Move & Max Move Transformation (2/2) ✅
+- [x] **Z-move transformation** (battle_actions.rs:2759-2774) - Transform active_move to Z-Move
+- [x] **Max move transformation** (battle_actions.rs:2785-2800) - Transform active_move to Max Move
+
+**Refactoring:**
+- Refactored use_move_inner to use ActiveMove instead of MoveData (battle_actions.rs:2736)
+- Updated 8 references from move_data to active_move throughout function
+
+**Enables:** Z-Moves (Breakneck Blitz, Inferno Overdrive, etc.), Max Moves (Max Flare, Max Geyser, etc.), Dynamax battle mechanics
+
 ## Remaining P0 Critical (High Priority)
 
 ### Move Events (0 remaining TODOs) ✅ ALL COMPLETE
@@ -99,13 +117,13 @@
 - [x] ~~TrapPokemon/MaybeTrapPokemon events (battle.rs:5115)~~ ✅ Completed
 - [~] ~~Foe ability trapping (battle.rs:5119)~~ ⚠️ Stub implemented, full requires species infrastructure
 
-## Remaining P1 Important (13 TODOs)
+## Remaining P1 Important (11 TODOs)
 
-### Z-Moves & Max Moves (5 TODOs)
+### Z-Moves & Max Moves (3 remaining TODOs)
 - [ ] Z-Move transformation in get_action_speed
 - [ ] Max Move transformation in get_action_speed
-- [ ] Z-move transformation in use_move
-- [ ] Max move transformation in use_move
+- [x] ~~Z-move transformation in use_move~~ ✅ Completed (Session 6)
+- [x] ~~Max move transformation in use_move~~ ✅ Completed (Session 6)
 - [ ] runZPower for status Z-moves
 
 ### Side Management (4 TODOs)
