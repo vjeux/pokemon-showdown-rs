@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 40/79 TODOs (50.6%)
+**Feature Implementation:** ⚠️ 41/79 TODOs (51.9%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -299,11 +299,22 @@
 
 **Enables:** Proper request state tracking for battle flow control
 
+#### Pressure PP Deduction (1/1) ✅
+- [x] **PP deduction in use_move_inner** (battle_actions.rs:3067-3071) - Deduct extra PP from Pressure ability
+
+**Implementation Details:**
+- Calls pokemon.deduct_pp() when extra_pp > 0 (line 3068-3070)
+- Deducts extra PP accumulated from Pressure ability targets
+- Matches JavaScript: `if (extraPP > 0) pokemon.deductPP(callerMoveForPressure || moveOrMoveName, extraPP);`
+- Uses existing deduct_pp method on Pokemon
+
+**Enables:** Pressure ability PP deduction mechanics
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (39 TODOs)
+## Remaining P2 Nice-to-have (38 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions
@@ -319,7 +330,7 @@
 - Format callbacks
 - Switch in all active Pokemon
 
-### Infrastructure (29 TODOs)
+### Infrastructure (28 TODOs)
 - Various missing infrastructure pieces
 - Effect type checks
 - Boost migration

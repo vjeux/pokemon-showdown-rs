@@ -3064,11 +3064,11 @@ pub fn use_move_inner(
             }
         }
 
-        // TODO: Deduct PP from pokemon
         // JS: if (extraPP > 0) pokemon.deductPP(callerMoveForPressure || moveOrMoveName, extraPP);
-        // This requires implementing deductPP on pokemon, which modifies move PP
-        // For now, documented as TODO
-        let _ = extra_pp; // Silence unused warning
+        if extra_pp > 0 {
+            let (side_idx, poke_idx) = pokemon_pos;
+            battle.sides[side_idx].pokemon[poke_idx].deduct_pp(move_or_move_name, extra_pp as u8);
+        }
     }
 
     // if (!this.battle.singleEvent('TryMove', move, null, pokemon, target, move) ||
