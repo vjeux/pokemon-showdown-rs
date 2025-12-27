@@ -11,7 +11,26 @@ use crate::event::EventResult;
 ///     return source.status === 'slp' || source.hasAbility('comatose');
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    // onTry(source) {
+    //     return source.status === 'slp' || source.hasAbility('comatose');
+    // }
+    let source = source_pos;
+
+    // return source.status === 'slp' || source.hasAbility('comatose');
+    let has_sleep_or_comatose = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let has_sleep = source_pokemon.status == Some(ID::from("slp"));
+        let has_comatose = battle.has_ability(source, "comatose");
+
+        has_sleep || has_comatose
+    };
+
+    EventResult::Bool(has_sleep_or_comatose)
 }
 
