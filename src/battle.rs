@@ -369,6 +369,9 @@ pub struct Battle {
     pub rated: Option<String>,
     /// Strict choices (errors on invalid choices)
     pub strict_choices: bool,
+    /// Support choice cancellation (allow undo)
+    /// JavaScript: supportCancel
+    pub support_cancel: bool,
     /// Force random chance outcome (for testing)
     pub force_random_chance: Option<bool>,
 
@@ -457,6 +460,7 @@ impl Battle {
             debug_mode: options.debug,
             rated: options.rated,
             strict_choices: options.strict_choices,
+            support_cancel: false, // JavaScript default: supportCancel defaults to false
             force_random_chance: if options.debug {
                 options.force_random_chance
             } else {
@@ -6231,9 +6235,9 @@ impl Battle {
             // JS: if (side.isChoiceDone())
             if side.is_choice_done(picked_team_size) {
                 // JS: if (!this.supportCancel) side.choice.cantUndo = true;
-                // TODO: Add support_cancel field to Battle struct
-                // For now, always set cantUndo to true (equivalent to supportCancel = false)
-                side.choice.cant_undo = true;
+                if !self.support_cancel {
+                    side.choice.cant_undo = true;
+                }
 
                 // JS: totalActions++;
                 total_actions += 1;

@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 37/79 TODOs (46.8%)
+**Feature Implementation:** ⚠️ 38/79 TODOs (48.1%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -240,7 +240,7 @@
 
 **Enables:** Correct ally detection in multi-battle formats (doubles, triples, multi)
 
-### Session 9 Continued - Move Target Pressure Mechanics (2 implementations)
+### Session 9 Continued - Move Target Pressure Mechanics (3 implementations)
 
 #### Mustpressure Flag Check (1/1) ✅
 - [x] **mustpressure flag check in get_move_targets** (battle.rs:3942-3944) - Check move flags for Pressure PP deduction
@@ -265,11 +265,22 @@
 
 **Enables:** Future moves (Future Sight, Doom Desire) can target fainted Pokemon slots
 
+#### Support Cancel Field (1/1) ✅
+- [x] **support_cancel field in Battle struct** (battle.rs:374, 463, 6238) - Allow choice cancellation control
+
+**Implementation Details:**
+- Added support_cancel: bool field to Battle struct (line 374)
+- Initialized to false in Battle::new() (line 463) - matches JavaScript default
+- Updated is_all_choice_done() to check support_cancel before setting cantUndo (line 6238)
+- Matches JavaScript: `if (!this.supportCancel) side.choice.cantUndo = true;`
+
+**Enables:** Proper choice undo control based on battle configuration
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (42 TODOs)
+## Remaining P2 Nice-to-have (41 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions
