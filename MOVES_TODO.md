@@ -107,7 +107,7 @@ Moves with callbacks: 373
 - [x] followme - Follow Me (Status, Normal) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
 - [ ] foresight - Foresight (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
 - [x] forestscurse - Forest's Curse (Status, Grass) - 1 callback: onHit
-- [ ] freezedry - Freeze-Dry (Special, Ice) - 1 callback: onEffectiveness
+- [x] freezedry - Freeze-Dry (Special, Ice) - 1 callback: onEffectiveness
 - [ ] freezeshock - Freeze Shock (Physical, Ice) - 1 callback: onTryMove
 - [ ] freezyfrost - Freezy Frost (Special, Ice) - 1 callback: onHit
 - [ ] frustration - Frustration (Physical, Normal) - 1 callback: basePowerCallback
