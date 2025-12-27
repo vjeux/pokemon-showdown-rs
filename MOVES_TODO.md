@@ -223,7 +223,7 @@ Moves with callbacks: 373
 - [x] painsplit - Pain Split (Status, Normal) - 1 callback: onHit
 - [x] partingshot - Parting Shot (Status, Dark) - 1 callback: onHit
 - [x] payback - Payback (Physical, Dark) - 1 callback: basePowerCallback
-- [ ] perishsong - Perish Song (Status, Normal) - 3 callbacks: onHitField, condition::onEnd, condition::onResidual
+- [x] perishsong - Perish Song (Status, Normal) - 3 callbacks: onHitField, condition::onEnd, condition::onResidual
 - [ ] phantomforce - Phantom Force (Physical, Ghost) - 1 callback: onTryMove
 - [ ] photongeyser - Photon Geyser (Special, Psychic) - 1 callback: onModifyMove
 - [ ] pikapapow - Pika Papow (Special, Electric) - 1 callback: basePowerCallback
