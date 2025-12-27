@@ -248,7 +248,7 @@ Moves with callbacks: 373
 - [x] punishment - Punishment (Physical, Dark) - 1 callback: basePowerCallback
 - [x] purify - Purify (Status, Poison) - 1 callback: onHit
 - [ ] pursuit - Pursuit (Physical, Dark) - 5 callbacks: basePowerCallback, beforeTurnCallback, onModifyMove, onTryHit, condition::onBeforeSwitchOut
-- [ ] quash - Quash (Status, Dark) - 1 callback: onHit
+- [x] quash - Quash (Status, Dark) - 1 callback: onHit
 - [ ] quickguard - Quick Guard (Status, Fighting) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
 - [ ] rage - Rage (Physical, Normal) - 3 callbacks: condition::onStart, condition::onHit, condition::onBeforeMove
 - [ ] ragefist - Rage Fist (Physical, Ghost) - 1 callback: basePowerCallback
