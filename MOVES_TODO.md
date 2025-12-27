@@ -45,7 +45,7 @@ Moves with callbacks: 373
 - [x] chillyreception - Chilly Reception (Status, Ice) - 2 callbacks: priorityChargeCallback, condition::onBeforeMove
 - [x] clangoroussoul - Clangorous Soul (Status, Dragon) - 3 callbacks: onTry, onTryHit, onHit
 - [x] clearsmog - Clear Smog (Special, Poison) - 1 callback: onHit
-- [ ] collisioncourse - Collision Course (Physical, Fighting) - 1 callback: onBasePower
+- [x] collisioncourse - Collision Course (Physical, Fighting) - 1 callback: onBasePower
 - [ ] comeuppance - Comeuppance (Physical, Dark) - 3 callbacks: damageCallback, onTry, onModifyTarget
 - [ ] conversion - Conversion (Status, Normal) - 1 callback: onHit
 - [ ] conversion2 - Conversion 2 (Status, Normal) - 1 callback: onHit
