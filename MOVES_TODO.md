@@ -39,7 +39,7 @@ Moves with callbacks: 373
 - [x] burnup - Burn Up (Special, Fire) - 1 callback: onTryMove
 - [x] camouflage - Camouflage (Status, Normal) - 1 callback: onHit
 - [x] captivate - Captivate (Status, Normal) - 1 callback: onTryImmunity
-- [ ] ceaselessedge - Ceaseless Edge (Physical, Dark) - 2 callbacks: onAfterHit, onAfterSubDamage
+- [x] ceaselessedge - Ceaseless Edge (Physical, Dark) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [ ] celebrate - Celebrate (Status, Normal) - 1 callback: onTryHit
 - [ ] charge - Charge (Status, Electric) - 6 callbacks: condition::onStart, condition::onRestart, condition::onBasePower, condition::onMoveAborted, condition::onAfterMove, condition::onEnd
 - [ ] chillyreception - Chilly Reception (Status, Ice) - 2 callbacks: priorityChargeCallback, condition::onBeforeMove
