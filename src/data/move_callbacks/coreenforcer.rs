@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex_data::ID;
 
 /// onHit(target) {
 ///     if (target.getAbility().flags['cantsuppress']) return;
@@ -13,7 +14,51 @@ use crate::event::EventResult;
 ///     target.addVolatile('gastroacid');
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // Get the target
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.getAbility().flags['cantsuppress']) return;
+    let cant_suppress = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let ability = target_pokemon.get_ability(battle);
+        ability.flags.contains_key("cantsuppress")
+    };
+
+    if cant_suppress {
+        // return;
+        return EventResult::Continue;
+    }
+
+    // if (target.newlySwitched || this.queue.willMove(target)) return;
+    let newly_switched = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.newly_switched
+    };
+
+    let will_move = battle.queue.will_move(target);
+
+    if newly_switched || will_move {
+        // return;
+        return EventResult::Continue;
+    }
+
+    // target.addVolatile('gastroacid');
+    let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+    target_pokemon.add_volatile(ID::from("gastroacid"));
+
     EventResult::Continue
 }
 
@@ -23,7 +68,50 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 ///     target.addVolatile('gastroacid');
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // Get the target
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.getAbility().flags['cantsuppress']) return;
+    let cant_suppress = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let ability = target_pokemon.get_ability(battle);
+        ability.flags.contains_key("cantsuppress")
+    };
+
+    if cant_suppress {
+        // return;
+        return EventResult::Continue;
+    }
+
+    // if (target.newlySwitched || this.queue.willMove(target)) return;
+    let newly_switched = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.newly_switched
+    };
+
+    let will_move = battle.queue.will_move(target);
+
+    if newly_switched || will_move {
+        // return;
+        return EventResult::Continue;
+    }
+
+    // target.addVolatile('gastroacid');
+    let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+    target_pokemon.add_volatile(ID::from("gastroacid"));
+
     EventResult::Continue
 }
-
