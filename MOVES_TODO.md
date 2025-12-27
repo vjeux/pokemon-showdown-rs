@@ -41,7 +41,7 @@ Moves with callbacks: 373
 - [x] captivate - Captivate (Status, Normal) - 1 callback: onTryImmunity
 - [x] ceaselessedge - Ceaseless Edge (Physical, Dark) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [x] celebrate - Celebrate (Status, Normal) - 1 callback: onTryHit
-- [ ] charge - Charge (Status, Electric) - 6 callbacks: condition::onStart, condition::onRestart, condition::onBasePower, condition::onMoveAborted, condition::onAfterMove, condition::onEnd
+- [x] charge - Charge (Status, Electric) - 6 callbacks: condition::onStart, condition::onRestart, condition::onBasePower, condition::onMoveAborted, condition::onAfterMove, condition::onEnd
 - [ ] chillyreception - Chilly Reception (Status, Ice) - 2 callbacks: priorityChargeCallback, condition::onBeforeMove
 - [ ] clangoroussoul - Clangorous Soul (Status, Dragon) - 3 callbacks: onTry, onTryHit, onHit
 - [ ] clearsmog - Clear Smog (Special, Poison) - 1 callback: onHit
