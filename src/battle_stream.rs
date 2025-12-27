@@ -122,6 +122,8 @@ pub enum BattleMessage {
 
 impl BattleMessage {
     /// Parse a protocol line into a message
+    /// Note: Rust-specific infrastructure. JavaScript handles protocol messages as raw strings.
+    /// This method provides type-safe parsing for the Rust implementation.
     pub fn parse(line: &str) -> Option<Self> {
         let line = line.trim();
         if line.is_empty() {
@@ -383,6 +385,8 @@ impl BattleMessage {
     }
 
     /// Convert message to protocol string
+    /// Note: Rust-specific infrastructure. JavaScript works with protocol strings directly.
+    /// This method provides type-safe serialization for the Rust implementation.
     pub fn to_protocol(&self) -> String {
         match self {
             BattleMessage::Player { slot, name, avatar, rating } => {
@@ -510,6 +514,7 @@ pub struct BattleStreamOptions {
 
 impl BattleStream {
     /// Create a new battle stream
+    /// Note: Rust-specific constructor. Use with_options() for equivalent to TS constructor.
     pub fn new() -> Self {
         Self {
             battle: None,
@@ -537,6 +542,7 @@ impl BattleStream {
     }
 
     /// Create a battle stream with existing battle
+    /// Note: Rust-specific constructor. No JavaScript equivalent.
     pub fn with_battle(battle: Battle) -> Self {
         Self {
             battle: Some(battle),
@@ -550,25 +556,15 @@ impl BattleStream {
     }
 
     /// Start a new battle with options
-    // TypeScript source:
-    // 
-    // 
-    // 	async start() {
-    // 		for await (const chunk of this.stream) {
-    // 			this.receive(chunk);
-    // 		}
-    // 	}
-    //
+    /// Note: Different from TS async start(). Corresponds to case 'start' in _writeLine() (battle-stream.ts:102-111)
+    /// Creates a new Battle instance with the provided options.
     pub fn start(&mut self, options: BattleOptions) {
         self.battle = Some(Battle::new(options));
     }
 
     /// Write input to the battle
-    /// Equivalent to _write() in battle-stream.ts
-    // 			write(data: string) {
-    // 				void stream.write(data);
-    // 			}
-    //
+    /// Equivalent to _write() and _writeLines() in battle-stream.ts (lines 68-80)
+    /// Processes input commands sent to the battle stream
     pub fn write(&mut self, input: &str) {
         for line in input.lines() {
             let line = line.trim();
@@ -747,8 +743,8 @@ impl BattleStream {
     }
 
     /// Read output from the battle
-    // 			read() {}
-    //
+    /// Note: Simplified version. TypeScript uses Node.js stream read() (battle-stream.ts)
+    /// Returns queued messages from the output queue.
     pub fn read(&mut self) -> Option<String> {
         // First return any queued messages
         if let Some(msg) = self.output_queue.pop_front() {
@@ -767,21 +763,25 @@ impl BattleStream {
     }
 
     /// Get reference to battle
+    /// Note: Rust-specific accessor. TypeScript accesses battle field directly.
     pub fn battle(&self) -> Option<&Battle> {
         self.battle.as_ref()
     }
 
     /// Get mutable reference to battle
+    /// Note: Rust-specific accessor. TypeScript accesses battle field directly.
     pub fn battle_mut(&mut self) -> Option<&mut Battle> {
         self.battle.as_mut()
     }
 
     /// Check if battle has ended
+    /// Note: Rust-specific helper. TypeScript accesses battle.ended directly.
     pub fn ended(&self) -> bool {
         self.battle.as_ref().map_or(true, |b| b.ended)
     }
 
     /// Get winner if battle ended
+    /// Note: Rust-specific helper. TypeScript accesses battle.winner directly.
     pub fn winner(&self) -> Option<String> {
         self.battle.as_ref().and_then(|b| b.winner.clone())
     }
@@ -818,6 +818,7 @@ pub struct PlayerStreams {
 
 impl PlayerStreams {
     /// Create new player streams
+    /// Note: Rust-specific constructor. Part of getPlayerStreams() infrastructure.
     pub fn new() -> Self {
         Self {
             omniscient: VecDeque::new(),

@@ -332,3 +332,46 @@
 - [x] `prioritize_action_ref` (line 772)
 - [x] `resolve_action` (line 912)
 - [x] `get_order_for_choice` (line 1008)
+
+---
+
+## battle_stream.rs
+
+**Total methods:** 30 (17 public, 13 private)
+
+### Public Methods
+
+- [x] `parse` (line 125)
+- [x] `to_protocol` (line 386)
+- [x] `new` (line 513)
+- [x] `with_options` (line 527)
+- [x] `with_battle` (line 540)
+- [x] `start` (line 562)
+- [x] `write` (line 572)
+- [x] `push_message` (line 728)
+- [x] `read` (line 752)
+- [x] `battle` (line 770)
+- [x] `battle_mut` (line 775)
+- [x] `ended` (line 780)
+- [x] `winner` (line 785)
+- [x] `destroy` (line 791)
+- [x] `new` (line 821)
+- [x] `push_update` (line 834)
+- [x] `split_first` (line 884)
+
+### Private Methods
+
+- [x] `write_line` (line 586)
+- [x] `default` (line 850)
+- [x] `default` (line 903)
+- [x] `test_parse_turn` (line 913)
+- [x] `test_parse_switch` (line 919)
+- [x] `test_parse_move` (line 930)
+- [x] `test_parse_damage` (line 941)
+- [x] `test_parse_boost` (line 947)
+- [x] `test_parse_weather` (line 957)
+- [x] `test_parse_status` (line 963)
+- [x] `test_to_protocol` (line 972)
+- [x] `test_battle_stream_creation` (line 985)
+- [x] `test_parse_terastallize` (line 992)
+
