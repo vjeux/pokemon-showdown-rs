@@ -28,7 +28,10 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // TODO: This callback needs boost parameter support in the function signature
+        // The TypeScript version receives (boost, target, source, effect) and modifies boost in-place
+        // It removes negative boosts from the boost object and shows a message
+        // This needs infrastructure changes to pass mutable boosts reference
         EventResult::Continue
     }
 
@@ -36,7 +39,10 @@ pub mod condition {
     ///     this.add('-sidestart', side, 'Mist');
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // TODO: This callback needs side parameter support in the function signature
+        // The TypeScript version receives (side) to identify which side
+        // For now, implementing a placeholder that returns Continue
+        // This needs infrastructure changes to pass side information
         EventResult::Continue
     }
 
@@ -44,7 +50,10 @@ pub mod condition {
     ///     this.add('-sideend', side, 'Mist');
     /// }
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // TODO: This callback needs side parameter support in the function signature
+        // The TypeScript version receives (side) to identify which side
+        // For now, implementing a placeholder that returns Continue
+        // This needs infrastructure changes to pass side information
         EventResult::Continue
     }
 }
