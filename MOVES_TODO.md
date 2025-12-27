@@ -20,7 +20,7 @@ Moves with callbacks: 373
 - [x] axekick - Axe Kick (Physical, Fighting) - 1 callback: onMoveFail
 - [x] banefulbunker - Baneful Bunker (Status, Poison) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [x] barbbarrage - Barb Barrage (Physical, Poison) - 1 callback: onBasePower
-- [ ] batonpass - Baton Pass (Status, Normal) - 1 callback: onHit
+- [x] batonpass - Baton Pass (Status, Normal) - 1 callback: onHit
 - [ ] beakblast - Beak Blast (Physical, Flying) - 4 callbacks: priorityChargeCallback, onAfterMove, condition::onStart, condition::onHit
 - [ ] beatup - Beat Up (Physical, Dark) - 2 callbacks: basePowerCallback, onModifyMove
 - [ ] belch - Belch (Special, Poison) - 1 callback: onDisableMove
