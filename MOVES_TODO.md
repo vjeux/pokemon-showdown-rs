@@ -182,7 +182,7 @@ Moves with callbacks: 373
 - [x] lowkick - Low Kick (Physical, Fighting) - 2 callbacks: basePowerCallback, onTryHit
 - [x] luckychant - Lucky Chant (Status, Normal) - 2 callbacks: condition::onSideStart, condition::onSideEnd
 - [x] lunarblessing - Lunar Blessing (Status, Psychic) - 1 callback: onHit
-- [ ] lunardance - Lunar Dance (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
+- [x] lunardance - Lunar Dance (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
 - [ ] magiccoat - Magic Coat (Status, Psychic) - 3 callbacks: condition::onStart, condition::onTryHit, condition::onAllyTryHitSide
 - [ ] magicpowder - Magic Powder (Status, Psychic) - 1 callback: onHit
 - [ ] magicroom - Magic Room (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
