@@ -2820,7 +2820,7 @@ impl Battle {
                 // }
 
                 // JS: pokemon.isStarted = false;
-                // TODO: Implement is_started field (tracks if pokemon has been sent out)
+                self.sides[side_idx].pokemon[poke_idx].is_started = false;
 
                 // JS: delete pokemon.terastallized;
                 self.sides[side_idx].pokemon[poke_idx].terastallized = None;

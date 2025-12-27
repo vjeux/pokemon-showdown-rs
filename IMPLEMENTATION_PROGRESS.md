@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 38/79 TODOs (48.1%)
+**Feature Implementation:** ⚠️ 39/79 TODOs (49.4%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -276,11 +276,22 @@
 
 **Enables:** Proper choice undo control based on battle configuration
 
+#### Pokemon isStarted Field (1/1) ✅
+- [x] **isStarted field assignment in faint_messages** (battle.rs:2823) - Reset isStarted when Pokemon faints
+
+**Implementation Details:**
+- Sets pokemon.is_started = false when Pokemon faints
+- Matches JavaScript: `pokemon.isStarted = false;`
+- Field already existed in Pokemon struct, just needed assignment
+- Tracks whether a Pokemon has been sent out this battle
+
+**Enables:** Proper tracking of Pokemon battle state, essential for various battle mechanics
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (41 TODOs)
+## Remaining P2 Nice-to-have (40 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions
@@ -296,7 +307,7 @@
 - Format callbacks
 - Switch in all active Pokemon
 
-### Infrastructure (41 TODOs)
+### Infrastructure (30 TODOs)
 - Various missing infrastructure pieces
 - Effect type checks
 - Boost migration
