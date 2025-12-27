@@ -5836,8 +5836,70 @@ impl Battle {
         // JS: this.lastSuccessfulMoveThisTurn = null;
         self.last_successful_move_this_turn = None;
 
-        // TODO: Dynamax 3-turn removal (requires volatile.turns tracking)
-        // JS: Check volatiles['dynamax']?.turns === 3, updateSpeed(), speedSort(), removeVolatile()
+        // Dynamax 3-turn removal
+        // JS: const dynamaxEnding: Pokemon[] = [];
+        // JS: for (const pokemon of this.getAllActive()) {
+        // JS:     if (pokemon.volatiles['dynamax']?.turns === 3) {
+        // JS:         dynamaxEnding.push(pokemon);
+        // JS:     }
+        // JS: }
+        let dynamax_id = ID::new("dynamax");
+        let mut dynamax_ending: Vec<(usize, usize)> = Vec::new();
+
+        for side_idx in 0..self.sides.len() {
+            for active_idx in 0..self.sides[side_idx].active.len() {
+                if let Some(Some(poke_idx)) = self.sides[side_idx].active.get(active_idx) {
+                    if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
+                        // Check if Pokemon has dynamax volatile with turns === 3
+                        if let Some(dynamax_state) = pokemon.volatiles.get(&dynamax_id) {
+                            let turns = dynamax_state.data.get("turns")
+                                .and_then(|v| v.as_i64())
+                                .unwrap_or(0);
+                            if turns == 3 {
+                                dynamax_ending.push((side_idx, *poke_idx));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // JS: if (dynamaxEnding.length > 1) {
+        // JS:     this.updateSpeed();
+        // JS:     this.speedSort(dynamaxEnding);
+        // JS: }
+        if dynamax_ending.len() > 1 {
+            // Update speed for all Pokemon ending Dynamax
+            for &(side_idx, poke_idx) in &dynamax_ending {
+                if let Some(pokemon) = self.sides.get_mut(side_idx)
+                    .and_then(|s| s.pokemon.get_mut(poke_idx)) {
+                    pokemon.update_speed();
+                }
+            }
+
+            // Speed sort the Pokemon ending Dynamax
+            dynamax_ending.sort_by(|&(side_a, poke_a), &(side_b, poke_b)| {
+                let speed_a = self.sides.get(side_a)
+                    .and_then(|s| s.pokemon.get(poke_a))
+                    .map(|p| p.speed)
+                    .unwrap_or(0);
+                let speed_b = self.sides.get(side_b)
+                    .and_then(|s| s.pokemon.get(poke_b))
+                    .map(|p| p.speed)
+                    .unwrap_or(0);
+                speed_b.cmp(&speed_a) // Higher speed first
+            });
+        }
+
+        // JS: for (const pokemon of dynamaxEnding) {
+        // JS:     pokemon.removeVolatile('dynamax');
+        // JS: }
+        for (side_idx, poke_idx) in dynamax_ending {
+            if let Some(pokemon) = self.sides.get_mut(side_idx)
+                .and_then(|s| s.pokemon.get_mut(poke_idx)) {
+                pokemon.volatiles.remove(&dynamax_id);
+            }
+        }
 
         // TODO: Gen 1 partial trapping cleanup (requires partialtrappinglock/partiallytrapped volatiles)
 

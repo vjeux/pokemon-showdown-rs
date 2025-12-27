@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 77/79 TODOs (97.5%)
+**Feature Implementation:** ⚠️ 78/79 TODOs (98.7%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -938,6 +938,37 @@
 - Uses Pokemon.get_slot() to construct identifier for logs
 
 **Enables:** Gen 1 substitute damage mechanics, proper substitute HP tracking, correct substitute destruction, Gen 1 confusion/HJK recoil interaction with substitutes
+
+### Session 19 - Dynamax 3-Turn Removal (1 implementation)
+
+#### Dynamax Duration System (1/1) ✅
+- [x] **Dynamax 3-turn removal** (battle.rs:5839-5902) - Remove Dynamax volatile after 3 turns
+
+**Implementation Details:**
+- Collects all active Pokemon with dynamax volatile where turns === 3
+- Accesses volatile data: `dynamax_state.data.get("turns")`
+- If more than 1 Pokemon ending Dynamax:
+  - Calls `pokemon.update_speed()` for each
+  - Speed-sorts the list (higher speed first)
+- Removes dynamax volatile from all Pokemon in the list
+- Matches JavaScript battle.ts:1657-1669:
+  ```javascript
+  const dynamaxEnding: Pokemon[] = [];
+  for (const pokemon of this.getAllActive()) {
+      if (pokemon.volatiles['dynamax']?.turns === 3) {
+          dynamaxEnding.push(pokemon);
+      }
+  }
+  if (dynamaxEnding.length > 1) {
+      this.updateSpeed();
+      this.speedSort(dynamaxEnding);
+  }
+  for (const pokemon of dynamaxEnding) {
+      pokemon.removeVolatile('dynamax');
+  }
+  ```
+
+**Enables:** Dynamax 3-turn duration limit, proper Dynamax removal order (sorted by speed), correct stat restoration after Dynamax ends
 
 
 
