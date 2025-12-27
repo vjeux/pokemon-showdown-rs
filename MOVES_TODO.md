@@ -335,6 +335,10 @@ The following moves require infrastructure that doesn't exist yet:
 - `volatile.source`: orderup - Source pokemon reference in volatile condition
 - `pokemon.baseSpecies.forme`: orderup - Forme name string field (e.g., 'Droopy', 'Stretchy')
 - `move.flags['mirror']`: mirrormove - Mirror flag for moves that can be copied
+- `move.flags['failmefirst']`: mefirst - Fail Me First flag for uncopyable moves
+- `move.target`: matblock, secretpower - Move target field string (e.g., 'self', 'allAdjacent', 'allAdjacentFoes')
+- `side.allies()`: magneticflux - Get iterator of allied pokemon on a side
+- `pokemon.hasAbility(array)`: magneticflux, aromatherapy - Check if pokemon has any ability from array (overload)
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
