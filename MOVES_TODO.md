@@ -230,7 +230,7 @@ Moves with callbacks: 373
 - [x] pluck - Pluck (Physical, Flying) - 1 callback: onHit
 - [x] polarflare - Polar Flare (Special, Fire) - 2 callbacks: onHit, onAfterMoveSecondarySelf
 - [x] pollenpuff - Pollen Puff (Special, Bug) - 3 callbacks: onTryHit, onTryMove, onHit
-- [ ] poltergeist - Poltergeist (Physical, Ghost) - 2 callbacks: onTry, onTryHit
+- [x] poltergeist - Poltergeist (Physical, Ghost) - 2 callbacks: onTry, onTryHit
 - [ ] powder - Powder (Status, Bug) - 2 callbacks: condition::onStart, condition::onTryMove
 - [ ] powershift - Power Shift (Status, Normal) - 4 callbacks: condition::onStart, condition::onCopy, condition::onEnd, condition::onRestart
 - [ ] powersplit - Power Split (Status, Psychic) - 1 callback: onHit
