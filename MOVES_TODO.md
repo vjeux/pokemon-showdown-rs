@@ -82,7 +82,7 @@ Moves with callbacks: 373
 - [x] endeavor - Endeavor (Physical, Normal) - 2 callbacks: damageCallback, onTryImmunity
 - [x] endure - Endure (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onDamage
 - [x] entrainment - Entrainment (Status, Normal) - 2 callbacks: onTryHit, onHit
-- [ ] eruption - Eruption (Special, Fire) - 1 callback: basePowerCallback
+- [x] eruption - Eruption (Special, Fire) - 1 callback: basePowerCallback
 - [ ] expandingforce - Expanding Force (Special, Psychic) - 2 callbacks: onBasePower, onModifyMove
 - [ ] facade - Facade (Physical, Normal) - 1 callback: onBasePower
 - [ ] fairylock - Fairy Lock (Status, Fairy) - 2 callbacks: condition::onFieldStart, condition::onTrapPokemon
