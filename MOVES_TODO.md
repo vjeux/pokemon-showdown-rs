@@ -120,6 +120,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.runEffectiveness(move)`: stealthrock - Calculate type effectiveness
 - `battle.dex.getActiveMove(name)`: stealthrock, stickyweb - Get active move data
 - `battle.dex.conditions.get(name)`: defog, rapidspin, tidyup, courtchange - Get condition data by name
+- `condition.counterMax`: allyswitch - Max counter value for progressive failure chances in condition definitions
 - `battle.field.clearTerrain()`: defog - Clear terrain field
 - `move.hasSheerForce`: rapidspin - Sheer force flag
 - `pokemon.side.foeSidesWithConditions()`: tidyup - Get foe sides that have conditions
@@ -215,6 +216,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `move.flags.contact` mutable: shellsidearm - Modify contact flag
 - `move.sourceEffect`: trumpcard - Source effect ID field
 - `battle.effectState.lastDamageSource`: bide - Effect state can store source pokemon reference
+- `battle.effectState.totalDamage`: bide - Effect state field for accumulating damage
 - `pokemon.isActive`: bide - Check if pokemon is currently active in battle
 - `battle.getRandomTarget(pokemon, move)`: bide - Get random valid target
 - `battle.actions.tryMoveHit(target, pokemon, move)`: bide - Execute custom move with move data
