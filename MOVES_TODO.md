@@ -46,7 +46,7 @@ Moves with callbacks: 373
 - [x] clangoroussoul - Clangorous Soul (Status, Dragon) - 3 callbacks: onTry, onTryHit, onHit
 - [x] clearsmog - Clear Smog (Special, Poison) - 1 callback: onHit
 - [x] collisioncourse - Collision Course (Physical, Fighting) - 1 callback: onBasePower
-- [ ] comeuppance - Comeuppance (Physical, Dark) - 3 callbacks: damageCallback, onTry, onModifyTarget
+- [x] comeuppance - Comeuppance (Physical, Dark) - 3 callbacks: damageCallback, onTry, onModifyTarget
 - [ ] conversion - Conversion (Status, Normal) - 1 callback: onHit
 - [ ] conversion2 - Conversion 2 (Status, Normal) - 1 callback: onHit
 - [ ] copycat - Copycat (Status, Normal) - 1 callback: onHit
