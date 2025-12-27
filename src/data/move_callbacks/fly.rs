@@ -1,0 +1,39 @@
+//! Fly Move
+//!
+//! Pokemon Showdown - http://pokemonshowdown.com/
+//!
+//! Generated from data/moves.ts
+
+use crate::battle::{Battle, Arg};
+use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
+use crate::pokemon::Pokemon;
+use crate::dex_data::ID;
+use super::{MoveHandlerResult, Status, Effect};
+
+/// onTryMove(...)
+///
+/// ```text
+/// JS Source (data/moves.ts):
+/// onTryMove(attacker, defender, move) {			if (attacker.removeVolatile(move.id)) {
+/// 				return;
+/// 			}
+/// 			this.add('-prepare', attacker, move.name);
+/// 			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+/// 				return;
+/// 			}
+/// 			attacker.addVolatile('twoturnmove', defender);
+/// 			return null;
+/// 		}
+/// ```
+pub fn on_try_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
+
+// Condition handlers
+pub mod condition {
+    use super::*;
+
+    // TODO: Implement condition handlers
+}

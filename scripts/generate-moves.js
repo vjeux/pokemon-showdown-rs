@@ -25,7 +25,8 @@ function rustModName(name) {
 
 // Load the moves from TypeScript file
 const workspaceRoot = process.env.WORKSPACE_ROOT || path.join(__dirname, '..');
-const movesPath = path.join(workspaceRoot, 'pokemon-showdown-js', 'data', 'moves.ts');
+const showdownDir = process.env.SHOWDOWN_DIR || 'pokemon-showdown';
+const movesPath = path.join(path.dirname(workspaceRoot), showdownDir, 'data', 'moves.ts');
 const movesContent = fs.readFileSync(movesPath, 'utf8');
 
 // Parse moves - extract each move definition
@@ -49,22 +50,48 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
     const seenCallbacks = new Set();
 
     // Match callback functions with their implementations
-    // Matches: onCallbackName(args) { ... }
-    const callbackImplRegex = /(on\w+)(?:Priority|Order|SubOrder)?\s*\(([\s\S]*?)\)\s*\{([\s\S]*?)^\t\t\}/gm;
-    let callbackMatch;
+    // We need to match curly braces carefully to get individual callbacks
+    const lines = content.split('\n');
+    let i = 0;
+    while (i < lines.length) {
+        const line = lines[i];
+        // Match callback name and opening
+        const match = line.match(/^\t\t(on\w+)(?:Priority|Order|SubOrder)?\s*\((.*)\)\s*\{/);
+        if (match) {
+            const callbackName = match[1];
+            const args = match[2];
+            let body = '';
+            let braceCount = 1;
+            i++;
 
-    while ((callbackMatch = callbackImplRegex.exec(content)) !== null) {
-        const callbackName = callbackMatch[1];
-        const args = callbackMatch[2];
-        const body = callbackMatch[3];
+            // Extract the function body by counting braces
+            while (i < lines.length && braceCount > 0) {
+                const currentLine = lines[i];
+                body += currentLine + '\n';
 
-        if (!seenCallbacks.has(callbackName)) {
-            seenCallbacks.add(callbackName);
-            callbacks.push({
-                name: callbackName,
-                jsSource: `${callbackName}(${args}) {${body}\n\t\t}`
-            });
+                // Count braces (simple counting, doesn't handle strings perfectly but works for our case)
+                for (const char of currentLine) {
+                    if (char === '{') braceCount++;
+                    if (char === '}') braceCount--;
+                }
+
+                if (braceCount === 0) {
+                    // Remove the closing brace line and trailing comma
+                    body = body.replace(/^\t\t\},?\s*$/m, '');
+                    break;
+                }
+                i++;
+            }
+
+            if (!seenCallbacks.has(callbackName)) {
+                seenCallbacks.add(callbackName);
+                callbacks.push({
+                    name: callbackName,
+                    jsSource: `${callbackName}(${args}) {${body}\t\t}`
+                });
+            }
         }
+        i++;
     }
 
     // Check for condition block

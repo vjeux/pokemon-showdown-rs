@@ -1,0 +1,35 @@
+//! Hyperspace Fury Move
+//!
+//! Pokemon Showdown - http://pokemonshowdown.com/
+//!
+//! Generated from data/moves.ts
+
+use crate::battle::{Battle, Arg};
+use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
+use crate::pokemon::Pokemon;
+use crate::dex_data::ID;
+use super::{MoveHandlerResult, Status, Effect};
+
+/// onTry(...)
+///
+/// ```text
+/// JS Source (data/moves.ts):
+/// onTry(source) {			if (source.species.name === 'Hoopa-Unbound') {
+/// 				return;
+/// 			}
+/// 			this.hint("Only a Pokemon whose form is Hoopa Unbound can use this move.");
+/// 			if (source.species.name === 'Hoopa') {
+/// 				this.attrLastMove('[still]');
+/// 				this.add('-fail', source, 'move: Hyperspace Fury', '[forme]');
+/// 				return null;
+/// 			}
+/// 			this.attrLastMove('[still]');
+/// 			this.add('-fail', source, 'move: Hyperspace Fury');
+/// 			return null;
+/// 		}
+/// ```
+pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
