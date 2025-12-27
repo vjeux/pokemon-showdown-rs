@@ -238,7 +238,7 @@ Moves with callbacks: 373
 - [x] powertrick - Power Trick (Status, Psychic) - 4 callbacks: condition::onStart, condition::onCopy, condition::onEnd, condition::onRestart
 - [x] powertrip - Power Trip (Physical, Dark) - 1 callback: basePowerCallback
 - [x] present - Present (Physical, Normal) - 1 callback: onModifyMove
-- [ ] protect - Protect (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit
+- [x] protect - Protect (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit
 - [ ] psyblade - Psyblade (Physical, Psychic) - 1 callback: onBasePower
 - [ ] psychicfangs - Psychic Fangs (Physical, Psychic) - 1 callback: onTryHit
 - [ ] psychicterrain - Psychic Terrain (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onTryHit, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
