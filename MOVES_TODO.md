@@ -14,8 +14,12 @@ The following moves require infrastructure that doesn't exist yet:
 - `getStat('spe')`: gyroball, electroball - Get calculated stat value
 - `pokemon.faint()`: finalgambit - Faint the pokemon
 - `battle.random(min, max)`: EXISTS ✓
-- `pokemon.getUndynamaxedHP()`: endeavor, superfang, ruination, naturesmadness, guardianofalola - Get HP ignoring Dynamax
+- `pokemon.getUndynamaxedHP()`: endeavor, superfang, ruination, naturesmadness, guardianofalola, painsplit - Get HP ignoring Dynamax
 - `pokemon.cureStatus()`: wakeupslap, smellingsalts, aromatherapy - Cure pokemon status condition
+- `pokemon.setBoost(boosts)`: heartswap, guardswap, powerswap - Set boost values from SparseBoostsTable
+- `pokemon.sethp(hp)`: painsplit - Set HP value directly
+- `pokemon.getHealth`: painsplit - Get health info for display (HP/maxHP format)
+- `pokemon.storedStats`: guardsplit, powersplit, speedswap - Mutable stats object with atk, def, spa, spd, spe fields
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
