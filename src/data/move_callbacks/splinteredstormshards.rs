@@ -11,7 +11,13 @@ use crate::event::EventResult;
 ///     this.field.clearTerrain();
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // onHit() {
+    //     this.field.clearTerrain();
+    // }
+
+    // this.field.clearTerrain();
+    battle.clear_terrain();
+
     EventResult::Continue
 }
 
@@ -19,7 +25,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 ///     this.field.clearTerrain();
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // onAfterSubDamage() {
+    //     this.field.clearTerrain();
+    // }
+
+    // this.field.clearTerrain();
+    battle.clear_terrain();
+
     EventResult::Continue
 }
 
