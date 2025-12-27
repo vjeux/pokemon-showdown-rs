@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 51/79 TODOs (64.6%)
+**Feature Implementation:** ⚠️ 52/79 TODOs (65.8%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -399,11 +399,25 @@
 
 **Enables:** Correct multi battle (doubles/triples/multi) side condition sharing, proper hazard mechanics in team battles
 
+#### Effect Type Check for Heal Logs (1/1) ✅
+- [x] **Effect type check in add_heal_log** (battle.rs:4646) - Check if effect is Move before adding [from] tag
+
+**Implementation Details:**
+- Added effect.effectType check before adding heal log
+- Uses get_effect_type() to determine if effect is a Move
+- Matches JavaScript logic:
+  - If effect.effectType === 'Move': `this.add('-heal', target, target.getHealth);` (no [from] tag)
+  - Else if source exists: `this.add('-heal', target, target.getHealth, '[from] ${effect}', '[of] ${source}');`
+  - Else: `this.add('-heal', target, target.getHealth, '[from] ${effect}');`
+- Prevents incorrectly showing [from] tag for healing moves
+
+**Enables:** Correct protocol logging for healing moves vs healing abilities/items, proper battle log display
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (28 TODOs)
+## Remaining P2 Nice-to-have (27 TODOs)
 
 ### Gen-Specific (3 TODOs)
 - Multi battle side conditions
@@ -419,9 +433,8 @@
 - Format callbacks
 - Switch in all active Pokemon
 
-### Infrastructure (28 TODOs)
+### Infrastructure (20 TODOs)
 - Various missing infrastructure pieces
-- Effect type checks
 - Boost migration
 - Request handling improvements
 

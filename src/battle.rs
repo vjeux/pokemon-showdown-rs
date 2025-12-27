@@ -4638,13 +4638,24 @@ impl Battle {
             }
             _ => {
                 // Default heal log
-                // TODO: Check if effect.effectType === 'Move'
-                if let Some(src) = source {
+                // JS: if (effect.effectType === 'Move') { this.add('-heal', target, target.getHealth); }
+                // JS: else if (source && source !== target) { this.add('-heal', target, target.getHealth, `[from] ${effect.fullname}`, `[of] ${source}`); }
+                // JS: else { this.add('-heal', target, target.getHealth, `[from] ${effect.fullname}`); }
+
+                // Check if effect type is Move
+                let is_move = effect.map_or(false, |e| self.get_effect_type(e) == "Move");
+
+                if is_move {
+                    // Move effects: just show heal without [from] tag
+                    self.add_log("-heal", &[&target_str, &health_str]);
+                } else if let Some(src) = source {
+                    // Non-move effects with source: show [from] effect [of] source
                     let src_str = format!("p{}a", src.0 + 1);
                     let from_str = format!("[from] {}", effect_id);
                     let of_str = format!("[of] {}", src_str);
                     self.add_log("-heal", &[&target_str, &health_str, &from_str, &of_str]);
                 } else {
+                    // Non-move effects without source: show [from] effect
                     let from_str = format!("[from] {}", effect_id);
                     self.add_log("-heal", &[&target_str, &health_str, &from_str]);
                 }
