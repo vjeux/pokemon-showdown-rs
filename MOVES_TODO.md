@@ -280,7 +280,7 @@ Moves with callbacks: 373
 - [x] sandsearstorm - Sandsear Storm (Special, Ground) - 1 callback: onModifyMove
 - [x] sappyseed - Sappy Seed (Physical, Grass) - 1 callback: onHit
 - [x] secretpower - Secret Power (Physical, Normal) - 1 callback: onModifyMove
-- [ ] shadowforce - Shadow Force (Physical, Ghost) - 1 callback: onTryMove
+- [x] shadowforce - Shadow Force (Physical, Ghost) - 1 callback: onTryMove
 - [ ] shedtail - Shed Tail (Status, Normal) - 2 callbacks: onTryHit, onHit
 - [ ] shellsidearm - Shell Side Arm (Special, Poison) - 4 callbacks: onPrepareHit, onModifyMove, onHit, onAfterSubDamage
 - [ ] shelltrap - Shell Trap (Special, Fire) - 4 callbacks: priorityChargeCallback, onTryMove, condition::onStart, condition::onHit
