@@ -215,7 +215,7 @@ Moves with callbacks: 373
 - [x] naturepower - Nature Power (Status, Normal) - 1 callback: onTryHit
 - [x] naturesmadness - Nature's Madness (Special, Fairy) - 1 callback: damageCallback
 - [x] nightmare - Nightmare (Status, Ghost) - 2 callbacks: condition::onStart, condition::onResidual
-- [ ] noretreat - No Retreat (Status, Fighting) - 3 callbacks: onTry, condition::onStart, condition::onTrapPokemon
+- [x] noretreat - No Retreat (Status, Fighting) - 3 callbacks: onTry, condition::onStart, condition::onTrapPokemon
 - [ ] obstruct - Obstruct (Status, Dark) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] octolock - Octolock (Status, Fighting) - 4 callbacks: onTryImmunity, condition::onStart, condition::onResidual, condition::onTrapPokemon
 - [ ] odorsleuth - Odor Sleuth (Status, Normal) - 1 callback: onTryHit
