@@ -16,6 +16,21 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
+    /// durationCallback(target, source, effect) {
+    ///     if (effect?.name === "Psychic Noise") {
+    ///         return 2;
+    ///     }
+    ///     if (source?.hasAbility('persistent')) {
+    ///         this.add('-activate', source, 'ability: Persistent', '[move] Heal Block');
+    ///         return 7;
+    ///     }
+    ///     return 5;
+    /// }
+    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
     /// onStart(pokemon, source) {
     ///     this.add('-start', pokemon, 'move: Heal Block');
     ///     source.moveThisTurnResult = true;

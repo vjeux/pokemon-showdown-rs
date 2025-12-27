@@ -16,6 +16,17 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
+    /// durationCallback(source, effect) {
+    ///     if (source?.hasItem('terrainextender')) {
+    ///         return 8;
+    ///     }
+    ///     return 5;
+    /// }
+    pub fn duration_callback(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
     /// onBasePower(basePower, attacker, defender, move) {
     ///     const weakenedMoves = ['earthquake', 'bulldoze', 'magnitude'];
     ///     if (weakenedMoves.includes(move.id) && defender.isGrounded() && !defender.isSemiInvulnerable()) {

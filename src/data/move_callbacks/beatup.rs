@@ -10,6 +10,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
+/// basePowerCallback(pokemon, target, move) {
+///     const setSpecies = this.dex.species.get(move.allies!.shift()!.set.species);
+///     const bp = 5 + Math.floor(setSpecies.baseStats.atk / 10);
+///     this.debug(`BP for ${setSpecies.name} hit: ${bp}`);
+///     return bp;
+/// }
+pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
 /// onModifyMove(move, pokemon) {
 ///     move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
 ///     move.multihit = move.allies.length;

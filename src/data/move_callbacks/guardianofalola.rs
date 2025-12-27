@@ -10,20 +10,18 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// ondition(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// ondition('matblock')
-/// 			) {
-/// 				this.add('-zbroken', target);
-/// 				return this.clampIntRange(Math.ceil(hp75 / 4 - 0.5), 1);
-/// 			}
-/// 			return this.clampIntRange(hp75, 1);
-/// 
-/// 		}
-/// ```
-pub fn ondition(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+/// damageCallback(pokemon, target) {
+///     const hp75 = Math.floor(target.getUndynamaxedHP() * 3 / 4);
+///     if (
+///         target.volatiles['protect'] || target.volatiles['banefulbunker'] || target.volatiles['kingsshield'] ||
+///         target.volatiles['spikyshield'] || target.side.getSideCondition('matblock')
+///     ) {
+///         this.add('-zbroken', target);
+///         return this.clampIntRange(Math.ceil(hp75 / 4 - 0.5), 1);
+///     }
+///     return this.clampIntRange(hp75, 1);
+/// }
+pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

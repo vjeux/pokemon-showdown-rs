@@ -10,6 +10,23 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
+/// damageCallback(pokemon) {
+///     if (!pokemon.volatiles['mirrorcoat']) return 0;
+///     return pokemon.volatiles['mirrorcoat'].damage || 1;
+/// }
+pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
+/// beforeTurnCallback(pokemon) {
+///     pokemon.addVolatile('mirrorcoat');
+/// }
+pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
 /// onTry(source) {
 ///     if (!source.volatiles['mirrorcoat']) return false;
 ///     if (source.volatiles['mirrorcoat'].slot === null) return false;

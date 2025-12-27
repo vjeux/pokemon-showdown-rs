@@ -10,6 +10,14 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
+/// damageCallback(pokemon, target) {
+///     return target.getUndynamaxedHP() - pokemon.hp;
+/// }
+pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
 /// onTryImmunity(target, pokemon) {
 ///     return pokemon.hp < target.hp;
 /// }

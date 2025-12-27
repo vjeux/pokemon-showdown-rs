@@ -10,6 +10,24 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
+/// priorityChargeCallback(pokemon) {
+///     pokemon.addVolatile('focuspunch');
+/// }
+pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
+/// beforeMoveCallback(pokemon) {
+///     if (pokemon.volatiles['focuspunch']?.lostFocus) {
+///         this.add('cant', pokemon, 'Focus Punch', 'Focus Punch');
+///         return true;
+///     }
+/// }
+pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
 
 
 // Condition handlers

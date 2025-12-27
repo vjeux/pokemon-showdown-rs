@@ -10,6 +10,13 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
+/// priorityChargeCallback(source) {
+///     source.addVolatile('chillyreception');
+/// }
+pub fn priority_charge_callback(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
 
 
 // Condition handlers

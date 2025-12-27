@@ -85,8 +85,8 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
     let i = 0;
     while (i < lines.length) {
         const line = lines[i];
-        // Match callback name and opening
-        const match = line.match(/^\t\t(on\w+)(?:Priority|Order|SubOrder)?\s*\((.*)\)\s*\{/);
+        // Match callback name and opening (both onXxx and xxxCallback patterns)
+        const match = line.match(/^\t\t((?:on\w+|\w+Callback))(?:Priority|Order|SubOrder)?\s*\((.*)\)\s*\{/);
         if (match) {
             const callbackName = match[1];
             const args = match[2];
@@ -163,7 +163,7 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
 
         while (j < conditionLines.length) {
             const line = conditionLines[j];
-            const match = line.match(/^\t\t\t(on\w+)(?:Priority|Order|SubOrder)?\s*\((.*)\)\s*\{/);
+            const match = line.match(/^\t\t\t((?:on\w+|\w+Callback))(?:Priority|Order|SubOrder)?\s*\((.*)\)\s*\{/);
             if (match) {
                 const callbackName = match[1];
                 const args = match[2];

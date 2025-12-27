@@ -10,6 +10,18 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
+/// damageCallback(pokemon) {
+///     const lastDamagedBy = pokemon.getLastDamagedBy(true);
+///     if (lastDamagedBy !== undefined) {
+///         return (lastDamagedBy.damage * 1.5) || 1;
+///     }
+///     return 0;
+/// }
+pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
 /// onTry(source) {
 ///     const lastDamagedBy = source.getLastDamagedBy(true);
 ///     if (!lastDamagedBy?.thisTurn) return false;

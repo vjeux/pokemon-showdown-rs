@@ -10,16 +10,19 @@ mod common;
 pub use common::*;
 
 // Individual move modules
+pub mod acrobatics;
 pub mod acupressure;
 pub mod afteryou;
 pub mod allyswitch;
 pub mod aquaring;
 pub mod aromatherapy;
 pub mod assist;
+pub mod assurance;
 pub mod attract;
 pub mod aurawheel;
 pub mod auroraveil;
 pub mod autotomize;
+pub mod avalanche;
 pub mod axekick;
 pub mod banefulbunker;
 pub mod barbbarrage;
@@ -33,6 +36,7 @@ pub mod bide;
 pub mod bleakwindstorm;
 pub mod blizzard;
 pub mod block;
+pub mod boltbeak;
 pub mod bounce;
 pub mod brickbreak;
 pub mod brine;
@@ -58,6 +62,7 @@ pub mod counter;
 pub mod courtchange;
 pub mod covet;
 pub mod craftyshield;
+pub mod crushgrip;
 pub mod curse;
 pub mod darkvoid;
 pub mod defog;
@@ -70,10 +75,12 @@ pub mod doodle;
 pub mod doomdesire;
 pub mod doubleshock;
 pub mod dragoncheer;
+pub mod dragonenergy;
 pub mod dreameater;
 pub mod echoedvoice;
 pub mod electricterrain;
 pub mod electrify;
+pub mod electroball;
 pub mod electrodrift;
 pub mod electroshot;
 pub mod embargo;
@@ -81,6 +88,7 @@ pub mod encore;
 pub mod endeavor;
 pub mod endure;
 pub mod entrainment;
+pub mod eruption;
 pub mod expandingforce;
 pub mod facade;
 pub mod fairylock;
@@ -89,8 +97,11 @@ pub mod falseswipe;
 pub mod fellstinger;
 pub mod ficklebeam;
 pub mod filletaway;
+pub mod finalgambit;
 pub mod firepledge;
 pub mod firstimpression;
+pub mod fishiousrend;
+pub mod flail;
 pub mod flameburst;
 pub mod fling;
 pub mod floralhealing;
@@ -105,6 +116,7 @@ pub mod forestscurse;
 pub mod freezedry;
 pub mod freezeshock;
 pub mod freezyfrost;
+pub mod frustration;
 pub mod furycutter;
 pub mod fusionbolt;
 pub mod fusionflare;
@@ -128,9 +140,12 @@ pub mod gravapple;
 pub mod gravity;
 pub mod growth;
 pub mod grudge;
+pub mod guardianofalola;
 pub mod guardsplit;
 pub mod guardswap;
+pub mod gyroball;
 pub mod happyhour;
+pub mod hardpress;
 pub mod haze;
 pub mod healbell;
 pub mod healblock;
@@ -140,6 +155,7 @@ pub mod heartswap;
 pub mod heatcrash;
 pub mod heavyslam;
 pub mod helpinghand;
+pub mod hex;
 pub mod hiddenpower;
 pub mod highjumpkick;
 pub mod holdback;
@@ -150,6 +166,7 @@ pub mod iceburn;
 pub mod icespinner;
 pub mod imprison;
 pub mod incinerate;
+pub mod infernalparade;
 pub mod ingrain;
 pub mod instruct;
 pub mod iondeluge;
@@ -163,6 +180,7 @@ pub mod knockoff;
 pub mod laserfocus;
 pub mod lashout;
 pub mod lastresort;
+pub mod lastrespects;
 pub mod leechseed;
 pub mod lightscreen;
 pub mod lightthatburnsthesky;
@@ -201,6 +219,7 @@ pub mod mudsport;
 pub mod multiattack;
 pub mod naturalgift;
 pub mod naturepower;
+pub mod naturesmadness;
 pub mod nightmare;
 pub mod noretreat;
 pub mod obstruct;
@@ -209,9 +228,11 @@ pub mod odorsleuth;
 pub mod orderup;
 pub mod painsplit;
 pub mod partingshot;
+pub mod payback;
 pub mod perishsong;
 pub mod phantomforce;
 pub mod photongeyser;
+pub mod pikapapow;
 pub mod pluck;
 pub mod polarflare;
 pub mod pollenpuff;
@@ -221,6 +242,7 @@ pub mod powershift;
 pub mod powersplit;
 pub mod powerswap;
 pub mod powertrick;
+pub mod powertrip;
 pub mod present;
 pub mod protect;
 pub mod psyblade;
@@ -228,11 +250,14 @@ pub mod psychicfangs;
 pub mod psychicterrain;
 pub mod psychoshift;
 pub mod psychup;
+pub mod psywave;
+pub mod punishment;
 pub mod purify;
 pub mod pursuit;
 pub mod quash;
 pub mod quickguard;
 pub mod rage;
+pub mod ragefist;
 pub mod ragepowder;
 pub mod ragingbull;
 pub mod rapidspin;
@@ -244,13 +269,18 @@ pub mod refresh;
 pub mod relicsong;
 pub mod rest;
 pub mod retaliate;
+pub mod r#return;
 pub mod revelationdance;
+pub mod revenge;
+pub mod reversal;
 pub mod revivalblessing;
+pub mod risingvoltage;
 pub mod roleplay;
 pub mod rollout;
 pub mod roost;
 pub mod rototiller;
 pub mod round;
+pub mod ruination;
 pub mod safeguard;
 pub mod saltcure;
 pub mod sandsearstorm;
@@ -291,13 +321,16 @@ pub mod steelbeam;
 pub mod steelroller;
 pub mod stickyweb;
 pub mod stockpile;
+pub mod stompingtantrum;
 pub mod stoneaxe;
+pub mod storedpower;
 pub mod strengthsap;
 pub mod struggle;
 pub mod stuffcheeks;
 pub mod substitute;
 pub mod suckerpunch;
 pub mod supercellslam;
+pub mod superfang;
 pub mod swallow;
 pub mod switcheroo;
 pub mod synchronoise;
@@ -311,6 +344,7 @@ pub mod teatime;
 pub mod technoblast;
 pub mod telekinesis;
 pub mod teleport;
+pub mod temperflare;
 pub mod terablast;
 pub mod terastarstorm;
 pub mod terrainpulse;
@@ -328,22 +362,65 @@ pub mod transform;
 pub mod trick;
 pub mod trickortreat;
 pub mod trickroom;
+pub mod tripleaxel;
+pub mod triplekick;
+pub mod trumpcard;
 pub mod upperhand;
 pub mod uproar;
+pub mod veeveevolley;
 pub mod venomdrench;
 pub mod venoshock;
 pub mod wakeupslap;
 pub mod waterpledge;
+pub mod watershuriken;
 pub mod watersport;
+pub mod waterspout;
 pub mod weatherball;
 pub mod wideguard;
 pub mod wildboltstorm;
 pub mod wish;
 pub mod wonderroom;
 pub mod worryseed;
+pub mod wringout;
 pub mod yawn;
 
 // Dispatch functions
+/// Dispatch basePowerCallback callbacks
+pub fn dispatch_base_power_callback(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch beforeMoveCallback callbacks
+pub fn dispatch_before_move_callback(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch beforeTurnCallback callbacks
+pub fn dispatch_before_turn_callback(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch damageCallback callbacks
+pub fn dispatch_damage_callback(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
 /// Dispatch onAfterHit callbacks
 pub fn dispatch_on_after_hit(
     _battle: &mut Battle,
@@ -549,7 +626,25 @@ pub fn dispatch_on_use_move_message(
     MoveHandlerResult::Undefined
 }
 
+/// Dispatch priorityChargeCallback callbacks
+pub fn dispatch_priority_charge_callback(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
 // Condition dispatch functions
+/// Dispatch condition durationCallback callbacks
+pub fn dispatch_condition_duration_callback(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
 /// Dispatch condition onAccuracy callbacks
 pub fn dispatch_condition_on_accuracy(
     _battle: &mut Battle,

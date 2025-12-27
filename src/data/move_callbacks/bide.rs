@@ -10,6 +10,13 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
+/// beforeMoveCallback(pokemon) {
+///     if (pokemon.volatiles['bide']) return true;
+/// }
+pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
 
 
 // Condition handlers

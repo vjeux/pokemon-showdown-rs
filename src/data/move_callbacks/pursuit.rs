@@ -10,6 +10,35 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
+/// basePowerCallback(pokemon, target, move) {
+///     // You can't get here unless the pursuit succeeds
+///     if (target.beingCalledBack || target.switchFlag) {
+///         this.debug('Pursuit damage boost');
+///         return move.basePower * 2;
+///     }
+///     return move.basePower;
+/// }
+pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
+/// beforeTurnCallback(pokemon) {
+///     for (const side of this.sides) {
+///         if (side.hasAlly(pokemon)) continue;
+///         side.addSideCondition('pursuit', pokemon);
+///         const data = side.getSideConditionData('pursuit');
+///         if (!data.sources) {
+///             data.sources = [];
+///         }
+///         data.sources.push(pokemon);
+///     }
+/// }
+pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
 /// onModifyMove(move, source, target) {
 ///     if (target?.beingCalledBack || target?.switchFlag) move.accuracy = true;
 /// }

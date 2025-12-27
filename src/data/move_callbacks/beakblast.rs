@@ -10,6 +10,14 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
+/// priorityChargeCallback(pokemon) {
+///     pokemon.addVolatile('beakblast');
+/// }
+pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    // TODO: Implement 1-to-1 from JS
+    MoveHandlerResult::Undefined
+}
+
 /// onAfterMove(pokemon) {
 ///     pokemon.removeVolatile('beakblast');
 /// }

@@ -16,6 +16,18 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
+    /// durationCallback(target, source, effect) {
+    ///     if (source?.hasAbility('persistent')) {
+    ///         this.add('-activate', source, 'ability: Persistent', '[move] Safeguard');
+    ///         return 7;
+    ///     }
+    ///     return 5;
+    /// }
+    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
     /// onSetStatus(status, target, source, effect) {
     ///     if (!effect || !source) return;
     ///     if (effect.id === 'yawn') return;
