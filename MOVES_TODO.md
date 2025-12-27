@@ -167,7 +167,7 @@ Moves with callbacks: 373
 - [x] ivycudgel - Ivy Cudgel (Physical, Grass) - 2 callbacks: onPrepareHit, onModifyType
 - [x] jawlock - Jaw Lock (Physical, Dark) - 1 callback: onHit
 - [x] judgment - Judgment (Special, Normal) - 1 callback: onModifyType
-- [ ] jumpkick - Jump Kick (Physical, Fighting) - 1 callback: onMoveFail
+- [x] jumpkick - Jump Kick (Physical, Fighting) - 1 callback: onMoveFail
 - [ ] junglehealing - Jungle Healing (Status, Grass) - 1 callback: onHit
 - [ ] kingsshield - King's Shield (Status, Steel) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] knockoff - Knock Off (Physical, Dark) - 2 callbacks: onBasePower, onAfterHit
