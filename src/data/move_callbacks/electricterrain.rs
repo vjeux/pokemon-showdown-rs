@@ -17,7 +17,7 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -30,7 +30,7 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_set_status(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_set_status(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -42,7 +42,7 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_try_add_volatile(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -53,7 +53,7 @@ pub mod condition {
     ///         return this.chainModify([5325, 4096]);
     ///     }
     /// }
-    pub fn on_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> EventResult {
+    pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -65,7 +65,7 @@ pub mod condition {
     ///         this.add('-fieldstart', 'move: Electric Terrain');
     ///     }
     /// }
-    pub fn on_field_start(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_field_start(battle: &mut Battle, field_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

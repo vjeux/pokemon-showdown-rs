@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return pokemon.addVolatile('allyswitch');
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -33,7 +33,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
 ///     }
 ///     this.swapPosition(pokemon, newPosition, '[from] move: Ally Switch');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

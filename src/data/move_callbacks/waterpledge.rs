@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -37,7 +37,7 @@ pub fn base_power_callback(battle: &mut Battle, target_pos: Option<(usize, usize
 ///         }
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -54,7 +54,7 @@ pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, s
 ///         move.self = { sideCondition: 'waterpledge' };
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -88,7 +88,7 @@ pub mod condition {
     ///         if (move.self?.chance) move.self.chance *= 2;
     ///     }
     /// }
-    pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

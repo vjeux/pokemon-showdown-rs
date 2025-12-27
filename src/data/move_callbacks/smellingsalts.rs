@@ -22,7 +22,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 /// onHit(target) {
 ///     if (target.status === 'par') target.cureStatus();
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

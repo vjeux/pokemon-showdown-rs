@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///     }
 ///     this.actions.useMove(move.id, pokemon);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

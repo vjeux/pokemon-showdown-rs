@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         move.infiltrates = true;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize), move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -25,7 +25,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, sourc
 ///         return false;
 ///     }
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -37,7 +37,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, targ
 ///         }
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

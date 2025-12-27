@@ -41,7 +41,7 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> EventResult {
+    pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -61,7 +61,7 @@ pub mod condition {
     ///         pokemon.removeVolatile('charge');
     ///     }
     /// }
-    pub fn on_after_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

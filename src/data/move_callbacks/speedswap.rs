@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     source.storedStats.spe = targetSpe;
 ///     this.add('-activate', source, 'move: Speed Swap', `[of] ${target}`);
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

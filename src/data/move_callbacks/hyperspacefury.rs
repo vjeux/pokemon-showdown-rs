@@ -21,7 +21,7 @@ use crate::event::EventResult;
 ///     this.add('-fail', source, 'move: Hyperspace Fury');
 ///     return null;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (!pokemon.volatiles['stockpile']?.layers) return false;
 ///     return pokemon.volatiles['stockpile'].layers * 100;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -19,7 +19,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> 
 /// onTry(source) {
 ///     return !!source.volatiles['stockpile'];
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -27,7 +27,7 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventR
 /// onAfterMove(pokemon) {
 ///     pokemon.removeVolatile('stockpile');
 /// }
-pub fn on_after_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

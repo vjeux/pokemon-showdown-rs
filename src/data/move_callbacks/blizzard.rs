@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onModifyMove(move) {
 ///     if (this.field.isWeather(['hail', 'snowscape'])) move.accuracy = true;
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

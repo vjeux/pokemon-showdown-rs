@@ -23,7 +23,7 @@ use crate::event::EventResult;
 ///     attacker.addVolatile('twoturnmove', defender);
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, move_id: &str) -> EventResult {
+pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -35,7 +35,7 @@ pub fn on_try_move(battle: &mut Battle, move_id: &str) -> EventResult {
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

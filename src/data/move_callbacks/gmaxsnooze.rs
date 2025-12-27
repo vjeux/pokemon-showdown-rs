@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///     if (this.randomChance(1, 2)) return;
 ///     target.addVolatile('yawn');
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (!pokemon.volatiles['mirrorcoat']) return 0;
 ///     return pokemon.volatiles['mirrorcoat'].damage || 1;
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -28,7 +28,7 @@ pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
 ///     if (!source.volatiles['mirrorcoat']) return false;
 ///     if (source.volatiles['mirrorcoat'].slot === null) return false;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

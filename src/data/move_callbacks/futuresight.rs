@@ -28,7 +28,7 @@ use crate::event::EventResult;
 ///     this.add('-start', source, 'move: Future Sight');
 ///     return this.NOT_FAIL;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

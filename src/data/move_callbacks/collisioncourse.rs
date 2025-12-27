@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([5461, 4096]);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

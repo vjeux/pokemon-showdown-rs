@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -27,7 +27,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, source_pos: Option<(u
 ///         }
 ///     }
 /// }
-pub fn on_after_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize), move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -23,7 +23,7 @@ use crate::event::EventResult;
 ///     this.add('-enditem', target, yourItem, '[silent]', '[from] move: Thief', `[of] ${source}`);
 ///     this.add('-item', source, yourItem, '[from] move: Thief', `[of] ${target}`);
 /// }
-pub fn on_after_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize), move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

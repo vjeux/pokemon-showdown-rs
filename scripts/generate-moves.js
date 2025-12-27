@@ -9,30 +9,58 @@
 const fs = require('fs');
 const path = require('path');
 
-// Helper function to generate parameters based on JS callback signature
+// Helper function to generate parameters based on callback name (standardized)
 function generateParameters(callbackName, jsArgs) {
-    // Parse JS arguments to determine what Rust parameters we need
-    const args = jsArgs.split(',').map(a => a.trim()).filter(a => a);
-
     // Always include battle
     let params = ['battle: &mut Battle'];
 
-    // Map common JS parameter names to Rust types
-    const paramMap = {
-        'pokemon': 'pokemon_pos: (usize, usize)',
-        'target': 'target_pos: Option<(usize, usize)>',
-        'source': 'source_pos: Option<(usize, usize)>',
-        'move': 'move_id: &str',
-        'effect': 'effect_id: Option<&str>',
-        'damage': 'damage: i32',
-        'basePower': 'base_power: i32',
-        'accuracy': 'accuracy: i32',
+    // Standard signatures for each callback type
+    // This ensures all callbacks of the same type have the same signature
+    const standardSignatures = {
+        'basePowerCallback': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'damageCallback': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'beforeMoveCallback': ['pokemon_pos: (usize, usize)'],
+        'beforeTurnCallback': ['pokemon_pos: (usize, usize)'],
+        'priorityChargeCallback': ['pokemon_pos: (usize, usize)'],
+        'durationCallback': ['target_pos: Option<(usize, usize)>', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
+        // Standard onXxx callbacks
+        'onHit': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: Option<&str>'],
+        'onTryHit': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)', 'move_id: Option<&str>'],
+        'onAfterHit': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)', 'move_id: Option<&str>'],
+        'onBasePower': ['base_power: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: Option<&str>'],
+        'onModifyMove': ['move_id: &str', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onTry': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onTryMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onPrepareHit': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onAfterMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
     };
 
-    // Add parameters based on JS args
-    for (const arg of args) {
-        if (paramMap[arg]) {
-            params.push(paramMap[arg]);
+    // Use standard signature if available, otherwise parse JS args
+    if (standardSignatures[callbackName]) {
+        params.push(...standardSignatures[callbackName]);
+    } else {
+        // Parse JS arguments to determine what Rust parameters we need
+        const args = jsArgs.split(',').map(a => a.trim()).filter(a => a);
+
+        // Map common JS parameter names to Rust types
+        const paramMap = {
+            'pokemon': 'pokemon_pos: (usize, usize)',
+            'target': 'target_pos: Option<(usize, usize)>',
+            'source': 'source_pos: Option<(usize, usize)>',
+            'move': 'move_id: &str',
+            'effect': 'effect_id: Option<&str>',
+            'damage': 'damage: i32',
+            'basePower': 'base_power: i32',
+            'accuracy': 'accuracy: i32',
+            'status': 'status: Option<&str>',
+            'field': 'field_pos: Option<(usize, usize)>',
+        };
+
+        // Add parameters based on JS args
+        for (const arg of args) {
+            if (paramMap[arg]) {
+                params.push(paramMap[arg]);
+            }
         }
     }
 
@@ -338,24 +366,59 @@ movesWithCallbacks.forEach(move => {
 const sortedCallbacks = Array.from(callbackMap.keys()).sort();
 const dispatchers = sortedCallbacks.map(callback => {
     const funcName = `dispatch_${camelToSnake(callback)}`;
+    const rustCallbackName = camelToSnake(callback);
+    const moveIds = callbackMap.get(callback);
 
-    // Determine parameters based on callback type
+    // Determine parameters based on callback type - match standardSignatures
+    // move_id is ALWAYS the first param after battle for routing, then the callback-specific params
     let params = '';
-    if (callback.includes('Damage') || callback === 'onTryHit' || callback === 'onHit' || callback === 'onAfterHit') {
-        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: (usize, usize)';
-    } else if (callback === 'onTryMove' || callback === 'onModifyType') {
-        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
-    } else if (callback === 'onBasePower' || callback === 'onAfterMove') {
-        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: Option<(usize, usize)>';
+    let callParams = '';
+
+    if (callback === 'basePowerCallback') {
+        params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
+        callParams = 'battle, pokemon_pos, target_pos, move_id';
+    } else if (callback === 'damageCallback') {
+        params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
+        callParams = 'battle, pokemon_pos, target_pos';
+    } else if (callback === 'beforeMoveCallback' || callback === 'beforeTurnCallback' || callback === 'priorityChargeCallback') {
+        params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize)';
+        callParams = 'battle, pokemon_pos';
+    } else if (callback === 'onHit') {
+        params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
+        callParams = 'battle, pokemon_pos, target_pos, Some(move_id)';
+    } else if (callback === 'onTryHit' || callback === 'onAfterHit') {
+        params = ',\n    move_id: &str,\n    source_pos: (usize, usize),\n    target_pos: (usize, usize)';
+        callParams = 'battle, source_pos, target_pos, Some(move_id)';
+    } else if (callback === 'onBasePower') {
+        params = ',\n    move_id: &str,\n    base_power: i32,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
+        callParams = 'battle, base_power, pokemon_pos, target_pos, Some(move_id)';
+    } else if (callback === 'onModifyMove') {
+        params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
+        callParams = 'battle, move_id, pokemon_pos, target_pos';
+    } else if (callback === 'onTry' || callback === 'onTryMove') {
+        params = ',\n    move_id: &str,\n    source_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
+        callParams = 'battle, source_pos, target_pos';
+    } else if (callback === 'onPrepareHit' || callback === 'onAfterMove') {
+        params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
+        callParams = 'battle, pokemon_pos, target_pos';
     } else {
-        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
+        // Default for callbacks not explicitly handled
+        params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize)';
+        callParams = 'battle, pokemon_pos';
     }
+
+    const matchArms = moveIds.map(moveId => {
+        return `        "${moveId}" => ${rustModName(moveId)}::${rustCallbackName}(${callParams}),`;
+    }).join('\n');
 
     return `/// Dispatch ${callback} callbacks
 pub fn ${funcName}(
-    _battle: &mut Battle${params},
+    battle: &mut Battle${params},
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+${matchArms}
+        _ => EventResult::Continue,
+    }
 }`;
 }).join('\n\n');
 
@@ -363,24 +426,38 @@ pub fn ${funcName}(
 const sortedConditionCallbacks = Array.from(conditionCallbackMap.keys()).sort();
 const conditionDispatchers = sortedConditionCallbacks.map(callback => {
     const funcName = `dispatch_condition_${camelToSnake(callback)}`;
+    const rustCallbackName = camelToSnake(callback);
+    const moveIds = conditionCallbackMap.get(callback);
 
     // Determine parameters based on callback type
     let params = '';
+    let callParams = '';
     if (callback.includes('Damage') || callback === 'onTryHit' || callback === 'onHit' || callback === 'onAfterHit') {
-        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: (usize, usize)';
+        params = ',\n    move_id: &str,\n    source_pos: (usize, usize),\n    target_pos: (usize, usize)';
+        callParams = 'battle, source_pos, target_pos, move_id';
     } else if (callback === 'onTryMove' || callback === 'onModifyType') {
-        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
+        params = ',\n    move_id: &str,\n    source_pos: (usize, usize)';
+        callParams = 'battle, source_pos';
     } else if (callback === 'onBasePower' || callback === 'onAfterMove') {
-        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: Option<(usize, usize)>';
+        params = ',\n    move_id: &str,\n    source_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
+        callParams = 'battle, source_pos, target_pos';
     } else {
-        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
+        params = ',\n    move_id: &str,\n    source_pos: (usize, usize)';
+        callParams = 'battle, source_pos';
     }
+
+    const matchArms = moveIds.map(moveId => {
+        return `        "${moveId}" => ${rustModName(moveId)}::condition::${rustCallbackName}(${callParams}),`;
+    }).join('\n');
 
     return `/// Dispatch condition ${callback} callbacks
 pub fn ${funcName}(
-    _battle: &mut Battle${params},
+    battle: &mut Battle${params},
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+${matchArms}
+        _ => EventResult::Continue,
+    }
 }`;
 }).join('\n\n');
 

@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         this.add('-enditem', pokemon, item.name, '[from] move: Incinerate');
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

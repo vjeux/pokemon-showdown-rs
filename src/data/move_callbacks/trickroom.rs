@@ -18,7 +18,7 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${power}`);
 ///     return power;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

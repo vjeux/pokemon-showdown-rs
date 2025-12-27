@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// priorityChargeCallback(source) {
 ///     source.addVolatile('chillyreception');
 /// }
-pub fn priority_charge_callback(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

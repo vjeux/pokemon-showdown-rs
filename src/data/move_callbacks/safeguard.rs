@@ -35,7 +35,7 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_set_status(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_set_status(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -48,7 +48,7 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_try_add_volatile(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

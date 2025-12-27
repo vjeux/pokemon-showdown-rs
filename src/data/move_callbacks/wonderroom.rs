@@ -18,7 +18,7 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -31,7 +31,7 @@ pub mod condition {
     ///     move.overrideOffensiveStat = statAndBoosts === 'def' ? 'spd' : 'def';
     ///     this.hint(`${move.name} uses ${statAndBoosts === 'def' ? '' : 'Sp. '}Def boosts when Wonder Room is active.`);
     /// }
-    pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -43,7 +43,7 @@ pub mod condition {
     ///         this.add('-fieldstart', 'move: Wonder Room', `[of] ${source}`);
     ///     }
     /// }
-    pub fn on_field_start(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_start(battle: &mut Battle, field_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

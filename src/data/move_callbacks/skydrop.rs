@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         delete move.flags['contact'];
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -35,7 +35,7 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 /// onTry(source, target) {
 ///     return !target.fainted;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -62,7 +62,7 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_po
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize), move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -70,7 +70,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, sourc
 /// onHit(target, source) {
 ///     if (target.hp) this.add('-end', target, 'Sky Drop');
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -384,825 +384,1796 @@ pub mod yawn;
 // Dispatch functions
 /// Dispatch basePowerCallback callbacks
 pub fn dispatch_base_power_callback(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "acrobatics" => acrobatics::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "assurance" => assurance::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "avalanche" => avalanche::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "beatup" => beatup::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "boltbeak" => boltbeak::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "crushgrip" => crushgrip::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "dragonenergy" => dragonenergy::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "echoedvoice" => echoedvoice::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "electroball" => electroball::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "eruption" => eruption::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "firepledge" => firepledge::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "fishiousrend" => fishiousrend::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "flail" => flail::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "frustration" => frustration::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "furycutter" => furycutter::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "grassknot" => grassknot::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "grasspledge" => grasspledge::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "gyroball" => gyroball::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "hardpress" => hardpress::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "heatcrash" => heatcrash::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "heavyslam" => heavyslam::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "hex" => hex::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "iceball" => iceball::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "infernalparade" => infernalparade::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "lastrespects" => lastrespects::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "lowkick" => lowkick::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "payback" => payback::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "pikapapow" => pikapapow::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "powertrip" => powertrip::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "punishment" => punishment::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "pursuit" => pursuit::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "ragefist" => ragefist::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "return" => r#return::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "revenge" => revenge::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "reversal" => reversal::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "risingvoltage" => risingvoltage::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "rollout" => rollout::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "round" => round::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "smellingsalts" => smellingsalts::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "spitup" => spitup::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "stompingtantrum" => stompingtantrum::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "storedpower" => storedpower::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "temperflare" => temperflare::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "terablast" => terablast::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "tripleaxel" => tripleaxel::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "triplekick" => triplekick::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "trumpcard" => trumpcard::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "veeveevolley" => veeveevolley::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "wakeupslap" => wakeupslap::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "waterpledge" => waterpledge::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "watershuriken" => watershuriken::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "waterspout" => waterspout::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        "wringout" => wringout::base_power_callback(battle, pokemon_pos, target_pos, move_id),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch beforeMoveCallback callbacks
 pub fn dispatch_before_move_callback(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "bide" => bide::before_move_callback(battle, pokemon_pos),
+        "focuspunch" => focuspunch::before_move_callback(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch beforeTurnCallback callbacks
 pub fn dispatch_before_turn_callback(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "counter" => counter::before_turn_callback(battle, pokemon_pos),
+        "mirrorcoat" => mirrorcoat::before_turn_callback(battle, pokemon_pos),
+        "pursuit" => pursuit::before_turn_callback(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch damageCallback callbacks
 pub fn dispatch_damage_callback(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "comeuppance" => comeuppance::damage_callback(battle, pokemon_pos, target_pos),
+        "counter" => counter::damage_callback(battle, pokemon_pos, target_pos),
+        "endeavor" => endeavor::damage_callback(battle, pokemon_pos, target_pos),
+        "finalgambit" => finalgambit::damage_callback(battle, pokemon_pos, target_pos),
+        "guardianofalola" => guardianofalola::damage_callback(battle, pokemon_pos, target_pos),
+        "metalburst" => metalburst::damage_callback(battle, pokemon_pos, target_pos),
+        "mirrorcoat" => mirrorcoat::damage_callback(battle, pokemon_pos, target_pos),
+        "naturesmadness" => naturesmadness::damage_callback(battle, pokemon_pos, target_pos),
+        "psywave" => psywave::damage_callback(battle, pokemon_pos, target_pos),
+        "ruination" => ruination::damage_callback(battle, pokemon_pos, target_pos),
+        "superfang" => superfang::damage_callback(battle, pokemon_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAfterHit callbacks
 pub fn dispatch_on_after_hit(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "ceaselessedge" => ceaselessedge::on_after_hit(battle, source_pos, target_pos, Some(move_id)),
+        "covet" => covet::on_after_hit(battle, source_pos, target_pos, Some(move_id)),
+        "icespinner" => icespinner::on_after_hit(battle, source_pos, target_pos, Some(move_id)),
+        "knockoff" => knockoff::on_after_hit(battle, source_pos, target_pos, Some(move_id)),
+        "mortalspin" => mortalspin::on_after_hit(battle, source_pos, target_pos, Some(move_id)),
+        "rapidspin" => rapidspin::on_after_hit(battle, source_pos, target_pos, Some(move_id)),
+        "stoneaxe" => stoneaxe::on_after_hit(battle, source_pos, target_pos, Some(move_id)),
+        "thief" => thief::on_after_hit(battle, source_pos, target_pos, Some(move_id)),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAfterMove callbacks
 pub fn dispatch_on_after_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "beakblast" => beakblast::on_after_move(battle, pokemon_pos, target_pos),
+        "iceball" => iceball::on_after_move(battle, pokemon_pos, target_pos),
+        "mindblown" => mindblown::on_after_move(battle, pokemon_pos, target_pos),
+        "rollout" => rollout::on_after_move(battle, pokemon_pos, target_pos),
+        "sparklingaria" => sparklingaria::on_after_move(battle, pokemon_pos, target_pos),
+        "spitup" => spitup::on_after_move(battle, pokemon_pos, target_pos),
+        "steelbeam" => steelbeam::on_after_move(battle, pokemon_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAfterMoveSecondarySelf callbacks
 pub fn dispatch_on_after_move_secondary_self(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "fellstinger" => fellstinger::on_after_move_secondary_self(battle, pokemon_pos),
+        "orderup" => orderup::on_after_move_secondary_self(battle, pokemon_pos),
+        "polarflare" => polarflare::on_after_move_secondary_self(battle, pokemon_pos),
+        "relicsong" => relicsong::on_after_move_secondary_self(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAfterSubDamage callbacks
 pub fn dispatch_on_after_sub_damage(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "ceaselessedge" => ceaselessedge::on_after_sub_damage(battle, pokemon_pos),
+        "coreenforcer" => coreenforcer::on_after_sub_damage(battle, pokemon_pos),
+        "flameburst" => flameburst::on_after_sub_damage(battle, pokemon_pos),
+        "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, pokemon_pos),
+        "icespinner" => icespinner::on_after_sub_damage(battle, pokemon_pos),
+        "mortalspin" => mortalspin::on_after_sub_damage(battle, pokemon_pos),
+        "rapidspin" => rapidspin::on_after_sub_damage(battle, pokemon_pos),
+        "shellsidearm" => shellsidearm::on_after_sub_damage(battle, pokemon_pos),
+        "splinteredstormshards" => splinteredstormshards::on_after_sub_damage(battle, pokemon_pos),
+        "steelroller" => steelroller::on_after_sub_damage(battle, pokemon_pos),
+        "stoneaxe" => stoneaxe::on_after_sub_damage(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onBasePower callbacks
 pub fn dispatch_on_base_power(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    move_id: &str,
+    base_power: i32,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "barbbarrage" => barbbarrage::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "brine" => brine::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "collisioncourse" => collisioncourse::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "electrodrift" => electrodrift::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "expandingforce" => expandingforce::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "facade" => facade::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "ficklebeam" => ficklebeam::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "fusionbolt" => fusionbolt::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "fusionflare" => fusionflare::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "gravapple" => gravapple::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "knockoff" => knockoff::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "lashout" => lashout::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "mistyexplosion" => mistyexplosion::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "psyblade" => psyblade::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "retaliate" => retaliate::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "solarbeam" => solarbeam::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "solarblade" => solarblade::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        "venoshock" => venoshock::on_base_power(battle, base_power, pokemon_pos, target_pos, Some(move_id)),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onDamage callbacks
 pub fn dispatch_on_damage(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "falseswipe" => falseswipe::on_damage(battle, pokemon_pos),
+        "holdback" => holdback::on_damage(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onDisableMove callbacks
 pub fn dispatch_on_disable_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "belch" => belch::on_disable_move(battle, pokemon_pos),
+        "stuffcheeks" => stuffcheeks::on_disable_move(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onEffectiveness callbacks
 pub fn dispatch_on_effectiveness(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "flyingpress" => flyingpress::on_effectiveness(battle, pokemon_pos),
+        "freezedry" => freezedry::on_effectiveness(battle, pokemon_pos),
+        "thousandarrows" => thousandarrows::on_effectiveness(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onHit callbacks
 pub fn dispatch_on_hit(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "acupressure" => acupressure::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "afteryou" => afteryou::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "allyswitch" => allyswitch::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "aromatherapy" => aromatherapy::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "assist" => assist::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "autotomize" => autotomize::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "banefulbunker" => banefulbunker::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "batonpass" => batonpass::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "bellydrum" => bellydrum::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "bestow" => bestow::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "block" => block::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "bugbite" => bugbite::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "burningbulwark" => burningbulwark::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "camouflage" => camouflage::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "clangoroussoul" => clangoroussoul::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "clearsmog" => clearsmog::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "conversion" => conversion::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "conversion2" => conversion2::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "copycat" => copycat::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "coreenforcer" => coreenforcer::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "corrosivegas" => corrosivegas::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "curse" => curse::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "defog" => defog::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "detect" => detect::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "doodle" => doodle::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "endure" => endure::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "entrainment" => entrainment::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "filletaway" => filletaway::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "flameburst" => flameburst::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "floralhealing" => floralhealing::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "forestscurse" => forestscurse::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "freezyfrost" => freezyfrost::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "gmaxsnooze" => gmaxsnooze::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "guardsplit" => guardsplit::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "guardswap" => guardswap::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "healbell" => healbell::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "healpulse" => healpulse::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "heartswap" => heartswap::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "incinerate" => incinerate::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "instruct" => instruct::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "jawlock" => jawlock::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "junglehealing" => junglehealing::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "kingsshield" => kingsshield::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "lockon" => lockon::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "lunarblessing" => lunarblessing::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "magicpowder" => magicpowder::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "maxguard" => maxguard::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "meanlook" => meanlook::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "metronome" => metronome::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "mimic" => mimic::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "mindreader" => mindreader::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "moonlight" => moonlight::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "morningsun" => morningsun::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "obstruct" => obstruct::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "painsplit" => painsplit::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "partingshot" => partingshot::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "pluck" => pluck::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "polarflare" => polarflare::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "pollenpuff" => pollenpuff::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "powersplit" => powersplit::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "powerswap" => powerswap::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "protect" => protect::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "psychup" => psychup::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "purify" => purify::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "quash" => quash::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "recycle" => recycle::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "reflecttype" => reflecttype::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "refresh" => refresh::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "relicsong" => relicsong::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "rest" => rest::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "roleplay" => roleplay::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "sappyseed" => sappyseed::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "shedtail" => shedtail::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "shellsidearm" => shellsidearm::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "shoreup" => shoreup::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "silktrap" => silktrap::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "simplebeam" => simplebeam::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "sketch" => sketch::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "skillswap" => skillswap::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "skydrop" => skydrop::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "sleeptalk" => sleeptalk::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "smellingsalts" => smellingsalts::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "soak" => soak::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "speedswap" => speedswap::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "spiderweb" => spiderweb::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "spikyshield" => spikyshield::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "spite" => spite::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "splinteredstormshards" => splinteredstormshards::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "steelroller" => steelroller::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "strengthsap" => strengthsap::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "stuffcheeks" => stuffcheeks::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "substitute" => substitute::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "swallow" => swallow::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "switcheroo" => switcheroo::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "synthesis" => synthesis::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "takeheart" => takeheart::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "thousandwaves" => thousandwaves::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "tidyup" => tidyup::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "topsyturvy" => topsyturvy::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "transform" => transform::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "trick" => trick::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "trickortreat" => trickortreat::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "venomdrench" => venomdrench::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "wakeupslap" => wakeupslap::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        "worryseed" => worryseed::on_hit(battle, pokemon_pos, target_pos, Some(move_id)),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onHitField callbacks
 pub fn dispatch_on_hit_field(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "courtchange" => courtchange::on_hit_field(battle, pokemon_pos),
+        "flowershield" => flowershield::on_hit_field(battle, pokemon_pos),
+        "haze" => haze::on_hit_field(battle, pokemon_pos),
+        "perishsong" => perishsong::on_hit_field(battle, pokemon_pos),
+        "rototiller" => rototiller::on_hit_field(battle, pokemon_pos),
+        "teatime" => teatime::on_hit_field(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onHitSide callbacks
 pub fn dispatch_on_hit_side(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "gearup" => gearup::on_hit_side(battle, pokemon_pos),
+        "magneticflux" => magneticflux::on_hit_side(battle, pokemon_pos),
+        "quickguard" => quickguard::on_hit_side(battle, pokemon_pos),
+        "wideguard" => wideguard::on_hit_side(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onModifyMove callbacks
 pub fn dispatch_on_modify_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "beatup" => beatup::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "bleakwindstorm" => bleakwindstorm::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "blizzard" => blizzard::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "curse" => curse::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "expandingforce" => expandingforce::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "firepledge" => firepledge::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "grasspledge" => grasspledge::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "growth" => growth::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "hurricane" => hurricane::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "iceball" => iceball::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "lightthatburnsthesky" => lightthatburnsthesky::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "magnitude" => magnitude::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "photongeyser" => photongeyser::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "present" => present::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "pursuit" => pursuit::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "rollout" => rollout::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "sandsearstorm" => sandsearstorm::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "secretpower" => secretpower::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "shellsidearm" => shellsidearm::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "skydrop" => skydrop::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "struggle" => struggle::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "terablast" => terablast::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "terastarstorm" => terastarstorm::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "terrainpulse" => terrainpulse::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "thunder" => thunder::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "waterpledge" => waterpledge::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "weatherball" => weatherball::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        "wildboltstorm" => wildboltstorm::on_modify_move(battle, move_id, pokemon_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onModifyPriority callbacks
 pub fn dispatch_on_modify_priority(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "grassyglide" => grassyglide::on_modify_priority(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onModifyTarget callbacks
 pub fn dispatch_on_modify_target(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "comeuppance" => comeuppance::on_modify_target(battle, pokemon_pos),
+        "metalburst" => metalburst::on_modify_target(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onModifyType callbacks
 pub fn dispatch_on_modify_type(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "aurawheel" => aurawheel::on_modify_type(battle, pokemon_pos),
+        "hiddenpower" => hiddenpower::on_modify_type(battle, pokemon_pos),
+        "ivycudgel" => ivycudgel::on_modify_type(battle, pokemon_pos),
+        "judgment" => judgment::on_modify_type(battle, pokemon_pos),
+        "multiattack" => multiattack::on_modify_type(battle, pokemon_pos),
+        "naturalgift" => naturalgift::on_modify_type(battle, pokemon_pos),
+        "ragingbull" => ragingbull::on_modify_type(battle, pokemon_pos),
+        "revelationdance" => revelationdance::on_modify_type(battle, pokemon_pos),
+        "technoblast" => technoblast::on_modify_type(battle, pokemon_pos),
+        "terablast" => terablast::on_modify_type(battle, pokemon_pos),
+        "terastarstorm" => terastarstorm::on_modify_type(battle, pokemon_pos),
+        "terrainpulse" => terrainpulse::on_modify_type(battle, pokemon_pos),
+        "weatherball" => weatherball::on_modify_type(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onMoveFail callbacks
 pub fn dispatch_on_move_fail(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "axekick" => axekick::on_move_fail(battle, pokemon_pos),
+        "highjumpkick" => highjumpkick::on_move_fail(battle, pokemon_pos),
+        "jumpkick" => jumpkick::on_move_fail(battle, pokemon_pos),
+        "skydrop" => skydrop::on_move_fail(battle, pokemon_pos),
+        "supercellslam" => supercellslam::on_move_fail(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onPrepareHit callbacks
 pub fn dispatch_on_prepare_hit(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "allyswitch" => allyswitch::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "banefulbunker" => banefulbunker::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "burningbulwark" => burningbulwark::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "destinybond" => destinybond::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "detect" => detect::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "endure" => endure::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "firepledge" => firepledge::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "fling" => fling::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "grasspledge" => grasspledge::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "ivycudgel" => ivycudgel::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "kingsshield" => kingsshield::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "maxguard" => maxguard::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "naturalgift" => naturalgift::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "obstruct" => obstruct::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "protect" => protect::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "shellsidearm" => shellsidearm::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "silktrap" => silktrap::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "spikyshield" => spikyshield::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "terablast" => terablast::on_prepare_hit(battle, pokemon_pos, target_pos),
+        "waterpledge" => waterpledge::on_prepare_hit(battle, pokemon_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onTry callbacks
 pub fn dispatch_on_try(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "aurawheel" => aurawheel::on_try(battle, source_pos, target_pos),
+        "auroraveil" => auroraveil::on_try(battle, source_pos, target_pos),
+        "clangoroussoul" => clangoroussoul::on_try(battle, source_pos, target_pos),
+        "comeuppance" => comeuppance::on_try(battle, source_pos, target_pos),
+        "counter" => counter::on_try(battle, source_pos, target_pos),
+        "craftyshield" => craftyshield::on_try(battle, source_pos, target_pos),
+        "darkvoid" => darkvoid::on_try(battle, source_pos, target_pos),
+        "doomdesire" => doomdesire::on_try(battle, source_pos, target_pos),
+        "fakeout" => fakeout::on_try(battle, source_pos, target_pos),
+        "filletaway" => filletaway::on_try(battle, source_pos, target_pos),
+        "firstimpression" => firstimpression::on_try(battle, source_pos, target_pos),
+        "followme" => followme::on_try(battle, source_pos, target_pos),
+        "futuresight" => futuresight::on_try(battle, source_pos, target_pos),
+        "hyperspacefury" => hyperspacefury::on_try(battle, source_pos, target_pos),
+        "lastresort" => lastresort::on_try(battle, source_pos, target_pos),
+        "magnetrise" => magnetrise::on_try(battle, source_pos, target_pos),
+        "matblock" => matblock::on_try(battle, source_pos, target_pos),
+        "metalburst" => metalburst::on_try(battle, source_pos, target_pos),
+        "mirrorcoat" => mirrorcoat::on_try(battle, source_pos, target_pos),
+        "noretreat" => noretreat::on_try(battle, source_pos, target_pos),
+        "poltergeist" => poltergeist::on_try(battle, source_pos, target_pos),
+        "quickguard" => quickguard::on_try(battle, source_pos, target_pos),
+        "ragepowder" => ragepowder::on_try(battle, source_pos, target_pos),
+        "rest" => rest::on_try(battle, source_pos, target_pos),
+        "round" => round::on_try(battle, source_pos, target_pos),
+        "skydrop" => skydrop::on_try(battle, source_pos, target_pos),
+        "sleeptalk" => sleeptalk::on_try(battle, source_pos, target_pos),
+        "snore" => snore::on_try(battle, source_pos, target_pos),
+        "spitup" => spitup::on_try(battle, source_pos, target_pos),
+        "splash" => splash::on_try(battle, source_pos, target_pos),
+        "steelroller" => steelroller::on_try(battle, source_pos, target_pos),
+        "stockpile" => stockpile::on_try(battle, source_pos, target_pos),
+        "stuffcheeks" => stuffcheeks::on_try(battle, source_pos, target_pos),
+        "suckerpunch" => suckerpunch::on_try(battle, source_pos, target_pos),
+        "swallow" => swallow::on_try(battle, source_pos, target_pos),
+        "telekinesis" => telekinesis::on_try(battle, source_pos, target_pos),
+        "teleport" => teleport::on_try(battle, source_pos, target_pos),
+        "thunderclap" => thunderclap::on_try(battle, source_pos, target_pos),
+        "upperhand" => upperhand::on_try(battle, source_pos, target_pos),
+        "wideguard" => wideguard::on_try(battle, source_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onTryHit callbacks
 pub fn dispatch_on_try_hit(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "autotomize" => autotomize::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "brickbreak" => brickbreak::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "celebrate" => celebrate::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "clangoroussoul" => clangoroussoul::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "curse" => curse::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "disable" => disable::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "electrify" => electrify::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "entrainment" => entrainment::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "filletaway" => filletaway::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "foresight" => foresight::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "gastroacid" => gastroacid::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "grassknot" => grassknot::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "happyhour" => happyhour::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "healingwish" => healingwish::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "heatcrash" => heatcrash::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "heavyslam" => heavyslam::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "helpinghand" => helpinghand::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "lockon" => lockon::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "lowkick" => lowkick::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "lunardance" => lunardance::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "mefirst" => mefirst::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "mindreader" => mindreader::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "miracleeye" => miracleeye::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "mirrormove" => mirrormove::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "naturepower" => naturepower::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "odorsleuth" => odorsleuth::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "pollenpuff" => pollenpuff::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "poltergeist" => poltergeist::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "psychicfangs" => psychicfangs::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "psychoshift" => psychoshift::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "pursuit" => pursuit::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "ragingbull" => ragingbull::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "revivalblessing" => revivalblessing::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "roleplay" => roleplay::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "shedtail" => shedtail::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "simplebeam" => simplebeam::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "skillswap" => skillswap::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "skydrop" => skydrop::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "splash" => splash::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "spotlight" => spotlight::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "substitute" => substitute::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "uproar" => uproar::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "worryseed" => worryseed::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        "yawn" => yawn::on_try_hit(battle, source_pos, target_pos, Some(move_id)),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onTryImmunity callbacks
 pub fn dispatch_on_try_immunity(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "attract" => attract::on_try_immunity(battle, pokemon_pos),
+        "captivate" => captivate::on_try_immunity(battle, pokemon_pos),
+        "dreameater" => dreameater::on_try_immunity(battle, pokemon_pos),
+        "endeavor" => endeavor::on_try_immunity(battle, pokemon_pos),
+        "leechseed" => leechseed::on_try_immunity(battle, pokemon_pos),
+        "octolock" => octolock::on_try_immunity(battle, pokemon_pos),
+        "switcheroo" => switcheroo::on_try_immunity(battle, pokemon_pos),
+        "synchronoise" => synchronoise::on_try_immunity(battle, pokemon_pos),
+        "trick" => trick::on_try_immunity(battle, pokemon_pos),
+        "worryseed" => worryseed::on_try_immunity(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onTryMove callbacks
 pub fn dispatch_on_try_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "bounce" => bounce::on_try_move(battle, source_pos, target_pos),
+        "burnup" => burnup::on_try_move(battle, source_pos, target_pos),
+        "dig" => dig::on_try_move(battle, source_pos, target_pos),
+        "dive" => dive::on_try_move(battle, source_pos, target_pos),
+        "doubleshock" => doubleshock::on_try_move(battle, source_pos, target_pos),
+        "echoedvoice" => echoedvoice::on_try_move(battle, source_pos, target_pos),
+        "electroshot" => electroshot::on_try_move(battle, source_pos, target_pos),
+        "fly" => fly::on_try_move(battle, source_pos, target_pos),
+        "freezeshock" => freezeshock::on_try_move(battle, source_pos, target_pos),
+        "geomancy" => geomancy::on_try_move(battle, source_pos, target_pos),
+        "iceburn" => iceburn::on_try_move(battle, source_pos, target_pos),
+        "meteorbeam" => meteorbeam::on_try_move(battle, source_pos, target_pos),
+        "phantomforce" => phantomforce::on_try_move(battle, source_pos, target_pos),
+        "pollenpuff" => pollenpuff::on_try_move(battle, source_pos, target_pos),
+        "razorwind" => razorwind::on_try_move(battle, source_pos, target_pos),
+        "shadowforce" => shadowforce::on_try_move(battle, source_pos, target_pos),
+        "shelltrap" => shelltrap::on_try_move(battle, source_pos, target_pos),
+        "skullbash" => skullbash::on_try_move(battle, source_pos, target_pos),
+        "skyattack" => skyattack::on_try_move(battle, source_pos, target_pos),
+        "solarbeam" => solarbeam::on_try_move(battle, source_pos, target_pos),
+        "solarblade" => solarblade::on_try_move(battle, source_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onUseMoveMessage callbacks
 pub fn dispatch_on_use_move_message(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "magnitude" => magnitude::on_use_move_message(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch priorityChargeCallback callbacks
 pub fn dispatch_priority_charge_callback(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "beakblast" => beakblast::priority_charge_callback(battle, pokemon_pos),
+        "chillyreception" => chillyreception::priority_charge_callback(battle, pokemon_pos),
+        "focuspunch" => focuspunch::priority_charge_callback(battle, pokemon_pos),
+        "shelltrap" => shelltrap::priority_charge_callback(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 // Condition dispatch functions
 /// Dispatch condition durationCallback callbacks
 pub fn dispatch_condition_duration_callback(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "auroraveil" => auroraveil::condition::duration_callback(battle, source_pos),
+        "electricterrain" => electricterrain::condition::duration_callback(battle, source_pos),
+        "grassyterrain" => grassyterrain::condition::duration_callback(battle, source_pos),
+        "gravity" => gravity::condition::duration_callback(battle, source_pos),
+        "healblock" => healblock::condition::duration_callback(battle, source_pos),
+        "lightscreen" => lightscreen::condition::duration_callback(battle, source_pos),
+        "magicroom" => magicroom::condition::duration_callback(battle, source_pos),
+        "mistyterrain" => mistyterrain::condition::duration_callback(battle, source_pos),
+        "psychicterrain" => psychicterrain::condition::duration_callback(battle, source_pos),
+        "reflect" => reflect::condition::duration_callback(battle, source_pos),
+        "safeguard" => safeguard::condition::duration_callback(battle, source_pos),
+        "tailwind" => tailwind::condition::duration_callback(battle, source_pos),
+        "trickroom" => trickroom::condition::duration_callback(battle, source_pos),
+        "wonderroom" => wonderroom::condition::duration_callback(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onAccuracy callbacks
 pub fn dispatch_condition_on_accuracy(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "glaiverush" => glaiverush::condition::on_accuracy(battle, source_pos),
+        "minimize" => minimize::condition::on_accuracy(battle, source_pos),
+        "telekinesis" => telekinesis::condition::on_accuracy(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onAfterMove callbacks
 pub fn dispatch_condition_on_after_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "charge" => charge::condition::on_after_move(battle, source_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onAllyTryHitSide callbacks
 pub fn dispatch_condition_on_ally_try_hit_side(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "magiccoat" => magiccoat::condition::on_ally_try_hit_side(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onAnyBasePower callbacks
 pub fn dispatch_condition_on_any_base_power(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "skydrop" => skydrop::condition::on_any_base_power(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onAnyDragOut callbacks
 pub fn dispatch_condition_on_any_drag_out(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "skydrop" => skydrop::condition::on_any_drag_out(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onAnyInvulnerability callbacks
 pub fn dispatch_condition_on_any_invulnerability(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "skydrop" => skydrop::condition::on_any_invulnerability(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onAnyModifyDamage callbacks
 pub fn dispatch_condition_on_any_modify_damage(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "auroraveil" => auroraveil::condition::on_any_modify_damage(battle, source_pos, target_pos, move_id),
+        "lightscreen" => lightscreen::condition::on_any_modify_damage(battle, source_pos, target_pos, move_id),
+        "reflect" => reflect::condition::on_any_modify_damage(battle, source_pos, target_pos, move_id),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onAnyPrepareHit callbacks
 pub fn dispatch_condition_on_any_prepare_hit(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "snatch" => snatch::condition::on_any_prepare_hit(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onAnySetStatus callbacks
 pub fn dispatch_condition_on_any_set_status(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "uproar" => uproar::condition::on_any_set_status(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onBasePower callbacks
 pub fn dispatch_condition_on_base_power(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "charge" => charge::condition::on_base_power(battle, source_pos, target_pos),
+        "electricterrain" => electricterrain::condition::on_base_power(battle, source_pos, target_pos),
+        "grassyterrain" => grassyterrain::condition::on_base_power(battle, source_pos, target_pos),
+        "helpinghand" => helpinghand::condition::on_base_power(battle, source_pos, target_pos),
+        "mefirst" => mefirst::condition::on_base_power(battle, source_pos, target_pos),
+        "mistyterrain" => mistyterrain::condition::on_base_power(battle, source_pos, target_pos),
+        "mudsport" => mudsport::condition::on_base_power(battle, source_pos, target_pos),
+        "psychicterrain" => psychicterrain::condition::on_base_power(battle, source_pos, target_pos),
+        "watersport" => watersport::condition::on_base_power(battle, source_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onBeforeMove callbacks
 pub fn dispatch_condition_on_before_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "attract" => attract::condition::on_before_move(battle, source_pos),
+        "bide" => bide::condition::on_before_move(battle, source_pos),
+        "chillyreception" => chillyreception::condition::on_before_move(battle, source_pos),
+        "destinybond" => destinybond::condition::on_before_move(battle, source_pos),
+        "disable" => disable::condition::on_before_move(battle, source_pos),
+        "glaiverush" => glaiverush::condition::on_before_move(battle, source_pos),
+        "gravity" => gravity::condition::on_before_move(battle, source_pos),
+        "grudge" => grudge::condition::on_before_move(battle, source_pos),
+        "healblock" => healblock::condition::on_before_move(battle, source_pos),
+        "rage" => rage::condition::on_before_move(battle, source_pos),
+        "taunt" => taunt::condition::on_before_move(battle, source_pos),
+        "throatchop" => throatchop::condition::on_before_move(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onBeforeSwitchOut callbacks
 pub fn dispatch_condition_on_before_switch_out(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "pursuit" => pursuit::condition::on_before_switch_out(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onCopy callbacks
 pub fn dispatch_condition_on_copy(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "gastroacid" => gastroacid::condition::on_copy(battle, source_pos),
+        "powershift" => powershift::condition::on_copy(battle, source_pos),
+        "powertrick" => powertrick::condition::on_copy(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onDamage callbacks
 pub fn dispatch_condition_on_damage(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "bide" => bide::condition::on_damage(battle, source_pos, target_pos, move_id),
+        "endure" => endure::condition::on_damage(battle, source_pos, target_pos, move_id),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onDamagingHit callbacks
 pub fn dispatch_condition_on_damaging_hit(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "counter" => counter::condition::on_damaging_hit(battle, source_pos),
+        "mirrorcoat" => mirrorcoat::condition::on_damaging_hit(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onDisableMove callbacks
 pub fn dispatch_condition_on_disable_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "disable" => disable::condition::on_disable_move(battle, source_pos),
+        "encore" => encore::condition::on_disable_move(battle, source_pos),
+        "gravity" => gravity::condition::on_disable_move(battle, source_pos),
+        "healblock" => healblock::condition::on_disable_move(battle, source_pos),
+        "taunt" => taunt::condition::on_disable_move(battle, source_pos),
+        "throatchop" => throatchop::condition::on_disable_move(battle, source_pos),
+        "torment" => torment::condition::on_disable_move(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onDragOut callbacks
 pub fn dispatch_condition_on_drag_out(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "ingrain" => ingrain::condition::on_drag_out(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onEffectiveness callbacks
 pub fn dispatch_condition_on_effectiveness(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "tarshot" => tarshot::condition::on_effectiveness(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onEnd callbacks
 pub fn dispatch_condition_on_end(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "attract" => attract::condition::on_end(battle, source_pos),
+        "bide" => bide::condition::on_end(battle, source_pos),
+        "charge" => charge::condition::on_end(battle, source_pos),
+        "disable" => disable::condition::on_end(battle, source_pos),
+        "embargo" => embargo::condition::on_end(battle, source_pos),
+        "encore" => encore::condition::on_end(battle, source_pos),
+        "healblock" => healblock::condition::on_end(battle, source_pos),
+        "laserfocus" => laserfocus::condition::on_end(battle, source_pos),
+        "magnetrise" => magnetrise::condition::on_end(battle, source_pos),
+        "perishsong" => perishsong::condition::on_end(battle, source_pos),
+        "powershift" => powershift::condition::on_end(battle, source_pos),
+        "powertrick" => powertrick::condition::on_end(battle, source_pos),
+        "saltcure" => saltcure::condition::on_end(battle, source_pos),
+        "stockpile" => stockpile::condition::on_end(battle, source_pos),
+        "substitute" => substitute::condition::on_end(battle, source_pos),
+        "syrupbomb" => syrupbomb::condition::on_end(battle, source_pos),
+        "taunt" => taunt::condition::on_end(battle, source_pos),
+        "telekinesis" => telekinesis::condition::on_end(battle, source_pos),
+        "throatchop" => throatchop::condition::on_end(battle, source_pos),
+        "torment" => torment::condition::on_end(battle, source_pos),
+        "uproar" => uproar::condition::on_end(battle, source_pos),
+        "wish" => wish::condition::on_end(battle, source_pos),
+        "yawn" => yawn::condition::on_end(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onFaint callbacks
 pub fn dispatch_condition_on_faint(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "destinybond" => destinybond::condition::on_faint(battle, source_pos),
+        "grudge" => grudge::condition::on_faint(battle, source_pos),
+        "skydrop" => skydrop::condition::on_faint(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onFieldEnd callbacks
 pub fn dispatch_condition_on_field_end(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "electricterrain" => electricterrain::condition::on_field_end(battle, source_pos),
+        "grassyterrain" => grassyterrain::condition::on_field_end(battle, source_pos),
+        "gravity" => gravity::condition::on_field_end(battle, source_pos),
+        "magicroom" => magicroom::condition::on_field_end(battle, source_pos),
+        "mistyterrain" => mistyterrain::condition::on_field_end(battle, source_pos),
+        "mudsport" => mudsport::condition::on_field_end(battle, source_pos),
+        "psychicterrain" => psychicterrain::condition::on_field_end(battle, source_pos),
+        "trickroom" => trickroom::condition::on_field_end(battle, source_pos),
+        "watersport" => watersport::condition::on_field_end(battle, source_pos),
+        "wonderroom" => wonderroom::condition::on_field_end(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onFieldRestart callbacks
 pub fn dispatch_condition_on_field_restart(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "echoedvoice" => echoedvoice::condition::on_field_restart(battle, source_pos),
+        "magicroom" => magicroom::condition::on_field_restart(battle, source_pos),
+        "trickroom" => trickroom::condition::on_field_restart(battle, source_pos),
+        "wonderroom" => wonderroom::condition::on_field_restart(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onFieldStart callbacks
 pub fn dispatch_condition_on_field_start(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "echoedvoice" => echoedvoice::condition::on_field_start(battle, source_pos),
+        "electricterrain" => electricterrain::condition::on_field_start(battle, source_pos),
+        "fairylock" => fairylock::condition::on_field_start(battle, source_pos),
+        "grassyterrain" => grassyterrain::condition::on_field_start(battle, source_pos),
+        "gravity" => gravity::condition::on_field_start(battle, source_pos),
+        "iondeluge" => iondeluge::condition::on_field_start(battle, source_pos),
+        "magicroom" => magicroom::condition::on_field_start(battle, source_pos),
+        "mistyterrain" => mistyterrain::condition::on_field_start(battle, source_pos),
+        "mudsport" => mudsport::condition::on_field_start(battle, source_pos),
+        "psychicterrain" => psychicterrain::condition::on_field_start(battle, source_pos),
+        "trickroom" => trickroom::condition::on_field_start(battle, source_pos),
+        "watersport" => watersport::condition::on_field_start(battle, source_pos),
+        "wonderroom" => wonderroom::condition::on_field_start(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onFoeBeforeMove callbacks
 pub fn dispatch_condition_on_foe_before_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "imprison" => imprison::condition::on_foe_before_move(battle, source_pos),
+        "skydrop" => skydrop::condition::on_foe_before_move(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onFoeDisableMove callbacks
 pub fn dispatch_condition_on_foe_disable_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "imprison" => imprison::condition::on_foe_disable_move(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onFoeRedirectTarget callbacks
 pub fn dispatch_condition_on_foe_redirect_target(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "followme" => followme::condition::on_foe_redirect_target(battle, source_pos),
+        "ragepowder" => ragepowder::condition::on_foe_redirect_target(battle, source_pos),
+        "spotlight" => spotlight::condition::on_foe_redirect_target(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onFoeTrapPokemon callbacks
 pub fn dispatch_condition_on_foe_trap_pokemon(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "skydrop" => skydrop::condition::on_foe_trap_pokemon(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onHit callbacks
 pub fn dispatch_condition_on_hit(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "banefulbunker" => banefulbunker::condition::on_hit(battle, source_pos, target_pos, move_id),
+        "beakblast" => beakblast::condition::on_hit(battle, source_pos, target_pos, move_id),
+        "burningbulwark" => burningbulwark::condition::on_hit(battle, source_pos, target_pos, move_id),
+        "focuspunch" => focuspunch::condition::on_hit(battle, source_pos, target_pos, move_id),
+        "kingsshield" => kingsshield::condition::on_hit(battle, source_pos, target_pos, move_id),
+        "obstruct" => obstruct::condition::on_hit(battle, source_pos, target_pos, move_id),
+        "rage" => rage::condition::on_hit(battle, source_pos, target_pos, move_id),
+        "shelltrap" => shelltrap::condition::on_hit(battle, source_pos, target_pos, move_id),
+        "silktrap" => silktrap::condition::on_hit(battle, source_pos, target_pos, move_id),
+        "spikyshield" => spikyshield::condition::on_hit(battle, source_pos, target_pos, move_id),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onImmunity callbacks
 pub fn dispatch_condition_on_immunity(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "dig" => dig::condition::on_immunity(battle, source_pos),
+        "dive" => dive::condition::on_immunity(battle, source_pos),
+        "magnetrise" => magnetrise::condition::on_immunity(battle, source_pos),
+        "telekinesis" => telekinesis::condition::on_immunity(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onInvulnerability callbacks
 pub fn dispatch_condition_on_invulnerability(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "bounce" => bounce::condition::on_invulnerability(battle, source_pos),
+        "dig" => dig::condition::on_invulnerability(battle, source_pos),
+        "dive" => dive::condition::on_invulnerability(battle, source_pos),
+        "fly" => fly::condition::on_invulnerability(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onModifyAccuracy callbacks
 pub fn dispatch_condition_on_modify_accuracy(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "gravity" => gravity::condition::on_modify_accuracy(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onModifyBoost callbacks
 pub fn dispatch_condition_on_modify_boost(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "foresight" => foresight::condition::on_modify_boost(battle, source_pos),
+        "miracleeye" => miracleeye::condition::on_modify_boost(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onModifyCritRatio callbacks
 pub fn dispatch_condition_on_modify_crit_ratio(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "dragoncheer" => dragoncheer::condition::on_modify_crit_ratio(battle, source_pos),
+        "focusenergy" => focusenergy::condition::on_modify_crit_ratio(battle, source_pos),
+        "gmaxchistrike" => gmaxchistrike::condition::on_modify_crit_ratio(battle, source_pos),
+        "laserfocus" => laserfocus::condition::on_modify_crit_ratio(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onModifyMove callbacks
 pub fn dispatch_condition_on_modify_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "gravity" => gravity::condition::on_modify_move(battle, source_pos),
+        "healblock" => healblock::condition::on_modify_move(battle, source_pos),
+        "throatchop" => throatchop::condition::on_modify_move(battle, source_pos),
+        "waterpledge" => waterpledge::condition::on_modify_move(battle, source_pos),
+        "wonderroom" => wonderroom::condition::on_modify_move(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onModifySpe callbacks
 pub fn dispatch_condition_on_modify_spe(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "grasspledge" => grasspledge::condition::on_modify_spe(battle, source_pos),
+        "tailwind" => tailwind::condition::on_modify_spe(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onModifyType callbacks
 pub fn dispatch_condition_on_modify_type(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "electrify" => electrify::condition::on_modify_type(battle, source_pos),
+        "iondeluge" => iondeluge::condition::on_modify_type(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onMoveAborted callbacks
 pub fn dispatch_condition_on_move_aborted(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "bide" => bide::condition::on_move_aborted(battle, source_pos),
+        "charge" => charge::condition::on_move_aborted(battle, source_pos),
+        "destinybond" => destinybond::condition::on_move_aborted(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onNegateImmunity callbacks
 pub fn dispatch_condition_on_negate_immunity(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "foresight" => foresight::condition::on_negate_immunity(battle, source_pos),
+        "miracleeye" => miracleeye::condition::on_negate_immunity(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onOverrideAction callbacks
 pub fn dispatch_condition_on_override_action(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "encore" => encore::condition::on_override_action(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onRedirectTarget callbacks
 pub fn dispatch_condition_on_redirect_target(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "counter" => counter::condition::on_redirect_target(battle, source_pos),
+        "mirrorcoat" => mirrorcoat::condition::on_redirect_target(battle, source_pos),
+        "skydrop" => skydrop::condition::on_redirect_target(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onResidual callbacks
 pub fn dispatch_condition_on_residual(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "aquaring" => aquaring::condition::on_residual(battle, source_pos),
+        "curse" => curse::condition::on_residual(battle, source_pos),
+        "encore" => encore::condition::on_residual(battle, source_pos),
+        "firepledge" => firepledge::condition::on_residual(battle, source_pos),
+        "gmaxcannonade" => gmaxcannonade::condition::on_residual(battle, source_pos),
+        "gmaxvinelash" => gmaxvinelash::condition::on_residual(battle, source_pos),
+        "gmaxvolcalith" => gmaxvolcalith::condition::on_residual(battle, source_pos),
+        "gmaxwildfire" => gmaxwildfire::condition::on_residual(battle, source_pos),
+        "grassyterrain" => grassyterrain::condition::on_residual(battle, source_pos),
+        "iceball" => iceball::condition::on_residual(battle, source_pos),
+        "ingrain" => ingrain::condition::on_residual(battle, source_pos),
+        "leechseed" => leechseed::condition::on_residual(battle, source_pos),
+        "nightmare" => nightmare::condition::on_residual(battle, source_pos),
+        "octolock" => octolock::condition::on_residual(battle, source_pos),
+        "perishsong" => perishsong::condition::on_residual(battle, source_pos),
+        "rollout" => rollout::condition::on_residual(battle, source_pos),
+        "saltcure" => saltcure::condition::on_residual(battle, source_pos),
+        "syrupbomb" => syrupbomb::condition::on_residual(battle, source_pos),
+        "uproar" => uproar::condition::on_residual(battle, source_pos),
+        "wish" => wish::condition::on_residual(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onRestart callbacks
 pub fn dispatch_condition_on_restart(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "allyswitch" => allyswitch::condition::on_restart(battle, source_pos),
+        "charge" => charge::condition::on_restart(battle, source_pos),
+        "furycutter" => furycutter::condition::on_restart(battle, source_pos),
+        "gmaxchistrike" => gmaxchistrike::condition::on_restart(battle, source_pos),
+        "healblock" => healblock::condition::on_restart(battle, source_pos),
+        "helpinghand" => helpinghand::condition::on_restart(battle, source_pos),
+        "laserfocus" => laserfocus::condition::on_restart(battle, source_pos),
+        "powershift" => powershift::condition::on_restart(battle, source_pos),
+        "powertrick" => powertrick::condition::on_restart(battle, source_pos),
+        "smackdown" => smackdown::condition::on_restart(battle, source_pos),
+        "stockpile" => stockpile::condition::on_restart(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSetStatus callbacks
 pub fn dispatch_condition_on_set_status(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "electricterrain" => electricterrain::condition::on_set_status(battle, source_pos),
+        "mistyterrain" => mistyterrain::condition::on_set_status(battle, source_pos),
+        "safeguard" => safeguard::condition::on_set_status(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSideEnd callbacks
 pub fn dispatch_condition_on_side_end(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "auroraveil" => auroraveil::condition::on_side_end(battle, source_pos),
+        "firepledge" => firepledge::condition::on_side_end(battle, source_pos),
+        "gmaxcannonade" => gmaxcannonade::condition::on_side_end(battle, source_pos),
+        "gmaxvinelash" => gmaxvinelash::condition::on_side_end(battle, source_pos),
+        "gmaxvolcalith" => gmaxvolcalith::condition::on_side_end(battle, source_pos),
+        "gmaxwildfire" => gmaxwildfire::condition::on_side_end(battle, source_pos),
+        "grasspledge" => grasspledge::condition::on_side_end(battle, source_pos),
+        "lightscreen" => lightscreen::condition::on_side_end(battle, source_pos),
+        "luckychant" => luckychant::condition::on_side_end(battle, source_pos),
+        "mist" => mist::condition::on_side_end(battle, source_pos),
+        "reflect" => reflect::condition::on_side_end(battle, source_pos),
+        "safeguard" => safeguard::condition::on_side_end(battle, source_pos),
+        "tailwind" => tailwind::condition::on_side_end(battle, source_pos),
+        "waterpledge" => waterpledge::condition::on_side_end(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSideRestart callbacks
 pub fn dispatch_condition_on_side_restart(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "spikes" => spikes::condition::on_side_restart(battle, source_pos),
+        "toxicspikes" => toxicspikes::condition::on_side_restart(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSideStart callbacks
 pub fn dispatch_condition_on_side_start(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "auroraveil" => auroraveil::condition::on_side_start(battle, source_pos),
+        "craftyshield" => craftyshield::condition::on_side_start(battle, source_pos),
+        "firepledge" => firepledge::condition::on_side_start(battle, source_pos),
+        "gmaxcannonade" => gmaxcannonade::condition::on_side_start(battle, source_pos),
+        "gmaxsteelsurge" => gmaxsteelsurge::condition::on_side_start(battle, source_pos),
+        "gmaxvinelash" => gmaxvinelash::condition::on_side_start(battle, source_pos),
+        "gmaxvolcalith" => gmaxvolcalith::condition::on_side_start(battle, source_pos),
+        "gmaxwildfire" => gmaxwildfire::condition::on_side_start(battle, source_pos),
+        "grasspledge" => grasspledge::condition::on_side_start(battle, source_pos),
+        "lightscreen" => lightscreen::condition::on_side_start(battle, source_pos),
+        "luckychant" => luckychant::condition::on_side_start(battle, source_pos),
+        "matblock" => matblock::condition::on_side_start(battle, source_pos),
+        "mist" => mist::condition::on_side_start(battle, source_pos),
+        "quickguard" => quickguard::condition::on_side_start(battle, source_pos),
+        "reflect" => reflect::condition::on_side_start(battle, source_pos),
+        "safeguard" => safeguard::condition::on_side_start(battle, source_pos),
+        "spikes" => spikes::condition::on_side_start(battle, source_pos),
+        "stealthrock" => stealthrock::condition::on_side_start(battle, source_pos),
+        "stickyweb" => stickyweb::condition::on_side_start(battle, source_pos),
+        "tailwind" => tailwind::condition::on_side_start(battle, source_pos),
+        "toxicspikes" => toxicspikes::condition::on_side_start(battle, source_pos),
+        "waterpledge" => waterpledge::condition::on_side_start(battle, source_pos),
+        "wideguard" => wideguard::condition::on_side_start(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSourceAccuracy callbacks
 pub fn dispatch_condition_on_source_accuracy(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "lockon" => lockon::condition::on_source_accuracy(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSourceBasePower callbacks
 pub fn dispatch_condition_on_source_base_power(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "bounce" => bounce::condition::on_source_base_power(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSourceInvulnerability callbacks
 pub fn dispatch_condition_on_source_invulnerability(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "lockon" => lockon::condition::on_source_invulnerability(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSourceModifyDamage callbacks
 pub fn dispatch_condition_on_source_modify_damage(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "dig" => dig::condition::on_source_modify_damage(battle, source_pos, target_pos, move_id),
+        "dive" => dive::condition::on_source_modify_damage(battle, source_pos, target_pos, move_id),
+        "fly" => fly::condition::on_source_modify_damage(battle, source_pos, target_pos, move_id),
+        "glaiverush" => glaiverush::condition::on_source_modify_damage(battle, source_pos, target_pos, move_id),
+        "minimize" => minimize::condition::on_source_modify_damage(battle, source_pos, target_pos, move_id),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onStart callbacks
 pub fn dispatch_condition_on_start(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "allyswitch" => allyswitch::condition::on_start(battle, source_pos),
+        "aquaring" => aquaring::condition::on_start(battle, source_pos),
+        "attract" => attract::condition::on_start(battle, source_pos),
+        "banefulbunker" => banefulbunker::condition::on_start(battle, source_pos),
+        "beakblast" => beakblast::condition::on_start(battle, source_pos),
+        "bide" => bide::condition::on_start(battle, source_pos),
+        "burningbulwark" => burningbulwark::condition::on_start(battle, source_pos),
+        "charge" => charge::condition::on_start(battle, source_pos),
+        "counter" => counter::condition::on_start(battle, source_pos),
+        "curse" => curse::condition::on_start(battle, source_pos),
+        "destinybond" => destinybond::condition::on_start(battle, source_pos),
+        "disable" => disable::condition::on_start(battle, source_pos),
+        "dragoncheer" => dragoncheer::condition::on_start(battle, source_pos),
+        "electrify" => electrify::condition::on_start(battle, source_pos),
+        "embargo" => embargo::condition::on_start(battle, source_pos),
+        "encore" => encore::condition::on_start(battle, source_pos),
+        "endure" => endure::condition::on_start(battle, source_pos),
+        "focusenergy" => focusenergy::condition::on_start(battle, source_pos),
+        "focuspunch" => focuspunch::condition::on_start(battle, source_pos),
+        "followme" => followme::condition::on_start(battle, source_pos),
+        "foresight" => foresight::condition::on_start(battle, source_pos),
+        "furycutter" => furycutter::condition::on_start(battle, source_pos),
+        "gastroacid" => gastroacid::condition::on_start(battle, source_pos),
+        "glaiverush" => glaiverush::condition::on_start(battle, source_pos),
+        "gmaxchistrike" => gmaxchistrike::condition::on_start(battle, source_pos),
+        "grudge" => grudge::condition::on_start(battle, source_pos),
+        "healblock" => healblock::condition::on_start(battle, source_pos),
+        "helpinghand" => helpinghand::condition::on_start(battle, source_pos),
+        "iceball" => iceball::condition::on_start(battle, source_pos),
+        "imprison" => imprison::condition::on_start(battle, source_pos),
+        "ingrain" => ingrain::condition::on_start(battle, source_pos),
+        "kingsshield" => kingsshield::condition::on_start(battle, source_pos),
+        "laserfocus" => laserfocus::condition::on_start(battle, source_pos),
+        "leechseed" => leechseed::condition::on_start(battle, source_pos),
+        "magiccoat" => magiccoat::condition::on_start(battle, source_pos),
+        "magnetrise" => magnetrise::condition::on_start(battle, source_pos),
+        "maxguard" => maxguard::condition::on_start(battle, source_pos),
+        "miracleeye" => miracleeye::condition::on_start(battle, source_pos),
+        "mirrorcoat" => mirrorcoat::condition::on_start(battle, source_pos),
+        "nightmare" => nightmare::condition::on_start(battle, source_pos),
+        "noretreat" => noretreat::condition::on_start(battle, source_pos),
+        "obstruct" => obstruct::condition::on_start(battle, source_pos),
+        "octolock" => octolock::condition::on_start(battle, source_pos),
+        "powder" => powder::condition::on_start(battle, source_pos),
+        "powershift" => powershift::condition::on_start(battle, source_pos),
+        "powertrick" => powertrick::condition::on_start(battle, source_pos),
+        "protect" => protect::condition::on_start(battle, source_pos),
+        "rage" => rage::condition::on_start(battle, source_pos),
+        "ragepowder" => ragepowder::condition::on_start(battle, source_pos),
+        "rollout" => rollout::condition::on_start(battle, source_pos),
+        "roost" => roost::condition::on_start(battle, source_pos),
+        "saltcure" => saltcure::condition::on_start(battle, source_pos),
+        "shelltrap" => shelltrap::condition::on_start(battle, source_pos),
+        "silktrap" => silktrap::condition::on_start(battle, source_pos),
+        "smackdown" => smackdown::condition::on_start(battle, source_pos),
+        "snatch" => snatch::condition::on_start(battle, source_pos),
+        "spikyshield" => spikyshield::condition::on_start(battle, source_pos),
+        "spotlight" => spotlight::condition::on_start(battle, source_pos),
+        "stockpile" => stockpile::condition::on_start(battle, source_pos),
+        "substitute" => substitute::condition::on_start(battle, source_pos),
+        "syrupbomb" => syrupbomb::condition::on_start(battle, source_pos),
+        "tarshot" => tarshot::condition::on_start(battle, source_pos),
+        "taunt" => taunt::condition::on_start(battle, source_pos),
+        "telekinesis" => telekinesis::condition::on_start(battle, source_pos),
+        "throatchop" => throatchop::condition::on_start(battle, source_pos),
+        "torment" => torment::condition::on_start(battle, source_pos),
+        "uproar" => uproar::condition::on_start(battle, source_pos),
+        "wish" => wish::condition::on_start(battle, source_pos),
+        "yawn" => yawn::condition::on_start(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSwap callbacks
 pub fn dispatch_condition_on_swap(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "healingwish" => healingwish::condition::on_swap(battle, source_pos),
+        "lunardance" => lunardance::condition::on_swap(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onSwitchIn callbacks
 pub fn dispatch_condition_on_switch_in(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "gmaxsteelsurge" => gmaxsteelsurge::condition::on_switch_in(battle, source_pos),
+        "healingwish" => healingwish::condition::on_switch_in(battle, source_pos),
+        "lunardance" => lunardance::condition::on_switch_in(battle, source_pos),
+        "spikes" => spikes::condition::on_switch_in(battle, source_pos),
+        "stealthrock" => stealthrock::condition::on_switch_in(battle, source_pos),
+        "stickyweb" => stickyweb::condition::on_switch_in(battle, source_pos),
+        "toxicspikes" => toxicspikes::condition::on_switch_in(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onTrapPokemon callbacks
 pub fn dispatch_condition_on_trap_pokemon(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "fairylock" => fairylock::condition::on_trap_pokemon(battle, source_pos),
+        "ingrain" => ingrain::condition::on_trap_pokemon(battle, source_pos),
+        "noretreat" => noretreat::condition::on_trap_pokemon(battle, source_pos),
+        "octolock" => octolock::condition::on_trap_pokemon(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onTryAddVolatile callbacks
 pub fn dispatch_condition_on_try_add_volatile(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "electricterrain" => electricterrain::condition::on_try_add_volatile(battle, source_pos),
+        "focuspunch" => focuspunch::condition::on_try_add_volatile(battle, source_pos),
+        "mistyterrain" => mistyterrain::condition::on_try_add_volatile(battle, source_pos),
+        "safeguard" => safeguard::condition::on_try_add_volatile(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onTryBoost callbacks
 pub fn dispatch_condition_on_try_boost(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "mist" => mist::condition::on_try_boost(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onTryHeal callbacks
 pub fn dispatch_condition_on_try_heal(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "healblock" => healblock::condition::on_try_heal(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onTryHit callbacks
 pub fn dispatch_condition_on_try_hit(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "banefulbunker" => banefulbunker::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "burningbulwark" => burningbulwark::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "craftyshield" => craftyshield::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "kingsshield" => kingsshield::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "magiccoat" => magiccoat::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "matblock" => matblock::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "maxguard" => maxguard::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "obstruct" => obstruct::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "protect" => protect::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "psychicterrain" => psychicterrain::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "quickguard" => quickguard::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "silktrap" => silktrap::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "spikyshield" => spikyshield::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        "wideguard" => wideguard::condition::on_try_hit(battle, source_pos, target_pos, move_id),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onTryMove callbacks
 pub fn dispatch_condition_on_try_move(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "powder" => powder::condition::on_try_move(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onTryPrimaryHit callbacks
 pub fn dispatch_condition_on_try_primary_hit(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "substitute" => substitute::condition::on_try_primary_hit(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onType callbacks
 pub fn dispatch_condition_on_type(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "roost" => roost::condition::on_type(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch condition onUpdate callbacks
 pub fn dispatch_condition_on_update(
-    _battle: &mut Battle,
-    _move_id: &str,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match move_id {
+        "attract" => attract::condition::on_update(battle, source_pos),
+        "fling" => fling::condition::on_update(battle, source_pos),
+        "syrupbomb" => syrupbomb::condition::on_update(battle, source_pos),
+        "telekinesis" => telekinesis::condition::on_update(battle, source_pos),
+        _ => EventResult::Continue,
+    }
 }

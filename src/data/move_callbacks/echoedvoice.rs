@@ -23,7 +23,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 /// onTryMove() {
 ///     this.field.addPseudoWeather('echoedvoice');
 /// }
-pub fn on_try_move(battle: &mut Battle) -> EventResult {
+pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

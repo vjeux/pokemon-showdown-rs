@@ -39,7 +39,7 @@ pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
 /// onModifyMove(move, source, target) {
 ///     if (target?.beingCalledBack || target?.switchFlag) move.accuracy = true;
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -47,7 +47,7 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(us
 /// onTryHit(target, pokemon) {
 ///     target.side.removeSideCondition('pursuit');
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize), move_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
