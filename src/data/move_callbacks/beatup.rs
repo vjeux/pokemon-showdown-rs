@@ -6,6 +6,42 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex_data::ID;
+
+/// onModifyMove(move, pokemon) {
+///     move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
+///     move.multihit = move.allies.length;
+/// }
+pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    // move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
+    // Build list of allies that are not fainted and not statused
+    let mut allies = Vec::new();
+    for pos in battle.allies_and_self(pokemon_pos.0, false) {
+        if let Some(pokemon) = battle.pokemon_at(pos.0, pos.1) {
+            // ally === pokemon || !ally.fainted && !ally.status
+            if pos == pokemon_pos || (!pokemon.fainted && pokemon.status == ID::from("")) {
+                allies.push(pos);
+            }
+        }
+    }
+
+    // move.multihit = move.allies.length;
+    let multihit = allies.len() as i32;
+
+    // Store allies and multihit in current effect state
+    if let Some(ref mut effect_state) = battle.current_effect_state {
+        effect_state.data.insert(
+            "allies".to_string(),
+            serde_json::to_value(&allies).unwrap_or(serde_json::Value::Null),
+        );
+        effect_state.data.insert(
+            "multihit".to_string(),
+            serde_json::to_value(multihit).unwrap_or(serde_json::Value::Null),
+        );
+    }
+
+    EventResult::Continue
+}
 
 /// basePowerCallback(pokemon, target, move) {
 ///     const setSpecies = this.dex.species.get(move.allies!.shift()!.set.species);
@@ -14,16 +50,52 @@ use crate::event::EventResult;
 ///     return bp;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
-}
+    // Get allies from current effect state
+    let ally_pos = if let Some(ref mut effect_state) = battle.current_effect_state {
+        if let Some(allies_value) = effect_state.data.get_mut("allies") {
+            // move.allies!.shift()
+            if let Some(allies_array) = allies_value.as_array_mut() {
+                if !allies_array.is_empty() {
+                    let first_ally = allies_array.remove(0);
+                    // Deserialize the ally position
+                    serde_json::from_value::<(usize, usize)>(first_ally).ok()
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    } else {
+        None
+    };
 
-/// onModifyMove(move, pokemon) {
-///     move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
-///     move.multihit = move.allies.length;
-/// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let ally_pos = match ally_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // const setSpecies = this.dex.species.get(move.allies!.shift()!.set.species);
+    let species_id = if let Some(pokemon) = battle.pokemon_at(ally_pos.0, ally_pos.1) {
+        pokemon.species.clone()
+    } else {
+        return EventResult::Continue;
+    };
+
+    let species = match battle.dex.get_species_by_id(&species_id) {
+        Some(s) => s,
+        None => return EventResult::Continue,
+    };
+
+    // const bp = 5 + Math.floor(setSpecies.baseStats.atk / 10);
+    let bp = 5 + (species.base_stats.atk / 10);
+
+    // this.debug(`BP for ${setSpecies.name} hit: ${bp}`);
+    // TODO: debug logging not yet implemented
+
+    // return bp;
+    EventResult::Int(bp)
 }
 
