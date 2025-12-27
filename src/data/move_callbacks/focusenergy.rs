@@ -25,7 +25,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onModifyCritRatio(critRatio) {
     ///     return critRatio + 2;
     /// }
@@ -33,5 +32,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

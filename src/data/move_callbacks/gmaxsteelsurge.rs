@@ -18,7 +18,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSwitchIn(pokemon) {
     ///     if (pokemon.hasItem('heavydutyboots')) return;
     ///     // Ice Face and Disguise correctly get typed damage from Stealth Rock
@@ -34,5 +33,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

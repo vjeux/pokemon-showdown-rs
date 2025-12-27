@@ -22,7 +22,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFieldStart(target, source) {
     ///     if (source?.hasAbility('persistent')) {
     ///         this.add('-fieldstart', 'move: Gravity', '[persistent]');
@@ -61,7 +60,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onModifyAccuracy(accuracy) {
     ///     if (typeof accuracy !== 'number') return;
     ///     return this.chainModify([6840, 4096]);
@@ -70,7 +68,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onDisableMove(pokemon) {
     ///     for (const moveSlot of pokemon.moveSlots) {
     ///         if (this.dex.moves.get(moveSlot.id).flags['gravity']) {
@@ -82,7 +79,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onBeforeMove(pokemon, target, move) {
     ///     if (move.flags['gravity'] && !move.isZ) {
     ///         this.add('cant', pokemon, 'move: Gravity', move);
@@ -93,7 +89,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onModifyMove(move, pokemon, target) {
     ///     if (move.flags['gravity'] && !move.isZ) {
     ///         this.add('cant', pokemon, 'move: Gravity', move);
@@ -104,7 +99,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Gravity');
     /// }
@@ -112,5 +106,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

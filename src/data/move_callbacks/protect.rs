@@ -33,7 +33,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onTryHit(target, source, move) {
     ///     if (!move.flags['protect']) {
     ///         if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
@@ -58,5 +57,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

@@ -25,7 +25,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onTryHit(target, source, move) {
     ///     if (['self', 'all'].includes(move.target) || move.category !== 'Status') return;
     ///     this.add('-activate', target, 'move: Crafty Shield');
@@ -35,5 +34,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

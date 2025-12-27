@@ -29,7 +29,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSwap(target) {
     ///     if (
     ///         !target.fainted && (
@@ -51,5 +50,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

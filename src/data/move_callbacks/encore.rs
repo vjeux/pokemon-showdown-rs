@@ -32,7 +32,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onOverrideAction(pokemon, target, move) {
     ///     if (move.id !== this.effectState.move) return this.effectState.move;
     /// }
@@ -40,7 +39,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onResidual(target) {
     ///     const moveSlot = target.getMoveData(this.effectState.move);
     ///     if (!moveSlot || moveSlot.pp <= 0) {
@@ -52,7 +50,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onEnd(target) {
     ///     this.add('-end', target, 'Encore');
     /// }
@@ -60,7 +57,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onDisableMove(pokemon) {
     ///     if (!this.effectState.move || !pokemon.hasMove(this.effectState.move)) {
     ///         return;
@@ -75,5 +71,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

@@ -22,7 +22,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFieldStart(target, source) {
     ///     if (source?.hasAbility('persistent')) {
     ///         this.add('-fieldstart', 'move: Trick Room', `[of] ${source}`, '[persistent]');
@@ -34,7 +33,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFieldRestart(target, source) {
     ///     this.field.removePseudoWeather('trickroom');
     /// }
@@ -42,7 +40,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Trick Room');
     /// }
@@ -50,5 +47,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

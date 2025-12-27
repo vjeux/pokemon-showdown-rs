@@ -21,7 +21,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSetStatus(status, target, source, effect) {
     ///     if (status.id === 'slp' && target.isGrounded() && !target.isSemiInvulnerable()) {
     ///         if (effect.id === 'yawn' || (effect.effectType === 'Move' && !effect.secondaries)) {
@@ -34,7 +33,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onTryAddVolatile(status, target) {
     ///     if (!target.isGrounded() || target.isSemiInvulnerable()) return;
     ///     if (status.id === 'yawn') {
@@ -46,7 +44,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onBasePower(basePower, attacker, defender, move) {
     ///     if (move.type === 'Electric' && attacker.isGrounded() && !attacker.isSemiInvulnerable()) {
     ///         this.debug('electric terrain boost');
@@ -57,7 +54,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFieldStart(field, source, effect) {
     ///     if (effect?.effectType === 'Ability') {
     ///         this.add('-fieldstart', 'move: Electric Terrain', '[from] ability: ' + effect.name, `[of] ${source}`);
@@ -69,7 +65,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Electric Terrain');
     /// }
@@ -77,5 +72,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

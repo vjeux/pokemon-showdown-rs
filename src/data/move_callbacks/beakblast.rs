@@ -33,7 +33,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onHit(target, source, move) {
     ///     if (this.checkMoveMakesContact(move, source, target)) {
     ///         source.trySetStatus('brn', target);
@@ -43,5 +42,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

@@ -18,7 +18,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onAnyPrepareHit(source, target, move) {
     ///     const snatchUser = this.effectState.source;
     ///     if (snatchUser.isSkyDropped()) return;
@@ -34,5 +33,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

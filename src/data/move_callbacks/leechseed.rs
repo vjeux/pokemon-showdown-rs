@@ -25,7 +25,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onResidual(pokemon) {
     ///     const target = this.getAtSlot(pokemon.volatiles['leechseed'].sourceSlot);
     ///     if (!target || target.fainted || target.hp <= 0) {
@@ -41,5 +40,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

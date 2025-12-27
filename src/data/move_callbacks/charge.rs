@@ -22,7 +22,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onRestart(pokemon, source, effect) {
     ///     if (effect && ['Electromorphosis', 'Wind Power'].includes(effect.name)) {
     ///         this.add('-start', pokemon, 'Charge', this.activeMove!.name, '[from] ability: ' + effect.name);
@@ -34,7 +33,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onBasePower(basePower, attacker, defender, move) {
     ///     if (move.type === 'Electric') {
     ///         this.debug('charge boost');
@@ -45,7 +43,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onMoveAborted(pokemon, target, move) {
     ///     if (move.type === 'Electric' && move.id !== 'charge') {
     ///         pokemon.removeVolatile('charge');
@@ -55,7 +52,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onAfterMove(pokemon, target, move) {
     ///     if (move.type === 'Electric' && move.id !== 'charge') {
     ///         pokemon.removeVolatile('charge');
@@ -65,7 +61,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Charge', '[silent]');
     /// }
@@ -73,5 +68,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

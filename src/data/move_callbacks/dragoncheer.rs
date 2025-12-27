@@ -28,7 +28,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onModifyCritRatio(critRatio, source) {
     ///     return critRatio + (this.effectState.hasDragonType ? 2 : 1);
     /// }
@@ -36,5 +35,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

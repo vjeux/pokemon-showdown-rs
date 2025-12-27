@@ -25,7 +25,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFoeRedirectTarget(target, source, source2, move) {
     ///     const ragePowderUser = this.effectState.target;
     ///     if (ragePowderUser.isSkyDropped()) return;
@@ -40,5 +39,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

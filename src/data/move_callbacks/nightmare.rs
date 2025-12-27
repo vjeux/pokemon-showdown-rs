@@ -21,7 +21,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onResidual(pokemon) {
     ///     this.damage(pokemon.baseMaxhp / 4);
     /// }
@@ -29,5 +28,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

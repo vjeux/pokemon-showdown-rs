@@ -31,7 +31,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onResidual(target) {
     ///     if (target.volatiles['throatchop']) {
     ///         target.removeVolatile('uproar');
@@ -47,7 +46,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onEnd(target) {
     ///     this.add('-end', target, 'Uproar');
     /// }
@@ -55,7 +53,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onAnySetStatus(status, pokemon) {
     ///     if (status.id === 'slp') {
     ///         if (pokemon === this.effectState.target) {
@@ -70,5 +67,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

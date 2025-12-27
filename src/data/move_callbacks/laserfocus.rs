@@ -22,7 +22,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onRestart(pokemon) {
     ///     this.effectState.duration = 2;
     ///     this.add('-start', pokemon, 'move: Laser Focus');
@@ -31,7 +30,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onModifyCritRatio(critRatio) {
     ///     return 5;
     /// }
@@ -39,7 +37,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'move: Laser Focus', '[silent]');
     /// }
@@ -47,5 +44,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

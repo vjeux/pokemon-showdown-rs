@@ -42,7 +42,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onResidual(pokemon) {
     ///     const duration = pokemon.volatiles['perishsong'].duration;
     ///     this.add('-start', pokemon, `perish${duration}`);
@@ -51,5 +50,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

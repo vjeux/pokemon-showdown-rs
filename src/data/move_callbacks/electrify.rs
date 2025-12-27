@@ -25,7 +25,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onModifyType(move) {
     ///     if (move.id !== 'struggle') {
     ///         this.debug('Electrify making move type electric');
@@ -36,5 +35,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

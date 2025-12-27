@@ -85,7 +85,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFoeTrapPokemon(defender) {
     ///     if (defender !== this.effectState.source) return;
     ///     defender.trapped = true;
@@ -94,7 +93,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFoeBeforeMove(attacker, defender, move) {
     ///     if (attacker === this.effectState.source) {
     ///         attacker.activeMoveActions--;
@@ -106,7 +104,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onRedirectTarget(target, source, source2) {
     ///     if (source !== this.effectState.target) return;
     ///     if (this.effectState.source.fainted) return;
@@ -116,7 +113,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onAnyInvulnerability(target, source, move) {
     ///     if (target !== this.effectState.target && target !== this.effectState.source) {
     ///         return;
@@ -133,7 +129,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onAnyBasePower(basePower, target, source, move) {
     ///     if (target !== this.effectState.target && target !== this.effectState.source) {
     ///         return;
@@ -150,7 +145,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFaint(target) {
     ///     if (target.volatiles['skydrop'] && target.volatiles['twoturnmove'].source) {
     ///         this.add('-end', target.volatiles['twoturnmove'].source, 'Sky Drop', '[interrupt]');
@@ -160,5 +154,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

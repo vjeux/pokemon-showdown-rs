@@ -22,7 +22,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSetStatus(status, target, source, effect) {
     ///     if (!effect || !source) return;
     ///     if (effect.id === 'yawn') return;
@@ -39,7 +38,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onTryAddVolatile(status, target, source, effect) {
     ///     if (!effect || !source) return;
     ///     if (effect.effectType === 'Move' && effect.infiltrates && !target.isAlly(source)) return;
@@ -52,7 +50,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSideStart(side, source) {
     ///     if (source?.hasAbility('persistent')) {
     ///         this.add('-sidestart', side, 'Safeguard', '[persistent]');
@@ -64,7 +61,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSideEnd(side) {
     ///     this.add('-sideend', side, 'Safeguard');
     /// }
@@ -72,5 +68,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

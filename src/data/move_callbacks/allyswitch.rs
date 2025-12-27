@@ -48,7 +48,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onRestart(pokemon) {
     ///     // this.effectState.counter should never be undefined here.
     ///     // However, just in case, use 1 if it is undefined.
@@ -68,5 +67,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

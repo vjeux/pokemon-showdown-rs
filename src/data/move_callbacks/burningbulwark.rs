@@ -33,7 +33,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onTryHit(target, source, move) {
     ///     if (!move.flags['protect'] || move.category === 'Status') {
     ///         if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
@@ -61,7 +60,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onHit(target, source, move) {
     ///     if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
     ///         source.trySetStatus('brn', target);
@@ -71,5 +69,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

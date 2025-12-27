@@ -18,7 +18,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onTryMove(pokemon, target, move) {
     ///     if (move.type === 'Fire') {
     ///         this.add('-activate', pokemon, 'move: Powder');
@@ -31,5 +30,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

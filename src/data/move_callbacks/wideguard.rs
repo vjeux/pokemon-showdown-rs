@@ -33,7 +33,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onTryHit(target, source, move) {
     ///     // Wide Guard blocks all spread moves
     ///     if (move?.target !== 'allAdjacent' && move.target !== 'allAdjacentFoes') {
@@ -58,5 +57,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

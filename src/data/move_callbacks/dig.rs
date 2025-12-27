@@ -33,7 +33,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onInvulnerability(target, source, move) {
     ///     if (['earthquake', 'magnitude'].includes(move.id)) {
     ///         return;
@@ -44,7 +43,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSourceModifyDamage(damage, source, target, move) {
     ///     if (move.id === 'earthquake' || move.id === 'magnitude') {
     ///         return this.chainModify(2);
@@ -54,5 +52,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

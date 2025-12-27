@@ -36,7 +36,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSourceModifyDamage(damage, source, target, move) {
     ///     if (move.id === 'gust' || move.id === 'twister') {
     ///         return this.chainModify(2);
@@ -46,5 +45,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

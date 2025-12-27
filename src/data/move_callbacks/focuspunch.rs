@@ -36,7 +36,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onHit(pokemon, source, move) {
     ///     if (move.category !== 'Status') {
     ///         this.effectState.lostFocus = true;
@@ -46,7 +45,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onTryAddVolatile(status, pokemon) {
     ///     if (status.id === 'flinch') return null;
     /// }
@@ -54,5 +52,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

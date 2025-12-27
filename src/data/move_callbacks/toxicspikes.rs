@@ -19,7 +19,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSideRestart(side) {
     ///     if (this.effectState.layers >= 2) return false;
     ///     this.add('-sidestart', side, 'move: Toxic Spikes');
@@ -29,7 +28,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSwitchIn(pokemon) {
     ///     if (!pokemon.isGrounded()) return;
     ///     if (pokemon.hasType('Poison')) {
@@ -47,5 +45,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

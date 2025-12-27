@@ -25,7 +25,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFaint(target, source, effect) {
     ///     if (!source || !effect || target.isAlly(source)) return;
     ///     if (effect.effectType === 'Move' && !effect.flags['futuremove']) {
@@ -41,7 +40,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onBeforeMove(pokemon, target, move) {
     ///     if (move.id === 'destinybond') return;
     ///     this.debug('removing Destiny Bond before attack');
@@ -51,7 +49,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onMoveAborted(pokemon, target, move) {
     ///     pokemon.removeVolatile('destinybond');
     /// }
@@ -59,5 +56,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

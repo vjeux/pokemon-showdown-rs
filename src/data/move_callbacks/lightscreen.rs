@@ -21,7 +21,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onAnyModifyDamage(damage, source, target, move) {
     ///     if (target !== source && this.effectState.target.hasAlly(target) && this.getCategory(move) === 'Special') {
     ///         if (!target.getMoveHitData(move).crit && !move.infiltrates) {
@@ -35,7 +34,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSideStart(side) {
     ///     this.add('-sidestart', side, 'move: Light Screen');
     /// }
@@ -43,7 +41,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSideEnd(side) {
     ///     this.add('-sideend', side, 'move: Light Screen');
     /// }
@@ -51,5 +48,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

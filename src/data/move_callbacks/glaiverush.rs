@@ -18,7 +18,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onAccuracy() {
     ///     return true;
     /// }
@@ -26,7 +25,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSourceModifyDamage() {
     ///     return this.chainModify(2);
     /// }
@@ -34,7 +32,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onBeforeMove(pokemon) {
     ///     this.debug('removing Glaive Rush drawback before attack');
     ///     pokemon.removeVolatile('glaiverush');
@@ -43,5 +40,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

@@ -31,7 +31,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSideStart(side) {
     ///     this.add('-sidestart', side, 'Mist');
     /// }
@@ -39,7 +38,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSideEnd(side) {
     ///     this.add('-sideend', side, 'Mist');
     /// }
@@ -47,5 +45,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

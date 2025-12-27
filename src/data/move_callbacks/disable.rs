@@ -51,7 +51,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Disable');
     /// }
@@ -59,7 +58,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onBeforeMove(attacker, defender, move) {
     ///     if (!(move.isZ && move.isZOrMaxPowered) && move.id === this.effectState.move) {
     ///         this.add('cant', attacker, 'Disable', move);
@@ -70,7 +68,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onDisableMove(pokemon) {
     ///     for (const moveSlot of pokemon.moveSlots) {
     ///         if (moveSlot.id === this.effectState.move) {
@@ -82,5 +79,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

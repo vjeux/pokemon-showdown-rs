@@ -18,7 +18,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onSwitchIn(pokemon) {
     ///     if (!pokemon.isGrounded() || pokemon.hasItem('heavydutyboots')) return;
     ///     this.add('-activate', pokemon, 'move: Sticky Web');
@@ -28,5 +27,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

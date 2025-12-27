@@ -32,7 +32,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onRestart(target) {
     ///     if (this.effectState.layers >= 3) return false;
     ///     this.effectState.layers++;
@@ -47,7 +46,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onEnd(target) {
     ///     if (this.effectState.def || this.effectState.spd) {
     ///         const boosts: SparseBoostsTable = {};
@@ -64,5 +62,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

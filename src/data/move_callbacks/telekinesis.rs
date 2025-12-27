@@ -36,7 +36,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onAccuracy(accuracy, target, source, move) {
     ///     if (move && !move.ohko) return true;
     /// }
@@ -44,7 +43,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onImmunity(type) {
     ///     if (type === 'Ground') return false;
     /// }
@@ -52,7 +50,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onUpdate(pokemon) {
     ///     if (pokemon.baseSpecies.name === 'Gengar-Mega') {
     ///         delete pokemon.volatiles['telekinesis'];
@@ -63,7 +60,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onEnd(target) {
     ///     this.add('-end', target, 'Telekinesis');
     /// }
@@ -71,5 +67,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

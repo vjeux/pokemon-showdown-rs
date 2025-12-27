@@ -21,7 +21,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onBasePower(basePower, attacker, defender, move) {
     ///     const weakenedMoves = ['earthquake', 'bulldoze', 'magnitude'];
     ///     if (weakenedMoves.includes(move.id) && defender.isGrounded() && !defender.isSemiInvulnerable()) {
@@ -37,7 +36,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFieldStart(field, source, effect) {
     ///     if (effect?.effectType === 'Ability') {
     ///         this.add('-fieldstart', 'move: Grassy Terrain', '[from] ability: ' + effect.name, `[of] ${source}`);
@@ -49,7 +47,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onResidual(pokemon) {
     ///     if (pokemon.isGrounded() && !pokemon.isSemiInvulnerable()) {
     ///         this.heal(pokemon.baseMaxhp / 16, pokemon, pokemon);
@@ -61,7 +58,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Grassy Terrain');
     /// }
@@ -69,5 +65,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

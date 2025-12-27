@@ -18,7 +18,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFoeDisableMove(pokemon) {
     ///     for (const moveSlot of this.effectState.source.moveSlots) {
     ///         if (moveSlot.id === 'struggle') continue;
@@ -30,7 +29,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFoeBeforeMove(attacker, defender, move) {
     ///     if (move.id !== 'struggle' && this.effectState.source.hasMove(move.id) && !move.isZOrMaxPowered) {
     ///         this.add('cant', attacker, 'move: Imprison', move);
@@ -41,5 +39,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

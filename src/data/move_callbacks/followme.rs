@@ -29,7 +29,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFoeRedirectTarget(target, source, source2, move) {
     ///     if (!this.effectState.target.isSkyDropped() && this.validTarget(this.effectState.target, source, move.target)) {
     ///         if (move.smartTarget) move.smartTarget = false;
@@ -41,5 +40,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

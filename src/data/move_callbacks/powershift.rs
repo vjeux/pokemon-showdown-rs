@@ -22,7 +22,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onCopy(pokemon) {
     ///     const newatk = pokemon.storedStats.def;
     ///     const newdef = pokemon.storedStats.atk;
@@ -33,7 +32,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Power Shift');
     ///     const newatk = pokemon.storedStats.def;
@@ -45,7 +43,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onRestart(pokemon) {
     ///     pokemon.removeVolatile('Power Shift');
     /// }
@@ -53,5 +50,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

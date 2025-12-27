@@ -299,8 +299,7 @@ ${move.conditionCallbacks.map(callback => {
     pub fn ${rustFuncName}(${params}) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
-    }
-`;
+    }`;
 }).join('\n')}
 }
 ` : ''}`;

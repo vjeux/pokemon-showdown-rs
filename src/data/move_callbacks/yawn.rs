@@ -27,7 +27,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onEnd(target) {
     ///     this.add('-end', target, 'move: Yawn', '[silent]');
     ///     target.trySetStatus('slp', this.effectState.source);
@@ -36,5 +35,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }

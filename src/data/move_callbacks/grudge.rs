@@ -18,7 +18,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onFaint(target, source, effect) {
     ///     if (!source || source.fainted || !effect) return;
     ///     if (effect.effectType === 'Move' && !effect.flags['futuremove'] && source.lastMove) {
@@ -37,7 +36,6 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
     /// onBeforeMove(pokemon) {
     ///     this.debug('removing Grudge before attack');
     ///     pokemon.removeVolatile('grudge');
@@ -46,5 +44,4 @@ pub mod condition {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
-
 }
