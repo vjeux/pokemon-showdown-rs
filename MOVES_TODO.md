@@ -283,6 +283,16 @@ The following moves require infrastructure that doesn't exist yet:
 - `side.removeSlotCondition(target, name)`: wish - Remove slot condition
 - `battle.effectState.sourceSlot`: wish - sourceSlot field in effect state
 - `battle.effectState.source.name`: wish - Access source pokemon name through effect state
+- `pokemon.disableMove(moveId, hiddenPower)`: imprison - Disable move with hidden power flag
+- `pokemon.maybeDisabled`: imprison - Maybe disabled mutable boolean field
+- `move.hasBounced`: magiccoat - Has bounced mutable boolean flag
+- `move.pranksterBoosted`: magiccoat - Prankster boosted mutable field
+- `move.flags['reflectable']`: magiccoat - Reflectable move flag
+- `effect.pranksterBoosted`: magiccoat - Effect prankster boosted field
+- `battle.effectState.pranksterBoosted`: magiccoat - Effect state prankster field (mutable)
+- `battle.actions.useMove(move, pokemon, options)`: magiccoat - UseMove with options object {target: ...}
+- `move.sourceEffect` read: snatch - Source effect field for move origin tracking
+- `move.flags['snatch']`: snatch - Snatch flag for moves
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
