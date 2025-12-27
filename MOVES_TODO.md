@@ -271,6 +271,18 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.getWeight()`: skydrop - Get weight in hectograms (returns number)
 - `pokemon.volatiles['twoturnmove'].source`: skydrop - Access source from twoturnmove volatile
 - `move.name`: skydrop - Move name string field
+- `pokemon.volatiles[name].sourceSlot`: leechseed, wish - Access sourceSlot field from volatile
+- `side.activeTeam()`: uproar - Get array of active team pokemon
+- `side.foe.activeTeam()`: uproar - Get foe's active team array
+- `array.entries()`: uproar - Array entries() iterator with [index, pokemon] tuples
+- `pokemon.volatiles` deletion: uproar - delete volatiles[name]
+- `battle.effectState.hp`: wish - hp field in effect state (mutable)
+- `battle.effectState.startingTurn`: wish - startingTurn field in effect state (mutable)
+- `battle.getOverflowedTurnCount()`: wish - Get turn count with overflow handling
+- `battle.turn`: wish - Current turn number field
+- `side.removeSlotCondition(target, name)`: wish - Remove slot condition
+- `battle.effectState.sourceSlot`: wish - sourceSlot field in effect state
+- `battle.effectState.source.name`: wish - Access source pokemon name through effect state
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
