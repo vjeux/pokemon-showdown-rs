@@ -6817,294 +6817,148 @@ impl Battle {
         target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
+        use crate::data::ability_callbacks;
+
+        let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
-            "ModifySTAB" => {
-                // STAB modifying abilities
-                if ability_id.as_str() == "adaptability" {
-                    // Adaptability increases STAB from 1.5x to 2x
-                    // Multiply by 2.0/1.5 = 4/3 = 1.333...
-                    // In 4096 basis: (4096 * 4) / 3 = 5461
-                    return EventResult::Number(5461);
-                }
-            }
-            "SwitchIn" => {
-                // Handle switch-in abilities
-                if let Some((side_idx, poke_idx)) = target {
-                    // Intimidate
-                    if ability_id.as_str() == "intimidate" {
-                        // Lower foe's Attack - collect targets first to avoid borrow issues
-                        let foe_side = if side_idx == 0 { 1 } else { 0 };
-                        let mut targets = Vec::new();
-                        if let Some(foe) = self.sides.get(foe_side) {
-                            for slot in 0..foe.active.len() {
-                                if foe.active[slot].is_some() {
-                                    targets.push((foe_side, slot));
-                                }
-                            }
-                        }
-                        for target_pos in targets {
-                            self.boost(&[("atk", -1)], target_pos, Some((side_idx, poke_idx)), Some("Intimidate"));
-                        }
-                        return EventResult::Stop;
-                    }
-                    // Drizzle
-                    if ability_id.as_str() == "drizzle" {
-                        self.field.set_weather(ID::new("rain"), None);
-                        return EventResult::Stop;
-                    }
-                    // Drought
-                    if ability_id.as_str() == "drought" {
-                        self.field.set_weather(ID::new("sunnyday"), None);
-                        return EventResult::Stop;
-                    }
-                    // Sand Stream
-                    if ability_id.as_str() == "sandstream" {
-                        self.field.set_weather(ID::new("sandstorm"), None);
-                        return EventResult::Stop;
-                    }
-                    // Snow Warning
-                    if ability_id.as_str() == "snowwarning" {
-                        self.field.set_weather(ID::new("snow"), None);
-                        return EventResult::Stop;
-                    }
-                }
-            }
-            "SourceModifyDamage" => {
-                // Defender's abilities that reduce incoming damage
-                // Multiscale: Halve damage when at full HP
-                if ability_id.as_str() == "multiscale" {
-                    if let Some((side_idx, poke_idx)) = target {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                if pokemon.hp == pokemon.maxhp {
-                                    // Halve damage (0.5x)
-                                    // In 4096 basis: 0.5 * 4096 = 2048
-                                    return EventResult::Number(2048);
-                                }
-                            }
-                        }
-                    }
-                }
-                // Filter / Solid Rock: Reduce super effective damage to 0.75x
-                if ability_id.as_str() == "filter" || ability_id.as_str() == "solidrock" {
-                    // TODO: Check if move is super effective
-                    // For now, cannot check type effectiveness in event context
-                    // Would need to pass type effectiveness as additional context
-                }
-                // Prism Armor: Reduce super effective damage to 0.75x
-                if ability_id.as_str() == "prismarmor" {
-                    // TODO: Check if move is super effective
-                }
-            }
-            "ModifyDamage" => {
-                // Attacker's damage modifying abilities
-                // (Multiscale moved to SourceModifyDamage)
-            }
-            "Residual" => {
-                // Residual abilities like Poison Heal, Rain Dish, Hydration, Bad Dreams, etc.
-                if let Some((side_idx, poke_idx)) = target {
-                    if ability_id.as_str() == "poisonheal" {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                if pokemon.status.as_str() == "tox" || pokemon.status.as_str() == "psn" {
-                                    let heal = pokemon.maxhp / 8;
-                                    self.heal(heal as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("Poison Heal")));
-                                    return EventResult::Stop;
-                                }
-                            }
-                        }
-                    }
-                    if ability_id.as_str() == "hydration" {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                // Check if has status and weather is rain/primordialsea
-                                if !pokemon.status.is_empty() {
-                                    let weather = self.field.weather.as_str();
-                                    if weather == "raindance" || weather == "primordialsea" {
-                                        self.add("-activate", &[
-                                            crate::battle::Arg::String(pokemon.name.clone()),
-                                            crate::battle::Arg::Str("ability: Hydration")
-                                        ]);
-                                        let side_idx_mut = side_idx;
-                                        let poke_idx_mut = poke_idx;
-                                        self.sides[side_idx_mut].pokemon[poke_idx_mut].cure_status();
-                                        return EventResult::Stop;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if ability_id.as_str() == "baddreams" {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                if pokemon.hp == 0 {
-                                    return EventResult::Continue;
-                                }
-                                // Damage sleeping foes
-                                let foe_side = if side_idx == 0 { 1 } else { 0 };
-                                let mut foes_to_damage: Vec<(usize, i32)> = Vec::new();
-
-                                if let Some(foe_side_ref) = self.sides.get(foe_side) {
-                                    for foe in foe_side_ref.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
-                                        if foe.status.as_str() == "slp" || foe.ability.as_str() == "comatose" {
-                                            let damage = foe.maxhp / 8;
-                                            foes_to_damage.push((foe.position, damage));
-                                        }
-                                    }
-                                }
-
-                                for (foe_pos, dmg) in foes_to_damage {
-                                    self.damage(dmg as i32, Some((foe_side, foe_pos)), Some((side_idx, poke_idx)), None, false);
-                                }
-                                return EventResult::Stop;
-                            }
-                        }
-                    }
-                    if ability_id.as_str() == "healer" {
-                        // Healer: 30% chance to cure status of adjacent allies
-                        // Collect data first, then perform mutations
-                        let mut should_continue = false;
-                        let mut pokemon_name = String::new();
-                        let mut allies_with_status: Vec<usize> = Vec::new();
-
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                if pokemon.hp == 0 {
-                                    should_continue = true;
-                                } else {
-                                    pokemon_name = pokemon.name.clone();
-                                    for ally in side.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
-                                        if ally.position != pokemon.position && !ally.status.is_empty() {
-                                            allies_with_status.push(ally.position);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if should_continue {
-                            return EventResult::Continue;
-                        }
-
-                        // Now perform mutations
-                        for ally_pos in allies_with_status {
-                            if self.random_chance(3, 10) {
-                                self.add("-activate", &[
-                                    crate::battle::Arg::String(pokemon_name.clone()),
-                                    crate::battle::Arg::Str("ability: Healer")
-                                ]);
-                                self.sides[side_idx].pokemon[ally_pos].cure_status();
-                            }
-                        }
-                        return EventResult::Stop;
-                    }
-                    if ability_id.as_str() == "speedboost" {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                // Speed Boost: Boosts Speed by 1 stage at end of turn (if active_turns > 0)
-                                if pokemon.active_turns > 0 {
-                                    self.boost(&[("spe", 1)], (side_idx, poke_idx), Some((side_idx, poke_idx)), None);
-                                }
-                                return EventResult::Stop;
-                            }
-                        }
-                    }
-                    if ability_id.as_str() == "moody" {
-                        // Moody: Randomly raises one stat by 2 and lowers another by 1 each turn
-                        // Phase 1: Collect boost data
-                        let (mut stats_to_raise, boosts_data) = {
-                            if let Some(side) = self.sides.get(side_idx) {
-                                if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                    let mut stats = Vec::new();
-                                    if pokemon.boosts.atk < 6 { stats.push("atk"); }
-                                    if pokemon.boosts.def < 6 { stats.push("def"); }
-                                    if pokemon.boosts.spa < 6 { stats.push("spa"); }
-                                    if pokemon.boosts.spd < 6 { stats.push("spd"); }
-                                    if pokemon.boosts.spe < 6 { stats.push("spe"); }
-                                    (stats, (pokemon.boosts.atk, pokemon.boosts.def, pokemon.boosts.spa, pokemon.boosts.spd, pokemon.boosts.spe))
-                                } else {
-                                    (Vec::new(), (0, 0, 0, 0, 0))
-                                }
-                            } else {
-                                (Vec::new(), (0, 0, 0, 0, 0))
-                            }
-                        };
-
-                        // Phase 2: Random selection (mutable borrow)
-                        let raised_stat = if !stats_to_raise.is_empty() {
-                            let idx = self.random(stats_to_raise.len() as i32) as usize;
-                            Some(stats_to_raise[idx])
-                        } else {
-                            None
-                        };
-
-                        // Build list of stats that can be lowered
-                        let (atk, def, spa, spd, spe) = boosts_data;
-                        let mut stats_to_lower = Vec::new();
-                        if atk > -6 && Some("atk") != raised_stat { stats_to_lower.push("atk"); }
-                        if def > -6 && Some("def") != raised_stat { stats_to_lower.push("def"); }
-                        if spa > -6 && Some("spa") != raised_stat { stats_to_lower.push("spa"); }
-                        if spd > -6 && Some("spd") != raised_stat { stats_to_lower.push("spd"); }
-                        if spe > -6 && Some("spe") != raised_stat { stats_to_lower.push("spe"); }
-
-                        let lowered_stat = if !stats_to_lower.is_empty() {
-                            let idx = self.random(stats_to_lower.len() as i32) as usize;
-                            Some(stats_to_lower[idx])
-                        } else {
-                            None
-                        };
-
-                        // Build boost array
-                        let mut boosts = Vec::new();
-                        if let Some(stat) = raised_stat {
-                            boosts.push((stat, 2));
-                        }
-                        if let Some(stat) = lowered_stat {
-                            boosts.push((stat, -1));
-                        }
-
-                        // Apply boosts if any
-                        if !boosts.is_empty() {
-                            self.boost(&boosts, (side_idx, poke_idx), Some((side_idx, poke_idx)), None);
-                        }
-                        return EventResult::Stop;
-                    }
-                    if ability_id.as_str() == "shedskin" {
-                        // 33% chance to cure status
-                        // if (pokemon.hp && pokemon.status && this.randomChance(33, 100))
-                        let (has_hp, has_status) = {
-                            if let Some(side) = self.sides.get(side_idx) {
-                                if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                    (pokemon.hp > 0, !pokemon.status.is_empty())
-                                } else {
-                                    (false, false)
-                                }
-                            } else {
-                                (false, false)
-                            }
-                        };
-                        if has_hp && has_status && self.random_chance(33, 100) {
-                            // this.add('-activate', pokemon, 'ability: Shed Skin');
-                            if let Some(side) = self.sides.get(side_idx) {
-                                if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                    self.add("-activate", &[
-                                        Arg::String(pokemon.name.clone()),
-                                        Arg::Str("ability: Shed Skin")
-                                    ]);
-                                }
-                            }
-                            // pokemon.cureStatus();
-                            self.sides[side_idx].pokemon[poke_idx].cure_status();
-                        }
-                        return EventResult::Stop;
-                    }
-                }
-            }
-            _ => {}
+            "AfterBoost" => ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), pokemon_pos),
+            "AfterEachBoost" => ability_callbacks::dispatch_on_after_each_boost(self, ability_id.as_str(), pokemon_pos),
+            "AfterMoveSecondary" => ability_callbacks::dispatch_on_after_move_secondary(self, ability_id.as_str(), pokemon_pos),
+            "AfterMoveSecondarySelf" => ability_callbacks::dispatch_on_after_move_secondary_self(self, ability_id.as_str(), pokemon_pos),
+            "AfterSetStatus" => ability_callbacks::dispatch_on_after_set_status(self, ability_id.as_str(), pokemon_pos),
+            "AfterTerastallization" => ability_callbacks::dispatch_on_after_terastallization(self, ability_id.as_str(), pokemon_pos),
+            "AfterUseItem" => ability_callbacks::dispatch_on_after_use_item(self, ability_id.as_str(), pokemon_pos),
+            "AllyAfterUseItem" => ability_callbacks::dispatch_on_ally_after_use_item(self, ability_id.as_str(), pokemon_pos),
+            "AllyBasePower" => ability_callbacks::dispatch_on_ally_base_power(self, ability_id.as_str(), pokemon_pos),
+            "AllyBasePowerPriority" => ability_callbacks::dispatch_on_ally_base_power_priority(self, ability_id.as_str(), pokemon_pos),
+            "AllyFaint" => ability_callbacks::dispatch_on_ally_faint(self, ability_id.as_str(), pokemon_pos),
+            "AllyModifyAtk" => ability_callbacks::dispatch_on_ally_modify_atk(self, ability_id.as_str(), pokemon_pos),
+            "AllyModifyAtkPriority" => ability_callbacks::dispatch_on_ally_modify_atk_priority(self, ability_id.as_str(), pokemon_pos),
+            "AllyModifySpD" => ability_callbacks::dispatch_on_ally_modify_sp_d(self, ability_id.as_str(), pokemon_pos),
+            "AllyModifySpDPriority" => ability_callbacks::dispatch_on_ally_modify_sp_d_priority(self, ability_id.as_str(), pokemon_pos),
+            "AllySetStatus" => ability_callbacks::dispatch_on_ally_set_status(self, ability_id.as_str(), pokemon_pos),
+            "AllyTryAddVolatile" => ability_callbacks::dispatch_on_ally_try_add_volatile(self, ability_id.as_str(), pokemon_pos),
+            "AllyTryBoost" => ability_callbacks::dispatch_on_ally_try_boost(self, ability_id.as_str(), pokemon_pos),
+            "AllyTryHitSide" => ability_callbacks::dispatch_on_ally_try_hit_side(self, ability_id.as_str(), pokemon_pos),
+            "AnyAccuracy" => ability_callbacks::dispatch_on_any_accuracy(self, ability_id.as_str(), pokemon_pos),
+            "AnyAfterMega" => ability_callbacks::dispatch_on_any_after_mega(self, ability_id.as_str(), pokemon_pos),
+            "AnyAfterMove" => ability_callbacks::dispatch_on_any_after_move(self, ability_id.as_str(), pokemon_pos),
+            "AnyAfterSetStatus" => ability_callbacks::dispatch_on_any_after_set_status(self, ability_id.as_str(), pokemon_pos),
+            "AnyAfterTerastallization" => ability_callbacks::dispatch_on_any_after_terastallization(self, ability_id.as_str(), pokemon_pos),
+            "AnyBasePower" => ability_callbacks::dispatch_on_any_base_power(self, ability_id.as_str(), pokemon_pos),
+            "AnyBasePowerPriority" => ability_callbacks::dispatch_on_any_base_power_priority(self, ability_id.as_str(), pokemon_pos),
+            "AnyBeforeMove" => ability_callbacks::dispatch_on_any_before_move(self, ability_id.as_str(), pokemon_pos),
+            "AnyDamage" => ability_callbacks::dispatch_on_any_damage(self, ability_id.as_str(), pokemon_pos),
+            "AnyFaint" => ability_callbacks::dispatch_on_any_faint(self, ability_id.as_str(), pokemon_pos),
+            "AnyFaintPriority" => ability_callbacks::dispatch_on_any_faint_priority(self, ability_id.as_str(), pokemon_pos),
+            "AnyInvulnerability" => ability_callbacks::dispatch_on_any_invulnerability(self, ability_id.as_str(), pokemon_pos),
+            "AnyInvulnerabilityPriority" => ability_callbacks::dispatch_on_any_invulnerability_priority(self, ability_id.as_str(), pokemon_pos),
+            "AnyModifyAccuracy" => ability_callbacks::dispatch_on_any_modify_accuracy(self, ability_id.as_str(), pokemon_pos),
+            "AnyModifyAccuracyPriority" => ability_callbacks::dispatch_on_any_modify_accuracy_priority(self, ability_id.as_str(), pokemon_pos),
+            "AnyModifyAtk" => ability_callbacks::dispatch_on_any_modify_atk(self, ability_id.as_str(), pokemon_pos),
+            "AnyModifyBoost" => ability_callbacks::dispatch_on_any_modify_boost(self, ability_id.as_str(), pokemon_pos),
+            "AnyModifyDamage" => ability_callbacks::dispatch_on_any_modify_damage(self, ability_id.as_str(), pokemon_pos),
+            "AnyModifyDef" => ability_callbacks::dispatch_on_any_modify_def(self, ability_id.as_str(), pokemon_pos),
+            "AnyModifySpA" => ability_callbacks::dispatch_on_any_modify_sp_a(self, ability_id.as_str(), pokemon_pos),
+            "AnyModifySpD" => ability_callbacks::dispatch_on_any_modify_sp_d(self, ability_id.as_str(), pokemon_pos),
+            "AnyRedirectTarget" => ability_callbacks::dispatch_on_any_redirect_target(self, ability_id.as_str(), pokemon_pos),
+            "AnySetWeather" => ability_callbacks::dispatch_on_any_set_weather(self, ability_id.as_str(), pokemon_pos),
+            "AnySwitchIn" => ability_callbacks::dispatch_on_any_switch_in(self, ability_id.as_str(), pokemon_pos),
+            "AnySwitchInPriority" => ability_callbacks::dispatch_on_any_switch_in_priority(self, ability_id.as_str(), pokemon_pos),
+            "AnyTryMove" => ability_callbacks::dispatch_on_any_try_move(self, ability_id.as_str(), pokemon_pos),
+            "AnyTryPrimaryHit" => ability_callbacks::dispatch_on_any_try_primary_hit(self, ability_id.as_str(), pokemon_pos),
+            "BasePower" => ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), pokemon_pos),
+            "BasePowerPriority" => ability_callbacks::dispatch_on_base_power_priority(self, ability_id.as_str(), pokemon_pos),
+            "BeforeMove" => ability_callbacks::dispatch_on_before_move(self, ability_id.as_str(), pokemon_pos),
+            "BeforeMovePriority" => ability_callbacks::dispatch_on_before_move_priority(self, ability_id.as_str(), pokemon_pos),
+            "BeforeSwitchIn" => ability_callbacks::dispatch_on_before_switch_in(self, ability_id.as_str(), pokemon_pos),
+            "ChangeBoost" => ability_callbacks::dispatch_on_change_boost(self, ability_id.as_str(), pokemon_pos),
+            "CheckShow" => ability_callbacks::dispatch_on_check_show(self, ability_id.as_str(), pokemon_pos),
+            "CriticalHit" => ability_callbacks::dispatch_on_critical_hit(self, ability_id.as_str(), pokemon_pos),
+            "Damage" => ability_callbacks::dispatch_on_damage(self, ability_id.as_str(), pokemon_pos),
+            "DamagePriority" => ability_callbacks::dispatch_on_damage_priority(self, ability_id.as_str(), pokemon_pos),
+            "DamagingHit" => ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), pokemon_pos),
+            "DamagingHitOrder" => ability_callbacks::dispatch_on_damaging_hit_order(self, ability_id.as_str(), pokemon_pos),
+            "DeductPP" => ability_callbacks::dispatch_on_deduct_p_p(self, ability_id.as_str(), pokemon_pos),
+            "DisableMove" => ability_callbacks::dispatch_on_disable_move(self, ability_id.as_str(), pokemon_pos),
+            "DragOut" => ability_callbacks::dispatch_on_drag_out(self, ability_id.as_str(), pokemon_pos),
+            "DragOutPriority" => ability_callbacks::dispatch_on_drag_out_priority(self, ability_id.as_str(), pokemon_pos),
+            "EatItem" => ability_callbacks::dispatch_on_eat_item(self, ability_id.as_str(), pokemon_pos),
+            "Effectiveness" => ability_callbacks::dispatch_on_effectiveness(self, ability_id.as_str(), pokemon_pos),
+            "EmergencyExit" => ability_callbacks::dispatch_on_emergency_exit(self, ability_id.as_str(), pokemon_pos),
+            "End" => ability_callbacks::dispatch_on_end(self, ability_id.as_str(), pokemon_pos),
+            "Faint" => ability_callbacks::dispatch_on_faint(self, ability_id.as_str(), pokemon_pos),
+            "Flinch" => ability_callbacks::dispatch_on_flinch(self, ability_id.as_str(), pokemon_pos),
+            "FoeAfterBoost" => ability_callbacks::dispatch_on_foe_after_boost(self, ability_id.as_str(), pokemon_pos),
+            "FoeMaybeTrapPokemon" => ability_callbacks::dispatch_on_foe_maybe_trap_pokemon(self, ability_id.as_str(), pokemon_pos),
+            "FoeTrapPokemon" => ability_callbacks::dispatch_on_foe_trap_pokemon(self, ability_id.as_str(), pokemon_pos),
+            "FoeTryEatItem" => ability_callbacks::dispatch_on_foe_try_eat_item(self, ability_id.as_str(), pokemon_pos),
+            "FoeTryMove" => ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), pokemon_pos),
+            "FractionalPriority" => ability_callbacks::dispatch_on_fractional_priority(self, ability_id.as_str(), pokemon_pos),
+            "FractionalPriorityPriority" => ability_callbacks::dispatch_on_fractional_priority_priority(self, ability_id.as_str(), pokemon_pos),
+            "Hit" => ability_callbacks::dispatch_on_hit(self, ability_id.as_str(), pokemon_pos),
+            "Immunity" => ability_callbacks::dispatch_on_immunity(self, ability_id.as_str(), pokemon_pos),
+            "ModifyAccuracy" => ability_callbacks::dispatch_on_modify_accuracy(self, ability_id.as_str(), pokemon_pos),
+            "ModifyAccuracyPriority" => ability_callbacks::dispatch_on_modify_accuracy_priority(self, ability_id.as_str(), pokemon_pos),
+            "ModifyAtk" => ability_callbacks::dispatch_on_modify_atk(self, ability_id.as_str(), pokemon_pos),
+            "ModifyAtkPriority" => ability_callbacks::dispatch_on_modify_atk_priority(self, ability_id.as_str(), pokemon_pos),
+            "ModifyCritRatio" => ability_callbacks::dispatch_on_modify_crit_ratio(self, ability_id.as_str(), pokemon_pos),
+            "ModifyDamage" => ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), pokemon_pos),
+            "ModifyDef" => ability_callbacks::dispatch_on_modify_def(self, ability_id.as_str(), pokemon_pos),
+            "ModifyDefPriority" => ability_callbacks::dispatch_on_modify_def_priority(self, ability_id.as_str(), pokemon_pos),
+            "ModifyMove" => ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), pokemon_pos),
+            "ModifyMovePriority" => ability_callbacks::dispatch_on_modify_move_priority(self, ability_id.as_str(), pokemon_pos),
+            "ModifyPriority" => ability_callbacks::dispatch_on_modify_priority(self, ability_id.as_str(), pokemon_pos),
+            "ModifySTAB" => ability_callbacks::dispatch_on_modify_s_t_a_b(self, ability_id.as_str(), pokemon_pos),
+            "ModifySecondaries" => ability_callbacks::dispatch_on_modify_secondaries(self, ability_id.as_str(), pokemon_pos),
+            "ModifySpA" => ability_callbacks::dispatch_on_modify_sp_a(self, ability_id.as_str(), pokemon_pos),
+            "ModifySpAPriority" => ability_callbacks::dispatch_on_modify_sp_a_priority(self, ability_id.as_str(), pokemon_pos),
+            "ModifySpe" => ability_callbacks::dispatch_on_modify_spe(self, ability_id.as_str(), pokemon_pos),
+            "ModifyType" => ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), pokemon_pos),
+            "ModifyTypePriority" => ability_callbacks::dispatch_on_modify_type_priority(self, ability_id.as_str(), pokemon_pos),
+            "ModifyWeight" => ability_callbacks::dispatch_on_modify_weight(self, ability_id.as_str(), pokemon_pos),
+            "ModifyWeightPriority" => ability_callbacks::dispatch_on_modify_weight_priority(self, ability_id.as_str(), pokemon_pos),
+            "PrepareHit" => ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), pokemon_pos),
+            "Residual" => ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos),
+            "ResidualOrder" => ability_callbacks::dispatch_on_residual_order(self, ability_id.as_str(), pokemon_pos),
+            "ResidualSubOrder" => ability_callbacks::dispatch_on_residual_sub_order(self, ability_id.as_str(), pokemon_pos),
+            "SetStatus" => ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), pokemon_pos),
+            "SideConditionStart" => ability_callbacks::dispatch_on_side_condition_start(self, ability_id.as_str(), pokemon_pos),
+            "SourceAfterFaint" => ability_callbacks::dispatch_on_source_after_faint(self, ability_id.as_str(), pokemon_pos),
+            "SourceBasePower" => ability_callbacks::dispatch_on_source_base_power(self, ability_id.as_str(), pokemon_pos),
+            "SourceBasePowerPriority" => ability_callbacks::dispatch_on_source_base_power_priority(self, ability_id.as_str(), pokemon_pos),
+            "SourceDamagingHit" => ability_callbacks::dispatch_on_source_damaging_hit(self, ability_id.as_str(), pokemon_pos),
+            "SourceModifyAccuracy" => ability_callbacks::dispatch_on_source_modify_accuracy(self, ability_id.as_str(), pokemon_pos),
+            "SourceModifyAccuracyPriority" => ability_callbacks::dispatch_on_source_modify_accuracy_priority(self, ability_id.as_str(), pokemon_pos),
+            "SourceModifyAtk" => ability_callbacks::dispatch_on_source_modify_atk(self, ability_id.as_str(), pokemon_pos),
+            "SourceModifyAtkPriority" => ability_callbacks::dispatch_on_source_modify_atk_priority(self, ability_id.as_str(), pokemon_pos),
+            "SourceModifyDamage" => ability_callbacks::dispatch_on_source_modify_damage(self, ability_id.as_str(), pokemon_pos),
+            "SourceModifyDamagePriority" => ability_callbacks::dispatch_on_source_modify_damage_priority(self, ability_id.as_str(), pokemon_pos),
+            "SourceModifySecondaries" => ability_callbacks::dispatch_on_source_modify_secondaries(self, ability_id.as_str(), pokemon_pos),
+            "SourceModifySpA" => ability_callbacks::dispatch_on_source_modify_sp_a(self, ability_id.as_str(), pokemon_pos),
+            "SourceModifySpAPriority" => ability_callbacks::dispatch_on_source_modify_sp_a_priority(self, ability_id.as_str(), pokemon_pos),
+            "SourceTryHeal" => ability_callbacks::dispatch_on_source_try_heal(self, ability_id.as_str(), pokemon_pos),
+            "SourceTryPrimaryHit" => ability_callbacks::dispatch_on_source_try_primary_hit(self, ability_id.as_str(), pokemon_pos),
+            "Start" => ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos),
+            "SwitchIn" => ability_callbacks::dispatch_on_switch_in(self, ability_id.as_str(), pokemon_pos),
+            "SwitchInPriority" => ability_callbacks::dispatch_on_switch_in_priority(self, ability_id.as_str(), pokemon_pos),
+            "SwitchOut" => ability_callbacks::dispatch_on_switch_out(self, ability_id.as_str(), pokemon_pos),
+            "TakeItem" => ability_callbacks::dispatch_on_take_item(self, ability_id.as_str(), pokemon_pos),
+            "TerrainChange" => ability_callbacks::dispatch_on_terrain_change(self, ability_id.as_str(), pokemon_pos),
+            "TryAddVolatile" => ability_callbacks::dispatch_on_try_add_volatile(self, ability_id.as_str(), pokemon_pos),
+            "TryBoost" => ability_callbacks::dispatch_on_try_boost(self, ability_id.as_str(), pokemon_pos),
+            "TryBoostPriority" => ability_callbacks::dispatch_on_try_boost_priority(self, ability_id.as_str(), pokemon_pos),
+            "TryEatItem" => ability_callbacks::dispatch_on_try_eat_item(self, ability_id.as_str(), pokemon_pos),
+            "TryEatItemPriority" => ability_callbacks::dispatch_on_try_eat_item_priority(self, ability_id.as_str(), pokemon_pos),
+            "TryHeal" => ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), pokemon_pos),
+            "TryHit" => ability_callbacks::dispatch_on_try_hit(self, ability_id.as_str(), pokemon_pos),
+            "TryHitPriority" => ability_callbacks::dispatch_on_try_hit_priority(self, ability_id.as_str(), pokemon_pos),
+            "Update" => ability_callbacks::dispatch_on_update(self, ability_id.as_str(), pokemon_pos),
+            "Weather" => ability_callbacks::dispatch_on_weather(self, ability_id.as_str(), pokemon_pos),
+            "WeatherChange" => ability_callbacks::dispatch_on_weather_change(self, ability_id.as_str(), pokemon_pos),
+            _ => EventResult::Continue,
         }
-
-        EventResult::Continue
     }
 
     /// Handle item events
@@ -7117,59 +6971,95 @@ impl Battle {
         use crate::event::EventResult;
         use crate::data::item_callbacks;
 
-        // Get event context
         let source = self.current_event.as_ref().and_then(|e| e.source);
+        let pokemon_pos = target.unwrap_or((0, 0));
 
-        // Dispatch to specific typed callback based on event type
         match event_id {
-            "ModifyAtk" => {
-                if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_modify_atk(self, item_id.as_str(), pokemon_pos);
-                }
-                EventResult::Continue
-            }
-            "ModifySpA" => {
-                if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_modify_sp_a(self, item_id.as_str(), pokemon_pos);
-                }
-                EventResult::Continue
-            }
-            "ModifyDef" => {
-                if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_modify_def(self, item_id.as_str(), pokemon_pos);
-                }
-                EventResult::Continue
-            }
-            "ModifySpD" => {
-                if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_modify_sp_d(self, item_id.as_str(), pokemon_pos);
-                }
-                EventResult::Continue
-            }
-            "ModifyDamage" => {
-                if let Some(target_pos) = target {
-                    return item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), target_pos);
-                }
-                EventResult::Continue
-            }
-            "SourceModifyDamage" => {
-                if let Some(target_pos) = target {
-                    return item_callbacks::dispatch_on_source_modify_damage(self, item_id.as_str(), target_pos);
-                }
-                EventResult::Continue
-            }
+            "AfterBoost" => item_callbacks::dispatch_on_after_boost(self, item_id.as_str(), pokemon_pos),
+            "AfterMoveSecondary" => item_callbacks::dispatch_on_after_move_secondary(self, item_id.as_str(), pokemon_pos),
+            "AfterMoveSecondaryPriority" => item_callbacks::dispatch_on_after_move_secondary_priority(self, item_id.as_str(), pokemon_pos),
             "AfterMoveSecondarySelf" => {
                 if let Some(source_pos) = source {
-                    return item_callbacks::dispatch_on_after_move_secondary_self(self, item_id.as_str(), source_pos, target);
+                    item_callbacks::dispatch_on_after_move_secondary_self(self, item_id.as_str(), source_pos, target)
+                } else {
+                    EventResult::Continue
                 }
-                EventResult::Continue
             }
-            "Residual" => {
-                if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_residual(self, item_id.as_str(), pokemon_pos);
-                }
-                EventResult::Continue
-            }
+            "AfterMoveSecondarySelfPriority" => item_callbacks::dispatch_on_after_move_secondary_self_priority(self, item_id.as_str(), pokemon_pos),
+            "AfterSetStatus" => item_callbacks::dispatch_on_after_set_status(self, item_id.as_str(), pokemon_pos),
+            "AfterSetStatusPriority" => item_callbacks::dispatch_on_after_set_status_priority(self, item_id.as_str(), pokemon_pos),
+            "AfterSubDamage" => item_callbacks::dispatch_on_after_sub_damage(self, item_id.as_str(), pokemon_pos),
+            "AnyAfterMega" => item_callbacks::dispatch_on_any_after_mega(self, item_id.as_str(), pokemon_pos),
+            "AnyAfterMove" => item_callbacks::dispatch_on_any_after_move(self, item_id.as_str(), pokemon_pos),
+            "AnyAfterTerastallization" => item_callbacks::dispatch_on_any_after_terastallization(self, item_id.as_str(), pokemon_pos),
+            "AnyPseudoWeatherChange" => item_callbacks::dispatch_on_any_pseudo_weather_change(self, item_id.as_str(), pokemon_pos),
+            "AnySwitchIn" => item_callbacks::dispatch_on_any_switch_in(self, item_id.as_str(), pokemon_pos),
+            "AnySwitchInPriority" => item_callbacks::dispatch_on_any_switch_in_priority(self, item_id.as_str(), pokemon_pos),
+            "Attract" => item_callbacks::dispatch_on_attract(self, item_id.as_str(), pokemon_pos),
+            "AttractPriority" => item_callbacks::dispatch_on_attract_priority(self, item_id.as_str(), pokemon_pos),
+            "BasePower" => item_callbacks::dispatch_on_base_power(self, item_id.as_str(), pokemon_pos),
+            "BasePowerPriority" => item_callbacks::dispatch_on_base_power_priority(self, item_id.as_str(), pokemon_pos),
+            "ChargeMove" => item_callbacks::dispatch_on_charge_move(self, item_id.as_str(), pokemon_pos),
+            "Damage" => item_callbacks::dispatch_on_damage(self, item_id.as_str(), pokemon_pos),
+            "DamagePriority" => item_callbacks::dispatch_on_damage_priority(self, item_id.as_str(), pokemon_pos),
+            "DamagingHit" => item_callbacks::dispatch_on_damaging_hit(self, item_id.as_str(), pokemon_pos),
+            "DamagingHitOrder" => item_callbacks::dispatch_on_damaging_hit_order(self, item_id.as_str(), pokemon_pos),
+            "DisableMove" => item_callbacks::dispatch_on_disable_move(self, item_id.as_str(), pokemon_pos),
+            "Drive" => item_callbacks::dispatch_on_drive(self, item_id.as_str(), pokemon_pos),
+            "Eat" => item_callbacks::dispatch_on_eat(self, item_id.as_str(), pokemon_pos),
+            "Effectiveness" => item_callbacks::dispatch_on_effectiveness(self, item_id.as_str(), pokemon_pos),
+            "End" => item_callbacks::dispatch_on_end(self, item_id.as_str(), pokemon_pos),
+            "FoeAfterBoost" => item_callbacks::dispatch_on_foe_after_boost(self, item_id.as_str(), pokemon_pos),
+            "FractionalPriority" => item_callbacks::dispatch_on_fractional_priority(self, item_id.as_str(), pokemon_pos),
+            "FractionalPriorityPriority" => item_callbacks::dispatch_on_fractional_priority_priority(self, item_id.as_str(), pokemon_pos),
+            "Hit" => item_callbacks::dispatch_on_hit(self, item_id.as_str(), pokemon_pos),
+            "Immunity" => item_callbacks::dispatch_on_immunity(self, item_id.as_str(), pokemon_pos),
+            "MaybeTrapPokemon" => item_callbacks::dispatch_on_maybe_trap_pokemon(self, item_id.as_str(), pokemon_pos),
+            "MaybeTrapPokemonPriority" => item_callbacks::dispatch_on_maybe_trap_pokemon_priority(self, item_id.as_str(), pokemon_pos),
+            "Memory" => item_callbacks::dispatch_on_memory(self, item_id.as_str(), pokemon_pos),
+            "ModifyAccuracy" => item_callbacks::dispatch_on_modify_accuracy(self, item_id.as_str(), pokemon_pos),
+            "ModifyAccuracyPriority" => item_callbacks::dispatch_on_modify_accuracy_priority(self, item_id.as_str(), pokemon_pos),
+            "ModifyAtk" => item_callbacks::dispatch_on_modify_atk(self, item_id.as_str(), pokemon_pos),
+            "ModifyAtkPriority" => item_callbacks::dispatch_on_modify_atk_priority(self, item_id.as_str(), pokemon_pos),
+            "ModifyCritRatio" => item_callbacks::dispatch_on_modify_crit_ratio(self, item_id.as_str(), pokemon_pos),
+            "ModifyDamage" => item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), pokemon_pos),
+            "ModifyDef" => item_callbacks::dispatch_on_modify_def(self, item_id.as_str(), pokemon_pos),
+            "ModifyDefPriority" => item_callbacks::dispatch_on_modify_def_priority(self, item_id.as_str(), pokemon_pos),
+            "ModifyMove" => item_callbacks::dispatch_on_modify_move(self, item_id.as_str(), pokemon_pos),
+            "ModifyMovePriority" => item_callbacks::dispatch_on_modify_move_priority(self, item_id.as_str(), pokemon_pos),
+            "ModifySecondaries" => item_callbacks::dispatch_on_modify_secondaries(self, item_id.as_str(), pokemon_pos),
+            "ModifySpA" => item_callbacks::dispatch_on_modify_sp_a(self, item_id.as_str(), pokemon_pos),
+            "ModifySpAPriority" => item_callbacks::dispatch_on_modify_sp_a_priority(self, item_id.as_str(), pokemon_pos),
+            "ModifySpD" => item_callbacks::dispatch_on_modify_sp_d(self, item_id.as_str(), pokemon_pos),
+            "ModifySpDPriority" => item_callbacks::dispatch_on_modify_sp_d_priority(self, item_id.as_str(), pokemon_pos),
+            "ModifySpe" => item_callbacks::dispatch_on_modify_spe(self, item_id.as_str(), pokemon_pos),
+            "ModifyWeight" => item_callbacks::dispatch_on_modify_weight(self, item_id.as_str(), pokemon_pos),
+            "NegateImmunity" => item_callbacks::dispatch_on_negate_immunity(self, item_id.as_str(), pokemon_pos),
+            "Plate" => item_callbacks::dispatch_on_plate(self, item_id.as_str(), pokemon_pos),
+            "Residual" => item_callbacks::dispatch_on_residual(self, item_id.as_str(), pokemon_pos),
+            "ResidualOrder" => item_callbacks::dispatch_on_residual_order(self, item_id.as_str(), pokemon_pos),
+            "ResidualSubOrder" => item_callbacks::dispatch_on_residual_sub_order(self, item_id.as_str(), pokemon_pos),
+            "SetAbility" => item_callbacks::dispatch_on_set_ability(self, item_id.as_str(), pokemon_pos),
+            "SourceModifyAccuracy" => item_callbacks::dispatch_on_source_modify_accuracy(self, item_id.as_str(), pokemon_pos),
+            "SourceModifyAccuracyPriority" => item_callbacks::dispatch_on_source_modify_accuracy_priority(self, item_id.as_str(), pokemon_pos),
+            "SourceModifyDamage" => item_callbacks::dispatch_on_source_modify_damage(self, item_id.as_str(), pokemon_pos),
+            "SourceTryPrimaryHit" => item_callbacks::dispatch_on_source_try_primary_hit(self, item_id.as_str(), pokemon_pos),
+            "Start" => item_callbacks::dispatch_on_start(self, item_id.as_str(), pokemon_pos),
+            "SwitchIn" => item_callbacks::dispatch_on_switch_in(self, item_id.as_str(), pokemon_pos),
+            "SwitchInPriority" => item_callbacks::dispatch_on_switch_in_priority(self, item_id.as_str(), pokemon_pos),
+            "TakeItem" => item_callbacks::dispatch_on_take_item(self, item_id.as_str(), pokemon_pos),
+            "TerrainChange" => item_callbacks::dispatch_on_terrain_change(self, item_id.as_str(), pokemon_pos),
+            "TrapPokemon" => item_callbacks::dispatch_on_trap_pokemon(self, item_id.as_str(), pokemon_pos),
+            "TrapPokemonPriority" => item_callbacks::dispatch_on_trap_pokemon_priority(self, item_id.as_str(), pokemon_pos),
+            "TryBoost" => item_callbacks::dispatch_on_try_boost(self, item_id.as_str(), pokemon_pos),
+            "TryBoostPriority" => item_callbacks::dispatch_on_try_boost_priority(self, item_id.as_str(), pokemon_pos),
+            "TryEatItem" => item_callbacks::dispatch_on_try_eat_item(self, item_id.as_str(), pokemon_pos),
+            "TryHeal" => item_callbacks::dispatch_on_try_heal(self, item_id.as_str(), pokemon_pos),
+            "TryHealPriority" => item_callbacks::dispatch_on_try_heal_priority(self, item_id.as_str(), pokemon_pos),
+            "TryHit" => item_callbacks::dispatch_on_try_hit(self, item_id.as_str(), pokemon_pos),
+            "Update" => item_callbacks::dispatch_on_update(self, item_id.as_str(), pokemon_pos),
+            "Use" => item_callbacks::dispatch_on_use(self, item_id.as_str(), pokemon_pos),
+            "UseItem" => item_callbacks::dispatch_on_use_item(self, item_id.as_str(), pokemon_pos),
             _ => EventResult::Continue,
         }
     }
@@ -7182,54 +7072,74 @@ impl Battle {
         target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
+        use crate::data::move_callbacks;
 
-        // Get source from current event
-        let source = if let Some(ref event) = self.current_event {
-            event.source
-        } else {
-            None
-        };
-
-        // Get move effect ID
-        let move_effect_id = ID::new(move_id);
+        let source = self.current_event.as_ref().and_then(|e| e.source);
+        let source_pos = source.unwrap_or((0, 0));
+        let target_pos = target.unwrap_or((0, 0));
 
         match event_id {
-            "PrepareHit" => {
-                // TODO: onPrepareHit callbacks - implement when move_callbacks is reimplemented
-                // For now, just continue
+            "AfterHit" => {
+                if let Some(target_pos) = target {
+                    move_callbacks::dispatch_on_after_hit(self, move_id, source_pos, target_pos)
+                } else {
+                    EventResult::Continue
+                }
             }
+            "AfterMove" => move_callbacks::dispatch_on_after_move(self, move_id, source_pos, target),
+            "AfterMoveSecondarySelf" => move_callbacks::dispatch_on_after_move_secondary_self(self, move_id, source_pos),
+            "AfterSubDamage" => {
+                if let Some(target_pos) = target {
+                    move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos, target_pos)
+                } else {
+                    EventResult::Continue
+                }
+            }
+            "BasePower" => move_callbacks::dispatch_on_base_power(self, move_id, source_pos, target),
+            "Damage" => {
+                if let Some(target_pos) = target {
+                    move_callbacks::dispatch_on_damage(self, move_id, source_pos, target_pos)
+                } else {
+                    EventResult::Continue
+                }
+            }
+            "DamagePriority" => {
+                if let Some(target_pos) = target {
+                    move_callbacks::dispatch_on_damage_priority(self, move_id, source_pos, target_pos)
+                } else {
+                    EventResult::Continue
+                }
+            }
+            "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_id, source_pos),
+            "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_id, source_pos),
             "Hit" => {
-                // TODO: Secondary effect onHit callbacks - implement when move_callbacks is reimplemented
-                // For now, just continue
+                if let Some(target_pos) = target {
+                    move_callbacks::dispatch_on_hit(self, move_id, source_pos, target_pos)
+                } else {
+                    EventResult::Continue
+                }
             }
-            "Try" => {
-                // TODO: onTry callbacks - implement when move_callbacks is reimplemented
-                // For now, just continue
-            }
-            "ModifyType" => {
-                // TODO: onModifyType callbacks - implement when move_callbacks is reimplemented
-                // For now, just continue
-            }
+            "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, source_pos),
+            "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_id, source_pos),
+            "ModifyMove" => move_callbacks::dispatch_on_modify_move(self, move_id, source_pos),
+            "ModifyPriority" => move_callbacks::dispatch_on_modify_priority(self, move_id, source_pos),
+            "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, move_id, source_pos),
+            "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, source_pos),
+            "MoveFail" => move_callbacks::dispatch_on_move_fail(self, move_id, source_pos),
+            "PrepareHit" => move_callbacks::dispatch_on_prepare_hit(self, move_id, source_pos),
+            "Try" => move_callbacks::dispatch_on_try(self, move_id, source_pos),
             "TryHit" => {
-                // TODO: onTryHit callbacks - implement when move_callbacks is reimplemented
-                // For now, just continue
+                if let Some(target_pos) = target {
+                    move_callbacks::dispatch_on_try_hit(self, move_id, source_pos, target_pos)
+                } else {
+                    EventResult::Continue
+                }
             }
-            "Hit" => {
-                // TODO: onHit callbacks - implement when move_callbacks is reimplemented
-                // For now, just continue
-            }
-            "TryImmunity" => {
-                // TODO: onTryImmunity callbacks - implement when move_callbacks is reimplemented
-                // For now, just continue
-            }
-            "MoveFail" => {
-                // TODO: onMoveFail callbacks - implement when move_callbacks is reimplemented
-                // For now, just continue
-            }
-            _ => {}
+            "TryImmunity" => move_callbacks::dispatch_on_try_immunity(self, move_id, source_pos),
+            "TryMove" => move_callbacks::dispatch_on_try_move(self, move_id, source_pos),
+            "UseMoveMessage" => move_callbacks::dispatch_on_use_move_message(self, move_id, source_pos),
+            _ => EventResult::Continue,
         }
-
-        EventResult::Continue
     }
 
     /// Check volatile condition TryHit events

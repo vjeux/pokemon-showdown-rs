@@ -4,9 +4,10 @@
 //! items, and conditions, following the Pokemon Showdown JS architecture.
 
 pub mod abilities;
-// pub mod ability_callbacks;  // Has import errors - tries to import crate::data::moves which doesn't exist
+pub mod ability_callbacks;
 pub mod items;
 pub mod item_callbacks;
+pub mod move_callbacks;
 pub mod conditions;
 pub mod typechart;
 pub mod species;
