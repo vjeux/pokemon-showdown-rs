@@ -163,7 +163,7 @@ Moves with callbacks: 373
 - [x] infernalparade - Infernal Parade (Special, Ghost) - 1 callback: basePowerCallback
 - [x] ingrain - Ingrain (Status, Grass) - 4 callbacks: condition::onStart, condition::onResidual, condition::onTrapPokemon, condition::onDragOut
 - [x] instruct - Instruct (Status, Psychic) - 1 callback: onHit
-- [ ] iondeluge - Ion Deluge (Status, Electric) - 2 callbacks: condition::onFieldStart, condition::onModifyType
+- [x] iondeluge - Ion Deluge (Status, Electric) - 2 callbacks: condition::onFieldStart, condition::onModifyType
 - [ ] ivycudgel - Ivy Cudgel (Physical, Grass) - 2 callbacks: onPrepareHit, onModifyType
 - [ ] jawlock - Jaw Lock (Physical, Dark) - 1 callback: onHit
 - [ ] judgment - Judgment (Special, Normal) - 1 callback: onModifyType
