@@ -7,6 +7,9 @@ Moves with callbacks: 373
 
 The following moves require infrastructure that doesn't exist yet:
 
+### Generator Script Issues
+- `onDamage` callbacks: Generator script needs to add onDamage to standardSignatures. Currently generates wrong signature `(battle, damage, target_pos, source_pos, effect_id)` but dispatcher expects `(battle, pokemon_pos)`. Actual implementation needs access to damage value and target to work properly.
+
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
 - Requires: `battle.queue.willMove(target)` (check if target has queued action)
