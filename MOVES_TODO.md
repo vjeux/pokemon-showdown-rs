@@ -332,6 +332,9 @@ The following moves require infrastructure that doesn't exist yet:
 - `action.order`: quash - Action order/priority field (mutable) for turn order manipulation
 - `volatile.layers`: psychup - Volatile condition layers field (e.g., gmaxchistrike)
 - `volatile.hasDragonType`: psychup - Boolean field on volatile (e.g., dragoncheer)
+- `volatile.source`: orderup - Source pokemon reference in volatile condition
+- `pokemon.baseSpecies.forme`: orderup - Forme name string field (e.g., 'Droopy', 'Stretchy')
+- `move.flags['mirror']`: mirrormove - Mirror flag for moves that can be copied
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
