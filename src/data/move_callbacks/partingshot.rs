@@ -14,7 +14,39 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // const success = this.boost({ atk: -1, spa: -1 }, target, source);
+    use std::collections::HashMap;
+    let mut boosts = HashMap::new();
+    boosts.insert("atk".to_string(), -1);
+    boosts.insert("spa".to_string(), -1);
+    let success = battle.boost(boosts, target, Some(source), None);
+
+    // if (!success && !target.hasAbility('mirrorarmor')) {
+    if !success {
+        let has_mirrorarmor = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.has_ability(&ID::from("mirrorarmor"))
+        };
+
+        if !has_mirrorarmor {
+            // delete move.selfSwitch;
+            if let Some(ref mut active_move) = battle.active_move {
+                active_move.self_switch = None;
+            }
+        }
+    }
+
     EventResult::Continue
 }
 
