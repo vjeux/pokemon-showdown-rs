@@ -113,7 +113,7 @@ Moves with callbacks: 373
 - [x] frustration - Frustration (Physical, Normal) - 1 callback: basePowerCallback
 - [ ] furycutter - Fury Cutter (Physical, Bug) - 3 callbacks: basePowerCallback, condition::onStart, condition::onRestart
 - [x] fusionbolt - Fusion Bolt (Physical, Electric) - 1 callback: onBasePower
-- [ ] fusionflare - Fusion Flare (Special, Fire) - 1 callback: onBasePower
+- [x] fusionflare - Fusion Flare (Special, Fire) - 1 callback: onBasePower
 - [ ] futuresight - Future Sight (Special, Psychic) - 1 callback: onTry
 - [ ] gastroacid - Gastro Acid (Status, Poison) - 3 callbacks: onTryHit, condition::onStart, condition::onCopy
 - [ ] gearup - Gear Up (Status, Steel) - 1 callback: onHitSide
