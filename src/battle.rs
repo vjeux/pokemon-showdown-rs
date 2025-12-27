@@ -5761,19 +5761,36 @@ impl Battle {
                 // Requires: this.actions.getMaxMove(), this.actions.getActiveMaxMove()
 
                 // JS: let priority = this.dex.moves.get(move.id).priority;
-                // TODO: Get move priority from Dex
-                // For now, use the priority already set in move_action (from when action was created)
-                // Full implementation requires: Battle to have reference to Dex
-                let mut priority = move_action.priority;
+                // Get base priority from move data in Dex
+                let mut priority = if let Some(move_data) = self.dex.get_move_by_id(&move_id) {
+                    move_data.priority
+                } else {
+                    // Fallback to action priority if move not found in Dex
+                    move_action.priority
+                };
 
                 // JS: priority = this.singleEvent('ModifyPriority', move, null, action.pokemon, null, null, priority);
-                let move_id = &move_action.move_id.clone();
+                // Allows move-specific priority modification (e.g., Grassy Glide in Grassy Terrain)
+                let move_id_ref = &move_action.move_id.clone();
                 let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
-                let result = self.single_event("ModifyPriority", move_id, Some(pokemon_pos), None, None);
+                let result = self.single_event("ModifyPriority", move_id_ref, Some(pokemon_pos), None, None);
                 if let Some(new_priority) = result.number() {
                     priority = new_priority as i8;
                 }
-                // TODO: Also call runEvent('ModifyPriority')
+
+                // JS: priority = this.runEvent('ModifyPriority', action.pokemon, null, move, priority);
+                // Allows ability/item-based priority modification (e.g., Prankster, Quick Claw)
+                let effect_id = move_action.move_id.clone();
+                let relay_result = self.run_event(
+                    "ModifyPriority",
+                    Some(pokemon_pos),
+                    None,
+                    Some(&effect_id),
+                    Some(priority as i32),
+                );
+                if let Some(modified_priority) = relay_result {
+                    priority = modified_priority as i8;
+                }
 
                 // JS: action.priority = priority + action.fractionalPriority;
                 // Note: fractionalPriority is already applied when action is created
@@ -5781,7 +5798,15 @@ impl Battle {
                 move_action.priority = priority;
 
                 // JS: if (this.gen > 5) action.move.priority = priority;
-                // TODO: Set move.priority field (requires mutable move reference)
+                // Note: In Gen 6+, Quick Guard checks if move priority was artificially enhanced.
+                // JavaScript sets action.move.priority to track this, but in Rust:
+                // - MoveAction only has move_id (ID), not a mutable Move object reference
+                // - Moves are stored in Dex (read-only HashMap)
+                // To implement this properly, we would need to either:
+                // 1. Add a move_priority_modified: Option<i8> field to MoveAction, or
+                // 2. Store modified move state in Battle (e.g., HashMap<move_id, modified_priority>)
+                // For now, Quick Guard won't be able to detect artificially enhanced priority.
+                // TODO: Implement move.priority tracking for Quick Guard (Gen 6+ mechanic)
 
                 // JS: action.speed = action.pokemon.getActionSpeed();
                 let pokemon_speed = self.get_pokemon_action_speed(move_action.side_index, move_action.pokemon_index);
