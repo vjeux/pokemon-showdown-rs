@@ -5901,7 +5901,119 @@ impl Battle {
             }
         }
 
-        // TODO: Gen 1 partial trapping cleanup (requires partialtrappinglock/partiallytrapped volatiles)
+        // Gen 1 partial trapping cleanup
+        // JS: if (this.gen === 1) { ... }
+        if self.gen == 1 {
+            let partialtrappinglock_id = ID::new("partialtrappinglock");
+            let partiallytrapped_id = ID::new("partiallytrapped");
+            let fakepartiallytrapped_id = ID::new("fakepartiallytrapped");
+
+            // Collect which volatiles need to be removed (to avoid borrow checker issues)
+            let mut volatiles_to_remove: Vec<((usize, usize), ID)> = Vec::new();
+
+            for side_idx in 0..self.sides.len() {
+                for active_idx in 0..self.sides[side_idx].active.len() {
+                    if let Some(Some(poke_idx)) = self.sides[side_idx].active.get(active_idx) {
+                        let pos = (side_idx, *poke_idx);
+
+                        // Check partialtrappinglock
+                        if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
+                            if let Some(lock_state) = pokemon.volatiles.get(&partialtrappinglock_id) {
+                                // JS: const target = pokemon.volatiles['partialtrappinglock'].locked;
+                                // The locked target is stored in the volatile's data
+                                let should_remove = if let Some(locked_data) = lock_state.data.get("locked") {
+                                    // Extract target position (stored as side_idx * 10 + poke_idx)
+                                    if let Some(locked_val) = locked_data.as_i64() {
+                                        let target_side = (locked_val / 10) as usize;
+                                        let target_poke = (locked_val % 10) as usize;
+
+                                        // JS: if (target.hp <= 0 || !target.volatiles['partiallytrapped'])
+                                        if let Some(target) = self.sides.get(target_side)
+                                            .and_then(|s| s.pokemon.get(target_poke)) {
+                                            target.hp <= 0 || !target.volatiles.contains_key(&partiallytrapped_id)
+                                        } else {
+                                            true // Target doesn't exist, remove
+                                        }
+                                    } else {
+                                        true // Invalid data, remove
+                                    }
+                                } else {
+                                    true // No locked data, remove
+                                };
+
+                                if should_remove {
+                                    volatiles_to_remove.push((pos, partialtrappinglock_id.clone()));
+                                }
+                            }
+
+                            // Check partiallytrapped
+                            if let Some(trapped_state) = pokemon.volatiles.get(&partiallytrapped_id) {
+                                // JS: const source = pokemon.volatiles['partiallytrapped'].source;
+                                let should_remove = if let Some(source_data) = trapped_state.data.get("source") {
+                                    // Extract source position
+                                    if let Some(source_val) = source_data.as_i64() {
+                                        let source_side = (source_val / 10) as usize;
+                                        let source_poke = (source_val % 10) as usize;
+
+                                        // JS: if (source.hp <= 0 || !source.volatiles['partialtrappinglock'])
+                                        if let Some(source) = self.sides.get(source_side)
+                                            .and_then(|s| s.pokemon.get(source_poke)) {
+                                            source.hp <= 0 || !source.volatiles.contains_key(&partialtrappinglock_id)
+                                        } else {
+                                            true // Source doesn't exist, remove
+                                        }
+                                    } else {
+                                        true // Invalid data, remove
+                                    }
+                                } else {
+                                    true // No source data, remove
+                                };
+
+                                if should_remove {
+                                    volatiles_to_remove.push((pos, partiallytrapped_id.clone()));
+                                }
+                            }
+
+                            // Check fakepartiallytrapped
+                            if let Some(fake_state) = pokemon.volatiles.get(&fakepartiallytrapped_id) {
+                                // JS: const counterpart = pokemon.volatiles['fakepartiallytrapped'].counterpart;
+                                let should_remove = if let Some(counterpart_data) = fake_state.data.get("counterpart") {
+                                    // Extract counterpart position
+                                    if let Some(counterpart_val) = counterpart_data.as_i64() {
+                                        let counterpart_side = (counterpart_val / 10) as usize;
+                                        let counterpart_poke = (counterpart_val % 10) as usize;
+
+                                        // JS: if (counterpart.hp <= 0 || !counterpart.volatiles['fakepartiallytrapped'])
+                                        if let Some(counterpart) = self.sides.get(counterpart_side)
+                                            .and_then(|s| s.pokemon.get(counterpart_poke)) {
+                                            counterpart.hp <= 0 || !counterpart.volatiles.contains_key(&fakepartiallytrapped_id)
+                                        } else {
+                                            true // Counterpart doesn't exist, remove
+                                        }
+                                    } else {
+                                        true // Invalid data, remove
+                                    }
+                                } else {
+                                    true // No counterpart data, remove
+                                };
+
+                                if should_remove {
+                                    volatiles_to_remove.push((pos, fakepartiallytrapped_id.clone()));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Remove the volatiles
+            for ((side_idx, poke_idx), volatile_id) in volatiles_to_remove {
+                if let Some(pokemon) = self.sides.get_mut(side_idx)
+                    .and_then(|s| s.pokemon.get_mut(poke_idx)) {
+                    pokemon.volatiles.remove(&volatile_id);
+                }
+            }
+        }
 
         // Collect pokemon positions and move slots for DisableMove events (to avoid borrow checker issues)
         let mut pokemon_positions: Vec<(usize, usize)> = Vec::new();
