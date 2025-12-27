@@ -12,7 +12,26 @@ use crate::event::EventResult;
 ///     pokemon.cureStatus();
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+
+    // if (['', 'slp', 'frz'].includes(pokemon.status)) return false;
+    let status = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.status.clone()
+    };
+
+    if status.is_none() || status == Some(ID::from("slp")) || status == Some(ID::from("frz")) {
+        return EventResult::Bool(false);
+    }
+
+    // pokemon.cureStatus();
+    battle.cure_status(pokemon, None, None);
+
     EventResult::Continue
 }
 
