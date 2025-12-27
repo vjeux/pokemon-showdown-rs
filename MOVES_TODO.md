@@ -176,7 +176,7 @@ Moves with callbacks: 373
 - [x] lastresort - Last Resort (Physical, Normal) - 1 callback: onTry
 - [x] lastrespects - Last Respects (Physical, Ghost) - 1 callback: basePowerCallback
 - [x] leechseed - Leech Seed (Status, Grass) - 3 callbacks: onTryImmunity, condition::onStart, condition::onResidual
-- [ ] lightscreen - Light Screen (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
+- [x] lightscreen - Light Screen (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [ ] lightthatburnsthesky - Light That Burns the Sky (Special, Psychic) - 1 callback: onModifyMove
 - [ ] lockon - Lock-On (Status, Normal) - 4 callbacks: onTryHit, onHit, condition::onSourceInvulnerability, condition::onSourceAccuracy
 - [ ] lowkick - Low Kick (Physical, Fighting) - 2 callbacks: basePowerCallback, onTryHit
