@@ -129,7 +129,7 @@ Moves with callbacks: 373
 - [x] grassknot - Grass Knot (Special, Grass) - 2 callbacks: basePowerCallback, onTryHit
 - [x] grasspledge - Grass Pledge (Special, Grass) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onSideEnd, condition::onModifySpe
 - [x] grassyglide - Grassy Glide (Physical, Grass) - 1 callback: onModifyPriority
-- [ ] grassyterrain - Grassy Terrain (Status, Grass) - 5 callbacks: condition::durationCallback, condition::onBasePower, condition::onFieldStart, condition::onResidual, condition::onFieldEnd
+- [x] grassyterrain - Grassy Terrain (Status, Grass) - 5 callbacks: condition::durationCallback, condition::onBasePower, condition::onFieldStart, condition::onResidual, condition::onFieldEnd
 - [x] gravapple - Grav Apple (Physical, Grass) - 1 callback: onBasePower
 - [ ] gravity - Gravity (Status, Psychic) - 7 callbacks: condition::durationCallback, condition::onFieldStart, condition::onModifyAccuracy, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onFieldEnd
 - [x] growth - Growth (Status, Normal) - 1 callback: onModifyMove
