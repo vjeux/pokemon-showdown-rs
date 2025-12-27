@@ -287,7 +287,7 @@ Moves with callbacks: 373
 - [x] shoreup - Shore Up (Status, Ground) - 1 callback: onHit
 - [x] silktrap - Silk Trap (Status, Bug) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [x] simplebeam - Simple Beam (Status, Normal) - 2 callbacks: onTryHit, onHit
-- [ ] sketch - Sketch (Status, Normal) - 1 callback: onHit
+- [x] sketch - Sketch (Status, Normal) - 1 callback: onHit
 - [ ] skillswap - Skill Swap (Status, Psychic) - 2 callbacks: onTryHit, onHit
 - [ ] skullbash - Skull Bash (Physical, Normal) - 1 callback: onTryMove
 - [ ] skyattack - Sky Attack (Physical, Flying) - 1 callback: onTryMove
