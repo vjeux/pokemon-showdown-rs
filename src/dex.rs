@@ -169,6 +169,8 @@ pub struct MoveData {
     pub ohko: Option<Ohko>,
     #[serde(default)]
     pub selfdestruct: Option<String>,
+    #[serde(rename = "tracksTarget", default)]
+    pub tracks_target: Option<bool>,
 }
 
 /// Accuracy can be a number or true (always hits)
@@ -807,6 +809,7 @@ impl Dex {
             steals_boosts: false,
             force_switch: false,
             self_destruct: move_data.selfdestruct.clone(),
+            tracks_target: move_data.tracks_target.unwrap_or(false),
             base_move: None,
             max_move: None,
             z_move: None,

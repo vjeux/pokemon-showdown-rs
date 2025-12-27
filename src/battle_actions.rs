@@ -155,6 +155,7 @@ pub struct ActiveMove {
     pub steals_boosts: bool,
     pub force_switch: bool,
     pub self_destruct: Option<String>,
+    pub tracks_target: bool,
     pub base_move: Option<ID>,
     pub max_move: Option<MaxMoveData>,
     pub z_move: Option<ZMoveData>,

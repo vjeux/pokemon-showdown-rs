@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 55/79 TODOs (69.6%)
+**Feature Implementation:** ⚠️ 56/79 TODOs (70.9%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -482,11 +482,33 @@
 
 **Enables:** Correct Gen 2-3 faint behavior in singles battles, proper turn skipping mechanics
 
+#### RedirectTarget Priority Event (1/1) ✅
+- [x] **RedirectTarget priority event in get_move_targets** (battle.rs:4001-4032) - Redirects moves via abilities like Storm Drain and Lightning Rod
+- [x] **priority_event relay_var parameter** (battle.rs:8434-8444) - Updated to accept relay variable for target encoding
+- [x] **tracksTarget infrastructure** (dex.rs:172-173, battle_actions.rs:158, dex.rs:812) - Added tracks_target field to MoveData and ActiveMove
+
+**Implementation Details:**
+- Checks if `active_per_half > 1` and `!move.tracks_target`
+- Encodes target position as: `side_idx * 10 + pokemon_idx`
+- Calls `priority_event("RedirectTarget", user, user, move, encoded_target)`
+- Decodes result back to target position
+- Updated priority_event to accept and pass relay_var parameter
+- Added tracks_target field to MoveData with serde rename
+- Initialize tracks_target in get_active_move() from move data
+- Matches JavaScript:
+  ```javascript
+  if (this.battle.activePerHalf > 1 && !move.tracksTarget) {
+      target = this.battle.priorityEvent('RedirectTarget', this, this, move, target);
+  }
+  ```
+
+**Enables:** Storm Drain, Lightning Rod, and other move redirection abilities
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (24 TODOs)
+## Remaining P2 Nice-to-have (23 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks

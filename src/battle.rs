@@ -3998,15 +3998,38 @@ impl Battle {
                     }
                 }
 
-                // TODO: Handle RedirectTarget priority event (Storm Drain, Lightning Rod)
                 // JS: if (this.battle.activePerHalf > 1 && !move.tracksTarget) {
                 //       target = this.battle.priorityEvent('RedirectTarget', this, this, move, target);
                 //     }
-                // This requires implementing:
-                // - tracksTarget flag support
-                // - charging move detection
-                // - priorityEvent with encoded target relay variable
-                // For now, skip redirection
+                if self.active_per_half > 1 {
+                    // Get move data to check tracksTarget
+                    if let Some(move_data) = self.dex.get_move(move_id.as_str()) {
+                        if !move_data.tracks_target.unwrap_or(false) {
+                            // Encode current target position for relay variable
+                            // Format: side_idx * 10 + pokemon_idx
+                            if let Some((target_side, target_pos)) = target {
+                                let encoded_target = (target_side as i32 * 10) + target_pos as i32;
+
+                                // Call RedirectTarget priority event
+                                // JS: target = this.battle.priorityEvent('RedirectTarget', this, this, move, target);
+                                // Priority events can modify the relay variable (encoded target)
+                                // This allows abilities like Storm Drain and Lightning Rod to redirect moves
+                                if let Some(new_encoded) = self.priority_event(
+                                    "RedirectTarget",
+                                    Some(user_pos),
+                                    Some(user_pos),
+                                    Some(move_id),
+                                    Some(encoded_target),
+                                ) {
+                                    // Decode the new target position
+                                    let new_side = (new_encoded / 10) as usize;
+                                    let new_pos = (new_encoded % 10) as usize;
+                                    target = Some((new_side, new_pos));
+                                }
+                            }
+                        }
+                    }
+                }
 
                 // TODO: Handle smart targeting
                 // JS: if (move.smartTarget) {
@@ -8415,9 +8438,10 @@ impl Battle {
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
         effect: Option<&ID>,
+        relay_var: Option<i32>,
     ) -> Option<i32> {
         // For priority events, we use fastExit behavior
-        self.run_event(event_id, target, source, effect, None)
+        self.run_event(event_id, target, source, effect, relay_var)
     }
 
     /// Get event modifier (4096 = 1.0x)
@@ -8576,16 +8600,17 @@ impl Battle {
         // JS: let tracksTarget = move.tracksTarget;
         // JS: if (pokemon.hasAbility(['stalwart', 'propellertail'])) tracksTarget = true;
         let (user_side, user_idx) = user;
-        let tracks_target = if let Some(side) = self.sides.get(user_side) {
+        let mut tracks_target = move_def.tracks_target.unwrap_or(false);
+
+        // Check if Pokemon has Stalwart or Propeller Tail abilities
+        if let Some(side) = self.sides.get(user_side) {
             if let Some(pokemon) = side.pokemon.get(user_idx) {
                 let ability = pokemon.ability.as_str();
-                ability == "stalwart" || ability == "propellertail"
-            } else {
-                false
+                if ability == "stalwart" || ability == "propellertail" {
+                    tracks_target = true;
+                }
             }
-        } else {
-            false
-        };
+        }
 
         // JS: if (tracksTarget && originalTarget?.isActive) return originalTarget;
         if tracks_target {
