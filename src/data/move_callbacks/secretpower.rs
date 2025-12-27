@@ -37,7 +37,87 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // if (this.field.isTerrain('')) return;
+    let terrain = battle.field.terrain.as_ref();
+    if terrain.is_none() {
+        return EventResult::Continue;
+    }
+
+    let terrain_id = terrain.unwrap();
+
+    // move.secondaries = [];
+    let active_move = match &mut battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    active_move.secondaries = Some(vec![]);
+
+    // if (this.field.isTerrain('electricterrain')) {
+    if *terrain_id == ID::from("electricterrain") {
+        // move.secondaries.push({
+        //     chance: 30,
+        //     status: 'par',
+        // });
+        let secondary = crate::dex_data::Secondary {
+            chance: Some(30),
+            status: Some("par".to_string()),
+            ..Default::default()
+        };
+        if let Some(ref mut secondaries) = active_move.secondaries {
+            secondaries.push(secondary);
+        }
+    } else if *terrain_id == ID::from("grassyterrain") {
+        // move.secondaries.push({
+        //     chance: 30,
+        //     status: 'slp',
+        // });
+        let secondary = crate::dex_data::Secondary {
+            chance: Some(30),
+            status: Some("slp".to_string()),
+            ..Default::default()
+        };
+        if let Some(ref mut secondaries) = active_move.secondaries {
+            secondaries.push(secondary);
+        }
+    } else if *terrain_id == ID::from("mistyterrain") {
+        // move.secondaries.push({
+        //     chance: 30,
+        //     boosts: {
+        //         spa: -1,
+        //     },
+        // });
+        let mut boosts = std::collections::HashMap::new();
+        boosts.insert("spa".to_string(), -1);
+        let secondary = crate::dex_data::Secondary {
+            chance: Some(30),
+            boosts: Some(boosts),
+            ..Default::default()
+        };
+        if let Some(ref mut secondaries) = active_move.secondaries {
+            secondaries.push(secondary);
+        }
+    } else if *terrain_id == ID::from("psychicterrain") {
+        // move.secondaries.push({
+        //     chance: 30,
+        //     boosts: {
+        //         spe: -1,
+        //     },
+        // });
+        let mut boosts = std::collections::HashMap::new();
+        boosts.insert("spe".to_string(), -1);
+        let secondary = crate::dex_data::Secondary {
+            chance: Some(30),
+            boosts: Some(boosts),
+            ..Default::default()
+        };
+        if let Some(ref mut secondaries) = active_move.secondaries {
+            secondaries.push(secondary);
+        }
+    }
+
     EventResult::Continue
 }
 
