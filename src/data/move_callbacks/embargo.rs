@@ -16,7 +16,32 @@ pub mod condition {
     ///     this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon);
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // this.add('-start', pokemon, 'Embargo');
+        let pokemon_arg = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon_pokemon)
+        };
+
+        battle.add("-start", &[pokemon_arg, "Embargo".into()]);
+
+        // this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon);
+        let item_id = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.item.clone()
+        };
+
+        if let Some(item) = item_id {
+            battle.single_event("End", Some(&item.to_string()), pokemon, None, None);
+        }
+
         EventResult::Continue
     }
 
@@ -24,7 +49,19 @@ pub mod condition {
     ///     this.add('-end', pokemon, 'Embargo');
     /// }
     pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // this.add('-end', pokemon, 'Embargo');
+        let pokemon_arg = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon_pokemon)
+        };
+
+        battle.add("-end", &[pokemon_arg, "Embargo".into()]);
+
         EventResult::Continue
     }
 }
