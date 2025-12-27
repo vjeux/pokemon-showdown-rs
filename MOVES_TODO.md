@@ -301,6 +301,19 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.foes()`: gmaxgoldrush, gmaxdepletion - Get iterator of foe pokemon
 - `pokemon.deductPP(moveId, amount)`: gmaxdepletion - Deduct PP from a move, returns amount deducted
 - `battle.field.setWeather(weatherId)`: maxrockfall - Set weather condition
+- `pokemon.addType(type)`: trickortreat, forestscurse - Add type to pokemon, returns bool
+- `target.side.active.length`: trickortreat - Number of active pokemon on a side
+- `action.move`: waterpledge, upperhand, trickortreat - Action's move reference
+- `action.maxMove`: waterpledge - Boolean flag for Max move actions
+- `action.zmove`: waterpledge - Boolean flag for Z-move actions
+- `battle.queue.prioritizeAction(action, move)`: waterpledge - Move action earlier in queue with move context
+- `move.forceSTAB`: waterpledge - Force STAB calculation flag (mutable)
+- `move.sideCondition`: waterpledge - Side condition ID to apply from move (mutable)
+- `move.self`: waterpledge - Self-effects object with fields like sideCondition, chance
+- `secondary.chance`: waterpledge - Secondary effect chance field (mutable)
+- `secondary.volatileStatus`: waterpledge - Volatile status from secondary effect
+- `move.priority` read: upperhand, suckerpunch - Move priority value for checking
+- `action.targetLoc`: trickortreat - Target location field on action (mutable)
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
