@@ -104,7 +104,7 @@ Moves with callbacks: 373
 - [x] flyingpress - Flying Press (Physical, Fighting) - 1 callback: onEffectiveness
 - [x] focusenergy - Focus Energy (Status, Normal) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
 - [ ] focuspunch - Focus Punch (Physical, Fighting) - 5 callbacks: priorityChargeCallback, beforeMoveCallback, condition::onStart, condition::onHit, condition::onTryAddVolatile
-- [ ] followme - Follow Me (Status, Normal) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
+- [x] followme - Follow Me (Status, Normal) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
 - [ ] foresight - Foresight (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
 - [ ] forestscurse - Forest's Curse (Status, Grass) - 1 callback: onHit
 - [ ] freezedry - Freeze-Dry (Special, Ice) - 1 callback: onEffectiveness
