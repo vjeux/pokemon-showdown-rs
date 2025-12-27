@@ -324,6 +324,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.activeTurns`: taunt - Number of turns pokemon has been active
 - `move.name`: skydrop, spite - Move name string field
 - `move.hitTargets`: sparklingaria - Array of pokemon that were successfully hit by the move
+- `battle.queue.list`: round, pursuit - Direct access to queue as array for iteration and manipulation
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
