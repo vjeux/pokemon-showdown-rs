@@ -101,7 +101,7 @@ Moves with callbacks: 373
 - [x] floralhealing - Floral Healing (Status, Fairy) - 1 callback: onHit
 - [x] flowershield - Flower Shield (Status, Fairy) - 1 callback: onHitField
 - [ ] fly - Fly (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceModifyDamage
-- [ ] flyingpress - Flying Press (Physical, Fighting) - 1 callback: onEffectiveness
+- [x] flyingpress - Flying Press (Physical, Fighting) - 1 callback: onEffectiveness
 - [ ] focusenergy - Focus Energy (Status, Normal) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
 - [ ] focuspunch - Focus Punch (Physical, Fighting) - 5 callbacks: priorityChargeCallback, beforeMoveCallback, condition::onStart, condition::onHit, condition::onTryAddVolatile
 - [ ] followme - Follow Me (Status, Normal) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
