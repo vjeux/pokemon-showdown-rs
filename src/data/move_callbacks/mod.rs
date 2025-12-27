@@ -3,6 +3,8 @@
 //! This module exports all move callback implementations.
 //! Each move with callbacks is in its own file.
 
+use crate::battle::Battle;
+
 // Common types
 mod common;
 pub use common::*;
@@ -341,3 +343,209 @@ pub mod wish;
 pub mod wonderroom;
 pub mod worryseed;
 pub mod yawn;
+
+// Dispatch functions
+/// Dispatch onAfterHit callbacks
+pub fn dispatch_on_after_hit(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onAfterMove callbacks
+pub fn dispatch_on_after_move(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onAfterMoveSecondarySelf callbacks
+pub fn dispatch_on_after_move_secondary_self(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onAfterSubDamage callbacks
+pub fn dispatch_on_after_sub_damage(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onBasePower callbacks
+pub fn dispatch_on_base_power(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onDamage callbacks
+pub fn dispatch_on_damage(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onDisableMove callbacks
+pub fn dispatch_on_disable_move(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onEffectiveness callbacks
+pub fn dispatch_on_effectiveness(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onHit callbacks
+pub fn dispatch_on_hit(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onHitField callbacks
+pub fn dispatch_on_hit_field(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onHitSide callbacks
+pub fn dispatch_on_hit_side(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onModifyMove callbacks
+pub fn dispatch_on_modify_move(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onModifyPriority callbacks
+pub fn dispatch_on_modify_priority(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onModifyTarget callbacks
+pub fn dispatch_on_modify_target(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onModifyType callbacks
+pub fn dispatch_on_modify_type(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onMoveFail callbacks
+pub fn dispatch_on_move_fail(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onPrepareHit callbacks
+pub fn dispatch_on_prepare_hit(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onTry callbacks
+pub fn dispatch_on_try(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onTryHit callbacks
+pub fn dispatch_on_try_hit(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onTryImmunity callbacks
+pub fn dispatch_on_try_immunity(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onTryMove callbacks
+pub fn dispatch_on_try_move(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}
+
+/// Dispatch onUseMoveMessage callbacks
+pub fn dispatch_on_use_move_message(
+    _battle: &mut Battle,
+    _move_id: &str,
+    _source_pos: (usize, usize),
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}

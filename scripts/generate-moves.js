@@ -233,11 +233,49 @@ pub mod condition {
 
 console.log(`Generated ${generatedCount} move files`);
 
+// Build a map of callback -> moves for dispatcher generation
+const callbackMap = new Map();
+movesWithCallbacks.forEach(move => {
+    move.callbacks.forEach(callback => {
+        if (!callbackMap.has(callback.name)) {
+            callbackMap.set(callback.name, []);
+        }
+        callbackMap.get(callback.name).push(move.id);
+    });
+});
+
+// Generate dispatch functions
+const sortedCallbacks = Array.from(callbackMap.keys()).sort();
+const dispatchers = sortedCallbacks.map(callback => {
+    const funcName = `dispatch_${camelToSnake(callback)}`;
+
+    // Determine parameters based on callback type
+    let params = '';
+    if (callback.includes('Damage') || callback === 'onTryHit' || callback === 'onHit' || callback === 'onAfterHit') {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: (usize, usize)';
+    } else if (callback === 'onTryMove' || callback === 'onModifyType') {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
+    } else if (callback === 'onBasePower' || callback === 'onAfterMove') {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: Option<(usize, usize)>';
+    } else {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
+    }
+
+    return `/// Dispatch ${callback} callbacks
+pub fn ${funcName}(
+    _battle: &mut Battle${params},
+) -> MoveHandlerResult {
+    MoveHandlerResult::Undefined
+}`;
+}).join('\n\n');
+
 // Generate mod.rs to export all moves
 const modContent = `//! Move Callback Handlers
 //!
 //! This module exports all move callback implementations.
 //! Each move with callbacks is in its own file.
+
+use crate::battle::Battle;
 
 // Common types
 mod common;
@@ -247,6 +285,9 @@ pub use common::*;
 ${movesWithCallbacks.map(m =>
     `pub mod ${rustModName(m.id)};`
 ).join('\n')}
+
+// Dispatch functions
+${dispatchers}
 `;
 
 const modPath = path.join(movesDir, 'mod.rs');
