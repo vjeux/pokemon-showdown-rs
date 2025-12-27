@@ -93,7 +93,7 @@ Moves with callbacks: 373
 - [x] filletaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
 - [x] finalgambit - Final Gambit (Special, Fighting) - 1 callback: damageCallback
 - [ ] firepledge - Fire Pledge (Special, Fire) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onResidual, condition::onSideEnd
-- [ ] firstimpression - First Impression (Physical, Bug) - 1 callback: onTry
+- [x] firstimpression - First Impression (Physical, Bug) - 1 callback: onTry
 - [ ] fishiousrend - Fishious Rend (Physical, Water) - 1 callback: basePowerCallback
 - [ ] flail - Flail (Physical, Normal) - 1 callback: basePowerCallback
 - [ ] flameburst - Flame Burst (Special, Fire) - 2 callbacks: onHit, onAfterSubDamage
