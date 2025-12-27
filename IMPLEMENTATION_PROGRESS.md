@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 8/79 TODOs (10.1%)
+**Feature Implementation:** ⚠️ 10/79 TODOs (12.7%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -37,6 +37,14 @@
 
 **Note:** Quick Guard detection of enhanced priority requires additional infrastructure (move state tracking)
 
+#### Pokemon Adjacency Helpers (2/2) ✅
+- [x] **is_adjacent()** (battle.rs:3472-3506) - Check if two pokemon are adjacent
+- [x] **adjacent_allies()** (battle.rs:3515-3563) - Get all adjacent allied pokemon
+- [x] **adjacent_foes()** (battle.rs:3573-3624) - Get all adjacent enemy pokemon
+- [x] **Updated get_random_target()** (battle.rs:3680-3708) - Now uses adjacency helpers
+
+**Enables:** Proper targeting for doubles/triples, Healing Wish, Storm Drain, Lightning Rod
+
 ## Remaining P0 Critical (High Priority)
 
 ### Move Events (5 remaining TODOs)
@@ -49,9 +57,9 @@
 - [ ] getMoveTargets multi-target (battle_actions.rs:2899)
 - [ ] PP deduction with Pressure (battle_actions.rs:2918)
 
-### Pokemon Helpers (2 TODOs)
-- [ ] adjacentAllies() (battle.rs:3492)
-- [ ] adjacentFoes() (battle.rs:3516)
+### Pokemon Helpers (0 remaining TODOs)
+- [x] ~~adjacentAllies() (battle.rs:3492)~~ ✅ Completed
+- [x] ~~adjacentFoes() (battle.rs:3516)~~ ✅ Completed
 
 ### Other Critical Events (3 TODOs)
 - [ ] DisableMove event (battle.rs:5096)
