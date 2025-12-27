@@ -53,6 +53,29 @@ impl std::fmt::Display for ID {
 }
 
 /// Converts anything to an ID. An ID must have only lowercase alphanumeric characters.
+// TypeScript source:
+// /**
+// * Converts anything to an ID. An ID must have only lowercase alphanumeric
+// * characters.
+// *
+// * If a string is passed, it will be converted to lowercase and
+// * non-alphanumeric characters will be stripped.
+// *
+// * If an object with an ID is passed, its ID will be returned.
+// * Otherwise, an empty string will be returned.
+// *
+// * Generally assigned to the global toID, because of how
+// * commonly it's used.
+// */
+// export function toID(text: any): ID {
+// 	if (typeof text !== 'string') {
+// 		if (text) text = text.id || text.userid || text.roomid || text;
+// 		if (typeof text === 'number') text = `${text}`;
+// 		else if (typeof text !== 'string') return '';
+// 	}
+// 	return text.toLowerCase().replace(/[^a-z0-9]+/g, '') as ID;
+// }
+//
 pub fn to_id(text: &str) -> String {
     text.chars()
         .filter(|c| c.is_ascii_alphanumeric())
@@ -173,8 +196,12 @@ impl StatsTable {
         Self { hp, atk, def, spa, spd, spe }
     }
 
-    // TypeScript source:
     // 
+    // 	get(name: string | TypeInfo): TypeInfo {
+    // 		if (name && typeof name !== 'string') return name;
+    // 		return this.getByID(toID(name));
+    // 	}
+    //
     // 
     // 	get(name: string | TypeInfo): TypeInfo {
     // 		if (name && typeof name !== 'string') return name;
@@ -217,8 +244,17 @@ pub enum BoostID {
 }
 
 impl BoostID {
-    // TypeScript source:
     // 
+    // 	all(): readonly TypeInfo[] {
+    // 		if (this.allCache) return this.allCache;
+    // 		const types = [];
+    // 		for (const id in this.dex.data.TypeChart) {
+    // 			types.push(this.getByID(id as ID));
+    // 		}
+    // 		this.allCache = Object.freeze(types);
+    // 		return this.allCache;
+    // 	}
+    //
     // 
     // 	all(): readonly TypeInfo[] {
     // 		if (this.allCache) return this.allCache;
@@ -270,8 +306,12 @@ impl BoostsTable {
         Self::default()
     }
 
-    // TypeScript source:
     // 
+    // 	get(name: string | TypeInfo): TypeInfo {
+    // 		if (name && typeof name !== 'string') return name;
+    // 		return this.getByID(toID(name));
+    // 	}
+    //
     // 
     // 	get(name: string | TypeInfo): TypeInfo {
     // 		if (name && typeof name !== 'string') return name;
@@ -653,8 +693,12 @@ impl DexNatures {
     }
 
     /// Get a nature by name or ID
-    // TypeScript source:
     // 
+    // 	get(name: string | TypeInfo): TypeInfo {
+    // 		if (name && typeof name !== 'string') return name;
+    // 		return this.getByID(toID(name));
+    // 	}
+    //
     // 
     // 	get(name: string | TypeInfo): TypeInfo {
     // 		if (name && typeof name !== 'string') return name;
@@ -702,8 +746,17 @@ impl DexNatures {
     }
 
     /// Get all natures
-    // TypeScript source:
     // 
+    // 	all(): readonly TypeInfo[] {
+    // 		if (this.allCache) return this.allCache;
+    // 		const types = [];
+    // 		for (const id in this.dex.data.TypeChart) {
+    // 			types.push(this.getByID(id as ID));
+    // 		}
+    // 		this.allCache = Object.freeze(types);
+    // 		return this.allCache;
+    // 	}
+    //
     // 
     // 	all(): readonly TypeInfo[] {
     // 		if (this.allCache) return this.allCache;
@@ -830,10 +883,20 @@ impl DexTypes {
     }
 
     /// Get a type by name
-    // TypeScript source:
-    // 
     // 
     // 	get(name: string | TypeInfo): TypeInfo {
+    // 		if (name && typeof name !== 'string') return name;
+    // 		return this.getByID(toID(name));
+    // 	}
+    //
+    // 
+    // 	get(name: string | TypeInfo): TypeInfo {
+    // 		if (name && typeof name !== 'string') return name;
+    // 		return this.getByID(toID(name));
+    // 	}
+    //
+    // 
+    // 	get(name: string | Nature): Nature {
     // 		if (name && typeof name !== 'string') return name;
     // 		return this.getByID(toID(name));
     // 	}
@@ -843,6 +906,31 @@ impl DexTypes {
     }
 
     /// Get a type by ID
+    // 	getByID(id: ID): Nature {
+    // 		if (id === '') return EMPTY_NATURE;
+    // 		let nature = this.natureCache.get(id);
+    // 		if (nature) return nature;
+    // 
+    // 		const alias = this.dex.getAlias(id);
+    // 		if (alias) {
+    // 			nature = this.get(alias);
+    // 			if (nature.exists) {
+    // 				this.natureCache.set(id, nature);
+    // 			}
+    // 			return nature;
+    // 		}
+    // 		if (id && this.dex.data.Natures.hasOwnProperty(id)) {
+    // 			const natureData = this.dex.data.Natures[id];
+    // 			nature = new Nature(natureData);
+    // 			if (nature.gen > this.dex.gen) nature.isNonstandard = 'Future';
+    // 		} else {
+    // 			nature = new Nature({ name: id, exists: false });
+    // 		}
+    // 
+    // 		if (nature.exists) this.natureCache.set(id, this.dex.deepFreeze(nature));
+    // 		return nature;
+    // 	}
+    //
     pub fn get_by_id(&mut self, id: &str) -> TypeInfo {
         if id.is_empty() {
             return TypeInfo {
@@ -881,8 +969,15 @@ impl DexTypes {
     }
 
     /// Get all type names (excluding nonstandard)
-    // TypeScript source:
     // 
+    // 	names(): readonly string[] {
+    // 		if (this.namesCache) return this.namesCache;
+    // 
+    // 		this.namesCache = this.all().filter(type => !type.isNonstandard).map(type => type.name);
+    // 
+    // 		return this.namesCache;
+    // 	}
+    //
     // 
     // 	names(): readonly string[] {
     // 		if (this.namesCache) return this.namesCache;
@@ -907,8 +1002,22 @@ impl DexTypes {
     }
 
     /// Check if a name is a valid type name
-    // TypeScript source:
     // 
+    // 	isName(name: string | null | undefined): boolean {
+    // 		if (!name) return false;
+    // 		const id = name.toLowerCase();
+    // 		const typeName = id.charAt(0).toUpperCase() + id.substr(1);
+    // 		return name === typeName && this.dex.data.TypeChart.hasOwnProperty(id);
+    // 	}
+    //
+    // 
+    // 	isName(name: string | null | undefined): boolean {
+    // 		if (!name) return false;
+    // 		const id = name.toLowerCase();
+    // 		const typeName = id.charAt(0).toUpperCase() + id.substr(1);
+    // 		return name === typeName && this.dex.data.TypeChart.hasOwnProperty(id);
+    // 	}
+    //
     // 
     // 	isName(name: string | null | undefined): boolean {
     // 		if (!name) return false;
@@ -927,8 +1036,6 @@ impl DexTypes {
     }
 
     /// Get all types
-    // TypeScript source:
-    // 
     // 
     // 	all(): readonly TypeInfo[] {
     // 		if (this.allCache) return this.allCache;
@@ -937,6 +1044,28 @@ impl DexTypes {
     // 			types.push(this.getByID(id as ID));
     // 		}
     // 		this.allCache = Object.freeze(types);
+    // 		return this.allCache;
+    // 	}
+    //
+    // 
+    // 	all(): readonly TypeInfo[] {
+    // 		if (this.allCache) return this.allCache;
+    // 		const types = [];
+    // 		for (const id in this.dex.data.TypeChart) {
+    // 			types.push(this.getByID(id as ID));
+    // 		}
+    // 		this.allCache = Object.freeze(types);
+    // 		return this.allCache;
+    // 	}
+    //
+    // 
+    // 	all(): readonly Nature[] {
+    // 		if (this.allCache) return this.allCache;
+    // 		const natures = [];
+    // 		for (const id in this.dex.data.Natures) {
+    // 			natures.push(this.getByID(id as ID));
+    // 		}
+    // 		this.allCache = Object.freeze(natures);
     // 		return this.allCache;
     // 	}
     //
@@ -1230,8 +1359,24 @@ impl DexStats {
     }
 
     /// Get full stat names
-    // TypeScript source:
     // 
+    // 	names(): readonly string[] {
+    // 		if (this.namesCache) return this.namesCache;
+    // 
+    // 		this.namesCache = this.all().filter(type => !type.isNonstandard).map(type => type.name);
+    // 
+    // 		return this.namesCache;
+    // 	}
+    //
+    // 
+    // 	names(): readonly string[] {
+    // 		if (this.namesCache) return this.namesCache;
+    // 
+    // 		this.namesCache = this.all().filter(type => !type.isNonstandard).map(type => type.name);
+    // 
+    // 		return this.namesCache;
+    // 	}
+    //
     // 
     // 	names(): readonly string[] {
     // 		if (this.namesCache) return this.namesCache;
@@ -1262,6 +1407,14 @@ impl DexStats {
     }
 
     /// Get stat ID from name
+    // 	getID(name: string) {
+    // 		if (name === 'Spd') return 'spe' as StatID;
+    // 		const id = toID(name);
+    // 		if (reverseCache[id]) return reverseCache[id];
+    // 		if (idsCache.includes(id as StatID)) return id as StatID;
+    // 		return null;
+    // 	}
+    //
     pub fn get_id(&self, name: &str) -> Option<StatID> {
         // Special case: "Spd" means Speed, not Special Defense
         if name == "Spd" {
@@ -1271,8 +1424,14 @@ impl DexStats {
     }
 
     /// Get all stat IDs
-    // TypeScript source:
-    // 
+    // 	ids(): typeof idsCache {
+    // 		return idsCache;
+    // 	}
+    //
+    // 	ids(): typeof idsCache {
+    // 		return idsCache;
+    // 	}
+    //
     // 	ids(): typeof idsCache {
     // 		return idsCache;
     // 	}

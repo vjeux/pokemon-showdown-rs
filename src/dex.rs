@@ -803,8 +803,56 @@ impl Dex {
     // 		}
     // 	}
     //
-    // TypeScript source:
     // 
+    // 	getEffectiveness(
+    // 		source: { type: string } | string,
+    // 		target: { getTypes: () => string[] } | { types: string[] } | string[] | string
+    // 	): number {
+    // 		const sourceType: string = typeof source !== 'string' ? source.type : source;
+    // 		// @ts-expect-error really wish TS would support this
+    // 		const targetTyping: string[] | string = target.getTypes?.() || target.types || target;
+    // 		let totalTypeMod = 0;
+    // 		if (Array.isArray(targetTyping)) {
+    // 			for (const type of targetTyping) {
+    // 				totalTypeMod += this.getEffectiveness(sourceType, type);
+    // 			}
+    // 			return totalTypeMod;
+    // 		}
+    // 		const typeData = this.types.get(targetTyping);
+    // 		if (!typeData) return 0;
+    // 		switch (typeData.damageTaken[sourceType]) {
+    // 		case 1: return 1; // super-effective
+    // 		case 2: return -1; // resist
+    // 		// in case of weird situations like Gravity, immunity is handled elsewhere
+    // 		default: return 0;
+    // 		}
+    // 	}
+    //
+    // 
+    // 	getEffectiveness(
+    // 		source: { type: string } | string,
+    // 		target: { getTypes: () => string[] } | { types: string[] } | string[] | string
+    // 	): number {
+    // 		const sourceType: string = typeof source !== 'string' ? source.type : source;
+    // 		// @ts-expect-error really wish TS would support this
+    // 		const targetTyping: string[] | string = target.getTypes?.() || target.types || target;
+    // 		let totalTypeMod = 0;
+    // 		if (Array.isArray(targetTyping)) {
+    // 			for (const type of targetTyping) {
+    // 				totalTypeMod += this.getEffectiveness(sourceType, type);
+    // 			}
+    // 			return totalTypeMod;
+    // 		}
+    // 		const typeData = this.types.get(targetTyping);
+    // 		if (!typeData) return 0;
+    // 		switch (typeData.damageTaken[sourceType]) {
+    // 		case 1: return 1; // super-effective
+    // 		case 2: return -1; // resist
+    // 		// in case of weird situations like Gravity, immunity is handled elsewhere
+    // 		default: return 0;
+    // 		}
+    // 	}
+    //
     // 
     // 	getEffectiveness(
     // 		source: { type: string } | string,
@@ -908,33 +956,16 @@ impl Dex {
     // 		return name;
     // 	}
     //
-    // TypeScript source:
-    // /**
-    // 	 * Sanitizes a username or Pokemon nickname
-    // 	 *
-    // 	 * Returns the passed name, sanitized for safe use as a name in the PS
-    // 	 * protocol.
-    // 	 *
-    // 	 * Such a string must uphold these guarantees:
-    // 	 * - must not contain any ASCII whitespace character other than a space
-    // 	 * - must not start or end with a space character
-    // 	 * - must not contain any of: | , [ ]
-    // 	 * - must not be the empty string
-    // 	 * - must not contain Unicode RTL control characters
-    // 	 *
-    // 	 * If no such string can be found, returns the empty string. Calling
-    // 	 * functions are expected to check for that condition and deal with it
-    // 	 * accordingly.
-    // 	 *
-    // 	 * getName also enforces that there are not multiple consecutive space
-    // 	 * characters in the name, although this is not strictly necessary for
-    // 	 * safety.
-    // 	 */
-    // 	getName(name: any): string {
-    // 		if (typeof name !== 'string' && typeof name !== 'number') return '';
-    // 		name = `${name}`.replace(/[|\s[\],\u202e]+/g, ' ').trim();
-    // 		if (name.length > 18) name = name.substr(0, 18).trim();
+    // 		// remove zalgo
+    // 		name = name.replace(
+    // 			/[\u0300-\u036f\u0483-\u0489\u0610-\u0615\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06ED\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]{3,}/g,
+    // 			''
+    // 		);
+    // 		name = name.replace(/[\u239b-\u23b9]/g, '');
     // 
+    // 		return name;
+    // 	}
+    //
     // 		// remove zalgo
     // 		name = name.replace(
     // 			/[\u0300-\u036f\u0483-\u0489\u0610-\u0615\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06ED\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]{3,}/g,
@@ -996,29 +1027,6 @@ impl Dex {
     // 		return true;
     // 	}
     //
-    // TypeScript source:
-    // /**
-    // 	 * Returns false if the target is immune; true otherwise.
-    // 	 * Also checks immunity to some statuses.
-    // 	 */
-    // 	getImmunity(
-    // 		source: { type: string } | string,
-    // 		target: { getTypes: () => string[] } | { types: string[] } | string[] | string
-    // 	): boolean {
-    // 		const sourceType: string = typeof source !== 'string' ? source.type : source;
-    // 		// @ts-expect-error really wish TS would support this
-    // 		const targetTyping: string[] | string = target.getTypes?.() || target.types || target;
-    // 		if (Array.isArray(targetTyping)) {
-    // 			for (const type of targetTyping) {
-    // 				if (!this.getImmunity(sourceType, type)) return false;
-    // 			}
-    // 			return true;
-    // 		}
-    // 		const typeData = this.types.get(targetTyping);
-    // 		if (typeData && typeData.damageTaken[sourceType] === 3) return false;
-    // 		return true;
-    // 	}
-    //
     pub fn get_immunity(&self, source_type: &str, target_types: &[String]) -> bool {
         for target_type in target_types {
             if self.get_effectiveness(source_type, target_type) == 0.0 {
@@ -1030,8 +1038,6 @@ impl Dex {
 
     /// Calculate Hidden Power type from IVs
     /// Equivalent to getHiddenPower() in dex.ts
-    // TypeScript source:
-    // 
     // 
     // 	getHiddenPower(ivs: StatsTable) {
     // 		const hpTypes = [
@@ -1070,8 +1076,82 @@ impl Dex {
     // 		}
     // 	}
     //
-    // TypeScript source:
     // 
+    // 	getHiddenPower(ivs: StatsTable) {
+    // 		const hpTypes = [
+    // 			'Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel',
+    // 			'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark',
+    // 		];
+    // 		const tr = this.trunc;
+    // 		const stats = { hp: 31, atk: 31, def: 31, spe: 31, spa: 31, spd: 31 };
+    // 		if (this.gen <= 2) {
+    // 			// Gen 2 specific Hidden Power check. IVs are still treated 0-31 so we get them 0-15
+    // 			const atkDV = tr(ivs.atk / 2);
+    // 			const defDV = tr(ivs.def / 2);
+    // 			const speDV = tr(ivs.spe / 2);
+    // 			const spcDV = tr(ivs.spa / 2);
+    // 			return {
+    // 				type: hpTypes[4 * (atkDV % 4) + (defDV % 4)],
+    // 				power: tr(
+    // 					(5 * ((spcDV >> 3) + (2 * (speDV >> 3)) + (4 * (defDV >> 3)) + (8 * (atkDV >> 3))) + (spcDV % 4)) / 2 + 31
+    // 				),
+    // 			};
+    // 		} else {
+    // 			// Hidden Power check for Gen 3 onwards
+    // 			let hpTypeX = 0;
+    // 			let hpPowerX = 0;
+    // 			let i = 1;
+    // 			for (const s in stats) {
+    // 				hpTypeX += i * (ivs[s as StatID] % 2);
+    // 				hpPowerX += i * (tr(ivs[s as StatID] / 2) % 2);
+    // 				i *= 2;
+    // 			}
+    // 			return {
+    // 				type: hpTypes[tr(hpTypeX * 15 / 63)],
+    // 				// After Gen 6, Hidden Power is always 60 base power
+    // 				power: (this.gen && this.gen < 6) ? tr(hpPowerX * 40 / 63) + 30 : 60,
+    // 			};
+    // 		}
+    // 	}
+    //
+    // 
+    // 	getHiddenPower(ivs: StatsTable) {
+    // 		const hpTypes = [
+    // 			'Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel',
+    // 			'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark',
+    // 		];
+    // 		const tr = this.trunc;
+    // 		const stats = { hp: 31, atk: 31, def: 31, spe: 31, spa: 31, spd: 31 };
+    // 		if (this.gen <= 2) {
+    // 			// Gen 2 specific Hidden Power check. IVs are still treated 0-31 so we get them 0-15
+    // 			const atkDV = tr(ivs.atk / 2);
+    // 			const defDV = tr(ivs.def / 2);
+    // 			const speDV = tr(ivs.spe / 2);
+    // 			const spcDV = tr(ivs.spa / 2);
+    // 			return {
+    // 				type: hpTypes[4 * (atkDV % 4) + (defDV % 4)],
+    // 				power: tr(
+    // 					(5 * ((spcDV >> 3) + (2 * (speDV >> 3)) + (4 * (defDV >> 3)) + (8 * (atkDV >> 3))) + (spcDV % 4)) / 2 + 31
+    // 				),
+    // 			};
+    // 		} else {
+    // 			// Hidden Power check for Gen 3 onwards
+    // 			let hpTypeX = 0;
+    // 			let hpPowerX = 0;
+    // 			let i = 1;
+    // 			for (const s in stats) {
+    // 				hpTypeX += i * (ivs[s as StatID] % 2);
+    // 				hpPowerX += i * (tr(ivs[s as StatID] / 2) % 2);
+    // 				i *= 2;
+    // 			}
+    // 			return {
+    // 				type: hpTypes[tr(hpTypeX * 15 / 63)],
+    // 				// After Gen 6, Hidden Power is always 60 base power
+    // 				power: (this.gen && this.gen < 6) ? tr(hpPowerX * 40 / 63) + 30 : 60,
+    // 			};
+    // 		}
+    // 	}
+    //
     // 
     // 	getHiddenPower(ivs: StatsTable) {
     // 		const hpTypes = [
@@ -1174,8 +1254,18 @@ impl Dex {
 
     /// Create a Dex for a specific generation
     /// Equivalent to forGen() in dex.ts
-    // TypeScript source:
     // 
+    // 	forGen(gen: number) {
+    // 		if (!gen) return this;
+    // 		return this.mod(`gen${gen}`);
+    // 	}
+    //
+    // 
+    // 	forGen(gen: number) {
+    // 		if (!gen) return this;
+    // 		return this.mod(`gen${gen}`);
+    // 	}
+    //
     // 
     // 	forGen(gen: number) {
     // 		if (!gen) return this;

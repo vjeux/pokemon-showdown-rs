@@ -559,16 +559,29 @@ impl BattleStream {
     // 		}
     // 	}
     //
+    // 
+    // 	async start() {
+    // 		for await (const chunk of this.stream) {
+    // 			this.receive(chunk);
+    // 		}
+    // 	}
+    //
     pub fn start(&mut self, options: BattleOptions) {
         self.battle = Some(Battle::new(options));
     }
 
     /// Write input to the battle
     /// Equivalent to _write() in battle-stream.ts
-    // TypeScript source:
-    // 
     // 			write(data: string) {
     // 				void stream.write(data.replace(/(^|\n)/g, `$1>p4 `));
+    // 			}
+    //
+    // 			write(data: string) {
+    // 				void stream.write(data.replace(/(^|\n)/g, `$1>p4 `));
+    // 			}
+    //
+    // 			write(data: string) {
+    // 				void stream.write(data);
     // 			}
     //
     pub fn write(&mut self, input: &str) {
@@ -710,8 +723,40 @@ impl BattleStream {
 
     /// Push a message to the output queue
     /// Equivalent to pushMessage() in battle-stream.ts
-    // TypeScript source:
     // 
+    // 	pushMessage(type: string, data: string) {
+    // 		if (this.replay) {
+    // 			if (type === 'update') {
+    // 				if (this.replay === 'spectator') {
+    // 					const channelMessages = extractChannelMessages(data, [0]);
+    // 					this.push(channelMessages[0].join('\n'));
+    // 				} else {
+    // 					const channelMessages = extractChannelMessages(data, [-1]);
+    // 					this.push(channelMessages[-1].join('\n'));
+    // 				}
+    // 			}
+    // 			return;
+    // 		}
+    // 		this.push(`${type}\n${data}`);
+    // 	}
+    //
+    // 
+    // 	pushMessage(type: string, data: string) {
+    // 		if (this.replay) {
+    // 			if (type === 'update') {
+    // 				if (this.replay === 'spectator') {
+    // 					const channelMessages = extractChannelMessages(data, [0]);
+    // 					this.push(channelMessages[0].join('\n'));
+    // 				} else {
+    // 					const channelMessages = extractChannelMessages(data, [-1]);
+    // 					this.push(channelMessages[-1].join('\n'));
+    // 				}
+    // 			}
+    // 			return;
+    // 		}
+    // 		this.push(`${type}\n${data}`);
+    // 	}
+    //
     // 
     // 	pushMessage(type: string, data: string) {
     // 		if (this.replay) {
@@ -751,8 +796,10 @@ impl BattleStream {
     }
 
     /// Read output from the battle
-    // TypeScript source:
-    // 
+    // 			read() {}
+    //
+    // 			read() {}
+    //
     // 			read() {}
     //
     pub fn read(&mut self) -> Option<String> {

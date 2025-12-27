@@ -175,13 +175,32 @@ function addJSCommentsToRustFile(rustPath, tsPath) {
     for (let i = rustMethods.length - 1; i >= 0; i--) {
         const rustMethod = rustMethods[i];
 
-        // Check if comment already exists
+        // Check if comment already exists - look in a reasonable window above the method
         let hasExistingComment = false;
-        for (let j = Math.max(0, rustMethod.lineNumber - 20); j < rustMethod.lineNumber; j++) {
-            if (rustLines[j].includes('// TypeScript source:') ||
-                rustLines[j].includes('// JavaScript source:')) {
-                hasExistingComment = true;
-                break;
+        const searchStart = Math.max(0, rustMethod.lineNumber - 50);
+        const searchEnd = rustMethod.lineNumber;
+
+        for (let j = searchStart; j < searchEnd; j++) {
+            const line = rustLines[j];
+            if (line.includes('// TypeScript source:') ||
+                line.includes('// JavaScript source:')) {
+                // Found a TS comment marker - check if it's for THIS method
+                // by ensuring there's no other function definition between the comment and this method
+                let hasIntervening = false;
+                for (let k = j + 1; k < rustMethod.lineNumber; k++) {
+                    const checkLine = rustLines[k];
+                    // Skip comment lines
+                    if (checkLine.trim().startsWith('//')) continue;
+                    // If we find another fn declaration, the comment isn't for this method
+                    if (checkLine.match(/^\s*(?:pub(?:\s+\([^)]+\))?\s+)?(?:async\s+)?(?:unsafe\s+)?fn\s+\w+/)) {
+                        hasIntervening = true;
+                        break;
+                    }
+                }
+                if (!hasIntervening) {
+                    hasExistingComment = true;
+                    break;
+                }
             }
         }
 
