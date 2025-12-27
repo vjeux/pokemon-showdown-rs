@@ -13,7 +13,33 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!target.lastMove || target.lastMove.isZOrMaxPowered || target.lastMove.isMax || target.lastMove.id === 'struggle') {
+    //     return false;
+    // }
+    let target = target_pos;
+
+    let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Check if target has a last move
+    let last_move_id = match &target_pokemon.last_move {
+        Some(id) => id.clone(),
+        None => {
+            // !target.lastMove
+            return EventResult::Bool(false);
+        }
+    };
+
+    // target.lastMove.id === 'struggle'
+    if last_move_id.as_str() == "struggle" {
+        return EventResult::Bool(false);
+    }
+
+    // TODO: Check isZOrMaxPowered and isMax - these require additional move metadata
+    // For now, we'll just check the struggle case
+
     EventResult::Continue
 }
 
@@ -48,7 +74,105 @@ pub mod condition {
     ///     this.effectState.move = pokemon.lastMove.id;
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        // // The target hasn't taken its turn, or Cursed Body activated and the move was not used through Dancer or Instruct
+        // if (
+        //     this.queue.willMove(pokemon) ||
+        //     (pokemon === this.activePokemon && this.activeMove && !this.activeMove.isExternal)
+        // ) {
+        //     this.effectState.duration!--;
+        // }
+        let pokemon = pokemon_pos;
+
+        let will_move = battle.queue.will_move(pokemon);
+
+        // TODO: Check if pokemon === this.activePokemon && this.activeMove && !this.activeMove.isExternal
+        // For now, just check willMove
+        if will_move {
+            // this.effectState.duration!--;
+            if let Some(ref mut effect_state) = battle.current_effect_state {
+                if let Some(duration) = effect_state.duration {
+                    effect_state.duration = Some(duration - 1);
+                }
+            }
+        }
+
+        // if (!pokemon.lastMove) {
+        //     this.debug(`Pokemon hasn't moved yet`);
+        //     return false;
+        // }
+        let last_move_id = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            match &pokemon_pokemon.last_move {
+                Some(id) => id.clone(),
+                None => {
+                    battle.debug("Pokemon hasn't moved yet");
+                    return EventResult::Bool(false);
+                }
+            }
+        };
+
+        // for (const moveSlot of pokemon.moveSlots) {
+        //     if (moveSlot.id === pokemon.lastMove.id) {
+        //         if (!moveSlot.pp) {
+        //             this.debug('Move out of PP');
+        //             return false;
+        //         }
+        //     }
+        // }
+        let has_pp = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            let mut found = false;
+            for move_slot in &pokemon_pokemon.move_slots {
+                if move_slot.id == last_move_id {
+                    if move_slot.pp == 0 {
+                        battle.debug("Move out of PP");
+                        return EventResult::Bool(false);
+                    }
+                    found = true;
+                    break;
+                }
+            }
+            found
+        };
+
+        // if (effect.effectType === 'Ability') {
+        //     this.add('-start', pokemon, 'Disable', pokemon.lastMove.name, '[from] ability: ' + effect.name, `[of] ${source}`);
+        // } else {
+        //     this.add('-start', pokemon, 'Disable', pokemon.lastMove.name);
+        // }
+        let (pokemon_arg, last_move_name) = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            let move_data = battle.dex.get_move_by_id(&last_move_id);
+            let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| last_move_id.to_string());
+
+            (crate::battle::Arg::from(pokemon_pokemon), move_name)
+        };
+
+        // TODO: Check effect.effectType === 'Ability'
+        // For now, just add the simple version
+        battle.add("-start", &[
+            pokemon_arg,
+            "Disable".into(),
+            last_move_name.into(),
+        ]);
+
+        // this.effectState.move = pokemon.lastMove.id;
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            effect_state.data.insert("move".to_string(), serde_json::to_value(last_move_id.to_string()).unwrap());
+        }
+
         EventResult::Continue
     }
 
@@ -56,7 +180,19 @@ pub mod condition {
     ///     this.add('-end', pokemon, 'Disable');
     /// }
     pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // this.add('-end', pokemon, 'Disable');
+        let pokemon = pokemon_pos;
+
+        let pokemon_arg = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon_pokemon)
+        };
+
+        battle.add("-end", &[pokemon_arg, "Disable".into()]);
+
         EventResult::Continue
     }
 
@@ -67,7 +203,34 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_before_move(battle: &mut Battle, move_id: &str) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // if (!(move.isZ && move.isZOrMaxPowered) && move.id === this.effectState.move) {
+        //     this.add('cant', attacker, 'Disable', move);
+        //     return false;
+        // }
+
+        // Get the disabled move from effect state
+        let disabled_move_id = if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.data.get("move")
+                .and_then(|v| v.as_str())
+                .map(|s| s.to_string())
+        } else {
+            None
+        };
+
+        if let Some(disabled_id) = disabled_move_id {
+            // move.id === this.effectState.move
+            if move_id == disabled_id {
+                // TODO: Check !(move.isZ && move.isZOrMaxPowered)
+                // For now, we'll just check the move ID match
+
+                // this.add('cant', attacker, 'Disable', move);
+                // Note: This callback doesn't have access to attacker position in the signature
+                // We would need to get it from battle context
+                // For now, we'll just return false to indicate the move is blocked
+                return EventResult::Bool(false);
+            }
+        }
+
         EventResult::Continue
     }
 
@@ -79,7 +242,41 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        // for (const moveSlot of pokemon.moveSlots) {
+        //     if (moveSlot.id === this.effectState.move) {
+        //         pokemon.disableMove(moveSlot.id);
+        //     }
+        // }
+        let pokemon = pokemon_pos;
+
+        // Get the disabled move from effect state
+        let disabled_move_id = if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.data.get("move")
+                .and_then(|v| v.as_str())
+                .map(|s| ID::from(s))
+        } else {
+            None
+        };
+
+        if let Some(disabled_id) = disabled_move_id {
+            let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            // for (const moveSlot of pokemon.moveSlots)
+            for move_slot in &pokemon_pokemon.move_slots {
+                // if (moveSlot.id === this.effectState.move)
+                if move_slot.id == disabled_id {
+                    // pokemon.disableMove(moveSlot.id);
+                    pokemon_pokemon.disable_move(&move_slot.id);
+                    break;
+                }
+            }
+        }
+
         EventResult::Continue
     }
 }
