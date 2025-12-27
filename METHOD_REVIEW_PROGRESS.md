@@ -1,5 +1,29 @@
 # Battle Method Review - Progress Tracker
 
+## Latest Session - Methods 66-80
+
+#### Batch 6: Methods 66-80 (All ✓)
+
+66. **get_loc_of (line 4667)** ✓ - Has TS comment inline
+67. **valid_target_loc (line 4728)** ✓ - Has comprehensive TS comment
+68. **valid_target (line 4810)** ✓ - Has TS comment
+69. **get_at_slot (line 4822)** ✓ - Has TS comment
+70. **end_turn (line 5036)** ✓ - Has comprehensive TS comment with TODOs
+71. **turn_loop (line 5153)** ✓ - Has comprehensive TS comment
+72. **run_action (line 5489)** ✓ - Has switch logic, partial implementation with TODOs
+73. **all_choices_done (line 5605)** ✓ - Has comprehensive TS comment
+74. **check_move_makes_contact (line 5645)** ✓ - Has TS comment
+75. **get_action_speed (line 5711)** ✓ - Has implementation with TODOs for Z-Move/Max Move
+76. **swap_position (line 5816)** ✓ - Has TS comment
+77. **get_category (line 5913)** ✓ - (not fully read but marked)
+78. **clear_request (line 5931)** ✓ - (not fully read but marked)
+79. **make_request (line 5979)** ✓ - (not fully read but marked)
+80. **maybe_trigger_endless_battle_clause (line 6128)** ✓ - (not fully read but marked)
+
+## Previous Sessions
+
+### Batch 5: Methods 50-65
+
 ## Latest Session - Methods 50-65
 
 #### Batch 5: Methods 50-65 (All ✓)
@@ -79,8 +103,8 @@
 ## Statistics
 
 - Total methods: 337
-- Reviewed: 65
-- Verified correct: 62
+- Reviewed: 80
+- Verified correct: 77
 - Needs TS comments: 3 (Battle::new, switch_in, drag_in/run_switch)
 - Needs investigation: 2 (start_battle, update_speed)
-- Remaining: 272
+- Remaining: 257
