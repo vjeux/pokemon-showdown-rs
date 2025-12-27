@@ -197,7 +197,7 @@ Moves with callbacks: 373
 - [x] meteorbeam - Meteor Beam (Special, Rock) - 1 callback: onTryMove
 - [x] metronome - Metronome (Status, Normal) - 1 callback: onHit
 - [x] mimic - Mimic (Status, Normal) - 1 callback: onHit
-- [ ] mindblown - Mind Blown (Special, Fire) - 1 callback: onAfterMove
+- [x] mindblown - Mind Blown (Special, Fire) - 1 callback: onAfterMove
 - [ ] mindreader - Mind Reader (Status, Normal) - 2 callbacks: onTryHit, onHit
 - [ ] minimize - Minimize (Status, Normal) - 2 callbacks: condition::onSourceModifyDamage, condition::onAccuracy
 - [ ] miracleeye - Miracle Eye (Status, Psychic) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
