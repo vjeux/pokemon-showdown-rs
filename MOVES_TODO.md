@@ -191,6 +191,19 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.attrLastMove(attr)`: aurawheel, allyswitch - Modify last move attributes
 - `battle.hint(message)`: aurawheel - Add hint message
 - `EventResult::Null`: aurawheel - Return null to prevent move execution
+- `pokemon.ignoringItem(ignoreKlutz?)`: fling, naturalgift - Check if pokemon is ignoring held item
+- `item.fling`: fling - Fling data object with basePower, effect, status, volatileStatus
+- `item.isBerry`: fling, bugbite, pluck, incinerate - Boolean flag for berry items
+- `item.naturalGift`: naturalgift - Natural gift data with type and basePower
+- `item.isGem`: incinerate - Boolean flag for gem items
+- `item.id`: knockoff - Item ID field
+- `item.onEat`: bugbite, pluck, fling - Item onEat callback
+- `pokemon.usedItemThisTurn`: fling, naturalgift - Flag for item usage this turn
+- `pokemon.staleness`: bugbite, pluck, fling - Staleness field (can be 'external')
+- `pokemon.ateBerry`: bugbite, pluck, fling - Boolean flag for eating berry
+- `battle.chainModify(factor)`: knockoff - Modify relay variable by factor
+- `move.onHit` dynamic assignment: fling - Ability to dynamically assign onHit callback
+- `move.secondaries`: fling - Secondaries array (mutable)
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
