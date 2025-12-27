@@ -230,6 +230,12 @@ The following moves require infrastructure that doesn't exist yet:
 - `effect.secondaries`: electricterrain - Effect secondaries field
 - `battle.chainModify([numerator, denominator])`: electricterrain - Fraction modifier version
 - `move.boosts` mutable: growth - Modify move boost effects
+- `battle.checkMoveMakesContact(move, source, target)`: beakblast - Check if move makes contact
+- `battle.field.isWeather(array)`: auroraveil - Check if current weather matches any in array
+- `pokemon.hasAlly(target)`: auroraveil - Check if pokemon has specific ally
+- `side.getSideCondition(name)`: auroraveil - Get side condition from a side
+- `pokemon.getMoveHitData(move).crit`: auroraveil - Access crit field from move hit data
+- `pokemon.addVolatile(condition, source, move, label)`: anchorshot - Add volatile with trapper label
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
