@@ -36,8 +36,10 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     };
 
     // Check if target is asleep or has comatose ability
-    // TODO: Add hasAbility('comatose') check when ability system is ready
-    if target.has_status("slp") {
+    let is_asleep = target.has_status("slp");
+    let has_comatose = target.has_ability("comatose");
+
+    if is_asleep || has_comatose {
         // TODO: battle.debug('BP doubled on sleeping target');
         EventResult::Number(move_data.base_power * 2)
     } else {
@@ -49,7 +51,24 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 ///     if (target.status === 'slp') target.cureStatus();
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement when pokemon.cureStatus() is available
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if target is asleep, then cure it
+    let is_asleep = if let Some(target) = battle.pokemon_at(target_pos.0, target_pos.1) {
+        target.has_status("slp")
+    } else {
+        return EventResult::Continue;
+    };
+
+    if is_asleep {
+        if let Some(target) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+            target.cure_status();
+        }
+    }
+
     EventResult::Continue
 }
 
