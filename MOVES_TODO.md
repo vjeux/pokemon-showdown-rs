@@ -32,7 +32,7 @@ Moves with callbacks: 373
 - [x] block - Block (Status, Normal) - 1 callback: onHit
 - [x] boltbeak - Bolt Beak (Physical, Electric) - 1 callback: basePowerCallback
 - [x] bounce - Bounce (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceBasePower
-- [ ] brickbreak - Brick Break (Physical, Fighting) - 1 callback: onTryHit
+- [x] brickbreak - Brick Break (Physical, Fighting) - 1 callback: onTryHit
 - [ ] brine - Brine (Special, Water) - 1 callback: onBasePower
 - [ ] bugbite - Bug Bite (Physical, Bug) - 1 callback: onHit
 - [ ] burningbulwark - Burning Bulwark (Status, Fire) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
