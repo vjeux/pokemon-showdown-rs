@@ -48,7 +48,24 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 ///     if (target.status === 'par') target.cureStatus();
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if target is paralyzed, then cure it
+    let is_paralyzed = if let Some(target) = battle.pokemon_at(target_pos.0, target_pos.1) {
+        target.has_status("par")
+    } else {
+        return EventResult::Continue;
+    };
+
+    if is_paralyzed {
+        if let Some(target) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+            target.cure_status();
+        }
+    }
+
     EventResult::Continue
 }
 
