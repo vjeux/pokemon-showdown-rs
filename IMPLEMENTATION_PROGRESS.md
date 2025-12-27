@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 48/79 TODOs (60.8%)
+**Feature Implementation:** ⚠️ 49/79 TODOs (62.0%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -375,11 +375,22 @@
 
 **Enables:** Correct damage tracking for move-based effects, proper Last Resort / Copycat / Mirror Move mechanics
 
+#### Gen 1 Queue Clear (1/1) ✅
+- [x] **queue.clear() in faint_messages** (battle.rs:2856) - Clear action queue when Pokemon faints in Gen 1
+
+**Implementation Details:**
+- Calls self.queue.clear() in Gen 1 faint handling
+- Matches JavaScript: `this.queue.clear();`
+- Gen 1 specific: fainting skips the rest of the turn by clearing all queued actions
+- Essential for Gen 1 battle mechanics where fainting immediately ends turn processing
+
+**Enables:** Correct Gen 1 faint behavior, proper turn termination in Gen 1
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (31 TODOs)
+## Remaining P2 Nice-to-have (30 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions

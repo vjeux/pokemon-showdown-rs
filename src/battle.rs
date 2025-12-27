@@ -2852,8 +2852,9 @@ impl Battle {
         // JS: if (this.gen <= 1) { this.queue.clear(); ... }
         if self.gen <= 1 {
             // Gen 1: fainting skips the rest of the turn
-            // TODO: this.queue.clear();
-            // TODO: Clear Bide accumulated damage
+            // JS: this.queue.clear();
+            self.queue.clear();
+            // TODO: Clear Bide accumulated damage (requires checking pokemon.volatiles['bide'])
         }
 
         // JS: else if (this.gen <= 3 && this.gameType === 'singles') { ... }
