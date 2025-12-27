@@ -5434,6 +5434,9 @@ impl Battle {
     }
 
     /// Get a Pokemon by its full name (mutable)
+    /// Rust helper method - JavaScript getPokemon() can return mutable references directly
+    /// Rust requires separate methods for immutable and mutable borrows
+    /// Returns position tuple (side_index, pokemon_index) instead of reference for flexibility
     pub fn get_pokemon_mut(&mut self, fullname: &str) -> Option<(usize, usize)> {
         for (side_idx, side) in self.sides.iter().enumerate() {
             for (poke_idx, pokemon) in side.pokemon.iter().enumerate() {
@@ -7687,6 +7690,9 @@ impl Battle {
     }
 
     /// Get effect type for an effect ID
+    /// Rust helper method - JavaScript determines effect type dynamically via duck typing
+    /// This method checks the effect ID against dex lookups to categorize it
+    /// Returns: "Ability", "Item", "Move", "Status", "Volatile", "Weather", "Terrain", or "Unknown"
     fn get_effect_type(&self, effect_id: &ID) -> &str {
         // Check if it's an ability
         if self.dex.get_ability(effect_id.as_str()).is_some() {
@@ -7722,6 +7728,9 @@ impl Battle {
     }
 
     /// Dispatch a single event to the appropriate handler
+    /// Rust helper method - JavaScript's singleEvent() calls handler functions directly
+    /// This method routes events to specialized handlers based on effect type
+    /// Routes to: handle_ability_event, handle_item_event, handle_move_event, handle_condition_event
     fn dispatch_single_event(
         &mut self,
         event_id: &str,
@@ -7757,6 +7766,9 @@ impl Battle {
     }
 
     /// Handle ability events
+    /// Rust helper method - JavaScript's singleEvent() directly invokes ability[`on${eventId}`] callbacks
+    /// This method dispatches to ability_callbacks module based on event name
+    /// Routes to ability-specific handlers for all event types (AfterBoost, ModifyDamage, etc.)
     fn handle_ability_event(
         &mut self,
         event_id: &str,
@@ -7909,6 +7921,9 @@ impl Battle {
     }
 
     /// Handle item events
+    /// Rust helper method - JavaScript's singleEvent() directly invokes item[`on${eventId}`] callbacks
+    /// This method dispatches to item_callbacks module based on event name
+    /// Routes to item-specific handlers for all event types (AfterBoost, ModifyDamage, Eat, etc.)
     fn handle_item_event(
         &mut self,
         event_id: &str,
@@ -8012,6 +8027,9 @@ impl Battle {
     }
 
     /// Handle move events
+    /// Rust helper method - JavaScript's singleEvent() directly invokes move[`on${eventId}`] callbacks
+    /// This method dispatches to move_callbacks module based on event name
+    /// Routes to move-specific handlers for all event types (AfterHit, BasePower, Damage, etc.)
     fn handle_move_event(
         &mut self,
         event_id: &str,
@@ -8128,6 +8146,9 @@ impl Battle {
     }
 
     /// Handle condition events (status, volatile, weather, terrain)
+    /// Rust helper method - JavaScript's singleEvent() directly invokes condition[`on${eventId}`] callbacks
+    /// This method dispatches to condition_callbacks module based on event name
+    /// Routes to condition-specific handlers for all event types (Residual, BeforeMove, Weather, etc.)
     fn handle_condition_event(
         &mut self,
         event_id: &str,
@@ -8194,6 +8215,9 @@ impl Battle {
 
     /// Handle side condition events (SideStart, SideEnd, AnyModifyDamage, etc.)
     /// Calls the appropriate callback for each side condition
+    /// Rust helper method - JavaScript's singleEvent() directly invokes side condition callbacks
+    /// This method dispatches to move_callbacks for side condition events
+    /// Currently only implements auroraveil - more side conditions need to be added
     fn handle_side_condition_event(
         &mut self,
         event_id: &str,
