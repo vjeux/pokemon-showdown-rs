@@ -9,7 +9,7 @@ use crate::event::EventResult;
 
 /// onTry(source, target, move) {
 ///     if (target.volatiles['smackdown'] || target.volatiles['ingrain']) return false;
-/// 
+///
 ///     // Additional Gravity check for Z-move variant
 ///     if (this.field.getPseudoWeather('Gravity')) {
 ///         this.add('cant', source, 'move: Gravity', move);
@@ -17,7 +17,43 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.volatiles['smackdown'] || target.volatiles['ingrain']) return false;
+    let has_smackdown_or_ingrain = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.volatiles.contains_key(&ID::from("smackdown")) ||
+        target_pokemon.volatiles.contains_key(&ID::from("ingrain"))
+    };
+
+    if has_smackdown_or_ingrain {
+        return EventResult::Bool(false);
+    }
+
+    // // Additional Gravity check for Z-move variant
+    // if (this.field.getPseudoWeather('Gravity')) {
+    //     this.add('cant', source, 'move: Gravity', move);
+    //     return null;
+    // }
+    let has_gravity = battle.field.pseudo_weather.contains_key(&ID::from("gravity"));
+    if has_gravity {
+        let source_arg = crate::battle::Arg::Pos(source_pos.0, source_pos.1);
+        let move_id = match &battle.active_move {
+            Some(m) => m.id.clone(),
+            None => ID::from(""),
+        };
+        battle.add("cant", &[source_arg, "move: Gravity".into(), move_id.to_string().into()]);
+        return EventResult::Null;
+    }
+
     EventResult::Continue
 }
 
@@ -28,7 +64,15 @@ pub mod condition {
     ///     this.add('-start', target, 'Magnet Rise');
     /// }
     pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // this.add('-start', target, 'Magnet Rise');
+        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        battle.add("-start", &[target_arg, "Magnet Rise".into()]);
+
         EventResult::Continue
     }
 
@@ -36,7 +80,10 @@ pub mod condition {
     ///     if (type === 'Ground') return false;
     /// }
     pub fn on_immunity(battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // TODO: This callback needs the type parameter to work correctly
+        // The TypeScript version checks: if (type === 'Ground') return false;
+        // Once the event system supports passing the type parameter, implement:
+        // if type_id == "ground" { return EventResult::Bool(false); }
         EventResult::Continue
     }
 
@@ -44,7 +91,15 @@ pub mod condition {
     ///     this.add('-end', target, 'Magnet Rise');
     /// }
     pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // this.add('-end', target, 'Magnet Rise');
+        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        battle.add("-end", &[target_arg, "Magnet Rise".into()]);
+
         EventResult::Continue
     }
 }
