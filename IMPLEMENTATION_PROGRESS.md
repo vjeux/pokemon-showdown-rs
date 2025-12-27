@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 47/79 TODOs (59.5%)
+**Feature Implementation:** ⚠️ 48/79 TODOs (60.8%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -364,11 +364,22 @@
 
 **Enables:** Correct instafaint behavior for spread damage, proper faint queue processing
 
+#### Source Last Damage Tracking (1/1) ✅
+- [x] **Effect type check for lastDamage** (battle.rs:8881) - Only set source.lastDamage for Move effects
+
+**Implementation Details:**
+- Added effect.effectType check before setting source.lastDamage
+- Uses get_effect_type() to determine if effect is a Move
+- Matches JavaScript: `if (source && effect.effectType === 'Move') source.lastDamage = targetDamage;`
+- Prevents incorrectly setting lastDamage for non-Move damage sources (items, abilities, status, etc.)
+
+**Enables:** Correct damage tracking for move-based effects, proper Last Resort / Copycat / Mirror Move mechanics
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (32 TODOs)
+## Remaining P2 Nice-to-have (31 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions

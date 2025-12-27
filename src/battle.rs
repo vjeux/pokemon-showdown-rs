@@ -8877,8 +8877,8 @@ impl Battle {
             }
 
             // Set source.lastDamage for moves
-            if source.is_some() {
-                // TODO: Check if effect.effectType === 'Move'
+            // JS: if (source && effect.effectType === 'Move') source.lastDamage = targetDamage;
+            if source.is_some() && effect.map_or(false, |e| self.get_effect_type(e) == "Move") {
                 if let Some((src_side, src_idx)) = source {
                     if let Some(side) = self.sides.get_mut(src_side) {
                         if let Some(pokemon) = side.pokemon.get_mut(src_idx) {
