@@ -325,6 +325,10 @@ The following moves require infrastructure that doesn't exist yet:
 - `move.name`: skydrop, spite - Move name string field
 - `move.hitTargets`: sparklingaria - Array of pokemon that were successfully hit by the move
 - `battle.queue.list`: round, pursuit - Direct access to queue as array for iteration and manipulation
+- `move.id`: quickguard, sleeptalk - Move ID string field for comparison
+- `move.willChangeForme`: relicsong - Mutable field for tracking forme change
+- `pokemon.species.id`: relicsong - Species ID string field
+- `pokemon.formeChange(name, effect, noSwitch, unknown, message)`: relicsong - Change pokemon forme
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
