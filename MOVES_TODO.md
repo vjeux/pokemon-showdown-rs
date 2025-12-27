@@ -296,7 +296,7 @@ Moves with callbacks: 373
 - [x] smackdown - Smack Down (Physical, Rock) - 2 callbacks: condition::onStart, condition::onRestart
 - [x] smellingsalts - Smelling Salts (Physical, Normal) - 2 callbacks: basePowerCallback, onHit
 - [x] snatch - Snatch (Status, Dark) - 2 callbacks: condition::onStart, condition::onAnyPrepareHit
-- [ ] snore - Snore (Special, Normal) - 1 callback: onTry
+- [x] snore - Snore (Special, Normal) - 1 callback: onTry
 - [ ] soak - Soak (Status, Water) - 1 callback: onHit
 - [ ] solarbeam - Solar Beam (Special, Grass) - 2 callbacks: onTryMove, onBasePower
 - [ ] solarblade - Solar Blade (Physical, Grass) - 2 callbacks: onTryMove, onBasePower
