@@ -210,7 +210,7 @@ Moves with callbacks: 373
 - [x] morningsun - Morning Sun (Status, Normal) - 1 callback: onHit
 - [x] mortalspin - Mortal Spin (Physical, Poison) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [x] mudsport - Mud Sport (Status, Ground) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
-- [ ] multiattack - Multi-Attack (Physical, Normal) - 1 callback: onModifyType
+- [x] multiattack - Multi-Attack (Physical, Normal) - 1 callback: onModifyType
 - [ ] naturalgift - Natural Gift (Physical, Normal) - 2 callbacks: onModifyType, onPrepareHit
 - [ ] naturepower - Nature Power (Status, Normal) - 1 callback: onTryHit
 - [ ] naturesmadness - Nature's Madness (Special, Fairy) - 1 callback: damageCallback
