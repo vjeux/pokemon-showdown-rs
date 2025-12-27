@@ -15,8 +15,28 @@ use crate::event::EventResult;
 ///     return !!this.queue.willAct();
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let source = source_pos;
+
+    // if (source.activeMoveActions > 1) {
+    //     this.hint("Mat Block only works on your first turn out.");
+    //     return false;
+    // }
+    let active_move_actions = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.active_move_actions
+    };
+
+    if active_move_actions > 1 {
+        battle.hint("Mat Block only works on your first turn out.");
+        return EventResult::Bool(false);
+    }
+
+    // return !!this.queue.willAct();
+    let will_act = battle.queue.will_act();
+    EventResult::Bool(will_act)
 }
 
 pub mod condition {
@@ -26,7 +46,15 @@ pub mod condition {
     ///     this.add('-singleturn', source, 'Mat Block');
     /// }
     pub fn on_side_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // this.add('-singleturn', source, 'Mat Block');
+        let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+        battle.add("-singleturn", &[source_arg, "Mat Block".into()]);
+
         EventResult::Continue
     }
 
@@ -48,7 +76,94 @@ pub mod condition {
     ///     return this.NOT_FAIL;
     /// }
     pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        use crate::dex_data::ID;
+
+        let source = source_pos;
+        let target = target_pos;
+
+        // if (!move.flags['protect']) {
+        let has_protect_flag = battle.active_move.as_ref()
+            .and_then(|m| battle.dex.get_move_by_id(m))
+            .map(|m| m.flags.protect)
+            .unwrap_or(false);
+
+        if !has_protect_flag {
+            // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
+            let move_id = battle.active_move.as_ref().map(|m| m.as_str()).unwrap_or("");
+            if move_id == "gmaxoneblow" || move_id == "gmaxrapidflow" {
+                return EventResult::Continue;
+            }
+
+            // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
+            let is_z_or_max = battle.active_move.as_ref()
+                .and_then(|m| battle.dex.get_move_by_id(m))
+                .map(|m| m.is_z_or_max_powered)
+                .unwrap_or(false);
+
+            if is_z_or_max {
+                let move_id = match &battle.active_move {
+                    Some(id) => id.clone(),
+                    None => return EventResult::Continue,
+                };
+
+                let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+
+                if let Some(hit_data) = target_pokemon.get_move_hit_data_mut(&move_id) {
+                    hit_data.z_broke_protect = true;
+                }
+            }
+
+            // return;
+            return EventResult::Continue;
+        }
+
+        // if (move && (move.target === 'self' || move.category === 'Status')) return;
+        let move_data = battle.active_move.as_ref()
+            .and_then(|m| battle.dex.get_move_by_id(m));
+
+        if let Some(m) = move_data {
+            if m.target == "self" || m.category == "Status" {
+                return EventResult::Continue;
+            }
+        }
+
+        // this.add('-activate', target, 'move: Mat Block', move.name);
+        let move_name = move_data.map(|m| m.name.as_str()).unwrap_or("");
+        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        battle.add("-activate", &[target_arg, "move: Mat Block".into(), move_name.into()]);
+
+        // const lockedmove = source.getVolatile('lockedmove');
+        // if (lockedmove) {
+        //     // Outrage counter is reset
+        //     if (source.volatiles['lockedmove'].duration === 2) {
+        //         delete source.volatiles['lockedmove'];
+        //     }
+        // }
+        let has_lockedmove_duration_2 = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::NotFail,
+            };
+
+            if let Some(lockedmove) = source_pokemon.volatiles.get(&ID::from("lockedmove")) {
+                lockedmove.duration == Some(2)
+            } else {
+                false
+            }
+        };
+
+        if has_lockedmove_duration_2 {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::NotFail,
+            };
+            source_pokemon.remove_volatile(&ID::from("lockedmove"));
+        }
+
+        // return this.NOT_FAIL;
+        EventResult::NotFail
     }
 }
