@@ -320,6 +320,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `target.runImmunity(type)`: thousandarrows - Check if pokemon is immune to a type (different from status immunity)
 - `pokemon.moveLastTurnResult`: temperflare, stompingtantrum - Result of last move (false if move failed)
 - `pokemon.eatItem(force)`: teatime - Make pokemon eat held item, force parameter bypasses checks
+- `pokemon.activeTurns`: taunt - Number of turns pokemon has been active
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
