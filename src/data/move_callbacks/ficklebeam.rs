@@ -15,7 +15,28 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = pokemon_pos;
+
+    // if (this.randomChance(3, 10)) {
+    if battle.random_chance(3, 10) {
+        // this.attrLastMove('[anim] Fickle Beam All Out');
+        battle.attr_last_move("[anim] Fickle Beam All Out");
+
+        // this.add('-activate', pokemon, 'move: Fickle Beam');
+        let pokemon_arg = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon_pokemon)
+        };
+
+        battle.add("-activate", &[pokemon_arg, "move: Fickle Beam".into()]);
+
+        // return this.chainModify(2);
+        return EventResult::ChainModify(2.0);
+    }
+
     EventResult::Continue
 }
 
