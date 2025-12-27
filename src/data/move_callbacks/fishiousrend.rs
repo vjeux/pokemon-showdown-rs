@@ -45,10 +45,10 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     let will_move = battle.queue.will_move(target_pos.0, target_pos.1).is_some();
 
     if newly_switched || will_move {
-        // TODO: battle.debug('Fishious Rend damage boost');
+        battle.debug("Fishious Rend damage boost");
         EventResult::Number(base_power * 2)
     } else {
-        // TODO: battle.debug('Fishious Rend NOT boosted');
+        battle.debug("Fishious Rend NOT boosted");
         EventResult::Number(base_power)
     }
 }

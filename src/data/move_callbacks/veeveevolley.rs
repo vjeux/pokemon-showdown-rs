@@ -21,7 +21,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     let bp = (pokemon.happiness * 10) / 25;
     let bp = if bp == 0 { 1 } else { bp };
 
-    // TODO: battle.debug(`BP: ${bp}`);
+    battle.debug(&format!("BP: {}", bp));
     EventResult::Number(bp)
 }
 

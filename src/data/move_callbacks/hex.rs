@@ -40,7 +40,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     let has_comatose = target.has_ability("comatose");
 
     if has_status || has_comatose {
-        // TODO: battle.debug('BP doubled from status condition');
+        battle.debug("BP doubled from status condition");
         EventResult::Number(move_data.base_power * 2)
     } else {
         EventResult::Number(move_data.base_power)

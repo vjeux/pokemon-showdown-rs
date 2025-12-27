@@ -36,7 +36,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     };
 
     if target.hurt_this_turn.is_some() {
-        // TODO: battle.debug('BP doubled on damaged target');
+        battle.debug("BP doubled on damaged target");
         EventResult::Number(move_data.base_power * 2)
     } else {
         EventResult::Number(move_data.base_power)

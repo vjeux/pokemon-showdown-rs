@@ -38,7 +38,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         1
     };
 
-    // TODO: battle.debug(`BP for ${hp}/${maxhp} HP: ${bp}`);
+    battle.debug(&format!("BP for {}/{} HP: {}", hp, maxhp, bp));
     EventResult::Number(bp)
 }
 

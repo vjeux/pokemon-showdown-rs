@@ -52,7 +52,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         20
     };
 
-    // TODO: battle.debug(`BP: ${bp}`);
+    battle.debug(&format!("BP: {}", bp));
     EventResult::Number(bp)
 }
 

@@ -46,11 +46,11 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     if newly_switched || will_move {
         // Target moved first or will move - NOT boosted
-        // TODO: battle.debug('Payback NOT boosted');
+        battle.debug("Payback NOT boosted");
         EventResult::Number(base_power)
     } else {
         // Target moved after user - boosted
-        // TODO: battle.debug('Payback damage boost');
+        battle.debug("Payback damage boost");
         EventResult::Number(base_power * 2)
     }
 }

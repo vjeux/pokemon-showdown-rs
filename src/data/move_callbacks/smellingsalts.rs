@@ -37,7 +37,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     // Check if target is paralyzed
     if target.has_status("par") {
-        // TODO: battle.debug('BP doubled on paralyzed target');
+        battle.debug("BP doubled on paralyzed target");
         EventResult::Number(move_data.base_power * 2)
     } else {
         EventResult::Number(move_data.base_power)

@@ -33,7 +33,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     let base_power = move_data.base_power;
 
     if pokemon.item.is_empty() {
-        // TODO: battle.debug("BP doubled for no item");
+        battle.debug("BP doubled for no item");
         EventResult::Number(base_power * 2)
     } else {
         EventResult::Number(base_power)
