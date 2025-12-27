@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 64/79 TODOs (81.0%)
+**Feature Implementation:** ⚠️ 66/79 TODOs (83.5%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -671,11 +671,43 @@
 
 **Enables:** Correct protocol logging for partial trapping moves showing which specific move is causing damage (Bind, Fire Spin, Whirlpool, etc.)
 
+### Session 10 Continued - Move Secondary Effects and Boosts Conversion (2 implementations)
+
+#### Move Secondary Effects Conversion (1/1) ✅
+- [x] **convert_secondary() helper** (dex.rs:881-891) - Convert MoveSecondary to SecondaryEffect
+- [x] **secondaries field initialization** (dex.rs:824-828) - Use helper to convert move_data.secondary to Vec<SecondaryEffect>
+
+**Implementation Details:**
+- Created `convert_secondary()` helper method in Dex
+- Converts MoveSecondary (JSON format with HashMap boosts) to SecondaryEffect (typed format with BoostsTable)
+- Maps chance, status, volatile_status fields directly
+- Uses `convert_boosts_hash_to_table()` to convert boosts HashMap
+- Sets self_effect to false (primary effect, not self-targeting)
+- Updated get_active_move() to use helper when secondary exists
+- Wraps result in Vec since ActiveMove.secondaries is Vec<SecondaryEffect>
+
+**Enables:** Move secondary effects (Thunder's paralysis chance, Scald's burn chance, etc.) with proper typed boosts
+
+#### Stat Boosts Conversion (1/1) ✅
+- [x] **convert_boosts_hash_to_table() helper** (dex.rs:869-879) - Convert HashMap<String, i32> to BoostsTable
+- [x] **boosts field initialization** (dex.rs:833) - Use helper to convert move_data.boosts to BoostsTable
+
+**Implementation Details:**
+- Created `convert_boosts_hash_to_table()` helper method in Dex
+- Converts HashMap<String, i32> from JSON to typed BoostsTable struct
+- Maps stat names to struct fields: atk, def, spa, spd, spe, accuracy, evasion
+- Defaults to 0 if stat not present in HashMap
+- Casts i32 to i8 for struct compatibility
+- Updated get_active_move() to use helper when boosts exists
+- Handles both move.boosts (direct stat changes) and secondary.boosts (chance-based changes)
+
+**Enables:** Move stat changes (Swords Dance, Growl, etc.) and stat change secondary effects (Icy Wind, Charge Beam, etc.)
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (15 TODOs)
+## Remaining P2 Nice-to-have (13 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks

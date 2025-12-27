@@ -817,12 +817,16 @@ impl Dex {
             z_move: None,
             sleep_usable: false,
 
-            // Secondary effects - TODO: convert from move_data.secondary
-            secondaries: Vec::new(),
+            // Secondary effects - convert from move_data.secondary
+            secondaries: if let Some(ref sec) = move_data.secondary {
+                vec![Self::convert_secondary(sec)]
+            } else {
+                Vec::new()
+            },
             self_effect: None,
 
             // Move data effects - copy from move_data
-            boosts: None, // TODO: convert from move_data.boosts
+            boosts: move_data.boosts.as_ref().map(|b| Self::convert_boosts_hash_to_table(b)),
             heal: move_data.heal,
             status: move_data.status.clone(),
             force_status: None,
@@ -860,6 +864,30 @@ impl Dex {
             wind: flags.get("wind").map(|&v| v != 0).unwrap_or(false),
             cant_use_twice: flags.get("cantusetwice").map(|&v| v != 0).unwrap_or(false),
             future_move: flags.get("futuremove").map(|&v| v != 0).unwrap_or(false),
+        }
+    }
+
+    /// Convert HashMap boosts to BoostsTable struct
+    fn convert_boosts_hash_to_table(boosts: &HashMap<String, i32>) -> crate::dex_data::BoostsTable {
+        crate::dex_data::BoostsTable {
+            atk: boosts.get("atk").copied().unwrap_or(0) as i8,
+            def: boosts.get("def").copied().unwrap_or(0) as i8,
+            spa: boosts.get("spa").copied().unwrap_or(0) as i8,
+            spd: boosts.get("spd").copied().unwrap_or(0) as i8,
+            spe: boosts.get("spe").copied().unwrap_or(0) as i8,
+            accuracy: boosts.get("accuracy").copied().unwrap_or(0) as i8,
+            evasion: boosts.get("evasion").copied().unwrap_or(0) as i8,
+        }
+    }
+
+    /// Convert MoveSecondary to SecondaryEffect
+    fn convert_secondary(secondary: &MoveSecondary) -> crate::battle_actions::SecondaryEffect {
+        crate::battle_actions::SecondaryEffect {
+            chance: secondary.chance,
+            boosts: secondary.boosts.as_ref().map(|b| Self::convert_boosts_hash_to_table(b)),
+            status: secondary.status.clone(),
+            volatile_status: secondary.volatile_status_secondary.clone(),
+            self_effect: false,
         }
     }
 
