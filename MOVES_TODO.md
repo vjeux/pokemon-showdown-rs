@@ -137,7 +137,7 @@ Moves with callbacks: 373
 - [x] guardianofalola - Guardian of Alola (Special, Fairy) - 1 callback: damageCallback
 - [x] guardsplit - Guard Split (Status, Psychic) - 1 callback: onHit
 - [x] guardswap - Guard Swap (Status, Psychic) - 1 callback: onHit
-- [ ] gyroball - Gyro Ball (Physical, Steel) - 1 callback: basePowerCallback
+- [x] gyroball - Gyro Ball (Physical, Steel) - 1 callback: basePowerCallback
 - [ ] happyhour - Happy Hour (Status, Normal) - 1 callback: onTryHit
 - [ ] hardpress - Hard Press (Physical, Steel) - 1 callback: basePowerCallback
 - [ ] haze - Haze (Status, Ice) - 1 callback: onHitField
