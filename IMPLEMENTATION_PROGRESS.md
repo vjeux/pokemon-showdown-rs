@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 75/79 TODOs (94.9%)
+**Feature Implementation:** ⚠️ 76/79 TODOs (96.2%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -892,6 +892,30 @@
 - Sets up initial battle state with all active Pokemon on field
 
 **Enables:** Proper battle initialization with all active Pokemon switched in, triggers switch-in abilities and events, correct battle start sequence
+
+### Session 17 - KnownType Field and Trap Immunity (1 implementation)
+
+#### Pokemon.knownType Field Infrastructure (1/1) ✅
+- [x] **Add known_type field to Pokemon** (pokemon.rs:135, 260) - Track known type for illusion/disguise mechanics
+- [x] **Implement trap immunity check** (battle.rs:5863-5874) - Check knownType and status immunity before MaybeTrapPokemon event
+
+**Implementation Details:**
+- Added `known_type: Option<String>` field to Pokemon struct (line 135)
+- Initialized to None in Pokemon::new() (line 260)
+- Implemented conditional MaybeTrapPokemon event call in end_turn()
+- Checks: `pokemon.known_type.is_none() || pokemon.run_status_immunity("trapped")`
+- Only runs MaybeTrapPokemon if type is unknown OR not immune to trapped status
+- Matches JavaScript: `if (!pokemon.knownType || this.dex.getImmunity('trapped', pokemon))`
+
+**Technical Notes:**
+- knownType is used for Illusion/Disguise/Zorua mechanics
+- When a Pokemon's type becomes known, this field is set
+- run_status_immunity("trapped") checks if Pokemon is immune to being trapped
+- Ghost types, levitating Pokemon may be immune based on abilities
+- Proper check prevents unnecessary event calls
+
+**Enables:** Illusion/Disguise type tracking, correct trap mechanics based on type knowledge, optimized event system (skips events when Pokemon is immune)
+
 
 
 

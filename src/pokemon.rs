@@ -132,6 +132,7 @@ pub struct Pokemon {
     pub types: Vec<String>,
     pub added_type: Option<String>,
     pub base_types: Vec<String>,
+    pub known_type: Option<String>,  // Known type for illusion/disguise mechanics
 
     // Tera
     pub tera_type: Option<String>,
@@ -256,6 +257,7 @@ impl Pokemon {
             types: Vec::new(),
             added_type: None,
             base_types: Vec::new(),
+            known_type: None,  // Initially null, set when type becomes known (e.g., Illusion breaks)
 
             tera_type: set.tera_type.clone(),
             terastallized: None,

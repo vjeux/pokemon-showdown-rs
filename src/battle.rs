@@ -5861,9 +5861,16 @@ impl Battle {
             self.run_event("TrapPokemon", Some(pokemon_pos), None, None, None);
 
             // MaybeTrapPokemon event - conditional trapping based on type immunity
-            // For now, always call it (full implementation needs knownType and getImmunity)
-            // TODO: Check pokemon.knownType and immunity to 'trapped' before calling
-            self.run_event("MaybeTrapPokemon", Some(pokemon_pos), None, None, None);
+            // JS: if (!pokemon.knownType || this.dex.getImmunity('trapped', pokemon))
+            let should_run_maybe_trap = {
+                let pokemon = &self.sides[pokemon_pos.0].pokemon[pokemon_pos.1];
+                // Run if type is not known OR if not immune to trapped status
+                pokemon.known_type.is_none() || pokemon.run_status_immunity("trapped")
+            };
+
+            if should_run_maybe_trap {
+                self.run_event("MaybeTrapPokemon", Some(pokemon_pos), None, None, None);
+            }
         }
 
         // Check for foe abilities that might trap pokemon (Gen 3+)
