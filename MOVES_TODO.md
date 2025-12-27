@@ -243,7 +243,7 @@ Moves with callbacks: 373
 - [x] psychicfangs - Psychic Fangs (Physical, Psychic) - 1 callback: onTryHit
 - [ ] psychicterrain - Psychic Terrain (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onTryHit, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
 - [x] psychoshift - Psycho Shift (Status, Psychic) - 1 callback: onTryHit
-- [ ] psychup - Psych Up (Status, Normal) - 1 callback: onHit
+- [x] psychup - Psych Up (Status, Normal) - 1 callback: onHit
 - [ ] psywave - Psywave (Special, Psychic) - 1 callback: damageCallback
 - [ ] punishment - Punishment (Physical, Dark) - 1 callback: basePowerCallback
 - [ ] purify - Purify (Status, Poison) - 1 callback: onHit
