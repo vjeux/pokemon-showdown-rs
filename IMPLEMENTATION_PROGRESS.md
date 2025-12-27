@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 16/79 TODOs (20.3%)
+**Feature Implementation:** ⚠️ 18/79 TODOs (22.8%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -53,7 +53,7 @@
 
 **Enables:** Assault Vest, Gorilla Tactics move restrictions, Mean Look trapping
 
-### Session 5 - Move Target Events (3 implementations)
+### Session 5 - Move Target Events (5 implementations)
 
 #### ModifyTarget Event (1/1) ✅
 - [x] **ModifyTarget event** (battle_actions.rs:2799-2818) - Allows moves to redirect targets
@@ -66,17 +66,29 @@
 
 **Enables:** Proper target selection for moves without explicit targets, dynamic retargeting
 
+#### Multi-target Infrastructure (2/2) ✅
+- [x] **getMoveTargets implementation** (battle.rs:3782-3907, battle_actions.rs:2925-2932) - Full multi-target logic
+- [x] **PP deduction with Pressure** (battle_actions.rs:2950-2973) - Deduct extra PP from Pressure targets
+
+**Supporting Methods:**
+- allies_and_self() (battle.rs:3642-3660)
+- foes() (battle.rs:3678-3704)
+- is_ally() (battle.rs:3909-3917)
+- is_pokemon_fainted() (battle.rs:3919-3926)
+
+**Enables:** Spread moves, multi-target damage, Pressure ability PP mechanics
+
 ## Remaining P0 Critical (High Priority)
 
-### Move Events (2 remaining TODOs)
+### Move Events (0 remaining TODOs) ✅ ALL COMPLETE
 - [x] ~~ModifyTarget event (battle_actions.rs:2799)~~ ✅ Completed
 - [x] ~~ModifyPriority event (battle.rs:5747)~~ ✅ Completed
 - [~] ~~Set move.priority field (battle.rs:5755)~~ ⚠️ Documented limitation
 - [x] ~~Get move priority from Dex (battle.rs:5735)~~ ✅ Completed
 - [x] ~~getRandomTarget (battle_actions.rs:2805)~~ ✅ Completed
 - [~] ~~Set move source effect (battle_actions.rs:2821)~~ ⚠️ Documented - handled via event parameters
-- [ ] getMoveTargets multi-target (battle_actions.rs:2899)
-- [ ] PP deduction with Pressure (battle_actions.rs:2918)
+- [x] ~~getMoveTargets multi-target (battle_actions.rs:2899)~~ ✅ Completed
+- [x] ~~PP deduction with Pressure (battle_actions.rs:2918)~~ ✅ Completed
 
 ### Pokemon Helpers (0 remaining TODOs)
 - [x] ~~adjacentAllies() (battle.rs:3492)~~ ✅ Completed
