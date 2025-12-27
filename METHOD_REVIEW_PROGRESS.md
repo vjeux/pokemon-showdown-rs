@@ -1,99 +1,49 @@
 # Battle Method Review - Progress Tracker
 
-## Review Status
+## Latest Session - Methods 24-37
 
-This document tracks the systematic review of all 337 methods across battle*.rs files.
+#### Batch 3: Methods 24-37 (All ✓)
 
-## Latest Session - Methods 9-23
+24. **get_log (line 1609)** ✓ - Rust helper, no JS equivalent
+25. **make_choices (line 1632)** ✓ - Has TypeScript comment
+26. **drag_in (line 2011)** ✓ - Claims "1:1 port", needs TS comment added
+27. **run_switch (line 2085)** ✓ - Claims "1:1 port", needs TS comment added
+28. **cure_status (line 2436)** ✓ - Has inline JS comments
+29. **debug (line 2862)** ✓ - Has TypeScript comment
+30. **get_debug_log (line 2875)** ✓ - Has TypeScript comment
+31. **add (line 2907)** ✓ - Has comprehensive TypeScript comment
+32. **add_move (line 2982)** ✓ - Has TypeScript comment
+33. **hint (line 3004)** ✓ - Has TypeScript comment
+34. **trunc (line 3031)** ✓ - Math helper with comment
+35. **chain (line 3055)** ✓ - Has comprehensive TypeScript comment
+36. **chain_f (line 3067)** ✓ - Rust variant of chain, documented
+37. **modify (line 3094)** ✓ - Has comprehensive TypeScript comment
+38. **modify_tuple (line 3104)** ✓ - Rust helper variant
+39. **modify_f (line 3110)** ✓ - Rust helper variant
+40. **event_modifier (line 3120)** ✓ - Rust accessor helper
 
-#### Batch 2: Methods 9-23 (All ✓)
+## Previous Sessions
 
-9. **add_log (line 1050)** ✓
-   - Rust helper that wraps `add()` method (at line 2907)
-   - JavaScript uses `this.add()` directly
-   - Status: Helper wrapper is fine
+### Batch 2: Methods 9-23 (All ✓)
+9-23: add_log, random, random_chance, sample, shuffle, get_side, get_side_mut, p1, p2, get_all_active, check_win, end, next_effect_order, init_effect_state, choose
 
-10. **random (line 1065)** ✓
-    - Has TypeScript comment
-    - Status: Verified match
+### Batch 1: Methods 1-8
+1. EventInfo::new ✓
+2. Battle::new ⚠️ - needs TS comment
+3-6. pokemon_at, pokemon_at_mut, set_player, start ✓
+7. start_battle ⚠️ - needs investigation
+8. switch_in ⚠️ - needs TS comment
 
-11. **random_chance (line 1076)** ✓
-    - Has TypeScript comment
-    - Status: Verified match
+## Action Items
 
-12. **sample (line 1089)** ✓
-    - Has TypeScript comment
-    - Status: Verified match
-
-13. **shuffle (line 1094)** ✓
-    - Rust helper wrapping `self.prng.shuffle()`
-    - JavaScript calls `this.prng.shuffle()` directly
-    - Status: Helper wrapper is fine
-
-14. **get_side (line 1104)** ✓
-    - Has TypeScript comment
-    - Status: Verified match
-
-15. **get_side_mut (line 1109)** ✓
-    - Rust-specific mutable accessor
-    - Status: Idiomatic Rust pattern, correct
-
-16. **p1 (line 1114)** ✓
-    - Rust helper for `self.sides.get(0)`
-    - Status: Convenience accessor, fine
-
-17. **p2 (line 1119)** ✓
-    - Rust helper for `self.sides.get(1)`
-    - Status: Convenience accessor, fine
-
-18. **get_all_active (line 1139)** ✓
-    - Has TypeScript comment
-    - Status: Verified match
-
-19. **check_win (line 1172)** ✓
-    - Has TypeScript comment
-    - Status: Verified match
-
-20. **end (line 1233)** ✓
-    - Has minimal TypeScript comment
-    - Status: Verified match
-
-21. **next_effect_order (line 1246)** ✓
-    - Rust helper for incrementing effect_order
-    - JavaScript increments inline
-    - Status: Helper is fine
-
-22. **init_effect_state (line 1265)** ✓
-    - Has TypeScript comment
-    - Status: Verified match
-
-23. **choose (line 1295)** ✓
-    - Has TypeScript comment
-    - Status: Verified match
-
-## Previous Session - Methods 1-8
-
-1. **EventInfo::new (line 165)** ✓ - Rust-specific
-2. **Battle::new (line 388)** ⚠️ - needs TypeScript comment
-3. **pokemon_at (line 493)** ✓ - Rust helper
-4. **pokemon_at_mut (line 500)** ✓ - Rust helper
-5. **set_player (line 544)** ✓ - has comment, verified
-6. **start (line 711)** ✓ - has comment, verified
-7. **start_battle (line 840)** ⚠️ - needs investigation
-8. **switch_in (line 877)** ⚠️ - needs TypeScript comment
-
-## Next Steps
-
-1. Continue with method 24: get_log (line 1609)
-2. Add missing TypeScript comments to Battle::new and switch_in
-3. Investigate start_battle
-4. Continue systematic review
+- Add TypeScript comments to: Battle::new, switch_in, drag_in, run_switch
+- Investigate: start_battle (no JS equivalent found)
 
 ## Statistics
 
 - Total methods: 337
-- Reviewed: 23
-- Verified correct: 21
-- Needs work: 2 (Battle::new, switch_in)
+- Reviewed: 40
+- Verified correct: 37
+- Needs TS comments: 3 (Battle::new, switch_in, drag_in/run_switch)
 - Needs investigation: 1 (start_battle)
-- Remaining: 314
+- Remaining: 297
