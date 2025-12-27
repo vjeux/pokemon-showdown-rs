@@ -16,7 +16,18 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Only Darkrai can use this move (or if move has bounced - TODO: need move.hasBounced)
+    if source.species == "Darkrai" {
+        return EventResult::Continue;
+    }
+
+    // TODO: battle.add('-fail', source, 'move: Dark Void');
+    // TODO: battle.hint("Only a Pokemon whose form is Darkrai can use this move.");
+    EventResult::Null
 }
 
