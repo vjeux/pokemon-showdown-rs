@@ -16,7 +16,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         delete move.flags['contact'];
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -30,7 +30,7 @@ pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 ///         }
 ///     }
 /// }
-pub fn on_move_fail(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -38,7 +38,7 @@ pub fn on_move_fail(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHand
 /// onTry(source, target) {
 ///     return !target.fainted;
 /// }
-pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -65,7 +65,7 @@ pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerRes
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -73,7 +73,7 @@ pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandle
 /// onHit(target, source) {
 ///     if (target.hp) this.add('-end', target, 'Sky Drop');
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

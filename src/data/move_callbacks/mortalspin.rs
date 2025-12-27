@@ -26,7 +26,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         }
 ///     }
 /// }
-pub fn on_after_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_after_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -47,7 +47,7 @@ pub fn on_after_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHand
 ///         }
 ///     }
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

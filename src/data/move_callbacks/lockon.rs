@@ -13,7 +13,7 @@ use super::{MoveHandlerResult, Status, Effect};
 /// onTryHit(target, source) {
 ///     if (source.volatiles['lockon']) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -22,7 +22,7 @@ pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandle
 ///     source.addVolatile('lockon', target);
 ///     this.add('-activate', source, 'move: Lock-On', `[of] ${target}`);
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

@@ -15,7 +15,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     pokemon.addVolatile('iceball');
 ///     if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
 /// }
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -34,7 +34,7 @@ pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 ///         iceballData.contactHitCount;
 ///     }
 /// }
-pub fn on_after_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_after_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

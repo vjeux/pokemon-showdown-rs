@@ -13,7 +13,7 @@ use super::{MoveHandlerResult, Status, Effect};
 /// onDisableMove(pokemon) {
 ///     if (!pokemon.ateBerry) pokemon.disableMove('belch');
 /// }
-pub fn on_disable_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

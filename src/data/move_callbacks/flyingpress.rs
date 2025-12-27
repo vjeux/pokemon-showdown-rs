@@ -13,7 +13,7 @@ use super::{MoveHandlerResult, Status, Effect};
 /// onEffectiveness(typeMod, target, type, move) {
 ///     return typeMod + this.dex.getEffectiveness('Flying', type);
 /// }
-pub fn on_effectiveness(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

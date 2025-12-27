@@ -16,7 +16,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -26,7 +26,7 @@ pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHan
 ///         move.target = 'allAdjacentFoes';
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

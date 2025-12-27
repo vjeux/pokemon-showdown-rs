@@ -13,7 +13,7 @@ use super::{MoveHandlerResult, Status, Effect};
 /// onHit(target, source, move) {
 ///     return target.addVolatile('trapped', source, move, 'trapper');
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

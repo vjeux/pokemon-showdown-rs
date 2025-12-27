@@ -14,7 +14,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     const lastDamagedBy = source.getLastDamagedBy(true);
 ///     if (!lastDamagedBy?.thisTurn) return false;
 /// }
-pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -25,7 +25,7 @@ pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerRes
 ///         targetRelayVar.target = this.getAtSlot(lastDamagedBy.slot);
 ///     }
 /// }
-pub fn on_modify_target(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_modify_target(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

@@ -13,7 +13,7 @@ use super::{MoveHandlerResult, Status, Effect};
 /// onMoveFail(target, source, move) {
 ///     this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('Jump Kick'));
 /// }
-pub fn on_move_fail(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

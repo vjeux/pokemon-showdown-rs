@@ -18,7 +18,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         return null;
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

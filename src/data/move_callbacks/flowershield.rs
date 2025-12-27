@@ -28,7 +28,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     }
 ///     return success;
 /// }
-pub fn on_hit_field(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit_field(battle: &mut Battle, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

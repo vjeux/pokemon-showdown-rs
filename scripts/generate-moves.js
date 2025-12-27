@@ -9,6 +9,36 @@
 const fs = require('fs');
 const path = require('path');
 
+// Helper function to generate parameters based on JS callback signature
+function generateParameters(callbackName, jsArgs) {
+    // Parse JS arguments to determine what Rust parameters we need
+    const args = jsArgs.split(',').map(a => a.trim()).filter(a => a);
+
+    // Always include battle
+    let params = ['battle: &mut Battle'];
+
+    // Map common JS parameter names to Rust types
+    const paramMap = {
+        'pokemon': 'pokemon_pos: (usize, usize)',
+        'target': 'target_pos: Option<(usize, usize)>',
+        'source': 'source_pos: Option<(usize, usize)>',
+        'move': 'move_id: &str',
+        'effect': 'effect_id: Option<&str>',
+        'damage': 'damage: i32',
+        'basePower': 'base_power: i32',
+        'accuracy': 'accuracy: i32',
+    };
+
+    // Add parameters based on JS args
+    for (const arg of args) {
+        if (paramMap[arg]) {
+            params.push(paramMap[arg]);
+        }
+    }
+
+    return params.join(', ');
+}
+
 // Helper function to convert camelCase to snake_case
 function camelToSnake(str) {
     return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
@@ -107,11 +137,13 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
 
                     callbacks.push({
                         name: callbackName,
+                        args: args,
                         jsSource: `${callbackName}(${args}) {\n${normalizedBody}\n}`
                     });
                 } else {
                     callbacks.push({
                         name: callbackName,
+                        args: args,
                         jsSource: `${callbackName}(${args}) {}`
                     });
                 }
@@ -170,6 +202,7 @@ use super::{MoveHandlerResult, Status, Effect};
 
 ${move.callbacks.map(callback => {
     const rustFuncName = camelToSnake(callback.name);
+    const params = generateParameters(callback.name, callback.args);
     // Format JS source: replace all tabs with 4 spaces
     const formattedSource = callback.jsSource
         .split('\n')
@@ -178,7 +211,7 @@ ${move.callbacks.map(callback => {
         .join('\n');
 
     return `${formattedSource}
-pub fn ${rustFuncName}(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn ${rustFuncName}(${params}) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

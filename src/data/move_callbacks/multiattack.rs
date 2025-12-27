@@ -14,7 +14,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     if (pokemon.ignoringItem()) return;
 ///     move.type = this.runEvent('Memory', pokemon, null, move, 'Normal');
 /// }
-pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

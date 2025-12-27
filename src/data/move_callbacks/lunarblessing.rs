@@ -14,7 +14,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     const success = !!this.heal(this.modify(pokemon.maxhp, 0.25));
 ///     return pokemon.cureStatus() || success;
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

@@ -24,7 +24,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -32,7 +32,7 @@ pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandle
 /// onHit(target) {
 ///     this.directDamage(Math.ceil(target.maxhp / 2));
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

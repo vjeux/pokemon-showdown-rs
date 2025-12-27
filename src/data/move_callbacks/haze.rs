@@ -16,7 +16,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         pokemon.clearBoosts();
 ///     }
 /// }
-pub fn on_hit_field(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit_field(battle: &mut Battle) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

@@ -16,7 +16,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     const success = this.boost({ atk: -1 }, target, source, null, false, true);
 ///     return !!(this.heal(atk, source, target) || success);
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

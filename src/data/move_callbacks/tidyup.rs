@@ -28,7 +28,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     if (success) this.add('-activate', pokemon, 'move: Tidy Up');
 ///     return !!this.boost({ atk: 1, spe: 1 }, pokemon, pokemon, null, false, true) || success;
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

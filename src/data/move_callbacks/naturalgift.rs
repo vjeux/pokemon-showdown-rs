@@ -16,7 +16,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     if (!item.naturalGift) return;
 ///     move.type = item.naturalGift.type;
 /// }
-pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -32,7 +32,7 @@ pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 ///     pokemon.usedItemThisTurn = true;
 ///     this.runEvent('AfterUseItem', pokemon, null, null, item);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

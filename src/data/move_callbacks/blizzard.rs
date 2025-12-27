@@ -13,7 +13,7 @@ use super::{MoveHandlerResult, Status, Effect};
 /// onModifyMove(move) {
 ///     if (this.field.isWeather(['hail', 'snowscape'])) move.accuracy = true;
 /// }
-pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

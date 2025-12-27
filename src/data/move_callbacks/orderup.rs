@@ -26,7 +26,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         break;
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

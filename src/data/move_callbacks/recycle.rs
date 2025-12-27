@@ -17,7 +17,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     this.add('-item', pokemon, this.dex.items.get(item), '[from] move: Recycle');
 ///     pokemon.setItem(item, source, move);
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

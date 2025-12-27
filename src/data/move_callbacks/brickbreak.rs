@@ -16,7 +16,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     pokemon.side.removeSideCondition('lightscreen');
 ///     pokemon.side.removeSideCondition('auroraveil');
 /// }
-pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

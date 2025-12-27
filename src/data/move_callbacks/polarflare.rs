@@ -15,7 +15,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         move.willChangeForme = true;
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -26,7 +26,7 @@ pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerRes
 ///         pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

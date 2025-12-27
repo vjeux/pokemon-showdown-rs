@@ -13,7 +13,7 @@ use super::{MoveHandlerResult, Status, Effect};
 /// onDamage(damage, target, source, effect) {
 ///     if (damage >= target.hp) return target.hp - 1;
 /// }
-pub fn on_damage(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

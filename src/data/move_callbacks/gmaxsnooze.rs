@@ -15,7 +15,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     if (this.randomChance(1, 2)) return;
 ///     target.addVolatile('yawn');
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
@@ -25,7 +25,7 @@ pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerRes
 ///     if (this.randomChance(1, 2)) return;
 ///     target.addVolatile('yawn');
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }

@@ -31,7 +31,7 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     if (!source.setType(randomType)) return false;
 ///     this.add('-start', source, 'typechange', randomType);
 /// }
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
