@@ -3930,11 +3930,12 @@ impl Battle {
         let mut targets: Vec<(usize, usize)> = Vec::new();
 
         // Get move data to access target and flags
-        let (move_target, has_mustpressure, has_futuremove) = match self.dex.get_move(move_id.as_str()) {
+        let (move_target, has_mustpressure, has_futuremove, has_smart_target) = match self.dex.get_move(move_id.as_str()) {
             Some(m) => (
                 m.target.clone(),
                 m.flags.contains_key("mustpressure"),
-                m.flags.contains_key("futuremove")
+                m.flags.contains_key("futuremove"),
+                m.smart_target.unwrap_or(false)
             ),
             None => return (vec![], vec![]),
         };
@@ -4031,16 +4032,52 @@ impl Battle {
                     }
                 }
 
-                // TODO: Handle smart targeting
                 // JS: if (move.smartTarget) {
                 //       targets = this.getSmartTargets(target, move);
                 //       target = targets[0];
                 //     }
-                // This requires implementing getSmartTargets()
-                // For now, skip smart targeting
+                // Smart targeting for Dragon Darts: if target fainted, retarget to adjacent ally
+                if has_smart_target {
+                    if let Some((target_side, target_pos)) = target {
+                        // Get target's first adjacent ally
+                        let target2 = {
+                            let adjacent_allies = self.adjacent_allies(target_side, target_pos);
+                            adjacent_allies.first().copied()
+                        };
 
-                if let Some(t) = target {
-                    targets.push(t);
+                        // Check if target2 is valid (exists, is not self, has HP)
+                        if let Some((ally_side, ally_pos)) = target2 {
+                            let target2_is_self = (ally_side == user_pos.0 && ally_pos == user_pos.1);
+                            let target2_has_hp = !self.is_pokemon_fainted((ally_side, ally_pos));
+                            let target_has_hp = !self.is_pokemon_fainted((target_side, target_pos));
+
+                            if !target2_is_self && target2_has_hp {
+                                if !target_has_hp {
+                                    // Target fainted, use target2 instead
+                                    // JS: if (!target.hp) { move.smartTarget = false; return [target2]; }
+                                    targets.push((ally_side, ally_pos));
+                                    target = Some((ally_side, ally_pos));
+                                } else {
+                                    // Both targets alive, hit both
+                                    // JS: return [target, target2];
+                                    targets.push((target_side, target_pos));
+                                    target = Some((target_side, target_pos));
+                                }
+                            } else {
+                                // target2 invalid, just use target
+                                // JS: if (!target2 || target2 === this || !target2.hp) { move.smartTarget = false; return [target]; }
+                                targets.push((target_side, target_pos));
+                            }
+                        } else {
+                            // No target2, just use target
+                            targets.push((target_side, target_pos));
+                        }
+                    }
+                } else {
+                    // Not smart targeting, just add target
+                    if let Some(t) = target {
+                        targets.push(t);
+                    }
                 }
 
                 // JS: if (target.fainted && !move.flags['futuremove']) return { targets: [], pressureTargets: [] };

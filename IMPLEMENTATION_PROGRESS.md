@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 70/79 TODOs (88.6%)
+**Feature Implementation:** ⚠️ 71/79 TODOs (89.9%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -774,6 +774,32 @@
 - Allows Quick Guard to detect if a move's priority was artificially enhanced by abilities like Prankster
 
 **Enables:** Quick Guard detection of artificially enhanced move priority (Gen 6+ mechanic), proper Quick Guard blocking of priority-boosted moves
+
+### Session 12 - Smart Targeting for Dragon Darts (1 implementation)
+
+#### Smart Target Logic (1/1) ✅
+- [x] **Smart targeting implementation** (battle.rs:4035-4080) - Implement smart targeting for Dragon Darts
+
+**Implementation Details:**
+- Extracts `smart_target` field from move data (line 3938)
+- Implements full getSmartTargets logic inline in get_move_targets()
+- Gets target's first adjacent ally using adjacent_allies()
+- Checks if target2 is valid (exists, is not self, has HP)
+- Returns appropriate targets based on HP status:
+  - If target2 invalid: returns [target]
+  - If target fainted: returns [target2]
+  - If both alive: returns [target, target2]
+- Matches JavaScript pokemon.ts getSmartTargets():
+  ```javascript
+  getSmartTargets(target: Pokemon, move: ActiveMove) {
+      const target2 = target.adjacentAllies()[0];
+      if (!target2 || target2 === this || !target2.hp) { return [target]; }
+      if (!target.hp) { return [target2]; }
+      return [target, target2];
+  }
+  ```
+
+**Enables:** Dragon Darts multi-target mechanics, proper retargeting when targets faint
 
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
