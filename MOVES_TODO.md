@@ -106,7 +106,7 @@ Moves with callbacks: 373
 - [ ] focuspunch - Focus Punch (Physical, Fighting) - 5 callbacks: priorityChargeCallback, beforeMoveCallback, condition::onStart, condition::onHit, condition::onTryAddVolatile
 - [x] followme - Follow Me (Status, Normal) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
 - [ ] foresight - Foresight (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
-- [ ] forestscurse - Forest's Curse (Status, Grass) - 1 callback: onHit
+- [x] forestscurse - Forest's Curse (Status, Grass) - 1 callback: onHit
 - [ ] freezedry - Freeze-Dry (Special, Ice) - 1 callback: onEffectiveness
 - [ ] freezeshock - Freeze Shock (Physical, Ice) - 1 callback: onTryMove
 - [ ] freezyfrost - Freezy Frost (Special, Ice) - 1 callback: onHit
