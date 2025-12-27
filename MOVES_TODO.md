@@ -179,7 +179,7 @@ Moves with callbacks: 373
 - [x] lightscreen - Light Screen (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [x] lightthatburnsthesky - Light That Burns the Sky (Special, Psychic) - 1 callback: onModifyMove
 - [x] lockon - Lock-On (Status, Normal) - 4 callbacks: onTryHit, onHit, condition::onSourceInvulnerability, condition::onSourceAccuracy
-- [ ] lowkick - Low Kick (Physical, Fighting) - 2 callbacks: basePowerCallback, onTryHit
+- [x] lowkick - Low Kick (Physical, Fighting) - 2 callbacks: basePowerCallback, onTryHit
 - [ ] luckychant - Lucky Chant (Status, Normal) - 2 callbacks: condition::onSideStart, condition::onSideEnd
 - [ ] lunarblessing - Lunar Blessing (Status, Psychic) - 1 callback: onHit
 - [ ] lunardance - Lunar Dance (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
