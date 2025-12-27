@@ -49,7 +49,7 @@ Moves with callbacks: 373
 - [x] comeuppance - Comeuppance (Physical, Dark) - 3 callbacks: damageCallback, onTry, onModifyTarget
 - [x] conversion - Conversion (Status, Normal) - 1 callback: onHit
 - [x] conversion2 - Conversion 2 (Status, Normal) - 1 callback: onHit
-- [ ] copycat - Copycat (Status, Normal) - 1 callback: onHit
+- [x] copycat - Copycat (Status, Normal) - 1 callback: onHit
 - [ ] coreenforcer - Core Enforcer (Special, Dragon) - 2 callbacks: onHit, onAfterSubDamage
 - [ ] corrosivegas - Corrosive Gas (Status, Poison) - 1 callback: onHit
 - [ ] counter - Counter (Physical, Fighting) - 6 callbacks: damageCallback, beforeTurnCallback, onTry, condition::onStart, condition::onRedirectTarget, condition::onDamagingHit
