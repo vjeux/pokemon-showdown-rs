@@ -6,6 +6,8 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex_data::ID;
+use crate::battle_actions;
 
 /// onHit(target) {
 ///     const moves = [];
@@ -28,7 +30,71 @@ use crate::event::EventResult;
 ///     this.actions.useMove(randomMove, target);
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // Get the target position
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // const moves = [];
+    let mut moves: Vec<ID> = Vec::new();
+
+    // for (const pokemon of target.side.pokemon) {
+    let target_side_idx = target.0;
+    let num_pokemon = battle.sides[target_side_idx].pokemon.len();
+
+    for poke_idx in 0..num_pokemon {
+        let poke_pos = (target_side_idx, poke_idx);
+
+        // if (pokemon === target) continue;
+        if poke_pos == target {
+            continue;
+        }
+
+        let pokemon = match battle.pokemon_at(poke_pos.0, poke_pos.1) {
+            Some(p) => p,
+            None => continue,
+        };
+
+        // for (const moveSlot of pokemon.moveSlots) {
+        for move_slot in &pokemon.move_slots {
+            // const moveid = moveSlot.id;
+            let moveid = &move_slot.id;
+
+            // const move = this.dex.moves.get(moveid);
+            let move_data = battle.dex.moves.get_by_id(moveid);
+
+            // if (move.flags['noassist'] || move.isZ || move.isMax) {
+            //     continue;
+            // }
+            if move_data.flags.contains_key("noassist") || move_data.is_z.is_some() || move_data.is_max.is_some() {
+                continue;
+            }
+
+            // moves.push(moveid);
+            moves.push(moveid.clone());
+        }
+    }
+
+    // let randomMove = '';
+    // if (moves.length) randomMove = this.sample(moves);
+    let random_move = if !moves.is_empty() {
+        battle.sample(&moves)
+    } else {
+        None
+    };
+
+    // if (!randomMove) {
+    //     return false;
+    // }
+    let random_move = match random_move {
+        Some(m) => m,
+        None => return EventResult::Bool(false),
+    };
+
+    // this.actions.useMove(randomMove, target);
+    battle_actions::use_move(battle, random_move, target, None, None);
+
     EventResult::Continue
 }
 
