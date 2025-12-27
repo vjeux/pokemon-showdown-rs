@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 5/79 TODOs (6.3%)
+**Feature Implementation:** ⚠️ 8/79 TODOs (10.1%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -26,13 +26,24 @@
 
 **Enables:** Simple, Contrary, Clear Body, Defiant
 
+### Session 3 - Move Priority (3 partial implementations)
+
+#### Move Priority Events (3/8 partial) ⚠️
+- [x] **Get move priority from Dex** (battle.rs:5763-5770) - Retrieves base priority from Dex
+- [x] **ModifyPriority event** (battle.rs:5781-5793) - Ability/item priority modification
+- [~] **Set move.priority field** (battle.rs:5800-5809) - Documented limitation, needs infrastructure
+
+**Enables:** Prankster, Quick Claw, Grassy Glide priority mechanics
+
+**Note:** Quick Guard detection of enhanced priority requires additional infrastructure (move state tracking)
+
 ## Remaining P0 Critical (High Priority)
 
-### Move Events (8 TODOs)
+### Move Events (5 remaining TODOs)
 - [ ] ModifyTarget event (battle_actions.rs:2799)
-- [ ] ModifyPriority event (battle.rs:5747)
-- [ ] Set move.priority field (battle.rs:5755)
-- [ ] Get move priority from Dex (battle.rs:5735)
+- [x] ~~ModifyPriority event (battle.rs:5747)~~ ✅ Completed
+- [~] ~~Set move.priority field (battle.rs:5755)~~ ⚠️ Documented limitation
+- [x] ~~Get move priority from Dex (battle.rs:5735)~~ ✅ Completed
 - [ ] getRandomTarget (battle_actions.rs:2805)
 - [ ] Set move source effect (battle_actions.rs:2821)
 - [ ] getMoveTargets multi-target (battle_actions.rs:2899)
