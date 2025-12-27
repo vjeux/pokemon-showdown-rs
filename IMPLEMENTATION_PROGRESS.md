@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 56/79 TODOs (70.9%)
+**Feature Implementation:** ⚠️ 57/79 TODOs (72.2%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -504,11 +504,32 @@
 
 **Enables:** Storm Drain, Lightning Rod, and other move redirection abilities
 
+#### Smart Targeting (1/1) ✅
+- [x] **Smart targeting in get_target** (battle.rs:8628-8642) - Smart target selection for moves like Dragon Darts
+- [x] **smartTarget infrastructure** (dex.rs:174-175, dex.rs:803) - Added smart_target field to MoveData and ActiveMove
+
+**Implementation Details:**
+- Checks if `move.smartTarget` is true
+- Gets Pokemon at target location
+- If target exists and is not fainted, returns it
+- Otherwise, gets a random target
+- Added smart_target field to MoveData with serde rename
+- Initialize smart_target in get_active_move() from move data
+- Matches JavaScript:
+  ```javascript
+  if (move.smartTarget) {
+      const curTarget = pokemon.getAtLoc(targetLoc);
+      return curTarget && !curTarget.fainted ? curTarget : this.getRandomTarget(pokemon, move);
+  }
+  ```
+
+**Enables:** Dragon Darts and other multi-target moves with smart targeting
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (23 TODOs)
+## Remaining P2 Nice-to-have (22 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks

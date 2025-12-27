@@ -8629,7 +8629,17 @@ impl Battle {
         // JS:     const curTarget = pokemon.getAtLoc(targetLoc);
         // JS:     return curTarget && !curTarget.fainted ? curTarget : this.getRandomTarget(pokemon, move);
         // JS: }
-        // TODO: move.smartTarget support (requires MoveDef field)
+        if move_def.smart_target.unwrap_or(false) {
+            // Try to get the Pokemon at target location
+            if let Some(cur_target) = self.get_at_loc(user, target_loc) {
+                // If target exists and is not fainted, use it
+                if !self.is_pokemon_fainted(cur_target) {
+                    return Some(cur_target);
+                }
+            }
+            // Otherwise, get a random target
+            return self.get_random_target(user.0, user.1, &target_type);
+        }
 
         // JS: const selfLoc = pokemon.getLocOf(pokemon);
         // JS: if (['adjacentAlly', 'any', 'normal'].includes(move.target) && targetLoc === selfLoc && ...)

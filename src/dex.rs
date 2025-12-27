@@ -171,6 +171,8 @@ pub struct MoveData {
     pub selfdestruct: Option<String>,
     #[serde(rename = "tracksTarget", default)]
     pub tracks_target: Option<bool>,
+    #[serde(rename = "smartTarget", default)]
+    pub smart_target: Option<bool>,
 }
 
 /// Accuracy can be a number or true (always hits)
@@ -798,7 +800,7 @@ impl Dex {
             mindblown_recoil: false,
             struggle_recoil: false,
             self_dropped: false,
-            smart_target: None,
+            smart_target: move_data.smart_target,
             stellar_boosted: false,
             multi_hit: None,
             multi_hit_type: None,
