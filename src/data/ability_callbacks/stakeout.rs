@@ -38,7 +38,7 @@ pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
 /// onModifyAtk(atk, attacker, defender)
 /// Doubles Attack against Pokemon that just switched in
-pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_atk(_atk: i32, _attacker: &Pokemon, defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
     // if (!defender.activeTurns)
     if defender.active_turns == 0 {
         // this.debug('Stakeout boost');
@@ -52,7 +52,7 @@ pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// onModifySpA(atk, attacker, defender)
 /// Doubles Special Attack against Pokemon that just switched in
-pub fn on_modify_sp_a(_spa: u32, _attacker: &Pokemon, defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_sp_a(_spa: i32, _attacker: &Pokemon, defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
     // if (!defender.activeTurns)
     if defender.active_turns == 0 {
         // this.debug('Stakeout boost');

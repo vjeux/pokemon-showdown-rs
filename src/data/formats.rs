@@ -126,7 +126,7 @@ pub struct FormatDef {
     /// Is this format rated?
     pub rated: bool,
     /// Minimum ELO for this format
-    pub min_elo: Option<u32>,
+    pub min_elo: Option<i32>,
 }
 
 /// Standard ruleset definitions
@@ -470,18 +470,18 @@ pub fn is_banned_in_format(format_id: &ID, thing: &str) -> bool {
 // =========================================================================
 
 /// Complex ban entry: (rule, source, limit, bans)
-pub type ComplexBan = (String, String, u32, Vec<String>);
+pub type ComplexBan = (String, String, i32, Vec<String>);
 
 /// Timer settings for battle
 #[derive(Debug, Clone, Default)]
 pub struct GameTimerSettings {
     pub dc_timer: bool,
     pub dc_timer_bank: bool,
-    pub starting: u32,
-    pub grace: u32,
-    pub add_per_turn: u32,
-    pub max_per_turn: u32,
-    pub max_first_turn: u32,
+    pub starting: i32,
+    pub grace: i32,
+    pub add_per_turn: i32,
+    pub max_per_turn: i32,
+    pub max_first_turn: i32,
     pub timeout_auto_choose: bool,
     pub accelerate: bool,
 }
@@ -510,7 +510,7 @@ pub struct RuleTable {
     pub min_team_size: usize,
     pub max_team_size: usize,
     pub picked_team_size: Option<usize>,
-    pub max_total_level: Option<u32>,
+    pub max_total_level: Option<i32>,
     pub max_move_count: usize,
     pub min_source_gen: u8,
     pub min_level: u8,
@@ -518,7 +518,7 @@ pub struct RuleTable {
     pub default_level: u8,
     pub adjust_level: Option<u8>,
     pub adjust_level_down: Option<u8>,
-    pub ev_limit: Option<u32>,
+    pub ev_limit: Option<i32>,
 }
 
 impl RuleTable {
@@ -690,9 +690,9 @@ impl RuleTable {
 
     /// Add a complex ban
     /// Equivalent to addComplexBan()
-    pub fn add_complex_ban(&mut self, rule: &str, source: &str, limit: u32, bans: Vec<String>) {
+    pub fn add_complex_ban(&mut self, rule: &str, source: &str, limit: i32, bans: Vec<String>) {
         if let Some(idx) = self.get_complex_ban_index(&self.complex_bans, rule) {
-            if self.complex_bans[idx].2 == u32::MAX {
+            if self.complex_bans[idx].2 == i32::MAX {
                 return; // Infinity
             }
             self.complex_bans[idx] = (rule.to_string(), source.to_string(), limit, bans);
@@ -703,9 +703,9 @@ impl RuleTable {
 
     /// Add a complex team ban
     /// Equivalent to addComplexTeamBan()
-    pub fn add_complex_team_ban(&mut self, rule: &str, source: &str, limit: u32, bans: Vec<String>) {
+    pub fn add_complex_team_ban(&mut self, rule: &str, source: &str, limit: i32, bans: Vec<String>) {
         if let Some(idx) = self.get_complex_ban_index(&self.complex_team_bans, rule) {
-            if self.complex_team_bans[idx].2 == u32::MAX {
+            if self.complex_team_bans[idx].2 == i32::MAX {
                 return;
             }
             self.complex_team_bans[idx] = (rule.to_string(), source.to_string(), limit, bans);

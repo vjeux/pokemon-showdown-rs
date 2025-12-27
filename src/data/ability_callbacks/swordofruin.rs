@@ -48,7 +48,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
 /// onAnyModifyDef(def, target, source, move)
 /// Reduces all Pokemon's Defense by 25% except those with Sword of Ruin
 /// Note: onAnyModifyDef handler needs to be wired into battle engine
-pub fn on_any_modify_def(_battle: &mut Battle, _def: u32, target: &Pokemon, _source: Option<&Pokemon>, _move: Option<&MoveDef>, _ability_holder: &Pokemon) -> AbilityHandlerResult {
+pub fn on_any_modify_def(_battle: &mut Battle, _def: i32, target: &Pokemon, _source: Option<&Pokemon>, _move: Option<&MoveDef>, _ability_holder: &Pokemon) -> AbilityHandlerResult {
     // const abilityHolder = this.effectState.target;
     // if (target.hasAbility('Sword of Ruin')) return;
     if target.ability.as_str() == "swordofruin" {

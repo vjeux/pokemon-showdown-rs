@@ -36,7 +36,7 @@ pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// onModifySpA(spa, pokemon)
 /// Boosts Special Attack by 1.5x in sunny weather
-pub fn on_modify_sp_a(battle: &mut Battle, _spa: u32, _pokemon: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _pokemon: &Pokemon) -> AbilityHandlerResult {
     // if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather()))
     let weather = battle.field.effective_weather();
     if *weather == ID::new("sunnyday") || *weather == ID::new("desolateland") {

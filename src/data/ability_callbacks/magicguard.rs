@@ -28,7 +28,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamage(damage, target, source, effect)
 /// Prevents indirect damage (only takes damage from moves)
-pub fn on_damage(battle: &mut Battle, _damage: u32, _target: &Pokemon, source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_damage(battle: &mut Battle, _damage: i32, _target: &Pokemon, source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
     // if (effect.effectType !== 'Move')
     if effect.effect_type != "Move" {
         // if (effect.effectType === 'Ability')

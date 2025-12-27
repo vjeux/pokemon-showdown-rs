@@ -40,7 +40,7 @@ use super::{AbilityHandlerResult, Status, Effect};
     pub const ON_BASE_POWER_PRIORITY: i32 = 21;
 
     /// onBasePower(basePower, pokemon)
-    pub fn on_base_power(battle: &mut Battle, _base_power: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+    pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon: &Pokemon) -> AbilityHandlerResult {
         // let boosted = true;
         let mut boosted = true;
         // for (const target of this.getAllActive())

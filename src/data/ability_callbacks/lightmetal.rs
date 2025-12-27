@@ -25,7 +25,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyWeight(weighthg)
 /// Halves the Pokemon's weight
-pub fn on_modify_weight(weighthg: u32) -> AbilityHandlerResult {
+pub fn on_modify_weight(weighthg: i32) -> AbilityHandlerResult {
     // return this.trunc(weighthg / 2);
     AbilityHandlerResult::Number((weighthg / 2) as i32)
 }

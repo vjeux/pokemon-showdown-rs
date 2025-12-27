@@ -31,7 +31,7 @@ pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
 /// onModifyAtk(atk, pokemon)
 /// Boosts Attack by 1.5x when statused
-pub fn on_modify_atk(_atk: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_atk(_atk: i32, pokemon: &Pokemon) -> AbilityHandlerResult {
     // if (pokemon.status)
     if !pokemon.status.is_empty() {
         // return this.chainModify(1.5);

@@ -30,7 +30,7 @@ pub const ON_MODIFY_DEF_PRIORITY: i32 = 6;
 
 /// onModifyDef(def, pokemon)
 /// Boosts Defense by 1.5x when statused
-pub fn on_modify_def(_def: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_def(_def: i32, pokemon: &Pokemon) -> AbilityHandlerResult {
     // if (pokemon.status)
     if !pokemon.status.is_empty() {
         // return this.chainModify(1.5);

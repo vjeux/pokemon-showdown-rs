@@ -41,7 +41,7 @@ pub const ON_MODIFY_SPA_PRIORITY: i32 = 5;
 
 /// onModifyAtk(atk, attacker, defender, move)
 /// Boosts Dragon-type moves by 1.5x
-pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_atk(_atk: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Dragon')
     if move_.move_type == "Dragon" {
         // return this.chainModify(1.5);
@@ -52,7 +52,7 @@ pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_:
 
 /// onModifySpA(atk, attacker, defender, move)
 /// Boosts Dragon-type moves by 1.5x
-pub fn on_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_sp_a(_spa: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Dragon')
     if move_.move_type == "Dragon" {
         // return this.chainModify(1.5);

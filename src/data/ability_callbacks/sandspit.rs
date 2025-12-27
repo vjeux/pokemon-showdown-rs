@@ -25,7 +25,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Sets sandstorm when hit by a damaging move
-pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, _target: &Pokemon, _source: &mut Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, _target: &Pokemon, _source: &mut Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
     // this.field.setWeather('sandstorm');
     battle.field.set_weather(ID::new("sandstorm"), None);
     AbilityHandlerResult::Undefined

@@ -40,7 +40,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
     /// onModifyAtk(atk, pokemon)
     /// Halves Attack when HP is at or below 50%
-    pub fn on_modify_atk(_atk: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+    pub fn on_modify_atk(_atk: i32, pokemon: &Pokemon) -> AbilityHandlerResult {
         // if (pokemon.hp <= pokemon.maxhp / 2)
         if pokemon.hp <= pokemon.maxhp / 2 {
             // return this.chainModify(0.5);
@@ -51,7 +51,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
     /// onModifySpA(atk, pokemon)
     /// Halves Special Attack when HP is at or below 50%
-    pub fn on_modify_sp_a(_spa: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+    pub fn on_modify_sp_a(_spa: i32, pokemon: &Pokemon) -> AbilityHandlerResult {
         // if (pokemon.hp <= pokemon.maxhp / 2)
         if pokemon.hp <= pokemon.maxhp / 2 {
             // return this.chainModify(0.5);

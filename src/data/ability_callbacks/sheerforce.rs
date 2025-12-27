@@ -58,7 +58,7 @@ pub const ON_BASE_POWER_PRIORITY: i32 = 21;
 
 /// onBasePower(basePower, pokemon, target, move)
 /// Boosts moves with removed secondaries by 1.3x
-pub fn on_base_power(_base_power: u32, _pokemon: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_base_power(_base_power: i32, _pokemon: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.hasSheerForce) return this.chainModify([5325, 4096]);
     if move_.has_sheer_force {
         return AbilityHandlerResult::ChainModify(5325, 4096); // ~1.3x

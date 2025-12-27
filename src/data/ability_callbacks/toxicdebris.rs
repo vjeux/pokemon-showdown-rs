@@ -30,7 +30,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Sets Toxic Spikes on attacker's side when hit by physical move
-pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.category === 'Physical' && (!toxicSpikes || toxicSpikes.layers < 2))
     if move_.category != MoveCategory::Physical {
         return AbilityHandlerResult::Undefined;

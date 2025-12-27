@@ -30,7 +30,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 pub const ON_BASE_POWER_PRIORITY: i32 = 19;
 
 /// onBasePower(basePower, attacker, defender, move)
-pub fn on_base_power(_base_power: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_base_power(_base_power: i32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if ((attacker.status === 'psn' || attacker.status === 'tox') && move.category === 'Physical')
     if (attacker.status.as_str() == "psn" || attacker.status.as_str() == "tox") && move_.category == MoveCategory::Physical {
         // return this.chainModify(1.5);

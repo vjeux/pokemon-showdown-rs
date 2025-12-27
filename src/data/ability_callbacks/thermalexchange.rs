@@ -40,7 +40,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Boosts Attack by 1 stage when hit by a Fire-type move
-pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, _source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Fire')
     if move_.move_type.as_str() == "Fire" {
         // this.boost({ atk: 1 });

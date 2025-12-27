@@ -28,7 +28,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onSourceModifyDamage(damage, source, target, move)
 /// Reduces super-effective damage by 25%
-pub fn on_source_modify_damage(_damage: u32, _source: &Pokemon, target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_damage(_damage: i32, _source: &Pokemon, target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (target.getMoveHitData(move).typeMod > 0)
     let hit_data = target.get_move_hit_data(&move_.id);
     if hit_data.type_mod > 0 {

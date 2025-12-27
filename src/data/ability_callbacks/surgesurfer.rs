@@ -26,7 +26,7 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifySpe(spe)
-pub fn on_modify_spe(battle: &Battle, _spe: u32) -> AbilityHandlerResult {
+pub fn on_modify_spe(battle: &Battle, _spe: i32) -> AbilityHandlerResult {
     // if (this.field.isTerrain('electricterrain'))
     if *battle.field.get_terrain() == ID::new("electricterrain") {
         // return this.chainModify(2);

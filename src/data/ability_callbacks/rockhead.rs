@@ -27,7 +27,7 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamage(damage, target, source, effect)
-pub fn on_damage(_battle: &mut Battle, _damage: u32, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_damage(_battle: &mut Battle, _damage: i32, _target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
     // if (effect.id === 'recoil')
     if effect.id == "recoil" {
         // if (!this.activeMove) throw new Error("Battle.activeMove is null");

@@ -29,7 +29,7 @@ pub const ON_MODIFY_DEF_PRIORITY: i32 = 6;
 
 /// onModifyDef(def)
 /// Doubles Defense
-pub fn on_modify_def(_def: u32) -> AbilityHandlerResult {
+pub fn on_modify_def(_def: i32) -> AbilityHandlerResult {
     // return this.chainModify(2);
     AbilityHandlerResult::ChainModify(8192, 4096) // 2x
 }

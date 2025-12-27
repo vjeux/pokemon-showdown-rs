@@ -39,7 +39,7 @@ use super::{AbilityHandlerResult, Status, Effect};
     pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
     /// onModifyAtk(atk, attacker, defender, move)
-    pub fn on_modify_atk(_atk: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_modify_atk(_atk: i32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         // if (move.type === 'Fire' && attacker.hp <= attacker.maxhp / 3)
         if move_.move_type == "Fire" && attacker.hp <= attacker.maxhp / 3 {
             // this.debug('Blaze boost');
@@ -53,7 +53,7 @@ use super::{AbilityHandlerResult, Status, Effect};
     pub const ON_MODIFY_SPA_PRIORITY: i32 = 5;
 
     /// onModifySpA(atk, attacker, defender, move)
-    pub fn on_modify_spa(_atk: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_modify_spa(_atk: i32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         // if (move.type === 'Fire' && attacker.hp <= attacker.maxhp / 3)
         if move_.move_type == "Fire" && attacker.hp <= attacker.maxhp / 3 {
             // this.debug('Blaze boost');

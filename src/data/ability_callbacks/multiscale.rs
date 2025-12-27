@@ -28,7 +28,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onSourceModifyDamage(damage, source, target, move)
 /// Halves damage when at full HP
-pub fn on_source_modify_damage(_damage: u32, _source: &Pokemon, target: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_damage(_damage: i32, _source: &Pokemon, target: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
     // if (target.hp >= target.maxhp)
     if target.hp >= target.maxhp {
         // return this.chainModify(0.5);

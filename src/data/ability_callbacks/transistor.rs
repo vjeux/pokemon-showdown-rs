@@ -38,7 +38,7 @@ pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
 /// onModifyAtk(atk, attacker, defender, move)
 /// Boosts Electric-type moves by 1.3x
-pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_atk(_atk: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Electric')
     if move_.move_type == "Electric" {
         // return this.chainModify([5325, 4096]);
@@ -51,7 +51,7 @@ pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// onModifySpA(atk, attacker, defender, move)
 /// Boosts Electric-type moves by 1.3x
-pub fn on_modify_sp_a(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_sp_a(_atk: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Electric')
     if move_.move_type == "Electric" {
         // return this.chainModify([5325, 4096]);

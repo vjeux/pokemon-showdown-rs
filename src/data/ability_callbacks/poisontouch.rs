@@ -35,7 +35,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 /// TODO: onSourceDamagingHit handler not yet called by battle engine
 /// TODO: Item checking (hasItem) not yet available
 /// TODO: Needs mutable target reference to call try_set_status
-pub fn on_source_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // Despite not being a secondary, Shield Dust / Covert Cloak block Poison Touch's effect
     // if (target.hasAbility('shielddust') || target.hasItem('covertcloak')) return;
     if target.ability.as_str() == "shielddust" {

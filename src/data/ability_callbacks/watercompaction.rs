@@ -26,7 +26,7 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
-pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     let target_ref = (target.side_index, target.position);
     // if (move.type === 'Water')
     if move_.move_type == "Water" {

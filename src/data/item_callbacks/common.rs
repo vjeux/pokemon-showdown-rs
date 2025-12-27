@@ -18,7 +18,7 @@ pub enum ItemHandlerResult {
     /// Return a number
     Number(i32),
     /// Chain modifier (numerator, denominator)
-    ChainModify(u32, u32),
+    ChainModify(i32, i32),
 }
 
 /// Item definition placeholder

@@ -94,7 +94,7 @@ pub const ON_BASE_POWER_PRIORITY: i32 = 21;
 /// onBasePower(basePower, attacker, defender, move)
 /// Boosts base power based on number of fainted allies (up to 5)
 /// Multipliers: 0 = 1.0x, 1 = 1.1x, 2 = 1.2x, 3 = 1.3x, 4 = 1.4x, 5 = 1.5x
-pub fn on_base_power(_battle: &mut Battle, _base_power: u32, attacker: &Pokemon, _defender: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_base_power(_battle: &mut Battle, _base_power: i32, attacker: &Pokemon, _defender: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
     // if (this.effectState.fallen)
     if let Some(fallen_value) = attacker.ability_state.data.get("fallen") {
         if let Some(fallen) = fallen_value.as_u64() {

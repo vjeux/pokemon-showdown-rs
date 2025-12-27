@@ -75,7 +75,7 @@ pub const ON_SOURCE_MODIFY_ATK_PRIORITY: i32 = 6;
 
 /// onSourceModifyAtk(atk, attacker, defender, move)
 /// Halves damage from Ghost-type moves (Atk)
-pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_atk(_atk: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Ghost')
     if move_.move_type == "Ghost" {
         // this.debug('Purifying Salt weaken');
@@ -89,7 +89,7 @@ pub const ON_SOURCE_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// onSourceModifySpA(spa, attacker, defender, move)
 /// Halves damage from Ghost-type moves (SpA)
-pub fn on_source_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_sp_a(_spa: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Ghost')
     if move_.move_type == "Ghost" {
         // this.debug('Purifying Salt weaken');

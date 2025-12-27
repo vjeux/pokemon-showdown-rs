@@ -32,7 +32,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
     /// onSourceModifyAccuracy(accuracy)
     /// Boosts accuracy by ~1.3x (5325/4096)
-    pub fn on_source_modify_accuracy(accuracy: Option<u32>) -> AbilityHandlerResult {
+    pub fn on_source_modify_accuracy(accuracy: Option<i32>) -> AbilityHandlerResult {
         // if (typeof accuracy !== 'number') return;
         if accuracy.is_none() {
             return AbilityHandlerResult::Undefined;

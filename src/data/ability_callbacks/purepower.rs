@@ -28,7 +28,7 @@ pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
 /// onModifyAtk(atk)
 /// Doubles the Pokemon's Attack stat
-pub fn on_modify_atk(_atk: u32) -> AbilityHandlerResult {
+pub fn on_modify_atk(_atk: i32) -> AbilityHandlerResult {
     // return this.chainModify(2);
     AbilityHandlerResult::ChainModify(8192, 4096) // 2x
 }

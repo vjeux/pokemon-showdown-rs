@@ -46,9 +46,9 @@ pub const ON_MODIFY_ACCURACY_PRIORITY: i32 = -1;
 
 /// onModifyAccuracy(accuracy)
 /// Lowers opponent's accuracy by ~20% in hail/snowscape
-pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: u32) -> AbilityHandlerResult {
+pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32) -> AbilityHandlerResult {
     // if (typeof accuracy !== 'number') return;
-    // Note: In Rust, accuracy is always u32, so this check is implicit
+    // Note: In Rust, accuracy is always i32, so this check is implicit
 
     // if (this.field.isWeather(['hail', 'snowscape']))
     let weather = battle.field.get_weather();

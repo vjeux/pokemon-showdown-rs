@@ -36,7 +36,7 @@ pub const ON_DAMAGING_HIT_ORDER: i32 = 1;
 
 /// onDamagingHit(damage, target, source, move)
 /// Gets charged when hit by wind moves
-pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.flags['wind'])
     if move_.flags.wind {
         // target.addVolatile('charge');

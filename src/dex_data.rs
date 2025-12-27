@@ -385,9 +385,9 @@ pub enum MoveTarget {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct EffectState {
     pub id: ID,
-    pub effect_order: u32,
-    pub duration: Option<u32>,
-    pub layers: Option<u32>,
+    pub effect_order: i32,
+    pub duration: Option<i32>,
+    pub layers: Option<i32>,
     pub source_slot: Option<String>,
     #[serde(flatten)]
     pub data: HashMap<String, serde_json::Value>,
@@ -405,12 +405,12 @@ impl EffectState {
         }
     }
 
-    pub fn with_duration(mut self, duration: u32) -> Self {
+    pub fn with_duration(mut self, duration: i32) -> Self {
         self.duration = Some(duration);
         self
     }
 
-    pub fn with_layers(mut self, layers: u32) -> Self {
+    pub fn with_layers(mut self, layers: i32) -> Self {
         self.layers = Some(layers);
         self
     }
@@ -429,7 +429,7 @@ pub struct BasicEffect {
     pub short_desc: String,
     pub desc: String,
     pub is_nonstandard: Option<Nonstandard>,
-    pub duration: Option<u32>,
+    pub duration: Option<i32>,
     pub no_copy: bool,
     pub affects_fainted: bool,
     pub status: Option<ID>,

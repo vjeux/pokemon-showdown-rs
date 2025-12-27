@@ -191,7 +191,7 @@ pub struct HandlerPriority {
     /// Sub-order for same priority
     pub sub_order: i32,
     /// Speed of the Pokemon (for speed ties)
-    pub speed: u32,
+    pub speed: i32,
 }
 
 impl HandlerPriority {
@@ -346,11 +346,11 @@ pub struct ConditionData {
     /// Display name
     pub name: String,
     /// Number of turns the condition lasts (None = indefinite)
-    pub duration: Option<u32>,
+    pub duration: Option<i32>,
     /// Can this condition be passed by Baton Pass?
     pub no_copy: bool,
     /// Counter used by some conditions (e.g., Perish Song)
-    pub counter_max: Option<u32>,
+    pub counter_max: Option<i32>,
     /// Status this condition applies (e.g., "slp" for Rest)
     pub status: Option<String>,
     /// Residual order (when to run onResidual)
@@ -378,7 +378,7 @@ impl ConditionData {
         }
     }
     
-    pub fn with_duration(mut self, duration: u32) -> Self {
+    pub fn with_duration(mut self, duration: i32) -> Self {
         self.duration = Some(duration);
         self
     }

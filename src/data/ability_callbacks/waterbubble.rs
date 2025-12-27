@@ -12,7 +12,7 @@ pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// Halves Fire-type attack damage taken
-pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_atk(_atk: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     if move_.move_type == "Fire" {
         return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
     }
@@ -20,7 +20,7 @@ pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon,
 }
 
 /// Halves Fire-type special attack damage taken
-pub fn on_source_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_sp_a(_spa: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     if move_.move_type == "Fire" {
         return AbilityHandlerResult::ChainModify(2048, 4096); // 0.5x
     }
@@ -28,7 +28,7 @@ pub fn on_source_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon
 }
 
 /// Doubles Water-type attack damage dealt
-pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_atk(_atk: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     if move_.move_type == "Water" {
         return AbilityHandlerResult::ChainModify(8192, 4096); // 2x
     }
@@ -36,7 +36,7 @@ pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_:
 }
 
 /// Doubles Water-type special attack damage dealt
-pub fn on_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_sp_a(_spa: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     if move_.move_type == "Water" {
         return AbilityHandlerResult::ChainModify(8192, 4096); // 2x
     }

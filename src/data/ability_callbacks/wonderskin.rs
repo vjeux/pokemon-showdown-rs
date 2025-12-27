@@ -10,7 +10,7 @@ pub const ON_MODIFY_ACCURACY_PRIORITY: i32 = 10;
 
 /// onModifyAccuracy(accuracy, target, source, move)
 /// Reduces accuracy of status moves to 50%
-pub fn on_modify_accuracy(_battle: &mut Battle, _accuracy: u32, _target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_accuracy(_battle: &mut Battle, _accuracy: i32, _target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.category === 'Status' && typeof accuracy === 'number')
     if move_.category == MoveCategory::Status {
         // this.debug('Wonder Skin - setting accuracy to 50');

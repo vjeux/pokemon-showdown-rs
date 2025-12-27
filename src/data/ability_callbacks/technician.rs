@@ -38,7 +38,7 @@ pub const ON_BASE_POWER_PRIORITY: i32 = 30;
 /// Note: JS checks basePowerAfterMultiplier using this.modify(basePower, this.event.modifier)
 /// For now, implementing simple check against base_power parameter
 /// TODO: May need to account for prior modifiers in the damage calculation chain
-pub fn on_base_power(_battle: &Battle, base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+pub fn on_base_power(_battle: &Battle, base_power: i32, _attacker: &Pokemon, _defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
     // const basePowerAfterMultiplier = this.modify(basePower, this.event.modifier);
     // if (basePowerAfterMultiplier <= 60)
     // Note: Simplified - checking base_power directly. May need event.modifier support later.

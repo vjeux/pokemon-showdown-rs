@@ -59,7 +59,7 @@ use super::{AbilityHandlerResult, Status, Effect};
     pub const ON_SOURCE_BASE_POWER_PRIORITY: i32 = 17;
 
     /// onSourceBasePower(basePower, attacker, defender, move)
-    pub fn on_source_base_power(_base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_source_base_power(_base_power: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         if move_.move_type == "Fire" {
             // 1.25x = 5120/4096
             return AbilityHandlerResult::ChainModify(5120, 4096);

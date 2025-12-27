@@ -9,7 +9,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
 /// onModifyAtk - boost exists, can implement
-pub fn on_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_atk(_atk: i32, _attacker: &Pokemon, _defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
     AbilityHandlerResult::ChainModify(6144, 4096) // 1.5x
 }
 

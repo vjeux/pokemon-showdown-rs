@@ -12,21 +12,21 @@ use crate::dex_data::ID;
 /// Base stats for a species
 #[derive(Debug, Clone, Copy, Default)]
 pub struct BaseStats {
-    pub hp: u32,
-    pub atk: u32,
-    pub def: u32,
-    pub spa: u32,
-    pub spd: u32,
-    pub spe: u32,
+    pub hp: i32,
+    pub atk: i32,
+    pub def: i32,
+    pub spa: i32,
+    pub spd: i32,
+    pub spe: i32,
 }
 
 impl BaseStats {
-    pub const fn new(hp: u32, atk: u32, def: u32, spa: u32, spd: u32, spe: u32) -> Self {
+    pub const fn new(hp: i32, atk: i32, def: i32, spa: i32, spd: i32, spe: i32) -> Self {
         Self { hp, atk, def, spa, spd, spe }
     }
 
     /// Get base stat total (BST)
-    pub fn total(&self) -> u32 {
+    pub fn total(&self) -> i32 {
         self.hp + self.atk + self.def + self.spa + self.spd + self.spe
     }
 }

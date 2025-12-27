@@ -57,9 +57,9 @@ pub struct EventListener {
     /// Sub-order for same priority
     pub sub_order: i32,
     /// Effect order (for hazards and abilities with same priority)
-    pub effect_order: Option<u32>,
+    pub effect_order: Option<i32>,
     /// Speed stat (for speed-based sorting)
-    pub speed: Option<u32>,
+    pub speed: Option<i32>,
 }
 
 /// Effect type - matches JavaScript effectType
@@ -318,7 +318,7 @@ pub struct Battle {
     /// Current request state
     pub request_state: BattleRequestState,
     /// Current turn number
-    pub turn: u32,
+    pub turn: i32,
     /// Is it mid-turn?
     pub mid_turn: bool,
     /// Has the battle started?
@@ -337,7 +337,7 @@ pub struct Battle {
     /// Last move log line index (for attrLastMove)
     pub last_move_line: i32,
     /// Last damage dealt (for Counter in Gen 1)
-    pub last_damage: u32,
+    pub last_damage: i32,
 
     /// Currently active move being executed
     pub active_move: Option<ID>,
@@ -347,7 +347,7 @@ pub struct Battle {
     pub active_target: Option<(usize, usize)>, // (side_idx, poke_idx)
 
     /// Effect order counter
-    pub effect_order: u32,
+    pub effect_order: i32,
 
     /// Event depth for recursion tracking
     pub event_depth: u8,
@@ -989,12 +989,12 @@ impl Battle {
     }
 
     /// Random number in [0, n)
-    pub fn random(&mut self, n: u32) -> u32 {
+    pub fn random(&mut self, n: i32) -> i32 {
         self.prng.random_int(n)
     }
 
     /// Random chance
-    pub fn random_chance(&mut self, numerator: u32, denominator: u32) -> bool {
+    pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
         if let Some(forced) = self.force_random_chance {
             return forced;
         }
@@ -1124,7 +1124,7 @@ impl Battle {
     }
 
     /// Get the next effect order number
-    pub fn next_effect_order(&mut self) -> u32 {
+    pub fn next_effect_order(&mut self) -> i32 {
         self.effect_order += 1;
         self.effect_order
     }
@@ -1610,7 +1610,7 @@ impl Battle {
         self.queue.clear();
 
         // Collect all move actions with their priorities and speeds
-        let mut actions: Vec<(usize, usize, crate::side::ChosenAction, i8, u32)> = Vec::new();
+        let mut actions: Vec<(usize, usize, crate::side::ChosenAction, i8, i32)> = Vec::new();
 
         for side_idx in 0..self.sides.len() {
             for action in &self.sides[side_idx].choice.actions {
@@ -1624,7 +1624,7 @@ impl Battle {
                             } else {
                                 0
                             };
-                            let speed = self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as u32;
+                            let speed = self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as i32;
                             actions.push((side_idx, poke_idx, action.clone(), priority, speed));
                         }
                     }
@@ -1636,7 +1636,7 @@ impl Battle {
 
                         // Get speed for ordering (use 0 if slot is empty)
                         let speed = if let Some(poke_idx) = pokemon_idx {
-                            self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as u32
+                            self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as i32
                         } else {
                             0 // Empty slot - use speed 0 for ordering
                         };
@@ -2161,7 +2161,7 @@ impl Battle {
                     // Calculate confusion damage: 40 BP typeless physical move
                     let (atk, def, level) = {
                         let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                        (pokemon.stored_stats.atk as u32, pokemon.stored_stats.def as u32, pokemon.level as u32)
+                        (pokemon.stored_stats.atk as i32, pokemon.stored_stats.def as i32, pokemon.level as i32)
                     };
                     let base_damage = ((2 * level / 5 + 2) * 40 * atk / def.max(1)) / 50 + 2;
                     let random_factor = 85 + self.random(16);
@@ -2252,12 +2252,12 @@ impl Battle {
 
             // Calculate effective accuracy with boosts
             let accuracy_modifier = if effective_boost >= 0 {
-                (3 + effective_boost as u32) as f64 / 3.0
+                (3 + effective_boost as i32) as f64 / 3.0
             } else {
-                3.0 / (3 + (-effective_boost) as u32) as f64
+                3.0 / (3 + (-effective_boost) as i32) as f64
             };
 
-            let effective_accuracy = (accuracy as f64 * accuracy_modifier) as u32;
+            let effective_accuracy = (accuracy as f64 * accuracy_modifier) as i32;
             let roll = self.random(100);
 
             if roll >= effective_accuracy {
@@ -2280,8 +2280,8 @@ impl Battle {
 
         // Determine number of hits for multi-hit moves
         let hit_count = self.get_multi_hit_count(move_id);
-        let mut total_damage = 0u32;
-        let mut hits_landed = 0u32;
+        let mut total_damage = 0i32;
+        let mut hits_landed = 0i32;
         let mut was_crit = false;
 
         for _hit in 0..hit_count {
@@ -2341,7 +2341,7 @@ impl Battle {
             };
 
             if recoil_fraction > 0.0 {
-                let recoil_damage = ((total_damage as f64 * recoil_fraction) as u32).max(1);
+                let recoil_damage = ((total_damage as f64 * recoil_fraction) as i32).max(1);
                 self.sides[attacker_side].pokemon[attacker_idx].take_damage(recoil_damage);
 
                 let attacker_name = {
@@ -2661,7 +2661,7 @@ impl Battle {
     }
 
     /// Calculate damage for a move (basic implementation)
-    fn calculate_move_damage(&mut self, attacker_side: usize, attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) -> (u32, bool) {
+    fn calculate_move_damage(&mut self, attacker_side: usize, attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) -> (i32, bool) {
         // Extract all needed fields from move_def to avoid borrow checker issues
         let (base_power, category, move_type) = match self.dex.get_move(move_id.as_str()) {
             Some(move_def) => {
@@ -2685,10 +2685,10 @@ impl Battle {
 
             let (attack_stat, defense_stat) = match category.as_str() {
                 "Physical" => {
-                    (attacker.stored_stats.atk as u32, defender.stored_stats.def as u32)
+                    (attacker.stored_stats.atk as i32, defender.stored_stats.def as i32)
                 }
                 _ => {
-                    (attacker.stored_stats.spa as u32, defender.stored_stats.spd as u32)
+                    (attacker.stored_stats.spa as i32, defender.stored_stats.spd as i32)
                 }
             };
 
@@ -2706,7 +2706,7 @@ impl Battle {
                 defense_stat,
                 atk_boost,
                 def_boost,
-                attacker.level as u32,
+                attacker.level as i32,
                 attacker.types.clone(),
                 attacker.status.as_str().to_string(),
                 defender.types.clone(),
@@ -2743,7 +2743,7 @@ impl Battle {
                 Some(move_id),
                 Some(base_attack)
             ).unwrap_or(base_attack);
-            (modified_attack as u32) / 100 // Convert back from percentage
+            (modified_attack as i32) / 100 // Convert back from percentage
         } else {
             let base_attack = (attack * 100) as i32; // Convert to percentage
             let modified_attack = self.run_event(
@@ -2753,7 +2753,7 @@ impl Battle {
                 Some(move_id),
                 Some(base_attack)
             ).unwrap_or(base_attack);
-            (modified_attack as u32) / 100 // Convert back from percentage
+            (modified_attack as i32) / 100 // Convert back from percentage
         };
 
         // SourceModifyAtk/SourceModifySpA - defender's abilities that modify attacker's stats
@@ -2767,7 +2767,7 @@ impl Battle {
                 Some(move_id),
                 Some(base_attack)
             ).unwrap_or(base_attack);
-            (modified_attack as u32) / 100 // Convert back from percentage
+            (modified_attack as i32) / 100 // Convert back from percentage
         } else {
             let base_attack = (attack * 100) as i32; // Convert to percentage
             let modified_attack = self.run_event(
@@ -2777,7 +2777,7 @@ impl Battle {
                 Some(move_id),
                 Some(base_attack)
             ).unwrap_or(base_attack);
-            (modified_attack as u32) / 100 // Convert back from percentage
+            (modified_attack as i32) / 100 // Convert back from percentage
         };
 
         // ModifyDef/ModifySpD for defender (items like Eviolite, Assault Vest)
@@ -2790,7 +2790,7 @@ impl Battle {
                 Some(move_id),
                 Some(base_defense)
             ).unwrap_or(base_defense);
-            ((modified_defense as u32) / 100).max(1) // Convert back from percentage, minimum 1
+            ((modified_defense as i32) / 100).max(1) // Convert back from percentage, minimum 1
         } else {
             let base_defense = (defense * 100) as i32; // Convert to percentage
             let modified_defense = self.run_event(
@@ -2800,7 +2800,7 @@ impl Battle {
                 Some(move_id),
                 Some(base_defense)
             ).unwrap_or(base_defense);
-            ((modified_defense as u32) / 100).max(1) // Convert back from percentage, minimum 1
+            ((modified_defense as i32) / 100).max(1) // Convert back from percentage, minimum 1
         };
 
         // Base damage calculation: ((2L/5 + 2) * P * A/D) / 50 + 2
@@ -2830,10 +2830,10 @@ impl Battle {
             1.0
         };
 
-        let damage = (damage as f64 * stab) as u32;
+        let damage = (damage as f64 * stab) as i32;
 
         // Type effectiveness
-        let damage = (damage as f64 * type_effectiveness) as u32;
+        let damage = (damage as f64 * type_effectiveness) as i32;
 
         // Burn reduces physical damage
         let damage = if category == "Physical" && attacker_status == "brn" {
@@ -2845,14 +2845,14 @@ impl Battle {
         // Weather type modifier (rain boosts Water, sun boosts Fire, etc.)
         let weather = self.field.weather.as_str();
         let weather_mod = get_weather_type_modifier(weather, &move_type);
-        let damage = (damage as f64 * weather_mod) as u32;
+        let damage = (damage as f64 * weather_mod) as i32;
 
         // Terrain type modifier (grounded Pokemon only)
         // Check if attacker is grounded (simplified - not Flying type and no Levitate)
         let attacker_grounded = !attacker_types.iter().any(|t| t.to_lowercase() == "flying");
         let terrain = self.field.terrain.as_str();
         let terrain_mod = get_terrain_damage_modifier(terrain, &move_type, attacker_grounded);
-        let damage = (damage as f64 * terrain_mod) as u32;
+        let damage = (damage as f64 * terrain_mod) as i32;
 
         // Log effectiveness
         if type_effectiveness > 1.0 {
@@ -2884,7 +2884,7 @@ impl Battle {
             let target_name = format!("{}: {}", self.sides[target_side].id_str(), defender_name);
             self.add_log("-crit", &[&target_name]);
             // Critical hits: 1.5x damage, ignore burn penalty (for physical), ignore stat drops
-            return (((damage as f64 * 1.5) as u32).max(1), true);
+            return (((damage as f64 * 1.5) as i32).max(1), true);
         }
 
         // Apply side condition damage modifiers (Aurora Veil, Reflect, Light Screen)
@@ -2910,7 +2910,7 @@ impl Battle {
             Some(move_id),
             Some(damage as i32)
         ) {
-            modified as u32
+            modified as i32
         } else {
             damage
         };
@@ -2925,7 +2925,7 @@ impl Battle {
             Some(move_id),
             Some(damage as i32)
         ) {
-            modified as u32
+            modified as i32
         } else {
             damage
         };
@@ -2944,7 +2944,7 @@ impl Battle {
     }
 
     /// Get number of hits for multi-hit moves
-    fn get_multi_hit_count(&mut self, move_id: &ID) -> u32 {
+    fn get_multi_hit_count(&mut self, move_id: &ID) -> i32 {
         // Extract multihit data before calling mutable method
         let multihit_data = if let Some(move_def) = self.dex.get_move(move_id.as_str()) {
             move_def.multihit.clone()
@@ -2976,7 +2976,7 @@ impl Battle {
     }
 
     /// Get move accuracy (0-100, where 100+ means never miss)
-    fn get_move_accuracy(&self, move_id: &ID) -> u32 {
+    fn get_move_accuracy(&self, move_id: &ID) -> i32 {
         // Use move data from MoveData
         if let Some(move_def) = self.dex.get_move(move_id.as_str()) {
             match move_def.accuracy {
@@ -3051,7 +3051,7 @@ impl Battle {
     }
 
     /// Calculate a stat with boost applied
-    fn calculate_boosted_stat(&self, base: u32, boost: i8) -> u32 {
+    fn calculate_boosted_stat(&self, base: i32, boost: i8) -> i32 {
         let (num, denom) = match boost {
             -6 => (2, 8),
             -5 => (2, 7),
@@ -3164,7 +3164,7 @@ impl Battle {
 
                 if !available_stats.is_empty() {
                     // Randomly select one stat
-                    let idx = self.random(available_stats.len() as u32) as usize;
+                    let idx = self.random(available_stats.len() as i32) as usize;
                     let chosen_stat = available_stats[idx];
                     self.apply_boost(target_side, target_idx, chosen_stat, 2);
                 }
@@ -3349,7 +3349,7 @@ impl Battle {
                     "raindance" | "primordialsea" | "sandstorm" | "hail" | "snow" => 0.25,
                     _ => 0.5,
                 };
-                let heal = ((maxhp as f64) * heal_frac) as u32;
+                let heal = ((maxhp as f64) * heal_frac) as i32;
                 self.sides[attacker_side].pokemon[target_idx].heal(heal);
                 let name = {
                     let side_id = self.sides[attacker_side].id_str();
@@ -3394,7 +3394,7 @@ impl Battle {
                 // Force switch the target
                 let switchable = self.sides[target_side].get_switchable();
                 if !switchable.is_empty() {
-                    let random_idx = self.random(switchable.len() as u32) as usize;
+                    let random_idx = self.random(switchable.len() as i32) as usize;
                     let switch_to = switchable[random_idx];
                     let target_slot = self.sides[target_side].pokemon[target_idx].position;
                     self.do_switch(target_side, target_slot, switch_to);
@@ -3692,7 +3692,7 @@ impl Battle {
                 // Weather damage (sandstorm/hail)
                 let weather_damage_frac = get_weather_damage_fraction(&weather, &pokemon_types);
                 if weather_damage_frac > 0.0 {
-                    let damage = ((maxhp as f64 * weather_damage_frac) as u32).max(1);
+                    let damage = ((maxhp as f64 * weather_damage_frac) as i32).max(1);
                     self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
 
                     let name = {
@@ -3708,7 +3708,7 @@ impl Battle {
                 // Grassy Terrain healing
                 let grassy_heal_frac = get_grassy_terrain_heal(&terrain, is_grounded);
                 if grassy_heal_frac > 0.0 {
-                    let heal = ((maxhp as f64 * grassy_heal_frac) as u32).max(1);
+                    let heal = ((maxhp as f64 * grassy_heal_frac) as i32).max(1);
                     let old_hp = self.sides[side_idx].pokemon[poke_idx].hp;
                     self.sides[side_idx].pokemon[poke_idx].heal(heal);
 
@@ -4715,7 +4715,7 @@ impl Battle {
                 .collect();
 
             if !valid_targets.is_empty() {
-                let random_idx = self.random(valid_targets.len() as u32) as usize;
+                let random_idx = self.random(valid_targets.len() as i32) as usize;
                 return Some((foe_side, valid_targets[random_idx]));
             }
 
@@ -4884,7 +4884,7 @@ impl Battle {
         // JavaScript: if (this.gen <= 1 && this.dex.currentMod !== 'gen1stadium' && ...)
         if self.gen <= 1 && ["confusion", "jumpkick", "highjumpkick"].contains(&effect_id) {
             // Confusion and recoil damage can be countered
-            self.last_damage = damage as u32;
+            self.last_damage = damage as i32;
 
             // Check if target has Substitute volatile
             let substitute_id = ID::new("substitute");
@@ -4941,7 +4941,7 @@ impl Battle {
         let actual_damage = if let Some(side) = self.sides.get_mut(target_pos.0) {
             if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
                 let old_hp = pokemon.hp;
-                pokemon.hp = pokemon.hp.saturating_sub(damage as u32);
+                pokemon.hp = pokemon.hp.saturating_sub(damage as i32);
                 (old_hp - pokemon.hp) as i32
             } else {
                 0
@@ -5092,7 +5092,7 @@ impl Battle {
         let final_damage = if let Some(side) = self.sides.get_mut(side_idx) {
             if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
                 let old_hp = pokemon.hp;
-                pokemon.hp = (pokemon.hp + damage as u32).min(pokemon.maxhp);
+                pokemon.hp = (pokemon.hp + damage as i32).min(pokemon.maxhp);
                 (pokemon.hp - old_hp) as i32
             } else {
                 0
@@ -5528,7 +5528,7 @@ impl Battle {
     /// Returns negative if a comes first, positive if b comes first, 0 if equal
     pub fn compare_priority(a: &PriorityItem, b: &PriorityItem) -> std::cmp::Ordering {
         // 1. Order, low to high (default last)
-        let order_cmp = a.order.unwrap_or(u32::MAX).cmp(&b.order.unwrap_or(u32::MAX));
+        let order_cmp = a.order.unwrap_or(i32::MAX).cmp(&b.order.unwrap_or(i32::MAX));
         if order_cmp != std::cmp::Ordering::Equal {
             return order_cmp;
         }
@@ -5576,7 +5576,7 @@ impl Battle {
     /// Compare for left-to-right order (hazards, etc.)
     pub fn compare_left_to_right_order(a: &PriorityItem, b: &PriorityItem) -> std::cmp::Ordering {
         // Order first
-        let order_cmp = a.order.unwrap_or(u32::MAX).cmp(&b.order.unwrap_or(u32::MAX));
+        let order_cmp = a.order.unwrap_or(i32::MAX).cmp(&b.order.unwrap_or(i32::MAX));
         if order_cmp != std::cmp::Ordering::Equal {
             return order_cmp;
         }
@@ -5636,7 +5636,7 @@ impl Battle {
     /// Shuffle a range of a slice in place
     fn shuffle_range<T>(&mut self, list: &mut [T], start: usize, end: usize) {
         for i in start..end {
-            let j = start + (self.random((end - start) as u32) as usize);
+            let j = start + (self.random((end - start) as i32) as usize);
             list.swap(i, j);
         }
     }
@@ -5685,7 +5685,7 @@ impl Battle {
         if switches.is_empty() {
             return None;
         }
-        let idx = self.random(switches.len() as u32) as usize;
+        let idx = self.random(switches.len() as i32) as usize;
         Some(switches[idx])
     }
 
@@ -5839,11 +5839,11 @@ impl Battle {
 
         // JS: const side = this.sides[slot.charCodeAt(1) - 49]; // 49 is '1'
         let side_char = slot_str.chars().nth(1)?;
-        let side_idx = (side_char as u32).checked_sub(49)? as usize; // 49 is '1'
+        let side_idx = (side_char as i32).checked_sub(49)? as usize; // 49 is '1'
 
         // JS: const position = slot.charCodeAt(2) - 97; // 97 is 'a'
         let pos_char = slot_str.chars().nth(2)?;
-        let position = (pos_char as u32).checked_sub(97)? as usize; // 97 is 'a'
+        let position = (pos_char as i32).checked_sub(97)? as usize; // 97 is 'a'
 
         // JS: const positionOffset = Math.floor(side.n / 2) * side.active.length;
         // JS: return side.active[position - positionOffset];
@@ -6249,18 +6249,18 @@ impl Battle {
 
     /// Get a Pokemon's action speed (called by pokemon.getActionSpeed() in JS)
     /// This is the helper method for getting base Pokemon speed
-    fn get_pokemon_action_speed(&self, side_idx: usize, poke_idx: usize) -> u32 {
+    fn get_pokemon_action_speed(&self, side_idx: usize, poke_idx: usize) -> i32 {
         if let Some(side) = self.sides.get(side_idx) {
             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                 // Apply speed boosts
-                let base_speed = pokemon.stored_stats.spe as u32;
+                let base_speed = pokemon.stored_stats.spe as i32;
                 let stage = pokemon.boosts.spe;
                 let multiplier = if stage >= 0 {
-                    (2 + stage as u32) as f64 / 2.0
+                    (2 + stage as i32) as f64 / 2.0
                 } else {
-                    2.0 / (2 + (-stage) as u32) as f64
+                    2.0 / (2 + (-stage) as i32) as f64
                 };
-                return (base_speed as f64 * multiplier) as u32;
+                return (base_speed as f64 * multiplier) as i32;
             }
         }
         0
@@ -6943,7 +6943,7 @@ impl Battle {
                                 }
                                 // Damage sleeping foes
                                 let foe_side = if side_idx == 0 { 1 } else { 0 };
-                                let mut foes_to_damage: Vec<(usize, u32)> = Vec::new();
+                                let mut foes_to_damage: Vec<(usize, i32)> = Vec::new();
 
                                 if let Some(foe_side_ref) = self.sides.get(foe_side) {
                                     for foe in foe_side_ref.pokemon.iter().filter(|p| p.is_active && !p.fainted) {
@@ -7033,7 +7033,7 @@ impl Battle {
 
                         // Phase 2: Random selection (mutable borrow)
                         let raised_stat = if !stats_to_raise.is_empty() {
-                            let idx = self.random(stats_to_raise.len() as u32) as usize;
+                            let idx = self.random(stats_to_raise.len() as i32) as usize;
                             Some(stats_to_raise[idx])
                         } else {
                             None
@@ -7049,7 +7049,7 @@ impl Battle {
                         if spe > -6 && Some("spe") != raised_stat { stats_to_lower.push("spe"); }
 
                         let lowered_stat = if !stats_to_lower.is_empty() {
-                            let idx = self.random(stats_to_lower.len() as u32) as usize;
+                            let idx = self.random(stats_to_lower.len() as i32) as usize;
                             Some(stats_to_lower[idx])
                         } else {
                             None
@@ -7568,7 +7568,7 @@ impl Battle {
     /// Equivalent to battle.ts eachEvent()
     pub fn each_event(&mut self, event_id: &str, effect: Option<&ID>) {
         // Collect all active Pokemon with their speeds
-        let mut actives: Vec<(usize, usize, u32)> = Vec::new();
+        let mut actives: Vec<(usize, usize, i32)> = Vec::new();
         for (side_idx, side) in self.sides.iter().enumerate() {
             for (_slot, active_idx) in side.active.iter().enumerate() {
                 if let Some(poke_idx) = active_idx {
@@ -7865,14 +7865,14 @@ impl Battle {
             if self.gen <= 1 {
                 // JavaScript: if (!['recoil', 'drain', 'leechseed'].includes(effect.id) && effect.effectType !== 'Status')
                 if effect_id != "recoil" && effect_id != "drain" && effect_id != "leechseed" {
-                    self.last_damage = target_damage as u32;
+                    self.last_damage = target_damage as i32;
                 }
             }
 
             // Apply damage using Pokemon's damage method
             let actual_damage = if let Some(side) = self.sides.get_mut(side_idx) {
                 if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
-                    let dmg = pokemon.damage(target_damage as u32);
+                    let dmg = pokemon.damage(target_damage as i32);
                     dmg as i32
                 } else {
                     0
@@ -7899,7 +7899,7 @@ impl Battle {
                 if let Some((src_side, src_idx)) = source {
                     if let Some(side) = self.sides.get_mut(src_side) {
                         if let Some(pokemon) = side.pokemon.get_mut(src_idx) {
-                            pokemon.last_damage = target_damage as u32;
+                            pokemon.last_damage = target_damage as i32;
                         }
                     }
                 }
@@ -8267,7 +8267,7 @@ impl Battle {
     /// Get overflowed turn count (for endless battle detection and Gen 8+ move timing)
     /// Equivalent to battle.ts getOverflowedTurnCount() (battle.ts:3317-3319)
     /// Used by Wish, Future Sight, and other delayed moves
-    pub fn get_overflowed_turn_count(&self) -> u32 {
+    pub fn get_overflowed_turn_count(&self) -> i32 {
         // JavaScript: return this.gen >= 8 ? (this.turn - 1) % 256 : this.turn - 1;
         if self.gen >= 8 {
             (self.turn.saturating_sub(1)) % 256
@@ -8361,7 +8361,7 @@ impl Battle {
             // Get Pokemon speed
             if let Some(side) = self.sides.get(effect_holder.0) {
                 if let Some(pokemon) = side.pokemon.get(effect_holder.1) {
-                    handler.speed = Some(pokemon.stored_stats.spe as u32);
+                    handler.speed = Some(pokemon.stored_stats.spe as i32);
 
                     // JS: if (handler.effect.effectType === 'Ability' && handler.effect.name === 'Magic Bounce' && callbackName === 'onAllyTryHitSide')
                     if handler.effect_type == EffectType::Ability
@@ -8369,7 +8369,7 @@ impl Battle {
                         && callback_name == "onAllyTryHitSide" {
                         // JS: handler.speed = pokemon.getStat('spe', true, true);
                         // TODO: Implement getStat with unmodified flag
-                        handler.speed = Some(pokemon.stored_stats.spe as u32);
+                        handler.speed = Some(pokemon.stored_stats.spe as i32);
                     }
 
                     // JS: if (callbackName.endsWith('SwitchIn'))
@@ -8710,7 +8710,7 @@ impl Battle {
         // JS: const hpTotal = tiedSides.map(side => (
         //         side.pokemon.map(pokemon => pokemon.hp).reduce((a, b) => a + b)
         //     ));
-        let hp_total: Vec<u32> = tied_sides.iter()
+        let hp_total: Vec<i32> = tied_sides.iter()
             .map(|&side_idx| {
                 self.sides[side_idx].pokemon.iter()
                     .map(|p| p.hp)
@@ -8911,11 +8911,11 @@ impl Battle {
 /// Priority item for sorting actions/handlers
 #[derive(Debug, Clone, Default)]
 pub struct PriorityItem {
-    pub order: Option<u32>,
+    pub order: Option<i32>,
     pub priority: i32,
-    pub speed: u32,
+    pub speed: i32,
     pub sub_order: i32,
-    pub effect_order: u32,
+    pub effect_order: i32,
     pub index: usize,
 }
 

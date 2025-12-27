@@ -33,9 +33,9 @@ pub const ON_MODIFY_ACCURACY_PRIORITY: i32 = -1;
 
 /// onModifyAccuracy(accuracy, target)
 /// Halves opponent accuracy when confused
-pub fn on_modify_accuracy(_battle: &mut Battle, _accuracy: u32, target: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_accuracy(_battle: &mut Battle, _accuracy: i32, target: &Pokemon) -> AbilityHandlerResult {
     // if (typeof accuracy !== 'number') return;
-    // Note: In Rust, accuracy is always u32, so this check is implicit
+    // Note: In Rust, accuracy is always i32, so this check is implicit
 
     // if (target?.volatiles['confusion'])
     if target.has_volatile(&ID::new("confusion")) {

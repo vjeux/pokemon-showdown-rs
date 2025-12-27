@@ -29,7 +29,7 @@ pub const ON_MODIFY_WEIGHT_PRIORITY: i32 = 1;
 
 /// onModifyWeight(weighthg)
 /// Doubles the Pokemon's weight
-pub fn on_modify_weight(weighthg: u32) -> AbilityHandlerResult {
+pub fn on_modify_weight(weighthg: i32) -> AbilityHandlerResult {
     // return weighthg * 2;
     AbilityHandlerResult::Number((weighthg * 2) as i32)
 }

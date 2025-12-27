@@ -45,7 +45,7 @@ pub fn on_try_hit(battle: &mut Battle, pokemon: &Pokemon, _target: &Pokemon, mov
 pub const ON_DAMAGE_PRIORITY: i32 = -30;
 
 /// onDamage(damage, target, source, effect)
-pub fn on_damage(battle: &mut Battle, damage: u32, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_damage(battle: &mut Battle, damage: i32, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
     // if (target.hp === target.maxhp && damage >= target.hp && effect && effect.effectType === 'Move')
     if target.hp == target.maxhp && damage >= target.hp && effect.effect_type == "Move" {
         // this.add('-ability', target, 'Sturdy');

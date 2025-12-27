@@ -19,13 +19,13 @@ pub struct MoveAction {
     /// Action type
     pub choice: MoveActionType,
     /// Order for sorting (lower = earlier)
-    pub order: u32,
+    pub order: i32,
     /// Priority of the action (higher = earlier)
     pub priority: i8,
     /// Fractional priority (higher = earlier)
     pub fractional_priority: f64,
     /// Speed of pokemon using move (higher = earlier if priority tie)
-    pub speed: u32,
+    pub speed: i32,
     /// Index of the pokemon doing the move
     pub pokemon_index: usize,
     /// Side index of the pokemon
@@ -57,11 +57,11 @@ pub struct SwitchAction {
     /// Action type
     pub choice: SwitchActionType,
     /// Order for sorting
-    pub order: u32,
+    pub order: i32,
     /// Priority of the action
     pub priority: i8,
     /// Speed of pokemon switching
-    pub speed: u32,
+    pub speed: i32,
     /// Index of the pokemon doing the switch
     pub pokemon_index: usize,
     /// Side index of the pokemon
@@ -115,11 +115,11 @@ pub struct PokemonAction {
     /// Action type
     pub choice: PokemonActionType,
     /// Order for sorting
-    pub order: u32,
+    pub order: i32,
     /// Priority
     pub priority: i8,
     /// Speed
-    pub speed: u32,
+    pub speed: i32,
     /// Pokemon index
     pub pokemon_index: usize,
     /// Side index
@@ -155,7 +155,7 @@ pub enum Action {
 
 impl Action {
     /// Get the order value for sorting
-    pub fn order(&self) -> u32 {
+    pub fn order(&self) -> i32 {
         match self {
             Action::Move(a) => a.order,
             Action::Switch(a) => a.order,
@@ -196,7 +196,7 @@ impl Action {
     }
 
     /// Get the speed value for sorting
-    pub fn speed(&self) -> u32 {
+    pub fn speed(&self) -> i32 {
         match self {
             Action::Move(a) => a.speed,
             Action::Switch(a) => a.speed,
@@ -705,7 +705,7 @@ impl BattleQueue {
     }
 
     /// Get the order value for a choice type
-    pub fn get_order_for_choice(choice: &str) -> u32 {
+    pub fn get_order_for_choice(choice: &str) -> i32 {
         match choice {
             "team" => 1,
             "start" => 2,

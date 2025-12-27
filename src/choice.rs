@@ -368,11 +368,11 @@ pub struct PokemonRequest {
 /// Stats in request
 #[derive(Debug, Clone, Default)]
 pub struct RequestStats {
-    pub atk: u32,
-    pub def: u32,
-    pub spa: u32,
-    pub spd: u32,
-    pub spe: u32,
+    pub atk: i32,
+    pub def: i32,
+    pub spa: i32,
+    pub spd: i32,
+    pub spe: i32,
 }
 
 impl Default for ActiveRequest {

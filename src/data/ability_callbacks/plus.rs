@@ -32,7 +32,7 @@ pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// onModifySpA(spa, pokemon)
 /// Boosts SpA by 1.5x if an ally has Plus or Minus
-pub fn on_modify_sp_a(battle: &mut Battle, _spa: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, pokemon: &Pokemon) -> AbilityHandlerResult {
     // for (const allyActive of pokemon.allies())
     let side = &battle.sides[pokemon.side_index];
 

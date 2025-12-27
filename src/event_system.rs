@@ -79,9 +79,9 @@ pub struct EffectState {
     /// Source of the effect
     pub source: Option<(usize, usize)>,
     /// Duration remaining (turns)
-    pub duration: Option<u32>,
+    pub duration: Option<i32>,
     /// Time (for sorting)
-    pub time: Option<u32>,
+    pub time: Option<i32>,
     /// Custom data storage (for effect-specific state)
     pub data: std::collections::HashMap<String, serde_json::Value>,
 }

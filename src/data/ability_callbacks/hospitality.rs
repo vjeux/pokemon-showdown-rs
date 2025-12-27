@@ -32,7 +32,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
     let side_index = pokemon.side_index;
 
     // Collect adjacent ally positions first to avoid borrow checker issues
-    let mut allies_to_heal: Vec<(usize, u32)> = Vec::new(); // (position, heal_amount)
+    let mut allies_to_heal: Vec<(usize, i32)> = Vec::new(); // (position, heal_amount)
 
     if let Some(side) = battle.sides.get(side_index) {
         for ally in side.pokemon.iter().filter(|p| p.is_active && !p.fainted) {

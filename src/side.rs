@@ -250,7 +250,7 @@ impl Side {
     }
 
     /// Add a side condition
-    pub fn add_side_condition(&mut self, id: ID, duration: Option<u32>) -> bool {
+    pub fn add_side_condition(&mut self, id: ID, duration: Option<i32>) -> bool {
         if self.side_conditions.contains_key(&id) {
             return false;
         }
@@ -281,7 +281,7 @@ impl Side {
     }
 
     /// Add a slot condition
-    pub fn add_slot_condition(&mut self, slot: usize, id: ID, duration: Option<u32>) -> bool {
+    pub fn add_slot_condition(&mut self, slot: usize, id: ID, duration: Option<i32>) -> bool {
         if slot >= self.slot_conditions.len() {
             return false;
         }
@@ -411,7 +411,7 @@ impl Side {
     }
 
     /// Get the number of layers of a hazard
-    pub fn get_hazard_layers(&self, hazard_id: &ID) -> u32 {
+    pub fn get_hazard_layers(&self, hazard_id: &ID) -> i32 {
         self.side_conditions.get(hazard_id)
             .and_then(|state| state.layers)
             .unwrap_or(0)
@@ -436,7 +436,7 @@ impl Side {
     }
 
     /// Calculate Stealth Rock damage based on type effectiveness
-    pub fn calc_stealth_rock_damage(defender_types: &[String], max_hp: u32) -> u32 {
+    pub fn calc_stealth_rock_damage(defender_types: &[String], max_hp: i32) -> i32 {
         // Stealth Rock does 12.5% base, modified by Rock type effectiveness
         let mut effectiveness = 1.0;
         for def_type in defender_types {
@@ -451,18 +451,18 @@ impl Side {
 
         // Base 1/8 (12.5%) * effectiveness
         let damage_frac = 0.125 * effectiveness;
-        ((max_hp as f64 * damage_frac) as u32).max(1)
+        ((max_hp as f64 * damage_frac) as i32).max(1)
     }
 
     /// Calculate Spikes damage based on number of layers
-    pub fn calc_spikes_damage(layers: u32, max_hp: u32) -> u32 {
+    pub fn calc_spikes_damage(layers: i32, max_hp: i32) -> i32 {
         // Spikes: 1 layer = 1/8, 2 layers = 1/6, 3 layers = 1/4
         let damage_frac = match layers {
             1 => 1.0 / 8.0,
             2 => 1.0 / 6.0,
             _ => 1.0 / 4.0,
         };
-        ((max_hp as f64 * damage_frac) as u32).max(1)
+        ((max_hp as f64 * damage_frac) as i32).max(1)
     }
 
     // ==========================================
@@ -475,7 +475,7 @@ impl Side {
     }
 
     /// Check if this side can dynamax now (Gen 8)
-    pub fn can_dynamax_now(&self, gen: u8, game_type: &str, turn: u32) -> bool {
+    pub fn can_dynamax_now(&self, gen: u8, game_type: &str, turn: i32) -> bool {
         if gen != 8 {
             return false;
         }

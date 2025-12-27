@@ -48,7 +48,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
 /// onAnyModifySpA(spa, source, target, move)
 /// Reduces all Pokemon's Special Attack by 25% except those with Vessel of Ruin
 /// Note: onAnyModifySpA handler needs to be wired into battle engine
-pub fn on_any_modify_sp_a(_battle: &mut Battle, _spa: u32, source: &Pokemon, _target: Option<&Pokemon>, _move: Option<&MoveDef>, _ability_holder: &Pokemon) -> AbilityHandlerResult {
+pub fn on_any_modify_sp_a(_battle: &mut Battle, _spa: i32, source: &Pokemon, _target: Option<&Pokemon>, _move: Option<&MoveDef>, _ability_holder: &Pokemon) -> AbilityHandlerResult {
     // const abilityHolder = this.effectState.target;
     // if (source.hasAbility('Vessel of Ruin')) return;
     if source.ability.as_str() == "vesselofruin" {

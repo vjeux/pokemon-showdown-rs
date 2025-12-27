@@ -45,9 +45,9 @@ pub fn on_immunity(_battle: &mut Battle, immunity_type: &str, _pokemon: &Pokemon
 
 /// onModifyAccuracy(accuracy)
 /// Lowers opponent's accuracy by ~20% in sandstorm
-pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: u32) -> AbilityHandlerResult {
+pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32) -> AbilityHandlerResult {
     // if (typeof accuracy !== 'number') return;
-    // Note: In Rust, accuracy is always u32, so this check is implicit
+    // Note: In Rust, accuracy is always i32, so this check is implicit
 
     // if (this.field.isWeather('sandstorm'))
     if battle.field.is_weather("sandstorm") {

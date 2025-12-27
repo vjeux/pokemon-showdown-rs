@@ -34,7 +34,7 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
-    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, _target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, _target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         let source_ref = (source.side_index, source.position);
         if battle.check_move_makes_contact(&move_.id, source_ref) && source.status.is_empty() && source.run_status_immunity("powder") {
             let r = battle.random(100);

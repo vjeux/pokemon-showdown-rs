@@ -34,7 +34,7 @@ pub fn on_start(_battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandlerRe
 }
 
 /// onDamage(item, pokemon)
-pub fn on_damage(_damage: u32, pokemon: &mut Pokemon) -> AbilityHandlerResult {
+pub fn on_damage(_damage: i32, pokemon: &mut Pokemon) -> AbilityHandlerResult {
     // pokemon.abilityState.gluttony = true;
     pokemon.ability_state.data.insert("gluttony".to_string(), serde_json::Value::Bool(true));
     AbilityHandlerResult::Undefined

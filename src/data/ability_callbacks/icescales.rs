@@ -27,7 +27,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onSourceModifyDamage(damage, source, target, move)
 /// Halves damage from Special moves
-pub fn on_source_modify_damage(_damage: u32, _source: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_damage(_damage: i32, _source: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.category === 'Special')
     if move_.category == MoveCategory::Special {
         // return this.chainModify(0.5);

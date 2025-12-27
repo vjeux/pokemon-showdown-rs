@@ -31,7 +31,7 @@ pub const ON_BASE_POWER_PRIORITY: i32 = 19;
 
 /// onBasePower(basePower, attacker, defender, move)
 /// Boosts slicing moves by 1.5x
-pub fn on_base_power(_base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_base_power(_base_power: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.flags['slicing'])
     if move_.flags.slicing {
         // return this.chainModify(1.5);

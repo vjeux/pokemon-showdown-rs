@@ -9,7 +9,7 @@ use crate::data::natures::{get_nature_by_name, NatureStat};
 use crate::data::species::BaseStats;
 
 /// Calculate HP stat
-pub fn calc_hp(base: u32, iv: u32, ev: u32, level: u32) -> u32 {
+pub fn calc_hp(base: i32, iv: i32, ev: i32, level: i32) -> i32 {
     if base == 1 {
         // Shedinja always has 1 HP
         return 1;
@@ -18,11 +18,11 @@ pub fn calc_hp(base: u32, iv: u32, ev: u32, level: u32) -> u32 {
 }
 
 /// Calculate non-HP stat (Atk, Def, SpA, SpD, Spe)
-pub fn calc_stat(base: u32, iv: u32, ev: u32, level: u32, nature_multiplier: f64) -> u32 {
+pub fn calc_stat(base: i32, iv: i32, ev: i32, level: i32, nature_multiplier: f64) -> i32 {
     // Pokemon stat formula: floor((floor(2*base + iv + floor(ev/4)) * level / 100 + 5) * nature)
     let ev_contribution = ev / 4;
     let base_stat = ((2 * base + iv + ev_contribution) * level) / 100 + 5;
-    (base_stat as f64 * nature_multiplier).floor() as u32
+    (base_stat as f64 * nature_multiplier).floor() as i32
 }
 
 /// Calculate all stats for a Pokemon
@@ -30,7 +30,7 @@ pub fn calc_all_stats(
     base_stats: &BaseStats,
     ivs: &StatSpread,
     evs: &StatSpread,
-    level: u32,
+    level: i32,
     nature: Option<&str>,
 ) -> StatSpread {
     let nature_def = nature.and_then(get_nature_by_name);
@@ -52,16 +52,16 @@ pub fn calc_all_stats(
 /// Stat spread (for IVs, EVs, or final stats)
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct StatSpread {
-    pub hp: u32,
-    pub atk: u32,
-    pub def: u32,
-    pub spa: u32,
-    pub spd: u32,
-    pub spe: u32,
+    pub hp: i32,
+    pub atk: i32,
+    pub def: i32,
+    pub spa: i32,
+    pub spd: i32,
+    pub spe: i32,
 }
 
 impl StatSpread {
-    pub const fn new(hp: u32, atk: u32, def: u32, spa: u32, spd: u32, spe: u32) -> Self {
+    pub const fn new(hp: i32, atk: i32, def: i32, spa: i32, spd: i32, spe: i32) -> Self {
         Self { hp, atk, def, spa, spd, spe }
     }
 
@@ -96,7 +96,7 @@ impl StatSpread {
     }
 
     /// Total of all stats
-    pub fn total(&self) -> u32 {
+    pub fn total(&self) -> i32 {
         self.hp + self.atk + self.def + self.spa + self.spd + self.spe
     }
 }
@@ -106,7 +106,7 @@ pub fn calc_stats_for_species(
     species_name: &str,
     ivs: &StatSpread,
     evs: &StatSpread,
-    level: u32,
+    level: i32,
     nature: Option<&str>,
 ) -> Option<StatSpread> {
     use crate::data::species::get_species_by_name;
@@ -156,18 +156,18 @@ pub fn get_accuracy_boost_multiplier(stage: i8) -> f64 {
 }
 
 /// Apply boost to a stat
-pub fn apply_boost(stat: u32, stage: i8) -> u32 {
-    (stat as f64 * get_boost_multiplier(stage)).floor() as u32
+pub fn apply_boost(stat: i32, stage: i8) -> i32 {
+    (stat as f64 * get_boost_multiplier(stage)).floor() as i32
 }
 
 /// Calculate the speed tier of a Pokemon
-pub fn get_speed_tier(base_speed: u32, positive_nature: bool, evs: u32, level: u32) -> u32 {
+pub fn get_speed_tier(base_speed: i32, positive_nature: bool, evs: i32, level: i32) -> i32 {
     let nature_mult = if positive_nature { 1.1 } else { 1.0 };
     calc_stat(base_speed, 31, evs, level, nature_mult)
 }
 
 /// Common speed tiers at level 100 with max investment
-pub fn common_speed_benchmarks() -> Vec<(&'static str, u32)> {
+pub fn common_speed_benchmarks() -> Vec<(&'static str, i32)> {
     vec![
         ("Base 50 neutral", 218),
         ("Base 60 neutral", 240),
@@ -189,15 +189,15 @@ pub fn common_speed_benchmarks() -> Vec<(&'static str, u32)> {
 
 /// Calculate damage range
 pub fn calc_damage_range(
-    attacker_stat: u32,
-    defender_stat: u32,
-    base_power: u32,
-    level: u32,
+    attacker_stat: i32,
+    defender_stat: i32,
+    base_power: i32,
+    level: i32,
     stab: bool,
     type_effectiveness: f64,
     critical: bool,
     other_modifiers: f64,
-) -> (u32, u32) {
+) -> (i32, i32) {
     let level_factor = (2 * level / 5) + 2;
     let base_damage = ((level_factor * base_power * attacker_stat / defender_stat) / 50) + 2;
 
@@ -214,14 +214,14 @@ pub fn calc_damage_range(
     }
 
     // Random roll is 0.85 to 1.00
-    let min_damage = ((base_damage as f64 * modifier * 0.85).floor() as u32).max(1);
-    let max_damage = ((base_damage as f64 * modifier * 1.00).floor() as u32).max(1);
+    let min_damage = ((base_damage as f64 * modifier * 0.85).floor() as i32).max(1);
+    let max_damage = ((base_damage as f64 * modifier * 1.00).floor() as i32).max(1);
 
     (min_damage, max_damage)
 }
 
 /// Calculate if a move OHKOs
-pub fn calc_ohko_chance(damage_range: (u32, u32), defender_hp: u32) -> f64 {
+pub fn calc_ohko_chance(damage_range: (i32, i32), defender_hp: i32) -> f64 {
     let (min, max) = damage_range;
 
     if min >= defender_hp {

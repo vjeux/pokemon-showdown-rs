@@ -29,7 +29,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onAnyModifyDamage(damage, source, target, move)
     /// Reduces damage to allies by 25%
-    pub fn on_any_modify_damage(_battle: &Battle, _damage: u32, _source: &Pokemon, target: &Pokemon, _move_: &MoveDef, effect_holder: &Pokemon) -> AbilityHandlerResult {
+    pub fn on_any_modify_damage(_battle: &Battle, _damage: i32, _source: &Pokemon, target: &Pokemon, _move_: &MoveDef, effect_holder: &Pokemon) -> AbilityHandlerResult {
         // If target is an ally of the effect holder (but not the holder itself)
         let holder_ref = (effect_holder.side_index, effect_holder.position);
         let target_ref = (target.side_index, target.position);

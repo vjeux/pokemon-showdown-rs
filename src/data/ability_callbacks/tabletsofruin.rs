@@ -48,7 +48,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
 /// onAnyModifyAtk(atk, source, target, move)
 /// Reduces all Pokemon's Attack by 25% except those with Tablets of Ruin
 /// Note: onAnyModifyAtk handler needs to be wired into battle engine
-pub fn on_any_modify_atk(_battle: &mut Battle, _atk: u32, source: &Pokemon, _target: Option<&Pokemon>, _move: Option<&MoveDef>, _ability_holder: &Pokemon) -> AbilityHandlerResult {
+pub fn on_any_modify_atk(_battle: &mut Battle, _atk: i32, source: &Pokemon, _target: Option<&Pokemon>, _move: Option<&MoveDef>, _ability_holder: &Pokemon) -> AbilityHandlerResult {
     // const abilityHolder = this.effectState.target;
     // if (source.hasAbility('Tablets of Ruin')) return;
     if source.ability.as_str() == "tabletsofruin" {

@@ -108,9 +108,9 @@ pub struct Pokemon {
     pub base_stored_stats: StatsTable,
     pub stored_stats: StatsTable,
     pub boosts: BoostsTable,
-    pub maxhp: u32,
-    pub base_maxhp: u32,
-    pub hp: u32,
+    pub maxhp: i32,
+    pub base_maxhp: i32,
+    pub hp: i32,
 
     // Ability
     pub base_ability: ID,
@@ -177,20 +177,20 @@ pub struct Pokemon {
     pub move_this_turn: Option<ID>,
     pub move_this_turn_result: Option<bool>,
     pub move_last_turn_result: Option<bool>,
-    pub hurt_this_turn: Option<u32>,
-    pub last_damage: u32,
-    pub times_attacked: u32,
+    pub hurt_this_turn: Option<i32>,
+    pub last_damage: i32,
+    pub times_attacked: i32,
 
     // Counters
-    pub active_turns: u32,
-    pub active_move_actions: u32,
-    pub previously_switched_in: u32,
+    pub active_turns: i32,
+    pub active_move_actions: i32,
+    pub previously_switched_in: i32,
     pub is_started: bool,
     pub during_move: bool,
 
     // Calculated values
-    pub weight_hg: u32,
-    pub speed: u32,
+    pub weight_hg: i32,
+    pub speed: i32,
 
     // Mega/Dynamax state
     pub can_mega_evo: Option<String>,
@@ -351,7 +351,7 @@ impl Pokemon {
     }
 
     /// Take damage
-    pub fn take_damage(&mut self, damage: u32) -> u32 {
+    pub fn take_damage(&mut self, damage: i32) -> i32 {
         let actual = damage.min(self.hp);
         self.hp = self.hp.saturating_sub(damage);
         if self.hp == 0 && !self.fainted {
@@ -363,7 +363,7 @@ impl Pokemon {
     }
 
     /// Heal HP
-    pub fn heal(&mut self, amount: u32) -> u32 {
+    pub fn heal(&mut self, amount: i32) -> i32 {
         if self.hp >= self.maxhp {
             return 0;
         }
@@ -432,8 +432,8 @@ impl Pokemon {
     }
 
     /// Get a stat value with boosts applied
-    pub fn get_stat(&self, stat: StatID, unboosted: bool) -> u32 {
-        let base = self.stored_stats.get(stat) as u32;
+    pub fn get_stat(&self, stat: StatID, unboosted: bool) -> i32 {
+        let base = self.stored_stats.get(stat) as i32;
         if unboosted {
             return base;
         }
@@ -448,9 +448,9 @@ impl Pokemon {
         };
 
         let (numerator, denominator) = if boost >= 0 {
-            (2 + boost as u32, 2)
+            (2 + boost as i32, 2)
         } else {
-            (2, 2 + (-boost) as u32)
+            (2, 2 + (-boost) as i32)
         };
 
         base * numerator / denominator
@@ -668,7 +668,7 @@ impl Pokemon {
     }
 
     /// Get the weight in hectograms
-    pub fn get_weight(&self) -> u32 {
+    pub fn get_weight(&self) -> i32 {
         // Base weight would come from species data
         // For now return stored weight
         self.weight_hg
@@ -700,7 +700,7 @@ impl Pokemon {
     }
 
     /// Get the action speed (speed used for turn order)
-    pub fn get_action_speed(&self) -> u32 {
+    pub fn get_action_speed(&self) -> i32 {
         let mut speed = self.get_stat(StatID::Spe, false);
 
         // Paralysis halves speed
@@ -774,26 +774,26 @@ impl Pokemon {
     }
 
     /// Calculate a stat with boost
-    pub fn calculate_stat(&self, stat: StatID, boost: i8, modifier: f64) -> u32 {
+    pub fn calculate_stat(&self, stat: StatID, boost: i8, modifier: f64) -> i32 {
         if stat == StatID::HP {
             return self.maxhp;
         }
 
         // Get base stat
-        let base_stat = self.stored_stats.get(stat) as u32;
+        let base_stat = self.stored_stats.get(stat) as i32;
 
         // Apply boost
         let clamped_boost = boost.clamp(-6, 6);
         let boost_table: [f64; 7] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
 
         let boosted_stat = if clamped_boost >= 0 {
-            (base_stat as f64 * boost_table[clamped_boost as usize]) as u32
+            (base_stat as f64 * boost_table[clamped_boost as usize]) as i32
         } else {
-            (base_stat as f64 / boost_table[(-clamped_boost) as usize]) as u32
+            (base_stat as f64 / boost_table[(-clamped_boost) as usize]) as i32
         };
 
         // Apply modifier
-        ((boosted_stat as f64) * modifier) as u32
+        ((boosted_stat as f64) * modifier) as i32
     }
 
     /// Get best stat (for Beast Boost, Quark Drive, Protosynthesis)
@@ -831,7 +831,7 @@ impl Pokemon {
 
     /// Mark Pokemon as fainted and queue faint
     /// Returns the amount of damage dealt (HP before faint)
-    pub fn faint(&mut self) -> u32 {
+    pub fn faint(&mut self) -> i32 {
         if self.fainted || self.faint_queued {
             return 0;
         }
@@ -844,7 +844,7 @@ impl Pokemon {
 
     /// Apply damage to Pokemon
     /// Returns actual damage dealt
-    pub fn damage(&mut self, amount: u32) -> u32 {
+    pub fn damage(&mut self, amount: i32) -> i32 {
         if self.hp == 0 || amount == 0 {
             return 0;
         }
@@ -960,7 +960,7 @@ impl Pokemon {
     }
 
     /// Set HP directly, returns delta
-    pub fn set_hp(&mut self, hp: u32) -> i32 {
+    pub fn set_hp(&mut self, hp: i32) -> i32 {
         if self.hp == 0 {
             return 0;
         }
@@ -1020,7 +1020,7 @@ impl Pokemon {
     }
 
     /// Update max HP (for forme changes)
-    pub fn update_max_hp(&mut self, new_base_max_hp: u32) {
+    pub fn update_max_hp(&mut self, new_base_max_hp: i32) {
         if new_base_max_hp == self.base_maxhp {
             return;
         }
@@ -1064,10 +1064,10 @@ impl Pokemon {
     }
 
     /// Get HP as if not dynamaxed
-    pub fn get_undynamaxed_hp(&self) -> u32 {
+    pub fn get_undynamaxed_hp(&self) -> i32 {
         if self.has_volatile(&ID::new("dynamax")) {
             // Dynamaxed HP is doubled, so divide by 2
-            ((self.hp as f64) * (self.base_maxhp as f64) / (self.maxhp as f64)).ceil() as u32
+            ((self.hp as f64) * (self.base_maxhp as f64) / (self.maxhp as f64)).ceil() as i32
         } else {
             self.hp
         }
@@ -1083,7 +1083,7 @@ impl Pokemon {
     }
 
     /// Record that this Pokemon was attacked
-    pub fn got_attacked(&mut self, move_id: ID, damage: u32, _source_side: usize, _source_pos: usize) {
+    pub fn got_attacked(&mut self, move_id: ID, damage: i32, _source_side: usize, _source_pos: usize) {
         self.last_damage = damage;
         self.times_attacked += 1;
         // Would store in attackedBy array in full implementation
@@ -1183,7 +1183,7 @@ impl Pokemon {
     }
 
     /// Set species (for forme changes and Transform)
-    pub fn set_species(&mut self, species_id: ID, types: Vec<String>, weight_hg: u32) {
+    pub fn set_species(&mut self, species_id: ID, types: Vec<String>, weight_hg: i32) {
         self.species_id = species_id;
         self.types = types.clone();
         self.base_types = types;
@@ -1245,13 +1245,13 @@ impl Pokemon {
 
     /// Get combat power (for Pokemon Go style formats)
     /// Equivalent to getCombatPower in pokemon.ts
-    pub fn get_combat_power(&self) -> u32 {
+    pub fn get_combat_power(&self) -> i32 {
         // Simplified formula based on stats
-        let atk = self.stored_stats.atk as u32;
-        let def = self.stored_stats.def as u32;
-        let sta = (self.stored_stats.hp as u32).max(10); // Use HP as stamina proxy
+        let atk = self.stored_stats.atk as i32;
+        let def = self.stored_stats.def as i32;
+        let sta = (self.stored_stats.hp as i32).max(10); // Use HP as stamina proxy
 
-        (((atk as f64) * (def as f64).powf(0.5) * (sta as f64).powf(0.5)) / 10.0) as u32
+        (((atk as f64) * (def as f64).powf(0.5) * (sta as f64).powf(0.5)) / 10.0) as i32
     }
 
     /// Get location of a target Pokemon relative to this one
@@ -1308,14 +1308,14 @@ impl Pokemon {
 
     /// Get last attacker info
     /// Equivalent to getLastAttackedBy in pokemon.ts
-    pub fn get_last_attacked_by(&self) -> Option<(ID, u32)> {
+    pub fn get_last_attacked_by(&self) -> Option<(ID, i32)> {
         // Would need attacked_by tracking for full implementation
         None
     }
 
     /// Get last damager info
     /// Equivalent to getLastDamagedBy in pokemon.ts
-    pub fn get_last_damaged_by(&self, filter_out_same_side: bool) -> Option<(ID, u32)> {
+    pub fn get_last_damaged_by(&self, filter_out_same_side: bool) -> Option<(ID, i32)> {
         if self.last_damage == 0 {
             return None;
         }
@@ -1632,7 +1632,7 @@ pub struct MoveHitData {
     /// Type effectiveness modifier (-2 to 2, for 0.25x to 4x)
     pub type_mod: i8,
     /// Actual damage dealt
-    pub damage: u32,
+    pub damage: i32,
     /// Did the move hit the substitute instead?
     pub hit_substitute: bool,
 }

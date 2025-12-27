@@ -34,7 +34,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
     /// Lowers Speed of all other active Pokemon by 1 stage when hit
-    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, _source: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
         // let activated = false;
         let mut activated = false;
         // for (const pokemon of this.getAllActive())

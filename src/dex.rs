@@ -38,12 +38,12 @@ pub struct AbilitySlots {
 /// Base stats as stored in JSON
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct BaseStatsData {
-    pub hp: u32,
-    pub atk: u32,
-    pub def: u32,
-    pub spa: u32,
-    pub spd: u32,
-    pub spe: u32,
+    pub hp: i32,
+    pub atk: i32,
+    pub def: i32,
+    pub spa: i32,
+    pub spd: i32,
+    pub spe: i32,
 }
 
 impl From<BaseStatsData> for StatsTable {
@@ -83,7 +83,7 @@ pub struct SpeciesData {
     #[serde(default)]
     pub prevo: Option<String>,
     #[serde(default)]
-    pub evo_level: Option<u32>,
+    pub evo_level: Option<i32>,
     #[serde(default)]
     pub base_species: Option<String>,
     #[serde(default)]
@@ -111,7 +111,7 @@ pub struct SpeciesData {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MoveSecondary {
     #[serde(default)]
-    pub chance: Option<u32>,
+    pub chance: Option<i32>,
     #[serde(default)]
     pub status: Option<String>,
     #[serde(default)]
@@ -133,11 +133,11 @@ pub struct MoveData {
     pub move_type: String,
     pub category: String,
     #[serde(default)]
-    pub base_power: u32,
+    pub base_power: i32,
     #[serde(default, deserialize_with = "deserialize_accuracy")]
     pub accuracy: Accuracy,
     #[serde(default)]
-    pub pp: u32,
+    pub pp: i32,
     #[serde(default)]
     pub priority: i8,
     #[serde(default)]
@@ -145,7 +145,7 @@ pub struct MoveData {
     #[serde(default)]
     pub secondary: Option<MoveSecondary>,
     #[serde(default)]
-    pub flags: HashMap<String, u32>,
+    pub flags: HashMap<String, i32>,
     #[serde(default)]
     pub boosts: Option<HashMap<String, i32>>,
     #[serde(default)]
@@ -153,11 +153,11 @@ pub struct MoveData {
     #[serde(rename = "volatileStatus", default)]
     pub volatile_status: Option<String>,
     #[serde(default)]
-    pub drain: Option<(u32, u32)>,
+    pub drain: Option<(i32, i32)>,
     #[serde(default)]
-    pub recoil: Option<(u32, u32)>,
+    pub recoil: Option<(i32, i32)>,
     #[serde(default)]
-    pub heal: Option<(u32, u32)>,
+    pub heal: Option<(i32, i32)>,
     #[serde(default)]
     pub multihit: Option<Multihit>,
     #[serde(rename = "isZ", default)]
@@ -171,7 +171,7 @@ pub struct MoveData {
 /// Accuracy can be a number or true (always hits)
 #[derive(Debug, Clone)]
 pub enum Accuracy {
-    Percent(u32),
+    Percent(i32),
     AlwaysHits,
 }
 
@@ -211,14 +211,14 @@ where
         where
             E: de::Error,
         {
-            Ok(Accuracy::Percent(value as u32))
+            Ok(Accuracy::Percent(value as i32))
         }
 
         fn visit_i64<E>(self, value: i64) -> Result<Self::Value, E>
         where
             E: de::Error,
         {
-            Ok(Accuracy::Percent(value as u32))
+            Ok(Accuracy::Percent(value as i32))
         }
     }
 
@@ -382,8 +382,8 @@ where
 /// Multihit can be a single number or range [min, max]
 #[derive(Debug, Clone)]
 pub enum Multihit {
-    Fixed(u32),
-    Range(u32, u32),
+    Fixed(i32),
+    Range(i32, i32),
 }
 
 impl<'de> Deserialize<'de> for Multihit {
@@ -406,15 +406,15 @@ impl<'de> Deserialize<'de> for Multihit {
             where
                 E: de::Error,
             {
-                Ok(Multihit::Fixed(value as u32))
+                Ok(Multihit::Fixed(value as i32))
             }
 
             fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
             where
                 A: SeqAccess<'de>,
             {
-                let min: u32 = seq.next_element()?.ok_or_else(|| de::Error::invalid_length(0, &self))?;
-                let max: u32 = seq.next_element()?.ok_or_else(|| de::Error::invalid_length(1, &self))?;
+                let min: i32 = seq.next_element()?.ok_or_else(|| de::Error::invalid_length(0, &self))?;
+                let max: i32 = seq.next_element()?.ok_or_else(|| de::Error::invalid_length(1, &self))?;
                 Ok(Multihit::Range(min, max))
             }
         }
@@ -429,7 +429,7 @@ impl Serialize for Multihit {
         S: serde::Serializer,
     {
         match self {
-            Multihit::Fixed(n) => serializer.serialize_u32(*n),
+            Multihit::Fixed(n) => serializer.serialize_i32(*n),
             Multihit::Range(min, max) => {
                 use serde::ser::SerializeSeq;
                 let mut seq = serializer.serialize_seq(Some(2))?;
@@ -448,7 +448,7 @@ impl Serialize for Accuracy {
     {
         match self {
             Accuracy::AlwaysHits => serializer.serialize_bool(true),
-            Accuracy::Percent(p) => serializer.serialize_u32(*p),
+            Accuracy::Percent(p) => serializer.serialize_i32(*p),
         }
     }
 }
@@ -484,7 +484,7 @@ pub struct ItemData {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FlingData {
     #[serde(rename = "basePower", default)]
-    pub base_power: u32,
+    pub base_power: i32,
 }
 
 /// Type effectiveness data
@@ -854,14 +854,14 @@ impl Dex {
 
     /// Calculate Hidden Power type from IVs
     /// Equivalent to getHiddenPower() in dex.ts
-    pub fn get_hidden_power(ivs: &StatsTable) -> (&'static str, u32) {
+    pub fn get_hidden_power(ivs: &StatsTable) -> (&'static str, i32) {
         // Gen 3+ formula
-        let hp_bits = (ivs.hp & 1) as u32;
-        let atk_bits = ((ivs.atk & 1) as u32) << 1;
-        let def_bits = ((ivs.def & 1) as u32) << 2;
-        let spe_bits = ((ivs.spe & 1) as u32) << 3;
-        let spa_bits = ((ivs.spa & 1) as u32) << 4;
-        let spd_bits = ((ivs.spd & 1) as u32) << 5;
+        let hp_bits = (ivs.hp & 1) as i32;
+        let atk_bits = ((ivs.atk & 1) as i32) << 1;
+        let def_bits = ((ivs.def & 1) as i32) << 2;
+        let spe_bits = ((ivs.spe & 1) as i32) << 3;
+        let spa_bits = ((ivs.spa & 1) as i32) << 4;
+        let spd_bits = ((ivs.spd & 1) as i32) << 5;
 
         let type_num = (hp_bits | atk_bits | def_bits | spe_bits | spa_bits | spd_bits) * 15 / 63;
 
@@ -874,12 +874,12 @@ impl Dex {
         let hp_type = types.get(type_num as usize).unwrap_or(&"Dark");
 
         // Calculate power (Gen 3-5: 30-70, Gen 6+: always 60)
-        let hp2_bits = ((ivs.hp >> 1) & 1) as u32;
-        let atk2_bits = (((ivs.atk >> 1) & 1) as u32) << 1;
-        let def2_bits = (((ivs.def >> 1) & 1) as u32) << 2;
-        let spe2_bits = (((ivs.spe >> 1) & 1) as u32) << 3;
-        let spa2_bits = (((ivs.spa >> 1) & 1) as u32) << 4;
-        let spd2_bits = (((ivs.spd >> 1) & 1) as u32) << 5;
+        let hp2_bits = ((ivs.hp >> 1) & 1) as i32;
+        let atk2_bits = (((ivs.atk >> 1) & 1) as i32) << 1;
+        let def2_bits = (((ivs.def >> 1) & 1) as i32) << 2;
+        let spe2_bits = (((ivs.spe >> 1) & 1) as i32) << 3;
+        let spa2_bits = (((ivs.spa >> 1) & 1) as i32) << 4;
+        let spd2_bits = (((ivs.spd >> 1) & 1) as i32) << 5;
 
         let power = (hp2_bits | atk2_bits | def2_bits | spe2_bits | spa2_bits | spd2_bits) * 40 / 63 + 30;
 
@@ -888,7 +888,7 @@ impl Dex {
 
     /// Truncate a number (floor towards zero)
     /// Equivalent to trunc() in dex.ts
-    pub fn trunc(num: f64, bits: u32) -> i32 {
+    pub fn trunc(num: f64, bits: i32) -> i32 {
         if bits == 0 {
             if num > 0.0 {
                 num.floor() as i32
@@ -1190,7 +1190,7 @@ impl Dex {
     }
 
     /// Calculate Base Stat Total for a species
-    pub fn get_bst(&self, species_name: &str) -> Option<u32> {
+    pub fn get_bst(&self, species_name: &str) -> Option<i32> {
         self.get_species(species_name).map(|s| {
             s.base_stats.hp + s.base_stats.atk + s.base_stats.def +
             s.base_stats.spa + s.base_stats.spd + s.base_stats.spe
@@ -1222,8 +1222,8 @@ impl Dex {
             .unwrap_or(false)
     }
 
-    /// Get move accuracy as Option<u32> (None if always hits)
-    pub fn get_move_accuracy(&self, move_name: &str) -> Option<u32> {
+    /// Get move accuracy as Option<i32> (None if always hits)
+    pub fn get_move_accuracy(&self, move_name: &str) -> Option<i32> {
         self.get_move(move_name).and_then(|m| match &m.accuracy {
             Accuracy::Percent(p) => Some(*p),
             Accuracy::AlwaysHits => None,
@@ -1255,7 +1255,7 @@ impl Dex {
     }
 
     /// Get fling base power for an item
-    pub fn get_fling_power(&self, item_name: &str) -> u32 {
+    pub fn get_fling_power(&self, item_name: &str) -> i32 {
         self.get_item(item_name)
             .and_then(|i| i.fling.as_ref())
             .map(|f| f.base_power)

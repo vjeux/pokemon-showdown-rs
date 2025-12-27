@@ -31,7 +31,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
     /// 30% chance to disable the move that hit this Pokemon
-    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         // if (source.volatiles['disable']) return;
         if source.has_volatile(&ID::new("disable")) {
             return AbilityHandlerResult::Undefined;

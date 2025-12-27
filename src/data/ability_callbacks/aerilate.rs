@@ -60,7 +60,7 @@ pub const ON_MODIFY_TYPE_PRIORITY: i32 = -1;
     pub const ON_BASE_POWER_PRIORITY: i32 = 23;
 
     /// onBasePower(basePower, pokemon, target, move)
-    pub fn on_base_power(_base_power: u32, _pokemon: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_base_power(_base_power: i32, _pokemon: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         if move_.type_changer_boosted {
             return AbilityHandlerResult::ChainModify(4915, 4096); // ~1.2x
         }

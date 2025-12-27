@@ -28,7 +28,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Inflicts Perish Song on both self and attacker when hit by contact move
-pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (!this.checkMoveMakesContact(move, source, target) || source.volatiles['perishsong']) return;
     if !move_.flags.contact {
         return AbilityHandlerResult::Undefined;

@@ -31,7 +31,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 pub const ON_DAMAGE_PRIORITY: i32 = 1;
 
 /// onDamage(damage, target, source, effect)
-pub fn on_damage(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_damage(battle: &mut Battle, _damage: i32, target: &Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
     // if (effect.id === 'psn' || effect.id === 'tox')
     if effect.id == "psn" || effect.id == "tox" {
         // this.heal(target.baseMaxhp / 8);

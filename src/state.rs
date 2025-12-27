@@ -18,7 +18,7 @@ pub struct BattleState {
     /// PRNG seed at start of battle
     pub seed: PRNGSeed,
     /// Current turn number
-    pub turn: u32,
+    pub turn: i32,
     /// Active turn (for mid-turn states)
     pub active_turn: bool,
     /// Battle ended
@@ -64,9 +64,9 @@ pub struct PokemonState {
     /// Gender
     pub gender: String,
     /// Current HP
-    pub hp: u32,
+    pub hp: i32,
     /// Maximum HP
-    pub maxhp: u32,
+    pub maxhp: i32,
     /// Current ability ID
     pub ability: ID,
     /// Base ability ID (before Transform, etc.)
@@ -102,7 +102,7 @@ pub struct PokemonState {
     /// Last move used
     pub last_move: Option<ID>,
     /// Last move turn
-    pub last_move_turn: Option<u32>,
+    pub last_move_turn: Option<i32>,
     /// Transform target (if transformed)
     pub transformed: bool,
 }
@@ -125,12 +125,12 @@ pub struct MoveSlotState {
 /// Serializable stats
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatsState {
-    pub hp: u32,
-    pub atk: u32,
-    pub def: u32,
-    pub spa: u32,
-    pub spd: u32,
-    pub spe: u32,
+    pub hp: i32,
+    pub atk: i32,
+    pub def: i32,
+    pub spa: i32,
+    pub spd: i32,
+    pub spe: i32,
 }
 
 /// Serializable boosts
@@ -164,7 +164,7 @@ pub struct FieldState {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputLogEntry {
     /// Turn number
-    pub turn: u32,
+    pub turn: i32,
     /// Side index (0 or 1)
     pub side: usize,
     /// Choice string (e.g., "move 1", "switch 2")
@@ -274,7 +274,7 @@ impl ReplayData {
     }
 
     /// Add an input to the replay
-    pub fn add_input(&mut self, turn: u32, side: usize, choice: String) {
+    pub fn add_input(&mut self, turn: i32, side: usize, choice: String) {
         self.inputs.push(InputLogEntry { turn, side, choice });
     }
 
@@ -416,7 +416,7 @@ pub fn serialize_battle(battle: &crate::battle::Battle) -> serde_json::Value {
 /// Equivalent to state.ts deserializeBattle()
 pub fn deserialize_battle_state(state: &serde_json::Value, battle: &mut crate::battle::Battle) {
     if let Some(turn) = state.get("turn").and_then(|v| v.as_u64()) {
-        battle.turn = turn as u32;
+        battle.turn = turn as i32;
     }
     if let Some(ended) = state.get("ended").and_then(|v| v.as_bool()) {
         battle.ended = ended;
@@ -463,7 +463,7 @@ pub fn serialize_pokemon(pokemon: &crate::pokemon::Pokemon) -> serde_json::Value
 /// Equivalent to state.ts deserializePokemon()
 pub fn deserialize_pokemon(state: &serde_json::Value, pokemon: &mut crate::pokemon::Pokemon) {
     if let Some(hp) = state.get("hp").and_then(|v| v.as_u64()) {
-        pokemon.hp = hp as u32;
+        pokemon.hp = hp as i32;
     }
     if let Some(status) = state.get("status").and_then(|v| v.as_str()) {
         pokemon.status = ID::new(status);

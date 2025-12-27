@@ -31,7 +31,7 @@ use super::{AbilityHandlerResult, Status, Effect};
     pub const ON_DAMAGING_HIT_ORDER: i32 = 1;
 
     /// onDamagingHit(damage, target, source, move)
-    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         // if (!target.hp && this.checkMoveMakesContact(move, source, target, true))
         let source_ref = (source.side_index, source.position);
         let target_ref = (target.side_index, target.position);

@@ -28,7 +28,7 @@ pub const ON_MODIFY_DEF_PRIORITY: i32 = 6;
 
 /// onModifyDef(pokemon)
 /// Boosts Defense by 1.5x in Grassy Terrain
-pub fn on_modify_def(battle: &mut Battle, _def: u32, _pokemon: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_def(battle: &mut Battle, _def: i32, _pokemon: &Pokemon) -> AbilityHandlerResult {
     // if (this.field.isTerrain("grassyterrain"))
     if battle.field.is_terrain("grassyterrain") {
         // return this.chainModify(1.5);

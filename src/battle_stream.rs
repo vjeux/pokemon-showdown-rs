@@ -12,7 +12,7 @@ use std::collections::VecDeque;
 #[derive(Debug, Clone, PartialEq)]
 pub enum BattleMessage {
     // Battle initialization
-    Player { slot: String, name: String, avatar: Option<String>, rating: Option<u32> },
+    Player { slot: String, name: String, avatar: Option<String>, rating: Option<i32> },
     TeamSize { slot: String, size: usize },
     GameType { game_type: String },
     Gen { gen: u8 },
@@ -24,7 +24,7 @@ pub enum BattleMessage {
     TeamPreview,
 
     // Turn management
-    Turn { number: u32 },
+    Turn { number: i32 },
     Upkeep,
     Request { request_json: String },
     Win { winner: String },

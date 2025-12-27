@@ -27,7 +27,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyDamage(damage, source, target, move)
 /// Boosts super-effective damage by 1.25x
-pub fn on_modify_damage(_damage: u32, _source: &Pokemon, target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_damage(_damage: i32, _source: &Pokemon, target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move && target.getMoveHitData(move).typeMod > 0)
     let hit_data = target.get_move_hit_data(&move_.id);
     if hit_data.type_mod > 0 {

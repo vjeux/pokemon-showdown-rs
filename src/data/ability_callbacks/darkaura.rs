@@ -45,7 +45,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
     /// onAnyBasePower(basePower, source, target, move)
     /// Boosts Dark-type moves for all Pokemon
-    pub fn on_any_base_power(_base_power: u32, source: &Pokemon, target: &Pokemon, move_: &MoveDef, has_aura_break: bool) -> AbilityHandlerResult {
+    pub fn on_any_base_power(_base_power: i32, source: &Pokemon, target: &Pokemon, move_: &MoveDef, has_aura_break: bool) -> AbilityHandlerResult {
         // if (target === source || move.category === 'Status' || move.type !== 'Dark') return;
         let source_ref = (source.side_index, source.position);
         let target_ref = (target.side_index, target.position);

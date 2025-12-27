@@ -213,7 +213,7 @@ pub fn on_restart(battle: &mut Battle, target: (usize, usize)) -> MoveHandlerRes
         if let Some(pokemon) = side.pokemon.get(poke_idx) {
             if let Some(volatile) = pokemon.volatiles.get(&ID::new("allyswitch")) {
                 if let Some(counter_val) = volatile.data.get("counter") {
-                    counter_val.as_u64().unwrap_or(1) as u32
+                    counter_val.as_u64().unwrap_or(1) as i32
                 } else {
                     1
                 }
@@ -228,7 +228,7 @@ pub fn on_restart(battle: &mut Battle, target: (usize, usize)) -> MoveHandlerRes
     };
 
     // Debug message
-    let chance_pct = (100.0 / counter as f64).round() as u32;
+    let chance_pct = (100.0 / counter as f64).round() as i32;
     battle.debug(&format!("Ally Switch success chance: {}%", chance_pct));
 
     // Random chance check

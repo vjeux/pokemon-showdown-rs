@@ -104,7 +104,7 @@ pub fn on_hit(
     // JavaScript: let randomMove = '';
     // JavaScript: if (moves.length) randomMove = this.sample(moves);
     let random_move = if !moves.is_empty() {
-        let idx = battle.random(moves.len() as u32) as usize;
+        let idx = battle.random(moves.len() as i32) as usize;
         Some(moves[idx].clone())
     } else {
         None

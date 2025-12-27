@@ -41,7 +41,7 @@ pub const ON_SOURCE_MODIFY_SPA_PRIORITY: i32 = 5;
 
 /// onSourceModifyAtk(atk, attacker, defender, move)
 /// Halves Ice-type and Fire-type attack damage
-pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_atk(_atk: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Ice' || move.type === 'Fire')
     if move_.move_type == "Ice" || move_.move_type == "Fire" {
         // this.debug('Thick Fat weaken');
@@ -53,7 +53,7 @@ pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon,
 
 /// onSourceModifySpA(atk, attacker, defender, move)
 /// Halves Ice-type and Fire-type special attack damage
-pub fn on_source_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_sp_a(_spa: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Ice' || move.type === 'Fire')
     if move_.move_type == "Ice" || move_.move_type == "Fire" {
         // this.debug('Thick Fat weaken');

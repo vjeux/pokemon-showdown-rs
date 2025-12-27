@@ -28,7 +28,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onSourceModifyDamage(damage, source, target, move)
 /// Halves contact damage, doubles Fire damage
-pub fn on_source_modify_damage(damage: u32, _source: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_damage(damage: i32, _source: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // let mod = 1;
     let mut mod_num = 4096;
     let mod_den = 4096;

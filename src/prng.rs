@@ -67,7 +67,7 @@ pub trait RNG {
     /// Get the current seed
     fn get_seed(&self) -> PRNGSeed;
     /// Get the next random 32-bit number
-    fn next(&mut self) -> u32;
+    fn next(&mut self) -> i32;
 }
 
 /// A PRNG intended to emulate the on-cartridge PRNG for Gen 5 with a 64-bit
@@ -97,14 +97,14 @@ impl Gen5RNG {
     /// Calculates `a * b + c` (with 64-bit 2's complement integers)
     fn multiply_add(a: [u16; 4], b: [u16; 4], c: [u16; 4]) -> [u16; 4] {
         let mut out = [0u16; 4];
-        let mut carry: u32 = 0;
+        let mut carry: i32 = 0;
 
         for out_index in (0..4).rev() {
             for b_index in out_index..4 {
                 let a_index = 3 - (b_index - out_index);
-                carry = carry.wrapping_add((a[a_index] as u32).wrapping_mul(b[b_index] as u32));
+                carry = carry.wrapping_add((a[a_index] as i32).wrapping_mul(b[b_index] as i32));
             }
-            carry = carry.wrapping_add(c[out_index] as u32);
+            carry = carry.wrapping_add(c[out_index] as i32);
             out[out_index] = (carry & 0xFFFF) as u16;
             carry >>= 16;
         }
@@ -133,10 +133,10 @@ impl RNG for Gen5RNG {
         PRNGSeed::Gen5(self.seed)
     }
 
-    fn next(&mut self) -> u32 {
+    fn next(&mut self) -> i32 {
         self.next_frame();
         // Use the upper 32 bits
-        ((self.seed[0] as u32) << 16) | (self.seed[1] as u32)
+        ((self.seed[0] as i32) << 16) | (self.seed[1] as i32)
     }
 }
 
@@ -167,7 +167,7 @@ impl SodiumRNG {
     /// Generate a random seed
     pub fn generate_seed() -> String {
         let mut rng = rand::thread_rng();
-        let seed: [u32; 4] = [rng.gen(), rng.gen(), rng.gen(), rng.gen()];
+        let seed: [i32; 4] = [rng.gen(), rng.gen(), rng.gen(), rng.gen()];
         format!(
             "{:08x}{:08x}{:08x}{:08x}",
             seed[0], seed[1], seed[2], seed[3]
@@ -181,7 +181,7 @@ impl RNG for SodiumRNG {
         PRNGSeed::Sodium(hex)
     }
 
-    fn next(&mut self) -> u32 {
+    fn next(&mut self) -> i32 {
         // Create 36 bytes of zeros, encrypt to get random bytes
         let mut buf = [0u8; 36];
 
@@ -193,10 +193,10 @@ impl RNG for SodiumRNG {
         self.seed.copy_from_slice(&buf[0..32]);
 
         // Use bytes 32-36 for the output (big-endian)
-        ((buf[32] as u32) << 24)
-            | ((buf[33] as u32) << 16)
-            | ((buf[34] as u32) << 8)
-            | (buf[35] as u32)
+        ((buf[32] as i32) << 24)
+            | ((buf[33] as i32) << 16)
+            | ((buf[34] as i32) << 8)
+            | (buf[35] as i32)
     }
 }
 
@@ -266,7 +266,7 @@ impl PRNG {
     }
 
     /// Get the next random 32-bit number
-    fn next_raw(&mut self) -> u32 {
+    fn next_raw(&mut self) -> i32 {
         match &mut self.rng {
             PRNGImpl::Gen5(rng) => rng.next(),
             PRNGImpl::Sodium(rng) => rng.next(),
@@ -277,7 +277,7 @@ impl PRNG {
     /// - `random()` returns a float in [0, 1)
     /// - `random(n)` returns an integer in [0, n)
     /// - `random(m, n)` returns an integer in [m, n)
-    pub fn random(&mut self, from: Option<u32>, to: Option<u32>) -> f64 {
+    pub fn random(&mut self, from: Option<i32>, to: Option<i32>) -> f64 {
         let result = self.next_raw();
 
         match (from, to) {
@@ -291,19 +291,19 @@ impl PRNG {
     }
 
     /// Get a random integer in [0, n)
-    pub fn random_int(&mut self, n: u32) -> u32 {
-        self.random(Some(n), None) as u32
+    pub fn random_int(&mut self, n: i32) -> i32 {
+        self.random(Some(n), None) as i32
     }
 
     /// Get a random integer in [from, to)
-    pub fn random_range(&mut self, from: u32, to: u32) -> u32 {
-        self.random(Some(from), Some(to)) as u32
+    pub fn random_range(&mut self, from: i32, to: i32) -> i32 {
+        self.random(Some(from), Some(to)) as i32
     }
 
     /// Flip a coin (two-sided die), returning true or false.
     ///
     /// This function returns true with probability `P`, where `P = numerator / denominator`.
-    pub fn random_chance(&mut self, numerator: u32, denominator: u32) -> bool {
+    pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
         self.random_int(denominator) < numerator
     }
 
@@ -312,7 +312,7 @@ impl PRNG {
         if items.is_empty() {
             return None;
         }
-        let index = self.random_int(items.len() as u32) as usize;
+        let index = self.random_int(items.len() as i32) as usize;
         Some(&items[index])
     }
 
@@ -325,7 +325,7 @@ impl PRNG {
     pub fn shuffle_range<T>(&mut self, items: &mut [T], start: usize, end: usize) {
         let mut i = start;
         while i < end.saturating_sub(1) {
-            let next_index = self.random_range(i as u32, end as u32) as usize;
+            let next_index = self.random_range(i as i32, end as i32) as usize;
             if i != next_index {
                 items.swap(i, next_index);
             }
@@ -366,7 +366,7 @@ impl PRNG {
         if items.is_empty() {
             return None;
         }
-        let index = self.random_int(items.len() as u32) as usize;
+        let index = self.random_int(items.len() as i32) as usize;
         Some(items.remove(index))
     }
 
@@ -468,7 +468,7 @@ mod tests {
         // Test case 3: Raw 32-bit values with seed [0xAAAA, 0xBBBB, 0xCCCC, 0xDDDD]
         // Expected from JS: [2795446293,2744431784,3501875646,746470024,1664743198,3087483402,966965533,2002677306,2482317012,1229306196]
         let mut rng3 = Gen5RNG::new([0xAAAA, 0xBBBB, 0xCCCC, 0xDDDD]);
-        let expected_raw: [u32; 10] = [
+        let expected_raw: [i32; 10] = [
             2795446293, 2744431784, 3501875646, 746470024, 1664743198,
             3087483402, 966965533, 2002677306, 2482317012, 1229306196
         ];

@@ -57,7 +57,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
     /// onAnyDamage(damage, target, source, effect)
     /// Blocks Aftermath damage
-    pub fn on_any_damage(_damage: u32, _target: &Pokemon, _source: &Pokemon, effect_name: Option<&str>) -> AbilityHandlerResult {
+    pub fn on_any_damage(_damage: i32, _target: &Pokemon, _source: &Pokemon, effect_name: Option<&str>) -> AbilityHandlerResult {
         // if (effect && effect.name === 'Aftermath')
         if let Some(name) = effect_name {
             if name == "Aftermath" {

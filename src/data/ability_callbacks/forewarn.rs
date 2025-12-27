@@ -99,7 +99,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
     }
 
     // const [warnMoveName, warnTarget] = this.sample(warnMoves);
-    let idx = battle.prng.random_int(warn_moves.len() as u32) as usize;
+    let idx = battle.prng.random_int(warn_moves.len() as i32) as usize;
     let (warn_move_id, foe_side, foe_pos) = &warn_moves[idx];
     let warn_target = &battle.sides[*foe_side].pokemon[*foe_pos];
 

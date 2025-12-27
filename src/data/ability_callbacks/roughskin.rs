@@ -30,7 +30,7 @@ pub const ON_DAMAGING_HIT_ORDER: i32 = 1;
 
 /// onDamagingHit(damage, target, source, move)
 /// Damages attacker by 1/8 of their max HP if they make contact
-pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, _target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, _target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (this.checkMoveMakesContact(move, source, target, true))
     let source_ref = (source.side_index, source.position);
     if battle.check_move_makes_contact(&move_.id, source_ref) {

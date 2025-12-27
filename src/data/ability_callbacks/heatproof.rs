@@ -46,7 +46,7 @@ pub const ON_SOURCE_MODIFY_SPA_PRIORITY: i32 = 5;
 
 /// onSourceModifyAtk(atk, attacker, defender, move)
 /// Halves Fire-type attack damage
-pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_atk(_atk: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Fire')
     if move_.move_type == "Fire" {
         // return this.chainModify(0.5);
@@ -57,7 +57,7 @@ pub fn on_source_modify_atk(_atk: u32, _attacker: &Pokemon, _defender: &Pokemon,
 
 /// onSourceModifySpA(atk, attacker, defender, move)
 /// Halves Fire-type special attack damage
-pub fn on_source_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_sp_a(_spa: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Fire')
     if move_.move_type == "Fire" {
         // return this.chainModify(0.5);
@@ -68,7 +68,7 @@ pub fn on_source_modify_sp_a(_spa: u32, _attacker: &Pokemon, _defender: &Pokemon
 
 /// onDamage(damage, target, source, effect)
 /// Halves burn damage
-pub fn on_damage(damage: u32, _target: &Pokemon, _source: &Pokemon, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_damage(damage: i32, _target: &Pokemon, _source: &Pokemon, effect: &Effect) -> AbilityHandlerResult {
     // if (effect && effect.id === 'brn')
     if effect.id == "brn" {
         // return damage / 2;

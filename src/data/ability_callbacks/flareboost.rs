@@ -30,7 +30,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 pub const ON_BASE_POWER_PRIORITY: i32 = 19;
 
     /// onBasePower(basePower, attacker, defender, move)
-    pub fn on_base_power(_base_power: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_base_power(_base_power: i32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         if attacker.has_status("brn") && move_.category == MoveCategory::Special {
             return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
         }

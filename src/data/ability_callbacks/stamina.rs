@@ -24,7 +24,7 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, effect)
-pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &Pokemon, _effect: &Effect) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, _source: &Pokemon, _effect: &Effect) -> AbilityHandlerResult {
     let target_ref = (target.side_index, target.position);
     // this.boost({ def: 1 });
     battle.boost(&[("def", 1)], target_ref, Some(target_ref), None);

@@ -28,7 +28,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifyDamage(damage, source, target, move)
 /// Boosts damage by 1.5x on critical hits
-pub fn on_modify_damage(_battle: &mut Battle, _damage: u32, _source: &Pokemon, _target: &Pokemon, _move: &MoveDef, was_crit: bool) -> AbilityHandlerResult {
+pub fn on_modify_damage(_battle: &mut Battle, _damage: i32, _source: &Pokemon, _target: &Pokemon, _move: &MoveDef, was_crit: bool) -> AbilityHandlerResult {
     // if (target.getMoveHitData(move).crit)
     if was_crit {
         // this.debug('Sniper boost');

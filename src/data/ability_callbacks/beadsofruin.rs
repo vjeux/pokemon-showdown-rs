@@ -48,7 +48,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
 /// Note: This reduces Special Defense of all Pokemon without Beads of Ruin by 25%.
 /// The implementation requires tracking ruinedSpD on the move, which is complex.
 /// For now, we return a modifier value.
-pub fn on_any_modify_sp_d(battle: &mut Battle, spd: u32, target: &Pokemon, _source: Option<&Pokemon>, _move: Option<&MoveDef>, ability_holder: &Pokemon) -> AbilityHandlerResult {
+pub fn on_any_modify_sp_d(battle: &mut Battle, spd: i32, target: &Pokemon, _source: Option<&Pokemon>, _move: Option<&MoveDef>, ability_holder: &Pokemon) -> AbilityHandlerResult {
     // const abilityHolder = this.effectState.target;
     // if (target.hasAbility('Beads of Ruin')) return;
     if target.ability.as_str() == "beadsofruin" {

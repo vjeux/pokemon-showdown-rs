@@ -36,7 +36,7 @@ pub const ON_BASE_POWER_PRIORITY: i32 = 21;
 
 /// onBasePower(basePower, attacker, defender, move)
 /// Boosts Rock/Ground/Steel moves by 1.3x in sandstorm
-pub fn on_base_power(battle: &mut Battle, _base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (this.field.isWeather('sandstorm'))
     if battle.field.is_weather("sandstorm") {
         // if (move.type === 'Rock' || move.type === 'Ground' || move.type === 'Steel')

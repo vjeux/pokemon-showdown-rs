@@ -494,7 +494,7 @@ pub fn dispatch_on_residual(
                     }
                     // Damage sleeping foes
                     let foe_side = if side_idx == 0 { 1 } else { 0 };
-                    let mut foes_to_damage: Vec<(usize, u32)> = Vec::new();
+                    let mut foes_to_damage: Vec<(usize, i32)> = Vec::new();
 
                     if let Some(foe_side_ref) = battle.sides.get(foe_side) {
                         for foe in foe_side_ref.pokemon.iter().filter(|p| p.is_active && !p.fainted) {

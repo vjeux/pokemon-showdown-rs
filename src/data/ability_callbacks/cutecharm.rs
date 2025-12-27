@@ -30,7 +30,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
     /// 30% chance to infatuate an attacker of the opposite gender that makes contact
-    pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         // if (this.checkMoveMakesContact(move, source, target))
         let target_ref = (target.side_index, target.position);
         if battle.check_move_makes_contact(&move_.id, target_ref) {

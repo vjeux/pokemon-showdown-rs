@@ -28,7 +28,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 pub const ON_DAMAGING_HIT_ORDER: i32 = 1;
 
     /// onDamagingHit(damage, target, source, move)
-    pub fn on_damaging_hit(_battle: &mut Battle, _damage: u32, target: &mut Pokemon, _source: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_damaging_hit(_battle: &mut Battle, _damage: i32, target: &mut Pokemon, _source: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
         target.add_volatile(ID::new("charge"));
         AbilityHandlerResult::Undefined
     }

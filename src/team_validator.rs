@@ -200,11 +200,11 @@ pub enum ValidationError {
     /// Invalid item
     InvalidItem { pokemon: String, item: String },
     /// Invalid EV spread (total > 510)
-    InvalidEVs { pokemon: String, total: u32 },
+    InvalidEVs { pokemon: String, total: i32 },
     /// Single EV too high (> 252)
-    EVTooHigh { pokemon: String, stat: String, value: u32 },
+    EVTooHigh { pokemon: String, stat: String, value: i32 },
     /// Invalid IV (> 31)
-    InvalidIV { pokemon: String, stat: String, value: u32 },
+    InvalidIV { pokemon: String, stat: String, value: i32 },
     /// Nickname too long
     NicknameTooLong { pokemon: String, length: usize },
     /// Duplicate nickname
@@ -303,16 +303,16 @@ impl Default for ValidatorSet {
 /// EV spread
 #[derive(Debug, Clone, Copy, Default)]
 pub struct EVSpread {
-    pub hp: u32,
-    pub atk: u32,
-    pub def: u32,
-    pub spa: u32,
-    pub spd: u32,
-    pub spe: u32,
+    pub hp: i32,
+    pub atk: i32,
+    pub def: i32,
+    pub spa: i32,
+    pub spd: i32,
+    pub spe: i32,
 }
 
 impl EVSpread {
-    pub fn total(&self) -> u32 {
+    pub fn total(&self) -> i32 {
         self.hp + self.atk + self.def + self.spa + self.spd + self.spe
     }
 
@@ -330,12 +330,12 @@ impl EVSpread {
 /// IV spread
 #[derive(Debug, Clone, Copy)]
 pub struct IVSpread {
-    pub hp: u32,
-    pub atk: u32,
-    pub def: u32,
-    pub spa: u32,
-    pub spd: u32,
-    pub spe: u32,
+    pub hp: i32,
+    pub atk: i32,
+    pub def: i32,
+    pub spa: i32,
+    pub spd: i32,
+    pub spe: i32,
 }
 
 impl Default for IVSpread {
@@ -996,7 +996,7 @@ fn parse_evs(input: &str) -> EVSpread {
         let part = part.trim();
         let words: Vec<&str> = part.split_whitespace().collect();
         if words.len() >= 2 {
-            if let Ok(value) = words[0].parse::<u32>() {
+            if let Ok(value) = words[0].parse::<i32>() {
                 match words[1].to_lowercase().as_str() {
                     "hp" => evs.hp = value,
                     "atk" => evs.atk = value,
@@ -1018,7 +1018,7 @@ fn parse_ivs(input: &str) -> IVSpread {
         let part = part.trim();
         let words: Vec<&str> = part.split_whitespace().collect();
         if words.len() >= 2 {
-            if let Ok(value) = words[0].parse::<u32>() {
+            if let Ok(value) = words[0].parse::<i32>() {
                 match words[1].to_lowercase().as_str() {
                     "hp" => ivs.hp = value,
                     "atk" => ivs.atk = value,

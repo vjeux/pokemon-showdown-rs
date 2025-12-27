@@ -80,7 +80,7 @@ use super::{AbilityHandlerResult, Status, Effect};
     pub const ON_MODIFY_SPA_PRIORITY: i32 = 5;
 
     /// onModifyAtk(atk, attacker, defender, move)
-    pub fn on_modify_atk(_atk: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_modify_atk(_atk: i32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         if move_.move_type == "Fire" && attacker.has_ability(&["flashfire"]) && attacker.has_volatile(&ID::new("flashfire")) {
             return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
         }
@@ -88,7 +88,7 @@ use super::{AbilityHandlerResult, Status, Effect};
     }
 
     /// onModifySpA(spa, attacker, defender, move)
-    pub fn on_modify_spa(_spa: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+    pub fn on_modify_spa(_spa: i32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
         if move_.move_type == "Fire" && attacker.has_ability(&["flashfire"]) && attacker.has_volatile(&ID::new("flashfire")) {
             return AbilityHandlerResult::ChainModify(6144, 4096); // 1.5x
         }

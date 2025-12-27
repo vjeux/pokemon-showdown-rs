@@ -80,7 +80,7 @@ pub fn get_z_move_name(move_type: &str) -> &'static str {
 #[derive(Debug, Clone)]
 pub enum DamageResult {
     /// Actual damage dealt
-    Damage(u32),
+    Damage(i32),
     /// Target is immune
     Immune,
     /// Move missed
@@ -97,7 +97,7 @@ pub enum DamageResult {
 pub struct MoveHitData {
     pub crit: bool,
     pub type_mod: i32,
-    pub damage: u32,
+    pub damage: i32,
     pub z_broke_protect: bool,
 }
 
@@ -107,17 +107,17 @@ pub struct MoveHitData {
 pub struct ActiveMove {
     pub id: ID,
     pub name: String,
-    pub base_power: u32,
+    pub base_power: i32,
     pub category: String,
     pub move_type: String,
-    pub accuracy: u32,
+    pub accuracy: i32,
     pub priority: i8,
     pub target: String,
     pub flags: MoveFlags,
 
     // Active state
-    pub hit: u32,
-    pub total_damage: u32,
+    pub hit: i32,
+    pub total_damage: i32,
     pub spread_hit: bool,
     pub is_external: bool,
     pub is_z: bool,
@@ -146,7 +146,7 @@ pub struct ActiveMove {
     pub self_dropped: bool,
     pub smart_target: Option<bool>,
     pub stellar_boosted: bool,
-    pub multi_hit: Option<u32>,
+    pub multi_hit: Option<i32>,
     pub multi_hit_type: Option<String>,
     pub multi_accuracy: bool,
     pub ohko: Option<String>,
@@ -166,7 +166,7 @@ pub struct ActiveMove {
 
     // Move data effects
     pub boosts: Option<BoostsTable>,
-    pub heal: Option<(u32, u32)>,
+    pub heal: Option<(i32, i32)>,
     pub status: Option<String>,
     pub force_status: Option<String>,
     pub volatile_status: Option<String>,
@@ -177,7 +177,7 @@ pub struct ActiveMove {
     pub pseudo_weather: Option<String>,
 
     // Recoil
-    pub recoil: Option<(u32, u32)>,
+    pub recoil: Option<(i32, i32)>,
 
     // Hit targets (populated during execution)
     pub hit_targets: Vec<(usize, usize)>,
@@ -205,13 +205,13 @@ pub struct MoveFlags {
 /// Max move data
 #[derive(Debug, Clone, Default)]
 pub struct MaxMoveData {
-    pub base_power: u32,
+    pub base_power: i32,
 }
 
 /// Z-move data
 #[derive(Debug, Clone, Default)]
 pub struct ZMoveData {
-    pub base_power: Option<u32>,
+    pub base_power: Option<i32>,
     pub boost: Option<BoostsTable>,
     pub effect: Option<String>,
 }
@@ -219,7 +219,7 @@ pub struct ZMoveData {
 /// Secondary effect data
 #[derive(Debug, Clone, Default)]
 pub struct SecondaryEffect {
-    pub chance: Option<u32>,
+    pub chance: Option<i32>,
     pub boosts: Option<BoostsTable>,
     pub status: Option<String>,
     pub volatile_status: Option<String>,
@@ -230,7 +230,7 @@ pub struct SecondaryEffect {
 #[derive(Debug, Clone, Default)]
 pub struct SelfEffect {
     pub boosts: Option<BoostsTable>,
-    pub chance: Option<u32>,
+    pub chance: Option<i32>,
 }
 
 /// Z-Move request option
@@ -243,7 +243,7 @@ pub struct ZMoveOption {
 /// Damage value (can be number, false, or undefined-like None)
 #[derive(Debug, Clone)]
 pub enum DamageValue {
-    Damage(u32),
+    Damage(i32),
     Failed,
     Blocked,  // HIT_SUBSTITUTE
 }
@@ -278,7 +278,7 @@ impl<'a> BattleActions<'a> {
         defender: &Pokemon,
         move_data: &MoveData,
         is_crit: bool,
-        random_factor: u32,
+        random_factor: i32,
     ) -> DamageResult {
         // Check for immunity first
         let effectiveness = get_effectiveness_multi(&move_data.move_type, &defender.types);
@@ -297,8 +297,8 @@ impl<'a> BattleActions<'a> {
         let (attack, defense) = if move_data.category == "Special" {
             let atk_boost = attacker.boosts.spa;
             let def_boost = defender.boosts.spd;
-            let base_atk = attacker.stored_stats.spa as u32;
-            let base_def = defender.stored_stats.spd as u32;
+            let base_atk = attacker.stored_stats.spa as i32;
+            let base_def = defender.stored_stats.spd as i32;
             (
                 Self::calculate_stat_with_boost(base_atk, atk_boost),
                 Self::calculate_stat_with_boost(base_def, def_boost),
@@ -306,8 +306,8 @@ impl<'a> BattleActions<'a> {
         } else {
             let atk_boost = attacker.boosts.atk;
             let def_boost = defender.boosts.def;
-            let base_atk = attacker.stored_stats.atk as u32;
-            let base_def = defender.stored_stats.def as u32;
+            let base_atk = attacker.stored_stats.atk as i32;
+            let base_def = defender.stored_stats.def as i32;
             (
                 Self::calculate_stat_with_boost(base_atk, atk_boost),
                 Self::calculate_stat_with_boost(base_def, def_boost),
@@ -315,7 +315,7 @@ impl<'a> BattleActions<'a> {
         };
 
         // Basic damage formula: ((2 * Level / 5 + 2) * Power * A/D) / 50 + 2
-        let level = attacker.level as u32;
+        let level = attacker.level as i32;
         let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense.max(1)) / 50 + 2;
 
         // Apply STAB (Same Type Attack Bonus)
@@ -326,11 +326,11 @@ impl<'a> BattleActions<'a> {
         };
 
         // Apply type effectiveness
-        let damage = (base_damage as f64 * stab * effectiveness) as u32;
+        let damage = (base_damage as f64 * stab * effectiveness) as i32;
 
         // Apply critical hit (1.5x in Gen 6+)
         let damage = if is_crit {
-            (damage as f64 * 1.5) as u32
+            (damage as f64 * 1.5) as i32
         } else {
             damage
         };
@@ -381,14 +381,14 @@ impl<'a> BattleActions<'a> {
     }
 
     /// Calculate the effective stat value with boost applied
-    pub fn calculate_stat_with_boost(base_stat: u32, boost: i8) -> u32 {
+    pub fn calculate_stat_with_boost(base_stat: i32, boost: i8) -> i32 {
         let (num, denom) = Self::get_boost_modifier(boost);
-        (base_stat as i32 * num / denom).max(1) as u32
+        (base_stat as i32 * num / denom).max(1) as i32
     }
 
     /// Calculate recoil damage
     /// Equivalent to calcRecoilDamage in battle-actions.ts
-    pub fn calc_recoil_damage(damage_dealt: u32, move_id: &str, recoil: Option<(u32, u32)>, pokemon_max_hp: u32) -> u32 {
+    pub fn calc_recoil_damage(damage_dealt: i32, move_id: &str, recoil: Option<(i32, i32)>, pokemon_max_hp: i32) -> i32 {
         if move_id == "chloroblast" {
             return (pokemon_max_hp / 2).max(1);
         }
@@ -401,7 +401,7 @@ impl<'a> BattleActions<'a> {
 
     /// Calculate confusion damage
     /// Equivalent to getConfusionDamage in battle-actions.ts
-    pub fn get_confusion_damage(level: u32, attack: u32, defense: u32, base_power: u32, random_factor: u32) -> u32 {
+    pub fn get_confusion_damage(level: i32, attack: i32, defense: i32, base_power: i32, random_factor: i32) -> i32 {
         // int(int(int(2 * L / 5 + 2) * P * A / D) / 50) + 2
         let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense) / 50 + 2;
 
@@ -441,7 +441,7 @@ impl<'a> BattleActions<'a> {
         move_name: &str,
         move_type: &str,
         move_category: &str,
-        z_move_base_power: Option<u32>,
+        z_move_base_power: Option<i32>,
         item_z_move: Option<&str>,
         item_z_move_from: Option<&str>,
         item_z_move_type: Option<&str>,
@@ -627,14 +627,14 @@ impl<'a> BattleActions<'a> {
     /// Check accuracy for move hit
     /// Equivalent to hitStepAccuracy in battle-actions.ts
     pub fn hit_step_accuracy(
-        move_accuracy: u32,
+        move_accuracy: i32,
         move_always_hit: bool,
         move_ohko: bool,
         attacker_accuracy_boost: i8,
         defender_evasion_boost: i8,
         ignore_accuracy: bool,
         ignore_evasion: bool,
-        random_value: u32, // 0-99
+        random_value: i32, // 0-99
     ) -> bool {
         // Always hit moves
         if move_always_hit || move_accuracy == 0 {
@@ -648,7 +648,7 @@ impl<'a> BattleActions<'a> {
 
         // Apply stage modifier
         let (num, denom) = Self::get_accuracy_modifier(accuracy_stages);
-        let effective_accuracy = (move_accuracy as i32 * num / denom) as u32;
+        let effective_accuracy = (move_accuracy as i32 * num / denom) as i32;
 
         // OHKO moves have special accuracy handling
         if move_ohko {
@@ -752,8 +752,8 @@ impl<'a> BattleActions<'a> {
         base_move_id: &str,
         base_move_type: &str,
         base_move_category: &str,
-        base_move_base_power: u32,
-        z_crystal_base_power: Option<u32>,
+        base_move_base_power: i32,
+        z_crystal_base_power: Option<i32>,
     ) -> ActiveMove {
         let z_move_name = get_z_move_name(base_move_type);
         let z_base_power = if base_move_category == "Status" {
@@ -780,7 +780,7 @@ impl<'a> BattleActions<'a> {
     }
 
     /// Get Z-move base power from original move's base power
-    fn z_move_power_table(base_power: u32) -> u32 {
+    fn z_move_power_table(base_power: i32) -> i32 {
         match base_power {
             0..=55 => 100,
             56..=65 => 120,
@@ -801,7 +801,7 @@ impl<'a> BattleActions<'a> {
         base_move_id: &str,
         base_move_type: &str,
         base_move_category: &str,
-        base_move_base_power: u32,
+        base_move_base_power: i32,
         gmax_move: Option<&str>,
     ) -> ActiveMove {
         let max_move_name = if let Some(gmax) = gmax_move {
@@ -834,7 +834,7 @@ impl<'a> BattleActions<'a> {
     }
 
     /// Get Max move base power from original move's base power
-    fn max_move_power_table(base_power: u32, move_type: &str) -> u32 {
+    fn max_move_power_table(base_power: i32, move_type: &str) -> i32 {
         // Fighting and Poison type moves have different scaling
         let is_fighting_poison = move_type == "Fighting" || move_type == "Poison";
 
@@ -876,21 +876,21 @@ impl<'a> BattleActions<'a> {
     /// Modify damage with various factors
     /// Equivalent to modifyDamage in battle-actions.ts
     pub fn modify_damage(
-        base_damage: u32,
+        base_damage: i32,
         modifiers: &[f64],
-    ) -> u32 {
+    ) -> i32 {
         let mut damage = base_damage as f64;
         for modifier in modifiers {
             damage = (damage * modifier).floor();
         }
-        (damage as u32).max(1)
+        (damage as i32).max(1)
     }
 
     /// Check if move forces switch
     /// Equivalent to forceSwitch handling in battle-actions.ts
     pub fn should_force_switch(
         move_force_switch: bool,
-        target_hp: u32,
+        target_hp: i32,
         target_is_dynamaxed: bool,
     ) -> bool {
         if !move_force_switch {
@@ -907,7 +907,7 @@ impl<'a> BattleActions<'a> {
 
     /// Get multi-hit count for a move
     /// Equivalent to multi-hit handling in battle-actions.ts
-    pub fn get_multi_hit_count(multi_hit: Option<u32>, random_value: u32) -> u32 {
+    pub fn get_multi_hit_count(multi_hit: Option<i32>, random_value: i32) -> i32 {
         match multi_hit {
             None => 1,
             Some(n) if n <= 1 => 1,
@@ -932,7 +932,7 @@ impl<'a> BattleActions<'a> {
         crit_ratio: i32,
         attacker_focus_energy: bool,
         move_will_crit: Option<bool>,
-        random_value: u32,
+        random_value: i32,
     ) -> bool {
         // Guaranteed crit or no crit
         if let Some(will_crit) = move_will_crit {
@@ -994,16 +994,16 @@ impl<'a> BattleActions<'a> {
     /// Get damage from getDamage in battle-actions.ts
     /// This is a comprehensive damage calculation
     pub fn get_damage(
-        attacker_level: u32,
-        attacker_attack: u32,
-        defender_defense: u32,
-        base_power: u32,
+        attacker_level: i32,
+        attacker_attack: i32,
+        defender_defense: i32,
+        base_power: i32,
         stab_modifier: f64,
         type_effectiveness: f64,
         is_crit: bool,
-        random_factor: u32, // 85-100
+        random_factor: i32, // 85-100
         other_modifiers: &[f64],
-    ) -> u32 {
+    ) -> i32 {
         if base_power == 0 || type_effectiveness == 0.0 {
             return 0;
         }
@@ -1033,7 +1033,7 @@ impl<'a> BattleActions<'a> {
             damage = (damage * modifier).floor();
         }
 
-        (damage as u32).max(1)
+        (damage as i32).max(1)
     }
 
     /// Try spread move hit - checks all targets
@@ -1054,7 +1054,7 @@ impl<'a> BattleActions<'a> {
     /// Move hit - execute the actual hit
     /// Equivalent to moveHit in battle-actions.ts
     pub fn move_hit_result(
-        damage: u32,
+        damage: i32,
         type_effectiveness: f64,
         is_crit: bool,
     ) -> MoveHitData {
@@ -1134,10 +1134,10 @@ impl<'a> BattleActions<'a> {
     /// Hit step move hit loop
     /// Equivalent to hitStepMoveHitLoop in battle-actions.ts
     pub fn hit_step_move_hit_loop_count(
-        multi_hit: Option<u32>,
+        multi_hit: Option<i32>,
         move_hit_type: Option<&str>,
-        random_value: u32,
-    ) -> u32 {
+        random_value: i32,
+    ) -> i32 {
         if let Some(hit_type) = move_hit_type {
             match hit_type {
                 "parentalbond" => 2,
@@ -1159,8 +1159,8 @@ impl<'a> BattleActions<'a> {
     /// Equivalent to tryPrimaryHitEvent in battle-actions.ts
     pub fn try_primary_hit_event(
         move_has_primary_effect: bool,
-        move_primary_chance: Option<u32>,
-        random_value: u32,
+        move_primary_chance: Option<i32>,
+        random_value: i32,
     ) -> bool {
         if !move_has_primary_effect {
             return true; // No primary effect to apply
@@ -1177,7 +1177,7 @@ impl<'a> BattleActions<'a> {
     /// Equivalent to runMoveEffects in battle-actions.ts
     pub fn run_move_effects_list(
         move_boosts: Option<&BoostsTable>,
-        move_heal: Option<(u32, u32)>,
+        move_heal: Option<(i32, i32)>,
         move_status: Option<&str>,
         move_volatile: Option<&str>,
     ) -> MoveEffects {
@@ -1201,7 +1201,7 @@ pub struct AfterMoveResult {
 #[derive(Debug, Clone, Default)]
 pub struct MoveEffects {
     pub boosts: Option<BoostsTable>,
-    pub heal: Option<(u32, u32)>,
+    pub heal: Option<(i32, i32)>,
     pub status: Option<String>,
     pub volatile_status: Option<String>,
 }
@@ -1251,7 +1251,7 @@ pub struct UseMoveOptions {
 /// Can be damage amount, false (failed), or true/undefined (success with no damage)
 #[derive(Debug, Clone, Copy)]
 pub enum SpreadMoveDamageValue {
-    Damage(u32),
+    Damage(i32),
     Failed,
     Success,
     Undefined,
@@ -1354,7 +1354,7 @@ impl<'a> BattleActions<'a> {
         target_indices: &[usize],
         pokemon_index: usize,
         move_id: &ID,
-        multi_hit: Option<u32>,
+        multi_hit: Option<i32>,
         gen: u8,
     ) -> SpreadMoveDamage {
         let target_hits = multi_hit.unwrap_or(1) as usize;
@@ -1407,7 +1407,7 @@ impl<'a> BattleActions<'a> {
         move_id: &ID,
         is_secondary: bool,
         is_self: bool,
-    ) -> Option<u32> {
+    ) -> Option<i32> {
         let targets = match target_index {
             Some(idx) => vec![idx],
             None => vec![],
@@ -1561,7 +1561,7 @@ impl<'a> BattleActions<'a> {
         target_or_targets: &[usize],
         pokemon_index: usize,
         move_id: &ID,
-    ) -> Option<u32> {
+    ) -> Option<i32> {
         // This calls hitStepMoveHitLoop and returns damage
         let damage = Self::hit_step_move_hit_loop_stub(
             target_or_targets,
@@ -1572,7 +1572,7 @@ impl<'a> BattleActions<'a> {
         );
 
         // Sum up damage
-        let mut total = 0u32;
+        let mut total = 0i32;
         for d in damage {
             if let SpreadMoveDamageValue::Damage(dmg) = d {
                 total += dmg;

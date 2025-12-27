@@ -44,11 +44,11 @@ pub struct ConditionDef {
     /// Condition type
     pub condition_type: ConditionType,
     /// Duration in turns (None = indefinite or until cured)
-    pub duration: Option<u32>,
+    pub duration: Option<i32>,
     /// Maximum duration (for variable durations like sleep)
-    pub max_duration: Option<u32>,
+    pub max_duration: Option<i32>,
     /// Minimum duration
-    pub min_duration: Option<u32>,
+    pub min_duration: Option<i32>,
     /// Can be passed by Baton Pass
     pub baton_passable: bool,
     /// Prevents switching

@@ -33,7 +33,7 @@ pub const ON_ALLY_BASE_POWER_PRIORITY: i32 = 22;
 /// Boosts ally move power by 1.3x
 ///
 /// TODO: onAllyBasePower handler not yet called by battle engine
-pub fn on_ally_base_power(_battle: &mut Battle, _base_power: u32, attacker: &Pokemon, _defender: &Pokemon, _move: &MoveDef, ability_holder: &Pokemon) -> AbilityHandlerResult {
+pub fn on_ally_base_power(_battle: &mut Battle, _base_power: i32, attacker: &Pokemon, _defender: &Pokemon, _move: &MoveDef, ability_holder: &Pokemon) -> AbilityHandlerResult {
     // if (attacker !== this.effectState.target)
     let attacker_ref = (attacker.side_index, attacker.position);
     let holder_ref = (ability_holder.side_index, ability_holder.position);

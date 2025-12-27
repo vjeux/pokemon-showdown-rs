@@ -48,7 +48,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
 
 /// onModifySpA(atk, attacker, defender, move)
 /// Boosts Special Attack by 1.3330... (5461/4096) in Electric Terrain
-pub fn on_modify_sp_a(battle: &mut Battle, _spa: u32, _attacker: &Pokemon, _defender: Option<&Pokemon>, _move: Option<&MoveDef>) -> AbilityHandlerResult {
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker: &Pokemon, _defender: Option<&Pokemon>, _move: Option<&MoveDef>) -> AbilityHandlerResult {
     // if (this.field.isTerrain('electricterrain'))
     if battle.field.is_terrain("electricterrain") {
         // this.debug('Hadron Engine boost');

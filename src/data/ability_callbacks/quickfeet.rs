@@ -26,7 +26,7 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifySpe(spe, pokemon)
-pub fn on_modify_spe(_battle: &Battle, _spe: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_spe(_battle: &Battle, _spe: i32, pokemon: &Pokemon) -> AbilityHandlerResult {
     // if (pokemon.status)
     if !pokemon.status.is_empty() {
         // return this.chainModify(1.5);

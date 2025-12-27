@@ -65,7 +65,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
             .unwrap_or(0)
     });
 
-    let mut ally_volatiles: Vec<(&str, Option<u32>, Option<bool>)> = Vec::new();
+    let mut ally_volatiles: Vec<(&str, Option<i32>, Option<bool>)> = Vec::new();
     if let Some(ally) = battle.sides.get(ally_ref.0).and_then(|s| s.pokemon.get(ally_ref.1)) {
         if ally.is_active && !ally.fainted && ally.position != pokemon.position {
             for volatile_id in volatiles_to_copy.iter() {

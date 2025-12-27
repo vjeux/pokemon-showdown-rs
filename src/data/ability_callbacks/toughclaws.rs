@@ -30,7 +30,7 @@ pub const ON_BASE_POWER_PRIORITY: i32 = 21;
 
 /// onBasePower(basePower, attacker, defender, move)
 /// Boosts contact moves by 1.3x
-pub fn on_base_power(_base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_base_power(_base_power: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.flags['contact'])
     if move_.flags.contact {
         // return this.chainModify([5325, 4096]);

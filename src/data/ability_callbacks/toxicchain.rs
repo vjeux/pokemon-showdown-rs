@@ -30,7 +30,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onSourceDamagingHit(damage, target, source, move)
 /// 30% chance to badly poison target when source (with this ability) deals damage
-pub fn on_source_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, _source: &Pokemon, _move_: &MoveDef) -> AbilityHandlerResult {
     // Despite not being a secondary, Shield Dust / Covert Cloak block Toxic Chain's effect
     // if (target.hasAbility('shielddust') || target.hasItem('covertcloak')) return;
     if target.ability.as_str() == "shielddust" {

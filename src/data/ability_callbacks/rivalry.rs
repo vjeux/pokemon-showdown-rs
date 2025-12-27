@@ -36,7 +36,7 @@ pub const ON_BASE_POWER_PRIORITY: i32 = 24;
 
 /// onBasePower(basePower, attacker, defender, move)
 /// Boosts damage by 1.25x against same gender, weakens by 0.75x against opposite gender
-pub fn on_base_power(_base_power: u32, attacker: &Pokemon, defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+pub fn on_base_power(_base_power: i32, attacker: &Pokemon, defender: &Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
     // if (attacker.gender && defender.gender)
     if attacker.gender != Gender::None && defender.gender != Gender::None {
         // if (attacker.gender === defender.gender)

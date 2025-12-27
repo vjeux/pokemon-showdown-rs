@@ -32,7 +32,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamagingHit(damage, target, source, move)
 /// Boosts Speed when hit by Dark, Bug, or Ghost-type moves
-pub fn on_damaging_hit(battle: &mut Battle, _damage: u32, target: &Pokemon, _source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target: &Pokemon, _source: &mut Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (['Dark', 'Bug', 'Ghost'].includes(move.type))
     let move_type = &move_.move_type;
     if move_type == "Dark" || move_type == "Bug" || move_type == "Ghost" {

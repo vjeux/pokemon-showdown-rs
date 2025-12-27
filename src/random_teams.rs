@@ -66,7 +66,7 @@ impl RandomTeamGenerator {
         }
 
         // Pick a random species
-        let idx = self.prng.random_int(available.len() as u32) as usize;
+        let idx = self.prng.random_int(available.len() as i32) as usize;
         let (_, species) = available[idx];
 
         Some(self.build_set(species))
@@ -123,7 +123,7 @@ impl RandomTeamGenerator {
             }
         }
 
-        let idx = self.prng.random_int(abilities.len() as u32) as usize;
+        let idx = self.prng.random_int(abilities.len() as i32) as usize;
         abilities[idx].clone()
     }
 
@@ -189,7 +189,7 @@ impl RandomTeamGenerator {
         }
 
         // Default: random from common items
-        let idx = self.prng.random_int(items.len() as u32) as usize;
+        let idx = self.prng.random_int(items.len() as i32) as usize;
         items[idx].to_string()
     }
 
@@ -257,7 +257,7 @@ impl RandomTeamGenerator {
         // Add STAB moves
         for type_name in types {
             if let Some((_, move_list)) = type_moves.iter().find(|(t, _)| t == type_name) {
-                let idx = self.prng.random_int(move_list.len() as u32) as usize;
+                let idx = self.prng.random_int(move_list.len() as i32) as usize;
                 let move_name = move_list[idx];
                 if !moves.contains(&move_name.to_string()) {
                     moves.push(move_name.to_string());
@@ -272,7 +272,7 @@ impl RandomTeamGenerator {
         ];
 
         while moves.len() < 3 {
-            let idx = self.prng.random_int(coverage.len() as u32) as usize;
+            let idx = self.prng.random_int(coverage.len() as i32) as usize;
             let move_name = coverage[idx];
             if !moves.contains(&move_name.to_string()) {
                 moves.push(move_name.to_string());
@@ -287,13 +287,13 @@ impl RandomTeamGenerator {
         ];
 
         if moves.len() < 4 {
-            let idx = self.prng.random_int(utility.len() as u32) as usize;
+            let idx = self.prng.random_int(utility.len() as i32) as usize;
             moves.push(utility[idx].to_string());
         }
 
         // Ensure we have exactly 4 moves
         while moves.len() < 4 {
-            let idx = self.prng.random_int(coverage.len() as u32) as usize;
+            let idx = self.prng.random_int(coverage.len() as i32) as usize;
             let move_name = coverage[idx];
             if !moves.contains(&move_name.to_string()) {
                 moves.push(move_name.to_string());

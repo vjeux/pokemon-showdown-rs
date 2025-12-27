@@ -45,7 +45,7 @@ use super::{AbilityHandlerResult, Status, Effect};
     pub const ON_ANY_BASE_POWER_PRIORITY: i32 = 20;
 
     /// onAnyBasePower(basePower, source, target, move)
-    pub fn on_any_base_power(_base_power: u32, source: &Pokemon, target: &Pokemon, move_: &MoveDef, aura_booster: Option<&Pokemon>, has_aura_break: bool) -> AbilityHandlerResult {
+    pub fn on_any_base_power(_base_power: i32, source: &Pokemon, target: &Pokemon, move_: &MoveDef, aura_booster: Option<&Pokemon>, has_aura_break: bool) -> AbilityHandlerResult {
         let source_ref = (source.side_index, source.position);
         let target_ref = (target.side_index, target.position);
         if target_ref == source_ref || move_.category == MoveCategory::Status || move_.move_type != "Fairy" {

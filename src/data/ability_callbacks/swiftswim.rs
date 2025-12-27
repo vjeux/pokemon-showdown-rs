@@ -26,7 +26,7 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onModifySpe(spe, pokemon)
-pub fn on_modify_spe(battle: &Battle, _spe: u32, pokemon: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_spe(battle: &Battle, _spe: i32, pokemon: &Pokemon) -> AbilityHandlerResult {
     // if (['raindance', 'primordialsea'].includes(pokemon.effectiveWeather()))
     let eff_weather = pokemon.effective_weather(&battle.field.get_weather().to_string());
     if eff_weather == "raindance" || eff_weather == "primordialsea" {

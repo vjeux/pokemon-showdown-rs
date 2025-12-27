@@ -55,7 +55,7 @@ impl Field {
     }
 
     /// Set the weather
-    pub fn set_weather(&mut self, weather_id: ID, duration: Option<u32>) -> bool {
+    pub fn set_weather(&mut self, weather_id: ID, duration: Option<i32>) -> bool {
         if weather_id == self.weather {
             return false;
         }
@@ -104,7 +104,7 @@ impl Field {
     }
 
     /// Set the terrain
-    pub fn set_terrain(&mut self, terrain_id: ID, duration: Option<u32>) -> bool {
+    pub fn set_terrain(&mut self, terrain_id: ID, duration: Option<i32>) -> bool {
         if terrain_id == self.terrain {
             return false;
         }
@@ -132,7 +132,7 @@ impl Field {
     }
 
     /// Add a pseudo-weather condition
-    pub fn add_pseudo_weather(&mut self, id: ID, duration: Option<u32>) -> bool {
+    pub fn add_pseudo_weather(&mut self, id: ID, duration: Option<i32>) -> bool {
         if self.pseudo_weather.contains_key(&id) {
             return false;
         }

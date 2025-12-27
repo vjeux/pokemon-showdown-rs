@@ -37,7 +37,7 @@ pub const ON_BASE_POWER_PRIORITY: i32 = 7;
 
 /// onBasePower(basePower, attacker, defender, move)
 /// Boosts sound-based moves by 1.3x
-pub fn on_base_power(_base_power: u32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_base_power(_base_power: i32, _attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.flags['sound'])
     if move_.flags.sound {
         // return this.chainModify([5325, 4096]);
@@ -48,7 +48,7 @@ pub fn on_base_power(_base_power: u32, _attacker: &Pokemon, _defender: &Pokemon,
 
 /// onSourceModifyDamage(damage, source, target, move)
 /// Halves damage from sound-based moves
-pub fn on_source_modify_damage(_damage: u32, _source: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_damage(_damage: i32, _source: &Pokemon, _target: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.flags['sound'])
     if move_.flags.sound {
         // return this.chainModify(0.5);

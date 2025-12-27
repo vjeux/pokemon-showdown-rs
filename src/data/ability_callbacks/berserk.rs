@@ -51,7 +51,7 @@ use crate::dex_data::ID;
 use super::{AbilityHandlerResult, Status, Effect};
 
 /// onDamage(damage, target, source, effect)
-pub fn on_damage(_damage: u32, target: &mut Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_damage(_damage: i32, target: &mut Pokemon, _source: Option<&Pokemon>, effect: &Effect) -> AbilityHandlerResult {
     // if (
     //     effect.effectType === "Move" &&
     //     !effect.multihit &&

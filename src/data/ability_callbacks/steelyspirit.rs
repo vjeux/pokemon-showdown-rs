@@ -31,7 +31,7 @@ pub const ON_ALLY_BASE_POWER_PRIORITY: i32 = 22;
 
 /// onAllyBasePower(basePower, attacker, defender, move)
 /// Boosts Steel-type moves used by allies by 1.5x
-pub fn on_ally_base_power(_battle: &mut Battle, _base_power: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef, ability_holder: &Pokemon) -> AbilityHandlerResult {
+pub fn on_ally_base_power(_battle: &mut Battle, _base_power: i32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef, ability_holder: &Pokemon) -> AbilityHandlerResult {
     // Ensure this is an ally, not self
     let attacker_ref = (attacker.side_index, attacker.position);
     let holder_ref = (ability_holder.side_index, ability_holder.position);

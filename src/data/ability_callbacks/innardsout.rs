@@ -31,7 +31,7 @@ pub const ON_DAMAGING_HIT_ORDER: i32 = 1;
 
 /// onDamagingHit(damage, target, source, move)
 /// Deals damage equal to damage taken when KO'd
-pub fn on_damaging_hit(battle: &mut Battle, damage: u32, target: &Pokemon, source: &mut Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
+pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target: &Pokemon, source: &mut Pokemon, _move: &MoveDef) -> AbilityHandlerResult {
     // if (!target.hp)
     if target.hp == 0 {
         // this.damage(target.getUndynamaxedHP(damage), source, target);

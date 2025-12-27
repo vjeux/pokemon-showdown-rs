@@ -54,7 +54,7 @@ pub fn on_start(battle: &mut Battle, pokemon: &Pokemon) -> AbilityHandlerResult 
 
 /// onModifyAtk(atk, pokemon)
 /// Boosts Attack by 1.333x in sun
-pub fn on_modify_atk(battle: &mut Battle, _atk: u32, _pokemon: &Pokemon) -> AbilityHandlerResult {
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _pokemon: &Pokemon) -> AbilityHandlerResult {
     // if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather()))
     let weather = battle.field.effective_weather();
     if *weather == ID::new("sunnyday") || *weather == ID::new("desolateland") {

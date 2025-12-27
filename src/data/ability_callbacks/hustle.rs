@@ -38,7 +38,7 @@ pub const ON_SOURCE_MODIFY_ACCURACY_PRIORITY: i32 = -1;
 
 /// onModifyAtk(atk)
 /// Multiplies Attack by 1.5
-pub fn on_modify_atk(atk: u32) -> AbilityHandlerResult {
+pub fn on_modify_atk(atk: i32) -> AbilityHandlerResult {
     // return this.modify(atk, 1.5);
     // Note: this.modify() directly multiplies, not chainModify
     AbilityHandlerResult::Number((atk as f64 * 1.5) as i32)
@@ -46,7 +46,7 @@ pub fn on_modify_atk(atk: u32) -> AbilityHandlerResult {
 
 /// onSourceModifyAccuracy(accuracy, target, source, move)
 /// Reduces accuracy of Physical moves
-pub fn on_source_modify_accuracy(accuracy: Option<u32>, _target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_source_modify_accuracy(accuracy: Option<i32>, _target: &Pokemon, _source: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.category === 'Physical' && typeof accuracy === 'number')
     if move_.category == MoveCategory::Physical && accuracy.is_some() {
         // return this.chainModify([3277, 4096]);

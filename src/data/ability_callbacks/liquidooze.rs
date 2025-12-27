@@ -32,7 +32,7 @@ use super::{AbilityHandlerResult, Status, Effect};
 /// Damages draining opponent instead of healing them
 ///
 /// TODO: onSourceTryHeal handler not yet called by battle engine
-pub fn on_source_try_heal(battle: &mut Battle, damage: u32, target: &Pokemon, source: &Pokemon, effect: &Effect) -> AbilityHandlerResult {
+pub fn on_source_try_heal(battle: &mut Battle, damage: i32, target: &Pokemon, source: &Pokemon, effect: &Effect) -> AbilityHandlerResult {
     // this.debug(`Heal is occurring: ${target} <- ${source} :: ${effect.id}`);
     // const canOoze = ['drain', 'leechseed', 'strengthsap'];
     const CAN_OOZE: &[&str] = &["drain", "leechseed", "strengthsap"];

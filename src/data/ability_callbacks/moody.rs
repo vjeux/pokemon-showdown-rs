@@ -66,7 +66,7 @@ pub fn on_residual(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandler
 
     // Randomly select stat to raise
     let raised_stat = if !stats_to_raise.is_empty() {
-        let idx = battle.random(stats_to_raise.len() as u32) as usize;
+        let idx = battle.random(stats_to_raise.len() as i32) as usize;
         Some(stats_to_raise[idx])
     } else {
         None
@@ -82,7 +82,7 @@ pub fn on_residual(battle: &mut Battle, pokemon: &mut Pokemon) -> AbilityHandler
 
     // Randomly select stat to lower
     let lowered_stat = if !stats_to_lower.is_empty() {
-        let idx = battle.random(stats_to_lower.len() as u32) as usize;
+        let idx = battle.random(stats_to_lower.len() as i32) as usize;
         Some(stats_to_lower[idx])
     } else {
         None

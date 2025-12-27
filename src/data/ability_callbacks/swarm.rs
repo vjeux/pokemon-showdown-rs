@@ -38,7 +38,7 @@ pub const ON_MODIFY_ATK_PRIORITY: i32 = 5;
 
 /// onModifyAtk(atk, attacker, defender, move)
 /// Boosts Bug-type moves by 1.5x when HP <= 1/3
-pub fn on_modify_atk(_atk: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_atk(_atk: i32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Bug' && attacker.hp <= attacker.maxhp / 3)
     if move_.move_type == "Bug" && attacker.hp <= attacker.maxhp / 3 {
         // return this.chainModify(1.5);
@@ -51,7 +51,7 @@ pub const ON_MODIFY_SP_A_PRIORITY: i32 = 5;
 
 /// onModifySpA(atk, attacker, defender, move)
 /// Boosts Bug-type moves by 1.5x when HP <= 1/3
-pub fn on_modify_sp_a(_atk: u32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
+pub fn on_modify_sp_a(_atk: i32, attacker: &Pokemon, _defender: &Pokemon, move_: &MoveDef) -> AbilityHandlerResult {
     // if (move.type === 'Bug' && attacker.hp <= attacker.maxhp / 3)
     if move_.move_type == "Bug" && attacker.hp <= attacker.maxhp / 3 {
         // return this.chainModify(1.5);
