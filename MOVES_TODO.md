@@ -245,7 +245,7 @@ Moves with callbacks: 373
 - [x] psychoshift - Psycho Shift (Status, Psychic) - 1 callback: onTryHit
 - [x] psychup - Psych Up (Status, Normal) - 1 callback: onHit
 - [x] psywave - Psywave (Special, Psychic) - 1 callback: damageCallback
-- [ ] punishment - Punishment (Physical, Dark) - 1 callback: basePowerCallback
+- [x] punishment - Punishment (Physical, Dark) - 1 callback: basePowerCallback
 - [ ] purify - Purify (Status, Poison) - 1 callback: onHit
 - [ ] pursuit - Pursuit (Physical, Dark) - 5 callbacks: basePowerCallback, beforeTurnCallback, onModifyMove, onTryHit, condition::onBeforeSwitchOut
 - [ ] quash - Quash (Status, Dark) - 1 callback: onHit
