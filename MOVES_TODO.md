@@ -63,15 +63,14 @@ The following are advanced features that require more complex infrastructure:
 - `pokemon.baseSpecies.name`: telekinesis - Base species name
 - `pokemon.baseSpecies.forme`: orderup - Forme name string field (e.g., 'Droopy', 'Stretchy')
 - `pokemon.species.id`: relicsong - Species ID string field
-- `pokemon.hpType`: hiddenpower - Hidden Power type string field (currently commented out)
 
 **Item Data Fields**:
-- `item.onPlate`: judgment - Plate type string field
-- `item.zMove`: judgment - Z-move boolean or data flag
+- ✓ `item.onPlate`: judgment - Plate type string field (DONE)
+- ✓ `item.zMove`: judgment - Z-move boolean or data flag (DONE)
 
 **MoveSlot Direct Mutation**:
-- `moveSlot.used`: lastresort - Boolean flag tracking if move has been used since switching in
-- `moveSlot.pp`: grudge - PP field (mutable) for setting PP directly
+- ✓ `moveSlot.used`: lastresort - Boolean flag tracking if move has been used since switching in (DONE)
+- ✓ `moveSlot.pp`: grudge - PP field (mutable) for setting PP directly (DONE via set_pp)
 
 **Effect Data Access**:
 - `effect.name`: healblock, grudge - Effect name string field (can be from effect parameter)
