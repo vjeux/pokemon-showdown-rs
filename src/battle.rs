@@ -7124,57 +7124,49 @@ impl Battle {
         match event_id {
             "ModifyAtk" => {
                 if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_modify_atk(self, item_id.as_str(), pokemon_pos)
-                        .unwrap_or(EventResult::Continue);
+                    return item_callbacks::dispatch_on_modify_atk(self, item_id.as_str(), pokemon_pos);
                 }
                 EventResult::Continue
             }
             "ModifySpA" => {
                 if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_modify_sp_a(self, item_id.as_str(), pokemon_pos)
-                        .unwrap_or(EventResult::Continue);
+                    return item_callbacks::dispatch_on_modify_sp_a(self, item_id.as_str(), pokemon_pos);
                 }
                 EventResult::Continue
             }
             "ModifyDef" => {
                 if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_modify_def(self, item_id.as_str(), pokemon_pos)
-                        .unwrap_or(EventResult::Continue);
+                    return item_callbacks::dispatch_on_modify_def(self, item_id.as_str(), pokemon_pos);
                 }
                 EventResult::Continue
             }
             "ModifySpD" => {
                 if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_modify_sp_d(self, item_id.as_str(), pokemon_pos)
-                        .unwrap_or(EventResult::Continue);
+                    return item_callbacks::dispatch_on_modify_sp_d(self, item_id.as_str(), pokemon_pos);
                 }
                 EventResult::Continue
             }
             "ModifyDamage" => {
                 if let Some(target_pos) = target {
-                    return item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), target_pos, source)
-                        .unwrap_or(EventResult::Continue);
+                    return item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), target_pos);
                 }
                 EventResult::Continue
             }
             "SourceModifyDamage" => {
                 if let Some(target_pos) = target {
-                    return item_callbacks::dispatch_on_source_modify_damage(self, item_id.as_str(), target_pos, source)
-                        .unwrap_or(EventResult::Continue);
+                    return item_callbacks::dispatch_on_source_modify_damage(self, item_id.as_str(), target_pos);
                 }
                 EventResult::Continue
             }
             "AfterMoveSecondarySelf" => {
                 if let Some(source_pos) = source {
-                    return item_callbacks::dispatch_on_after_move_secondary_self(self, item_id.as_str(), source_pos, target)
-                        .unwrap_or(EventResult::Continue);
+                    return item_callbacks::dispatch_on_after_move_secondary_self(self, item_id.as_str(), source_pos, target);
                 }
                 EventResult::Continue
             }
             "Residual" => {
                 if let Some(pokemon_pos) = target {
-                    return item_callbacks::dispatch_on_residual(self, item_id.as_str(), pokemon_pos)
-                        .unwrap_or(EventResult::Continue);
+                    return item_callbacks::dispatch_on_residual(self, item_id.as_str(), pokemon_pos);
                 }
                 EventResult::Continue
             }
