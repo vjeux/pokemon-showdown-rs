@@ -339,6 +339,9 @@ The following moves require infrastructure that doesn't exist yet:
 - `move.target`: matblock, secretpower - Move target field string (e.g., 'self', 'allAdjacent', 'allAdjacentFoes')
 - `side.allies()`: magneticflux - Get iterator of allied pokemon on a side
 - `pokemon.hasAbility(array)`: magneticflux, aromatherapy - Check if pokemon has any ability from array (overload)
+- `moveSlot.used`: lastresort - Boolean flag tracking if move has been used since switching in
+- `target.heal(amount)`: lunardance - Heal pokemon HP (different from battle.heal)
+- `target.clearStatus()`: lunardance - Clear pokemon status condition
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
