@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 35/79 TODOs (44.3%)
+**Feature Implementation:** ⚠️ 36/79 TODOs (45.6%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -240,11 +240,25 @@
 
 **Enables:** Correct ally detection in multi-battle formats (doubles, triples, multi)
 
+### Session 9 Continued - Move Target Pressure Mechanics (1 implementation)
+
+#### Mustpressure Flag Check (1/1) ✅
+- [x] **mustpressure flag check in get_move_targets** (battle.rs:3942-3944) - Check move flags for Pressure PP deduction
+
+**Implementation Details:**
+- Modified get_move_targets() to extract both move_target and has_mustpressure flag upfront
+- Avoids borrow checker issues by cloning needed data instead of holding references
+- Checks if move has 'mustpressure' flag at beginning (line 3833)
+- Sets pressure_targets = all foes when flag is present (line 3944)
+- Matches JavaScript: `if (move.flags['mustpressure']) pressureTargets = this.foes();`
+
+**Enables:** Correct Pressure ability PP deduction for moves with mustpressure flag
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (44 TODOs)
+## Remaining P2 Nice-to-have (43 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions

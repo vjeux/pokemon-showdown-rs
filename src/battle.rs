@@ -3828,8 +3828,9 @@ impl Battle {
     ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
         let mut targets: Vec<(usize, usize)> = Vec::new();
 
-        let move_target = match self.dex.get_move(move_id.as_str()) {
-            Some(m) => m.target.clone(),
+        // Get move data to access target and flags
+        let (move_target, has_mustpressure) = match self.dex.get_move(move_id.as_str()) {
+            Some(m) => (m.target.clone(), m.flags.contains_key("mustpressure")),
             None => return (vec![], vec![]),
         };
 
@@ -3939,8 +3940,9 @@ impl Battle {
         }
 
         // JS: if (move.flags['mustpressure']) pressureTargets = this.foes();
-        // TODO: Check mustpressure flag when move flags are available
-        // For now, skip this check
+        if has_mustpressure {
+            pressure_targets = self.foes(user_pos.0, true);
+        }
 
         (targets, pressure_targets)
     }
