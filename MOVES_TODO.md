@@ -112,6 +112,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.hasItem(name)`: gastroacid - Check if pokemon has specific item
 - `battle.effectState.layers`: spikes, toxicspikes - Effect state layers count (mutable)
 - `pokemon.side`: toxicspikes, stickyweb - Pokemon's side
+- `pokemon.side.faintedLastTurn`: retaliate - Boolean flag indicating if a pokemon fainted last turn
 - `pokemon.side.removeSideCondition(name)`: toxicspikes - Remove side condition
 - `pokemon.side.foe`: toxicspikes, stickyweb - Foe side
 - `pokemon.side.foe.active[0]`: toxicspikes, stickyweb - Active pokemon on foe side
