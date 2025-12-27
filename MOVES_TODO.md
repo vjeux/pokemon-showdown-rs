@@ -75,6 +75,25 @@ The following moves require infrastructure that doesn't exist yet:
 - `move.isMax`: protect - Max move flag
 - `pokemon.getMoveHitData(move)`: protect - Get move hit data with zBrokeProtect field
 - `move.smartTarget`: protect - Smart target flag (mutable)
+- `move.hit`: triplekick - Current hit number in multi-hit sequence
+- `move.allies`: beatup - Allies array with shift() method (mutable)
+- `battle.dex.species.get(name)`: beatup - Get species data by name
+- `species.baseStats`: beatup - Base stats object with atk, def, spa, spd, spe, hp
+- `pokemon.fainted`: beatup, sketch, mimic - Fainted boolean
+- `move.multihit`: beatup - Multi-hit count (mutable)
+- `move.magnitude`: magnitude - Custom magnitude field (mutable)
+- `move.basePower` mutable: magnitude, present, beatup - Modify base power in callbacks
+- `move.heal`: present - Heal array [numerator, denominator] (mutable)
+- `move.infiltrates` mutable: present - Infiltrates flag (mutable)
+- `pokemon.lastMove`: sketch, mimic - Last move used by pokemon
+- `pokemon.transformed`: sketch, mimic - Transformed boolean
+- `pokemon.moves`: sketch, mimic - Array of move IDs
+- `pokemon.baseMoveSlots`: sketch - Base move slots (mutable)
+- Move slot structure: sketch, mimic - Object with move, id, pp, maxpp, target, disabled, used, virtual fields
+- `battle.dex.moves.all()`: metronome - Get all moves as array
+- `move.isNonstandard`: metronome - Non-standard status string
+- `move.num`: metronome - Move number for sorting
+- `battle.actions.useMove(moveId, pokemon)`: metronome - Execute a move
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
