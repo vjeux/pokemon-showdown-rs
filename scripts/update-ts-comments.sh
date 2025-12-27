@@ -24,9 +24,13 @@ fi
 
 cd /home/builder/workspace
 
-# Run the script
-echo "Running comment addition script..."
-node scripts/add-all-js-comments.js
+# Run the IMPROVED script (duplicate-safe)
+echo "Running duplicate-safe comment addition script..."
+node scripts/add-ts-comments-improved.js
+
+echo ""
+echo "Checking for any duplicates..."
+node scripts/remove-duplicate-ts-comments.js
 
 echo ""
 echo "================================================"
