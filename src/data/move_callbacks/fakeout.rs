@@ -14,7 +14,25 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let source = source_pos;
+
+    // if (source.activeMoveActions > 1) {
+    let active_move_actions = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.active_move_actions
+    };
+
+    if active_move_actions > 1 {
+        // this.hint("Fake Out only works on your first turn out.");
+        battle.hint("Fake Out only works on your first turn out.");
+
+        // return false;
+        return EventResult::Bool(false);
+    }
+
     EventResult::Continue
 }
 
