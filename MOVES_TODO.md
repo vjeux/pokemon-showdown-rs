@@ -37,7 +37,7 @@ Moves with callbacks: 373
 - [x] bugbite - Bug Bite (Physical, Bug) - 1 callback: onHit
 - [x] burningbulwark - Burning Bulwark (Status, Fire) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [x] burnup - Burn Up (Special, Fire) - 1 callback: onTryMove
-- [ ] camouflage - Camouflage (Status, Normal) - 1 callback: onHit
+- [x] camouflage - Camouflage (Status, Normal) - 1 callback: onHit
 - [ ] captivate - Captivate (Status, Normal) - 1 callback: onTryImmunity
 - [ ] ceaselessedge - Ceaseless Edge (Physical, Dark) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [ ] celebrate - Celebrate (Status, Normal) - 1 callback: onTryHit
