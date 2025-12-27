@@ -342,6 +342,9 @@ The following moves require infrastructure that doesn't exist yet:
 - `moveSlot.used`: lastresort - Boolean flag tracking if move has been used since switching in
 - `target.heal(amount)`: lunardance - Heal pokemon HP (different from battle.heal)
 - `target.clearStatus()`: lunardance - Clear pokemon status condition
+- `source.moveThisTurnResult`: healblock - Mutable field tracking move result (true/false/null)
+- `move.flags['heal']`: healblock - Heal flag for healing moves
+- `effect.name`: healblock, grudge - Effect name string field (can be from effect parameter)
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
