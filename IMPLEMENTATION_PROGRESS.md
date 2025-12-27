@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 41/79 TODOs (51.9%)
+**Feature Implementation:** ⚠️ 42/79 TODOs (53.2%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -310,11 +310,24 @@
 
 **Enables:** Pressure ability PP deduction mechanics
 
+#### Gen 5+ FaintData Logic (1/1) ✅
+- [x] **checkWin Gen 5+ logic** (battle.rs:1224-1244) - Determine winner based on which side fainted last in Gen 5+
+
+**Implementation Details:**
+- Changed parameter from `_faint_data` to `faint_data` to use the parameter
+- Implemented Gen 5+ logic: `faintData && this.gen > 4 ? faintData.target.side : null`
+- Extracts side_idx from faint_data.target tuple
+- Passes the side's ID to win() if Gen 5+ and faint_data exists
+- Otherwise passes None for a tie
+- Matches JavaScript: `this.win(faintData && this.gen > 4 ? faintData.target.side : null);`
+
+**Enables:** Correct Gen 5+ simultaneous faint resolution, tie-breaker mechanics based on faint order
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (38 TODOs)
+## Remaining P2 Nice-to-have (37 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions

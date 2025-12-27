@@ -1221,15 +1221,26 @@ impl Battle {
     // 		}
     // 	}
     //
-    pub fn check_win(&mut self, _faint_data: Option<FaintData>) -> bool {
-        // TODO: In Gen 5+, use faintData to determine which side fainted last
-        // For now, ignore faint_data parameter
+    pub fn check_win(&mut self, faint_data: Option<FaintData>) -> bool {
+        // JavaScript: checkWin(faintData?: Battle['faintQueue'][0])
 
         // Check if all sides have no Pokemon left - tie/draw scenario
         if self.sides.iter().all(|side| side.pokemon_left == 0) {
-            // In Gen 5+, the side that fainted last wins, but we don't track faintData
-            // For now, just call win with None for a tie
-            self.win(None);
+            // JS: this.win(faintData && this.gen > 4 ? faintData.target.side : null);
+            // In Gen 5+, the side that fainted last wins
+            let winner = if let Some(faint_data) = faint_data {
+                if self.gen > 4 {
+                    // Extract the side_idx from faint_data.target (side_idx, poke_idx)
+                    let (side_idx, _) = faint_data.target;
+                    // Get the Side's ID
+                    Some(self.sides[side_idx].id)
+                } else {
+                    None
+                }
+            } else {
+                None
+            };
+            self.win(winner);
             return true;
         }
 
