@@ -37,8 +37,8 @@ The following are advanced features that require more complex infrastructure:
 - `move.sourceEffect` read: snatch - Source effect field
 
 **Type System Access**:
-- `battle.dex.types.names()`: conversion2 - Get all type names iterator
-- `battle.dex.types.get(typeName).damageTaken[attackType]`: conversion2 - Type chart effectiveness
+- ✓ `battle.dex.types.names()`: conversion2 - Get all type names iterator (DONE via get_all_type_names)
+- ✓ `battle.dex.types.get(typeName).damageTaken[attackType]`: conversion2 - Type chart effectiveness (DONE via get_type_damage_taken)
 
 **Volatile Field Access** (require EffectState field accessors):
 - `pokemon.volatiles[name].duration`: perishsong - Access duration field of volatile
