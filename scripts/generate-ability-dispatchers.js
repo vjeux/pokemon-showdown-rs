@@ -59,19 +59,6 @@ function camelToSnake(str) {
     return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
 }
 
-// Determine if a callback mutates battle state
-function isMutatingCallback(callback) {
-    const readOnly = [
-        'onModifyAtk', 'onModifySpA', 'onModifyDef', 'onModifySpD',
-        'onModifyDamage', 'onSourceModifyDamage', 'onModifySpe',
-        'onModifyAccuracy', 'onSourceModifyAccuracy', 'onModifyCritRatio',
-        'onBasePower', 'onSourceBasePower', 'onModifyType', 'onTryHit',
-        'onTryMove', 'onModifyMove', 'onModifySTAB', 'onModifyWeight',
-        'onModifyPriority'
-    ];
-    return !readOnly.includes(callback);
-}
-
 // Generate dispatch functions
 const dispatchers = [];
 
@@ -79,10 +66,7 @@ const dispatchers = [];
 const sortedCallbacks = Array.from(callbackMap.keys()).sort();
 
 sortedCallbacks.forEach(callback => {
-    const abilityIds = callbackMap.get(callback);
     const funcName = `dispatch_${camelToSnake(callback)}`;
-    const isMutating = isMutatingCallback(callback);
-    const battleRef = isMutating ? '&mut Battle' : '&Battle';
 
     // Determine parameters based on callback type
     let params = '';
@@ -96,19 +80,10 @@ sortedCallbacks.forEach(callback => {
         params = ',\n    _ability_id: &str,\n    _pokemon_pos: (usize, usize)';
     }
 
-    const comment = isMutating ? '/// Dispatch ' + callback + ' callbacks (mutates battle)' : '/// Dispatch ' + callback + ' callbacks (read-only)';
-
-    // Count abilities per callback
-    const abilityCount = abilityIds.length;
-    const abilityList = abilityIds.slice(0, 10).map(id => `"${id}"`).join(', ');
-    const more = abilityCount > 10 ? `, ... (${abilityCount - 10} more)` : '';
-
-    dispatcher = `${comment}
-/// Abilities: ${abilityList}${more}
+    dispatcher = `/// Dispatch ${callback} callbacks
 pub fn ${funcName}(
-    _battle: ${battleRef}${params},
+    _battle: &mut Battle${params},
 ) -> EventResult {
-    // TODO: Implement dispatch for ${abilityCount} abilities
     EventResult::Continue
 }`;
 

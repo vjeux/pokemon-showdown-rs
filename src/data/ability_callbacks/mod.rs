@@ -13,1487 +13,1217 @@ use crate::event::EventResult;
 // They return EventResult directly, with EventResult::Continue for no match.
 // =========================================================================
 
-/// Dispatch onAfterBoost callbacks (mutates battle)
-/// Abilities: "rattled"
+/// Dispatch onAfterBoost callbacks
 pub fn dispatch_on_after_boost(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAfterEachBoost callbacks (mutates battle)
-/// Abilities: "competitive", "defiant"
+/// Dispatch onAfterEachBoost callbacks
 pub fn dispatch_on_after_each_boost(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAfterMoveSecondary callbacks (mutates battle)
-/// Abilities: "angershell", "berserk", "colorchange", "pickpocket"
+/// Dispatch onAfterMoveSecondary callbacks
 pub fn dispatch_on_after_move_secondary(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAfterMoveSecondarySelf callbacks (mutates battle)
-/// Abilities: "magician"
+/// Dispatch onAfterMoveSecondarySelf callbacks
 pub fn dispatch_on_after_move_secondary_self(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAfterSetStatus callbacks (mutates battle)
-/// Abilities: "synchronize"
+/// Dispatch onAfterSetStatus callbacks
 pub fn dispatch_on_after_set_status(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAfterTerastallization callbacks (mutates battle)
-/// Abilities: "teraformzero"
+/// Dispatch onAfterTerastallization callbacks
 pub fn dispatch_on_after_terastallization(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAfterUseItem callbacks (mutates battle)
-/// Abilities: "unburden"
+/// Dispatch onAfterUseItem callbacks
 pub fn dispatch_on_after_use_item(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyAfterUseItem callbacks (mutates battle)
-/// Abilities: "symbiosis"
+/// Dispatch onAllyAfterUseItem callbacks
 pub fn dispatch_on_ally_after_use_item(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyBasePower callbacks (mutates battle)
-/// Abilities: "battery", "powerspot", "steelyspirit"
+/// Dispatch onAllyBasePower callbacks
 pub fn dispatch_on_ally_base_power(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyBasePowerPriority callbacks (mutates battle)
-/// Abilities: "battery", "powerspot", "steelyspirit"
+/// Dispatch onAllyBasePowerPriority callbacks
 pub fn dispatch_on_ally_base_power_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyFaint callbacks (mutates battle)
-/// Abilities: "powerofalchemy", "receiver"
+/// Dispatch onAllyFaint callbacks
 pub fn dispatch_on_ally_faint(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyModifyAtk callbacks (mutates battle)
-/// Abilities: "flowergift"
+/// Dispatch onAllyModifyAtk callbacks
 pub fn dispatch_on_ally_modify_atk(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyModifyAtkPriority callbacks (mutates battle)
-/// Abilities: "flowergift"
+/// Dispatch onAllyModifyAtkPriority callbacks
 pub fn dispatch_on_ally_modify_atk_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyModifySpD callbacks (mutates battle)
-/// Abilities: "flowergift"
+/// Dispatch onAllyModifySpD callbacks
 pub fn dispatch_on_ally_modify_sp_d(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyModifySpDPriority callbacks (mutates battle)
-/// Abilities: "flowergift"
+/// Dispatch onAllyModifySpDPriority callbacks
 pub fn dispatch_on_ally_modify_sp_d_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllySetStatus callbacks (mutates battle)
-/// Abilities: "flowerveil", "pastelveil", "sweetveil"
+/// Dispatch onAllySetStatus callbacks
 pub fn dispatch_on_ally_set_status(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyTryAddVolatile callbacks (mutates battle)
-/// Abilities: "aromaveil", "flowerveil", "sweetveil"
+/// Dispatch onAllyTryAddVolatile callbacks
 pub fn dispatch_on_ally_try_add_volatile(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyTryBoost callbacks (mutates battle)
-/// Abilities: "flowerveil"
+/// Dispatch onAllyTryBoost callbacks
 pub fn dispatch_on_ally_try_boost(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAllyTryHitSide callbacks (mutates battle)
-/// Abilities: "magicbounce", "sapsipper", "soundproof", "rebound"
+/// Dispatch onAllyTryHitSide callbacks
 pub fn dispatch_on_ally_try_hit_side(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyAccuracy callbacks (mutates battle)
-/// Abilities: "noguard"
+/// Dispatch onAnyAccuracy callbacks
 pub fn dispatch_on_any_accuracy(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyAfterMega callbacks (mutates battle)
-/// Abilities: "opportunist"
+/// Dispatch onAnyAfterMega callbacks
 pub fn dispatch_on_any_after_mega(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyAfterMove callbacks (mutates battle)
-/// Abilities: "opportunist", "terashell"
+/// Dispatch onAnyAfterMove callbacks
 pub fn dispatch_on_any_after_move(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyAfterSetStatus callbacks (mutates battle)
-/// Abilities: "poisonpuppeteer"
+/// Dispatch onAnyAfterSetStatus callbacks
 pub fn dispatch_on_any_after_set_status(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyAfterTerastallization callbacks (mutates battle)
-/// Abilities: "opportunist"
+/// Dispatch onAnyAfterTerastallization callbacks
 pub fn dispatch_on_any_after_terastallization(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyBasePower callbacks (mutates battle)
-/// Abilities: "darkaura", "fairyaura"
+/// Dispatch onAnyBasePower callbacks
 pub fn dispatch_on_any_base_power(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyBasePowerPriority callbacks (mutates battle)
-/// Abilities: "darkaura", "fairyaura"
+/// Dispatch onAnyBasePowerPriority callbacks
 pub fn dispatch_on_any_base_power_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyBeforeMove callbacks (mutates battle)
-/// Abilities: "terashell"
+/// Dispatch onAnyBeforeMove callbacks
 pub fn dispatch_on_any_before_move(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyDamage callbacks (mutates battle)
-/// Abilities: "damp"
+/// Dispatch onAnyDamage callbacks
 pub fn dispatch_on_any_damage(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyFaint callbacks (mutates battle)
-/// Abilities: "soulheart"
+/// Dispatch onAnyFaint callbacks
 pub fn dispatch_on_any_faint(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyFaintPriority callbacks (mutates battle)
-/// Abilities: "soulheart"
+/// Dispatch onAnyFaintPriority callbacks
 pub fn dispatch_on_any_faint_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyInvulnerability callbacks (mutates battle)
-/// Abilities: "noguard"
+/// Dispatch onAnyInvulnerability callbacks
 pub fn dispatch_on_any_invulnerability(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyInvulnerabilityPriority callbacks (mutates battle)
-/// Abilities: "noguard"
+/// Dispatch onAnyInvulnerabilityPriority callbacks
 pub fn dispatch_on_any_invulnerability_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyModifyAccuracy callbacks (mutates battle)
-/// Abilities: "victorystar"
+/// Dispatch onAnyModifyAccuracy callbacks
 pub fn dispatch_on_any_modify_accuracy(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyModifyAccuracyPriority callbacks (mutates battle)
-/// Abilities: "victorystar"
+/// Dispatch onAnyModifyAccuracyPriority callbacks
 pub fn dispatch_on_any_modify_accuracy_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyModifyAtk callbacks (mutates battle)
-/// Abilities: "tabletsofruin"
+/// Dispatch onAnyModifyAtk callbacks
 pub fn dispatch_on_any_modify_atk(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyModifyBoost callbacks (mutates battle)
-/// Abilities: "unaware"
+/// Dispatch onAnyModifyBoost callbacks
 pub fn dispatch_on_any_modify_boost(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyModifyDamage callbacks (mutates battle)
-/// Abilities: "friendguard"
+/// Dispatch onAnyModifyDamage callbacks
 pub fn dispatch_on_any_modify_damage(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyModifyDef callbacks (mutates battle)
-/// Abilities: "swordofruin"
+/// Dispatch onAnyModifyDef callbacks
 pub fn dispatch_on_any_modify_def(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyModifySpA callbacks (mutates battle)
-/// Abilities: "vesselofruin"
+/// Dispatch onAnyModifySpA callbacks
 pub fn dispatch_on_any_modify_sp_a(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyModifySpD callbacks (mutates battle)
-/// Abilities: "beadsofruin"
+/// Dispatch onAnyModifySpD callbacks
 pub fn dispatch_on_any_modify_sp_d(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyRedirectTarget callbacks (mutates battle)
-/// Abilities: "lightningrod", "stormdrain"
+/// Dispatch onAnyRedirectTarget callbacks
 pub fn dispatch_on_any_redirect_target(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnySetWeather callbacks (mutates battle)
-/// Abilities: "deltastream", "desolateland", "primordialsea"
+/// Dispatch onAnySetWeather callbacks
 pub fn dispatch_on_any_set_weather(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnySwitchIn callbacks (mutates battle)
-/// Abilities: "commander", "opportunist", "pastelveil"
+/// Dispatch onAnySwitchIn callbacks
 pub fn dispatch_on_any_switch_in(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnySwitchInPriority callbacks (mutates battle)
-/// Abilities: "commander", "opportunist"
+/// Dispatch onAnySwitchInPriority callbacks
 pub fn dispatch_on_any_switch_in_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyTryMove callbacks (mutates battle)
-/// Abilities: "damp"
+/// Dispatch onAnyTryMove callbacks
 pub fn dispatch_on_any_try_move(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onAnyTryPrimaryHit callbacks (mutates battle)
-/// Abilities: "aurabreak"
+/// Dispatch onAnyTryPrimaryHit callbacks
 pub fn dispatch_on_any_try_primary_hit(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onBasePower callbacks (read-only)
-/// Abilities: "aerilate", "analytic", "flareboost", "galvanize", "ironfist", "megalauncher", "normalize", "pixilate", "punkrock", "reckless", ... (10 more)
+/// Dispatch onBasePower callbacks
 pub fn dispatch_on_base_power(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 20 abilities
     EventResult::Continue
 }
 
-/// Dispatch onBasePowerPriority callbacks (mutates battle)
-/// Abilities: "aerilate", "analytic", "flareboost", "galvanize", "ironfist", "megalauncher", "normalize", "pixilate", "punkrock", "reckless", ... (10 more)
+/// Dispatch onBasePowerPriority callbacks
 pub fn dispatch_on_base_power_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 20 abilities
     EventResult::Continue
 }
 
-/// Dispatch onBeforeMove callbacks (mutates battle)
-/// Abilities: "gorillatactics", "truant"
+/// Dispatch onBeforeMove callbacks
 pub fn dispatch_on_before_move(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onBeforeMovePriority callbacks (mutates battle)
-/// Abilities: "truant"
+/// Dispatch onBeforeMovePriority callbacks
 pub fn dispatch_on_before_move_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onBeforeSwitchIn callbacks (mutates battle)
-/// Abilities: "illusion"
+/// Dispatch onBeforeSwitchIn callbacks
 pub fn dispatch_on_before_switch_in(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onChangeBoost callbacks (mutates battle)
-/// Abilities: "contrary", "ripen", "simple"
+/// Dispatch onChangeBoost callbacks
 pub fn dispatch_on_change_boost(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onCheckShow callbacks (mutates battle)
-/// Abilities: "naturalcure"
+/// Dispatch onCheckShow callbacks
 pub fn dispatch_on_check_show(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onCriticalHit callbacks (mutates battle)
-/// Abilities: "battlearmor", "disguise", "iceface", "shellarmor"
+/// Dispatch onCriticalHit callbacks
 pub fn dispatch_on_critical_hit(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onDamage callbacks (mutates battle)
-/// Abilities: "angershell", "berserk", "disguise", "gluttony", "heatproof", "iceface", "magicguard", "poisonheal", "rockhead", "sturdy", ... (1 more)
+/// Dispatch onDamage callbacks
 pub fn dispatch_on_damage(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 11 abilities
     EventResult::Continue
 }
 
-/// Dispatch onDamagePriority callbacks (mutates battle)
-/// Abilities: "disguise", "iceface", "poisonheal", "sturdy"
+/// Dispatch onDamagePriority callbacks
 pub fn dispatch_on_damage_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onDamagingHit callbacks (mutates battle)
-/// Abilities: "aftermath", "cottondown", "cursedbody", "cutecharm", "effectspore", "electromorphosis", "flamebody", "gooey", "gulpmissile", "illusion", ... (21 more)
+/// Dispatch onDamagingHit callbacks
 pub fn dispatch_on_damaging_hit(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 31 abilities
     EventResult::Continue
 }
 
-/// Dispatch onDamagingHitOrder callbacks (mutates battle)
-/// Abilities: "aftermath", "electromorphosis", "innardsout", "ironbarbs", "roughskin", "windpower"
+/// Dispatch onDamagingHitOrder callbacks
 pub fn dispatch_on_damaging_hit_order(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 6 abilities
     EventResult::Continue
 }
 
-/// Dispatch onDeductPP callbacks (mutates battle)
-/// Abilities: "pressure"
+/// Dispatch onDeductPP callbacks
 pub fn dispatch_on_deduct_p_p(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onDisableMove callbacks (mutates battle)
-/// Abilities: "gorillatactics"
+/// Dispatch onDisableMove callbacks
 pub fn dispatch_on_disable_move(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onDragOut callbacks (mutates battle)
-/// Abilities: "guarddog", "suctioncups"
+/// Dispatch onDragOut callbacks
 pub fn dispatch_on_drag_out(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onDragOutPriority callbacks (mutates battle)
-/// Abilities: "guarddog", "suctioncups"
+/// Dispatch onDragOutPriority callbacks
 pub fn dispatch_on_drag_out_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onEatItem callbacks (mutates battle)
-/// Abilities: "cheekpouch", "cudchew", "ripen"
+/// Dispatch onEatItem callbacks
 pub fn dispatch_on_eat_item(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onEffectiveness callbacks (mutates battle)
-/// Abilities: "disguise", "iceface"
+/// Dispatch onEffectiveness callbacks
 pub fn dispatch_on_effectiveness(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onEmergencyExit callbacks (mutates battle)
-/// Abilities: "emergencyexit", "wimpout"
+/// Dispatch onEmergencyExit callbacks
 pub fn dispatch_on_emergency_exit(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onEnd callbacks (mutates battle)
-/// Abilities: "airlock", "asoneglastrier", "asonespectrier", "cloudnine", "deltastream", "desolateland", "flashfire", "gorillatactics", "illusion", "neutralizinggas", ... (8 more)
+/// Dispatch onEnd callbacks
 pub fn dispatch_on_end(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 18 abilities
     EventResult::Continue
 }
 
-/// Dispatch onFaint callbacks (mutates battle)
-/// Abilities: "illusion"
+/// Dispatch onFaint callbacks
 pub fn dispatch_on_faint(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onFlinch callbacks (mutates battle)
-/// Abilities: "steadfast"
+/// Dispatch onFlinch callbacks
 pub fn dispatch_on_flinch(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onFoeAfterBoost callbacks (mutates battle)
-/// Abilities: "opportunist"
+/// Dispatch onFoeAfterBoost callbacks
 pub fn dispatch_on_foe_after_boost(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onFoeMaybeTrapPokemon callbacks (mutates battle)
-/// Abilities: "arenatrap", "magnetpull", "shadowtag"
+/// Dispatch onFoeMaybeTrapPokemon callbacks
 pub fn dispatch_on_foe_maybe_trap_pokemon(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onFoeTrapPokemon callbacks (mutates battle)
-/// Abilities: "arenatrap", "magnetpull", "shadowtag"
+/// Dispatch onFoeTrapPokemon callbacks
 pub fn dispatch_on_foe_trap_pokemon(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onFoeTryEatItem callbacks (mutates battle)
-/// Abilities: "asoneglastrier", "asonespectrier", "unnerve"
+/// Dispatch onFoeTryEatItem callbacks
 pub fn dispatch_on_foe_try_eat_item(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onFoeTryMove callbacks (mutates battle)
-/// Abilities: "armortail", "dazzling", "queenlymajesty"
+/// Dispatch onFoeTryMove callbacks
 pub fn dispatch_on_foe_try_move(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onFractionalPriority callbacks (mutates battle)
-/// Abilities: "myceliummight", "quickdraw", "stall"
+/// Dispatch onFractionalPriority callbacks
 pub fn dispatch_on_fractional_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onFractionalPriorityPriority callbacks (mutates battle)
-/// Abilities: "myceliummight", "quickdraw"
+/// Dispatch onFractionalPriorityPriority callbacks
 pub fn dispatch_on_fractional_priority_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onHit callbacks (mutates battle)
-/// Abilities: "angerpoint", "owntempo"
+/// Dispatch onHit callbacks
 pub fn dispatch_on_hit(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onImmunity callbacks (mutates battle)
-/// Abilities: "icebody", "magmaarmor", "oblivious", "overcoat", "sandforce", "sandrush", "sandveil", "snowcloak"
+/// Dispatch onImmunity callbacks
 pub fn dispatch_on_immunity(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 8 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyAccuracy callbacks (read-only)
-/// Abilities: "sandveil", "snowcloak", "tangledfeet", "wonderskin"
+/// Dispatch onModifyAccuracy callbacks
 pub fn dispatch_on_modify_accuracy(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyAccuracyPriority callbacks (mutates battle)
-/// Abilities: "sandveil", "snowcloak", "tangledfeet", "wonderskin"
+/// Dispatch onModifyAccuracyPriority callbacks
 pub fn dispatch_on_modify_accuracy_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyAtk callbacks (read-only)
-/// Abilities: "blaze", "defeatist", "dragonsmaw", "gorillatactics", "guts", "hugepower", "hustle", "orichalcumpulse", "overgrow", "purepower", ... (8 more)
+/// Dispatch onModifyAtk callbacks
 pub fn dispatch_on_modify_atk(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 18 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyAtkPriority callbacks (mutates battle)
-/// Abilities: "blaze", "defeatist", "dragonsmaw", "gorillatactics", "guts", "hugepower", "hustle", "orichalcumpulse", "overgrow", "purepower", ... (7 more)
+/// Dispatch onModifyAtkPriority callbacks
 pub fn dispatch_on_modify_atk_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 17 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyCritRatio callbacks (read-only)
-/// Abilities: "merciless", "superluck"
+/// Dispatch onModifyCritRatio callbacks
 pub fn dispatch_on_modify_crit_ratio(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyDamage callbacks (read-only)
-/// Abilities: "neuroforce", "sniper", "tintedlens"
+/// Dispatch onModifyDamage callbacks
 pub fn dispatch_on_modify_damage(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyDef callbacks (read-only)
-/// Abilities: "furcoat", "grasspelt", "marvelscale"
+/// Dispatch onModifyDef callbacks
 pub fn dispatch_on_modify_def(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyDefPriority callbacks (mutates battle)
-/// Abilities: "furcoat", "grasspelt", "marvelscale"
+/// Dispatch onModifyDefPriority callbacks
 pub fn dispatch_on_modify_def_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyMove callbacks (read-only)
-/// Abilities: "battlebond", "gorillatactics", "illuminate", "infiltrator", "keeneye", "longreach", "mindseye", "moldbreaker", "myceliummight", "propellertail", ... (10 more)
+/// Dispatch onModifyMove callbacks
 pub fn dispatch_on_modify_move(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 20 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyMovePriority callbacks (mutates battle)
-/// Abilities: "battlebond", "mindseye", "propellertail", "scrappy", "serenegrace", "stalwart", "stancechange", "stench"
+/// Dispatch onModifyMovePriority callbacks
 pub fn dispatch_on_modify_move_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 8 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyPriority callbacks (read-only)
-/// Abilities: "galewings", "prankster", "triage"
+/// Dispatch onModifyPriority callbacks
 pub fn dispatch_on_modify_priority(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifySTAB callbacks (read-only)
-/// Abilities: "adaptability"
+/// Dispatch onModifySTAB callbacks
 pub fn dispatch_on_modify_s_t_a_b(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifySecondaries callbacks (mutates battle)
-/// Abilities: "shielddust"
+/// Dispatch onModifySecondaries callbacks
 pub fn dispatch_on_modify_secondaries(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifySpA callbacks (read-only)
-/// Abilities: "blaze", "defeatist", "dragonsmaw", "hadronengine", "minus", "overgrow", "plus", "rockypayload", "solarpower", "stakeout", ... (5 more)
+/// Dispatch onModifySpA callbacks
 pub fn dispatch_on_modify_sp_a(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 15 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifySpAPriority callbacks (mutates battle)
-/// Abilities: "blaze", "defeatist", "dragonsmaw", "hadronengine", "minus", "overgrow", "plus", "rockypayload", "solarpower", "stakeout", ... (4 more)
+/// Dispatch onModifySpAPriority callbacks
 pub fn dispatch_on_modify_sp_a_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 14 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifySpe callbacks (read-only)
-/// Abilities: "chlorophyll", "quickfeet", "sandrush", "slowstart", "slushrush", "surgesurfer", "swiftswim"
+/// Dispatch onModifySpe callbacks
 pub fn dispatch_on_modify_spe(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 7 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyType callbacks (read-only)
-/// Abilities: "aerilate", "galvanize", "liquidvoice", "normalize", "pixilate", "refrigerate"
+/// Dispatch onModifyType callbacks
 pub fn dispatch_on_modify_type(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 6 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyTypePriority callbacks (mutates battle)
-/// Abilities: "aerilate", "galvanize", "liquidvoice", "normalize", "pixilate", "refrigerate"
+/// Dispatch onModifyTypePriority callbacks
 pub fn dispatch_on_modify_type_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 6 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyWeight callbacks (read-only)
-/// Abilities: "heavymetal", "lightmetal"
+/// Dispatch onModifyWeight callbacks
 pub fn dispatch_on_modify_weight(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onModifyWeightPriority callbacks (mutates battle)
-/// Abilities: "heavymetal"
+/// Dispatch onModifyWeightPriority callbacks
 pub fn dispatch_on_modify_weight_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onPrepareHit callbacks (mutates battle)
-/// Abilities: "libero", "parentalbond", "protean"
+/// Dispatch onPrepareHit callbacks
 pub fn dispatch_on_prepare_hit(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onResidual callbacks (mutates battle)
-/// Abilities: "baddreams", "cudchew", "harvest", "healer", "hungerswitch", "hydration", "moody", "opportunist", "pickup", "powerconstruct", ... (6 more)
+/// Dispatch onResidual callbacks
 pub fn dispatch_on_residual(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 16 abilities
     EventResult::Continue
 }
 
-/// Dispatch onResidualOrder callbacks (mutates battle)
-/// Abilities: "baddreams", "cudchew", "harvest", "healer", "hungerswitch", "hydration", "moody", "opportunist", "pickup", "powerconstruct", ... (6 more)
+/// Dispatch onResidualOrder callbacks
 pub fn dispatch_on_residual_order(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 16 abilities
     EventResult::Continue
 }
 
-/// Dispatch onResidualSubOrder callbacks (mutates battle)
-/// Abilities: "baddreams", "cudchew", "harvest", "healer", "hydration", "moody", "pickup", "shedskin", "slowstart", "speedboost"
+/// Dispatch onResidualSubOrder callbacks
 pub fn dispatch_on_residual_sub_order(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 10 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSetStatus callbacks (mutates battle)
-/// Abilities: "comatose", "immunity", "insomnia", "leafguard", "limber", "pastelveil", "purifyingsalt", "shieldsdown", "thermalexchange", "vitalspirit", ... (2 more)
+/// Dispatch onSetStatus callbacks
 pub fn dispatch_on_set_status(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 12 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSideConditionStart callbacks (mutates battle)
-/// Abilities: "windpower", "windrider"
+/// Dispatch onSideConditionStart callbacks
 pub fn dispatch_on_side_condition_start(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceAfterFaint callbacks (mutates battle)
-/// Abilities: "asoneglastrier", "asonespectrier", "battlebond", "beastboost", "chillingneigh", "grimneigh", "moxie"
+/// Dispatch onSourceAfterFaint callbacks
 pub fn dispatch_on_source_after_faint(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 7 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceBasePower callbacks (read-only)
-/// Abilities: "dryskin"
+/// Dispatch onSourceBasePower callbacks
 pub fn dispatch_on_source_base_power(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceBasePowerPriority callbacks (mutates battle)
-/// Abilities: "dryskin"
+/// Dispatch onSourceBasePowerPriority callbacks
 pub fn dispatch_on_source_base_power_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceDamagingHit callbacks (mutates battle)
-/// Abilities: "poisontouch", "toxicchain"
+/// Dispatch onSourceDamagingHit callbacks
 pub fn dispatch_on_source_damaging_hit(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceModifyAccuracy callbacks (read-only)
-/// Abilities: "compoundeyes", "hustle"
+/// Dispatch onSourceModifyAccuracy callbacks
 pub fn dispatch_on_source_modify_accuracy(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceModifyAccuracyPriority callbacks (mutates battle)
-/// Abilities: "compoundeyes", "hustle"
+/// Dispatch onSourceModifyAccuracyPriority callbacks
 pub fn dispatch_on_source_modify_accuracy_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceModifyAtk callbacks (mutates battle)
-/// Abilities: "heatproof", "purifyingsalt", "thickfat", "waterbubble"
+/// Dispatch onSourceModifyAtk callbacks
 pub fn dispatch_on_source_modify_atk(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceModifyAtkPriority callbacks (mutates battle)
-/// Abilities: "heatproof", "purifyingsalt", "thickfat", "waterbubble"
+/// Dispatch onSourceModifyAtkPriority callbacks
 pub fn dispatch_on_source_modify_atk_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceModifyDamage callbacks (read-only)
-/// Abilities: "filter", "fluffy", "icescales", "multiscale", "prismarmor", "punkrock", "ripen", "shadowshield", "solidrock"
+/// Dispatch onSourceModifyDamage callbacks
 pub fn dispatch_on_source_modify_damage(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 9 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceModifyDamagePriority callbacks (mutates battle)
-/// Abilities: "ripen"
+/// Dispatch onSourceModifyDamagePriority callbacks
 pub fn dispatch_on_source_modify_damage_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceModifySecondaries callbacks (mutates battle)
-/// Abilities: "parentalbond"
+/// Dispatch onSourceModifySecondaries callbacks
 pub fn dispatch_on_source_modify_secondaries(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceModifySpA callbacks (mutates battle)
-/// Abilities: "heatproof", "purifyingsalt", "thickfat", "waterbubble"
+/// Dispatch onSourceModifySpA callbacks
 pub fn dispatch_on_source_modify_sp_a(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceModifySpAPriority callbacks (mutates battle)
-/// Abilities: "heatproof", "purifyingsalt", "thickfat", "waterbubble"
+/// Dispatch onSourceModifySpAPriority callbacks
 pub fn dispatch_on_source_modify_sp_a_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceTryHeal callbacks (mutates battle)
-/// Abilities: "liquidooze"
+/// Dispatch onSourceTryHeal callbacks
 pub fn dispatch_on_source_try_heal(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSourceTryPrimaryHit callbacks (mutates battle)
-/// Abilities: "gulpmissile"
+/// Dispatch onSourceTryPrimaryHit callbacks
 pub fn dispatch_on_source_try_primary_hit(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onStart callbacks (mutates battle)
-/// Abilities: "airlock", "anticipation", "asoneglastrier", "asonespectrier", "aurabreak", "beadsofruin", "cloudnine", "comatose", "commander", "costar", ... (54 more)
+/// Dispatch onStart callbacks
 pub fn dispatch_on_start(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 64 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSwitchIn callbacks (mutates battle)
-/// Abilities: "airlock", "cloudnine", "imposter", "neutralizinggas", "terashift", "zerotohero"
+/// Dispatch onSwitchIn callbacks
 pub fn dispatch_on_switch_in(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 6 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSwitchInPriority callbacks (mutates battle)
-/// Abilities: "asoneglastrier", "asonespectrier", "costar", "flowergift", "forecast", "hospitality", "iceface", "klutz", "mimicry", "neutralizinggas", ... (6 more)
+/// Dispatch onSwitchInPriority callbacks
 pub fn dispatch_on_switch_in_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 16 abilities
     EventResult::Continue
 }
 
-/// Dispatch onSwitchOut callbacks (mutates battle)
-/// Abilities: "naturalcure", "regenerator", "zerotohero"
+/// Dispatch onSwitchOut callbacks
 pub fn dispatch_on_switch_out(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTakeItem callbacks (mutates battle)
-/// Abilities: "stickyhold", "unburden"
+/// Dispatch onTakeItem callbacks
 pub fn dispatch_on_take_item(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTerrainChange callbacks (mutates battle)
-/// Abilities: "mimicry", "quarkdrive"
+/// Dispatch onTerrainChange callbacks
 pub fn dispatch_on_terrain_change(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 2 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTryAddVolatile callbacks (mutates battle)
-/// Abilities: "innerfocus", "insomnia", "leafguard", "owntempo", "purifyingsalt", "shieldsdown", "vitalspirit"
+/// Dispatch onTryAddVolatile callbacks
 pub fn dispatch_on_try_add_volatile(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 7 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTryBoost callbacks (mutates battle)
-/// Abilities: "bigpecks", "clearbody", "fullmetalbody", "guarddog", "hypercutter", "illuminate", "innerfocus", "keeneye", "mindseye", "mirrorarmor", ... (4 more)
+/// Dispatch onTryBoost callbacks
 pub fn dispatch_on_try_boost(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 14 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTryBoostPriority callbacks (mutates battle)
-/// Abilities: "guarddog"
+/// Dispatch onTryBoostPriority callbacks
 pub fn dispatch_on_try_boost_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTryEatItem callbacks (mutates battle)
-/// Abilities: "angershell", "berserk", "ripen"
+/// Dispatch onTryEatItem callbacks
 pub fn dispatch_on_try_eat_item(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 3 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTryEatItemPriority callbacks (mutates battle)
-/// Abilities: "ripen"
+/// Dispatch onTryEatItemPriority callbacks
 pub fn dispatch_on_try_eat_item_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTryHeal callbacks (mutates battle)
-/// Abilities: "ripen"
+/// Dispatch onTryHeal callbacks
 pub fn dispatch_on_try_heal(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 1 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTryHit callbacks (read-only)
-/// Abilities: "bulletproof", "dryskin", "eartheater", "flashfire", "goodasgold", "lightningrod", "magicbounce", "motordrive", "oblivious", "overcoat", ... (12 more)
+/// Dispatch onTryHit callbacks
 pub fn dispatch_on_try_hit(
-    _battle: &Battle,
+    _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 22 abilities
     EventResult::Continue
 }
 
-/// Dispatch onTryHitPriority callbacks (mutates battle)
-/// Abilities: "magicbounce", "overcoat", "sapsipper", "rebound"
+/// Dispatch onTryHitPriority callbacks
 pub fn dispatch_on_try_hit_priority(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onUpdate callbacks (mutates battle)
-/// Abilities: "commander", "disguise", "iceface", "immunity", "insomnia", "limber", "magmaarmor", "oblivious", "owntempo", "pastelveil", ... (5 more)
+/// Dispatch onUpdate callbacks
 pub fn dispatch_on_update(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 15 abilities
     EventResult::Continue
 }
 
-/// Dispatch onWeather callbacks (mutates battle)
-/// Abilities: "dryskin", "icebody", "raindish", "solarpower"
+/// Dispatch onWeather callbacks
 pub fn dispatch_on_weather(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }
 
-/// Dispatch onWeatherChange callbacks (mutates battle)
-/// Abilities: "flowergift", "forecast", "iceface", "protosynthesis"
+/// Dispatch onWeatherChange callbacks
 pub fn dispatch_on_weather_change(
     _battle: &mut Battle,
     _ability_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement dispatch for 4 abilities
     EventResult::Continue
 }

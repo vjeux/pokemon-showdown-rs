@@ -59,16 +59,6 @@ function camelToSnake(str) {
     return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
 }
 
-// Determine if a callback mutates battle state
-function isMutatingCallback(callback) {
-    const readOnly = [
-        'onModifyType', 'onBasePower', 'onModifyMove',
-        'onTryHit', 'onTryMove', 'onModifyDamage',
-        'onModifyPriority', 'onModifyTarget'
-    ];
-    return !readOnly.includes(callback);
-}
-
 // Generate dispatch functions
 const dispatchers = [];
 
@@ -76,10 +66,7 @@ const dispatchers = [];
 const sortedCallbacks = Array.from(callbackMap.keys()).sort();
 
 sortedCallbacks.forEach(callback => {
-    const moveIds = callbackMap.get(callback);
     const funcName = `dispatch_${camelToSnake(callback)}`;
-    const isMutating = isMutatingCallback(callback);
-    const battleRef = isMutating ? '&mut Battle' : '&Battle';
 
     // Determine parameters based on callback type
     let params = '';
@@ -93,19 +80,10 @@ sortedCallbacks.forEach(callback => {
         params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
     }
 
-    const comment = isMutating ? '/// Dispatch ' + callback + ' callbacks (mutates battle)' : '/// Dispatch ' + callback + ' callbacks (read-only)';
-
-    // Count moves per callback
-    const moveCount = moveIds.length;
-    const moveList = moveIds.slice(0, 10).map(id => `"${id}"`).join(', ');
-    const more = moveCount > 10 ? `, ... (${moveCount - 10} more)` : '';
-
-    dispatcher = `${comment}
-/// Moves: ${moveList}${more}
+    dispatcher = `/// Dispatch ${callback} callbacks
 pub fn ${funcName}(
-    _battle: ${battleRef}${params},
+    _battle: &mut Battle${params},
 ) -> EventResult {
-    // TODO: Implement dispatch for ${moveCount} moves
     EventResult::Continue
 }`;
 
