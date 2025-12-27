@@ -11,7 +11,18 @@ use crate::event::EventResult;
 ///     return 50 + 50 * pokemon.side.totalFainted;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let pokemon = pokemon_pos;
+
+    // return 50 + 50 * pokemon.side.totalFainted;
+    let total_fainted = {
+        let side = match battle.sides.get(pokemon.0) {
+            Some(s) => s,
+            None => return EventResult::Continue,
+        };
+        side.total_fainted
+    };
+
+    let base_power = 50 + 50 * total_fainted as i32;
+    EventResult::Int(base_power)
 }
 
