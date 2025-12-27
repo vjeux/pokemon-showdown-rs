@@ -2937,7 +2937,7 @@ pub fn use_move_inner(
             match z_power_result {
                 ZPowerResult::DamageMove => {
                     // JS: this.battle.attrLastMove('[zeffect]');
-                    // TODO: Implement attrLastMove for [zeffect] attribute
+                    battle.attr_last_move(&["[zeffect]"]);
                 }
                 ZPowerResult::Boost(ref boosts) => {
                     // JS: this.battle.boost(move.zMove.boost, pokemon, pokemon, zPower);

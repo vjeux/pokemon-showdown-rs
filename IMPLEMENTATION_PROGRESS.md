@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 42/79 TODOs (53.2%)
+**Feature Implementation:** ⚠️ 43/79 TODOs (54.4%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -323,11 +323,22 @@
 
 **Enables:** Correct Gen 5+ simultaneous faint resolution, tie-breaker mechanics based on faint order
 
+#### Z-Move attrLastMove (1/1) ✅
+- [x] **attrLastMove for [zeffect]** (battle_actions.rs:2940) - Add [zeffect] attribute to damage Z-moves
+
+**Implementation Details:**
+- Calls battle.attr_last_move(&["[zeffect]"]) for damage Z-moves
+- Matches JavaScript: `this.battle.attrLastMove('[zeffect]');`
+- Uses existing attr_last_move method (battle.rs:9097-9130)
+- Adds [zeffect] tag to the last move log line
+
+**Enables:** Proper protocol logging for damage Z-moves, distinguishes Z-powered damaging moves in battle log
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (37 TODOs)
+## Remaining P2 Nice-to-have (36 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions
