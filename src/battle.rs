@@ -7188,57 +7188,61 @@ impl Battle {
         target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
+        use crate::data::condition_callbacks;
+
+        let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
-            "Start" => {
-                // onStart for volatile conditions
-                if let Some((side_idx, poke_idx)) = target {
-                    if condition_id == "banefulbunker" {
-//                         let _result = crate::data::move_callbacks::banefulbunker::condition_on_start(self, (side_idx, poke_idx));
-                        return EventResult::Continue;
-                    }
-                    // TODO: Add other volatile conditions with onStart here
-                }
-            }
-            "Update" => {
-                // Call onUpdate for volatile conditions
-                if let Some((side_idx, poke_idx)) = target {
-                    if condition_id == "attract" {
-//                         let _result = crate::data::move_callbacks::attract::on_update(self, (side_idx, poke_idx));
-                        // onUpdate typically returns Undefined, continue to other volatiles
-                        return EventResult::Continue;
-                    }
-                    // TODO: Add other volatile conditions with onUpdate here
-                }
-            }
-            "Residual" => {
-                if let Some((side_idx, poke_idx)) = target {
-                    // Burn damage
-                    if condition_id == "brn" {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                let damage = pokemon.maxhp / 16;
-                                self.damage(damage.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("burn")), false);
-                                return EventResult::Stop;
-                            }
-                        }
-                    }
-                    // Poison damage
-                    if condition_id == "psn" {
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                let damage = pokemon.maxhp / 8;
-                                self.damage(damage.max(1) as i32, Some((side_idx, poke_idx)), None, Some(&ID::new("poison")), false);
-                                return EventResult::Stop;
-                            }
-                        }
-                    }
-                }
-            }
-            _ => {}
+            "AfterMove" => condition_callbacks::dispatch_on_after_move(self, condition_id, pokemon_pos),
+            "AfterMoveSecondary" => condition_callbacks::dispatch_on_after_move_secondary(self, condition_id, pokemon_pos),
+            "BasePower" => condition_callbacks::dispatch_on_base_power(self, condition_id, pokemon_pos),
+            "BasePowerPriority" => condition_callbacks::dispatch_on_base_power_priority(self, condition_id, pokemon_pos),
+            "BeforeMove" => condition_callbacks::dispatch_on_before_move(self, condition_id, pokemon_pos),
+            "BeforeMovePriority" => condition_callbacks::dispatch_on_before_move_priority(self, condition_id, pokemon_pos),
+            "BeforeSwitchOut" => condition_callbacks::dispatch_on_before_switch_out(self, condition_id, pokemon_pos),
+            "BeforeSwitchOutPriority" => condition_callbacks::dispatch_on_before_switch_out_priority(self, condition_id, pokemon_pos),
+            "BeforeTurn" => condition_callbacks::dispatch_on_before_turn(self, condition_id, pokemon_pos),
+            "DamagingHit" => condition_callbacks::dispatch_on_damaging_hit(self, condition_id, pokemon_pos),
+            "DisableMove" => condition_callbacks::dispatch_on_disable_move(self, condition_id, pokemon_pos),
+            "DragOut" => condition_callbacks::dispatch_on_drag_out(self, condition_id, pokemon_pos),
+            "DragOutPriority" => condition_callbacks::dispatch_on_drag_out_priority(self, condition_id, pokemon_pos),
+            "Effectiveness" => condition_callbacks::dispatch_on_effectiveness(self, condition_id, pokemon_pos),
+            "EffectivenessPriority" => condition_callbacks::dispatch_on_effectiveness_priority(self, condition_id, pokemon_pos),
+            "End" => condition_callbacks::dispatch_on_end(self, condition_id, pokemon_pos),
+            "FieldEnd" => condition_callbacks::dispatch_on_field_end(self, condition_id, pokemon_pos),
+            "FieldResidual" => condition_callbacks::dispatch_on_field_residual(self, condition_id, pokemon_pos),
+            "FieldResidualOrder" => condition_callbacks::dispatch_on_field_residual_order(self, condition_id, pokemon_pos),
+            "FieldStart" => condition_callbacks::dispatch_on_field_start(self, condition_id, pokemon_pos),
+            "Immunity" => condition_callbacks::dispatch_on_immunity(self, condition_id, pokemon_pos),
+            "Invulnerability" => condition_callbacks::dispatch_on_invulnerability(self, condition_id, pokemon_pos),
+            "LockMove" => condition_callbacks::dispatch_on_lock_move(self, condition_id, pokemon_pos),
+            "ModifyDef" => condition_callbacks::dispatch_on_modify_def(self, condition_id, pokemon_pos),
+            "ModifyDefPriority" => condition_callbacks::dispatch_on_modify_def_priority(self, condition_id, pokemon_pos),
+            "ModifyMove" => condition_callbacks::dispatch_on_modify_move(self, condition_id, pokemon_pos),
+            "ModifySpD" => condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, pokemon_pos),
+            "ModifySpDPriority" => condition_callbacks::dispatch_on_modify_sp_d_priority(self, condition_id, pokemon_pos),
+            "ModifySpe" => condition_callbacks::dispatch_on_modify_spe(self, condition_id, pokemon_pos),
+            "ModifySpePriority" => condition_callbacks::dispatch_on_modify_spe_priority(self, condition_id, pokemon_pos),
+            "MoveAborted" => condition_callbacks::dispatch_on_move_aborted(self, condition_id, pokemon_pos),
+            "Residual" => condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos),
+            "ResidualOrder" => condition_callbacks::dispatch_on_residual_order(self, condition_id, pokemon_pos),
+            "ResidualPriority" => condition_callbacks::dispatch_on_residual_priority(self, condition_id, pokemon_pos),
+            "Restart" => condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos),
+            "SourceModifyDamage" => condition_callbacks::dispatch_on_source_modify_damage(self, condition_id, pokemon_pos),
+            "StallMove" => condition_callbacks::dispatch_on_stall_move(self, condition_id, pokemon_pos),
+            "Start" => condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos),
+            "SwitchIn" => condition_callbacks::dispatch_on_switch_in(self, condition_id, pokemon_pos),
+            "TrapPokemon" => condition_callbacks::dispatch_on_trap_pokemon(self, condition_id, pokemon_pos),
+            "TrapPokemonPriority" => condition_callbacks::dispatch_on_trap_pokemon_priority(self, condition_id, pokemon_pos),
+            "TryAddVolatile" => condition_callbacks::dispatch_on_try_add_volatile(self, condition_id, pokemon_pos),
+            "TryMove" => condition_callbacks::dispatch_on_try_move(self, condition_id, pokemon_pos),
+            "TryMovePriority" => condition_callbacks::dispatch_on_try_move_priority(self, condition_id, pokemon_pos),
+            "Type" => condition_callbacks::dispatch_on_type(self, condition_id, pokemon_pos),
+            "TypePriority" => condition_callbacks::dispatch_on_type_priority(self, condition_id, pokemon_pos),
+            "Weather" => condition_callbacks::dispatch_on_weather(self, condition_id, pokemon_pos),
+            "WeatherModifyDamage" => condition_callbacks::dispatch_on_weather_modify_damage(self, condition_id, pokemon_pos),
+            _ => EventResult::Continue,
         }
-
-        EventResult::Continue
     }
 
     /// Handle side condition events (SideStart, SideEnd, AnyModifyDamage, etc.)
