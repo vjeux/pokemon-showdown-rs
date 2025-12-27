@@ -7,10 +7,10 @@
 
 ### Public Methods
 
-- [ ] `new` (line 165)
+- [x] `new` (line 165)
 - [ ] `new` (line 388)
-- [ ] `pokemon_at` (line 493)
-- [ ] `pokemon_at_mut` (line 500)
+- [x] `pokemon_at` (line 493)
+- [x] `pokemon_at_mut` (line 500)
 - [ ] `set_player` (line 544)
 - [ ] `start` (line 711)
 - [ ] `start_battle` (line 840)
