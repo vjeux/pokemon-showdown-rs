@@ -15,7 +15,34 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Get current move
+    let move_id = match &battle.current_move {
+        Some(id) => id.clone(),
+        None => return EventResult::Continue,
+    };
+
+    // if (target.runEffectiveness(move) > 0) {
+    let effectiveness = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.run_effectiveness(&move_id, battle)
+    };
+
+    if effectiveness > 0 {
+        // this.debug(`electro drift super effective buff`);
+        battle.debug("electro drift super effective buff");
+
+        // return this.chainModify([5461, 4096]);
+        return EventResult::ChainModifyFraction(5461, 4096);
+    }
+
     EventResult::Continue
 }
 
