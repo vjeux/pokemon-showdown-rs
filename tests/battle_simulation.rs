@@ -646,9 +646,6 @@ fn test_paralysis_cant_move() {
     assert_eq!(battle.sides[1].pokemon[0].status.as_str(), "par", "Rattata should be paralyzed");
 
     // Run multiple turns - statistically some should be blocked by paralysis
-    // We can check the log for "cant" messages
-    let log_before = battle.get_log().len();
-
     for _ in 0..10 {
         battle.make_choices("move thunderbolt", "move tackle");
         if battle.ended {
@@ -996,15 +993,10 @@ fn test_flying_immune_to_spikes() {
     battle.make_choices("move spikes", "move tackle");
 
     // Switch in Pidgeot (Flying) - should NOT take damage
-    let pidgeot_hp_before = battle.sides[1].pokemon[1].hp;
-
     battle.make_choices("move spikes", "switch 2");
-
-    let pidgeot_hp_after = battle.sides[1].pokemon[1].hp;
 
     // Pidgeot should only take tackle damage, NOT Spikes damage
     let log = battle.get_log();
-    let spikes_to_pidgeot = log.matches("Pidgeot").count() > 0 && log.contains("[from] Spikes");
     // Since Flying type is immune to ground-based hazards, check the HP difference doesn't include spikes
     println!("Flying immunity test log:\n{}", log);
 }
