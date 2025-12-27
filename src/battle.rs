@@ -3829,8 +3829,12 @@ impl Battle {
         let mut targets: Vec<(usize, usize)> = Vec::new();
 
         // Get move data to access target and flags
-        let (move_target, has_mustpressure) = match self.dex.get_move(move_id.as_str()) {
-            Some(m) => (m.target.clone(), m.flags.contains_key("mustpressure")),
+        let (move_target, has_mustpressure, has_futuremove) = match self.dex.get_move(move_id.as_str()) {
+            Some(m) => (
+                m.target.clone(),
+                m.flags.contains_key("mustpressure"),
+                m.flags.contains_key("futuremove")
+            ),
             None => return (vec![], vec![]),
         };
 
@@ -3916,8 +3920,7 @@ impl Battle {
                 }
 
                 // JS: if (target.fainted && !move.flags['futuremove']) return { targets: [], pressureTargets: [] };
-                if target.map_or(false, |t| self.is_pokemon_fainted(t)) {
-                    // TODO: Check futuremove flag when move flags are available
+                if target.map_or(false, |t| self.is_pokemon_fainted(t)) && !has_futuremove {
                     return (vec![], vec![]);
                 }
 

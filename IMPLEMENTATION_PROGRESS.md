@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 36/79 TODOs (45.6%)
+**Feature Implementation:** ⚠️ 37/79 TODOs (46.8%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -240,7 +240,7 @@
 
 **Enables:** Correct ally detection in multi-battle formats (doubles, triples, multi)
 
-### Session 9 Continued - Move Target Pressure Mechanics (1 implementation)
+### Session 9 Continued - Move Target Pressure Mechanics (2 implementations)
 
 #### Mustpressure Flag Check (1/1) ✅
 - [x] **mustpressure flag check in get_move_targets** (battle.rs:3942-3944) - Check move flags for Pressure PP deduction
@@ -248,17 +248,28 @@
 **Implementation Details:**
 - Modified get_move_targets() to extract both move_target and has_mustpressure flag upfront
 - Avoids borrow checker issues by cloning needed data instead of holding references
-- Checks if move has 'mustpressure' flag at beginning (line 3833)
-- Sets pressure_targets = all foes when flag is present (line 3944)
+- Checks if move has 'mustpressure' flag at beginning (line 3835)
+- Sets pressure_targets = all foes when flag is present (line 3947)
 - Matches JavaScript: `if (move.flags['mustpressure']) pressureTargets = this.foes();`
 
 **Enables:** Correct Pressure ability PP deduction for moves with mustpressure flag
+
+#### Futuremove Flag Check (1/1) ✅
+- [x] **futuremove flag check in get_move_targets** (battle.rs:3922-3925) - Prevent returning empty targets for future moves
+
+**Implementation Details:**
+- Added has_futuremove flag extraction at function start (line 3836)
+- Modified fainted target check to include futuremove condition
+- Only returns empty if target is fainted AND move does NOT have futuremove flag (line 3923)
+- Matches JavaScript: `if (target.fainted && !move.flags['futuremove']) return { targets: [], pressureTargets: [] };`
+
+**Enables:** Future moves (Future Sight, Doom Desire) can target fainted Pokemon slots
 
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (43 TODOs)
+## Remaining P2 Nice-to-have (42 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions
