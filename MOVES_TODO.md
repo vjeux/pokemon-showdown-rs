@@ -12,62 +12,6 @@ The following moves require infrastructure that doesn't exist yet:
 
 ### Missing Pokemon/Battle Methods
 
-### Additional Infrastructure Now Available
-
-The following infrastructure has been verified to exist:
-
-- ✓ `battle.sample(array)`: EXISTS at src/battle.rs:1174
-- ✓ `pokemon.faint()`: EXISTS at src/pokemon.rs:1483
-- ✓ `pokemon.tryTrap()`: EXISTS at src/pokemon.rs:1999
-- ✓ `pokemon.trapped`: EXISTS at src/pokemon.rs:158
-- ✓ `battle.dex.getImmunity(effect, target)`: EXISTS at src/dex.rs:1095
-- ✓ `pokemon.beingCalledBack`: EXISTS at src/pokemon.rs:165
-- ✓ `pokemon.switchFlag`: EXISTS at src/pokemon.rs:162
-- ✓ `side.hasAlly(pokemon)`: EXISTS at src/side.rs:768
-- ✓ `side.addSideCondition(name, source)`: EXISTS at src/side.rs:292
-- ✓ `side.getSideConditionData(name)`: EXISTS at src/side.rs:1847
-- ✓ `pokemon.isAdjacent(other)`: EXISTS at src/pokemon.rs:1546
-- ✓ `pokemon.canMegaEvo`: EXISTS at src/pokemon.rs:198
-- ✓ `pokemon.canUltraBurst`: EXISTS at src/pokemon.rs:199
-- ✓ `pokemon.canTerastallize`: EXISTS at src/pokemon.rs:140
-- ✓ `action.choice`: EXISTS at src/battle_queue.rs:20 (MoveActionType)
-- ✓ `pokemon.getLocOf(pokemon)`: EXISTS at src/pokemon.rs:2545
-- ✓ `battle.boost(boosts)`: EXISTS at src/battle.rs:5013
-- ✓ `pokemon.getWeight()`: EXISTS at src/pokemon.rs:1143
-- ✓ `side.activeTeam()`: EXISTS at src/side.rs:1719
-- ✓ `battle.lastSuccessfulMoveThisTurn`: EXISTS at src/battle.rs:343
-- ✓ `side.removeSlotCondition(target, name)`: EXISTS at src/side.rs:404
-- ✓ `pokemon.disableMove(moveId, hiddenPower)`: EXISTS at src/pokemon.rs:1257
-- ✓ `pokemon.maybeDisabled`: EXISTS at src/pokemon.rs:160
-- ✓ `battle.actions.useMove(...)`: EXISTS at src/battle_actions.rs:2510
-- ✓ `pokemon.teraType`: EXISTS at src/pokemon.rs:138
-- ✓ `pokemon.foes()`: EXISTS at src/battle.rs:3887
-- ✓ `pokemon.deductPP(moveId, amount)`: EXISTS at src/pokemon.rs:863
-- ✓ `battle.field.setWeather(weatherId)`: EXISTS at src/field.rs:113
-- ✓ `pokemon.addType(type)`: EXISTS at src/pokemon.rs:1189
-- ✓ `action.targetLoc`: EXISTS at src/battle_queue.rs:34
-- ✓ `battle.queue.prioritizeAction(action, move)`: EXISTS at src/battle_queue.rs:578
-- ✓ `battle.field.getPseudoWeather(name)`: EXISTS at src/field.rs:321
-- ✓ `target.runImmunity(type)`: EXISTS at src/pokemon.rs:3056
-- ✓ `pokemon.moveLastTurnResult`: EXISTS at src/pokemon.rs:181
-- ✓ `pokemon.eatItem(force)`: EXISTS at src/pokemon.rs:2982
-- ✓ `pokemon.activeTurns`: EXISTS at src/pokemon.rs:187
-- ✓ `battle.queue.list`: Queue accessible for iteration
-- ✓ `pokemon.formeChange(...)`: EXISTS at src/pokemon.rs:2378
-- ✓ `action.order`: EXISTS at src/battle_queue.rs:22
-- ✓ `side.allies()`: EXISTS at src/side.rs:741
-- ✓ `target.heal(amount)`: EXISTS at src/pokemon.rs:453 (Pokemon::heal)
-- ✓ `target.clearStatus()`: EXISTS at src/pokemon.rs:3253
-- ✓ `source.moveThisTurnResult`: EXISTS at src/pokemon.rs:180
-- ✓ `battle.dex.getEffectiveness(type1, type2)`: EXISTS at src/dex.rs:966
-- ✓ `battle.turn`: EXISTS at src/battle.rs:328
-- ✓ `battle.getOverflowedTurnCount()`: EXISTS at src/battle.rs:10116
-- ✓ `pokemon.lastMoveUsed`: EXISTS at src/pokemon.rs:177
-- ✓ `action.maxMove`: EXISTS at src/battle_queue.rs:42
-- ✓ `action.zmove`: EXISTS at src/battle_queue.rs:40
-- ✓ `battle.queue.cancelMove(...)`: EXISTS at src/battle_queue.rs:382
-- ✓ `battle.queue.willMove(...)`: EXISTS at src/battle_queue.rs:408
-
 ### Remaining Infrastructure Gaps
 
 The following are advanced features that require more complex infrastructure:
@@ -147,6 +91,62 @@ The following are advanced features that require more complex infrastructure:
 - `action.move`: waterpledge, upperhand, trickortreat - Action's move reference
 - `target.side.active.length`: trickortreat - Number of active pokemon on a side
 - `array.entries()`: uproar - Array entries() iterator with [index, pokemon] tuples
+
+### Additional Infrastructure Now Available
+
+The following infrastructure has been verified to exist:
+
+- ✓ `battle.sample(array)`: EXISTS at src/battle.rs:1174
+- ✓ `pokemon.faint()`: EXISTS at src/pokemon.rs:1483
+- ✓ `pokemon.tryTrap()`: EXISTS at src/pokemon.rs:1999
+- ✓ `pokemon.trapped`: EXISTS at src/pokemon.rs:158
+- ✓ `battle.dex.getImmunity(effect, target)`: EXISTS at src/dex.rs:1095
+- ✓ `pokemon.beingCalledBack`: EXISTS at src/pokemon.rs:165
+- ✓ `pokemon.switchFlag`: EXISTS at src/pokemon.rs:162
+- ✓ `side.hasAlly(pokemon)`: EXISTS at src/side.rs:768
+- ✓ `side.addSideCondition(name, source)`: EXISTS at src/side.rs:292
+- ✓ `side.getSideConditionData(name)`: EXISTS at src/side.rs:1847
+- ✓ `pokemon.isAdjacent(other)`: EXISTS at src/pokemon.rs:1546
+- ✓ `pokemon.canMegaEvo`: EXISTS at src/pokemon.rs:198
+- ✓ `pokemon.canUltraBurst`: EXISTS at src/pokemon.rs:199
+- ✓ `pokemon.canTerastallize`: EXISTS at src/pokemon.rs:140
+- ✓ `action.choice`: EXISTS at src/battle_queue.rs:20 (MoveActionType)
+- ✓ `pokemon.getLocOf(pokemon)`: EXISTS at src/pokemon.rs:2545
+- ✓ `battle.boost(boosts)`: EXISTS at src/battle.rs:5013
+- ✓ `pokemon.getWeight()`: EXISTS at src/pokemon.rs:1143
+- ✓ `side.activeTeam()`: EXISTS at src/side.rs:1719
+- ✓ `battle.lastSuccessfulMoveThisTurn`: EXISTS at src/battle.rs:343
+- ✓ `side.removeSlotCondition(target, name)`: EXISTS at src/side.rs:404
+- ✓ `pokemon.disableMove(moveId, hiddenPower)`: EXISTS at src/pokemon.rs:1257
+- ✓ `pokemon.maybeDisabled`: EXISTS at src/pokemon.rs:160
+- ✓ `battle.actions.useMove(...)`: EXISTS at src/battle_actions.rs:2510
+- ✓ `pokemon.teraType`: EXISTS at src/pokemon.rs:138
+- ✓ `pokemon.foes()`: EXISTS at src/battle.rs:3887
+- ✓ `pokemon.deductPP(moveId, amount)`: EXISTS at src/pokemon.rs:863
+- ✓ `battle.field.setWeather(weatherId)`: EXISTS at src/field.rs:113
+- ✓ `pokemon.addType(type)`: EXISTS at src/pokemon.rs:1189
+- ✓ `action.targetLoc`: EXISTS at src/battle_queue.rs:34
+- ✓ `battle.queue.prioritizeAction(action, move)`: EXISTS at src/battle_queue.rs:578
+- ✓ `battle.field.getPseudoWeather(name)`: EXISTS at src/field.rs:321
+- ✓ `target.runImmunity(type)`: EXISTS at src/pokemon.rs:3056
+- ✓ `pokemon.moveLastTurnResult`: EXISTS at src/pokemon.rs:181
+- ✓ `pokemon.eatItem(force)`: EXISTS at src/pokemon.rs:2982
+- ✓ `pokemon.activeTurns`: EXISTS at src/pokemon.rs:187
+- ✓ `battle.queue.list`: Queue accessible for iteration
+- ✓ `pokemon.formeChange(...)`: EXISTS at src/pokemon.rs:2378
+- ✓ `action.order`: EXISTS at src/battle_queue.rs:22
+- ✓ `side.allies()`: EXISTS at src/side.rs:741
+- ✓ `target.heal(amount)`: EXISTS at src/pokemon.rs:453 (Pokemon::heal)
+- ✓ `target.clearStatus()`: EXISTS at src/pokemon.rs:3253
+- ✓ `source.moveThisTurnResult`: EXISTS at src/pokemon.rs:180
+- ✓ `battle.dex.getEffectiveness(type1, type2)`: EXISTS at src/dex.rs:966
+- ✓ `battle.turn`: EXISTS at src/battle.rs:328
+- ✓ `battle.getOverflowedTurnCount()`: EXISTS at src/battle.rs:10116
+- ✓ `pokemon.lastMoveUsed`: EXISTS at src/pokemon.rs:177
+- ✓ `action.maxMove`: EXISTS at src/battle_queue.rs:42
+- ✓ `action.zmove`: EXISTS at src/battle_queue.rs:40
+- ✓ `battle.queue.cancelMove(...)`: EXISTS at src/battle_queue.rs:382
+- ✓ `battle.queue.willMove(...)`: EXISTS at src/battle_queue.rs:408
 
 **All basic Pokemon/Battle methods have been implemented! ✓**
 

@@ -20,7 +20,29 @@ use crate::event::EventResult;
 ///     return hasLastResort;
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Last Resort fails unless the user knows at least 2 moves
+    if source.move_slots.len() < 2 {
+        return EventResult::Bool(false);
+    }
+
+    // User must actually have Last Resort for it to succeed
+    let mut has_last_resort = false;
+    for move_slot in &source.move_slots {
+        if move_slot.id.as_str() == "lastresort" {
+            has_last_resort = true;
+            continue;
+        }
+        // All other moves must have been used
+        if !move_slot.used {
+            return EventResult::Bool(false);
+        }
+    }
+
+    EventResult::Bool(has_last_resort)
 }
 
