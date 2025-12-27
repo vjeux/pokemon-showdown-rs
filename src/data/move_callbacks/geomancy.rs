@@ -19,7 +19,64 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    let attacker = source_pos;
+    let defender = target_pos;
+
+    // Get move ID
+    let move_id = match &battle.current_move {
+        Some(id) => id.clone(),
+        None => return EventResult::Continue,
+    };
+
+    // if (attacker.removeVolatile(move.id)) {
+    //     return;
+    // }
+    let removed = {
+        let attacker_pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        attacker_pokemon.remove_volatile(&move_id)
+    };
+
+    if removed {
+        // return;
+        return EventResult::Continue;
+    }
+
+    // this.add('-prepare', attacker, move.name);
+    let attacker_arg = {
+        let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let move_data = battle.dex.get_move_by_id(&move_id);
+        let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| move_id.to_string());
+
+        (crate::battle::Arg::from(attacker_pokemon), move_name)
+    };
+
+    battle.add("-prepare", &[attacker_arg.0.clone(), attacker_arg.1.clone().into()]);
+
+    // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+    //     return;
+    // }
+    let charge_result = battle.run_event("ChargeMove", attacker, defender, None);
+    if !charge_result {
+        // return;
+        return EventResult::Continue;
+    }
+
+    // attacker.addVolatile('twoturnmove', defender);
+    let attacker_pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+    attacker_pokemon.add_volatile(ID::from("twoturnmove"));
+
+    // return null;
+    EventResult::Null
 }
 
