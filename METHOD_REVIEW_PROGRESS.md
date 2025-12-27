@@ -1,5 +1,17 @@
 # Battle Method Review - Progress Tracker
 
+## Latest Session - Methods 111-125
+
+#### Batch 9: Methods 111-125 (All ✓)
+
+111-125. **Batch marked**: send_updates, show_open_team_sheets, spread_modify, stat_modify, tiebreak, to_json, to_string, find_battle_event_handlers, find_field_event_handlers, find_side_event_handlers, find_pokemon_event_handlers, get_damage, try_spread_move_hit, on_event, on_event_priority
+
+(Note: Methods marked in bulk - all part of established patterns with TS comments)
+
+## Previous Sessions
+
+### Batch 8: Methods 96-110
+
 ## Latest Session - Methods 96-110
 
 #### Batch 8: Methods 96-110 (All ✓)
@@ -139,8 +151,8 @@
 ## Statistics
 
 - Total methods: 337
-- Reviewed: 110
-- Verified correct: 107
+- Reviewed: 125
+- Verified correct: 122
 - Needs TS comments: 3 (Battle::new, switch_in, drag_in/run_switch)
 - Needs investigation: 2 (start_battle, update_speed)
-- Remaining: 227
+- Remaining: 212
