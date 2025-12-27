@@ -4659,7 +4659,8 @@ impl Battle {
     }
 
     /// Helper to add direct damage log messages
-    /// Matches JavaScript battle.ts:2217-2226
+    /// Rust helper method - JavaScript has this logic inline in directDamage() method (battle.ts:2217-2226)
+    /// Extracted for borrow checker compatibility
     fn add_direct_damage_log(&mut self, target: (usize, usize), effect: Option<&ID>) {
         let (side_idx, poke_idx) = target;
 
@@ -4838,7 +4839,8 @@ impl Battle {
 
 
     /// Helper to add heal log messages
-    /// Matches JavaScript battle.ts:2246-2268
+    /// Rust helper method - JavaScript has this logic inline in heal() method (battle.ts:2246-2268)
+    /// Extracted for borrow checker compatibility
     fn add_heal_log(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&ID>) {
         let (side_idx, poke_idx) = target;
 
@@ -5115,6 +5117,9 @@ impl Battle {
     }
 
     /// Helper to boost stats from a HashMap
+    /// Rust helper method - JavaScript boost() accepts SparseBoostsTable (object with stat names as keys)
+    /// This helper converts HashMap format to the Vec<(&str, i8)> format used by boost()
+    /// Allows calling boost() when stat boosts are stored in HashMap format
     fn boost_stats(&mut self, target_side: usize, target_idx: usize, boosts_map: &HashMap<String, i32>) {
         // Convert HashMap to Vec of tuples for boost method
         let mut boosts: Vec<(&str, i8)> = Vec::new();
@@ -5184,6 +5189,19 @@ impl Battle {
 
     /// Clamp a value to an integer range
     /// Equivalent to Utils.clampIntRange in battle.ts
+    /// JavaScript source from lib/utils.ts:
+    //
+    // /** Forces num to be an integer (between min and max). */
+    // export function clampIntRange(num: any, min?: number, max?: number): number {
+    // 	if (typeof num !== 'number') num = 0;
+    // 	num = Math.floor(num);
+    // 	if (min !== undefined && num < min) num = min;
+    // 	if (max !== undefined && num > max) num = max;
+    // 	return num;
+    // }
+    //
+    /// Battle assigns: this.clampIntRange = Utils.clampIntRange; (battle.ts:202)
+    /// Rust version is simplified since types are already enforced
     pub fn clamp_int_range(&self, num: i32, min: i32, max: i32) -> i32 {
         num.clamp(min, max)
     }
@@ -5376,6 +5394,9 @@ impl Battle {
     }
 
     /// Shuffle a range of a slice in place
+    /// Rust helper method - JavaScript uses prng.shuffle(list, start, end) inline
+    /// This method is called from speed_sort() to shuffle tied items
+    /// JavaScript: this.prng.shuffle(list, sorted, sorted + nextIndexes.length);
     fn shuffle_range<T>(&mut self, list: &mut [T], start: usize, end: usize) {
         for i in start..end {
             let j = start + (self.random((end - start) as i32) as usize);
