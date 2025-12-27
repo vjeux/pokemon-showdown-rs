@@ -550,12 +550,27 @@ impl BattleStream {
     }
 
     /// Start a new battle with options
+    // TypeScript source:
+    // 
+    // 
+    // 	async start() {
+    // 		for await (const chunk of this.stream) {
+    // 			this.receive(chunk);
+    // 		}
+    // 	}
+    //
     pub fn start(&mut self, options: BattleOptions) {
         self.battle = Some(Battle::new(options));
     }
 
     /// Write input to the battle
     /// Equivalent to _write() in battle-stream.ts
+    // TypeScript source:
+    // 
+    // 			write(data: string) {
+    // 				void stream.write(data.replace(/(^|\n)/g, `$1>p4 `));
+    // 			}
+    //
     pub fn write(&mut self, input: &str) {
         for line in input.lines() {
             let line = line.trim();
@@ -695,6 +710,25 @@ impl BattleStream {
 
     /// Push a message to the output queue
     /// Equivalent to pushMessage() in battle-stream.ts
+    // TypeScript source:
+    // 
+    // 
+    // 	pushMessage(type: string, data: string) {
+    // 		if (this.replay) {
+    // 			if (type === 'update') {
+    // 				if (this.replay === 'spectator') {
+    // 					const channelMessages = extractChannelMessages(data, [0]);
+    // 					this.push(channelMessages[0].join('\n'));
+    // 				} else {
+    // 					const channelMessages = extractChannelMessages(data, [-1]);
+    // 					this.push(channelMessages[-1].join('\n'));
+    // 				}
+    // 			}
+    // 			return;
+    // 		}
+    // 		this.push(`${type}\n${data}`);
+    // 	}
+    //
     pub fn push_message(&mut self, msg_type: &str, data: &str) {
         match self.replay {
             ReplayMode::Off => {
@@ -717,6 +751,10 @@ impl BattleStream {
     }
 
     /// Read output from the battle
+    // TypeScript source:
+    // 
+    // 			read() {}
+    //
     pub fn read(&mut self) -> Option<String> {
         // First return any queued messages
         if let Some(msg) = self.output_queue.pop_front() {
@@ -822,6 +860,33 @@ impl Default for PlayerStreams {
 
 /// Split first utility function
 /// Equivalent to splitFirst() in battle-stream.ts
+// TypeScript source:
+// /**
+//  * Like string.split(delimiter), but only recognizes the first `limit`
+//  * delimiters (default 1).
+//  *
+//  * `"1 2 3 4".split(" ", 2) => ["1", "2"]`
+//  *
+//  * `Utils.splitFirst("1 2 3 4", " ", 1) => ["1", "2 3 4"]`
+//  *
+//  * Returns an array of length exactly limit + 1.
+//  */
+// function splitFirst(str: string, delimiter: string, limit = 1) {
+// 	const splitStr: string[] = [];
+// 	while (splitStr.length < limit) {
+// 		const delimiterIndex = str.indexOf(delimiter);
+// 		if (delimiterIndex >= 0) {
+// 			splitStr.push(str.slice(0, delimiterIndex));
+// 			str = str.slice(delimiterIndex + delimiter.length);
+// 		} else {
+// 			splitStr.push(str);
+// 			str = '';
+// 		}
+// 	}
+// 	splitStr.push(str);
+// 	return splitStr;
+// }
+//
 pub fn split_first(s: &str, delimiter: &str, limit: usize) -> Vec<String> {
     let mut result = Vec::new();
     let mut remaining = s;

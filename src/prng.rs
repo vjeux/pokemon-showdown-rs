@@ -65,8 +65,23 @@ impl PRNGSeed {
 /// Low-level source of 32-bit random numbers
 pub trait RNG {
     /// Get the current seed
+    // TypeScript source:
+    // 
+    // 
+    // 	getSeed(): PRNGSeed {
+    // 		return this.seed.join(',') as PRNGSeed;
+    // 	}
+    //
     fn get_seed(&self) -> PRNGSeed;
     /// Get the next random 32-bit number
+    // TypeScript source:
+    // 
+    // 
+    // 	next(): number {
+    // 		this.seed = this.nextFrame(this.seed); // Advance the RNG
+    // 		return (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
+    // 	}
+    //
     fn next(&mut self) -> u32;
 }
 
@@ -84,6 +99,18 @@ impl Gen5RNG {
     }
 
     /// Generate a random seed
+    // TypeScript source:
+    // 
+    // 
+    // 	static generateSeed(): Gen5RNGSeed {
+    // 		return [
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 		];
+    // 	}
+    //
     pub fn generate_seed() -> [u16; 4] {
         let mut rng = rand::thread_rng();
         [
@@ -95,6 +122,54 @@ impl Gen5RNG {
     }
 
     /// Calculates `a * b + c` (with 64-bit 2's complement integers)
+    // TypeScript source:
+    // /**
+    // 	 * Calculates `a * b + c` (with 64-bit 2's complement integers)
+    // 	 */
+    // 	multiplyAdd(a: Gen5RNGSeed, b: Gen5RNGSeed, c: Gen5RNGSeed) {
+    // 		// If you've done long multiplication, this is the same thing.
+    // 		const out: Gen5RNGSeed = [0, 0, 0, 0];
+    // 		let carry = 0;
+    // 
+    // 		for (let outIndex = 3; outIndex >= 0; outIndex--) {
+    // 			for (let bIndex = outIndex; bIndex < 4; bIndex++) {
+    // 				const aIndex = 3 - (bIndex - outIndex);
+    // 
+    // 				carry += a[aIndex] * b[bIndex];
+    // 			}
+    // 			carry += c[outIndex];
+    // 
+    // 			out[outIndex] = carry & 0xFFFF;
+    // 			carry >>>= 16;
+    // 		}
+    // 
+    // 		return out;
+    // 	}
+    //
+    // TypeScript source:
+    // /**
+    // 	 * Calculates `a * b + c` (with 64-bit 2's complement integers)
+    // 	 */
+    // 	multiplyAdd(a: Gen5RNGSeed, b: Gen5RNGSeed, c: Gen5RNGSeed) {
+    // 		// If you've done long multiplication, this is the same thing.
+    // 		const out: Gen5RNGSeed = [0, 0, 0, 0];
+    // 		let carry = 0;
+    // 
+    // 		for (let outIndex = 3; outIndex >= 0; outIndex--) {
+    // 			for (let bIndex = outIndex; bIndex < 4; bIndex++) {
+    // 				const aIndex = 3 - (bIndex - outIndex);
+    // 
+    // 				carry += a[aIndex] * b[bIndex];
+    // 			}
+    // 			carry += c[outIndex];
+    // 
+    // 			out[outIndex] = carry & 0xFFFF;
+    // 			carry >>>= 16;
+    // 		}
+    // 
+    // 		return out;
+    // 	}
+    //
     fn multiply_add(a: [u16; 4], b: [u16; 4], c: [u16; 4]) -> [u16; 4] {
         let mut out = [0u16; 4];
         let mut carry: u32 = 0;
@@ -121,6 +196,54 @@ impl Gen5RNG {
     /// c = 0x00269EC3
     /// m = 2^64
     /// ```
+    // TypeScript source:
+    // /**
+    // 	 * The RNG is a Linear Congruential Generator (LCG) in the form: `x_{n + 1} = (a x_n + c) % m`
+    // 	 *
+    // 	 * Where: `x_0` is the seed, `x_n` is the random number after n iterations,
+    // 	 *
+    // 	 * ````
+    // 	 * a = 0x5D588B656C078965
+    // 	 * c = 0x00269EC3
+    // 	 * m = 2^64
+    // 	 * ````
+    // 	 */
+    // 	nextFrame(seed: Gen5RNGSeed, framesToAdvance = 1): Gen5RNGSeed {
+    // 		const a: Gen5RNGSeed = [0x5D58, 0x8B65, 0x6C07, 0x8965];
+    // 		const c: Gen5RNGSeed = [0, 0, 0x26, 0x9EC3];
+    // 
+    // 		for (let i = 0; i < framesToAdvance; i++) {
+    // 			// seed = seed * a + c
+    // 			seed = this.multiplyAdd(seed, a, c);
+    // 		}
+    // 
+    // 		return seed;
+    // 	}
+    //
+    // TypeScript source:
+    // /**
+    // 	 * The RNG is a Linear Congruential Generator (LCG) in the form: `x_{n + 1} = (a x_n + c) % m`
+    // 	 *
+    // 	 * Where: `x_0` is the seed, `x_n` is the random number after n iterations,
+    // 	 *
+    // 	 * ````
+    // 	 * a = 0x5D588B656C078965
+    // 	 * c = 0x00269EC3
+    // 	 * m = 2^64
+    // 	 * ````
+    // 	 */
+    // 	nextFrame(seed: Gen5RNGSeed, framesToAdvance = 1): Gen5RNGSeed {
+    // 		const a: Gen5RNGSeed = [0x5D58, 0x8B65, 0x6C07, 0x8965];
+    // 		const c: Gen5RNGSeed = [0, 0, 0x26, 0x9EC3];
+    // 
+    // 		for (let i = 0; i < framesToAdvance; i++) {
+    // 			// seed = seed * a + c
+    // 			seed = this.multiplyAdd(seed, a, c);
+    // 		}
+    // 
+    // 		return seed;
+    // 	}
+    //
     fn next_frame(&mut self) {
         const A: [u16; 4] = [0x5D58, 0x8B65, 0x6C07, 0x8965];
         const C: [u16; 4] = [0, 0, 0x26, 0x9EC3];
@@ -129,10 +252,25 @@ impl Gen5RNG {
 }
 
 impl RNG for Gen5RNG {
+    // TypeScript source:
+    // 
+    // 
+    // 	getSeed(): PRNGSeed {
+    // 		return this.seed.join(',') as PRNGSeed;
+    // 	}
+    //
     fn get_seed(&self) -> PRNGSeed {
         PRNGSeed::Gen5(self.seed)
     }
 
+    // TypeScript source:
+    // 
+    // 
+    // 	next(): number {
+    // 		this.seed = this.nextFrame(this.seed); // Advance the RNG
+    // 		return (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
+    // 	}
+    //
     fn next(&mut self) -> u32 {
         self.next_frame();
         // Use the upper 32 bits
@@ -165,6 +303,18 @@ impl SodiumRNG {
     }
 
     /// Generate a random seed
+    // TypeScript source:
+    // 
+    // 
+    // 	static generateSeed(): Gen5RNGSeed {
+    // 		return [
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 		];
+    // 	}
+    //
     pub fn generate_seed() -> String {
         let mut rng = rand::thread_rng();
         let seed: [u32; 4] = [rng.gen(), rng.gen(), rng.gen(), rng.gen()];
@@ -176,11 +326,26 @@ impl SodiumRNG {
 }
 
 impl RNG for SodiumRNG {
+    // TypeScript source:
+    // 
+    // 
+    // 	getSeed(): PRNGSeed {
+    // 		return this.seed.join(',') as PRNGSeed;
+    // 	}
+    //
     fn get_seed(&self) -> PRNGSeed {
         let hex: String = self.seed.iter().map(|b| format!("{:02x}", b)).collect();
         PRNGSeed::Sodium(hex)
     }
 
+    // TypeScript source:
+    // 
+    // 
+    // 	next(): number {
+    // 		this.seed = this.nextFrame(this.seed); // Advance the RNG
+    // 		return (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
+    // 	}
+    //
     fn next(&mut self) -> u32 {
         // Create 36 bytes of zeros, encrypt to get random bytes
         let mut buf = [0u8; 36];
@@ -242,6 +407,13 @@ impl PRNG {
     }
 
     /// Get the current seed
+    // TypeScript source:
+    // 
+    // 
+    // 	getSeed(): PRNGSeed {
+    // 		return this.seed.join(',') as PRNGSeed;
+    // 	}
+    //
     pub fn get_seed(&self) -> PRNGSeed {
         match &self.rng {
             PRNGImpl::Gen5(rng) => rng.get_seed(),
@@ -250,6 +422,18 @@ impl PRNG {
     }
 
     /// Set the seed
+    // TypeScript source:
+    // 
+    // 
+    // 	setSeed(seed: SodiumRNGSeed) {
+    // 		// randombytes_buf_deterministic requires 32 bytes, but
+    // 		// generateSeed generates 16 bytes, so the last 16 bytes will be 0
+    // 		// when starting out. This shouldn't cause any problems.
+    // 		const seedBuf = new Uint8Array(32);
+    // 		Utils.bufWriteHex(seedBuf, seed[1].padEnd(64, '0'));
+    // 		this.seed = seedBuf;
+    // 	}
+    //
     pub fn set_seed(&mut self, seed: PRNGSeed) {
         self.rng = match &seed {
             PRNGSeed::Sodium(hex) => PRNGImpl::Sodium(SodiumRNG::new(hex)),
@@ -277,6 +461,52 @@ impl PRNG {
     /// - `random()` returns a float in [0, 1)
     /// - `random(n)` returns an integer in [0, n)
     /// - `random(m, n)` returns an integer in [m, n)
+    // TypeScript source:
+    // /**
+    // 	 * Retrieves the next random number in the sequence.
+    // 	 * This function has three different results, depending on arguments:
+    // 	 * - random() returns a real number in [0, 1), just like Math.random()
+    // 	 * - random(n) returns an integer in [0, n)
+    // 	 * - random(m, n) returns an integer in [m, n)
+    // 	 * m and n are converted to integers via Math.floor. If the result is NaN, they are ignored.
+    // 	 */
+    // 	random(from?: number, to?: number): number {
+    // 		const result = this.rng.next();
+    // 
+    // 		if (from) from = Math.floor(from);
+    // 		if (to) to = Math.floor(to);
+    // 		if (from === undefined) {
+    // 			return result / 2 ** 32;
+    // 		} else if (!to) {
+    // 			return Math.floor(result * from / 2 ** 32);
+    // 		} else {
+    // 			return Math.floor(result * (to - from) / 2 ** 32) + from;
+    // 		}
+    // 	}
+    //
+    // TypeScript source:
+    // /**
+    // 	 * Retrieves the next random number in the sequence.
+    // 	 * This function has three different results, depending on arguments:
+    // 	 * - random() returns a real number in [0, 1), just like Math.random()
+    // 	 * - random(n) returns an integer in [0, n)
+    // 	 * - random(m, n) returns an integer in [m, n)
+    // 	 * m and n are converted to integers via Math.floor. If the result is NaN, they are ignored.
+    // 	 */
+    // 	random(from?: number, to?: number): number {
+    // 		const result = this.rng.next();
+    // 
+    // 		if (from) from = Math.floor(from);
+    // 		if (to) to = Math.floor(to);
+    // 		if (from === undefined) {
+    // 			return result / 2 ** 32;
+    // 		} else if (!to) {
+    // 			return Math.floor(result * from / 2 ** 32);
+    // 		} else {
+    // 			return Math.floor(result * (to - from) / 2 ** 32) + from;
+    // 		}
+    // 	}
+    //
     pub fn random(&mut self, from: Option<i32>, to: Option<i32>) -> f64 {
         let result = self.next_raw();
 
@@ -303,11 +533,78 @@ impl PRNG {
     /// Flip a coin (two-sided die), returning true or false.
     ///
     /// This function returns true with probability `P`, where `P = numerator / denominator`.
+    // TypeScript source:
+    // /**
+    // 	 * Flip a coin (two-sided die), returning true or false.
+    // 	 *
+    // 	 * This function returns true with probability `P`, where `P = numerator
+    // 	 * / denominator`. This function returns false with probability `1 - P`.
+    // 	 *
+    // 	 * The numerator must be a non-negative integer (`>= 0`).
+    // 	 *
+    // 	 * The denominator must be a positive integer (`> 0`).
+    // 	 */
+    // 	randomChance(numerator: number, denominator: number): boolean {
+    // 		return this.random(denominator) < numerator;
+    // 	}
+    //
     pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
         self.random_int(denominator) < numerator
     }
 
     /// Return a random item from the given slice.
+    // TypeScript source:
+    // /**
+    // 	 * Return a random item from the given array.
+    // 	 *
+    // 	 * This function chooses items in the array with equal probability.
+    // 	 *
+    // 	 * If there are duplicate items in the array, each duplicate is
+    // 	 * considered separately. For example, sample(['x', 'x', 'y']) returns
+    // 	 * 'x' 67% of the time and 'y' 33% of the time.
+    // 	 *
+    // 	 * The array must contain at least one item.
+    // 	 *
+    // 	 * The array must not be sparse.
+    // 	 */
+    // 	sample<T>(items: readonly T[]): T {
+    // 		if (items.length === 0) {
+    // 			throw new RangeError(`Cannot sample an empty array`);
+    // 		}
+    // 		const index = this.random(items.length);
+    // 		const item = items[index];
+    // 		if (item === undefined && !Object.prototype.hasOwnProperty.call(items, index)) {
+    // 			throw new RangeError(`Cannot sample a sparse array`);
+    // 		}
+    // 		return item;
+    // 	}
+    //
+    // TypeScript source:
+    // /**
+    // 	 * Return a random item from the given array.
+    // 	 *
+    // 	 * This function chooses items in the array with equal probability.
+    // 	 *
+    // 	 * If there are duplicate items in the array, each duplicate is
+    // 	 * considered separately. For example, sample(['x', 'x', 'y']) returns
+    // 	 * 'x' 67% of the time and 'y' 33% of the time.
+    // 	 *
+    // 	 * The array must contain at least one item.
+    // 	 *
+    // 	 * The array must not be sparse.
+    // 	 */
+    // 	sample<T>(items: readonly T[]): T {
+    // 		if (items.length === 0) {
+    // 			throw new RangeError(`Cannot sample an empty array`);
+    // 		}
+    // 		const index = this.random(items.length);
+    // 		const item = items[index];
+    // 		if (item === undefined && !Object.prototype.hasOwnProperty.call(items, index)) {
+    // 			throw new RangeError(`Cannot sample a sparse array`);
+    // 		}
+    // 		return item;
+    // 	}
+    //
     pub fn sample<'a, T>(&mut self, items: &'a [T]) -> Option<&'a T> {
         if items.is_empty() {
             return None;
@@ -317,6 +614,23 @@ impl PRNG {
     }
 
     /// A Fisher-Yates shuffle. This is how the game resolves speed ties.
+    // TypeScript source:
+    // /**
+    // 	 * A Fisher-Yates shuffle. This is how the game resolves speed ties.
+    // 	 *
+    // 	 * At least according to V4 in
+    // 	 * https://github.com/smogon/pokemon-showdown/issues/1157#issuecomment-214454873
+    // 	 */
+    // 	shuffle<T>(items: T[], start = 0, end: number = items.length) {
+    // 		while (start < end - 1) {
+    // 			const nextIndex = this.random(start, end);
+    // 			if (start !== nextIndex) {
+    // 				[items[start], items[nextIndex]] = [items[nextIndex], items[start]];
+    // 			}
+    // 			start++;
+    // 		}
+    // 	}
+    //
     pub fn shuffle<T>(&mut self, items: &mut [T]) {
         self.shuffle_range(items, 0, items.len());
     }
@@ -334,6 +648,18 @@ impl PRNG {
     }
 
     /// Generate a random seed (sodium format)
+    // TypeScript source:
+    // 
+    // 
+    // 	static generateSeed(): Gen5RNGSeed {
+    // 		return [
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 			Math.trunc(Math.random() * 2 ** 16),
+    // 		];
+    // 	}
+    //
     pub fn generate_seed() -> PRNGSeed {
         PRNGSeed::Sodium(SodiumRNG::generate_seed())
     }

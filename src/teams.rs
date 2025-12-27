@@ -27,6 +27,13 @@ pub fn to_id(name: &str) -> String {
 
 /// Pack a name by removing non-alphanumeric characters (but keeping case)
 /// Equivalent to Teams.packName() in teams.ts
+// TypeScript source:
+// /** Very similar to toID but without the lowercase conversion */
+// 	packName(this: void, name: string | undefined | null) {
+// 		if (!name) return '';
+// 		return name.replace(/[^A-Za-z0-9]+/g, '');
+// 	}
+//
 pub fn pack_name(name: &str) -> String {
     name.chars()
         .filter(|c| c.is_alphanumeric())
@@ -35,6 +42,17 @@ pub fn pack_name(name: &str) -> String {
 
 /// Unpack a name to a more readable format (best-effort without dex)
 /// Equivalent to Teams.unpackName() in teams.ts
+// TypeScript source:
+// /** Will not entirely recover a packed name, but will be a pretty readable guess */
+// 	unpackName(name: string, dexTable?: { get: (name: string) => AnyObject }) {
+// 		if (!name) return '';
+// 		if (dexTable) {
+// 			const obj = dexTable.get(name);
+// 			if (obj.exists) return obj.name;
+// 		}
+// 		return name.replace(/([0-9]+)/g, ' $1 ').replace(/([A-Z])/g, ' $1').replace(/[ ][ ]/g, ' ').trim();
+// 	}
+//
 pub fn unpack_name(name: &str) -> String {
     if name.is_empty() {
         return String::new();
@@ -303,6 +321,92 @@ pub fn export_team_with_options(team: &[PokemonSet], options: &ExportOptions) ->
 }
 
 /// Export a single Pokemon set
+// TypeScript source:
+// 
+// 
+// 	exportSet(set: PokemonSet, { hideStats, removeNicknames }: ExportOptions = {}) {
+// 		let out = ``;
+// 
+// 		// core
+// 		if (typeof removeNicknames === 'function' && set.name && set.name !== set.species) {
+// 			set.name = removeNicknames(set.name) || set.species;
+// 		}
+// 		if (set.name && set.name !== set.species && removeNicknames !== true) {
+// 			out += `${set.name} (${set.species})`;
+// 		} else {
+// 			out += set.species;
+// 		}
+// 		if (set.gender === 'M') out += ` (M)`;
+// 		if (set.gender === 'F') out += ` (F)`;
+// 		if (set.item) out += ` @ ${set.item}`;
+// 		out += `  \n`;
+// 
+// 		if (set.ability) {
+// 			out += `Ability: ${set.ability}  \n`;
+// 		}
+// 
+// 		// details
+// 		if (set.level && set.level !== 100) {
+// 			out += `Level: ${set.level}  \n`;
+// 		}
+// 		if (set.shiny) {
+// 			out += `Shiny: Yes  \n`;
+// 		}
+// 		if (typeof set.happiness === 'number' && set.happiness !== 255 && !isNaN(set.happiness)) {
+// 			out += `Happiness: ${set.happiness}  \n`;
+// 		}
+// 		if (set.pokeball) {
+// 			out += `Pokeball: ${set.pokeball}  \n`;
+// 		}
+// 		if (set.hpType) {
+// 			out += `Hidden Power: ${set.hpType}  \n`;
+// 		}
+// 		if (typeof set.dynamaxLevel === 'number' && set.dynamaxLevel !== 10 && !isNaN(set.dynamaxLevel)) {
+// 			out += `Dynamax Level: ${set.dynamaxLevel}  \n`;
+// 		}
+// 		if (set.gigantamax) {
+// 			out += `Gigantamax: Yes  \n`;
+// 		}
+// 		if (set.teraType) {
+// 			out += `Tera Type: ${set.teraType}  \n`;
+// 		}
+// 
+// 		// stats
+// 		if (!hideStats) {
+// 			if (set.evs) {
+// 				const stats = Dex.stats.ids().map(
+// 					stat => set.evs[stat] ?
+// 						`${set.evs[stat]} ${Dex.stats.shortNames[stat]}` : ``
+// 				).filter(Boolean);
+// 				if (stats.length) {
+// 					out += `EVs: ${stats.join(" / ")}  \n`;
+// 				}
+// 			}
+// 			if (set.nature) {
+// 				out += `${set.nature} Nature  \n`;
+// 			}
+// 			if (set.ivs) {
+// 				const stats = Dex.stats.ids().map(
+// 					stat => (set.ivs[stat] !== 31 && set.ivs[stat] !== undefined) ?
+// 						`${set.ivs[stat] || 0} ${Dex.stats.shortNames[stat]}` : ``
+// 				).filter(Boolean);
+// 				if (stats.length) {
+// 					out += `IVs: ${stats.join(" / ")}  \n`;
+// 				}
+// 			}
+// 		}
+// 
+// 		// moves
+// 		for (let move of set.moves) {
+// 			if (move.startsWith(`Hidden Power `) && move.charAt(13) !== '[') {
+// 				move = `Hidden Power [${move.slice(13)}]`;
+// 			}
+// 			out += `- ${move}  \n`;
+// 		}
+// 
+// 		return out;
+// 	}
+//
 pub fn export_set(set: &PokemonSet, options: &ExportOptions) -> String {
     let mut output = String::new();
 
@@ -437,6 +541,107 @@ fn get_stat_id(stat_name: &str) -> Option<&'static str> {
 }
 
 /// Parse a line from an exported team
+// TypeScript source:
+// 
+// 
+// 	parseExportedTeamLine(line: string, isFirstLine: boolean, set: PokemonSet, aggressive?: boolean) {
+// 		if (isFirstLine) {
+// 			let item;
+// 			[line, item] = line.split(' @ ');
+// 			if (item) {
+// 				set.item = item;
+// 				if (toID(set.item) === 'noitem') set.item = '';
+// 			}
+// 			if (line.endsWith(' (M)')) {
+// 				set.gender = 'M';
+// 				line = line.slice(0, -4);
+// 			}
+// 			if (line.endsWith(' (F)')) {
+// 				set.gender = 'F';
+// 				line = line.slice(0, -4);
+// 			}
+// 			if (line.endsWith(')') && line.includes('(')) {
+// 				const [name, species] = line.slice(0, -1).split('(');
+// 				set.species = Dex.species.get(species).name;
+// 				set.name = name.trim();
+// 			} else {
+// 				set.species = Dex.species.get(line).name;
+// 				set.name = '';
+// 			}
+// 		} else if (line.startsWith('Trait: ')) {
+// 			line = line.slice(7);
+// 			set.ability = aggressive ? toID(line) : line;
+// 		} else if (line.startsWith('Ability: ')) {
+// 			line = line.slice(9);
+// 			set.ability = aggressive ? toID(line) : line;
+// 		} else if (line === 'Shiny: Yes') {
+// 			set.shiny = true;
+// 		} else if (line.startsWith('Level: ')) {
+// 			line = line.slice(7);
+// 			set.level = +line;
+// 		} else if (line.startsWith('Happiness: ')) {
+// 			line = line.slice(11);
+// 			set.happiness = +line;
+// 		} else if (line.startsWith('Pokeball: ')) {
+// 			line = line.slice(10);
+// 			set.pokeball = aggressive ? toID(line) : line;
+// 		} else if (line.startsWith('Hidden Power: ')) {
+// 			line = line.slice(14);
+// 			set.hpType = aggressive ? toID(line) : line;
+// 		} else if (line.startsWith('Tera Type: ')) {
+// 			line = line.slice(11);
+// 			set.teraType = aggressive ? line.replace(/[^a-zA-Z0-9]/g, '') : line;
+// 		} else if (line === 'Gigantamax: Yes') {
+// 			set.gigantamax = true;
+// 		} else if (line.startsWith('EVs: ')) {
+// 			line = line.slice(5);
+// 			const evLines = line.split('/');
+// 			set.evs = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+// 			for (const evLine of evLines) {
+// 				const [statValue, statName] = evLine.trim().split(' ');
+// 				const statid = Dex.stats.getID(statName);
+// 				if (!statid) continue;
+// 				const value = parseInt(statValue);
+// 				set.evs[statid] = value;
+// 			}
+// 		} else if (line.startsWith('IVs: ')) {
+// 			line = line.slice(5);
+// 			const ivLines = line.split('/');
+// 			set.ivs = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
+// 			for (const ivLine of ivLines) {
+// 				const [statValue, statName] = ivLine.trim().split(' ');
+// 				const statid = Dex.stats.getID(statName);
+// 				if (!statid) continue;
+// 				let value = parseInt(statValue);
+// 				if (isNaN(value)) value = 31;
+// 				set.ivs[statid] = value;
+// 			}
+// 		} else if (/^[A-Za-z]+ (N|n)ature/.test(line)) {
+// 			let natureIndex = line.indexOf(' Nature');
+// 			if (natureIndex === -1) natureIndex = line.indexOf(' nature');
+// 			if (natureIndex === -1) return;
+// 			line = line.substr(0, natureIndex);
+// 			if (line !== 'undefined') set.nature = aggressive ? toID(line) : line;
+// 		} else if (line.startsWith('-') || line.startsWith('~')) {
+// 			line = line.slice(line.charAt(1) === ' ' ? 2 : 1);
+// 			if (line.startsWith('Hidden Power [')) {
+// 				const hpType = line.slice(14, -1);
+// 				line = 'Hidden Power ' + hpType;
+// 				if (!set.ivs && Dex.types.isName(hpType)) {
+// 					set.ivs = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
+// 					const hpIVs = Dex.types.get(hpType).HPivs || {};
+// 					for (const statid in hpIVs) {
+// 						set.ivs[statid as StatID] = hpIVs[statid as StatID]!;
+// 					}
+// 				}
+// 			}
+// 			if (line === 'Frustration' && set.happiness === undefined) {
+// 				set.happiness = 0;
+// 			}
+// 			set.moves.push(line);
+// 		}
+// 	}
+//
 pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut PokemonSet, aggressive: bool) {
     let line = line.trim();
 
@@ -637,11 +842,42 @@ pub fn import_team(buffer: &str, aggressive: bool) -> Option<Vec<PokemonSet>> {
 }
 
 /// Stub for team generator - requires random-battles data modules
+// TypeScript source:
+// 
+// 
+// 	getGenerator(format: Format | string, seed: PRNG | PRNGSeed | null = null) {
+// 		let TeamGenerator;
+// 		format = Dex.formats.get(format);
+// 		let mod = format.mod;
+// 		if (format.mod === 'monkeyspaw') mod = 'gen9';
+// 		const formatID = toID(format);
+// 		if (mod === 'gen9ssb') {
+// 			TeamGenerator = require(`../data/mods/gen9ssb/random-teams`).default;
+// 		} else if (formatID.includes('gen9babyrandombattle')) {
+// 			TeamGenerator = require(`../data/random-battles/gen9baby/teams`).default;
+// 		} else if (formatID.includes('gen9randombattle') && format.ruleTable?.has('+pokemontag:cap')) {
+// 			TeamGenerator = require(`../data/random-battles/gen9cap/teams`).default;
+// 		} else if (formatID.includes('gen9freeforallrandombattle')) {
+// 			TeamGenerator = require(`../data/random-battles/gen9ffa/teams`).default;
+// 		} else {
+// 			TeamGenerator = require(`../data/random-battles/${mod}/teams`).default;
+// 		}
+// 
+// 		return new TeamGenerator(format, seed);
+// 	}
+//
 pub fn get_generator(_format: &str, _seed: Option<u64>) -> Option<()> {
     None
 }
 
 /// Stub for team generation - requires random-battles data modules
+// TypeScript source:
+// 
+// 
+// 	generate(format: Format | string, options: PlayerOptions | null = null): PokemonSet[] {
+// 		return this.getGenerator(format, options?.seed).getTeam(options);
+// 	}
+//
 pub fn generate(_format: &str, _seed: Option<u64>) -> Option<Vec<PokemonSet>> {
     None
 }
