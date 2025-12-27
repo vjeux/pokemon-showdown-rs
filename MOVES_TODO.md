@@ -273,7 +273,7 @@ Moves with callbacks: 373
 - [x] rollout - Rollout (Physical, Rock) - 5 callbacks: basePowerCallback, onModifyMove, onAfterMove, condition::onStart, condition::onResidual
 - [x] roost - Roost (Status, Flying) - 2 callbacks: condition::onStart, condition::onType
 - [x] rototiller - Rototiller (Status, Ground) - 1 callback: onHitField
-- [ ] round - Round (Special, Normal) - 2 callbacks: basePowerCallback, onTry
+- [x] round - Round (Special, Normal) - 2 callbacks: basePowerCallback, onTry
 - [ ] ruination - Ruination (Special, Dark) - 1 callback: damageCallback
 - [ ] safeguard - Safeguard (Status, Normal) - 5 callbacks: condition::durationCallback, condition::onSetStatus, condition::onTryAddVolatile, condition::onSideStart, condition::onSideEnd
 - [ ] saltcure - Salt Cure (Physical, Rock) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
