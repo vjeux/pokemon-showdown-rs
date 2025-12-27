@@ -293,6 +293,9 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.actions.useMove(move, pokemon, options)`: magiccoat - UseMove with options object {target: ...}
 - `move.sourceEffect` read: snatch - Source effect field for move origin tracking
 - `move.flags['snatch']`: snatch - Snatch flag for moves
+- `item.onPlate`: judgment - Plate type string field
+- `item.zMove`: judgment - Z-move boolean or data flag
+- `battle.runEvent(eventName, pokemon, null, move, defaultValue)`: multiattack - Run event with default return value
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
