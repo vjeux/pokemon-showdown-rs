@@ -301,7 +301,7 @@ Moves with callbacks: 373
 - [x] solarbeam - Solar Beam (Special, Grass) - 2 callbacks: onTryMove, onBasePower
 - [x] solarblade - Solar Blade (Physical, Grass) - 2 callbacks: onTryMove, onBasePower
 - [x] sparklingaria - Sparkling Aria (Special, Water) - 1 callback: onAfterMove
-- [ ] speedswap - Speed Swap (Status, Psychic) - 1 callback: onHit
+- [x] speedswap - Speed Swap (Status, Psychic) - 1 callback: onHit
 - [ ] spiderweb - Spider Web (Status, Bug) - 1 callback: onHit
 - [ ] spikes - Spikes (Status, Ground) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
 - [ ] spikyshield - Spiky Shield (Status, Grass) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
