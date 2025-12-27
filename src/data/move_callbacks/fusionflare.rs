@@ -14,7 +14,19 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // if (this.lastSuccessfulMoveThisTurn === 'fusionbolt') {
+    if let Some(ref last_move) = battle.last_successful_move_this_turn {
+        if *last_move == ID::from("fusionbolt") {
+            // this.debug('double power');
+            battle.debug("double power");
+
+            // return this.chainModify(2);
+            return EventResult::ChainModify(2.0);
+        }
+    }
+
     EventResult::Continue
 }
 
