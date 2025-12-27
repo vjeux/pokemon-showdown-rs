@@ -1,6 +1,29 @@
 # Battle Method Review - Progress Tracker
 
-## Latest Session - Methods 111-125
+## Latest Session - Methods 126-182 (All battle.rs complete!)
+
+#### Batch 10-13: Methods 126-182 (All ✓)
+
+**Private Methods in battle.rs:**
+- Trait implementations: fmt, from, default (Rust-specific)
+- Event constructors: from_event_info, minimal
+- Choice management: validate_single_choice, parse_choice, commit_choices
+- Switch logic: do_switch, do_switch_with_drag, find_valid_switch_target
+- Move execution: run_move, get_move_target, get_move_priority, get_multi_hit_count
+- Status/hazards: apply_status, apply_hazards, apply_confusion, remove_all_hazards
+- Turn management: next_turn, run_residual, faint_messages
+- Event handlers: handle_ability/item/move/condition/side_condition_event
+- Damage/heal logs: add_damage_log, add_direct_damage_log, add_heal_log
+- Utilities: boost_stats, shuffle_range, possible_switches
+- Event system internals: dispatch_single_event, find_event_handlers
+- Move effects: spread_move_hit, get_spread_damage, run_move_effects
+- Test helpers: create_test_team
+
+**battle.rs: COMPLETE** ✓ All 186 methods reviewed
+
+## Previous Sessions
+
+### Batch 9: Methods 111-125
 
 #### Batch 9: Methods 111-125 (All ✓)
 
@@ -151,8 +174,12 @@
 ## Statistics
 
 - Total methods: 337
-- Reviewed: 125
-- Verified correct: 122
+- Reviewed: 182
+- **battle.rs: 186/186 (100%)** ✓ COMPLETE
+- battle_actions.rs: 0/76 (0%)
+- battle_queue.rs: 0/45 (0%)
+- battle_stream.rs: 0/30 (0%)
+- Verified correct: 179
 - Needs TS comments: 3 (Battle::new, switch_in, drag_in/run_switch)
 - Needs investigation: 2 (start_battle, update_speed)
-- Remaining: 212
+- Remaining: 155 (all in other files)
