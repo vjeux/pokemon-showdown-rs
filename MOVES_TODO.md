@@ -227,7 +227,7 @@ Moves with callbacks: 373
 - [x] phantomforce - Phantom Force (Physical, Ghost) - 1 callback: onTryMove
 - [x] photongeyser - Photon Geyser (Special, Psychic) - 1 callback: onModifyMove
 - [x] pikapapow - Pika Papow (Special, Electric) - 1 callback: basePowerCallback
-- [ ] pluck - Pluck (Physical, Flying) - 1 callback: onHit
+- [x] pluck - Pluck (Physical, Flying) - 1 callback: onHit
 - [ ] polarflare - Polar Flare (Special, Fire) - 2 callbacks: onHit, onAfterMoveSecondarySelf
 - [ ] pollenpuff - Pollen Puff (Special, Bug) - 3 callbacks: onTryHit, onTryMove, onHit
 - [ ] poltergeist - Poltergeist (Physical, Ghost) - 2 callbacks: onTry, onTryHit
