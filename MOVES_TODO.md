@@ -229,7 +229,7 @@ Moves with callbacks: 373
 - [x] pikapapow - Pika Papow (Special, Electric) - 1 callback: basePowerCallback
 - [x] pluck - Pluck (Physical, Flying) - 1 callback: onHit
 - [x] polarflare - Polar Flare (Special, Fire) - 2 callbacks: onHit, onAfterMoveSecondarySelf
-- [ ] pollenpuff - Pollen Puff (Special, Bug) - 3 callbacks: onTryHit, onTryMove, onHit
+- [x] pollenpuff - Pollen Puff (Special, Bug) - 3 callbacks: onTryHit, onTryMove, onHit
 - [ ] poltergeist - Poltergeist (Physical, Ghost) - 2 callbacks: onTry, onTryHit
 - [ ] powder - Powder (Status, Bug) - 2 callbacks: condition::onStart, condition::onTryMove
 - [ ] powershift - Power Shift (Status, Normal) - 4 callbacks: condition::onStart, condition::onCopy, condition::onEnd, condition::onRestart
