@@ -68,7 +68,7 @@ Moves with callbacks: 373
 - [x] doodle - Doodle (Status, Normal) - 1 callback: onHit
 - [x] doomdesire - Doom Desire (Special, Steel) - 1 callback: onTry
 - [x] doubleshock - Double Shock (Physical, Electric) - 1 callback: onTryMove
-- [ ] dragoncheer - Dragon Cheer (Status, Dragon) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
+- [x] dragoncheer - Dragon Cheer (Status, Dragon) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
 - [ ] dragonenergy - Dragon Energy (Special, Dragon) - 1 callback: basePowerCallback
 - [ ] dreameater - Dream Eater (Special, Psychic) - 1 callback: onTryImmunity
 - [ ] echoedvoice - Echoed Voice (Special, Normal) - 4 callbacks: basePowerCallback, onTryMove, condition::onFieldStart, condition::onFieldRestart
