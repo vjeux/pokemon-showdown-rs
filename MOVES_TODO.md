@@ -170,6 +170,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.queue.resolveAction({choice, pokemon, moveid, targetLoc})`: instruct - Resolve action from choice object
 - `battle.lastMove`: copycat - Battle's last move used (different from pokemon.lastMove)
 - `move.flags['failcopycat']`: copycat - Copycat-blocked flag
+- `move.flags['failmimic']`: mimic - Mimic-blocked flag
 - `move.flags['nosleeptalk']`: sleeptalk - Sleep Talk-blocked flag
 - `move.flags['noassist']`: assist - Assist-blocked flag
 - `move.basePower` read access: copycat, sleeptalk - Read base power value
