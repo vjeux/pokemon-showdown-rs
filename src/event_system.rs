@@ -130,6 +130,117 @@ pub struct EffectState {
     pub data: std::collections::HashMap<String, serde_json::Value>,
 }
 
+impl EffectState {
+    /// Get a boolean field from custom data
+    /// Equivalent to volatile.fieldName or effectState.fieldName in TypeScript
+    pub fn get_bool(&self, key: &str) -> Option<bool> {
+        self.data.get(key).and_then(|v| v.as_bool())
+    }
+
+    /// Set a boolean field in custom data
+    pub fn set_bool(&mut self, key: &str, value: bool) {
+        self.data.insert(key.to_string(), serde_json::Value::Bool(value));
+    }
+
+    /// Get an integer field from custom data
+    /// Equivalent to volatile.fieldName or effectState.fieldName in TypeScript
+    pub fn get_i32(&self, key: &str) -> Option<i32> {
+        self.data.get(key).and_then(|v| v.as_i64()).map(|n| n as i32)
+    }
+
+    /// Set an integer field in custom data
+    pub fn set_i32(&mut self, key: &str, value: i32) {
+        self.data.insert(key.to_string(), serde_json::Value::Number(value.into()));
+    }
+
+    /// Get a usize field from custom data (for slot indices)
+    pub fn get_usize(&self, key: &str) -> Option<usize> {
+        self.data.get(key).and_then(|v| v.as_u64()).map(|n| n as usize)
+    }
+
+    /// Set a usize field in custom data
+    pub fn set_usize(&mut self, key: &str, value: usize) {
+        self.data.insert(key.to_string(), serde_json::Value::Number((value as u64).into()));
+    }
+
+    /// Get source slot from custom data
+    /// Equivalent to volatile.sourceSlot or effectState.sourceSlot in TypeScript
+    pub fn get_source_slot(&self) -> Option<usize> {
+        self.get_usize("sourceSlot")
+    }
+
+    /// Set source slot in custom data
+    pub fn set_source_slot(&mut self, slot: usize) {
+        self.set_usize("sourceSlot", slot);
+    }
+
+    /// Check if lostFocus flag is set
+    /// Equivalent to effectState.lostFocus in TypeScript (focuspunch)
+    pub fn get_lost_focus(&self) -> bool {
+        self.get_bool("lostFocus").unwrap_or(false)
+    }
+
+    /// Set lostFocus flag
+    pub fn set_lost_focus(&mut self, value: bool) {
+        self.set_bool("lostFocus", value);
+    }
+
+    /// Get layers count
+    /// Equivalent to volatile.layers in TypeScript (gmaxchistrike, psychup)
+    pub fn get_layers(&self) -> i32 {
+        self.get_i32("layers").unwrap_or(0)
+    }
+
+    /// Set layers count
+    pub fn set_layers(&mut self, layers: i32) {
+        self.set_i32("layers", layers);
+    }
+
+    /// Get hasDragonType flag
+    /// Equivalent to volatile.hasDragonType in TypeScript (dragoncheer)
+    pub fn get_has_dragon_type(&self) -> bool {
+        self.get_bool("hasDragonType").unwrap_or(false)
+    }
+
+    /// Set hasDragonType flag
+    pub fn set_has_dragon_type(&mut self, value: bool) {
+        self.set_bool("hasDragonType", value);
+    }
+
+    /// Get hp value
+    /// Equivalent to effectState.hp in TypeScript (wish)
+    pub fn get_hp(&self) -> Option<i32> {
+        self.get_i32("hp")
+    }
+
+    /// Set hp value
+    pub fn set_hp(&mut self, hp: i32) {
+        self.set_i32("hp", hp);
+    }
+
+    /// Get starting turn
+    /// Equivalent to effectState.startingTurn in TypeScript (wish)
+    pub fn get_starting_turn(&self) -> Option<i32> {
+        self.get_i32("startingTurn")
+    }
+
+    /// Set starting turn
+    pub fn set_starting_turn(&mut self, turn: i32) {
+        self.set_i32("startingTurn", turn);
+    }
+
+    /// Get pranksterBoosted flag
+    /// Equivalent to effectState.pranksterBoosted in TypeScript (magiccoat)
+    pub fn get_prankster_boosted(&self) -> bool {
+        self.get_bool("pranksterBoosted").unwrap_or(false)
+    }
+
+    /// Set pranksterBoosted flag
+    pub fn set_prankster_boosted(&mut self, value: bool) {
+        self.set_bool("pranksterBoosted", value);
+    }
+}
+
 /// Event handler with priority information
 #[derive(Debug, Clone)]
 pub struct EventHandler {

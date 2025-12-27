@@ -41,22 +41,22 @@ The following are advanced features that require more complex infrastructure:
 - ✓ `battle.dex.types.get(typeName).damageTaken[attackType]`: conversion2 - Type chart effectiveness (DONE via get_type_damage_taken)
 
 **Volatile Field Access** (require EffectState field accessors):
-- `pokemon.volatiles[name].duration`: perishsong - Access duration field of volatile
-- `pokemon.volatiles[name]?.fieldName`: focuspunch, skydrop - Optional chaining for volatile field access
-- `pokemon.volatiles['twoturnmove'].source`: skydrop - Access source from twoturnmove volatile
-- `pokemon.volatiles[name].sourceSlot`: leechseed, wish - Access sourceSlot field from volatile
-- `pokemon.volatiles` deletion: uproar - delete volatiles[name]
-- `volatile.layers`: psychup - Volatile condition layers field (e.g., gmaxchistrike)
-- `volatile.hasDragonType`: psychup - Boolean field on volatile (e.g., dragoncheer)
-- `volatile.source`: orderup - Source pokemon reference in volatile condition
+- ✓ `pokemon.volatiles[name].duration`: perishsong - Access duration field of volatile (DONE - EffectState.duration field)
+- ✓ `pokemon.volatiles[name]?.fieldName`: focuspunch, skydrop - Optional chaining for volatile field access (DONE - use get_bool/get_i32 methods)
+- ✓ `pokemon.volatiles['twoturnmove'].source`: skydrop - Access source from twoturnmove volatile (DONE - EffectState.source field)
+- ✓ `pokemon.volatiles[name].sourceSlot`: leechseed, wish - Access sourceSlot field from volatile (DONE - get_source_slot method)
+- ✓ `pokemon.volatiles` deletion: uproar - delete volatiles[name] (DONE - use pokemon.remove_volatile)
+- ✓ `volatile.layers`: psychup - Volatile condition layers field (e.g., gmaxchistrike) (DONE - get_layers/set_layers methods)
+- ✓ `volatile.hasDragonType`: psychup - Boolean field on volatile (e.g., dragoncheer) (DONE - get_has_dragon_type/set_has_dragon_type methods)
+- ✓ `volatile.source`: orderup - Source pokemon reference in volatile condition (DONE - EffectState.source field)
 
 **Effect State Custom Fields** (require EffectState field system):
-- `battle.effectState.lostFocus`: focuspunch - lostFocus boolean field in effect state
-- `battle.effectState.hp`: wish - hp field in effect state (mutable)
-- `battle.effectState.startingTurn`: wish - startingTurn field in effect state (mutable)
-- `battle.effectState.sourceSlot`: wish - sourceSlot field in effect state
-- `battle.effectState.source.name`: wish - Access source pokemon name through effect state
-- `battle.effectState.pranksterBoosted`: magiccoat - Effect state prankster field (mutable)
+- ✓ `battle.effectState.lostFocus`: focuspunch - lostFocus boolean field in effect state (DONE - get_lost_focus/set_lost_focus methods)
+- ✓ `battle.effectState.hp`: wish - hp field in effect state (mutable) (DONE - get_hp/set_hp methods)
+- ✓ `battle.effectState.startingTurn`: wish - startingTurn field in effect state (mutable) (DONE - get_starting_turn/set_starting_turn methods)
+- ✓ `battle.effectState.sourceSlot`: wish - sourceSlot field in effect state (DONE - get_source_slot/set_source_slot methods)
+- ✓ `battle.effectState.source.name`: wish - Access source pokemon name through effect state (DONE - use EffectState.source to get pokemon position, then access name)
+- ✓ `battle.effectState.pranksterBoosted`: magiccoat - Effect state prankster field (mutable) (DONE - get_prankster_boosted/set_prankster_boosted methods)
 
 **Species Data Structure**:
 - ✓ `pokemon.baseSpecies.baseSpecies`: telekinesis - Base species of base species (for forms like Gengar-Mega) (DONE via get_base_species_base_species)
