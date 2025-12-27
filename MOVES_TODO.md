@@ -329,6 +329,9 @@ The following moves require infrastructure that doesn't exist yet:
 - `move.willChangeForme`: relicsong - Mutable field for tracking forme change
 - `pokemon.species.id`: relicsong - Species ID string field
 - `pokemon.formeChange(name, effect, noSwitch, unknown, message)`: relicsong - Change pokemon forme
+- `action.order`: quash - Action order/priority field (mutable) for turn order manipulation
+- `volatile.layers`: psychup - Volatile condition layers field (e.g., gmaxchistrike)
+- `volatile.hasDragonType`: psychup - Boolean field on volatile (e.g., dragoncheer)
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
