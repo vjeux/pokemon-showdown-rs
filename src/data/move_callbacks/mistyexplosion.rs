@@ -14,7 +14,33 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = pokemon_pos;
+
+    // if (this.field.isTerrain('mistyterrain') && source.isGrounded()) {
+    let is_misty_terrain = battle.field.terrain == Some(ID::from("mistyterrain"));
+
+    if !is_misty_terrain {
+        return EventResult::Continue;
+    }
+
+    let is_grounded = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.is_grounded(battle)
+    };
+
+    if is_grounded {
+        // this.debug('misty terrain boost');
+        // (debug is typically not needed in Rust implementation)
+
+        // return this.chainModify(1.5);
+        return EventResult::ChainModifyFraction(3, 2); // 1.5 = 3/2
+    }
+
     EventResult::Continue
 }
 
