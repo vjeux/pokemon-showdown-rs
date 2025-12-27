@@ -17,24 +17,24 @@ The following moves require infrastructure that doesn't exist yet:
 The following are advanced features that require more complex infrastructure:
 
 **Runtime Mutable Move Fields** (require ActiveMove mutation system):
-- `move.target` mutable: curse - Change move target
-- `move.nonGhostTarget`: curse - Non-ghost target field
-- `move.volatileStatus` deletion: curse - Delete volatile status field from move
+- ✓ `move.target` mutable: curse - Change move target (DONE - ActiveMove.target field is mutable)
+- ✓ `move.nonGhostTarget`: curse - Non-ghost target field (DONE - ActiveMove.non_ghost_target field)
+- ✓ `move.volatileStatus` deletion: curse - Delete volatile status field from move (DONE - set ActiveMove.volatile_status to None)
 - `move.onHit` deletion: curse - Delete onHit callback from move
-- `move.self` mutable: curse - Modify move self-effects with boosts
+- ✓ `move.self` mutable: curse - Modify move self-effects with boosts (DONE - ActiveMove.self_effect field)
 - `move.flags` field deletion: skydrop - delete move.flags['contact']
-- `move.hasBounced`: magiccoat - Has bounced mutable boolean flag
-- `move.pranksterBoosted`: magiccoat - Prankster boosted mutable field
-- `move.forceSTAB`: waterpledge - Force STAB calculation flag (mutable)
-- `move.sideCondition`: waterpledge - Side condition ID to apply from move (mutable)
-- `move.self`: waterpledge - Self-effects object with fields like sideCondition, chance
-- `move.willChangeForme`: relicsong - Mutable field for tracking forme change
-- `move.name`: skydrop, spite - Move name string field (needs active move access)
-- `move.id`: quickguard, sleeptalk - Move ID string field (needs active move access)
-- `move.priority` read: upperhand, suckerpunch - Move priority value (needs active move access)
-- `move.flags['*']`: Various flags need active move access
-- `move.hitTargets`: sparklingaria - Array of pokemon hit (runtime state)
-- `move.sourceEffect` read: snatch - Source effect field
+- ✓ `move.hasBounced`: magiccoat - Has bounced mutable boolean flag (DONE - ActiveMove.has_bounced field)
+- ✓ `move.pranksterBoosted`: magiccoat - Prankster boosted mutable field (DONE - ActiveMove.prankster_boosted field)
+- ✓ `move.forceSTAB`: waterpledge - Force STAB calculation flag (mutable) (DONE - ActiveMove.force_stab field)
+- ✓ `move.sideCondition`: waterpledge - Side condition ID to apply from move (mutable) (DONE - ActiveMove.side_condition field)
+- ✓ `move.self`: waterpledge - Self-effects object with fields like sideCondition, chance (DONE - ActiveMove.self_effect field)
+- ✓ `move.willChangeForme`: relicsong - Mutable field for tracking forme change (DONE - ActiveMove.will_change_forme field)
+- ✓ `move.name`: skydrop, spite - Move name string field (needs active move access) (DONE - ActiveMove.name field)
+- ✓ `move.id`: quickguard, sleeptalk - Move ID string field (needs active move access) (DONE - ActiveMove.id field)
+- ✓ `move.priority` read: upperhand, suckerpunch - Move priority value (needs active move access) (DONE - ActiveMove.priority field)
+- ✓ `move.flags['*']`: Various flags need active move access (DONE - ActiveMove.flags field)
+- ✓ `move.hitTargets`: sparklingaria - Array of pokemon hit (runtime state) (DONE - ActiveMove.hit_targets field)
+- ✓ `move.sourceEffect` read: snatch - Source effect field (DONE - ActiveMove.source_effect field)
 
 **Type System Access**:
 - ✓ `battle.dex.types.names()`: conversion2 - Get all type names iterator (DONE via get_all_type_names)

@@ -161,6 +161,12 @@ pub struct ActiveMove {
     pub z_move: Option<ZMoveData>,
     pub sleep_usable: bool,
 
+    // Special move fields
+    /// Non-ghost target for Curse (used when ghost type uses it differently)
+    pub non_ghost_target: Option<String>,
+    /// Whether this move will cause a forme change (relicsong)
+    pub will_change_forme: bool,
+
     // Secondary effects
     pub secondaries: Vec<SecondaryEffect>,
     pub self_effect: Option<SelfEffect>,

@@ -823,6 +823,10 @@ impl Dex {
             z_move: None,
             sleep_usable: false,
 
+            // Special move fields
+            non_ghost_target: None,
+            will_change_forme: false,
+
             // Secondary effects - convert from move_data.secondary
             secondaries: if let Some(ref sec) = move_data.secondary {
                 vec![Self::convert_secondary(sec)]
