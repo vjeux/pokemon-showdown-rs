@@ -219,7 +219,7 @@ Moves with callbacks: 373
 - [x] obstruct - Obstruct (Status, Dark) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [x] octolock - Octolock (Status, Fighting) - 4 callbacks: onTryImmunity, condition::onStart, condition::onResidual, condition::onTrapPokemon
 - [x] odorsleuth - Odor Sleuth (Status, Normal) - 1 callback: onTryHit
-- [ ] orderup - Order Up (Physical, Dragon) - 1 callback: onAfterMoveSecondarySelf
+- [x] orderup - Order Up (Physical, Dragon) - 1 callback: onAfterMoveSecondarySelf
 - [ ] painsplit - Pain Split (Status, Normal) - 1 callback: onHit
 - [ ] partingshot - Parting Shot (Status, Dark) - 1 callback: onHit
 - [ ] payback - Payback (Physical, Dark) - 1 callback: basePowerCallback
