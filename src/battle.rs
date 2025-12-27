@@ -1305,6 +1305,8 @@ impl Battle {
     }
 
     /// Get total Pokemon left for all foes of a side
+    /// Rust helper - JavaScript calls side.foePokemonLeft() directly
+    /// This helper calculates foe Pokemon count from the Battle level
     fn get_foe_pokemon_left(&self, side_idx: usize) -> usize {
         match self.game_type {
             GameType::FreeForAll => {
@@ -1335,23 +1337,18 @@ impl Battle {
         }
     }
 
-    /// End the battle
+    /// End the battle (placeholder method - JavaScript has empty implementation)
+    /// The actual battle-ending logic is in win()
     // TypeScript source:
     //  end() {}
     //
-    pub fn end(&mut self, winner: Option<&str>) {
-        self.ended = true;
-        self.winner = winner.map(|s| s.to_string());
-
-        // Clone winner to avoid borrow conflict
-        if let Some(w) = self.winner.clone() {
-            self.add_log("win", &[&w]);
-        } else {
-            self.add_log("tie", &[]);
-        }
+    pub fn end(&mut self) {
+        // JavaScript implementation is empty - placeholder method
+        // All battle-ending logic should use win() instead
     }
 
     /// Get the next effect order number
+    /// Rust helper - JavaScript uses this.effectOrder++ inline in initEffectState
     pub fn next_effect_order(&mut self) -> i32 {
         self.effect_order += 1;
         self.effect_order
