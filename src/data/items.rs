@@ -7,8 +7,6 @@
 //
 // Access items via Battle.dex.get_item(name) or Battle.dex.items
 
-use crate::dex_data::ID;
-
 // Re-export item data type from dex
 pub use crate::dex::ItemData;
 

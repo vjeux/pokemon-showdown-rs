@@ -7,8 +7,6 @@
 //
 // Access abilities via Battle.dex.get_ability(name) or Battle.dex.abilities
 
-use crate::dex_data::ID;
-
 // Re-export ability data type from dex
 pub use crate::dex::AbilityData;
 

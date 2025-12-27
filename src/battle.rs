@@ -9,7 +9,7 @@ use std::collections::{HashSet, HashMap};
 use serde::{Deserialize, Serialize};
 
 use crate::dex_data::{ID, GameType, SideID, EffectState, StatsTable};
-use crate::field::{Field, get_weather_type_modifier, get_terrain_damage_modifier};
+use crate::field::Field;
 use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
 use crate::side::{Side, RequestState, Choice};
@@ -1763,6 +1763,18 @@ impl Battle {
             return;
         }
 
+        // JS: if (action.choice === 'switch' && action.pokemon.status) {
+        //         this.singleEvent('CheckShow', this.dex.abilities.getByID('naturalcure'), null, action.pokemon);
+        //     }
+        // Check if the switching Pokemon has a status condition
+        if let Some(active_idx) = self.sides[side_idx].active.get(slot).copied().flatten() {
+            let has_status = !self.sides[side_idx].pokemon[active_idx].status.is_empty();
+            if has_status {
+                let naturalcure_id = ID::new("naturalcure");
+                self.single_event("CheckShow", &naturalcure_id, Some((side_idx, active_idx)), None, None);
+            }
+        }
+
         // Get the old Pokemon's name for logging
         let _old_name = self.sides[side_idx].get_active(slot)
             .map(|p| p.name.clone())
@@ -2013,9 +2025,17 @@ impl Battle {
         // Deduct PP
         self.sides[side_idx].pokemon[poke_idx].deduct_pp(move_id, 1);
 
-        // Check if move hits, calculate damage, apply effects
-        // For now, implement basic damage application
-        self.use_move(side_idx, poke_idx, move_id, target_side_idx, target_poke_idx);
+        // Execute the move using battle_actions module
+        // This calls the line-by-line port of battle-actions.ts useMove()
+        crate::battle_actions::use_move(
+            self,
+            move_id,
+            (side_idx, poke_idx),
+            Some((target_side_idx, target_poke_idx)),
+            None, // source_effect
+            None, // z_move
+            None, // max_move
+        );
     }
 
     /// Get the target for a move based on target_loc
@@ -2039,470 +2059,6 @@ impl Battle {
                 .and_then(|opt| *opt)
                 .unwrap_or(0);
             (foe_idx, target_poke_idx)
-        }
-    }
-
-    /// Apply a move's effects
-    fn use_move(&mut self, attacker_side: usize, attacker_idx: usize, move_id: &ID, target_side: usize, target_idx: usize) {
-        // Load move data - we need to get this from the Dex
-        // For now, we'll implement inline with basic damage
-
-        // Check flinch (flinch prevents action and is consumed)
-        let flinch_id = ID::new("flinch");
-        if self.sides[attacker_side].pokemon[attacker_idx].has_volatile(&flinch_id) {
-            self.sides[attacker_side].pokemon[attacker_idx].remove_volatile(&flinch_id);
-            let name = {
-                let side_id = self.sides[attacker_side].id_str();
-                let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                format!("{}: {}", side_id, pokemon.name)
-            };
-            self.add_log("cant", &[&name, "flinch"]);
-            return;
-        }
-
-        // Check paralysis
-        let paralysis_check = self.random(4);
-        if self.sides[attacker_side].pokemon[attacker_idx].status.as_str() == "par" && paralysis_check == 0 {
-            let name = {
-                let side_id = self.sides[attacker_side].id_str();
-                let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                format!("{}: {}", side_id, pokemon.name)
-            };
-            self.add_log("cant", &[&name, "par"]);
-            return;
-        }
-
-        // Check freeze (20% thaw chance)
-        if self.sides[attacker_side].pokemon[attacker_idx].status.as_str() == "frz" {
-            let thaw_check = self.random(5);
-            if thaw_check != 0 {
-                let name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                self.add_log("cant", &[&name, "frz"]);
-                return;
-            } else {
-                // Thaw out
-                self.sides[attacker_side].pokemon[attacker_idx].cure_status();
-                let name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                self.add_log("-curestatus", &[&name, "frz", "[msg]"]);
-            }
-        }
-
-        // Check sleep
-        if self.sides[attacker_side].pokemon[attacker_idx].status.as_str() == "slp" {
-            let duration = self.sides[attacker_side].pokemon[attacker_idx].status_state.duration;
-            if let Some(d) = duration {
-                if d > 0 {
-                    self.sides[attacker_side].pokemon[attacker_idx].status_state.duration = Some(d - 1);
-                    let name = {
-                        let side_id = self.sides[attacker_side].id_str();
-                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                        format!("{}: {}", side_id, pokemon.name)
-                    };
-                    self.add_log("cant", &[&name, "slp"]);
-                    return;
-                } else {
-                    // Wake up
-                    self.sides[attacker_side].pokemon[attacker_idx].cure_status();
-                    let name = {
-                        let side_id = self.sides[attacker_side].id_str();
-                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                        format!("{}: {}", side_id, pokemon.name)
-                    };
-                    self.add_log("-curestatus", &[&name, "slp", "[msg]"]);
-                }
-            }
-        }
-
-        // Check confusion (33% chance to hit self in Gen 7+)
-        let confusion_id = ID::new("confusion");
-        if self.sides[attacker_side].pokemon[attacker_idx].has_volatile(&confusion_id) {
-            // Decrement confusion counter
-            let snap_out = {
-                if let Some(state) = self.sides[attacker_side].pokemon[attacker_idx].get_volatile_mut(&confusion_id) {
-                    if let Some(ref mut duration) = state.duration {
-                        if *duration > 0 {
-                            *duration -= 1;
-                        }
-                        *duration == 0
-                    } else {
-                        false
-                    }
-                } else {
-                    false
-                }
-            };
-
-            if snap_out {
-                self.sides[attacker_side].pokemon[attacker_idx].remove_volatile(&confusion_id);
-                let name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                self.add_log("-end", &[&name, "confusion"]);
-            } else {
-                let name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                self.add_log("-activate", &[&name, "confusion"]);
-
-                // 33% chance to hit self (Gen 7+)
-                if self.random(3) == 0 {
-                    // Calculate confusion damage: 40 BP typeless physical move
-                    let (atk, def, level) = {
-                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                        (pokemon.stored_stats.atk as i32, pokemon.stored_stats.def as i32, pokemon.level as i32)
-                    };
-                    let base_damage = ((2 * level / 5 + 2) * 40 * atk / def.max(1)) / 50 + 2;
-                    let random_factor = 85 + self.random(16);
-                    let confusion_damage = (base_damage * random_factor / 100).max(1);
-
-                    self.sides[attacker_side].pokemon[attacker_idx].take_damage(confusion_damage);
-                    let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
-                    let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
-                    self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] confusion"]);
-                    return; // Can't use the move this turn
-                }
-            }
-        }
-
-        // Set last move
-        self.sides[attacker_side].pokemon[attacker_idx].move_this_turn = Some(move_id.clone());
-        self.sides[attacker_side].pokemon[attacker_idx].last_move_used = Some(move_id.clone());
-
-        // Choice item locking - lock the Pokemon into this move
-        let item = self.sides[attacker_side].pokemon[attacker_idx].item.as_str();
-        if matches!(item, "choiceband" | "choicescarf" | "choicespecs") {
-            self.sides[attacker_side].pokemon[attacker_idx].locked_move = Some(move_id.clone());
-        }
-
-        // Check if target is valid
-        if target_side >= self.sides.len() || target_idx >= self.sides[target_side].pokemon.len() {
-            return;
-        }
-
-        let target_fainted = self.sides[target_side].pokemon[target_idx].is_fainted();
-        if target_fainted {
-            self.add_log("-notarget", &[]);
-
-            // Self-KO moves (Selfdestruct, Explosion) should still cause user to faint
-            // even if there's no target
-            match move_id.as_str() {
-                "selfdestruct" | "explosion" => {
-                    if !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
-                        let attacker_name = {
-                            let side_id = self.sides[attacker_side].id_str();
-                            let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                            format!("{}: {}", side_id, pokemon.name)
-                        };
-
-                        self.sides[attacker_side].pokemon[attacker_idx].hp = 0;
-                        self.add_log("-damage", &[&attacker_name, "0 fnt"]);
-                        self.add_log("faint", &[&attacker_name]);
-                    }
-                }
-                "lunardance" | "healingwish" | "memento" => {
-                    // Other self-KO moves - handle similarly if needed
-                    // For now, only implementing selfdestruct/explosion
-                }
-                _ => {}
-            }
-
-            return;
-        }
-
-        // Run BeforeMove event for volatile conditions (e.g., attract)
-        // JS: const willTryMove = this.battle.runEvent('BeforeMove', pokemon, target, move);
-        let will_try_move = self.run_before_move_event((attacker_side, attacker_idx), (target_side, target_idx), move_id);
-        if !will_try_move {
-            // BeforeMove returned false, move is prevented
-            return;
-        }
-
-        // Check accuracy
-        let mut accuracy = self.get_move_accuracy(move_id);
-
-        // Weather-based accuracy modifiers
-        let weather = self.field.weather.as_str();
-        match (move_id.as_str(), weather) {
-            // Thunder and Hurricane always hit in rain
-            ("thunder" | "hurricane", "raindance" | "rain" | "primordialsea") => accuracy = 101,
-            // Blizzard always hits in hail
-            ("blizzard", "hail" | "snow") => accuracy = 101,
-            // Thunder and Hurricane have lower accuracy in sun
-            ("thunder" | "hurricane", "sunnyday" | "sun" | "desolateland") => accuracy = 50,
-            _ => {}
-        }
-
-        if accuracy < 100 {
-            // Get accuracy/evasion boosts
-            let acc_boost = self.sides[attacker_side].pokemon[attacker_idx].boosts.accuracy;
-            let eva_boost = self.sides[target_side].pokemon[target_idx].boosts.evasion;
-            let effective_boost = acc_boost - eva_boost;
-
-            // Calculate effective accuracy with boosts
-            let accuracy_modifier = if effective_boost >= 0 {
-                (3 + effective_boost as i32) as f64 / 3.0
-            } else {
-                3.0 / (3 + (-effective_boost) as i32) as f64
-            };
-
-            let effective_accuracy = (accuracy as f64 * accuracy_modifier) as i32;
-            let roll = self.random(100);
-
-            if roll >= effective_accuracy {
-                let attacker_name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                self.add_log("-miss", &[&attacker_name]);
-                return;
-            }
-        }
-
-        // Check volatile condition TryHit events (Protect, Baneful Bunker, etc.)
-        // This must happen before damage calculation
-        if !self.check_volatile_try_hit((target_side, target_idx), (attacker_side, attacker_idx), move_id) {
-            // Move was blocked by a volatile condition (e.g., Protect)
-            return;
-        }
-
-        // Determine number of hits for multi-hit moves
-        let hit_count = self.get_multi_hit_count(move_id);
-        let mut total_damage = 0i32;
-        let mut hits_landed = 0i32;
-        let mut was_crit = false;
-
-        for _hit in 0..hit_count {
-            // Check if target fainted during multi-hit
-            if self.sides[target_side].pokemon[target_idx].is_fainted() {
-                break;
-            }
-
-            // TODO: Implement damage calculation through event system
-            // Should call getDamage equivalent (battle-actions.ts:1583)
-            // Calculate damage for this hit
-            // let (damage, is_crit) = self.calculate_move_damage(attacker_side, attacker_idx, target_side, target_idx, move_id);
-            let damage = 0;
-            let is_crit = false;
-            if is_crit {
-                was_crit = true;
-            }
-
-            if damage > 0 {
-                hits_landed += 1;
-                total_damage += damage;
-
-                // Apply damage
-                self.sides[target_side].pokemon[target_idx].take_damage(damage);
-
-                let target_name = {
-                    let side_id = self.sides[target_side].id_str();
-                    let pokemon = &self.sides[target_side].pokemon[target_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                let hp = self.sides[target_side].pokemon[target_idx].hp;
-                let maxhp = self.sides[target_side].pokemon[target_idx].maxhp;
-                self.add_log("-damage", &[&target_name, &format!("{}/{}", hp, maxhp)]);
-            }
-        }
-
-        // Anger Point: Maximizes Attack when hit by a critical hit
-        if was_crit {
-            let target_ability = self.sides[target_side].pokemon[target_idx].ability.as_str();
-            if target_ability == "angerpoint" {
-                let target_hp = self.sides[target_side].pokemon[target_idx].hp;
-                if target_hp > 0 {
-                    // Boost Attack to +6 (12 stages since each boost is +0.5)
-                    self.boost(&[("atk", 12)], (target_side, target_idx), Some((target_side, target_idx)), None);
-                }
-            }
-        }
-
-        // Log hit count for multi-hit moves
-        if hit_count > 1 && hits_landed > 0 {
-            self.add_log("-hitcount", &[&hits_landed.to_string()]);
-        }
-
-        if total_damage > 0 {
-            // Apply recoil damage for recoil moves (based on total damage)
-            let recoil_fraction = match move_id.as_str() {
-                "bravebird" | "flareblitz" | "woodhammer" | "wildcharge" => 1.0 / 3.0,
-                "headsmash" => 0.5,
-                "doubleedge" | "takedown" => 1.0 / 4.0,
-                _ => 0.0,
-            };
-
-            if recoil_fraction > 0.0 {
-                let recoil_damage = ((total_damage as f64 * recoil_fraction) as i32).max(1);
-                self.sides[attacker_side].pokemon[attacker_idx].take_damage(recoil_damage);
-
-                let attacker_name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
-                let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
-                self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), "[from] Recoil"]);
-            }
-
-            // Flare Blitz has 10% burn chance
-            if move_id.as_str() == "flareblitz" && self.random(10) == 0 {
-                self.apply_status(target_side, target_idx, "brn");
-            }
-
-            // Life Orb recoil (10% of max HP)
-            let attacker_item = self.sides[attacker_side].pokemon[attacker_idx].item.as_str();
-            if attacker_item == "lifeorb" {
-                let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
-                let life_orb_damage = (maxhp / 10).max(1);
-                self.sides[attacker_side].pokemon[attacker_idx].take_damage(life_orb_damage);
-
-                let attacker_name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
-                let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
-                self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), "[from] item: Life Orb"]);
-            }
-
-            // Contact ability damage (Iron Barbs, Rough Skin)
-            // Check if move makes contact
-            let contact_moves = [
-                "tackle", "bodyslam", "doubleedge", "takedown", "quickattack", "slash",
-                "earthquake", "closecombat", "uturn", "knockoff", "ironhead", "crunch",
-                "bravebird", "flareblitz", "woodhammer", "wildcharge", "headsmash",
-                "dragonclaw", "stoneedge", "waterfall", "drillrun", "crosschop",
-                "bulletpunch", "machpunch", "iceshard", "aquajet", "shadowclaw",
-                "nightslash", "leafblade", "psychocut", "aerialace", "dragonrush",
-                "flipturn", "bounce", "fly", "dive", "dig", "skyattack",
-            ];
-            let is_contact = contact_moves.contains(&move_id.as_str());
-
-            if is_contact && !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
-                let defender_ability = self.sides[target_side].pokemon[target_idx].ability.as_str().to_lowercase();
-
-                if defender_ability == "ironbarbs" || defender_ability == "roughskin" {
-                    let attacker_maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
-                    let contact_damage = (attacker_maxhp / 8).max(1);
-                    self.sides[attacker_side].pokemon[attacker_idx].take_damage(contact_damage);
-
-                    let attacker_name = {
-                        let side_id = self.sides[attacker_side].id_str();
-                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                        format!("{}: {}", side_id, pokemon.name)
-                    };
-                    let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
-                    let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
-                    let ability_name = if defender_ability == "ironbarbs" { "Iron Barbs" } else { "Rough Skin" };
-                    self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), &format!("[from] ability: {}", ability_name)]);
-                }
-
-                // Aftermath: damages attacker by 1/4 max HP when KO'd by contact move
-                if defender_ability == "aftermath" {
-                    let defender_hp = self.sides[target_side].pokemon[target_idx].hp;
-                    if defender_hp == 0 {
-                        let attacker_maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
-                        let contact_damage = (attacker_maxhp / 4).max(1);
-                        self.sides[attacker_side].pokemon[attacker_idx].take_damage(contact_damage);
-
-                        let attacker_name = {
-                            let side_id = self.sides[attacker_side].id_str();
-                            let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                            format!("{}: {}", side_id, pokemon.name)
-                        };
-                        let hp = self.sides[attacker_side].pokemon[attacker_idx].hp;
-                        let maxhp = self.sides[attacker_side].pokemon[attacker_idx].maxhp;
-                        self.add_log("-damage", &[&attacker_name, &format!("{}/{}", hp, maxhp), "[from] ability: Aftermath"]);
-                    }
-                }
-
-                // Flame Body: 30% chance to burn attacker on contact
-                if defender_ability == "flamebody" {
-                    if self.random_chance(3, 10) {
-                        self.apply_status(attacker_side, attacker_idx, "brn");
-                    }
-                }
-
-                // Poison Point: 30% chance to poison attacker on contact
-                if defender_ability == "poisonpoint" {
-                    if self.random_chance(3, 10) {
-                        self.apply_status(attacker_side, attacker_idx, "psn");
-                    }
-                }
-
-                // Static: 30% chance to paralyze attacker on contact
-                if defender_ability == "static" {
-                    if self.random_chance(3, 10) {
-                        self.apply_status(attacker_side, attacker_idx, "par");
-                    }
-                }
-            }
-        }
-
-        // Apply secondary effects based on move
-        self.apply_move_secondary(attacker_side, attacker_idx, target_side, target_idx, move_id);
-
-        // Handle self-KO moves (Lunar Dance, Healing Wish, Memento, Selfdestruct, Explosion, etc.)
-        match move_id.as_str() {
-            "lunardance" => {
-                // Lunar Dance: User faints, next Pokemon that switches in is fully healed
-                if !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
-                    // Faint the user
-                    let attacker_name = {
-                        let side_id = self.sides[attacker_side].id_str();
-                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                        format!("{}: {}", side_id, pokemon.name)
-                    };
-
-                    self.sides[attacker_side].pokemon[attacker_idx].hp = 0;
-                    self.add_log("-damage", &[&attacker_name, "0 fnt"]);
-                    self.add_log("faint", &[&attacker_name]);
-
-                    // TODO: Add side effect to heal next switch-in
-                    // self.sides[attacker_side].add_side_condition(ID::new("lunardance"));
-                }
-            }
-            "selfdestruct" | "explosion" => {
-                // Selfdestruct/Explosion: User faints after dealing damage
-                // Note: Damage was already dealt earlier in this function
-                if !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
-                    let attacker_name = {
-                        let side_id = self.sides[attacker_side].id_str();
-                        let pokemon = &self.sides[attacker_side].pokemon[attacker_idx];
-                        format!("{}: {}", side_id, pokemon.name)
-                    };
-
-                    self.sides[attacker_side].pokemon[attacker_idx].hp = 0;
-                    self.add_log("-damage", &[&attacker_name, "0 fnt"]);
-                    self.add_log("faint", &[&attacker_name]);
-                }
-            }
-            _ => {}
-        }
-
-        // Handle pivot moves (U-Turn, Volt Switch, Flip Turn)
-        // These moves force a switch after dealing damage
-        if total_damage > 0 && matches!(move_id.as_str(), "uturn" | "voltswitch" | "flipturn") {
-            // Only switch if the attacker is not fainted
-            if !self.sides[attacker_side].pokemon[attacker_idx].is_fainted() {
-                // Flag that a pivot switch is pending
-                self.sides[attacker_side].pokemon[attacker_idx].add_volatile(ID::new("pivotswitch"));
-            }
         }
     }
 
@@ -3202,7 +2758,19 @@ impl Battle {
 
                 // JS: this.singleEvent('End', pokemon.getAbility(), pokemon.abilityState, pokemon);
                 // JS: this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon);
-                // TODO: singleEvent('End') for ability and item
+                // Get ability and item IDs before they're cleared
+                let ability_id = self.sides[side_idx].pokemon[poke_idx].ability.clone();
+                let item_id = self.sides[side_idx].pokemon[poke_idx].item.clone();
+
+                // Call End event for ability
+                if !ability_id.is_empty() {
+                    self.single_event("End", &ability_id, Some((side_idx, poke_idx)), None, None);
+                }
+
+                // Call End event for item
+                if !item_id.is_empty() {
+                    self.single_event("End", &item_id, Some((side_idx, poke_idx)), None, None);
+                }
 
                 // JS: pokemon.clearVolatile(false);
                 self.sides[side_idx].pokemon[poke_idx].clear_volatile_full(false);
@@ -5057,6 +4625,9 @@ impl Battle {
 
         // TODO: Gen 1 partial trapping cleanup (requires partialtrappinglock/partiallytrapped volatiles)
 
+        // Collect move slots for DisableMove events (to avoid borrow checker issues)
+        let mut disable_move_data: Vec<((usize, usize), ID)> = Vec::new();
+
         // Reset Pokemon turn-specific fields
         for side in &mut self.sides {
             for pokemon in &mut side.pokemon {
@@ -5095,24 +4666,26 @@ impl Battle {
                 // JS: pokemon.maybeLocked = false;
                 pokemon.maybe_locked = false;
 
-                // TODO: DisableMove event processing (requires moveSlots.disabled field and disableMove() method)
                 // JS: for (const moveSlot of pokemon.moveSlots) { moveSlot.disabled = false; }
                 // JS: this.runEvent('DisableMove', pokemon);
                 // JS: for (const moveSlot of pokemon.moveSlots) { this.singleEvent('DisableMove', activeMove, null, pokemon); }
+                // TODO: runEvent('DisableMove', pokemon) - requires implementation
 
-                // TODO: Illusion/type appearance tracking (Gen 7+)
-                // JS: if (pokemon.getLastAttackedBy() && this.gen >= 7) pokemon.knownType = true;
-
-                // TODO: attackedBy array cleanup
-                // JS: for (let i = pokemon.attackedBy.length - 1; i >= 0; i--) { ... }
-
-                // TODO: Type change messages (Gen 7+)
-                // JS: if (this.gen >= 7 && !pokemon.terastallized) { ... }
+                // Collect move slot data for later single_event calls
+                let pokemon_pos = (pokemon.side_index, pokemon.position);
+                for move_slot in &pokemon.move_slots {
+                    disable_move_data.push((pokemon_pos, move_slot.id.clone()));
+                }
 
                 // JS: pokemon.trapped = pokemon.maybeTrapped = false;
                 pokemon.trapped = false;
                 pokemon.maybe_trapped = false;
             }
+        }
+
+        // Call singleEvent('DisableMove') for each move (after the mutable borrow ends)
+        for (pokemon_pos, move_id) in disable_move_data {
+            self.single_event("DisableMove", &move_id, Some(pokemon_pos), None, None);
         }
 
         // TODO: TrapPokemon and MaybeTrapPokemon events
@@ -5232,8 +4805,14 @@ impl Battle {
                         // TODO: Switch in all active Pokemon (requires battle_actions integration)
                         // JS: for (const side of this.sides) { for (let i = 0; i < side.active.length; i++) { this.actions.switchIn(side.pokemon[i], i); } }
 
-                        // TODO: Start events for each Pokemon
                         // JS: for (const pokemon of this.getAllPokemon()) { this.singleEvent('Start', ...); }
+                        // Call Start event for each Pokemon's species
+                        for side_idx in 0..self.sides.len() {
+                            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
+                                let species_id = self.sides[side_idx].pokemon[poke_idx].species_id.clone();
+                                self.single_event("Start", &species_id, Some((side_idx, poke_idx)), None, None);
+                            }
+                        }
 
                         // JS: this.midTurn = true;
                         self.mid_turn = true;
@@ -5365,20 +4944,21 @@ impl Battle {
                 // TODO: Get move priority from Dex
                 // For now, use the priority already set in move_action (from when action was created)
                 // Full implementation requires: Battle to have reference to Dex
-                let base_priority = move_action.priority;
+                let mut priority = move_action.priority;
 
                 // JS: priority = this.singleEvent('ModifyPriority', move, null, action.pokemon, null, null, priority);
-                // TODO: Implement ModifyPriority single event
-                // Requires: singleEvent with move context
-
-                // JS: priority = this.runEvent('ModifyPriority', action.pokemon, null, move, priority);
-                // TODO: Implement ModifyPriority run event
-                // Requires: runEvent with move context, pokemon from action
+                let move_id = &move_action.move_id.clone();
+                let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
+                let result = self.single_event("ModifyPriority", move_id, Some(pokemon_pos), None, None);
+                if let Some(new_priority) = result.number() {
+                    priority = new_priority as i8;
+                }
+                // TODO: Also call runEvent('ModifyPriority')
 
                 // JS: action.priority = priority + action.fractionalPriority;
                 // Note: fractionalPriority is already applied when action is created
                 // Just ensure priority is set correctly
-                move_action.priority = base_priority;
+                move_action.priority = priority;
 
                 // JS: if (this.gen > 5) action.move.priority = priority;
                 // TODO: Set move.priority field (requires mutable move reference)
@@ -7163,7 +6743,7 @@ impl Battle {
     fn modify_internal(&self, value: i32, modifier: i32) -> i32 {
         // 4096-based fixed-point multiplication
         // modifier is already in 4096 basis (e.g., 6144 = 1.5x)
-        let result = (value as i64 * modifier as i64);
+        let result = value as i64 * modifier as i64;
         ((result + 2048) >> 12).max(1) as i32
     }
 

@@ -9,7 +9,7 @@ use std::collections::HashSet;
 
 use once_cell::sync::Lazy;
 
-use crate::dex_data::{ID, BoostsTable, EffectState};
+use crate::dex_data::{ID, BoostsTable};
 use crate::dex::{Dex, MoveData};
 use crate::pokemon::Pokemon;
 use crate::data::typechart::get_effectiveness_multi;
@@ -1706,6 +1706,302 @@ pub enum SwitchInResult {
     Blocked,
     /// Pokemon fainted from Pursuit before switching
     PursuitFaint,
+}
+
+// =========================================================================
+// MOVE EXECUTION - useMove and useMoveInner
+// These are standalone functions that take &mut Battle as parameter
+// Equivalent to battle-actions.ts useMove() and useMoveInner()
+// =========================================================================
+
+/// Use a move - wrapper for use_move_inner
+/// Equivalent to battle-actions.ts useMove() (lines 368-379)
+pub fn use_move(
+    battle: &mut crate::battle::Battle,
+    move_id: &ID,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    source_effect: Option<&ID>,
+    z_move: Option<&str>,
+    max_move: Option<&str>,
+) -> bool {
+    // pokemon.moveThisTurnResult = undefined;
+    // Note: moveThisTurnResult tracking would go here
+
+    // const oldMoveResult: boolean | null | undefined = pokemon.moveThisTurnResult;
+    // const moveResult = this.useMoveInner(move, pokemon, options);
+    let move_result = use_move_inner(
+        battle,
+        move_id,
+        pokemon_pos,
+        target_pos,
+        source_effect,
+        z_move,
+        max_move,
+    );
+
+    // if (oldMoveResult === pokemon.moveThisTurnResult) pokemon.moveThisTurnResult = moveResult;
+    // Note: moveThisTurnResult syncing would go here
+
+    // return moveResult;
+    move_result
+}
+
+/// Inner implementation of useMove - handles the actual move execution
+/// Equivalent to battle-actions.ts useMoveInner() (lines 380-543)
+pub fn use_move_inner(
+    battle: &mut crate::battle::Battle,
+    move_or_move_name: &ID,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    source_effect_param: Option<&ID>,
+    z_move_param: Option<&str>,
+    max_move_param: Option<&str>,
+) -> bool {
+    // let target = options?.target;
+    let mut target = target_pos;
+
+    // let sourceEffect = options?.sourceEffect;
+    let mut source_effect = source_effect_param.cloned();
+
+    // const zMove = options?.zMove;
+    let z_move = z_move_param;
+
+    // const maxMove = options?.maxMove;
+    let max_move = max_move_param;
+
+    // if (!sourceEffect && this.battle.effect.id) sourceEffect = this.battle.effect;
+    // if (sourceEffect && ['instruct', 'custapberry'].includes(sourceEffect.id)) sourceEffect = null;
+    // TODO: Implement current effect tracking
+
+    // let move = this.dex.getActiveMove(moveOrMoveName);
+    let mut move_data = match battle.dex.get_move(move_or_move_name.as_str()) {
+        Some(m) => m.clone(),
+        None => return false,
+    };
+
+    // pokemon.lastMoveUsed = move;
+    // TODO: Set lastMoveUsed on pokemon
+
+    // if (move.id === 'weatherball' && zMove) {
+    //     this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
+    //     if (move.type !== 'Normal') sourceEffect = move;
+    // }
+    if move_or_move_name.as_str() == "weatherball" && z_move.is_some() {
+        battle.single_event("ModifyType", move_or_move_name, Some(pokemon_pos), target, Some(move_or_move_name));
+        // TODO: Check if move.type !== 'Normal' and update sourceEffect
+    }
+
+    // if (zMove || (move.category !== 'Status' && sourceEffect && (sourceEffect as ActiveMove).isZ)) {
+    //     move = this.getActiveZMove(move, pokemon);
+    // }
+    // TODO: Implement Z-move transformation
+
+    // if (maxMove && move.category !== 'Status') {
+    //     this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
+    //     this.battle.runEvent('ModifyType', pokemon, target, move, move);
+    // }
+    if max_move.is_some() && move_data.category != "Status" {
+        battle.single_event("ModifyType", move_or_move_name, Some(pokemon_pos), target, Some(move_or_move_name));
+        // TODO: Implement runEvent('ModifyType')
+    }
+
+    // if (maxMove || (move.category !== 'Status' && sourceEffect && (sourceEffect as ActiveMove).isMax)) {
+    //     move = this.getActiveMaxMove(move, pokemon);
+    // }
+    // TODO: Implement max move transformation
+
+    // if (this.battle.activeMove) {
+    //     move.priority = this.battle.activeMove.priority;
+    //     if (!move.hasBounced) move.pranksterBoosted = this.battle.activeMove.pranksterBoosted;
+    // }
+    // TODO: Implement active move priority inheritance
+
+    // const baseTarget = move.target;
+    let base_target = move_data.target.clone();
+
+    // let targetRelayVar = { target };
+    // targetRelayVar = this.battle.runEvent('ModifyTarget', pokemon, target, move, targetRelayVar, true);
+    // if (targetRelayVar.target !== undefined) target = targetRelayVar.target;
+    // TODO: Implement ModifyTarget event
+
+    // if (target === undefined) target = this.battle.getRandomTarget(pokemon, move);
+    // TODO: Implement getRandomTarget
+
+    // if (move.target === 'self' || move.target === 'allies') {
+    //     target = pokemon;
+    // }
+    if move_data.target == "self" || move_data.target == "allies" {
+        target = Some(pokemon_pos);
+    }
+
+    // if (sourceEffect) {
+    //     move.sourceEffect = sourceEffect.id;
+    //     move.ignoreAbility = (sourceEffect as ActiveMove).ignoreAbility;
+    // }
+    // TODO: Set move source effect
+
+    // let moveResult = false;
+    let mut move_result = false;
+
+    // this.battle.setActiveMove(move, pokemon, target);
+    // TODO: Implement setActiveMove
+
+    // this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
+    // this.battle.singleEvent('ModifyMove', move, null, pokemon, target, move, move);
+    battle.single_event("ModifyType", move_or_move_name, Some(pokemon_pos), target, Some(move_or_move_name));
+    battle.single_event("ModifyMove", move_or_move_name, Some(pokemon_pos), target, Some(move_or_move_name));
+
+    // if (baseTarget !== move.target) {
+    //     target = this.battle.getRandomTarget(pokemon, move);
+    // }
+    // TODO: Handle target adjustment after ModifyMove
+
+    // move = this.battle.runEvent('ModifyType', pokemon, target, move, move);
+    // move = this.battle.runEvent('ModifyMove', pokemon, target, move, move);
+    // TODO: Implement ModifyType and ModifyMove run events
+
+    // if (baseTarget !== move.target) {
+    //     target = this.battle.getRandomTarget(pokemon, move);
+    // }
+    // TODO: Handle second target adjustment
+
+    // if (!move || pokemon.fainted) {
+    //     return false;
+    // }
+    let (side_idx, poke_idx) = pokemon_pos;
+    if battle.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)).map(|p| p.is_fainted()).unwrap_or(true) {
+        return false;
+    }
+
+    // let attrs = '';
+    // let movename = move.name;
+    // if (move.id === 'hiddenpower') movename = 'Hidden Power';
+    // if (sourceEffect) attrs += `|[from] ${sourceEffect.fullname}`;
+    // if (zMove && move.isZ === true) {
+    //     attrs = `|[anim]${movename}${attrs}`;
+    //     movename = `Z-${movename}`;
+    // }
+    // this.battle.addMove('move', pokemon, movename, `${target}${attrs}`);
+    let move_name = move_data.name.clone();
+    battle.add_log("move", &[
+        &format!("{}: {}", battle.sides[side_idx].id_str(), battle.sides[side_idx].pokemon[poke_idx].name),
+        &move_name,
+    ]);
+
+    // if (zMove) this.runZPower(move, pokemon);
+    // TODO: Implement runZPower for status Z-moves
+
+    // if (!target) {
+    //     this.battle.attrLastMove('[notarget]');
+    //     this.battle.add(this.battle.gen >= 5 ? '-fail' : '-notarget', pokemon);
+    //     return false;
+    // }
+    let target_pos = match target {
+        Some(t) => t,
+        None => {
+            battle.add_log("-notarget", &[]);
+            return false;
+        }
+    };
+
+    // const { targets, pressureTargets } = pokemon.getMoveTargets(move, target);
+    // if (targets.length) {
+    //     target = targets[targets.length - 1]; // in case of redirection
+    // }
+    // TODO: Implement getMoveTargets for multi-target handling
+
+    // const callerMoveForPressure = sourceEffect && (sourceEffect as ActiveMove).pp ? sourceEffect as ActiveMove : null;
+    // if (!sourceEffect || callerMoveForPressure || sourceEffect.id === 'pursuit') {
+    //     let extraPP = 0;
+    //     for (const source of pressureTargets) {
+    //         const ppDrop = this.battle.runEvent('DeductPP', source, pokemon, move);
+    //         if (ppDrop !== true) {
+    //             extraPP += ppDrop || 0;
+    //         }
+    //     }
+    //     if (extraPP > 0) {
+    //         pokemon.deductPP(callerMoveForPressure || moveOrMoveName, extraPP);
+    //     }
+    // }
+    // TODO: Implement PP deduction with Pressure
+
+    // if (!this.battle.singleEvent('TryMove', move, null, pokemon, target, move) ||
+    //     !this.battle.runEvent('TryMove', pokemon, target, move)) {
+    //     move.mindBlownRecoil = false;
+    //     return false;
+    // }
+    let try_move_result = battle.single_event("TryMove", move_or_move_name, Some(pokemon_pos), target_pos.into(), Some(move_or_move_name));
+    if matches!(try_move_result, crate::event::EventResult::Fail | crate::event::EventResult::Boolean(false)) {
+        // TODO: Set move.mindBlownRecoil = false
+        return false;
+    }
+    // TODO: Also check runEvent('TryMove')
+
+    // this.battle.singleEvent('UseMoveMessage', move, null, pokemon, target, move);
+    battle.single_event("UseMoveMessage", move_or_move_name, Some(pokemon_pos), target_pos.into(), Some(move_or_move_name));
+
+    // if (move.ignoreImmunity === undefined) {
+    //     move.ignoreImmunity = (move.category === 'Status');
+    // }
+    // TODO: Set ignoreImmunity default
+
+    // if (this.battle.gen !== 4 && move.selfdestruct === 'always') {
+    //     this.battle.faint(pokemon, pokemon, move);
+    // }
+    // TODO: Implement self-destruct for non-Gen4
+
+    // let damage: number | false | undefined | '' = false;
+    // if (move.target === 'all' || move.target === 'foeSide' || move.target === 'allySide' || move.target === 'allyTeam') {
+    //     damage = this.tryMoveHit(targets, pokemon, move);
+    //     if (damage === this.battle.NOT_FAIL) pokemon.moveThisTurnResult = null;
+    //     if (damage || damage === 0 || damage === undefined) moveResult = true;
+    // } else {
+    //     if (!targets.length) {
+    //         this.battle.attrLastMove('[notarget]');
+    //         this.battle.add(this.battle.gen >= 5 ? '-fail' : '-notarget', pokemon);
+    //         return false;
+    //     }
+    //     if (this.battle.gen === 4 && move.selfdestruct === 'always') {
+    //         this.battle.faint(pokemon, pokemon, move);
+    //     }
+    //     moveResult = this.trySpreadMoveHit(targets, pokemon, move);
+    // }
+    // TODO: Implement tryMoveHit and trySpreadMoveHit
+
+    // if (move.selfBoost && moveResult) this.moveHit(pokemon, pokemon, move, move.selfBoost, false, true);
+    // TODO: Implement self-boost after move
+
+    // if (!pokemon.hp) {
+    //     this.battle.faint(pokemon, pokemon, move);
+    // }
+    // TODO: Faint check
+
+    // if (!moveResult) {
+    //     this.battle.singleEvent('MoveFail', move, null, target, pokemon, move);
+    //     return false;
+    // }
+    if !move_result {
+        battle.single_event("MoveFail", move_or_move_name, target_pos.into(), Some(pokemon_pos), Some(move_or_move_name));
+        return false;
+    }
+
+    // if (!(move.hasSheerForce && pokemon.hasAbility('sheerforce')) && !move.flags['futuremove']) {
+    //     const originalHp = pokemon.hp;
+    //     this.battle.singleEvent('AfterMoveSecondarySelf', move, null, pokemon, target, move);
+    //     this.battle.runEvent('AfterMoveSecondarySelf', pokemon, target, move);
+    //     if (pokemon && pokemon !== target && move.category !== 'Status') {
+    //         if (pokemon.hp <= pokemon.maxhp / 2 && originalHp > pokemon.maxhp / 2) {
+    //             this.battle.runEvent('EmergencyExit', pokemon, pokemon);
+    //         }
+    //     }
+    // }
+    // TODO: Check hasSheerForce and futuremove flag
+    battle.single_event("AfterMoveSecondarySelf", move_or_move_name, Some(pokemon_pos), target_pos.into(), Some(move_or_move_name));
+    // TODO: Also call runEvent('AfterMoveSecondarySelf') and EmergencyExit check
+
+    // return true;
+    true // Placeholder - will be set by actual move execution
 }
 
 // =========================================================================

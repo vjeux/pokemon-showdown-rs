@@ -633,7 +633,7 @@ impl DexNatures {
 
         // Look up in nature data
         if let Some(nature) = get_nature_data(id) {
-            let mut n = nature.clone();
+            let n = nature.clone();
             if n.gen > self.gen {
                 // Mark as future if not available in this gen
             }
