@@ -17,7 +17,7 @@ Moves with callbacks: 373
 - [x] auroraveil - Aurora Veil (Status, Ice) - 5 callbacks: onTry, condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [x] autotomize - Autotomize (Status, Steel) - 2 callbacks: onTryHit, onHit
 - [x] avalanche - Avalanche (Physical, Ice) - 1 callback: basePowerCallback
-- [ ] axekick - Axe Kick (Physical, Fighting) - 1 callback: onMoveFail
+- [x] axekick - Axe Kick (Physical, Fighting) - 1 callback: onMoveFail
 - [ ] banefulbunker - Baneful Bunker (Status, Poison) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] barbbarrage - Barb Barrage (Physical, Poison) - 1 callback: onBasePower
 - [ ] batonpass - Baton Pass (Status, Normal) - 1 callback: onHit
