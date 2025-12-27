@@ -3623,6 +3623,306 @@ impl Battle {
         result
     }
 
+    /// Get all allies including self
+    /// Equivalent to pokemon.ts alliesAndSelf() which calls side.allies()
+    ///
+    // 	alliesAndSelf(): Pokemon[] {
+    // 		return this.side.allies();
+    // 	}
+    //
+    // side.allies(all?: boolean) implementation:
+    // 	allies(all?: boolean) {
+    // 		// called during the first switch-in, so `active` can still contain nulls at this point
+    // 		let allies = this.activeTeam().filter(ally => ally);
+    // 		if (!all) allies = allies.filter(ally => !!ally.hp);
+    //
+    // 		return allies;
+    // 	}
+    //
+    pub fn allies_and_self(&self, side_idx: usize, include_fainted: bool) -> Vec<(usize, usize)> {
+        let mut result = Vec::new();
+
+        if let Some(side) = self.sides.get(side_idx) {
+            // Iterate through active slots on this side
+            for active_slot in &side.active {
+                if let Some(poke_idx) = active_slot {
+                    if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                        // Include if: include_fainted=true OR pokemon has HP
+                        if include_fainted || pokemon.hp > 0 {
+                            result.push((side_idx, *poke_idx));
+                        }
+                    }
+                }
+            }
+        }
+
+        result
+    }
+
+    /// Get all foes
+    /// Equivalent to pokemon.ts foes() which calls side.foes()
+    ///
+    // 	foes(all?: boolean): Pokemon[] {
+    // 		return this.side.foes(all);
+    // 	}
+    //
+    // side.foes(all?: boolean) implementation:
+    // 	foes(all?: boolean) {
+    // 		if (this.battle.gameType === 'freeforall') {
+    // 			return this.battle.sides.map(side => side.active[0])
+    // 				.filter(pokemon => pokemon && pokemon.side !== this && (all || !!pokemon.hp));
+    // 		}
+    // 		return this.foe.allies(all);
+    // 	}
+    //
+    pub fn foes(&self, side_idx: usize, include_fainted: bool) -> Vec<(usize, usize)> {
+        let mut result = Vec::new();
+
+        // JS: if (this.battle.gameType === 'freeforall') {
+        if self.game_type == GameType::FreeForAll {
+            // Return all active pokemon from other sides
+            for (foe_side_idx, foe_side) in self.sides.iter().enumerate() {
+                if foe_side_idx != side_idx {
+                    if let Some(Some(foe_idx)) = foe_side.active.first() {
+                        if let Some(foe) = foe_side.pokemon.get(*foe_idx) {
+                            if include_fainted || foe.hp > 0 {
+                                result.push((foe_side_idx, *foe_idx));
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            // JS: return this.foe.allies(all);
+            // Get foe side index
+            let foe_side_idx = if side_idx == 0 { 1 } else { 0 };
+            // Return allies from foe side
+            result = self.allies_and_self(foe_side_idx, include_fainted);
+        }
+
+        result
+    }
+
+    /// Get move targets and pressure targets
+    /// Equivalent to pokemon.ts getMoveTargets()
+    ///
+    // 	getMoveTargets(move: ActiveMove, target: Pokemon): { targets: Pokemon[], pressureTargets: Pokemon[] } {
+    // 		let targets: Pokemon[] = [];
+    //
+    // 		switch (move.target) {
+    // 		case 'all':
+    // 		case 'foeSide':
+    // 		case 'allySide':
+    // 		case 'allyTeam':
+    // 			if (!move.target.startsWith('foe')) {
+    // 				targets.push(...this.alliesAndSelf());
+    // 			}
+    // 			if (!move.target.startsWith('ally')) {
+    // 				targets.push(...this.foes(true));
+    // 			}
+    // 			if (targets.length && !targets.includes(target)) {
+    // 				this.battle.retargetLastMove(targets[targets.length - 1]);
+    // 			}
+    // 			break;
+    // 		case 'allAdjacent':
+    // 			targets.push(...this.adjacentAllies());
+    // 			// falls through
+    // 		case 'allAdjacentFoes':
+    // 			targets.push(...this.adjacentFoes());
+    // 			if (targets.length && !targets.includes(target)) {
+    // 				this.battle.retargetLastMove(targets[targets.length - 1]);
+    // 			}
+    // 			break;
+    // 		case 'allies':
+    // 			targets = this.alliesAndSelf();
+    // 			break;
+    // 		default:
+    // 			const selectedTarget = target;
+    // 			if (!target || (target.fainted && !target.isAlly(this)) && this.battle.gameType !== 'freeforall') {
+    // 				// If a targeted foe faints, the move is retargeted
+    // 				const possibleTarget = this.battle.getRandomTarget(this, move);
+    // 				if (!possibleTarget) return { targets: [], pressureTargets: [] };
+    // 				target = possibleTarget;
+    // 			}
+    // 			if (this.battle.activePerHalf > 1 && !move.tracksTarget) {
+    // 				const isCharging = move.flags['charge'] && !this.volatiles['twoturnmove'] &&
+    // 					!(move.id.startsWith('solarb') && ['sunnyday', 'desolateland'].includes(this.effectiveWeather())) &&
+    // 					!(move.id === 'electroshot' && ['raindance', 'primordialsea'].includes(this.effectiveWeather())) &&
+    // 					!(this.hasItem('powerherb') && move.id !== 'skydrop');
+    // 				if (!isCharging && !(move.id === 'pursuit' && (target.beingCalledBack || target.switchFlag))) {
+    // 					target = this.battle.priorityEvent('RedirectTarget', this, this, move, target);
+    // 				}
+    // 			}
+    // 			if (move.smartTarget) {
+    // 				targets = this.getSmartTargets(target, move);
+    // 				target = targets[0];
+    // 			} else {
+    // 				targets.push(target);
+    // 			}
+    // 			if (target.fainted && !move.flags['futuremove']) {
+    // 				return { targets: [], pressureTargets: [] };
+    // 			}
+    // 			if (selectedTarget !== target) {
+    // 				this.battle.retargetLastMove(target);
+    // 			}
+    // 		}
+    //
+    // 		// Resolve apparent targets for Pressure.
+    // 		let pressureTargets = targets;
+    // 		if (move.target === 'foeSide') {
+    // 			pressureTargets = [];
+    // 		}
+    // 		if (move.flags['mustpressure']) {
+    // 			pressureTargets = this.foes();
+    // 		}
+    //
+    // 		return { targets, pressureTargets };
+    // 	}
+    //
+    pub fn get_move_targets(
+        &mut self,
+        user_pos: (usize, usize),
+        move_id: &ID,
+        mut target: Option<(usize, usize)>,
+    ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
+        let mut targets: Vec<(usize, usize)> = Vec::new();
+
+        let move_target = match self.dex.get_move(move_id.as_str()) {
+            Some(m) => m.target.clone(),
+            None => return (vec![], vec![]),
+        };
+
+        // Handle different target types
+        match move_target.as_str() {
+            "all" | "foeSide" | "allySide" | "allyTeam" => {
+                // JS: if (!move.target.startsWith('foe')) targets.push(...this.alliesAndSelf());
+                if !move_target.starts_with("foe") {
+                    targets.extend(self.allies_and_self(user_pos.0, true));
+                }
+                // JS: if (!move.target.startsWith('ally')) targets.push(...this.foes(true));
+                if !move_target.starts_with("ally") {
+                    targets.extend(self.foes(user_pos.0, true));
+                }
+                // JS: if (targets.length && !targets.includes(target)) this.battle.retargetLastMove(targets[targets.length - 1]);
+                if !targets.is_empty() && !target.map_or(false, |t| targets.contains(&t)) {
+                    if let Some(&last_target) = targets.last() {
+                        self.retarget_last_move(last_target);
+                    }
+                }
+            }
+            "allAdjacent" => {
+                // JS: targets.push(...this.adjacentAllies());
+                targets.extend(self.adjacent_allies(user_pos.0, user_pos.1));
+                // falls through to allAdjacentFoes
+                targets.extend(self.adjacent_foes(user_pos.0, user_pos.1));
+                if !targets.is_empty() && !target.map_or(false, |t| targets.contains(&t)) {
+                    if let Some(&last_target) = targets.last() {
+                        self.retarget_last_move(last_target);
+                    }
+                }
+            }
+            "allAdjacentFoes" => {
+                // JS: targets.push(...this.adjacentFoes());
+                targets.extend(self.adjacent_foes(user_pos.0, user_pos.1));
+                if !targets.is_empty() && !target.map_or(false, |t| targets.contains(&t)) {
+                    if let Some(&last_target) = targets.last() {
+                        self.retarget_last_move(last_target);
+                    }
+                }
+            }
+            "allies" => {
+                // JS: targets = this.alliesAndSelf();
+                targets = self.allies_and_self(user_pos.0, false);
+            }
+            _ => {
+                // Default case - single target moves
+                let selected_target = target;
+
+                // JS: if (!target || (target.fainted && !target.isAlly(this)) && this.battle.gameType !== 'freeforall')
+                if target.is_none()
+                    || (self.is_pokemon_fainted(target.unwrap())
+                        && !self.is_ally(target.unwrap(), user_pos)
+                        && self.game_type != GameType::FreeForAll)
+                {
+                    // JS: const possibleTarget = this.battle.getRandomTarget(this, move);
+                    target = self.get_random_target(user_pos.0, user_pos.1, &move_target);
+                    if target.is_none() {
+                        return (vec![], vec![]);
+                    }
+                }
+
+                // TODO: Handle RedirectTarget priority event (Storm Drain, Lightning Rod)
+                // JS: if (this.battle.activePerHalf > 1 && !move.tracksTarget) {
+                //       target = this.battle.priorityEvent('RedirectTarget', this, this, move, target);
+                //     }
+                // This requires implementing:
+                // - tracksTarget flag support
+                // - charging move detection
+                // - priorityEvent with encoded target relay variable
+                // For now, skip redirection
+
+                // TODO: Handle smart targeting
+                // JS: if (move.smartTarget) {
+                //       targets = this.getSmartTargets(target, move);
+                //       target = targets[0];
+                //     }
+                // This requires implementing getSmartTargets()
+                // For now, skip smart targeting
+
+                if let Some(t) = target {
+                    targets.push(t);
+                }
+
+                // JS: if (target.fainted && !move.flags['futuremove']) return { targets: [], pressureTargets: [] };
+                if target.map_or(false, |t| self.is_pokemon_fainted(t)) {
+                    // TODO: Check futuremove flag when move flags are available
+                    return (vec![], vec![]);
+                }
+
+                // JS: if (selectedTarget !== target) this.battle.retargetLastMove(target);
+                if selected_target != target {
+                    if let Some(t) = target {
+                        self.retarget_last_move(t);
+                    }
+                }
+            }
+        }
+
+        // Resolve apparent targets for Pressure
+        // JS: let pressureTargets = targets;
+        let mut pressure_targets = targets.clone();
+
+        // JS: if (move.target === 'foeSide') pressureTargets = [];
+        if move_target == "foeSide" {
+            pressure_targets.clear();
+        }
+
+        // JS: if (move.flags['mustpressure']) pressureTargets = this.foes();
+        // TODO: Check mustpressure flag when move flags are available
+        // For now, skip this check
+
+        (targets, pressure_targets)
+    }
+
+    /// Check if two pokemon are allies
+    fn is_ally(&self, pos1: (usize, usize), pos2: (usize, usize)) -> bool {
+        // JS: return !!pokemon && (this.side === pokemon.side || this.side.allySide === pokemon.side);
+        if pos1.0 == pos2.0 {
+            return true;
+        }
+        // TODO: Check allySide for multi battles
+        // For now, just check same side
+        false
+    }
+
+    /// Check if pokemon is fainted
+    fn is_pokemon_fainted(&self, pos: (usize, usize)) -> bool {
+        self.sides
+            .get(pos.0)
+            .and_then(|s| s.pokemon.get(pos.1))
+            .map_or(true, |p| p.is_fainted())
+    }
+
     /// Get random target for a move
     /// Equivalent to battle.ts getRandomTarget()
     ///
