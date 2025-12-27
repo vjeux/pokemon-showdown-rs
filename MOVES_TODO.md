@@ -204,6 +204,32 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.chainModify(factor)`: knockoff - Modify relay variable by factor
 - `move.onHit` dynamic assignment: fling - Ability to dynamically assign onHit callback
 - `move.secondaries`: fling - Secondaries array (mutable)
+- `pokemon.getStat(stat, ignoreBoosts, unmodified)`: shellsidearm - Get calculated stat with flags
+- `move.category` mutable: shellsidearm - Change Physical/Special/Status category
+- `move.flags.contact` mutable: shellsidearm - Modify contact flag
+- `move.sourceEffect`: trumpcard - Source effect ID field
+- `battle.effectState.lastDamageSource`: bide - Effect state can store source pokemon reference
+- `pokemon.isActive`: bide - Check if pokemon is currently active in battle
+- `battle.getRandomTarget(pokemon, move)`: bide - Get random valid target
+- `battle.actions.tryMoveHit(target, pokemon, move)`: bide - Execute custom move with move data
+- Custom move data creation: bide - Create move with accuracy, damage, category, priority, flags, effectType, type fields
+- `move.accuracy` field: bide - Can be true or number
+- `move.damage` field: bide - For fixed damage moves
+- `move.category` field: bide - Physical/Special/Status
+- `move.priority` field: bide - Move priority value
+- `move.type` field: bide, electricterrain - Move type
+- `pokemon.adjacentAllies()`: flameburst - Get iterator of adjacent allied pokemon
+- `pokemon.baseMaxhp`: flameburst - Base max HP field (different from maxhp)
+- `target.side.addSlotCondition(target, name)`: futuresight - Add slot-specific condition, returns bool
+- `target.side.slotConditions[position][name]`: futuresight - Access slot conditions by position
+- `pokemon.position`: futuresight - Pokemon's position in the side
+- `move.ignoreImmunity`: futuresight - Ignore immunity flag
+- `pokemon.isSemiInvulnerable()`: electricterrain - Check if pokemon is in semi-invulnerable state
+- `status.id`: electricterrain - Status ID field
+- `effect.id`: electricterrain - Effect ID field
+- `effect.secondaries`: electricterrain - Effect secondaries field
+- `battle.chainModify([numerator, denominator])`: electricterrain - Fraction modifier version
+- `move.boosts` mutable: growth - Modify move boost effects
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
