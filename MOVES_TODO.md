@@ -95,7 +95,7 @@ Moves with callbacks: 373
 - [ ] firepledge - Fire Pledge (Special, Fire) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [x] firstimpression - First Impression (Physical, Bug) - 1 callback: onTry
 - [x] fishiousrend - Fishious Rend (Physical, Water) - 1 callback: basePowerCallback
-- [ ] flail - Flail (Physical, Normal) - 1 callback: basePowerCallback
+- [x] flail - Flail (Physical, Normal) - 1 callback: basePowerCallback
 - [ ] flameburst - Flame Burst (Special, Fire) - 2 callbacks: onHit, onAfterSubDamage
 - [ ] fling - Fling (Physical, Dark) - 2 callbacks: onPrepareHit, condition::onUpdate
 - [ ] floralhealing - Floral Healing (Status, Fairy) - 1 callback: onHit
