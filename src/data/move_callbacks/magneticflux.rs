@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         (!ally.volatiles['maxguard'] || this.runEvent('TryHit', ally, source, move))
 ///     ));
 ///     if (!targets.length) return false;
-/// 
+///
 ///     let didSomething = false;
 ///     for (const target of targets) {
 ///         didSomething = this.boost({ def: 1, spd: 1 }, target, source, move, false, true) || didSomething;
@@ -21,7 +21,67 @@ use crate::event::EventResult;
 ///     return didSomething;
 /// }
 pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // const targets = side.allies().filter(ally => (
+    //     ally.hasAbility(['plus', 'minus']) &&
+    //     (!ally.volatiles['maxguard'] || this.runEvent('TryHit', ally, source, move))
+    // ));
+    let side_index = source.0;
+    let allies = battle.get_allies(side_index);
+
+    let mut targets = Vec::new();
+    for ally_pos in allies {
+        let (has_ability, has_maxguard) = {
+            let ally_pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                Some(p) => p,
+                None => continue,
+            };
+            let has_ability = ally_pokemon.has_ability(&ID::from("plus")) ||
+                             ally_pokemon.has_ability(&ID::from("minus"));
+            let has_maxguard = ally_pokemon.volatiles.contains_key(&ID::from("maxguard"));
+            (has_ability, has_maxguard)
+        };
+
+        if !has_ability {
+            continue;
+        }
+
+        if has_maxguard {
+            let try_hit_result = battle.run_event("TryHit", ally_pos, Some(source), None);
+            if !try_hit_result {
+                continue;
+            }
+        }
+
+        targets.push(ally_pos);
+    }
+
+    // if (!targets.length) return false;
+    if targets.is_empty() {
+        return EventResult::Bool(false);
+    }
+
+    // let didSomething = false;
+    // for (const target of targets) {
+    //     didSomething = this.boost({ def: 1, spd: 1 }, target, source, move, false, true) || didSomething;
+    // }
+    let mut did_something = false;
+    for target in targets {
+        let mut boosts = std::collections::HashMap::new();
+        boosts.insert("def".to_string(), 1);
+        boosts.insert("spd".to_string(), 1);
+
+        let boost_result = battle.boost_with_options(boosts, target, Some(source), Some(&ID::from(move_id)), false, true);
+        did_something = boost_result || did_something;
+    }
+
+    // return didSomething;
+    EventResult::Bool(did_something)
 }
 
