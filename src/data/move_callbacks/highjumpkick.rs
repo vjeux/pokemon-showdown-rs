@@ -10,13 +10,8 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onMoveFail(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onMoveFail(target, source, move) {			this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('High Jump Kick'));
-/// 		}
-/// ```
+/// onMoveFail(target, source, move) {            this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('High Jump Kick'));
+///         }
 pub fn on_move_fail(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

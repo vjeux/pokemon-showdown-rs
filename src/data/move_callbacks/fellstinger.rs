@@ -10,13 +10,8 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onAfterMoveSecondarySelf(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onAfterMoveSecondarySelf(pokemon, target, move) {			if (!target || target.fainted || target.hp <= 0) this.boost({ atk: 3 }, pokemon, pokemon, move);
-/// 		}
-/// ```
+/// onAfterMoveSecondarySelf(pokemon, target, move) {            if (!target || target.fainted || target.hp <= 0) this.boost({ atk: 3 }, pokemon, pokemon, move);
+///         }
 pub fn on_after_move_secondary_self(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

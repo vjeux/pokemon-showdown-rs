@@ -10,16 +10,11 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onHit(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onHit() {			this.add('-clearallboost');
-/// 			for (const pokemon of this.getAllActive()) {
-/// 				pokemon.clearBoosts();
-/// 			}
-/// 		}
-/// ```
+/// onHit() {            this.add('-clearallboost');
+///             for (const pokemon of this.getAllActive()) {
+///                 pokemon.clearBoosts();
+///             }
+///         }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

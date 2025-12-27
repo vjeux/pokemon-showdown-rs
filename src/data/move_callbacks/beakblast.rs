@@ -10,13 +10,8 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onAfterMove(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onAfterMove(pokemon) {			pokemon.removeVolatile('beakblast');
-/// 		}
-/// ```
+/// onAfterMove(pokemon) {            pokemon.removeVolatile('beakblast');
+///         }
 pub fn on_after_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

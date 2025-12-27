@@ -10,16 +10,11 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onBasePower(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onBasePower(basePower, source) {			if (this.field.isTerrain('electricterrain')) {
-/// 				this.debug('psyblade electric terrain boost');
-/// 				return this.chainModify(1.5);
-/// 			}
-/// 		}
-/// ```
+/// onBasePower(basePower, source) {            if (this.field.isTerrain('electricterrain')) {
+///                 this.debug('psyblade electric terrain boost');
+///                 return this.chainModify(1.5);
+///             }
+///         }
 pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

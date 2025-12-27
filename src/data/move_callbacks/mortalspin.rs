@@ -10,51 +10,41 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onAfterHit(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onAfterHit(target, pokemon, move) {			if (!move.hasSheerForce) {
-/// 				if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
-/// 					this.add('-end', pokemon, 'Leech Seed', '[from] move: Mortal Spin', `[of] ${pokemon}`);
-/// 				}
-/// 				const sideConditions = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
-/// 				for (const condition of sideConditions) {
-/// 					if (pokemon.hp && pokemon.side.removeSideCondition(condition)) {
-/// 						this.add('-sideend', pokemon.side, this.dex.conditions.get(condition).name, '[from] move: Mortal Spin', `[of] ${pokemon}`);
-/// 					}
-/// 				}
-/// 				if (pokemon.hp && pokemon.volatiles['partiallytrapped']) {
-/// 					pokemon.removeVolatile('partiallytrapped');
-/// 				}
-/// 			}
-/// 		}
-/// ```
+/// onAfterHit(target, pokemon, move) {            if (!move.hasSheerForce) {
+///                 if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
+///                     this.add('-end', pokemon, 'Leech Seed', '[from] move: Mortal Spin', `[of] ${pokemon}`);
+///                 }
+///                 const sideConditions = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
+///                 for (const condition of sideConditions) {
+///                     if (pokemon.hp && pokemon.side.removeSideCondition(condition)) {
+///                         this.add('-sideend', pokemon.side, this.dex.conditions.get(condition).name, '[from] move: Mortal Spin', `[of] ${pokemon}`);
+///                     }
+///                 }
+///                 if (pokemon.hp && pokemon.volatiles['partiallytrapped']) {
+///                     pokemon.removeVolatile('partiallytrapped');
+///                 }
+///             }
+///         }
 pub fn on_after_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
 
-/// onAfterSubDamage(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onAfterSubDamage(damage, target, pokemon, move) {			if (!move.hasSheerForce) {
-/// 				if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
-/// 					this.add('-end', pokemon, 'Leech Seed', '[from] move: Mortal Spin', `[of] ${pokemon}`);
-/// 				}
-/// 				const sideConditions = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
-/// 				for (const condition of sideConditions) {
-/// 					if (pokemon.hp && pokemon.side.removeSideCondition(condition)) {
-/// 						this.add('-sideend', pokemon.side, this.dex.conditions.get(condition).name, '[from] move: Mortal Spin', `[of] ${pokemon}`);
-/// 					}
-/// 				}
-/// 				if (pokemon.hp && pokemon.volatiles['partiallytrapped']) {
-/// 					pokemon.removeVolatile('partiallytrapped');
-/// 				}
-/// 			}
-/// 		}
-/// ```
+/// onAfterSubDamage(damage, target, pokemon, move) {            if (!move.hasSheerForce) {
+///                 if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
+///                     this.add('-end', pokemon, 'Leech Seed', '[from] move: Mortal Spin', `[of] ${pokemon}`);
+///                 }
+///                 const sideConditions = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
+///                 for (const condition of sideConditions) {
+///                     if (pokemon.hp && pokemon.side.removeSideCondition(condition)) {
+///                         this.add('-sideend', pokemon.side, this.dex.conditions.get(condition).name, '[from] move: Mortal Spin', `[of] ${pokemon}`);
+///                     }
+///                 }
+///                 if (pokemon.hp && pokemon.volatiles['partiallytrapped']) {
+///                     pokemon.removeVolatile('partiallytrapped');
+///                 }
+///             }
+///         }
 pub fn on_after_sub_damage(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

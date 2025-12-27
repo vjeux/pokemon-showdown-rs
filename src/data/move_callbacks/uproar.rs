@@ -10,19 +10,14 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTryHit(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onTryHit(target) {			const activeTeam = target.side.activeTeam();
-/// 			const foeActiveTeam = target.side.foe.activeTeam();
-/// 			for (const [i, allyActive] of activeTeam.entries()) {
-/// 				if (allyActive && allyActive.status === 'slp') allyActive.cureStatus();
-/// 				const foeActive = foeActiveTeam[i];
-/// 				if (foeActive && foeActive.status === 'slp') foeActive.cureStatus();
-/// 			}
-/// 		}
-/// ```
+/// onTryHit(target) {            const activeTeam = target.side.activeTeam();
+///             const foeActiveTeam = target.side.foe.activeTeam();
+///             for (const [i, allyActive] of activeTeam.entries()) {
+///                 if (allyActive && allyActive.status === 'slp') allyActive.cureStatus();
+///                 const foeActive = foeActiveTeam[i];
+///                 if (foeActive && foeActive.status === 'slp') foeActive.cureStatus();
+///             }
+///         }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

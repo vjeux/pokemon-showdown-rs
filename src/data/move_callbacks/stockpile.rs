@@ -10,13 +10,8 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTry(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onTry(source) {			if (source.volatiles['stockpile'] && source.volatiles['stockpile'].layers >= 3) return false;
-/// 		}
-/// ```
+/// onTry(source) {            if (source.volatiles['stockpile'] && source.volatiles['stockpile'].layers >= 3) return false;
+///         }
 pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

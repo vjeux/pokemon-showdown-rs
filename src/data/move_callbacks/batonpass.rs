@@ -10,17 +10,12 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onHit(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onHit(target) {			if (!this.canSwitch(target.side) || target.volatiles['commanded']) {
-/// 				this.attrLastMove('[still]');
-/// 				this.add('-fail', target);
-/// 				return this.NOT_FAIL;
-/// 			}
-/// 		}
-/// ```
+/// onHit(target) {            if (!this.canSwitch(target.side) || target.volatiles['commanded']) {
+///                 this.attrLastMove('[still]');
+///                 this.add('-fail', target);
+///                 return this.NOT_FAIL;
+///             }
+///         }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

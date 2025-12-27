@@ -10,25 +10,15 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTry(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onTry(source, target) {			return !!target.item;
-/// 		}
-/// ```
+/// onTry(source, target) {            return !!target.item;
+///         }
 pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
 
-/// onTryHit(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onTryHit(target, source, move) {			this.add('-activate', target, 'move: Poltergeist', this.dex.items.get(target.item).name);
-/// 		}
-/// ```
+/// onTryHit(target, source, move) {            this.add('-activate', target, 'move: Poltergeist', this.dex.items.get(target.item).name);
+///         }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

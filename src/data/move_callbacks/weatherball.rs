@@ -10,58 +10,48 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onModifyType(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onModifyType(move, pokemon) {			switch (pokemon.effectiveWeather()) {
-/// 			case 'sunnyday':
-/// 			case 'desolateland':
-/// 				move.type = 'Fire';
-/// 				break;
-/// 			case 'raindance':
-/// 			case 'primordialsea':
-/// 				move.type = 'Water';
-/// 				break;
-/// 			case 'sandstorm':
-/// 				move.type = 'Rock';
-/// 				break;
-/// 			case 'hail':
-/// 			case 'snowscape':
-/// 				move.type = 'Ice';
-/// 				break;
-/// 			}
-/// 		}
-/// ```
+/// onModifyType(move, pokemon) {            switch (pokemon.effectiveWeather()) {
+///             case 'sunnyday':
+///             case 'desolateland':
+///                 move.type = 'Fire';
+///                 break;
+///             case 'raindance':
+///             case 'primordialsea':
+///                 move.type = 'Water';
+///                 break;
+///             case 'sandstorm':
+///                 move.type = 'Rock';
+///                 break;
+///             case 'hail':
+///             case 'snowscape':
+///                 move.type = 'Ice';
+///                 break;
+///             }
+///         }
 pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
 
-/// onModifyMove(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onModifyMove(move, pokemon) {			switch (pokemon.effectiveWeather()) {
-/// 			case 'sunnyday':
-/// 			case 'desolateland':
-/// 				move.basePower *= 2;
-/// 				break;
-/// 			case 'raindance':
-/// 			case 'primordialsea':
-/// 				move.basePower *= 2;
-/// 				break;
-/// 			case 'sandstorm':
-/// 				move.basePower *= 2;
-/// 				break;
-/// 			case 'hail':
-/// 			case 'snowscape':
-/// 				move.basePower *= 2;
-/// 				break;
-/// 			}
-/// 			this.debug(`BP: ${move.basePower}`);
-/// 		}
-/// ```
+/// onModifyMove(move, pokemon) {            switch (pokemon.effectiveWeather()) {
+///             case 'sunnyday':
+///             case 'desolateland':
+///                 move.basePower *= 2;
+///                 break;
+///             case 'raindance':
+///             case 'primordialsea':
+///                 move.basePower *= 2;
+///                 break;
+///             case 'sandstorm':
+///                 move.basePower *= 2;
+///                 break;
+///             case 'hail':
+///             case 'snowscape':
+///                 move.basePower *= 2;
+///                 break;
+///             }
+///             this.debug(`BP: ${move.basePower}`);
+///         }
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

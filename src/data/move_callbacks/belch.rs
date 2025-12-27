@@ -10,13 +10,8 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onDisableMove(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onDisableMove(pokemon) {			if (!pokemon.ateBerry) pokemon.disableMove('belch');
-/// 		}
-/// ```
+/// onDisableMove(pokemon) {            if (!pokemon.ateBerry) pokemon.disableMove('belch');
+///         }
 pub fn on_disable_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

@@ -144,12 +144,14 @@ use super::{MoveHandlerResult, Status, Effect};
 
 ${move.callbacks.map(callback => {
     const rustFuncName = camelToSnake(callback.name);
-    return `/// ${callback.name}(...)
-///
-/// \`\`\`text
-/// JS Source (data/moves.ts):
-${callback.jsSource.split('\n').map(line => '/// ' + line).join('\n')}
-/// \`\`\`
+    // Format JS source: replace all tabs with 4 spaces
+    const formattedSource = callback.jsSource
+        .split('\n')
+        .map(line => line.replace(/\t/g, '    ')) // Replace all tabs with 4 spaces
+        .map(line => '/// ' + line)
+        .join('\n');
+
+    return `${formattedSource}
 pub fn ${rustFuncName}(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

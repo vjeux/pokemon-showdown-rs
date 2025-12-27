@@ -10,31 +10,21 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTry(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onTry(source, target, move) {			if (move.sourceEffect === 'snatch') return;
-/// 			return !!source.volatiles['stockpile'];
-/// 		}
-/// ```
+/// onTry(source, target, move) {            if (move.sourceEffect === 'snatch') return;
+///             return !!source.volatiles['stockpile'];
+///         }
 pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
 
-/// onHit(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onHit(pokemon) {			const layers = pokemon.volatiles['stockpile']?.layers || 1;
-/// 			const healAmount = [0.25, 0.5, 1];
-/// 			const success = !!this.heal(this.modify(pokemon.maxhp, healAmount[layers - 1]));
-/// 			if (!success) this.add('-fail', pokemon, 'heal');
-/// 			pokemon.removeVolatile('stockpile');
-/// 			return success || this.NOT_FAIL;
-/// 		}
-/// ```
+/// onHit(pokemon) {            const layers = pokemon.volatiles['stockpile']?.layers || 1;
+///             const healAmount = [0.25, 0.5, 1];
+///             const success = !!this.heal(this.modify(pokemon.maxhp, healAmount[layers - 1]));
+///             if (!success) this.add('-fail', pokemon, 'heal');
+///             pokemon.removeVolatile('stockpile');
+///             return success || this.NOT_FAIL;
+///         }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

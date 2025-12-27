@@ -10,17 +10,12 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTry(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onTry(source) {			if (source.activeMoveActions > 1) {
-/// 				this.hint("Mat Block only works on your first turn out.");
-/// 				return false;
-/// 			}
-/// 			return !!this.queue.willAct();
-/// 		}
-/// ```
+/// onTry(source) {            if (source.activeMoveActions > 1) {
+///                 this.hint("Mat Block only works on your first turn out.");
+///                 return false;
+///             }
+///             return !!this.queue.willAct();
+///         }
 pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

@@ -10,29 +10,19 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTry(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onTry(source, target, move) {			// Additional Gravity check for Z-move variant
-/// 			if (this.field.getPseudoWeather('Gravity')) {
-/// 				this.add('cant', source, 'move: Gravity', move);
-/// 				return null;
-/// 			}
-/// 		}
-/// ```
+/// onTry(source, target, move) {            // Additional Gravity check for Z-move variant
+///             if (this.field.getPseudoWeather('Gravity')) {
+///                 this.add('cant', source, 'move: Gravity', move);
+///                 return null;
+///             }
+///         }
 pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
 
-/// onTryHit(...)
-///
-/// ```text
-/// JS Source (data/moves.ts):
-/// onTryHit(target, source) {			this.add('-nothing');
-/// 		}
-/// ```
+/// onTryHit(target, source) {            this.add('-nothing');
+///         }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
