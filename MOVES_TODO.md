@@ -63,7 +63,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.actions.getDamage(source, target, move)`: substitute - Get move damage
 - `pokemon.lastDamage`: substitute - Last damage dealt (mutable)
 - `battle.actions.calcRecoilDamage(damage, move, source)`: substitute - Calculate recoil damage
-- `move.flags[name]`: substitute, protect - Move flags (bypasssub, protect, etc.)
+- `move.flags[name]`: substitute, protect - Move flags (bypasssub, protect, sound, etc.)
 - `move.infiltrates`: substitute - Move infiltrates flag
 - `move.ohko`: substitute - OHKO flag
 - `move.recoil`: substitute - Recoil data
@@ -275,6 +275,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.volatiles[name]?.fieldName`: focuspunch, skydrop - Optional chaining for volatile field access
 - `battle.effectState.lostFocus`: focuspunch - lostFocus boolean field in effect state
 - `battle.boost(boosts)`: rage - Apply boost using object literal {atk: 1}
+- `battle.boost(boosts, target, source, effect, isSecondary, isSelf)`: tidyup - Extended boost signature with optional params, returns bool
 - `move.flags` field deletion: skydrop - delete move.flags['contact']
 - `pokemon.getWeight()`: skydrop - Get weight in hectograms (returns number)
 - `pokemon.volatiles['twoturnmove'].source`: skydrop - Access source from twoturnmove volatile
