@@ -87,7 +87,7 @@ The following are advanced features that require more complex infrastructure:
 - ✓ `battle.actions.runMegaEvo(pokemon)`: pursuit - Execute Mega Evolution (DONE - stubs exist at run_mega_evo_stub)
 - ✓ `battle.actions.terastallize(pokemon)`: pursuit - Execute Terastallization (DONE - stubs exist at terastallize_stub)
 - ✓ `battle.runEvent(eventName, pokemon, null, move, defaultValue)`: multiattack - Run event with default return value (DONE - relay_var parameter)
-- `action.move`: waterpledge, upperhand, trickortreat - Action's move reference
+- ✓ `action.move`: waterpledge, upperhand, trickortreat - Action's move reference (DONE via MoveAction::get_move method)
 - ✓ `target.side.active.length`: trickortreat - Number of active pokemon on a side (DONE - use side.active.len())
 - ✓ `array.entries()`: uproar - Array entries() iterator with [index, pokemon] tuples (DONE - use .iter().enumerate())
 

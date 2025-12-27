@@ -49,6 +49,15 @@ pub struct MoveAction {
     pub move_priority_modified: Option<i8>,
 }
 
+impl MoveAction {
+    /// Get move data from Dex
+    /// Equivalent to accessing action.move in TypeScript
+    /// Returns MoveData for this action's move
+    pub fn get_move<'a>(&self, dex: &'a crate::dex::Dex) -> Option<&'a crate::dex::MoveData> {
+        dex.get_move(self.move_id.as_str())
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum MoveActionType {
     Move,
