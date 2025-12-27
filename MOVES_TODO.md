@@ -117,7 +117,7 @@ Moves with callbacks: 373
 - [x] futuresight - Future Sight (Special, Psychic) - 1 callback: onTry
 - [x] gastroacid - Gastro Acid (Status, Poison) - 3 callbacks: onTryHit, condition::onStart, condition::onCopy
 - [x] gearup - Gear Up (Status, Steel) - 1 callback: onHitSide
-- [ ] geomancy - Geomancy (Status, Fairy) - 1 callback: onTryMove
+- [x] geomancy - Geomancy (Status, Fairy) - 1 callback: onTryMove
 - [ ] glaiverush - Glaive Rush (Physical, Dragon) - 4 callbacks: condition::onStart, condition::onAccuracy, condition::onSourceModifyDamage, condition::onBeforeMove
 - [ ] gmaxcannonade - G-Max Cannonade (Physical, Water) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [ ] gmaxchistrike - G-Max Chi Strike (Physical, Fighting) - 3 callbacks: condition::onStart, condition::onRestart, condition::onModifyCritRatio
