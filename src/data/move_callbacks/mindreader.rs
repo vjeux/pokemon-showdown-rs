@@ -11,7 +11,23 @@ use crate::event::EventResult;
 ///     if (source.volatiles['lockon']) return false;
 /// }
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = source_pos;
+
+    // if (source.volatiles['lockon']) return false;
+    let has_lockon = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.volatiles.contains_key(&ID::from("lockon"))
+    };
+
+    if has_lockon {
+        return EventResult::Bool(false);
+    }
+
     EventResult::Continue
 }
 
@@ -20,7 +36,42 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 ///     this.add('-activate', source, 'move: Mind Reader', `[of] ${target}`);
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // source.addVolatile('lockon', target);
+    {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.add_volatile_with_source(&ID::from("lockon"), Some(target), battle);
+    }
+
+    // this.add('-activate', source, 'move: Mind Reader', `[of] ${target}`);
+    let (source_arg, target_arg) = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (crate::battle::Arg::from(source_pokemon), crate::battle::Arg::from(target_pokemon))
+    };
+
+    battle.add("-activate", &[
+        source_arg,
+        "move: Mind Reader".into(),
+        format!("[of] {}", target_arg).into(),
+    ]);
+
     EventResult::Continue
 }
 
