@@ -773,8 +773,12 @@ impl Battle {
                     self.sides[3].ally_index = Some(1);
 
                     // JS: sync side conditions
-                    // TODO: this.sides[2].sideConditions = this.sides[0].sideConditions;
-                    // TODO: this.sides[3].sideConditions = this.sides[1].sideConditions;
+                    // JS: this.sides[2].sideConditions = this.sides[0].sideConditions;
+                    let side_0_conditions = self.sides[0].side_conditions.clone();
+                    self.sides[2].side_conditions = side_0_conditions;
+                    // JS: this.sides[3].sideConditions = this.sides[1].sideConditions;
+                    let side_1_conditions = self.sides[1].side_conditions.clone();
+                    self.sides[3].side_conditions = side_1_conditions;
                 }
             }
             GameType::FreeForAll => {
