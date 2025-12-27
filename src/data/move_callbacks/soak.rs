@@ -17,7 +17,40 @@ use crate::event::EventResult;
 ///     this.add('-start', target, 'typechange', 'Water');
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if target is already pure Water type
+    let current_types = if let Some(target) = battle.pokemon_at(target_pos.0, target_pos.1) {
+        target.get_types()
+    } else {
+        return EventResult::Continue;
+    };
+
+    let is_already_water = current_types.len() == 1 && current_types[0] == "Water";
+
+    if is_already_water {
+        // Already Water type - fail but still animate
+        // TODO: battle.add('-fail', target);
+        return EventResult::Null;
+    }
+
+    // Try to set type to Water
+    let success = if let Some(target) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+        target.set_type("Water")
+    } else {
+        return EventResult::Continue;
+    };
+
+    if !success {
+        // Failed to set type - fail but still animate
+        // TODO: battle.add('-fail', target);
+        return EventResult::Null;
+    }
+
+    // TODO: battle.add('-start', target, 'typechange', 'Water');
     EventResult::Continue
 }
 
