@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 60/79 TODOs (75.9%)
+**Feature Implementation:** ⚠️ 61/79 TODOs (77.2%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -574,11 +574,43 @@
 
 **Enables:** Correct weather damage immunity (Ice types in Hail/Snow, Rock/Ground/Steel in Sandstorm, weather-immune abilities)
 
+#### Recoil/Drain Handling (1/1) ✅
+- [x] **Recoil/drain for moves** (battle.rs:9097-9142) - Apply recoil damage and drain healing based on move effects
+
+**Implementation Details:**
+- Extracts recoil and drain data from MoveData before calling methods (avoids borrow checker issues)
+- Implements three distinct gen-specific cases:
+  - **Gen 1 recoil:** `floor(damage * recoil[0] / recoil[1])`, clamped to minimum 1
+  - **Gen 1-4 drain:** `floor(damage * drain[0] / drain[1])`, clamped to minimum 1, sets lastDamage for Gen 1
+  - **Gen 5+ drain:** `round(damage * drain[0] / drain[1])` (no floor)
+- Calls `self.damage()` for recoil with 'recoil' effect
+- Calls `self.heal()` for drain with 'drain' effect
+- Matches JavaScript:
+  ```javascript
+  if (targetDamage && effect.effectType === 'Move') {
+      if (this.gen <= 1 && effect.recoil && source) {
+          const amount = this.clampIntRange(Math.floor(targetDamage * effect.recoil[0] / effect.recoil[1]), 1);
+          this.damage(amount, source, target, 'recoil');
+      }
+      if (this.gen <= 4 && effect.drain && source) {
+          const amount = this.clampIntRange(Math.floor(targetDamage * effect.drain[0] / effect.drain[1]), 1);
+          if (this.gen <= 1) this.lastDamage = amount;
+          this.heal(amount, source, target, 'drain');
+      }
+      if (this.gen > 4 && effect.drain && source) {
+          const amount = Math.round(targetDamage * effect.drain[0] / effect.drain[1]);
+          this.heal(amount, source, target, 'drain');
+      }
+  }
+  ```
+
+**Enables:** Recoil damage (Take Down, Double-Edge, Submission), Drain healing (Absorb, Mega Drain, Giga Drain), gen-specific damage calculations
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (19 TODOs)
+## Remaining P2 Nice-to-have (18 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks

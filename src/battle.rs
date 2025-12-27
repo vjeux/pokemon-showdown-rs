@@ -9076,9 +9076,69 @@ impl Battle {
 
             // Handle recoil and drain for moves
             // JavaScript: if (targetDamage && effect.effectType === 'Move')
-            if target_damage > 0 {
-                // TODO: Check if effect is a move and has recoil/drain
-                // For now, skip recoil/drain handling
+            // JS: 			if (targetDamage && effect.effectType === 'Move') {
+            // JS: 				if (this.gen <= 1 && effect.recoil && source) {
+            // JS: 					if (this.dex.currentMod !== 'gen1stadium' || target.hp > 0) {
+            // JS: 						const amount = this.clampIntRange(Math.floor(targetDamage * effect.recoil[0] / effect.recoil[1]), 1);
+            // JS: 						this.damage(amount, source, target, 'recoil');
+            // JS: 					}
+            // JS: 				}
+            // JS: 				if (this.gen <= 4 && effect.drain && source) {
+            // JS: 					const amount = this.clampIntRange(Math.floor(targetDamage * effect.drain[0] / effect.drain[1]), 1);
+            // JS: 					// Draining can be countered in gen 1
+            // JS: 					if (this.gen <= 1) this.lastDamage = amount;
+            // JS: 					this.heal(amount, source, target, 'drain');
+            // JS: 				}
+            // JS: 				if (this.gen > 4 && effect.drain && source) {
+            // JS: 					const amount = Math.round(targetDamage * effect.drain[0] / effect.drain[1]);
+            // JS: 					this.heal(amount, source, target, 'drain');
+            // JS: 				}
+            // JS: 			}
+            if target_damage > 0 && effect.map_or(false, |e| self.get_effect_type(e) == "Move") {
+                // Get move data to check for recoil and drain (extract data first to avoid borrow issues)
+                let (recoil_data, drain_data) = if let Some(eff) = effect {
+                    if let Some(move_data) = self.dex.get_move(eff.as_str()) {
+                        (move_data.recoil, move_data.drain)
+                    } else {
+                        (None, None)
+                    }
+                } else {
+                    (None, None)
+                };
+
+                // Gen 1 recoil damage
+                if self.gen <= 1 && recoil_data.is_some() && source.is_some() {
+                    let (recoil_num, recoil_denom) = recoil_data.unwrap();
+                    let amount = ((target_damage as f64 * recoil_num as f64) / recoil_denom as f64).floor() as i32;
+                    let amount = self.clamp_int_range(amount, 1, i32::MAX);
+
+                    let recoil_id = ID::new("recoil");
+                    self.damage(amount, source, target, Some(&recoil_id), false);
+                }
+
+                // Gen 1-4 drain healing
+                if self.gen <= 4 && drain_data.is_some() && source.is_some() {
+                    let (drain_num, drain_denom) = drain_data.unwrap();
+                    let amount = ((target_damage as f64 * drain_num as f64) / drain_denom as f64).floor() as i32;
+                    let amount = self.clamp_int_range(amount, 1, i32::MAX);
+
+                    // Draining can be countered in gen 1
+                    if self.gen <= 1 {
+                        self.last_damage = amount;
+                    }
+
+                    let drain_id = ID::new("drain");
+                    self.heal(amount, source, target, Some(&drain_id));
+                }
+
+                // Gen 5+ drain healing (uses round instead of floor)
+                if self.gen > 4 && drain_data.is_some() && source.is_some() {
+                    let (drain_num, drain_denom) = drain_data.unwrap();
+                    let amount = ((target_damage as f64 * drain_num as f64) / drain_denom as f64).round() as i32;
+
+                    let drain_id = ID::new("drain");
+                    self.heal(amount, source, target, Some(&drain_id));
+                }
             }
         }
 
