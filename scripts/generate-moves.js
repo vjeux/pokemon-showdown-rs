@@ -44,17 +44,26 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
     const categoryMatch = content.match(/category:\s*"([^"]+)"/);
     const typeMatch = content.match(/type:\s*"([^"]+)"/);
 
-    // Extract all callbacks (functions)
+    // Extract all callbacks (functions) with their JS source
     const callbacks = [];
-    const callbackRegex = /(\w+)(?:Priority|Order|SubOrder)?[:\(]/g;
-    let callbackMatch;
     const seenCallbacks = new Set();
 
-    while ((callbackMatch = callbackRegex.exec(content)) !== null) {
+    // Match callback functions with their implementations
+    // Matches: onCallbackName(args) { ... }
+    const callbackImplRegex = /(on\w+)(?:Priority|Order|SubOrder)?\s*\(([\s\S]*?)\)\s*\{([\s\S]*?)^\t\t\}/gm;
+    let callbackMatch;
+
+    while ((callbackMatch = callbackImplRegex.exec(content)) !== null) {
         const callbackName = callbackMatch[1];
-        if (callbackName.startsWith('on') && !seenCallbacks.has(callbackName)) {
+        const args = callbackMatch[2];
+        const body = callbackMatch[3];
+
+        if (!seenCallbacks.has(callbackName)) {
             seenCallbacks.add(callbackName);
-            callbacks.push(callbackName);
+            callbacks.push({
+                name: callbackName,
+                jsSource: `${callbackName}(${args}) {${body}\n\t\t}`
+            });
         }
     }
 
@@ -72,8 +81,7 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
         type: typeMatch ? typeMatch[1] : 'Unknown',
         callbacks,
         hasCondition,
-        hasSecondary,
-        fullContent: match[0] // Full JS source
+        hasSecondary
     });
 }
 
@@ -100,11 +108,6 @@ for (const move of movesWithCallbacks) {
 //! Pokemon Showdown - http://pokemonshowdown.com/
 //!
 //! Generated from data/moves.ts
-//!
-//! \`\`\`text
-//! JS Source (data/moves.ts):
-${move.fullContent.split('\n').map(line => '//! ' + line).join('\n')}
-//! \`\`\`
 
 use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
@@ -113,8 +116,13 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 ${move.callbacks.map(callback => {
-    const rustFuncName = camelToSnake(callback);
-    return `/// ${callback}(...)
+    const rustFuncName = camelToSnake(callback.name);
+    return `/// ${callback.name}(...)
+///
+/// \`\`\`text
+/// JS Source (data/moves.ts):
+${callback.jsSource.split('\n').map(line => '/// ' + line).join('\n')}
+/// \`\`\`
 pub fn ${rustFuncName}(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
@@ -207,7 +215,7 @@ Total: ${moves.length} moves
 Moves with callbacks: ${movesWithCallbacks.length}
 
 ## Moves with Callbacks (alphabetically)
-${movesWithCallbacks.map(m => `- [ ] ${m.id} - ${m.name} (${m.category}, ${m.type}) - ${m.callbacks.length} callback${m.callbacks.length !== 1 ? 's' : ''}: ${m.callbacks.join(', ')}`).join('\n')}
+${movesWithCallbacks.map(m => `- [ ] ${m.id} - ${m.name} (${m.category}, ${m.type}) - ${m.callbacks.length} callback${m.callbacks.length !== 1 ? 's' : ''}: ${m.callbacks.map(cb => cb.name).join(', ')}`).join('\n')}
 
 ## Statistics
 
@@ -216,7 +224,7 @@ ${(() => {
     const callbackCount = {};
     movesWithCallbacks.forEach(m => {
         m.callbacks.forEach(cb => {
-            callbackCount[cb] = (callbackCount[cb] || 0) + 1;
+            callbackCount[cb.name] = (callbackCount[cb.name] || 0) + 1;
         });
     });
     return Object.entries(callbackCount)
