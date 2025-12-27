@@ -14,7 +14,19 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // Check if a teammate fainted last turn
+    let fainted_last_turn = if let Some(side) = battle.sides.get(pokemon_pos.0) {
+        side.fainted_last_turn.is_some()
+    } else {
+        return EventResult::Continue;
+    };
+
+    if fainted_last_turn {
+        // TODO: battle.debug('Boosted for a faint last turn');
+        // chainModify(2) means multiply base power by 2
+        EventResult::Number(base_power * 2)
+    } else {
+        EventResult::Continue
+    }
 }
 
