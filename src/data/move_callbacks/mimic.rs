@@ -29,7 +29,109 @@ use crate::event::EventResult;
 ///     this.add('-start', source, 'Mimic', move.name);
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Bool(false),
+    };
+
+    // const move = target.lastMove;
+    let last_move_id = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Bool(false),
+        };
+        target_pokemon.last_move.clone()
+    };
+
+    // if (source.transformed || !move || move.flags['failmimic'] || source.moves.includes(move.id)) {
+    //     return false;
+    // }
+    let move_id = match last_move_id {
+        Some(id) => id,
+        None => return EventResult::Bool(false),
+    };
+
+    let move_data = match battle.dex.get_move_by_id(&move_id) {
+        Some(m) => m,
+        None => return EventResult::Bool(false),
+    };
+
+    let (source_transformed, source_has_move) = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Bool(false),
+        };
+        let transformed = source_pokemon.transformed;
+        let has_move = source_pokemon.move_slots.iter().any(|slot| slot.id == move_id);
+        (transformed, has_move)
+    };
+
+    if source_transformed || move_data.flags.contains_key("failmimic") || source_has_move {
+        return EventResult::Bool(false);
+    }
+
+    // if (move.isZ || move.isMax) return false;
+    if move_data.is_z_or_max_powered {
+        return EventResult::Bool(false);
+    }
+
+    // const mimicIndex = source.moves.indexOf('mimic');
+    // if (mimicIndex < 0) return false;
+    let mimic_index = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Bool(false),
+        };
+        source_pokemon.move_slots.iter().position(|slot| slot.id == ID::from("mimic"))
+    };
+
+    let mimic_index = match mimic_index {
+        Some(idx) => idx,
+        None => return EventResult::Bool(false),
+    };
+
+    // source.moveSlots[mimicIndex] = {
+    //     move: move.name,
+    //     id: move.id,
+    //     pp: move.pp,
+    //     maxpp: move.pp,
+    //     target: move.target,
+    //     disabled: false,
+    //     used: false,
+    //     virtual: true,
+    // };
+    {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Bool(false),
+        };
+
+        if let Some(slot) = source_pokemon.move_slots.get_mut(mimic_index) {
+            slot.name = move_data.name.clone();
+            slot.id = move_data.id.clone();
+            slot.pp = move_data.pp;
+            slot.max_pp = move_data.pp;
+            slot.target = move_data.target.clone();
+            slot.disabled = false;
+            slot.used = false;
+            slot.is_virtual = true;
+        }
+    }
+
+    // this.add('-start', source, 'Mimic', move.name);
+    let source_arg = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Bool(false),
+        };
+        crate::battle::Arg::from(source_pokemon)
+    };
+
+    battle.add("-start", &[source_arg, "Mimic".into(), move_data.name.clone().into()]);
+
     EventResult::Continue
 }
 
