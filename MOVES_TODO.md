@@ -263,7 +263,7 @@ Moves with callbacks: 373
 - [x] relicsong - Relic Song (Special, Normal) - 2 callbacks: onHit, onAfterMoveSecondarySelf
 - [x] rest - Rest (Status, Psychic) - 2 callbacks: onTry, onHit
 - [x] retaliate - Retaliate (Physical, Normal) - 1 callback: onBasePower
-- [ ] return - Return (Physical, Normal) - 1 callback: basePowerCallback
+- [x] return - Return (Physical, Normal) - 1 callback: basePowerCallback
 - [ ] revelationdance - Revelation Dance (Special, Normal) - 1 callback: onModifyType
 - [ ] revenge - Revenge (Physical, Fighting) - 1 callback: basePowerCallback
 - [ ] reversal - Reversal (Physical, Fighting) - 1 callback: basePowerCallback
