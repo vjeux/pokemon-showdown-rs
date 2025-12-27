@@ -20,7 +20,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     if source.active_move_actions > 1 {
-        // TODO: battle.hint("Fake Out only works on your first turn out.");
+        battle.hint("Fake Out only works on your first turn out.", false, None);
         return EventResult::Bool(false);
     }
 
