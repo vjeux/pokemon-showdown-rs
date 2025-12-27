@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 67/79 TODOs (84.8%)
+**Feature Implementation:** ⚠️ 68/79 TODOs (86.1%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -722,11 +722,28 @@
 
 **Enables:** Correct source effect tracking for triggered moves, ability ignore flag inheritance
 
+#### Current Effect Fallback and Filtering (1/1) ✅
+- [x] **current_effect fallback logic** (battle_actions.rs:2731-2743) - Use battle.current_effect when source_effect not provided
+
+**Implementation Details:**
+- If source_effect parameter is None, checks battle.current_effect
+- Sets source_effect to battle.current_effect if it exists
+- Filters out 'instruct' and 'custapberry' from source effects
+- Matches JavaScript battle-actions.ts:
+  ```javascript
+  if (!sourceEffect && this.battle.effect.id) sourceEffect = this.battle.effect;
+  if (sourceEffect && ['instruct', 'custapberry'].includes(sourceEffect.id)) sourceEffect = null;
+  ```
+- Uses existing battle.current_effect field (already in Battle struct at line 363)
+- Tracks which effect triggered the current move for chaining mechanics
+
+**Enables:** Move chaining (Dancer, Instruct), proper effect context inheritance, excluded effects filtering
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (12 TODOs)
+## Remaining P2 Nice-to-have (11 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks

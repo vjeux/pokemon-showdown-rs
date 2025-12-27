@@ -2728,10 +2728,19 @@ pub fn use_move_inner(
 
     // if (!sourceEffect && this.battle.effect.id) sourceEffect = this.battle.effect;
     // if (sourceEffect && ['instruct', 'custapberry'].includes(sourceEffect.id)) sourceEffect = null;
-    // TODO: Implement current effect tracking
-    // Tracks the current effect (item/ability/move) that triggered this move
-    // Used for move chaining (e.g., Dancer copies moves, Instruct repeats moves)
-    // Would require adding current_effect field to Battle struct
+    if source_effect.is_none() {
+        if let Some(ref current_eff) = battle.current_effect {
+            source_effect = Some(current_eff.clone());
+        }
+    }
+
+    // Exclude instruct and custapberry from source effects
+    if let Some(ref eff) = source_effect {
+        let eff_id = eff.as_str();
+        if eff_id == "instruct" || eff_id == "custapberry" {
+            source_effect = None;
+        }
+    }
 
     // let move = this.dex.getActiveMove(moveOrMoveName);
     let mut active_move = match battle.dex.get_active_move(move_or_move_name.as_str()) {
