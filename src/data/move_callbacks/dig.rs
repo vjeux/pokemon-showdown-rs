@@ -41,8 +41,11 @@ pub mod condition {
     ///     return false;
     /// }
     pub fn on_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        // Dig makes the user invulnerable, except to Earthquake and Magnitude
+        if move_id == "earthquake" || move_id == "magnitude" {
+            return EventResult::Continue;
+        }
+        EventResult::Bool(false)
     }
 
     /// onSourceModifyDamage(damage, source, target, move) {
@@ -51,7 +54,11 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        // Earthquake and Magnitude deal double damage to digging Pokemon
+        if move_id == "earthquake" || move_id == "magnitude" {
+            EventResult::Number(damage * 2)
+        } else {
+            EventResult::Continue
+        }
     }
 }
