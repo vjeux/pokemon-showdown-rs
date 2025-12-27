@@ -33,8 +33,10 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     };
 
     // Check if target has a status condition or comatose ability
-    // TODO: Add hasAbility('comatose') check when ability system is ready
-    if !target.status.is_empty() {
+    let has_status = !target.status.is_empty();
+    let has_comatose = target.has_ability("comatose");
+
+    if has_status || has_comatose {
         EventResult::Number(move_data.base_power * 2)
     } else {
         EventResult::Number(move_data.base_power)
