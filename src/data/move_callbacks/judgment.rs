@@ -15,7 +15,55 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = pokemon_pos;
+
+    // if (pokemon.ignoringItem()) return;
+    let ignoring_item = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.ignoring_item()
+    };
+
+    if ignoring_item {
+        return EventResult::Continue;
+    }
+
+    // const item = pokemon.getItem();
+    // if (item.id && item.onPlate && !item.zMove) {
+    //     move.type = item.onPlate;
+    // }
+    let on_plate_type = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let item_id = match &pokemon_pokemon.item {
+            Some(id) => id,
+            None => return EventResult::Continue,
+        };
+
+        let item = battle.dex.get_item_by_id(item_id);
+        match item {
+            Some(i) => {
+                if i.on_plate.is_some() && !i.z_move {
+                    i.on_plate.clone()
+                } else {
+                    None
+                }
+            }
+            None => None,
+        }
+    };
+
+    if let Some(plate_type) = on_plate_type {
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.move_type = plate_type;
+        }
+    }
+
     EventResult::Continue
 }
 
