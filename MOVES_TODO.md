@@ -266,7 +266,7 @@ Moves with callbacks: 373
 - [x] return - Return (Physical, Normal) - 1 callback: basePowerCallback
 - [x] revelationdance - Revelation Dance (Special, Normal) - 1 callback: onModifyType
 - [x] revenge - Revenge (Physical, Fighting) - 1 callback: basePowerCallback
-- [ ] reversal - Reversal (Physical, Fighting) - 1 callback: basePowerCallback
+- [x] reversal - Reversal (Physical, Fighting) - 1 callback: basePowerCallback
 - [ ] revivalblessing - Revival Blessing (Status, Normal) - 1 callback: onTryHit
 - [ ] risingvoltage - Rising Voltage (Special, Electric) - 1 callback: basePowerCallback
 - [ ] roleplay - Role Play (Status, Psychic) - 2 callbacks: onTryHit, onHit
