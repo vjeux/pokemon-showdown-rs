@@ -8642,8 +8642,40 @@ impl Battle {
         }
 
         // JS: const selfLoc = pokemon.getLocOf(pokemon);
-        // JS: if (['adjacentAlly', 'any', 'normal'].includes(move.target) && targetLoc === selfLoc && ...)
-        // TODO: Self-targeting validation (requires volatiles check)
+        // JS: if (
+        // JS:     ['adjacentAlly', 'any', 'normal'].includes(move.target) && targetLoc === selfLoc &&
+        // JS:     !pokemon.volatiles['twoturnmove'] && !pokemon.volatiles['iceball'] && !pokemon.volatiles['rollout']
+        // JS: ) {
+        // JS:     return move.flags['futuremove'] ? pokemon : null;
+        // JS: }
+        // Fails if the target is the user and the move can't target its own position
+        let self_loc = self.get_loc_of(user, user);
+        if (target_type == "AdjacentAlly" || target_type == "Any" || target_type == "Normal")
+            && target_loc as i32 == self_loc
+        {
+            // Check if Pokemon has volatiles that allow self-targeting
+            let has_self_targeting_volatile = if let Some(side) = self.sides.get(user_side) {
+                if let Some(pokemon) = side.pokemon.get(user_idx) {
+                    pokemon.volatiles.contains_key(&ID::new("twoturnmove"))
+                        || pokemon.volatiles.contains_key(&ID::new("iceball"))
+                        || pokemon.volatiles.contains_key(&ID::new("rollout"))
+                } else {
+                    false
+                }
+            } else {
+                false
+            };
+
+            if !has_self_targeting_volatile {
+                // If move has futuremove flag, return user (self), otherwise return None
+                let has_futuremove = move_def.flags.get("futuremove").map(|&v| v != 0).unwrap_or(false);
+                return if has_futuremove {
+                    Some(user)
+                } else {
+                    None
+                };
+            }
+        }
 
         // JS: if (move.target !== 'randomNormal' && this.validTargetLoc(targetLoc, pokemon, move.target)) {
         if target_type != "RandomNormal" && self.valid_target_loc(target_loc as i32, user, &target_type) {

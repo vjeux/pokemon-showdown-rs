@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 57/79 TODOs (72.2%)
+**Feature Implementation:** ⚠️ 58/79 TODOs (73.4%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -525,11 +525,33 @@
 
 **Enables:** Dragon Darts and other multi-target moves with smart targeting
 
+#### Self-Targeting Validation (1/1) ✅
+- [x] **Self-targeting check in get_target** (battle.rs:8644-8678) - Prevents moves from targeting themselves unless volatiles allow it
+
+**Implementation Details:**
+- Calculates self location using get_loc_of(user, user)
+- Checks if move target type is 'adjacentAlly', 'any', or 'normal' (moves that can't normally target self)
+- Checks if target location equals self location
+- Validates Pokemon doesn't have volatiles that allow self-targeting: 'twoturnmove', 'iceball', 'rollout'
+- Returns user (self) if move has 'futuremove' flag, otherwise returns None
+- Matches JavaScript:
+  ```javascript
+  const selfLoc = pokemon.getLocOf(pokemon);
+  if (
+      ['adjacentAlly', 'any', 'normal'].includes(move.target) && targetLoc === selfLoc &&
+      !pokemon.volatiles['twoturnmove'] && !pokemon.volatiles['iceball'] && !pokemon.volatiles['rollout']
+  ) {
+      return move.flags['futuremove'] ? pokemon : null;
+  }
+  ```
+
+**Enables:** Correct self-targeting validation, prevents invalid self-targeting, supports two-turn moves and rollout mechanics
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (22 TODOs)
+## Remaining P2 Nice-to-have (21 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks
