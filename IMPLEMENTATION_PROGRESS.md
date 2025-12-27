@@ -1,0 +1,103 @@
+# 1:1 JavaScript Implementation Progress
+
+## Overall Status
+
+**Methods Review:** ✅ 331/331 (100%)
+- All methods have TypeScript source comments
+- All documented with JavaScript equivalents or marked as Rust-specific
+
+**Feature Implementation:** ⚠️ 5/79 TODOs (6.3%)
+- Systematic implementation of missing JavaScript features ongoing
+
+## Completed Implementations
+
+### Session 2 - Critical Events (5 implementations)
+
+#### Faint Events (3/3) ✅
+- [x] **BeforeFaint** (battle.rs:2695-2706) - Can cancel fainting
+- [x] **Faint** (battle.rs:2726-2733) - Triggers on faint
+- [x] **AfterFaint** (battle.rs:2807-2818) - Post-faint cleanup
+
+**Enables:** Sturdy, Soul-Heart, Moxie, format-specific faint handling
+
+#### Boost Events (2/2) ✅  
+- [x] **ChangeBoost** (battle.rs:4222-4223) - Modify boost amounts
+- [x] **TryBoost** (battle.rs:4232) - Prevent boosts
+
+**Enables:** Simple, Contrary, Clear Body, Defiant
+
+## Remaining P0 Critical (High Priority)
+
+### Move Events (8 TODOs)
+- [ ] ModifyTarget event (battle_actions.rs:2799)
+- [ ] ModifyPriority event (battle.rs:5747)
+- [ ] Set move.priority field (battle.rs:5755)
+- [ ] Get move priority from Dex (battle.rs:5735)
+- [ ] getRandomTarget (battle_actions.rs:2805)
+- [ ] Set move source effect (battle_actions.rs:2821)
+- [ ] getMoveTargets multi-target (battle_actions.rs:2899)
+- [ ] PP deduction with Pressure (battle_actions.rs:2918)
+
+### Pokemon Helpers (2 TODOs)
+- [ ] adjacentAllies() (battle.rs:3492)
+- [ ] adjacentFoes() (battle.rs:3516)
+
+### Other Critical Events (3 TODOs)
+- [ ] DisableMove event (battle.rs:5096)
+- [ ] TrapPokemon/MaybeTrapPokemon events (battle.rs:5115)
+- [ ] Foe ability trapping (battle.rs:5119)
+
+## Remaining P1 Important (13 TODOs)
+
+### Z-Moves & Max Moves (5 TODOs)
+- [ ] Z-Move transformation in get_action_speed
+- [ ] Max Move transformation in get_action_speed
+- [ ] Z-move transformation in use_move
+- [ ] Max move transformation in use_move
+- [ ] runZPower for status Z-moves
+
+### Side Management (4 TODOs)
+- [ ] side.clearChoice()
+- [ ] side.activeRequest field
+- [ ] ruleTable.pickedTeamSize
+- [ ] isChoiceDone() check
+
+### Format Callbacks (4 TODOs)
+- [ ] Format callbacks (onBegin)
+- [ ] ruleTable iteration and subformat callbacks  
+- [ ] Format callbacks in runAction
+- [ ] Swap events
+
+## Remaining P2 Nice-to-have (51 TODOs)
+
+### Gen-Specific (5 TODOs)
+- Multi battle side conditions
+- Gen 2-3 queue cancellation
+- Gen 1 no-progress checks
+- Staleness checks  
+- Berry cycling checks
+
+### Dynamax (5 TODOs)
+- Dynamax 3-turn removal
+- Gen 1 partial trapping
+- Zacian/Zamazenta forme changes
+- Format callbacks
+- Switch in all active Pokemon
+
+### Infrastructure (41 TODOs)
+- Various missing infrastructure pieces
+- Effect type checks
+- Boost migration
+- Request handling improvements
+
+## Next Steps
+
+1. **Continue P0 implementations:**
+   - Move events (ModifyTarget, ModifyPriority)
+   - Pokemon adjacency helpers
+   - Remaining critical events
+
+2. **Track progress:** Commit after each feature group
+
+3. **Goal:** Achieve functional parity for core battle mechanics
+
