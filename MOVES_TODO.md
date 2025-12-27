@@ -20,6 +20,13 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.sethp(hp)`: painsplit - Set HP value directly
 - `pokemon.getHealth`: painsplit - Get health info for display (HP/maxHP format)
 - `pokemon.storedStats`: guardsplit, powersplit, speedswap - Mutable stats object with atk, def, spa, spd, spe fields
+- `pokemon.clearBoosts()`: clearsmog, haze - Clear all boost stages to 0
+- `pokemon.removeVolatile(name)`: psychup - Remove volatile condition
+- `battle.directDamage(amount)`: bellydrum - Deal direct damage (unaffected by abilities/items)
+- `battle.heal(amount, target, source)`: strengthsap - Heal HP
+- `battle.getAllActive()`: haze - Get array of all active pokemon
+- `battle.clampIntRange(value, min)`: superfang, ruination, naturesmadness - Clamp integer to minimum value
+- `pokemon.boosts` mutable access: topsyturvy, psychup - Direct modification of boost values (or helper methods)
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
