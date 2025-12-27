@@ -299,7 +299,7 @@ Moves with callbacks: 373
 - [x] snore - Snore (Special, Normal) - 1 callback: onTry
 - [x] soak - Soak (Status, Water) - 1 callback: onHit
 - [x] solarbeam - Solar Beam (Special, Grass) - 2 callbacks: onTryMove, onBasePower
-- [ ] solarblade - Solar Blade (Physical, Grass) - 2 callbacks: onTryMove, onBasePower
+- [x] solarblade - Solar Blade (Physical, Grass) - 2 callbacks: onTryMove, onBasePower
 - [ ] sparklingaria - Sparkling Aria (Special, Water) - 1 callback: onAfterMove
 - [ ] speedswap - Speed Swap (Status, Psychic) - 1 callback: onHit
 - [ ] spiderweb - Spider Web (Status, Bug) - 1 callback: onHit
