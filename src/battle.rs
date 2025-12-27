@@ -9857,7 +9857,7 @@ impl Battle {
     // 		this.event.modifier = ((previousMod * nextMod + 2048) >> 12) / 4096;
     // 	}
     //
-    pub fn chain_modify(&mut self, numerator: i32, denominator: i32) {
+    pub fn chain_modify(&mut self, numerator: i32, denominator: i32) -> i32 {
         if let Some(ref mut event) = self.current_event {
             // Extract modifier value first to avoid borrow checker issues
             let modifier = event.modifier;
@@ -9871,7 +9871,11 @@ impl Battle {
 
             // JS: this.event.modifier = ((previousMod * nextMod + 2048) >> 12) / 4096;
             // Result stays in 4096 basis points
-            event.modifier = ((previous_mod as i64 * next_mod as i64 + 2048) >> 12) as i32;
+            let new_modifier = ((previous_mod as i64 * next_mod as i64 + 2048) >> 12) as i32;
+            event.modifier = new_modifier;
+            new_modifier
+        } else {
+            4096 // Default modifier (1.0 in 4096 basis points)
         }
     }
 
