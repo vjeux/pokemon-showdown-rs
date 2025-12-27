@@ -158,6 +158,16 @@ The following moves require infrastructure that doesn't exist yet:
 - `move.baseMove`: encore - Base move ID for Max moves
 - `pokemon.getMoveData(moveId)`: encore - Get move slot data
 - `pokemon.hasMove(moveId)`: encore - Check if pokemon has move
+- `move.flags['failinstruct']`: instruct - Instruct-blocked flag
+- `move.flags['charge']`: instruct, sleeptalk - Charge move flag
+- `move.flags['recharge']`: instruct - Recharge move flag
+- `pokemon.lastMoveTargetLoc`: instruct - Last move target location
+- `battle.queue.resolveAction({choice, pokemon, moveid, targetLoc})`: instruct - Resolve action from choice object
+- `battle.lastMove`: copycat - Battle's last move used (different from pokemon.lastMove)
+- `move.flags['failcopycat']`: copycat - Copycat-blocked flag
+- `move.flags['nosleeptalk']`: sleeptalk - Sleep Talk-blocked flag
+- `move.flags['noassist']`: assist - Assist-blocked flag
+- `move.basePower` read access: copycat, sleeptalk - Read base power value
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
