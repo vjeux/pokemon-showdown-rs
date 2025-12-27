@@ -8605,6 +8605,9 @@ impl Battle {
     }
 
     /// Run event and return boolean
+    /// Rust convenience method - JavaScript runEvent() returns various types (undefined, null, number, etc.)
+    /// This method simplifies the API by returning true if event succeeded (returned Some value), false otherwise
+    /// Used when callers only need to know if the event succeeded, not the actual relay value
     pub fn run_event_bool(
         &mut self,
         event_id: &str,
@@ -8818,11 +8821,17 @@ impl Battle {
     }
 
     /// Get event modifier (4096 = 1.0x)
+    /// Rust convenience method - JavaScript accesses this.event.modifier directly
+    /// This method provides safe access to current event's modifier value
+    /// Returns 4096 (1.0x) if no event is active
     pub fn get_event_modifier(&self) -> i32 {
         self.current_event.as_ref().map(|e| e.modifier).unwrap_or(4096)
     }
 
     /// Set event modifier (for chainModify pattern, 4096 = 1.0x)
+    /// Rust convenience method - JavaScript sets this.event.modifier directly
+    /// This method chains modifiers by multiplying: modifier = (current * new + 2048) >> 12
+    /// Used by chainModify() to accumulate multiple damage/stat modifiers
     pub fn set_event_modifier(&mut self, modifier: i32) {
         if let Some(ref mut event) = self.current_event {
             // Chain modifiers by multiplying in 4096 basis points
@@ -9090,6 +9099,9 @@ impl Battle {
 
     /// Get Pokemon at a location relative to a source Pokemon
     /// Helper for get_target
+    /// Rust helper method - JavaScript uses pokemon.getAtLoc(targetLoc) directly on Pokemon object
+    /// This method implements the logic as a Battle method since Pokemon doesn't have access to Battle state
+    /// Returns (side_index, pokemon_index) tuple if Pokemon exists at location, None otherwise
     fn get_at_loc(&self, source: (usize, usize), target_loc: i8) -> Option<(usize, usize)> {
         let (source_side, _source_idx) = source;
 
@@ -9602,6 +9614,9 @@ impl Battle {
 
     /// Helper to add damage log messages
     /// Matches JavaScript battle.ts:2088-2112
+    /// Rust helper method - JavaScript has this logic inline in spreadDamage()
+    /// This method extracts the damage logging logic for code organization
+    /// Handles special cases: partiallytrapped, powder, confused, and default damage logs
     fn add_damage_log(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&ID>) {
         let (side_idx, poke_idx) = target;
 
@@ -9696,6 +9711,11 @@ impl Battle {
         result
     }
 
+    /// Internal modifier calculation with 4096 fixed-point arithmetic
+    /// Rust helper method - JavaScript uses inline calculation or this.modify()
+    /// This method implements 4096-based fixed-point multiplication
+    /// Formula: result = ((value * modifier + 2048) >> 12).max(1)
+    /// modifier is in 4096 basis points (e.g., 6144 = 1.5x, 2048 = 0.5x)
     fn modify_internal(&self, value: i32, modifier: i32) -> i32 {
         // 4096-based fixed-point multiplication
         // modifier is already in 4096 basis (e.g., 6144 = 1.5x)
