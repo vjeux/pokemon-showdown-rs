@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 71/79 TODOs (89.9%)
+**Feature Implementation:** ⚠️ 72/79 TODOs (91.1%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -800,6 +800,33 @@
   ```
 
 **Enables:** Dragon Darts multi-target mechanics, proper retargeting when targets faint
+
+### Session 13 - Nature Stat Modifiers (1 implementation)
+
+#### Nature Modifiers for Stats (1/1) ✅
+- [x] **Nature stat modifiers** (battle.rs:10285-10327) - Apply nature +/- 10% modifiers to stats
+
+**Implementation Details:**
+- Uses Dex.get_nature() to retrieve nature data
+- Checks if nature.plus matches stat_name for +10% boost
+- Checks if nature.minus matches stat_name for -10% reduction
+- Applies overflow protection when ruleTable has 'overflowstatmod':
+  - Plus stats capped at 595 (Eternatus-Eternamax in Pure Hackmons)
+  - Minus stats capped at 728
+- Uses 16-bit truncation: `Dex::trunc(Dex::trunc(stat * 110, 16) / 100, 0)`
+- Matches JavaScript battle.ts:10228-10237:
+  ```javascript
+  const nature = this.dex.natures.get(set.nature);
+  if (nature.plus === statName) {
+      stat = this.ruleTable.has('overflowstatmod') ? Math.min(stat, 595) : stat;
+      stat = tr(tr(stat * 110, 16) / 100);
+  } else if (nature.minus === statName) {
+      stat = this.ruleTable.has('overflowstatmod') ? Math.min(stat, 728) : stat;
+      stat = tr(tr(stat * 90, 16) / 100);
+  }
+  ```
+
+**Enables:** Correct stat calculation with nature modifiers (Adamant, Modest, Timid, etc.), Pure Hackmons edge case handling
 
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 

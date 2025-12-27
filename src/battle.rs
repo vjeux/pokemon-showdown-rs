@@ -10283,13 +10283,47 @@ impl Battle {
         let mut stat = self.trunc(inner as f64 * set.level as f64 / 100.0 + 5.0);
 
         // Apply nature
-        // TODO: Need Dex.natures access to apply nature modifiers
         // JS: const nature = this.dex.natures.get(set.nature);
-        // JS: if (nature.plus === statName) { stat = tr(tr(stat * 110, 16) / 100); }
-        // JS: else if (nature.minus === statName) { stat = tr(tr(stat * 90, 16) / 100); }
+        // JS: if (nature.plus === statName) {
+        //       stat = this.ruleTable.has('overflowstatmod') ? Math.min(stat, 595) : stat;
+        //       stat = tr(tr(stat * 110, 16) / 100);
+        //     }
+        // JS: else if (nature.minus === statName) {
+        //       stat = this.ruleTable.has('overflowstatmod') ? Math.min(stat, 728) : stat;
+        //       stat = tr(tr(stat * 90, 16) / 100);
+        //     }
         if !set.nature.is_empty() {
-            // nature_data = self.dex.natures.get(&set.nature);
-            // Apply 1.1x or 0.9x multiplier based on nature.plus/minus with 16-bit truncation
+            if let Some(nature_data) = self.dex.get_nature(&set.nature) {
+                // Check if this stat is boosted by nature (+10%)
+                if let Some(ref plus) = nature_data.plus {
+                    if plus == stat_name {
+                        // Apply overflow protection if rule exists
+                        // This only affects Eternatus-Eternamax in Pure Hackmons
+                        if let Some(ref rule_table) = self.rule_table {
+                            if rule_table.has("overflowstatmod") {
+                                stat = stat.min(595);
+                            }
+                        }
+                        // Apply 1.1x multiplier with 16-bit truncation
+                        // Natures are calculated with 16-bit truncation
+                        stat = crate::dex::Dex::trunc(crate::dex::Dex::trunc(stat as f64 * 110.0, 16) as f64 / 100.0, 0);
+                    }
+                }
+
+                // Check if this stat is reduced by nature (-10%)
+                if let Some(ref minus) = nature_data.minus {
+                    if minus == stat_name {
+                        // Apply overflow protection if rule exists
+                        if let Some(ref rule_table) = self.rule_table {
+                            if rule_table.has("overflowstatmod") {
+                                stat = stat.min(728);
+                            }
+                        }
+                        // Apply 0.9x multiplier with 16-bit truncation
+                        stat = crate::dex::Dex::trunc(crate::dex::Dex::trunc(stat as f64 * 90.0, 16) as f64 / 100.0, 0);
+                    }
+                }
+            }
         }
 
         stat.max(0)
