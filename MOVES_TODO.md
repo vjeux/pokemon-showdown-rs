@@ -91,7 +91,7 @@ Moves with callbacks: 373
 - [x] fellstinger - Fell Stinger (Physical, Bug) - 1 callback: onAfterMoveSecondarySelf
 - [x] ficklebeam - Fickle Beam (Special, Dragon) - 1 callback: onBasePower
 - [x] filletaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
-- [ ] finalgambit - Final Gambit (Special, Fighting) - 1 callback: damageCallback
+- [x] finalgambit - Final Gambit (Special, Fighting) - 1 callback: damageCallback
 - [ ] firepledge - Fire Pledge (Special, Fire) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [ ] firstimpression - First Impression (Physical, Bug) - 1 callback: onTry
 - [ ] fishiousrend - Fishious Rend (Physical, Water) - 1 callback: basePowerCallback
