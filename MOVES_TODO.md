@@ -322,6 +322,8 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.moveLastTurnResult`: temperflare, stompingtantrum - Result of last move (false if move failed)
 - `pokemon.eatItem(force)`: teatime - Make pokemon eat held item, force parameter bypasses checks
 - `pokemon.activeTurns`: taunt - Number of turns pokemon has been active
+- `move.name`: skydrop, spite - Move name string field
+- `move.hitTargets`: sparklingaria - Array of pokemon that were successfully hit by the move
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
