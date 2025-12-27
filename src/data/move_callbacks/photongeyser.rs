@@ -11,7 +11,26 @@ use crate::event::EventResult;
 ///     if (pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) move.category = 'Physical';
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = pokemon_pos;
+
+    // if (pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) move.category = 'Physical';
+    let (atk_stat, spa_stat) = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let atk = pokemon_pokemon.get_stat("atk", false, true);
+        let spa = pokemon_pokemon.get_stat("spa", false, true);
+        (atk, spa)
+    };
+
+    if atk_stat > spa_stat {
+        // move.category = 'Physical';
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.category = "Physical".to_string();
+        }
+    }
+
     EventResult::Continue
 }
 
