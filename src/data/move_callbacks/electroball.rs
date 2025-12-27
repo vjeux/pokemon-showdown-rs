@@ -15,7 +15,45 @@ use crate::event::EventResult;
 ///     return bp;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let pokemon = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // let ratio = Math.floor(pokemon.getStat('spe') / target.getStat('spe'));
+    let pokemon_speed = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.get_stat("spe", battle)
+    };
+
+    let target_speed = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.get_stat("spe", battle)
+    };
+
+    // if (!isFinite(ratio)) ratio = 0;
+    let ratio = if target_speed == 0 {
+        0
+    } else {
+        pokemon_speed / target_speed
+    };
+
+    // const bp = [40, 60, 80, 120, 150][Math.min(ratio, 4)];
+    let bp_table = [40, 60, 80, 120, 150];
+    let index = std::cmp::min(ratio as usize, 4);
+    let bp = bp_table[index];
+
+    // this.debug(`BP: ${bp}`);
+    battle.debug(&format!("BP: {}", bp));
+
+    // return bp;
+    EventResult::Int(bp)
 }
 
