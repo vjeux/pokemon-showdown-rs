@@ -295,7 +295,7 @@ Moves with callbacks: 373
 - [x] sleeptalk - Sleep Talk (Status, Normal) - 2 callbacks: onTry, onHit
 - [x] smackdown - Smack Down (Physical, Rock) - 2 callbacks: condition::onStart, condition::onRestart
 - [x] smellingsalts - Smelling Salts (Physical, Normal) - 2 callbacks: basePowerCallback, onHit
-- [ ] snatch - Snatch (Status, Dark) - 2 callbacks: condition::onStart, condition::onAnyPrepareHit
+- [x] snatch - Snatch (Status, Dark) - 2 callbacks: condition::onStart, condition::onAnyPrepareHit
 - [ ] snore - Snore (Special, Normal) - 1 callback: onTry
 - [ ] soak - Soak (Status, Water) - 1 callback: onHit
 - [ ] solarbeam - Solar Beam (Special, Grass) - 2 callbacks: onTryMove, onBasePower
