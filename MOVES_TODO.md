@@ -62,7 +62,7 @@ Moves with callbacks: 373
 - [x] defog - Defog (Status, Flying) - 1 callback: onHit
 - [x] destinybond - Destiny Bond (Status, Ghost) - 5 callbacks: onPrepareHit, condition::onStart, condition::onFaint, condition::onBeforeMove, condition::onMoveAborted
 - [x] detect - Detect (Status, Fighting) - 2 callbacks: onPrepareHit, onHit
-- [ ] dig - Dig (Physical, Ground) - 4 callbacks: onTryMove, condition::onImmunity, condition::onInvulnerability, condition::onSourceModifyDamage
+- [x] dig - Dig (Physical, Ground) - 4 callbacks: onTryMove, condition::onImmunity, condition::onInvulnerability, condition::onSourceModifyDamage
 - [ ] disable - Disable (Status, Normal) - 5 callbacks: onTryHit, condition::onStart, condition::onEnd, condition::onBeforeMove, condition::onDisableMove
 - [ ] dive - Dive (Physical, Water) - 4 callbacks: onTryMove, condition::onImmunity, condition::onInvulnerability, condition::onSourceModifyDamage
 - [ ] doodle - Doodle (Status, Normal) - 1 callback: onHit
