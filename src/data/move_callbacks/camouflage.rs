@@ -22,7 +22,7 @@ use crate::event::EventResult;
 ///     if (target.getTypes().join() === newType || !target.setType(newType)) return false;
 ///     this.add('-start', target, 'typechange', newType);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: Option<&str>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

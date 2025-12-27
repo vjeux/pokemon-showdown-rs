@@ -17,18 +17,18 @@ function generateParameters(callbackName, jsArgs) {
     // Standard signatures for each callback type
     // This ensures all callbacks of the same type have the same signature
     const standardSignatures = {
-        'basePowerCallback': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'basePowerCallback': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
         'damageCallback': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
         'beforeMoveCallback': ['pokemon_pos: (usize, usize)'],
         'beforeTurnCallback': ['pokemon_pos: (usize, usize)'],
         'priorityChargeCallback': ['pokemon_pos: (usize, usize)'],
         'durationCallback': ['target_pos: Option<(usize, usize)>', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
         // Standard onXxx callbacks
-        'onHit': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: Option<&str>'],
-        'onTryHit': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)', 'move_id: Option<&str>'],
-        'onAfterHit': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)', 'move_id: Option<&str>'],
-        'onBasePower': ['base_power: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: Option<&str>'],
-        'onModifyMove': ['move_id: &str', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onHit': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onTryHit': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)'],
+        'onAfterHit': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)'],
+        'onBasePower': ['base_power: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onModifyMove': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
         'onTry': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
         'onTryMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
         'onPrepareHit': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
@@ -376,7 +376,7 @@ const dispatchers = sortedCallbacks.map(callback => {
 
     if (callback === 'basePowerCallback') {
         params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
-        callParams = 'battle, pokemon_pos, target_pos, move_id';
+        callParams = 'battle, pokemon_pos, target_pos';
     } else if (callback === 'damageCallback') {
         params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
         callParams = 'battle, pokemon_pos, target_pos';
@@ -385,16 +385,16 @@ const dispatchers = sortedCallbacks.map(callback => {
         callParams = 'battle, pokemon_pos';
     } else if (callback === 'onHit') {
         params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
-        callParams = 'battle, pokemon_pos, target_pos, Some(move_id)';
+        callParams = 'battle, pokemon_pos, target_pos';
     } else if (callback === 'onTryHit' || callback === 'onAfterHit') {
         params = ',\n    move_id: &str,\n    source_pos: (usize, usize),\n    target_pos: (usize, usize)';
-        callParams = 'battle, source_pos, target_pos, Some(move_id)';
+        callParams = 'battle, source_pos, target_pos';
     } else if (callback === 'onBasePower') {
         params = ',\n    move_id: &str,\n    base_power: i32,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
-        callParams = 'battle, base_power, pokemon_pos, target_pos, Some(move_id)';
+        callParams = 'battle, base_power, pokemon_pos, target_pos';
     } else if (callback === 'onModifyMove') {
         params = ',\n    move_id: &str,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
-        callParams = 'battle, move_id, pokemon_pos, target_pos';
+        callParams = 'battle, pokemon_pos, target_pos';
     } else if (callback === 'onTry' || callback === 'onTryMove') {
         params = ',\n    move_id: &str,\n    source_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
         callParams = 'battle, source_pos, target_pos';
@@ -434,7 +434,7 @@ const conditionDispatchers = sortedConditionCallbacks.map(callback => {
     let callParams = '';
     if (callback.includes('Damage') || callback === 'onTryHit' || callback === 'onHit' || callback === 'onAfterHit') {
         params = ',\n    move_id: &str,\n    source_pos: (usize, usize),\n    target_pos: (usize, usize)';
-        callParams = 'battle, source_pos, target_pos, move_id';
+        callParams = 'battle, source_pos, target_pos';
     } else if (callback === 'onTryMove' || callback === 'onModifyType') {
         params = ',\n    move_id: &str,\n    source_pos: (usize, usize)';
         callParams = 'battle, source_pos';
