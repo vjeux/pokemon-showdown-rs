@@ -9,7 +9,7 @@ use std::collections::{HashSet, HashMap};
 use serde::{Deserialize, Serialize};
 
 use crate::dex_data::{ID, GameType, SideID, EffectState, StatsTable};
-use crate::field::{Field, get_weather_type_modifier, get_terrain_damage_modifier, get_weather_damage_fraction, get_grassy_terrain_heal};
+use crate::field::{Field, get_weather_type_modifier, get_terrain_damage_modifier};
 use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
 use crate::side::{Side, RequestState, Choice};
@@ -3668,242 +3668,27 @@ impl Battle {
     }
 
     /// Process end-of-turn residual effects
+    /// Equivalent to battle.ts case 'residual' (battle.ts:2810-2817)
     fn run_residual(&mut self) {
-        // Get field conditions once
-        let weather = self.field.weather.as_str().to_string();
-        let terrain = self.field.terrain.as_str().to_string();
+        // this.add('');
+        self.add_log("", &[]);
 
-        for side_idx in 0..self.sides.len() {
-            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
-                let is_active = self.sides[side_idx].pokemon[poke_idx].is_active;
-                if !is_active {
-                    continue;
-                }
+        // this.clearActiveMove(true);
+        self.clear_active_move(true);
 
-                if self.sides[side_idx].pokemon[poke_idx].is_fainted() {
-                    continue;
-                }
+        // this.updateSpeed();
+        self.update_speed();
 
-                let status = self.sides[side_idx].pokemon[poke_idx].status.as_str().to_string();
-                let maxhp = self.sides[side_idx].pokemon[poke_idx].maxhp;
-                let pokemon_types = self.sides[side_idx].pokemon[poke_idx].types.clone();
-                let is_grounded = !pokemon_types.iter().any(|t| t.to_lowercase() == "flying");
+        // residualPokemon = this.getAllActive().map(pokemon => [pokemon, pokemon.getUndynamaxedHP()] as const);
+        // Note: We don't track residualPokemon yet for EmergencyExit handling
+        // This will be needed when implementing EmergencyExit abilities
 
-                // Weather damage (sandstorm/hail)
-                let weather_damage_frac = get_weather_damage_fraction(&weather, &pokemon_types);
-                if weather_damage_frac > 0.0 {
-                    let damage = ((maxhp as f64 * weather_damage_frac) as i32).max(1);
-                    self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
+        // this.fieldEvent('Residual');
+        self.field_event("Residual");
 
-                    let name = {
-                        let side_id = self.sides[side_idx].id_str();
-                        let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                        format!("{}: {}", side_id, pokemon.name)
-                    };
-                    let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                    let weather_source = format!("[from] {}", weather);
-                    self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), &weather_source]);
-                }
-
-                // Grassy Terrain healing
-                let grassy_heal_frac = get_grassy_terrain_heal(&terrain, is_grounded);
-                if grassy_heal_frac > 0.0 {
-                    let heal = ((maxhp as f64 * grassy_heal_frac) as i32).max(1);
-                    let old_hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                    self.sides[side_idx].pokemon[poke_idx].heal(heal);
-
-                    if self.sides[side_idx].pokemon[poke_idx].hp > old_hp {
-                        let name = {
-                            let side_id = self.sides[side_idx].id_str();
-                            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                            format!("{}: {}", side_id, pokemon.name)
-                        };
-                        let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                        self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp), "[from] Grassy Terrain"]);
-                    }
-                }
-
-                // Status damage
-                match status.as_str() {
-                    "brn" => {
-                        // Burn does 1/16 max HP (Gen 7+)
-                        let damage = (maxhp / 16).max(1);
-                        self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
-
-                        let name = {
-                            let side_id = self.sides[side_idx].id_str();
-                            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                            format!("{}: {}", side_id, pokemon.name)
-                        };
-                        let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                        self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] brn"]);
-                    }
-                    "psn" => {
-                        // Poison does 1/8 max HP
-                        let damage = (maxhp / 8).max(1);
-                        self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
-
-                        let name = {
-                            let side_id = self.sides[side_idx].id_str();
-                            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                            format!("{}: {}", side_id, pokemon.name)
-                        };
-                        let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                        self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] psn"]);
-                    }
-                    "tox" => {
-                        // Toxic does N/16 max HP where N increases each turn
-                        let counter = self.sides[side_idx].pokemon[poke_idx].status_state.duration.unwrap_or(1);
-                        let damage = (maxhp * counter / 16).max(1);
-                        self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
-
-                        // Increment counter
-                        self.sides[side_idx].pokemon[poke_idx].status_state.duration = Some(counter + 1);
-
-                        let name = {
-                            let side_id = self.sides[side_idx].id_str();
-                            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                            format!("{}: {}", side_id, pokemon.name)
-                        };
-                        let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                        self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] tox"]);
-                    }
-                    _ => {}
-                }
-
-                // Item end-of-turn effects
-                let item = self.sides[side_idx].pokemon[poke_idx].item.as_str().to_string();
-                match item.as_str() {
-                    "leftovers" => {
-                        // Heal 1/16 max HP
-                        let old_hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                        if old_hp < maxhp {
-                            let heal = (maxhp / 16).max(1);
-                            self.sides[side_idx].pokemon[poke_idx].heal(heal);
-
-                            let name = {
-                                let side_id = self.sides[side_idx].id_str();
-                                let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                                format!("{}: {}", side_id, pokemon.name)
-                            };
-                            let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                            self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp), "[from] item: Leftovers"]);
-                        }
-                    }
-                    "blacksludge" => {
-                        // Heal 1/16 if Poison type, damage otherwise
-                        let is_poison = pokemon_types.iter().any(|t| t.to_lowercase() == "poison");
-                        if is_poison {
-                            let old_hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                            if old_hp < maxhp {
-                                let heal = (maxhp / 16).max(1);
-                                self.sides[side_idx].pokemon[poke_idx].heal(heal);
-
-                                let name = {
-                                    let side_id = self.sides[side_idx].id_str();
-                                    let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                                    format!("{}: {}", side_id, pokemon.name)
-                                };
-                                let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                                self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp), "[from] item: Black Sludge"]);
-                            }
-                        } else {
-                            let damage = (maxhp / 8).max(1);
-                            self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
-
-                            let name = {
-                                let side_id = self.sides[side_idx].id_str();
-                                let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                                format!("{}: {}", side_id, pokemon.name)
-                            };
-                            let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                            self.add_log("-damage", &[&name, &format!("{}/{}", hp, maxhp), "[from] item: Black Sludge"]);
-                        }
-                    }
-                    _ => {}
-                }
-            }
-        }
-
-        // Process volatile condition residuals (onResidual callbacks)
-        // JavaScript: this.fieldEvent('Residual') processes all pokemon volatiles
-        for side_idx in 0..self.sides.len() {
-            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
-                let is_active = self.sides[side_idx].pokemon[poke_idx].is_active;
-                if !is_active {
-                    continue;
-                }
-
-                if self.sides[side_idx].pokemon[poke_idx].is_fainted() {
-                    continue;
-                }
-
-                // Collect volatile IDs to process (to avoid borrow issues)
-                let volatile_ids: Vec<ID> = self.sides[side_idx].pokemon[poke_idx]
-                    .volatiles
-                    .keys()
-                    .cloned()
-                    .collect();
-
-                for volatile_id in volatile_ids {
-                    // Call onResidual callback for aquaring
-                    if volatile_id.as_str() == "aquaring" {
-//                         crate::data::move_callbacks::aquaring::on_residual(self, (side_idx, poke_idx));
-                    }
-                }
-            }
-        }
-
-        // Decrement field condition durations
-        let expired = self.field.decrement_durations();
-        for effect_id in expired {
-            self.add_log("-fieldend", &[effect_id.as_str()]);
-        }
-
-        // Decrement side condition durations
-        for side_idx in 0..self.sides.len() {
-            // Collect side condition IDs that need duration decrements
-            let side_condition_ids: Vec<ID> = self.sides[side_idx]
-                .side_conditions
-                .keys()
-                .cloned()
-                .collect();
-
-            for condition_id in side_condition_ids {
-                // Get current duration
-                let current_duration = if let Some(side) = self.sides.get(side_idx) {
-                    if let Some(condition) = side.get_side_condition(&condition_id) {
-                        condition.duration
-                    } else {
-                        None
-                    }
-                } else {
-                    None
-                };
-
-                // Decrement if there's a duration
-                if let Some(dur) = current_duration {
-                    if dur > 0 {
-                        let new_duration = dur - 1;
-
-                        if new_duration == 0 {
-                            // Duration expired, call onSideEnd and remove condition
-                            self.handle_side_condition_event("SideEnd", side_idx, &condition_id);
-
-                            if let Some(side) = self.sides.get_mut(side_idx) {
-                                side.remove_side_condition(&condition_id);
-                            }
-                        } else {
-                            // Update duration
-                            if let Some(side) = self.sides.get_mut(side_idx) {
-                                if let Some(condition) = side.get_side_condition_mut(&condition_id) {
-                                    condition.duration = Some(new_duration);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        // if (!this.ended) this.add('upkeep');
+        if !self.ended {
+            self.add_log("upkeep", &[]);
         }
     }
 
