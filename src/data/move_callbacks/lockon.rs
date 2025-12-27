@@ -10,16 +10,18 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTryHit(target, source) {            if (source.volatiles['lockon']) return false;
-///         }
+/// onTryHit(target, source) {
+/// if (source.volatiles['lockon']) return false;
+/// }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
 
-/// onHit(target, source) {            source.addVolatile('lockon', target);
-///             this.add('-activate', source, 'move: Lock-On', `[of] ${target}`);
-///         }
+/// onHit(target, source) {
+/// source.addVolatile('lockon', target);
+/// this.add('-activate', source, 'move: Lock-On', `[of] ${target}`);
+/// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

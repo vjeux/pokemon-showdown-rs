@@ -10,12 +10,13 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTryHit(target, source, move) {            if (target.volatiles['dynamax']) {
-///                 this.add('-fail', source, 'move: Grass Knot', '[from] Dynamax');
-///                 this.attrLastMove('[still]');
-///                 return null;
-///             }
-///         }
+/// onTryHit(target, source, move) {
+/// if (target.volatiles['dynamax']) {
+///     this.add('-fail', source, 'move: Grass Knot', '[from] Dynamax');
+///     this.attrLastMove('[still]');
+///     return null;
+/// }
+/// }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

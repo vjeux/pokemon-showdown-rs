@@ -10,8 +10,9 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTryHit(target) {            if (!target.newlySwitched && !this.queue.willMove(target)) return false;
-///         }
+/// onTryHit(target) {
+/// if (!target.newlySwitched && !this.queue.willMove(target)) return false;
+/// }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

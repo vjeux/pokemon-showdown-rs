@@ -10,10 +10,11 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onHit(target, pokemon) {            if (!pokemon.transformInto(target)) {
-///                 return false;
-///             }
-///         }
+/// onHit(target, pokemon) {
+/// if (!pokemon.transformInto(target)) {
+///     return false;
+/// }
+/// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

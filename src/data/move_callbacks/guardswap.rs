@@ -10,20 +10,21 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onHit(target, source) {            const targetBoosts: SparseBoostsTable = {};
-///             const sourceBoosts: SparseBoostsTable = {};
+/// onHit(target, source) {
+/// const targetBoosts: SparseBoostsTable = {};
+/// const sourceBoosts: SparseBoostsTable = {};
 /// 
-///             const defSpd: BoostID[] = ['def', 'spd'];
-///             for (const stat of defSpd) {
-///                 targetBoosts[stat] = target.boosts[stat];
-///                 sourceBoosts[stat] = source.boosts[stat];
-///             }
+/// const defSpd: BoostID[] = ['def', 'spd'];
+/// for (const stat of defSpd) {
+///     targetBoosts[stat] = target.boosts[stat];
+///     sourceBoosts[stat] = source.boosts[stat];
+/// }
 /// 
-///             source.setBoost(targetBoosts);
-///             target.setBoost(sourceBoosts);
+/// source.setBoost(targetBoosts);
+/// target.setBoost(sourceBoosts);
 /// 
-///             this.add('-swapboost', source, target, 'def, spd', '[from] move: Guard Swap');
-///         }
+/// this.add('-swapboost', source, target, 'def, spd', '[from] move: Guard Swap');
+/// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

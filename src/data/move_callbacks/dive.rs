@@ -10,20 +10,21 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTryMove(attacker, defender, move) {            if (attacker.removeVolatile(move.id)) {
-///                 return;
-///             }
-///             if (attacker.hasAbility('gulpmissile') && attacker.species.name === 'Cramorant' && !attacker.transformed) {
-///                 const forme = attacker.hp <= attacker.maxhp / 2 ? 'cramorantgorging' : 'cramorantgulping';
-///                 attacker.formeChange(forme, move);
-///             }
-///             this.add('-prepare', attacker, move.name);
-///             if (!this.runEvent('ChargeMove', attacker, defender, move)) {
-///                 return;
-///             }
-///             attacker.addVolatile('twoturnmove', defender);
-///             return null;
-///         }
+/// onTryMove(attacker, defender, move) {
+/// if (attacker.removeVolatile(move.id)) {
+///     return;
+/// }
+/// if (attacker.hasAbility('gulpmissile') && attacker.species.name === 'Cramorant' && !attacker.transformed) {
+///     const forme = attacker.hp <= attacker.maxhp / 2 ? 'cramorantgorging' : 'cramorantgulping';
+///     attacker.formeChange(forme, move);
+/// }
+/// this.add('-prepare', attacker, move.name);
+/// if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+///     return;
+/// }
+/// attacker.addVolatile('twoturnmove', defender);
+/// return null;
+/// }
 pub fn on_try_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

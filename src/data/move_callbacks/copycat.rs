@@ -10,15 +10,16 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onHit(pokemon) {            let move: Move | ActiveMove | null = this.lastMove;
-///             if (!move) return;
+/// onHit(pokemon) {
+/// let move: Move | ActiveMove | null = this.lastMove;
+/// if (!move) return;
 /// 
-///             if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
-///             if (move.flags['failcopycat'] || move.isZ || move.isMax) {
-///                 return false;
-///             }
-///             this.actions.useMove(move.id, pokemon);
-///         }
+/// if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
+/// if (move.flags['failcopycat'] || move.isZ || move.isMax) {
+///     return false;
+/// }
+/// this.actions.useMove(move.id, pokemon);
+/// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

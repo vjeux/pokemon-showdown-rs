@@ -10,8 +10,9 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTryImmunity(target, source) {            return target.hasType(source.getTypes());
-///         }
+/// onTryImmunity(target, source) {
+/// return target.hasType(source.getTypes());
+/// }
 pub fn on_try_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

@@ -10,15 +10,17 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTry(source) {            return !!source.volatiles['stockpile'];
-///         }
+/// onTry(source) {
+/// return !!source.volatiles['stockpile'];
+/// }
 pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined
 }
 
-/// onAfterMove(pokemon) {            pokemon.removeVolatile('stockpile');
-///         }
+/// onAfterMove(pokemon) {
+/// pokemon.removeVolatile('stockpile');
+/// }
 pub fn on_after_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

@@ -10,18 +10,19 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onModifyMove(move, pokemon, target) {            const rand = this.random(10);
-///             if (rand < 2) {
-///                 move.heal = [1, 4];
-///                 move.infiltrates = true;
-///             } else if (rand < 6) {
-///                 move.basePower = 40;
-///             } else if (rand < 9) {
-///                 move.basePower = 80;
-///             } else {
-///                 move.basePower = 120;
-///             }
-///         }
+/// onModifyMove(move, pokemon, target) {
+/// const rand = this.random(10);
+/// if (rand < 2) {
+///     move.heal = [1, 4];
+///     move.infiltrates = true;
+/// } else if (rand < 6) {
+///     move.basePower = 40;
+/// } else if (rand < 9) {
+///     move.basePower = 80;
+/// } else {
+///     move.basePower = 120;
+/// }
+/// }
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

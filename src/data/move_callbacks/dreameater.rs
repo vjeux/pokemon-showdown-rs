@@ -10,8 +10,9 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onTryImmunity(target) {            return target.status === 'slp' || target.hasAbility('comatose');
-///         }
+/// onTryImmunity(target) {
+/// return target.status === 'slp' || target.hasAbility('comatose');
+/// }
 pub fn on_try_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

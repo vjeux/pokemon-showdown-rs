@@ -10,14 +10,15 @@ use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
-/// onHit(target, source) {            const newdef = Math.floor((target.storedStats.def + source.storedStats.def) / 2);
-///             target.storedStats.def = newdef;
-///             source.storedStats.def = newdef;
-///             const newspd = Math.floor((target.storedStats.spd + source.storedStats.spd) / 2);
-///             target.storedStats.spd = newspd;
-///             source.storedStats.spd = newspd;
-///             this.add('-activate', source, 'move: Guard Split', `[of] ${target}`);
-///         }
+/// onHit(target, source) {
+/// const newdef = Math.floor((target.storedStats.def + source.storedStats.def) / 2);
+/// target.storedStats.def = newdef;
+/// source.storedStats.def = newdef;
+/// const newspd = Math.floor((target.storedStats.spd + source.storedStats.spd) / 2);
+/// target.storedStats.spd = newspd;
+/// source.storedStats.spd = newspd;
+/// this.add('-activate', source, 'move: Guard Split', `[of] ${target}`);
+/// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
     MoveHandlerResult::Undefined

@@ -85,10 +85,35 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
 
             if (!seenCallbacks.has(callbackName)) {
                 seenCallbacks.add(callbackName);
-                callbacks.push({
-                    name: callbackName,
-                    jsSource: `${callbackName}(${args}) {${body}\t\t}`
-                });
+
+                // Normalize indentation: remove common leading whitespace
+                const bodyLines = body.split('\n').filter(line => line.trim() !== '');
+                if (bodyLines.length > 0) {
+                    // Find minimum indentation (count leading tabs/spaces)
+                    const minIndent = Math.min(...bodyLines.map(line => {
+                        const match = line.match(/^(\s*)/);
+                        return match ? match[1].length : 0;
+                    }));
+
+                    // Remove the common indentation
+                    const normalizedBody = body.split('\n')
+                        .map(line => {
+                            if (line.trim() === '') return '';
+                            return line.slice(minIndent);
+                        })
+                        .join('\n')
+                        .trim();
+
+                    callbacks.push({
+                        name: callbackName,
+                        jsSource: `${callbackName}(${args}) {\n${normalizedBody}\n}`
+                    });
+                } else {
+                    callbacks.push({
+                        name: callbackName,
+                        jsSource: `${callbackName}(${args}) {}`
+                    });
+                }
             }
         }
         i++;
