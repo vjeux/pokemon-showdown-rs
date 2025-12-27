@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Arg, Battle};
 use crate::event::EventResult;
 
 /// onTryHit(target, source) {
@@ -16,7 +16,6 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         None => return EventResult::Continue,
     };
 
-    use crate::battle::Arg;
     battle.add("-activate", &[Arg::Pokemon(target), Arg::Str("move: Celebrate")]);
 
     EventResult::Continue

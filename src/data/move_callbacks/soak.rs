@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Arg, Battle};
 use crate::event::EventResult;
 
 /// onHit(target) {
@@ -38,7 +38,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             None => return EventResult::Continue,
         };
 
-        use crate::battle::Arg;
         battle.add("-fail", &[Arg::Pokemon(target)]);
         return EventResult::Null;
     }
@@ -57,7 +56,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             None => return EventResult::Continue,
         };
 
-        use crate::battle::Arg;
         battle.add("-fail", &[Arg::Pokemon(target)]);
         return EventResult::Null;
     }
@@ -67,7 +65,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         None => return EventResult::Continue,
     };
 
-    use crate::battle::Arg;
     battle.add("-start", &[Arg::Pokemon(target), Arg::Str("typechange"), Arg::Str("Water")]);
     EventResult::Continue
 }

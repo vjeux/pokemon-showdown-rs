@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Arg, Battle};
 use crate::event::EventResult;
 
 /// onHit(target) {
@@ -27,7 +27,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         None => return EventResult::Continue,
     };
 
-    use crate::battle::Arg;
     battle.add("-clearboost", &[Arg::Pokemon(target)]);
 
     EventResult::Continue
