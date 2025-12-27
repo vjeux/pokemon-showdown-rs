@@ -37,7 +37,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     // Check if target is asleep or has comatose ability
     // TODO: Add hasAbility('comatose') check when ability system is ready
-    if target.status.as_str() == "slp" {
+    if target.has_status("slp") {
         // TODO: battle.debug('BP doubled on sleeping target');
         EventResult::Number(move_data.base_power * 2)
     } else {
