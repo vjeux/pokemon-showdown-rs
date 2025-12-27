@@ -206,7 +206,7 @@ Moves with callbacks: 373
 - [x] mist - Mist (Status, Ice) - 3 callbacks: condition::onTryBoost, condition::onSideStart, condition::onSideEnd
 - [x] mistyexplosion - Misty Explosion (Special, Fairy) - 1 callback: onBasePower
 - [x] mistyterrain - Misty Terrain (Status, Fairy) - 6 callbacks: condition::durationCallback, condition::onSetStatus, condition::onTryAddVolatile, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
-- [ ] moonlight - Moonlight (Status, Fairy) - 1 callback: onHit
+- [x] moonlight - Moonlight (Status, Fairy) - 1 callback: onHit
 - [ ] morningsun - Morning Sun (Status, Normal) - 1 callback: onHit
 - [ ] mortalspin - Mortal Spin (Physical, Poison) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [ ] mudsport - Mud Sport (Status, Ground) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
