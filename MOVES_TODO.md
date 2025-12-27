@@ -78,8 +78,8 @@ The following are advanced features that require more complex infrastructure:
 - ✓ `effect.pranksterBoosted`: magiccoat - Effect prankster boosted field (DONE via EffectData.prankster_boosted)
 
 **Secondary Effect Fields**:
-- `secondary.chance`: waterpledge - Secondary effect chance field (mutable)
-- `secondary.volatileStatus`: waterpledge - Volatile status from secondary effect
+- ✓ `secondary.chance`: waterpledge - Secondary effect chance field (mutable) (DONE - exists in SecondaryEffect struct)
+- ✓ `secondary.volatileStatus`: waterpledge - Volatile status from secondary effect (DONE - exists as volatile_status in SecondaryEffect)
 
 **Other**:
 - ✓ `battle.queue.entries()`: pursuit - Queue entries iterator with (index, action) tuples (DONE)
