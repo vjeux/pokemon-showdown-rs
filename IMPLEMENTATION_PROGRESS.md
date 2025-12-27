@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 10/79 TODOs (12.7%)
+**Feature Implementation:** ⚠️ 13/79 TODOs (16.5%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -45,6 +45,14 @@
 
 **Enables:** Proper targeting for doubles/triples, Healing Wish, Storm Drain, Lightning Rod
 
+#### Critical Events (3/3) ✅
+- [x] **DisableMove event** (battle.rs:5310-5315) - Allows abilities to disable moves
+- [x] **TrapPokemon event** (battle.rs:5327-5329) - Enables trapping moves
+- [x] **MaybeTrapPokemon event** (battle.rs:5331-5334) - Conditional trapping based on type
+- [~] **Foe ability trapping** (battle.rs:5337-5356) - Stub for Gen 3+ ability checks
+
+**Enables:** Assault Vest, Gorilla Tactics move restrictions, Mean Look trapping
+
 ## Remaining P0 Critical (High Priority)
 
 ### Move Events (5 remaining TODOs)
@@ -61,10 +69,10 @@
 - [x] ~~adjacentAllies() (battle.rs:3492)~~ ✅ Completed
 - [x] ~~adjacentFoes() (battle.rs:3516)~~ ✅ Completed
 
-### Other Critical Events (3 TODOs)
-- [ ] DisableMove event (battle.rs:5096)
-- [ ] TrapPokemon/MaybeTrapPokemon events (battle.rs:5115)
-- [ ] Foe ability trapping (battle.rs:5119)
+### Other Critical Events (0 remaining TODOs)
+- [x] ~~DisableMove event (battle.rs:5096)~~ ✅ Completed
+- [x] ~~TrapPokemon/MaybeTrapPokemon events (battle.rs:5115)~~ ✅ Completed
+- [~] ~~Foe ability trapping (battle.rs:5119)~~ ⚠️ Stub implemented, full requires species infrastructure
 
 ## Remaining P1 Important (13 TODOs)
 
