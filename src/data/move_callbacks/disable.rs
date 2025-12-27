@@ -17,8 +17,6 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Ev
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

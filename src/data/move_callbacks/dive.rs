@@ -27,8 +27,6 @@ pub fn on_try_move(battle: &mut Battle, move_id: &str) -> EventResult {
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

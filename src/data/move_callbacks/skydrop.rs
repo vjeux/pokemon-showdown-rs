@@ -75,8 +75,6 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

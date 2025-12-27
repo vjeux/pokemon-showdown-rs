@@ -27,8 +27,6 @@ pub fn on_try_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

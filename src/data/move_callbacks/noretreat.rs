@@ -18,8 +18,6 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_po
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

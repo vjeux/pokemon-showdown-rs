@@ -23,8 +23,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

@@ -283,9 +283,7 @@ pub fn ${rustFuncName}(${params}) -> EventResult {
 }
 `;
 }).join('\n')}
-${move.conditionCallbacks.length > 0 ? `
-// Condition handlers
-pub mod condition {
+${move.conditionCallbacks.length > 0 ? `pub mod condition {
     use super::*;
 
 ${move.conditionCallbacks.map(callback => {

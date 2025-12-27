@@ -15,8 +15,6 @@ pub fn on_try(battle: &mut Battle) -> EventResult {
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

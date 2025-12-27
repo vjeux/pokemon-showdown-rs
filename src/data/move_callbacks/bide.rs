@@ -15,8 +15,6 @@ pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

@@ -60,8 +60,6 @@ pub fn on_after_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, ta
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

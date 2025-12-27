@@ -8,8 +8,6 @@ use crate::battle::Battle;
 use crate::event::EventResult;
 
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

@@ -31,8 +31,6 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

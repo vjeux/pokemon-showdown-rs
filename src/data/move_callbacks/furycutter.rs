@@ -20,8 +20,6 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

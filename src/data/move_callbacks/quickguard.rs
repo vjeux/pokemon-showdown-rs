@@ -23,8 +23,6 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> E
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

@@ -15,8 +15,6 @@ pub fn priority_charge_callback(battle: &mut Battle, source_pos: Option<(usize, 
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 

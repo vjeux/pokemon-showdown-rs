@@ -15,8 +15,6 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
     EventResult::Continue
 }
 
-
-// Condition handlers
 pub mod condition {
     use super::*;
 
