@@ -140,6 +140,24 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.getAtSlot(slot)`: counter, mirrorcoat - Get pokemon at specific slot
 - `battle.getCategory(move)`: counter, mirrorcoat - Get move category (Physical, Special, Status)
 - `pokemon.getSlot()`: counter, mirrorcoat - Get pokemon's slot/position
+- `battle.activePerHalf`: followme, ragepowder, spotlight - Number of active pokemon per half
+- `pokemon.isSkyDropped()`: followme, ragepowder - Check if pokemon is in sky drop state
+- `battle.validTarget(target, source, moveTarget)`: followme, ragepowder, spotlight - Validate if target is valid for move
+- `pokemon.runStatusImmunity(status)`: ragepowder - Check status immunity
+- `battle.effectState.target`: followme, ragepowder, spotlight, lockon - Effect state target field
+- `battle.effectState.multiplier`: helpinghand - Effect state multiplier field (mutable)
+- `move.isZOrMaxPowered`: disable - Z or Max powered flag
+- `battle.activePokemon`: disable - Currently active pokemon
+- `battle.activeMove`: disable - Currently active move object
+- `move.isExternal`: disable - External move flag
+- `battle.effectState.duration`: disable, encore - Effect state duration field (mutable)
+- `moveSlot.pp`: disable, encore - Move PP field
+- `effect.effectType`: disable - Effect type string ('Ability', 'Move', etc.)
+- `effect.name`: disable - Effect name
+- `battle.effectState.move`: disable, encore - Effect state move field (mutable)
+- `move.baseMove`: encore - Base move ID for Max moves
+- `pokemon.getMoveData(moveId)`: encore - Get move slot data
+- `pokemon.hasMove(moveId)`: encore - Check if pokemon has move
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
