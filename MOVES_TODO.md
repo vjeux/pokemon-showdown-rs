@@ -18,7 +18,7 @@ Moves with callbacks: 373
 - [x] autotomize - Autotomize (Status, Steel) - 2 callbacks: onTryHit, onHit
 - [x] avalanche - Avalanche (Physical, Ice) - 1 callback: basePowerCallback
 - [x] axekick - Axe Kick (Physical, Fighting) - 1 callback: onMoveFail
-- [ ] banefulbunker - Baneful Bunker (Status, Poison) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
+- [x] banefulbunker - Baneful Bunker (Status, Poison) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] barbbarrage - Barb Barrage (Physical, Poison) - 1 callback: onBasePower
 - [ ] batonpass - Baton Pass (Status, Normal) - 1 callback: onHit
 - [ ] beakblast - Beak Blast (Physical, Flying) - 4 callbacks: priorityChargeCallback, onAfterMove, condition::onStart, condition::onHit
