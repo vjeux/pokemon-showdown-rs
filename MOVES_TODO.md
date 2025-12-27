@@ -294,6 +294,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.effectState.startingTurn`: wish - startingTurn field in effect state (mutable)
 - `battle.getOverflowedTurnCount()`: wish - Get turn count with overflow handling
 - `battle.turn`: wish - Current turn number field
+- `battle.lastSuccessfulMoveThisTurn`: fusionbolt, fusionflare - ID of last successful move this turn (string)
 - `side.removeSlotCondition(target, name)`: wish - Remove slot condition
 - `battle.effectState.sourceSlot`: wish - sourceSlot field in effect state
 - `battle.effectState.source.name`: wish - Access source pokemon name through effect state
