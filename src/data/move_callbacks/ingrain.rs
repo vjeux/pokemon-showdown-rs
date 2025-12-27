@@ -15,7 +15,12 @@ pub mod condition {
     ///     this.add('-start', pokemon, 'move: Ingrain');
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // this.add('-start', pokemon, 'move: Ingrain');
+        let pokemon_arg = crate::battle::Arg::Pos(pokemon.0, pokemon.1);
+        battle.add("-start", &[pokemon_arg, "move: Ingrain".into()]);
+
         EventResult::Continue
     }
 
@@ -23,7 +28,19 @@ pub mod condition {
     ///     this.heal(pokemon.baseMaxhp / 16);
     /// }
     pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // this.heal(pokemon.baseMaxhp / 16);
+        let heal_amount = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.base_maxhp / 16
+        };
+
+        battle.heal(heal_amount, pokemon, None, None);
+
         EventResult::Continue
     }
 
@@ -31,7 +48,15 @@ pub mod condition {
     ///     pokemon.tryTrap();
     /// }
     pub fn on_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // pokemon.tryTrap();
+        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.try_trap();
+
         EventResult::Continue
     }
 
@@ -40,7 +65,13 @@ pub mod condition {
     ///     return null;
     /// }
     pub fn on_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        let pokemon = pokemon_pos;
+
+        // this.add('-activate', pokemon, 'move: Ingrain');
+        let pokemon_arg = crate::battle::Arg::Pos(pokemon.0, pokemon.1);
+        battle.add("-activate", &[pokemon_arg, "move: Ingrain".into()]);
+
+        // return null;
+        EventResult::Null
     }
 }
