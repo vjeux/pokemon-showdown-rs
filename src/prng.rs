@@ -468,7 +468,7 @@ mod tests {
         // Test case 3: Raw 32-bit values with seed [0xAAAA, 0xBBBB, 0xCCCC, 0xDDDD]
         // Expected from JS: [2795446293,2744431784,3501875646,746470024,1664743198,3087483402,966965533,2002677306,2482317012,1229306196]
         let mut rng3 = Gen5RNG::new([0xAAAA, 0xBBBB, 0xCCCC, 0xDDDD]);
-        let expected_raw: [i32; 10] = [
+        let expected_raw: [u32; 10] = [
             2795446293, 2744431784, 3501875646, 746470024, 1664743198,
             3087483402, 966965533, 2002677306, 2482317012, 1229306196
         ];
