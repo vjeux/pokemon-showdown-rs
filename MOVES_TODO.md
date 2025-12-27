@@ -118,7 +118,7 @@ Moves with callbacks: 373
 - [x] gastroacid - Gastro Acid (Status, Poison) - 3 callbacks: onTryHit, condition::onStart, condition::onCopy
 - [x] gearup - Gear Up (Status, Steel) - 1 callback: onHitSide
 - [x] geomancy - Geomancy (Status, Fairy) - 1 callback: onTryMove
-- [ ] glaiverush - Glaive Rush (Physical, Dragon) - 4 callbacks: condition::onStart, condition::onAccuracy, condition::onSourceModifyDamage, condition::onBeforeMove
+- [x] glaiverush - Glaive Rush (Physical, Dragon) - 4 callbacks: condition::onStart, condition::onAccuracy, condition::onSourceModifyDamage, condition::onBeforeMove
 - [ ] gmaxcannonade - G-Max Cannonade (Physical, Water) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [ ] gmaxchistrike - G-Max Chi Strike (Physical, Fighting) - 3 callbacks: condition::onStart, condition::onRestart, condition::onModifyCritRatio
 - [ ] gmaxsnooze - G-Max Snooze (Physical, Dark) - 2 callbacks: onHit, onAfterSubDamage
