@@ -2858,7 +2858,44 @@ impl Battle {
             // Gen 1: fainting skips the rest of the turn
             // JS: this.queue.clear();
             self.queue.clear();
-            // TODO: Clear Bide accumulated damage (requires checking pokemon.volatiles['bide'])
+
+            // JS: Fainting clears accumulated Bide damage
+            // JS: for (const pokemon of this.getAllActive()) {
+            // JS:     if (pokemon.volatiles['bide']?.damage) {
+            // JS:         pokemon.volatiles['bide'].damage = 0;
+            // JS:         this.hint("Desync Clause Mod activated!");
+            // JS:         this.hint("In Gen 1, Bide's accumulated damage is reset to 0 when a Pokemon faints.");
+            // JS:     }
+            // JS: }
+            let mut bide_cleared = false;
+            let bide_id = ID::new("bide");
+
+            for side in &mut self.sides {
+                for pokemon in &mut side.pokemon {
+                    if !pokemon.is_active {
+                        continue;
+                    }
+
+                    // Check if pokemon has bide volatile with damage > 0
+                    if let Some(bide_state) = pokemon.volatiles.get_mut(&bide_id) {
+                        // Check if the bide state has a damage field
+                        if let Some(damage_value) = bide_state.data.get("damage") {
+                            if let Some(damage) = damage_value.as_i64() {
+                                if damage > 0 {
+                                    // Reset damage to 0
+                                    bide_state.data.insert("damage".to_string(), serde_json::json!(0));
+                                    bide_cleared = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if bide_cleared {
+                self.hint("Desync Clause Mod activated!", false, None);
+                self.hint("In Gen 1, Bide's accumulated damage is reset to 0 when a Pokemon faints.", false, None);
+            }
         }
 
         // JS: else if (this.gen <= 3 && this.gameType === 'singles') { ... }

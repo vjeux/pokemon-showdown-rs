@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 52/79 TODOs (65.8%)
+**Feature Implementation:** ⚠️ 53/79 TODOs (67.1%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -413,14 +413,35 @@
 
 **Enables:** Correct protocol logging for healing moves vs healing abilities/items, proper battle log display
 
+#### Gen 1 Bide Damage Clearing (1/1) ✅
+- [x] **Clear Bide accumulated damage on faint** (battle.rs:2870-2898) - Reset Bide damage to 0 for all active Pokemon in Gen 1
+
+**Implementation Details:**
+- Iterates through all active Pokemon when a faint occurs in Gen 1
+- Checks pokemon.volatiles['bide'] for damage field
+- Resets damage to 0 if it exists and is > 0
+- Adds hint messages when Bide damage is cleared
+- Matches JavaScript:
+  ```javascript
+  for (const pokemon of this.getAllActive()) {
+      if (pokemon.volatiles['bide']?.damage) {
+          pokemon.volatiles['bide'].damage = 0;
+          this.hint("Desync Clause Mod activated!");
+          this.hint("In Gen 1, Bide's accumulated damage is reset to 0 when a Pokemon faints.");
+      }
+  }
+  ```
+- Uses EffectState.data HashMap to access/modify Bide damage field
+
+**Enables:** Correct Gen 1 Bide mechanics, prevents accumulated damage from carrying over after faints
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (27 TODOs)
+## Remaining P2 Nice-to-have (26 TODOs)
 
-### Gen-Specific (3 TODOs)
-- Multi battle side conditions
+### Gen-Specific (2 TODOs)
 - Gen 2-3 queue cancellation
 - Gen 1 no-progress checks
 - Staleness checks  
