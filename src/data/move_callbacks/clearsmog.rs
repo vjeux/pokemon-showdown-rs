@@ -12,7 +12,18 @@ use crate::event::EventResult;
 ///     this.add('-clearboost', target);
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Clear all stat boosts from target
+    if let Some(target) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+        target.clear_boosts();
+    }
+
+    // TODO: battle.add('-clearboost', target);
+
     EventResult::Continue
 }
 
