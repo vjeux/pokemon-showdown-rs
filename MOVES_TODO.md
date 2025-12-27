@@ -172,7 +172,7 @@ Moves with callbacks: 373
 - [x] kingsshield - King's Shield (Status, Steel) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [x] knockoff - Knock Off (Physical, Dark) - 2 callbacks: onBasePower, onAfterHit
 - [x] laserfocus - Laser Focus (Status, Normal) - 4 callbacks: condition::onStart, condition::onRestart, condition::onModifyCritRatio, condition::onEnd
-- [ ] lashout - Lash Out (Physical, Dark) - 1 callback: onBasePower
+- [x] lashout - Lash Out (Physical, Dark) - 1 callback: onBasePower
 - [ ] lastresort - Last Resort (Physical, Normal) - 1 callback: onTry
 - [ ] lastrespects - Last Respects (Physical, Ghost) - 1 callback: basePowerCallback
 - [ ] leechseed - Leech Seed (Status, Grass) - 3 callbacks: onTryImmunity, condition::onStart, condition::onResidual
