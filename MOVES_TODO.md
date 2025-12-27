@@ -115,7 +115,7 @@ Moves with callbacks: 373
 - [x] fusionbolt - Fusion Bolt (Physical, Electric) - 1 callback: onBasePower
 - [x] fusionflare - Fusion Flare (Special, Fire) - 1 callback: onBasePower
 - [x] futuresight - Future Sight (Special, Psychic) - 1 callback: onTry
-- [ ] gastroacid - Gastro Acid (Status, Poison) - 3 callbacks: onTryHit, condition::onStart, condition::onCopy
+- [x] gastroacid - Gastro Acid (Status, Poison) - 3 callbacks: onTryHit, condition::onStart, condition::onCopy
 - [ ] gearup - Gear Up (Status, Steel) - 1 callback: onHitSide
 - [ ] geomancy - Geomancy (Status, Fairy) - 1 callback: onTryMove
 - [ ] glaiverush - Glaive Rush (Physical, Dragon) - 4 callbacks: condition::onStart, condition::onAccuracy, condition::onSourceModifyDamage, condition::onBeforeMove
