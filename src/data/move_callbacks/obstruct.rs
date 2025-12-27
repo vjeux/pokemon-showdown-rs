@@ -11,15 +11,30 @@ use crate::event::EventResult;
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let pokemon = pokemon_pos;
+
+    // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
+    let will_act = battle.queue_will_act();
+
+    if !will_act {
+        return EventResult::Bool(false);
+    }
+
+    // this.runEvent('StallMove', pokemon)
+    battle.run_event("StallMove", pokemon, None, None)
 }
 
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+
+    // pokemon.addVolatile('stall');
+    battle.add_volatile(&ID::from("stall"), pokemon, None, None);
+
     EventResult::Continue
 }
 
@@ -30,7 +45,22 @@ pub mod condition {
     ///     this.add('-singleturn', target, 'Protect');
     /// }
     pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // this.add('-singleturn', target, 'Protect');
+        let target_arg = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(target_pokemon)
+        };
+
+        battle.add("-singleturn", &[target_arg, "Protect".into()]);
+
         EventResult::Continue
     }
 
@@ -58,8 +88,128 @@ pub mod condition {
     ///     return this.NOT_FAIL;
     /// }
     pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        use crate::dex_data::ID;
+
+        let source = source_pos;
+        let target = target_pos;
+
+        // if (!move.flags['protect'] || move.category === 'Status') {
+        let (has_protect_flag, is_status) = {
+            let active_move = match &battle.active_move {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+            let has_protect = active_move.flags.contains(&"protect".to_string());
+            let is_status = active_move.category == "Status";
+            (has_protect, is_status)
+        };
+
+        if !has_protect_flag || is_status {
+            // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
+            let move_id = {
+                let active_move = match &battle.active_move {
+                    Some(m) => m.id.clone(),
+                    None => return EventResult::Continue,
+                };
+                move_id
+            };
+
+            if move_id == ID::from("gmaxoneblow") || move_id == ID::from("gmaxrapidflow") {
+                return EventResult::Continue;
+            }
+
+            // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
+            let is_z_or_max = {
+                let active_move = match &battle.active_move {
+                    Some(m) => m,
+                    None => return EventResult::Continue,
+                };
+                active_move.is_z || active_move.is_max
+            };
+
+            if is_z_or_max {
+                let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target_pokemon.move_this_turn_outcome_flags.z_broke_protect = true;
+            }
+
+            // return;
+            return EventResult::Continue;
+        }
+
+        // if (move.smartTarget) {
+        let smart_target = {
+            let active_move = match &battle.active_move {
+                Some(m) => m.smart_target,
+                None => return EventResult::Continue,
+            };
+            smart_target
+        };
+
+        if smart_target {
+            // move.smartTarget = false;
+            if let Some(ref mut active_move) = battle.active_move {
+                active_move.smart_target = false;
+            }
+        } else {
+            // this.add('-activate', target, 'move: Protect');
+            let target_arg = {
+                let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                crate::battle::Arg::from(target_pokemon)
+            };
+
+            battle.add("-activate", &[target_arg, "move: Protect".into()]);
+        }
+
+        // const lockedmove = source.getVolatile('lockedmove');
+        // if (lockedmove) {
+        let has_lockedmove = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.volatiles.contains_key(&ID::from("lockedmove"))
+        };
+
+        if has_lockedmove {
+            // if (source.volatiles['lockedmove'].duration === 2) {
+            let duration_is_2 = {
+                let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                source_pokemon.volatiles.get(&ID::from("lockedmove"))
+                    .and_then(|v| v.duration)
+                    .map(|d| d == 2)
+                    .unwrap_or(false)
+            };
+
+            if duration_is_2 {
+                // delete source.volatiles['lockedmove'];
+                let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                source_pokemon.remove_volatile(&ID::from("lockedmove"));
+            }
+        }
+
+        // if (this.checkMoveMakesContact(move, source, target)) {
+        if battle.check_move_makes_contact(source, target) {
+            // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
+            use std::collections::HashMap;
+            let mut boosts = HashMap::new();
+            boosts.insert("def".to_string(), -2);
+            battle.boost(boosts, source, Some(target), Some(&ID::from("obstruct")));
+        }
+
+        // return this.NOT_FAIL;
+        EventResult::NotFail
     }
 
     /// onHit(target, source, move) {
@@ -68,7 +218,31 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+        let source = pokemon_pos;
+
+        // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
+        let is_z_or_max_powered = {
+            let active_move = match &battle.active_move {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+            active_move.is_z || active_move.is_max
+        };
+
+        if is_z_or_max_powered && battle.check_move_makes_contact(source, target) {
+            // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
+            use std::collections::HashMap;
+            let mut boosts = HashMap::new();
+            boosts.insert("def".to_string(), -2);
+            battle.boost(boosts, source, Some(target), Some(&ID::from("obstruct")));
+        }
+
         EventResult::Continue
     }
 }
