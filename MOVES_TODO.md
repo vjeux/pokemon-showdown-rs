@@ -90,7 +90,7 @@ Moves with callbacks: 373
 - [x] falseswipe - False Swipe (Physical, Normal) - 1 callback: onDamage
 - [x] fellstinger - Fell Stinger (Physical, Bug) - 1 callback: onAfterMoveSecondarySelf
 - [x] ficklebeam - Fickle Beam (Special, Dragon) - 1 callback: onBasePower
-- [ ] filletaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
+- [x] filletaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
 - [ ] finalgambit - Final Gambit (Special, Fighting) - 1 callback: damageCallback
 - [ ] firepledge - Fire Pledge (Special, Fire) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [ ] firstimpression - First Impression (Physical, Bug) - 1 callback: onTry
