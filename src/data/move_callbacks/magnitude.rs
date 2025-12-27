@@ -33,7 +33,40 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // const i = this.random(100);
+    let i = battle.random(100);
+
+    // Determine magnitude and base power based on random value
+    let (magnitude, base_power) = if i < 5 {
+        (4, 10)
+    } else if i < 15 {
+        (5, 30)
+    } else if i < 35 {
+        (6, 50)
+    } else if i < 65 {
+        (7, 70)
+    } else if i < 85 {
+        (8, 90)
+    } else if i < 95 {
+        (9, 110)
+    } else {
+        (10, 150)
+    };
+
+    // Store magnitude and base_power in current effect state
+    // TODO: Once battle infrastructure supports modifying active move directly,
+    // this should set move.magnitude and move.basePower
+    if let Some(ref mut effect_state) = battle.current_effect_state {
+        effect_state.data.insert(
+            "magnitude".to_string(),
+            serde_json::to_value(magnitude).unwrap_or(serde_json::Value::Null),
+        );
+        effect_state.data.insert(
+            "basePower".to_string(),
+            serde_json::to_value(base_power).unwrap_or(serde_json::Value::Null),
+        );
+    }
+
     EventResult::Continue
 }
 
@@ -41,7 +74,21 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///     this.add('-activate', pokemon, 'move: Magnitude', move.magnitude);
 /// }
 pub fn on_use_move_message(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // Get magnitude from current effect state
+    let magnitude = if let Some(ref effect_state) = battle.current_effect_state {
+        if let Some(mag_value) = effect_state.data.get("magnitude") {
+            mag_value.as_i64().unwrap_or(0) as i32
+        } else {
+            0
+        }
+    } else {
+        0
+    };
+
+    // this.add('-activate', pokemon, 'move: Magnitude', move.magnitude);
+    let pokemon_arg = crate::battle::Arg::Pos(pokemon_pos.0, pokemon_pos.1);
+    battle.add("-activate", &[pokemon_arg, "move: Magnitude".into(), magnitude.to_string().into()]);
+
     EventResult::Continue
 }
 
