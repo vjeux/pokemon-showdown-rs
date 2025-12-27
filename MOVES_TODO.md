@@ -128,7 +128,7 @@ Moves with callbacks: 373
 - [x] gmaxwildfire - G-Max Wildfire (Physical, Fire) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [ ] grassknot - Grass Knot (Special, Grass) - 2 callbacks: basePowerCallback, onTryHit
 - [ ] grasspledge - Grass Pledge (Special, Grass) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onSideEnd, condition::onModifySpe
-- [ ] grassyglide - Grassy Glide (Physical, Grass) - 1 callback: onModifyPriority
+- [x] grassyglide - Grassy Glide (Physical, Grass) - 1 callback: onModifyPriority
 - [ ] grassyterrain - Grassy Terrain (Status, Grass) - 5 callbacks: condition::durationCallback, condition::onBasePower, condition::onFieldStart, condition::onResidual, condition::onFieldEnd
 - [ ] gravapple - Grav Apple (Physical, Grass) - 1 callback: onBasePower
 - [ ] gravity - Gravity (Status, Psychic) - 7 callbacks: condition::durationCallback, condition::onFieldStart, condition::onModifyAccuracy, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onFieldEnd
