@@ -27,8 +27,89 @@ use crate::event::EventResult;
 ///     return bp;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+
+    // let bp = move.basePower;
+    let mut bp = {
+        let active_move = match &battle.active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+        active_move.base_power
+    };
+
+    // const rolloutData = pokemon.volatiles['rollout'];
+    // if (rolloutData?.hitCount) {
+    //     bp *= 2 ** rolloutData.contactHitCount;
+    // }
+    let rollout_data = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.volatiles.get(&ID::from("rollout")).cloned()
+    };
+
+    if let Some(ref data) = rollout_data {
+        if data.hit_count > 0 {
+            bp *= 2_i32.pow(data.contact_hit_count as u32);
+        }
+    }
+
+    // if (rolloutData && pokemon.status !== 'slp') {
+    //     rolloutData.hitCount++;
+    //     rolloutData.contactHitCount++;
+    //     if (rolloutData.hitCount < 5) {
+    //         rolloutData.duration = 2;
+    //     }
+    // }
+    if let Some(_) = rollout_data {
+        let status = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.status.clone()
+        };
+
+        if status != Some(ID::from("slp")) {
+            let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            if let Some(data) = pokemon_pokemon.volatiles.get_mut(&ID::from("rollout")) {
+                data.hit_count += 1;
+                data.contact_hit_count += 1;
+                if data.hit_count < 5 {
+                    data.duration = 2;
+                }
+            }
+        }
+    }
+
+    // if (pokemon.volatiles['defensecurl']) {
+    //     bp *= 2;
+    // }
+    let has_defense_curl = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.volatiles.contains_key(&ID::from("defensecurl"))
+    };
+
+    if has_defense_curl {
+        bp *= 2;
+    }
+
+    // this.debug(`BP: ${bp}`);
+    battle.debug(&format!("BP: {}", bp));
+
+    // return bp;
+    EventResult::Int(bp)
 }
 
 /// onModifyMove(move, pokemon, target) {
@@ -37,7 +118,50 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 ///     if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+    let target = target_pos;
+
+    // if (pokemon.volatiles['rollout'] || pokemon.status === 'slp' || !target) return;
+    let (has_rollout, is_sleeping) = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (
+            pokemon_pokemon.volatiles.contains_key(&ID::from("rollout")),
+            pokemon_pokemon.status == Some(ID::from("slp"))
+        )
+    };
+
+    if has_rollout || is_sleeping || target.is_none() {
+        return EventResult::Continue;
+    }
+
+    // pokemon.addVolatile('rollout');
+    battle.add_volatile(&ID::from("rollout"), pokemon, None, None);
+
+    // if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
+    let has_source_effect = {
+        let active_move = match &battle.active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+        active_move.source_effect.is_some()
+    };
+
+    if has_source_effect {
+        let target = target.unwrap();
+        let target_loc = battle.get_loc_of(pokemon, target);
+
+        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.last_move_target_loc = target_loc;
+    }
+
     EventResult::Continue
 }
 
@@ -56,7 +180,43 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///     }
 /// }
 pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = source_pos;
+
+    // const rolloutData = source.volatiles["rollout"];
+    // if (
+    //     rolloutData &&
+    //     rolloutData.hitCount === 5 &&
+    //     rolloutData.contactHitCount < 5
+    //     // this conditions can only be met in gen7 and gen8dlc1
+    //     // see `disguise` and `iceface` abilities in the resp mod folders
+    // ) {
+    let rollout_data = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.volatiles.get(&ID::from("rollout")).cloned()
+    };
+
+    if let Some(data) = rollout_data {
+        if data.hit_count == 5 && data.contact_hit_count < 5 {
+            // source.addVolatile("rolloutstorage");
+            battle.add_volatile(&ID::from("rolloutstorage"), source, None, None);
+
+            // source.volatiles["rolloutstorage"].contactHitCount = rolloutData.contactHitCount;
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            if let Some(storage_data) = source_pokemon.volatiles.get_mut(&ID::from("rolloutstorage")) {
+                storage_data.contact_hit_count = data.contact_hit_count;
+            }
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -68,7 +228,16 @@ pub mod condition {
     ///     this.effectState.contactHitCount = 0;
     /// }
     pub fn on_start(battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // this.effectState.hitCount = 0;
+        // this.effectState.contactHitCount = 0;
+        let effect_state = match &mut battle.effect_state {
+            Some(es) => es,
+            None => return EventResult::Continue,
+        };
+
+        effect_state.hit_count = 0;
+        effect_state.contact_hit_count = 0;
+
         EventResult::Continue
     }
 
@@ -79,7 +248,29 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (target.lastMove && target.lastMove.id === 'struggle') {
+        //     // don't lock
+        //     delete target.volatiles['rollout'];
+        // }
+        let last_move_is_struggle = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.last_move.as_ref().map(|m| m.id == ID::from("struggle")).unwrap_or(false)
+        };
+
+        if last_move_is_struggle {
+            battle.remove_volatile(&ID::from("rollout"), target);
+        }
+
         EventResult::Continue
     }
 }
