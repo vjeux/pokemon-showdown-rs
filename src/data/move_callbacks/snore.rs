@@ -16,8 +16,10 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         None => return EventResult::Continue,
     };
 
-    // Only works if user is asleep (or has comatose ability - TODO)
-    // TODO: Add hasAbility('comatose') check when ability system is ready
-    EventResult::Bool(source.has_status("slp"))
+    // Only works if user is asleep or has comatose ability
+    let is_asleep = source.has_status("slp");
+    let has_comatose = source.has_ability("comatose");
+
+    EventResult::Bool(is_asleep || has_comatose)
 }
 
