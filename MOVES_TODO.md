@@ -54,7 +54,7 @@ Moves with callbacks: 373
 - [x] corrosivegas - Corrosive Gas (Status, Poison) - 1 callback: onHit
 - [x] counter - Counter (Physical, Fighting) - 6 callbacks: damageCallback, beforeTurnCallback, onTry, condition::onStart, condition::onRedirectTarget, condition::onDamagingHit
 - [x] courtchange - Court Change (Status, Normal) - 1 callback: onHitField
-- [ ] covet - Covet (Physical, Normal) - 1 callback: onAfterHit
+- [x] covet - Covet (Physical, Normal) - 1 callback: onAfterHit
 - [ ] craftyshield - Crafty Shield (Status, Fairy) - 3 callbacks: onTry, condition::onSideStart, condition::onTryHit
 - [ ] crushgrip - Crush Grip (Physical, Normal) - 1 callback: basePowerCallback
 - [ ] curse - Curse (Status, Ghost) - 5 callbacks: onModifyMove, onTryHit, onHit, condition::onStart, condition::onResidual
