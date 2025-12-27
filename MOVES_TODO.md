@@ -12,6 +12,142 @@ The following moves require infrastructure that doesn't exist yet:
 
 ### Missing Pokemon/Battle Methods
 
+### Additional Infrastructure Now Available
+
+The following infrastructure has been verified to exist:
+
+- ✓ `battle.sample(array)`: EXISTS at src/battle.rs:1174
+- ✓ `pokemon.faint()`: EXISTS at src/pokemon.rs:1483
+- ✓ `pokemon.tryTrap()`: EXISTS at src/pokemon.rs:1999
+- ✓ `pokemon.trapped`: EXISTS at src/pokemon.rs:158
+- ✓ `battle.dex.getImmunity(effect, target)`: EXISTS at src/dex.rs:1095
+- ✓ `pokemon.beingCalledBack`: EXISTS at src/pokemon.rs:165
+- ✓ `pokemon.switchFlag`: EXISTS at src/pokemon.rs:162
+- ✓ `side.hasAlly(pokemon)`: EXISTS at src/side.rs:768
+- ✓ `side.addSideCondition(name, source)`: EXISTS at src/side.rs:292
+- ✓ `side.getSideConditionData(name)`: EXISTS at src/side.rs:1847
+- ✓ `pokemon.isAdjacent(other)`: EXISTS at src/pokemon.rs:1546
+- ✓ `pokemon.canMegaEvo`: EXISTS at src/pokemon.rs:198
+- ✓ `pokemon.canUltraBurst`: EXISTS at src/pokemon.rs:199
+- ✓ `pokemon.canTerastallize`: EXISTS at src/pokemon.rs:140
+- ✓ `action.choice`: EXISTS at src/battle_queue.rs:20 (MoveActionType)
+- ✓ `pokemon.getLocOf(pokemon)`: EXISTS at src/pokemon.rs:2545
+- ✓ `battle.boost(boosts)`: EXISTS at src/battle.rs:5013
+- ✓ `pokemon.getWeight()`: EXISTS at src/pokemon.rs:1143
+- ✓ `side.activeTeam()`: EXISTS at src/side.rs:1719
+- ✓ `battle.lastSuccessfulMoveThisTurn`: EXISTS at src/battle.rs:343
+- ✓ `side.removeSlotCondition(target, name)`: EXISTS at src/side.rs:404
+- ✓ `pokemon.disableMove(moveId, hiddenPower)`: EXISTS at src/pokemon.rs:1257
+- ✓ `pokemon.maybeDisabled`: EXISTS at src/pokemon.rs:160
+- ✓ `battle.actions.useMove(...)`: EXISTS at src/battle_actions.rs:2510
+- ✓ `pokemon.teraType`: EXISTS at src/pokemon.rs:138
+- ✓ `pokemon.foes()`: EXISTS at src/battle.rs:3887
+- ✓ `pokemon.deductPP(moveId, amount)`: EXISTS at src/pokemon.rs:863
+- ✓ `battle.field.setWeather(weatherId)`: EXISTS at src/field.rs:113
+- ✓ `pokemon.addType(type)`: EXISTS at src/pokemon.rs:1189
+- ✓ `action.targetLoc`: EXISTS at src/battle_queue.rs:34
+- ✓ `battle.queue.prioritizeAction(action, move)`: EXISTS at src/battle_queue.rs:578
+- ✓ `battle.field.getPseudoWeather(name)`: EXISTS at src/field.rs:321
+- ✓ `target.runImmunity(type)`: EXISTS at src/pokemon.rs:3056
+- ✓ `pokemon.moveLastTurnResult`: EXISTS at src/pokemon.rs:181
+- ✓ `pokemon.eatItem(force)`: EXISTS at src/pokemon.rs:2982
+- ✓ `pokemon.activeTurns`: EXISTS at src/pokemon.rs:187
+- ✓ `battle.queue.list`: Queue accessible for iteration
+- ✓ `pokemon.formeChange(...)`: EXISTS at src/pokemon.rs:2378
+- ✓ `action.order`: EXISTS at src/battle_queue.rs:22
+- ✓ `side.allies()`: EXISTS at src/side.rs:741
+- ✓ `target.heal(amount)`: EXISTS at src/pokemon.rs:453 (Pokemon::heal)
+- ✓ `target.clearStatus()`: EXISTS at src/pokemon.rs:3253
+- ✓ `source.moveThisTurnResult`: EXISTS at src/pokemon.rs:180
+- ✓ `battle.dex.getEffectiveness(type1, type2)`: EXISTS at src/dex.rs:966
+- ✓ `battle.turn`: EXISTS at src/battle.rs:328
+- ✓ `battle.getOverflowedTurnCount()`: EXISTS at src/battle.rs:10116
+- ✓ `pokemon.lastMoveUsed`: EXISTS at src/pokemon.rs:177
+- ✓ `action.maxMove`: EXISTS at src/battle_queue.rs:42
+- ✓ `action.zmove`: EXISTS at src/battle_queue.rs:40
+- ✓ `battle.queue.cancelMove(...)`: EXISTS at src/battle_queue.rs:382
+- ✓ `battle.queue.willMove(...)`: EXISTS at src/battle_queue.rs:408
+
+### Remaining Infrastructure Gaps
+
+The following are advanced features that require more complex infrastructure:
+
+**Runtime Mutable Move Fields** (require ActiveMove mutation system):
+- `move.target` mutable: curse - Change move target
+- `move.nonGhostTarget`: curse - Non-ghost target field
+- `move.volatileStatus` deletion: curse - Delete volatile status field from move
+- `move.onHit` deletion: curse - Delete onHit callback from move
+- `move.self` mutable: curse - Modify move self-effects with boosts
+- `move.flags` field deletion: skydrop - delete move.flags['contact']
+- `move.hasBounced`: magiccoat - Has bounced mutable boolean flag
+- `move.pranksterBoosted`: magiccoat - Prankster boosted mutable field
+- `move.forceSTAB`: waterpledge - Force STAB calculation flag (mutable)
+- `move.sideCondition`: waterpledge - Side condition ID to apply from move (mutable)
+- `move.self`: waterpledge - Self-effects object with fields like sideCondition, chance
+- `move.willChangeForme`: relicsong - Mutable field for tracking forme change
+- `move.name`: skydrop, spite - Move name string field (needs active move access)
+- `move.id`: quickguard, sleeptalk - Move ID string field (needs active move access)
+- `move.priority` read: upperhand, suckerpunch - Move priority value (needs active move access)
+- `move.flags['*']`: Various flags need active move access
+- `move.hitTargets`: sparklingaria - Array of pokemon hit (runtime state)
+- `move.sourceEffect` read: snatch - Source effect field
+
+**Type System Access**:
+- `battle.dex.types.names()`: conversion2 - Get all type names iterator
+- `battle.dex.types.get(typeName).damageTaken[attackType]`: conversion2 - Type chart effectiveness
+
+**Volatile Field Access** (require EffectState field accessors):
+- `pokemon.volatiles[name].duration`: perishsong - Access duration field of volatile
+- `pokemon.volatiles[name]?.fieldName`: focuspunch, skydrop - Optional chaining for volatile field access
+- `pokemon.volatiles['twoturnmove'].source`: skydrop - Access source from twoturnmove volatile
+- `pokemon.volatiles[name].sourceSlot`: leechseed, wish - Access sourceSlot field from volatile
+- `pokemon.volatiles` deletion: uproar - delete volatiles[name]
+- `volatile.layers`: psychup - Volatile condition layers field (e.g., gmaxchistrike)
+- `volatile.hasDragonType`: psychup - Boolean field on volatile (e.g., dragoncheer)
+- `volatile.source`: orderup - Source pokemon reference in volatile condition
+
+**Effect State Custom Fields** (require EffectState field system):
+- `battle.effectState.lostFocus`: focuspunch - lostFocus boolean field in effect state
+- `battle.effectState.hp`: wish - hp field in effect state (mutable)
+- `battle.effectState.startingTurn`: wish - startingTurn field in effect state (mutable)
+- `battle.effectState.sourceSlot`: wish - sourceSlot field in effect state
+- `battle.effectState.source.name`: wish - Access source pokemon name through effect state
+- `battle.effectState.pranksterBoosted`: magiccoat - Effect state prankster field (mutable)
+
+**Species Data Structure**:
+- `pokemon.baseSpecies.baseSpecies`: telekinesis - Base species of base species (for forms like Gengar-Mega)
+- `pokemon.baseSpecies.name`: telekinesis - Base species name
+- `pokemon.baseSpecies.forme`: orderup - Forme name string field (e.g., 'Droopy', 'Stretchy')
+- `pokemon.species.id`: relicsong - Species ID string field
+- `pokemon.hpType`: hiddenpower - Hidden Power type string field (currently commented out)
+
+**Item Data Fields**:
+- `item.onPlate`: judgment - Plate type string field
+- `item.zMove`: judgment - Z-move boolean or data flag
+
+**MoveSlot Direct Mutation**:
+- `moveSlot.used`: lastresort - Boolean flag tracking if move has been used since switching in
+- `moveSlot.pp`: grudge - PP field (mutable) for setting PP directly
+
+**Effect Data Access**:
+- `effect.name`: healblock, grudge - Effect name string field (can be from effect parameter)
+- `effect.effectType`: grudge, disable - Effect type string ('Ability', 'Move', etc.)
+- `effect.pranksterBoosted`: magiccoat - Effect prankster boosted field
+
+**Secondary Effect Fields**:
+- `secondary.chance`: waterpledge - Secondary effect chance field (mutable)
+- `secondary.volatileStatus`: waterpledge - Volatile status from secondary effect
+
+**Other**:
+- `battle.queue.entries()`: pursuit - Queue entries iterator with (index, action) tuples
+- `battle.queue.list.splice(index, count)`: pursuit - Remove entries from queue list
+- `battle.actions.runMegaEvo(pokemon)`: pursuit - Execute Mega Evolution (stubs exist)
+- `battle.actions.terastallize(pokemon)`: pursuit - Execute Terastallization (stubs exist)
+- `battle.runEvent(eventName, pokemon, null, move, defaultValue)`: multiattack - Run event with default return value
+- `action.move`: waterpledge, upperhand, trickortreat - Action's move reference
+- `target.side.active.length`: trickortreat - Number of active pokemon on a side
+- `array.entries()`: uproar - Array entries() iterator with [index, pokemon] tuples
+
 **All basic Pokemon/Battle methods have been implemented! ✓**
 
 The following items exist and are fully functional:
@@ -191,129 +327,6 @@ The following items exist and are fully functional:
 - ✓ `battle.field.isWeather(array)`: Field weather checking exists
 - ✓ `pokemon.hasAlly(target)`: Ally checking logic exists
 - ✓ `side.getSideCondition(name)`: EXISTS at src/side.rs:315
-
-### Remaining Infrastructure Gaps
-
-The following are advanced features that require more complex infrastructure:
-
-- `move.target` mutable: curse - Change move target
-- `move.nonGhostTarget`: curse - Non-ghost target field
-- `move.volatileStatus` deletion: curse - Delete volatile status field from move
-- `move.onHit` deletion: curse - Delete onHit callback from move
-- `move.self` mutable: curse - Modify move self-effects with boosts
-- `pokemon.lastMoveUsed`: conversion2 - Last move used by pokemon (with .type field)
-- `battle.dex.types.names()`: conversion2 - Get all type names iterator
-- `battle.dex.types.get(typeName).damageTaken[attackType]`: conversion2 - Type chart effectiveness
-- `battle.sample(array)`: conversion2 - Random element from array
-- `pokemon.volatiles[name].duration`: perishsong - Access duration field of volatile
-- `pokemon.faint()`: perishsong - Faint the pokemon
-- `pokemon.tryTrap()`: noretreat, octolock - Try to trap the pokemon (prevents switching)
-- `pokemon.trapped`: skydrop - Trapped mutable boolean field (prevents switching)
-- `battle.dex.getImmunity(effect, target)`: octolock - Check if target has immunity to an effect (e.g., 'trapped')
-- `pokemon.beingCalledBack`: pursuit - Boolean flag for being called back
-- `pokemon.switchFlag`: pursuit - Boolean flag for switching out
-- `side.hasAlly(pokemon)`: pursuit - Check if side has pokemon as ally
-- `side.addSideCondition(name, source)`: pursuit - Add side condition with source
-- `side.getSideConditionData(name)`: pursuit - Get mutable side condition data object
-- `pokemon.isAdjacent(other)`: pursuit - Check if pokemon is adjacent to another
-- `pokemon.canMegaEvo`: pursuit - Boolean flag for Mega Evolution availability
-- `pokemon.canUltraBurst`: pursuit - Boolean flag for Ultra Burst availability
-- `pokemon.canTerastallize`: pursuit - Boolean flag for Terastallization availability
-- `battle.queue.entries()`: pursuit - Queue entries iterator with (index, action) tuples
-- `action.pokemon`: pursuit - Action's pokemon reference
-- `action.choice`: pursuit - Action choice string (megaEvo, terastallize, etc.)
-- `battle.actions.runMegaEvo(pokemon)`: pursuit - Execute Mega Evolution
-- `battle.actions.terastallize(pokemon)`: pursuit - Execute Terastallization
-- `battle.queue.list.splice(index, count)`: pursuit - Remove entries from queue list
-- `battle.actions.runMove(moveId, pokemon, targetLoc)`: pursuit - Run specific move
-- `pokemon.getLocOf(pokemon)`: pursuit - Get location of target pokemon
-- `pokemon.volatiles[name]?.fieldName`: focuspunch, skydrop - Optional chaining for volatile field access
-- `battle.effectState.lostFocus`: focuspunch - lostFocus boolean field in effect state
-- `battle.boost(boosts)`: rage - Apply boost using object literal {atk: 1}
-- `battle.boost(boosts, target, source, effect, isSecondary, isSelf)`: tidyup - Extended boost signature with optional params, returns bool
-- `move.flags` field deletion: skydrop - delete move.flags['contact']
-- `pokemon.getWeight()`: skydrop - Get weight in hectograms (returns number)
-- `pokemon.volatiles['twoturnmove'].source`: skydrop - Access source from twoturnmove volatile
-- `move.name`: skydrop - Move name string field
-- `pokemon.volatiles[name].sourceSlot`: leechseed, wish - Access sourceSlot field from volatile
-- `side.activeTeam()`: uproar - Get array of active team pokemon
-- `side.foe.activeTeam()`: uproar - Get foe's active team array
-- `array.entries()`: uproar - Array entries() iterator with [index, pokemon] tuples
-- `pokemon.volatiles` deletion: uproar - delete volatiles[name]
-- `battle.effectState.hp`: wish - hp field in effect state (mutable)
-- `battle.effectState.startingTurn`: wish - startingTurn field in effect state (mutable)
-- `battle.getOverflowedTurnCount()`: wish - Get turn count with overflow handling
-- `battle.turn`: wish - Current turn number field
-- `battle.lastSuccessfulMoveThisTurn`: fusionbolt, fusionflare - ID of last successful move this turn (string)
-- `side.removeSlotCondition(target, name)`: wish - Remove slot condition
-- `battle.effectState.sourceSlot`: wish - sourceSlot field in effect state
-- `battle.effectState.source.name`: wish - Access source pokemon name through effect state
-- `pokemon.disableMove(moveId, hiddenPower)`: imprison - Disable move with hidden power flag
-- `pokemon.maybeDisabled`: imprison - Maybe disabled mutable boolean field
-- `move.hasBounced`: magiccoat - Has bounced mutable boolean flag
-- `move.pranksterBoosted`: magiccoat - Prankster boosted mutable field
-- `move.flags['reflectable']`: magiccoat - Reflectable move flag
-- `effect.pranksterBoosted`: magiccoat - Effect prankster boosted field
-- `battle.effectState.pranksterBoosted`: magiccoat - Effect state prankster field (mutable)
-- `battle.actions.useMove(move, pokemon, options)`: magiccoat - UseMove with options object {target: ...}
-- `move.sourceEffect` read: snatch - Source effect field for move origin tracking
-- `move.flags['snatch']`: snatch - Snatch flag for moves
-- `item.onPlate`: judgment - Plate type string field
-- `item.zMove`: judgment - Z-move boolean or data flag
-- `battle.runEvent(eventName, pokemon, null, move, defaultValue)`: multiattack - Run event with default return value
-- `pokemon.teraType`: terablast - Tera type string field
-- `pokemon.hpType`: hiddenpower - Hidden Power type string field
-- `pokemon.foes()`: gmaxgoldrush, gmaxdepletion - Get iterator of foe pokemon
-- `pokemon.deductPP(moveId, amount)`: gmaxdepletion - Deduct PP from a move, returns amount deducted
-- `battle.field.setWeather(weatherId)`: maxrockfall - Set weather condition
-- `pokemon.addType(type)`: trickortreat, forestscurse - Add type to pokemon, returns bool
-- `target.side.active.length`: trickortreat - Number of active pokemon on a side
-- `action.move`: waterpledge, upperhand, trickortreat - Action's move reference
-- `action.maxMove`: waterpledge - Boolean flag for Max move actions
-- `action.zmove`: waterpledge - Boolean flag for Z-move actions
-- `battle.queue.prioritizeAction(action, move)`: waterpledge - Move action earlier in queue with move context
-- `move.forceSTAB`: waterpledge - Force STAB calculation flag (mutable)
-- `move.sideCondition`: waterpledge - Side condition ID to apply from move (mutable)
-- `move.self`: waterpledge - Self-effects object with fields like sideCondition, chance
-- `secondary.chance`: waterpledge - Secondary effect chance field (mutable)
-- `secondary.volatileStatus`: waterpledge - Volatile status from secondary effect
-- `move.priority` read: upperhand, suckerpunch - Move priority value for checking
-- `action.targetLoc`: trickortreat - Target location field on action (mutable)
-- `battle.field.getPseudoWeather(name)`: telekinesis - Get pseudo-weather condition, returns truthy/falsy
-- `pokemon.baseSpecies.baseSpecies`: telekinesis - Base species of base species (for forms like Gengar-Mega)
-- `pokemon.baseSpecies.name`: telekinesis - Base species name
-- `target.runImmunity(type)`: thousandarrows - Check if pokemon is immune to a type (different from status immunity)
-- `pokemon.moveLastTurnResult`: temperflare, stompingtantrum - Result of last move (false if move failed)
-- `pokemon.eatItem(force)`: teatime - Make pokemon eat held item, force parameter bypasses checks
-- `pokemon.activeTurns`: taunt - Number of turns pokemon has been active
-- `move.name`: skydrop, spite - Move name string field
-- `move.hitTargets`: sparklingaria - Array of pokemon that were successfully hit by the move
-- `battle.queue.list`: round, pursuit - Direct access to queue as array for iteration and manipulation
-- `move.id`: quickguard, sleeptalk - Move ID string field for comparison
-- `move.willChangeForme`: relicsong - Mutable field for tracking forme change
-- `pokemon.species.id`: relicsong - Species ID string field
-- `pokemon.formeChange(name, effect, noSwitch, unknown, message)`: relicsong - Change pokemon forme
-- `action.order`: quash - Action order/priority field (mutable) for turn order manipulation
-- `volatile.layers`: psychup - Volatile condition layers field (e.g., gmaxchistrike)
-- `volatile.hasDragonType`: psychup - Boolean field on volatile (e.g., dragoncheer)
-- `volatile.source`: orderup - Source pokemon reference in volatile condition
-- `pokemon.baseSpecies.forme`: orderup - Forme name string field (e.g., 'Droopy', 'Stretchy')
-- `move.flags['mirror']`: mirrormove - Mirror flag for moves that can be copied
-- `move.flags['failmefirst']`: mefirst - Fail Me First flag for uncopyable moves
-- `move.target`: matblock, secretpower - Move target field string (e.g., 'self', 'allAdjacent', 'allAdjacentFoes')
-- `side.allies()`: magneticflux - Get iterator of allied pokemon on a side
-- `pokemon.hasAbility(array)`: magneticflux, aromatherapy - Check if pokemon has any ability from array (overload)
-- `moveSlot.used`: lastresort - Boolean flag tracking if move has been used since switching in
-- `target.heal(amount)`: lunardance - Heal pokemon HP (different from battle.heal)
-- `target.clearStatus()`: lunardance - Clear pokemon status condition
-- `source.moveThisTurnResult`: healblock - Mutable field tracking move result (true/false/null)
-- `move.flags['heal']`: healblock - Heal flag for healing moves
-- `effect.name`: healblock, grudge - Effect name string field (can be from effect parameter)
-- `effect.effectType`: grudge, disable - Effect type string ('Ability', 'Move', etc.)
-- `move.flags['futuremove']`: grudge - Future move flag for Future Sight/Doom Desire
-- `move.flags['gravity']`: gravity - Gravity flag for moves affected by gravity
-- `moveSlot.pp`: grudge - PP field (mutable) for setting PP directly
-- `battle.dex.getEffectiveness(type1, type2)`: flyingpress - Get type effectiveness modifier between two types
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
