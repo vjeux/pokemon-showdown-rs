@@ -2813,10 +2813,14 @@ pub fn use_move_inner(
     //     move.priority = this.battle.activeMove.priority;
     //     if (!move.hasBounced) move.pranksterBoosted = this.battle.activeMove.pranksterBoosted;
     // }
-    // TODO: Implement active move priority inheritance
-    // When a move is called by another move (e.g., Copycat, Me First, Dancer),
-    // it inherits the priority and pranksterBoosted from the active move
-    // Would require tracking active_move state in Battle struct
+    if let Some(ref active_move_id) = battle.active_move {
+        if let Some(battle_active_move) = battle.dex.get_active_move(active_move_id.as_str()) {
+            active_move.priority = battle_active_move.priority;
+            if !active_move.has_bounced {
+                active_move.prankster_boosted = battle_active_move.prankster_boosted;
+            }
+        }
+    }
 
     // const baseTarget = move.target;
     let base_target = active_move.target.clone();

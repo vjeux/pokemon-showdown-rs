@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 68/79 TODOs (86.1%)
+**Feature Implementation:** ⚠️ 69/79 TODOs (87.3%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -739,11 +739,31 @@
 
 **Enables:** Move chaining (Dancer, Instruct), proper effect context inheritance, excluded effects filtering
 
+#### Active Move Priority Inheritance (1/1) ✅
+- [x] **priority and pranksterBoosted inheritance** (battle_actions.rs:2816-2823) - Inherit priority and prankster boost from active move
+
+**Implementation Details:**
+- Checks if battle.active_move is Some (another move is currently active)
+- Looks up the active move using dex.get_active_move()
+- Copies priority from active move to current move
+- Copies prankster_boosted from active move if current move hasn't bounced (has_bounced is false)
+- Matches JavaScript battle-actions.ts:
+  ```javascript
+  if (this.battle.activeMove) {
+      move.priority = this.battle.activeMove.priority;
+      if (!move.hasBounced) move.pranksterBoosted = this.battle.activeMove.pranksterBoosted;
+  }
+  ```
+- Uses existing battle.active_move field (Option<ID> at battle.rs:349)
+- Critical for move chaining mechanics where called moves inherit caller's properties
+
+**Enables:** Correct priority for called moves (Copycat, Me First, Dancer), Prankster boost inheritance for chained moves
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (11 TODOs)
+## Remaining P2 Nice-to-have (10 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks
