@@ -11394,6 +11394,12 @@ impl Battle {
         let random_factor = 85 + self.random(16);
         base_damage = base_damage * random_factor / 100;
 
+        // Trigger ModifyDamage event to allow custom damage modification
+        // JavaScript: damage = this.battle.runEvent('ModifyDamage', pokemon, target, move, damage)
+        if let Some(modified) = self.run_event("ModifyDamage", Some(target_pos), Some(source_pos), Some(&move_data.id), Some(base_damage)) {
+            base_damage = modified;
+        }
+
         base_damage.max(1)
     }
 
@@ -11487,6 +11493,17 @@ impl Battle {
                 // Only clear on None (failed)
                 if applied.is_none() {
                     final_targets[i] = None;
+                }
+            }
+        }
+
+        // Step 3.5: Trigger Hit events for successful hits
+        // JavaScript: this.battle.runEvent('Hit', target, pokemon, move)
+        for (i, &target) in final_targets.iter().enumerate() {
+            if let Some(target_pos) = target {
+                // Only trigger Hit if we actually dealt damage or the move succeeded
+                if damages[i].is_some() {
+                    self.run_event("Hit", Some(target_pos), Some(source_pos), Some(move_id), None);
                 }
             }
         }
