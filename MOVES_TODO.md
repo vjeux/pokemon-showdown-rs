@@ -132,7 +132,7 @@ Moves with callbacks: 373
 - [ ] grassyterrain - Grassy Terrain (Status, Grass) - 5 callbacks: condition::durationCallback, condition::onBasePower, condition::onFieldStart, condition::onResidual, condition::onFieldEnd
 - [x] gravapple - Grav Apple (Physical, Grass) - 1 callback: onBasePower
 - [ ] gravity - Gravity (Status, Psychic) - 7 callbacks: condition::durationCallback, condition::onFieldStart, condition::onModifyAccuracy, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onFieldEnd
-- [ ] growth - Growth (Status, Normal) - 1 callback: onModifyMove
+- [x] growth - Growth (Status, Normal) - 1 callback: onModifyMove
 - [ ] grudge - Grudge (Status, Ghost) - 3 callbacks: condition::onStart, condition::onFaint, condition::onBeforeMove
 - [ ] guardianofalola - Guardian of Alola (Special, Fairy) - 1 callback: damageCallback
 - [ ] guardsplit - Guard Split (Status, Psychic) - 1 callback: onHit
