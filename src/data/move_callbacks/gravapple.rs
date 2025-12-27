@@ -13,7 +13,16 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // if (this.field.getPseudoWeather('gravity')) {
+    let has_gravity = battle.field.pseudo_weather.contains_key(&ID::from("gravity"));
+
+    if has_gravity {
+        // return this.chainModify(1.5);
+        return EventResult::ChainModify(1.5);
+    }
+
     EventResult::Continue
 }
 
