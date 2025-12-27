@@ -300,6 +300,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.hpType`: hiddenpower - Hidden Power type string field
 - `pokemon.foes()`: gmaxgoldrush, gmaxdepletion - Get iterator of foe pokemon
 - `pokemon.deductPP(moveId, amount)`: gmaxdepletion - Deduct PP from a move, returns amount deducted
+- `battle.field.setWeather(weatherId)`: maxrockfall - Set weather condition
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
