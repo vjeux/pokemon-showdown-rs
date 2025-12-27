@@ -10,8 +10,12 @@ use crate::event::EventResult;
 /// onEffectiveness(typeMod, target, type, move) {
 ///     return typeMod + this.dex.getEffectiveness('Flying', type);
 /// }
-pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_effectiveness(battle: &mut Battle, type_mod: i32, target_type: &str) -> EventResult {
+    use crate::dex_data::ID;
+
+    // return typeMod + this.dex.getEffectiveness('Flying', type);
+    let flying_effectiveness = battle.dex.get_effectiveness(&ID::from("flying"), &ID::from(target_type));
+
+    EventResult::Int(type_mod + flying_effectiveness)
 }
 
