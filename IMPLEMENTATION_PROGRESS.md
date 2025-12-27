@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 31/79 TODOs (39.2%)
+**Feature Implementation:** ⚠️ 34/79 TODOs (43.0%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -212,11 +212,28 @@
 
 **Enables:** Format-specific battle initialization, custom rules support, position swap mechanics
 
+### Session 9 - Request Management Completion (3 implementations)
+
+#### makeRequest() Method Enhancements (3/3) ✅
+- [x] **clearChoice() calls** (battle.rs:6654-6656) - Calls side.clearChoice() when setting new request state
+- [x] **activeRequest assignment** (battle.rs:6663-6665) - Sets activeRequest to None for all sides
+- [x] **pickedTeamSize display** (battle.rs:6668-6680) - Adds team preview size to protocol message
+- [x] **isChoiceDone() safety check** (battle.rs:6699-6704) - Validates choices aren't already done
+
+**Implementation Details:**
+- Implemented proper clearChoice() calls with request state parameter
+- Sets activeRequest = None for all sides as per JavaScript
+- Displays pickedTeamSize in teampreview message when available
+- Added safety check to prevent infinite loops (panics if choices done immediately after request)
+- Matches JavaScript 1:1 for all request state transitions
+
+**Enables:** Proper request state management, choice validation, team preview protocol messages
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (51 TODOs)
+## Remaining P2 Nice-to-have (45 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions

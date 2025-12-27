@@ -6651,20 +6651,32 @@ impl Battle {
         let req_type = if let Some(rt) = request_type {
             self.request_state = rt;
             // JS: for (const side of this.sides) { side.clearChoice(); }
-            // TODO: Implement side.clearChoice() - requires different signature in Rust
+            for side in &mut self.sides {
+                side.clear_choice(rt);
+            }
             rt
         } else {
             self.request_state
         };
 
         // JS: for (const side of this.sides) { side.activeRequest = null; }
-        // TODO: Implement side.activeRequest field
+        for side in &mut self.sides {
+            side.active_request = None;
+        }
 
         // JS: if (type === 'teampreview') { ... this.add(`teampreview${pickedTeamSize ? `|${pickedTeamSize}` : ''}`); }
         if matches!(req_type, BattleRequestState::TeamPreview) {
-            // TODO: Implement ruleTable.pickedTeamSize
-            // For now, just add 'teampreview' without size
-            self.add("-", &[Arg::Str("teampreview")]);
+            // JS: const pickedTeamSize = this.ruleTable.pickedTeamSize;
+            // JS: this.add(`teampreview${pickedTeamSize ? `|${pickedTeamSize}` : ''}`);
+            if let Some(ref rule_table) = self.rule_table {
+                if let Some(picked_team_size) = rule_table.picked_team_size {
+                    self.add("-", &[Arg::Str("teampreview"), Arg::String(picked_team_size.to_string())]);
+                } else {
+                    self.add("-", &[Arg::Str("teampreview")]);
+                }
+            } else {
+                self.add("-", &[Arg::Str("teampreview")]);
+            }
         }
 
         // JS: const requests = this.getRequests(type);
@@ -6685,8 +6697,11 @@ impl Battle {
         // TODO: Implement sentRequests field
 
         // JS: if (this.sides.every(side => side.isChoiceDone())) { throw new Error(...); }
-        // TODO: Implement isChoiceDone() check
-        // This is a safety check to prevent infinite loops
+        // Safety check to prevent infinite loops
+        let picked_team_size = self.rule_table.as_ref().and_then(|rt| rt.picked_team_size);
+        if self.sides.iter().all(|side| side.is_choice_done(picked_team_size)) {
+            panic!("Choices are done immediately after a request");
+        }
     }
 
     /// Check and trigger Endless Battle Clause
