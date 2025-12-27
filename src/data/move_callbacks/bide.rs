@@ -8,14 +8,15 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// beforeMoveCallback(pokemon) {
 ///     if (pokemon.volatiles['bide']) return true;
 /// }
-pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -27,9 +28,9 @@ pub mod condition {
     ///     this.effectState.totalDamage = 0;
     ///     this.add('-start', pokemon, 'move: Bide');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onDamage(damage, target, source, move) {
@@ -37,9 +38,9 @@ pub mod condition {
     ///     this.effectState.totalDamage += damage;
     ///     this.effectState.lastDamageSource = source;
     /// }
-    pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onBeforeMove(pokemon, target, move) {
@@ -76,25 +77,25 @@ pub mod condition {
     ///     }
     ///     this.add('-activate', pokemon, 'move: Bide');
     /// }
-    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onMoveAborted(pokemon) {
     ///     pokemon.removeVolatile('bide');
     /// }
-    pub fn on_move_aborted(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_move_aborted(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'move: Bide', '[silent]');
     /// }
-    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

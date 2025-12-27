@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -22,9 +23,9 @@ pub mod condition {
     ///         this.effectState.pranksterBoosted = effect.pranksterBoosted;
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onTryHit(target, source, move) {
@@ -37,9 +38,9 @@ pub mod condition {
     ///     this.actions.useMove(newMove, target, { target: source });
     ///     return null;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onAllyTryHitSide(target, source, move) {
@@ -53,9 +54,9 @@ pub mod condition {
     ///     move.hasBounced = true; // only bounce once in free-for-all battles
     ///     return null;
     /// }
-    pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

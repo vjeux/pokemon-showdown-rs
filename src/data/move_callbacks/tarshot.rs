@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -20,9 +21,9 @@ pub mod condition {
     ///     if (pokemon.terastallized) return false;
     ///     this.add('-start', pokemon, 'Tar Shot');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onEffectiveness(typeMod, target, type, move) {
@@ -31,9 +32,9 @@ pub mod condition {
     ///     if (type !== target.getTypes()[0]) return;
     ///     return typeMod + 1;
     /// }
-    pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

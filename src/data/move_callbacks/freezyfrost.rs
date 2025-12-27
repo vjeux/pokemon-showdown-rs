@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onHit() {
 ///     this.add('-clearallboost');
@@ -16,8 +17,8 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         pokemon.clearBoosts();
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 

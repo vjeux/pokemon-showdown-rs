@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -19,9 +20,9 @@ pub mod condition {
     /// onSideStart(side) {
     ///     this.add('-sidestart', side, 'move: Sticky Web');
     /// }
-    pub fn on_side_start(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onSwitchIn(pokemon) {
@@ -29,9 +30,9 @@ pub mod condition {
     ///     this.add('-activate', pokemon, 'move: Sticky Web');
     ///     this.boost({ spe: -1 }, pokemon, pokemon.side.foe.active[0], this.dex.getActiveMove('stickyweb'));
     /// }
-    pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

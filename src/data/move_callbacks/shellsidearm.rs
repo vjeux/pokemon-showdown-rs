@@ -8,16 +8,17 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onPrepareHit(target, source, move) {
 ///     if (!source.isAlly(target)) {
 ///         this.attrLastMove('[anim] Shell Side Arm ' + move.category);
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onModifyMove(move, pokemon, target) {
@@ -33,25 +34,25 @@ pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, s
 ///         move.flags.contact = 1;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onHit(target, source, move) {
 ///     // Shell Side Arm normally reveals its category via animation on cart, but doesn't play either custom animation against allies
 ///     if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onAfterSubDamage(damage, target, source, move) {
 ///     if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 

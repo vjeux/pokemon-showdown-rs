@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -23,9 +24,9 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onSetStatus(status, target, source, effect) {
@@ -40,9 +41,9 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_set_status(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+    pub fn on_set_status(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onTryAddVolatile(status, target, source, effect) {
@@ -53,9 +54,9 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_try_add_volatile(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+    pub fn on_try_add_volatile(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onSideStart(side, source) {
@@ -65,17 +66,17 @@ pub mod condition {
     ///         this.add('-sidestart', side, 'Safeguard');
     ///     }
     /// }
-    pub fn on_side_start(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_side_start(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onSideEnd(side) {
     ///     this.add('-sideend', side, 'Safeguard');
     /// }
-    pub fn on_side_end(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

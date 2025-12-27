@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onModifyMove(move, source) {
 ///     if (!source.volatiles['skydrop']) {
@@ -16,9 +17,9 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         delete move.flags['contact'];
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onMoveFail(target, source) {
@@ -30,17 +31,17 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(us
 ///         }
 ///     }
 /// }
-pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onTry(source, target) {
 ///     return !target.fainted;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onTryHit(target, source, move) {
@@ -65,17 +66,17 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_po
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onHit(target, source) {
 ///     if (target.hp) this.add('-end', target, 'Sky Drop');
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -86,18 +87,18 @@ pub mod condition {
     /// onAnyDragOut(pokemon) {
     ///     if (pokemon === this.effectState.target || pokemon === this.effectState.source) return false;
     /// }
-    pub fn on_any_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_any_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onFoeTrapPokemon(defender) {
     ///     if (defender !== this.effectState.source) return;
     ///     defender.trapped = true;
     /// }
-    pub fn on_foe_trap_pokemon(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_foe_trap_pokemon(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onFoeBeforeMove(attacker, defender, move) {
@@ -107,9 +108,9 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_foe_before_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
+    pub fn on_foe_before_move(battle: &mut Battle, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onRedirectTarget(target, source, source2) {
@@ -117,9 +118,9 @@ pub mod condition {
     ///     if (this.effectState.source.fainted) return;
     ///     return this.effectState.source;
     /// }
-    pub fn on_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onAnyInvulnerability(target, source, move) {
@@ -134,9 +135,9 @@ pub mod condition {
     ///     }
     ///     return false;
     /// }
-    pub fn on_any_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    pub fn on_any_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onAnyBasePower(basePower, target, source, move) {
@@ -151,9 +152,9 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_any_base_power(battle: &mut Battle, base_power: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    pub fn on_any_base_power(battle: &mut Battle, base_power: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onFaint(target) {
@@ -161,9 +162,9 @@ pub mod condition {
     ///         this.add('-end', target.volatiles['twoturnmove'].source, 'Sky Drop', '[interrupt]');
     ///     }
     /// }
-    pub fn on_faint(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_faint(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

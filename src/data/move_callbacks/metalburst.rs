@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// damageCallback(pokemon) {
 ///     const lastDamagedBy = pokemon.getLastDamagedBy(true);
@@ -17,18 +18,18 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     }
 ///     return 0;
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onTry(source) {
 ///     const lastDamagedBy = source.getLastDamagedBy(true);
 ///     if (!lastDamagedBy?.thisTurn) return false;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onModifyTarget(targetRelayVar, source, target, move) {
@@ -37,8 +38,8 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHa
 ///         targetRelayVar.target = this.getAtSlot(lastDamagedBy.slot);
 ///     }
 /// }
-pub fn on_modify_target(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn on_modify_target(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 

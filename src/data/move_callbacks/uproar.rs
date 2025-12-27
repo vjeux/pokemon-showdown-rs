@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onTryHit(target) {
 ///     const activeTeam = target.side.activeTeam();
@@ -19,9 +20,9 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         if (foeActive && foeActive.status === 'slp') foeActive.cureStatus();
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -32,9 +33,9 @@ pub mod condition {
     /// onStart(target) {
     ///     this.add('-start', target, 'Uproar');
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onResidual(target) {
@@ -48,17 +49,17 @@ pub mod condition {
     ///     }
     ///     this.add('-start', target, 'Uproar', '[upkeep]');
     /// }
-    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onEnd(target) {
     ///     this.add('-end', target, 'Uproar');
     /// }
-    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onAnySetStatus(status, pokemon) {
@@ -71,9 +72,9 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_any_set_status(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_any_set_status(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

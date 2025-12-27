@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onHitField(target, source, move) {
 ///     let result = false;
@@ -29,9 +30,9 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     if (!result) return false;
 ///     if (message) this.add('-fieldactivate', 'move: Perish Song');
 /// }
-pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -43,18 +44,18 @@ pub mod condition {
     ///     this.add('-start', target, 'perish0');
     ///     target.faint();
     /// }
-    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onResidual(pokemon) {
     ///     const duration = pokemon.volatiles['perishsong'].duration;
     ///     this.add('-start', pokemon, `perish${duration}`);
     /// }
-    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

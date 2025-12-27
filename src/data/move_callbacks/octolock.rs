@@ -8,14 +8,15 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onTryImmunity(target) {
 ///     return this.dex.getImmunity('trapped', target);
 /// }
-pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -26,9 +27,9 @@ pub mod condition {
     /// onStart(pokemon, source) {
     ///     this.add('-start', pokemon, 'move: Octolock', `[of] ${source}`);
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onResidual(pokemon) {
@@ -40,17 +41,17 @@ pub mod condition {
     ///     }
     ///     this.boost({ def: -1, spd: -1 }, pokemon, source, this.dex.getActiveMove('octolock'));
     /// }
-    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onTrapPokemon(pokemon) {
     ///     if (this.effectState.source?.isActive) pokemon.tryTrap();
     /// }
-    pub fn on_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

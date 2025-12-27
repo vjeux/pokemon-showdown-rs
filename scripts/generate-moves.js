@@ -267,7 +267,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 ${move.callbacks.map(callback => {
     const rustFuncName = camelToSnake(callback.name);
@@ -280,9 +281,9 @@ ${move.callbacks.map(callback => {
         .join('\n');
 
     return `${formattedSource}
-pub fn ${rustFuncName}(${params}) -> MoveHandlerResult {
+pub fn ${rustFuncName}(${params}) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 `;
 }).join('\n')}
@@ -301,9 +302,9 @@ ${move.conditionCallbacks.map(callback => {
         .join('\n');
 
     return `${formattedSource}
-    pub fn ${rustFuncName}(${params}) -> MoveHandlerResult {
+    pub fn ${rustFuncName}(${params}) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 `;
 }).join('\n')}
@@ -359,8 +360,8 @@ const dispatchers = sortedCallbacks.map(callback => {
     return `/// Dispatch ${callback} callbacks
 pub fn ${funcName}(
     _battle: &mut Battle${params},
-) -> MoveHandlerResult {
-    MoveHandlerResult::Undefined
+) -> EventResult {
+    EventResult::Continue
 }`;
 }).join('\n\n');
 
@@ -384,8 +385,8 @@ const conditionDispatchers = sortedConditionCallbacks.map(callback => {
     return `/// Dispatch condition ${callback} callbacks
 pub fn ${funcName}(
     _battle: &mut Battle${params},
-) -> MoveHandlerResult {
-    MoveHandlerResult::Undefined
+) -> EventResult {
+    EventResult::Continue
 }`;
 }).join('\n\n');
 
@@ -396,6 +397,7 @@ const modContent = `//! Move Callback Handlers
 //! Each move with callbacks is in its own file.
 
 use crate::battle::Battle;
+use crate::event::EventResult;
 
 // Common types
 mod common;
@@ -421,25 +423,6 @@ console.log(`Generated ${modPath}`);
 const commonContent = `//! Common types for move callbacks
 
 use crate::dex_data::ID;
-
-/// Result from a move handler
-#[derive(Debug, Clone)]
-pub enum MoveHandlerResult {
-    /// No return value (undefined in JS)
-    Undefined,
-    /// Return false
-    False,
-    /// Return true
-    True,
-    /// Return null (blocks action)
-    Null,
-    /// Return 0
-    Zero,
-    /// Return a number
-    Number(i32),
-    /// Chain modifier (numerator, denominator)
-    ChainModify(u32, u32),
-}
 
 /// Status object
 #[derive(Debug, Clone, Default)]

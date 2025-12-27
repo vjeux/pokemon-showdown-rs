@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onTry(source) {
 ///     if (source.status === 'slp' || source.hasAbility('comatose')) return false;
@@ -27,9 +28,9 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         return null;
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onHit(target, source, move) {
@@ -39,8 +40,8 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHa
 ///     target.statusState.startTime = 3;
 ///     this.heal(target.maxhp); // Aesthetic only as the healing happens after you fall asleep in-game
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 

@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onBasePower(basePower, source) {
 ///     if (this.field.isTerrain('psychicterrain') && source.isGrounded()) {
@@ -16,9 +17,9 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onModifyMove(move, source, target) {
@@ -26,8 +27,8 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, source_pos: Option<(u
 ///         move.target = 'allAdjacentFoes';
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 

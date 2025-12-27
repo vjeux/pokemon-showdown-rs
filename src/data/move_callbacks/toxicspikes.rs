@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -20,9 +21,9 @@ pub mod condition {
     ///     this.add('-sidestart', side, 'move: Toxic Spikes');
     ///     this.effectState.layers = 1;
     /// }
-    pub fn on_side_start(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onSideRestart(side) {
@@ -30,9 +31,9 @@ pub mod condition {
     ///     this.add('-sidestart', side, 'move: Toxic Spikes');
     ///     this.effectState.layers++;
     /// }
-    pub fn on_side_restart(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_side_restart(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onSwitchIn(pokemon) {
@@ -48,9 +49,9 @@ pub mod condition {
     ///         pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
     ///     }
     /// }
-    pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

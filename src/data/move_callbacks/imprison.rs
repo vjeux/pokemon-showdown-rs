@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -19,9 +20,9 @@ pub mod condition {
     /// onStart(target) {
     ///     this.add('-start', target, 'move: Imprison');
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onFoeDisableMove(pokemon) {
@@ -31,9 +32,9 @@ pub mod condition {
     ///     }
     ///     pokemon.maybeDisabled = true;
     /// }
-    pub fn on_foe_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_foe_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onFoeBeforeMove(attacker, defender, move) {
@@ -42,9 +43,9 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_foe_before_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
+    pub fn on_foe_before_move(battle: &mut Battle, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

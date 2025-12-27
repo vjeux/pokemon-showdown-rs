@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onTryHit(source) {
 ///     if (source.volatiles['substitute']) {
@@ -20,17 +21,17 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onHit(target) {
 ///     this.directDamage(target.maxhp / 4);
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -50,9 +51,9 @@ pub mod condition {
     ///         delete target.volatiles['partiallytrapped'];
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onTryPrimaryHit(target, source, move) {
@@ -86,17 +87,17 @@ pub mod condition {
     ///     this.runEvent('AfterSubDamage', target, source, move, damage);
     ///     return this.HIT_SUBSTITUTE;
     /// }
-    pub fn on_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    pub fn on_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onEnd(target) {
     ///     this.add('-end', target, 'Substitute');
     /// }
-    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

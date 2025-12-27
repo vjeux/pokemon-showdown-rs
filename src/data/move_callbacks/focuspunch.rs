@@ -8,14 +8,15 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// priorityChargeCallback(pokemon) {
 ///     pokemon.addVolatile('focuspunch');
 /// }
-pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// beforeMoveCallback(pokemon) {
@@ -24,9 +25,9 @@ pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)
 ///         return true;
 ///     }
 /// }
-pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -37,9 +38,9 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-singleturn', pokemon, 'move: Focus Punch');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onHit(pokemon, source, move) {
@@ -47,17 +48,17 @@ pub mod condition {
     ///         this.effectState.lostFocus = true;
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onTryAddVolatile(status, pokemon) {
     ///     if (status.id === 'flinch') return null;
     /// }
-    pub fn on_try_add_volatile(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_try_add_volatile(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

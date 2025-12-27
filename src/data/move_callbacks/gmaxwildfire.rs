@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -19,25 +20,25 @@ pub mod condition {
     /// onSideStart(targetSide) {
     ///     this.add('-sidestart', targetSide, 'G-Max Wildfire');
     /// }
-    pub fn on_side_start(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onResidual(target) {
     ///     if (!target.hasType('Fire')) this.damage(target.baseMaxhp / 6, target);
     /// }
-    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onSideEnd(targetSide) {
     ///     this.add('-sideend', targetSide, 'G-Max Wildfire');
     /// }
-    pub fn on_side_end(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onTryHit(source) {
 ///     if (!this.canSwitch(source.side)) {
@@ -17,9 +18,9 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -30,9 +31,9 @@ pub mod condition {
     /// onSwitchIn(target) {
     ///     this.singleEvent('Swap', this.effect, this.effectState, target);
     /// }
-    pub fn on_switch_in(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_switch_in(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onSwap(target) {
@@ -52,9 +53,9 @@ pub mod condition {
     ///         target.side.removeSlotCondition(target, 'lunardance');
     ///     }
     /// }
-    pub fn on_swap(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_swap(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

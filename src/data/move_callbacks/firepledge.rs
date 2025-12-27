@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// basePowerCallback(target, source, move) {
 ///     if (['grasspledge', 'waterpledge'].includes(move.sourceEffect)) {
@@ -17,9 +18,9 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn base_power_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onPrepareHit(target, source, move) {
@@ -37,9 +38,9 @@ pub fn base_power_callback(battle: &mut Battle, target_pos: Option<(usize, usize
 ///         }
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onModifyMove(move) {
@@ -54,9 +55,9 @@ pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, s
 ///         move.sideCondition = 'firepledge';
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -67,25 +68,25 @@ pub mod condition {
     /// onSideStart(targetSide) {
     ///     this.add('-sidestart', targetSide, 'Fire Pledge');
     /// }
-    pub fn on_side_start(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onResidual(pokemon) {
     ///     if (!pokemon.hasType('Fire')) this.damage(pokemon.baseMaxhp / 8, pokemon);
     /// }
-    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onSideEnd(targetSide) {
     ///     this.add('-sideend', targetSide, 'Fire Pledge');
     /// }
-    pub fn on_side_end(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

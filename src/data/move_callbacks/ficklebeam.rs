@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onBasePower(basePower, pokemon) {
 ///     if (this.randomChance(3, 10)) {
@@ -17,8 +18,8 @@ use super::{MoveHandlerResult, Status, Effect};
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 

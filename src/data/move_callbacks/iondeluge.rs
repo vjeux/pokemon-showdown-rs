@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -20,9 +21,9 @@ pub mod condition {
     ///     this.add('-fieldactivate', 'move: Ion Deluge');
     ///     this.hint(`Normal-type moves become Electric-type after using ${sourceEffect}.`);
     /// }
-    pub fn on_field_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_field_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onModifyType(move) {
@@ -31,9 +32,9 @@ pub mod condition {
     ///         this.debug(move.name + "'s type changed to Electric");
     ///     }
     /// }
-    pub fn on_modify_type(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
+    pub fn on_modify_type(battle: &mut Battle, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

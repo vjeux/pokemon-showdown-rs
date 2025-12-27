@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// basePowerCallback(pokemon, target, move) {
 ///     if (!pokemon.volatiles['furycutter'] || move.hit === 1) {
@@ -18,9 +19,9 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -31,9 +32,9 @@ pub mod condition {
     /// onStart() {
     ///     this.effectState.multiplier = 1;
     /// }
-    pub fn on_start(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onRestart() {
@@ -42,9 +43,9 @@ pub mod condition {
     ///     }
     ///     this.effectState.duration = 2;
     /// }
-    pub fn on_restart(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_restart(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

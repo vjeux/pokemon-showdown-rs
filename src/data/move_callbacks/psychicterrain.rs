@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -22,9 +23,9 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+    pub fn duration_callback(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onTryHit(target, source, effect) {
@@ -42,9 +43,9 @@ pub mod condition {
     ///     this.add('-activate', target, 'move: Psychic Terrain');
     ///     return null;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+    pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onBasePower(basePower, attacker, defender, move) {
@@ -53,9 +54,9 @@ pub mod condition {
     ///         return this.chainModify([5325, 4096]);
     ///     }
     /// }
-    pub fn on_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> MoveHandlerResult {
+    pub fn on_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onFieldStart(field, source, effect) {
@@ -65,17 +66,17 @@ pub mod condition {
     ///         this.add('-fieldstart', 'move: Psychic Terrain');
     ///     }
     /// }
-    pub fn on_field_start(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+    pub fn on_field_start(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Psychic Terrain');
     /// }
-    pub fn on_field_end(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_field_end(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

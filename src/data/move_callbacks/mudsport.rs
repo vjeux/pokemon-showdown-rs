@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -19,9 +20,9 @@ pub mod condition {
     /// onFieldStart(field, source) {
     ///     this.add('-fieldstart', 'move: Mud Sport', `[of] ${source}`);
     /// }
-    pub fn on_field_start(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_field_start(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onBasePower(basePower, attacker, defender, move) {
@@ -30,17 +31,17 @@ pub mod condition {
     ///         return this.chainModify([1352, 4096]);
     ///     }
     /// }
-    pub fn on_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> MoveHandlerResult {
+    pub fn on_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Mud Sport');
     /// }
-    pub fn on_field_end(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_field_end(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 
 
@@ -29,17 +30,17 @@ pub mod condition {
     ///     // https://www.smogon.com/forums/threads/scarlet-violet-battle-mechanics-research.3709545/post-9894139
     ///     this.effectState.hasDragonType = target.hasType("Dragon");
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onModifyCritRatio(critRatio, source) {
     ///     return critRatio + (this.effectState.hasDragonType ? 2 : 1);
     /// }
-    pub fn on_modify_crit_ratio(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_modify_crit_ratio(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

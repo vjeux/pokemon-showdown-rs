@@ -8,7 +8,8 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// basePowerCallback(pokemon, target, move) {
 ///     let bp = move.basePower;
@@ -29,9 +30,9 @@ use super::{MoveHandlerResult, Status, Effect};
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onModifyMove(move, pokemon, target) {
@@ -39,9 +40,9 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 ///     pokemon.addVolatile('rollout');
 ///     if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 /// onAfterMove(source, target, move) {
@@ -58,9 +59,9 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 ///             rolloutData.contactHitCount;
 ///     }
 /// }
-pub fn on_after_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+pub fn on_after_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
 
@@ -72,9 +73,9 @@ pub mod condition {
     ///     this.effectState.hitCount = 0;
     ///     this.effectState.contactHitCount = 0;
     /// }
-    pub fn on_start(battle: &mut Battle) -> MoveHandlerResult {
+    pub fn on_start(battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
     /// onResidual(target) {
@@ -83,9 +84,9 @@ pub mod condition {
     ///         delete target.volatiles['rollout'];
     ///     }
     /// }
-    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
-        MoveHandlerResult::Undefined
+        EventResult::Continue
     }
 
 }

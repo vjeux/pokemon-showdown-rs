@@ -8,15 +8,16 @@ use crate::battle::{Battle, Arg};
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
+use super::{Status, Effect};
 
 /// onBasePower(basePower) {
 ///     if (this.field.getPseudoWeather('gravity')) {
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32) -> MoveHandlerResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
 
