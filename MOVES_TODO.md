@@ -3,6 +3,29 @@
 Total: 953 moves
 Moves with callbacks: 373
 
+## Missing Infrastructure
+
+The following moves require infrastructure that doesn't exist yet:
+
+### afteryou
+- Requires: `battle.activePerHalf` (number of active pokemon per side)
+- Requires: `battle.queue.willMove(target)` (check if target has queued action)
+- Requires: `battle.queue.prioritizeAction(action)` (move action to front of queue)
+- Requires: `battle.add()` (add battle message)
+
+### allyswitch
+- Requires: `pokemon.addVolatile()` (add volatile condition)
+- Requires: `battle.format.gameType` (game format: singles/doubles/triples)
+- Requires: `pokemon.side.active` (list of active pokemon on a side)
+- Requires: `pokemon.position` (position in battle)
+- Requires: `pokemon.fainted` (whether pokemon is fainted)
+- Requires: `battle.swapPosition()` (swap pokemon positions)
+- Requires: `battle.attrLastMove()` (modify last move attributes)
+- Requires: `EventResult::NOT_FAIL` constant
+- Requires: Effect state management (counter field)
+- Requires: `battle.randomChance()` (random chance)
+- Requires: Pokemon volatiles management
+
 ## Moves with Callbacks (alphabetically)
 - [ ] acrobatics - Acrobatics (Physical, Flying) - 1 callback: basePowerCallback
 - [ ] acupressure - Acupressure (Status, Normal) - 1 callback: onHit
