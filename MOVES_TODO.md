@@ -47,6 +47,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.getTypes()`: camouflage, reflecttype - Get pokemon types as array
 - `pokemon.setType(type)`: camouflage, conversion, reflecttype - Set pokemon type(s), returns bool
 - `pokemon.hasType(type)`: conversion - Check if pokemon has a type
+- `pokemon.hasType(types_array)`: synchronoise - Check if pokemon has any type in array (overload)
 - `pokemon.moveSlots`: conversion - Array of move slots with id field
 - `battle.dex.moves.get(id)`: conversion - Get move data by ID
 - `pokemon.species.num`: reflecttype - Species number (e.g., 493 for Arceus)
