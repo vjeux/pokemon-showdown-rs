@@ -94,6 +94,21 @@ The following moves require infrastructure that doesn't exist yet:
 - `move.isNonstandard`: metronome - Non-standard status string
 - `move.num`: metronome - Move number for sorting
 - `battle.actions.useMove(moveId, pokemon)`: metronome - Execute a move
+- `pokemon.transformInto(target)`: transform - Transform into target pokemon
+- `pokemon.getAbility()`: doodle, entrainment, roleplay, skillswap, gastroacid, simplebeam - Get ability object with flags
+- `pokemon.alliesAndSelf()`: doodle - Get iterator of allies and self
+- `pokemon.ability`: doodle, entrainment, roleplay, skillswap, simplebeam - Ability ID field (mutable)
+- `pokemon.setAbility(ability, source, move)`: doodle, entrainment, roleplay, simplebeam - Set ability, returns old ability or null
+- `ability.flags['failroleplay']`: doodle, roleplay - Ability cannot be role-played
+- `ability.flags['cantsuppress']`: doodle, entrainment, roleplay, skillswap, gastroacid, simplebeam - Ability cannot be suppressed
+- `ability.flags['noentrain']`: entrainment - Cannot be entrained
+- `ability.flags['failskillswap']`: skillswap - Cannot be skill swapped
+- `pokemon.volatileStaleness`: entrainment, skillswap - Volatile staleness field (mutable, can be undefined or 'external')
+- `pokemon.abilityState`: skillswap - Ability state object (mutable)
+- `battle.initEffectState({id, target})`: skillswap - Initialize effect state
+- `battle.toID(string)`: skillswap - Convert string to ID
+- `battle.effect`: skillswap - Current effect
+- `pokemon.hasItem(name)`: gastroacid - Check if pokemon has specific item
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
