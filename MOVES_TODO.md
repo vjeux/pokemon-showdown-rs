@@ -191,6 +191,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.volatiles[name]`: aromatherapy, many - Check/access volatile conditions
 - `move.infiltrates`: aromatherapy - Check if move bypasses substitute
 - `pokemon.weighthg`: autotomize - Pokemon weight in hectograms (mutable)
+- `pokemon.gender`: captivate, attract - Pokemon gender ('M', 'F', or 'N' for no gender)
 - `pokemon.species.baseSpecies`: aurawheel - Base species name
 - `pokemon.species.name`: aurawheel - Current species/form name
 - `battle.attrLastMove(attr)`: aurawheel, allyswitch - Modify last move attributes
