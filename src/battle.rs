@@ -5248,7 +5248,8 @@ impl Battle {
 
         // TODO: Gen 1 partial trapping cleanup (requires partialtrappinglock/partiallytrapped volatiles)
 
-        // Collect move slots for DisableMove events (to avoid borrow checker issues)
+        // Collect pokemon positions and move slots for DisableMove events (to avoid borrow checker issues)
+        let mut pokemon_positions: Vec<(usize, usize)> = Vec::new();
         let mut disable_move_data: Vec<((usize, usize), ID)> = Vec::new();
 
         // Reset Pokemon turn-specific fields
@@ -5290,12 +5291,13 @@ impl Battle {
                 pokemon.maybe_locked = false;
 
                 // JS: for (const moveSlot of pokemon.moveSlots) { moveSlot.disabled = false; }
-                // JS: this.runEvent('DisableMove', pokemon);
-                // JS: for (const moveSlot of pokemon.moveSlots) { this.singleEvent('DisableMove', activeMove, null, pokemon); }
-                // TODO: runEvent('DisableMove', pokemon) - requires implementation
+                // Reset all move slots to not disabled (this happens in Pokemon struct reset)
+
+                // Collect pokemon position for DisableMove event
+                let pokemon_pos = (pokemon.side_index, pokemon.position);
+                pokemon_positions.push(pokemon_pos);
 
                 // Collect move slot data for later single_event calls
-                let pokemon_pos = (pokemon.side_index, pokemon.position);
                 for move_slot in &pokemon.move_slots {
                     disable_move_data.push((pokemon_pos, move_slot.id.clone()));
                 }
@@ -5306,17 +5308,52 @@ impl Battle {
             }
         }
 
-        // Call singleEvent('DisableMove') for each move (after the mutable borrow ends)
+        // Call runEvent('DisableMove') for each active pokemon (after the mutable borrow ends)
+        // JS: this.runEvent('DisableMove', pokemon);
+        // This allows abilities like Assault Vest, Gorilla Tactics, etc. to disable moves
+        for pokemon_pos in &pokemon_positions {
+            self.run_event("DisableMove", Some(*pokemon_pos), None, None, None);
+        }
+
+        // Call singleEvent('DisableMove') for each move (allows move-specific disable logic)
+        // JS: for (const moveSlot of pokemon.moveSlots) { this.singleEvent('DisableMove', activeMove, null, pokemon); }
         for (pokemon_pos, move_id) in disable_move_data {
             self.single_event("DisableMove", &move_id, Some(pokemon_pos), None, None);
         }
 
-        // TODO: TrapPokemon and MaybeTrapPokemon events
+        // Call TrapPokemon and MaybeTrapPokemon events for each active pokemon
         // JS: this.runEvent('TrapPokemon', pokemon);
         // JS: if (!pokemon.knownType || this.dex.getImmunity('trapped', pokemon)) { this.runEvent('MaybeTrapPokemon', pokemon); }
+        for &pokemon_pos in &pokemon_positions {
+            // TrapPokemon event - allows moves/abilities to trap pokemon (e.g., Mean Look)
+            self.run_event("TrapPokemon", Some(pokemon_pos), None, None, None);
 
-        // TODO: Foe ability trapping check (Gen 3+)
-        // JS: for (const source of pokemon.foes()) { ... check abilities ... }
+            // MaybeTrapPokemon event - conditional trapping based on type immunity
+            // For now, always call it (full implementation needs knownType and getImmunity)
+            // TODO: Check pokemon.knownType and immunity to 'trapped' before calling
+            self.run_event("MaybeTrapPokemon", Some(pokemon_pos), None, None, None);
+        }
+
+        // Check for foe abilities that might trap pokemon (Gen 3+)
+        // JS: for (const source of pokemon.foes()) { ... check species.abilities ... }
+        if self.gen >= 3 {
+            for &(side_idx, poke_idx) in &pokemon_positions {
+                // Get adjacent foes for this pokemon
+                let foes = self.adjacent_foes(side_idx, poke_idx);
+
+                for (foe_side_idx, foe_idx) in foes {
+                    // TODO: Full implementation requires:
+                    // 1. Check species.abilities for all ability slots
+                    // 2. Check ruleTable for +hackmons and obtainableabilities
+                    // 3. Check for unreleased hidden abilities
+                    // 4. Call singleEvent('FoeMaybeTrapPokemon', ability, {}, pokemon, source)
+                    // For now, this is a stub to document the requirement
+
+                    // The simplified version just notes that foe abilities could affect trapping
+                    // Full implementation would iterate through all possible abilities of the foe's species
+                }
+            }
+        }
 
         self.add_log("", &[]);
         self.add_log("turn", &[&self.turn.to_string()]);
