@@ -14,6 +14,10 @@ The following moves require infrastructure that doesn't exist yet:
 - `getStat('spe')`: gyroball, electroball - Get calculated stat value
 - `pokemon.faint()`: finalgambit - Faint the pokemon
 - `battle.random(min, max)`: EXISTS ✓
+- `pokemon.getUndynamaxedHP()`: endeavor, superfang, ruination, naturesmadness, guardianofalola - Get HP ignoring Dynamax
+- `pokemon.cureStatus()`: wakeupslap, smellingsalts - Cure pokemon status condition
+- `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
+- `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
