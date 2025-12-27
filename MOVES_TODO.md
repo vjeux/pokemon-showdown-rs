@@ -129,6 +129,8 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.queue.cancelMove(pokemon)`: gravity - Cancel queued move for pokemon
 - `pokemon.disableMove(moveId)`: gravity - Disable a specific move
 - `battle.field.removePseudoWeather(name)`: trickroom, magicroom, wonderroom - Remove pseudo-weather condition
+- `battle.field.addPseudoWeather(name)`: echoedvoice - Add pseudo-weather condition
+- `battle.field.pseudoWeather[name]`: echoedvoice - Access pseudo-weather condition data with fields like multiplier
 - `pokemon.getItem()`: magicroom - Get item data object
 - `move.overrideOffensiveStat`: wonderroom - Override offensive stat field (mutable, can be 'def', 'spd', etc.)
 - `battle.effectState.source`: magicroom - Effect state source field
