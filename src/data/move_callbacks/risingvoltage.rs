@@ -15,7 +15,53 @@ use crate::event::EventResult;
 ///     return move.basePower;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    let source = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (this.field.isTerrain('electricterrain') && target.isGrounded()) {
+    let is_electric_terrain = battle.is_terrain(&ID::from("electricterrain"));
+    let target_is_grounded = battle.is_grounded(target);
+
+    if is_electric_terrain && target_is_grounded {
+        // if (!source.isAlly(target)) this.hint(`${move.name}'s BP doubled on grounded target.`);
+        let is_ally = battle.is_ally(source, target);
+
+        if !is_ally {
+            let move_name = {
+                let active_move = match &battle.active_move {
+                    Some(m) => m,
+                    None => return EventResult::Continue,
+                };
+                active_move.name.clone()
+            };
+            battle.hint(&format!("{}'s BP doubled on grounded target.", move_name));
+        }
+
+        // return move.basePower * 2;
+        let base_power = {
+            let active_move = match &battle.active_move {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+            active_move.base_power
+        };
+        return EventResult::Int(base_power * 2);
+    }
+
+    // return move.basePower;
+    let base_power = {
+        let active_move = match &battle.active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+        active_move.base_power
+    };
+
+    EventResult::Int(base_power)
 }
 
