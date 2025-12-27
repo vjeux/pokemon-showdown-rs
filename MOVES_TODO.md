@@ -27,6 +27,17 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.getAllActive()`: haze - Get array of all active pokemon
 - `battle.clampIntRange(value, min)`: superfang, ruination, naturesmadness - Clamp integer to minimum value
 - `pokemon.boosts` mutable access: topsyturvy, psychup - Direct modification of boost values (or helper methods)
+- `pokemon.setStatus(status, source, move)`: rest - Set status condition, returns bool
+- `pokemon.statusState`: rest - Status state object with time/startTime fields
+- `pokemon.lastItem`: recycle - Last held item (mutable string)
+- `pokemon.setItem(item, source, move)`: recycle, bestow, trick, switcheroo - Set held item
+- `pokemon.takeItem(source)`: bestow, trick, switcheroo - Remove and return held item
+- `pokemon.item` mutable access: bestow, trick, switcheroo - Direct item modification
+- `pokemon.itemState`: bestow, trick, switcheroo - Item state data
+- `battle.singleEvent(eventName, ...)`: bestow, trick, switcheroo - Trigger single event on item/condition
+- `battle.dex.items.get(id)`: recycle - Get item data by ID
+- `EventResult::NOT_FAIL`: purify - Constant for not-fail result
+- Active move modification: psychoshift - Ability to modify active move data (move.status)
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
