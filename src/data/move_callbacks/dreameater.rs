@@ -21,8 +21,10 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
         None => return EventResult::Continue,
     };
 
-    // Only works on sleeping targets (or comatose ability - TODO when ability system ready)
-    // TODO: Add hasAbility('comatose') check when ability system is ready
-    EventResult::Bool(target.has_status("slp"))
+    // Only works on sleeping targets or comatose ability
+    let is_asleep = target.has_status("slp");
+    let has_comatose = target.has_ability("comatose");
+
+    EventResult::Bool(is_asleep || has_comatose)
 }
 
