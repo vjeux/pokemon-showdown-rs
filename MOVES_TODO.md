@@ -211,7 +211,7 @@ Moves with callbacks: 373
 - [x] mortalspin - Mortal Spin (Physical, Poison) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [x] mudsport - Mud Sport (Status, Ground) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
 - [x] multiattack - Multi-Attack (Physical, Normal) - 1 callback: onModifyType
-- [ ] naturalgift - Natural Gift (Physical, Normal) - 2 callbacks: onModifyType, onPrepareHit
+- [x] naturalgift - Natural Gift (Physical, Normal) - 2 callbacks: onModifyType, onPrepareHit
 - [ ] naturepower - Nature Power (Status, Normal) - 1 callback: onTryHit
 - [ ] naturesmadness - Nature's Madness (Special, Fairy) - 1 callback: damageCallback
 - [ ] nightmare - Nightmare (Status, Ghost) - 2 callbacks: condition::onStart, condition::onResidual
