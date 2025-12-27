@@ -298,6 +298,8 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.runEvent(eventName, pokemon, null, move, defaultValue)`: multiattack - Run event with default return value
 - `pokemon.teraType`: terablast - Tera type string field
 - `pokemon.hpType`: hiddenpower - Hidden Power type string field
+- `pokemon.foes()`: gmaxgoldrush, gmaxdepletion - Get iterator of foe pokemon
+- `pokemon.deductPP(moveId, amount)`: gmaxdepletion - Deduct PP from a move, returns amount deducted
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
