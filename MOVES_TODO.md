@@ -52,7 +52,7 @@ Moves with callbacks: 373
 - [x] copycat - Copycat (Status, Normal) - 1 callback: onHit
 - [x] coreenforcer - Core Enforcer (Special, Dragon) - 2 callbacks: onHit, onAfterSubDamage
 - [x] corrosivegas - Corrosive Gas (Status, Poison) - 1 callback: onHit
-- [ ] counter - Counter (Physical, Fighting) - 6 callbacks: damageCallback, beforeTurnCallback, onTry, condition::onStart, condition::onRedirectTarget, condition::onDamagingHit
+- [x] counter - Counter (Physical, Fighting) - 6 callbacks: damageCallback, beforeTurnCallback, onTry, condition::onStart, condition::onRedirectTarget, condition::onDamagingHit
 - [ ] courtchange - Court Change (Status, Normal) - 1 callback: onHitField
 - [ ] covet - Covet (Physical, Normal) - 1 callback: onAfterHit
 - [ ] craftyshield - Crafty Shield (Status, Fairy) - 3 callbacks: onTry, condition::onSideStart, condition::onTryHit
