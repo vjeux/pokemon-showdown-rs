@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 73/79 TODOs (92.4%)
+**Feature Implementation:** ⚠️ 74/79 TODOs (93.7%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -842,6 +842,33 @@
 - Matches JavaScript: `this.ruleTable = this.dex.formats.getRuleTable(this.format);`
 
 **Enables:** Rule-based format validation, overflow stat modifiers (used in nature calculations), ban/restriction checking, custom format rules
+
+### Session 15 - Picked Team Size Check (1 implementation)
+
+#### PickedTeamSize Team Preview Logic (1/1) ✅
+- [x] **pickedTeamSize check in run_pick_team** (battle.rs:10094-10159) - Show Pokemon privately when pickedTeamSize is set but no onTeamPreview handler ran
+
+**Implementation Details:**
+- Checks if `rule_table.picked_team_size.is_some()`
+- If true: Shows Pokemon privately (no onTeamPreview handler ran)
+  - Adds 'clearpoke' log
+  - Iterates through all Pokemon using get_all_pokemon()
+  - Hides forme details for Zacian/Zamazenta/Xerneas:
+    - Zacian/Zamazenta: Replaces with "-*" if not already "-Crowned"
+    - Xerneas: Replaces any forme suffix with "-*" (e.g., "Xerneas-Neutral" -> "Xerneas-*")
+  - Removes ", shiny" from details string
+  - Calls add_split() for each Pokemon to show details privately
+  - Makes teampreview request
+- Matches JavaScript: battle.ts:10065-10077
+
+**Technical Notes:**
+- Used string methods instead of regex for forme replacement
+- Collected Pokemon data into Vec first to avoid borrow checker issues
+- Xerneas forme replacement: finds "Xerneas", checks for forme suffix (starts with '-'), replaces up to next comma or end
+- Side ID mapping: side_index 0 -> "p1", side_index 1 -> "p2"
+
+**Enables:** Team preview when pickedTeamSize is set, proper forme hiding for legendary Pokemon during team selection, correct side-specific message splitting
+
 
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
