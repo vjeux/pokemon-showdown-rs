@@ -58,7 +58,7 @@ Moves with callbacks: 373
 - [x] craftyshield - Crafty Shield (Status, Fairy) - 3 callbacks: onTry, condition::onSideStart, condition::onTryHit
 - [x] crushgrip - Crush Grip (Physical, Normal) - 1 callback: basePowerCallback
 - [x] curse - Curse (Status, Ghost) - 5 callbacks: onModifyMove, onTryHit, onHit, condition::onStart, condition::onResidual
-- [ ] darkvoid - Dark Void (Status, Dark) - 1 callback: onTry
+- [x] darkvoid - Dark Void (Status, Dark) - 1 callback: onTry
 - [ ] defog - Defog (Status, Flying) - 1 callback: onHit
 - [ ] destinybond - Destiny Bond (Status, Ghost) - 5 callbacks: onPrepareHit, condition::onStart, condition::onFaint, condition::onBeforeMove, condition::onMoveAborted
 - [ ] detect - Detect (Status, Fighting) - 2 callbacks: onPrepareHit, onHit
