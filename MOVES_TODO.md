@@ -213,7 +213,7 @@ Moves with callbacks: 373
 - [x] multiattack - Multi-Attack (Physical, Normal) - 1 callback: onModifyType
 - [x] naturalgift - Natural Gift (Physical, Normal) - 2 callbacks: onModifyType, onPrepareHit
 - [x] naturepower - Nature Power (Status, Normal) - 1 callback: onTryHit
-- [ ] naturesmadness - Nature's Madness (Special, Fairy) - 1 callback: damageCallback
+- [x] naturesmadness - Nature's Madness (Special, Fairy) - 1 callback: damageCallback
 - [ ] nightmare - Nightmare (Status, Ghost) - 2 callbacks: condition::onStart, condition::onResidual
 - [ ] noretreat - No Retreat (Status, Fighting) - 3 callbacks: onTry, condition::onStart, condition::onTrapPokemon
 - [ ] obstruct - Obstruct (Status, Dark) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
