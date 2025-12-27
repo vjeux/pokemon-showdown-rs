@@ -486,6 +486,12 @@ pub struct ItemData {
     pub is_choice: bool,
     #[serde(default)]
     pub fling: Option<FlingData>,
+    /// Type for Plate items (e.g., "Fire" for Flame Plate)
+    #[serde(rename = "onPlate", default)]
+    pub on_plate: Option<String>,
+    /// Z-Move compatibility
+    #[serde(rename = "zMove", default)]
+    pub z_move: Option<serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
