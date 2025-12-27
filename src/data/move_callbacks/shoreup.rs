@@ -20,7 +20,68 @@ use crate::event::EventResult;
 ///     return success;
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    // onHit(pokemon) {
+    //     let factor = 0.5;
+    //     if (this.field.isWeather('sandstorm')) {
+    //         factor = 0.667;
+    //     }
+    //     const success = !!this.heal(this.modify(pokemon.maxhp, factor));
+    //     if (!success) {
+    //         this.add('-fail', pokemon, 'heal');
+    //         return this.NOT_FAIL;
+    //     }
+    //     return success;
+    // }
+    let pokemon = pokemon_pos;
+
+    // let factor = 0.5;
+    // if (this.field.isWeather('sandstorm')) {
+    //     factor = 0.667;
+    // }
+    let is_sandstorm = battle.is_weather(&ID::from("sandstorm"));
+    let factor = if is_sandstorm {
+        0.667
+    } else {
+        0.5
+    };
+
+    // const success = !!this.heal(this.modify(pokemon.maxhp, factor));
+    let maxhp = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.maxhp
+    };
+
+    let heal_amount = battle.modify(maxhp, factor);
+    let heal_result = battle.heal(heal_amount, pokemon, None, None);
+    let success = heal_result != 0;
+
+    // if (!success) {
+    //     this.add('-fail', pokemon, 'heal');
+    //     return this.NOT_FAIL;
+    // }
+    if !success {
+        let pokemon_arg = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon_pokemon)
+        };
+
+        battle.add("-fail", &[
+            pokemon_arg,
+            "heal".into(),
+        ]);
+
+        return EventResult::Bool(false); // this.NOT_FAIL
+    }
+
+    // return success;
+    EventResult::Bool(success)
 }
 
