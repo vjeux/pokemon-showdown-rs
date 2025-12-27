@@ -11,7 +11,20 @@ use crate::event::EventResult;
 ///     return target.addVolatile('trapped', source, move, 'trapper');
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    // onHit(target, source, move) {
+    //     return target.addVolatile('trapped', source, move, 'trapper');
+    // }
+    let source = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // return target.addVolatile('trapped', source, move, 'trapper');
+    let result = battle.add_volatile(&ID::from("trapped"), target, Some(source), Some("trapper"));
+
+    EventResult::Bool(result)
 }
 
