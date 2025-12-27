@@ -14,7 +14,19 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // if (this.field.isTerrain('electricterrain')) {
+    let is_electric_terrain = battle.field.terrain == Some(ID::from("electricterrain"));
+
+    if is_electric_terrain {
+        // this.debug('psyblade electric terrain boost');
+        battle.debug("psyblade electric terrain boost");
+
+        // return this.chainModify(1.5);
+        return EventResult::ChainModifyFraction(3, 2); // 1.5 = 3/2
+    }
+
     EventResult::Continue
 }
 
