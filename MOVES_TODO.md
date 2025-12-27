@@ -98,7 +98,7 @@ Moves with callbacks: 373
 - [x] flail - Flail (Physical, Normal) - 1 callback: basePowerCallback
 - [x] flameburst - Flame Burst (Special, Fire) - 2 callbacks: onHit, onAfterSubDamage
 - [ ] fling - Fling (Physical, Dark) - 2 callbacks: onPrepareHit, condition::onUpdate
-- [ ] floralhealing - Floral Healing (Status, Fairy) - 1 callback: onHit
+- [x] floralhealing - Floral Healing (Status, Fairy) - 1 callback: onHit
 - [ ] flowershield - Flower Shield (Status, Fairy) - 1 callback: onHitField
 - [ ] fly - Fly (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceModifyDamage
 - [ ] flyingpress - Flying Press (Physical, Fighting) - 1 callback: onEffectiveness
