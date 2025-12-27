@@ -11,15 +11,38 @@ use crate::event::EventResult;
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
+    let pokemon = pokemon_pos;
+
+    // !!this.queue.willAct()
+    let will_act = battle.queue.will_act();
+
+    if !will_act {
+        return EventResult::Bool(false);
+    }
+
+    // this.runEvent('StallMove', pokemon)
+    let stall_result = battle.run_event("StallMove", pokemon, None, None);
+
+    // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
+    EventResult::Bool(will_act && stall_result)
 }
 
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // pokemon.addVolatile('stall');
+    let pokemon = pokemon_pos;
+
+    let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+    pokemon_pokemon.add_volatile(ID::from("stall"));
+
     EventResult::Continue
 }
 
