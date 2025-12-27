@@ -13,7 +13,7 @@ Moves with callbacks: 373
 - [x] assist - Assist (Status, Normal) - 1 callback: onHit
 - [x] assurance - Assurance (Physical, Dark) - 1 callback: basePowerCallback
 - [x] attract - Attract (Status, Normal) - 5 callbacks: onTryImmunity, condition::onStart, condition::onUpdate, condition::onBeforeMove, condition::onEnd
-- [ ] aurawheel - Aura Wheel (Physical, Electric) - 2 callbacks: onTry, onModifyType
+- [x] aurawheel - Aura Wheel (Physical, Electric) - 2 callbacks: onTry, onModifyType
 - [ ] auroraveil - Aurora Veil (Status, Ice) - 5 callbacks: onTry, condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [ ] autotomize - Autotomize (Status, Steel) - 2 callbacks: onTryHit, onHit
 - [ ] avalanche - Avalanche (Physical, Ice) - 1 callback: basePowerCallback
