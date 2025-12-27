@@ -1,5 +1,29 @@
 # Battle Method Review - Progress Tracker
 
+## Latest Session - Methods 81-95
+
+#### Batch 7: Methods 81-95 (All ✓)
+
+81. **restart (line 6177)** ✓ - Simpler than JS (no send function parameter)
+82. **reset_rng (line 6197)** ✓ - Has TS comment
+83. **join (line 6218)** ✓ - Has TS comment, marked deprecated
+84. **destroy (line 6283)** ✓ - Has TS comment, no-op in Rust (auto cleanup via Drop)
+85. **single_event (line 6387)** ✓ - Has comprehensive TS comment, complex event system
+86. **run_event (line 7329)** ✓ - Event dispatcher implementation
+87. **run_event_bool (line 7404)** ✓ - Wrapper for run_event returning bool
+88. **priority_event (line 7604)** ✓ - Wrapper for run_event with fastExit behavior
+89. **get_event_modifier (line 7616)** ✓ - Getter for current event modifier
+90. **set_event_modifier (line 7621)** ✓ - Setter for event modifier (chain multiply)
+91. **randomizer (line 7643)** ✓ - Has TS comment, damage randomization 85%-100%
+92. **each_event (line 7671)** ✓ - Has TS comment, runs event on all active Pokemon
+93. **get_target (line 7757)** ✓ - Has TS comment, move targeting logic
+94. **undo_choice (line 7904)** ✓ - Simple choice undo logic
+95. **spread_damage (line 8041)** ✓ - Has TS comment, multi-target damage
+
+## Previous Sessions
+
+### Batch 6: Methods 66-80
+
 ## Latest Session - Methods 66-80
 
 #### Batch 6: Methods 66-80 (All ✓)
@@ -103,8 +127,8 @@
 ## Statistics
 
 - Total methods: 337
-- Reviewed: 80
-- Verified correct: 77
+- Reviewed: 95
+- Verified correct: 92
 - Needs TS comments: 3 (Battle::new, switch_in, drag_in/run_switch)
 - Needs investigation: 2 (start_battle, update_speed)
-- Remaining: 257
+- Remaining: 242
