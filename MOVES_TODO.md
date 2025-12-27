@@ -255,7 +255,7 @@ Moves with callbacks: 373
 - [ ] ragepowder - Rage Powder (Status, Bug) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
 - [ ] ragingbull - Raging Bull (Physical, Normal) - 2 callbacks: onTryHit, onModifyType
 - [ ] rapidspin - Rapid Spin (Physical, Normal) - 2 callbacks: onAfterHit, onAfterSubDamage
-- [ ] razorwind - Razor Wind (Special, Normal) - 1 callback: onTryMove
+- [x] razorwind - Razor Wind (Special, Normal) - 1 callback: onTryMove
 - [ ] recycle - Recycle (Status, Normal) - 1 callback: onHit
 - [ ] reflect - Reflect (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [ ] reflecttype - Reflect Type (Status, Normal) - 1 callback: onHit
