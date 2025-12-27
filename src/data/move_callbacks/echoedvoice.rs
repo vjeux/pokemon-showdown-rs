@@ -16,15 +16,49 @@ use crate::event::EventResult;
 ///     return bp;
 /// }
 pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    // let bp = move.basePower;
+    let base_power = match &battle.current_move {
+        Some(move_id) => {
+            match battle.dex.get_move_by_id(move_id) {
+                Some(move_data) => move_data.base_power,
+                None => return EventResult::Continue,
+            }
+        }
+        None => return EventResult::Continue,
+    };
+
+    let mut bp = base_power;
+
+    // if (this.field.pseudoWeather.echoedvoice) {
+    //     bp = move.basePower * this.field.pseudoWeather.echoedvoice.multiplier;
+    // }
+    if let Some(echoedvoice_condition) = battle.field.pseudo_weather.get(&ID::from("echoedvoice")) {
+        // Get multiplier from effect state
+        let multiplier = echoedvoice_condition.data.get("multiplier")
+            .and_then(|v| v.as_i64())
+            .unwrap_or(1) as i32;
+
+        bp = base_power * multiplier;
+    }
+
+    // this.debug(`BP: ${move.basePower}`);
+    battle.debug(&format!("BP: {}", base_power));
+
+    // return bp;
+    EventResult::Int(bp)
 }
 
 /// onTryMove() {
 ///     this.field.addPseudoWeather('echoedvoice');
 /// }
 pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // this.field.addPseudoWeather('echoedvoice');
+    battle.field.add_pseudo_weather(&ID::from("echoedvoice"));
+
     EventResult::Continue
 }
 
@@ -35,7 +69,11 @@ pub mod condition {
     ///     this.effectState.multiplier = 1;
     /// }
     pub fn on_field_start(battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // this.effectState.multiplier = 1;
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            effect_state.data.insert("multiplier".to_string(), serde_json::Value::Number(1.into()));
+        }
+
         EventResult::Continue
     }
 
@@ -48,7 +86,32 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_field_restart(battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // if (this.effectState.duration !== 2) {
+        //     this.effectState.duration = 2;
+        //     if (this.effectState.multiplier < 5) {
+        //         this.effectState.multiplier++;
+        //     }
+        // }
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            let duration = effect_state.duration.unwrap_or(0);
+
+            if duration != 2 {
+                // this.effectState.duration = 2;
+                effect_state.duration = Some(2);
+
+                // if (this.effectState.multiplier < 5) {
+                //     this.effectState.multiplier++;
+                // }
+                let current_multiplier = effect_state.data.get("multiplier")
+                    .and_then(|v| v.as_i64())
+                    .unwrap_or(1);
+
+                if current_multiplier < 5 {
+                    effect_state.data.insert("multiplier".to_string(), serde_json::Value::Number((current_multiplier + 1).into()));
+                }
+            }
+        }
+
         EventResult::Continue
     }
 }
