@@ -47,7 +47,7 @@ Moves with callbacks: 373
 - [x] clearsmog - Clear Smog (Special, Poison) - 1 callback: onHit
 - [x] collisioncourse - Collision Course (Physical, Fighting) - 1 callback: onBasePower
 - [x] comeuppance - Comeuppance (Physical, Dark) - 3 callbacks: damageCallback, onTry, onModifyTarget
-- [ ] conversion - Conversion (Status, Normal) - 1 callback: onHit
+- [x] conversion - Conversion (Status, Normal) - 1 callback: onHit
 - [ ] conversion2 - Conversion 2 (Status, Normal) - 1 callback: onHit
 - [ ] copycat - Copycat (Status, Normal) - 1 callback: onHit
 - [ ] coreenforcer - Core Enforcer (Special, Dragon) - 2 callbacks: onHit, onAfterSubDamage
