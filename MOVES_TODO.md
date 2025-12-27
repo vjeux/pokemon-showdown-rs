@@ -235,7 +235,7 @@ Moves with callbacks: 373
 - [x] powershift - Power Shift (Status, Normal) - 4 callbacks: condition::onStart, condition::onCopy, condition::onEnd, condition::onRestart
 - [x] powersplit - Power Split (Status, Psychic) - 1 callback: onHit
 - [x] powerswap - Power Swap (Status, Psychic) - 1 callback: onHit
-- [ ] powertrick - Power Trick (Status, Psychic) - 4 callbacks: condition::onStart, condition::onCopy, condition::onEnd, condition::onRestart
+- [x] powertrick - Power Trick (Status, Psychic) - 4 callbacks: condition::onStart, condition::onCopy, condition::onEnd, condition::onRestart
 - [ ] powertrip - Power Trip (Physical, Dark) - 1 callback: basePowerCallback
 - [ ] present - Present (Physical, Normal) - 1 callback: onModifyMove
 - [ ] protect - Protect (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit
