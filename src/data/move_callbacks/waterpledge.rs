@@ -55,5 +55,35 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onSideStart(targetSide) {
+    ///     this.add('-sidestart', targetSide, 'Water Pledge');
+    /// }
+    pub fn on_side_start(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onSideEnd(targetSide) {
+    ///     this.add('-sideend', targetSide, 'Water Pledge');
+    /// }
+    pub fn on_side_end(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onModifyMove(move, pokemon) {
+    ///     if (move.secondaries && move.id !== 'secretpower') {
+    ///         this.debug('doubling secondary chance');
+    ///         for (const secondary of move.secondaries) {
+    ///             if (pokemon.hasAbility('serenegrace') && secondary.volatileStatus === 'flinch') continue;
+    ///             if (secondary.chance) secondary.chance *= 2;
+    ///         }
+    ///         if (move.self?.chance) move.self.chance *= 2;
+    ///     }
+    /// }
+    pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

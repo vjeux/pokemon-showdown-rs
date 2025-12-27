@@ -50,5 +50,18 @@ pub fn on_prepare_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, s
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onUpdate(pokemon) {
+    ///     const item = pokemon.getItem();
+    ///     pokemon.setItem('');
+    ///     pokemon.lastItem = item.id;
+    ///     pokemon.usedItemThisTurn = true;
+    ///     this.add('-enditem', pokemon, item.name, '[from] move: Fling');
+    ///     this.runEvent('AfterUseItem', pokemon, null, null, item);
+    ///     pokemon.removeVolatile('fling');
+    /// }
+    pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

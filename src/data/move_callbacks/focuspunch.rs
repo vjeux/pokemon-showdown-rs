@@ -16,5 +16,30 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon) {
+    ///     this.add('-singleturn', pokemon, 'move: Focus Punch');
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onHit(pokemon, source, move) {
+    ///     if (move.category !== 'Status') {
+    ///         this.effectState.lostFocus = true;
+    ///     }
+    /// }
+    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onTryAddVolatile(status, pokemon) {
+    ///     if (status.id === 'flinch') return null;
+    /// }
+    pub fn on_try_add_volatile(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

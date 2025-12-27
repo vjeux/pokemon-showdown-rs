@@ -49,5 +49,20 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon, source) {
+    ///     this.add('-start', pokemon, 'Curse', `[of] ${source}`);
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onResidual(pokemon) {
+    ///     this.damage(pokemon.baseMaxhp / 4);
+    /// }
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

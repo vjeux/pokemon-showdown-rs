@@ -23,5 +23,25 @@ pub fn on_try_move(battle: &mut Battle) -> MoveHandlerResult {
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onFieldStart() {
+    ///     this.effectState.multiplier = 1;
+    /// }
+    pub fn on_field_start(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFieldRestart() {
+    ///     if (this.effectState.duration !== 2) {
+    ///         this.effectState.duration = 2;
+    ///         if (this.effectState.multiplier < 5) {
+    ///             this.effectState.multiplier++;
+    ///         }
+    ///     }
+    /// }
+    pub fn on_field_restart(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

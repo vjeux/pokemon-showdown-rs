@@ -32,5 +32,12 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, pokem
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onBasePower(basePower) {
+    ///     return this.chainModify(1.5);
+    /// }
+    pub fn on_base_power(battle: &mut Battle, base_power: i32) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

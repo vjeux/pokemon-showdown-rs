@@ -16,5 +16,23 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon) {
+    ///     if (pokemon.status !== 'slp' && !pokemon.hasAbility('comatose')) {
+    ///         return false;
+    ///     }
+    ///     this.add('-start', pokemon, 'Nightmare');
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onResidual(pokemon) {
+    ///     this.damage(pokemon.baseMaxhp / 4);
+    /// }
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

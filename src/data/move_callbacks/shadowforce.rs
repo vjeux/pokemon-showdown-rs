@@ -26,10 +26,3 @@ pub fn on_try_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
     MoveHandlerResult::Undefined
 }
 
-
-// Condition handlers
-pub mod condition {
-    use super::*;
-
-    // TODO: Implement condition handlers
-}

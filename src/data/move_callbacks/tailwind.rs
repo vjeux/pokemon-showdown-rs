@@ -16,5 +16,32 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onSideStart(side, source) {
+    ///     if (source?.hasAbility('persistent')) {
+    ///         this.add('-sidestart', side, 'move: Tailwind', '[persistent]');
+    ///     } else {
+    ///         this.add('-sidestart', side, 'move: Tailwind');
+    ///     }
+    /// }
+    pub fn on_side_start(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onModifySpe(spe, pokemon) {
+    ///     return this.chainModify(2);
+    /// }
+    pub fn on_modify_spe(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onSideEnd(side) {
+    ///     this.add('-sideend', side, 'move: Tailwind');
+    /// }
+    pub fn on_side_end(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

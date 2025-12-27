@@ -16,5 +16,94 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onFieldStart(target, source) {
+    ///     if (source?.hasAbility('persistent')) {
+    ///         this.add('-fieldstart', 'move: Gravity', '[persistent]');
+    ///     } else {
+    ///         this.add('-fieldstart', 'move: Gravity');
+    ///     }
+    ///     for (const pokemon of this.getAllActive()) {
+    ///         let applies = false;
+    ///         if (pokemon.removeVolatile('bounce') || pokemon.removeVolatile('fly')) {
+    ///             applies = true;
+    ///             this.queue.cancelMove(pokemon);
+    ///             pokemon.removeVolatile('twoturnmove');
+    ///         }
+    ///         if (pokemon.volatiles['skydrop']) {
+    ///             applies = true;
+    ///             this.queue.cancelMove(pokemon);
+    /// 
+    ///             if (pokemon.volatiles['skydrop'].source) {
+    ///                 this.add('-end', pokemon.volatiles['twoturnmove'].source, 'Sky Drop', '[interrupt]');
+    ///             }
+    ///             pokemon.removeVolatile('skydrop');
+    ///             pokemon.removeVolatile('twoturnmove');
+    ///         }
+    ///         if (pokemon.volatiles['magnetrise']) {
+    ///             applies = true;
+    ///             delete pokemon.volatiles['magnetrise'];
+    ///         }
+    ///         if (pokemon.volatiles['telekinesis']) {
+    ///             applies = true;
+    ///             delete pokemon.volatiles['telekinesis'];
+    ///         }
+    ///         if (applies) this.add('-activate', pokemon, 'move: Gravity');
+    ///     }
+    /// }
+    pub fn on_field_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onModifyAccuracy(accuracy) {
+    ///     if (typeof accuracy !== 'number') return;
+    ///     return this.chainModify([6840, 4096]);
+    /// }
+    pub fn on_modify_accuracy(battle: &mut Battle, accuracy: i32) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onDisableMove(pokemon) {
+    ///     for (const moveSlot of pokemon.moveSlots) {
+    ///         if (this.dex.moves.get(moveSlot.id).flags['gravity']) {
+    ///             pokemon.disableMove(moveSlot.id);
+    ///         }
+    ///     }
+    /// }
+    pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onBeforeMove(pokemon, target, move) {
+    ///     if (move.flags['gravity'] && !move.isZ) {
+    ///         this.add('cant', pokemon, 'move: Gravity', move);
+    ///         return false;
+    ///     }
+    /// }
+    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onModifyMove(move, pokemon, target) {
+    ///     if (move.flags['gravity'] && !move.isZ) {
+    ///         this.add('cant', pokemon, 'move: Gravity', move);
+    ///         return false;
+    ///     }
+    /// }
+    pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFieldEnd() {
+    ///     this.add('-fieldend', 'move: Gravity');
+    /// }
+    pub fn on_field_end(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

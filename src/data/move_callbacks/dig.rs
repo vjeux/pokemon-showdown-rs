@@ -31,5 +31,33 @@ pub fn on_try_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onImmunity(type, pokemon) {
+    ///     if (type === 'sandstorm' || type === 'hail') return false;
+    /// }
+    pub fn on_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onInvulnerability(target, source, move) {
+    ///     if (['earthquake', 'magnitude'].includes(move.id)) {
+    ///         return;
+    ///     }
+    ///     return false;
+    /// }
+    pub fn on_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onSourceModifyDamage(damage, source, target, move) {
+    ///     if (move.id === 'earthquake' || move.id === 'magnitude') {
+    ///         return this.chainModify(2);
+    ///     }
+    /// }
+    pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

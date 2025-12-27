@@ -23,5 +23,23 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Mo
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     this.add('-singleturn', target, 'move: Electrify');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onModifyType(move) {
+    ///     if (move.id !== 'struggle') {
+    ///         this.debug('Electrify making move type electric');
+    ///         move.type = 'Electric';
+    ///     }
+    /// }
+    pub fn on_modify_type(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

@@ -16,5 +16,35 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     this.add('-start', target, 'move: Imprison');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFoeDisableMove(pokemon) {
+    ///     for (const moveSlot of this.effectState.source.moveSlots) {
+    ///         if (moveSlot.id === 'struggle') continue;
+    ///         pokemon.disableMove(moveSlot.id, true);
+    ///     }
+    ///     pokemon.maybeDisabled = true;
+    /// }
+    pub fn on_foe_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFoeBeforeMove(attacker, defender, move) {
+    ///     if (move.id !== 'struggle' && this.effectState.source.hasMove(move.id) && !move.isZOrMaxPowered) {
+    ///         this.add('cant', attacker, 'move: Imprison', move);
+    ///         return false;
+    ///     }
+    /// }
+    pub fn on_foe_before_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

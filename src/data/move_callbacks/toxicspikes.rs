@@ -16,5 +16,41 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onSideStart(side) {
+    ///     this.add('-sidestart', side, 'move: Toxic Spikes');
+    ///     this.effectState.layers = 1;
+    /// }
+    pub fn on_side_start(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onSideRestart(side) {
+    ///     if (this.effectState.layers >= 2) return false;
+    ///     this.add('-sidestart', side, 'move: Toxic Spikes');
+    ///     this.effectState.layers++;
+    /// }
+    pub fn on_side_restart(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onSwitchIn(pokemon) {
+    ///     if (!pokemon.isGrounded()) return;
+    ///     if (pokemon.hasType('Poison')) {
+    ///         this.add('-sideend', pokemon.side, 'move: Toxic Spikes', `[of] ${pokemon}`);
+    ///         pokemon.side.removeSideCondition('toxicspikes');
+    ///     } else if (pokemon.hasType('Steel') || pokemon.hasItem('heavydutyboots')) {
+    ///         // do nothing
+    ///     } else if (this.effectState.layers >= 2) {
+    ///         pokemon.trySetStatus('tox', pokemon.side.foe.active[0]);
+    ///     } else {
+    ///         pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
+    ///     }
+    /// }
+    pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

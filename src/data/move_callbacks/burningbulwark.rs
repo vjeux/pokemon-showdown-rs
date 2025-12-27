@@ -31,5 +31,50 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerRe
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     this.add('-singleturn', target, 'move: Protect');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onTryHit(target, source, move) {
+    ///     if (!move.flags['protect'] || move.category === 'Status') {
+    ///         if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
+    ///         if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
+    ///         return;
+    ///     }
+    ///     if (move.smartTarget) {
+    ///         move.smartTarget = false;
+    ///     } else {
+    ///         this.add('-activate', target, 'move: Protect');
+    ///     }
+    ///     const lockedmove = source.getVolatile('lockedmove');
+    ///     if (lockedmove) {
+    ///         // Outrage counter is reset
+    ///         if (source.volatiles['lockedmove'].duration === 2) {
+    ///             delete source.volatiles['lockedmove'];
+    ///         }
+    ///     }
+    ///     if (this.checkMoveMakesContact(move, source, target)) {
+    ///         source.trySetStatus('brn', target);
+    ///     }
+    ///     return this.NOT_FAIL;
+    /// }
+    pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onHit(target, source, move) {
+    ///     if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
+    ///         source.trySetStatus('brn', target);
+    ///     }
+    /// }
+    pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

@@ -60,7 +60,6 @@ pub mod covet;
 pub mod craftyshield;
 pub mod curse;
 pub mod darkvoid;
-pub mod defensecurl;
 pub mod defog;
 pub mod destinybond;
 pub mod detect;

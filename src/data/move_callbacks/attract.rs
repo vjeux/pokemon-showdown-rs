@@ -23,5 +23,58 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon, source, effect) {
+    ///     if (!(pokemon.gender === 'M' && source.gender === 'F') && !(pokemon.gender === 'F' && source.gender === 'M')) {
+    ///         this.debug('incompatible gender');
+    ///         return false;
+    ///     }
+    ///     if (!this.runEvent('Attract', pokemon, source)) {
+    ///         this.debug('Attract event failed');
+    ///         return false;
+    ///     }
+    /// 
+    ///     if (effect.name === 'Cute Charm') {
+    ///         this.add('-start', pokemon, 'Attract', '[from] ability: Cute Charm', `[of] ${source}`);
+    ///     } else if (effect.name === 'Destiny Knot') {
+    ///         this.add('-start', pokemon, 'Attract', '[from] item: Destiny Knot', `[of] ${source}`);
+    ///     } else {
+    ///         this.add('-start', pokemon, 'Attract');
+    ///     }
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onUpdate(pokemon) {
+    ///     if (this.effectState.source && !this.effectState.source.isActive && pokemon.volatiles['attract']) {
+    ///         this.debug(`Removing Attract volatile on ${pokemon}`);
+    ///         pokemon.removeVolatile('attract');
+    ///     }
+    /// }
+    pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onBeforeMove(pokemon, target, move) {
+    ///     this.add('-activate', pokemon, 'move: Attract', '[of] ' + this.effectState.source);
+    ///     if (this.randomChance(1, 2)) {
+    ///         this.add('cant', pokemon, 'Attract');
+    ///         return false;
+    ///     }
+    /// }
+    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onEnd(pokemon) {
+    ///     this.add('-end', pokemon, 'Attract', '[silent]');
+    /// }
+    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

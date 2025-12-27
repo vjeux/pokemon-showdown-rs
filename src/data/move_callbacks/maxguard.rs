@@ -31,5 +31,36 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerRe
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     this.add('-singleturn', target, 'Max Guard');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onTryHit(target, source, move) {
+    ///     const bypassesMaxGuard = [
+    ///         'acupressure', 'afteryou', 'allyswitch', 'aromatherapy', 'aromaticmist', 'coaching', 'confide', 'copycat', 'curse', 'decorate', 'doomdesire', 'feint', 'futuresight', 'gmaxoneblow', 'gmaxrapidflow', 'healbell', 'holdhands', 'howl', 'junglehealing', 'lifedew', 'meanlook', 'perishsong', 'playnice', 'powertrick', 'roar', 'roleplay', 'tearfullook',
+    ///     ];
+    ///     if (bypassesMaxGuard.includes(move.id)) return;
+    ///     if (move.smartTarget) {
+    ///         move.smartTarget = false;
+    ///     } else {
+    ///         this.add('-activate', target, 'move: Max Guard');
+    ///     }
+    ///     const lockedmove = source.getVolatile('lockedmove');
+    ///     if (lockedmove) {
+    ///         // Outrage counter is reset
+    ///         if (source.volatiles['lockedmove'].duration === 2) {
+    ///             delete source.volatiles['lockedmove'];
+    ///         }
+    ///     }
+    ///     return this.NOT_FAIL;
+    /// }
+    pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

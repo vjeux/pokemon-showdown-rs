@@ -31,5 +31,25 @@ pub fn on_try_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onInvulnerability(target, source, move) {
+    ///     if (['gust', 'twister', 'skyuppercut', 'thunder', 'hurricane', 'smackdown', 'thousandarrows'].includes(move.id)) {
+    ///         return;
+    ///     }
+    ///     return false;
+    /// }
+    pub fn on_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onSourceModifyDamage(damage, source, target, move) {
+    ///     if (move.id === 'gust' || move.id === 'twister') {
+    ///         return this.chainModify(2);
+    ///     }
+    /// }
+    pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

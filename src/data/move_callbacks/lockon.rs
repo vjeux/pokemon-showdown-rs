@@ -32,5 +32,20 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onSourceInvulnerability(target, source, move) {
+    ///     if (move && source === this.effectState.target && target === this.effectState.source) return 0;
+    /// }
+    pub fn on_source_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onSourceAccuracy(accuracy, target, source, move) {
+    ///     if (move && source === this.effectState.target && target === this.effectState.source) return true;
+    /// }
+    pub fn on_source_accuracy(battle: &mut Battle, accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

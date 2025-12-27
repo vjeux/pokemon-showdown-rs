@@ -16,5 +16,20 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onFieldStart(target) {
+    ///     this.add('-fieldactivate', 'move: Fairy Lock');
+    /// }
+    pub fn on_field_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onTrapPokemon(pokemon) {
+    ///     pokemon.tryTrap();
+    /// }
+    pub fn on_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

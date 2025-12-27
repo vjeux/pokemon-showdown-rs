@@ -16,5 +16,59 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onSetStatus(status, target, source, effect) {
+    ///     if (!target.isGrounded() || target.isSemiInvulnerable()) return;
+    ///     if (effect && ((effect as Move).status || effect.id === 'yawn')) {
+    ///         this.add('-activate', target, 'move: Misty Terrain');
+    ///     }
+    ///     return false;
+    /// }
+    pub fn on_set_status(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onTryAddVolatile(status, target, source, effect) {
+    ///     if (!target.isGrounded() || target.isSemiInvulnerable()) return;
+    ///     if (status.id === 'confusion') {
+    ///         if (effect.effectType === 'Move' && !effect.secondaries) this.add('-activate', target, 'move: Misty Terrain');
+    ///         return null;
+    ///     }
+    /// }
+    pub fn on_try_add_volatile(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onBasePower(basePower, attacker, defender, move) {
+    ///     if (move.type === 'Dragon' && defender.isGrounded() && !defender.isSemiInvulnerable()) {
+    ///         this.debug('misty terrain weaken');
+    ///         return this.chainModify(0.5);
+    ///     }
+    /// }
+    pub fn on_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFieldStart(field, source, effect) {
+    ///     if (effect?.effectType === 'Ability') {
+    ///         this.add('-fieldstart', 'move: Misty Terrain', '[from] ability: ' + effect.name, `[of] ${source}`);
+    ///     } else {
+    ///         this.add('-fieldstart', 'move: Misty Terrain');
+    ///     }
+    /// }
+    pub fn on_field_start(battle: &mut Battle, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFieldEnd() {
+    ///     this.add('-fieldend', 'Misty Terrain');
+    /// }
+    pub fn on_field_end(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

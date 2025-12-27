@@ -16,5 +16,47 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     if (target.activeTurns && !this.queue.willMove(target)) {
+    ///         this.effectState.duration!++;
+    ///     }
+    ///     this.add('-start', target, 'move: Taunt');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onEnd(target) {
+    ///     this.add('-end', target, 'move: Taunt');
+    /// }
+    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onDisableMove(pokemon) {
+    ///     for (const moveSlot of pokemon.moveSlots) {
+    ///         const move = this.dex.moves.get(moveSlot.id);
+    ///         if (move.category === 'Status' && move.id !== 'mefirst') {
+    ///             pokemon.disableMove(moveSlot.id);
+    ///         }
+    ///     }
+    /// }
+    pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onBeforeMove(attacker, defender, move) {
+    ///     if (!(move.isZ && move.isZOrMaxPowered) && move.category === 'Status' && move.id !== 'mefirst') {
+    ///         this.add('cant', attacker, 'move: Taunt', move);
+    ///         return false;
+    ///     }
+    /// }
+    pub fn on_before_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

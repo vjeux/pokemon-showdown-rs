@@ -23,5 +23,23 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Mo
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon) {
+    ///     this.add('-singleturn', pokemon, 'move: Spotlight');
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFoeRedirectTarget(target, source, source2, move) {
+    ///     if (this.validTarget(this.effectState.target, source, move.target)) {
+    ///         this.debug("Spotlight redirected target of move");
+    ///         return this.effectState.target;
+    ///     }
+    /// }
+    pub fn on_foe_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

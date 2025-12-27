@@ -16,5 +16,42 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon) {
+    ///     let applies = false;
+    ///     if (pokemon.hasType('Flying') || pokemon.hasAbility('levitate')) applies = true;
+    ///     if (pokemon.hasItem('ironball') || pokemon.volatiles['ingrain'] ||
+    ///         this.field.getPseudoWeather('gravity')) applies = false;
+    ///     if (pokemon.removeVolatile('fly') || pokemon.removeVolatile('bounce')) {
+    ///         applies = true;
+    ///         this.queue.cancelMove(pokemon);
+    ///         pokemon.removeVolatile('twoturnmove');
+    ///     }
+    ///     if (pokemon.volatiles['magnetrise']) {
+    ///         applies = true;
+    ///         delete pokemon.volatiles['magnetrise'];
+    ///     }
+    ///     if (pokemon.volatiles['telekinesis']) {
+    ///         applies = true;
+    ///         delete pokemon.volatiles['telekinesis'];
+    ///     }
+    ///     if (!applies) return false;
+    ///     this.add('-start', pokemon, 'Smack Down');
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onRestart(pokemon) {
+    ///     if (pokemon.removeVolatile('fly') || pokemon.removeVolatile('bounce')) {
+    ///         this.queue.cancelMove(pokemon);
+    ///         pokemon.removeVolatile('twoturnmove');
+    ///         this.add('-start', pokemon, 'Smack Down');
+    ///     }
+    /// }
+    pub fn on_restart(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

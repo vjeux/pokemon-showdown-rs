@@ -23,5 +23,28 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     this.add('-start', target, 'move: Leech Seed');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onResidual(pokemon) {
+    ///     const target = this.getAtSlot(pokemon.volatiles['leechseed'].sourceSlot);
+    ///     if (!target || target.fainted || target.hp <= 0) {
+    ///         this.debug('Nothing to leech into');
+    ///         return;
+    ///     }
+    ///     const damage = this.damage(pokemon.baseMaxhp / 8, pokemon, target);
+    ///     if (damage) {
+    ///         this.heal(damage, target, pokemon);
+    ///     }
+    /// }
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

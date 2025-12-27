@@ -29,5 +29,51 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Mo
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     this.add('-start', target, 'Uproar');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onResidual(target) {
+    ///     if (target.volatiles['throatchop']) {
+    ///         target.removeVolatile('uproar');
+    ///         return;
+    ///     }
+    ///     if (target.lastMove && target.lastMove.id === 'struggle') {
+    ///         // don't lock
+    ///         delete target.volatiles['uproar'];
+    ///     }
+    ///     this.add('-start', target, 'Uproar', '[upkeep]');
+    /// }
+    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onEnd(target) {
+    ///     this.add('-end', target, 'Uproar');
+    /// }
+    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onAnySetStatus(status, pokemon) {
+    ///     if (status.id === 'slp') {
+    ///         if (pokemon === this.effectState.target) {
+    ///             this.add('-fail', pokemon, 'slp', '[from] Uproar', '[msg]');
+    ///         } else {
+    ///             this.add('-fail', pokemon, 'slp', '[from] Uproar');
+    ///         }
+    ///         return null;
+    ///     }
+    /// }
+    pub fn on_any_set_status(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

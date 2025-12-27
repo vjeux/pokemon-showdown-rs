@@ -23,5 +23,22 @@ pub fn on_after_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHa
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon) {
+    ///     this.add('-singleturn', pokemon, 'move: Beak Blast');
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onHit(target, source, move) {
+    ///     if (this.checkMoveMakesContact(move, source, target)) {
+    ///         source.trySetStatus('brn', target);
+    ///     }
+    /// }
+    pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

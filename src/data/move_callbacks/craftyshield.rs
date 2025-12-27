@@ -23,5 +23,22 @@ pub fn on_try(battle: &mut Battle) -> MoveHandlerResult {
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onSideStart(target, source) {
+    ///     this.add('-singleturn', source, 'Crafty Shield');
+    /// }
+    pub fn on_side_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onTryHit(target, source, move) {
+    ///     if (['self', 'all'].includes(move.target) || move.category !== 'Status') return;
+    ///     this.add('-activate', target, 'move: Crafty Shield');
+    ///     return this.NOT_FAIL;
+    /// }
+    pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

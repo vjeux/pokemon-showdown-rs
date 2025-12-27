@@ -23,5 +23,27 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHa
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon) {
+    ///     this.add('-singleturn', pokemon, 'move: Rage Powder');
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFoeRedirectTarget(target, source, source2, move) {
+    ///     const ragePowderUser = this.effectState.target;
+    ///     if (ragePowderUser.isSkyDropped()) return;
+    /// 
+    ///     if (source.runStatusImmunity('powder') && this.validTarget(ragePowderUser, source, move.target)) {
+    ///         if (move.smartTarget) move.smartTarget = false;
+    ///         this.debug("Rage Powder redirected target of move");
+    ///         return ragePowderUser;
+    ///     }
+    /// }
+    pub fn on_foe_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

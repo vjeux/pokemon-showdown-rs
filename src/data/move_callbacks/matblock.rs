@@ -27,5 +27,34 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> MoveHa
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onSideStart(target, source) {
+    ///     this.add('-singleturn', source, 'Mat Block');
+    /// }
+    pub fn on_side_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onTryHit(target, source, move) {
+    ///     if (!move.flags['protect']) {
+    ///         if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
+    ///         if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
+    ///         return;
+    ///     }
+    ///     if (move && (move.target === 'self' || move.category === 'Status')) return;
+    ///     this.add('-activate', target, 'move: Mat Block', move.name);
+    ///     const lockedmove = source.getVolatile('lockedmove');
+    ///     if (lockedmove) {
+    ///         // Outrage counter is reset
+    ///         if (source.volatiles['lockedmove'].duration === 2) {
+    ///             delete source.volatiles['lockedmove'];
+    ///         }
+    ///     }
+    ///     return this.NOT_FAIL;
+    /// }
+    pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

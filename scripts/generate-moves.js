@@ -152,8 +152,77 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
         i++;
     }
 
-    // Check for condition block
-    const hasCondition = content.includes('condition: {');
+    // Parse condition block callbacks
+    const conditionCallbacks = [];
+    const conditionMatch = content.match(/condition: \{([\s\S]*?)^\t\t\},?/m);
+    if (conditionMatch) {
+        const conditionContent = conditionMatch[1];
+        const conditionLines = conditionContent.split('\n');
+        let j = 0;
+        const seenConditionCallbacks = new Set();
+
+        while (j < conditionLines.length) {
+            const line = conditionLines[j];
+            const match = line.match(/^\t\t\t(on\w+)(?:Priority|Order|SubOrder)?\s*\((.*)\)\s*\{/);
+            if (match) {
+                const callbackName = match[1];
+                const args = match[2];
+                let body = '';
+                let braceCount = 1;
+                j++;
+
+                while (j < conditionLines.length && braceCount > 0) {
+                    const currentLine = conditionLines[j];
+                    body += currentLine + '\n';
+
+                    for (const char of currentLine) {
+                        if (char === '{') braceCount++;
+                        if (char === '}') braceCount--;
+                    }
+
+                    if (braceCount === 0) {
+                        body = body.replace(/^\t\t\t\},?\s*$/m, '');
+                        break;
+                    }
+                    j++;
+                }
+
+                if (!seenConditionCallbacks.has(callbackName)) {
+                    seenConditionCallbacks.add(callbackName);
+
+                    const bodyLines = body.split('\n').filter(line => line.trim() !== '');
+                    if (bodyLines.length > 0) {
+                        const minIndent = Math.min(...bodyLines.map(line => {
+                            const match = line.match(/^(\s*)/);
+                            return match ? match[1].length : 0;
+                        }));
+
+                        const normalizedBody = body.split('\n')
+                            .map(line => {
+                                if (line.trim() === '') return '';
+                                const unindented = line.slice(minIndent);
+                                return unindented ? '    ' + unindented : '';
+                            })
+                            .join('\n')
+                            .replace(/\s+$/, '');
+
+                        conditionCallbacks.push({
+                            name: callbackName,
+                            args: args,
+                            jsSource: `${callbackName}(${args}) {\n${normalizedBody}\n}`
+                        });
+                    } else {
+                        conditionCallbacks.push({
+                            name: callbackName,
+                            args: args,
+                            jsSource: `${callbackName}(${args}) {}`
+                        });
+                    }
+                }
+            }
+            j++;
+        }
+    }
 
     // Check for secondary effect
     const hasSecondary = content.includes('secondary: {');
@@ -165,7 +234,7 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
         category: categoryMatch ? categoryMatch[1] : 'Unknown',
         type: typeMatch ? typeMatch[1] : 'Unknown',
         callbacks,
-        hasCondition,
+        conditionCallbacks,
         hasSecondary
     });
 }
@@ -173,7 +242,7 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
 console.log(`Found ${moves.length} moves`);
 
 // Filter moves that have callbacks or conditions
-const movesWithCallbacks = moves.filter(m => m.callbacks.length > 0 || m.hasCondition);
+const movesWithCallbacks = moves.filter(m => m.callbacks.length > 0 || m.conditionCallbacks.length > 0);
 console.log(`Found ${movesWithCallbacks.length} moves with callbacks or conditions`);
 
 // Sort moves alphabetically
@@ -217,12 +286,27 @@ pub fn ${rustFuncName}(${params}) -> MoveHandlerResult {
 }
 `;
 }).join('\n')}
-${move.hasCondition ? `
+${move.conditionCallbacks.length > 0 ? `
 // Condition handlers
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+${move.conditionCallbacks.map(callback => {
+    const rustFuncName = camelToSnake(callback.name);
+    const params = generateParameters(callback.name, callback.args);
+    const formattedSource = callback.jsSource
+        .split('\n')
+        .map(line => line.replace(/\t/g, '    '))
+        .map(line => '    /// ' + line)
+        .join('\n');
+
+    return `${formattedSource}
+    pub fn ${rustFuncName}(${params}) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+`;
+}).join('\n')}
 }
 ` : ''}`;
 
@@ -344,7 +428,14 @@ Total: ${moves.length} moves
 Moves with callbacks: ${movesWithCallbacks.length}
 
 ## Moves with Callbacks (alphabetically)
-${movesWithCallbacks.map(m => `- [ ] ${m.id} - ${m.name} (${m.category}, ${m.type}) - ${m.callbacks.length} callback${m.callbacks.length !== 1 ? 's' : ''}: ${m.callbacks.map(cb => cb.name).join(', ')}`).join('\n')}
+${movesWithCallbacks.map(m => {
+    const totalCallbacks = m.callbacks.length + m.conditionCallbacks.length;
+    const allCallbacks = [
+        ...m.callbacks.map(cb => cb.name),
+        ...m.conditionCallbacks.map(cb => `condition::${cb.name}`)
+    ];
+    return `- [ ] ${m.id} - ${m.name} (${m.category}, ${m.type}) - ${totalCallbacks} callback${totalCallbacks !== 1 ? 's' : ''}: ${allCallbacks.join(', ')}`;
+}).join('\n')}
 
 ## Statistics
 
@@ -354,6 +445,10 @@ ${(() => {
     movesWithCallbacks.forEach(m => {
         m.callbacks.forEach(cb => {
             callbackCount[cb.name] = (callbackCount[cb.name] || 0) + 1;
+        });
+        m.conditionCallbacks.forEach(cb => {
+            const key = `condition::${cb.name}`;
+            callbackCount[key] = (callbackCount[key] || 0) + 1;
         });
     });
     return Object.entries(callbackCount)

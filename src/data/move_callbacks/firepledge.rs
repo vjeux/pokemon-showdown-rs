@@ -52,5 +52,28 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onSideStart(targetSide) {
+    ///     this.add('-sidestart', targetSide, 'Fire Pledge');
+    /// }
+    pub fn on_side_start(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onResidual(pokemon) {
+    ///     if (!pokemon.hasType('Fire')) this.damage(pokemon.baseMaxhp / 8, pokemon);
+    /// }
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onSideEnd(targetSide) {
+    ///     this.add('-sideend', targetSide, 'Fire Pledge');
+    /// }
+    pub fn on_side_end(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

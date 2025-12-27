@@ -31,5 +31,23 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerRe
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     this.add('-singleturn', target, 'move: Endure');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onDamage(damage, target, source, effect) {
+    ///     if (effect?.effectType === 'Move' && damage >= target.hp) {
+    ///         this.add('-activate', target, 'move: Endure');
+    ///         return target.hp - 1;
+    ///     }
+    /// }
+    pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

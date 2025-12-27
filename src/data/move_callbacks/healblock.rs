@@ -16,5 +16,83 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon, source) {
+    ///     this.add('-start', pokemon, 'move: Heal Block');
+    ///     source.moveThisTurnResult = true;
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onDisableMove(pokemon) {
+    ///     for (const moveSlot of pokemon.moveSlots) {
+    ///         if (this.dex.moves.get(moveSlot.id).flags['heal']) {
+    ///             pokemon.disableMove(moveSlot.id);
+    ///         }
+    ///     }
+    /// }
+    pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onBeforeMove(pokemon, target, move) {
+    ///     if (move.flags['heal'] && !move.isZ && !move.isMax) {
+    ///         this.add('cant', pokemon, 'move: Heal Block', move);
+    ///         return false;
+    ///     }
+    /// }
+    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onModifyMove(move, pokemon, target) {
+    ///     if (move.flags['heal'] && !move.isZ && !move.isMax) {
+    ///         this.add('cant', pokemon, 'move: Heal Block', move);
+    ///         return false;
+    ///     }
+    /// }
+    pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onEnd(pokemon) {
+    ///     this.add('-end', pokemon, 'move: Heal Block');
+    /// }
+    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onTryHeal(damage, target, source, effect) {
+    ///     if (effect && (effect.id === 'zpower' || (effect as Move).isZ)) return damage;
+    ///     if (source && target !== source && target.hp !== target.maxhp && effect.name === "Pollen Puff") {
+    ///         this.attrLastMove('[still]');
+    ///         // FIXME: Wrong error message, correct one not supported yet
+    ///         this.add('cant', source, 'move: Heal Block', effect);
+    ///         return null;
+    ///     }
+    ///     return false;
+    /// }
+    pub fn on_try_heal(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onRestart(target, source, effect) {
+    ///     if (effect?.name === 'Psychic Noise') return;
+    /// 
+    ///     this.add('-fail', target, 'move: Heal Block'); // Succeeds to suppress downstream messages
+    ///     if (!source.moveThisTurnResult) {
+    ///         source.moveThisTurnResult = false;
+    ///     }
+    /// }
+    pub fn on_restart(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

@@ -27,5 +27,26 @@ pub fn on_try_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHand
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon) {
+    ///     this.add('-singleturn', pokemon, 'move: Shell Trap');
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onHit(pokemon, source, move) {
+    ///     if (!pokemon.isAlly(source) && move.category === 'Physical') {
+    ///         this.effectState.gotHit = true;
+    ///         const action = this.queue.willMove(pokemon);
+    ///         if (action) {
+    ///             this.queue.prioritizeAction(action);
+    ///         }
+    ///     }
+    /// }
+    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

@@ -28,5 +28,53 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_po
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     if (['Diglett', 'Dugtrio', 'Palossand', 'Sandygast'].includes(target.baseSpecies.baseSpecies) ||
+    ///         target.baseSpecies.name === 'Gengar-Mega') {
+    ///         this.add('-immune', target);
+    ///         return null;
+    ///     }
+    ///     if (target.volatiles['smackdown'] || target.volatiles['ingrain']) return false;
+    ///     this.add('-start', target, 'Telekinesis');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onAccuracy(accuracy, target, source, move) {
+    ///     if (move && !move.ohko) return true;
+    /// }
+    pub fn on_accuracy(battle: &mut Battle, accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onImmunity(type) {
+    ///     if (type === 'Ground') return false;
+    /// }
+    pub fn on_immunity(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onUpdate(pokemon) {
+    ///     if (pokemon.baseSpecies.name === 'Gengar-Mega') {
+    ///         delete pokemon.volatiles['telekinesis'];
+    ///         this.add('-end', pokemon, 'Telekinesis', '[silent]');
+    ///     }
+    /// }
+    pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onEnd(target) {
+    ///     this.add('-end', target, 'Telekinesis');
+    /// }
+    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

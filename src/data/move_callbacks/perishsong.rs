@@ -39,5 +39,22 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onEnd(target) {
+    ///     this.add('-start', target, 'perish0');
+    ///     target.faint();
+    /// }
+    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onResidual(pokemon) {
+    ///     const duration = pokemon.volatiles['perishsong'].duration;
+    ///     this.add('-start', pokemon, `perish${duration}`);
+    /// }
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

@@ -44,5 +44,24 @@ pub fn on_after_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, ta
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart() {
+    ///     this.effectState.hitCount = 0;
+    ///     this.effectState.contactHitCount = 0;
+    /// }
+    pub fn on_start(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onResidual(target) {
+    ///     if (target.lastMove && target.lastMove.id === 'struggle') {
+    ///         // don't lock
+    ///         delete target.volatiles['iceball'];
+    ///     }
+    /// }
+    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

@@ -1,44 +1,44 @@
 # Moves Implementation Tracking
 
 Total: 953 moves
-Moves with callbacks: 333
+Moves with callbacks: 332
 
 ## Moves with Callbacks (alphabetically)
 - [ ] acupressure - Acupressure (Status, Normal) - 1 callback: onHit
 - [ ] afteryou - After You (Status, Normal) - 1 callback: onHit
-- [ ] allyswitch - Ally Switch (Status, Psychic) - 2 callbacks: onPrepareHit, onHit
-- [ ] aquaring - Aqua Ring (Status, Water) - 0 callbacks: 
+- [ ] allyswitch - Ally Switch (Status, Psychic) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onRestart
+- [ ] aquaring - Aqua Ring (Status, Water) - 2 callbacks: condition::onStart, condition::onResidual
 - [ ] aromatherapy - Aromatherapy (Status, Grass) - 1 callback: onHit
 - [ ] assist - Assist (Status, Normal) - 1 callback: onHit
-- [ ] attract - Attract (Status, Normal) - 1 callback: onTryImmunity
+- [ ] attract - Attract (Status, Normal) - 5 callbacks: onTryImmunity, condition::onStart, condition::onUpdate, condition::onBeforeMove, condition::onEnd
 - [ ] aurawheel - Aura Wheel (Physical, Electric) - 2 callbacks: onTry, onModifyType
-- [ ] auroraveil - Aurora Veil (Status, Ice) - 1 callback: onTry
+- [ ] auroraveil - Aurora Veil (Status, Ice) - 4 callbacks: onTry, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [ ] autotomize - Autotomize (Status, Steel) - 2 callbacks: onTryHit, onHit
 - [ ] axekick - Axe Kick (Physical, Fighting) - 1 callback: onMoveFail
-- [ ] banefulbunker - Baneful Bunker (Status, Poison) - 2 callbacks: onPrepareHit, onHit
+- [ ] banefulbunker - Baneful Bunker (Status, Poison) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] barbbarrage - Barb Barrage (Physical, Poison) - 1 callback: onBasePower
 - [ ] batonpass - Baton Pass (Status, Normal) - 1 callback: onHit
-- [ ] beakblast - Beak Blast (Physical, Flying) - 1 callback: onAfterMove
+- [ ] beakblast - Beak Blast (Physical, Flying) - 3 callbacks: onAfterMove, condition::onStart, condition::onHit
 - [ ] beatup - Beat Up (Physical, Dark) - 1 callback: onModifyMove
 - [ ] belch - Belch (Special, Poison) - 1 callback: onDisableMove
 - [ ] bellydrum - Belly Drum (Status, Normal) - 1 callback: onHit
 - [ ] bestow - Bestow (Status, Normal) - 1 callback: onHit
-- [ ] bide - Bide (Physical, Normal) - 0 callbacks: 
+- [ ] bide - Bide (Physical, Normal) - 5 callbacks: condition::onStart, condition::onDamage, condition::onBeforeMove, condition::onMoveAborted, condition::onEnd
 - [ ] bleakwindstorm - Bleakwind Storm (Special, Flying) - 1 callback: onModifyMove
 - [ ] blizzard - Blizzard (Special, Ice) - 1 callback: onModifyMove
 - [ ] block - Block (Status, Normal) - 1 callback: onHit
-- [ ] bounce - Bounce (Physical, Flying) - 1 callback: onTryMove
+- [ ] bounce - Bounce (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceBasePower
 - [ ] brickbreak - Brick Break (Physical, Fighting) - 1 callback: onTryHit
 - [ ] brine - Brine (Special, Water) - 1 callback: onBasePower
 - [ ] bugbite - Bug Bite (Physical, Bug) - 1 callback: onHit
-- [ ] burningbulwark - Burning Bulwark (Status, Fire) - 2 callbacks: onPrepareHit, onHit
+- [ ] burningbulwark - Burning Bulwark (Status, Fire) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] burnup - Burn Up (Special, Fire) - 1 callback: onTryMove
 - [ ] camouflage - Camouflage (Status, Normal) - 1 callback: onHit
 - [ ] captivate - Captivate (Status, Normal) - 1 callback: onTryImmunity
 - [ ] ceaselessedge - Ceaseless Edge (Physical, Dark) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [ ] celebrate - Celebrate (Status, Normal) - 1 callback: onTryHit
-- [ ] charge - Charge (Status, Electric) - 0 callbacks: 
-- [ ] chillyreception - Chilly Reception (Status, Ice) - 0 callbacks: 
+- [ ] charge - Charge (Status, Electric) - 6 callbacks: condition::onStart, condition::onRestart, condition::onBasePower, condition::onMoveAborted, condition::onAfterMove, condition::onEnd
+- [ ] chillyreception - Chilly Reception (Status, Ice) - 1 callback: condition::onBeforeMove
 - [ ] clangoroussoul - Clangorous Soul (Status, Dragon) - 3 callbacks: onTry, onTryHit, onHit
 - [ ] clearsmog - Clear Smog (Special, Poison) - 1 callback: onHit
 - [ ] collisioncourse - Collision Course (Physical, Fighting) - 1 callback: onBasePower
@@ -48,192 +48,191 @@ Moves with callbacks: 333
 - [ ] copycat - Copycat (Status, Normal) - 1 callback: onHit
 - [ ] coreenforcer - Core Enforcer (Special, Dragon) - 2 callbacks: onHit, onAfterSubDamage
 - [ ] corrosivegas - Corrosive Gas (Status, Poison) - 1 callback: onHit
-- [ ] counter - Counter (Physical, Fighting) - 1 callback: onTry
+- [ ] counter - Counter (Physical, Fighting) - 4 callbacks: onTry, condition::onStart, condition::onRedirectTarget, condition::onDamagingHit
 - [ ] courtchange - Court Change (Status, Normal) - 1 callback: onHitField
 - [ ] covet - Covet (Physical, Normal) - 1 callback: onAfterHit
-- [ ] craftyshield - Crafty Shield (Status, Fairy) - 1 callback: onTry
-- [ ] curse - Curse (Status, Ghost) - 3 callbacks: onModifyMove, onTryHit, onHit
+- [ ] craftyshield - Crafty Shield (Status, Fairy) - 3 callbacks: onTry, condition::onSideStart, condition::onTryHit
+- [ ] curse - Curse (Status, Ghost) - 5 callbacks: onModifyMove, onTryHit, onHit, condition::onStart, condition::onResidual
 - [ ] darkvoid - Dark Void (Status, Dark) - 1 callback: onTry
-- [ ] defensecurl - Defense Curl (Status, Normal) - 0 callbacks: 
 - [ ] defog - Defog (Status, Flying) - 1 callback: onHit
-- [ ] destinybond - Destiny Bond (Status, Ghost) - 1 callback: onPrepareHit
+- [ ] destinybond - Destiny Bond (Status, Ghost) - 5 callbacks: onPrepareHit, condition::onStart, condition::onFaint, condition::onBeforeMove, condition::onMoveAborted
 - [ ] detect - Detect (Status, Fighting) - 2 callbacks: onPrepareHit, onHit
-- [ ] dig - Dig (Physical, Ground) - 1 callback: onTryMove
-- [ ] disable - Disable (Status, Normal) - 1 callback: onTryHit
-- [ ] dive - Dive (Physical, Water) - 1 callback: onTryMove
+- [ ] dig - Dig (Physical, Ground) - 4 callbacks: onTryMove, condition::onImmunity, condition::onInvulnerability, condition::onSourceModifyDamage
+- [ ] disable - Disable (Status, Normal) - 5 callbacks: onTryHit, condition::onStart, condition::onEnd, condition::onBeforeMove, condition::onDisableMove
+- [ ] dive - Dive (Physical, Water) - 4 callbacks: onTryMove, condition::onImmunity, condition::onInvulnerability, condition::onSourceModifyDamage
 - [ ] doodle - Doodle (Status, Normal) - 1 callback: onHit
 - [ ] doomdesire - Doom Desire (Special, Steel) - 1 callback: onTry
 - [ ] doubleshock - Double Shock (Physical, Electric) - 1 callback: onTryMove
-- [ ] dragoncheer - Dragon Cheer (Status, Dragon) - 0 callbacks: 
+- [ ] dragoncheer - Dragon Cheer (Status, Dragon) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
 - [ ] dreameater - Dream Eater (Special, Psychic) - 1 callback: onTryImmunity
-- [ ] echoedvoice - Echoed Voice (Special, Normal) - 1 callback: onTryMove
-- [ ] electricterrain - Electric Terrain (Status, Electric) - 0 callbacks: 
-- [ ] electrify - Electrify (Status, Electric) - 1 callback: onTryHit
+- [ ] echoedvoice - Echoed Voice (Special, Normal) - 3 callbacks: onTryMove, condition::onFieldStart, condition::onFieldRestart
+- [ ] electricterrain - Electric Terrain (Status, Electric) - 5 callbacks: condition::onSetStatus, condition::onTryAddVolatile, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
+- [ ] electrify - Electrify (Status, Electric) - 3 callbacks: onTryHit, condition::onStart, condition::onModifyType
 - [ ] electrodrift - Electro Drift (Special, Electric) - 1 callback: onBasePower
 - [ ] electroshot - Electro Shot (Special, Electric) - 1 callback: onTryMove
-- [ ] embargo - Embargo (Status, Dark) - 0 callbacks: 
-- [ ] encore - Encore (Status, Normal) - 0 callbacks: 
+- [ ] embargo - Embargo (Status, Dark) - 2 callbacks: condition::onStart, condition::onEnd
+- [ ] encore - Encore (Status, Normal) - 5 callbacks: condition::onStart, condition::onOverrideAction, condition::onResidual, condition::onEnd, condition::onDisableMove
 - [ ] endeavor - Endeavor (Physical, Normal) - 1 callback: onTryImmunity
-- [ ] endure - Endure (Status, Normal) - 2 callbacks: onPrepareHit, onHit
+- [ ] endure - Endure (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onDamage
 - [ ] entrainment - Entrainment (Status, Normal) - 2 callbacks: onTryHit, onHit
 - [ ] expandingforce - Expanding Force (Special, Psychic) - 2 callbacks: onBasePower, onModifyMove
 - [ ] facade - Facade (Physical, Normal) - 1 callback: onBasePower
-- [ ] fairylock - Fairy Lock (Status, Fairy) - 0 callbacks: 
+- [ ] fairylock - Fairy Lock (Status, Fairy) - 2 callbacks: condition::onFieldStart, condition::onTrapPokemon
 - [ ] fakeout - Fake Out (Physical, Normal) - 1 callback: onTry
 - [ ] falseswipe - False Swipe (Physical, Normal) - 1 callback: onDamage
 - [ ] fellstinger - Fell Stinger (Physical, Bug) - 1 callback: onAfterMoveSecondarySelf
 - [ ] ficklebeam - Fickle Beam (Special, Dragon) - 1 callback: onBasePower
 - [ ] filletaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
-- [ ] firepledge - Fire Pledge (Special, Fire) - 2 callbacks: onPrepareHit, onModifyMove
+- [ ] firepledge - Fire Pledge (Special, Fire) - 5 callbacks: onPrepareHit, onModifyMove, condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [ ] firstimpression - First Impression (Physical, Bug) - 1 callback: onTry
 - [ ] flameburst - Flame Burst (Special, Fire) - 2 callbacks: onHit, onAfterSubDamage
-- [ ] fling - Fling (Physical, Dark) - 1 callback: onPrepareHit
+- [ ] fling - Fling (Physical, Dark) - 2 callbacks: onPrepareHit, condition::onUpdate
 - [ ] floralhealing - Floral Healing (Status, Fairy) - 1 callback: onHit
 - [ ] flowershield - Flower Shield (Status, Fairy) - 1 callback: onHitField
-- [ ] fly - Fly (Physical, Flying) - 1 callback: onTryMove
+- [ ] fly - Fly (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceModifyDamage
 - [ ] flyingpress - Flying Press (Physical, Fighting) - 1 callback: onEffectiveness
-- [ ] focusenergy - Focus Energy (Status, Normal) - 0 callbacks: 
-- [ ] focuspunch - Focus Punch (Physical, Fighting) - 0 callbacks: 
-- [ ] followme - Follow Me (Status, Normal) - 1 callback: onTry
-- [ ] foresight - Foresight (Status, Normal) - 1 callback: onTryHit
+- [ ] focusenergy - Focus Energy (Status, Normal) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
+- [ ] focuspunch - Focus Punch (Physical, Fighting) - 3 callbacks: condition::onStart, condition::onHit, condition::onTryAddVolatile
+- [ ] followme - Follow Me (Status, Normal) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
+- [ ] foresight - Foresight (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
 - [ ] forestscurse - Forest's Curse (Status, Grass) - 1 callback: onHit
 - [ ] freezedry - Freeze-Dry (Special, Ice) - 1 callback: onEffectiveness
 - [ ] freezeshock - Freeze Shock (Physical, Ice) - 1 callback: onTryMove
 - [ ] freezyfrost - Freezy Frost (Special, Ice) - 1 callback: onHit
-- [ ] furycutter - Fury Cutter (Physical, Bug) - 0 callbacks: 
+- [ ] furycutter - Fury Cutter (Physical, Bug) - 2 callbacks: condition::onStart, condition::onRestart
 - [ ] fusionbolt - Fusion Bolt (Physical, Electric) - 1 callback: onBasePower
 - [ ] fusionflare - Fusion Flare (Special, Fire) - 1 callback: onBasePower
 - [ ] futuresight - Future Sight (Special, Psychic) - 1 callback: onTry
-- [ ] gastroacid - Gastro Acid (Status, Poison) - 1 callback: onTryHit
+- [ ] gastroacid - Gastro Acid (Status, Poison) - 3 callbacks: onTryHit, condition::onStart, condition::onCopy
 - [ ] gearup - Gear Up (Status, Steel) - 1 callback: onHitSide
 - [ ] geomancy - Geomancy (Status, Fairy) - 1 callback: onTryMove
-- [ ] glaiverush - Glaive Rush (Physical, Dragon) - 0 callbacks: 
-- [ ] gmaxcannonade - G-Max Cannonade (Physical, Water) - 0 callbacks: 
-- [ ] gmaxchistrike - G-Max Chi Strike (Physical, Fighting) - 0 callbacks: 
+- [ ] glaiverush - Glaive Rush (Physical, Dragon) - 4 callbacks: condition::onStart, condition::onAccuracy, condition::onSourceModifyDamage, condition::onBeforeMove
+- [ ] gmaxcannonade - G-Max Cannonade (Physical, Water) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
+- [ ] gmaxchistrike - G-Max Chi Strike (Physical, Fighting) - 3 callbacks: condition::onStart, condition::onRestart, condition::onModifyCritRatio
 - [ ] gmaxsnooze - G-Max Snooze (Physical, Dark) - 2 callbacks: onHit, onAfterSubDamage
-- [ ] gmaxsteelsurge - G-Max Steelsurge (Physical, Steel) - 0 callbacks: 
-- [ ] gmaxvinelash - G-Max Vine Lash (Physical, Grass) - 0 callbacks: 
-- [ ] gmaxvolcalith - G-Max Volcalith (Physical, Rock) - 0 callbacks: 
-- [ ] gmaxwildfire - G-Max Wildfire (Physical, Fire) - 0 callbacks: 
+- [ ] gmaxsteelsurge - G-Max Steelsurge (Physical, Steel) - 2 callbacks: condition::onSideStart, condition::onSwitchIn
+- [ ] gmaxvinelash - G-Max Vine Lash (Physical, Grass) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
+- [ ] gmaxvolcalith - G-Max Volcalith (Physical, Rock) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
+- [ ] gmaxwildfire - G-Max Wildfire (Physical, Fire) - 3 callbacks: condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [ ] grassknot - Grass Knot (Special, Grass) - 1 callback: onTryHit
-- [ ] grasspledge - Grass Pledge (Special, Grass) - 2 callbacks: onPrepareHit, onModifyMove
+- [ ] grasspledge - Grass Pledge (Special, Grass) - 5 callbacks: onPrepareHit, onModifyMove, condition::onSideStart, condition::onSideEnd, condition::onModifySpe
 - [ ] grassyglide - Grassy Glide (Physical, Grass) - 1 callback: onModifyPriority
-- [ ] grassyterrain - Grassy Terrain (Status, Grass) - 0 callbacks: 
+- [ ] grassyterrain - Grassy Terrain (Status, Grass) - 4 callbacks: condition::onBasePower, condition::onFieldStart, condition::onResidual, condition::onFieldEnd
 - [ ] gravapple - Grav Apple (Physical, Grass) - 1 callback: onBasePower
-- [ ] gravity - Gravity (Status, Psychic) - 0 callbacks: 
+- [ ] gravity - Gravity (Status, Psychic) - 6 callbacks: condition::onFieldStart, condition::onModifyAccuracy, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onFieldEnd
 - [ ] growth - Growth (Status, Normal) - 1 callback: onModifyMove
-- [ ] grudge - Grudge (Status, Ghost) - 0 callbacks: 
+- [ ] grudge - Grudge (Status, Ghost) - 3 callbacks: condition::onStart, condition::onFaint, condition::onBeforeMove
 - [ ] guardsplit - Guard Split (Status, Psychic) - 1 callback: onHit
 - [ ] guardswap - Guard Swap (Status, Psychic) - 1 callback: onHit
 - [ ] happyhour - Happy Hour (Status, Normal) - 1 callback: onTryHit
 - [ ] haze - Haze (Status, Ice) - 1 callback: onHitField
 - [ ] healbell - Heal Bell (Status, Normal) - 1 callback: onHit
-- [ ] healblock - Heal Block (Status, Psychic) - 0 callbacks: 
-- [ ] healingwish - Healing Wish (Status, Psychic) - 1 callback: onTryHit
+- [ ] healblock - Heal Block (Status, Psychic) - 7 callbacks: condition::onStart, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onEnd, condition::onTryHeal, condition::onRestart
+- [ ] healingwish - Healing Wish (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
 - [ ] healpulse - Heal Pulse (Status, Psychic) - 1 callback: onHit
 - [ ] heartswap - Heart Swap (Status, Psychic) - 1 callback: onHit
 - [ ] heatcrash - Heat Crash (Physical, Fire) - 1 callback: onTryHit
 - [ ] heavyslam - Heavy Slam (Physical, Steel) - 1 callback: onTryHit
-- [ ] helpinghand - Helping Hand (Status, Normal) - 1 callback: onTryHit
+- [ ] helpinghand - Helping Hand (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onRestart, condition::onBasePower
 - [ ] hiddenpower - Hidden Power (Special, Normal) - 1 callback: onModifyType
 - [ ] highjumpkick - High Jump Kick (Physical, Fighting) - 1 callback: onMoveFail
 - [ ] holdback - Hold Back (Physical, Normal) - 1 callback: onDamage
 - [ ] hurricane - Hurricane (Special, Flying) - 1 callback: onModifyMove
 - [ ] hyperspacefury - Hyperspace Fury (Physical, Dark) - 1 callback: onTry
-- [ ] iceball - Ice Ball (Physical, Ice) - 2 callbacks: onModifyMove, onAfterMove
+- [ ] iceball - Ice Ball (Physical, Ice) - 4 callbacks: onModifyMove, onAfterMove, condition::onStart, condition::onResidual
 - [ ] iceburn - Ice Burn (Special, Ice) - 1 callback: onTryMove
 - [ ] icespinner - Ice Spinner (Physical, Ice) - 2 callbacks: onAfterHit, onAfterSubDamage
-- [ ] imprison - Imprison (Status, Psychic) - 0 callbacks: 
+- [ ] imprison - Imprison (Status, Psychic) - 3 callbacks: condition::onStart, condition::onFoeDisableMove, condition::onFoeBeforeMove
 - [ ] incinerate - Incinerate (Special, Fire) - 1 callback: onHit
-- [ ] ingrain - Ingrain (Status, Grass) - 0 callbacks: 
+- [ ] ingrain - Ingrain (Status, Grass) - 4 callbacks: condition::onStart, condition::onResidual, condition::onTrapPokemon, condition::onDragOut
 - [ ] instruct - Instruct (Status, Psychic) - 1 callback: onHit
-- [ ] iondeluge - Ion Deluge (Status, Electric) - 0 callbacks: 
+- [ ] iondeluge - Ion Deluge (Status, Electric) - 2 callbacks: condition::onFieldStart, condition::onModifyType
 - [ ] ivycudgel - Ivy Cudgel (Physical, Grass) - 2 callbacks: onPrepareHit, onModifyType
 - [ ] jawlock - Jaw Lock (Physical, Dark) - 1 callback: onHit
 - [ ] judgment - Judgment (Special, Normal) - 1 callback: onModifyType
 - [ ] jumpkick - Jump Kick (Physical, Fighting) - 1 callback: onMoveFail
 - [ ] junglehealing - Jungle Healing (Status, Grass) - 1 callback: onHit
-- [ ] kingsshield - King's Shield (Status, Steel) - 2 callbacks: onPrepareHit, onHit
+- [ ] kingsshield - King's Shield (Status, Steel) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] knockoff - Knock Off (Physical, Dark) - 2 callbacks: onBasePower, onAfterHit
-- [ ] laserfocus - Laser Focus (Status, Normal) - 0 callbacks: 
+- [ ] laserfocus - Laser Focus (Status, Normal) - 4 callbacks: condition::onStart, condition::onRestart, condition::onModifyCritRatio, condition::onEnd
 - [ ] lashout - Lash Out (Physical, Dark) - 1 callback: onBasePower
 - [ ] lastresort - Last Resort (Physical, Normal) - 1 callback: onTry
-- [ ] leechseed - Leech Seed (Status, Grass) - 1 callback: onTryImmunity
-- [ ] lightscreen - Light Screen (Status, Psychic) - 0 callbacks: 
+- [ ] leechseed - Leech Seed (Status, Grass) - 3 callbacks: onTryImmunity, condition::onStart, condition::onResidual
+- [ ] lightscreen - Light Screen (Status, Psychic) - 3 callbacks: condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [ ] lightthatburnsthesky - Light That Burns the Sky (Special, Psychic) - 1 callback: onModifyMove
-- [ ] lockon - Lock-On (Status, Normal) - 2 callbacks: onTryHit, onHit
+- [ ] lockon - Lock-On (Status, Normal) - 4 callbacks: onTryHit, onHit, condition::onSourceInvulnerability, condition::onSourceAccuracy
 - [ ] lowkick - Low Kick (Physical, Fighting) - 1 callback: onTryHit
-- [ ] luckychant - Lucky Chant (Status, Normal) - 0 callbacks: 
+- [ ] luckychant - Lucky Chant (Status, Normal) - 2 callbacks: condition::onSideStart, condition::onSideEnd
 - [ ] lunarblessing - Lunar Blessing (Status, Psychic) - 1 callback: onHit
-- [ ] lunardance - Lunar Dance (Status, Psychic) - 1 callback: onTryHit
-- [ ] magiccoat - Magic Coat (Status, Psychic) - 0 callbacks: 
+- [ ] lunardance - Lunar Dance (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
+- [ ] magiccoat - Magic Coat (Status, Psychic) - 3 callbacks: condition::onStart, condition::onTryHit, condition::onAllyTryHitSide
 - [ ] magicpowder - Magic Powder (Status, Psychic) - 1 callback: onHit
-- [ ] magicroom - Magic Room (Status, Psychic) - 0 callbacks: 
+- [ ] magicroom - Magic Room (Status, Psychic) - 3 callbacks: condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
 - [ ] magneticflux - Magnetic Flux (Status, Electric) - 1 callback: onHitSide
-- [ ] magnetrise - Magnet Rise (Status, Electric) - 1 callback: onTry
+- [ ] magnetrise - Magnet Rise (Status, Electric) - 4 callbacks: onTry, condition::onStart, condition::onImmunity, condition::onEnd
 - [ ] magnitude - Magnitude (Physical, Ground) - 2 callbacks: onModifyMove, onUseMoveMessage
-- [ ] matblock - Mat Block (Status, Fighting) - 1 callback: onTry
-- [ ] maxguard - Max Guard (Status, Normal) - 2 callbacks: onPrepareHit, onHit
+- [ ] matblock - Mat Block (Status, Fighting) - 3 callbacks: onTry, condition::onSideStart, condition::onTryHit
+- [ ] maxguard - Max Guard (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit
 - [ ] meanlook - Mean Look (Status, Normal) - 1 callback: onHit
-- [ ] mefirst - Me First (Status, Normal) - 1 callback: onTryHit
+- [ ] mefirst - Me First (Status, Normal) - 2 callbacks: onTryHit, condition::onBasePower
 - [ ] metalburst - Metal Burst (Physical, Steel) - 2 callbacks: onTry, onModifyTarget
 - [ ] meteorbeam - Meteor Beam (Special, Rock) - 1 callback: onTryMove
 - [ ] metronome - Metronome (Status, Normal) - 1 callback: onHit
 - [ ] mimic - Mimic (Status, Normal) - 1 callback: onHit
 - [ ] mindblown - Mind Blown (Special, Fire) - 1 callback: onAfterMove
 - [ ] mindreader - Mind Reader (Status, Normal) - 2 callbacks: onTryHit, onHit
-- [ ] minimize - Minimize (Status, Normal) - 0 callbacks: 
-- [ ] miracleeye - Miracle Eye (Status, Psychic) - 1 callback: onTryHit
-- [ ] mirrorcoat - Mirror Coat (Special, Psychic) - 1 callback: onTry
+- [ ] minimize - Minimize (Status, Normal) - 2 callbacks: condition::onSourceModifyDamage, condition::onAccuracy
+- [ ] miracleeye - Miracle Eye (Status, Psychic) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
+- [ ] mirrorcoat - Mirror Coat (Special, Psychic) - 4 callbacks: onTry, condition::onStart, condition::onRedirectTarget, condition::onDamagingHit
 - [ ] mirrormove - Mirror Move (Status, Flying) - 1 callback: onTryHit
-- [ ] mist - Mist (Status, Ice) - 0 callbacks: 
+- [ ] mist - Mist (Status, Ice) - 3 callbacks: condition::onTryBoost, condition::onSideStart, condition::onSideEnd
 - [ ] mistyexplosion - Misty Explosion (Special, Fairy) - 1 callback: onBasePower
-- [ ] mistyterrain - Misty Terrain (Status, Fairy) - 0 callbacks: 
+- [ ] mistyterrain - Misty Terrain (Status, Fairy) - 5 callbacks: condition::onSetStatus, condition::onTryAddVolatile, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
 - [ ] moonlight - Moonlight (Status, Fairy) - 1 callback: onHit
 - [ ] morningsun - Morning Sun (Status, Normal) - 1 callback: onHit
 - [ ] mortalspin - Mortal Spin (Physical, Poison) - 2 callbacks: onAfterHit, onAfterSubDamage
-- [ ] mudsport - Mud Sport (Status, Ground) - 0 callbacks: 
+- [ ] mudsport - Mud Sport (Status, Ground) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
 - [ ] multiattack - Multi-Attack (Physical, Normal) - 1 callback: onModifyType
 - [ ] naturalgift - Natural Gift (Physical, Normal) - 2 callbacks: onModifyType, onPrepareHit
 - [ ] naturepower - Nature Power (Status, Normal) - 1 callback: onTryHit
-- [ ] nightmare - Nightmare (Status, Ghost) - 0 callbacks: 
-- [ ] noretreat - No Retreat (Status, Fighting) - 1 callback: onTry
-- [ ] obstruct - Obstruct (Status, Dark) - 2 callbacks: onPrepareHit, onHit
-- [ ] octolock - Octolock (Status, Fighting) - 1 callback: onTryImmunity
+- [ ] nightmare - Nightmare (Status, Ghost) - 2 callbacks: condition::onStart, condition::onResidual
+- [ ] noretreat - No Retreat (Status, Fighting) - 3 callbacks: onTry, condition::onStart, condition::onTrapPokemon
+- [ ] obstruct - Obstruct (Status, Dark) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
+- [ ] octolock - Octolock (Status, Fighting) - 4 callbacks: onTryImmunity, condition::onStart, condition::onResidual, condition::onTrapPokemon
 - [ ] odorsleuth - Odor Sleuth (Status, Normal) - 1 callback: onTryHit
 - [ ] orderup - Order Up (Physical, Dragon) - 1 callback: onAfterMoveSecondarySelf
 - [ ] painsplit - Pain Split (Status, Normal) - 1 callback: onHit
 - [ ] partingshot - Parting Shot (Status, Dark) - 1 callback: onHit
-- [ ] perishsong - Perish Song (Status, Normal) - 1 callback: onHitField
+- [ ] perishsong - Perish Song (Status, Normal) - 3 callbacks: onHitField, condition::onEnd, condition::onResidual
 - [ ] phantomforce - Phantom Force (Physical, Ghost) - 1 callback: onTryMove
 - [ ] photongeyser - Photon Geyser (Special, Psychic) - 1 callback: onModifyMove
 - [ ] pluck - Pluck (Physical, Flying) - 1 callback: onHit
 - [ ] polarflare - Polar Flare (Special, Fire) - 2 callbacks: onHit, onAfterMoveSecondarySelf
 - [ ] pollenpuff - Pollen Puff (Special, Bug) - 3 callbacks: onTryHit, onTryMove, onHit
 - [ ] poltergeist - Poltergeist (Physical, Ghost) - 2 callbacks: onTry, onTryHit
-- [ ] powder - Powder (Status, Bug) - 0 callbacks: 
-- [ ] powershift - Power Shift (Status, Normal) - 0 callbacks: 
+- [ ] powder - Powder (Status, Bug) - 2 callbacks: condition::onStart, condition::onTryMove
+- [ ] powershift - Power Shift (Status, Normal) - 4 callbacks: condition::onStart, condition::onCopy, condition::onEnd, condition::onRestart
 - [ ] powersplit - Power Split (Status, Psychic) - 1 callback: onHit
 - [ ] powerswap - Power Swap (Status, Psychic) - 1 callback: onHit
-- [ ] powertrick - Power Trick (Status, Psychic) - 0 callbacks: 
+- [ ] powertrick - Power Trick (Status, Psychic) - 4 callbacks: condition::onStart, condition::onCopy, condition::onEnd, condition::onRestart
 - [ ] present - Present (Physical, Normal) - 1 callback: onModifyMove
-- [ ] protect - Protect (Status, Normal) - 2 callbacks: onPrepareHit, onHit
+- [ ] protect - Protect (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit
 - [ ] psyblade - Psyblade (Physical, Psychic) - 1 callback: onBasePower
 - [ ] psychicfangs - Psychic Fangs (Physical, Psychic) - 1 callback: onTryHit
-- [ ] psychicterrain - Psychic Terrain (Status, Psychic) - 0 callbacks: 
+- [ ] psychicterrain - Psychic Terrain (Status, Psychic) - 4 callbacks: condition::onTryHit, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
 - [ ] psychoshift - Psycho Shift (Status, Psychic) - 1 callback: onTryHit
 - [ ] psychup - Psych Up (Status, Normal) - 1 callback: onHit
 - [ ] purify - Purify (Status, Poison) - 1 callback: onHit
-- [ ] pursuit - Pursuit (Physical, Dark) - 2 callbacks: onModifyMove, onTryHit
+- [ ] pursuit - Pursuit (Physical, Dark) - 3 callbacks: onModifyMove, onTryHit, condition::onBeforeSwitchOut
 - [ ] quash - Quash (Status, Dark) - 1 callback: onHit
-- [ ] quickguard - Quick Guard (Status, Fighting) - 2 callbacks: onTry, onHitSide
-- [ ] rage - Rage (Physical, Normal) - 0 callbacks: 
-- [ ] ragepowder - Rage Powder (Status, Bug) - 1 callback: onTry
+- [ ] quickguard - Quick Guard (Status, Fighting) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
+- [ ] rage - Rage (Physical, Normal) - 3 callbacks: condition::onStart, condition::onHit, condition::onBeforeMove
+- [ ] ragepowder - Rage Powder (Status, Bug) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
 - [ ] ragingbull - Raging Bull (Physical, Normal) - 2 callbacks: onTryHit, onModifyType
 - [ ] rapidspin - Rapid Spin (Physical, Normal) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [ ] razorwind - Razor Wind (Special, Normal) - 1 callback: onTryMove
 - [ ] recycle - Recycle (Status, Normal) - 1 callback: onHit
-- [ ] reflect - Reflect (Status, Psychic) - 0 callbacks: 
+- [ ] reflect - Reflect (Status, Psychic) - 3 callbacks: condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [ ] reflecttype - Reflect Type (Status, Normal) - 1 callback: onHit
 - [ ] refresh - Refresh (Status, Normal) - 1 callback: onHit
 - [ ] relicsong - Relic Song (Special, Normal) - 2 callbacks: onHit, onAfterMoveSecondarySelf
@@ -242,31 +241,31 @@ Moves with callbacks: 333
 - [ ] revelationdance - Revelation Dance (Special, Normal) - 1 callback: onModifyType
 - [ ] revivalblessing - Revival Blessing (Status, Normal) - 1 callback: onTryHit
 - [ ] roleplay - Role Play (Status, Psychic) - 2 callbacks: onTryHit, onHit
-- [ ] rollout - Rollout (Physical, Rock) - 2 callbacks: onModifyMove, onAfterMove
-- [ ] roost - Roost (Status, Flying) - 0 callbacks: 
+- [ ] rollout - Rollout (Physical, Rock) - 4 callbacks: onModifyMove, onAfterMove, condition::onStart, condition::onResidual
+- [ ] roost - Roost (Status, Flying) - 2 callbacks: condition::onStart, condition::onType
 - [ ] rototiller - Rototiller (Status, Ground) - 1 callback: onHitField
 - [ ] round - Round (Special, Normal) - 1 callback: onTry
-- [ ] safeguard - Safeguard (Status, Normal) - 0 callbacks: 
-- [ ] saltcure - Salt Cure (Physical, Rock) - 0 callbacks: 
+- [ ] safeguard - Safeguard (Status, Normal) - 4 callbacks: condition::onSetStatus, condition::onTryAddVolatile, condition::onSideStart, condition::onSideEnd
+- [ ] saltcure - Salt Cure (Physical, Rock) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
 - [ ] sandsearstorm - Sandsear Storm (Special, Ground) - 1 callback: onModifyMove
 - [ ] sappyseed - Sappy Seed (Physical, Grass) - 1 callback: onHit
 - [ ] secretpower - Secret Power (Physical, Normal) - 1 callback: onModifyMove
 - [ ] shadowforce - Shadow Force (Physical, Ghost) - 1 callback: onTryMove
 - [ ] shedtail - Shed Tail (Status, Normal) - 2 callbacks: onTryHit, onHit
 - [ ] shellsidearm - Shell Side Arm (Special, Poison) - 4 callbacks: onPrepareHit, onModifyMove, onHit, onAfterSubDamage
-- [ ] shelltrap - Shell Trap (Special, Fire) - 1 callback: onTryMove
+- [ ] shelltrap - Shell Trap (Special, Fire) - 3 callbacks: onTryMove, condition::onStart, condition::onHit
 - [ ] shoreup - Shore Up (Status, Ground) - 1 callback: onHit
-- [ ] silktrap - Silk Trap (Status, Bug) - 2 callbacks: onPrepareHit, onHit
+- [ ] silktrap - Silk Trap (Status, Bug) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] simplebeam - Simple Beam (Status, Normal) - 2 callbacks: onTryHit, onHit
 - [ ] sketch - Sketch (Status, Normal) - 1 callback: onHit
 - [ ] skillswap - Skill Swap (Status, Psychic) - 2 callbacks: onTryHit, onHit
 - [ ] skullbash - Skull Bash (Physical, Normal) - 1 callback: onTryMove
 - [ ] skyattack - Sky Attack (Physical, Flying) - 1 callback: onTryMove
-- [ ] skydrop - Sky Drop (Physical, Flying) - 5 callbacks: onModifyMove, onMoveFail, onTry, onTryHit, onHit
+- [ ] skydrop - Sky Drop (Physical, Flying) - 12 callbacks: onModifyMove, onMoveFail, onTry, onTryHit, onHit, condition::onAnyDragOut, condition::onFoeTrapPokemon, condition::onFoeBeforeMove, condition::onRedirectTarget, condition::onAnyInvulnerability, condition::onAnyBasePower, condition::onFaint
 - [ ] sleeptalk - Sleep Talk (Status, Normal) - 2 callbacks: onTry, onHit
-- [ ] smackdown - Smack Down (Physical, Rock) - 0 callbacks: 
+- [ ] smackdown - Smack Down (Physical, Rock) - 2 callbacks: condition::onStart, condition::onRestart
 - [ ] smellingsalts - Smelling Salts (Physical, Normal) - 1 callback: onHit
-- [ ] snatch - Snatch (Status, Dark) - 0 callbacks: 
+- [ ] snatch - Snatch (Status, Dark) - 2 callbacks: condition::onStart, condition::onAnyPrepareHit
 - [ ] snore - Snore (Special, Normal) - 1 callback: onTry
 - [ ] soak - Soak (Status, Water) - 1 callback: onHit
 - [ ] solarbeam - Solar Beam (Special, Grass) - 2 callbacks: onTryMove, onBasePower
@@ -274,37 +273,37 @@ Moves with callbacks: 333
 - [ ] sparklingaria - Sparkling Aria (Special, Water) - 1 callback: onAfterMove
 - [ ] speedswap - Speed Swap (Status, Psychic) - 1 callback: onHit
 - [ ] spiderweb - Spider Web (Status, Bug) - 1 callback: onHit
-- [ ] spikes - Spikes (Status, Ground) - 0 callbacks: 
-- [ ] spikyshield - Spiky Shield (Status, Grass) - 2 callbacks: onPrepareHit, onHit
+- [ ] spikes - Spikes (Status, Ground) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
+- [ ] spikyshield - Spiky Shield (Status, Grass) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] spite - Spite (Status, Ghost) - 1 callback: onHit
 - [ ] spitup - Spit Up (Special, Normal) - 2 callbacks: onTry, onAfterMove
 - [ ] splash - Splash (Status, Normal) - 2 callbacks: onTry, onTryHit
 - [ ] splinteredstormshards - Splintered Stormshards (Physical, Rock) - 2 callbacks: onHit, onAfterSubDamage
-- [ ] spotlight - Spotlight (Status, Normal) - 1 callback: onTryHit
-- [ ] stealthrock - Stealth Rock (Status, Rock) - 0 callbacks: 
+- [ ] spotlight - Spotlight (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onFoeRedirectTarget
+- [ ] stealthrock - Stealth Rock (Status, Rock) - 2 callbacks: condition::onSideStart, condition::onSwitchIn
 - [ ] steelbeam - Steel Beam (Special, Steel) - 1 callback: onAfterMove
 - [ ] steelroller - Steel Roller (Physical, Steel) - 3 callbacks: onTry, onHit, onAfterSubDamage
-- [ ] stickyweb - Sticky Web (Status, Bug) - 0 callbacks: 
-- [ ] stockpile - Stockpile (Status, Normal) - 1 callback: onTry
+- [ ] stickyweb - Sticky Web (Status, Bug) - 2 callbacks: condition::onSideStart, condition::onSwitchIn
+- [ ] stockpile - Stockpile (Status, Normal) - 4 callbacks: onTry, condition::onStart, condition::onRestart, condition::onEnd
 - [ ] stoneaxe - Stone Axe (Physical, Rock) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [ ] strengthsap - Strength Sap (Status, Grass) - 1 callback: onHit
 - [ ] struggle - Struggle (Physical, Normal) - 1 callback: onModifyMove
 - [ ] stuffcheeks - Stuff Cheeks (Status, Normal) - 3 callbacks: onDisableMove, onTry, onHit
-- [ ] substitute - Substitute (Status, Normal) - 2 callbacks: onTryHit, onHit
+- [ ] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit, onHit, condition::onStart, condition::onTryPrimaryHit, condition::onEnd
 - [ ] suckerpunch - Sucker Punch (Physical, Dark) - 1 callback: onTry
 - [ ] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail
 - [ ] swallow - Swallow (Status, Normal) - 2 callbacks: onTry, onHit
 - [ ] switcheroo - Switcheroo (Status, Dark) - 2 callbacks: onTryImmunity, onHit
 - [ ] synchronoise - Synchronoise (Special, Psychic) - 1 callback: onTryImmunity
 - [ ] synthesis - Synthesis (Status, Grass) - 1 callback: onHit
-- [ ] syrupbomb - Syrup Bomb (Special, Grass) - 0 callbacks: 
-- [ ] tailwind - Tailwind (Status, Flying) - 0 callbacks: 
+- [ ] syrupbomb - Syrup Bomb (Special, Grass) - 4 callbacks: condition::onStart, condition::onUpdate, condition::onResidual, condition::onEnd
+- [ ] tailwind - Tailwind (Status, Flying) - 3 callbacks: condition::onSideStart, condition::onModifySpe, condition::onSideEnd
 - [ ] takeheart - Take Heart (Status, Psychic) - 1 callback: onHit
-- [ ] tarshot - Tar Shot (Status, Rock) - 0 callbacks: 
-- [ ] taunt - Taunt (Status, Dark) - 0 callbacks: 
+- [ ] tarshot - Tar Shot (Status, Rock) - 2 callbacks: condition::onStart, condition::onEffectiveness
+- [ ] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove, condition::onBeforeMove
 - [ ] teatime - Teatime (Status, Normal) - 1 callback: onHitField
 - [ ] technoblast - Techno Blast (Special, Normal) - 1 callback: onModifyType
-- [ ] telekinesis - Telekinesis (Status, Psychic) - 1 callback: onTry
+- [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry, condition::onStart, condition::onAccuracy, condition::onImmunity, condition::onUpdate, condition::onEnd
 - [ ] teleport - Teleport (Status, Psychic) - 1 callback: onTry
 - [ ] terablast - Tera Blast (Special, Normal) - 3 callbacks: onPrepareHit, onModifyType, onModifyMove
 - [ ] terastarstorm - Tera Starstorm (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
@@ -312,54 +311,116 @@ Moves with callbacks: 333
 - [ ] thief - Thief (Physical, Dark) - 1 callback: onAfterHit
 - [ ] thousandarrows - Thousand Arrows (Physical, Ground) - 1 callback: onEffectiveness
 - [ ] thousandwaves - Thousand Waves (Physical, Ground) - 1 callback: onHit
-- [ ] throatchop - Throat Chop (Physical, Dark) - 0 callbacks: 
+- [ ] throatchop - Throat Chop (Physical, Dark) - 5 callbacks: condition::onStart, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onEnd
 - [ ] thunder - Thunder (Special, Electric) - 1 callback: onModifyMove
 - [ ] thunderclap - Thunderclap (Special, Electric) - 1 callback: onTry
 - [ ] tidyup - Tidy Up (Status, Normal) - 1 callback: onHit
 - [ ] topsyturvy - Topsy-Turvy (Status, Dark) - 1 callback: onHit
-- [ ] torment - Torment (Status, Dark) - 0 callbacks: 
-- [ ] toxicspikes - Toxic Spikes (Status, Poison) - 0 callbacks: 
+- [ ] torment - Torment (Status, Dark) - 3 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove
+- [ ] toxicspikes - Toxic Spikes (Status, Poison) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
 - [ ] transform - Transform (Status, Normal) - 1 callback: onHit
 - [ ] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity, onHit
 - [ ] trickortreat - Trick-or-Treat (Status, Ghost) - 1 callback: onHit
-- [ ] trickroom - Trick Room (Status, Psychic) - 0 callbacks: 
+- [ ] trickroom - Trick Room (Status, Psychic) - 3 callbacks: condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
 - [ ] upperhand - Upper Hand (Physical, Fighting) - 1 callback: onTry
-- [ ] uproar - Uproar (Special, Normal) - 1 callback: onTryHit
+- [ ] uproar - Uproar (Special, Normal) - 5 callbacks: onTryHit, condition::onStart, condition::onResidual, condition::onEnd, condition::onAnySetStatus
 - [ ] venomdrench - Venom Drench (Status, Poison) - 1 callback: onHit
 - [ ] venoshock - Venoshock (Special, Poison) - 1 callback: onBasePower
 - [ ] wakeupslap - Wake-Up Slap (Physical, Fighting) - 1 callback: onHit
-- [ ] waterpledge - Water Pledge (Special, Water) - 2 callbacks: onPrepareHit, onModifyMove
-- [ ] watersport - Water Sport (Status, Water) - 0 callbacks: 
+- [ ] waterpledge - Water Pledge (Special, Water) - 5 callbacks: onPrepareHit, onModifyMove, condition::onSideStart, condition::onSideEnd, condition::onModifyMove
+- [ ] watersport - Water Sport (Status, Water) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
 - [ ] weatherball - Weather Ball (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
-- [ ] wideguard - Wide Guard (Status, Rock) - 2 callbacks: onTry, onHitSide
+- [ ] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
 - [ ] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
-- [ ] wish - Wish (Status, Normal) - 0 callbacks: 
-- [ ] wonderroom - Wonder Room (Status, Psychic) - 0 callbacks: 
+- [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
+- [ ] wonderroom - Wonder Room (Status, Psychic) - 4 callbacks: condition::onModifyMove, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
 - [ ] worryseed - Worry Seed (Status, Grass) - 3 callbacks: onTryImmunity, onTryHit, onHit
-- [ ] yawn - Yawn (Status, Normal) - 1 callback: onTryHit
+- [ ] yawn - Yawn (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onEnd
 
 ## Statistics
 
 By callback type:
 - onHit: 105 moves
+- condition::onStart: 69 moves
 - onTryHit: 44 moves
 - onTry: 40 moves
 - onModifyMove: 28 moves
+- condition::onEnd: 23 moves
+- condition::onSideStart: 23 moves
 - onTryMove: 21 moves
 - onPrepareHit: 20 moves
+- condition::onResidual: 20 moves
 - onBasePower: 18 moves
+- condition::onSideEnd: 14 moves
+- condition::onTryHit: 14 moves
 - onModifyType: 13 moves
+- condition::onFieldStart: 13 moves
+- condition::onBeforeMove: 12 moves
+- condition::onRestart: 11 moves
 - onAfterSubDamage: 11 moves
 - onTryImmunity: 10 moves
+- condition::onHit: 10 moves
+- condition::onFieldEnd: 10 moves
+- condition::onBasePower: 9 moves
 - onAfterHit: 8 moves
 - onAfterMove: 7 moves
+- condition::onDisableMove: 7 moves
+- condition::onSwitchIn: 7 moves
 - onHitField: 6 moves
 - onMoveFail: 5 moves
+- condition::onSourceModifyDamage: 5 moves
+- condition::onModifyMove: 5 moves
+- condition::onUpdate: 4 moves
+- condition::onInvulnerability: 4 moves
+- condition::onImmunity: 4 moves
+- condition::onModifyCritRatio: 4 moves
+- condition::onFieldRestart: 4 moves
+- condition::onTryAddVolatile: 4 moves
+- condition::onTrapPokemon: 4 moves
 - onAfterMoveSecondarySelf: 4 moves
 - onHitSide: 4 moves
+- condition::onAnyModifyDamage: 3 moves
+- condition::onMoveAborted: 3 moves
+- condition::onRedirectTarget: 3 moves
+- condition::onFaint: 3 moves
+- condition::onSetStatus: 3 moves
 - onEffectiveness: 3 moves
+- condition::onFoeRedirectTarget: 3 moves
+- condition::onCopy: 3 moves
+- condition::onAccuracy: 3 moves
 - onDisableMove: 2 moves
+- condition::onDamage: 2 moves
 - onModifyTarget: 2 moves
+- condition::onDamagingHit: 2 moves
+- condition::onModifyType: 2 moves
 - onDamage: 2 moves
+- condition::onNegateImmunity: 2 moves
+- condition::onModifyBoost: 2 moves
+- condition::onModifySpe: 2 moves
+- condition::onSwap: 2 moves
+- condition::onFoeBeforeMove: 2 moves
+- condition::onSideRestart: 2 moves
+- condition::onSourceBasePower: 1 moves
+- condition::onAfterMove: 1 moves
+- condition::onOverrideAction: 1 moves
 - onModifyPriority: 1 moves
+- condition::onModifyAccuracy: 1 moves
+- condition::onTryHeal: 1 moves
+- condition::onFoeDisableMove: 1 moves
+- condition::onDragOut: 1 moves
+- condition::onSourceInvulnerability: 1 moves
+- condition::onSourceAccuracy: 1 moves
+- condition::onAllyTryHitSide: 1 moves
 - onUseMoveMessage: 1 moves
+- condition::onTryBoost: 1 moves
+- condition::onTryMove: 1 moves
+- condition::onBeforeSwitchOut: 1 moves
+- condition::onType: 1 moves
+- condition::onAnyDragOut: 1 moves
+- condition::onFoeTrapPokemon: 1 moves
+- condition::onAnyInvulnerability: 1 moves
+- condition::onAnyBasePower: 1 moves
+- condition::onAnyPrepareHit: 1 moves
+- condition::onTryPrimaryHit: 1 moves
+- condition::onEffectiveness: 1 moves
+- condition::onAnySetStatus: 1 moves

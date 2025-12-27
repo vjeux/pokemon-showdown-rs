@@ -26,5 +26,20 @@ pub fn on_try(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_po
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon) {
+    ///     this.add('-start', pokemon, 'move: No Retreat');
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onTrapPokemon(pokemon) {
+    ///     pokemon.tryTrap();
+    /// }
+    pub fn on_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

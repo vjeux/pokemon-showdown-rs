@@ -20,10 +20,3 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> Mo
     MoveHandlerResult::Undefined
 }
 
-
-// Condition handlers
-pub mod condition {
-    use super::*;
-
-    // TODO: Implement condition handlers
-}

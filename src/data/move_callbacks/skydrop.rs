@@ -83,5 +83,87 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onAnyDragOut(pokemon) {
+    ///     if (pokemon === this.effectState.target || pokemon === this.effectState.source) return false;
+    /// }
+    pub fn on_any_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFoeTrapPokemon(defender) {
+    ///     if (defender !== this.effectState.source) return;
+    ///     defender.trapped = true;
+    /// }
+    pub fn on_foe_trap_pokemon(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFoeBeforeMove(attacker, defender, move) {
+    ///     if (attacker === this.effectState.source) {
+    ///         attacker.activeMoveActions--;
+    ///         this.debug('Sky drop nullifying.');
+    ///         return null;
+    ///     }
+    /// }
+    pub fn on_foe_before_move(battle: &mut Battle, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onRedirectTarget(target, source, source2) {
+    ///     if (source !== this.effectState.target) return;
+    ///     if (this.effectState.source.fainted) return;
+    ///     return this.effectState.source;
+    /// }
+    pub fn on_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onAnyInvulnerability(target, source, move) {
+    ///     if (target !== this.effectState.target && target !== this.effectState.source) {
+    ///         return;
+    ///     }
+    ///     if (source === this.effectState.target && target === this.effectState.source) {
+    ///         return;
+    ///     }
+    ///     if (['gust', 'twister', 'skyuppercut', 'thunder', 'hurricane', 'smackdown', 'thousandarrows'].includes(move.id)) {
+    ///         return;
+    ///     }
+    ///     return false;
+    /// }
+    pub fn on_any_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onAnyBasePower(basePower, target, source, move) {
+    ///     if (target !== this.effectState.target && target !== this.effectState.source) {
+    ///         return;
+    ///     }
+    ///     if (source === this.effectState.target && target === this.effectState.source) {
+    ///         return;
+    ///     }
+    ///     if (move.id === 'gust' || move.id === 'twister') {
+    ///         this.debug('BP doubled on midair target');
+    ///         return this.chainModify(2);
+    ///     }
+    /// }
+    pub fn on_any_base_power(battle: &mut Battle, base_power: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onFaint(target) {
+    ///     if (target.volatiles['skydrop'] && target.volatiles['twoturnmove'].source) {
+    ///         this.add('-end', target.volatiles['twoturnmove'].source, 'Sky Drop', '[interrupt]');
+    ///     }
+    /// }
+    pub fn on_faint(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

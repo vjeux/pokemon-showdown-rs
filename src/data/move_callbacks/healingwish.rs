@@ -27,5 +27,25 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> Mo
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onSwitchIn(target) {
+    ///     this.singleEvent('Swap', this.effect, this.effectState, target);
+    /// }
+    pub fn on_switch_in(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onSwap(target) {
+    ///     if (!target.fainted && (target.hp < target.maxhp || target.status)) {
+    ///         target.heal(target.maxhp);
+    ///         target.clearStatus();
+    ///         this.add('-heal', target, target.getHealth, '[from] move: Healing Wish');
+    ///         target.side.removeSlotCondition(target, 'healingwish');
+    ///     }
+    /// }
+    pub fn on_swap(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

@@ -31,5 +31,40 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, pokem
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onBeforeSwitchOut(pokemon) {
+    ///     this.debug('Pursuit start');
+    ///     let alreadyAdded = false;
+    ///     pokemon.removeVolatile('destinybond');
+    ///     for (const source of this.effectState.sources) {
+    ///         if (!source.isAdjacent(pokemon) || !this.queue.cancelMove(source) || !source.hp) continue;
+    ///         if (!alreadyAdded) {
+    ///             this.add('-activate', pokemon, 'move: Pursuit');
+    ///             alreadyAdded = true;
+    ///         }
+    ///         // Run through each action in queue to check if the Pursuit user is supposed to Mega Evolve this turn.
+    ///         // If it is, then Mega Evolve before moving.
+    ///         if (source.canMegaEvo || source.canUltraBurst || source.canTerastallize) {
+    ///             for (const [actionIndex, action] of this.queue.entries()) {
+    ///                 if (action.pokemon === source) {
+    ///                     if (action.choice === 'megaEvo') {
+    ///                         this.actions.runMegaEvo(source);
+    ///                     } else if (action.choice === 'terastallize') {
+    ///                         // Also a "forme" change that happens before moves, though only possible in NatDex
+    ///                         this.actions.terastallize(source);
+    ///                     } else {
+    ///                         continue;
+    ///                     }
+    ///                     this.queue.list.splice(actionIndex, 1);
+    ///                     break;
+    ///                 }
+    ///             }
+    ///         }
+    ///         this.actions.runMove('pursuit', source, source.getLocOf(pokemon));
+    ///     }
+    /// }
+    pub fn on_before_switch_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

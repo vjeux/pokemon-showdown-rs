@@ -16,5 +16,54 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(target) {
+    ///     this.add('-start', target, 'Throat Chop', '[silent]');
+    /// }
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onDisableMove(pokemon) {
+    ///     for (const moveSlot of pokemon.moveSlots) {
+    ///         if (this.dex.moves.get(moveSlot.id).flags['sound']) {
+    ///             pokemon.disableMove(moveSlot.id);
+    ///         }
+    ///     }
+    /// }
+    pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onBeforeMove(pokemon, target, move) {
+    ///     if (!move.isZOrMaxPowered && move.flags['sound']) {
+    ///         this.add('cant', pokemon, 'move: Throat Chop');
+    ///         return false;
+    ///     }
+    /// }
+    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onModifyMove(move, pokemon, target) {
+    ///     if (!move.isZOrMaxPowered && move.flags['sound']) {
+    ///         this.add('cant', pokemon, 'move: Throat Chop');
+    ///         return false;
+    ///     }
+    /// }
+    pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onEnd(target) {
+    ///     this.add('-end', target, 'Throat Chop', '[silent]');
+    /// }
+    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

@@ -46,5 +46,32 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerRe
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart() {
+    ///     this.effectState.counter = 3;
+    /// }
+    pub fn on_start(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onRestart(pokemon) {
+    ///     // this.effectState.counter should never be undefined here.
+    ///     // However, just in case, use 1 if it is undefined.
+    ///     const counter = this.effectState.counter || 1;
+    ///     this.debug(`Ally Switch success chance: ${Math.round(100 / counter)}%`);
+    ///     const success = this.randomChance(1, counter);
+    ///     if (!success) {
+    ///         delete pokemon.volatiles['allyswitch'];
+    ///         return false;
+    ///     }
+    ///     if (this.effectState.counter < (this.effect as Condition).counterMax!) {
+    ///         this.effectState.counter *= 3;
+    ///     }
+    ///     this.effectState.duration = 2;
+    /// }
+    pub fn on_restart(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

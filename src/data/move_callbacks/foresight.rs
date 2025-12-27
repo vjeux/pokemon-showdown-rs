@@ -23,5 +23,30 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Mo
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart(pokemon) {
+    ///     this.add('-start', pokemon, 'Foresight');
+    /// }
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onNegateImmunity(pokemon, type) {
+    ///     if (pokemon.hasType('Ghost') && ['Normal', 'Fighting'].includes(type)) return false;
+    /// }
+    pub fn on_negate_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onModifyBoost(boosts) {
+    ///     if (boosts.evasion && boosts.evasion > 0) {
+    ///         boosts.evasion = 0;
+    ///     }
+    /// }
+    pub fn on_modify_boost(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }

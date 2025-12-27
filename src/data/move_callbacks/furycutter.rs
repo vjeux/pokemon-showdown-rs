@@ -16,5 +16,23 @@ use super::{MoveHandlerResult, Status, Effect};
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onStart() {
+    ///     this.effectState.multiplier = 1;
+    /// }
+    pub fn on_start(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
+    /// onRestart() {
+    ///     if (this.effectState.multiplier < 4) {
+    ///         this.effectState.multiplier <<= 1;
+    ///     }
+    ///     this.effectState.duration = 2;
+    /// }
+    pub fn on_restart(battle: &mut Battle) -> MoveHandlerResult {
+        // TODO: Implement 1-to-1 from JS
+        MoveHandlerResult::Undefined
+    }
+
 }
