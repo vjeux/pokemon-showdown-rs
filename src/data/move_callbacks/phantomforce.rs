@@ -19,7 +19,61 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    let attacker = source_pos;
+    let defender = target_pos;
+
+    // if (attacker.removeVolatile(move.id)) {
+    let move_id = {
+        let active_move = match &battle.active_move {
+            Some(m) => m.id.clone(),
+            None => return EventResult::Continue,
+        };
+        active_move
+    };
+
+    let removed = {
+        let attacker_pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        attacker_pokemon.remove_volatile(&move_id)
+    };
+
+    if removed {
+        // return;
+        return EventResult::Continue;
+    }
+
+    // this.add('-prepare', attacker, move.name);
+    let (attacker_arg, move_name) = {
+        let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let attacker_arg = crate::battle::Arg::from(attacker_pokemon);
+
+        let move_data = battle.dex.get_move_by_id(&move_id);
+        let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| move_id.to_string());
+
+        (attacker_arg, move_name)
+    };
+
+    battle.add("-prepare", &[attacker_arg, move_name.into()]);
+
+    // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+    let charge_result = battle.run_event("ChargeMove", attacker, defender, Some(&move_id));
+
+    if matches!(charge_result, EventResult::Bool(false)) {
+        // return;
+        return EventResult::Continue;
+    }
+
+    // attacker.addVolatile('twoturnmove', defender);
+    battle.add_volatile(&ID::from("twoturnmove"), attacker, defender, None);
+
+    // return null;
+    EventResult::Null
 }
 
