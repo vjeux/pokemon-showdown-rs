@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onAfterHit(target, source) {
-/// if (source.hp) {
-///     this.field.clearTerrain();
-/// }
+///     if (source.hp) {
+///         this.field.clearTerrain();
+///     }
 /// }
 pub fn on_after_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -21,9 +21,9 @@ pub fn on_after_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHand
 }
 
 /// onAfterSubDamage(damage, target, source) {
-/// if (source.hp) {
-///     this.field.clearTerrain();
-/// }
+///     if (source.hp) {
+///         this.field.clearTerrain();
+///     }
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

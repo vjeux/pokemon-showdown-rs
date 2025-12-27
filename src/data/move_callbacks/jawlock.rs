@@ -11,8 +11,8 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onHit(target, source, move) {
-/// source.addVolatile('trapped', target, move, 'trapper');
-/// target.addVolatile('trapped', source, move, 'trapper');
+///     source.addVolatile('trapped', target, move, 'trapper');
+///     target.addVolatile('trapped', source, move, 'trapper');
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

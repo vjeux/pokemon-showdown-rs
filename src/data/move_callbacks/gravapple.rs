@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onBasePower(basePower) {
-/// if (this.field.getPseudoWeather('gravity')) {
-///     return this.chainModify(1.5);
-/// }
+///     if (this.field.getPseudoWeather('gravity')) {
+///         return this.chainModify(1.5);
+///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

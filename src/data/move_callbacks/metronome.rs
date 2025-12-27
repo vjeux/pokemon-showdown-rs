@@ -11,17 +11,17 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onHit(pokemon) {
-/// const moves = this.dex.moves.all().filter(move => (
-///     (!move.isNonstandard || move.isNonstandard === 'Unobtainable') &&
-///     move.flags['metronome']
-/// ));
-/// let randomMove = '';
-/// if (moves.length) {
-///     moves.sort((a, b) => a.num - b.num);
-///     randomMove = this.sample(moves).id;
-/// }
-/// if (!randomMove) return false;
-/// this.actions.useMove(randomMove, pokemon);
+///     const moves = this.dex.moves.all().filter(move => (
+///         (!move.isNonstandard || move.isNonstandard === 'Unobtainable') &&
+///         move.flags['metronome']
+///     ));
+///     let randomMove = '';
+///     if (moves.length) {
+///         moves.sort((a, b) => a.num - b.num);
+///         randomMove = this.sample(moves).id;
+///     }
+///     if (!randomMove) return false;
+///     this.actions.useMove(randomMove, pokemon);
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

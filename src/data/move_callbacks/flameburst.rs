@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onHit(target, source, move) {
-/// for (const ally of target.adjacentAllies()) {
-///     this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
-/// }
+///     for (const ally of target.adjacentAllies()) {
+///         this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
+///     }
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -21,9 +21,9 @@ pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerRes
 }
 
 /// onAfterSubDamage(damage, target, source, move) {
-/// for (const ally of target.adjacentAllies()) {
-///     this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
-/// }
+///     for (const ally of target.adjacentAllies()) {
+///         this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
+///     }
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

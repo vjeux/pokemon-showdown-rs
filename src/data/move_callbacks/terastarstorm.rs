@@ -11,12 +11,12 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onModifyType(move, pokemon) {
-/// if (pokemon.species.name === 'Terapagos-Stellar') {
-///     move.type = 'Stellar';
-///     if (pokemon.terastallized && pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) {
-///         move.category = 'Physical';
+///     if (pokemon.species.name === 'Terapagos-Stellar') {
+///         move.type = 'Stellar';
+///         if (pokemon.terastallized && pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) {
+///             move.category = 'Physical';
+///         }
 ///     }
-/// }
 /// }
 pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -24,9 +24,9 @@ pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 }
 
 /// onModifyMove(move, pokemon) {
-/// if (pokemon.species.name === 'Terapagos-Stellar') {
-///     move.target = 'allAdjacentFoes';
-/// }
+///     if (pokemon.species.name === 'Terapagos-Stellar') {
+///         move.target = 'allAdjacentFoes';
+///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

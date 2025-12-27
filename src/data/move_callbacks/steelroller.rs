@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onTry() {
-/// return !this.field.isTerrain('');
+///     return !this.field.isTerrain('');
 /// }
 pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -19,7 +19,7 @@ pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerRes
 }
 
 /// onHit() {
-/// this.field.clearTerrain();
+///     this.field.clearTerrain();
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -27,7 +27,7 @@ pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerRes
 }
 
 /// onAfterSubDamage() {
-/// this.field.clearTerrain();
+///     this.field.clearTerrain();
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

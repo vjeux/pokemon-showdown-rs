@@ -11,10 +11,10 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onHit(pokemon, source) {
-/// const item = pokemon.getItem();
-/// if ((item.isBerry || item.isGem) && pokemon.takeItem(source)) {
-///     this.add('-enditem', pokemon, item.name, '[from] move: Incinerate');
-/// }
+///     const item = pokemon.getItem();
+///     if ((item.isBerry || item.isGem) && pokemon.takeItem(source)) {
+///         this.add('-enditem', pokemon, item.name, '[from] move: Incinerate');
+///     }
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onHit(target) {
-/// if (target.status === 'slp') target.cureStatus();
+///     if (target.status === 'slp') target.cureStatus();
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onModifyPriority(priority, source, target, move) {
-/// if (this.field.isTerrain('grassyterrain') && source.isGrounded()) {
-///     return priority + 1;
-/// }
+///     if (this.field.isTerrain('grassyterrain') && source.isGrounded()) {
+///         return priority + 1;
+///     }
 /// }
 pub fn on_modify_priority(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

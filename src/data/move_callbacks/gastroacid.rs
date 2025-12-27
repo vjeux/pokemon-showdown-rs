@@ -11,13 +11,13 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onTryHit(target) {
-/// if (target.getAbility().flags['cantsuppress']) {
-///     return false;
-/// }
-/// if (target.hasItem('Ability Shield')) {
-///     this.add('-block', target, 'item: Ability Shield');
-///     return null;
-/// }
+///     if (target.getAbility().flags['cantsuppress']) {
+///         return false;
+///     }
+///     if (target.hasItem('Ability Shield')) {
+///         this.add('-block', target, 'item: Ability Shield');
+///         return null;
+///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

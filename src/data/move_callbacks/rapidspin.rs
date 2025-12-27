@@ -11,20 +11,20 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onAfterHit(target, pokemon, move) {
-/// if (!move.hasSheerForce) {
-///     if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
-///         this.add('-end', pokemon, 'Leech Seed', '[from] move: Rapid Spin', `[of] ${pokemon}`);
-///     }
-///     const sideConditions = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
-///     for (const condition of sideConditions) {
-///         if (pokemon.hp && pokemon.side.removeSideCondition(condition)) {
-///             this.add('-sideend', pokemon.side, this.dex.conditions.get(condition).name, '[from] move: Rapid Spin', `[of] ${pokemon}`);
+///     if (!move.hasSheerForce) {
+///         if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
+///             this.add('-end', pokemon, 'Leech Seed', '[from] move: Rapid Spin', `[of] ${pokemon}`);
+///         }
+///         const sideConditions = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
+///         for (const condition of sideConditions) {
+///             if (pokemon.hp && pokemon.side.removeSideCondition(condition)) {
+///                 this.add('-sideend', pokemon.side, this.dex.conditions.get(condition).name, '[from] move: Rapid Spin', `[of] ${pokemon}`);
+///             }
+///         }
+///         if (pokemon.hp && pokemon.volatiles['partiallytrapped']) {
+///             pokemon.removeVolatile('partiallytrapped');
 ///         }
 ///     }
-///     if (pokemon.hp && pokemon.volatiles['partiallytrapped']) {
-///         pokemon.removeVolatile('partiallytrapped');
-///     }
-/// }
 /// }
 pub fn on_after_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -32,20 +32,20 @@ pub fn on_after_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHand
 }
 
 /// onAfterSubDamage(damage, target, pokemon, move) {
-/// if (!move.hasSheerForce) {
-///     if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
-///         this.add('-end', pokemon, 'Leech Seed', '[from] move: Rapid Spin', `[of] ${pokemon}`);
-///     }
-///     const sideConditions = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
-///     for (const condition of sideConditions) {
-///         if (pokemon.hp && pokemon.side.removeSideCondition(condition)) {
-///             this.add('-sideend', pokemon.side, this.dex.conditions.get(condition).name, '[from] move: Rapid Spin', `[of] ${pokemon}`);
+///     if (!move.hasSheerForce) {
+///         if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
+///             this.add('-end', pokemon, 'Leech Seed', '[from] move: Rapid Spin', `[of] ${pokemon}`);
+///         }
+///         const sideConditions = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
+///         for (const condition of sideConditions) {
+///             if (pokemon.hp && pokemon.side.removeSideCondition(condition)) {
+///                 this.add('-sideend', pokemon.side, this.dex.conditions.get(condition).name, '[from] move: Rapid Spin', `[of] ${pokemon}`);
+///             }
+///         }
+///         if (pokemon.hp && pokemon.volatiles['partiallytrapped']) {
+///             pokemon.removeVolatile('partiallytrapped');
 ///         }
 ///     }
-///     if (pokemon.hp && pokemon.volatiles['partiallytrapped']) {
-///         pokemon.removeVolatile('partiallytrapped');
-///     }
-/// }
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

@@ -11,13 +11,13 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onTry(source) {
-/// if (source.species.baseSpecies === 'Morpeko') {
-///     return;
-/// }
-/// this.attrLastMove('[still]');
-/// this.add('-fail', source, 'move: Aura Wheel');
-/// this.hint("Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.");
-/// return null;
+///     if (source.species.baseSpecies === 'Morpeko') {
+///         return;
+///     }
+///     this.attrLastMove('[still]');
+///     this.add('-fail', source, 'move: Aura Wheel');
+///     this.hint("Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.");
+///     return null;
 /// }
 pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -25,11 +25,11 @@ pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerRes
 }
 
 /// onModifyType(move, pokemon) {
-/// if (pokemon.species.name === 'Morpeko-Hangry') {
-///     move.type = 'Dark';
-/// } else {
-///     move.type = 'Electric';
-/// }
+///     if (pokemon.species.name === 'Morpeko-Hangry') {
+///         move.type = 'Dark';
+///     } else {
+///         move.type = 'Electric';
+///     }
 /// }
 pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

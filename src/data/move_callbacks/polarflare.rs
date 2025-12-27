@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onHit(target, pokemon, move) {
-/// if (pokemon.baseSpecies.baseSpecies === 'Ramnarok' && !pokemon.transformed) {
-///     move.willChangeForme = true;
-/// }
+///     if (pokemon.baseSpecies.baseSpecies === 'Ramnarok' && !pokemon.transformed) {
+///         move.willChangeForme = true;
+///     }
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -21,10 +21,10 @@ pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerRes
 }
 
 /// onAfterMoveSecondarySelf(pokemon, target, move) {
-/// if (move.willChangeForme) {
-///     const forme = pokemon.species.id === 'ramnarokradiant' ? '' : '-Radiant';
-///     pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
-/// }
+///     if (move.willChangeForme) {
+///         const forme = pokemon.species.id === 'ramnarokradiant' ? '' : '-Radiant';
+///         pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
+///     }
 /// }
 pub fn on_after_move_secondary_self(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

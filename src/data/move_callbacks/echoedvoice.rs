@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onTryMove() {
-/// this.field.addPseudoWeather('echoedvoice');
+///     this.field.addPseudoWeather('echoedvoice');
 /// }
 pub fn on_try_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

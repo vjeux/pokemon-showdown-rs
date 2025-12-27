@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onPrepareHit(pokemon) {
-/// return !pokemon.removeVolatile('destinybond');
+///     return !pokemon.removeVolatile('destinybond');
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

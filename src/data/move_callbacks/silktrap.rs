@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onPrepareHit(pokemon) {
-/// return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
+///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -19,7 +19,7 @@ pub fn on_prepare_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 }
 
 /// onHit(pokemon) {
-/// pokemon.addVolatile('stall');
+///     pokemon.addVolatile('stall');
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

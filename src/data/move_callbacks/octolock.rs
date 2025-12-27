@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onTryImmunity(target) {
-/// return this.dex.getImmunity('trapped', target);
+///     return this.dex.getImmunity('trapped', target);
 /// }
 pub fn on_try_immunity(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

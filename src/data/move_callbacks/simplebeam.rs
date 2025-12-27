@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onTryHit(target) {
-/// if (target.getAbility().flags['cantsuppress'] || target.ability === 'simple' || target.ability === 'truant') {
-///     return false;
-/// }
+///     if (target.getAbility().flags['cantsuppress'] || target.ability === 'simple' || target.ability === 'truant') {
+///         return false;
+///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -21,8 +21,8 @@ pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandle
 }
 
 /// onHit(target, source) {
-/// const oldAbility = target.setAbility('simple');
-/// if (!oldAbility) return oldAbility as false | null;
+///     const oldAbility = target.setAbility('simple');
+///     if (!oldAbility) return oldAbility as false | null;
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

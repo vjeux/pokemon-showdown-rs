@@ -11,19 +11,19 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onPrepareHit(target, source, move) {
-/// for (const action of this.queue.list as MoveAction[]) {
-///     if (
-///         !action.move || !action.pokemon?.isActive ||
-///         action.pokemon.fainted || action.maxMove || action.zmove
-///     ) {
-///         continue;
+///     for (const action of this.queue.list as MoveAction[]) {
+///         if (
+///             !action.move || !action.pokemon?.isActive ||
+///             action.pokemon.fainted || action.maxMove || action.zmove
+///         ) {
+///             continue;
+///         }
+///         if (action.pokemon.isAlly(source) && ['waterpledge', 'firepledge'].includes(action.move.id)) {
+///             this.queue.prioritizeAction(action, move);
+///             this.add('-waiting', source, action.pokemon);
+///             return null;
+///         }
 ///     }
-///     if (action.pokemon.isAlly(source) && ['waterpledge', 'firepledge'].includes(action.move.id)) {
-///         this.queue.prioritizeAction(action, move);
-///         this.add('-waiting', source, action.pokemon);
-///         return null;
-///     }
-/// }
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -31,16 +31,16 @@ pub fn on_prepare_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 }
 
 /// onModifyMove(move) {
-/// if (move.sourceEffect === 'waterpledge') {
-///     move.type = 'Grass';
-///     move.forceSTAB = true;
-///     move.sideCondition = 'grasspledge';
-/// }
-/// if (move.sourceEffect === 'firepledge') {
-///     move.type = 'Fire';
-///     move.forceSTAB = true;
-///     move.sideCondition = 'firepledge';
-/// }
+///     if (move.sourceEffect === 'waterpledge') {
+///         move.type = 'Grass';
+///         move.forceSTAB = true;
+///         move.sideCondition = 'grasspledge';
+///     }
+///     if (move.sourceEffect === 'firepledge') {
+///         move.type = 'Fire';
+///         move.forceSTAB = true;
+///         move.sideCondition = 'firepledge';
+///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

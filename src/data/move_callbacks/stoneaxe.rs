@@ -11,11 +11,11 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onAfterHit(target, source, move) {
-/// if (!move.hasSheerForce && source.hp) {
-///     for (const side of source.side.foeSidesWithConditions()) {
-///         side.addSideCondition('stealthrock');
+///     if (!move.hasSheerForce && source.hp) {
+///         for (const side of source.side.foeSidesWithConditions()) {
+///             side.addSideCondition('stealthrock');
+///         }
 ///     }
-/// }
 /// }
 pub fn on_after_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -23,11 +23,11 @@ pub fn on_after_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHand
 }
 
 /// onAfterSubDamage(damage, target, source, move) {
-/// if (!move.hasSheerForce && source.hp) {
-///     for (const side of source.side.foeSidesWithConditions()) {
-///         side.addSideCondition('stealthrock');
+///     if (!move.hasSheerForce && source.hp) {
+///         for (const side of source.side.foeSidesWithConditions()) {
+///             side.addSideCondition('stealthrock');
+///         }
 ///     }
-/// }
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

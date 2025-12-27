@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onEffectiveness(typeMod, target, type, move) {
-/// return typeMod + this.dex.getEffectiveness('Flying', type);
+///     return typeMod + this.dex.getEffectiveness('Flying', type);
 /// }
 pub fn on_effectiveness(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

@@ -95,14 +95,15 @@ while ((match = moveRegex.exec(movesContent)) !== null) {
                         return match ? match[1].length : 0;
                     }));
 
-                    // Remove the common indentation
+                    // Remove the common indentation and add one level (4 spaces)
                     const normalizedBody = body.split('\n')
                         .map(line => {
                             if (line.trim() === '') return '';
-                            return line.slice(minIndent);
+                            const unindented = line.slice(minIndent);
+                            return unindented ? '    ' + unindented : '';
                         })
                         .join('\n')
-                        .trim();
+                        .replace(/\s+$/, ''); // Only trim trailing whitespace, not leading
 
                     callbacks.push({
                         name: callbackName,

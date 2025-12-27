@@ -11,12 +11,12 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onHit(target, source) {
-/// const item = target.takeItem(source);
-/// if (item) {
-///     this.add('-enditem', target, item.name, '[from] move: Corrosive Gas', `[of] ${source}`);
-/// } else {
-///     this.add('-fail', target, 'move: Corrosive Gas');
-/// }
+///     const item = target.takeItem(source);
+///     if (item) {
+///         this.add('-enditem', target, item.name, '[from] move: Corrosive Gas', `[of] ${source}`);
+///     } else {
+///         this.add('-fail', target, 'move: Corrosive Gas');
+///     }
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

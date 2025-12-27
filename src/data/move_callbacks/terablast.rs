@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onPrepareHit(target, source, move) {
-/// if (source.terastallized) {
-///     this.attrLastMove('[anim] Tera Blast ' + source.teraType);
-/// }
+///     if (source.terastallized) {
+///         this.attrLastMove('[anim] Tera Blast ' + source.teraType);
+///     }
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -21,9 +21,9 @@ pub fn on_prepare_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 }
 
 /// onModifyType(move, pokemon, target) {
-/// if (pokemon.terastallized) {
-///     move.type = pokemon.teraType;
-/// }
+///     if (pokemon.terastallized) {
+///         move.type = pokemon.teraType;
+///     }
 /// }
 pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -31,12 +31,12 @@ pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 }
 
 /// onModifyMove(move, pokemon) {
-/// if (pokemon.terastallized && pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) {
-///     move.category = 'Physical';
-/// }
-/// if (pokemon.terastallized === 'Stellar') {
-///     move.self = { boosts: { atk: -1, spa: -1 } };
-/// }
+///     if (pokemon.terastallized && pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) {
+///         move.category = 'Physical';
+///     }
+///     if (pokemon.terastallized === 'Stellar') {
+///         move.self = { boosts: { atk: -1, spa: -1 } };
+///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

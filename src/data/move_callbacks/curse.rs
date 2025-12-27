@@ -11,11 +11,11 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onModifyMove(move, source, target) {
-/// if (!source.hasType('Ghost')) {
-///     move.target = move.nonGhostTarget!;
-/// } else if (source.isAlly(target)) {
-///     move.target = 'randomNormal';
-/// }
+///     if (!source.hasType('Ghost')) {
+///         move.target = move.nonGhostTarget!;
+///     } else if (source.isAlly(target)) {
+///         move.target = 'randomNormal';
+///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -23,13 +23,13 @@ pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 }
 
 /// onTryHit(target, source, move) {
-/// if (!source.hasType('Ghost')) {
-///     delete move.volatileStatus;
-///     delete move.onHit;
-///     move.self = { boosts: { spe: -1, atk: 1, def: 1 } };
-/// } else if (move.volatileStatus && target.volatiles['curse']) {
-///     return false;
-/// }
+///     if (!source.hasType('Ghost')) {
+///         delete move.volatileStatus;
+///         delete move.onHit;
+///         move.self = { boosts: { spe: -1, atk: 1, def: 1 } };
+///     } else if (move.volatileStatus && target.volatiles['curse']) {
+///         return false;
+///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -37,7 +37,7 @@ pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandle
 }
 
 /// onHit(target, source) {
-/// this.directDamage(source.maxhp / 2, source, source);
+///     this.directDamage(source.maxhp / 2, source, source);
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

@@ -11,11 +11,11 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onModifyType(move, pokemon) {
-/// const types = pokemon.getTypes();
-/// let type = types[0];
-/// if (type === 'Bird') type = '???';
-/// if (type === '???' && types[1]) type = types[1];
-/// move.type = type;
+///     const types = pokemon.getTypes();
+///     let type = types[0];
+///     if (type === 'Bird') type = '???';
+///     if (type === '???' && types[1]) type = types[1];
+///     move.type = type;
 /// }
 pub fn on_modify_type(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

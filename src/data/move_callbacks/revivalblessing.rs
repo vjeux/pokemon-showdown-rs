@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onTryHit(source) {
-/// if (!source.side.pokemon.filter(ally => ally.fainted).length) {
-///     return false;
-/// }
+///     if (!source.side.pokemon.filter(ally => ally.fainted).length) {
+///         return false;
+///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

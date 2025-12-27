@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onHit(target) {
-/// const type = this.dex.moves.get(target.moveSlots[0].id).type;
-/// if (target.hasType(type) || !target.setType(type)) return false;
-/// this.add('-start', target, 'typechange', type);
+///     const type = this.dex.moves.get(target.moveSlots[0].id).type;
+///     if (target.hasType(type) || !target.setType(type)) return false;
+///     this.add('-start', target, 'typechange', type);
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onModifyMove(move, source, target) {
-/// if (target?.beingCalledBack || target?.switchFlag) move.accuracy = true;
+///     if (target?.beingCalledBack || target?.switchFlag) move.accuracy = true;
 /// }
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
@@ -19,7 +19,7 @@ pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHa
 }
 
 /// onTryHit(target, pokemon) {
-/// target.side.removeSideCondition('pursuit');
+///     target.side.removeSideCondition('pursuit');
 /// }
 pub fn on_try_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

@@ -11,9 +11,9 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onBasePower(basePower, pokemon) {
-/// if (pokemon.status && pokemon.status !== 'slp') {
-///     return this.chainModify(2);
-/// }
+///     if (pokemon.status && pokemon.status !== 'slp') {
+///         return this.chainModify(2);
+///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

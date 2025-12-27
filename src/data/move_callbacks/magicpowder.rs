@@ -11,8 +11,8 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onHit(target) {
-/// if (target.getTypes().join() === 'Psychic' || !target.setType('Psychic')) return false;
-/// this.add('-start', target, 'typechange', 'Psychic');
+///     if (target.getTypes().join() === 'Psychic' || !target.setType('Psychic')) return false;
+///     this.add('-start', target, 'typechange', 'Psychic');
 /// }
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

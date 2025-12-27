@@ -11,10 +11,10 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onTry(source, target, move) {
-/// if (source.volatiles['noretreat']) return false;
-/// if (source.volatiles['trapped']) {
-///     delete move.volatileStatus;
-/// }
+///     if (source.volatiles['noretreat']) return false;
+///     if (source.volatiles['trapped']) {
+///         delete move.volatileStatus;
+///     }
 /// }
 pub fn on_try(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS

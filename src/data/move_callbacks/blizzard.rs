@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 use super::{MoveHandlerResult, Status, Effect};
 
 /// onModifyMove(move) {
-/// if (this.field.isWeather(['hail', 'snowscape'])) move.accuracy = true;
+///     if (this.field.isWeather(['hail', 'snowscape'])) move.accuracy = true;
 /// }
 pub fn on_modify_move(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
     // TODO: Implement 1-to-1 from JS
