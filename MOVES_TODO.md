@@ -309,7 +309,7 @@ Moves with callbacks: 373
 - [x] spitup - Spit Up (Special, Normal) - 3 callbacks: basePowerCallback, onTry, onAfterMove
 - [x] splash - Splash (Status, Normal) - 2 callbacks: onTry, onTryHit
 - [x] splinteredstormshards - Splintered Stormshards (Physical, Rock) - 2 callbacks: onHit, onAfterSubDamage
-- [ ] spotlight - Spotlight (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onFoeRedirectTarget
+- [x] spotlight - Spotlight (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onFoeRedirectTarget
 - [ ] stealthrock - Stealth Rock (Status, Rock) - 2 callbacks: condition::onSideStart, condition::onSwitchIn
 - [ ] steelbeam - Steel Beam (Special, Steel) - 1 callback: onAfterMove
 - [ ] steelroller - Steel Roller (Physical, Steel) - 3 callbacks: onTry, onHit, onAfterSubDamage
