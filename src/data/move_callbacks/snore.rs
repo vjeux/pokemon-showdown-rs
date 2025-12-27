@@ -11,7 +11,13 @@ use crate::event::EventResult;
 ///     return source.status === 'slp' || source.hasAbility('comatose');
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Only works if user is asleep (or has comatose ability)
+    // TODO: Add hasAbility('comatose') check when ability system is ready
+    EventResult::Bool(source.status.as_str() == "slp")
 }
 
