@@ -385,6 +385,7 @@ pub struct Battle {
 
 impl Battle {
     /// Create a new battle
+    /// Equivalent to TypeScript Battle constructor (battle.ts:191)
     pub fn new(options: BattleOptions) -> Self {
         let seed = options.seed.clone().unwrap_or_else(PRNG::generate_seed);
         let prng = PRNG::new(Some(seed.clone()));
@@ -837,6 +838,8 @@ impl Battle {
     }
 
     /// Start the first turn (after team preview)
+    /// Equivalent to TypeScript runAction() case 'start' (battle.ts:2629-2700)
+    /// Note: In TS this is part of runAction switch statement, extracted to separate method in Rust
     pub fn start_battle(&mut self) {
         self.add_log("start", &[]);
         self.turn = 1;
@@ -3568,6 +3571,8 @@ impl Battle {
     // 		}
     // 	}
     //
+    /// Update speed for all active Pokemon
+    /// Equivalent to TypeScript updateSpeed() (battle.ts:387-391)
     pub fn update_speed(&mut self) {
         // Collect indices first to avoid borrow checker issues
         let indices: Vec<(usize, usize)> = self.get_all_active(false)
