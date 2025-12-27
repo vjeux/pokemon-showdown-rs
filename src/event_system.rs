@@ -15,6 +15,7 @@
 use crate::dex_data::ID;
 
 /// Event handler result - what a handler can return
+/// Equivalent to TypeScript return types from event handlers
 #[derive(Debug)]
 pub enum EventResult {
     /// Handler returned undefined - continue with current relayVar
@@ -27,6 +28,18 @@ pub enum EventResult {
     Int(i32),
     /// Handler returned false/null - stop processing
     Stop,
+    /// Handler returned NOT_FAIL constant
+    /// Equivalent to TypeScript: readonly NOT_FAIL = '' as const;
+    /// Indicates the move/action didn't fail (passed failure checks)
+    /// but doesn't necessarily mean it succeeded
+    NotFail,
+}
+
+impl EventResult {
+    /// NOT_FAIL constant - indicates action didn't fail
+    /// Equivalent to Battle.NOT_FAIL in TypeScript
+    /// TypeScript source: readonly NOT_FAIL = '' as const;
+    pub const NOT_FAIL: EventResult = EventResult::NotFail;
 }
 
 /// Effect types - matches JavaScript effectType
