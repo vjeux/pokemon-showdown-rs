@@ -171,6 +171,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.lastMove`: copycat - Battle's last move used (different from pokemon.lastMove)
 - `move.flags['failcopycat']`: copycat - Copycat-blocked flag
 - `move.flags['failmimic']`: mimic - Mimic-blocked flag
+- `move.flags['nosketch']`: sketch - Sketch-blocked flag
 - `move.flags['nosleeptalk']`: sleeptalk - Sleep Talk-blocked flag
 - `move.flags['noassist']`: assist - Assist-blocked flag
 - `move.basePower` read access: copycat, sleeptalk - Read base power value
@@ -257,6 +258,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.volatiles[name].duration`: perishsong - Access duration field of volatile
 - `pokemon.faint()`: perishsong - Faint the pokemon
 - `pokemon.tryTrap()`: noretreat, octolock - Try to trap the pokemon (prevents switching)
+- `pokemon.trapped`: skydrop - Trapped mutable boolean field (prevents switching)
 - `battle.dex.getImmunity(effect, target)`: octolock - Check if target has immunity to an effect (e.g., 'trapped')
 - `pokemon.beingCalledBack`: pursuit - Boolean flag for being called back
 - `pokemon.switchFlag`: pursuit - Boolean flag for switching out
