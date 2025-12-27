@@ -109,6 +109,14 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.toID(string)`: skillswap - Convert string to ID
 - `battle.effect`: skillswap - Current effect
 - `pokemon.hasItem(name)`: gastroacid - Check if pokemon has specific item
+- `battle.effectState.layers`: spikes, toxicspikes - Effect state layers count (mutable)
+- `pokemon.side`: toxicspikes, stickyweb - Pokemon's side
+- `pokemon.side.removeSideCondition(name)`: toxicspikes - Remove side condition
+- `pokemon.side.foe`: toxicspikes, stickyweb - Foe side
+- `pokemon.side.foe.active[0]`: toxicspikes, stickyweb - Active pokemon on foe side
+- `pokemon.trySetStatus(status, source)`: toxicspikes - Try to set status condition
+- `pokemon.runEffectiveness(move)`: stealthrock - Calculate type effectiveness
+- `battle.dex.getActiveMove(name)`: stealthrock, stickyweb - Get active move data
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
