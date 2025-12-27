@@ -114,7 +114,7 @@ Moves with callbacks: 373
 - [ ] furycutter - Fury Cutter (Physical, Bug) - 3 callbacks: basePowerCallback, condition::onStart, condition::onRestart
 - [x] fusionbolt - Fusion Bolt (Physical, Electric) - 1 callback: onBasePower
 - [x] fusionflare - Fusion Flare (Special, Fire) - 1 callback: onBasePower
-- [ ] futuresight - Future Sight (Special, Psychic) - 1 callback: onTry
+- [x] futuresight - Future Sight (Special, Psychic) - 1 callback: onTry
 - [ ] gastroacid - Gastro Acid (Status, Poison) - 3 callbacks: onTryHit, condition::onStart, condition::onCopy
 - [ ] gearup - Gear Up (Status, Steel) - 1 callback: onHitSide
 - [ ] geomancy - Geomancy (Status, Fairy) - 1 callback: onTryMove
