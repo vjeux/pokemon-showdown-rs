@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 58/79 TODOs (73.4%)
+**Feature Implementation:** ⚠️ 59/79 TODOs (74.7%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -547,11 +547,24 @@
 
 **Enables:** Correct self-targeting validation, prevents invalid self-targeting, supports two-turn moves and rollout mechanics
 
+#### isAlly() Integration in get_target (1/1) ✅
+- [x] **Replace simplified ally check with is_ally()** (battle.rs:8697-8703) - Use proper ally detection for multi-battle support
+
+**Implementation Details:**
+- Replaced `target_side == user_side` with proper `is_ally(target, user)` call
+- Properly checks both same side AND ally side (multi battles)
+- Matches JavaScript: `target.isAlly(pokemon)`
+- For fainted ally targets:
+  - Returns user (self) if move target is 'adjacentAllyOrSelf' and not Gen 5
+  - Otherwise returns target (fainted ally: attack shouldn't retarget)
+
+**Enables:** Correct ally detection in multi-battle formats (doubles, triples, multi), proper fainted ally targeting
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (21 TODOs)
+## Remaining P2 Nice-to-have (20 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks

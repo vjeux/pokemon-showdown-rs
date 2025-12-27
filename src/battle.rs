@@ -8694,12 +8694,11 @@ impl Battle {
                             // JS:     if (move.target === 'adjacentAllyOrSelf' && this.gen !== 5) return pokemon;
                             // JS:     return target;
                             // JS: }
-                            // TODO: isAlly check (requires helper method)
-                            // For now, assume fainted ally returns target
-                            if target_side == user_side {
+                            if self.is_ally(target, user) {
                                 if target_type == "AdjacentAllyOrSelf" && self.gen != 5 {
                                     return Some(user);
                                 }
+                                // Target is a fainted ally: attack shouldn't retarget
                                 return Some(target);
                             }
                         }
