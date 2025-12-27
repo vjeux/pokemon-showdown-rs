@@ -55,6 +55,26 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.addedType`: reflecttype - Added type field (mutable)
 - `pokemon.knownType`: reflecttype - Known type field (mutable)
 - `pokemon.isAlly(other)`: reflecttype - Check if pokemon is ally
+- `battle.canSwitch(side)`: batonpass, teleport - Check if side can switch pokemon
+- `pokemon.volatiles[name]` access: batonpass, substitute, protect - Access specific volatile condition
+- `move.selfSwitch` deletion: partingshot - Delete move properties (requires mutable move access)
+- `battle.effectState`: substitute - Effect state object with hp field
+- `battle.actions.getDamage(source, target, move)`: substitute - Get move damage
+- `pokemon.lastDamage`: substitute - Last damage dealt (mutable)
+- `battle.actions.calcRecoilDamage(damage, move, source)`: substitute - Calculate recoil damage
+- `move.flags[name]`: substitute, protect - Move flags (bypasssub, protect, etc.)
+- `move.infiltrates`: substitute - Move infiltrates flag
+- `move.ohko`: substitute - OHKO flag
+- `move.recoil`: substitute - Recoil data
+- `move.drain`: substitute - Drain data (array [numerator, denominator])
+- `battle.runEvent(name, ...)`: substitute, protect, detect - Run event on all listeners
+- `EventResult::HIT_SUBSTITUTE`: substitute - Constant for substitute hit
+- `battle.queue.willAct()`: protect, detect - Check if queue will act
+- `pokemon.getVolatile(name)`: protect - Get volatile condition
+- `move.isZ`: protect - Z-move flag
+- `move.isMax`: protect - Max move flag
+- `pokemon.getMoveHitData(move)`: protect - Get move hit data with zBrokeProtect field
+- `move.smartTarget`: protect - Smart target flag (mutable)
 - `pokemon.side.totalFainted`: lastrespects - Track fainted pokemon count on a side
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
