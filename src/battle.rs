@@ -8929,8 +8929,8 @@ impl Battle {
 
                     if should_faint {
                         self.debug(&format!("instafaint"));
-                        // TODO: Call self.faint_messages(true) when implemented
-                        // self.faint_messages(true);
+                        // JS: this.faintMessages(true);
+                        self.faint_messages(true, false, true);
 
                         // Gen 1-2 special handling
                         if self.gen <= 2 {

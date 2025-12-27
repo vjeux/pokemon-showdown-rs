@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 46/79 TODOs (58.2%)
+**Feature Implementation:** ⚠️ 47/79 TODOs (59.5%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -353,11 +353,22 @@
 - Healing replacement on switch (Z-Parting Shot, Z-Memento, etc.)
 - Full status Z-Move effect support
 
+#### Instafaint Handling (1/1) ✅
+- [x] **faintMessages call in spread_damage** (battle.rs:8933) - Process faint queue immediately for instafaint damage
+
+**Implementation Details:**
+- Calls faint_messages(true, false, true) when Pokemon faints from instafaint damage
+- Matches JavaScript: `this.faintMessages(true);` which uses defaults (lastFirst=true, forceCheck=false, checkWin=true)
+- Ensures faints are processed immediately before continuing with damage spread
+- Critical for proper turn order in simultaneous faint scenarios
+
+**Enables:** Correct instafaint behavior for spread damage, proper faint queue processing
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (33 TODOs)
+## Remaining P2 Nice-to-have (32 TODOs)
 
 ### Gen-Specific (5 TODOs)
 - Multi battle side conditions
