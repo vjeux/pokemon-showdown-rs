@@ -3073,58 +3073,81 @@ impl Battle {
     }
 
     /// Apply secondary effects from a move (data-driven)
+    /// Apply secondary move effects
+    /// Equivalent to battle-actions.ts runMoveEffects() (battle-actions.ts:1201-1331)
+    ///
+    /// This applies move effects in a data-driven way based on move definitions.
+    /// All move-specific logic should be in move callbacks, not hardcoded here.
     fn apply_move_secondary(&mut self, attacker_side: usize, attacker_idx: usize, target_side: usize, target_idx: usize, move_id: &ID) {
-        // Extract move data fields before making mutable calls
-        let (status, volatile_status, boosts, secondary) = match self.dex.get_move(move_id.as_str()) {
-            Some(move_def) => (
-                move_def.status.clone(),
-                move_def.volatile_status.clone(),
-                move_def.boosts.clone(),
-                move_def.secondary.clone(),
-            ),
-            None => return, // Unknown move, no secondaries
+        // Get move data
+        let move_data = match self.dex.get_move(move_id.as_str()) {
+            Some(move_def) => move_def.clone(),
+            None => return, // Unknown move
         };
 
-        // Call onTryHit event to check if move can be used (for moves that have onTryHit callback)
-        // JavaScript: if (!this.singleEvent('TryHit', move, {}, target, pokemon, move)) { return 'fail'; }
-        match move_id.as_str() {
-            "autotomize" => {
-                let try_hit_result = self.run_event("TryHit", Some((target_side, target_idx)), Some((attacker_side, attacker_idx)), Some(&move_id), None);
-                if try_hit_result.is_none() {
-                    // onTryHit returned false/fail, move fails
-                    return;
-                }
-            }
-            _ => {}
+        // Fire TryHit event (battle-actions.ts:1064)
+        // if (target) hitResult = this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
+        let try_hit_result = self.run_event(
+            "TryHit",
+            Some((target_side, target_idx)),
+            Some((attacker_side, attacker_idx)),
+            Some(move_id),
+            None
+        );
+        if try_hit_result.is_none() {
+            return;
         }
 
-        // Apply primary move effects (for status moves)
-        // Apply primary status condition
-        if let Some(ref status_str) = status {
-            self.apply_status(target_side, target_idx, status_str);
-        }
+        // Apply data-driven move effects (battle-actions.ts:1212-1273)
 
-        // Apply primary volatile status
-        if let Some(ref volatile) = volatile_status {
-            self.add_volatile_to_pokemon((target_side, target_idx), &ID::new(volatile), Some((attacker_side, attacker_idx)), Some(&move_id));
-        }
-
-        // Apply primary stat boosts (e.g., Swords Dance, Dragon Dance)
-        if let Some(ref boosts_map) = boosts {
+        // if (moveData.boosts && !target.fainted)
+        if let Some(ref boosts_map) = move_data.boosts {
             self.boost_stats(target_side, target_idx, boosts_map);
         }
 
-        // Apply secondary effects with chance checking
-        if let Some(ref sec) = secondary {
+        // if (moveData.status)
+        if let Some(ref status_str) = move_data.status {
+            self.apply_status(target_side, target_idx, status_str);
+        }
+
+        // if (moveData.volatileStatus)
+        if let Some(ref volatile) = move_data.volatile_status {
+            self.add_volatile_to_pokemon(
+                (target_side, target_idx),
+                &ID::new(volatile),
+                Some((attacker_side, attacker_idx)),
+                Some(move_id)
+            );
+        }
+
+        // if (moveData.sideCondition)
+        // if (moveData.weather)
+        // if (moveData.terrain)
+        // if (moveData.pseudoWeather)
+        // TODO: Implement when side conditions, weather, terrain, pseudo-weather are properly supported
+
+        // Fire Hit event (battle-actions.ts:1293-1299)
+        // The move dispatch system handles onHit callbacks
+        // this.battle.singleEvent('Hit', moveData, {}, target, source, move);
+        self.handle_move_event("Hit", move_id.as_str(), Some((target_side, target_idx)));
+
+        // this.battle.runEvent('Hit', target, source, move);
+        self.run_event(
+            "Hit",
+            Some((target_side, target_idx)),
+            Some((attacker_side, attacker_idx)),
+            Some(move_id),
+            None
+        );
+
+        // Apply secondary effects with chance checking (battle-actions.ts:1351-1366)
+        // secondaries(targets, source, move, moveData, isSelf)
+        if let Some(ref sec) = move_data.secondary {
             // Check if secondary effect triggers based on chance
             let triggers = if let Some(chance) = sec.chance {
-                // Roll for chance (e.g., 30% chance = roll 0-99, trigger if < 30)
-                use rand::Rng;
-                let roll = rand::thread_rng().gen_range(0..100);
-                roll < chance
+                self.random_chance(chance as i32, 100)
             } else {
-                // No chance specified means 100% chance
-                true
+                true // No chance specified means 100% chance
             };
 
             if triggers {
@@ -3135,7 +3158,12 @@ impl Battle {
 
                 // Apply secondary volatile status
                 if let Some(ref sec_volatile) = sec.volatile_status_secondary {
-                    self.add_volatile_to_pokemon((target_side, target_idx), &ID::new(sec_volatile), Some((attacker_side, attacker_idx)), Some(&move_id));
+                    self.add_volatile_to_pokemon(
+                        (target_side, target_idx),
+                        &ID::new(sec_volatile),
+                        Some((attacker_side, attacker_idx)),
+                        Some(move_id)
+                    );
                 }
 
                 // Apply secondary stat boosts
@@ -3144,313 +3172,6 @@ impl Battle {
                 }
             }
         }
-
-
-        // Handle move callbacks for complex move logic
-        match move_id.as_str() {
-            "acupressure" => {
-                // Randomly boosts one stat that is below +6 by 2 stages
-                // Collect stats that are below +6
-                let mut available_stats: Vec<&str> = Vec::new();
-                let boosts = &self.sides[target_side].pokemon[target_idx].boosts;
-
-                if boosts.atk < 6 { available_stats.push("atk"); }
-                if boosts.def < 6 { available_stats.push("def"); }
-                if boosts.spa < 6 { available_stats.push("spa"); }
-                if boosts.spd < 6 { available_stats.push("spd"); }
-                if boosts.spe < 6 { available_stats.push("spe"); }
-                if boosts.accuracy < 6 { available_stats.push("accuracy"); }
-                if boosts.evasion < 6 { available_stats.push("evasion"); }
-
-                if !available_stats.is_empty() {
-                    // Randomly select one stat
-                    let idx = self.random(available_stats.len() as i32) as usize;
-                    let chosen_stat = available_stats[idx];
-                    self.apply_boost(target_side, target_idx, chosen_stat, 2);
-                }
-                // If no stats available, the move fails (no effect)
-            }
-            "afteryou" => {
-                // After You makes the target move immediately after the user
-                // Check if this is doubles/triples (activePerHalf > 1)
-                if self.active_per_half == 1 {
-                    // Fails in singles
-                    return;
-                }
-
-                // Check if target has a queued move action
-                if let Some(_move_action) = self.queue.will_move(target_side, target_idx) {
-                    // Prioritize the target's action to move next
-                    if self.queue.prioritize_action(target_side, target_idx) {
-                        // Add activation message
-                        let target_name = &self.sides[target_side].pokemon[target_idx].name.clone();
-                        self.add("-activate", &[
-                            Arg::String(target_name.clone()),
-                            Arg::Str("move: After You")
-                        ]);
-                    }
-                }
-                // Note: This won't fully work until commit_choices is refactored to use the queue during execution
-            }
-            "alluringvoice" => {
-                // This is handled as a secondary effect in the move data
-                // If target raised stats this turn, add confusion
-                if self.sides[target_side].pokemon[target_idx].stats_raised_this_turn {
-                    let confusion_id = ID::new("confusion");
-                    self.sides[target_side].pokemon[target_idx].add_volatile(confusion_id);
-                }
-            }
-            "allyswitch" => {
-                // Ally Switch swaps positions with an ally in doubles/triples
-                // Fail if not doubles/triples
-                if self.active_per_half == 1 {
-                    let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
-                    self.add("-fail", &[
-                        Arg::String(pokemon_name.clone()),
-                        Arg::Str("move: Ally Switch")
-                    ]);
-                    return;
-                }
-
-                // Get current position
-                let current_position = self.sides[attacker_side].pokemon[attacker_idx].position;
-
-                // In doubles, swap with position 0 if at 1, or position 1 if at 0
-                // In triples, fail if in middle (position 1)
-                let new_position = if self.active_per_half == 3 && current_position == 1 {
-                    // Fail in triples if in the middle
-                    let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
-                    self.add("-fail", &[
-                        Arg::String(pokemon_name.clone()),
-                        Arg::Str("move: Ally Switch")
-                    ]);
-                    return;
-                } else if current_position == 0 {
-                    self.active_per_half - 1
-                } else {
-                    0
-                };
-
-                // Check if there's a Pokemon at the new position
-                if let Some(Some(ally_idx)) = self.sides[attacker_side].active.get(new_position) {
-                    let ally_fainted = self.sides[attacker_side].pokemon[*ally_idx].is_fainted();
-                    if ally_fainted {
-                        let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
-                        self.add("-fail", &[
-                            Arg::String(pokemon_name.clone()),
-                            Arg::Str("move: Ally Switch")
-                        ]);
-                        return;
-                    }
-
-                    // Perform the swap
-                    self.swap_position((attacker_side, attacker_idx), new_position, Some("[from] move: Ally Switch"));
-
-                    // Log the swap
-                    let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
-                    self.add("-activate", &[
-                        Arg::String(pokemon_name.clone()),
-                        Arg::Str("[from] move: Ally Switch")
-                    ]);
-                } else {
-                    // No ally at that position
-                    let pokemon_name = &self.sides[attacker_side].pokemon[attacker_idx].name.clone();
-                    self.add("-fail", &[
-                        Arg::String(pokemon_name.clone()),
-                        Arg::Str("move: Ally Switch")
-                    ]);
-                }
-                // TODO: Implement diminishing returns mechanic (counter that triples on each use)
-            }
-            // Entry hazard moves - set on opponent's side
-            "stealthrock" => {
-                let hazard_id = ID::new("stealthrock");
-                if self.sides[target_side].add_hazard(&hazard_id) {
-                    let target_side_id = self.sides[target_side].id_str();
-                    self.add_log("-sidestart", &[target_side_id, "Stealth Rock"]);
-                }
-            }
-            "spikes" => {
-                let hazard_id = ID::new("spikes");
-                if self.sides[target_side].add_hazard(&hazard_id) {
-                    let target_side_id = self.sides[target_side].id_str();
-                    self.add_log("-sidestart", &[target_side_id, "Spikes"]);
-                }
-            }
-            "toxicspikes" => {
-                let hazard_id = ID::new("toxicspikes");
-                if self.sides[target_side].add_hazard(&hazard_id) {
-                    let target_side_id = self.sides[target_side].id_str();
-                    self.add_log("-sidestart", &[target_side_id, "Toxic Spikes"]);
-                }
-            }
-            "stickyweb" => {
-                let hazard_id = ID::new("stickyweb");
-                if self.sides[target_side].add_hazard(&hazard_id) {
-                    let target_side_id = self.sides[target_side].id_str();
-                    self.add_log("-sidestart", &[target_side_id, "Sticky Web"]);
-                }
-            }
-            // Hazard removal moves
-            "defog" => {
-                self.remove_all_hazards(target_side);
-                // Also remove hazards from user's side
-                self.remove_all_hazards(attacker_side);
-            }
-            "rapidspin" => {
-                // Rapid Spin removes hazards from user's own side
-                self.remove_all_hazards(attacker_side);
-            }
-            // Protection moves
-            "protect" | "detect" => {
-                self.sides[attacker_side].pokemon[target_idx].add_volatile(ID::new("protect"));
-                let name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[target_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                self.add_log("-singleturn", &[&name, "Protect"]);
-            }
-            // Recovery moves
-            "recover" | "softboiled" | "milkdrink" | "slackoff" => {
-                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
-                let heal = maxhp / 2;
-                self.sides[attacker_side].pokemon[target_idx].heal(heal);
-                let name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[target_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                let hp = self.sides[attacker_side].pokemon[target_idx].hp;
-                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
-                self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp)]);
-            }
-            "roost" => {
-                // Roost heals 50% HP and removes Flying type for the turn
-                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
-                let heal = maxhp / 2;
-                self.sides[attacker_side].pokemon[target_idx].heal(heal);
-                self.sides[attacker_side].pokemon[target_idx].add_volatile(ID::new("roost"));
-                let name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[target_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                let hp = self.sides[attacker_side].pokemon[target_idx].hp;
-                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
-                self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp)]);
-            }
-            "moonlight" | "synthesis" | "morningsun" => {
-                // Weather-dependent recovery: 2/3 in sun, 1/4 in rain/sand/hail, 1/2 normally
-                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
-                let weather = self.field.weather.as_str();
-                let heal_frac = match weather {
-                    "sunnyday" | "desolateland" => 2.0 / 3.0,
-                    "raindance" | "primordialsea" | "sandstorm" | "hail" | "snow" => 0.25,
-                    _ => 0.5,
-                };
-                let heal = ((maxhp as f64) * heal_frac) as i32;
-                self.sides[attacker_side].pokemon[target_idx].heal(heal);
-                let name = {
-                    let side_id = self.sides[attacker_side].id_str();
-                    let pokemon = &self.sides[attacker_side].pokemon[target_idx];
-                    format!("{}: {}", side_id, pokemon.name)
-                };
-                let hp = self.sides[attacker_side].pokemon[target_idx].hp;
-                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
-                self.add_log("-heal", &[&name, &format!("{}/{}", hp, maxhp)]);
-            }
-            // Substitute
-            "substitute" => {
-                let maxhp = self.sides[attacker_side].pokemon[target_idx].maxhp;
-                let hp = self.sides[attacker_side].pokemon[target_idx].hp;
-                let cost = maxhp / 4;
-
-                if hp > cost && !self.sides[attacker_side].pokemon[target_idx].has_volatile(&ID::new("substitute")) {
-                    self.sides[attacker_side].pokemon[target_idx].take_damage(cost);
-                    self.sides[attacker_side].pokemon[target_idx].add_volatile(ID::new("substitute"));
-                    // Store substitute HP in volatile data
-                    let name = {
-                        let side_id = self.sides[attacker_side].id_str();
-                        let pokemon = &self.sides[attacker_side].pokemon[target_idx];
-                        format!("{}: {}", side_id, pokemon.name)
-                    };
-                    self.add_log("-start", &[&name, "Substitute"]);
-                }
-            }
-            // Haze - reset all stat changes
-            "haze" => {
-                for side in &mut self.sides {
-                    for pokemon in &mut side.pokemon {
-                        if pokemon.is_active {
-                            pokemon.boosts = Default::default();
-                        }
-                    }
-                }
-                self.add_log("-clearallboost", &[]);
-            }
-            // Phazing moves
-            "whirlwind" | "roar" => {
-                // Force switch the target
-                let switchable = self.sides[target_side].get_switchable();
-                if !switchable.is_empty() {
-                    let random_idx = self.random(switchable.len() as i32) as usize;
-                    let switch_to = switchable[random_idx];
-                    let target_slot = self.sides[target_side].pokemon[target_idx].position;
-                    self.do_switch(target_side, target_slot, switch_to);
-                }
-            }
-            // Team support moves
-            "healbell" | "aromatherapy" => {
-                // Cure status of all team members
-                let side_id = self.sides[attacker_side].id_str();
-                for pokemon in &mut self.sides[attacker_side].pokemon {
-                    if !pokemon.status.is_empty() {
-                        pokemon.cure_status();
-                    }
-                }
-                self.add_log("-cureteam", &[side_id]);
-            }
-            // Confusion-causing moves
-            "confuseray" | "supersonic" | "sweetkiss" | "teeterdance" => {
-                self.apply_confusion(target_side, target_idx);
-            }
-            // Hurricane and Dynamic Punch have 100% confusion chance
-            "hurricane" | "dynamicpunch" => {
-                self.apply_confusion(target_side, target_idx);
-            }
-            // Psybeam, Signal Beam, Confusion - 10% confusion chance
-            "psybeam" | "signalbeam" | "confusion" => {
-                if self.random(10) == 0 {
-                    self.apply_confusion(target_side, target_idx);
-                }
-            }
-            // Trick Room - reverses speed order for 5 turns
-            "trickroom" => {
-                let trick_room_id = ID::new("trickroom");
-                if self.field.has_pseudo_weather(&trick_room_id) {
-                    // Trick Room is already active - remove it
-                    self.field.remove_pseudo_weather(&trick_room_id);
-                    self.add_log("-fieldend", &["Trick Room"]);
-                } else {
-                    // Set Trick Room for 5 turns
-                    self.field.add_pseudo_weather(trick_room_id, Some(5));
-                    self.add_log("-fieldstart", &["Trick Room"]);
-                }
-            }
-            _ => {}
-        }
-
-        // Fire Hit event after all move effects are applied
-        // JavaScript: this.battle.runEvent('Hit', target, source, move);
-        // This fires for ALL moves, not just specific ones
-        self.run_event(
-            "Hit",
-            Some((target_side, target_idx)),
-            Some((attacker_side, attacker_idx)),
-            Some(move_id),
-            None
-        );
     }
 
     /// Apply confusion volatile to a Pokemon
