@@ -170,7 +170,7 @@ Moves with callbacks: 373
 - [x] jumpkick - Jump Kick (Physical, Fighting) - 1 callback: onMoveFail
 - [x] junglehealing - Jungle Healing (Status, Grass) - 1 callback: onHit
 - [x] kingsshield - King's Shield (Status, Steel) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
-- [ ] knockoff - Knock Off (Physical, Dark) - 2 callbacks: onBasePower, onAfterHit
+- [x] knockoff - Knock Off (Physical, Dark) - 2 callbacks: onBasePower, onAfterHit
 - [ ] laserfocus - Laser Focus (Status, Normal) - 4 callbacks: condition::onStart, condition::onRestart, condition::onModifyCritRatio, condition::onEnd
 - [ ] lashout - Lash Out (Physical, Dark) - 1 callback: onBasePower
 - [ ] lastresort - Last Resort (Physical, Normal) - 1 callback: onTry
