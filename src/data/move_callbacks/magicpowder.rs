@@ -12,7 +12,42 @@ use crate::event::EventResult;
 ///     this.add('-start', target, 'typechange', 'Psychic');
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.getTypes().join() === 'Psychic' || !target.setType('Psychic')) return false;
+    let types_string = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.get_types(battle).join("")
+    };
+
+    if types_string == "Psychic" {
+        return EventResult::Bool(false);
+    }
+
+    let set_type_success = {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.set_type(&ID::from("psychic"), battle)
+    };
+
+    if !set_type_success {
+        return EventResult::Bool(false);
+    }
+
+    // this.add('-start', target, 'typechange', 'Psychic');
+    let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+    battle.add("-start", &[target_arg, "typechange".into(), "Psychic".into()]);
+
     EventResult::Continue
 }
 
