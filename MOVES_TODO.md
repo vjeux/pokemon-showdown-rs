@@ -226,7 +226,7 @@ Moves with callbacks: 373
 - [x] perishsong - Perish Song (Status, Normal) - 3 callbacks: onHitField, condition::onEnd, condition::onResidual
 - [x] phantomforce - Phantom Force (Physical, Ghost) - 1 callback: onTryMove
 - [x] photongeyser - Photon Geyser (Special, Psychic) - 1 callback: onModifyMove
-- [ ] pikapapow - Pika Papow (Special, Electric) - 1 callback: basePowerCallback
+- [x] pikapapow - Pika Papow (Special, Electric) - 1 callback: basePowerCallback
 - [ ] pluck - Pluck (Physical, Flying) - 1 callback: onHit
 - [ ] polarflare - Polar Flare (Special, Fire) - 2 callbacks: onHit, onAfterMoveSecondarySelf
 - [ ] pollenpuff - Pollen Puff (Special, Bug) - 3 callbacks: onTryHit, onTryMove, onHit
