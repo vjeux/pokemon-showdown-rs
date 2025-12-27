@@ -4,8 +4,9 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Arg};
 use crate::event::EventResult;
+use crate::dex_data::ID;
 
 /// onHit(target, source, move) {
 ///     const item = target.getItem();
@@ -19,7 +20,96 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // Get target
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // const item = target.getItem();
+    let target_item = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.item.clone()
+    };
+
+    // if (source.hp && item.isBerry && target.takeItem(source)) {
+    let source_hp = {
+        let source_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.hp
+    };
+
+    if source_hp > 0 && !target_item.is_empty() {
+        // Check if item is a berry
+        let is_berry = if let Some(item_data) = battle.dex.get_item_by_id(&target_item) {
+            // Check if item name ends with "berry" (simple heuristic)
+            item_data.name.to_lowercase().ends_with("berry")
+        } else {
+            false
+        };
+
+        if is_berry {
+            // target.takeItem(source)
+            let taken_item = {
+                let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target_pokemon.take_item()
+            };
+
+            if let Some(item_id) = taken_item {
+                // this.add('-enditem', target, item.name, '[from] stealeat', '[move] Bug Bite', `[of] ${source}`);
+                let (target_arg, source_arg, item_name) = {
+                    let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    let source_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    let item_data = battle.dex.get_item_by_id(&item_id);
+                    let item_name = item_data.map(|i| i.name.clone()).unwrap_or_else(|| item_id.to_string());
+
+                    (Arg::from(target_pokemon), Arg::from(source_pokemon), item_name)
+                };
+
+                battle.add("-enditem", &[
+                    target_arg,
+                    item_name.into(),
+                    "[from] stealeat".into(),
+                    "[move] Bug Bite".into(),
+                    format!("[of] {}", source_arg.to_protocol_string()).into(),
+                ]);
+
+                // if (this.singleEvent('Eat', item, target.itemState, source, source, move)) {
+                //     this.runEvent('EatItem', source, source, move, item);
+                //     if (item.id === 'leppaberry') target.staleness = 'external';
+                // }
+                if battle.single_event("Eat", &item_id, Some(pokemon_pos), Some(pokemon_pos), None) {
+                    battle.run_event("EatItem", Some(pokemon_pos), Some(pokemon_pos), None);
+
+                    // if (item.id === 'leppaberry') target.staleness = 'external';
+                    // TODO: staleness not yet implemented
+                }
+
+                // if (item.onEat) source.ateBerry = true;
+                // Check if item has onEat callback (simplified: just set ateBerry for berries)
+                let source_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                source_pokemon.ate_berry = true;
+            }
+        }
+    }
+
     EventResult::Continue
 }
 
