@@ -59,7 +59,7 @@ Moves with callbacks: 373
 - [x] crushgrip - Crush Grip (Physical, Normal) - 1 callback: basePowerCallback
 - [x] curse - Curse (Status, Ghost) - 5 callbacks: onModifyMove, onTryHit, onHit, condition::onStart, condition::onResidual
 - [x] darkvoid - Dark Void (Status, Dark) - 1 callback: onTry
-- [ ] defog - Defog (Status, Flying) - 1 callback: onHit
+- [x] defog - Defog (Status, Flying) - 1 callback: onHit
 - [ ] destinybond - Destiny Bond (Status, Ghost) - 5 callbacks: onPrepareHit, condition::onStart, condition::onFaint, condition::onBeforeMove, condition::onMoveAborted
 - [ ] detect - Detect (Status, Fighting) - 2 callbacks: onPrepareHit, onHit
 - [ ] dig - Dig (Physical, Ground) - 4 callbacks: onTryMove, condition::onImmunity, condition::onInvulnerability, condition::onSourceModifyDamage
