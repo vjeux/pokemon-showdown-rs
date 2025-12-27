@@ -34,7 +34,7 @@ Moves with callbacks: 373
 - [x] bounce - Bounce (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceBasePower
 - [x] brickbreak - Brick Break (Physical, Fighting) - 1 callback: onTryHit
 - [x] brine - Brine (Special, Water) - 1 callback: onBasePower
-- [ ] bugbite - Bug Bite (Physical, Bug) - 1 callback: onHit
+- [x] bugbite - Bug Bite (Physical, Bug) - 1 callback: onHit
 - [ ] burningbulwark - Burning Bulwark (Status, Fire) - 5 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit, condition::onHit
 - [ ] burnup - Burn Up (Special, Fire) - 1 callback: onTryMove
 - [ ] camouflage - Camouflage (Status, Normal) - 1 callback: onHit
