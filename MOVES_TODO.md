@@ -271,7 +271,7 @@ Moves with callbacks: 373
 - [x] risingvoltage - Rising Voltage (Special, Electric) - 1 callback: basePowerCallback
 - [x] roleplay - Role Play (Status, Psychic) - 2 callbacks: onTryHit, onHit
 - [x] rollout - Rollout (Physical, Rock) - 5 callbacks: basePowerCallback, onModifyMove, onAfterMove, condition::onStart, condition::onResidual
-- [ ] roost - Roost (Status, Flying) - 2 callbacks: condition::onStart, condition::onType
+- [x] roost - Roost (Status, Flying) - 2 callbacks: condition::onStart, condition::onType
 - [ ] rototiller - Rototiller (Status, Ground) - 1 callback: onHitField
 - [ ] round - Round (Special, Normal) - 2 callbacks: basePowerCallback, onTry
 - [ ] ruination - Ruination (Special, Dark) - 1 callback: damageCallback
