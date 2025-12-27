@@ -19,7 +19,33 @@ pub mod condition {
     ///     pokemon.storedStats.def = newdef;
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // this.add('-start', pokemon, 'Power Shift');
+        let pokemon_arg = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon_pokemon)
+        };
+
+        battle.add("-start", &[pokemon_arg, "Power Shift".into()]);
+
+        // const newatk = pokemon.storedStats.def;
+        // const newdef = pokemon.storedStats.atk;
+        // pokemon.storedStats.atk = newatk;
+        // pokemon.storedStats.def = newdef;
+        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let newatk = pokemon_pokemon.stored_stats.def;
+        let newdef = pokemon_pokemon.stored_stats.atk;
+        pokemon_pokemon.stored_stats.atk = newatk;
+        pokemon_pokemon.stored_stats.def = newdef;
+
         EventResult::Continue
     }
 
@@ -30,7 +56,22 @@ pub mod condition {
     ///     pokemon.storedStats.def = newdef;
     /// }
     pub fn on_copy(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // const newatk = pokemon.storedStats.def;
+        // const newdef = pokemon.storedStats.atk;
+        // pokemon.storedStats.atk = newatk;
+        // pokemon.storedStats.def = newdef;
+        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let newatk = pokemon_pokemon.stored_stats.def;
+        let newdef = pokemon_pokemon.stored_stats.atk;
+        pokemon_pokemon.stored_stats.atk = newatk;
+        pokemon_pokemon.stored_stats.def = newdef;
+
         EventResult::Continue
     }
 
@@ -42,7 +83,33 @@ pub mod condition {
     ///     pokemon.storedStats.def = newdef;
     /// }
     pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // this.add('-end', pokemon, 'Power Shift');
+        let pokemon_arg = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon_pokemon)
+        };
+
+        battle.add("-end", &[pokemon_arg, "Power Shift".into()]);
+
+        // const newatk = pokemon.storedStats.def;
+        // const newdef = pokemon.storedStats.atk;
+        // pokemon.storedStats.atk = newatk;
+        // pokemon.storedStats.def = newdef;
+        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let newatk = pokemon_pokemon.stored_stats.def;
+        let newdef = pokemon_pokemon.stored_stats.atk;
+        pokemon_pokemon.stored_stats.atk = newatk;
+        pokemon_pokemon.stored_stats.def = newdef;
+
         EventResult::Continue
     }
 
@@ -50,7 +117,13 @@ pub mod condition {
     ///     pokemon.removeVolatile('Power Shift');
     /// }
     pub fn on_restart(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // pokemon.removeVolatile('Power Shift');
+        battle.remove_volatile(&ID::from("powershift"), pokemon);
+
         EventResult::Continue
     }
 }
