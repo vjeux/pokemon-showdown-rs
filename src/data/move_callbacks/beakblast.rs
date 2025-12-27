@@ -4,14 +4,22 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Arg};
 use crate::event::EventResult;
+use crate::dex_data::ID;
 
 /// priorityChargeCallback(pokemon) {
 ///     pokemon.addVolatile('beakblast');
 /// }
 pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // pokemon.addVolatile('beakblast');
+    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    pokemon.add_volatile(ID::from("beakblast"));
+
     EventResult::Continue
 }
 
@@ -19,7 +27,14 @@ pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)
 ///     pokemon.removeVolatile('beakblast');
 /// }
 pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // pokemon.removeVolatile('beakblast');
+    let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    pokemon.remove_volatile(&ID::from("beakblast"));
+
     EventResult::Continue
 }
 
@@ -30,7 +45,14 @@ pub mod condition {
     ///     this.add('-singleturn', pokemon, 'move: Beak Blast');
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // this.add('-singleturn', pokemon, 'move: Beak Blast');
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        battle.add("-singleturn", &[pokemon.into(), "move: Beak Blast".into()]);
+
         EventResult::Continue
     }
 
@@ -40,7 +62,29 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // Get source from target_pos (in condition context, pokemon_pos is the pokemon with beakblast, target is the attacker)
+        let source = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // Get the active move
+        let move_id = match &battle.active_move {
+            Some(id) => id.clone(),
+            None => return EventResult::Continue,
+        };
+
+        // if (this.checkMoveMakesContact(move, source, target)) {
+        //     source.trySetStatus('brn', target);
+        // }
+        if battle.check_move_makes_contact(&move_id, source) {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.try_set_status(ID::from("brn"), None);
+        }
+
         EventResult::Continue
     }
 }
