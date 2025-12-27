@@ -1,24 +1,24 @@
 #!/usr/bin/env node
 
 /**
- * Generate comprehensive item dispatch functions for mod.rs
- * Based on parsing all items and their callbacks
+ * Generate comprehensive move dispatch functions for mod.rs
+ * Based on parsing all moves and their callbacks
  */
 
 const fs = require('fs');
 const path = require('path');
 
-// Load the items from TypeScript file
+// Load the moves from TypeScript file
 const workspaceRoot = process.env.WORKSPACE_ROOT || path.join(__dirname, '../..');
-const itemsPath = path.join(workspaceRoot, 'pokemon-showdown-ts', 'data', 'items.ts');
-const itemsContent = fs.readFileSync(itemsPath, 'utf8');
+const movesPath = path.join(workspaceRoot, 'pokemon-showdown-ts', 'data', 'moves.ts');
+const movesContent = fs.readFileSync(movesPath, 'utf8');
 
-// Parse items - extract each item definition
-const itemRegex = /^\t([a-z0-9]+): \{([\s\S]*?)^\t\},?$/gm;
-const items = [];
+// Parse moves - extract each move definition
+const moveRegex = /^\t([a-z0-9]+): \{([\s\S]*?)^\t\},?$/gm;
+const moves = [];
 let match;
 
-while ((match = itemRegex.exec(itemsContent)) !== null) {
+while ((match = moveRegex.exec(movesContent)) !== null) {
     const id = match[1];
     const content = match[2];
 
@@ -37,20 +37,20 @@ while ((match = itemRegex.exec(itemsContent)) !== null) {
     }
 
     if (callbacks.length > 0) {
-        items.push({ id, callbacks });
+        moves.push({ id, callbacks });
     }
 }
 
-console.error(`Found ${items.length} items with callbacks`);
+console.error(`Found ${moves.length} moves with callbacks`);
 
-// Build a map of callback -> items
+// Build a map of callback -> moves
 const callbackMap = new Map();
-items.forEach(item => {
-    item.callbacks.forEach(callback => {
+moves.forEach(move => {
+    move.callbacks.forEach(callback => {
         if (!callbackMap.has(callback)) {
             callbackMap.set(callback, []);
         }
-        callbackMap.get(callback).push(item.id);
+        callbackMap.get(callback).push(move.id);
     });
 });
 
@@ -62,11 +62,9 @@ function camelToSnake(str) {
 // Determine if a callback mutates battle state
 function isMutatingCallback(callback) {
     const readOnly = [
-        'onModifyAtk', 'onModifySpA', 'onModifyDef', 'onModifySpD',
-        'onModifyDamage', 'onSourceModifyDamage', 'onModifySpe',
-        'onModifyAccuracy', 'onSourceModifyAccuracy', 'onModifyCritRatio',
-        'onBasePower', 'onSourceBasePower', 'onModifyType', 'onTryHit',
-        'onTryMove', 'onModifyMove'
+        'onModifyType', 'onBasePower', 'onModifyMove',
+        'onTryHit', 'onTryMove', 'onModifyDamage',
+        'onModifyPriority', 'onModifyTarget'
     ];
     return !readOnly.includes(callback);
 }
@@ -78,36 +76,36 @@ const dispatchers = [];
 const sortedCallbacks = Array.from(callbackMap.keys()).sort();
 
 sortedCallbacks.forEach(callback => {
-    const itemIds = callbackMap.get(callback);
+    const moveIds = callbackMap.get(callback);
     const funcName = `dispatch_${camelToSnake(callback)}`;
     const isMutating = isMutatingCallback(callback);
     const battleRef = isMutating ? '&mut Battle' : '&Battle';
 
     // Determine parameters based on callback type
     let params = '';
-    if (callback.includes('Source') && callback.includes('Damage')) {
-        params = ',\n    _item_id: &str,\n    _pokemon_pos: (usize, usize)';
-    } else if (callback.includes('Damage')) {
-        params = ',\n    _item_id: &str,\n    _pokemon_pos: (usize, usize)';
-    } else if (callback === 'onAfterMoveSecondarySelf') {
-        params = ',\n    _item_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: Option<(usize, usize)>';
+    if (callback.includes('Damage') || callback === 'onTryHit' || callback === 'onHit' || callback === 'onAfterHit') {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: (usize, usize)';
+    } else if (callback === 'onTryMove' || callback === 'onModifyType') {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
+    } else if (callback === 'onBasePower' || callback === 'onAfterMove') {
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: Option<(usize, usize)>';
     } else {
-        params = ',\n    _item_id: &str,\n    _pokemon_pos: (usize, usize)';
+        params = ',\n    _move_id: &str,\n    _source_pos: (usize, usize)';
     }
 
     const comment = isMutating ? '/// Dispatch ' + callback + ' callbacks (mutates battle)' : '/// Dispatch ' + callback + ' callbacks (read-only)';
 
-    // Count items per callback
-    const itemCount = itemIds.length;
-    const itemList = itemIds.slice(0, 10).map(id => `"${id}"`).join(', ');
-    const more = itemCount > 10 ? `, ... (${itemCount - 10} more)` : '';
+    // Count moves per callback
+    const moveCount = moveIds.length;
+    const moveList = moveIds.slice(0, 10).map(id => `"${id}"`).join(', ');
+    const more = moveCount > 10 ? `, ... (${moveCount - 10} more)` : '';
 
     dispatcher = `${comment}
-/// Items: ${itemList}${more}
+/// Moves: ${moveList}${more}
 pub fn ${funcName}(
     _battle: ${battleRef}${params},
 ) -> EventResult {
-    // TODO: Implement dispatch for ${itemCount} items
+    // TODO: Implement dispatch for ${moveCount} moves
     EventResult::Continue
 }`;
 
@@ -115,10 +113,10 @@ pub fn ${funcName}(
 });
 
 // Print to stdout
-console.log('//! Item Callback Handlers');
+console.log('//! Move Callback Handlers');
 console.log('//!');
-console.log('//! This module provides dispatch functions for item callbacks.');
-console.log('//! Individual item implementations will be added as needed.');
+console.log('//! This module provides dispatch functions for move callbacks.');
+console.log('//! Individual move implementations will be added as needed.');
 console.log('');
 console.log('use crate::battle::Battle;');
 console.log('use crate::event::EventResult;');
@@ -126,7 +124,7 @@ console.log('');
 console.log('// =========================================================================');
 console.log('// DISPATCH FUNCTIONS');
 console.log('//');
-console.log('// These functions route item events to specific item implementations.');
+console.log('// These functions route move events to specific move implementations.');
 console.log('// They return EventResult directly, with EventResult::Continue for no match.');
 console.log('// =========================================================================');
 console.log('');

@@ -1,24 +1,24 @@
 #!/usr/bin/env node
 
 /**
- * Generate comprehensive item dispatch functions for mod.rs
- * Based on parsing all items and their callbacks
+ * Generate comprehensive ability dispatch functions for mod.rs
+ * Based on parsing all abilities and their callbacks
  */
 
 const fs = require('fs');
 const path = require('path');
 
-// Load the items from TypeScript file
+// Load the abilities from TypeScript file
 const workspaceRoot = process.env.WORKSPACE_ROOT || path.join(__dirname, '../..');
-const itemsPath = path.join(workspaceRoot, 'pokemon-showdown-ts', 'data', 'items.ts');
-const itemsContent = fs.readFileSync(itemsPath, 'utf8');
+const abilitiesPath = path.join(workspaceRoot, 'pokemon-showdown-ts', 'data', 'abilities.ts');
+const abilitiesContent = fs.readFileSync(abilitiesPath, 'utf8');
 
-// Parse items - extract each item definition
-const itemRegex = /^\t([a-z0-9]+): \{([\s\S]*?)^\t\},?$/gm;
-const items = [];
+// Parse abilities - extract each ability definition
+const abilityRegex = /^\t([a-z0-9]+): \{([\s\S]*?)^\t\},?$/gm;
+const abilities = [];
 let match;
 
-while ((match = itemRegex.exec(itemsContent)) !== null) {
+while ((match = abilityRegex.exec(abilitiesContent)) !== null) {
     const id = match[1];
     const content = match[2];
 
@@ -37,20 +37,20 @@ while ((match = itemRegex.exec(itemsContent)) !== null) {
     }
 
     if (callbacks.length > 0) {
-        items.push({ id, callbacks });
+        abilities.push({ id, callbacks });
     }
 }
 
-console.error(`Found ${items.length} items with callbacks`);
+console.error(`Found ${abilities.length} abilities with callbacks`);
 
-// Build a map of callback -> items
+// Build a map of callback -> abilities
 const callbackMap = new Map();
-items.forEach(item => {
-    item.callbacks.forEach(callback => {
+abilities.forEach(ability => {
+    ability.callbacks.forEach(callback => {
         if (!callbackMap.has(callback)) {
             callbackMap.set(callback, []);
         }
-        callbackMap.get(callback).push(item.id);
+        callbackMap.get(callback).push(ability.id);
     });
 });
 
@@ -66,7 +66,8 @@ function isMutatingCallback(callback) {
         'onModifyDamage', 'onSourceModifyDamage', 'onModifySpe',
         'onModifyAccuracy', 'onSourceModifyAccuracy', 'onModifyCritRatio',
         'onBasePower', 'onSourceBasePower', 'onModifyType', 'onTryHit',
-        'onTryMove', 'onModifyMove'
+        'onTryMove', 'onModifyMove', 'onModifySTAB', 'onModifyWeight',
+        'onModifyPriority'
     ];
     return !readOnly.includes(callback);
 }
@@ -78,7 +79,7 @@ const dispatchers = [];
 const sortedCallbacks = Array.from(callbackMap.keys()).sort();
 
 sortedCallbacks.forEach(callback => {
-    const itemIds = callbackMap.get(callback);
+    const abilityIds = callbackMap.get(callback);
     const funcName = `dispatch_${camelToSnake(callback)}`;
     const isMutating = isMutatingCallback(callback);
     const battleRef = isMutating ? '&mut Battle' : '&Battle';
@@ -86,28 +87,28 @@ sortedCallbacks.forEach(callback => {
     // Determine parameters based on callback type
     let params = '';
     if (callback.includes('Source') && callback.includes('Damage')) {
-        params = ',\n    _item_id: &str,\n    _pokemon_pos: (usize, usize)';
+        params = ',\n    _ability_id: &str,\n    _pokemon_pos: (usize, usize)';
     } else if (callback.includes('Damage')) {
-        params = ',\n    _item_id: &str,\n    _pokemon_pos: (usize, usize)';
-    } else if (callback === 'onAfterMoveSecondarySelf') {
-        params = ',\n    _item_id: &str,\n    _source_pos: (usize, usize),\n    _target_pos: Option<(usize, usize)>';
+        params = ',\n    _ability_id: &str,\n    _pokemon_pos: (usize, usize)';
+    } else if (callback === 'onSwitchIn' || callback === 'onStart') {
+        params = ',\n    _ability_id: &str,\n    _pokemon_pos: (usize, usize)';
     } else {
-        params = ',\n    _item_id: &str,\n    _pokemon_pos: (usize, usize)';
+        params = ',\n    _ability_id: &str,\n    _pokemon_pos: (usize, usize)';
     }
 
     const comment = isMutating ? '/// Dispatch ' + callback + ' callbacks (mutates battle)' : '/// Dispatch ' + callback + ' callbacks (read-only)';
 
-    // Count items per callback
-    const itemCount = itemIds.length;
-    const itemList = itemIds.slice(0, 10).map(id => `"${id}"`).join(', ');
-    const more = itemCount > 10 ? `, ... (${itemCount - 10} more)` : '';
+    // Count abilities per callback
+    const abilityCount = abilityIds.length;
+    const abilityList = abilityIds.slice(0, 10).map(id => `"${id}"`).join(', ');
+    const more = abilityCount > 10 ? `, ... (${abilityCount - 10} more)` : '';
 
     dispatcher = `${comment}
-/// Items: ${itemList}${more}
+/// Abilities: ${abilityList}${more}
 pub fn ${funcName}(
     _battle: ${battleRef}${params},
 ) -> EventResult {
-    // TODO: Implement dispatch for ${itemCount} items
+    // TODO: Implement dispatch for ${abilityCount} abilities
     EventResult::Continue
 }`;
 
@@ -115,10 +116,10 @@ pub fn ${funcName}(
 });
 
 // Print to stdout
-console.log('//! Item Callback Handlers');
+console.log('//! Ability Callback Handlers');
 console.log('//!');
-console.log('//! This module provides dispatch functions for item callbacks.');
-console.log('//! Individual item implementations will be added as needed.');
+console.log('//! This module provides dispatch functions for ability callbacks.');
+console.log('//! Individual ability implementations will be added as needed.');
 console.log('');
 console.log('use crate::battle::Battle;');
 console.log('use crate::event::EventResult;');
@@ -126,7 +127,7 @@ console.log('');
 console.log('// =========================================================================');
 console.log('// DISPATCH FUNCTIONS');
 console.log('//');
-console.log('// These functions route item events to specific item implementations.');
+console.log('// These functions route ability events to specific ability implementations.');
 console.log('// They return EventResult directly, with EventResult::Continue for no match.');
 console.log('// =========================================================================');
 console.log('');
