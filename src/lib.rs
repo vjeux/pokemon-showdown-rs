@@ -38,7 +38,6 @@ pub use pokemon::{Pokemon, PokemonSet, MoveSlot};
 pub use side::Side;
 pub use battle::{Battle, BattleOptions, PlayerOptions};
 pub use battle_actions::{BattleActions, DamageResult, MoveHitData};
-pub use abilities::{AbilityEvent, AbilityModifier, get_ability_effect, check_ability_immunity, check_ability_prevents_status};
 pub use items::{ItemEvent, ItemModifier, get_item_effect, get_item_type_boost, check_item_prevents_status};
 pub use event::{EventType, EventResult, EffectType as EventEffectType, HandlerPriority, EventHandler, MoveFlags, AbilityFlags, ConditionData};
 pub use move_types::{MoveDef, MoveCategory, MoveTargetType};
