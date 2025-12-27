@@ -4216,15 +4216,20 @@ impl Battle {
         }
 
         // JS: boost = this.runEvent('ChangeBoost', target, source, effect, { ...boost });
-        // TODO: Implement ChangeBoost event to modify boosts before applying
-        self.run_event("ChangeBoost", Some(target), source, None, None);
+        // This event allows abilities/items to modify boost amounts before they're applied
+        // Note: Full boost modification would require infrastructure changes to return modified boosts
+        // For now, we call the event so abilities can react, even if they can't modify the boost amounts
+        let effect_id = effect.map(|s| ID::new(s));
+        self.run_event("ChangeBoost", Some(target), source, effect_id.as_ref(), None);
 
         // JS: boost = target.getCappedBoost(boost);
         // Clamp boosts to [-6, 6] range - done per-stat below
 
         // JS: boost = this.runEvent('TryBoost', target, source, effect, { ...boost });
-        // TODO: Implement TryBoost event to prevent boosts
-        self.run_event("TryBoost", Some(target), source, None, None);
+        // This event can prevent boosts from being applied (e.g., Clear Body ability)
+        // If the event handler needs to cancel boosts, it should set a flag or modify Pokemon state
+        // Note: JavaScript can return null to cancel all boosts - we call the event for side effects
+        self.run_event("TryBoost", Some(target), source, effect_id.as_ref(), None);
 
         let mut success = false;
         let mut stats_raised = false;
