@@ -8,7 +8,7 @@
 use std::collections::{HashSet, HashMap};
 use serde::{Deserialize, Serialize};
 
-use crate::dex_data::{ID, GameType, SideID, EffectState, StatsTable};
+use crate::dex_data::{ID, GameType, SideID, EffectState, StatsTable, StatID};
 use crate::field::Field;
 use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
@@ -9915,8 +9915,9 @@ impl Battle {
                         && handler.effect_id.as_str() == "magicbounce"
                         && callback_name == "onAllyTryHitSide" {
                         // JS: handler.speed = pokemon.getStat('spe', true, true);
-                        // TODO: Implement getStat with unmodified flag
-                        handler.speed = Some(pokemon.stored_stats.spe as i32);
+                        // Get unmodified speed stat (unboosted=true, unmodified=true)
+                        // When both flags are true, getStat returns storedStats without any modifications
+                        handler.speed = Some(pokemon.get_stat(StatID::Spe, true));
                     }
 
                     // JS: if (callbackName.endsWith('SwitchIn'))

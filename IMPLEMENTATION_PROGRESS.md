@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 62/79 TODOs (78.5%)
+**Feature Implementation:** ⚠️ 63/79 TODOs (79.7%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -634,11 +634,29 @@
 
 **Enables:** Correct Gen 1 Bide mechanics during instafaint, prevents accumulated damage from carrying over after instafaints
 
+### Session 9 Continued Part 3 - Magic Bounce Speed Calculation (1 implementation)
+
+#### Get Stat with Unmodified Flag (1/1) ✅
+- [x] **Magic Bounce speed calculation** (battle.rs:9917-9921) - Use get_stat() with unboosted flag for unmodified speed
+
+**Implementation Details:**
+- Added StatID import to battle.rs
+- Call pokemon.get_stat(StatID::Spe, true) for Magic Bounce priority calculation
+- Matches JavaScript: `handler.speed = pokemon.getStat('spe', true, true);`
+- When both unboosted and unmodified flags are true, getStat returns the base stored stat
+- The current Rust get_stat() with unboosted=true achieves the same result as JavaScript getStat with both flags true
+- Full JavaScript signature: `getStat(statName, unboosted?, unmodified?)`
+  - `unboosted=true`: Skip boost calculation
+  - `unmodified=true`: Skip Wonder Room effect and skip ModifyBoost/Modify{Stat} events
+- For this specific use case (both flags true), returning storedStats is correct
+
+**Enables:** Correct Magic Bounce ability priority ordering in onAllyTryHitSide callbacks
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (17 TODOs)
+## Remaining P2 Nice-to-have (16 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks
