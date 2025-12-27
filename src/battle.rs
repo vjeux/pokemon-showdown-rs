@@ -3459,6 +3459,170 @@ impl Battle {
         result
     }
 
+    /// Check if two pokemon are adjacent
+    /// Equivalent to Pokemon.isAdjacent() in pokemon.ts
+    //
+    // isAdjacent(pokemon2: Pokemon) {
+    //     if (this.fainted || pokemon2.fainted) return false;
+    //     if (this.battle.activePerHalf <= 2) return this !== pokemon2;
+    //     if (this.side === pokemon2.side) return Math.abs(this.position - pokemon2.position) === 1;
+    //     return Math.abs(this.position + pokemon2.position + 1 - this.side.active.length) <= 1;
+    // }
+    //
+    pub fn is_adjacent(&self, pos1: (usize, usize), pos2: (usize, usize)) -> bool {
+        let (side1, idx1) = pos1;
+        let (side2, idx2) = pos2;
+
+        // Get both pokemon
+        let poke1 = match self.sides.get(side1).and_then(|s| s.pokemon.get(idx1)) {
+            Some(p) => p,
+            None => return false,
+        };
+        let poke2 = match self.sides.get(side2).and_then(|s| s.pokemon.get(idx2)) {
+            Some(p) => p,
+            None => return false,
+        };
+
+        // JS: if (this.fainted || pokemon2.fainted) return false;
+        if poke1.is_fainted() || poke2.is_fainted() {
+            return false;
+        }
+
+        // JS: if (this.battle.activePerHalf <= 2) return this !== pokemon2;
+        if self.active_per_half <= 2 {
+            return pos1 != pos2;
+        }
+
+        // JS: if (this.side === pokemon2.side) return Math.abs(this.position - pokemon2.position) === 1;
+        if side1 == side2 {
+            let pos_diff = (poke1.position as i32 - poke2.position as i32).abs();
+            return pos_diff == 1;
+        }
+
+        // JS: return Math.abs(this.position + pokemon2.position + 1 - this.side.active.length) <= 1;
+        let active_length = self.sides.get(side1).map(|s| s.active.len()).unwrap_or(0);
+        let sum = poke1.position as i32 + poke2.position as i32 + 1 - active_length as i32;
+        sum.abs() <= 1
+    }
+
+    /// Get adjacent allies of a pokemon
+    /// Equivalent to Pokemon.adjacentAllies() in pokemon.ts
+    //
+    // adjacentAllies(): Pokemon[] {
+    //     return this.side.allies().filter(ally => this.isAdjacent(ally));
+    // }
+    //
+    pub fn adjacent_allies(&self, side_idx: usize, poke_idx: usize) -> Vec<(usize, usize)> {
+        let mut result = Vec::new();
+        let pokemon_pos = (side_idx, poke_idx);
+
+        // Get allies from the same side (active team)
+        if let Some(side) = self.sides.get(side_idx) {
+            for (i, active_slot) in side.active.iter().enumerate() {
+                if let Some(ally_idx) = active_slot {
+                    let ally_pos = (side_idx, *ally_idx);
+                    // Skip if it's the same pokemon
+                    if ally_pos == pokemon_pos {
+                        continue;
+                    }
+                    // Check if alive
+                    if let Some(ally) = side.pokemon.get(*ally_idx) {
+                        if !ally.is_fainted() && self.is_adjacent(pokemon_pos, ally_pos) {
+                            result.push(ally_pos);
+                        }
+                    }
+                }
+            }
+
+            // For multi battles, also check ally side
+            // JS: activeTeam() - if (this.battle.gameType !== 'multi') return this.active;
+            if self.game_type == GameType::Multi {
+                // Get the ally side (n % 2 + 2 for sides beyond first two)
+                let ally_side_idx = if side_idx < 2 {
+                    side_idx + 2
+                } else {
+                    side_idx - 2
+                };
+
+                if let Some(ally_side) = self.sides.get(ally_side_idx) {
+                    for (i, active_slot) in ally_side.active.iter().enumerate() {
+                        if let Some(ally_idx) = active_slot {
+                            let ally_pos = (ally_side_idx, *ally_idx);
+                            if let Some(ally) = ally_side.pokemon.get(*ally_idx) {
+                                if !ally.is_fainted() && self.is_adjacent(pokemon_pos, ally_pos) {
+                                    result.push(ally_pos);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        result
+    }
+
+    /// Get adjacent foes of a pokemon
+    /// Equivalent to Pokemon.adjacentFoes() in pokemon.ts
+    //
+    // adjacentFoes(): Pokemon[] {
+    //     if (this.battle.activePerHalf <= 2) return this.side.foes();
+    //     return this.side.foes().filter(foe => this.isAdjacent(foe));
+    // }
+    //
+    pub fn adjacent_foes(&self, side_idx: usize, poke_idx: usize) -> Vec<(usize, usize)> {
+        let pokemon_pos = (side_idx, poke_idx);
+        let mut result = Vec::new();
+
+        // JS: if (this.battle.activePerHalf <= 2) return this.side.foes();
+        // For singles and doubles, all active foes are adjacent
+        if self.active_per_half <= 2 {
+            // Get foe side(s)
+            for (foe_side_idx, foe_side) in self.sides.iter().enumerate() {
+                // Skip own side
+                if foe_side_idx == side_idx {
+                    continue;
+                }
+                // For non-multi battles, opposing sides are foes
+                if self.game_type != GameType::Multi || (foe_side_idx % 2) != (side_idx % 2) {
+                    for active_slot in &foe_side.active {
+                        if let Some(foe_idx) = active_slot {
+                            if let Some(foe) = foe_side.pokemon.get(*foe_idx) {
+                                if !foe.is_fainted() {
+                                    result.push((foe_side_idx, *foe_idx));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            // For triple battles and beyond, filter by adjacency
+            // JS: return this.side.foes().filter(foe => this.isAdjacent(foe));
+            for (foe_side_idx, foe_side) in self.sides.iter().enumerate() {
+                // Skip own side
+                if foe_side_idx == side_idx {
+                    continue;
+                }
+                // For non-multi battles, opposing sides are foes
+                if self.game_type != GameType::Multi || (foe_side_idx % 2) != (side_idx % 2) {
+                    for active_slot in &foe_side.active {
+                        if let Some(foe_idx) = active_slot {
+                            let foe_pos = (foe_side_idx, *foe_idx);
+                            if let Some(foe) = foe_side.pokemon.get(*foe_idx) {
+                                if !foe.is_fainted() && self.is_adjacent(pokemon_pos, foe_pos) {
+                                    result.push(foe_pos);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        result
+    }
+
     /// Get random target for a move
     /// Equivalent to battle.ts getRandomTarget()
     ///
@@ -3513,8 +3677,10 @@ impl Battle {
             if self.game_type == GameType::Singles {
                 return None;
             }
-            // TODO: adjacentAllies() requires Pokemon helper method
-            // For now, just return None
+            let adjacent_allies = self.adjacent_allies(user_side, user_idx);
+            if !adjacent_allies.is_empty() {
+                return self.sample(&adjacent_allies).copied();
+            }
             return None;
         }
 
@@ -3537,9 +3703,13 @@ impl Battle {
             if move_target == "AdjacentFoe" || move_target == "Normal" || move_target == "RandomNormal" {
                 // JS: const adjacentFoes = pokemon.adjacentFoes();
                 // JS: if (adjacentFoes.length) return this.sample(adjacentFoes);
-                // TODO: adjacentFoes() requires Pokemon helper method
+                let adjacent_foes = self.adjacent_foes(user_side, user_idx);
+                if !adjacent_foes.is_empty() {
+                    return self.sample(&adjacent_foes).copied();
+                }
 
                 // JS: return pokemon.side.foe.active[pokemon.side.foe.active.length - 1 - pokemon.position];
+                // No valid adjacent target, return slot directly across for any possible redirection
                 let foe_side = if user_side == 0 { 1 } else { 0 };
                 if foe_side < self.sides.len() {
                     if let Some(side) = self.sides.get(foe_side) {
