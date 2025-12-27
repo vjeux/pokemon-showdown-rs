@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 20/79 TODOs (25.3%)
+**Feature Implementation:** ⚠️ 22/79 TODOs (27.8%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -96,6 +96,32 @@
 
 **Enables:** Z-Moves (Breakneck Blitz, Inferno Overdrive, etc.), Max Moves (Max Flare, Max Geyser, etc.), Dynamax battle mechanics
 
+### Session 7 - Z-Move & Max Move Priority (2 implementations)
+
+#### Z-Move Priority Transformation (1/1) ✅
+- [x] **Z-Move transformation in get_action_speed** (battle.rs:6271-6279) - Transform move to Z-Move for priority calculation
+
+**Implementation Details:**
+- Checks if `move_action.zmove` is Some
+- Uses `dex.get_active_move()` to get the active Z-Move
+- Validates `z_move.is_z` before using transformed move ID
+- Uses Z-Move's priority instead of base move priority
+
+**Enables:** Correct priority calculation for Z-Moves, priority queue sorting
+
+#### Max Move Priority Transformation (1/1) ✅
+- [x] **Max Move transformation in get_action_speed** (battle.rs:6290-6298) - Transform move to Max Move for priority calculation
+
+**Implementation Details:**
+- Checks if `move_action.max_move` is Some
+- Uses `dex.get_active_move()` to get the active Max Move
+- Validates `max_move.is_max` before using transformed move ID
+- Uses Max Move's priority instead of base move priority
+
+**Enables:** Correct priority calculation for Max Moves (Dynamax), priority queue sorting
+
+**Note:** Both transformations ensure 1:1 JavaScript compatibility by matching the logic in `getActionSpeed()` from battle.ts:2590-2627
+
 ## Remaining P0 Critical (High Priority)
 
 ### Move Events (0 remaining TODOs) ✅ ALL COMPLETE
@@ -117,11 +143,11 @@
 - [x] ~~TrapPokemon/MaybeTrapPokemon events (battle.rs:5115)~~ ✅ Completed
 - [~] ~~Foe ability trapping (battle.rs:5119)~~ ⚠️ Stub implemented, full requires species infrastructure
 
-## Remaining P1 Important (11 TODOs)
+## Remaining P1 Important (9 TODOs)
 
-### Z-Moves & Max Moves (3 remaining TODOs)
-- [ ] Z-Move transformation in get_action_speed
-- [ ] Max Move transformation in get_action_speed
+### Z-Moves & Max Moves (1 remaining TODO)
+- [x] ~~Z-Move transformation in get_action_speed~~ ✅ Completed (Session 7)
+- [x] ~~Max Move transformation in get_action_speed~~ ✅ Completed (Session 7)
 - [x] ~~Z-move transformation in use_move~~ ✅ Completed (Session 6)
 - [x] ~~Max move transformation in use_move~~ ✅ Completed (Session 6)
 - [ ] runZPower for status Z-moves
@@ -162,10 +188,10 @@
 
 ## Next Steps
 
-1. **Continue P0 implementations:**
-   - Move events (ModifyTarget, ModifyPriority)
-   - Pokemon adjacency helpers
-   - Remaining critical events
+1. **Continue P1 Important implementations:**
+   - runZPower for status Z-moves
+   - Side Management (clearChoice, activeRequest, etc.)
+   - Format Callbacks (onBegin, runAction, swap events)
 
 2. **Track progress:** Commit after each feature group
 

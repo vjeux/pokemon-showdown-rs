@@ -6257,18 +6257,48 @@ impl Battle {
                 // JS: if (action.choice === 'move')
 
                 // Get the move (considering Z-Move/Max Move transformations)
-                let move_id = move_action.move_id.clone();
+                let mut move_id = move_action.move_id.clone();
 
-                // JS: if (action.zmove) { ... }
-                // TODO: Implement Z-Move transformation
-                // Requires: this.actions.getZMove(), this.dex.getActiveMove()
+                // JS: if (action.zmove) {
+                //         const zMoveName = this.actions.getZMove(action.move, action.pokemon, true);
+                //         if (zMoveName) {
+                //             const zMove = this.dex.getActiveMove(zMoveName);
+                //             if (zMove.exists && zMove.isZ) {
+                //                 move = zMove;
+                //             }
+                //         }
+                //     }
+                if let Some(ref zmove_name) = move_action.zmove {
+                    // Z-Move transformation: get the active Z-Move
+                    if let Some(z_move) = self.dex.get_active_move(zmove_name) {
+                        if z_move.is_z {
+                            // Use Z-Move for priority calculation
+                            move_id = z_move.id;
+                        }
+                    }
+                }
 
-                // JS: if (action.maxMove) { ... }
-                // TODO: Implement Max Move transformation
-                // Requires: this.actions.getMaxMove(), this.actions.getActiveMaxMove()
+                // JS: if (action.maxMove) {
+                //         const maxMoveName = this.actions.getMaxMove(action.maxMove, action.pokemon);
+                //         if (maxMoveName) {
+                //             const maxMove = this.actions.getActiveMaxMove(action.move, action.pokemon);
+                //             if (maxMove.exists && maxMove.isMax) {
+                //                 move = maxMove;
+                //             }
+                //         }
+                //     }
+                if let Some(ref max_move_name) = move_action.max_move {
+                    // Max Move transformation: get the active Max Move
+                    if let Some(max_move) = self.dex.get_active_move(max_move_name) {
+                        if max_move.is_max {
+                            // Use Max Move for priority calculation
+                            move_id = max_move.id;
+                        }
+                    }
+                }
 
                 // JS: let priority = this.dex.moves.get(move.id).priority;
-                // Get base priority from move data in Dex
+                // Get base priority from move data in Dex (from potentially transformed move)
                 let mut priority = if let Some(move_data) = self.dex.get_move_by_id(&move_id) {
                     move_data.priority
                 } else {
