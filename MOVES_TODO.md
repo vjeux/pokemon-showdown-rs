@@ -256,7 +256,7 @@ Moves with callbacks: 373
 - [ ] ragingbull - Raging Bull (Physical, Normal) - 2 callbacks: onTryHit, onModifyType
 - [ ] rapidspin - Rapid Spin (Physical, Normal) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [x] razorwind - Razor Wind (Special, Normal) - 1 callback: onTryMove
-- [ ] recycle - Recycle (Status, Normal) - 1 callback: onHit
+- [x] recycle - Recycle (Status, Normal) - 1 callback: onHit
 - [ ] reflect - Reflect (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
 - [ ] reflecttype - Reflect Type (Status, Normal) - 1 callback: onHit
 - [ ] refresh - Refresh (Status, Normal) - 1 callback: onHit
