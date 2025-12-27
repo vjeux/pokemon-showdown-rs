@@ -35,7 +35,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         // Prioritize the target's action (move it to front of queue)
         battle.queue.prioritize_action(target_pos.0, target_pos.1);
 
-        // TODO: battle.add('-activate', target, 'move: After You');
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        use crate::battle::Arg;
+        battle.add("-activate", &[Arg::Pokemon(target), Arg::Str("move: After You")]);
 
         EventResult::Continue
     } else {

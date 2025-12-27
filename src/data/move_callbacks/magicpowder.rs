@@ -43,7 +43,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         return EventResult::Bool(false);
     }
 
-    // TODO: battle.add('-start', target, 'typechange', 'Psychic');
+    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    use crate::battle::Arg;
+    battle.add("-start", &[Arg::Pokemon(target), Arg::Str("typechange"), Arg::Str("Psychic")]);
     EventResult::Continue
 }
 

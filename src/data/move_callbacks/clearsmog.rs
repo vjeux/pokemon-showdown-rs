@@ -22,7 +22,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         target.clear_boosts();
     }
 
-    // TODO: battle.add('-clearboost', target);
+    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    use crate::battle::Arg;
+    battle.add("-clearboost", &[Arg::Pokemon(target)]);
 
     EventResult::Continue
 }

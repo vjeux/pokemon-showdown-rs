@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_hit_field(battle: &mut Battle) -> EventResult {
-    // TODO: battle.add('-clearallboost');
+    battle.add("-clearallboost", &[]);
 
     // Get all active pokemon positions
     let active_positions = battle.get_all_active();

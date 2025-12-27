@@ -33,7 +33,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     if is_already_water {
         // Already Water type - fail but still animate
-        // TODO: battle.add('-fail', target);
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        use crate::battle::Arg;
+        battle.add("-fail", &[Arg::Pokemon(target)]);
         return EventResult::Null;
     }
 
@@ -46,11 +52,23 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     if !success {
         // Failed to set type - fail but still animate
-        // TODO: battle.add('-fail', target);
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        use crate::battle::Arg;
+        battle.add("-fail", &[Arg::Pokemon(target)]);
         return EventResult::Null;
     }
 
-    // TODO: battle.add('-start', target, 'typechange', 'Water');
+    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    use crate::battle::Arg;
+    battle.add("-start", &[Arg::Pokemon(target), Arg::Str("typechange"), Arg::Str("Water")]);
     EventResult::Continue
 }
 
