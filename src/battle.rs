@@ -6549,15 +6549,11 @@ impl Battle {
                 move_action.priority = priority;
 
                 // JS: if (this.gen > 5) action.move.priority = priority;
-                // Note: In Gen 6+, Quick Guard checks if move priority was artificially enhanced.
-                // JavaScript sets action.move.priority to track this, but in Rust:
-                // - MoveAction only has move_id (ID), not a mutable Move object reference
-                // - Moves are stored in Dex (read-only HashMap)
-                // To implement this properly, we would need to either:
-                // 1. Add a move_priority_modified: Option<i8> field to MoveAction, or
-                // 2. Store modified move state in Battle (e.g., HashMap<move_id, modified_priority>)
-                // For now, Quick Guard won't be able to detect artificially enhanced priority.
-                // TODO: Implement move.priority tracking for Quick Guard (Gen 6+ mechanic)
+                // In Gen 6+, Quick Guard checks if move priority was artificially enhanced
+                // Store the modified priority value for the move itself
+                if self.gen > 5 {
+                    move_action.move_priority_modified = Some(priority);
+                }
 
                 // JS: action.speed = action.pokemon.getActionSpeed();
                 let pokemon_speed = self.get_pokemon_action_speed(move_action.side_index, move_action.pokemon_index);

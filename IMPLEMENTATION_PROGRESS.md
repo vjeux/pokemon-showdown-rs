@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 69/79 TODOs (87.3%)
+**Feature Implementation:** ⚠️ 70/79 TODOs (88.6%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -758,6 +758,22 @@
 - Critical for move chaining mechanics where called moves inherit caller's properties
 
 **Enables:** Correct priority for called moves (Copycat, Me First, Dancer), Prankster boost inheritance for chained moves
+
+### Session 11 - Quick Guard Move Priority Tracking (1 implementation)
+
+#### Move Priority Modified Field (1/1) ✅
+- [x] **move_priority_modified field in MoveAction** (battle_queue.rs:45-49) - Track modified move priority for Quick Guard
+- [x] **Gen 6+ priority tracking** (battle.rs:6551-6556) - Set move_priority_modified when priority is modified
+
+**Implementation Details:**
+- Added `move_priority_modified: Option<i8>` field to MoveAction struct
+- Stores the modified priority value for the move itself (not just the action's priority)
+- Set in get_action_speed() when gen > 5: `if self.gen > 5 { move_action.move_priority_modified = Some(priority); }`
+- Matches JavaScript: `if (this.gen > 5) action.move.priority = priority;`
+- Updated all MoveAction constructions to include the new field (3 test cases in battle_queue.rs)
+- Allows Quick Guard to detect if a move's priority was artificially enhanced by abilities like Prankster
+
+**Enables:** Quick Guard detection of artificially enhanced move priority (Gen 6+ mechanic), proper Quick Guard blocking of priority-boosted moves
 
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 

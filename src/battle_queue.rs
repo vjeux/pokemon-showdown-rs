@@ -42,6 +42,11 @@ pub struct MoveAction {
     pub max_move: Option<String>,
     /// Tera type if terastallizing
     pub terastallize: Option<String>,
+    /// Modified move priority for Quick Guard detection (Gen 6+)
+    /// JavaScript: action.move.priority = priority
+    /// Stores the priority value assigned to the move itself, allowing Quick Guard
+    /// to detect if the move's priority was artificially enhanced (e.g., by Prankster)
+    pub move_priority_modified: Option<i8>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -1066,6 +1071,7 @@ mod tests {
             zmove: None,
             max_move: None,
             terastallize: None,
+            move_priority_modified: None,
         }));
 
         queue.push(Action::Move(MoveAction {
@@ -1082,6 +1088,7 @@ mod tests {
             zmove: None,
             max_move: None,
             terastallize: None,
+            move_priority_modified: None,
         }));
 
         queue.push(Action::Move(MoveAction {
@@ -1098,6 +1105,7 @@ mod tests {
             zmove: None,
             max_move: None,
             terastallize: None,
+            move_priority_modified: None,
         }));
 
         queue.sort();
