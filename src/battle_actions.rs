@@ -2855,9 +2855,14 @@ pub fn use_move_inner(
     //     move.sourceEffect = sourceEffect.id;
     //     move.ignoreAbility = (sourceEffect as ActiveMove).ignoreAbility;
     // }
-    // TODO: Set move source effect
-    // In Rust, moves are immutable data, so this would need to be tracked in ActiveMove state
-    // For now, source_effect is already passed to event handlers, so this is handled
+    if let Some(ref source_eff_id) = source_effect {
+        active_move.source_effect = Some(source_eff_id.clone());
+
+        // If sourceEffect is an ActiveMove, copy its ignoreAbility
+        if let Some(source_move) = battle.dex.get_active_move(source_eff_id.as_str()) {
+            active_move.ignore_ability = source_move.ignore_ability;
+        }
+    }
 
     // let moveResult = false;
     let mut move_result = false;

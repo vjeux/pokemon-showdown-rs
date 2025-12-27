@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 66/79 TODOs (83.5%)
+**Feature Implementation:** ⚠️ 67/79 TODOs (84.8%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -703,11 +703,30 @@
 
 **Enables:** Move stat changes (Swords Dance, Growl, etc.) and stat change secondary effects (Icy Wind, Charge Beam, etc.)
 
+#### Source Effect Tracking (1/1) ✅
+- [x] **active_move.source_effect assignment** (battle_actions.rs:2858-2865) - Set source effect and copy ignore_ability from source move
+
+**Implementation Details:**
+- Sets active_move.source_effect to Some(source_effect_id) when source_effect parameter is Some
+- If source effect refers to a move, looks up the move using dex.get_active_move()
+- Copies ignore_ability flag from source move to active_move
+- Matches JavaScript battle-actions.ts:
+  ```javascript
+  if (sourceEffect) {
+      move.sourceEffect = sourceEffect.id;
+      move.ignoreAbility = (sourceEffect as ActiveMove).ignoreAbility;
+  }
+  ```
+- Properly tracks which effect triggered this move (item/ability/move)
+- Used for move chaining (Dancer, Instruct) and ability interactions
+
+**Enables:** Correct source effect tracking for triggered moves, ability ignore flag inheritance
+
 ## Remaining P1 Important (0 TODOs) ✅ ALL P1 COMPLETE
 
 **Next Focus:** P2 Nice-to-have features (Gen-specific mechanics, Dynamax, Infrastructure improvements)
 
-## Remaining P2 Nice-to-have (13 TODOs)
+## Remaining P2 Nice-to-have (12 TODOs)
 
 ### Gen-Specific (1 TODO)
 - Gen 1 no-progress checks
