@@ -559,27 +559,12 @@ impl BattleStream {
     // 		}
     // 	}
     //
-    // 
-    // 	async start() {
-    // 		for await (const chunk of this.stream) {
-    // 			this.receive(chunk);
-    // 		}
-    // 	}
-    //
     pub fn start(&mut self, options: BattleOptions) {
         self.battle = Some(Battle::new(options));
     }
 
     /// Write input to the battle
     /// Equivalent to _write() in battle-stream.ts
-    // 			write(data: string) {
-    // 				void stream.write(data.replace(/(^|\n)/g, `$1>p4 `));
-    // 			}
-    //
-    // 			write(data: string) {
-    // 				void stream.write(data.replace(/(^|\n)/g, `$1>p4 `));
-    // 			}
-    //
     // 			write(data: string) {
     // 				void stream.write(data);
     // 			}
@@ -740,40 +725,6 @@ impl BattleStream {
     // 		this.push(`${type}\n${data}`);
     // 	}
     //
-    // 
-    // 	pushMessage(type: string, data: string) {
-    // 		if (this.replay) {
-    // 			if (type === 'update') {
-    // 				if (this.replay === 'spectator') {
-    // 					const channelMessages = extractChannelMessages(data, [0]);
-    // 					this.push(channelMessages[0].join('\n'));
-    // 				} else {
-    // 					const channelMessages = extractChannelMessages(data, [-1]);
-    // 					this.push(channelMessages[-1].join('\n'));
-    // 				}
-    // 			}
-    // 			return;
-    // 		}
-    // 		this.push(`${type}\n${data}`);
-    // 	}
-    //
-    // 
-    // 	pushMessage(type: string, data: string) {
-    // 		if (this.replay) {
-    // 			if (type === 'update') {
-    // 				if (this.replay === 'spectator') {
-    // 					const channelMessages = extractChannelMessages(data, [0]);
-    // 					this.push(channelMessages[0].join('\n'));
-    // 				} else {
-    // 					const channelMessages = extractChannelMessages(data, [-1]);
-    // 					this.push(channelMessages[-1].join('\n'));
-    // 				}
-    // 			}
-    // 			return;
-    // 		}
-    // 		this.push(`${type}\n${data}`);
-    // 	}
-    //
     pub fn push_message(&mut self, msg_type: &str, data: &str) {
         match self.replay {
             ReplayMode::Off => {
@@ -796,10 +747,6 @@ impl BattleStream {
     }
 
     /// Read output from the battle
-    // 			read() {}
-    //
-    // 			read() {}
-    //
     // 			read() {}
     //
     pub fn read(&mut self) -> Option<String> {

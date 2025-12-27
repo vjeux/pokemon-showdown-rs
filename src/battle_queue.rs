@@ -281,11 +281,6 @@ impl BattleQueue {
     // 		return this.list.shift();
     // 	}
     //
-    // 
-    // 	shift() {
-    // 		return this.list.shift();
-    // 	}
-    //
     pub fn shift(&mut self) -> Option<Action> {
         if self.list.is_empty() {
             None
@@ -295,14 +290,6 @@ impl BattleQueue {
     }
 
     /// Peek at the next action without removing
-    // 	peek(end?: boolean): Action | undefined {
-    // 		return this.list[end ? this.list.length - 1 : 0];
-    // 	}
-    //
-    // 	peek(end?: boolean): Action | undefined {
-    // 		return this.list[end ? this.list.length - 1 : 0];
-    // 	}
-    //
     // 	peek(end?: boolean): Action | undefined {
     // 		return this.list[end ? this.list.length - 1 : 0];
     // 	}
@@ -321,27 +308,11 @@ impl BattleQueue {
     // 		return this.list.push(action);
     // 	}
     //
-    // 	push(action: Action) {
-    // 		return this.list.push(action);
-    // 	}
-    //
-    // 	push(action: Action) {
-    // 		return this.list.push(action);
-    // 	}
-    //
     pub fn push(&mut self, action: Action) {
         self.list.push(action);
     }
 
     /// Unshift an action to the front
-    // 	unshift(action: Action) {
-    // 		return this.list.unshift(action);
-    // 	}
-    //
-    // 	unshift(action: Action) {
-    // 		return this.list.unshift(action);
-    // 	}
-    //
     // 	unshift(action: Action) {
     // 		return this.list.unshift(action);
     // 	}
@@ -366,45 +337,11 @@ impl BattleQueue {
     // 		this.list = [];
     // 	}
     //
-    // 
-    // 	clear() {
-    // 		this.list = [];
-    // 	}
-    //
-    // 
-    // 	clear() {
-    // 		this.list = [];
-    // 	}
-    //
     pub fn clear(&mut self) {
         self.list.clear();
     }
 
     /// Cancel all actions for a specific pokemon
-    // 
-    // 	cancelAction(pokemon: Pokemon) {
-    // 		const oldLength = this.list.length;
-    // 		for (let i = 0; i < this.list.length; i++) {
-    // 			if (this.list[i].pokemon === pokemon) {
-    // 				this.list.splice(i, 1);
-    // 				i--;
-    // 			}
-    // 		}
-    // 		return this.list.length !== oldLength;
-    // 	}
-    //
-    // 
-    // 	cancelAction(pokemon: Pokemon) {
-    // 		const oldLength = this.list.length;
-    // 		for (let i = 0; i < this.list.length; i++) {
-    // 			if (this.list[i].pokemon === pokemon) {
-    // 				this.list.splice(i, 1);
-    // 				i--;
-    // 			}
-    // 		}
-    // 		return this.list.length !== oldLength;
-    // 	}
-    //
     // 
     // 	cancelAction(pokemon: Pokemon) {
     // 		const oldLength = this.list.length;
@@ -437,28 +374,6 @@ impl BattleQueue {
     // 		return false;
     // 	}
     //
-    // 
-    // 	cancelMove(pokemon: Pokemon) {
-    // 		for (const [i, action] of this.list.entries()) {
-    // 			if (action.choice === 'move' && action.pokemon === pokemon) {
-    // 				this.list.splice(i, 1);
-    // 				return true;
-    // 			}
-    // 		}
-    // 		return false;
-    // 	}
-    //
-    // 
-    // 	cancelMove(pokemon: Pokemon) {
-    // 		for (const [i, action] of this.list.entries()) {
-    // 			if (action.choice === 'move' && action.pokemon === pokemon) {
-    // 				this.list.splice(i, 1);
-    // 				return true;
-    // 			}
-    // 		}
-    // 		return false;
-    // 	}
-    //
     pub fn cancel_move(&mut self, side_index: usize, pokemon_index: usize) -> bool {
         let pos = self.list.iter().position(|action| {
             action.is_move() &&
@@ -474,28 +389,6 @@ impl BattleQueue {
     }
 
     /// Check if a pokemon will move this turn
-    // 
-    // 	willMove(pokemon: Pokemon) {
-    // 		if (pokemon.fainted) return null;
-    // 		for (const action of this.list) {
-    // 			if (action.choice === 'move' && action.pokemon === pokemon) {
-    // 				return action;
-    // 			}
-    // 		}
-    // 		return null;
-    // 	}
-    //
-    // 
-    // 	willMove(pokemon: Pokemon) {
-    // 		if (pokemon.fainted) return null;
-    // 		for (const action of this.list) {
-    // 			if (action.choice === 'move' && action.pokemon === pokemon) {
-    // 				return action;
-    // 			}
-    // 		}
-    // 		return null;
-    // 	}
-    //
     // 
     // 	willMove(pokemon: Pokemon) {
     // 		if (pokemon.fainted) return null;
@@ -535,26 +428,6 @@ impl BattleQueue {
     // 		return null;
     // 	}
     //
-    // 
-    // 	willSwitch(pokemon: Pokemon) {
-    // 		for (const action of this.list) {
-    // 			if (['switch', 'instaswitch'].includes(action.choice) && action.pokemon === pokemon) {
-    // 				return action;
-    // 			}
-    // 		}
-    // 		return null;
-    // 	}
-    //
-    // 
-    // 	willSwitch(pokemon: Pokemon) {
-    // 		for (const action of this.list) {
-    // 			if (['switch', 'instaswitch'].includes(action.choice) && action.pokemon === pokemon) {
-    // 				return action;
-    // 			}
-    // 		}
-    // 		return null;
-    // 	}
-    //
     pub fn will_switch(&self, side_index: usize, pokemon_index: usize) -> Option<&SwitchAction> {
         for action in &self.list {
             if let Action::Switch(switch_action) = action {
@@ -567,26 +440,6 @@ impl BattleQueue {
     }
 
     /// Check if any pokemon will act
-    // 
-    // 	willAct() {
-    // 		for (const action of this.list) {
-    // 			if (['move', 'switch', 'instaswitch', 'shift'].includes(action.choice)) {
-    // 				return action;
-    // 			}
-    // 		}
-    // 		return null;
-    // 	}
-    //
-    // 
-    // 	willAct() {
-    // 		for (const action of this.list) {
-    // 			if (['move', 'switch', 'instaswitch', 'shift'].includes(action.choice)) {
-    // 				return action;
-    // 			}
-    // 		}
-    // 		return null;
-    // 	}
-    //
     // 
     // 	willAct() {
     // 		for (const action of this.list) {
@@ -661,53 +514,12 @@ impl BattleQueue {
     // 		}
     // 	}
     //
-    // 		if (choice.pokemon) {
-    // 			choice.pokemon.updateSpeed();
-    // 		}
-    // 		const actions = this.resolveAction(choice, midTurn);
-    // 
-    // 		let firstIndex = null;
-    // 		let lastIndex = null;
-    // 		for (const [i, curAction] of this.list.entries()) {
-    // 			const compared = this.battle.comparePriority(actions[0], curAction);
-    // 			if (compared <= 0 && firstIndex === null) {
-    // 				firstIndex = i;
-    // 			}
-    // 			if (compared < 0) {
-    // 				lastIndex = i;
-    // 				break;
-    // 			}
-    // 		}
-    // 
-    // 		if (firstIndex === null) {
-    // 			this.list.push(...actions);
-    // 		} else {
-    // 			if (lastIndex === null) lastIndex = this.list.length;
-    // 			const index = firstIndex === lastIndex ? firstIndex : this.battle.random(firstIndex, lastIndex + 1);
-    // 			this.list.splice(index, 0, ...actions);
-    // 		}
-    // 	}
-    //
     pub fn insert_choice(&mut self, action: Action) {
         self.list.insert(0, action);
     }
 
     /// Sort the queue by priority
     /// Order: order (lower first), priority (higher first), speed (higher first)
-    // 
-    // 	sort() {
-    // 		// this.log.push('SORT ' + this.debugQueue());
-    // 		this.battle.speedSort(this.list);
-    // 		return this;
-    // 	}
-    //
-    // 
-    // 	sort() {
-    // 		// this.log.push('SORT ' + this.debugQueue());
-    // 		this.battle.speedSort(this.list);
-    // 		return this;
-    // 	}
-    //
     // 
     // 	sort() {
     // 		// this.log.push('SORT ' + this.debugQueue());
@@ -875,59 +687,11 @@ impl BattleQueue {
     // 		}
     // 	}
     //
-    // 
-    // 	addChoice(choices: ActionChoice | ActionChoice[]) {
-    // 		if (!Array.isArray(choices)) choices = [choices];
-    // 		for (const choice of choices) {
-    // 			const resolvedChoices = this.resolveAction(choice);
-    // 			this.list.push(...resolvedChoices);
-    // 			for (const resolvedChoice of resolvedChoices) {
-    // 				if (resolvedChoice && resolvedChoice.choice === 'move' && resolvedChoice.move.id !== 'recharge') {
-    // 					resolvedChoice.pokemon.side.lastSelectedMove = resolvedChoice.move.id;
-    // 				}
-    // 			}
-    // 		}
-    // 	}
-    //
-    // 
-    // 	addChoice(choices: ActionChoice | ActionChoice[]) {
-    // 		if (!Array.isArray(choices)) choices = [choices];
-    // 		for (const choice of choices) {
-    // 			const resolvedChoices = this.resolveAction(choice);
-    // 			this.list.push(...resolvedChoices);
-    // 			for (const resolvedChoice of resolvedChoices) {
-    // 				if (resolvedChoice && resolvedChoice.choice === 'move' && resolvedChoice.move.id !== 'recharge') {
-    // 					resolvedChoice.pokemon.side.lastSelectedMove = resolvedChoice.move.id;
-    // 				}
-    // 			}
-    // 		}
-    // 	}
-    //
     pub fn add_choice(&mut self, action: Action) {
         self.list.push(action);
     }
 
     /// Debug output for queue state
-    // 
-    // 	debug(action?: any): string {
-    // 		if (action) {
-    // 			return `${action.order || ''}:${action.priority || ''}:${action.speed || ''}:${action.subOrder || ''} - ${action.choice}${action.pokemon ? ' ' + action.pokemon : ''}${action.move ? ' ' + action.move : ''}`;
-    // 		}
-    // 		return this.list.map(
-    // 			queueAction => this.debug(queueAction)
-    // 		).join('\n') + '\n';
-    // 	}
-    //
-    // 
-    // 	debug(action?: any): string {
-    // 		if (action) {
-    // 			return `${action.order || ''}:${action.priority || ''}:${action.speed || ''}:${action.subOrder || ''} - ${action.choice}${action.pokemon ? ' ' + action.pokemon : ''}${action.move ? ' ' + action.move : ''}`;
-    // 		}
-    // 		return this.list.map(
-    // 			queueAction => this.debug(queueAction)
-    // 		).join('\n') + '\n';
-    // 	}
-    //
     // 
     // 	debug(action?: any): string {
     // 		if (action) {
@@ -966,14 +730,6 @@ impl BattleQueue {
     }
 
     /// Get entries as iterator with indices
-    // 	entries() {
-    // 		return this.list.entries();
-    // 	}
-    //
-    // 	entries() {
-    // 		return this.list.entries();
-    // 	}
-    //
     // 	entries() {
     // 		return this.list.entries();
     // 	}
@@ -1050,212 +806,6 @@ impl BattleQueue {
     // 		if (action.choice === 'pass') return [];
     // 		const actions = [action];
     // 
-    // 		if (!action.side && action.pokemon) action.side = action.pokemon.side;
-    // 		if (!action.move && action.moveid) action.move = this.battle.dex.getActiveMove(action.moveid);
-    // 		if (!action.order) {
-    // 			const orders: { [choice: string]: number } = {
-    // 				team: 1,
-    // 				start: 2,
-    // 				instaswitch: 3,
-    // 				beforeTurn: 4,
-    // 				beforeTurnMove: 5,
-    // 				revivalblessing: 6,
-    // 
-    // 				runSwitch: 101,
-    // 				switch: 103,
-    // 				megaEvo: 104,
-    // 				megaEvoX: 104,
-    // 				megaEvoY: 104,
-    // 				runDynamax: 105,
-    // 				terastallize: 106,
-    // 				priorityChargeMove: 107,
-    // 
-    // 				shift: 200,
-    // 				// default is 200 (for moves)
-    // 
-    // 				residual: 300,
-    // 			};
-    // 			if (action.choice in orders) {
-    // 				action.order = orders[action.choice];
-    // 			} else {
-    // 				action.order = 200;
-    // 				if (!['move', 'event'].includes(action.choice)) {
-    // 					throw new Error(`Unexpected orderless action ${action.choice}`);
-    // 				}
-    // 			}
-    // 		}
-    // 		if (!midTurn) {
-    // 			if (action.choice === 'move') {
-    // 				if (!action.maxMove && !action.zmove && action.move.beforeTurnCallback) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'beforeTurnMove', pokemon: action.pokemon, move: action.move, targetLoc: action.targetLoc,
-    // 					}));
-    // 				}
-    // 				if (action.mega && !action.pokemon.isSkyDropped()) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'megaEvo',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (action.megax && !action.pokemon.isSkyDropped()) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'megaEvoX',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (action.megay && !action.pokemon.isSkyDropped()) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'megaEvoY',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (action.terastallize && !action.pokemon.terastallized) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'terastallize',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (action.maxMove && !action.pokemon.volatiles['dynamax']) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'runDynamax',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (!action.maxMove && !action.zmove && action.move.priorityChargeCallback) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'priorityChargeMove',
-    // 						pokemon: action.pokemon,
-    // 						move: action.move,
-    // 					}));
-    // 				}
-    // 				action.fractionalPriority = this.battle.runEvent('FractionalPriority', action.pokemon, null, action.move, 0);
-    // 			} else if (['switch', 'instaswitch'].includes(action.choice)) {
-    // 				if (typeof action.pokemon.switchFlag === 'string') {
-    // 					action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
-    // 				}
-    // 				action.pokemon.switchFlag = false;
-    // 			}
-    // 		}
-    // 
-    // 		const deferPriority = this.battle.gen === 7 && action.mega && action.mega !== 'done';
-    // 		if (action.move) {
-    // 			let target = null;
-    // 			action.move = this.battle.dex.getActiveMove(action.move);
-    // 
-    // 			if (!action.targetLoc) {
-    // 				target = this.battle.getRandomTarget(action.pokemon, action.move);
-    // 				// TODO: what actually happens here?
-    // 				if (target) action.targetLoc = action.pokemon.getLocOf(target);
-    // 			}
-    // 			action.originalTarget = action.pokemon.getAtLoc(action.targetLoc);
-    // 		}
-    // 		if (!deferPriority) this.battle.getActionSpeed(action);
-    // 		return actions as any;
-    // 	}
-    //
-    // 		if (!action.side && action.pokemon) action.side = action.pokemon.side;
-    // 		if (!action.move && action.moveid) action.move = this.battle.dex.getActiveMove(action.moveid);
-    // 		if (!action.order) {
-    // 			const orders: { [choice: string]: number } = {
-    // 				team: 1,
-    // 				start: 2,
-    // 				instaswitch: 3,
-    // 				beforeTurn: 4,
-    // 				beforeTurnMove: 5,
-    // 				revivalblessing: 6,
-    // 
-    // 				runSwitch: 101,
-    // 				switch: 103,
-    // 				megaEvo: 104,
-    // 				megaEvoX: 104,
-    // 				megaEvoY: 104,
-    // 				runDynamax: 105,
-    // 				terastallize: 106,
-    // 				priorityChargeMove: 107,
-    // 
-    // 				shift: 200,
-    // 				// default is 200 (for moves)
-    // 
-    // 				residual: 300,
-    // 			};
-    // 			if (action.choice in orders) {
-    // 				action.order = orders[action.choice];
-    // 			} else {
-    // 				action.order = 200;
-    // 				if (!['move', 'event'].includes(action.choice)) {
-    // 					throw new Error(`Unexpected orderless action ${action.choice}`);
-    // 				}
-    // 			}
-    // 		}
-    // 		if (!midTurn) {
-    // 			if (action.choice === 'move') {
-    // 				if (!action.maxMove && !action.zmove && action.move.beforeTurnCallback) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'beforeTurnMove', pokemon: action.pokemon, move: action.move, targetLoc: action.targetLoc,
-    // 					}));
-    // 				}
-    // 				if (action.mega && !action.pokemon.isSkyDropped()) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'megaEvo',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (action.megax && !action.pokemon.isSkyDropped()) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'megaEvoX',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (action.megay && !action.pokemon.isSkyDropped()) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'megaEvoY',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (action.terastallize && !action.pokemon.terastallized) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'terastallize',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (action.maxMove && !action.pokemon.volatiles['dynamax']) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'runDynamax',
-    // 						pokemon: action.pokemon,
-    // 					}));
-    // 				}
-    // 				if (!action.maxMove && !action.zmove && action.move.priorityChargeCallback) {
-    // 					actions.unshift(...this.resolveAction({
-    // 						choice: 'priorityChargeMove',
-    // 						pokemon: action.pokemon,
-    // 						move: action.move,
-    // 					}));
-    // 				}
-    // 				action.fractionalPriority = this.battle.runEvent('FractionalPriority', action.pokemon, null, action.move, 0);
-    // 			} else if (['switch', 'instaswitch'].includes(action.choice)) {
-    // 				if (typeof action.pokemon.switchFlag === 'string') {
-    // 					action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
-    // 				}
-    // 				action.pokemon.switchFlag = false;
-    // 			}
-    // 		}
-    // 
-    // 		const deferPriority = this.battle.gen === 7 && action.mega && action.mega !== 'done';
-    // 		if (action.move) {
-    // 			let target = null;
-    // 			action.move = this.battle.dex.getActiveMove(action.move);
-    // 
-    // 			if (!action.targetLoc) {
-    // 				target = this.battle.getRandomTarget(action.pokemon, action.move);
-    // 				// TODO: what actually happens here?
-    // 				if (target) action.targetLoc = action.pokemon.getLocOf(target);
-    // 			}
-    // 			action.originalTarget = action.pokemon.getAtLoc(action.targetLoc);
-    // 		}
-    // 		if (!deferPriority) this.battle.getActionSpeed(action);
-    // 		return actions as any;
-    // 	}
-    //
     // 		if (!action.side && action.pokemon) action.side = action.pokemon.side;
     // 		if (!action.move && action.moveid) action.move = this.battle.dex.getActiveMove(action.moveid);
     // 		if (!action.order) {

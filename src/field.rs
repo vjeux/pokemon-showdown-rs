@@ -110,165 +110,6 @@ impl Field {
     // 		return true;
     // 	}
     //
-    // 
-    // 	setWeather(status: string | Condition, source: Pokemon | 'debug' | null = null, sourceEffect: Effect | null = null) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
-    // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
-    // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 
-    // 		if (this.weather === status.id) {
-    // 			if (sourceEffect && sourceEffect.effectType === 'Ability') {
-    // 				if (this.battle.gen > 5 || this.weatherState.duration === 0) {
-    // 					return false;
-    // 				}
-    // 			} else if (this.battle.gen > 2 || status.id === 'sandstorm') {
-    // 				return false;
-    // 			}
-    // 		}
-    // 		if (source) {
-    // 			const result = this.battle.runEvent('SetWeather', source, source, status);
-    // 			if (!result) {
-    // 				if (result === false) {
-    // 					if ((sourceEffect as Move)?.weather) {
-    // 						this.battle.add('-fail', source, sourceEffect, '[from] ' + this.weather);
-    // 					} else if (sourceEffect && sourceEffect.effectType === 'Ability') {
-    // 						this.battle.add('-ability', source, sourceEffect, '[from] ' + this.weather, '[fail]');
-    // 					}
-    // 				}
-    // 				return null;
-    // 			}
-    // 		}
-    // 		const prevWeather = this.weather;
-    // 		const prevWeatherState = this.weatherState;
-    // 		this.weather = status.id;
-    // 		this.weatherState = this.battle.initEffectState({ id: status.id });
-    // 		if (source) {
-    // 			this.weatherState.source = source;
-    // 			this.weatherState.sourceSlot = source.getSlot();
-    // 		}
-    // 		if (status.duration) {
-    // 			this.weatherState.duration = status.duration;
-    // 		}
-    // 		if (status.durationCallback) {
-    // 			if (!source) throw new Error(`setting weather without a source`);
-    // 			this.weatherState.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
-    // 		}
-    // 		if (!this.battle.singleEvent('FieldStart', status, this.weatherState, this, source, sourceEffect)) {
-    // 			this.weather = prevWeather;
-    // 			this.weatherState = prevWeatherState;
-    // 			return false;
-    // 		}
-    // 		this.battle.eachEvent('WeatherChange', sourceEffect);
-    // 		return true;
-    // 	}
-    //
-    // 
-    // 	setWeather(status: string | Condition, source: Pokemon | 'debug' | null = null, sourceEffect: Effect | null = null) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
-    // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
-    // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 
-    // 		if (this.weather === status.id) {
-    // 			if (sourceEffect && sourceEffect.effectType === 'Ability') {
-    // 				if (this.battle.gen > 5 || this.weatherState.duration === 0) {
-    // 					return false;
-    // 				}
-    // 			} else if (this.battle.gen > 2 || status.id === 'sandstorm') {
-    // 				return false;
-    // 			}
-    // 		}
-    // 		if (source) {
-    // 			const result = this.battle.runEvent('SetWeather', source, source, status);
-    // 			if (!result) {
-    // 				if (result === false) {
-    // 					if ((sourceEffect as Move)?.weather) {
-    // 						this.battle.add('-fail', source, sourceEffect, '[from] ' + this.weather);
-    // 					} else if (sourceEffect && sourceEffect.effectType === 'Ability') {
-    // 						this.battle.add('-ability', source, sourceEffect, '[from] ' + this.weather, '[fail]');
-    // 					}
-    // 				}
-    // 				return null;
-    // 			}
-    // 		}
-    // 		const prevWeather = this.weather;
-    // 		const prevWeatherState = this.weatherState;
-    // 		this.weather = status.id;
-    // 		this.weatherState = this.battle.initEffectState({ id: status.id });
-    // 		if (source) {
-    // 			this.weatherState.source = source;
-    // 			this.weatherState.sourceSlot = source.getSlot();
-    // 		}
-    // 		if (status.duration) {
-    // 			this.weatherState.duration = status.duration;
-    // 		}
-    // 		if (status.durationCallback) {
-    // 			if (!source) throw new Error(`setting weather without a source`);
-    // 			this.weatherState.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
-    // 		}
-    // 		if (!this.battle.singleEvent('FieldStart', status, this.weatherState, this, source, sourceEffect)) {
-    // 			this.weather = prevWeather;
-    // 			this.weatherState = prevWeatherState;
-    // 			return false;
-    // 		}
-    // 		this.battle.eachEvent('WeatherChange', sourceEffect);
-    // 		return true;
-    // 	}
-    //
-    // 
-    // 	setWeather(status: string | Condition, source: Pokemon | 'debug' | null = null, sourceEffect: Effect | null = null) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
-    // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
-    // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 
-    // 		if (this.weather === status.id) {
-    // 			if (sourceEffect && sourceEffect.effectType === 'Ability') {
-    // 				if (this.battle.gen > 5 || this.weatherState.duration === 0) {
-    // 					return false;
-    // 				}
-    // 			} else if (this.battle.gen > 2 || status.id === 'sandstorm') {
-    // 				return false;
-    // 			}
-    // 		}
-    // 		if (source) {
-    // 			const result = this.battle.runEvent('SetWeather', source, source, status);
-    // 			if (!result) {
-    // 				if (result === false) {
-    // 					if ((sourceEffect as Move)?.weather) {
-    // 						this.battle.add('-fail', source, sourceEffect, '[from] ' + this.weather);
-    // 					} else if (sourceEffect && sourceEffect.effectType === 'Ability') {
-    // 						this.battle.add('-ability', source, sourceEffect, '[from] ' + this.weather, '[fail]');
-    // 					}
-    // 				}
-    // 				return null;
-    // 			}
-    // 		}
-    // 		const prevWeather = this.weather;
-    // 		const prevWeatherState = this.weatherState;
-    // 		this.weather = status.id;
-    // 		this.weatherState = this.battle.initEffectState({ id: status.id });
-    // 		if (source) {
-    // 			this.weatherState.source = source;
-    // 			this.weatherState.sourceSlot = source.getSlot();
-    // 		}
-    // 		if (status.duration) {
-    // 			this.weatherState.duration = status.duration;
-    // 		}
-    // 		if (status.durationCallback) {
-    // 			if (!source) throw new Error(`setting weather without a source`);
-    // 			this.weatherState.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
-    // 		}
-    // 		if (!this.battle.singleEvent('FieldStart', status, this.weatherState, this, source, sourceEffect)) {
-    // 			this.weather = prevWeather;
-    // 			this.weatherState = prevWeatherState;
-    // 			return false;
-    // 		}
-    // 		this.battle.eachEvent('WeatherChange', sourceEffect);
-    // 		return true;
-    // 	}
-    //
     pub fn set_weather(&mut self, weather_id: ID, duration: Option<i32>) -> bool {
         if weather_id == self.weather {
             return false;
@@ -282,28 +123,6 @@ impl Field {
     }
 
     /// Clear the weather
-    // 
-    // 	clearWeather() {
-    // 		if (!this.weather) return false;
-    // 		const prevWeather = this.getWeather();
-    // 		this.battle.singleEvent('FieldEnd', prevWeather, this.weatherState, this);
-    // 		this.weather = '';
-    // 		this.battle.clearEffectState(this.weatherState);
-    // 		this.battle.eachEvent('WeatherChange');
-    // 		return true;
-    // 	}
-    //
-    // 
-    // 	clearWeather() {
-    // 		if (!this.weather) return false;
-    // 		const prevWeather = this.getWeather();
-    // 		this.battle.singleEvent('FieldEnd', prevWeather, this.weatherState, this);
-    // 		this.weather = '';
-    // 		this.battle.clearEffectState(this.weatherState);
-    // 		this.battle.eachEvent('WeatherChange');
-    // 		return true;
-    // 	}
-    //
     // 
     // 	clearWeather() {
     // 		if (!this.weather) return false;
@@ -332,41 +151,11 @@ impl Field {
     // 		return this.weather;
     // 	}
     //
-    // 
-    // 	effectiveWeather() {
-    // 		if (this.suppressingWeather()) return '';
-    // 		return this.weather;
-    // 	}
-    //
-    // 
-    // 	effectiveWeather() {
-    // 		if (this.suppressingWeather()) return '';
-    // 		return this.weather;
-    // 	}
-    //
     pub fn effective_weather(&self) -> &ID {
         &self.weather
     }
 
     /// Check if weather matches
-    // 
-    // 	isWeather(weather: string | string[]) {
-    // 		const ourWeather = this.effectiveWeather();
-    // 		if (!Array.isArray(weather)) {
-    // 			return ourWeather === toID(weather);
-    // 		}
-    // 		return weather.map(toID).includes(ourWeather);
-    // 	}
-    //
-    // 
-    // 	isWeather(weather: string | string[]) {
-    // 		const ourWeather = this.effectiveWeather();
-    // 		if (!Array.isArray(weather)) {
-    // 			return ourWeather === toID(weather);
-    // 		}
-    // 		return weather.map(toID).includes(ourWeather);
-    // 	}
-    //
     // 
     // 	isWeather(weather: string | string[]) {
     // 		const ourWeather = this.effectiveWeather();
@@ -426,96 +215,6 @@ impl Field {
     // 		return true;
     // 	}
     //
-    // 
-    // 	setTerrain(status: string | Effect, source: Pokemon | 'debug' | null = null, sourceEffect: Effect | null = null) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
-    // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
-    // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 		if (!source) throw new Error(`setting terrain without a source`);
-    // 
-    // 		if (this.terrain === status.id) return false;
-    // 		const prevTerrain = this.terrain;
-    // 		const prevTerrainState = this.terrainState;
-    // 		this.terrain = status.id;
-    // 		this.terrainState = this.battle.initEffectState({
-    // 			id: status.id,
-    // 			source,
-    // 			sourceSlot: source.getSlot(),
-    // 			duration: status.duration,
-    // 		});
-    // 		if (status.durationCallback) {
-    // 			this.terrainState.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
-    // 		}
-    // 		if (!this.battle.singleEvent('FieldStart', status, this.terrainState, this, source, sourceEffect)) {
-    // 			this.terrain = prevTerrain;
-    // 			this.terrainState = prevTerrainState;
-    // 			return false;
-    // 		}
-    // 		this.battle.eachEvent('TerrainChange', sourceEffect);
-    // 		return true;
-    // 	}
-    //
-    // 
-    // 	setTerrain(status: string | Effect, source: Pokemon | 'debug' | null = null, sourceEffect: Effect | null = null) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
-    // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
-    // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 		if (!source) throw new Error(`setting terrain without a source`);
-    // 
-    // 		if (this.terrain === status.id) return false;
-    // 		const prevTerrain = this.terrain;
-    // 		const prevTerrainState = this.terrainState;
-    // 		this.terrain = status.id;
-    // 		this.terrainState = this.battle.initEffectState({
-    // 			id: status.id,
-    // 			source,
-    // 			sourceSlot: source.getSlot(),
-    // 			duration: status.duration,
-    // 		});
-    // 		if (status.durationCallback) {
-    // 			this.terrainState.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
-    // 		}
-    // 		if (!this.battle.singleEvent('FieldStart', status, this.terrainState, this, source, sourceEffect)) {
-    // 			this.terrain = prevTerrain;
-    // 			this.terrainState = prevTerrainState;
-    // 			return false;
-    // 		}
-    // 		this.battle.eachEvent('TerrainChange', sourceEffect);
-    // 		return true;
-    // 	}
-    //
-    // 
-    // 	setTerrain(status: string | Effect, source: Pokemon | 'debug' | null = null, sourceEffect: Effect | null = null) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
-    // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
-    // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 		if (!source) throw new Error(`setting terrain without a source`);
-    // 
-    // 		if (this.terrain === status.id) return false;
-    // 		const prevTerrain = this.terrain;
-    // 		const prevTerrainState = this.terrainState;
-    // 		this.terrain = status.id;
-    // 		this.terrainState = this.battle.initEffectState({
-    // 			id: status.id,
-    // 			source,
-    // 			sourceSlot: source.getSlot(),
-    // 			duration: status.duration,
-    // 		});
-    // 		if (status.durationCallback) {
-    // 			this.terrainState.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
-    // 		}
-    // 		if (!this.battle.singleEvent('FieldStart', status, this.terrainState, this, source, sourceEffect)) {
-    // 			this.terrain = prevTerrain;
-    // 			this.terrainState = prevTerrainState;
-    // 			return false;
-    // 		}
-    // 		this.battle.eachEvent('TerrainChange', sourceEffect);
-    // 		return true;
-    // 	}
-    //
     pub fn set_terrain(&mut self, terrain_id: ID, duration: Option<i32>) -> bool {
         if terrain_id == self.terrain {
             return false;
@@ -529,28 +228,6 @@ impl Field {
     }
 
     /// Clear the terrain
-    // 
-    // 	clearTerrain() {
-    // 		if (!this.terrain) return false;
-    // 		const prevTerrain = this.getTerrain();
-    // 		this.battle.singleEvent('FieldEnd', prevTerrain, this.terrainState, this);
-    // 		this.terrain = '';
-    // 		this.battle.clearEffectState(this.terrainState);
-    // 		this.battle.eachEvent('TerrainChange');
-    // 		return true;
-    // 	}
-    //
-    // 
-    // 	clearTerrain() {
-    // 		if (!this.terrain) return false;
-    // 		const prevTerrain = this.getTerrain();
-    // 		this.battle.singleEvent('FieldEnd', prevTerrain, this.terrainState, this);
-    // 		this.terrain = '';
-    // 		this.battle.clearEffectState(this.terrainState);
-    // 		this.battle.eachEvent('TerrainChange');
-    // 		return true;
-    // 	}
-    //
     // 
     // 	clearTerrain() {
     // 		if (!this.terrain) return false;
@@ -581,128 +258,11 @@ impl Field {
     // 		return terrain.map(toID).includes(ourTerrain);
     // 	}
     //
-    // 
-    // 	isTerrain(terrain: string | string[], target?: Pokemon | Side | Battle) {
-    // 		const ourTerrain = this.effectiveTerrain(target);
-    // 		if (!Array.isArray(terrain)) {
-    // 			return ourTerrain === toID(terrain);
-    // 		}
-    // 		return terrain.map(toID).includes(ourTerrain);
-    // 	}
-    //
-    // 
-    // 	isTerrain(terrain: string | string[], target?: Pokemon | Side | Battle) {
-    // 		const ourTerrain = this.effectiveTerrain(target);
-    // 		if (!Array.isArray(terrain)) {
-    // 			return ourTerrain === toID(terrain);
-    // 		}
-    // 		return terrain.map(toID).includes(ourTerrain);
-    // 	}
-    //
     pub fn is_terrain(&self, terrain: &str) -> bool {
         self.terrain.as_str() == terrain.to_lowercase()
     }
 
     /// Add a pseudo-weather condition
-    // 
-    // 	addPseudoWeather(
-    // 		status: string | Condition,
-    // 		source: Pokemon | 'debug' | null = null,
-    // 		sourceEffect: Effect | null = null
-    // 	): boolean {
-    // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
-    // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 		status = this.battle.dex.conditions.get(status);
-    // 
-    // 		let state = this.pseudoWeather[status.id];
-    // 		if (state) {
-    // 			if (!(status as any).onFieldRestart) return false;
-    // 			return this.battle.singleEvent('FieldRestart', status, state, this, source, sourceEffect);
-    // 		}
-    // 		state = this.pseudoWeather[status.id] = this.battle.initEffectState({
-    // 			id: status.id,
-    // 			source,
-    // 			sourceSlot: source?.getSlot(),
-    // 			duration: status.duration,
-    // 		});
-    // 		if (status.durationCallback) {
-    // 			if (!source) throw new Error(`setting fieldcond without a source`);
-    // 			state.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
-    // 		}
-    // 		if (!this.battle.singleEvent('FieldStart', status, state, this, source, sourceEffect)) {
-    // 			delete this.pseudoWeather[status.id];
-    // 			return false;
-    // 		}
-    // 		this.battle.runEvent('PseudoWeatherChange', source, source, status);
-    // 		return true;
-    // 	}
-    //
-    // 
-    // 	addPseudoWeather(
-    // 		status: string | Condition,
-    // 		source: Pokemon | 'debug' | null = null,
-    // 		sourceEffect: Effect | null = null
-    // 	): boolean {
-    // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
-    // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 		status = this.battle.dex.conditions.get(status);
-    // 
-    // 		let state = this.pseudoWeather[status.id];
-    // 		if (state) {
-    // 			if (!(status as any).onFieldRestart) return false;
-    // 			return this.battle.singleEvent('FieldRestart', status, state, this, source, sourceEffect);
-    // 		}
-    // 		state = this.pseudoWeather[status.id] = this.battle.initEffectState({
-    // 			id: status.id,
-    // 			source,
-    // 			sourceSlot: source?.getSlot(),
-    // 			duration: status.duration,
-    // 		});
-    // 		if (status.durationCallback) {
-    // 			if (!source) throw new Error(`setting fieldcond without a source`);
-    // 			state.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
-    // 		}
-    // 		if (!this.battle.singleEvent('FieldStart', status, state, this, source, sourceEffect)) {
-    // 			delete this.pseudoWeather[status.id];
-    // 			return false;
-    // 		}
-    // 		this.battle.runEvent('PseudoWeatherChange', source, source, status);
-    // 		return true;
-    // 	}
-    //
-    // 
-    // 	addPseudoWeather(
-    // 		status: string | Condition,
-    // 		source: Pokemon | 'debug' | null = null,
-    // 		sourceEffect: Effect | null = null
-    // 	): boolean {
-    // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
-    // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 		status = this.battle.dex.conditions.get(status);
-    // 
-    // 		let state = this.pseudoWeather[status.id];
-    // 		if (state) {
-    // 			if (!(status as any).onFieldRestart) return false;
-    // 			return this.battle.singleEvent('FieldRestart', status, state, this, source, sourceEffect);
-    // 		}
-    // 		state = this.pseudoWeather[status.id] = this.battle.initEffectState({
-    // 			id: status.id,
-    // 			source,
-    // 			sourceSlot: source?.getSlot(),
-    // 			duration: status.duration,
-    // 		});
-    // 		if (status.durationCallback) {
-    // 			if (!source) throw new Error(`setting fieldcond without a source`);
-    // 			state.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
-    // 		}
-    // 		if (!this.battle.singleEvent('FieldStart', status, state, this, source, sourceEffect)) {
-    // 			delete this.pseudoWeather[status.id];
-    // 			return false;
-    // 		}
-    // 		this.battle.runEvent('PseudoWeatherChange', source, source, status);
-    // 		return true;
-    // 	}
-    //
     // 
     // 	addPseudoWeather(
     // 		status: string | Condition,
@@ -758,18 +318,6 @@ impl Field {
     // 		return this.pseudoWeather[status.id] ? status : null;
     // 	}
     //
-    // 
-    // 	getPseudoWeather(status: string | Effect) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		return this.pseudoWeather[status.id] ? status : null;
-    // 	}
-    //
-    // 
-    // 	getPseudoWeather(status: string | Effect) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		return this.pseudoWeather[status.id] ? status : null;
-    // 	}
-    //
     pub fn get_pseudo_weather(&self, id: &ID) -> Option<&EffectState> {
         self.pseudo_weather.get(id)
     }
@@ -790,26 +338,6 @@ impl Field {
     // 		return true;
     // 	}
     //
-    // 
-    // 	removePseudoWeather(status: string | Effect) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		const state = this.pseudoWeather[status.id];
-    // 		if (!state) return false;
-    // 		this.battle.singleEvent('FieldEnd', status, state, this);
-    // 		delete this.pseudoWeather[status.id];
-    // 		return true;
-    // 	}
-    //
-    // 
-    // 	removePseudoWeather(status: string | Effect) {
-    // 		status = this.battle.dex.conditions.get(status);
-    // 		const state = this.pseudoWeather[status.id];
-    // 		if (!state) return false;
-    // 		this.battle.singleEvent('FieldEnd', status, state, this);
-    // 		delete this.pseudoWeather[status.id];
-    // 		return true;
-    // 	}
-    //
     pub fn remove_pseudo_weather(&mut self, id: &ID) -> bool {
         self.pseudo_weather.remove(id).is_some()
     }
@@ -819,16 +347,6 @@ impl Field {
     // ==========================================
 
     /// Get weather state
-    // 
-    // 	getWeather() {
-    // 		return this.battle.dex.conditions.getByID(this.weather);
-    // 	}
-    //
-    // 
-    // 	getWeather() {
-    // 		return this.battle.dex.conditions.getByID(this.weather);
-    // 	}
-    //
     // 
     // 	getWeather() {
     // 		return this.battle.dex.conditions.getByID(this.weather);
@@ -854,16 +372,6 @@ impl Field {
     // 		return this.battle.dex.conditions.getByID(this.terrain);
     // 	}
     //
-    // 
-    // 	getTerrain() {
-    // 		return this.battle.dex.conditions.getByID(this.terrain);
-    // 	}
-    //
-    // 
-    // 	getTerrain() {
-    // 		return this.battle.dex.conditions.getByID(this.terrain);
-    // 	}
-    //
     pub fn get_terrain(&self) -> &ID {
         &self.terrain
     }
@@ -880,18 +388,6 @@ impl Field {
 
     /// Effective terrain (accounts for Pokemon abilities)
     /// For now, just returns the terrain (suppression at battle level)
-    // 
-    // 	effectiveTerrain(target?: Pokemon | Side | Battle) {
-    // 		if (this.battle.event && !target) target = this.battle.event.target;
-    // 		return this.battle.runEvent('TryTerrain', target) ? this.terrain : '';
-    // 	}
-    //
-    // 
-    // 	effectiveTerrain(target?: Pokemon | Side | Battle) {
-    // 		if (this.battle.event && !target) target = this.battle.event.target;
-    // 		return this.battle.runEvent('TryTerrain', target) ? this.terrain : '';
-    // 	}
-    //
     // 
     // 	effectiveTerrain(target?: Pokemon | Side | Battle) {
     // 		if (this.battle.event && !target) target = this.battle.event.target;
@@ -921,32 +417,6 @@ impl Field {
     // 		return false;
     // 	}
     //
-    // 
-    // 	suppressingWeather() {
-    // 		for (const side of this.battle.sides) {
-    // 			for (const pokemon of side.active) {
-    // 				if (pokemon && !pokemon.fainted && !pokemon.ignoringAbility() &&
-    // 					pokemon.getAbility().suppressWeather && !pokemon.abilityState.ending) {
-    // 					return true;
-    // 				}
-    // 			}
-    // 		}
-    // 		return false;
-    // 	}
-    //
-    // 
-    // 	suppressingWeather() {
-    // 		for (const side of this.battle.sides) {
-    // 			for (const pokemon of side.active) {
-    // 				if (pokemon && !pokemon.fainted && !pokemon.ignoringAbility() &&
-    // 					pokemon.getAbility().suppressWeather && !pokemon.abilityState.ending) {
-    // 					return true;
-    // 				}
-    // 			}
-    // 		}
-    // 		return false;
-    // 	}
-    //
     pub fn suppressing_weather(&self) -> bool {
         // Would need to check active Pokemon abilities
         // Stub implementation - battle handles this
@@ -954,22 +424,6 @@ impl Field {
     }
 
     /// Destroy field (cleanup)
-    // 
-    // 	destroy() {
-    // 		// deallocate ourself
-    // 
-    // 		// get rid of some possibly-circular references
-    // 		(this as any).battle = null!;
-    // 	}
-    //
-    // 
-    // 	destroy() {
-    // 		// deallocate ourself
-    // 
-    // 		// get rid of some possibly-circular references
-    // 		(this as any).battle = null!;
-    // 	}
-    //
     // 
     // 	destroy() {
     // 		// deallocate ourself

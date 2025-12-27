@@ -122,19 +122,6 @@ pub enum StatID {
 }
 
 impl StatID {
-    // TypeScript source:
-    // 
-    // 
-    // 	all(): readonly TypeInfo[] {
-    // 		if (this.allCache) return this.allCache;
-    // 		const types = [];
-    // 		for (const id in this.dex.data.TypeChart) {
-    // 			types.push(this.getByID(id as ID));
-    // 		}
-    // 		this.allCache = Object.freeze(types);
-    // 		return this.allCache;
-    // 	}
-    //
     pub fn all() -> &'static [StatID] {
         &[
             StatID::HP,
@@ -196,18 +183,6 @@ impl StatsTable {
         Self { hp, atk, def, spa, spd, spe }
     }
 
-    // 
-    // 	get(name: string | TypeInfo): TypeInfo {
-    // 		if (name && typeof name !== 'string') return name;
-    // 		return this.getByID(toID(name));
-    // 	}
-    //
-    // 
-    // 	get(name: string | TypeInfo): TypeInfo {
-    // 		if (name && typeof name !== 'string') return name;
-    // 		return this.getByID(toID(name));
-    // 	}
-    //
     pub fn get(&self, stat: StatID) -> i32 {
         match stat {
             StatID::HP => self.hp,
@@ -244,28 +219,6 @@ pub enum BoostID {
 }
 
 impl BoostID {
-    // 
-    // 	all(): readonly TypeInfo[] {
-    // 		if (this.allCache) return this.allCache;
-    // 		const types = [];
-    // 		for (const id in this.dex.data.TypeChart) {
-    // 			types.push(this.getByID(id as ID));
-    // 		}
-    // 		this.allCache = Object.freeze(types);
-    // 		return this.allCache;
-    // 	}
-    //
-    // 
-    // 	all(): readonly TypeInfo[] {
-    // 		if (this.allCache) return this.allCache;
-    // 		const types = [];
-    // 		for (const id in this.dex.data.TypeChart) {
-    // 			types.push(this.getByID(id as ID));
-    // 		}
-    // 		this.allCache = Object.freeze(types);
-    // 		return this.allCache;
-    // 	}
-    //
     pub fn all() -> &'static [BoostID] {
         &[
             BoostID::Atk,
@@ -306,18 +259,6 @@ impl BoostsTable {
         Self::default()
     }
 
-    // 
-    // 	get(name: string | TypeInfo): TypeInfo {
-    // 		if (name && typeof name !== 'string') return name;
-    // 		return this.getByID(toID(name));
-    // 	}
-    //
-    // 
-    // 	get(name: string | TypeInfo): TypeInfo {
-    // 		if (name && typeof name !== 'string') return name;
-    // 		return this.getByID(toID(name));
-    // 	}
-    //
     pub fn get(&self, boost: BoostID) -> i8 {
         match boost {
             BoostID::Atk => self.atk,
@@ -693,18 +634,6 @@ impl DexNatures {
     }
 
     /// Get a nature by name or ID
-    // 
-    // 	get(name: string | TypeInfo): TypeInfo {
-    // 		if (name && typeof name !== 'string') return name;
-    // 		return this.getByID(toID(name));
-    // 	}
-    //
-    // 
-    // 	get(name: string | TypeInfo): TypeInfo {
-    // 		if (name && typeof name !== 'string') return name;
-    // 		return this.getByID(toID(name));
-    // 	}
-    //
     pub fn get(&mut self, name: &str) -> Nature {
         self.get_by_id(&to_id(name))
     }
@@ -746,28 +675,6 @@ impl DexNatures {
     }
 
     /// Get all natures
-    // 
-    // 	all(): readonly TypeInfo[] {
-    // 		if (this.allCache) return this.allCache;
-    // 		const types = [];
-    // 		for (const id in this.dex.data.TypeChart) {
-    // 			types.push(this.getByID(id as ID));
-    // 		}
-    // 		this.allCache = Object.freeze(types);
-    // 		return this.allCache;
-    // 	}
-    //
-    // 
-    // 	all(): readonly TypeInfo[] {
-    // 		if (this.allCache) return this.allCache;
-    // 		const types = [];
-    // 		for (const id in this.dex.data.TypeChart) {
-    // 			types.push(this.getByID(id as ID));
-    // 		}
-    // 		this.allCache = Object.freeze(types);
-    // 		return this.allCache;
-    // 	}
-    //
     pub fn all(&mut self) -> Vec<Nature> {
         if let Some(ref all) = self.all_cache {
             return all.clone();
@@ -883,18 +790,8 @@ impl DexTypes {
     }
 
     /// Get a type by name
+    // TypeScript source:
     // 
-    // 	get(name: string | TypeInfo): TypeInfo {
-    // 		if (name && typeof name !== 'string') return name;
-    // 		return this.getByID(toID(name));
-    // 	}
-    //
-    // 
-    // 	get(name: string | TypeInfo): TypeInfo {
-    // 		if (name && typeof name !== 'string') return name;
-    // 		return this.getByID(toID(name));
-    // 	}
-    //
     // 
     // 	get(name: string | Nature): Nature {
     // 		if (name && typeof name !== 'string') return name;
@@ -969,24 +866,6 @@ impl DexTypes {
     }
 
     /// Get all type names (excluding nonstandard)
-    // 
-    // 	names(): readonly string[] {
-    // 		if (this.namesCache) return this.namesCache;
-    // 
-    // 		this.namesCache = this.all().filter(type => !type.isNonstandard).map(type => type.name);
-    // 
-    // 		return this.namesCache;
-    // 	}
-    //
-    // 
-    // 	names(): readonly string[] {
-    // 		if (this.namesCache) return this.namesCache;
-    // 
-    // 		this.namesCache = this.all().filter(type => !type.isNonstandard).map(type => type.name);
-    // 
-    // 		return this.namesCache;
-    // 	}
-    //
     pub fn names(&mut self) -> Vec<String> {
         if let Some(ref names) = self.names_cache {
             return names.clone();
@@ -1010,22 +889,6 @@ impl DexTypes {
     // 		return name === typeName && this.dex.data.TypeChart.hasOwnProperty(id);
     // 	}
     //
-    // 
-    // 	isName(name: string | null | undefined): boolean {
-    // 		if (!name) return false;
-    // 		const id = name.toLowerCase();
-    // 		const typeName = id.charAt(0).toUpperCase() + id.substr(1);
-    // 		return name === typeName && this.dex.data.TypeChart.hasOwnProperty(id);
-    // 	}
-    //
-    // 
-    // 	isName(name: string | null | undefined): boolean {
-    // 		if (!name) return false;
-    // 		const id = name.toLowerCase();
-    // 		const typeName = id.charAt(0).toUpperCase() + id.substr(1);
-    // 		return name === typeName && this.dex.data.TypeChart.hasOwnProperty(id);
-    // 	}
-    //
     pub fn is_name(&self, name: &str) -> bool {
         if name.is_empty() {
             return false;
@@ -1036,28 +899,6 @@ impl DexTypes {
     }
 
     /// Get all types
-    // 
-    // 	all(): readonly TypeInfo[] {
-    // 		if (this.allCache) return this.allCache;
-    // 		const types = [];
-    // 		for (const id in this.dex.data.TypeChart) {
-    // 			types.push(this.getByID(id as ID));
-    // 		}
-    // 		this.allCache = Object.freeze(types);
-    // 		return this.allCache;
-    // 	}
-    //
-    // 
-    // 	all(): readonly TypeInfo[] {
-    // 		if (this.allCache) return this.allCache;
-    // 		const types = [];
-    // 		for (const id in this.dex.data.TypeChart) {
-    // 			types.push(this.getByID(id as ID));
-    // 		}
-    // 		this.allCache = Object.freeze(types);
-    // 		return this.allCache;
-    // 	}
-    //
     // 
     // 	all(): readonly Nature[] {
     // 		if (this.allCache) return this.allCache;
@@ -1368,24 +1209,6 @@ impl DexStats {
     // 		return this.namesCache;
     // 	}
     //
-    // 
-    // 	names(): readonly string[] {
-    // 		if (this.namesCache) return this.namesCache;
-    // 
-    // 		this.namesCache = this.all().filter(type => !type.isNonstandard).map(type => type.name);
-    // 
-    // 		return this.namesCache;
-    // 	}
-    //
-    // 
-    // 	names(): readonly string[] {
-    // 		if (this.namesCache) return this.namesCache;
-    // 
-    // 		this.namesCache = this.all().filter(type => !type.isNonstandard).map(type => type.name);
-    // 
-    // 		return this.namesCache;
-    // 	}
-    //
     pub fn names(&self) -> HashMap<StatID, &'static str> {
         let mut map = HashMap::new();
         if self.gen != 1 {
@@ -1424,14 +1247,6 @@ impl DexStats {
     }
 
     /// Get all stat IDs
-    // 	ids(): typeof idsCache {
-    // 		return idsCache;
-    // 	}
-    //
-    // 	ids(): typeof idsCache {
-    // 		return idsCache;
-    // 	}
-    //
     // 	ids(): typeof idsCache {
     // 		return idsCache;
     // 	}

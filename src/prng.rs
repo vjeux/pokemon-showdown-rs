@@ -65,27 +65,8 @@ impl PRNGSeed {
 /// Low-level source of 32-bit random numbers
 pub trait RNG {
     /// Get the current seed
-    // TypeScript source:
-    // 
-    // 
-    // 	getSeed(): PRNGSeed {
-    // 		return this.seed.join(',') as PRNGSeed;
-    // 	}
-    //
     fn get_seed(&self) -> PRNGSeed;
     /// Get the next random 32-bit number
-    // 
-    // 	next(): number {
-    // 		this.seed = this.nextFrame(this.seed); // Advance the RNG
-    // 		return (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
-    // 	}
-    //
-    // 
-    // 	next(): number {
-    // 		this.seed = this.nextFrame(this.seed); // Advance the RNG
-    // 		return (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
-    // 	}
-    //
     fn next(&mut self) -> u32;
 }
 
@@ -103,26 +84,6 @@ impl Gen5RNG {
     }
 
     /// Generate a random seed
-    // 
-    // 	static generateSeed(): Gen5RNGSeed {
-    // 		return [
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 		];
-    // 	}
-    //
-    // 
-    // 	static generateSeed(): Gen5RNGSeed {
-    // 		return [
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 		];
-    // 	}
-    //
     pub fn generate_seed() -> [u16; 4] {
         let mut rng = rand::thread_rng();
         [
@@ -143,36 +104,6 @@ impl Gen5RNG {
     // 		const out: Gen5RNGSeed = [0, 0, 0, 0];
     // 		let carry = 0;
     // 
-    // 		for (let outIndex = 3; outIndex >= 0; outIndex--) {
-    // 			for (let bIndex = outIndex; bIndex < 4; bIndex++) {
-    // 				const aIndex = 3 - (bIndex - outIndex);
-    // 
-    // 				carry += a[aIndex] * b[bIndex];
-    // 			}
-    // 			carry += c[outIndex];
-    // 
-    // 			out[outIndex] = carry & 0xFFFF;
-    // 			carry >>>= 16;
-    // 		}
-    // 
-    // 		return out;
-    // 	}
-    //
-    // 		for (let outIndex = 3; outIndex >= 0; outIndex--) {
-    // 			for (let bIndex = outIndex; bIndex < 4; bIndex++) {
-    // 				const aIndex = 3 - (bIndex - outIndex);
-    // 
-    // 				carry += a[aIndex] * b[bIndex];
-    // 			}
-    // 			carry += c[outIndex];
-    // 
-    // 			out[outIndex] = carry & 0xFFFF;
-    // 			carry >>>= 16;
-    // 		}
-    // 
-    // 		return out;
-    // 	}
-    //
     // 		for (let outIndex = 3; outIndex >= 0; outIndex--) {
     // 			for (let bIndex = outIndex; bIndex < 4; bIndex++) {
     // 				const aIndex = 3 - (bIndex - outIndex);
@@ -238,22 +169,6 @@ impl Gen5RNG {
     // 		return seed;
     // 	}
     //
-    // 		for (let i = 0; i < framesToAdvance; i++) {
-    // 			// seed = seed * a + c
-    // 			seed = this.multiplyAdd(seed, a, c);
-    // 		}
-    // 
-    // 		return seed;
-    // 	}
-    //
-    // 		for (let i = 0; i < framesToAdvance; i++) {
-    // 			// seed = seed * a + c
-    // 			seed = this.multiplyAdd(seed, a, c);
-    // 		}
-    // 
-    // 		return seed;
-    // 	}
-    //
     fn next_frame(&mut self) {
         const A: [u16; 4] = [0x5D58, 0x8B65, 0x6C07, 0x8965];
         const C: [u16; 4] = [0, 0, 0x26, 0x9EC3];
@@ -262,32 +177,10 @@ impl Gen5RNG {
 }
 
 impl RNG for Gen5RNG {
-    // 
-    // 	getSeed(): PRNGSeed {
-    // 		return this.seed.join(',') as PRNGSeed;
-    // 	}
-    //
-    // 
-    // 	getSeed(): PRNGSeed {
-    // 		return this.seed.join(',') as PRNGSeed;
-    // 	}
-    //
     fn get_seed(&self) -> PRNGSeed {
         PRNGSeed::Gen5(self.seed)
     }
 
-    // 
-    // 	next(): number {
-    // 		this.seed = this.nextFrame(this.seed); // Advance the RNG
-    // 		return (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
-    // 	}
-    //
-    // 
-    // 	next(): number {
-    // 		this.seed = this.nextFrame(this.seed); // Advance the RNG
-    // 		return (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
-    // 	}
-    //
     fn next(&mut self) -> u32 {
         self.next_frame();
         // Use the upper 32 bits
@@ -320,26 +213,6 @@ impl SodiumRNG {
     }
 
     /// Generate a random seed
-    // 
-    // 	static generateSeed(): Gen5RNGSeed {
-    // 		return [
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 		];
-    // 	}
-    //
-    // 
-    // 	static generateSeed(): Gen5RNGSeed {
-    // 		return [
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 		];
-    // 	}
-    //
     pub fn generate_seed() -> String {
         let mut rng = rand::thread_rng();
         let seed: [u32; 4] = [rng.gen(), rng.gen(), rng.gen(), rng.gen()];
@@ -351,33 +224,13 @@ impl SodiumRNG {
 }
 
 impl RNG for SodiumRNG {
-    // 
-    // 	getSeed(): PRNGSeed {
-    // 		return this.seed.join(',') as PRNGSeed;
-    // 	}
-    //
-    // 
-    // 	getSeed(): PRNGSeed {
-    // 		return this.seed.join(',') as PRNGSeed;
-    // 	}
-    //
     fn get_seed(&self) -> PRNGSeed {
         let hex: String = self.seed.iter().map(|b| format!("{:02x}", b)).collect();
         PRNGSeed::Sodium(hex)
     }
 
+    // TypeScript source:
     // 
-    // 	next(): number {
-    // 		this.seed = this.nextFrame(this.seed); // Advance the RNG
-    // 		return (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
-    // 	}
-    //
-    // 
-    // 	next(): number {
-    // 		this.seed = this.nextFrame(this.seed); // Advance the RNG
-    // 		return (this.seed[0] << 16 >>> 0) + this.seed[1]; // Use the upper 32 bits
-    // 	}
-    //
     // 
     // 	next() {
     // 		const zeroBuf = new Uint8Array(36);
@@ -452,16 +305,6 @@ impl PRNG {
     }
 
     /// Get the current seed
-    // 
-    // 	getSeed(): PRNGSeed {
-    // 		return this.seed.join(',') as PRNGSeed;
-    // 	}
-    //
-    // 
-    // 	getSeed(): PRNGSeed {
-    // 		return this.seed.join(',') as PRNGSeed;
-    // 	}
-    //
     // 	getSeed(): PRNGSeed {
     // 		return this.rng.getSeed();
     // 	}
@@ -474,26 +317,6 @@ impl PRNG {
     }
 
     /// Set the seed
-    // 
-    // 	setSeed(seed: SodiumRNGSeed) {
-    // 		// randombytes_buf_deterministic requires 32 bytes, but
-    // 		// generateSeed generates 16 bytes, so the last 16 bytes will be 0
-    // 		// when starting out. This shouldn't cause any problems.
-    // 		const seedBuf = new Uint8Array(32);
-    // 		Utils.bufWriteHex(seedBuf, seed[1].padEnd(64, '0'));
-    // 		this.seed = seedBuf;
-    // 	}
-    //
-    // 
-    // 	setSeed(seed: SodiumRNGSeed) {
-    // 		// randombytes_buf_deterministic requires 32 bytes, but
-    // 		// generateSeed generates 16 bytes, so the last 16 bytes will be 0
-    // 		// when starting out. This shouldn't cause any problems.
-    // 		const seedBuf = new Uint8Array(32);
-    // 		Utils.bufWriteHex(seedBuf, seed[1].padEnd(64, '0'));
-    // 		this.seed = seedBuf;
-    // 	}
-    //
     // 
     // 	setSeed(seed: PRNGSeed) {
     // 		if (seed.startsWith('sodium,')) {
@@ -547,28 +370,6 @@ impl PRNG {
     // 	random(from?: number, to?: number): number {
     // 		const result = this.rng.next();
     // 
-    // 		if (from) from = Math.floor(from);
-    // 		if (to) to = Math.floor(to);
-    // 		if (from === undefined) {
-    // 			return result / 2 ** 32;
-    // 		} else if (!to) {
-    // 			return Math.floor(result * from / 2 ** 32);
-    // 		} else {
-    // 			return Math.floor(result * (to - from) / 2 ** 32) + from;
-    // 		}
-    // 	}
-    //
-    // 		if (from) from = Math.floor(from);
-    // 		if (to) to = Math.floor(to);
-    // 		if (from === undefined) {
-    // 			return result / 2 ** 32;
-    // 		} else if (!to) {
-    // 			return Math.floor(result * from / 2 ** 32);
-    // 		} else {
-    // 			return Math.floor(result * (to - from) / 2 ** 32) + from;
-    // 		}
-    // 	}
-    //
     // 		if (from) from = Math.floor(from);
     // 		if (to) to = Math.floor(to);
     // 		if (from === undefined) {
@@ -695,26 +496,6 @@ impl PRNG {
     }
 
     /// Generate a random seed (sodium format)
-    // 
-    // 	static generateSeed(): Gen5RNGSeed {
-    // 		return [
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 		];
-    // 	}
-    //
-    // 
-    // 	static generateSeed(): Gen5RNGSeed {
-    // 		return [
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 			Math.trunc(Math.random() * 2 ** 16),
-    // 		];
-    // 	}
-    //
     // 
     // 	static generateSeed(): PRNGSeed {
     // 		return PRNG.convertSeed(SodiumRNG.generateSeed());
