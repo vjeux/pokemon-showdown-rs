@@ -264,6 +264,13 @@ The following moves require infrastructure that doesn't exist yet:
 - `battle.queue.list.splice(index, count)`: pursuit - Remove entries from queue list
 - `battle.actions.runMove(moveId, pokemon, targetLoc)`: pursuit - Run specific move
 - `pokemon.getLocOf(pokemon)`: pursuit - Get location of target pokemon
+- `pokemon.volatiles[name]?.fieldName`: focuspunch, skydrop - Optional chaining for volatile field access
+- `battle.effectState.lostFocus`: focuspunch - lostFocus boolean field in effect state
+- `battle.boost(boosts)`: rage - Apply boost using object literal {atk: 1}
+- `move.flags` field deletion: skydrop - delete move.flags['contact']
+- `pokemon.getWeight()`: skydrop - Get weight in hectograms (returns number)
+- `pokemon.volatiles['twoturnmove'].source`: skydrop - Access source from twoturnmove volatile
+- `move.name`: skydrop - Move name string field
 
 ### afteryou
 - Requires: `battle.activePerHalf` (number of active pokemon per side)
