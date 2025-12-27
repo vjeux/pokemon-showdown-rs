@@ -179,6 +179,7 @@ The following moves require infrastructure that doesn't exist yet:
 - `pokemon.timesAttacked`: ragefist - Track how many times pokemon was attacked
 - `pokemon.hurtThisTurn`: assurance - Track if pokemon was damaged this turn
 - `pokemon.statsRaisedThisTurn`: alluringvoice, burningjealousy - Track if stats were raised this turn
+- `pokemon.statsLoweredThisTurn`: lashout - Track if stats were lowered this turn
 - `pokemon.addVolatile(condition, source, move)`: Many moves - Add volatile status condition
 - `battle.add(message, ...)`: Nearly all moves - Add battle log message
 - `battle.damage(amount, target, source, effect)`: highjumpkick, jumpkick, etc - Deal damage to pokemon
