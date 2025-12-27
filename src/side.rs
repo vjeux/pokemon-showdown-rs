@@ -122,6 +122,9 @@ pub struct Side {
 
     /// Current request state
     pub request_state: RequestState,
+    /// Active request sent to player
+    #[serde(skip)]
+    pub active_request: Option<crate::choice::BattleRequest>,
     /// Current choice
     pub choice: Choice,
 
@@ -162,6 +165,7 @@ impl Side {
             side_conditions: HashMap::new(),
             slot_conditions,
             request_state: RequestState::None,
+            active_request: None,
             choice: Choice::new(),
             foe_index: None,
             ally_index: None,
@@ -558,20 +562,97 @@ impl Side {
     // 		return this.choice.actions.length >= this.active.length;
     // 	}
     //
-    pub fn is_choice_done(&self) -> bool {
+    pub fn is_choice_done(&self, picked_team_size: Option<usize>) -> bool {
+        // if (!this.requestState) return true;
+        if matches!(self.request_state, RequestState::None) {
+            return true;
+        }
+
+        // if (this.choice.forcedSwitchesLeft) return false;
+        if self.choice.forced_switches_left > 0 {
+            return false;
+        }
+
         match self.request_state {
-            RequestState::None => true,
             RequestState::TeamPreview => {
-                // For team preview, we need enough actions for the picked team size
-                // Simplified: just check if we have any actions
-                !self.choice.actions.is_empty()
+                // return this.choice.actions.length >= this.pickedTeamSize();
+                let team_size = self.picked_team_size(picked_team_size);
+                self.choice.actions.len() >= team_size
             }
             RequestState::Move | RequestState::Switch => {
-                // Need one action per active slot
-                let active_slots = self.active.len();
-                self.choice.actions.len() >= active_slots
+                // this.getChoiceIndex(); // auto-pass
+                // TODO: Call getChoiceIndex() for auto-pass
+                // This would auto-add pass actions for fainted Pokemon
+                // For now, just check actions length
+
+                // return this.choice.actions.length >= this.active.length;
+                self.choice.actions.len() >= self.active.len()
             }
+            RequestState::None => true,
         }
+    }
+
+    /// Clear choice for the turn
+    /// Equivalent to side.ts clearChoice()
+    //
+    // 	clearChoice() {
+    // 		let forcedSwitches = 0;
+    // 		let forcedPasses = 0;
+    // 		if (this.battle.requestState === 'switch') {
+    // 			const canSwitchOut = this.active.filter(pokemon => pokemon?.switchFlag).length;
+    // 			const canSwitchIn = this.pokemon.slice(this.active.length).filter(pokemon => pokemon && !pokemon.fainted).length;
+    // 			forcedSwitches = Math.min(canSwitchOut, canSwitchIn);
+    // 			forcedPasses = canSwitchOut - forcedSwitches;
+    // 		}
+    // 		this.choice = {
+    // 			cantUndo: false,
+    // 			error: ``,
+    // 			actions: [],
+    // 			forcedSwitchesLeft: forcedSwitches,
+    // 			forcedPassesLeft: forcedPasses,
+    // 			switchIns: new Set(),
+    // 			zMove: false,
+    // 			mega: false,
+    // 			ultra: false,
+    // 			dynamax: false,
+    // 			terastallize: false,
+    // 		};
+    // 	}
+    //
+    pub fn clear_choice(&mut self, battle_request_state: crate::battle::BattleRequestState) {
+        let mut forced_switches = 0;
+        let mut forced_passes = 0;
+
+        if matches!(battle_request_state, crate::battle::BattleRequestState::Switch) {
+            // Count active Pokemon with switchFlag set
+            let can_switch_out = self.active.iter()
+                .filter_map(|&opt_idx| opt_idx.and_then(|idx| self.pokemon.get(idx)))
+                .filter(|p| p.switch_flag)
+                .count();
+
+            // Count benched Pokemon that aren't fainted
+            let can_switch_in = self.pokemon.iter()
+                .skip(self.active.len())
+                .filter(|p| !p.is_fainted())
+                .count();
+
+            forced_switches = can_switch_out.min(can_switch_in);
+            forced_passes = can_switch_out - forced_switches;
+        }
+
+        self.choice = Choice {
+            cant_undo: false,
+            error: String::new(),
+            actions: Vec::new(),
+            forced_switches_left: forced_switches,
+            forced_passes_left: forced_passes,
+            switch_ins: Vec::new(),
+            z_move: false,
+            mega: false,
+            ultra: false,
+            dynamax: false,
+            terastallize: false,
+        };
     }
 
     /// Calculate Stealth Rock damage based on type effectiveness
@@ -758,48 +839,6 @@ impl Side {
         self.slot_conditions.get_mut(slot)?.get_mut(id)
     }
 
-    /// Clear the current choice
-    // 
-    // 	clearChoice() {
-    // 		let forcedSwitches = 0;
-    // 		let forcedPasses = 0;
-    // 		if (this.battle.requestState === 'switch') {
-    // 			const canSwitchOut = this.active.filter(pokemon => pokemon?.switchFlag).length;
-    // 			const canSwitchIn = this.pokemon.slice(this.active.length).filter(pokemon => pokemon && !pokemon.fainted).length;
-    // 			forcedSwitches = Math.min(canSwitchOut, canSwitchIn);
-    // 			forcedPasses = canSwitchOut - forcedSwitches;
-    // 		}
-    // 		this.choice = {
-    // 			cantUndo: false,
-    // 			error: ``,
-    // 			actions: [],
-    // 			forcedSwitchesLeft: forcedSwitches,
-    // 			forcedPassesLeft: forcedPasses,
-    // 			switchIns: new Set(),
-    // 			zMove: false,
-    // 			mega: false,
-    // 			ultra: false,
-    // 			dynamax: false,
-    // 			terastallize: false,
-    // 		};
-    // 	}
-    //
-    pub fn clear_choice(&mut self, request_state: RequestState, forced_switches: usize, forced_passes: usize) {
-        self.choice = Choice {
-            cant_undo: false,
-            error: String::new(),
-            actions: Vec::new(),
-            forced_switches_left: forced_switches,
-            forced_passes_left: forced_passes,
-            switch_ins: Vec::new(),
-            z_move: false,
-            mega: false,
-            ultra: false,
-            dynamax: false,
-            terastallize: false,
-        };
-        self.request_state = request_state;
-    }
 
     /// Get the current choice action index
     // 
@@ -1564,14 +1603,14 @@ impl Side {
     pub fn auto_choose(&mut self) -> bool {
         match self.request_state {
             RequestState::TeamPreview => {
-                if !self.is_choice_done() {
+                if !self.is_choice_done(None) {
                     let positions: Vec<usize> = (0..self.pokemon.len()).collect();
                     let _ = self.choose_team(positions);
                 }
             }
             RequestState::Switch => {
                 let mut iterations = 0;
-                while !self.is_choice_done() && iterations < 10 {
+                while !self.is_choice_done(None) && iterations < 10 {
                     // Find first available switch target
                     for i in self.active.len()..self.pokemon.len() {
                         if !self.choice.switch_ins.contains(&i) {
@@ -1588,7 +1627,7 @@ impl Side {
             }
             RequestState::Move => {
                 let mut iterations = 0;
-                while !self.is_choice_done() && iterations < 10 {
+                while !self.is_choice_done(None) && iterations < 10 {
                     let index = self.get_choice_index();
                     if let Some(Some(pokemon_idx)) = self.active.get(index) {
                         let pokemon = &self.pokemon[*pokemon_idx];

@@ -296,6 +296,9 @@ pub struct Battle {
     /// Dex for accessing Pokemon data
     #[serde(skip)]
     pub dex: crate::dex::Dex,
+    /// Rule table for format rules
+    #[serde(skip)]
+    pub rule_table: Option<crate::data::formats::RuleTable>,
 
     /// The battle field
     pub field: Field,
@@ -408,13 +411,22 @@ impl Battle {
 
         let sides = Vec::new(); // Sides will be added via set_player
 
+        // Load dex
+        let dex = crate::dex::Dex::load_default().expect("Failed to load Dex");
+
+        // TODO: Load rule_table from format
+        // Requires implementing Dex::get_format() method to search formats by ID
+        // JavaScript: this.ruleTable = this.dex.formats.getRuleTable(this.format);
+        let rule_table = None;
+
         let mut battle = Self {
             format_id: options.format_id,
             format_name: options.format_name.unwrap_or_else(|| format_id_str.clone()),
             game_type,
             gen,
             active_per_half,
-            dex: crate::dex::Dex::load_default().expect("Failed to load Dex"),
+            dex,
+            rule_table,
             field: Field::new(),
             sides,
             queue: BattleQueue::new(),
@@ -6147,10 +6159,13 @@ impl Battle {
         // JS: let totalActions = 0;
         let mut total_actions = 0;
 
+        // Get picked_team_size from rule_table if available
+        let picked_team_size = self.rule_table.as_ref().and_then(|rt| rt.picked_team_size);
+
         // JS: for (const side of this.sides)
         for side in &mut self.sides {
             // JS: if (side.isChoiceDone())
-            if side.is_choice_done() {
+            if side.is_choice_done(picked_team_size) {
                 // JS: if (!this.supportCancel) side.choice.cantUndo = true;
                 // TODO: Add support_cancel field to Battle struct
                 // For now, always set cantUndo to true (equivalent to supportCancel = false)

@@ -6,7 +6,7 @@
 - All methods have TypeScript source comments
 - All documented with JavaScript equivalents or marked as Rust-specific
 
-**Feature Implementation:** ⚠️ 23/79 TODOs (29.1%)
+**Feature Implementation:** ⚠️ 27/79 TODOs (34.2%)
 - Systematic implementation of missing JavaScript features ongoing
 
 ## Completed Implementations
@@ -166,7 +166,7 @@
 - [x] ~~TrapPokemon/MaybeTrapPokemon events (battle.rs:5115)~~ ✅ Completed
 - [~] ~~Foe ability trapping (battle.rs:5119)~~ ⚠️ Stub implemented, full requires species infrastructure
 
-## Remaining P1 Important (8 TODOs)
+## Remaining P1 Important (4 TODOs)
 
 ### Z-Moves & Max Moves (0 remaining TODOs) ✅ ALL COMPLETE
 - [x] ~~Z-Move transformation in get_action_speed~~ ✅ Completed (Session 7)
@@ -177,11 +177,22 @@
 
 **Note:** Z-Move priority calculation, transformation, and status effects now fully implemented with some minor infrastructure TODOs (addVolatile, addSlotCondition, attrLastMove)
 
-### Side Management (4 TODOs)
-- [ ] side.clearChoice()
-- [ ] side.activeRequest field
-- [ ] ruleTable.pickedTeamSize
-- [ ] isChoiceDone() check
+### Side Management (0 remaining TODOs) ✅ ALL COMPLETE
+- [x] **side.clearChoice()** (side.rs:595-642) ✅ Completed (Session 8)
+- [x] **side.activeRequest field** (side.rs:125-127) ✅ Completed (Session 8)
+- [x] **ruleTable.pickedTeamSize** (battle.rs:299-301, side.rs:1697-1699) ✅ Completed (Session 8)
+- [x] **isChoiceDone() check** (side.rs:565-593) ✅ Completed (Session 8)
+
+**Implementation Details:**
+- Added `activeRequest` field to Side struct for tracking active battle request
+- Added `rule_table` field to Battle struct to support pickedTeamSize
+- Implemented `clear_choice()` method matching JavaScript exactly (calculates forcedSwitches/forcedPasses)
+- Updated `is_choice_done()` to 1:1 JavaScript implementation:
+  - Checks forcedSwitchesLeft before returning
+  - Calls picked_team_size() for TeamPreview
+  - Includes TODO for getChoiceIndex() auto-pass call
+
+**Enables:** Proper choice state management, team preview validation, forced switch handling
 
 ### Format Callbacks (4 TODOs)
 - [ ] Format callbacks (onBegin)
