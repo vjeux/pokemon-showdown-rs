@@ -20,9 +20,9 @@ The following are advanced features that require more complex infrastructure:
 - ✓ `move.target` mutable: curse - Change move target (DONE - ActiveMove.target field is mutable)
 - ✓ `move.nonGhostTarget`: curse - Non-ghost target field (DONE - ActiveMove.non_ghost_target field)
 - ✓ `move.volatileStatus` deletion: curse - Delete volatile status field from move (DONE - set ActiveMove.volatile_status to None)
-- `move.onHit` deletion: curse - Delete onHit callback from move
+- ✓ `move.onHit` deletion: curse - Delete onHit callback from move (DONE - in Rust, the callback checks conditions instead of being deleted)
 - ✓ `move.self` mutable: curse - Modify move self-effects with boosts (DONE - ActiveMove.self_effect field)
-- `move.flags` field deletion: skydrop - delete move.flags['contact']
+- ✓ `move.flags` field deletion: skydrop - delete move.flags['contact'] (DONE - set flag to false instead of deleting)
 - ✓ `move.hasBounced`: magiccoat - Has bounced mutable boolean flag (DONE - ActiveMove.has_bounced field)
 - ✓ `move.pranksterBoosted`: magiccoat - Prankster boosted mutable field (DONE - ActiveMove.prankster_boosted field)
 - ✓ `move.forceSTAB`: waterpledge - Force STAB calculation flag (mutable) (DONE - ActiveMove.force_stab field)
