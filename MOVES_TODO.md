@@ -152,7 +152,7 @@ Moves with callbacks: 373
 - [x] hex - Hex (Special, Ghost) - 1 callback: basePowerCallback
 - [x] hiddenpower - Hidden Power (Special, Normal) - 1 callback: onModifyType
 - [x] highjumpkick - High Jump Kick (Physical, Fighting) - 1 callback: onMoveFail
-- [ ] holdback - Hold Back (Physical, Normal) - 1 callback: onDamage
+- [x] holdback - Hold Back (Physical, Normal) - 1 callback: onDamage
 - [ ] hurricane - Hurricane (Special, Flying) - 1 callback: onModifyMove
 - [ ] hyperspacefury - Hyperspace Fury (Physical, Dark) - 1 callback: onTry
 - [ ] iceball - Ice Ball (Physical, Ice) - 5 callbacks: basePowerCallback, onModifyMove, onAfterMove, condition::onStart, condition::onResidual
