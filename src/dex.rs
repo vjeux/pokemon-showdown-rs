@@ -166,6 +166,8 @@ pub struct MoveData {
     pub is_max: Option<IsMax>,
     #[serde(default, deserialize_with = "deserialize_ohko")]
     pub ohko: Option<Ohko>,
+    #[serde(default)]
+    pub selfdestruct: Option<String>,
 }
 
 /// Accuracy can be a number or true (always hits)

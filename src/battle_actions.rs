@@ -1995,10 +1995,9 @@ pub fn use_move_inner(
     // if (this.battle.gen !== 4 && move.selfdestruct === 'always') {
     //     this.battle.faint(pokemon, pokemon, move);
     // }
-    // TODO: Implement selfdestruct field in MoveData and uncomment this
-    // if battle.gen != 4 && move_data.selfdestruct == Some("always".to_string()) {
-    //     battle.faint(pokemon_pos, Some(pokemon_pos), Some(move_or_move_name.as_str()));
-    // }
+    if battle.gen != 4 && move_data.selfdestruct == Some("always".to_string()) {
+        battle.faint(pokemon_pos, Some(pokemon_pos), Some(move_or_move_name.as_str()));
+    }
 
     // let damage: number | false | undefined | '' = false;
     // if (move.target === 'all' || move.target === 'foeSide' || move.target === 'allySide' || move.target === 'allyTeam') {
