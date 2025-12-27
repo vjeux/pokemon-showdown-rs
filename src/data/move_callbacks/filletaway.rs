@@ -11,7 +11,21 @@ use crate::event::EventResult;
 ///     if (source.hp <= source.maxhp / 2 || source.maxhp === 1) return false;
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let source = source_pos;
+
+    // if (source.hp <= source.maxhp / 2 || source.maxhp === 1) return false;
+    let (hp, max_hp) = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (source_pokemon.hp, source_pokemon.max_hp)
+    };
+
+    if hp <= max_hp / 2 || max_hp == 1 {
+        return EventResult::Bool(false);
+    }
+
     EventResult::Continue
 }
 
@@ -20,7 +34,31 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 ///     delete move.boosts;
 /// }
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use std::collections::HashMap;
+
+    let pokemon = source_pos;
+
+    // if (!this.boost(move.boosts!)) return null;
+    // boosts: { atk: 2, spa: 2, spe: 2 }
+    let mut boosts = HashMap::new();
+    boosts.insert("atk".to_string(), 2);
+    boosts.insert("spa".to_string(), 2);
+    boosts.insert("spe".to_string(), 2);
+
+    let boost_result = battle.boost(boosts, pokemon, Some(pokemon), None);
+
+    if !boost_result {
+        return EventResult::Null;
+    }
+
+    // delete move.boosts;
+    // We need to clear the boosts from the current move
+    if let Some(ref move_id) = battle.current_move {
+        if let Some(move_data) = battle.dex.get_move_by_id_mut(move_id) {
+            move_data.boosts = None;
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -28,7 +66,19 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 ///     this.directDamage(pokemon.maxhp / 2);
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = pokemon_pos;
+
+    // this.directDamage(pokemon.maxhp / 2);
+    let max_hp = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.max_hp
+    };
+
+    battle.direct_damage(max_hp / 2, pokemon, None, None);
+
     EventResult::Continue
 }
 
