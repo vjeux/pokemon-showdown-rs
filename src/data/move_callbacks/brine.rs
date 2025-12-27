@@ -25,7 +25,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
 
     // Double base power if target HP is 50% or less
     if target.hp * 2 <= target.maxhp {
-        return EventResult::Number(battle.chain_modify(2, 1));
+        return EventResult::Number(battle.chain_modify(2.0));
     }
 
     EventResult::Continue

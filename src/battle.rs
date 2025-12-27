@@ -9848,7 +9848,7 @@ impl Battle {
     // 
     // 	chainModify(numerator: number | number[], denominator = 1) {
     // 		const previousMod = this.trunc(this.event.modifier * 4096);
-    // 
+    //
     // 		if (Array.isArray(numerator)) {
     // 			denominator = numerator[1];
     // 			numerator = numerator[0];
@@ -9857,7 +9857,19 @@ impl Battle {
     // 		this.event.modifier = ((previousMod * nextMod + 2048) >> 12) / 4096;
     // 	}
     //
-    pub fn chain_modify(&mut self, numerator: i32, denominator: i32) -> i32 {
+
+    /// Chain modify the event modifier using a simple multiplier
+    /// Most common usage: battle.chain_modify(2.0) to double the value
+    pub fn chain_modify(&mut self, multiplier: f32) -> i32 {
+        // Convert multiplier to numerator/denominator (e.g., 2.0 -> 2/1, 1.5 -> 3/2)
+        let numerator = (multiplier * 4096.0) as i32;
+        let denominator = 4096;
+        self.chain_modify_fraction(numerator, denominator)
+    }
+
+    /// Chain modify the event modifier using a fraction
+    /// Used for precise ratios: battle.chain_modify_fraction(3, 2) for 1.5x
+    pub fn chain_modify_fraction(&mut self, numerator: i32, denominator: i32) -> i32 {
         if let Some(ref mut event) = self.current_event {
             // Extract modifier value first to avoid borrow checker issues
             let modifier = event.modifier;
