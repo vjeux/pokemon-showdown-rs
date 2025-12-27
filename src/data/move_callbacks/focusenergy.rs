@@ -22,15 +22,61 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (target.volatiles['dragoncheer']) return false;
+        let has_dragoncheer = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.volatiles.contains_key(&ID::from("dragoncheer"))
+        };
+
+        if has_dragoncheer {
+            return EventResult::Bool(false);
+        }
+
+        // if (effect?.id === 'zpower') {
+        //     this.add('-start', target, 'move: Focus Energy', '[zeffect]');
+        // } else if (effect && (['costar', 'imposter', 'psychup', 'transform'].includes(effect.id))) {
+        //     this.add('-start', target, 'move: Focus Energy', '[silent]');
+        // } else {
+        //     this.add('-start', target, 'move: Focus Energy');
+        // }
+        let target_arg = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(target_pokemon)
+        };
+
+        if let Some(effect) = effect_id {
+            if effect == "zpower" {
+                battle.add("-start", &[target_arg, "move: Focus Energy".into(), "[zeffect]".into()]);
+            } else if effect == "costar" || effect == "imposter" || effect == "psychup" || effect == "transform" {
+                battle.add("-start", &[target_arg, "move: Focus Energy".into(), "[silent]".into()]);
+            } else {
+                battle.add("-start", &[target_arg, "move: Focus Energy".into()]);
+            }
+        } else {
+            battle.add("-start", &[target_arg, "move: Focus Energy".into()]);
+        }
+
         EventResult::Continue
     }
 
     /// onModifyCritRatio(critRatio) {
     ///     return critRatio + 2;
     /// }
-    pub fn on_modify_crit_ratio(battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+    pub fn on_modify_crit_ratio(battle: &mut Battle, crit_ratio: i32) -> EventResult {
+        // return critRatio + 2;
+        EventResult::Int(crit_ratio + 2)
     }
 }
