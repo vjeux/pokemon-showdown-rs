@@ -15,7 +15,46 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // onTry(source, target, move) {
+    //     // Additional Gravity check for Z-move variant
+    //     if (this.field.getPseudoWeather('Gravity')) {
+    //         this.add('cant', source, 'move: Gravity', move);
+    //         return null;
+    //     }
+    // }
+    let source = source_pos;
+
+    // if (this.field.getPseudoWeather('Gravity')) {
+    let has_gravity = battle.has_pseudo_weather(&ID::from("gravity"));
+
+    if has_gravity {
+        // this.add('cant', source, 'move: Gravity', move);
+        let (source_arg, move_arg) = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            let active_move = match &battle.active_move {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+
+            (crate::battle::Arg::from(source_pokemon), crate::battle::Arg::from(active_move))
+        };
+
+        battle.add("cant", &[
+            source_arg,
+            "move: Gravity".into(),
+            move_arg,
+        ]);
+
+        // return null;
+        return EventResult::Null;
+    }
+
     EventResult::Continue
 }
 
@@ -23,7 +62,13 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 ///     this.add('-nothing');
 /// }
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // onTryHit(target, source) {
+    //     this.add('-nothing');
+    // }
+
+    // this.add('-nothing');
+    battle.add("-nothing", &[]);
+
     EventResult::Continue
 }
 
