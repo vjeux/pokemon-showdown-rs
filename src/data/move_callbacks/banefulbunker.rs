@@ -4,22 +4,34 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Arg};
 use crate::event::EventResult;
+use crate::dex_data::ID;
 
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
+    let will_act = battle.queue.will_act();
+    let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None);
+
+    let result = will_act && stall_move_result;
+    EventResult::Bool(result)
 }
 
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // pokemon.addVolatile('stall');
+    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    pokemon.add_volatile(ID::from("stall"));
+
     EventResult::Continue
 }
 
@@ -30,7 +42,21 @@ pub mod condition {
     ///     this.add('-singleturn', target, 'move: Protect');
     /// }
     pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // Get target
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // Get target pokemon
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        // this.add('-singleturn', target, 'move: Protect');
+        battle.add("-singleturn", &[target_pokemon.into(), "move: Protect".into()]);
+
         EventResult::Continue
     }
 
@@ -58,8 +84,90 @@ pub mod condition {
     ///     return this.NOT_FAIL;
     /// }
     pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        // Get the active move
+        let move_id = match &battle.active_move {
+            Some(id) => id.clone(),
+            None => return EventResult::Continue,
+        };
+
+        // Get the move data
+        let move_data = match battle.dex.get_move_by_id(&move_id) {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+
+        // if (!move.flags['protect']) {
+        if !move_data.flags.contains_key("protect") {
+            // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
+            if move_id == ID::from("gmaxoneblow") || move_id == ID::from("gmaxrapidflow") {
+                return EventResult::Continue;
+            }
+
+            // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
+            // TODO: getMoveHitData not yet implemented
+            // return;
+            return EventResult::Continue;
+        }
+
+        // Get target pokemon
+        let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        // if (move.smartTarget) {
+        //     move.smartTarget = false;
+        // } else {
+        //     this.add('-activate', target, 'move: Protect');
+        // }
+        // TODO: smartTarget not yet implemented, just add the message
+        battle.add("-activate", &[target_pokemon.into(), "move: Protect".into()]);
+
+        // const lockedmove = source.getVolatile('lockedmove');
+        // if (lockedmove) {
+        //     // Outrage counter is reset
+        //     if (source.volatiles['lockedmove'].duration === 2) {
+        //         delete source.volatiles['lockedmove'];
+        //     }
+        // }
+        let lockedmove_id = ID::from("lockedmove");
+        let should_remove_lockedmove = {
+            let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => false,
+            };
+            if let Some(ref pokemon) = source_pokemon {
+                if let Some(volatile) = pokemon.volatiles.get(&lockedmove_id) {
+                    volatile.duration == Some(2)
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        };
+
+        if should_remove_lockedmove {
+            let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.remove_volatile(&lockedmove_id);
+        }
+
+        // if (this.checkMoveMakesContact(move, source, target)) {
+        //     source.trySetStatus('psn', target);
+        // }
+        if battle.check_move_makes_contact(&move_id, source_pos) {
+            let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.try_set_status(ID::from("psn"), None);
+        }
+
+        // return this.NOT_FAIL;
+        EventResult::NOT_FAIL
     }
 
     /// onHit(target, source, move) {
@@ -68,7 +176,37 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // Get source from target_pos (in condition context, pokemon_pos is the protected pokemon, target is the attacker)
+        let source = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // Get the active move
+        let move_id = match &battle.active_move {
+            Some(id) => id.clone(),
+            None => return EventResult::Continue,
+        };
+
+        // Get the move data
+        let move_data = match battle.dex.get_move_by_id(&move_id) {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+
+        // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
+        //     source.trySetStatus('psn', target);
+        // }
+        // TODO: isZOrMaxPowered not yet implemented
+        // For now, just check contact
+        if battle.check_move_makes_contact(&move_id, source) {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.try_set_status(ID::from("psn"), None);
+        }
+
         EventResult::Continue
     }
 }
