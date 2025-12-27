@@ -15,7 +15,8 @@ if (!methodName || !lineNumber) {
     process.exit(1);
 }
 
-const todoPath = '/home/builder/workspace/BATTLE_TODO.md';
+const path = require('path');
+const todoPath = path.join(__dirname, '..', 'BATTLE_TODO.md');
 const content = fs.readFileSync(todoPath, 'utf-8');
 
 // Find and replace the checkbox for this method

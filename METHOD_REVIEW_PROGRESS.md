@@ -1,6 +1,43 @@
 # Battle Method Review - Progress Tracker
 
-## Latest Session - Methods 24-37
+## Latest Session - Methods 50-65
+
+#### Batch 5: Methods 50-65 (All ✓)
+
+50. **update_speed (line 3571)** ✓ - NO TS comment, iterates through active Pokemon calling pokemon.update_speed()
+51. **damage (line 3607)** ✓ - Has comprehensive TS comment
+52. **direct_damage (line 3702)** ✓ - Has comprehensive TS comment
+53. **heal (line 3926)** ✓ - Has comprehensive TS comment
+54. **boost (line 4158)** ✓ - Has comprehensive TS comment with TODOs
+55. **faint (line 4301)** ✓ - Has TS comment
+56. **check_fainted (line 4340)** ✓ - Has TS comment
+57. **clamp_int_range (line 4353)** ✓ - Documented as Utils.clampIntRange helper
+58. **compare_priority (line 4385)** ✓ - Has comprehensive TS comment
+59. **compare_redirect_order (line 4424)** ✓ - Has TS comment
+60. **compare_left_to_right_order (line 4450)** ✓ - Has TS comment
+61. **speed_sort (line 4504)** ✓ - Has comprehensive TS comment
+62. **get_pokemon (line 4569)** ✓ - Has TS comment
+63. **get_pokemon_mut (line 4582)** ✓ - Rust variant of get_pokemon, acceptable
+64. **can_switch (line 4601)** ✓ - Has TS comment
+65. **get_random_switchable (line 4613)** ✓ - Has TS comment
+
+## Previous Sessions
+
+### Batch 4: Methods 41-49
+
+41. **tie (line 3131)** ✓ - Has TS comment
+42. **win (line 3164)** ✓ - Has comprehensive TS comment
+43. **lose (line 3246)** ✓ - Has comprehensive TS comment
+44. **force_win (line 3313)** ✓ - Has TS comment
+45. **set_active_move (line 3331)** ✓ - Has TS comment
+46. **clear_active_move (line 3351)** ✓ - Has TS comment
+47. **suppressing_ability (line 3371)** ✓ - Has TS comment
+48. **get_all_pokemon (line 3425)** ✓ - Has TS comment
+49. **get_random_target (line 3473)** ✓ - Has TS comment with TODOs
+
+### Batch 3: Methods 24-40
+
+## Previous Sessions - Methods 24-37
 
 #### Batch 3: Methods 24-37 (All ✓)
 
@@ -42,8 +79,8 @@
 ## Statistics
 
 - Total methods: 337
-- Reviewed: 40
-- Verified correct: 37
+- Reviewed: 65
+- Verified correct: 62
 - Needs TS comments: 3 (Battle::new, switch_in, drag_in/run_switch)
-- Needs investigation: 1 (start_battle)
-- Remaining: 297
+- Needs investigation: 2 (start_battle, update_speed)
+- Remaining: 272
