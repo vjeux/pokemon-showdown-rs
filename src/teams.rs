@@ -670,14 +670,20 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
             set.name = String::new();
         }
     } else if line.starts_with("Trait: ") || line.starts_with("Ability: ") {
-        let ability = if line.starts_with("Trait: ") { &line[7..] } else { &line[9..] };
+        let ability = if let Some(trait_str) = line.strip_prefix("Trait: ") {
+            trait_str
+        } else if let Some(ability_str) = line.strip_prefix("Ability: ") {
+            ability_str
+        } else {
+            "" // Should never happen given the if condition
+        };
         set.ability = if aggressive { to_id(ability) } else { ability.to_string() };
     } else if line == "Shiny: Yes" {
         set.shiny = true;
-    } else if line.starts_with("Level: ") {
-        set.level = line[7..].parse().unwrap_or(100);
-    } else if line.starts_with("Happiness: ") {
-        set.happiness = line[11..].parse().unwrap_or(255);
+    } else if let Some(level_str) = line.strip_prefix("Level: ") {
+        set.level = level_str.parse().unwrap_or(100);
+    } else if let Some(happiness_str) = line.strip_prefix("Happiness: ") {
+        set.happiness = happiness_str.parse().unwrap_or(255);
     } else if let Some(pokeball) = line.strip_prefix("Pokeball: ") {
         set.pokeball = if aggressive { to_id(pokeball) } else { pokeball.to_string() };
     } else if let Some(hptype) = line.strip_prefix("Hidden Power: ") {
@@ -690,8 +696,8 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
         });
     } else if line == "Gigantamax: Yes" {
         set.gigantamax = true;
-    } else if line.starts_with("Dynamax Level: ") {
-        set.dynamax_level = line[15..].parse().unwrap_or(10);
+    } else if let Some(dynamax_str) = line.strip_prefix("Dynamax Level: ") {
+        set.dynamax_level = dynamax_str.parse().unwrap_or(10);
     } else if let Some(ev_str) = line.strip_prefix("EVs: ") {
         set.evs = StatsTable { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
         for part in ev_str.split('/') {

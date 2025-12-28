@@ -569,8 +569,8 @@ impl BattleStream {
     pub fn write(&mut self, input: &str) {
         for line in input.lines() {
             let line = line.trim();
-            if line.starts_with('>') {
-                let parts: Vec<&str> = line[1..].splitn(2, ' ').collect();
+            if let Some(command_line) = line.strip_prefix('>') {
+                let parts: Vec<&str> = command_line.splitn(2, ' ').collect();
                 let cmd = parts.first().copied().unwrap_or("");
                 let args = parts.get(1).copied().unwrap_or("");
                 self.write_line(cmd, args);

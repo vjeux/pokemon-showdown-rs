@@ -1607,12 +1607,12 @@ pub fn parse_team(input: &str) -> Vec<ValidatorSet> {
                 pokemon.ivs = parse_ivs(ivs);
             } else if line.ends_with("Nature") {
                 pokemon.nature = Some(line.replace(" Nature", "").trim().to_string());
-            } else if line.starts_with("- ") {
-                pokemon.moves.push(line[2..].trim().to_string());
+            } else if let Some(move_name) = line.strip_prefix("- ") {
+                pokemon.moves.push(move_name.trim().to_string());
             } else if line == "Shiny: Yes" {
                 pokemon.shiny = true;
-            } else if line.starts_with("Happiness:") {
-                if let Ok(happiness) = line[10..].trim().parse() {
+            } else if let Some(happiness_str) = line.strip_prefix("Happiness:") {
+                if let Ok(happiness) = happiness_str.trim().parse() {
                     pokemon.happiness = happiness;
                 }
             }
