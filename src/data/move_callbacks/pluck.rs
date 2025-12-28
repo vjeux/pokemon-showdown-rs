@@ -104,7 +104,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     ]);
 
     // if (this.singleEvent('Eat', item, target.itemState, source, source, move)) {
-    let eat_result = battle.single_event("Eat", Some(&item_id), source, Some(source), Some(&ID::from("pluck")));
+    let eat_result = battle.single_event("Eat", &item_id, source, Some(source), Some(&ID::from("pluck")));
 
     if !matches!(eat_result, EventResult::Boolean(false)) {
         // this.runEvent('EatItem', source, source, move, item);

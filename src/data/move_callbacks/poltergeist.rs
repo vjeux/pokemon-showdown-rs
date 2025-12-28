@@ -22,7 +22,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Boolean(false),
         };
-        target_pokemon.item.is_some()
+        target_pokemon.item != ID::from("")
     };
 
     EventResult::Boolean(has_item)
@@ -42,17 +42,21 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         };
         let target_arg = crate::battle::Arg::from(target_pokemon);
 
-        let item_id = match &target_pokemon.item {
-            Some(id) => id.clone(),
-            None => return EventResult::Continue,
-        };
+        let item_id = target_pokemon.item.clone();
 
+        (target_arg, item_id)
+    };
+
+    if item_id == ID::from("") {
+        return EventResult::Continue;
+    }
+
+    let item_name = {
         let item_data = match battle.dex.get_item_by_id(&item_id) {
             Some(item) => item,
             None => return EventResult::Continue,
         };
-
-        (target_arg, item_data.name.clone())
+        item_data.name.clone()
     };
 
     battle.add("-activate", &[
