@@ -95,13 +95,13 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
                 crate::battle::Arg::from(defender_pokemon)
             };
 
-            battle.add_move("-anim", &[
+            battle.add("-anim", &[
                 attacker_arg,
                 move_name.into(),
                 defender_arg,
             ]);
         } else {
-            battle.add_move("-anim", &[
+            battle.add("-anim", &[
                 attacker_arg,
                 move_name.into(),
             ]);
