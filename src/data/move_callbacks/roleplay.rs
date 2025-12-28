@@ -42,7 +42,8 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         None => return EventResult::Continue,
     };
 
-    if target_ability_data.flags.fail_roleplay || source_ability_data.flags.cant_suppress {
+    if target_ability_data.flags.get("failroleplay").copied().unwrap_or(0) != 0 ||
+       source_ability_data.flags.get("cantsuppress").copied().unwrap_or(0) != 0 {
         return EventResult::Boolean(false);
     }
 
