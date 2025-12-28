@@ -2,16 +2,16 @@
 
 ## Summary
 
-**Current Status:** 106 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 105 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Total Session Progress:**
-- **Callbacks implemented**: 10 total (8 this session + 2 previous session)
+- **Callbacks implemented**: 11 total (9 this session + 2 previous session)
   - This session:
     - substitute.rs: condition::on_end, on_try_hit, on_hit
     - trick.rs: on_try_immunity
     - switcheroo.rs: on_try_immunity
     - throatchop.rs: condition::on_before_move, condition::on_modify_move
-    - uproar.rs: on_try_hit
+    - uproar.rs: on_try_hit, condition::on_residual
   - Previous session: swallow.rs: onTry, onHit
 - **Files marked complete**: 46 total (1 additional + 18 earlier + 27 previous session)
   - Now complete: throatchop
@@ -429,7 +429,7 @@ Moves with callbacks: 373
 - [x] triplekick - Triple Kick (Physical, Fighting) - 1 callback: basePowerCallback
 - [x] trumpcard - Trump Card (Special, Normal) - 1 callback: basePowerCallback
 - [x] upperhand - Upper Hand (Physical, Fighting) - 1 callback: onTry
-- [ ] uproar - Uproar (Special, Normal) - 5 callbacks: onTryHit ✓, condition::onStart ✓, condition::onResidual, condition::onEnd ✓, condition::onAnySetStatus (3/5 implemented)
+- [ ] uproar - Uproar (Special, Normal) - 5 callbacks: onTryHit ✓, condition::onStart ✓, condition::onResidual ✓, condition::onEnd ✓, condition::onAnySetStatus (4/5 implemented)
 - [x] veeveevolley - Veevee Volley (Physical, Normal) - 1 callback: basePowerCallback
 - [x] venomdrench - Venom Drench (Status, Poison) - 1 callback: onHit
 - [x] venoshock - Venoshock (Special, Poison) - 1 callback: onBasePower
