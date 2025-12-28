@@ -51,7 +51,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            battle.modify_value(target_pokemon.base_maxhp as f64, 0.75) as i32
+            battle.modify_f(target_pokemon.base_maxhp as f64, 0.75) as i32
         };
         success = battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0;
     } else {

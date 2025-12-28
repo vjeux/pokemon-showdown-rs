@@ -20,7 +20,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        battle.modify_value(pokemon_pokemon.maxhp, 0.25)
+        battle.modify_f(pokemon_pokemon.maxhp, 0.25)
     };
 
     let heal_success = battle.heal(heal_amount, Some(pokemon), None, None);

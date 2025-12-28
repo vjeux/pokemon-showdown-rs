@@ -49,7 +49,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
         if is_grassy_terrain {
             // this.modify(target.baseMaxhp, 0.667) - multiply by 2/3
-            battle.modify_value(base_max_hp, 0.667)
+            battle.modify_f(base_max_hp, 0.667)
         } else {
             // Math.ceil(target.baseMaxhp * 0.5) - 50% rounded up
             ((base_max_hp as f64 * 0.5).ceil()) as i32
