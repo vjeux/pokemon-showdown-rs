@@ -339,7 +339,19 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         ]);
 
         // source.addVolatile('twoturnmove', target);
-        battle.add_volatile(&ID::from("twoturnmove"), source, Some(target), None);
+        {
+
+            let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            pokemon.add_volatile(ID::from("twoturnmove"));
+
+        }
 
         // return null;
         return EventResult::Stop;

@@ -18,7 +18,25 @@ pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)
     // }
     let pokemon = pokemon_pos;
 
-    battle.add_volatile(&ID::from("shelltrap"), pokemon, None, None);
+    {
+
+
+        let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+
+
+            Some(p) => p,
+
+
+            None => return EventResult::Continue,
+
+
+        };
+
+
+        pokemon.add_volatile(ID::from("shelltrap"));
+
+
+    }
 
     EventResult::Continue
 }

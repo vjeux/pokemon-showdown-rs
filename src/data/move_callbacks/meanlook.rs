@@ -26,7 +26,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.add_volatile_with_source(&ID::from("trapped"), Some(source), battle)
+        target_pokemon.add_volatile(ID::from("trapped"))
+        // TODO: Set source/trapper information on the volatile
     };
 
     EventResult::Boolean(result)

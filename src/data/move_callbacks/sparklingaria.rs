@@ -105,7 +105,13 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos
             continue;
         }
 
-        let removed_volatile = battle.remove_volatile(&ID::from("sparklingaria"), pokemon_pos);
+        let removed_volatile = {
+            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => continue,
+            };
+            pokemon.remove_volatile(&ID::from("sparklingaria"))
+        };
 
         if (removed_volatile || number_targets > 1) && has_burn {
             battle.cure_status(pokemon_pos);

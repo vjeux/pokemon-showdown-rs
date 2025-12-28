@@ -28,7 +28,19 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // target.addVolatile('leechseed', source);
-    battle.add_volatile(&ID::from("leechseed"), target, Some(source), None);
+    {
+
+        let pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+
+            Some(p) => p,
+
+            None => return EventResult::Continue,
+
+        };
+
+        pokemon.add_volatile(ID::from("leechseed"));
+
+    }
 
     EventResult::Continue
 }

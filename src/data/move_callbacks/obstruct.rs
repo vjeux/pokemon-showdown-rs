@@ -34,7 +34,19 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let pokemon = pokemon_pos;
 
     // pokemon.addVolatile('stall');
-    battle.add_volatile(&ID::from("stall"), pokemon, None, None);
+    {
+
+        let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+
+            Some(p) => p,
+
+            None => return EventResult::Continue,
+
+        };
+
+        pokemon.add_volatile(ID::from("stall"));
+
+    }
 
     EventResult::Continue
 }

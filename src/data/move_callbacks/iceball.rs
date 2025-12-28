@@ -155,7 +155,19 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     }
 
     // pokemon.addVolatile('iceball');
-    battle.add_volatile(pokemon, &ID::from("iceball"), None, None);
+    {
+
+        let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+
+            Some(p) => p,
+
+            None => return EventResult::Continue,
+
+        };
+
+        pokemon.add_volatile(ID::from("iceball"));
+
+    }
 
     // if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
     if battle.active_move.as_ref().and_then(|m| m.source_effect.as_ref()).is_some() {
@@ -221,7 +233,19 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos
 
     if has_iceball && hit_count_is_5 && contact_hit_count < 5 {
         // source.addVolatile("rolloutstorage");
-        battle.add_volatile(source, &ID::from("rolloutstorage"), None, None);
+        {
+
+            let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            pokemon.add_volatile(ID::from("rolloutstorage"));
+
+        }
 
         // source.volatiles["rolloutstorage"].contactHitCount =
         // iceballData.contactHitCount;

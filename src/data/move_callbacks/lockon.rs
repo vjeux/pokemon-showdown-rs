@@ -45,7 +45,19 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // source.addVolatile('lockon', target);
-    battle.add_volatile(source, &ID::from("lockon"), Some(target), None);
+    {
+
+        let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+
+            Some(p) => p,
+
+            None => return EventResult::Continue,
+
+        };
+
+        pokemon.add_volatile(ID::from("lockon"));
+
+    }
 
     // this.add('-activate', source, 'move: Lock-On', `[of] ${target}`);
     let source_arg = {

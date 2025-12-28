@@ -86,7 +86,19 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 
                 if !has_perishsong {
                     // pokemon.addVolatile('perishsong');
-                    battle.add_volatile(&ID::from("perishsong"), pokemon_pos, source, None);
+                    {
+
+                        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+
+                            Some(p) => p,
+
+                            None => return EventResult::Continue,
+
+                        };
+
+                        pokemon.add_volatile(ID::from("perishsong"));
+
+                    }
 
                     // this.add('-start', pokemon, 'perish3', '[silent]');
                     let pokemon_arg = {

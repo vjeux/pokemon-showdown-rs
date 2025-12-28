@@ -91,7 +91,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         if has_volatile {
-            battle.add_volatile(volatile, source, None, None);
+            {
+                let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon.add_volatile(volatile.clone());
+            }
 
             if volatile == &ID::from("gmaxchistrike") {
                 let layers = {

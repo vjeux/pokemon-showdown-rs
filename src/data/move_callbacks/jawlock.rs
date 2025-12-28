@@ -21,10 +21,24 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // source.addVolatile('trapped', target, move, 'trapper');
-    battle.add_volatile_with_source_effect(source, &ID::from("trapped"), Some(target), Some("trapper"));
+    {
+        let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.add_volatile(ID::from("trapped"));
+        // TODO: Set source/trapper information on the volatile
+    }
 
     // target.addVolatile('trapped', source, move, 'trapper');
-    battle.add_volatile_with_source_effect(target, &ID::from("trapped"), Some(source), Some("trapper"));
+    {
+        let pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.add_volatile(ID::from("trapped"));
+        // TODO: Set source/trapper information on the volatile
+    }
 
     EventResult::Continue
 }
