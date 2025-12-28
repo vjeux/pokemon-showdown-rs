@@ -634,6 +634,21 @@ pub struct Dex {
     pub gen: u8,
 }
 
+/// Struct to hold JSON data for loading the Dex
+pub struct DexJsonData<'a> {
+    pub species_json: &'a str,
+    pub moves_json: &'a str,
+    pub abilities_json: &'a str,
+    pub items_json: &'a str,
+    pub types_json: &'a str,
+    pub natures_json: &'a str,
+    pub rulesets_json: &'a str,
+    pub aliases_json: &'a str,
+    pub compound_word_names_json: &'a str,
+    pub formats_json: &'a str,
+    pub formats_data_json: &'a str,
+}
+
 impl Dex {
     /// Create a new Dex for a specific generation
     pub fn new(gen: u8) -> Self {
@@ -653,29 +668,17 @@ impl Dex {
     }
 
     /// Load data from JSON strings
-    pub fn load_from_json(
-        species_json: &str,
-        moves_json: &str,
-        abilities_json: &str,
-        items_json: &str,
-        types_json: &str,
-        natures_json: &str,
-        rulesets_json: &str,
-        aliases_json: &str,
-        compound_word_names_json: &str,
-        formats_json: &str,
-        formats_data_json: &str,
-    ) -> Result<Self, serde_json::Error> {
-        let mut species_raw: HashMap<String, SpeciesData> = serde_json::from_str(species_json)?;
-        let moves_raw: HashMap<String, MoveData> = serde_json::from_str(moves_json)?;
-        let abilities_raw: HashMap<String, AbilityData> = serde_json::from_str(abilities_json)?;
-        let items_raw: HashMap<String, ItemData> = serde_json::from_str(items_json)?;
-        let types: HashMap<String, TypeData> = serde_json::from_str(types_json)?;
-        let natures_raw: HashMap<String, NatureData> = serde_json::from_str(natures_json)?;
-        let rulesets_raw: HashMap<String, RulesetData> = serde_json::from_str(rulesets_json)?;
-        let aliases_raw: HashMap<String, String> = serde_json::from_str(aliases_json)?;
-        let compound_word_names: Vec<String> = serde_json::from_str(compound_word_names_json)?;
-        let formats: Vec<FormatData> = serde_json::from_str(formats_json)?;
+    pub fn load_from_json(json_data: DexJsonData) -> Result<Self, serde_json::Error> {
+        let mut species_raw: HashMap<String, SpeciesData> = serde_json::from_str(json_data.species_json)?;
+        let moves_raw: HashMap<String, MoveData> = serde_json::from_str(json_data.moves_json)?;
+        let abilities_raw: HashMap<String, AbilityData> = serde_json::from_str(json_data.abilities_json)?;
+        let items_raw: HashMap<String, ItemData> = serde_json::from_str(json_data.items_json)?;
+        let types: HashMap<String, TypeData> = serde_json::from_str(json_data.types_json)?;
+        let natures_raw: HashMap<String, NatureData> = serde_json::from_str(json_data.natures_json)?;
+        let rulesets_raw: HashMap<String, RulesetData> = serde_json::from_str(json_data.rulesets_json)?;
+        let aliases_raw: HashMap<String, String> = serde_json::from_str(json_data.aliases_json)?;
+        let compound_word_names: Vec<String> = serde_json::from_str(json_data.compound_word_names_json)?;
+        let formats: Vec<FormatData> = serde_json::from_str(json_data.formats_json)?;
 
         // Load formats data and merge into species
         #[derive(Deserialize)]
@@ -689,7 +692,7 @@ impl Dex {
             #[serde(rename = "isNonstandard", default)]
             is_nonstandard: Option<String>,
         }
-        let formats_data: HashMap<String, FormatsDataEntry> = serde_json::from_str(formats_data_json)?;
+        let formats_data: HashMap<String, FormatsDataEntry> = serde_json::from_str(json_data.formats_data_json)?;
 
         // Merge formats data into species data
         for (species_id, formats_entry) in formats_data {
@@ -1802,19 +1805,19 @@ pub mod embedded {
 impl Dex {
     /// Load the embedded default data
     pub fn load_default() -> Result<Self, serde_json::Error> {
-        Self::load_from_json(
-            embedded::SPECIES_JSON,
-            embedded::MOVES_JSON,
-            embedded::ABILITIES_JSON,
-            embedded::ITEMS_JSON,
-            embedded::TYPES_JSON,
-            embedded::NATURES_JSON,
-            embedded::RULESETS_JSON,
-            embedded::ALIASES_JSON,
-            embedded::COMPOUNDWORDNAMES_JSON,
-            embedded::FORMATS_JSON,
-            embedded::FORMATS_DATA_JSON,
-        )
+        Self::load_from_json(DexJsonData {
+            species_json: embedded::SPECIES_JSON,
+            moves_json: embedded::MOVES_JSON,
+            abilities_json: embedded::ABILITIES_JSON,
+            items_json: embedded::ITEMS_JSON,
+            types_json: embedded::TYPES_JSON,
+            natures_json: embedded::NATURES_JSON,
+            rulesets_json: embedded::RULESETS_JSON,
+            aliases_json: embedded::ALIASES_JSON,
+            compound_word_names_json: embedded::COMPOUNDWORDNAMES_JSON,
+            formats_json: embedded::FORMATS_JSON,
+            formats_data_json: embedded::FORMATS_DATA_JSON,
+        })
     }
 }
 
