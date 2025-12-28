@@ -11,10 +11,16 @@ use crate::event::EventResult;
 ///     return 10 * move.hit;
 /// }
 pub fn base_power_callback(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // Get the active move
+    let active_move = match &battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // return 10 * move.hit;
+    EventResult::Number(10 * active_move.hit)
 }
