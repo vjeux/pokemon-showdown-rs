@@ -405,6 +405,7 @@ By callback type:
 - Gen 8: 11 items
 - Gen 9: 56 items
 
+<<<<<<< HEAD
 ## Missing Infrastructure for J-L Items
 
 ### Mega Evolution Stones (kangaskhanite, latiasite, latiosite, lopunnite, lucarionite, lucarionitez)
@@ -639,3 +640,16 @@ onModifyCritRatio(critRatio) {
    - Origin forme detection (adamantcrystal for Dialga)
    - Primal forme detection (blueorb for Kyogre)
    - Paradox forme detection (boosterenergy)
+
+## Missing Infrastructure for Items C-D
+
+### ItemData missing fields
+The following fields need to be added to `ItemData` in `src/dex.rs`:
+- `mega_evolves: Option<String>` - For mega stones (cameruptite, chandelurite, charizarditex, charizarditey, etc.)
+- `mega_stone: Option<String>` - The species this stone evolves into
+- `item_user: Option<Vec<String>>` - Species that can use this item
+
+### Methods needed
+- Access to item data from item position or ID in callbacks
+- Access to species data from pokemon's base_species
+- Methods to check if pokemon can use items (for mega stones)

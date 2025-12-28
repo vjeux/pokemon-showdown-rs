@@ -527,6 +527,12 @@ pub struct ItemData {
     /// Pokemon species that can use this mega stone (e.g., "Froslass")
     #[serde(rename = "megaEvolves", default)]
     pub mega_evolves: Option<String>,
+    /// Species that can use this item
+    #[serde(rename = "itemUser", default)]
+    pub item_user: Option<Vec<String>>,
+    /// Stat boosts when item is used (e.g., for Cell Battery)
+    #[serde(default)]
+    pub boosts: Option<std::collections::HashMap<String, i32>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
