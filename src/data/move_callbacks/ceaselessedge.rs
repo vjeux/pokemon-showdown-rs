@@ -32,10 +32,10 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
         //     side.addSideCondition('spikes');
         // }
         let source_side_idx = source_pos.0;
-        let foe_sides: Vec<usize> = battle.foe_sides_with_conditions(source_side_idx);
 
-        for side_idx in foe_sides {
-            if side_idx < battle.sides.len() {
+        // Get foe sides (opposite side in a 2-player battle)
+        for side_idx in 0..battle.sides.len() {
+            if side_idx != source_side_idx {
                 battle.sides[side_idx].add_side_condition(&ID::from("spikes"));
             }
         }
@@ -74,10 +74,10 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
         //     side.addSideCondition('spikes');
         // }
         let source_side_idx = source.0;
-        let foe_sides: Vec<usize> = battle.foe_sides_with_conditions(source_side_idx);
 
-        for side_idx in foe_sides {
-            if side_idx < battle.sides.len() {
+        // Get foe sides (opposite side in a 2-player battle)
+        for side_idx in 0..battle.sides.len() {
+            if side_idx != source_side_idx {
                 battle.sides[side_idx].add_side_condition(&ID::from("spikes"));
             }
         }
