@@ -541,12 +541,13 @@ pub fn dispatch_on_after_move_secondary_self(
     battle: &mut Battle,
     move_id: &str,
     pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "fellstinger" => fellstinger::on_after_move_secondary_self(battle, pokemon_pos),
-        "orderup" => orderup::on_after_move_secondary_self(battle, pokemon_pos),
-        "polarflare" => polarflare::on_after_move_secondary_self(battle, pokemon_pos),
-        "relicsong" => relicsong::on_after_move_secondary_self(battle, pokemon_pos),
+        "fellstinger" => fellstinger::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id),
+        "orderup" => orderup::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id),
+        "polarflare" => polarflare::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id),
+        "relicsong" => relicsong::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -556,19 +557,21 @@ pub fn dispatch_on_after_sub_damage(
     battle: &mut Battle,
     move_id: &str,
     pokemon_pos: (usize, usize),
+    damage: i32,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "ceaselessedge" => ceaselessedge::on_after_sub_damage(battle, pokemon_pos),
-        "coreenforcer" => coreenforcer::on_after_sub_damage(battle, pokemon_pos),
-        "flameburst" => flameburst::on_after_sub_damage(battle, pokemon_pos),
-        "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, pokemon_pos),
-        "icespinner" => icespinner::on_after_sub_damage(battle, pokemon_pos),
-        "mortalspin" => mortalspin::on_after_sub_damage(battle, pokemon_pos),
-        "rapidspin" => rapidspin::on_after_sub_damage(battle, pokemon_pos),
-        "shellsidearm" => shellsidearm::on_after_sub_damage(battle, pokemon_pos),
-        "splinteredstormshards" => splinteredstormshards::on_after_sub_damage(battle, pokemon_pos),
-        "steelroller" => steelroller::on_after_sub_damage(battle, pokemon_pos),
-        "stoneaxe" => stoneaxe::on_after_sub_damage(battle, pokemon_pos),
+        "ceaselessedge" => ceaselessedge::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "coreenforcer" => coreenforcer::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "flameburst" => flameburst::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "icespinner" => icespinner::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "mortalspin" => mortalspin::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "rapidspin" => rapidspin::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "shellsidearm" => shellsidearm::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "splinteredstormshards" => splinteredstormshards::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "steelroller" => steelroller::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "stoneaxe" => stoneaxe::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
         _ => EventResult::Continue,
     }
 }
@@ -769,14 +772,15 @@ pub fn dispatch_on_hit_field(
     battle: &mut Battle,
     move_id: &str,
     pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "courtchange" => courtchange::on_hit_field(battle, pokemon_pos),
-        "flowershield" => flowershield::on_hit_field(battle, pokemon_pos),
-        "haze" => haze::on_hit_field(battle, pokemon_pos),
-        "perishsong" => perishsong::on_hit_field(battle, pokemon_pos),
-        "rototiller" => rototiller::on_hit_field(battle, pokemon_pos),
-        "teatime" => teatime::on_hit_field(battle, pokemon_pos),
+        "courtchange" => courtchange::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
+        "flowershield" => flowershield::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
+        "haze" => haze::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
+        "perishsong" => perishsong::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
+        "rototiller" => rototiller::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
+        "teatime" => teatime::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
         _ => EventResult::Continue,
     }
 }

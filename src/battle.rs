@@ -8075,8 +8075,11 @@ impl Battle {
                 }
             }
             "AfterMove" => move_callbacks::dispatch_on_after_move(self, move_id, source_pos, target),
-            "AfterMoveSecondarySelf" => move_callbacks::dispatch_on_after_move_secondary_self(self, move_id, source_pos),
-            "AfterSubDamage" => move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos),
+            "AfterMoveSecondarySelf" => move_callbacks::dispatch_on_after_move_secondary_self(self, move_id, source_pos, target),
+            "AfterSubDamage" => {
+                // TODO: AfterSubDamage needs damage value from relay_var
+                move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos, 0, target)
+            }
             "BasePower" => {
                 // TODO: BasePower event needs base_power value from relay_var
                 // This requires architectural changes to thread relay_var through dispatch
@@ -8103,7 +8106,7 @@ impl Battle {
                     EventResult::Continue
                 }
             }
-            "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, source_pos),
+            "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, source_pos, target),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_id, source_pos),
             "ModifyMove" => move_callbacks::dispatch_on_modify_move(self, move_id, source_pos, target),
             "ModifyPriority" => move_callbacks::dispatch_on_modify_priority(self, move_id, source_pos),
