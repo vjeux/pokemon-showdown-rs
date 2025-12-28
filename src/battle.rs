@@ -83,12 +83,21 @@ pub enum EffectType {
     Status,
 }
 
+/// Type alias for event callback functions
+pub type EventCallback = Box<dyn Fn(&EventContext) -> Option<i32> + Send + Sync>;
+
+/// Type alias for move targets result (targets, pressure_targets)
+pub type MoveTargetsResult = (Vec<(usize, usize)>, Vec<(usize, usize)>);
+
+/// Type alias for spread move hit result (damages, targets)
+pub type SpreadMoveHitResult = (Vec<Option<i32>>, Vec<Option<(usize, usize)>>);
+
 /// Custom event handler registered via onEvent (for testing)
 /// JavaScript: { callback, target, priority, order, subOrder }
 pub struct CustomEventHandler {
     /// The callback function - now receives EventContext instead of &mut Battle
     /// This eliminates the circular reference and unsafe code
-    pub callback: Box<dyn Fn(&EventContext) -> Option<i32> + Send + Sync>,
+    pub callback: EventCallback,
     /// Priority for event ordering (higher = earlier)
     pub priority: i32,
     /// Order value
@@ -3979,7 +3988,7 @@ impl Battle {
         user_pos: (usize, usize),
         move_id: &ID,
         mut target: Option<(usize, usize)>,
-    ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
+    ) -> MoveTargetsResult {
         let mut targets: Vec<(usize, usize)> = Vec::new();
 
         // Get move data to access target and flags
@@ -11496,7 +11505,7 @@ impl Battle {
         move_id: &ID,
         is_secondary: bool,
         is_self: bool,
-    ) -> (Vec<Option<i32>>, Vec<Option<(usize, usize)>>) {
+    ) -> SpreadMoveHitResult {
         let mut damages: Vec<Option<i32>> = vec![Some(0); targets.len()];
         let mut final_targets = targets.to_vec();
 
