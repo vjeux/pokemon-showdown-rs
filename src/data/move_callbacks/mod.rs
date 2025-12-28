@@ -1444,7 +1444,7 @@ pub fn dispatch_condition_on_faint(
     match move_id {
         "destinybond" => destinybond::condition::on_faint(battle, source_pos),
         "grudge" => grudge::condition::on_faint(battle, source_pos),
-        "skydrop" => skydrop::condition::on_faint(battle, source_pos),
+        "skydrop" => skydrop::condition::on_faint(battle, Some(source_pos)),
         _ => EventResult::Continue,
     }
 }
@@ -1494,7 +1494,7 @@ pub fn dispatch_condition_on_field_start(
     match move_id {
         "echoedvoice" => echoedvoice::condition::on_field_start(battle, source_pos),
         "electricterrain" => electricterrain::condition::on_field_start(battle, source_pos),
-        "fairylock" => fairylock::condition::on_field_start(battle, source_pos),
+        "fairylock" => fairylock::condition::on_field_start(battle, Some(source_pos)),
         "grassyterrain" => grassyterrain::condition::on_field_start(battle, source_pos),
         "gravity" => gravity::condition::on_field_start(battle, source_pos),
         "iondeluge" => iondeluge::condition::on_field_start(battle, source_pos),
@@ -1516,8 +1516,8 @@ pub fn dispatch_condition_on_foe_before_move(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "imprison" => imprison::condition::on_foe_before_move(battle, source_pos),
-        "skydrop" => skydrop::condition::on_foe_before_move(battle, source_pos),
+        "imprison" => imprison::condition::on_foe_before_move(battle, move_id),
+        "skydrop" => skydrop::condition::on_foe_before_move(battle, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1568,16 +1568,16 @@ pub fn dispatch_condition_on_hit(
     target_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "banefulbunker" => banefulbunker::condition::on_hit(battle, source_pos, target_pos),
-        "beakblast" => beakblast::condition::on_hit(battle, source_pos, target_pos),
-        "burningbulwark" => burningbulwark::condition::on_hit(battle, source_pos, target_pos),
-        "focuspunch" => focuspunch::condition::on_hit(battle, source_pos, target_pos),
-        "kingsshield" => kingsshield::condition::on_hit(battle, source_pos, target_pos),
-        "obstruct" => obstruct::condition::on_hit(battle, source_pos, target_pos),
-        "rage" => rage::condition::on_hit(battle, source_pos, target_pos),
-        "shelltrap" => shelltrap::condition::on_hit(battle, source_pos, target_pos),
-        "silktrap" => silktrap::condition::on_hit(battle, source_pos, target_pos),
-        "spikyshield" => spikyshield::condition::on_hit(battle, source_pos, target_pos),
+        "banefulbunker" => banefulbunker::condition::on_hit(battle, source_pos, Some(target_pos)),
+        "beakblast" => beakblast::condition::on_hit(battle, source_pos, Some(target_pos)),
+        "burningbulwark" => burningbulwark::condition::on_hit(battle, source_pos, Some(target_pos)),
+        "focuspunch" => focuspunch::condition::on_hit(battle, source_pos, Some(target_pos)),
+        "kingsshield" => kingsshield::condition::on_hit(battle, source_pos, Some(target_pos)),
+        "obstruct" => obstruct::condition::on_hit(battle, source_pos, Some(target_pos)),
+        "rage" => rage::condition::on_hit(battle, source_pos, Some(target_pos)),
+        "shelltrap" => shelltrap::condition::on_hit(battle, source_pos, Some(target_pos)),
+        "silktrap" => silktrap::condition::on_hit(battle, source_pos, Some(target_pos)),
+        "spikyshield" => spikyshield::condition::on_hit(battle, source_pos, Some(target_pos)),
         _ => EventResult::Continue,
     }
 }
