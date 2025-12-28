@@ -15,12 +15,33 @@ use crate::event::EventResult;
 ///     return move.basePower;
 /// }
 pub fn base_power_callback(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // Get the active move
+    let active_move = match &battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // Check if sourceEffect is 'grasspledge' or 'waterpledge'
+    if let Some(ref source_effect) = active_move.source_effect {
+        let source_str = source_effect.as_str();
+        if source_str == "grasspledge" || source_str == "waterpledge" {
+            // Note: JS has this.add('-combine') which we don't have infrastructure for yet
+            // this.add('-combine');
+            return EventResult::Number(150);
+        }
+    }
+
+    // Get the move data for base power
+    let move_data = match battle.dex.get_move_by_id(&active_move.id) {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    EventResult::Number(move_data.base_power)
 }
 
 /// onPrepareHit(target, source, move) {
