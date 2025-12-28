@@ -76,7 +76,7 @@ pub mod condition {
                 std::cmp::max(calculated_damage, 1)
             };
 
-            battle.damage(damage, pokemon, None, None);
+            battle.damage(damage, pokemon, None, None, false);
 
             // this.attrLastMove('[still]');
             battle.attr_last_move(&["[still]"]);

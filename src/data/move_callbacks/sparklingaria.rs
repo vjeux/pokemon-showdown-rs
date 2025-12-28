@@ -64,7 +64,7 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos
     if source_fainted || hit_targets.is_empty() || has_sheer_force {
         // make sure the volatiles are cleared
         // for (const pokemon of this.getAllActive()) delete pokemon.volatiles['sparklingaria'];
-        let all_active = battle.get_all_active();
+        let all_active = battle.get_all_active(false);
         for pokemon_pos in all_active {
             battle.remove_volatile(&ID::from("sparklingaria"), pokemon_pos);
         }

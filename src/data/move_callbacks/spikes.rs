@@ -94,7 +94,7 @@ pub mod condition {
         };
 
         let damage_amount = damage_amounts[layers as usize] * max_hp / 24;
-        battle.damage(damage_amount, pokemon);
+        battle.damage(damage_amount, Some(pokemon), None, None, false);
 
         EventResult::Continue
     }

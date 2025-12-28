@@ -86,7 +86,7 @@ pub mod condition {
         // for (const mon of this.getAllActive()) {
         //     this.singleEvent('End', mon.getItem(), mon.itemState, mon);
         // }
-        let all_active = battle.get_all_active();
+        let all_active = battle.get_all_active(false);
         for pokemon_pos in all_active {
             let item_id = {
                 let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

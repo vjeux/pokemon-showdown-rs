@@ -20,7 +20,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // for (const pokemon of this.getAllActive()) {
     //     pokemon.clearBoosts();
     // }
-    let all_active = battle.get_all_active();
+    let all_active = battle.get_all_active(false);
 
     for pokemon_pos in all_active {
         let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

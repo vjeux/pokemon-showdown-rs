@@ -94,7 +94,7 @@ pub mod condition {
             }
         };
 
-        battle.damage(damage_amount, pokemon, None, None);
+        battle.damage(damage_amount, pokemon, None, None, false);
 
         EventResult::Continue
     }

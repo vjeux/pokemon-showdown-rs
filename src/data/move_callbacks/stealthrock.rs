@@ -63,7 +63,7 @@ pub mod condition {
 
         let multiplier = 2_i32.pow(type_mod as u32);
         let damage_amount = (max_hp * multiplier as i32) / 8;
-        battle.damage(damage_amount, pokemon);
+        battle.damage(damage_amount, Some(pokemon), None, None, false);
 
         EventResult::Continue
     }

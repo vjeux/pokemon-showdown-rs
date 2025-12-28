@@ -37,7 +37,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
     let mut any_airborne = false;
 
     // for (const pokemon of this.getAllActive()) {
-    let all_active = battle.get_all_active();
+    let all_active = battle.get_all_active(false);
 
     for pokemon_pos in all_active {
         // if (!pokemon.runImmunity('Ground')) {

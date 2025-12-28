@@ -34,7 +34,7 @@ pub fn on_hit_field(battle: &mut Battle, source_pos: Option<(usize, usize)>, mov
     // const targets: Pokemon[] = [];
     // for (const pokemon of this.getAllActive()) {
     let mut targets = Vec::new();
-    let all_active = battle.get_all_active();
+    let all_active = battle.get_all_active(false);
 
     for pokemon_pos in all_active {
         // if (

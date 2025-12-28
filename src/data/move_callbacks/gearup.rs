@@ -38,7 +38,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     };
 
     // Get all active Pokemon on the same side
-    let allies = battle.get_all_active()
+    let allies = battle.get_all_active(false)
         .into_iter()
         .filter(|pos| pos.0 == side_index)
         .collect::<Vec<_>>();

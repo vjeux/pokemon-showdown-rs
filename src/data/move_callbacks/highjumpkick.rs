@@ -27,7 +27,7 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
         source_pokemon.base_maxhp / 2
     };
 
-    battle.damage(damage_amount, source, Some(source), Some(&ID::from("highjumpkick")));
+    battle.damage(damage_amount, source, Some(source), Some(&ID::from("highjumpkick")), false);
 
     EventResult::Continue
 }

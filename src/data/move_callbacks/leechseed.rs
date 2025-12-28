@@ -124,7 +124,7 @@ pub mod condition {
             pokemon_pokemon.base_maxhp / 8
         };
 
-        let damage = battle.damage(damage_amount, pokemon, Some(target_pos), None);
+        let damage = battle.damage(damage_amount, pokemon, Some(target_pos), None, false);
 
         // if (damage) {
         //     this.heal(damage, target, pokemon);
