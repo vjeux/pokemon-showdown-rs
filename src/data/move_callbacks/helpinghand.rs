@@ -11,11 +11,28 @@ use crate::event::EventResult;
 ///     if (!target.newlySwitched && !this.queue.willMove(target)) return false;
 /// }
 pub fn on_try_hit(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target = target_pos;
+
+    // if (!target.newlySwitched && !this.queue.willMove(target)) return false;
+    let (newly_switched, will_move) = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (
+            target_pokemon.newly_switched,
+            battle.queue.will_move(target.0, target.1).is_some(),
+        )
+    };
+
+    if !newly_switched && !will_move {
+        return EventResult::NotFail;
+    }
+
     EventResult::Continue
 }
 
