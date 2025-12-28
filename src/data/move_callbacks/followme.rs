@@ -100,7 +100,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let is_valid_target = battle.valid_target(effect_state_target, source, move_target.as_deref());
+        let is_valid_target = battle.valid_target(effect_state_target, source, move_target.as_str());
 
         if is_valid_target {
             // if (move.smartTarget) move.smartTarget = false;

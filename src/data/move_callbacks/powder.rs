@@ -54,7 +54,7 @@ pub mod condition {
             active_move.move_type.clone()
         };
 
-        if move_type.as_deref() == Some("Fire") {
+        if move_type.as_str() == "Fire" {
             // this.add('-activate', pokemon, 'move: Powder');
             let pokemon_arg = {
                 let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {

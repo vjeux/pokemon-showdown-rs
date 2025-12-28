@@ -46,10 +46,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         pokemon_pokemon.effective_weather(&battle.field.weather.as_str())
     };
 
-    match effective_weather.as_deref() {
+    match effective_weather.as_str() {
         // case 'sunnyday':
         // case 'desolateland':
-        Some("sunnyday") | Some("desolateland") => {
+        "sunnyday" | "desolateland" => {
             // factor = 0.667;
             factor = 0.667;
         }
@@ -58,7 +58,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         // case 'sandstorm':
         // case 'hail':
         // case 'snowscape':
-        Some("raindance") | Some("primordialsea") | Some("sandstorm") | Some("hail") | Some("snowscape") => {
+        "raindance" | "primordialsea" | "sandstorm" | "hail" | "snowscape" => {
             // factor = 0.25;
             factor = 0.25;
         }
