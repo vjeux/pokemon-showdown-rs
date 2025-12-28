@@ -86,7 +86,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         // }
         let type_check = battle.dex.get_type_damage_taken(&type_name, &attack_type);
         if type_check == 2 || type_check == 3 {
-            possible_types.push(type_name);
+            possible_types.push(&type_name);
         }
     }
 
@@ -111,7 +111,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.set_type(vec![random_type_str.clone()]);
+        source_pokemon.set_type(vec![random_type_str.to_string()]);
     }
 
     // this.add('-start', source, 'typechange', randomType);
