@@ -12,10 +12,21 @@ use crate::event::EventResult;
 ///     return pokemon.cureStatus() || success;
 /// }
 pub fn on_hit(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let pokemon = pokemon_pos;
+
+    // const success = !!this.boost({ spa: 1, spd: 1 });
+    let boost_success = battle.boost(&[("spa", 1), ("spd", 1)], pokemon, None, None);
+
+    // return pokemon.cureStatus() || success;
+    let cure_success = battle.cure_status(pokemon);
+
+    if cure_success || boost_success {
+        EventResult::Continue
+    } else {
+        EventResult::NotFail
+    }
 }
