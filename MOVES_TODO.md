@@ -5,7 +5,12 @@
 **Current Status:** 114 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Recently Completed in This Session:**
-- Checklist cleanup: marked 27 previously completed files (synthesis, synchronoise, + 25 others)
+- Checklist cleanup: marked 18 previously completed files in this continuation session
+  - takeheart, temperflare, upperhand, veeveevolley (4 files)
+  - teleport, thunder, thunderclap, topsyturvy, venomdrench, venoshock (6 files)
+  - wakeupslap, watershuriken, waterspout, wildboltstorm, wringout (5 files)
+  - tailwind, transform, trickortreat (3 files)
+- Previous session: marked 27 previously completed files (synthesis, synchronoise, + 25 others)
 - Active implementation: 2 new callbacks
   - swallow.rs: onTry, onHit (uses stockpile volatile, heal with layers-based amounts)
 
