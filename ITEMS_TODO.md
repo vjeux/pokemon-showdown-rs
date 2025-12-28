@@ -4,13 +4,13 @@ Total: 583 items
 Items with callbacks: 326
 
 ## Items with Callbacks (alphabetically)
-- [ ] abilityshield - Ability Shield (Gen 9) - 1 callback: onSetAbility
+- [x] abilityshield - Ability Shield (Gen 9) - 1 callback: onSetAbility
 - [ ] abomasite - Abomasite (Gen 6) - 1 callback: onTakeItem
 - [ ] absolite - Absolite (Gen 6) - 1 callback: onTakeItem
 - [ ] absolitez - Absolite Z (Gen 9) - 1 callback: onTakeItem
-- [ ] absorbbulb - Absorb Bulb (Gen 5) - 1 callback: onDamagingHit
+- [x] absorbbulb - Absorb Bulb (Gen 5) - 1 callback: onDamagingHit
 - [ ] adamantcrystal - Adamant Crystal (Gen 8) - 2 callbacks: onBasePower, onTakeItem
-- [ ] adamantorb - Adamant Orb (Gen 4) - 1 callback: onBasePower
+- [x] adamantorb - Adamant Orb (Gen 4) - 1 callback: onBasePower
 - [ ] adrenalineorb - Adrenaline Orb (Gen 7) - 1 callback: onAfterBoost
 - [ ] aerodactylite - Aerodactylite (Gen 6) - 1 callback: onTakeItem
 - [ ] aggronite - Aggronite (Gen 6) - 1 callback: onTakeItem
@@ -33,15 +33,15 @@ Items with callbacks: 326
 - [ ] berserkgene - Berserk Gene (Gen 2) - 1 callback: onUpdate
 - [ ] bigroot - Big Root (Gen 4) - 1 callback: onTryHeal
 - [ ] bitterberry - Bitter Berry (Gen 2) - 2 callbacks: onUpdate, onEat
-- [ ] blackbelt - Black Belt (Gen 2) - 1 callback: onBasePower
-- [ ] blackglasses - Black Glasses (Gen 2) - 1 callback: onBasePower
-- [ ] blacksludge - Black Sludge (Gen 4) - 1 callback: onResidual
+- [x] blackbelt - Black Belt (Gen 2) - 1 callback: onBasePower
+- [x] blackglasses - Black Glasses (Gen 2) - 1 callback: onBasePower
+- [x] blacksludge - Black Sludge (Gen 4) - 1 callback: onResidual
 - [ ] blastoisinite - Blastoisinite (Gen 6) - 1 callback: onTakeItem
 - [ ] blazikenite - Blazikenite (Gen 6) - 1 callback: onTakeItem
 - [ ] blueorb - Blue Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
 - [ ] boosterenergy - Booster Energy (Gen 9) - 3 callbacks: onStart, onUpdate, onTakeItem
-- [ ] brightpowder - Bright Powder (Gen 2) - 1 callback: onModifyAccuracy
-- [ ] buggem - Bug Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] brightpowder - Bright Powder (Gen 2) - 1 callback: onModifyAccuracy
+- [x] buggem - Bug Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] bugmemory - Bug Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] burndrive - Burn Drive (Gen 5) - 1 callback: onTakeItem
 - [ ] burntberry - Burnt Berry (Gen 2) - 2 callbacks: onUpdate, onEat
