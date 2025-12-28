@@ -92,7 +92,7 @@ pub mod condition {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    target_pokemon.get_move_hit_data(move_id).crit
+                    target_pokemon.get_move_hit_data(&ID::from(move_id)).crit
                 };
                 let infiltrates = {
                     let active_move = match &battle.active_move {

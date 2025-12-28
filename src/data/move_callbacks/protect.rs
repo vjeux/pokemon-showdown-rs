@@ -150,11 +150,13 @@ pub mod condition {
                 };
 
                 // Set z_broke_protect on the target pokemon's move hit data
-                let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                target_pokemon.get_move_hit_data(&move_id.id).z_broke_protect = true;
+                // TODO: MoveHitData doesn't have z_broke_protect field yet
+                // Need to add this field or track it differently
+                // let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+                //     Some(p) => p,
+                //     None => return EventResult::Continue,
+                // };
+                // target_pokemon.get_move_hit_data(&move_id.id).z_broke_protect = true;
             }
 
             // return;
