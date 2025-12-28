@@ -145,7 +145,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let (pokemon_arg, source_arg) = {
+        let (pokemon_ident, source_ident) = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -155,13 +155,13 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            (crate::battle::Arg::from(pokemon_pokemon), crate::battle::Arg::from(source_pokemon))
+            (pokemon_pokemon.get_slot(), source_pokemon.get_slot())
         };
 
         battle.add("-start", &[
-            pokemon_arg,
+            pokemon_ident.as_str().into(),
             "Curse".into(),
-            format!("[of] {}", source_arg).into(),
+            format!("[of] {}", source_ident).into(),
         ]);
 
         EventResult::Continue

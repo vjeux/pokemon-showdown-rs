@@ -37,15 +37,15 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     }
 
     // this.add('-fail', source, 'move: Dark Void');
-    let source_arg = {
+    let source_ident = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(source_pokemon)
+        source_pokemon.get_slot()
     };
 
-    battle.add("-fail", &[source_arg, "move: Dark Void".into()]);
+    battle.add("-fail", &[source_ident.as_str().into(), "move: Dark Void".into()]);
 
     // this.hint("Only a Pokemon whose form is Darkrai can use this move.");
     battle.hint("Only a Pokemon whose form is Darkrai can use this move.", true, None);

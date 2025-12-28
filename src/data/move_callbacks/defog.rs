@@ -93,7 +93,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             }
 
             // this.add('-sideend', target.side, this.dex.conditions.get(targetCondition).name, '[from] move: Defog', `[of] ${source}`);
-            let (target_side_arg, source_arg, condition_name) = {
+            let (target_side_arg, source_ident, condition_name) = {
                 let target_side = match battle.sides.get(target_side_index) {
                     Some(s) => s,
                     None => continue,
@@ -108,14 +108,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 let condition_name = condition_id.to_string();
 
                 let side_id = if target_side_index == 0 { "p1" } else { "p2" };
-                (crate::battle::Arg::Str(side_id), crate::battle::Arg::from(source_pokemon), condition_name)
+                (crate::battle::Arg::Str(side_id), source_pokemon.get_slot(), condition_name)
             };
 
             battle.add("-sideend", &[
                 target_side_arg,
                 condition_name.into(),
                 "[from] move: Defog".into(),
-                format!("[of] {}", source_arg).into(),
+                format!("[of] {}", source_ident).into(),
             ]);
 
             // success = true;
@@ -140,7 +140,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
         if removed {
             // this.add('-sideend', source.side, this.dex.conditions.get(sideCondition).name, '[from] move: Defog', `[of] ${source}`);
-            let (source_side_arg, source_arg, condition_name) = {
+            let (source_side_arg, source_ident, condition_name) = {
                 let source_side = match battle.sides.get(source_side_index) {
                     Some(s) => s,
                     None => continue,
@@ -155,14 +155,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 let condition_name = condition_id.to_string();
 
                 let side_id = if source_side_index == 0 { "p1" } else { "p2" };
-                (crate::battle::Arg::Str(side_id), crate::battle::Arg::from(source_pokemon), condition_name)
+                (crate::battle::Arg::Str(side_id), source_pokemon.get_slot(), condition_name)
             };
 
             battle.add("-sideend", &[
                 source_side_arg,
                 condition_name.into(),
                 "[from] move: Defog".into(),
-                format!("[of] {}", source_arg).into(),
+                format!("[of] {}", source_ident).into(),
             ]);
 
             // success = true;

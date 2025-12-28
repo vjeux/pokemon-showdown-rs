@@ -173,15 +173,15 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
     battle.add("-swapsideconditions", &[]);
 
     // this.add('-activate', source, 'move: Court Change');
-    let source_arg = {
+    let source_ident = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(source_pokemon)
+        source_pokemon.get_slot()
     };
 
-    battle.add("-activate", &[source_arg, "move: Court Change".into()]);
+    battle.add("-activate", &[source_ident.as_str().into(), "move: Court Change".into()]);
 
     EventResult::Continue
 }

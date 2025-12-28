@@ -92,7 +92,7 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
     }
 
     // this.add('-item', source, yourItem, '[from] move: Covet', `[of] ${target}`);
-    let (source_arg, target_arg, item_name) = {
+    let (source_ident, target_ident, item_name) = {
         let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
@@ -104,14 +104,14 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
         let item_data = battle.dex.get_item_by_id(&your_item_id);
         let item_name = item_data.map(|i| i.name.clone()).unwrap_or_else(|| your_item_id.to_string());
 
-        (crate::battle::Arg::from(source_pokemon), crate::battle::Arg::from(target_pokemon), item_name)
+        (source_pokemon.get_slot(), target_pokemon.get_slot(), item_name)
     };
 
     battle.add("-item", &[
-        source_arg,
+        source_ident.as_str().into(),
         item_name.into(),
         "[from] move: Covet".into(),
-        format!("[of] {}", target_arg).into(),
+        format!("[of] {}", target_ident).into(),
     ]);
 
     EventResult::Continue
