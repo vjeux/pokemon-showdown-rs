@@ -27,6 +27,6 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // || 1 means if bp is 0, return 1
     let bp = if bp == 0 { 1 } else { bp };
 
-    EventResult::Number(bp)
+    EventResult::Number(bp as i32)
 }
 

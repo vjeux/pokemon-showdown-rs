@@ -82,11 +82,8 @@ pub fn on_hit_field(battle: &mut Battle, source_pos: Option<(usize, usize)>, mov
     // }
     let mut success = false;
     for target in targets {
-        let mut boosts = HashMap::new();
-        boosts.insert("def".to_string(), 1);
-
-        let boost_result = battle.boost(boosts, target, source, Some(move_id));
-        success = boost_result || success;
+        let boost_result = battle.boost(&[("def", 1)], target, source, Some(move_id));
+        success = (boost_result.unwrap_or(0) != 0) || success;
     }
 
     // return success;
