@@ -9,6 +9,59 @@
 const fs = require('fs');
 const path = require('path');
 
+// Helper function to generate parameters based on callback name (standardized)
+function generateParameters(callbackName, jsArgs) {
+    // Always include battle
+    let params = ['battle: &mut Battle'];
+
+    // Standard signatures for each callback type
+    const standardSignatures = {
+        // Item-specific callbacks
+        'onEat': ['pokemon_pos: (usize, usize)'],
+        'onTakeItem': ['item_pos: Option<(usize, usize)>', 'pokemon_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>'],
+        'onStart': ['target_pos: Option<(usize, usize)>'],
+        'onEnd': ['pokemon_pos: (usize, usize)'],
+        'onUpdate': ['pokemon_pos: (usize, usize)'],
+        'onResidual': ['pokemon_pos: (usize, usize)'],
+        'onBasePower': ['base_power: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onModifyDamage': ['damage: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onSourceModifyDamage': ['damage: i32', 'source_pos: (usize, usize)', 'target_pos: (usize, usize)'],
+        'onTryHit': ['target_pos: (usize, usize)', 'source_pos: (usize, usize)'],
+        'onDamagingHit': ['damage: i32', 'target_pos: (usize, usize)', 'source_pos: (usize, usize)'],
+        'onAfterMoveSecondarySelf': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onModifyMove': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+    };
+
+    // Use standard signature if available, otherwise parse JS args
+    if (standardSignatures[callbackName]) {
+        params.push(...standardSignatures[callbackName]);
+    } else {
+        // Parse JS arguments to determine what Rust parameters we need
+        const args = jsArgs.split(',').map(a => a.trim()).filter(a => a);
+
+        // Map common JS parameter names to Rust types
+        const paramMap = {
+            'pokemon': 'pokemon_pos: (usize, usize)',
+            'target': 'target_pos: Option<(usize, usize)>',
+            'source': 'source_pos: Option<(usize, usize)>',
+            'item': 'item_id: &str',
+            'effect': 'effect_id: Option<&str>',
+            'damage': 'damage: i32',
+            'basePower': 'base_power: i32',
+            'move': 'move_id: &str',
+        };
+
+        // Add parameters based on JS args
+        for (const arg of args) {
+            if (paramMap[arg]) {
+                params.push(paramMap[arg]);
+            }
+        }
+    }
+
+    return params.join(', ');
+}
+
 // Helper function to convert camelCase to snake_case
 function camelToSnake(str) {
     return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
@@ -25,7 +78,8 @@ function rustModName(name) {
 
 // Load the items from TypeScript file
 const workspaceRoot = process.env.WORKSPACE_ROOT || path.join(__dirname, '..');
-const itemsPath = path.join(workspaceRoot, 'pokemon-showdown-js', 'data', 'items.ts');
+const showdownDir = process.env.SHOWDOWN_DIR || 'pokemon-showdown';
+const itemsPath = path.join(path.dirname(workspaceRoot), showdownDir, 'data', 'items.ts');
 const itemsContent = fs.readFileSync(itemsPath, 'utf8');
 
 // Parse items - extract each item definition
@@ -43,35 +97,86 @@ while ((match = itemRegex.exec(itemsContent)) !== null) {
     const numMatch = content.match(/num:\s*(-?\d+)/);
     const genMatch = content.match(/gen:\s*(\d+)/);
 
-    // Extract all callbacks (functions)
+    // Extract all callbacks (functions) with their JS source
     const callbacks = [];
-    const callbackRegex = /(\w+)(?:Priority|Order|SubOrder)?[:\(]/g;
-    let callbackMatch;
     const seenCallbacks = new Set();
 
-    while ((callbackMatch = callbackRegex.exec(content)) !== null) {
-        const callbackName = callbackMatch[1];
-        if (callbackName.startsWith('on') && !seenCallbacks.has(callbackName)) {
-            seenCallbacks.add(callbackName);
-            callbacks.push(callbackName);
-        }
-    }
+    // Match callback functions with their implementations
+    const lines = content.split('\n');
+    let i = 0;
+    while (i < lines.length) {
+        const line = lines[i];
+        // Match callback name and opening (onXxx pattern for items)
+        const match = line.match(/^\t\t(on\w+)(?:Priority|Order|SubOrder)?\s*\((.*)\)\s*\{/);
+        if (match) {
+            const callbackName = match[1];
+            const args = match[2];
+            let body = '';
+            let braceCount = 1;
+            i++;
 
-    // Check for special properties
-    const hasFling = content.includes('fling: {');
-    const hasMegaStone = content.includes('megaStone:');
-    const hasBoosts = content.includes('boosts: {');
+            // Extract the function body by counting braces
+            while (i < lines.length && braceCount > 0) {
+                const currentLine = lines[i];
+                body += currentLine + '\n';
+
+                // Count braces
+                for (const char of currentLine) {
+                    if (char === '{') braceCount++;
+                    if (char === '}') braceCount--;
+                }
+
+                if (braceCount === 0) {
+                    // Remove the closing brace line and trailing comma
+                    body = body.replace(/^\t\t\},?\s*$/m, '');
+                    break;
+                }
+                i++;
+            }
+
+            if (!seenCallbacks.has(callbackName)) {
+                seenCallbacks.add(callbackName);
+
+                // Normalize indentation
+                const bodyLines = body.split('\n').filter(line => line.trim() !== '');
+                if (bodyLines.length > 0) {
+                    const minIndent = Math.min(...bodyLines.map(line => {
+                        const match = line.match(/^(\s*)/);
+                        return match ? match[1].length : 0;
+                    }));
+
+                    const normalizedBody = body.split('\n')
+                        .map(line => {
+                            if (line.trim() === '') return '';
+                            const unindented = line.slice(minIndent);
+                            return unindented ? '    ' + unindented : '';
+                        })
+                        .join('\n')
+                        .replace(/\s+$/, '');
+
+                    callbacks.push({
+                        name: callbackName,
+                        args: args,
+                        jsSource: `${callbackName}(${args}) {\n${normalizedBody}\n}`
+                    });
+                } else {
+                    callbacks.push({
+                        name: callbackName,
+                        args: args,
+                        jsSource: `${callbackName}(${args}) {}`
+                    });
+                }
+            }
+        }
+        i++;
+    }
 
     items.push({
         id,
         name: nameMatch ? nameMatch[1] : id,
         num: numMatch ? parseInt(numMatch[1]) : 0,
-        gen: genMatch ? parseInt(genMatch[1]) : 0,
-        callbacks,
-        hasFling,
-        hasMegaStone,
-        hasBoosts,
-        fullContent: match[0] // Full JS source
+        gen: genMatch ? parseInt(genMatch[1]) : 1,
+        callbacks
     });
 }
 
@@ -98,24 +203,24 @@ for (const item of itemsWithCallbacks) {
 //! Pokemon Showdown - http://pokemonshowdown.com/
 //!
 //! Generated from data/items.ts
-//!
-//! \`\`\`text
-//! JS Source (data/items.ts):
-${item.fullContent.split('\n').map(line => '//! ' + line).join('\n')}
-//! \`\`\`
 
-use crate::battle::{Battle, Arg};
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
-use crate::dex_data::ID;
-use super::{ItemHandlerResult, ItemDef};
+use crate::battle::Battle;
+use crate::event::EventResult;
 
 ${item.callbacks.map(callback => {
-    const rustFuncName = camelToSnake(callback);
-    return `/// ${callback}(...)
-pub fn ${rustFuncName}(battle: &mut Battle, /* TODO: Add parameters */) -> ItemHandlerResult {
+    const rustFuncName = camelToSnake(callback.name);
+    const params = generateParameters(callback.name, callback.args);
+    // Format JS source: replace all tabs with 4 spaces
+    const formattedSource = callback.jsSource
+        .split('\n')
+        .map(line => line.replace(/\t/g, '    '))
+        .map(line => '/// ' + line)
+        .join('\n');
+
+    return `${formattedSource}
+pub fn ${rustFuncName}(${params}) -> EventResult {
     // TODO: Implement 1-to-1 from JS
-    ItemHandlerResult::Undefined
+    EventResult::Continue
 }
 `;
 }).join('\n')}`;
@@ -127,62 +232,75 @@ pub fn ${rustFuncName}(battle: &mut Battle, /* TODO: Add parameters */) -> ItemH
 
 console.log(`Generated ${generatedCount} item files`);
 
+// Build a map of callback -> items for dispatcher generation
+const callbackMap = new Map();
+itemsWithCallbacks.forEach(item => {
+    item.callbacks.forEach(callback => {
+        if (!callbackMap.has(callback.name)) {
+            callbackMap.set(callback.name, []);
+        }
+        callbackMap.get(callback.name).push(item.id);
+    });
+});
+
+// Generate dispatch functions
+const sortedCallbacks = Array.from(callbackMap.keys()).sort();
+const dispatchers = sortedCallbacks.map(callback => {
+    const funcName = `dispatch_${camelToSnake(callback)}`;
+    const rustCallbackName = camelToSnake(callback);
+    const itemIds = callbackMap.get(callback);
+
+    // Determine parameters based on callback type
+    let params = ',\n    item_id: &str,\n    pokemon_pos: (usize, usize)';
+    let callParams = 'battle, pokemon_pos';
+
+    if (callback === 'onEat') {
+        params = ',\n    item_id: &str,\n    pokemon_pos: (usize, usize)';
+        callParams = 'battle, pokemon_pos';
+    } else if (callback === 'onBasePower') {
+        params = ',\n    item_id: &str,\n    base_power: i32,\n    pokemon_pos: (usize, usize),\n    target_pos: Option<(usize, usize)>';
+        callParams = 'battle, base_power, pokemon_pos, target_pos';
+    } else if (callback === 'onTryHit') {
+        params = ',\n    item_id: &str,\n    target_pos: (usize, usize),\n    source_pos: (usize, usize)';
+        callParams = 'battle, target_pos, source_pos';
+    }
+
+    const matchArms = itemIds.map(itemId => {
+        return `        "${itemId}" => ${rustModName(itemId)}::${rustCallbackName}(${callParams}),`;
+    }).join('\n');
+
+    return `/// Dispatch ${callback} callbacks
+pub fn ${funcName}(
+    battle: &mut Battle${params},
+) -> EventResult {
+    match item_id {
+${matchArms}
+        _ => EventResult::Continue,
+    }
+}`;
+}).join('\n\n');
+
 // Generate mod.rs to export all items
 const modContent = `//! Item Callback Handlers
 //!
 //! This module exports all item callback implementations.
 //! Each item with callbacks is in its own file.
 
-// Common types
-mod common;
-pub use common::*;
+use crate::battle::Battle;
+use crate::event::EventResult;
 
 // Individual item modules
 ${itemsWithCallbacks.map(i =>
     `pub mod ${rustModName(i.id)};`
 ).join('\n')}
+
+// Dispatch functions
+${dispatchers}
 `;
 
 const modPath = path.join(itemsDir, 'mod.rs');
 fs.writeFileSync(modPath, modContent);
 console.log(`Generated ${modPath}`);
-
-// Generate common.rs with shared types
-const commonContent = `//! Common types for item callbacks
-
-use crate::dex_data::ID;
-
-/// Result from an item handler
-#[derive(Debug, Clone)]
-pub enum ItemHandlerResult {
-    /// No return value (undefined in JS)
-    Undefined,
-    /// Return false
-    False,
-    /// Return true
-    True,
-    /// Return null (blocks action)
-    Null,
-    /// Return 0
-    Zero,
-    /// Return a number
-    Number(i32),
-    /// Chain modifier (numerator, denominator)
-    ChainModify(u32, u32),
-}
-
-/// Item definition placeholder
-/// TODO: Import actual ItemDef from items module when available
-#[derive(Debug, Clone, Default)]
-pub struct ItemDef {
-    pub id: ID,
-    pub name: String,
-}
-`;
-
-const commonPath = path.join(itemsDir, 'common.rs');
-fs.writeFileSync(commonPath, commonContent);
-console.log(`Generated ${commonPath}`);
 
 // Generate ITEMS_TODO.md
 let todoContent = `# Items Implementation Tracking
@@ -191,7 +309,11 @@ Total: ${items.length} items
 Items with callbacks: ${itemsWithCallbacks.length}
 
 ## Items with Callbacks (alphabetically)
-${itemsWithCallbacks.map(i => `- [ ] ${i.id} - ${i.name} (Gen ${i.gen}) - ${i.callbacks.length} callback${i.callbacks.length !== 1 ? 's' : ''}: ${i.callbacks.join(', ')}`).join('\n')}
+${itemsWithCallbacks.map(i => {
+    const totalCallbacks = i.callbacks.length;
+    const allCallbacks = i.callbacks.map(cb => cb.name);
+    return `- [ ] ${i.id} - ${i.name} (Gen ${i.gen}) - ${totalCallbacks} callback${totalCallbacks !== 1 ? 's' : ''}: ${allCallbacks.join(', ')}`;
+}).join('\n')}
 
 ## Statistics
 
@@ -200,7 +322,7 @@ ${(() => {
     const callbackCount = {};
     itemsWithCallbacks.forEach(i => {
         i.callbacks.forEach(cb => {
-            callbackCount[cb] = (callbackCount[cb] || 0) + 1;
+            callbackCount[cb.name] = (callbackCount[cb.name] || 0) + 1;
         });
     });
     return Object.entries(callbackCount)
@@ -230,5 +352,5 @@ console.log('\nGeneration complete!');
 console.log(`- ${items.length} items processed`);
 console.log(`- ${itemsWithCallbacks.length} items with callbacks`);
 console.log(`- ${generatedCount} individual item files created`);
-console.log(`- mod.rs and common.rs created`);
+console.log(`- mod.rs created`);
 console.log(`- ITEMS_TODO.md created`);
