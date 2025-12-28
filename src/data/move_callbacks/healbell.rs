@@ -47,7 +47,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // TODO: Add ally side support when double battles are fully implemented
     let allies: Vec<(usize, usize)> = battle.sides[target.0].active.iter()
         .enumerate()
-        .filter_map(|(i, &active)| if active { Some((target.0, i)) } else { None })
+        .filter_map(|(i, &active)| if active.is_some() { Some((target.0, i)) } else { None })
         .collect();
 
     // for (const ally of allies) {
@@ -55,7 +55,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         // if (ally !== source && !this.suppressingAbility(ally)) {
         let is_not_source = ally_pos != source;
         let suppressing_ability = if is_not_source {
-            battle.suppressing_ability(ally_pos)
+            battle.suppressing_ability(Some(ally_pos))
         } else {
             false
         };

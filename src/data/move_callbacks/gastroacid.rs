@@ -111,7 +111,7 @@ pub mod condition {
             pokemon_pokemon.ability.clone()
         };
 
-        battle.single_event("End", &ability_id.to_string(), Some(pokemon), Some(pokemon), Some(&ID::from("gastroacid")));
+        battle.single_event("End", &ability_id, Some(pokemon), Some(pokemon), Some("gastroacid"));
 
         EventResult::Continue
     }

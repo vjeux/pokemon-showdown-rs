@@ -62,8 +62,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         let (has_failinstruct, is_z, is_max, has_charge, has_recharge) = match last_move {
             Some(m) => (
                 m.flags.get("failinstruct").copied().unwrap_or(0) != 0,
-                m.is_z,
-                m.is_max,
+                m.is_z.is_some(),
+                m.is_max.is_some(),
                 m.flags.get("charge").copied().unwrap_or(0) != 0,
                 m.flags.get("recharge").copied().unwrap_or(0) != 0
             ),
