@@ -264,7 +264,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.last_move.as_ref().map(|m| m.id == ID::from("struggle")).unwrap_or(false)
+            target_pokemon.last_move.as_ref().map(|m| *m == ID::from("struggle")).unwrap_or(false)
         };
 
         if last_move_is_struggle {
