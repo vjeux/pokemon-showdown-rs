@@ -216,7 +216,8 @@ pub mod condition {
         }
 
         // if (this.checkMoveMakesContact(move, source, target)) {
-        let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&ID::from(""));
+        let empty_id = ID::from("");
+        let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&empty_id);
         if battle.check_move_makes_contact(move_id, source) {
             // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
             battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"));
@@ -250,7 +251,8 @@ pub mod condition {
         };
 
         if is_z_or_max_powered {
-            let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&ID::from(""));
+            let empty_id = ID::from("");
+            let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&empty_id);
             if battle.check_move_makes_contact(move_id, source) {
                 // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
                 battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"));
