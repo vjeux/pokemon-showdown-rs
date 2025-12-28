@@ -12,6 +12,8 @@ use crate::event::EventResult;
 ///     return true;
 /// }
 pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (item.megaEvolves === source.baseSpecies.baseSpecies) return false;
+    // return true;
+    // Note: Missing infrastructure - see ITEMS_TODO.md "Mega Stones (onTakeItem)"
     EventResult::Continue
 }
