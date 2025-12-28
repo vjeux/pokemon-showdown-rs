@@ -12,10 +12,27 @@ use crate::event::EventResult;
 ///     this.add('-activate', pokemon, 'move: Struggle');
 /// }
 pub fn on_modify_move(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = pokemon_pos;
+
+    // move.type = '???';
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.move_type = "???".to_owned();
+    }
+
+    // this.add('-activate', pokemon, 'move: Struggle');
+    let pokemon_arg = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.get_slot()
+    };
+
+    battle.add("-activate", &[pokemon_arg.into(), "move: Struggle".into()]);
+
     EventResult::Continue
 }
