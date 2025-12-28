@@ -27,7 +27,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.get_stat("spe", battle)
+        pokemon_pokemon.get_stat(crate::dex_data::StatID::Spe, false)
     };
 
     let target_speed = {
@@ -35,7 +35,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.get_stat("spe", battle)
+        target_pokemon.get_stat(crate::dex_data::StatID::Spe, false)
     };
 
     // if (!isFinite(ratio)) ratio = 0;

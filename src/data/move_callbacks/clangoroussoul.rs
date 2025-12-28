@@ -43,7 +43,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     // Apply boosts to the pokemon
     let boost_success = if let Some(boosts) = &move_data.boosts {
-        battle.boost(boosts.clone(), Some(source_pos), None, None)
+        // Convert HashMap<String, i32> to Vec<(&str, i8)>
+        let boost_vec: Vec<(&str, i8)> = boosts.iter()
+            .map(|(k, v)| (k.as_str(), *v as i8))
+            .collect();
+        battle.boost(&boost_vec, source_pos, None, None)
     } else {
         true
     };

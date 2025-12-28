@@ -87,8 +87,8 @@ pub fn on_modify_target(battle: &mut Battle, source_pos: Option<(usize, usize)>,
     // if (lastDamagedBy) {
     if let Some(damaged_by) = last_damaged_by {
         // targetRelayVar.target = this.getAtSlot(lastDamagedBy.slot);
-        let new_target = battle.get_at_slot(damaged_by.slot);
-        if let Some(target) = new_target {
+        let new_target = battle.pokemon_at(damaged_by.slot.0, damaged_by.slot.1);
+        if let Some(_target) = new_target {
             // Modify the target by returning the new target position
             // TODO: This requires modifying target relay variable which we don't have direct access to
             // For now, we'll use the event result to indicate the new target
