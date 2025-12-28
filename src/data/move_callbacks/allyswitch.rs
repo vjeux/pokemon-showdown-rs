@@ -92,11 +92,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (!success) {
     if !success {
         // this.add('-fail', pokemon, 'move: Ally Switch');
-        let pokemon = match battle.pokemon_at(pokemon_side_idx, pokemon_idx) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let pokemon_arg = {
+            let pokemon = match battle.pokemon_at(pokemon_side_idx, pokemon_idx) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon)
         };
-        battle.add("-fail", &[pokemon.into(), "move: Ally Switch".into()]);
+        battle.add("-fail", &[pokemon_arg, "move: Ally Switch".into()]);
 
         // this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);

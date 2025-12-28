@@ -29,14 +29,15 @@ use crate::dex_data::ID;
 ///     return success;
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // Get the source pokemon
-    let source_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
     // this.add('-activate', source, 'move: Aromatherapy');
-    battle.add("-activate", &[source_pokemon.into(), "move: Aromatherapy".into()]);
+    let source_arg = {
+        let source_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        crate::battle::Arg::from(source_pokemon)
+    };
+    battle.add("-activate", &[source_arg, "move: Aromatherapy".into()]);
 
     // let success = false;
     let mut success = false;
@@ -61,23 +62,41 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         let is_suppressing = battle.suppressing_ability(Some(ally_pos));
 
         if !is_source && !is_suppressing {
-            let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
-                Some(p) => p,
-                None => continue,
+            // Check abilities first
+            let (has_sapsipper, has_goodasgold) = {
+                let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                (ally.has_ability(&["sapsipper"]), ally.has_ability(&["goodasgold"]))
             };
 
             // if (ally.hasAbility('sapsipper')) {
-            if ally.has_ability(&["sapsipper"]) {
+            if has_sapsipper {
                 // this.add('-immune', ally, '[from] ability: Sap Sipper');
-                battle.add("-immune", &[ally.into(), "[from] ability: Sap Sipper".into()]);
+                let ally_arg = {
+                    let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    crate::battle::Arg::from(ally)
+                };
+                battle.add("-immune", &[ally_arg, "[from] ability: Sap Sipper".into()]);
                 // continue;
                 continue;
             }
 
             // if (ally.hasAbility('goodasgold')) {
-            if ally.has_ability(&["goodasgold"]) {
+            if has_goodasgold {
                 // this.add('-immune', ally, '[from] ability: Good as Gold');
-                battle.add("-immune", &[ally.into(), "[from] ability: Good as Gold".into()]);
+                let ally_arg = {
+                    let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    crate::battle::Arg::from(ally)
+                };
+                battle.add("-immune", &[ally_arg, "[from] ability: Good as Gold".into()]);
                 // continue;
                 continue;
             }

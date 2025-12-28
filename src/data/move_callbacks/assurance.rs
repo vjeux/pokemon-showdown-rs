@@ -33,9 +33,9 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         None => return EventResult::Continue,
     };
 
-    // Get the move data
-    let move_data = match battle.dex.get_move_by_id(move_id) {
-        Some(m) => m,
+    // Get the move data and extract base_power before mutable borrow
+    let base_power = match battle.dex.get_move_by_id(move_id) {
+        Some(m) => m.base_power,
         None => return EventResult::Continue,
     };
 
@@ -44,10 +44,10 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         // this.debug('BP doubled on damaged target');
         battle.debug("BP doubled on damaged target");
         // return move.basePower * 2;
-        return EventResult::Number(move_data.base_power * 2);
+        return EventResult::Number(base_power * 2);
     }
 
     // return move.basePower;
-    EventResult::Number(move_data.base_power)
+    EventResult::Number(base_power)
 }
 

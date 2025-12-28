@@ -106,14 +106,18 @@ pub mod condition {
         }
 
         // Get pokemon and source again for battle.add
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
+        let (pokemon_arg, source_name) = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
 
-        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            (crate::battle::Arg::from(pokemon), source_pokemon.name.clone())
         };
 
         // if (effect.name === 'Cute Charm') {
@@ -126,23 +130,23 @@ pub mod condition {
         if let Some(effect_name) = effect_id {
             if effect_name == "Cute Charm" {
                 battle.add("-start", &[
-                    pokemon.into(),
+                    pokemon_arg,
                     "Attract".into(),
                     "[from] ability: Cute Charm".into(),
-                    format!("[of] {}", source_pokemon.name).into(),
+                    format!("[of] {}", source_name).into(),
                 ]);
             } else if effect_name == "Destiny Knot" {
                 battle.add("-start", &[
-                    pokemon.into(),
+                    pokemon_arg,
                     "Attract".into(),
                     "[from] item: Destiny Knot".into(),
-                    format!("[of] {}", source_pokemon.name).into(),
+                    format!("[of] {}", source_name).into(),
                 ]);
             } else {
-                battle.add("-start", &[pokemon.into(), "Attract".into()]);
+                battle.add("-start", &[pokemon_arg, "Attract".into()]);
             }
         } else {
-            battle.add("-start", &[pokemon.into(), "Attract".into()]);
+            battle.add("-start", &[pokemon_arg, "Attract".into()]);
         }
 
         // Store the source in the effect state
