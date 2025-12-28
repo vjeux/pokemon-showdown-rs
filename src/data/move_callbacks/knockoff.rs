@@ -91,39 +91,21 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
             .unwrap_or_else(|| item_id.to_string());
 
         let target_arg = {
-
-
             let pokemon = match battle.pokemon_at(target.0, target.1) {
-
-
                 Some(p) => p,
-
-
                 None => return EventResult::Continue,
-
-
             };
-
-
-            crate::battle::Arg::from(pokemon)
-
-
+            pokemon.get_slot()
         };
         let source_arg = {
-
             let pokemon = match battle.pokemon_at(source.0, source.1) {
-
                 Some(p) => p,
-
                 None => return EventResult::Continue,
-
             };
-
-            crate::battle::Arg::from(pokemon)
-
+            pokemon.get_slot()
         };
         battle.add("-enditem", &[
-            target_arg,
+            target_arg.clone().into(),
             item_name.into(),
             "[from] move: Knock Off".into(),
             format!("[of] {}", source_arg).into(),

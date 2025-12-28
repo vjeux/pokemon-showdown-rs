@@ -37,28 +37,16 @@ pub mod condition {
         };
 
         let pokemon_arg = {
-
-
             let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
-
-
                 Some(p) => p,
-
-
                 None => return EventResult::Continue,
-
-
             };
-
-
-            crate::battle::Arg::from(pokemon)
-
-
+            pokemon.get_slot()
         };
         if is_silent_effect {
-            battle.add("-start", &[pokemon_arg, "move: Laser Focus".into(), "[silent]".into()]);
+            battle.add("-start", &[pokemon_arg.clone().into(), "move: Laser Focus".into(), "[silent]".into()]);
         } else {
-            battle.add("-start", &[pokemon_arg, "move: Laser Focus".into()]);
+            battle.add("-start", &[pokemon_arg.into(), "move: Laser Focus".into()]);
         }
 
         EventResult::Continue
@@ -78,19 +66,13 @@ pub mod condition {
 
         // this.add('-start', pokemon, 'move: Laser Focus');
         let pokemon_arg = {
-
             let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
-
                 Some(p) => p,
-
                 None => return EventResult::Continue,
-
             };
-
-            crate::battle::Arg::from(pokemon)
-
+            pokemon.get_slot()
         };
-        battle.add("-start", &[pokemon_arg, "move: Laser Focus".into()]);
+        battle.add("-start", &[pokemon_arg.into(), "move: Laser Focus".into()]);
 
         EventResult::Continue
     }
@@ -111,19 +93,13 @@ pub mod condition {
 
         // this.add('-end', pokemon, 'move: Laser Focus', '[silent]');
         let pokemon_arg = {
-
             let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
-
                 Some(p) => p,
-
                 None => return EventResult::Continue,
-
             };
-
-            crate::battle::Arg::from(pokemon)
-
+            pokemon.get_slot()
         };
-        battle.add("-end", &[pokemon_arg, "move: Laser Focus".into(), "[silent]".into()]);
+        battle.add("-end", &[pokemon_arg.into(), "move: Laser Focus".into(), "[silent]".into()]);
 
         EventResult::Continue
     }
