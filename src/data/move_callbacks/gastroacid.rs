@@ -50,14 +50,14 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     if has_ability_shield {
         // this.add('-block', target, 'item: Ability Shield');
-        let target_arg = {
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
-        battle.add("-block", &[target_arg, "item: Ability Shield".into()]);
+        battle.add("-block", &[target_ident.as_str().into(), "item: Ability Shield".into()]);
 
         // return null;
         return EventResult::Stop;

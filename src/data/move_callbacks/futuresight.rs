@@ -108,15 +108,15 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     }
 
     // this.add('-start', source, 'move: Future Sight');
-    let source_arg = {
+    let source_ident = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(source_pokemon)
+        source_pokemon.get_slot()
     };
 
-    battle.add("-start", &[source_arg, "move: Future Sight".into()]);
+    battle.add("-start", &[source_ident.as_str().into(), "move: Future Sight".into()]);
 
     // return this.NOT_FAIL;
     EventResult::Boolean(true)

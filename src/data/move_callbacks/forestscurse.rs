@@ -43,16 +43,16 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // this.add('-start', target, 'typeadd', 'Grass', '[from] move: Forest\'s Curse');
-    let target_arg = {
+    let target_ident = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(target_pokemon)
+        target_pokemon.get_slot()
     };
 
     battle.add("-start", &[
-        target_arg,
+        target_ident.as_str().into(),
         "typeadd".into(),
         "Grass".into(),
         "[from] move: Forest's Curse".into(),
