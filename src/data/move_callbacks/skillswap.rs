@@ -212,18 +212,53 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // source.ability = targetAbility.id;
     // target.ability = sourceAbility.id;
-    battle.swap_abilities(source, target);
+    {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.ability = target_ability_id.clone();
+    }
+    {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.ability = source_ability_id.clone();
+    }
 
     // source.abilityState = this.initEffectState({ id: this.toID(source.ability), target: source });
     // target.abilityState = this.initEffectState({ id: this.toID(target.ability), target });
-    battle.init_ability_state(source);
-    battle.init_ability_state(target);
+    {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.ability_state = crate::effect_state::EffectState::new(target_ability_id.clone());
+    }
+    {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.ability_state = crate::effect_state::EffectState::new(source_ability_id.clone());
+    }
 
     // source.volatileStaleness = undefined;
     // if (!target.isAlly(source)) target.volatileStaleness = 'external';
-    battle.set_volatile_staleness(source, None);
+    {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.volatile_staleness = None;
+    }
     if !is_ally {
-        battle.set_volatile_staleness(target, Some("external"));
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.volatile_staleness = Some("external".to_string());
     }
 
     // this.singleEvent('Start', targetAbility, source.abilityState, source);
