@@ -88,7 +88,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     None => continue,
                 };
                 // setAbility returns Option<ID> - Some(old_ability) if successful, None if failed
-                ally_pokemon.set_ability(target_ability_id.clone(), None, None)
+                ally_pokemon.set_ability(target_ability_id.clone())
             };
 
             // if (oldAbility) {

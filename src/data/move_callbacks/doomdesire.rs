@@ -49,7 +49,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         };
 
         if let Some(target_side) = battle.sides.get_mut(target_side_index) {
-            target_side.add_slot_condition(target_position, &ID::from("futuremove"))
+            target_side.add_slot_condition(target_position, ID::from("futuremove"), None)
         } else {
             false
         }

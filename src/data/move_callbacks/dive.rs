@@ -59,7 +59,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        attacker_pokemon.has_ability(&ID::from("gulpmissile"), battle) &&
+        attacker_pokemon.has_ability(&ID::from("gulpmissile")) &&
             attacker_pokemon.species_id.as_str() == "Cramorant" &&
             !attacker_pokemon.transformed
     };
@@ -77,11 +77,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             }
         };
 
-        let attacker_pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        attacker_pokemon.forme_change(forme, Some(&move_id));
+        battle.forme_change(attacker, forme, false, None, None);
     }
 
     // this.add('-prepare', attacker, move.name);
