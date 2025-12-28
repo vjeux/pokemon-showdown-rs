@@ -11,8 +11,6 @@ use crate::event::EventResult;
 ///     if (!target || target.fainted || target.hp <= 0) this.boost({ atk: 3 }, pokemon, pokemon, move);
 /// }
 pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    use std::collections::HashMap;
-
     let pokemon = pokemon_pos;
 
     // if (!target || target.fainted || target.hp <= 0) this.boost({ atk: 3 }, pokemon, pokemon, move);
@@ -28,10 +26,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
 
     if should_boost {
         // this.boost({ atk: 3 }, pokemon, pokemon, move);
-        let mut boosts = HashMap::new();
-        boosts.insert("atk".to_string(), 3);
-
-        battle.boost(boosts, pokemon, Some(pokemon), Some(move_id));
+        battle.boost(&[("atk", 3)], pokemon, Some(pokemon), Some(move_id));
     }
 
     EventResult::Continue

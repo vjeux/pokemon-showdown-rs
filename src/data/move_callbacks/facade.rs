@@ -26,11 +26,9 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
         pokemon_pokemon.status.clone()
     };
 
-    if let Some(status_id) = status {
-        if status_id != ID::from("slp") {
-            // return this.chainModify(2);
-            return EventResult::Number(battle.chain_modify(2.0 as f32));
-        }
+    if status != ID::from("") && status != ID::from("slp") {
+        // return this.chainModify(2);
+        return EventResult::Number(battle.chain_modify(2.0 as f32));
     }
 
     EventResult::Continue
