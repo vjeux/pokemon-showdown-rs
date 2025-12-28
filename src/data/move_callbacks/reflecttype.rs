@@ -38,7 +38,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.species.num
+        source_pokemon.species_id.num
     };
 
     if species_num == 493 || species_num == 773 {

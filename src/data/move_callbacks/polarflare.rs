@@ -36,7 +36,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
 /// onAfterMoveSecondarySelf(pokemon, target, move) {
 ///     if (move.willChangeForme) {
-///         const forme = pokemon.species.id === 'ramnarokradiant' ? '' : '-Radiant';
+///         const forme = pokemon.species_id.id === 'ramnarokradiant' ? '' : '-Radiant';
 ///         pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
 ///     }
 /// }
@@ -58,13 +58,13 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
         return EventResult::Continue;
     }
 
-    // const forme = pokemon.species.id === 'ramnarokradiant' ? '' : '-Radiant';
+    // const forme = pokemon.species_id.id === 'ramnarokradiant' ? '' : '-Radiant';
     let forme = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        if pokemon_pokemon.species.id == ID::from("ramnarokradiant") {
+        if pokemon_pokemon.species_id.id == ID::from("ramnarokradiant") {
             ""
         } else {
             "-Radiant"

@@ -60,7 +60,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             None => return EventResult::Continue,
         };
         attacker_pokemon.has_ability(&ID::from("gulpmissile"), battle) &&
-            attacker_pokemon.species.name == "Cramorant" &&
+            attacker_pokemon.species_id.name == "Cramorant" &&
             !attacker_pokemon.transformed
     };
 

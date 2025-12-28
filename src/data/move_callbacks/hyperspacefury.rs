@@ -32,7 +32,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.species.name.clone()
+        source_pokemon.species_id.name.clone()
     };
 
     if species_name == "Hoopa-Unbound" {

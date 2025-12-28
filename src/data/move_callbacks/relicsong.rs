@@ -39,7 +39,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
 /// onAfterMoveSecondarySelf(pokemon, target, move) {
 ///     if (move.willChangeForme) {
-///         const meloettaForme = pokemon.species.id === 'meloettapirouette' ? '' : '-Pirouette';
+///         const meloettaForme = pokemon.species_id.id === 'meloettapirouette' ? '' : '-Pirouette';
 ///         pokemon.formeChange('Meloetta' + meloettaForme, this.effect, false, '0', '[msg]');
 ///     }
 /// }
@@ -58,13 +58,13 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
     };
 
     if will_change_forme {
-        // const meloettaForme = pokemon.species.id === 'meloettapirouette' ? '' : '-Pirouette';
+        // const meloettaForme = pokemon.species_id.id === 'meloettapirouette' ? '' : '-Pirouette';
         let meloetta_forme = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            if pokemon_pokemon.species.id == ID::from("meloettapirouette") {
+            if pokemon_pokemon.species_id.id == ID::from("meloettapirouette") {
                 ""
             } else {
                 "-Pirouette"

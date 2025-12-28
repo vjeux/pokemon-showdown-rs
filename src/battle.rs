@@ -8081,20 +8081,16 @@ impl Battle {
             }
             "AfterMove" => move_callbacks::dispatch_on_after_move(self, move_id, source_pos, target),
             "AfterMoveSecondarySelf" => move_callbacks::dispatch_on_after_move_secondary_self(self, move_id, source_pos),
-            "AfterSubDamage" => {
-                if let Some(target_pos) = target {
-                    move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos, target_pos)
-                } else {
-                    EventResult::Continue
-                }
+            "AfterSubDamage" => move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos),
+            "BasePower" => {
+                // TODO: BasePower event needs base_power value from relay_var
+                // This requires architectural changes to thread relay_var through dispatch
+                EventResult::Continue
             }
-            "BasePower" => move_callbacks::dispatch_on_base_power(self, move_id, source_pos, target),
             "Damage" => {
-                if let Some(target_pos) = target {
-                    move_callbacks::dispatch_on_damage(self, move_id, source_pos, target_pos)
-                } else {
-                    EventResult::Continue
-                }
+                // TODO: Damage event needs damage, target_pos, source_pos, and effect_id
+                // This requires architectural changes to thread these values through dispatch
+                EventResult::Continue
             }
             "DamagePriority" => {
                 if let Some(target_pos) = target {
@@ -8114,13 +8110,13 @@ impl Battle {
             }
             "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, source_pos),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_id, source_pos),
-            "ModifyMove" => move_callbacks::dispatch_on_modify_move(self, move_id, source_pos),
+            "ModifyMove" => move_callbacks::dispatch_on_modify_move(self, move_id, source_pos, target),
             "ModifyPriority" => move_callbacks::dispatch_on_modify_priority(self, move_id, source_pos),
             "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, move_id, source_pos),
             "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, source_pos),
             "MoveFail" => move_callbacks::dispatch_on_move_fail(self, move_id, source_pos),
-            "PrepareHit" => move_callbacks::dispatch_on_prepare_hit(self, move_id, source_pos),
-            "Try" => move_callbacks::dispatch_on_try(self, move_id, source_pos),
+            "PrepareHit" => move_callbacks::dispatch_on_prepare_hit(self, move_id, source_pos, target),
+            "Try" => move_callbacks::dispatch_on_try(self, move_id, source_pos, target),
             "TryHit" => {
                 if let Some(target_pos) = target {
                     move_callbacks::dispatch_on_try_hit(self, move_id, source_pos, target_pos)
@@ -8129,7 +8125,7 @@ impl Battle {
                 }
             }
             "TryImmunity" => move_callbacks::dispatch_on_try_immunity(self, move_id, source_pos),
-            "TryMove" => move_callbacks::dispatch_on_try_move(self, move_id, source_pos),
+            "TryMove" => move_callbacks::dispatch_on_try_move(self, move_id, source_pos, target),
             "UseMoveMessage" => move_callbacks::dispatch_on_use_move_message(self, move_id, source_pos),
             _ => EventResult::Continue,
         }

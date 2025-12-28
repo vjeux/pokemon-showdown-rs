@@ -31,7 +31,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 }
 
 /// onModifyType(move, pokemon) {
-///     switch (pokemon.species.name) {
+///     switch (pokemon.species_id.name) {
 ///     case 'Ogerpon-Wellspring': case 'Ogerpon-Wellspring-Tera':
 ///         move.type = 'Water';
 ///         break;
@@ -48,13 +48,13 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 
     let pokemon = pokemon_pos;
 
-    // switch (pokemon.species.name) {
+    // switch (pokemon.species_id.name) {
     let species_name = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.species.name.clone()
+        pokemon_pokemon.species_id.name.clone()
     };
 
     // case 'Ogerpon-Wellspring': case 'Ogerpon-Wellspring-Tera':

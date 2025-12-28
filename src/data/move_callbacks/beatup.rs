@@ -79,7 +79,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     // const setSpecies = this.dex.species.get(move.allies!.shift()!.set.species);
     let species_id = if let Some(pokemon) = battle.pokemon_at(ally_pos.0, ally_pos.1) {
-        pokemon.species.clone()
+        pokemon.species_id.clone()
     } else {
         return EventResult::Continue;
     };

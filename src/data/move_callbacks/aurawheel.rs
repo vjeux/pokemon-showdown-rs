@@ -59,7 +59,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 }
 
 /// onModifyType(move, pokemon) {
-///     if (pokemon.species.name === 'Morpeko-Hangry') {
+///     if (pokemon.species_id.name === 'Morpeko-Hangry') {
 ///         move.type = 'Dark';
 ///     } else {
 ///         move.type = 'Electric';
@@ -79,7 +79,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
         None => return EventResult::Continue,
     };
 
-    // if (pokemon.species.name === 'Morpeko-Hangry') {
+    // if (pokemon.species_id.name === 'Morpeko-Hangry') {
     //     move.type = 'Dark';
     // } else {
     //     move.type = 'Electric';
