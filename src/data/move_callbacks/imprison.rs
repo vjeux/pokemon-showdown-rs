@@ -119,7 +119,7 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            source_pokemon.has_move(&move_id_obj)
+            source_pokemon.has_move(move_id_obj.as_str())
         };
 
         if source_has_move {

@@ -39,7 +39,7 @@ pub mod condition {
             pokemon_pokemon.base_maxhp / 16
         };
 
-        battle.heal(heal_amount, pokemon, None, None);
+        battle.heal(heal_amount, Some(pokemon), None, None);
 
         EventResult::Continue
     }

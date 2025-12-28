@@ -24,10 +24,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             None => return EventResult::Continue,
         };
 
-        let item_id = match &pokemon_pokemon.item {
-            Some(id) => id,
-            None => return EventResult::Continue,
-        };
+        let item_id = &pokemon_pokemon.item;
 
         let item = battle.dex.get_item_by_id(item_id);
         match item {
