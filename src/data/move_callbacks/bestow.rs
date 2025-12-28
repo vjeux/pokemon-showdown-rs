@@ -61,10 +61,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let take_item_event = battle.single_event("TakeItem", &my_item, Some(target), Some(pokemon_pos), None);
 
     let set_item_success = {
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => false,
-        };
+        let target_pokemon = battle.pokemon_at_mut(target.0, target.1);
 
         if let Some(target_pokemon) = target_pokemon {
             target_pokemon.set_item(my_item.clone())
