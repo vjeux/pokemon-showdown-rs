@@ -26,7 +26,7 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
         };
 
         // Check if status is slp or has Comatose ability
-        target_pokemon.status == Some(ID::from("slp")) || target_pokemon.has_ability(&ID::from("comatose"), battle)
+        target_pokemon.status == ID::from("slp") || target_pokemon.has_ability(&["comatose"], battle)
     };
 
     EventResult::Boolean(is_immune)

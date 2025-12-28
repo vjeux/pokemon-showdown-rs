@@ -89,7 +89,7 @@ pub mod condition {
 
         // TODO: Check if pokemon === this.activePokemon && this.activeMove && !this.activeMove.isExternal
         // For now, just check willMove
-        if will_move {
+        if will_move.is_some() {
             // this.effectState.duration!--;
             if let Some(ref mut effect_state) = battle.current_effect_state {
                 if let Some(duration) = effect_state.duration {
