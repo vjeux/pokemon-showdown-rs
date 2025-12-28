@@ -45,7 +45,19 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     // }
     let has_gravity = battle.field.pseudo_weather.contains_key(&ID::from("gravity"));
     if has_gravity {
-        let source_arg = crate::battle::Arg::Pos(source_pos.0, source_pos.1);
+        let source_arg = {
+
+            let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         let move_id = match &battle.active_move {
             Some(active_move) => active_move.id.clone(),
             None => ID::from(""),
@@ -70,7 +82,19 @@ pub mod condition {
         };
 
         // this.add('-start', target, 'Magnet Rise');
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-start", &[target_arg, "Magnet Rise".into()]);
 
         EventResult::Continue
@@ -97,7 +121,19 @@ pub mod condition {
         };
 
         // this.add('-end', target, 'Magnet Rise');
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-end", &[target_arg, "Magnet Rise".into()]);
 
         EventResult::Continue

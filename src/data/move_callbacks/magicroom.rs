@@ -35,7 +35,19 @@ pub mod condition {
         if has_persistent {
             //     this.add('-activate', source, 'ability: Persistent', '[move] Magic Room');
             if let Some(source) = source_pos {
-                let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+                let source_arg = {
+
+                    let pokemon = match battle.pokemon_at(source.0, source.1) {
+
+                        Some(p) => p,
+
+                        None => return EventResult::Continue,
+
+                    };
+
+                    crate::battle::Arg::from(pokemon)
+
+                };
                 battle.add("-activate", &[source_arg, "ability: Persistent".into(), "[move] Magic Room".into()]);
             }
             //     return 7;
@@ -75,7 +87,19 @@ pub mod condition {
         };
 
         if let Some(source) = source_pos {
-            let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+            let source_arg = {
+
+                let pokemon = match battle.pokemon_at(source.0, source.1) {
+
+                    Some(p) => p,
+
+                    None => return EventResult::Continue,
+
+                };
+
+                crate::battle::Arg::from(pokemon)
+
+            };
             if has_persistent {
                 battle.add("-fieldstart", &["move: Magic Room".into(), format!("[of] {}", source_arg).into(), "[persistent]".into()]);
             } else {
@@ -128,7 +152,19 @@ pub mod condition {
         };
 
         if let Some(source_pos) = source {
-            let source_arg = crate::battle::Arg::Pos(source_pos.0, source_pos.1);
+            let source_arg = {
+
+                let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+
+                    Some(p) => p,
+
+                    None => return EventResult::Continue,
+
+                };
+
+                crate::battle::Arg::from(pokemon)
+
+            };
             battle.add("-fieldend", &["move: Magic Room".into(), format!("[of] {}", source_arg).into()]);
         }
 

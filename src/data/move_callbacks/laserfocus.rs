@@ -36,7 +36,25 @@ pub mod condition {
             false
         };
 
-        let pokemon_arg = crate::battle::Arg::Pos(pokemon.0, pokemon.1);
+        let pokemon_arg = {
+
+
+            let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+
+
+                Some(p) => p,
+
+
+                None => return EventResult::Continue,
+
+
+            };
+
+
+            crate::battle::Arg::from(pokemon)
+
+
+        };
         if is_silent_effect {
             battle.add("-start", &[pokemon_arg, "move: Laser Focus".into(), "[silent]".into()]);
         } else {
@@ -59,7 +77,19 @@ pub mod condition {
         }
 
         // this.add('-start', pokemon, 'move: Laser Focus');
-        let pokemon_arg = crate::battle::Arg::Pos(pokemon.0, pokemon.1);
+        let pokemon_arg = {
+
+            let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-start", &[pokemon_arg, "move: Laser Focus".into()]);
 
         EventResult::Continue
@@ -80,7 +110,19 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.add('-end', pokemon, 'move: Laser Focus', '[silent]');
-        let pokemon_arg = crate::battle::Arg::Pos(pokemon.0, pokemon.1);
+        let pokemon_arg = {
+
+            let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-end", &[pokemon_arg, "move: Laser Focus".into(), "[silent]".into()]);
 
         EventResult::Continue

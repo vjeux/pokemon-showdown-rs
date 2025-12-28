@@ -25,7 +25,19 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         battle.attr_last_move(&["[still]"]);
 
         //     this.add('-fail', source);
-        let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+        let source_arg = {
+
+            let pokemon = match battle.pokemon_at(source.0, source.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-fail", &[source_arg]);
 
         //     return this.NOT_FAIL;
@@ -146,7 +158,19 @@ pub mod condition {
                 };
                 target_pokemon.get_health()
             };
-            let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+            let target_arg = {
+
+                let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                    Some(p) => p,
+
+                    None => return EventResult::Continue,
+
+                };
+
+                crate::battle::Arg::from(pokemon)
+
+            };
             battle.add("-heal", &[target_arg, health.into(), "[from] move: Lunar Dance".into()]);
 
             //     target.side.removeSlotCondition(target, 'lunardance');

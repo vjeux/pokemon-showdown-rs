@@ -43,7 +43,19 @@ pub mod condition {
         };
 
         // this.add('-start', target, 'move: Leech Seed');
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-start", &[target_arg, "move: Leech Seed".into()]);
 
         EventResult::Continue

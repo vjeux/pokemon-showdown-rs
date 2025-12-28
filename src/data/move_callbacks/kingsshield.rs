@@ -50,7 +50,19 @@ pub mod condition {
         };
 
         // this.add('-singleturn', target, 'Protect');
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-singleturn", &[target_arg, "Protect".into()]);
 
         EventResult::Continue
@@ -134,7 +146,19 @@ pub mod condition {
                 active_move.smart_target = Some(false);
             }
         } else {
-            let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+            let target_arg = {
+
+                let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                    Some(p) => p,
+
+                    None => return EventResult::Continue,
+
+                };
+
+                crate::battle::Arg::from(pokemon)
+
+            };
             battle.add("-activate", &[target_arg, "move: Protect".into()]);
         }
 

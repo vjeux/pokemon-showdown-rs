@@ -90,8 +90,38 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
             .map(|i| i.name.clone())
             .unwrap_or_else(|| item_id.to_string());
 
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
-        let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+        let target_arg = {
+
+
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+
+                Some(p) => p,
+
+
+                None => return EventResult::Continue,
+
+
+            };
+
+
+            crate::battle::Arg::from(pokemon)
+
+
+        };
+        let source_arg = {
+
+            let pokemon = match battle.pokemon_at(source.0, source.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-enditem", &[
             target_arg,
             item_name.into(),

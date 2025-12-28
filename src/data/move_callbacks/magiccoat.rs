@@ -24,7 +24,19 @@ pub mod condition {
         };
 
         // this.add('-singleturn', target, 'move: Magic Coat');
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-singleturn", &[target_arg, "move: Magic Coat".into()]);
 
         // if (effect?.effectType === 'Move') {

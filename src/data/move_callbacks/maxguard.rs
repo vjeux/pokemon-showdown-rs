@@ -55,7 +55,19 @@ pub mod condition {
         };
 
         // this.add('-singleturn', target, 'Max Guard');
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-singleturn", &[target_arg, "Max Guard".into()]);
 
         EventResult::Continue
@@ -122,7 +134,19 @@ pub mod condition {
             }
         } else {
             // this.add('-activate', target, 'move: Max Guard');
-            let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+            let target_arg = {
+
+                let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                    Some(p) => p,
+
+                    None => return EventResult::Continue,
+
+                };
+
+                crate::battle::Arg::from(pokemon)
+
+            };
             battle.add("-activate", &[target_arg, "move: Max Guard".into()]);
         }
 

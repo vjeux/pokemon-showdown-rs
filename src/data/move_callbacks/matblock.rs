@@ -52,7 +52,19 @@ pub mod condition {
         };
 
         // this.add('-singleturn', source, 'Mat Block');
-        let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+        let source_arg = {
+
+            let pokemon = match battle.pokemon_at(source.0, source.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-singleturn", &[source_arg, "Mat Block".into()]);
 
         EventResult::Continue
@@ -130,7 +142,19 @@ pub mod condition {
 
         // this.add('-activate', target, 'move: Mat Block', move.name);
         let move_name = move_data.map(|m| m.name.as_str()).unwrap_or("");
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-activate", &[target_arg, "move: Mat Block".into(), move_name.into()]);
 
         // const lockedmove = source.getVolatile('lockedmove');

@@ -86,7 +86,19 @@ pub fn on_use_move_message(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     };
 
     // this.add('-activate', pokemon, 'move: Magnitude', move.magnitude);
-    let pokemon_arg = crate::battle::Arg::Pos(pokemon_pos.0, pokemon_pos.1);
+    let pokemon_arg = {
+
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+
+            Some(p) => p,
+
+            None => return EventResult::Continue,
+
+        };
+
+        crate::battle::Arg::from(pokemon)
+
+    };
     battle.add("-activate", &[pokemon_arg, "move: Magnitude".into(), magnitude.to_string().into()]);
 
     EventResult::Continue

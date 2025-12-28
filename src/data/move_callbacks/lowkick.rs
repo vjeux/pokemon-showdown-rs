@@ -100,7 +100,19 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     if has_dynamax {
         //     this.add('-fail', pokemon, 'Dynamax');
-        let pokemon_arg = crate::battle::Arg::Pos(pokemon.0, pokemon.1);
+        let pokemon_arg = {
+
+            let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+
+                Some(p) => p,
+
+                None => return EventResult::Continue,
+
+            };
+
+            crate::battle::Arg::from(pokemon)
+
+        };
         battle.add("-fail", &[pokemon_arg, "Dynamax".into()]);
 
         //     this.attrLastMove('[still]');
