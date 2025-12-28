@@ -25,7 +25,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.status.is_some()
+        target_pokemon.status != ID::from("")
     };
 
     let has_comatose = {

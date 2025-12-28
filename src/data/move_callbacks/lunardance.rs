@@ -112,7 +112,7 @@ pub mod condition {
                 false
             } else {
                 target_pokemon.hp < target_pokemon.maxhp ||
-                target_pokemon.status.is_some() ||
+                target_pokemon.status != ID::from("") ||
                 target_pokemon.move_slots.iter().any(|ms| ms.pp < ms.maxpp)
             }
         };
