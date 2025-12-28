@@ -106,16 +106,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         None => return EventResult::Boolean(false),
     };
 
-    let set_type_success = {
+    {
         let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.set_type(vec![random_type_str.clone()])
-    };
-
-    if !set_type_success {
-        return EventResult::Boolean(false);
+        source_pokemon.set_type(vec![random_type_str.clone()]);
     }
 
     // this.add('-start', source, 'typechange', randomType);
