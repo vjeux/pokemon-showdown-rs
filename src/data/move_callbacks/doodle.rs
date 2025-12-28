@@ -87,7 +87,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     Some(p) => p,
                     None => continue,
                 };
-                // setAbility returns Option<ID> - Some(old_ability) if successful, None if failed
+                // setAbility returns ID - the old ability
                 ally_pokemon.set_ability(target_ability_id.clone())
             };
 
@@ -96,7 +96,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             // } else if (!success && oldAbility === null) {
             //     success = null;
             // }
-            if old_ability.is_some() {
+            if !old_ability.is_empty() {
                 success = Some(true);
             } else if success == Some(false) {
                 // oldAbility === null case

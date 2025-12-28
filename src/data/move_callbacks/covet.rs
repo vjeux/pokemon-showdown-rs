@@ -35,7 +35,7 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.item.is_some() || source_pokemon.volatiles.contains_key(&ID::from("gem"))
+        !source_pokemon.item.is_empty() || source_pokemon.volatiles.contains_key(&ID::from("gem"))
     };
 
     if source_has_item_or_gem {

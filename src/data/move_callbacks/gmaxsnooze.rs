@@ -26,7 +26,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.status.is_some()
+        !target_pokemon.status.is_empty()
     };
 
     if has_status {
@@ -79,7 +79,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.status.is_some()
+        !target_pokemon.status.is_empty()
     };
 
     if has_status {
