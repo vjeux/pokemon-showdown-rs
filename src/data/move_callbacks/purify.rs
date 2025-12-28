@@ -53,7 +53,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         (source_pokemon.maxhp + 1) / 2 // Math.ceil equivalent for integer division
     };
 
-    battle.heal(heal_amount, source, None, None);
+    battle.heal(heal_amount, Some(source), None, None);
 
     EventResult::Continue
 }
