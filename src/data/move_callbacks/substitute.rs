@@ -18,11 +18,77 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_hit(
-    _battle: &mut Battle,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    source_pos: (usize, usize),
     _target_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = source_pos;
+
+    // if (source.volatiles['substitute'])
+    let has_substitute = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.has_volatile(&ID::from("substitute"))
+    };
+
+    if has_substitute {
+        // this.add('-fail', source, 'move: Substitute');
+        let source_slot = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.get_slot()
+        };
+
+        battle.add(
+            "-fail",
+            &[
+                crate::battle::Arg::from(source_slot),
+                crate::battle::Arg::from("move: Substitute"),
+            ],
+        );
+
+        // return this.NOT_FAIL;
+        return EventResult::NotFail;
+    }
+
+    // if (source.hp <= source.maxhp / 4 || source.maxhp === 1)
+    let (hp, maxhp) = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (source_pokemon.hp, source_pokemon.maxhp)
+    };
+
+    if hp <= maxhp / 4 || maxhp == 1 {
+        // this.add('-fail', source, 'move: Substitute', '[weak]');
+        let source_slot = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.get_slot()
+        };
+
+        battle.add(
+            "-fail",
+            &[
+                crate::battle::Arg::from(source_slot),
+                crate::battle::Arg::from("move: Substitute"),
+                crate::battle::Arg::from("[weak]"),
+            ],
+        );
+
+        // return this.NOT_FAIL;
+        return EventResult::NotFail;
+    }
+
     EventResult::Continue
 }
 
@@ -30,11 +96,26 @@ pub fn on_try_hit(
 ///     this.directDamage(target.maxhp / 4);
 /// }
 pub fn on_hit(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // this.directDamage(target.maxhp / 4);
+    let damage = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.maxhp / 4
+    };
+
+    battle.direct_damage(damage, Some(target), None, None);
+
     EventResult::Continue
 }
 
