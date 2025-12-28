@@ -687,12 +687,11 @@ impl Side {
     // ==========================================
 
     /// String representation of Side
-    // 
+    //
     // 	toString() {
     // 		return `${this.id}: ${this.name}`;
     // 	}
     //
-
     /// Check if this side can dynamax now (Gen 8)
     // 
     // 	canDynamaxNow(): boolean {

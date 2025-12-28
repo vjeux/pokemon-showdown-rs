@@ -1331,13 +1331,12 @@ impl Pokemon {
     // ==========================================
 
     /// String representation of Pokemon
-    // 
+    //
     // 	toString() {
     // 		const fullname = (this.illusion) ? this.illusion.fullname : this.fullname;
     // 		return this.isActive ? this.getSlot() + fullname.slice(2) : fullname;
     // 	}
     //
-
     /// Get updated details string for protocol
     // 
     // 	getUpdatedDetails(level?: number) {

@@ -2385,7 +2385,6 @@ impl Battle {
         }
     }
     #[allow(dead_code)]
-
     /// Get number of hits for multi-hit moves
     fn get_multi_hit_count(&mut self, move_id: &ID) -> i32 {
         // Extract multihit data before calling mutable method
@@ -2418,7 +2417,6 @@ impl Battle {
         1 // Default: single hit
     }
     #[allow(dead_code)]
-
     /// Get move accuracy (0-100, where 100+ means never miss)
     fn get_move_accuracy(&self, move_id: &ID) -> i32 {
         // Use move data from MoveData
@@ -2432,7 +2430,6 @@ impl Battle {
         }
     }
     #[allow(dead_code)]
-
     /// Apply confusion volatile to a Pokemon
     fn apply_confusion(&mut self, side_idx: usize, poke_idx: usize) {
         if side_idx >= self.sides.len() || poke_idx >= self.sides[side_idx].pokemon.len() {
@@ -2459,7 +2456,6 @@ impl Battle {
         self.add_log("-start", &[&name, "confusion"]);
     }
     #[allow(dead_code)]
-
     /// Remove all entry hazards from a side
     fn remove_all_hazards(&mut self, side_idx: usize) {
         if side_idx >= self.sides.len() {
@@ -2484,7 +2480,6 @@ impl Battle {
         }
     }
     #[allow(dead_code)]
-
     /// Apply a status condition
     fn apply_status(&mut self, side_idx: usize, poke_idx: usize, status: &str) {
         if side_idx >= self.sides.len() || poke_idx >= self.sides[side_idx].pokemon.len() {
@@ -2596,7 +2591,6 @@ impl Battle {
         true
     }
     #[allow(dead_code)]
-
     /// Apply a stat boost
     fn apply_boost(&mut self, side_idx: usize, poke_idx: usize, stat: &str, amount: i8) {
         if side_idx >= self.sides.len() || poke_idx >= self.sides[side_idx].pokemon.len() {
@@ -9816,7 +9810,6 @@ impl Battle {
     /// Chain modify event modifier
     /// Equivalent to battle.ts chainModify() (battle.ts:2291-2300)
     ///
-    // 
     // 	chainModify(numerator: number | number[], denominator = 1) {
     // 		const previousMod = this.trunc(this.event.modifier * 4096);
     //
@@ -9828,7 +9821,6 @@ impl Battle {
     // 		this.event.modifier = ((previousMod * nextMod + 2048) >> 12) / 4096;
     // 	}
     //
-
     /// Chain modify the event modifier using a simple multiplier
     /// Most common usage: battle.chain_modify(2.0) to double the value
     pub fn chain_modify(&mut self, multiplier: f32) -> i32 {
@@ -10978,10 +10970,9 @@ impl Battle {
     // 		return `Battle: ${this.format}`;
     // 	}
     //
-
     /// Find battle-level event handlers
     /// Equivalent to battle.ts findBattleEventHandlers()
-    // 
+    //
     // 	findBattleEventHandlers(callbackName: string, getKey?: 'duration', customHolder?: Pokemon) {
     // 		const handlers: EventListener[] = [];
     // 
