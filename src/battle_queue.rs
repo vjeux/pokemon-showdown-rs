@@ -1039,13 +1039,6 @@ impl BattleQueue {
         }
     }
 
-    /// Get an iterator over (index, action) tuples
-    /// Equivalent to JavaScript array.entries()
-    /// TypeScript: for (const [i, action] of battle.queue.list.entries())
-    pub fn entries(&self) -> impl Iterator<Item = (usize, &Action)> {
-        self.list.iter().enumerate()
-    }
-
     /// Remove count entries starting at index
     /// Equivalent to JavaScript array.splice(index, count)
     /// TypeScript: battle.queue.list.splice(index, count)

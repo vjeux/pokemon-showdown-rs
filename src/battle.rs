@@ -5223,11 +5223,6 @@ impl Battle {
     // 	return num;
     // }
     //
-    /// Battle assigns: this.clampIntRange = Utils.clampIntRange; (battle.ts:202)
-    /// Rust version is simplified since types are already enforced
-    pub fn clamp_int_range(&self, num: i32, min: i32, max: i32) -> i32 {
-        num.clamp(min, max)
-    }
 
     // =========================================================================
     // Priority and Speed Sorting Methods (ported from battle.ts)

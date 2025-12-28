@@ -1694,12 +1694,6 @@ impl Dex {
         self.types.keys()
     }
 
-    /// Get type data for a specific type
-    /// Equivalent to this.dex.types.get(typeName) in conversion2.ts
-    pub fn get_type(&self, type_name: &str) -> Option<&TypeData> {
-        self.types.get(type_name)
-    }
-
     /// Get type effectiveness for a defensive type against an attacking type
     /// Equivalent to this.dex.types.get(typeName).damageTaken[attackType] in conversion2.ts
     /// Returns: 0 = normal, 1 = super effective, 2 = not very effective, 3 = immune
