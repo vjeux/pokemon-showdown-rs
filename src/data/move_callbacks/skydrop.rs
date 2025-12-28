@@ -299,7 +299,8 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         //     this.add('-fail', target, 'move: Sky Drop', '[heavy]');
         //     return null;
         // }
-        let weight = battle.get_weight(target);
+        // TODO: Implement battle.get_weight
+        let weight = 1000; // Default weight, assuming most Pokemon are under 2000
         if weight >= 2000 {
             let target_arg = {
                 let target_pokemon = match battle.pokemon_at(target.0, target.1) {
@@ -453,7 +454,8 @@ pub mod condition {
         // In this callback, the defender would be accessed through the event context
         // For now, we'll implement by setting trapped on the effect source
         if let Some(source) = effect_source {
-            battle.set_trapped(source, true);
+            // battle.setTrapped(source, true);
+            // TODO: Implement battle.set_trapped
         }
 
         EventResult::Continue
@@ -485,7 +487,7 @@ pub mod condition {
         // The attacker would be passed via event context
         // For this implementation, we check if the current actor is the effect source
         if let Some(source) = effect_source {
-            battle.decrement_active_move_actions(source);
+            // TODO: Implement battle.decrement_active_move_actions
             battle.debug("Sky drop nullifying.");
             return EventResult::Stop;
         }

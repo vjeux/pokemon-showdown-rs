@@ -69,14 +69,26 @@ pub mod condition {
             };
             pokemon.has_type("Flying")
         };
-        let has_levitate = battle.has_ability(pokemon, "levitate");
+        let has_levitate = {
+            let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.has_ability("levitate")
+        };
         if has_flying || has_levitate {
             applies = true;
         }
 
         // if (pokemon.hasItem('ironball') || pokemon.volatiles['ingrain'] ||
         //     this.field.getPseudoWeather('gravity')) applies = false;
-        let has_ironball = battle.has_item(pokemon, "ironball");
+        let has_ironball = {
+            let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.has_item("ironball")
+        };
         let has_ingrain = {
             let pokemon_data = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
@@ -84,7 +96,7 @@ pub mod condition {
             };
             pokemon_data.volatiles.contains_key(&ID::from("ingrain"))
         };
-        let has_gravity = battle.has_pseudo_weather("gravity");
+        let has_gravity = battle.field.pseudo_weather.contains_key(&ID::from("gravity"));
 
         if has_ironball || has_ingrain || has_gravity {
             applies = false;
@@ -107,7 +119,7 @@ pub mod condition {
 
         if removed_fly || removed_bounce {
             applies = true;
-            battle.cancel_move(pokemon);
+            // TODO: Implement battle.cancel_move(pokemon);
             {
                 let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                     Some(p) => p,
@@ -221,7 +233,7 @@ pub mod condition {
 
         if removed_fly || removed_bounce {
             // this.queue.cancelMove(pokemon);
-            battle.cancel_move(pokemon);
+            // TODO: Implement battle.cancel_move(pokemon);
 
             // pokemon.removeVolatile('twoturnmove');
             {
