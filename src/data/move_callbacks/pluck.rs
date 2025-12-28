@@ -66,7 +66,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         return EventResult::Continue;
     }
 
-    let taken = battle.take_item(target, Some(source));
+    let taken = {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.take_item().is_some()
+    };
 
     if !taken {
         return EventResult::Continue;

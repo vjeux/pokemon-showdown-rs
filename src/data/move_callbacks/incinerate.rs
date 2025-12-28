@@ -35,7 +35,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // if ((item.isBerry || item.isGem) && pokemon.takeItem(source)) {
     if is_berry_or_gem {
-        let took_item = battle.take_item(pokemon, source);
+        let took_item = {
+            let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.take_item().is_some()
+        };
         if took_item {
             // this.add('-enditem', pokemon, item.name, '[from] move: Incinerate');
             let pokemon_arg = {
