@@ -40,7 +40,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (this.field.isWeather('sandstorm')) {
     //     factor = 0.667;
     // }
-    let is_sandstorm = battle.is_weather(&ID::from("sandstorm"));
+    let is_sandstorm = battle.field.is_weather(&ID::from("sandstorm"));
     let factor = if is_sandstorm {
         0.667
     } else {

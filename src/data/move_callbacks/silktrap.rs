@@ -157,7 +157,10 @@ pub mod condition {
         if !has_protect_flag || is_status {
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             if is_z || is_max {
-                battle.set_move_hit_data_z_broke_protect(target, true);
+                // TODO: Implement move_hit_data system
+                // In JavaScript: target.getMoveHitData(move).zBrokeProtect = true;
+                // Needs proper MoveHitData tracking on Pokemon or Battle
+                // battle.set_move_hit_data_z_broke_protect(target, true);
             }
             // return;
             return EventResult::Continue;

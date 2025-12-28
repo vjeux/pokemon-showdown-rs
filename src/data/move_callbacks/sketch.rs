@@ -82,15 +82,19 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // if (move.flags['nosketch'] || move.isZ || move.isMax) return false;
-    let move_data = match battle.dex.get_move_by_id(&move_id) {
-        Some(m) => m,
-        None => return EventResult::Boolean(false),
-    };
+    let (move_name, move_pp) = {
+        let move_data = match battle.dex.get_move_by_id(&move_id) {
+            Some(m) => m,
+            None => return EventResult::Boolean(false),
+        };
 
-    let has_nosketch = move_data.flags.get("nosketch").copied().unwrap_or(0) != 0;
-    if has_nosketch || move_data.is_z.is_some() || move_data.is_max.is_some() {
-        return EventResult::Boolean(false);
-    }
+        let has_nosketch = move_data.flags.get("nosketch").copied().unwrap_or(0) != 0;
+        if has_nosketch || move_data.is_z.is_some() || move_data.is_max.is_some() {
+            return EventResult::Boolean(false);
+        }
+
+        (move_data.name.clone(), move_data.pp)
+    };
 
     // const sketchIndex = source.moves.indexOf('sketch');
     // if (sketchIndex < 0) return false;
@@ -118,7 +122,20 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // };
     // source.moveSlots[sketchIndex] = sketchedMove;
     // source.baseMoveSlots[sketchIndex] = sketchedMove;
-    battle.set_move_slot(source, sketch_index, &move_id, move_data.pp, move_data.pp);
+    {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let sketched_move = crate::pokemon::MoveSlot::new(
+            move_id.clone(),
+            move_name.clone(),
+            move_pp as u8,
+            move_pp as u8
+        );
+        source_pokemon.move_slots[sketch_index] = sketched_move.clone();
+        source_pokemon.base_move_slots[sketch_index] = sketched_move;
+    }
 
     // this.add('-activate', source, 'move: Sketch', move.name);
     let source_arg = {
@@ -132,7 +149,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     battle.add("-activate", &[
         source_arg,
         "move: Sketch".into(),
-        move_data.name.clone().into(),
+        move_name.into(),
     ]);
 
     EventResult::Continue
