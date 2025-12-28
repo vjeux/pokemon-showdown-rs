@@ -80,15 +80,15 @@ pub mod condition {
                     };
 
                     if should_activate {
-                        let target_arg = {
+                        let target_ident = {
                             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                                 Some(p) => p,
                                 None => return EventResult::Continue,
                             };
-                            crate::battle::Arg::from(target_pokemon)
+                            target_pokemon.get_slot()
                         };
 
-                        battle.add("-activate", &[target_arg, "move: Electric Terrain".into()]);
+                        battle.add("-activate", &[target_ident.as_str().into(), "move: Electric Terrain".into()]);
                     }
                 }
 
@@ -132,15 +132,15 @@ pub mod condition {
         //     return null;
         // }
         if status == Some("yawn") {
-            let target_arg = {
+            let target_ident = {
                 let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(target_pokemon)
+                target_pokemon.get_slot()
             };
 
-            battle.add("-activate", &[target_arg, "move: Electric Terrain".into()]);
+            battle.add("-activate", &[target_ident.as_str().into(), "move: Electric Terrain".into()]);
 
             // return null;
             return EventResult::Stop;
@@ -209,7 +209,7 @@ pub mod condition {
 
             if is_ability {
                 if let Some(source) = source_pos {
-                    let (source_arg, ability_name) = {
+                    let (source_ident, ability_name) = {
                         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                             Some(p) => p,
                             None => return EventResult::Continue,
@@ -217,13 +217,13 @@ pub mod condition {
                         let ability_name = battle.dex.get_ability_by_id(&ID::from(effect))
                             .map(|a| a.name.clone())
                             .unwrap_or_else(|| effect.to_string());
-                        (crate::battle::Arg::from(source_pokemon), ability_name)
+                        (source_pokemon.get_slot(), ability_name)
                     };
 
                     battle.add("-fieldstart", &[
                         "move: Electric Terrain".into(),
                         format!("[from] ability: {}", ability_name).into(),
-                        format!("[of] {}", source_arg).into(),
+                        format!("[of] {}", source_ident).into(),
                     ]);
                 } else {
                     battle.add("-fieldstart", &["move: Electric Terrain".into()]);
