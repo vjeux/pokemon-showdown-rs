@@ -521,6 +521,12 @@ pub struct ItemData {
     /// Z-Move compatibility
     #[serde(rename = "zMove", default)]
     pub z_move: Option<serde_json::Value>,
+    /// Mega Evolution stone target (e.g., "Froslass-Mega")
+    #[serde(rename = "megaStone", default)]
+    pub mega_stone: Option<String>,
+    /// Pokemon species that can use this mega stone (e.g., "Froslass")
+    #[serde(rename = "megaEvolves", default)]
+    pub mega_evolves: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

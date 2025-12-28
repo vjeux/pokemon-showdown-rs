@@ -14,6 +14,44 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // Get positions
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+    let source_pos = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target === source || move.category === 'Status') return;
+    if target_pos == source_pos {
+        return EventResult::Continue;
+    }
+
+    // Get move category and type
+    let (move_category, move_type) = match &battle.active_move {
+        Some(active_move) => (active_move.category.clone(), active_move.move_type.clone()),
+        None => return EventResult::Continue,
+    };
+
+    if move_category == "Status" {
+        return EventResult::Continue;
+    }
+
+    // if (move.type === 'Poison' && source.useItem())
+    if move_type == "Poison" {
+        // Get source pokemon mutably to use item
+        let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        if source_pokemon.use_item().is_some() {
+            // source.addVolatile('gem');
+            source_pokemon.add_volatile("gem".into());
+        }
+    }
+
     EventResult::Continue
 }

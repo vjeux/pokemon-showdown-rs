@@ -13,6 +13,12 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_source_modify_accuracy(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // if (typeof accuracy === 'number') {
+    //     return this.chainModify([4505, 4096]);
+    // }
+    // Note: In JS, this checks if accuracy is a number (not true/bypassed).
+    // Since this callback is only called when accuracy can be modified,
+    // we can always apply the modifier.
+    // return this.chainModify([4505, 4096]);
+    EventResult::Number(battle.chain_modify_fraction(4505, 4096))
 }

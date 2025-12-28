@@ -2546,6 +2546,15 @@ impl Pokemon {
         species.forme.clone()
     }
 
+    /// Get base species num for this Pokemon
+    /// Equivalent to pokemon.baseSpecies.num in TypeScript
+    pub fn get_base_species_num(&self, dex: &crate::dex::Dex) -> Option<i32> {
+        let species = dex.get_species(self.species_id.as_str())?;
+        let base_species_name = species.base_species.as_ref().unwrap_or(&species.name);
+        let base_species = dex.get_species(base_species_name)?;
+        Some(base_species.num)
+    }
+
     /// Clear all turn state at end of turn
     pub fn clear_turn_state_full(&mut self) {
         self.move_last_turn_result = self.move_this_turn_result;

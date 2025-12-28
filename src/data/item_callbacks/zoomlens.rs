@@ -14,6 +14,24 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_source_modify_accuracy(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (typeof accuracy === 'number' && !this.queue.willMove(target)) {
+    //     this.debug('Zoom Lens boosting accuracy');
+    //     return this.chainModify([4915, 4096]);
+    // }
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // !this.queue.willMove(target)
+    let will_move = battle.queue.will_move(target.0, target.1);
+    if will_move.is_none() {
+        // this.debug('Zoom Lens boosting accuracy');
+        battle.debug("Zoom Lens boosting accuracy");
+
+        // return this.chainModify([4915, 4096]);
+        return EventResult::Number(battle.chain_modify_fraction(4915, 4096));
+    }
+
     EventResult::Continue
 }

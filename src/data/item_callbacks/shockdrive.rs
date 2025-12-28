@@ -14,6 +14,30 @@ use crate::event::EventResult;
 ///     return true;
 /// }
 pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // if ((source && source.baseSpecies.num === 649) || pokemon.baseSpecies.num === 649) {
+    //     return false;
+    // }
+
+    // Check source if present
+    if let Some(source) = source_pos {
+        if let Some(source_pokemon) = battle.pokemon_at(source.0, source.1) {
+            if let Some(species) = battle.dex.get_species_by_id(&source_pokemon.base_species) {
+                if species.num == 649 {
+                    return EventResult::Boolean(false);
+                }
+            }
+        }
+    }
+
+    // Check pokemon
+    if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        if let Some(species) = battle.dex.get_species_by_id(&pokemon.base_species) {
+            if species.num == 649 {
+                return EventResult::Boolean(false);
+            }
+        }
+    }
+
+    // return true;
+    EventResult::Boolean(true)
 }

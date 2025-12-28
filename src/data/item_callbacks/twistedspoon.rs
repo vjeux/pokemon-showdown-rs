@@ -13,6 +13,19 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // Get the active move
+    let active_move = match &battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // if (move.type === 'Psychic') {
+    //     return this.chainModify([4915, 4096]);
+    // }
+    if active_move.move_type == "Psychic" {
+        let result = battle.chain_modify_fraction(4915, 4096);
+        return EventResult::Number(result);
+    }
+
     EventResult::Continue
 }

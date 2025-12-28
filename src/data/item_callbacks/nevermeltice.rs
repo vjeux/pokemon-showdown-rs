@@ -13,6 +13,17 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (move.type === 'Ice') {
+    //     return this.chainModify([4915, 4096]);
+    // }
+    let move_type = match &battle.active_move {
+        Some(active_move) => &active_move.move_type,
+        None => return EventResult::Continue,
+    };
+
+    if move_type == "ice" {
+        return EventResult::Number(battle.chain_modify_fraction(4915, 4096));
+    }
+
     EventResult::Continue
 }

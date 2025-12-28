@@ -13,6 +13,17 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (move.category === 'Physical') {
+    //     return this.chainModify([4505, 4096]);
+    // }
+    let category = match &battle.active_move {
+        Some(active_move) => &active_move.category,
+        None => return EventResult::Continue,
+    };
+
+    if category == "Physical" {
+        return EventResult::Number(battle.chain_modify_fraction(4505, 4096));
+    }
+
     EventResult::Continue
 }

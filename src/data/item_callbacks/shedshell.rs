@@ -11,7 +11,10 @@ use crate::event::EventResult;
 ///     pokemon.trapped = false;
 /// }
 pub fn on_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // pokemon.trapped = false;
+    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        pokemon.trapped = false;
+    }
     EventResult::Continue
 }
 
@@ -19,6 +22,9 @@ pub fn on_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
 ///     pokemon.maybeTrapped = false;
 /// }
 pub fn on_maybe_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // pokemon.maybeTrapped = false;
+    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        pokemon.maybe_trapped = false;
+    }
     EventResult::Continue
 }

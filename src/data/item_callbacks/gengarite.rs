@@ -12,6 +12,32 @@ use crate::event::EventResult;
 ///     return true;
 /// }
 pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Boolean(true),
+    };
+
+    let item = match battle.dex.get_item("gengarite") {
+        Some(item) => item,
+        None => return EventResult::Boolean(true),
+    };
+
+    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+        Some(p) => p,
+        None => return EventResult::Boolean(true),
+    };
+
+    let source_base_species_base_species = match source_pokemon.get_base_species_base_species(&battle.dex) {
+        Some(s) => s,
+        None => return EventResult::Boolean(true),
+    };
+
+    if let Some(mega_evolves) = &item.mega_evolves {
+        if mega_evolves == &source_base_species_base_species {
+            return EventResult::Boolean(false);
+        }
+    }
+
+    EventResult::Boolean(true)
+    
 }
