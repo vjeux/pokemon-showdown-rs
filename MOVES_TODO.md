@@ -162,10 +162,10 @@ Moves with callbacks: 373
 - [x] foresight - Foresight (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
 - [x] forestscurse - Forest's Curse (Status, Grass) - 1 callback: onHit
 - [x] freezedry - Freeze-Dry (Special, Ice) - 1 callback: onEffectiveness
-- [ ] freezeshock - Freeze Shock (Physical, Ice) - 1 callback: onTryMove
+- [x] freezeshock - Freeze Shock (Physical, Ice) - 1 callback: onTryMove
 - [x] freezyfrost - Freezy Frost (Special, Ice) - 1 callback: onHit
 - [x] frustration - Frustration (Physical, Normal) - 1 callback: basePowerCallback
-- [ ] furycutter - Fury Cutter (Physical, Bug) - 3 callbacks: basePowerCallback, condition::onStart, condition::onRestart
+- [x] furycutter - Fury Cutter (Physical, Bug) - 3 callbacks: basePowerCallback, condition::onStart, condition::onRestart
 - [x] fusionbolt - Fusion Bolt (Physical, Electric) - 1 callback: onBasePower
 - [x] fusionflare - Fusion Flare (Special, Fire) - 1 callback: onBasePower
 - [x] futuresight - Future Sight (Special, Psychic) - 1 callback: onTry
@@ -200,8 +200,8 @@ Moves with callbacks: 373
 - [ ] healingwish - Healing Wish (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
 - [x] healpulse - Heal Pulse (Status, Psychic) - 1 callback: onHit
 - [x] heartswap - Heart Swap (Status, Psychic) - 1 callback: onHit
-- [ ] heatcrash - Heat Crash (Physical, Fire) - 2 callbacks: basePowerCallback, onTryHit
-- [ ] heavyslam - Heavy Slam (Physical, Steel) - 2 callbacks: basePowerCallback, onTryHit
+- [x] heatcrash - Heat Crash (Physical, Fire) - 2 callbacks: basePowerCallback, onTryHit
+- [x] heavyslam - Heavy Slam (Physical, Steel) - 2 callbacks: basePowerCallback, onTryHit
 - [x] helpinghand - Helping Hand (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onRestart, condition::onBasePower
 - [x] hex - Hex (Special, Ghost) - 1 callback: basePowerCallback
 - [x] hiddenpower - Hidden Power (Special, Normal) - 1 callback: onModifyType
