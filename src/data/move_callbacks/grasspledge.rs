@@ -189,9 +189,11 @@ pub mod condition {
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', targetSide, 'Grass Pledge');
-        if let Some(side_index) = battle.current_effect_state.side {
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
             let side_arg = crate::battle::Arg::Side(side_index);
             battle.add("-sidestart", &[side_arg, "Grass Pledge".into()]);
+                    }
         }
 
         EventResult::Continue
@@ -202,9 +204,11 @@ pub mod condition {
     /// }
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', targetSide, 'Grass Pledge');
-        if let Some(side_index) = battle.current_effect_state.side {
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
             let side_arg = crate::battle::Arg::Side(side_index);
             battle.add("-sideend", &[side_arg, "Grass Pledge".into()]);
+                    }
         }
 
         EventResult::Continue

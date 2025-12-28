@@ -69,8 +69,11 @@ pub mod condition {
     pub fn on_foe_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // if (!this.effectState.target.isSkyDropped() && this.validTarget(this.effectState.target, source, move.target)) {
         // Get the effect state target (the Pokemon with Follow Me active)
-        let effect_state_target = match battle.current_effect_state.target {
-            Some(pos) => pos,
+        let effect_state_target = match &battle.current_effect_state {
+            Some(effect_state) => match effect_state.target {
+                Some(pos) => pos,
+                None => return EventResult::Continue,
+            },
             None => return EventResult::Continue,
         };
 

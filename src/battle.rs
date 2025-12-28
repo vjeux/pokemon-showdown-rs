@@ -1119,10 +1119,7 @@ impl Battle {
 
     /// Run each event for all active Pokemon
     fn each_event_internal(&mut self, event_name: &str) {
-        let active: Vec<(usize, usize)> = self.get_all_active(false)
-            .iter()
-            .map(|pokemon| (pokemon.side_index, pokemon.position))
-            .collect();
+        let active: Vec<(usize, usize)> = self.get_all_active(false);
         for (side_idx, poke_idx) in active {
             let effect_id = ID::new(event_name);
             self.single_event(event_name, &effect_id, Some((side_idx, poke_idx)), None, None);
@@ -4355,10 +4352,7 @@ impl Battle {
     /// Equivalent to TypeScript updateSpeed() (battle.ts:387-391)
     pub fn update_speed(&mut self) {
         // Collect indices first to avoid borrow checker issues
-        let indices: Vec<(usize, usize)> = self.get_all_active(false)
-            .iter()
-            .map(|pokemon| (pokemon.side_index, pokemon.position))
-            .collect();
+        let indices: Vec<(usize, usize)> = self.get_all_active(false);
 
         // Update each active Pokemon's speed
         for (side_idx, poke_idx) in indices {

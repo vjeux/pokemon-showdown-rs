@@ -19,9 +19,11 @@ pub mod condition {
 
         // this.add('-sidestart', targetSide, 'G-Max Cannonade');
         // The side index should be in the current effect state
-        if let Some(side_index) = battle.current_effect_state.side {
-            let side_arg = crate::battle::Arg::Side(side_index);
-            battle.add("-sidestart", &[side_arg, "G-Max Cannonade".into()]);
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
+                let side_arg = crate::battle::Arg::Side(side_index);
+                battle.add("-sidestart", &[side_arg, "G-Max Cannonade".into()]);
+            }
         }
 
         EventResult::Continue

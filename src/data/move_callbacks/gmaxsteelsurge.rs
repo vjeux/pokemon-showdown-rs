@@ -16,9 +16,11 @@ pub mod condition {
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', side, 'move: G-Max Steelsurge');
-        if let Some(side_index) = battle.current_effect_state.side {
-            let side_arg = crate::battle::Arg::Side(side_index);
-            battle.add("-sidestart", &[side_arg, "move: G-Max Steelsurge".into()]);
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
+                let side_arg = crate::battle::Arg::Side(side_index);
+                battle.add("-sidestart", &[side_arg, "move: G-Max Steelsurge".into()]);
+            }
         }
 
         EventResult::Continue
