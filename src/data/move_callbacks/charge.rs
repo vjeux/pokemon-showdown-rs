@@ -112,7 +112,7 @@ pub mod condition {
         };
 
         // if (move.type === 'Electric') {
-        if move_data.move_type == ID::from("Electric") {
+        if move_data.move_type == "Electric" {
             // this.debug('charge boost');
             // TODO: debug not yet implemented
 
@@ -137,7 +137,7 @@ pub mod condition {
         };
 
         // if (move.type === 'Electric' && move.id !== 'charge') {
-        if move_data.move_type == ID::from("Electric") && move_id != "charge" {
+        if move_data.move_type == "Electric" && move_id != "charge" {
             // pokemon.removeVolatile('charge');
             let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
@@ -167,7 +167,7 @@ pub mod condition {
         };
 
         // if (move.type === 'Electric' && move.id !== 'charge') {
-        if move_data.move_type == ID::from("Electric") && move_id.as_str() != "charge" {
+        if move_data.move_type == "Electric" && move_id.as_str() != "charge" {
             // pokemon.removeVolatile('charge');
             let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
                 Some(p) => p,

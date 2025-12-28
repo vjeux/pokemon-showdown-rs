@@ -61,7 +61,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // const possibleTypes = [];
-    let mut possible_types = Vec::new();
+    let mut possible_types: Vec<&str> = Vec::new();
 
     // const attackType = target.lastMoveUsed.type;
     // for (const typeName of this.dex.types.names()) {
