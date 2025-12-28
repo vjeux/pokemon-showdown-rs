@@ -143,6 +143,8 @@ pub struct MoveData {
     pub priority: i8,
     #[serde(default)]
     pub target: String,
+    #[serde(rename = "critRatio", default = "default_crit_ratio")]
+    pub crit_ratio: i32,
     #[serde(default)]
     pub secondary: Option<MoveSecondary>,
     #[serde(default)]
@@ -173,6 +175,10 @@ pub struct MoveData {
     pub tracks_target: Option<bool>,
     #[serde(rename = "smartTarget", default)]
     pub smart_target: Option<bool>,
+}
+
+fn default_crit_ratio() -> i32 {
+    1
 }
 
 /// Accuracy can be a number or true (always hits)

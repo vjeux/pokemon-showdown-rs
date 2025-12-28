@@ -112,6 +112,8 @@ pub struct EffectState {
     pub duration: Option<i32>,
     /// Time (for sorting)
     pub time: Option<i32>,
+    /// Effect order (for sorting multiple effects)
+    pub effect_order: i32,
     /// Custom data storage (for effect-specific state)
     pub data: std::collections::HashMap<String, serde_json::Value>,
 }

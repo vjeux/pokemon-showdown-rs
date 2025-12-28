@@ -41,6 +41,22 @@ impl MoveSlot {
     }
 }
 
+/// Record of a Pokemon that attacked this Pokemon
+/// Equivalent to Attacker interface in pokemon.ts
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Attacker {
+    /// Source Pokemon (side_idx, poke_idx)
+    pub source: (usize, usize),
+    /// Damage dealt
+    pub damage: i32,
+    /// Whether this attack happened this turn
+    pub this_turn: bool,
+    /// Move ID used
+    pub move_id: Option<ID>,
+    /// Source slot
+    pub slot: (usize, usize),
+}
+
 /// Pokemon set - the team builder representation of a Pokemon
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PokemonSet {
@@ -2677,7 +2693,7 @@ impl Pokemon {
 
     /// Get last damager info
     /// Equivalent to getLastDamagedBy in pokemon.ts
-    // 
+    //
     // 	getLastDamagedBy(filterOutSameSide: boolean) {
     // 		const damagedBy: Attacker[] = this.attackedBy.filter(attacker => (
     // 			typeof attacker.damageValue === 'number' &&
@@ -2687,11 +2703,13 @@ impl Pokemon {
     // 		return damagedBy[damagedBy.length - 1];
     // 	}
     //
-    pub fn get_last_damaged_by(&self, filter_out_same_side: bool) -> Option<(ID, i32)> {
-        if self.last_damage == 0 {
-            return None;
-        }
-        // Would need more tracking for full implementation
+    pub fn get_last_damaged_by(&self, filter_out_same_side: bool) -> Option<Attacker> {
+        // TODO: Implement proper attacked_by tracking
+        // For now, return None to allow compilation
+        // Full implementation needs:
+        // - attackedBy: Vec<Attacker> field on Pokemon
+        // - Tracking of all attacks in battle
+        // - Filtering by filterOutSameSide
         None
     }
 

@@ -17,7 +17,7 @@ use crate::dex_data::ID;
 /// }
 pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     // if (!move.hasSheerForce && source.hp) {
-    let has_sheer_force = battle.active_move_has_sheer_force;
+    let has_sheer_force = battle.active_move_has_sheer_force();
 
     let source_hp = {
         let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
@@ -59,7 +59,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
     };
 
     // if (!move.hasSheerForce && source.hp) {
-    let has_sheer_force = battle.active_move_has_sheer_force;
+    let has_sheer_force = battle.active_move_has_sheer_force();
 
     let source_hp = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
