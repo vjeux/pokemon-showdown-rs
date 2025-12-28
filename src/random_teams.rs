@@ -76,18 +76,17 @@ impl RandomTeamGenerator {
 
     /// Build a random set for a species
     fn build_set(&mut self, species: &SpeciesDef) -> ValidatorSet {
-        let mut set = ValidatorSet::default();
-
-        set.species = species.name.to_string();
-        set.level = self.get_level(species);
-        set.ability = self.pick_ability(species);
-        set.item = Some(self.pick_item(species));
-        set.nature = Some(self.pick_nature(species));
-        set.moves = self.pick_moves(species);
-        set.evs = self.generate_evs(species);
-        set.ivs = IVSpread::default(); // Perfect IVs
-
-        set
+        ValidatorSet {
+            species: species.name.to_string(),
+            level: self.get_level(species),
+            ability: self.pick_ability(species),
+            item: Some(self.pick_item(species)),
+            nature: Some(self.pick_nature(species)),
+            moves: self.pick_moves(species),
+            evs: self.generate_evs(species),
+            ivs: IVSpread::default(), // Perfect IVs
+            ..Default::default()
+        }
     }
 
     /// Get level for random battles (based on BST)

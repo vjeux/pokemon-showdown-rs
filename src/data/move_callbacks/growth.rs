@@ -29,9 +29,11 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
         // move.boosts = { atk: 2, spa: 2 };
         // Modify the current move's boosts
         if let Some(ref mut current_move) = battle.active_move {
-            let mut boosts = crate::dex_data::BoostsTable::default();
-            boosts.atk = 2;
-            boosts.spa = 2;
+            let boosts = crate::dex_data::BoostsTable {
+                atk: 2,
+                spa: 2,
+                ..Default::default()
+            };
             current_move.boosts = Some(boosts);
         }
     }
