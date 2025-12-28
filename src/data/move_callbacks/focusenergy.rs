@@ -49,24 +49,24 @@ pub mod condition {
         // } else {
         //     this.add('-start', target, 'move: Focus Energy');
         // }
-        let target_arg = {
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
         if let Some(effect) = effect_id {
             if effect == "zpower" {
-                battle.add("-start", &[target_arg, "move: Focus Energy".into(), "[zeffect]".into()]);
+                battle.add("-start", &[target_ident.as_str().into(), "move: Focus Energy".into(), "[zeffect]".into()]);
             } else if effect == "costar" || effect == "imposter" || effect == "psychup" || effect == "transform" {
-                battle.add("-start", &[target_arg, "move: Focus Energy".into(), "[silent]".into()]);
+                battle.add("-start", &[target_ident.as_str().into(), "move: Focus Energy".into(), "[silent]".into()]);
             } else {
-                battle.add("-start", &[target_arg, "move: Focus Energy".into()]);
+                battle.add("-start", &[target_ident.as_str().into(), "move: Focus Energy".into()]);
             }
         } else {
-            battle.add("-start", &[target_arg, "move: Focus Energy".into()]);
+            battle.add("-start", &[target_ident.as_str().into(), "move: Focus Energy".into()]);
         }
 
         EventResult::Continue

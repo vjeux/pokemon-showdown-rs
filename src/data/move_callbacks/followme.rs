@@ -38,22 +38,22 @@ pub mod condition {
         // } else {
         //     this.add('-singleturn', target, 'move: Follow Me');
         // }
-        let target_arg = {
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
         if let Some(effect) = effect_id {
             if effect == "zpower" {
-                battle.add("-singleturn", &[target_arg, "move: Follow Me".into(), "[zeffect]".into()]);
+                battle.add("-singleturn", &[target_ident.as_str().into(), "move: Follow Me".into(), "[zeffect]".into()]);
             } else {
-                battle.add("-singleturn", &[target_arg, "move: Follow Me".into()]);
+                battle.add("-singleturn", &[target_ident.as_str().into(), "move: Follow Me".into()]);
             }
         } else {
-            battle.add("-singleturn", &[target_arg, "move: Follow Me".into()]);
+            battle.add("-singleturn", &[target_ident.as_str().into(), "move: Follow Me".into()]);
         }
 
         EventResult::Continue
