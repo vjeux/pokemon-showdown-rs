@@ -48,7 +48,7 @@ pub mod condition {
         // if (move.type === 'Fire') {
         let move_type = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
             active_move.move_type.clone()
