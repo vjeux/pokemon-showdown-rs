@@ -161,7 +161,7 @@ pub mod condition {
         battle.add("-start", &[
             pokemon_arg,
             "Curse".into(),
-            format!("[of] {}", source_arg.to_protocol_string()).into(),
+            format!("[of] {}", source_arg).into(),
         ]);
 
         EventResult::Continue

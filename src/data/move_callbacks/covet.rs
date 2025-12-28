@@ -111,7 +111,7 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
         source_arg,
         item_name.into(),
         "[from] move: Covet".into(),
-        format!("[of] {}", target_arg.to_protocol_string()).into(),
+        format!("[of] {}", target_arg).into(),
     ]);
 
     EventResult::Continue

@@ -54,7 +54,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             target_arg,
             item_name.into(),
             "[from] move: Corrosive Gas".into(),
-            format!("[of] {}", source_arg.to_protocol_string()).into(),
+            format!("[of] {}", source_arg).into(),
         ]);
     } else {
         // this.add('-fail', target, 'move: Corrosive Gas');

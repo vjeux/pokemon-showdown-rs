@@ -85,7 +85,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     item_name.into(),
                     "[from] stealeat".into(),
                     "[move] Bug Bite".into(),
-                    format!("[of] {}", source_arg.to_protocol_string()).into(),
+                    format!("[of] {}", source_arg).into(),
                 ]);
 
                 // if (this.singleEvent('Eat', item, target.itemState, source, source, move)) {
