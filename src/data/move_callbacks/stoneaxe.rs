@@ -15,11 +15,49 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_after_hit(
-    _battle: &mut Battle,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    source_pos: (usize, usize),
     _target_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = source_pos;
+
+    // if (!move.hasSheerForce && source.hp) {
+    let has_sheer_force = match &battle.active_move {
+        Some(active_move) => active_move.has_sheer_force,
+        None => return EventResult::Continue,
+    };
+
+    if has_sheer_force {
+        return EventResult::Continue;
+    }
+
+    let (source_side, source_hp) = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (source_pokemon.side_index, source_pokemon.hp)
+    };
+
+    if source_hp == 0 {
+        return EventResult::Continue;
+    }
+
+    // for (const side of source.side.foeSidesWithConditions()) {
+    //     side.addSideCondition('stealthrock');
+    // }
+    let foe_side_indices: Vec<usize> = battle.sides[source_side]
+        .foe_sides_with_conditions(&battle.sides)
+        .iter()
+        .map(|s| s.n)
+        .collect();
+
+    for foe_side_idx in foe_side_indices {
+        let _ = battle.sides[foe_side_idx].add_side_condition(ID::from("stealthrock"), None);
+    }
+
     EventResult::Continue
 }
 
@@ -31,12 +69,53 @@ pub fn on_after_hit(
 ///     }
 /// }
 pub fn on_after_sub_damage(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _damage: i32,
     _target_pos: Option<(usize, usize)>,
-    _source_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
     _move_id: &str,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (!move.hasSheerForce && source.hp) {
+    let has_sheer_force = match &battle.active_move {
+        Some(active_move) => active_move.has_sheer_force,
+        None => return EventResult::Continue,
+    };
+
+    if has_sheer_force {
+        return EventResult::Continue;
+    }
+
+    let (source_side, source_hp) = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (source_pokemon.side_index, source_pokemon.hp)
+    };
+
+    if source_hp == 0 {
+        return EventResult::Continue;
+    }
+
+    // for (const side of source.side.foeSidesWithConditions()) {
+    //     side.addSideCondition('stealthrock');
+    // }
+    let foe_side_indices: Vec<usize> = battle.sides[source_side]
+        .foe_sides_with_conditions(&battle.sides)
+        .iter()
+        .map(|s| s.n)
+        .collect();
+
+    for foe_side_idx in foe_side_indices {
+        let _ = battle.sides[foe_side_idx].add_side_condition(ID::from("stealthrock"), None);
+    }
+
     EventResult::Continue
 }
