@@ -21,7 +21,8 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     }
 
     // this.runEvent('StallMove', pokemon)
-    battle.run_event("StallMove", pokemon, None, None)
+    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, None);
+    EventResult::Boolean(will_act && stall_result.unwrap_or(0) != 0)
 }
 
 /// onHit(pokemon) {
@@ -202,12 +203,9 @@ pub mod condition {
         }
 
         // if (this.checkMoveMakesContact(move, source, target)) {
-        if battle.check_move_makes_contact(source, target) {
+        if battle.check_move_makes_contact(None, source, target) {
             // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
-            use std::collections::HashMap;
-            let mut boosts = HashMap::new();
-            boosts.insert("def".to_string(), -2);
-            battle.boost(boosts, source, Some(target), Some(&ID::from("obstruct")));
+            battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"));
         }
 
         // return this.NOT_FAIL;
@@ -237,12 +235,9 @@ pub mod condition {
             active_move.is_z || active_move.is_max
         };
 
-        if is_z_or_max_powered && battle.check_move_makes_contact(source, target) {
+        if is_z_or_max_powered && battle.check_move_makes_contact(None, source, target) {
             // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
-            use std::collections::HashMap;
-            let mut boosts = HashMap::new();
-            boosts.insert("def".to_string(), -2);
-            battle.boost(boosts, source, Some(target), Some(&ID::from("obstruct")));
+            battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"));
         }
 
         EventResult::Continue

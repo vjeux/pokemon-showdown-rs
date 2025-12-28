@@ -44,14 +44,14 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     // case 'desolateland':
     //     move.accuracy = 50;
     //     break;
-    if let Some(weather_id) = effective_weather {
-        if weather_id == ID::from("raindance") || weather_id == ID::from("primordialsea") {
-            if let Some(ref mut active_move) = battle.active_move {
-                active_move.accuracy = 0;
-            }
-        } else if weather_id == ID::from("sunnyday") || weather_id == ID::from("desolateland") {
-            if let Some(ref mut active_move) = battle.active_move {
-                active_move.accuracy = 50;
+    let weather_id = effective_weather;
+    if weather_id == "raindance" || weather_id == "primordialsea" {
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.accuracy = 0;
+        }
+    } else if weather_id == "sunnyday" || weather_id == "desolateland" {
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.accuracy = 50;
             }
         }
     }

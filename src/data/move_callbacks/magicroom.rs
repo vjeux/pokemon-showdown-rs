@@ -96,7 +96,8 @@ pub mod condition {
                 pokemon.item.clone()
             };
 
-            if let Some(item_id) = item_id {
+            // Check if item is not empty
+            if item_id != ID::from("") {
                 battle.run_single_event("End", Some(&item_id), pokemon_pos, pokemon_pos, None);
             }
         }
