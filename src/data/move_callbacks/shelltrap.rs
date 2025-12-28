@@ -141,7 +141,7 @@ pub mod condition {
         let is_ally = battle.is_ally(pokemon, source);
         let is_physical = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
             active_move.category == "Physical"

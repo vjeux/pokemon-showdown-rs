@@ -51,12 +51,14 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
             None => return EventResult::Continue,
         };
 
-        if tatsugiri.base_species.base_species != "Tatsugiri" {
+        if tatsugiri.base_species != ID::from("tatsugiri") {
             return EventResult::Continue;
         }
 
         // switch (tatsugiri.baseSpecies.forme)
-        tatsugiri.base_species.forme.clone()
+        // Look up species data to get the forme
+        let species_data = battle.dex.get_species_by_id(&tatsugiri.base_species);
+        species_data.and_then(|s| s.forme.clone())
     };
 
     // switch (tatsugiri.baseSpecies.forme) {

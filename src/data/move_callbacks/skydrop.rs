@@ -203,7 +203,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     let move_id = {
         let active_move = match &battle.active_move {
-            Some(active_move) => &active_move.id,
+            Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
         active_move.clone()
@@ -298,7 +298,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
                 None => return EventResult::Continue,
             };
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
             (

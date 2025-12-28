@@ -88,7 +88,7 @@ pub mod condition {
         //     return;
         // }
         let target_pos = match target {
-            Some(pos) => pos,
+            Some(pokemon) => (pokemon.side_index, pokemon.position),
             None => {
                 battle.debug("Nothing to leech into");
                 return EventResult::Continue;

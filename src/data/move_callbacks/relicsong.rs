@@ -13,6 +13,8 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    use crate::dex_data::ID;
+
     let pokemon = pokemon_pos;
 
     // if (pokemon.baseSpecies.baseSpecies === 'Meloetta' && !pokemon.transformed) {
@@ -23,10 +25,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon_pokemon.base_species.base_species.clone(), pokemon_pokemon.transformed)
+        (pokemon_pokemon.base_species.clone(), pokemon_pokemon.transformed)
     };
 
-    if base_species == "Meloetta" && !transformed {
+    if base_species == ID::from("meloetta") && !transformed {
         let active_move = match &mut battle.active_move {
             Some(m) => m,
             None => return EventResult::Continue,

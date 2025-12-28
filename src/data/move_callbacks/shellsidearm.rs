@@ -30,7 +30,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         // this.attrLastMove('[anim] Shell Side Arm ' + move.category);
         let category = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
             active_move.category.clone()
@@ -145,7 +145,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     if !is_ally {
         let category = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
             active_move.category.clone()
@@ -179,7 +179,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
     if !is_ally {
         let category = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
             active_move.category.clone()

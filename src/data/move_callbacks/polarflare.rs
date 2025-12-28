@@ -13,6 +13,8 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    use crate::dex_data::ID;
+
     let pokemon = pokemon_pos;
 
     // if (pokemon.baseSpecies.baseSpecies === 'Ramnarok' && !pokemon.transformed) {
@@ -21,7 +23,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon_pokemon.base_species.base_species == "Ramnarok", pokemon_pokemon.transformed)
+        (pokemon_pokemon.base_species == ID::from("ramnarok"), pokemon_pokemon.transformed)
     };
 
     if is_ramnarok && !transformed {
