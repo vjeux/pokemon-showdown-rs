@@ -19,15 +19,15 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.add('-start', pokemon, 'Embargo');
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
 
-        battle.add("-start", &[pokemon_arg, "Embargo".into()]);
+        battle.add("-start", &[pokemon_ident.as_str().into(), "Embargo".into()]);
 
         // this.singleEvent('End', pokemon.getItem(), pokemon.itemState, pokemon);
         let item_id = {
@@ -50,15 +50,15 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.add('-end', pokemon, 'Embargo');
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
 
-        battle.add("-end", &[pokemon_arg, "Embargo".into()]);
+        battle.add("-end", &[pokemon_ident.as_str().into(), "Embargo".into()]);
 
         EventResult::Continue
     }
