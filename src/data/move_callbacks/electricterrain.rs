@@ -62,7 +62,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                (target_pokemon.is_grounded(battle), target_pokemon.is_semi_invulnerable())
+                (target_pokemon.is_grounded(), target_pokemon.is_semi_invulnerable())
             };
 
             if is_grounded && !is_semi_invulnerable {
@@ -173,7 +173,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                (attacker_pokemon.is_grounded(battle), attacker_pokemon.is_semi_invulnerable())
+                (attacker_pokemon.is_grounded(), attacker_pokemon.is_semi_invulnerable())
             };
 
             if is_grounded && !is_semi_invulnerable {

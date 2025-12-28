@@ -67,9 +67,8 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     battle.add("-prepare", &[attacker_arg.clone(), move_name.clone().into()]);
 
     // this.boost({ spa: 1 }, attacker, attacker, move);
-    let mut boosts = std::collections::HashMap::new();
-    boosts.insert("spa".to_string(), 1);
-    battle.boost(&boosts, attacker);
+    let boosts = [("spa", 1)];
+    battle.boost(&boosts, attacker, Some(attacker), None);
 
     // if (['raindance', 'primordialsea'].includes(attacker.effectiveWeather())) {
     //     this.attrLastMove('[still]');

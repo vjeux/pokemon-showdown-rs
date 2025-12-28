@@ -14,7 +14,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     let target = target_pos;
 
     // if (!this.queue.willMove(target) && target.activeTurns) return false;
-    let will_move = battle.queue.will_move(target);
+    let will_move = battle.queue.will_move(target.0, target.1);
 
     let active_turns = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {

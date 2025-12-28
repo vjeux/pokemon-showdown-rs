@@ -24,7 +24,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.has_type(&ID::from("electric"), battle)
+        pokemon_pokemon.has_type("electric")
     };
 
     if has_electric {

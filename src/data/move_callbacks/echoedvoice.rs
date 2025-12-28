@@ -52,7 +52,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     use crate::dex_data::ID;
 
     // this.field.addPseudoWeather('echoedvoice');
-    battle.field.add_pseudo_weather(&ID::from("echoedvoice"));
+    battle.field.add_pseudo_weather(ID::from("echoedvoice"), None);
 
     EventResult::Continue
 }
