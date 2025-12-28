@@ -5,7 +5,7 @@
 //! To properly test item coverage, we would need to:
 //! 1. Load all JSON data files in the test
 //! 2. Call Dex::load_from_json() with all the data
-//! This is excessive for a simple coverage test.
+//!    This is excessive for a simple coverage test.
 //!
 //! TODO: Re-implement this test to work with the new Dex system
 

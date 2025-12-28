@@ -274,7 +274,7 @@ fn test_should_have_valid_abilities_entries() {
 
     // JavaScript: const Abilities = Dex.data.Abilities;
     // Check if abilities are loaded
-    let ability_count = dex.abilities.iter().count();
+    let ability_count = dex.abilities.len();
     if ability_count == 0 {
         println!("Skipping ability validation - no abilities loaded yet");
         return;
@@ -420,8 +420,7 @@ fn test_should_have_valid_compound_word_names_entries() {
         let mut actual_name = dex.species.get(&targetid).map(|s| &s.name)
             .or_else(|| dex.moves.get(&targetid).map(|m| &m.name))
             .or_else(|| dex.abilities.get(&targetid).map(|a| &a.name))
-            .or_else(|| dex.items.get(&targetid).map(|i| &i.name))
-            .map(|s| s.clone());
+            .or_else(|| dex.items.get(&targetid).map(|i| &i.name)).cloned();
 
         // JavaScript: if (Dex.data.Pokedex[targetid]?.name) {
         if let Some(species) = dex.species.get(&targetid) {

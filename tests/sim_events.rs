@@ -90,7 +90,7 @@ fn test_on_event_priorities() {
     for i in 0..9 {
         let count = event_count.clone();
         let expected = i;
-        battle.on_event_priority("ModifyDamage", -(i as i32), move |_ctx| {
+        battle.on_event_priority("ModifyDamage", -i, move |_ctx| {
             let current = *count.lock().unwrap();
             assert_eq!(current, expected, "Handler {} called out of order", i);
             *count.lock().unwrap() += 1;

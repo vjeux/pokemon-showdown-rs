@@ -1916,19 +1916,19 @@ mod tests {
 
         // Test all_species - should have at least some species
         let all_species = dex.all_species();
-        assert!(all_species.len() > 0);
+        assert!(!all_species.is_empty());
 
         // Test all_moves - should have at least some moves
         let all_moves = dex.all_moves();
-        assert!(all_moves.len() > 0);
+        assert!(!all_moves.is_empty());
 
         // Test all_abilities - should have abilities
         let all_abilities = dex.all_abilities();
-        assert!(all_abilities.len() > 0);
+        assert!(!all_abilities.is_empty());
 
         // Test all_items
         let all_items = dex.all_items();
-        assert!(all_items.len() > 0);
+        assert!(!all_items.is_empty());
     }
 
     #[test]

@@ -579,21 +579,21 @@ fn test_move_doubles_should_enforce_pass_for_fainted() {
     // JavaScript:                 assert.fainted(p1.active[0]);
     // Check that first active Pokemon is fainted
     let p1_active_0_fainted = battle.sides[0].active[0]
-        .and_then(|idx| Some(battle.sides[0].pokemon[idx].is_fainted()))
+        .map(|idx| battle.sides[0].pokemon[idx].is_fainted())
         .unwrap_or(false);
     assert!(p1_active_0_fainted, "P1's first active Pokemon should be fainted");
 
     // JavaScript:                 assert.species(p1.active[1], 'Koffing');
     // Check that second active Pokemon is Koffing
     let p1_active_1_species = battle.sides[0].active[1]
-        .and_then(|idx| Some(battle.sides[0].pokemon[idx].species_id.as_str().to_string()))
+        .map(|idx| battle.sides[0].pokemon[idx].species_id.as_str().to_string())
         .unwrap_or_default();
     assert_eq!(p1_active_1_species, "koffing", "P1's second active Pokemon should be Koffing");
 
     // JavaScript:                 assert.false.fainted(p1.active[1]);
     // Check that second active Pokemon is not fainted
     let p1_active_1_fainted = battle.sides[0].active[1]
-        .and_then(|idx| Some(battle.sides[0].pokemon[idx].is_fainted()))
+        .map(|idx| battle.sides[0].pokemon[idx].is_fainted())
         .unwrap_or(true);
     assert!(!p1_active_1_fainted, "P1's second active Pokemon should not be fainted");
 
@@ -841,7 +841,7 @@ fn test_move_triples_should_enforce_pass_for_fainted() {
 
     // JavaScript:                 assert.species(p1.active[1], 'Forretress');
     let p1_active_1_species = battle.sides[0].active[1]
-        .and_then(|idx| Some(battle.sides[0].pokemon[idx].species_id.as_str().to_string()))
+        .map(|idx| battle.sides[0].pokemon[idx].species_id.as_str().to_string())
         .unwrap_or_default();
     assert_eq!(p1_active_1_species, "forretress", "P1's center Pokemon should be Forretress");
 

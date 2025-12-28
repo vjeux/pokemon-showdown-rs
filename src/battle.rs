@@ -11945,6 +11945,16 @@ impl Battle {
     }
 }
 
+// =========================================================================
+// Display trait (equivalent to battle.ts toString())
+// =========================================================================
+
+impl std::fmt::Display for Battle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Battle: {}", self.format_id.as_str())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -12054,15 +12064,5 @@ mod tests {
         for _ in 0..10 {
                        assert_eq!(battle1.random(100), battle2.random(100));
         }
-    }
-}
-
-// =========================================================================
-// Display trait (equivalent to battle.ts toString())
-// =========================================================================
-
-impl std::fmt::Display for Battle {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Battle: {}", self.format_id.as_str())
     }
 }
