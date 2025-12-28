@@ -17,11 +17,60 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_hit(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target = target_pos;
+
+    // Get the target's side index
+    let target_side_index = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.side_index
+    };
+
+    // const activeTeam = target.side.activeTeam();
+    let active_team = battle.sides[target_side_index].active_team();
+
+    // const foeActiveTeam = target.side.foe.activeTeam();
+    let foe_side_index = 1 - target_side_index; // 0 -> 1, 1 -> 0
+    let foe_active_team = battle.sides[foe_side_index].active_team();
+
+    // for (const [i, allyActive] of activeTeam.entries())
+    for slot_index in active_team {
+        // if (allyActive && allyActive.status === 'slp') allyActive.cureStatus();
+        let has_sleep = {
+            let pokemon = match battle.pokemon_at(target_side_index, slot_index) {
+                Some(p) => p,
+                None => continue,
+            };
+            pokemon.status.as_str() == "slp"
+        };
+
+        if has_sleep {
+            battle.cure_status((target_side_index, slot_index));
+        }
+    }
+
+    // Iterate through foe active team
+    for slot_index in foe_active_team {
+        // if (foeActive && foeActive.status === 'slp') foeActive.cureStatus();
+        let has_sleep = {
+            let pokemon = match battle.pokemon_at(foe_side_index, slot_index) {
+                Some(p) => p,
+                None => continue,
+            };
+            pokemon.status.as_str() == "slp"
+        };
+
+        if has_sleep {
+            battle.cure_status((foe_side_index, slot_index));
+        }
+    }
+
     EventResult::Continue
 }
 
