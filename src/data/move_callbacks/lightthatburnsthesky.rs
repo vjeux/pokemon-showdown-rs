@@ -26,7 +26,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 
     if atk > spa {
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.category = crate::move_types::MoveCategory::Physical;
+            active_move.category = String::from("Physical");
         }
     }
 

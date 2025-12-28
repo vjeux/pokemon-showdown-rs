@@ -79,7 +79,11 @@ pub mod condition {
         };
 
         let target = match source_slot {
-            Some(slot) => battle.get_at_slot(slot),
+            Some(slot) => {
+                // Convert slot index to string and pass to get_at_slot
+                let slot_str = slot.to_string();
+                battle.get_at_slot(Some(&slot_str))
+            },
             None => None,
         };
 
@@ -125,8 +129,10 @@ pub mod condition {
         // if (damage) {
         //     this.heal(damage, target, pokemon);
         // }
-        if damage > 0 {
-            battle.heal(damage, target_pos, Some(pokemon), None);
+        if let Some(damage_amount) = damage {
+            if damage_amount > 0 {
+                battle.heal(damage_amount, Some(target_pos), Some(pokemon), None);
+            }
         }
 
         EventResult::Continue
