@@ -34,11 +34,32 @@ pub mod condition {
     ///     this.add('-singleturn', source, 'Wide Guard');
     /// }
     pub fn on_side_start(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // this.add('-singleturn', source, 'Wide Guard');
+        let source_slot = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.get_slot()
+        };
+
+        battle.add(
+            "-singleturn",
+            &[
+                crate::battle::Arg::from(source_slot),
+                crate::battle::Arg::from("Wide Guard"),
+            ],
+        );
+
         EventResult::Continue
     }
 
