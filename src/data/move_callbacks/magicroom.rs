@@ -126,8 +126,10 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let source_arg = crate::battle::Arg::Pos(source.0, source.1);
-        battle.add("-fieldend", &["move: Magic Room".into(), format!("[of] {}", source_arg).into()]);
+        if let Some(source_pos) = source {
+            let source_arg = crate::battle::Arg::Pos(source_pos.0, source_pos.1);
+            battle.add("-fieldend", &["move: Magic Room".into(), format!("[of] {}", source_arg).into()]);
+        }
 
         EventResult::Continue
     }

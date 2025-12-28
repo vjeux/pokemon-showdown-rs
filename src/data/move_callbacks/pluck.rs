@@ -121,12 +121,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // if (item.onEat) source.ateBerry = true;
+    // In JavaScript, onEat is a callback function for berries
+    // Check if the item is a berry instead
     let has_on_eat = {
         let item_data = match battle.dex.get_item_by_id(&item_id) {
             Some(item) => item,
             None => return EventResult::Continue,
         };
-        item_data.on_eat.is_some()
+        item_data.is_berry
     };
 
     if has_on_eat {

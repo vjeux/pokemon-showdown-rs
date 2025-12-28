@@ -58,7 +58,9 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 
     // move.type = item.naturalGift.type;
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.move_type = Some(natural_gift.move_type.clone());
+        if let Some(move_type_str) = natural_gift.get("type").and_then(|v| v.as_str()) {
+            active_move.move_type = move_type_str.to_string();
+        }
     }
 
     EventResult::Continue
@@ -119,7 +121,9 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     };
 
     // move.basePower = item.naturalGift.basePower;
-    let base_power = natural_gift.base_power;
+    let base_power = natural_gift.get("basePower")
+        .and_then(|v| v.as_i64())
+        .unwrap_or(0) as i32;
     if let Some(ref mut active_move) = battle.active_move {
         active_move.base_power = base_power;
     }
