@@ -50,7 +50,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
     // if (move.willChangeForme) {
     let will_change_forme = {
         let active_move = match &battle.active_move {
-            Some(active_move) => &active_move.id,
+            Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
         active_move.will_change_forme
@@ -66,7 +66,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        if pokemon_pokemon.species_id.id == ID::from("ramnarokradiant") {
+        if pokemon_pokemon.species_id == ID::from("ramnarokradiant") {
             ""
         } else {
             "-Radiant"

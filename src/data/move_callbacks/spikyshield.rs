@@ -243,7 +243,7 @@ pub mod condition {
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         let is_z_or_max_powered = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
             active_move.is_z_or_max_powered

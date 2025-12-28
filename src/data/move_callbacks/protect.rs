@@ -108,7 +108,7 @@ pub mod condition {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
             let move_id = {
                 let active_move = match &battle.active_move {
-                    Some(active_move) => &active_move.id,
+                    Some(active_move) => active_move,
                     None => return EventResult::Continue,
                 };
                 active_move.clone()
@@ -130,7 +130,7 @@ pub mod condition {
             if is_z || is_max {
                 let move_id = {
                     let active_move = match &battle.active_move {
-                        Some(active_move) => &active_move.id,
+                        Some(active_move) => active_move,
                         None => return EventResult::Continue,
                     };
                     active_move.clone()
@@ -150,7 +150,7 @@ pub mod condition {
         // }
         let smart_target = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
             active_move.smart_target
