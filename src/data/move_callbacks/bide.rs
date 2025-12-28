@@ -190,7 +190,7 @@ pub mod condition {
 
             // if (!target.isActive) {
             let target_active = battle.pokemon_at(target.0, target.1)
-                .map(|p| p.is_active())
+                .map(|p| p.is_active)
                 .unwrap_or(false);
 
             let final_target = if !target_active {

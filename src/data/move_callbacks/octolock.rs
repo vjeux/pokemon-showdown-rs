@@ -150,7 +150,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                source_pokemon.is_active()
+                source_pokemon.is_active
             };
 
             if is_active {
