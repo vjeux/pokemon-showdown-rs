@@ -16,21 +16,12 @@ pub fn on_prepare_hit(battle: &mut Battle, target_pos: (usize, usize), source_po
     // if (!source.isAlly(target)) {
     //     this.attrLastMove('[anim] Shell Side Arm ' + move.category);
     // }
-    let is_ally = {
-        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source.is_ally(target)
-    };
+    let is_ally = battle.is_ally(source_pos, target_pos);
 
     if !is_ally {
         let category = battle.active_move.as_ref().map(|m| m.category.as_str()).unwrap_or("Special");
-        battle.attr_last_move(&format!("[anim] Shell Side Arm {}", category));
+        let anim_str = format!("[anim] Shell Side Arm {}", category);
+        battle.attr_last_move(&[&anim_str]);
     }
 
     EventResult::Continue
@@ -50,7 +41,7 @@ pub fn on_prepare_hit(battle: &mut Battle, target_pos: (usize, usize), source_po
 ///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+    use crate::dex_data::{ID, StatID};
 
     // if (!target) return;
     let target_pos = match target_pos {
@@ -62,21 +53,31 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     // const spa = pokemon.getStat('spa', false, true);
     // const def = target.getStat('def', false, true);
     // const spd = target.getStat('spd', false, true);
-    let atk = battle.get_stat(pokemon_pos, "atk", false, true);
-    let spa = battle.get_stat(pokemon_pos, "spa", false, true);
-    let def = battle.get_stat(target_pos, "def", false, true);
-    let spd = battle.get_stat(target_pos, "spd", false, true);
-
-    // const physical = Math.floor(Math.floor(Math.floor(Math.floor(2 * pokemon.level / 5 + 2) * 90 * atk) / def) / 50);
-    // const special = Math.floor(Math.floor(Math.floor(Math.floor(2 * pokemon.level / 5 + 2) * 90 * spa) / spd) / 50);
-    let level = {
+    let (atk, spa, level) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.level
+        (
+            pokemon.get_stat(StatID::Atk, false),
+            pokemon.get_stat(StatID::SpA, false),
+            pokemon.level,
+        )
     };
 
+    let (def, spd) = {
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (
+            target.get_stat(StatID::Def, false),
+            target.get_stat(StatID::SpD, false),
+        )
+    };
+
+    // const physical = Math.floor(Math.floor(Math.floor(Math.floor(2 * pokemon.level / 5 + 2) * 90 * atk) / def) / 50);
+    // const special = Math.floor(Math.floor(Math.floor(Math.floor(2 * pokemon.level / 5 + 2) * 90 * spa) / spd) / 50);
     let physical = ((((2 * level / 5 + 2) * 90 * atk) / def) / 50) as i32;
     let special = ((((2 * level / 5 + 2) * 90 * spa) / spd) / 50) as i32;
 
@@ -86,7 +87,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     // }
     if physical > special || (physical == special && battle.random_chance(1, 2)) {
         if let Some(active_move) = &mut battle.active_move {
-            active_move.category = ID::from("Physical");
+            active_move.category = String::from("Physical");
             active_move.flags.contact = true;
         }
     }
@@ -100,21 +101,12 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 /// }
 pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
     // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
-    let is_ally = {
-        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source.is_ally(target)
-    };
+    let is_ally = battle.is_ally(source_pos, target_pos);
 
     if !is_ally {
         let category = battle.active_move.as_ref().map(|m| m.category.as_str()).unwrap_or("Special");
-        battle.hint(&format!("{} Shell Side Arm", category));
+        let hint_str = format!("{} Shell Side Arm", category);
+        battle.hint(&hint_str, false, None);
     }
 
     EventResult::Continue
@@ -123,28 +115,14 @@ pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usiz
 /// onAfterSubDamage(damage, target, source, move) {
 ///     if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
     // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
-    let source_pos = match source_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
-
-    let is_ally = {
-        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source.is_ally(target)
-    };
+    let is_ally = battle.is_ally(source_pos, target_pos);
 
     if !is_ally {
         let category = battle.active_move.as_ref().map(|m| m.category.as_str()).unwrap_or("Special");
-        battle.hint(&format!("{} Shell Side Arm", category));
+        let hint_str = format!("{} Shell Side Arm", category);
+        battle.hint(&hint_str, false, None);
     }
 
     EventResult::Continue
