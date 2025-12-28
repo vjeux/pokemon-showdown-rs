@@ -12,32 +12,39 @@ use crate::event::EventResult;
 ///     return true;
 /// }
 pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
-    let source = match source_pos {
-        Some(pos) => pos,
-        None => return EventResult::Boolean(true),
+    // if (item.megaEvolves === source.baseSpecies.baseSpecies) return false;
+    // return true;
+
+    // Extract item ID and pokemon's base species base species
+    let (item_id, pokemon_base_species_base_species) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        // Get the pokemon's base species
+        let species = battle.dex.get_species(pokemon.base_species.as_str());
+        let base_species_base_species = species
+            .and_then(|s| s.base_species.clone())
+            .unwrap_or_else(|| {
+                // If base_species is None, use the species name itself
+                species.map(|s| s.name.clone()).unwrap_or_default()
+            });
+
+        (pokemon.item.clone(), base_species_base_species)
     };
 
-    let item = match battle.dex.get_item("golurkite") {
-        Some(item) => item,
-        None => return EventResult::Boolean(true),
-    };
+    // Get item data
+    let item_data = battle.dex.get_item(item_id.as_str());
+    let mega_evolves = item_data
+        .and_then(|i| i.mega_evolves.clone())
+        .unwrap_or_default();
 
-    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
-        Some(p) => p,
-        None => return EventResult::Boolean(true),
-    };
-
-    let source_base_species_base_species = match source_pokemon.get_base_species_base_species(&battle.dex) {
-        Some(s) => s,
-        None => return EventResult::Boolean(true),
-    };
-
-    if let Some(mega_evolves) = &item.mega_evolves {
-        if mega_evolves == &source_base_species_base_species {
-            return EventResult::Boolean(false);
-        }
+    // if (item.megaEvolves === source.baseSpecies.baseSpecies) return false;
+    if mega_evolves == pokemon_base_species_base_species {
+        return EventResult::Boolean(false);
     }
 
+    // return true;
     EventResult::Boolean(true)
-    
 }
