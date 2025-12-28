@@ -50,17 +50,17 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        // Get target pokemon
-        let target_arg = {
+        // Get target pokemon identifier
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            format!("p{}{}", target.0 + 1, target_pokemon.ident)
         };
 
         // this.add('-singleturn', target, 'move: Protect');
-        battle.add("-singleturn", &[target_arg, "move: Protect".into()]);
+        battle.add("-singleturn", &[target_ident.as_str().into(), "move: Protect".into()]);
 
         EventResult::Continue
     }
@@ -114,10 +114,13 @@ pub mod condition {
             return EventResult::Continue;
         }
 
-        // Get target pokemon
-        let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        // Get target pokemon identifier
+        let target_ident = {
+            let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            format!("p{}{}", target_pos.0 + 1, target_pokemon.ident)
         };
 
         // if (move.smartTarget) {
@@ -126,7 +129,7 @@ pub mod condition {
         //     this.add('-activate', target, 'move: Protect');
         // }
         // TODO: smartTarget not yet implemented, just add the message
-        battle.add("-activate", &[target_pokemon.into(), "move: Protect".into()]);
+        battle.add("-activate", &[target_ident.as_str().into(), "move: Protect".into()]);
 
         // const lockedmove = source.getVolatile('lockedmove');
         // if (lockedmove) {

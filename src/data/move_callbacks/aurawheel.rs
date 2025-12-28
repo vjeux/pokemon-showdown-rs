@@ -42,17 +42,17 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     // this.attrLastMove('[still]');
     battle.attr_last_move(&["[still]"]);
 
-    // Get source again for battle.add
-    let source_arg = {
+    // Get source identifier for battle.add
+    let source_ident = {
         let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(source)
+        format!("p{}{}", source_pos.0 + 1, source.ident)
     };
 
     // this.add('-fail', source, 'move: Aura Wheel');
-    battle.add("-fail", &[source_arg, "move: Aura Wheel".into()]);
+    battle.add("-fail", &[source_ident.as_str().into(), "move: Aura Wheel".into()]);
 
     // this.hint("Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.");
     battle.hint("Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.", false, None);
