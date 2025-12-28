@@ -51,13 +51,16 @@ pub mod condition {
         };
 
         // Get target pokemon
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let target_arg = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(target_pokemon)
         };
 
         // this.add('-singleturn', target, 'move: Protect');
-        battle.add("-singleturn", &[target_pokemon.into(), "move: Protect".into()]);
+        battle.add("-singleturn", &[target_arg, "move: Protect".into()]);
 
         EventResult::Continue
     }

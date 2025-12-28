@@ -34,13 +34,16 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         battle.attr_last_move(&["[still]"]);
 
         // Get target pokemon again for add
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let target_arg = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(target_pokemon)
         };
 
         // this.add('-fail', target);
-        battle.add("-fail", &[target_pokemon.into()]);
+        battle.add("-fail", &[target_arg]);
 
         // return this.NOT_FAIL;
         return EventResult::NotFail;

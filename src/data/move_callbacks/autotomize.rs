@@ -63,13 +63,16 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         pokemon_mut.weight_hg = new_weight;
 
         // Get pokemon again for battle.add
-        let pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let pokemon_arg = {
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon)
         };
 
         // this.add('-start', pokemon, 'Autotomize');
-        battle.add("-start", &[pokemon.into(), "Autotomize".into()]);
+        battle.add("-start", &[pokemon_arg, "Autotomize".into()]);
     }
 
     EventResult::Continue
