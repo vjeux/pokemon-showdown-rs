@@ -790,8 +790,8 @@ pub fn dispatch_on_hit_side(
     match move_id {
         "gearup" => gearup::on_hit_side(battle, pokemon_pos),
         "magneticflux" => magneticflux::on_hit_side(battle, pokemon_pos),
-        "quickguard" => quickguard::on_hit_side(battle, pokemon_pos),
-        "wideguard" => wideguard::on_hit_side(battle, pokemon_pos),
+        "quickguard" => quickguard::on_hit_side(battle, Some(pokemon_pos)),
+        "wideguard" => wideguard::on_hit_side(battle, Some(pokemon_pos)),
         _ => EventResult::Continue,
     }
 }
@@ -1050,14 +1050,14 @@ pub fn dispatch_on_try_immunity(
     match move_id {
         "attract" => attract::on_try_immunity(battle, pokemon_pos),
         "captivate" => captivate::on_try_immunity(battle, pokemon_pos),
-        "dreameater" => dreameater::on_try_immunity(battle, pokemon_pos),
+        "dreameater" => dreameater::on_try_immunity(battle, Some(pokemon_pos)),
         "endeavor" => endeavor::on_try_immunity(battle, pokemon_pos),
-        "leechseed" => leechseed::on_try_immunity(battle, pokemon_pos),
-        "octolock" => octolock::on_try_immunity(battle, pokemon_pos),
-        "switcheroo" => switcheroo::on_try_immunity(battle, pokemon_pos),
+        "leechseed" => leechseed::on_try_immunity(battle, Some(pokemon_pos)),
+        "octolock" => octolock::on_try_immunity(battle, Some(pokemon_pos)),
+        "switcheroo" => switcheroo::on_try_immunity(battle, Some(pokemon_pos)),
         "synchronoise" => synchronoise::on_try_immunity(battle, pokemon_pos),
-        "trick" => trick::on_try_immunity(battle, pokemon_pos),
-        "worryseed" => worryseed::on_try_immunity(battle, pokemon_pos),
+        "trick" => trick::on_try_immunity(battle, Some(pokemon_pos)),
+        "worryseed" => worryseed::on_try_immunity(battle, Some(pokemon_pos)),
         _ => EventResult::Continue,
     }
 }
@@ -1294,7 +1294,7 @@ pub fn dispatch_condition_on_before_move(
         "bide" => bide::condition::on_before_move(battle, source_pos),
         "chillyreception" => chillyreception::condition::on_before_move(battle, source_pos),
         "destinybond" => destinybond::condition::on_before_move(battle, source_pos),
-        "disable" => disable::condition::on_before_move(battle, source_pos),
+        "disable" => disable::condition::on_before_move(battle, move_id),
         "glaiverush" => glaiverush::condition::on_before_move(battle, source_pos),
         "gravity" => gravity::condition::on_before_move(battle, source_pos),
         "grudge" => grudge::condition::on_before_move(battle, source_pos),
