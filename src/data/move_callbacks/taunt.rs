@@ -58,8 +58,47 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_disable_move(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        let pokemon = pokemon_pos;
+
+        // for (const moveSlot of pokemon.moveSlots)
+        // Collect move IDs to disable (to avoid borrow checker issues)
+        let moves_to_disable: Vec<crate::dex_data::ID> = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            pokemon_ref
+                .move_slots
+                .iter()
+                .filter(|slot| {
+                    // const move = this.dex.moves.get(moveSlot.id);
+                    // if (move.category === 'Status' && move.id !== 'mefirst')
+                    battle
+                        .dex
+                        .moves
+                        .get(&slot.id)
+                        .map(|move_data| {
+                            move_data.category == "Status"
+                                && move_data.id.as_str() != "mefirst"
+                        })
+                        .unwrap_or(false)
+                })
+                .map(|slot| slot.id.clone())
+                .collect()
+        };
+
+        // pokemon.disableMove(moveSlot.id);
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        for move_id in moves_to_disable {
+            pokemon_mut.disable_move(move_id.as_str(), Some("Taunt".to_string()));
+        }
+
         EventResult::Continue
     }
 
