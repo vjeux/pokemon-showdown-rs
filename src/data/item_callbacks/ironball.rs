@@ -21,6 +21,7 @@ pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>,
 ///     return this.chainModify(0.5);
 /// }
 pub fn on_modify_spe(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // return this.chainModify(0.5);
+    battle.chain_modify(0.5);
     EventResult::Continue
 }

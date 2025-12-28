@@ -22,6 +22,22 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 ///     return true;
 /// }
 pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // if (source.baseSpecies.baseSpecies === 'Kyogre') return false;
+    if let Some(source) = source_pos {
+        if let Some(source_pokemon) = battle.pokemon_at(source.0, source.1) {
+            let source_species = battle.dex.get_species(source_pokemon.base_species.as_str());
+            if let Some(species_data) = source_species {
+                let base_species_name = species_data.base_species
+                    .as_ref()
+                    .unwrap_or(&species_data.name);
+                if base_species_name == "Kyogre" {
+                    // return false;
+                    return EventResult::Boolean(false);
+                }
+            }
+        }
+    }
+
+    // return true;
+    EventResult::Boolean(true)
 }
