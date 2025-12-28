@@ -659,3 +659,158 @@ The following fields need to be added to `ItemData` in `src/dex.rs`:
   - It triggers item effects, applies boosts, and runs events
   - Need to implement this in battle.rs or battle_actions.rs
   - For now, implementing manual boost application in item callbacks
+=======
+## R-T Items Implementation Progress (Files 201-225)
+
+### Blocked by Missing Infrastructure (25 items, 35 callbacks)
+
+#### Type-Resist Berries (need getMoveHitData().typeMod and chainModify return value)
+- roseliberry - onSourceModifyDamage, onEat
+- shucaberry - onSourceModifyDamage, onEat
+- tangaberry - onSourceModifyDamage, onEat
+
+**Missing:**
+- `pokemon.get_move_hit_data(move).type_mod` - Returns type effectiveness multiplier
+- `battle.chain_modify(0.5)` must return modified damage value for onSourceModifyDamage
+- Proper substitute check logic: `target.volatiles['substitute'] && !move.flags['bypasssub'] && !(move.infiltrates && this.gen >= 6)`
+
+#### Recoil/Counter Berries (need complex damage tracking)
+- rowapberry - onDamagingHit
+
+**Missing:**
+- `source.base_maxhp` field access
+- `pokemon.has_ability('ripen')` with ternary division logic
+- `battle.damage()` call from item callback
+
+#### Safety Items (need immunity system overhaul)
+- safetygoggles - onImmunity, onTryHit
+
+**Missing:**
+- `on_immunity(type_str)` signature with type parameter
+- Return `false` to grant immunity (current system unclear)
+- `on_try_hit` return `null` to block move
+- `battle.dex.get_immunity('powder', pokemon)` check
+
+#### Stat-Boost Berries (need eat_item + boost infrastructure)
+- salacberry - onUpdate, onEat (boost spe: 1)
+- starfberry - onUpdate, onEat (random stat boost +2)
+
+**Missing:**
+- `pokemon.eat_item()` callable from onUpdate
+- `pokemon.has_ability('gluttony') && pokemon.ability_state.gluttony` check
+- HP threshold detection (hp <= maxhp/4 or hp <= maxhp/2 with gluttony)
+- `battle.boost({spe: 1})` syntax
+- Random stat selection logic for starfberry
+
+#### Healing Berries (need heal + TryHeal event)
+- sitrusberry - onUpdate, onTryEatItem, onEat
+
+**Missing:**
+- `battle.run_event('TryHeal', pokemon, None, effect, amount)` - returns bool
+- `battle.heal(pokemon.base_maxhp / 4)` from onEat
+- HP threshold: hp <= maxhp/2
+
+#### Damage-Based Healing (need move.totalDamage tracking)
+- shellbell - onAfterMoveSecondarySelf
+
+**Missing:**
+- `move.total_damage` field in ActiveMove
+- `pokemon.force_switch_flag` check
+- `battle.heal(amount, pokemon)` signature
+
+#### Damage-Triggered Boost Items (need item boosts field)
+- snowball - onDamagingHit, boosts field
+
+**Missing:**
+- `ItemData.boosts` field (e.g., `{atk: 1}`)
+- Auto-apply boosts when `pokemon.use_item()` is called
+- Integration with item consumption
+
+#### Species-Locked Items (need baseSpecies.num)
+- souldew - onBasePower
+
+**Missing:**
+- `pokemon.base_species.num` field (species dex number)
+- Check if num == 380 (Latias) or 381 (Latios)
+- Type check for Psychic or Dragon moves
+- `battle.chain_modify_fraction(4915, 4096)` for 1.2x boost
+
+#### Crit Ratio Items (need parameter in callback)
+- scopelens - onModifyCritRatio
+
+**Missing:**
+- Callback signature: `on_modify_crit_ratio(battle, crit_ratio: i32, pokemon_pos) -> EventResult`
+- Return `EventResult::Number(crit_ratio + 1)`
+
+#### Type Gems (need addVolatile)
+- steelgem - onSourceTryPrimaryHit
+
+**Missing:**
+- `source.add_volatile('gem')` to apply gem boost
+- Check `move.category === 'Status'` to skip
+- `source.use_item()` returns bool
+
+#### Mega Stones (need ItemData.megaEvolves field) - 12 items
+- salamencite, sceptilite, scizorite, scolipite (Gen 9 Fan), scovillainite (Gen 9 Fan)
+- scraftinite (Gen 9 Fan), sharpedonite, skarmorite (Gen 9 Fan), slowbronite
+- staraptite (Gen 9 Fan), starminite (Gen 9 Fan), steelixite
+
+**All have same pattern:**
+- onTakeItem callback
+- Check `item.mega_evolves === source.base_species.base_species`
+- Return `false` to prevent taking, `true` to allow
+
+**Missing:**
+- `ItemData.mega_evolves: Option<String>` field
+- `pokemon.base_species.base_species` field
+
+### Missing Infrastructure Summary for R-T Items
+
+1. **Damage Modification System**
+   - `battle.chain_modify()` must return the modified value for use in onSourceModifyDamage
+   - Currently returns i32 but event system doesn't use the return value
+   - JS: `return this.chainModify(0.5)` actually returns the modified damage
+
+2. **Type Effectiveness Access**
+   - `pokemon.get_move_hit_data(move).type_mod` to check super-effective hits
+   - Substitute bypass logic needs move.flags and move.infiltrates
+
+3. **Immunity System**
+   - `on_immunity(type: &str)` signature with type parameter
+   - Return semantics: `false` = immune, `true` or `Continue` = not immune
+   - Weather immunity: 'sandstorm', 'hail', 'powder'
+
+4. **Move Blocking**
+   - `on_try_hit` return `null` or `EventResult::Null` to completely block move
+   - Different from `EventResult::Stop`
+
+5. **Berry Consumption**
+   - `pokemon.eat_item()` callable from onUpdate/onResidual
+   - Gluttony ability detection with ability_state
+   - HP threshold checks (1/4, 1/2, 1/3 maxhp)
+
+6. **Healing System**
+   - `battle.run_event('TryHeal', ...)` returns bool
+   - `battle.heal(amount)` from item callbacks
+   - `battle.heal(amount, pokemon)` with target parameter
+
+7. **Item-Based Boosts**
+   - `ItemData.boosts` field for auto-apply boosts
+   - Applied when item is consumed via use_item()
+
+8. **Species Data Access**
+   - `pokemon.base_species.num` - species dex number
+   - `pokemon.base_species.base_species` - base forme name
+   - Used for species-locked items
+
+9. **Active Move Tracking**
+   - `move.total_damage` field to track cumulative damage dealt
+   - Used for Shell Bell healing calculation
+
+10. **Volatile Application**
+    - `pokemon.add_volatile(volatile_id)` method
+    - Used for type gems to trigger 1.3x power boost
+
+11. **Mega Evolution**
+    - `ItemData.mega_evolves` field
+    - Mega stone locking mechanism via onTakeItem
