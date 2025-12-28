@@ -25,6 +25,55 @@ static CHOOSABLE_TARGETS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
     set
 });
 
+/// Parameters for Z-move functions
+pub struct ZMoveParams<'a> {
+    pub move_name: &'a str,
+    pub move_type: &'a str,
+    pub move_category: &'a str,
+    pub z_move_base_power: Option<i32>,
+    pub item_z_move: Option<&'a str>,
+    pub item_z_move_from: Option<&'a str>,
+    pub item_z_move_type: Option<&'a str>,
+    pub z_move_used: bool,
+}
+
+/// Parameters for can_z_move function
+pub struct CanZMoveParams<'a> {
+    pub z_move_used: bool,
+    pub is_transformed: bool,
+    pub species_is_mega: bool,
+    pub species_is_primal: bool,
+    pub species_forme: &'a str,
+    pub item_z_move: bool,
+    pub item_user: Option<&'a [String]>,
+    pub species_name: &'a str,
+}
+
+/// Parameters for hit_step_accuracy function
+pub struct AccuracyCheckParams {
+    pub move_accuracy: i32,
+    pub move_always_hit: bool,
+    pub move_ohko: bool,
+    pub attacker_accuracy_boost: i8,
+    pub defender_evasion_boost: i8,
+    pub ignore_accuracy: bool,
+    pub ignore_evasion: bool,
+    pub random_value: i32,
+}
+
+/// Parameters for get_damage function
+pub struct DamageCalcParams<'a> {
+    pub attacker_level: i32,
+    pub attacker_attack: i32,
+    pub defender_defense: i32,
+    pub base_power: i32,
+    pub stab_modifier: f64,
+    pub type_effectiveness: f64,
+    pub is_crit: bool,
+    pub random_factor: i32,
+    pub other_modifiers: &'a [f64],
+}
+
 /// Max Move names by type
 pub fn get_max_move_name(move_type: &str) -> &'static str {
     match move_type {
@@ -526,35 +575,26 @@ impl<'a> BattleActions<'a> {
     // 		}
     // 	}
     //
-    pub fn get_z_move(
-        move_name: &str,
-        move_type: &str,
-        move_category: &str,
-        z_move_base_power: Option<i32>,
-        item_z_move: Option<&str>,
-        item_z_move_from: Option<&str>,
-        item_z_move_type: Option<&str>,
-        z_move_used: bool,
-    ) -> Option<String> {
-        if z_move_used {
+    pub fn get_z_move(params: ZMoveParams) -> Option<String> {
+        if params.z_move_used {
             return None;
         }
 
         // Check for signature Z-move
-        if let Some(z_move_from) = item_z_move_from {
-            if move_name == z_move_from {
-                return item_z_move.map(|s| s.to_string());
+        if let Some(z_move_from) = params.item_z_move_from {
+            if params.move_name == z_move_from {
+                return params.item_z_move.map(|s| s.to_string());
             }
         }
 
         // Check for type-based Z-move
-        if item_z_move.is_some() {
-            if let Some(z_type) = item_z_move_type {
-                if move_type == z_type {
-                    if move_category == "Status" {
-                        return Some(move_name.to_string());
-                    } else if z_move_base_power.is_some() {
-                        return Some(get_z_move_name(move_type).to_string());
+        if params.item_z_move.is_some() {
+            if let Some(z_type) = params.item_z_move_type {
+                if params.move_type == z_type {
+                    if params.move_category == "Status" {
+                        return Some(params.move_name.to_string());
+                    } else if params.z_move_base_power.is_some() {
+                        return Some(get_z_move_name(params.move_type).to_string());
                     }
                 }
             }
@@ -599,27 +639,18 @@ impl<'a> BattleActions<'a> {
     // 		if (atLeastOne && !mustStruggle) return zMoves;
     // 	}
     //
-    pub fn can_z_move(
-        z_move_used: bool,
-        is_transformed: bool,
-        species_is_mega: bool,
-        species_is_primal: bool,
-        species_forme: &str,
-        item_z_move: bool,
-        item_user: Option<&[String]>,
-        species_name: &str,
-    ) -> bool {
-        if z_move_used {
+    pub fn can_z_move(params: CanZMoveParams) -> bool {
+        if params.z_move_used {
             return false;
         }
-        if is_transformed && (species_is_mega || species_is_primal || species_forme == "Ultra") {
+        if params.is_transformed && (params.species_is_mega || params.species_is_primal || params.species_forme == "Ultra") {
             return false;
         }
-        if !item_z_move {
+        if !params.item_z_move {
             return false;
         }
-        if let Some(users) = item_user {
-            if !users.iter().any(|u| u == species_name) {
+        if let Some(users) = params.item_user {
+            if !users.iter().any(|u| u == params.species_name) {
                 return false;
             }
         }
@@ -914,36 +945,27 @@ impl<'a> BattleActions<'a> {
     // 		return hitResults;
     // 	}
     //
-    pub fn hit_step_accuracy(
-        move_accuracy: i32,
-        move_always_hit: bool,
-        move_ohko: bool,
-        attacker_accuracy_boost: i8,
-        defender_evasion_boost: i8,
-        ignore_accuracy: bool,
-        ignore_evasion: bool,
-        random_value: i32, // 0-99
-    ) -> bool {
+    pub fn hit_step_accuracy(params: AccuracyCheckParams) -> bool {
         // Always hit moves
-        if move_always_hit || move_accuracy == 0 {
+        if params.move_always_hit || params.move_accuracy == 0 {
             return true;
         }
 
         // Calculate effective accuracy
-        let mut accuracy_stages = if ignore_accuracy { 0 } else { attacker_accuracy_boost };
-        let evasion_stages = if ignore_evasion { 0 } else { defender_evasion_boost };
+        let mut accuracy_stages = if params.ignore_accuracy { 0 } else { params.attacker_accuracy_boost };
+        let evasion_stages = if params.ignore_evasion { 0 } else { params.defender_evasion_boost };
         accuracy_stages -= evasion_stages;
 
         // Apply stage modifier
         let (num, denom) = Self::get_accuracy_modifier(accuracy_stages);
-        let effective_accuracy = move_accuracy * num / denom;
+        let effective_accuracy = params.move_accuracy * num / denom;
 
         // OHKO moves have special accuracy handling
-        if move_ohko {
-            return random_value < effective_accuracy.min(100);
+        if params.move_ohko {
+            return params.random_value < effective_accuracy.min(100);
         }
 
-        random_value < effective_accuracy.min(100)
+        params.random_value < effective_accuracy.min(100)
     }
 
     /// Get accuracy modifier from stages
@@ -1671,43 +1693,33 @@ impl<'a> BattleActions<'a> {
     // 		return this.modifyDamage(baseDamage, source, target, move, suppressMessages);
     // 	}
     //
-    pub fn get_damage(
-        attacker_level: i32,
-        attacker_attack: i32,
-        defender_defense: i32,
-        base_power: i32,
-        stab_modifier: f64,
-        type_effectiveness: f64,
-        is_crit: bool,
-        random_factor: i32, // 85-100
-        other_modifiers: &[f64],
-    ) -> i32 {
-        if base_power == 0 || type_effectiveness == 0.0 {
+    pub fn get_damage(params: DamageCalcParams) -> i32 {
+        if params.base_power == 0 || params.type_effectiveness == 0.0 {
             return 0;
         }
 
         // Base damage formula
-        let base_damage = ((2 * attacker_level / 5 + 2) * base_power * attacker_attack / defender_defense.max(1)) / 50 + 2;
+        let base_damage = ((2 * params.attacker_level / 5 + 2) * params.base_power * params.attacker_attack / params.defender_defense.max(1)) / 50 + 2;
 
         // Apply modifiers in order
         let mut damage = base_damage as f64;
 
         // STAB
-        damage *= stab_modifier;
+        damage *= params.stab_modifier;
 
         // Type effectiveness
-        damage *= type_effectiveness;
+        damage *= params.type_effectiveness;
 
         // Critical hit
-        if is_crit {
+        if params.is_crit {
             damage *= 1.5;
         }
 
         // Random factor
-        damage = damage * (random_factor as f64) / 100.0;
+        damage = damage * (params.random_factor as f64) / 100.0;
 
         // Other modifiers (abilities, items, weather, etc.)
-        for modifier in other_modifiers {
+        for modifier in params.other_modifiers {
             damage = (damage * modifier).floor();
         }
 
