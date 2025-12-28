@@ -1710,7 +1710,7 @@ pub fn dispatch_condition_on_move_aborted(
     match move_id {
         "bide" => bide::condition::on_move_aborted(battle, source_pos),
         "charge" => charge::condition::on_move_aborted(battle, source_pos, None, move_id),
-        "destinybond" => destinybond::condition::on_move_aborted(battle, source_pos),
+        "destinybond" => destinybond::condition::on_move_aborted(battle, source_pos, None, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1735,7 +1735,7 @@ pub fn dispatch_condition_on_override_action(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "encore" => encore::condition::on_override_action(battle, source_pos),
+        "encore" => encore::condition::on_override_action(battle, source_pos, None, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1747,9 +1747,9 @@ pub fn dispatch_condition_on_redirect_target(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "counter" => counter::condition::on_redirect_target(battle, source_pos),
-        "mirrorcoat" => mirrorcoat::condition::on_redirect_target(battle, source_pos),
-        "skydrop" => skydrop::condition::on_redirect_target(battle, source_pos),
+        "counter" => counter::condition::on_redirect_target(battle, None, Some(source_pos), move_id),
+        "mirrorcoat" => mirrorcoat::condition::on_redirect_target(battle, None, Some(source_pos), move_id),
+        "skydrop" => skydrop::condition::on_redirect_target(battle, None, Some(source_pos)),
         _ => EventResult::Continue,
     }
 }
@@ -1793,11 +1793,11 @@ pub fn dispatch_condition_on_restart(
 ) -> EventResult {
     match move_id {
         "allyswitch" => allyswitch::condition::on_restart(battle, source_pos),
-        "charge" => charge::condition::on_restart(battle, source_pos),
+        "charge" => charge::condition::on_restart(battle, source_pos, None, None),
         "furycutter" => furycutter::condition::on_restart(battle),
-        "gmaxchistrike" => gmaxchistrike::condition::on_restart(battle, source_pos),
-        "healblock" => healblock::condition::on_restart(battle, source_pos),
-        "helpinghand" => helpinghand::condition::on_restart(battle, source_pos),
+        "gmaxchistrike" => gmaxchistrike::condition::on_restart(battle, None, Some(source_pos), None),
+        "healblock" => healblock::condition::on_restart(battle, None, Some(source_pos), None),
+        "helpinghand" => helpinghand::condition::on_restart(battle, None, Some(source_pos)),
         "laserfocus" => laserfocus::condition::on_restart(battle, source_pos),
         "powershift" => powershift::condition::on_restart(battle, source_pos),
         "powertrick" => powertrick::condition::on_restart(battle, source_pos),
@@ -1814,9 +1814,9 @@ pub fn dispatch_condition_on_set_status(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "electricterrain" => electricterrain::condition::on_set_status(battle, source_pos),
-        "mistyterrain" => mistyterrain::condition::on_set_status(battle, source_pos),
-        "safeguard" => safeguard::condition::on_set_status(battle, source_pos),
+        "electricterrain" => electricterrain::condition::on_set_status(battle, None, None, Some(source_pos), None),
+        "mistyterrain" => mistyterrain::condition::on_set_status(battle, None, None, Some(source_pos), None),
+        "safeguard" => safeguard::condition::on_set_status(battle, None, None, Some(source_pos), None),
         _ => EventResult::Continue,
     }
 }
