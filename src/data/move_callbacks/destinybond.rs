@@ -38,15 +38,15 @@ pub mod condition {
         // this.add('-singlemove', pokemon, 'Destiny Bond');
         let pokemon = pokemon_pos;
 
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
 
-        battle.add("-singlemove", &[pokemon_arg, "Destiny Bond".into()]);
+        battle.add("-singlemove", &[pokemon_ident.as_str().into(), "Destiny Bond".into()]);
 
         EventResult::Continue
     }
@@ -117,15 +117,15 @@ pub mod condition {
             }
 
             // this.add('-activate', target, 'move: Destiny Bond');
-            let target_arg = {
+            let target_ident = {
                 let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(target_pokemon)
+                target_pokemon.get_slot()
             };
 
-            battle.add("-activate", &[target_arg, "move: Destiny Bond".into()]);
+            battle.add("-activate", &[target_ident.as_str().into(), "move: Destiny Bond".into()]);
 
             // source.faint();
             let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {

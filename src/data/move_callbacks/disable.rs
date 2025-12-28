@@ -149,7 +149,7 @@ pub mod condition {
         // } else {
         //     this.add('-start', pokemon, 'Disable', pokemon.lastMove.name);
         // }
-        let (pokemon_arg, last_move_name) = {
+        let (pokemon_ident, last_move_name) = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -157,13 +157,13 @@ pub mod condition {
             let move_data = battle.dex.get_move_by_id(&last_move_id);
             let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| last_move_id.to_string());
 
-            (crate::battle::Arg::from(pokemon_pokemon), move_name)
+            (pokemon_pokemon.get_slot(), move_name)
         };
 
         // TODO: Check effect.effectType === 'Ability'
         // For now, just add the simple version
         battle.add("-start", &[
-            pokemon_arg,
+            pokemon_ident.as_str().into(),
             "Disable".into(),
             last_move_name.into(),
         ]);
@@ -183,15 +183,15 @@ pub mod condition {
         // this.add('-end', pokemon, 'Disable');
         let pokemon = pokemon_pos;
 
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
 
-        battle.add("-end", &[pokemon_arg, "Disable".into()]);
+        battle.add("-end", &[pokemon_ident.as_str().into(), "Disable".into()]);
 
         EventResult::Continue
     }
@@ -267,13 +267,13 @@ pub mod condition {
             };
 
             // for (const moveSlot of pokemon.moveSlots)
-            for move_slot in &pokemon_pokemon.move_slots {
-                // if (moveSlot.id === this.effectState.move)
-                if move_slot.id == disabled_id {
-                    // pokemon.disableMove(moveSlot.id);
-                    pokemon_pokemon.disable_move(move_slot.id.as_str(), None);
-                    break;
-                }
+            // Find the move to disable, then disable it
+            let move_id_to_disable = pokemon_pokemon.move_slots.iter()
+                .find(|move_slot| move_slot.id == disabled_id)
+                .map(|move_slot| move_slot.id.clone());
+
+            if let Some(move_id) = move_id_to_disable {
+                pokemon_pokemon.disable_move(move_id.as_str(), None);
             }
         }
 

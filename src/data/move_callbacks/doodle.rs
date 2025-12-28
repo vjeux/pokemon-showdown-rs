@@ -116,14 +116,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         // if (success === false)
         if success == Some(false) {
             // this.add('-fail', source);
-            let source_arg = {
+            let source_ident = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(source_pokemon)
+                source_pokemon.get_slot()
             };
-            battle.add("-fail", &[source_arg]);
+            battle.add("-fail", &[source_ident.as_str().into()]);
         }
 
         // this.attrLastMove('[still]');
