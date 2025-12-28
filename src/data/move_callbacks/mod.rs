@@ -1964,47 +1964,47 @@ pub fn dispatch_condition_on_start(
         "burningbulwark" => burningbulwark::condition::on_start(battle, Some(source_pos)),
         "charge" => charge::condition::on_start(battle, source_pos, None, None),
         "counter" => counter::condition::on_start(battle, None, Some(source_pos), move_id),
-        "curse" => curse::condition::on_start(battle, source_pos),
+        "curse" => curse::condition::on_start(battle, source_pos, None),
         "destinybond" => destinybond::condition::on_start(battle, source_pos),
-        "disable" => disable::condition::on_start(battle, source_pos),
-        "dragoncheer" => dragoncheer::condition::on_start(battle, source_pos),
+        "disable" => disable::condition::on_start(battle, source_pos, None, None),
+        "dragoncheer" => dragoncheer::condition::on_start(battle, None, Some(source_pos), None),
         "electrify" => electrify::condition::on_start(battle, Some(source_pos)),
         "embargo" => embargo::condition::on_start(battle, source_pos),
         "encore" => encore::condition::on_start(battle, Some(source_pos)),
         "endure" => endure::condition::on_start(battle, Some(source_pos)),
-        "focusenergy" => focusenergy::condition::on_start(battle, source_pos),
+        "focusenergy" => focusenergy::condition::on_start(battle, None, Some(source_pos), None),
         "focuspunch" => focuspunch::condition::on_start(battle, source_pos),
-        "followme" => followme::condition::on_start(battle, source_pos),
+        "followme" => followme::condition::on_start(battle, None, Some(source_pos), None),
         "foresight" => foresight::condition::on_start(battle, source_pos),
-        "furycutter" => furycutter::condition::on_start(battle, source_pos),
+        "furycutter" => furycutter::condition::on_start(battle),
         "gastroacid" => gastroacid::condition::on_start(battle, source_pos),
         "glaiverush" => glaiverush::condition::on_start(battle, source_pos),
-        "gmaxchistrike" => gmaxchistrike::condition::on_start(battle, source_pos),
+        "gmaxchistrike" => gmaxchistrike::condition::on_start(battle, Some(source_pos), None, None),
         "grudge" => grudge::condition::on_start(battle, source_pos),
-        "healblock" => healblock::condition::on_start(battle, source_pos),
-        "helpinghand" => helpinghand::condition::on_start(battle, source_pos),
-        "iceball" => iceball::condition::on_start(battle, source_pos),
+        "healblock" => healblock::condition::on_start(battle, source_pos, None),
+        "helpinghand" => helpinghand::condition::on_start(battle, Some(source_pos), None),
+        "iceball" => iceball::condition::on_start(battle),
         "imprison" => imprison::condition::on_start(battle, Some(source_pos)),
         "ingrain" => ingrain::condition::on_start(battle, source_pos),
         "kingsshield" => kingsshield::condition::on_start(battle, Some(source_pos)),
-        "laserfocus" => laserfocus::condition::on_start(battle, source_pos),
+        "laserfocus" => laserfocus::condition::on_start(battle, source_pos, None, None),
         "leechseed" => leechseed::condition::on_start(battle, Some(source_pos)),
-        "magiccoat" => magiccoat::condition::on_start(battle, source_pos),
+        "magiccoat" => magiccoat::condition::on_start(battle, Some(source_pos), None, None),
         "magnetrise" => magnetrise::condition::on_start(battle, Some(source_pos)),
         "maxguard" => maxguard::condition::on_start(battle, Some(source_pos)),
         "miracleeye" => miracleeye::condition::on_start(battle, source_pos),
-        "mirrorcoat" => mirrorcoat::condition::on_start(battle, source_pos),
+        "mirrorcoat" => mirrorcoat::condition::on_start(battle, Some(source_pos), None, "mirrorcoat"),
         "nightmare" => nightmare::condition::on_start(battle, source_pos),
         "noretreat" => noretreat::condition::on_start(battle, source_pos),
         "obstruct" => obstruct::condition::on_start(battle, Some(source_pos)),
-        "octolock" => octolock::condition::on_start(battle, source_pos),
+        "octolock" => octolock::condition::on_start(battle, source_pos, None),
         "powder" => powder::condition::on_start(battle, Some(source_pos)),
         "powershift" => powershift::condition::on_start(battle, source_pos),
         "powertrick" => powertrick::condition::on_start(battle, source_pos),
         "protect" => protect::condition::on_start(battle, Some(source_pos)),
         "rage" => rage::condition::on_start(battle, source_pos),
         "ragepowder" => ragepowder::condition::on_start(battle, source_pos),
-        "rollout" => rollout::condition::on_start(battle, source_pos),
+        "rollout" => rollout::condition::on_start(battle),
         "roost" => roost::condition::on_start(battle, Some(source_pos)),
         "saltcure" => saltcure::condition::on_start(battle, source_pos),
         "shelltrap" => shelltrap::condition::on_start(battle, source_pos),
@@ -2014,16 +2014,16 @@ pub fn dispatch_condition_on_start(
         "spikyshield" => spikyshield::condition::on_start(battle, Some(source_pos)),
         "spotlight" => spotlight::condition::on_start(battle, source_pos),
         "stockpile" => stockpile::condition::on_start(battle, Some(source_pos)),
-        "substitute" => substitute::condition::on_start(battle, source_pos),
+        "substitute" => substitute::condition::on_start(battle, Some(source_pos), None, None),
         "syrupbomb" => syrupbomb::condition::on_start(battle, source_pos),
         "tarshot" => tarshot::condition::on_start(battle, source_pos),
         "taunt" => taunt::condition::on_start(battle, Some(source_pos)),
         "telekinesis" => telekinesis::condition::on_start(battle, Some(source_pos)),
         "throatchop" => throatchop::condition::on_start(battle, Some(source_pos)),
-        "torment" => torment::condition::on_start(battle, source_pos),
+        "torment" => torment::condition::on_start(battle, source_pos, None, None),
         "uproar" => uproar::condition::on_start(battle, Some(source_pos)),
-        "wish" => wish::condition::on_start(battle, source_pos),
-        "yawn" => yawn::condition::on_start(battle, source_pos),
+        "wish" => wish::condition::on_start(battle, source_pos, None),
+        "yawn" => yawn::condition::on_start(battle, Some(source_pos), None),
         _ => EventResult::Continue,
     }
 }
@@ -2081,10 +2081,10 @@ pub fn dispatch_condition_on_try_add_volatile(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "electricterrain" => electricterrain::condition::on_try_add_volatile(battle, source_pos),
-        "focuspunch" => focuspunch::condition::on_try_add_volatile(battle, source_pos),
-        "mistyterrain" => mistyterrain::condition::on_try_add_volatile(battle, source_pos),
-        "safeguard" => safeguard::condition::on_try_add_volatile(battle, source_pos),
+        "electricterrain" => electricterrain::condition::on_try_add_volatile(battle, None, Some(source_pos)),
+        "focuspunch" => focuspunch::condition::on_try_add_volatile(battle, None, source_pos),
+        "mistyterrain" => mistyterrain::condition::on_try_add_volatile(battle, None, Some(source_pos), None, None),
+        "safeguard" => safeguard::condition::on_try_add_volatile(battle, None, Some(source_pos), None, None),
         _ => EventResult::Continue,
     }
 }
@@ -2096,7 +2096,7 @@ pub fn dispatch_condition_on_try_boost(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "mist" => mist::condition::on_try_boost(battle, source_pos),
+        "mist" => mist::condition::on_try_boost(battle, Some(source_pos), None, None),
         _ => EventResult::Continue,
     }
 }
@@ -2108,7 +2108,7 @@ pub fn dispatch_condition_on_try_heal(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "healblock" => healblock::condition::on_try_heal(battle, source_pos),
+        "healblock" => healblock::condition::on_try_heal(battle, 0, Some(source_pos), None, None),
         _ => EventResult::Continue,
     }
 }
@@ -2146,7 +2146,7 @@ pub fn dispatch_condition_on_try_move(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "powder" => powder::condition::on_try_move(battle, source_pos),
+        "powder" => powder::condition::on_try_move(battle, source_pos, None),
         _ => EventResult::Continue,
     }
 }
@@ -2158,7 +2158,7 @@ pub fn dispatch_condition_on_try_primary_hit(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "substitute" => substitute::condition::on_try_primary_hit(battle, source_pos),
+        "substitute" => substitute::condition::on_try_primary_hit(battle, Some(source_pos), None, "substitute"),
         _ => EventResult::Continue,
     }
 }
