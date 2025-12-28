@@ -13,7 +13,23 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_def(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.baseSpecies.nfe)
+    let is_nfe = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        battle.dex.get_species(pokemon.base_species.as_str())
+            .map(|species| !species.evos.is_empty())
+            .unwrap_or(false)
+    };
+
+    if is_nfe {
+        // return this.chainModify(1.5);
+        battle.chain_modify(1.5);
+    }
+
     EventResult::Continue
 }
 
@@ -23,6 +39,22 @@ pub fn on_modify_def(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
 ///     }
 /// }
 pub fn on_modify_sp_d(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.baseSpecies.nfe)
+    let is_nfe = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        battle.dex.get_species(pokemon.base_species.as_str())
+            .map(|species| !species.evos.is_empty())
+            .unwrap_or(false)
+    };
+
+    if is_nfe {
+        // return this.chainModify(1.5);
+        battle.chain_modify(1.5);
+    }
+
     EventResult::Continue
 }
