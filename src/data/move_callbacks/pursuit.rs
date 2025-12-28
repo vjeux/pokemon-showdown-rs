@@ -58,7 +58,12 @@ pub fn base_power_callback(
 ///     }
 /// }
 pub fn before_turn_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // TODO: This callback needs infrastructure support for side condition sources
+    // The TypeScript version calls side.addSideCondition('pursuit', pokemon) where pokemon is the source
+    // But the Rust add_side_condition signature is: fn add_side_condition(&mut self, id: ID, duration: Option<i32>)
+    // It doesn't support passing a source pokemon parameter
+    // Additionally, there's no getSideConditionData equivalent to manage the sources array in effect state
+    // This needs infrastructure changes to support source tracking in side conditions
     EventResult::Continue
 }
 
@@ -155,7 +160,16 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_before_switch_out(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // TODO: This callback needs infrastructure support for side condition sources
+        // The TypeScript version accesses this.effectState.sources which would be populated by beforeTurnCallback
+        // However, as noted above, the infrastructure for side condition sources doesn't exist yet
+        // This callback also needs:
+        // - battle.debug() method
+        // - queue.cancelMove() method
+        // - actions.runMegaEvo() method
+        // - actions.terastallize() method
+        // - actions.runMove() method
+        // This needs significant infrastructure changes
         EventResult::Continue
     }
 }
