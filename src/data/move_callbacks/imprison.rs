@@ -70,7 +70,11 @@ pub mod condition {
         };
 
         for move_id in source_move_ids {
-            battle.disable_move(pokemon, &move_id, true);
+            let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.disable_move(move_id.as_str(), None);
         }
 
         // pokemon.maybeDisabled = true;
