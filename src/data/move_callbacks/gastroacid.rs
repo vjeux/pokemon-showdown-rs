@@ -27,7 +27,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let ability = target_pokemon.get_ability(battle);
+        let ability = target_pokemon.get_ability();
         ability.flags.contains_key("cantsuppress")
     };
 
@@ -127,7 +127,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let ability = pokemon_pokemon.get_ability(battle);
+            let ability = pokemon_pokemon.get_ability();
             ability.flags.contains_key("cantsuppress")
         };
 

@@ -48,7 +48,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.get_ability(battle)
+        target_pokemon.get_ability()
     };
 
     if !target_ability.flags.contains_key("failroleplay") {
@@ -62,7 +62,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     Some(p) => p,
                     None => continue,
                 };
-                let ability = ally_pokemon.get_ability(battle);
+                let ability = ally_pokemon.get_ability();
                 (ally_pokemon.ability.clone(), ability.flags.contains_key("cantsuppress"))
             };
 

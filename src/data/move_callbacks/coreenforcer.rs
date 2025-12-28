@@ -27,7 +27,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             None => return EventResult::Continue,
         };
 
-        let ability = target_pokemon.get_ability(battle);
+        let ability = target_pokemon.get_ability();
         ability.flags.contains_key("cantsuppress")
     };
 
@@ -81,7 +81,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
             None => return EventResult::Continue,
         };
 
-        let ability = target_pokemon.get_ability(battle);
+        let ability = target_pokemon.get_ability();
         ability.flags.contains_key("cantsuppress")
     };
 
