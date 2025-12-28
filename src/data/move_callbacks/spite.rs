@@ -45,7 +45,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(move_id) => {
                 let move_data = battle.dex.get_move_by_id(move_id);
                 match move_data {
-                    Some(m) => (move_id.clone(), m.is_z, m.is_max, m.base_move.clone()),
+                    Some(m) => (move_id.clone(), m.is_z.clone(), m.is_max.clone(), m.base_move.clone()),
                     None => return EventResult::Boolean(false),
                 }
             }

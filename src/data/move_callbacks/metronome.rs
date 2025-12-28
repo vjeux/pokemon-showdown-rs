@@ -32,7 +32,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let all_moves = battle.dex.all_moves();
     let mut moves: Vec<_> = all_moves
         .iter()
-        .filter(|move_data| {
+        .filter(|&&move_data| {
             // (!move.isNonstandard || move.isNonstandard === 'Unobtainable')
             let nonstandard_ok = move_data.is_nonstandard.is_none() ||
                                  move_data.is_nonstandard.as_deref() == Some("Unobtainable");
