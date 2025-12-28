@@ -23,7 +23,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
 
     if category == "Special" {
         // return this.chainModify([4505, 4096]);
-        return EventResult::Number(battle.chain_modify_fraction(4505, 4096));
+        battle.chain_modify_fraction(4505, 4096);
     }
 
     EventResult::Continue

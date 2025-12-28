@@ -30,7 +30,7 @@ pub fn on_source_modify_accuracy(battle: &mut Battle, target_pos: Option<(usize,
         battle.debug("Zoom Lens boosting accuracy");
 
         // return this.chainModify([4915, 4096]);
-        return EventResult::Number(battle.chain_modify_fraction(4915, 4096));
+        battle.chain_modify_fraction(4915, 4096);
     }
 
     EventResult::Continue

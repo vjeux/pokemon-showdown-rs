@@ -22,7 +22,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
     };
 
     if move_type == "electric" {
-        return EventResult::Number(battle.chain_modify_fraction(4915, 4096));
+        battle.chain_modify_fraction(4915, 4096);
     }
 
     EventResult::Continue

@@ -28,7 +28,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
     // if (move && move.type === 'Dark')
     if move_type == "Dark" {
         // return this.chainModify([4915, 4096]);
-        return EventResult::Number(battle.chain_modify_fraction(4915, 4096));
+        battle.chain_modify_fraction(4915, 4096);
     }
 
     EventResult::Continue
