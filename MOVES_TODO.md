@@ -390,14 +390,14 @@ Moves with callbacks: 373
 - [x] synthesis - Synthesis (Status, Grass) - 1 callback: onHit
 - [ ] syrupbomb - Syrup Bomb (Special, Grass) - 4 callbacks: condition::onStart, condition::onUpdate, condition::onResidual, condition::onEnd
 - [ ] tailwind - Tailwind (Status, Flying) - 4 callbacks: condition::durationCallback, condition::onSideStart, condition::onModifySpe, condition::onSideEnd
-- [ ] takeheart - Take Heart (Status, Psychic) - 1 callback: onHit
+- [x] takeheart - Take Heart (Status, Psychic) - 1 callback: onHit
 - [ ] tarshot - Tar Shot (Status, Rock) - 2 callbacks: condition::onStart, condition::onEffectiveness
 - [ ] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove, condition::onBeforeMove
 - [ ] teatime - Teatime (Status, Normal) - 1 callback: onHitField
 - [ ] technoblast - Techno Blast (Special, Normal) - 1 callback: onModifyType
 - [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry, condition::onStart, condition::onAccuracy, condition::onImmunity, condition::onUpdate, condition::onEnd
 - [ ] teleport - Teleport (Status, Psychic) - 1 callback: onTry
-- [ ] temperflare - Temper Flare (Physical, Fire) - 1 callback: basePowerCallback
+- [x] temperflare - Temper Flare (Physical, Fire) - 1 callback: basePowerCallback
 - [ ] terablast - Tera Blast (Special, Normal) - 4 callbacks: basePowerCallback, onPrepareHit, onModifyType, onModifyMove
 - [ ] terastarstorm - Tera Starstorm (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [ ] terrainpulse - Terrain Pulse (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
@@ -418,9 +418,9 @@ Moves with callbacks: 373
 - [x] tripleaxel - Triple Axel (Physical, Ice) - 1 callback: basePowerCallback
 - [x] triplekick - Triple Kick (Physical, Fighting) - 1 callback: basePowerCallback
 - [x] trumpcard - Trump Card (Special, Normal) - 1 callback: basePowerCallback
-- [ ] upperhand - Upper Hand (Physical, Fighting) - 1 callback: onTry
+- [x] upperhand - Upper Hand (Physical, Fighting) - 1 callback: onTry
 - [ ] uproar - Uproar (Special, Normal) - 5 callbacks: onTryHit, condition::onStart, condition::onResidual, condition::onEnd, condition::onAnySetStatus
-- [ ] veeveevolley - Veevee Volley (Physical, Normal) - 1 callback: basePowerCallback
+- [x] veeveevolley - Veevee Volley (Physical, Normal) - 1 callback: basePowerCallback
 - [ ] venomdrench - Venom Drench (Status, Poison) - 1 callback: onHit
 - [ ] venoshock - Venoshock (Special, Poison) - 1 callback: onBasePower
 - [ ] wakeupslap - Wake-Up Slap (Physical, Fighting) - 2 callbacks: basePowerCallback, onHit
