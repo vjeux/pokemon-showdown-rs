@@ -1616,10 +1616,10 @@ pub fn dispatch_condition_on_invulnerability(
 pub fn dispatch_condition_on_modify_accuracy(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    accuracy: i32,
 ) -> EventResult {
     match move_id {
-        "gravity" => gravity::condition::on_modify_accuracy(battle, source_pos),
+        "gravity" => gravity::condition::on_modify_accuracy(battle, accuracy),
         _ => EventResult::Continue,
     }
 }
@@ -1641,13 +1641,14 @@ pub fn dispatch_condition_on_modify_boost(
 pub fn dispatch_condition_on_modify_crit_ratio(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    crit_ratio: i32,
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "dragoncheer" => dragoncheer::condition::on_modify_crit_ratio(battle, source_pos),
-        "focusenergy" => focusenergy::condition::on_modify_crit_ratio(battle, source_pos),
-        "gmaxchistrike" => gmaxchistrike::condition::on_modify_crit_ratio(battle, source_pos),
-        "laserfocus" => laserfocus::condition::on_modify_crit_ratio(battle, source_pos),
+        "dragoncheer" => dragoncheer::condition::on_modify_crit_ratio(battle, crit_ratio, source_pos),
+        "focusenergy" => focusenergy::condition::on_modify_crit_ratio(battle, crit_ratio),
+        "gmaxchistrike" => gmaxchistrike::condition::on_modify_crit_ratio(battle),
+        "laserfocus" => laserfocus::condition::on_modify_crit_ratio(battle),
         _ => EventResult::Continue,
     }
 }
@@ -2026,8 +2027,8 @@ pub fn dispatch_condition_on_swap(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "healingwish" => healingwish::condition::on_swap(battle, source_pos),
-        "lunardance" => lunardance::condition::on_swap(battle, source_pos),
+        "healingwish" => healingwish::condition::on_swap(battle, Some(source_pos)),
+        "lunardance" => lunardance::condition::on_swap(battle, Some(source_pos)),
         _ => EventResult::Continue,
     }
 }
@@ -2040,8 +2041,8 @@ pub fn dispatch_condition_on_switch_in(
 ) -> EventResult {
     match move_id {
         "gmaxsteelsurge" => gmaxsteelsurge::condition::on_switch_in(battle, source_pos),
-        "healingwish" => healingwish::condition::on_switch_in(battle, source_pos),
-        "lunardance" => lunardance::condition::on_switch_in(battle, source_pos),
+        "healingwish" => healingwish::condition::on_switch_in(battle, Some(source_pos)),
+        "lunardance" => lunardance::condition::on_switch_in(battle, Some(source_pos)),
         "spikes" => spikes::condition::on_switch_in(battle, source_pos),
         "stealthrock" => stealthrock::condition::on_switch_in(battle, source_pos),
         "stickyweb" => stickyweb::condition::on_switch_in(battle, source_pos),
