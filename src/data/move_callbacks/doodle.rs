@@ -58,7 +58,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     if !target_ability.flags.contains_key("failroleplay") {
         // for (const pokemon of source.alliesAndSelf()) {
-        let allies_and_self = battle.get_allies_and_self(source);
+        let allies_and_self = battle.allies_and_self(source.0, false);
 
         for ally_pos in allies_and_self {
             // if (pokemon.ability === target.ability || pokemon.getAbility().flags['cantsuppress']) continue;

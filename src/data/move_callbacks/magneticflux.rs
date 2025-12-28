@@ -33,7 +33,11 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     //     (!ally.volatiles['maxguard'] || this.runEvent('TryHit', ally, source, move))
     // ));
     let side_index = source.0;
-    let allies = battle.get_allies(side_index);
+    // Get all allies excluding self (source)
+    let allies: Vec<(usize, usize)> = battle.allies_and_self(side_index, false)
+        .into_iter()
+        .filter(|&pos| pos != source)
+        .collect();
 
     let mut targets = Vec::new();
     for ally_pos in allies {
