@@ -90,35 +90,35 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 
         // this.addMove('-anim', attacker, move.name, defender);
         if let Some(defender) = defender {
-            let defender_arg = {
+            let defender_ident = {
                 let defender_pokemon = match battle.pokemon_at(defender.0, defender.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(defender_pokemon)
+                defender_pokemon.get_slot()
             };
 
-            // Need to recreate attacker_arg since it was moved
-            let attacker_arg2 = {
+            // Need to recreate attacker_ident since it was moved
+            let attacker_ident2 = {
                 let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(attacker_pokemon)
+                attacker_pokemon.get_slot()
             };
 
-            battle.add("-anim", &[attacker_arg2, move_name.into(), defender_arg]);
+            battle.add("-anim", &[attacker_ident2.as_str().into(), move_name.into(), defender_ident.as_str().into()]);
         } else {
-            // Need to recreate attacker_arg since it was moved
-            let attacker_arg2 = {
+            // Need to recreate attacker_ident since it was moved
+            let attacker_ident2 = {
                 let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(attacker_pokemon)
+                attacker_pokemon.get_slot()
             };
 
-            battle.add("-anim", &[attacker_arg2, move_name.into()]);
+            battle.add("-anim", &[attacker_ident2.as_str().into(), move_name.into()]);
         }
 
         // return;
