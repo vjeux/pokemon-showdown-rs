@@ -1788,14 +1788,13 @@ impl<'a> BattleActions<'a> {
         }
 
         // Check ability immunity (simplified)
-        match (defender_ability, move_type) {
-            ("voltabsorb" | "lightningrod" | "motordrive", "Electric") => false,
-            ("waterabsorb" | "stormdrain" | "dryskin", "Water") => false,
-            ("flashfire", "Fire") => false,
-            ("sapsipper", "Grass") => false,
-            ("levitate", "Ground") => false,
-            _ => true,
-        }
+        !matches!((defender_ability, move_type),
+            ("voltabsorb" | "lightningrod" | "motordrive", "Electric") |
+            ("waterabsorb" | "stormdrain" | "dryskin", "Water") |
+            ("flashfire", "Fire") |
+            ("sapsipper", "Grass") |
+            ("levitate", "Ground")
+        )
     }
 
     /// Hit step try hit event

@@ -2139,10 +2139,7 @@ impl Battle {
         }
 
         // Call switchIn with is_drag = true
-        match self.switch_in(side_idx, slot, switch_target, None, true) {
-            SwitchResult::Success => true,
-            _ => false,
-        }
+        matches!(self.switch_in(side_idx, slot, switch_target, None, true), SwitchResult::Success)
     }
 
     /// Execute a switch with optional drag flag

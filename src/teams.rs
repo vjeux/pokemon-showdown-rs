@@ -671,10 +671,8 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
     } else if line.starts_with("Trait: ") || line.starts_with("Ability: ") {
         let ability = if let Some(trait_str) = line.strip_prefix("Trait: ") {
             trait_str
-        } else if let Some(ability_str) = line.strip_prefix("Ability: ") {
-            ability_str
         } else {
-            "" // Should never happen given the if condition
+            line.strip_prefix("Ability: ").unwrap_or_default()
         };
         set.ability = if aggressive { to_id(ability) } else { ability.to_string() };
     } else if line == "Shiny: Yes" {
