@@ -9514,7 +9514,7 @@ impl Battle {
                 if self.gen <= 1 && recoil_data.is_some() && source.is_some() {
                     let (recoil_num, recoil_denom) = recoil_data.unwrap();
                     let amount = ((target_damage as f64 * recoil_num as f64) / recoil_denom as f64).floor() as i32;
-                    let amount = self.clamp_int_range(amount, 1, i32::MAX);
+                    let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
 
                     let recoil_id = ID::new("recoil");
                     self.damage(amount, source, target, Some(&recoil_id), false);
@@ -9524,7 +9524,7 @@ impl Battle {
                 if self.gen <= 4 && drain_data.is_some() && source.is_some() {
                     let (drain_num, drain_denom) = drain_data.unwrap();
                     let amount = ((target_damage as f64 * drain_num as f64) / drain_denom as f64).floor() as i32;
-                    let amount = self.clamp_int_range(amount, 1, i32::MAX);
+                    let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
 
                     // Draining can be countered in gen 1
                     if self.gen <= 1 {
@@ -11341,10 +11341,10 @@ impl Battle {
             [0, 16, 8, 4, 3, 2]
         } else if self.gen == 6 {
             crit_ratio = crit_ratio.clamp(0, 4);
-            [0, 16, 8, 2, 1]
+            [0, 16, 8, 2, 1, 0] // Padded to size 6, last element never accessed
         } else {
             crit_ratio = crit_ratio.clamp(0, 4);
-            [0, 24, 8, 2, 1]
+            [0, 24, 8, 2, 1, 0] // Padded to size 6, last element never accessed
         };
 
         // Determine if this is a critical hit
