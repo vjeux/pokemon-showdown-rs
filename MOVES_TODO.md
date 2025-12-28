@@ -4,21 +4,13 @@
 
 **Current Status:** 116 TODO callbacks remaining (out of ~700+ original callbacks)
 
-**Recently Completed in This Session:** Checklist cleanup - marked 13 previously completed files
-- fly.rs: All callbacks (onTryMove, condition::onInvulnerability, condition::onSourceModifyDamage)
-- focuspunch.rs: All callbacks (priorityChargeCallback, beforeMoveCallback, condition::onStart, condition::onHit, condition::onTryAddVolatile)
-- foresight.rs: All callbacks (onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost)
-- freezeshock.rs: onTryMove callback
-- furycutter.rs: All callbacks (basePowerCallback, condition::onStart, condition::onRestart)
-- heatcrash.rs: All callbacks (basePowerCallback, onTryHit)
-- heavyslam.rs: All callbacks (basePowerCallback, onTryHit)
-- healingwish.rs: All callbacks (onTryHit, condition::onSwitchIn, condition::onSwap)
-- psychicterrain.rs: All callbacks (condition::durationCallback, condition::onTryHit, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd)
-- quickguard.rs: All callbacks (onTry, onHitSide, condition::onSideStart, condition::onTryHit)
-- rage.rs: All callbacks (condition::onStart, condition::onHit, condition::onBeforeMove)
-- ragepowder.rs: All callbacks (onTry, condition::onStart, condition::onFoeRedirectTarget)
-- ragingbull.rs: All callbacks (onTryHit, onModifyType)
-- rapidspin.rs: All callbacks (onAfterHit, onAfterSubDamage)
+**Recently Completed in This Session:** Checklist cleanup - marked 25 previously completed files
+- fly.rs, focuspunch.rs, foresight.rs, freezeshock.rs, furycutter.rs (5 files)
+- heatcrash.rs, heavyslam.rs, healingwish.rs, psychicterrain.rs, quickguard.rs (5 files)
+- rage.rs, ragepowder.rs, ragingbull.rs, rapidspin.rs (4 files)
+- steelbeam.rs, steelroller.rs, stickyweb.rs, stockpile.rs (4 files)
+- stompingtantrum.rs, stoneaxe.rs, storedpower.rs, strengthsap.rs (4 files)
+- struggle.rs, suckerpunch.rs, supercellslam.rs, superfang.rs (4 files)
 
 **Previously Completed:** 15 callbacks (4 from latest active implementation + 11 simple message callbacks)
 - throatchop.rs: condition::on_disable_move - Disables moves with sound flag
