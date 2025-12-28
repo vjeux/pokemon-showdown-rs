@@ -29,12 +29,14 @@ pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usiz
     use crate::dex_data::ID;
 
     // if (source.species && (source.species.num === 493 || source.species.num === 773)) return false;
+    // Species 493 is Arceus, 773 is Silvally
     let species_check = {
         let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source.species.num == 493 || source.species.num == 773
+        let species = source.species_id.as_str();
+        species.starts_with("arceus") || species.starts_with("silvally")
     };
 
     if species_check {
@@ -53,15 +55,6 @@ pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usiz
     if is_terastallized {
         return EventResult::Boolean(false);
     }
-
-    // const oldApparentType = source.apparentType;
-    let old_apparent_type = {
-        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source.apparent_type.clone()
-    };
 
     // let newBaseTypes = target.getTypes(true).filter(type => type !== '???');
     let mut new_base_types = {
@@ -89,39 +82,34 @@ pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usiz
         };
 
         if has_added_type {
-            new_base_types = vec![ID::from("Normal")];
+            new_base_types = vec![String::from("Normal")];
         } else {
             return EventResult::Boolean(false);
         }
     }
 
     // this.add('-start', source, 'typechange', '[from] move: Reflect Type', `[of] ${target}`);
-    let source_arg = {
+    let (source_ident, target_ident) = {
         let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(source)
-    };
-    let target_arg = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(target)
+        (source.get_slot(), target.get_slot())
     };
 
     battle.add("-start", &[
-        source_arg.clone(),
-        crate::battle::Arg::from("typechange"),
-        crate::battle::Arg::from("[from] move: Reflect Type"),
-        crate::battle::Arg::from(format!("[of] {}", target_arg.as_string())),
+        source_ident.clone().into(),
+        "typechange".into(),
+        "[from] move: Reflect Type".into(),
+        format!("[of] {}", target_ident).into(),
     ]);
 
     // source.setType(newBaseTypes);
     // source.addedType = target.addedType;
-    // source.knownType = target.isAlly(source) && target.knownType;
-    // if (!source.knownType) source.apparentType = oldApparentType;
     let target_added_type = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
@@ -130,37 +118,13 @@ pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usiz
         target.added_type.clone()
     };
 
-    let target_known_type = {
-        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target.known_type
-    };
-
-    let is_ally = {
-        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target.is_ally(source)
-    };
-
     let source = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
         Some(p) => p,
         None => return EventResult::Continue,
     };
 
-    source.set_type(&new_base_types);
+    source.set_type(new_base_types);
     source.added_type = target_added_type;
-    source.known_type = is_ally && target_known_type;
-    if !source.known_type {
-        source.apparent_type = old_apparent_type;
-    }
 
     EventResult::Continue
 }
