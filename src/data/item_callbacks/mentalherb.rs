@@ -23,6 +23,46 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // const conditions = ['attract', 'taunt', 'encore', 'torment', 'disable', 'healblock'];
+    let conditions = ["attract", "taunt", "encore", "torment", "disable", "healblock"];
+
+    // for (const firstCondition of conditions) {
+    //     if (pokemon.volatiles[firstCondition]) {
+    let first_condition_found = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        conditions.iter().find(|&&cond| pokemon.has_volatile(&crate::dex_data::ID::new(cond))).copied()
+    };
+
+    if let Some(first_condition) = first_condition_found {
+        // if (!pokemon.useItem()) return;
+        let used_item = {
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_mut.use_item().is_some()
+        };
+
+        if !used_item {
+            return EventResult::Continue;
+        }
+
+        // for (const secondCondition of conditions) {
+        //     pokemon.removeVolatile(secondCondition);
+        for &condition in &conditions {
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_mut.remove_volatile(&crate::dex_data::ID::new(condition));
+        }
+
+        return EventResult::Continue;
+    }
+
     EventResult::Continue
 }
