@@ -117,8 +117,69 @@ pub mod condition {
     ///     }
     ///     this.add('-start', target, 'Uproar', '[upkeep]');
     /// }
-    pub fn on_residual(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+        use crate::dex_data::ID;
+
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (target.volatiles['throatchop'])
+        let has_throatchop = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.has_volatile(&ID::from("throatchop"))
+        };
+
+        if has_throatchop {
+            // target.removeVolatile('uproar');
+            let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_mut.remove_volatile(&ID::from("uproar"));
+            return EventResult::Continue;
+        }
+
+        // if (target.lastMove && target.lastMove.id === 'struggle')
+        let last_move_is_struggle = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.last_move.as_ref().map(|m| m.as_str()) == Some("struggle")
+        };
+
+        if last_move_is_struggle {
+            // delete target.volatiles['uproar'];
+            let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_mut.remove_volatile(&ID::from("uproar"));
+        }
+
+        // this.add('-start', target, 'Uproar', '[upkeep]');
+        let target_slot = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.get_slot()
+        };
+
+        battle.add(
+            "-start",
+            &[
+                crate::battle::Arg::from(target_slot),
+                crate::battle::Arg::from("Uproar"),
+                crate::battle::Arg::from("[upkeep]"),
+            ],
+        );
+
         EventResult::Continue
     }
 
