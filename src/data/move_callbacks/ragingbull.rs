@@ -14,11 +14,29 @@ use crate::event::EventResult;
 ///     pokemon.side.removeSideCondition('auroraveil');
 /// }
 pub fn on_try_hit(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let target = target_pos;
+
+    // pokemon.side.removeSideCondition('reflect');
+    // pokemon.side.removeSideCondition('lightscreen');
+    // pokemon.side.removeSideCondition('auroraveil');
+    let target_side = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.side_index
+    };
+
+    battle.sides[target_side].remove_side_condition(&ID::from("reflect"));
+    battle.sides[target_side].remove_side_condition(&ID::from("lightscreen"));
+    battle.sides[target_side].remove_side_condition(&ID::from("auroraveil"));
+
     EventResult::Continue
 }
 
@@ -36,10 +54,41 @@ pub fn on_try_hit(
 ///     }
 /// }
 pub fn on_modify_type(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _move_id: &str,
-    _pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = pokemon_pos;
+
+    // switch (pokemon.species_id.as_str()) {
+    let species_id = {
+        let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_ref.species_id.to_string()
+    };
+
+    if let Some(ref mut active_move) = battle.active_move {
+        match species_id.as_str() {
+            // case 'Tauros-Paldea-Combat':
+            //     move.type = 'Fighting';
+            "taurospaldea" | "taurospaldeacombat" => {
+                active_move.move_type = "Fighting".to_string();
+            }
+            // case 'Tauros-Paldea-Blaze':
+            //     move.type = 'Fire';
+            "taurospaldeablaze" => {
+                active_move.move_type = "Fire".to_string();
+            }
+            // case 'Tauros-Paldea-Aqua':
+            //     move.type = 'Water';
+            "taurospaldeaaqua" => {
+                active_move.move_type = "Water".to_string();
+            }
+            _ => {}
+        }
+    }
+
     EventResult::Continue
 }
