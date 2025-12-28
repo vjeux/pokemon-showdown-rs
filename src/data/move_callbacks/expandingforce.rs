@@ -27,7 +27,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.is_grounded(battle)
+            source_pokemon.is_grounded()
         };
 
         if is_grounded {
@@ -63,7 +63,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.is_grounded(battle)
+            source_pokemon.is_grounded()
         };
 
         if is_grounded {
