@@ -87,7 +87,13 @@ pub mod condition {
 
             if has_ally && category == "Physical" {
                 // if (!target.getMoveHitData(move).crit && !move.infiltrates) {
-                let crit = battle.get_move_hit_data(target, move_id).crit;
+                let crit = {
+                    let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    target_pokemon.get_move_hit_data(move_id).crit
+                };
                 let infiltrates = {
                     let active_move = match &battle.active_move {
                         Some(active_move) => active_move,

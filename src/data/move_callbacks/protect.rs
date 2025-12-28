@@ -149,7 +149,12 @@ pub mod condition {
                     active_move.clone()
                 };
 
-                battle.get_move_hit_data(target, &move_id).z_broke_protect = true;
+                // Set z_broke_protect on the target pokemon's move hit data
+                let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target_pokemon.get_move_hit_data(&move_id.id).z_broke_protect = true;
             }
 
             // return;

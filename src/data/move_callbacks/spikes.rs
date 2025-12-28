@@ -105,7 +105,12 @@ pub mod condition {
 
         // const damageAmounts = [0, 3, 4, 6]; // 1/8, 1/6, 1/4
         // this.damage(damageAmounts[this.effectState.layers] * pokemon.maxhp / 24);
-        let layers = battle.get_effect_state_layers();
+        let layers = match &battle.current_effect_state {
+            Some(state) => state.data.get("layers")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(1) as i32,
+            None => 1,
+        };
         let damage_amounts = [0, 3, 4, 6];
 
         let max_hp = {
