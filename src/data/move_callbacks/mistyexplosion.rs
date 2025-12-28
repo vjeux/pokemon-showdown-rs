@@ -19,7 +19,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
     let source = pokemon_pos;
 
     // if (this.field.isTerrain('mistyterrain') && source.isGrounded()) {
-    let is_misty_terrain = battle.field.terrain == Some(ID::from("mistyterrain"));
+    let is_misty_terrain = battle.field.terrain == ID::from("mistyterrain");
 
     if !is_misty_terrain {
         return EventResult::Continue;
