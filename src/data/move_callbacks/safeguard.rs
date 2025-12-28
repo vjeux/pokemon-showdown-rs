@@ -274,7 +274,7 @@ pub mod condition {
             }
         };
 
-        let side_arg = crate::battle::Arg::from_side(battle, side);
+        let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
 
         if let Some(source) = source_pos {
             let has_persistent = {
@@ -323,7 +323,7 @@ pub mod condition {
             }
         };
 
-        let side_arg = crate::battle::Arg::from_side(battle, side);
+        let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
 
         battle.add("-sideend", &[
             side_arg,

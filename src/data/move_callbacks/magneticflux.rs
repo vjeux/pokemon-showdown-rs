@@ -77,11 +77,8 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     // }
     let mut did_something = false;
     for target in targets {
-        let mut boosts = std::collections::HashMap::new();
-        boosts.insert("def".to_string(), 1);
-        boosts.insert("spd".to_string(), 1);
-
-        let boost_result = battle.boost_with_options(boosts, target, Some(source), Some(&ID::from(move_id)), false, true);
+        let boosts = [("def", 1), ("spd", 1)];
+        let boost_result = battle.boost(&boosts, target, Some(source), Some(move_id));
         did_something = boost_result || did_something;
     }
 

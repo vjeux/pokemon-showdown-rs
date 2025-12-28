@@ -128,7 +128,7 @@ pub mod condition {
             }
         };
 
-        let side_arg = crate::battle::Arg::from_side(battle, side);
+        let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
 
         battle.add("-sidestart", &[
             side_arg,
@@ -154,7 +154,7 @@ pub mod condition {
             }
         };
 
-        let side_arg = crate::battle::Arg::from_side(battle, side);
+        let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
 
         battle.add("-sideend", &[
             side_arg,
