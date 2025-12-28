@@ -33,8 +33,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // let success = false;
-    let success;
-
     // if (source.hasAbility('megalauncher')) {
     let has_megalauncher = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -44,7 +42,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         source_pokemon.has_ability(&["megalauncher"])
     };
 
-    if has_megalauncher {
+    let success = if has_megalauncher {
         // success = !!this.heal(this.modify(target.baseMaxhp, 0.75));
         let heal_amount = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
@@ -53,7 +51,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             };
             battle.modify_f(target_pokemon.base_maxhp, 0.75)
         };
-        success = battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0;
+        battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0
     } else {
         // success = !!this.heal(Math.ceil(target.baseMaxhp * 0.5));
         let heal_amount = {
@@ -63,8 +61,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             };
             (target_pokemon.base_maxhp as f64 * 0.5).ceil() as i32
         };
-        success = battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0;
-    }
+        battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0
+    };
 
     // if (success && !target.isAlly(source)) {
     let is_ally = target.0 == source.0;

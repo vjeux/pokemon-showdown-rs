@@ -42,20 +42,18 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
         .collect();
 
     // let randomMove = '';
-    let random_move: Option<ID>;
-
     // if (moves.length) {
-    if !moves.is_empty() {
+    let random_move: Option<ID> = if !moves.is_empty() {
         // moves.sort((a, b) => a.num - b.num);
         // Note: We've already cloned the IDs, so we can't sort by num anymore
         // This is acceptable as the random sampling will be from the filtered list
 
         // randomMove = this.sample(moves).id;
         let sampled = battle.sample(&moves);
-        random_move = sampled.cloned();
+        sampled.cloned()
     } else {
-        random_move = None;
-    }
+        None
+    };
 
     // if (!randomMove) return false;
     let move_id = match random_move {
