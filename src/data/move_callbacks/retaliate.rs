@@ -28,7 +28,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
         side.fainted_last_turn
     };
 
-    if fainted_last_turn {
+    if fainted_last_turn.is_some() {
         battle.debug("Boosted for a faint last turn");
         return EventResult::Number(battle.chain_modify(2 as f32));
     }

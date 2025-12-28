@@ -53,8 +53,8 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     };
 
     if let Some(ref data) = rollout_data {
-        if data.hit_count > 0 {
-            bp *= 2_i32.pow(data.contact_hit_count as u32);
+        if data.hit_count.unwrap_or(0) > 0 {
+            bp *= 2_i32.pow(data.contact_hit_count.unwrap_or(0) as u32);
         }
     }
 

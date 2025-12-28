@@ -38,7 +38,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         (source_pokemon.status.clone(), source_pokemon.has_ability(&["comatose"]))
     };
 
-    if status == Some(ID::from("slp")) || has_comatose {
+    if status == ID::from("slp") || has_comatose {
         return EventResult::Boolean(false);
     }
 
@@ -169,7 +169,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // this.heal(target.maxhp); // Aesthetic only as the healing happens after you fall asleep in-game
     let maxhp = target_pokemon.maxhp;
-    battle.heal(maxhp, target, None, None);
+    battle.heal(maxhp, Some(target), None, None);
 
     EventResult::Continue
 }

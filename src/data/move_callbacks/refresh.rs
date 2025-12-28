@@ -25,7 +25,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         pokemon_pokemon.status.clone()
     };
 
-    if status.is_none() || status == Some(ID::from("slp")) || status == Some(ID::from("frz")) {
+    if status == ID::from("") || status == ID::from("slp") || status == ID::from("frz") {
         return EventResult::Boolean(false);
     }
 
