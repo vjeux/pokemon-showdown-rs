@@ -66,15 +66,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     ]);
 
     // pokemon.setItem(item, source, move);
-    let move_id = {
-        let active_move = match &battle.active_move {
-            Some(active_move) => &active_move.id,
+    {
+        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
             None => return EventResult::Continue,
         };
-        active_move.clone()
-    };
-
-    battle.set_item(pokemon, &item, Some(source), Some(&move_id));
+        pokemon_pokemon.set_item(item);
+    }
 
     EventResult::Continue
 }
