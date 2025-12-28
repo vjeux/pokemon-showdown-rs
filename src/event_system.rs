@@ -16,7 +16,7 @@ use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// Effect types - matches JavaScript effectType
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum EffectType {
     Ability,
     Item,
@@ -71,7 +71,7 @@ impl EffectType {
 
 /// Effect metadata - represents an effect with its properties
 /// Equivalent to Effect interface in TypeScript
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct EffectData {
     /// Effect name/ID
     pub name: String,
