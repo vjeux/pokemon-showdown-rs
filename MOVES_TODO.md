@@ -389,12 +389,12 @@ Moves with callbacks: 373
 - [x] stoneaxe - Stone Axe (Physical, Rock) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [x] storedpower - Stored Power (Special, Psychic) - 1 callback: basePowerCallback
 - [x] strengthsap - Strength Sap (Status, Grass) - 1 callback: onHit
-- [ ] struggle - Struggle (Physical, Normal) - 1 callback: onModifyMove
+- [x] struggle - Struggle (Physical, Normal) - 1 callback: onModifyMove
 - [x] stuffcheeks - Stuff Cheeks (Status, Normal) - 3 callbacks: onDisableMove, onTry, onHit
 - [ ] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit, onHit, condition::onStart, condition::onTryPrimaryHit, condition::onEnd
-- [ ] suckerpunch - Sucker Punch (Physical, Dark) - 1 callback: onTry
-- [ ] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail
-- [ ] superfang - Super Fang (Physical, Normal) - 1 callback: damageCallback
+- [x] suckerpunch - Sucker Punch (Physical, Dark) - 1 callback: onTry
+- [x] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail
+- [x] superfang - Super Fang (Physical, Normal) - 1 callback: damageCallback
 - [ ] swallow - Swallow (Status, Normal) - 2 callbacks: onTry, onHit
 - [ ] switcheroo - Switcheroo (Status, Dark) - 2 callbacks: onTryImmunity, onHit
 - [ ] synchronoise - Synchronoise (Special, Psychic) - 1 callback: onTryImmunity
