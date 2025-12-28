@@ -70,7 +70,7 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos
         let half_hp = max_hp / 2;
         if hp_after_recoil <= half_hp && hp_before_recoil > half_hp {
             // this.runEvent('EmergencyExit', pokemon, pokemon);
-            battle.run_event("EmergencyExit", pokemon, Some(pokemon), None);
+            battle.run_event("EmergencyExit", pokemon, Some(pokemon), None, None);
         }
     }
 

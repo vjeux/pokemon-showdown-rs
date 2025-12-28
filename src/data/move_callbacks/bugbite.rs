@@ -93,7 +93,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 //     if (item.id === 'leppaberry') target.staleness = 'external';
                 // }
                 if battle.single_event("Eat", &item_id, Some(pokemon_pos), Some(pokemon_pos), None) {
-                    battle.run_event("EatItem", Some(pokemon_pos), Some(pokemon_pos), None);
+                    battle.run_event("EatItem", Some(pokemon_pos), Some(pokemon_pos), None, None);
 
                     // if (item.id === 'leppaberry') target.staleness = 'external';
                     // TODO: staleness not yet implemented

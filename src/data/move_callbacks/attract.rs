@@ -99,7 +99,7 @@ pub mod condition {
         //     this.debug('Attract event failed');
         //     return false;
         // }
-        let event_result = battle.run_event("Attract", Some(pokemon_pos), Some(source), None);
+        let event_result = battle.run_event("Attract", Some(pokemon_pos), Some(source), None, None);
         if !event_result {
             battle.debug("Attract event failed");
             return EventResult::Boolean(false);

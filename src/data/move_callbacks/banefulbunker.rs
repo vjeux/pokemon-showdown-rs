@@ -14,7 +14,7 @@ use crate::dex_data::ID;
 pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     let will_act = battle.queue.will_act();
-    let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None);
+    let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None, None);
 
     let result = will_act && stall_move_result;
     EventResult::Boolean(result)

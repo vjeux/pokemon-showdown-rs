@@ -20,7 +20,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         return EventResult::Boolean(false);
     }
 
-    let stall_result = battle.run_event("StallMove", pokemon, None, None);
+    let stall_result = battle.run_event("StallMove", pokemon, None, None, None);
 
     if matches!(stall_result, EventResult::Boolean(false)) {
         return EventResult::Boolean(false);

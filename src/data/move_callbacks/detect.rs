@@ -22,7 +22,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     }
 
     // this.runEvent('StallMove', pokemon)
-    let stall_result = battle.run_event("StallMove", pokemon, None, None);
+    let stall_result = battle.run_event("StallMove", pokemon, None, None, None);
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     EventResult::Boolean(will_act && stall_result)
