@@ -120,7 +120,8 @@ pub mod condition {
         };
 
         // this.actions.useMove(newMove, target, { target: source });
-        battle.use_move_with_bounced(&move_id, target, Some(source), true, prankster_boosted);
+        // TODO: Implement use_move_with_bounced method in Battle
+        // battle.use_move_with_bounced(&move_id, target, Some(source), true, prankster_boosted);
 
         // return null;
         EventResult::Stop
@@ -191,10 +192,11 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let move_id_id = battle.active_move.as_ref().map(|m| m.clone());
-        if let Some(move_id_id) = move_id_id {
-            battle.use_move_with_bounced(&move_id_id, effect_state_target, Some(source), true, false);
-        }
+        // TODO: Implement use_move_with_bounced method in Battle
+        // let move_id_id = battle.active_move.as_ref().map(|m| m.clone());
+        // if let Some(move_id_id) = move_id_id {
+        //     battle.use_move_with_bounced(&move_id_id, effect_state_target, Some(source), true, false);
+        // }
 
         // move.hasBounced = true; // only bounce once in free-for-all battles
         if let Some(ref mut active_move) = battle.active_move {
