@@ -1483,10 +1483,10 @@ pub fn dispatch_condition_on_field_restart(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "echoedvoice" => echoedvoice::condition::on_field_restart(battle, source_pos),
-        "magicroom" => magicroom::condition::on_field_restart(battle, source_pos),
-        "trickroom" => trickroom::condition::on_field_restart(battle, source_pos),
-        "wonderroom" => wonderroom::condition::on_field_restart(battle, source_pos),
+        "echoedvoice" => echoedvoice::condition::on_field_restart(battle),
+        "magicroom" => magicroom::condition::on_field_restart(battle),
+        "trickroom" => trickroom::condition::on_field_restart(battle),
+        "wonderroom" => wonderroom::condition::on_field_restart(battle),
         _ => EventResult::Continue,
     }
 }
