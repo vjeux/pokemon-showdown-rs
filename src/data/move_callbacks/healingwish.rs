@@ -15,11 +15,42 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_hit(
-    _battle: &mut Battle,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    source_pos: (usize, usize),
     _target_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let source = source_pos;
+
+    // if (!this.canSwitch(source.side)) {
+    let source_side = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.side_index
+    };
+
+    let can_switch = battle.can_switch(source_side);
+
+    if can_switch == 0 {
+        // this.attrLastMove('[still]');
+        battle.attr_last_move(&["[still]"]);
+
+        // this.add('-fail', source);
+        let source_arg = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.get_slot()
+        };
+
+        battle.add("-fail", &[source_arg.into()]);
+
+        // return this.NOT_FAIL;
+        return EventResult::NotFail;
+    }
+
     EventResult::Continue
 }
 
