@@ -23,11 +23,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // const success = this.boost({ atk: -1, spa: -1 }, target, source);
-    use std::collections::HashMap;
-    let mut boosts = HashMap::new();
-    boosts.insert("atk".to_string(), -1);
-    boosts.insert("spa".to_string(), -1);
-    let success = battle.boost(boosts, target, Some(source), None);
+    let success = battle.boost(&[("atk", -1), ("spa", -1)], target, Some(source), None);
 
     // if (!success && !target.hasAbility('mirrorarmor')) {
     if !success {

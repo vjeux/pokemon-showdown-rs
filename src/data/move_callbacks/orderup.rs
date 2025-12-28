@@ -62,28 +62,23 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
     };
 
     // switch (tatsugiri.baseSpecies.forme) {
-    use std::collections::HashMap;
-    let mut boosts = HashMap::new();
-
     match forme.as_deref() {
         // case 'Droopy':
         Some("Droopy") => {
             // this.boost({ def: 1 }, pokemon, pokemon);
-            boosts.insert("def".to_string(), 1);
+            battle.boost(&[("def", 1)], pokemon, Some(pokemon), None);
         }
         // case 'Stretchy':
         Some("Stretchy") => {
             // this.boost({ spe: 1 }, pokemon, pokemon);
-            boosts.insert("spe".to_string(), 1);
+            battle.boost(&[("spe", 1)], pokemon, Some(pokemon), None);
         }
         // default:
         _ => {
             // this.boost({ atk: 1 }, pokemon, pokemon);
-            boosts.insert("atk".to_string(), 1);
+            battle.boost(&[("atk", 1)], pokemon, Some(pokemon), None);
         }
     }
-
-    battle.boost(boosts, pokemon, Some(pokemon), None);
 
     EventResult::Continue
 }

@@ -126,11 +126,7 @@ pub mod condition {
             }
 
             // this.boost({ def: -1, spd: -1 }, pokemon, source, this.dex.getActiveMove('octolock'));
-            use std::collections::HashMap;
-            let mut boosts = HashMap::new();
-            boosts.insert("def".to_string(), -1);
-            boosts.insert("spd".to_string(), -1);
-            battle.boost(boosts, pokemon, Some(source), Some(&ID::from("octolock")));
+            battle.boost(&[("def", -1), ("spd", -1)], pokemon, Some(source), Some("octolock"));
         }
 
         EventResult::Continue
