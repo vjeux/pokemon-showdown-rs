@@ -166,12 +166,12 @@ pub mod condition {
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     source.trySetStatus('brn', target);
         // }
-        if battle.check_move_makes_contact(&move_id, source_pos, target_pos) {
+        if battle.check_move_makes_contact(&move_id, source_pos) {
             let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.try_set_status(ID::from("brn"));
+            source_pokemon.try_set_status(ID::from("brn"), Some(target_pos));
         }
 
         // return this.NOT_FAIL;

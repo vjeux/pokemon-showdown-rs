@@ -60,7 +60,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;
     // }
-    if !battle.run_event("ChargeMove", Some(source_pos), target_pos, None) {
+    if !battle.run_event("ChargeMove", Some(source_pos), target_pos, None, None) {
         // return;
         return EventResult::Continue;
     }
