@@ -71,7 +71,12 @@ pub mod condition {
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', targetSide, 'G-Max Cannonade');
         // The side index should be in the current effect state
-        if let Some(side_index) = battle.current_effect_state.side {
+        let side_index = match &battle.current_effect_state {
+            Some(es) => es.side,
+            None => None,
+        };
+
+        if let Some(side_index) = side_index {
             let side_arg = crate::battle::Arg::Side(side_index);
             battle.add("-sideend", &[side_arg, "G-Max Cannonade".into()]);
         }

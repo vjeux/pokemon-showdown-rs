@@ -80,7 +80,10 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // const source = this.effectState.source;
-        let source_pos = battle.current_effect_state.source;
+        let source_pos = match &battle.current_effect_state {
+            Some(es) => es.source,
+            None => None,
+        };
 
         // if (source && (!source.isActive || source.hp <= 0 || !source.activeTurns)) {
         if let Some(source) = source_pos {
@@ -140,7 +143,10 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // if (this.effectState.source?.isActive) pokemon.tryTrap();
-        let source_pos = battle.current_effect_state.source;
+        let source_pos = match &battle.current_effect_state {
+            Some(es) => es.source,
+            None => None,
+        };
 
         if let Some(source) = source_pos {
             let is_active = {
