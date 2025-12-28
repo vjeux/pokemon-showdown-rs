@@ -65,7 +65,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        battle.run_single_event("Swap", Some(&effect_id), target, target, None);
+        battle.single_event("Swap", &effect_id, Some(target), Some(target), None);
 
         EventResult::Continue
     }

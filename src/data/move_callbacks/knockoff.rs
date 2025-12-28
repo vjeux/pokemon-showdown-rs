@@ -37,8 +37,8 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
     }
 
     // if (!this.singleEvent('TakeItem', item, target.itemState, target, target, move, item)) return;
-    let can_take_item = battle.run_single_event("TakeItem", Some(&item_id), target, target, None);
-    if !can_take_item {
+    let result = battle.single_event("TakeItem", &item_id, Some(target), Some(target), None);
+    if let EventResult::Boolean(false) = result {
         return EventResult::Continue;
     }
 
