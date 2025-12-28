@@ -149,14 +149,14 @@ pub mod condition {
                 let ability = battle.dex.get_ability_by_id(&crate::dex_data::ID::from(eid));
                 let ability_name = ability.map(|a| a.name.clone()).unwrap_or_else(|| eid.to_string());
                 let from_msg = format!("[from] ability: {}", ability_name);
-                let source_arg = {
+                let source_ident = {
                     let pokemon = match battle.pokemon_at(source.0, source.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    crate::battle::Arg::from(pokemon)
+                    pokemon.get_slot()
                 };
-                battle.add("-fieldstart", &["move: Grassy Terrain".into(), from_msg.into(), "[of]".into(), source_arg]);
+                battle.add("-fieldstart", &["move: Grassy Terrain".into(), from_msg.into(), "[of]".into(), source_ident.as_str().into()]);
             }
         } else {
             // this.add('-fieldstart', 'move: Grassy Terrain');

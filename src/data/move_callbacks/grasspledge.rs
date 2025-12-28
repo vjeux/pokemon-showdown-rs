@@ -122,22 +122,22 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         battle.queue.prioritize_action(ally_pos.0, ally_pos.1);
 
         // this.add('-waiting', source, action.pokemon);
-        let source_arg = {
+        let source_ident = {
             let pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
         };
         let ally_pos = ally_pokemon_pos.unwrap();
-        let ally_arg = {
+        let ally_ident = {
             let pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
         };
-        battle.add("-waiting", &[source_arg, ally_arg]);
+        battle.add("-waiting", &[source_ident.as_str().into(), ally_ident.as_str().into()]);
 
         // return null;
         return EventResult::Stop;
