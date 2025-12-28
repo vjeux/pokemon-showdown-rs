@@ -15,22 +15,70 @@ use crate::event::EventResult;
 ///     return move.basePower;
 /// }
 pub fn base_power_callback(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    // Get the target
+    let target = match target_pos {
+        Some(pos) => match battle.pokemon_at(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        },
+        None => return EventResult::Continue,
+    };
+
+    // Get the active move
+    let active_move = match &battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.status === 'slp' || target.hasAbility('comatose'))
+    if target.status == ID::from("slp") || target.has_ability(&["comatose"]) {
+        // Note: JS has this.debug call which we don't have infrastructure for yet
+        // this.debug('BP doubled on sleeping target');
+        return EventResult::Number(active_move.base_power * 2);
+    }
+
+    EventResult::Number(active_move.base_power)
 }
 
 /// onHit(target) {
 ///     if (target.status === 'slp') target.cureStatus();
 /// }
 pub fn on_hit(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // Get the target position
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if target is asleep before getting mutable reference
+    let is_asleep = {
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target.status == ID::from("slp")
+    };
+
+    // if (target.status === 'slp') target.cureStatus();
+    if is_asleep {
+        let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target.cure_status();
+    }
+
     EventResult::Continue
 }
