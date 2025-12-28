@@ -1503,14 +1503,14 @@ pub fn dispatch_condition_on_field_start(
         "fairylock" => fairylock::condition::on_field_start(battle, Some(source_pos)),
         "grassyterrain" => grassyterrain::condition::on_field_start(battle, None, Some(source_pos), None),
         "gravity" => gravity::condition::on_field_start(battle, None, Some(source_pos)),
-        "iondeluge" => iondeluge::condition::on_field_start(battle),
-        "magicroom" => magicroom::condition::on_field_start(battle),
+        "iondeluge" => iondeluge::condition::on_field_start(battle, None, None),
+        "magicroom" => magicroom::condition::on_field_start(battle, None, None),
         "mistyterrain" => mistyterrain::condition::on_field_start(battle, None, Some(source_pos), None),
-        "mudsport" => mudsport::condition::on_field_start(battle),
+        "mudsport" => mudsport::condition::on_field_start(battle, None, None),
         "psychicterrain" => psychicterrain::condition::on_field_start(battle, None, Some(source_pos), None),
-        "trickroom" => trickroom::condition::on_field_start(battle),
-        "watersport" => watersport::condition::on_field_start(battle),
-        "wonderroom" => wonderroom::condition::on_field_start(battle),
+        "trickroom" => trickroom::condition::on_field_start(battle, None, None),
+        "watersport" => watersport::condition::on_field_start(battle, None, None),
+        "wonderroom" => wonderroom::condition::on_field_start(battle, None, None),
         _ => EventResult::Continue,
     }
 }
@@ -1547,9 +1547,9 @@ pub fn dispatch_condition_on_foe_redirect_target(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "followme" => followme::condition::on_foe_redirect_target(battle, source_pos),
-        "ragepowder" => ragepowder::condition::on_foe_redirect_target(battle, source_pos),
-        "spotlight" => spotlight::condition::on_foe_redirect_target(battle, source_pos),
+        "followme" => followme::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id),
+        "ragepowder" => ragepowder::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id),
+        "spotlight" => spotlight::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
