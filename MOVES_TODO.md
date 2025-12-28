@@ -523,6 +523,285 @@ By callback type:
 
 ## Missing Infrastructure
 
+### Critical Infrastructure Needed for Remaining 117 Callbacks
+
+All 117 remaining callbacks require one or more of the following infrastructure components that don't currently exist or need modifications to existing code.
+
+### 1. Active Move Access in Callbacks
+
+**Problem:** Most callbacks need to check properties of the active move (isZ, isMax, target type, move type, flags)
+
+**Current State:**
+- `battle.active_move: Option<ActiveMove>` exists
+- `ActiveMove` has fields: `is_z`, `is_max`, `move_type`, `target`, `flags: MoveFlags`
+- BUT: These are not accessible in callback signatures or need helper methods
+
+**Needed:**
+- Helper methods to access active move properties from within callbacks
+- OR: Pass active move reference/data to callbacks that need it
+
+**Blocks:**
+- healblock.rs: on_before_move, on_modify_move - needs move.flags['heal'], move.isZ, move.isMax
+- throatchop.rs: on_before_move, on_modify_move - needs move.flags['sound'], move.isZOrMaxPowered
+- taunt.rs: on_before_move - needs move.category, move.isZ, move.isZOrMaxPowered, move.id
+- wideguard.rs: on_try, on_try_hit - needs move.target type, move.isZ, move.isMax, move.id
+- terablast.rs: on_modify_type, on_modify_move - needs to modify move.type, move.category
+- All MoveHandlerResult callbacks (need different infrastructure)
+
+### 2. Mutable Move Modification
+
+**Problem:** Many callbacks need to modify the active move's properties (type, category, base_power)
+
+**Current State:**
+- ActiveMove exists but callbacks can't modify it
+- Callbacks return EventResult, not modified move data
+
+**Needed:**
+- System for callbacks to modify active move properties
+- Possibly through battle state or return values
+
+**Blocks:**
+- terablast.rs: on_modify_type, on_modify_move - modify move.type, move.category, move.self
+- technoblast.rs: on_modify_type - modify move.type
+- terrainpulse.rs: on_modify_type, on_modify_move - modify move.type, move.basePower
+- terastarstorm.rs: on_modify_type, on_modify_move - modify move.type, move.category, move.target
+- All pledge moves (firepledge, waterpledge): modify move.type, move.basePower, move.forceSTAB
+
+### 3. Pokemon Type and Ability Checking
+
+**Problem:** Need methods to check pokemon types and abilities
+
+**Current State:**
+- Pokemon has `types: Vec<String>` field
+- Pokemon has `ability: ID` field
+- NO helper methods exist for checking
+
+**Needed:**
+```rust
+impl Pokemon {
+    pub fn has_type(&self, type_name: &str) -> bool;
+    pub fn get_types(&self) -> &Vec<String>;
+    pub fn has_ability(&self, ability_name: &str) -> bool;
+    pub fn run_immunity(&self, type_name: &str) -> bool;
+}
+```
+
+**Blocks:**
+- trick.rs, trickroom.rs, wonderroom.rs, healblock.rs - need has_ability()
+- thousandarrows.rs - needs runImmunity(), hasType()
+- toxicspikes.rs - needs hasType()
+- telekinesis.rs - needs base_species checks
+
+### 4. Item Management
+
+**Problem:** Need comprehensive item system methods
+
+**Current State:**
+- Pokemon has `item: ID` field
+- NO methods for getting, taking, setting items
+
+**Needed:**
+```rust
+impl Pokemon {
+    pub fn get_item(&self) -> Option<&Item>;
+    pub fn take_item(&mut self, source: Option<&Pokemon>) -> Option<Item>;
+    pub fn set_item(&mut self, item: ID) -> bool;
+    pub fn has_item(&self, item_name: &str) -> bool;
+}
+```
+
+**Blocks:**
+- trick.rs: needs take_item(), set_item(), has_ability()
+- thief.rs: needs takeItem(), setItem(), singleEvent()
+- switcheroo.rs: needs item management
+- fling.rs: needs setItem(), getItem(), runEvent('AfterUseItem')
+- teatime.rs: needs getItem(), eatItem()
+
+### 5. Event System
+
+**Problem:** Callbacks need to fire and respond to events
+
+**Current State:**
+- No event system for callbacks to use
+
+**Needed:**
+```rust
+impl Battle {
+    pub fn run_event(&mut self, event_name: &str, ...) -> EventResult;
+    pub fn single_event(&mut self, event_name: &str, ...) -> bool;
+}
+```
+
+**Blocks:**
+- trick.rs: needs singleEvent('TakeItem')
+- thief.rs: needs singleEvent('TakeItem')
+- fling.rs: needs runEvent('AfterUseItem')
+- teatime.rs: needs runEvent('Invulnerability'), runEvent('TryHit')
+- technoblast.rs: needs runEvent('Drive')
+
+### 6. Queue and Action System
+
+**Problem:** Callbacks need to check upcoming actions and queue state
+
+**Current State:**
+- No queue system exposed to callbacks
+
+**Needed:**
+```rust
+impl Battle {
+    pub fn queue_will_act(&self) -> bool;
+    pub fn queue_will_move(&self, pokemon: &Pokemon) -> bool;
+}
+```
+
+**Blocks:**
+- wideguard.rs: on_try - needs queue.willAct()
+- taunt.rs: on_start - needs queue.willMove(target)
+- firepledge.rs, waterpledge.rs: need queue.willMove()
+
+### 7. Status Management
+
+**Problem:** Need methods to try setting status with immunity checks
+
+**Current State:**
+- Pokemon has `set_status()` but it's simplistic
+- NO try_set_status with proper checking
+
+**Needed:**
+```rust
+impl Pokemon {
+    pub fn try_set_status(&mut self, status: &str, source: Option<&Pokemon>) -> bool;
+}
+```
+
+**Blocks:**
+- toxicspikes.rs: needs try_set_status()
+- direclaw.rs (MoveHandlerResult): needs trySetStatus()
+- All status-inflicting moves
+
+### 8. Healing System with Source Tracking
+
+**Problem:** heal() method exists but doesn't track source or effect
+
+**Current State:**
+```rust
+pub fn heal(&mut self, amount: i32) -> i32;  // Basic heal, no source/effect
+```
+
+**Needed:**
+```rust
+impl Battle {
+    pub fn heal(&mut self, amount: i32, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> Option<i32>;
+}
+```
+
+**Blocks:**
+- wish.rs: needs heal() with source tracking
+- healblock.rs: on_try_heal - needs to check effect.id and source
+- All G-Max moves that heal (gmaxfinale)
+
+### 9. Effect State with Custom Fields
+
+**Problem:** EffectState needs to store custom fields like source, hp, duration, turn counters
+
+**Current State:**
+- EffectState exists but is basic
+- No source tracking, custom fields, or turn counters
+
+**Needed:**
+```rust
+pub struct EffectState {
+    pub id: ID,
+    pub duration: Option<i32>,
+    pub source: Option<(usize, usize)>,
+    pub source_slot: Option<usize>,
+    // Dynamic fields for specific effects
+    pub custom_fields: HashMap<String, Value>,
+}
+```
+
+**Blocks:**
+- wish.rs: needs effectState.hp, effectState.startingTurn, effectState.source
+- syrupbomb.rs: on_update, on_residual - needs effectState.source
+- torment.rs: needs effectState.duration modification
+- All duration_callback functions
+
+### 10. Battle State Methods
+
+**Problem:** Need various battle state access methods
+
+**Needed:**
+```rust
+impl Battle {
+    pub fn get_all_active(&self) -> Vec<(usize, usize)>;
+    pub fn attr_last_move(&mut self, attr: &str);
+    pub fn get_overflowed_turn_count(&self) -> i32;
+    pub fn hint(&mut self, message: &str);
+}
+```
+
+**Blocks:**
+- teatime.rs: needs getAllActive()
+- telekinesis.rs, healblock.rs: needs attrLastMove()
+- wish.rs: needs getOverflowedTurnCount(), hint()
+
+### 11. Move Slot Management
+
+**Problem:** Need to check and disable specific moves by ID
+
+**Current State:**
+- ✅ Pokemon has move_slots field
+- ✅ disable_move() method EXISTS
+- ✅ Can iterate and check moves
+
+**Status:** WORKING - Used in throatchop, taunt, healblock on_disable_move callbacks
+
+### 12. Volatile Condition Methods (Partially Complete)
+
+**Current State:**
+- ✅ add_volatile(id) EXISTS
+- ✅ remove_volatile(id) EXISTS
+- ✅ has_volatile(id) EXISTS
+- BUT: No source tracking, no linked volatiles
+
+**Needed:**
+```rust
+pub fn add_volatile_with_source(&mut self, id: ID, source: Option<(usize, usize)>, effect: Option<&str>) -> bool;
+```
+
+**Blocks:**
+- wideguard.rs: on_hit_side - needs addVolatile('stall')
+- syrupbomb.rs: needs removeVolatile() with effect state check
+- anchorshot.rs (MoveHandlerResult): needs addVolatile() with source
+
+### 13. MoveHandlerResult Infrastructure
+
+**Problem:** 72 callbacks use MoveHandlerResult instead of EventResult - completely different system
+
+**Files Affected:**
+- All G-Max moves (gmaxfinale, gmaxbefuddle, etc.)
+- All Z-moves (genesissupernova)
+- Various special moves (alluringvoice, anchorshot, burningjealousy, direclaw, eeriespell)
+
+**Status:** Requires separate implementation approach - different signatures, different return types
+
+### Summary by Priority
+
+**High Priority (unlocks many callbacks):**
+1. Active Move Access - needed by ~40 callbacks
+2. Pokemon Type/Ability Checking - needed by ~30 callbacks
+3. Mutable Move Modification - needed by ~25 callbacks
+
+**Medium Priority:**
+4. Event System - needed by ~20 callbacks
+5. Item Management - needed by ~15 callbacks
+6. Queue/Action System - needed by ~10 callbacks
+
+**Lower Priority:**
+7. Effect State Enhancements - needed by ~10 callbacks
+8. Status/Healing with tracking - needed by ~8 callbacks
+9. MoveHandlerResult system - needed by 72 callbacks but separate infrastructure
+
 ### trick.rs
 Missing methods on Pokemon:
 - `has_ability(ability_name: &str) -> bool` - Check if pokemon has a specific ability
