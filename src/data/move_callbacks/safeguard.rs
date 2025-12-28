@@ -45,7 +45,7 @@ pub mod condition {
                 };
 
                 battle.add("-activate", &[
-                    source_arg,
+                    source_arg.into(),
                     "ability: Persistent".into(),
                     "[move] Safeguard".into(),
                 ]);
@@ -139,7 +139,7 @@ pub mod condition {
                 };
 
                 battle.add("-activate", &[
-                    target_arg,
+                    target_arg.into(),
                     "move: Safeguard".into(),
                 ]);
             }
@@ -221,7 +221,7 @@ pub mod condition {
                 };
 
                 battle.add("-activate", &[
-                    target_arg,
+                    target_arg.into(),
                     "move: Safeguard".into(),
                 ]);
             }
@@ -274,19 +274,19 @@ pub mod condition {
 
             if has_persistent {
                 battle.add("-sidestart", &[
-                    side_arg,
+                    side_arg.into(),
                     "Safeguard".into(),
                     "[persistent]".into(),
                 ]);
             } else {
                 battle.add("-sidestart", &[
-                    side_arg,
+                    side_arg.into(),
                     "Safeguard".into(),
                 ]);
             }
         } else {
             battle.add("-sidestart", &[
-                side_arg,
+                side_arg.into(),
                 "Safeguard".into(),
             ]);
         }
@@ -313,7 +313,7 @@ pub mod condition {
         let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
 
         battle.add("-sideend", &[
-            side_arg,
+            side_arg.into(),
             "Safeguard".into(),
         ]);
 

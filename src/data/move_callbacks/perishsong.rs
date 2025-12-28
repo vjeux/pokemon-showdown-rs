@@ -64,7 +64,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
                 (source_arg, pokemon_arg)
             };
 
-            battle.add("-miss", &[source_arg.into(), pokemon_arg]);
+            battle.add("-miss", &[source_arg.into(), pokemon_arg.into()]);
             // result = true;
             result = true;
         // } else if (this.runEvent('TryHit', pokemon, source, move) === null) {

@@ -90,7 +90,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         };
 
         battle.add("cant", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             "Shell Trap".into(),
             "Shell Trap".into(),
         ]);
@@ -123,7 +123,7 @@ pub mod condition {
         };
 
         battle.add("-singleturn", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             "move: Shell Trap".into(),
         ]);
 

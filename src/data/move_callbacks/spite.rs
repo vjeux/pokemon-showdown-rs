@@ -91,7 +91,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     battle.add("-activate", &[
-        target_arg,
+        target_arg.into(),
         "move: Spite".into(),
         move_name.into(),
         pp_deducted.to_string().into(),

@@ -130,7 +130,7 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
             };
 
             battle.add("-end", &[
-                target_arg,
+                target_arg.into(),
                 "Sky Drop".into(),
                 "[interrupt]".into(),
             ]);
@@ -311,7 +311,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             };
 
             battle.add("-fail", &[
-                target_arg,
+                target_arg.into(),
                 "move: Sky Drop".into(),
                 "[heavy]".into(),
             ]);
@@ -340,9 +340,9 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         };
 
         battle.add("-prepare", &[
-            source_arg,
+            source_arg.into(),
             move_name.into(),
-            target_arg,
+            target_arg.into(),
         ]);
 
         // source.addVolatile('twoturnmove', target);
@@ -397,7 +397,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         battle.add("-end", &[
-            target_arg,
+            target_arg.into(),
             "Sky Drop".into(),
         ]);
     }
@@ -730,7 +730,7 @@ pub mod condition {
             };
 
             battle.add("-end", &[
-                source_arg,
+                source_arg.into(),
                 "Sky Drop".into(),
                 "[interrupt]".into(),
             ]);

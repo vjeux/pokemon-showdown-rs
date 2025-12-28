@@ -76,7 +76,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         battle.add("-sethp", &[
-            target_arg,
+            target_arg.into(),
             target_health.into(),
             "[from] move: Pain Split".into(),
             "[silent]".into(),
@@ -103,7 +103,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         battle.add("-sethp", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             pokemon_health.into(),
             "[from] move: Pain Split".into(),
         ]);

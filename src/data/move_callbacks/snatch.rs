@@ -30,7 +30,7 @@ pub mod condition {
         };
 
         battle.add("-singleturn", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             "Snatch".into(),
         ]);
 
@@ -136,13 +136,13 @@ pub mod condition {
             };
 
             battle.add("-activate", &[
-                snatch_user_arg,
+                snatch_user_arg.into(),
                 "move: Snatch".into(),
                 format!("[of] {}", source_arg).into(),
             ]);
         } else {
             battle.add("-activate", &[
-                snatch_user_arg,
+                snatch_user_arg.into(),
                 "move: Snatch".into(),
             ]);
         }

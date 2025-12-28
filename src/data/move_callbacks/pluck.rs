@@ -102,7 +102,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     battle.add("-enditem", &[
-        target_arg,
+        target_arg.into(),
         item_name.into(),
         "[from] stealeat".into(),
         "[move] Pluck".into(),

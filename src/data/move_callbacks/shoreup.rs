@@ -74,7 +74,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         battle.add("-fail", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             "heal".into(),
         ]);
 

@@ -47,7 +47,7 @@ pub mod condition {
         };
 
         battle.add("-singleturn", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             "move: Spotlight".into(),
         ]);
 

@@ -60,7 +60,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     battle.add("-item", &[
-        pokemon_arg,
+        pokemon_arg.into(),
         item_name.into(),
         "[from] move: Recycle".into(),
     ]);

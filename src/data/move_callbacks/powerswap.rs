@@ -117,8 +117,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     battle.add("-swapboost", &[
-        source_arg,
-        target_arg,
+        source_arg.into(),
+        target_arg.into(),
         "atk, spa".into(),
         "[from] move: Power Swap".into(),
     ]);

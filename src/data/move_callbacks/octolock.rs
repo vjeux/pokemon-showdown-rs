@@ -63,7 +63,7 @@ pub mod condition {
         };
 
         battle.add("-start", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             "move: Octolock".into(),
             source_arg.into(),
         ]);
@@ -121,7 +121,7 @@ pub mod condition {
                 };
 
                 battle.add("-end", &[
-                    pokemon_arg,
+                    pokemon_arg.into(),
                     "Octolock".into(),
                     "[partiallytrapped]".into(),
                     "[silent]".into(),

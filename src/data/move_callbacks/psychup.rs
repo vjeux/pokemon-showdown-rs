@@ -157,8 +157,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     battle.add("-copyboost", &[
-        source_arg,
-        target_arg,
+        source_arg.into(),
+        target_arg.into(),
         "[from] move: Psych Up".into(),
     ]);
 

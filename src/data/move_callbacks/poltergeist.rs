@@ -61,7 +61,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     battle.add("-activate", &[
-        target_arg,
+        target_arg.into(),
         "move: Poltergeist".into(),
         item_name.into(),
     ]);

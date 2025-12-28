@@ -76,7 +76,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_
     };
 
     battle.add("-singleturn", &[
-        target_arg,
+        target_arg.into(),
         crate::battle::Arg::from("move: Roost"),
     ]);
 

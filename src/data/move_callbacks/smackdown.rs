@@ -190,7 +190,7 @@ pub mod condition {
         };
 
         battle.add("-start", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             "Smack Down".into(),
         ]);
 
@@ -254,7 +254,7 @@ pub mod condition {
             };
 
             battle.add("-start", &[
-                pokemon_arg,
+                pokemon_arg.into(),
                 "Smack Down".into(),
             ]);
         }

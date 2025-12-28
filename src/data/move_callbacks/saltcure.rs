@@ -25,7 +25,7 @@ pub mod condition {
         };
 
         battle.add("-start", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             "Salt Cure".into(),
         ]);
 
@@ -76,7 +76,7 @@ pub mod condition {
         };
 
         battle.add("-end", &[
-            pokemon_arg,
+            pokemon_arg.into(),
             "Salt Cure".into(),
         ]);
 

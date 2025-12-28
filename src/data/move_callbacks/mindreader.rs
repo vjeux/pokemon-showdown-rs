@@ -67,7 +67,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     battle.add("-activate", &[
-        source_arg,
+        source_arg.into(),
         "move: Mind Reader".into(),
         format!("[of] {}", target_arg).into(),
     ]);

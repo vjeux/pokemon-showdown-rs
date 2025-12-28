@@ -84,7 +84,7 @@ pub mod condition {
         };
 
         battle.add("-singleturn", &[
-            target_arg,
+            target_arg.into(),
             "Protect".into(),
         ]);
 
@@ -193,7 +193,7 @@ pub mod condition {
             };
 
             battle.add("-activate", &[
-                target_arg,
+                target_arg.into(),
                 "move: Protect".into(),
             ]);
         }

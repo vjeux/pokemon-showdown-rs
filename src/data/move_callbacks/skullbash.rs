@@ -85,7 +85,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     };
 
     battle.add("-prepare", &[
-        attacker_arg,
+        attacker_arg.into(),
         move_name.into(),
     ]);
 

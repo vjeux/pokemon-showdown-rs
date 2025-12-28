@@ -74,7 +74,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         };
 
         battle.add("-fail", &[
-            source_arg,
+            source_arg.into(),
             "move: Shed Tail".into(),
         ]);
         return EventResult::Boolean(false); // this.NOT_FAIL
@@ -102,7 +102,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         };
 
         battle.add("-fail", &[
-            source_arg,
+            source_arg.into(),
             "move: Shed Tail".into(),
             "[weak]".into(),
         ]);

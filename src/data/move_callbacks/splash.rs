@@ -46,9 +46,9 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         };
 
         battle.add("cant", &[
-            source_arg,
+            source_arg.into(),
             "move: Gravity".into(),
-            move_arg,
+            move_arg.into(),
         ]);
 
         // return null;
