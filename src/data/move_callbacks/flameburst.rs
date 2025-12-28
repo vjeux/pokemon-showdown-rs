@@ -41,7 +41,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         let condition = battle.dex.get_condition(&ID::from("flameburst"));
-        battle.damage(base_max_hp / 16, ally_pos, Some(source), condition.as_ref());
+        battle.damage(base_max_hp / 16, ally_pos, Some(source), condition.as_ref(), false);
     }
 
     EventResult::Continue
@@ -85,7 +85,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
         };
 
         let condition = battle.dex.get_condition(&ID::from("flameburst"));
-        battle.damage(base_max_hp / 16, ally_pos, Some(source), condition.as_ref());
+        battle.damage(base_max_hp / 16, ally_pos, Some(source), condition.as_ref(), false);
     }
 
     EventResult::Continue

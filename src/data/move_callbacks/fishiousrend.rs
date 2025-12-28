@@ -36,7 +36,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         target_pokemon.newly_switched
     };
 
-    let will_move = battle.queue.will_move(target);
+    let will_move = battle.queue.will_move(target.0, target.1);
 
     if newly_switched || will_move.is_some() {
         // this.debug('Fishious Rend damage boost');

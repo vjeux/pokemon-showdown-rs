@@ -128,12 +128,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_ability(source_ability, Some(source), None)
+        target_pokemon.set_ability(source_ability)
     };
 
     // if (!oldAbility) return oldAbility as false | null;
-    if old_ability.is_none() {
-        // oldAbility is None (null in JS), return null
+    if old_ability.as_str().is_empty() {
+        // oldAbility is empty (falsy in JS), return null
         return EventResult::Stop;
     }
 

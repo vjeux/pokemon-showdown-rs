@@ -106,7 +106,7 @@ pub mod condition {
         // if (!this.queue.willMove(target)) {
         //     this.effectState.duration!++;
         // }
-        let will_move = battle.queue.will_move(target);
+        let will_move = battle.queue.will_move(target.0, target.1);
         if !will_move {
             if let Some(ref mut effect_state) = battle.current_effect_state {
                 if let Some(duration) = effect_state.duration {
@@ -286,7 +286,7 @@ pub mod condition {
         };
 
         for move_id in move_ids_to_disable {
-            pokemon_pokemon.disable_move(&move_id);
+            pokemon_pokemon.disable_move(&move_id, None);
         }
 
         EventResult::Continue
