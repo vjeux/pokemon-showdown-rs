@@ -75,7 +75,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 
     if let Some(new_type_str) = new_type {
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.move_type = ID::from(new_type_str);
+            active_move.move_type = new_type_str.to_string();
         }
     }
 

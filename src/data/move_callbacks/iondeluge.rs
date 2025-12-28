@@ -51,7 +51,7 @@ pub mod condition {
 
         if is_normal {
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.move_type = ID::from("electric");
+                active_move.move_type = String::from("Electric");
             }
             battle.debug(&format!("{}'s type changed to Electric", move_name));
         }
