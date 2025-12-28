@@ -234,14 +234,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.ability_state = crate::effect_state::EffectState::new(target_ability_id.clone());
+        source_pokemon.ability_state = crate::event_system::EffectState::new(target_ability_id.clone());
     }
     {
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.ability_state = crate::effect_state::EffectState::new(source_ability_id.clone());
+        target_pokemon.ability_state = crate::event_system::EffectState::new(source_ability_id.clone());
     }
 
     // source.volatileStaleness = undefined;

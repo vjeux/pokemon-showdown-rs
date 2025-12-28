@@ -29,7 +29,34 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // const targetSpe = target.storedStats.spe;
     // target.storedStats.spe = source.storedStats.spe;
     // source.storedStats.spe = targetSpe;
-    battle.swap_speed_stats(source, target);
+    let target_spe = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.stored_stats.spe
+    };
+    let source_spe = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.stored_stats.spe
+    };
+    {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.stored_stats.spe = source_spe;
+    }
+    {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.stored_stats.spe = target_spe;
+    }
 
     // this.add('-activate', source, 'move: Speed Swap', `[of] ${target}`);
     let (source_arg, target_arg) = {

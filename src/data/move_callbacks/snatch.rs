@@ -77,7 +77,13 @@ pub mod condition {
         };
 
         // if (snatchUser.isSkyDropped()) return;
-        let is_skydropped = battle.is_skydropped(snatch_user);
+        let is_skydropped = {
+            let snatch_user_pokemon = match battle.pokemon_at(snatch_user.0, snatch_user.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            snatch_user_pokemon.is_sky_dropped()
+        };
         if is_skydropped {
             return EventResult::Continue;
         }
