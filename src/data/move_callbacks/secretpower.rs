@@ -61,10 +61,12 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         //     chance: 30,
         //     status: 'par',
         // });
-        let secondary = crate::dex_data::Secondary {
+        let secondary = crate::battle_actions::SecondaryEffect {
             chance: Some(30),
             status: Some("par".to_string()),
-            ..Default::default()
+            boosts: None,
+            volatile_status: None,
+            self_effect: false,
         };
         active_move.secondaries.push(secondary);
     } else if *terrain_id == ID::from("grassyterrain") {
@@ -72,10 +74,12 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         //     chance: 30,
         //     status: 'slp',
         // });
-        let secondary = crate::dex_data::Secondary {
+        let secondary = crate::battle_actions::SecondaryEffect {
             chance: Some(30),
             status: Some("slp".to_string()),
-            ..Default::default()
+            boosts: None,
+            volatile_status: None,
+            self_effect: false,
         };
         active_move.secondaries.push(secondary);
     } else if *terrain_id == ID::from("mistyterrain") {
@@ -85,12 +89,14 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         //         spa: -1,
         //     },
         // });
-        let mut boosts = std::collections::HashMap::new();
-        boosts.insert("spa".to_string(), -1);
-        let secondary = crate::dex_data::Secondary {
+        let mut boosts = crate::dex_data::BoostsTable::new();
+        boosts.spa = -1;
+        let secondary = crate::battle_actions::SecondaryEffect {
             chance: Some(30),
             boosts: Some(boosts),
-            ..Default::default()
+            status: None,
+            volatile_status: None,
+            self_effect: false,
         };
         active_move.secondaries.push(secondary);
     } else if *terrain_id == ID::from("psychicterrain") {
@@ -100,12 +106,14 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         //         spe: -1,
         //     },
         // });
-        let mut boosts = std::collections::HashMap::new();
-        boosts.insert("spe".to_string(), -1);
-        let secondary = crate::dex_data::Secondary {
+        let mut boosts = crate::dex_data::BoostsTable::new();
+        boosts.spe = -1;
+        let secondary = crate::battle_actions::SecondaryEffect {
             chance: Some(30),
             boosts: Some(boosts),
-            ..Default::default()
+            status: None,
+            volatile_status: None,
+            self_effect: false,
         };
         active_move.secondaries.push(secondary);
     }
