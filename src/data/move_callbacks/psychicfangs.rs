@@ -17,13 +17,16 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     use crate::dex_data::ID;
 
     let pokemon_pos = target_pos;
+    let side_idx = pokemon_pos.0;
 
     // pokemon.side.removeSideCondition('reflect');
     // pokemon.side.removeSideCondition('lightscreen');
     // pokemon.side.removeSideCondition('auroraveil');
-    battle.remove_side_condition(pokemon_pos.0, &ID::from("reflect"));
-    battle.remove_side_condition(pokemon_pos.0, &ID::from("lightscreen"));
-    battle.remove_side_condition(pokemon_pos.0, &ID::from("auroraveil"));
+    if side_idx < battle.sides.len() {
+        battle.sides[side_idx].remove_side_condition(&ID::from("reflect"));
+        battle.sides[side_idx].remove_side_condition(&ID::from("lightscreen"));
+        battle.sides[side_idx].remove_side_condition(&ID::from("auroraveil"));
+    }
 
     EventResult::Continue
 }

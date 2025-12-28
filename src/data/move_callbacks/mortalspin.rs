@@ -35,27 +35,27 @@ pub fn on_after_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos:
         // if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
         //     this.add('-end', pokemon, 'Leech Seed', '[from] move: Mortal Spin', `[of] ${pokemon}`);
         // }
-        let has_hp = {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        let (has_hp, removed_leechseed, pokemon_ident) = {
+            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.hp > 0
+            let hp = pokemon.hp > 0;
+            let removed = if hp {
+                pokemon.remove_volatile(&ID::from("leechseed"))
+            } else {
+                false
+            };
+            let ident = pokemon.get_slot();
+            (hp, removed, ident)
         };
 
-        if has_hp && battle.remove_volatile(pokemon_pos, &ID::from("leechseed")) {
-            let pokemon_arg = {
-                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                crate::battle::Arg::from(pokemon)
-            };
+        if has_hp && removed_leechseed {
             battle.add("-end", &[
-                pokemon_arg.clone(),
-                crate::battle::Arg::Effect(ID::from("leechseed")),
-                crate::battle::Arg::from("[from] move: Mortal Spin"),
-                crate::battle::Arg::from(format!("[of] {}", pokemon_arg.as_string())),
+                pokemon_ident.clone().into(),
+                "Leech Seed".into(),
+                "[from] move: Mortal Spin".into(),
+                format!("[of] {}", pokemon_ident).into(),
             ]);
         }
 
@@ -66,6 +66,7 @@ pub fn on_after_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos:
         //     }
         // }
         let side_conditions = vec!["spikes", "toxicspikes", "stealthrock", "stickyweb", "gmaxsteelsurge"];
+        let side_idx = pokemon_pos.0;
 
         for condition in side_conditions {
             let has_hp = {
@@ -76,23 +77,31 @@ pub fn on_after_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos:
                 pokemon.hp > 0
             };
 
-            if has_hp && battle.remove_side_condition(pokemon_pos.0, &ID::from(condition)) {
-                let pokemon_arg = {
+            if !has_hp {
+                continue;
+            }
+
+            let removed = if side_idx < battle.sides.len() {
+                battle.sides[side_idx].remove_side_condition(&ID::from(condition))
+            } else {
+                false
+            };
+
+            if removed {
+                let pokemon_ident = {
                     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    crate::battle::Arg::from(pokemon)
+                    pokemon.get_slot()
                 };
-                let side_arg = {
-                    let side = &battle.sides[pokemon_pos.0];
-                    crate::battle::Arg::Side(side.id.clone())
-                };
+
+                let side_id = if side_idx == 0 { "p1" } else { "p2" };
                 battle.add("-sideend", &[
-                    side_arg,
-                    crate::battle::Arg::from(condition),
-                    crate::battle::Arg::from("[from] move: Mortal Spin"),
-                    crate::battle::Arg::from(format!("[of] {}", pokemon_arg.as_string())),
+                    side_id.into(),
+                    condition.into(),
+                    "[from] move: Mortal Spin".into(),
+                    format!("[of] {}", pokemon_ident).into(),
                 ]);
             }
         }
@@ -109,7 +118,11 @@ pub fn on_after_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos:
         };
 
         if has_hp {
-            battle.remove_volatile(pokemon_pos, &ID::from("partiallytrapped"));
+            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.remove_volatile(&ID::from("partiallytrapped"));
         }
     }
 
@@ -132,7 +145,7 @@ pub fn on_after_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos:
 ///         }
 ///     }
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
     on_after_hit(battle, target_pos, source_pos)
 }
 
