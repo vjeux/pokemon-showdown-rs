@@ -12,6 +12,16 @@ use crate::event::EventResult;
 ///     if (this.activeMove.id !== 'knockoff' && this.activeMove.id !== 'thief' && this.activeMove.id !== 'covet') return false;
 /// }
 pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.activeMove) return false;
+    let active_move_id = match &battle.active_move {
+        Some(m) => m.id.as_str(),
+        None => return EventResult::Boolean(false),
+    };
+
+    // if (this.activeMove.id !== 'knockoff' && this.activeMove.id !== 'thief' && this.activeMove.id !== 'covet') return false;
+    if active_move_id != "knockoff" && active_move_id != "thief" && active_move_id != "covet" {
+        return EventResult::Boolean(false);
+    }
+
     EventResult::Continue
 }
