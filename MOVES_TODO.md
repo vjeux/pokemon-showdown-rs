@@ -381,10 +381,10 @@ Moves with callbacks: 373
 - [x] splinteredstormshards - Splintered Stormshards (Physical, Rock) - 2 callbacks: onHit, onAfterSubDamage
 - [x] spotlight - Spotlight (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onFoeRedirectTarget
 - [x] stealthrock - Stealth Rock (Status, Rock) - 2 callbacks: condition::onSideStart, condition::onSwitchIn
-- [ ] steelbeam - Steel Beam (Special, Steel) - 1 callback: onAfterMove
-- [ ] steelroller - Steel Roller (Physical, Steel) - 3 callbacks: onTry, onHit, onAfterSubDamage
-- [ ] stickyweb - Sticky Web (Status, Bug) - 2 callbacks: condition::onSideStart, condition::onSwitchIn
-- [ ] stockpile - Stockpile (Status, Normal) - 4 callbacks: onTry, condition::onStart, condition::onRestart, condition::onEnd
+- [x] steelbeam - Steel Beam (Special, Steel) - 1 callback: onAfterMove
+- [x] steelroller - Steel Roller (Physical, Steel) - 3 callbacks: onTry, onHit, onAfterSubDamage
+- [x] stickyweb - Sticky Web (Status, Bug) - 2 callbacks: condition::onSideStart, condition::onSwitchIn
+- [x] stockpile - Stockpile (Status, Normal) - 4 callbacks: onTry, condition::onStart, condition::onRestart, condition::onEnd
 - [ ] stompingtantrum - Stomping Tantrum (Physical, Ground) - 1 callback: basePowerCallback
 - [ ] stoneaxe - Stone Axe (Physical, Rock) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [ ] storedpower - Stored Power (Special, Psychic) - 1 callback: basePowerCallback
