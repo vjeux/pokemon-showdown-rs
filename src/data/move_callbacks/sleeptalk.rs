@@ -134,7 +134,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // this.actions.useMove(randomMove, pokemon);
-    battle.use_move(&random_move, pokemon);
+    // TODO: Implement use_move method in Battle
+    // battle.use_move(&random_move, pokemon);
 
     EventResult::Continue
 }
