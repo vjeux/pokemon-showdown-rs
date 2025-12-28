@@ -13,12 +13,16 @@ use crate::event::EventResult;
 /// }
 /// ```
 pub fn on_try(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // return this.activePerHalf > 1;
+    if battle.active_per_half > 1 {
+        EventResult::Continue
+    } else {
+        EventResult::NotFail
+    }
 }
 
 pub mod condition {
@@ -27,8 +31,23 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-singleturn', pokemon, 'move: Rage Powder');
     /// }
-    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        let pokemon = pokemon_pos;
+
+        // this.add('-singleturn', pokemon, 'move: Rage Powder');
+        let pokemon_arg = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.get_slot()
+        };
+
+        battle.add(
+            "-singleturn",
+            &[pokemon_arg.into(), "move: Rage Powder".into()],
+        );
+
         EventResult::Continue
     }
 
@@ -45,12 +64,76 @@ pub mod condition {
     /// }
     /// ```
     pub fn on_foe_redirect_target(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        source_pos: Option<(usize, usize)>,
+        move_id: &str,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // const ragePowderUser = this.effectState.target;
+        let rage_powder_user = match &battle.current_effect_state {
+            Some(effect_state) => match effect_state.target {
+                Some(pos) => pos,
+                None => return EventResult::Continue,
+            },
+            None => return EventResult::Continue,
+        };
+
+        // if (ragePowderUser.isSkyDropped()) return;
+        let is_sky_dropped = {
+            let rage_powder_pokemon = match battle.pokemon_at(rage_powder_user.0, rage_powder_user.1)
+            {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            rage_powder_pokemon.is_sky_dropped()
+        };
+
+        if is_sky_dropped {
+            return EventResult::Continue;
+        }
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (source.runStatusImmunity('powder') && this.validTarget(ragePowderUser, source, move.target))
+        let has_powder_immunity = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.run_status_immunity("powder")
+        };
+
+        if !has_powder_immunity {
+            return EventResult::Continue;
+        }
+
+        // Get move target type
+        let move_target = match battle
+            .dex
+            .get_move_by_id(&crate::dex_data::ID::from(move_id))
+        {
+            Some(move_data) => move_data.target.clone(),
+            None => return EventResult::Continue,
+        };
+
+        let is_valid_target = battle.valid_target(rage_powder_user, source, move_target.as_str());
+
+        if is_valid_target {
+            // if (move.smartTarget) move.smartTarget = false;
+            if let Some(ref mut active_move) = battle.active_move {
+                active_move.smart_target = Some(false);
+            }
+
+            // this.debug("Rage Powder redirected target of move");
+            battle.debug("Rage Powder redirected target of move");
+
+            // return ragePowderUser;
+            return EventResult::Position(rage_powder_user);
+        }
+
         EventResult::Continue
     }
 }
