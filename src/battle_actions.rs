@@ -260,6 +260,7 @@ pub struct MoveFlags {
     pub reflectable: bool,
     pub snatch: bool,
     pub gravity: bool,
+    pub bypasssub: bool,
 }
 
 /// Max move data
