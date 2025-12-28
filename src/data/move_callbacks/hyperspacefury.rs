@@ -40,7 +40,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     }
 
     // this.hint("Only a Pokemon whose form is Hoopa Unbound can use this move.");
-    battle.hint("Only a Pokemon whose form is Hoopa Unbound can use this move.");
+    battle.hint("Only a Pokemon whose form is Hoopa Unbound can use this move.", true, None);
 
     // if (source.species.name === 'Hoopa') {
     if species_name == "Hoopa" {

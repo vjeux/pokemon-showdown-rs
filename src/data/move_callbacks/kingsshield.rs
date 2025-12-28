@@ -168,7 +168,8 @@ pub mod condition {
         //     if (this.checkMoveMakesContact(move, source, target)) {
         //         this.boost({ atk: -1 }, source, target, this.dex.getActiveMove("King's Shield"));
         //     }
-        let makes_contact = battle.check_move_makes_contact(None, source, target);
+        let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&ID::from(""));
+        let makes_contact = battle.check_move_makes_contact(move_id, source);
         if makes_contact {
             battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"));
         }
@@ -197,7 +198,8 @@ pub mod condition {
         let is_z_or_max_powered = battle.active_move.as_ref().map(|m| m.is_z_or_max_powered).unwrap_or(false);
 
         if is_z_or_max_powered {
-            let makes_contact = battle.check_move_makes_contact(None, source, target);
+            let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&ID::from(""));
+            let makes_contact = battle.check_move_makes_contact(move_id, source);
             if makes_contact {
                 battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"));
             }

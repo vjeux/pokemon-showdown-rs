@@ -19,8 +19,8 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let atk = pokemon_pokemon.get_stat("atk", false, true, battle);
-        let spa = pokemon_pokemon.get_stat("spa", false, true, battle);
+        let atk = pokemon_pokemon.get_stat("atk", false);
+        let spa = pokemon_pokemon.get_stat("spa", false);
         (atk, spa)
     };
 

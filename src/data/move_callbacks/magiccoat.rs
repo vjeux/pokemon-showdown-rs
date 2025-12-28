@@ -86,7 +86,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.is_semi_invulnerable(battle)
+            target_pokemon.is_semi_invulnerable()
         };
         if is_semi_invulnerable {
             return EventResult::Continue;
@@ -164,7 +164,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.is_semi_invulnerable(battle)
+            target_pokemon.is_semi_invulnerable()
         };
         if is_semi_invulnerable {
             return EventResult::Continue;

@@ -160,11 +160,12 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     // if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
     if battle.active_move.as_ref().and_then(|m| m.source_effect.as_ref()).is_some() {
         let target_loc = {
+            let active_per_half = battle.active_per_half;
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.get_loc_of(target)
+            pokemon_pokemon.get_loc_of(target.0, target.1, active_per_half)
         };
 
         let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {

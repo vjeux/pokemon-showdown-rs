@@ -144,7 +144,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                target_pokemon.get_health(battle)
+                target_pokemon.get_health()
             };
             let target_arg = crate::battle::Arg::Pos(target.0, target.1);
             battle.add("-heal", &[target_arg, health.into(), "[from] move: Lunar Dance".into()]);

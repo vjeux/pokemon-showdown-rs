@@ -23,7 +23,7 @@ pub mod condition {
         let source_effect = battle.current_effect_state.as_ref()
             .and_then(|state| state.source_effect.as_ref().map(|s| s.to_string()))
             .unwrap_or_else(|| "Ion Deluge".to_string());
-        battle.hint(&format!("Normal-type moves become Electric-type after using {}.", source_effect));
+        battle.hint(&format!("Normal-type moves become Electric-type after using {}.", source_effect), true, None);
 
         EventResult::Continue
     }
