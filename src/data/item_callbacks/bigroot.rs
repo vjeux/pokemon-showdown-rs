@@ -14,6 +14,17 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_heal(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // const heals = ['drain', 'leechseed', 'ingrain', 'aquaring', 'strengthsap'];
+    // if (heals.includes(effect.id)) {
+    //     return this.chainModify([5324, 4096]);
+    // }
+
+    if let Some(eff_id) = effect_id {
+        let heals = ["drain", "leechseed", "ingrain", "aquaring", "strengthsap"];
+        if heals.contains(&eff_id) {
+            battle.chain_modify_fraction(5324, 4096);
+        }
+    }
+
     EventResult::Continue
 }
