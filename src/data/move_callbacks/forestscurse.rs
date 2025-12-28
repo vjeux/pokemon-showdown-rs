@@ -34,16 +34,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // if (!target.addType('Grass')) return false;
-    let add_type_result = {
+    {
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.add_type(String::from("Grass"))
-    };
-
-    if !add_type_result {
-        return EventResult::Boolean(false);
+        target_pokemon.add_type(String::from("Grass"));
     }
 
     // this.add('-start', target, 'typeadd', 'Grass', '[from] move: Forest\'s Curse');

@@ -24,7 +24,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         target_pokemon.active_turns
     };
 
-    if !will_move && active_turns > 0 {
+    if will_move.is_none() && active_turns > 0 {
         // return false;
         return EventResult::Boolean(false);
     }

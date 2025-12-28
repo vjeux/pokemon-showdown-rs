@@ -124,7 +124,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
         let healed = battle.heal(heal_amount, Some(target), None, None);
 
-        if !healed {
+        if healed.unwrap_or(0) == 0 {
             // return this.NOT_FAIL;
             return EventResult::NotFail;
         }

@@ -70,7 +70,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         }
     };
 
-    if !take_item_event || !set_item_success {
+    if matches!(take_item_event, EventResult::Boolean(false)) || !set_item_success {
         // source.item = myItem.id;
         let source_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,

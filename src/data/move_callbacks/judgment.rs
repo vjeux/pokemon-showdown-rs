@@ -45,7 +45,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
         let item = battle.dex.get_item_by_id(item_id);
         match item {
             Some(i) => {
-                if i.on_plate.is_some() && !i.z_move {
+                if i.on_plate.is_some() && i.z_move.is_none() {
                     i.on_plate.clone()
                 } else {
                     None

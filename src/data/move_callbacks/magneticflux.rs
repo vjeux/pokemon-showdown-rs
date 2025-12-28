@@ -54,7 +54,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
 
         if has_maxguard {
             let try_hit_result = battle.run_event("TryHit", ally_pos, Some(source), None, None);
-            if !try_hit_result {
+            if try_hit_result.unwrap_or(0) == 0 {
                 continue;
             }
         }

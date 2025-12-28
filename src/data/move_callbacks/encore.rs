@@ -107,7 +107,7 @@ pub mod condition {
         //     this.effectState.duration!++;
         // }
         let will_move = battle.queue.will_move(target.0, target.1);
-        if !will_move {
+        if will_move.is_none() {
             if let Some(ref mut effect_state) = battle.current_effect_state {
                 if let Some(duration) = effect_state.duration {
                     effect_state.duration = Some(duration + 1);
