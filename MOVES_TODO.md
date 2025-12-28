@@ -2,15 +2,12 @@
 
 ## Summary
 
-**Current Status:** 116 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 114 TODO callbacks remaining (out of ~700+ original callbacks)
 
-**Recently Completed in This Session:** Checklist cleanup - marked 25 previously completed files
-- fly.rs, focuspunch.rs, foresight.rs, freezeshock.rs, furycutter.rs (5 files)
-- heatcrash.rs, heavyslam.rs, healingwish.rs, psychicterrain.rs, quickguard.rs (5 files)
-- rage.rs, ragepowder.rs, ragingbull.rs, rapidspin.rs (4 files)
-- steelbeam.rs, steelroller.rs, stickyweb.rs, stockpile.rs (4 files)
-- stompingtantrum.rs, stoneaxe.rs, storedpower.rs, strengthsap.rs (4 files)
-- struggle.rs, suckerpunch.rs, supercellslam.rs, superfang.rs (4 files)
+**Recently Completed in This Session:**
+- Checklist cleanup: marked 27 previously completed files (synthesis, synchronoise, + 25 others)
+- Active implementation: 2 new callbacks
+  - swallow.rs: onTry, onHit (uses stockpile volatile, heal with layers-based amounts)
 
 **Previously Completed:** 15 callbacks (4 from latest active implementation + 11 simple message callbacks)
 - throatchop.rs: condition::on_disable_move - Disables moves with sound flag
