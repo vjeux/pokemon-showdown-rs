@@ -46,12 +46,15 @@ pub mod condition {
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // this.add('-singleturn', pokemon, 'move: Beak Blast');
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let pokemon_ident = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
         };
 
-        battle.add("-singleturn", &[pokemon.into(), "move: Beak Blast".into()]);
+        battle.add("-singleturn", &[pokemon_ident.as_str().into(), "move: Beak Blast".into()]);
 
         EventResult::Continue
     }
