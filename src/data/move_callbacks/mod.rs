@@ -566,9 +566,21 @@ pub fn dispatch_on_after_sub_damage(
         "flameburst" => flameburst::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id),
         "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, damage, target_pos),
         "icespinner" => icespinner::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "mortalspin" => mortalspin::on_after_sub_damage(battle, damage, target_pos, pokemon_pos),
+        "mortalspin" => {
+            if let Some(target) = target_pos {
+                mortalspin::on_after_sub_damage(battle, damage, target, pokemon_pos)
+            } else {
+                EventResult::Continue
+            }
+        },
         "rapidspin" => rapidspin::on_after_sub_damage(battle, damage, target_pos, pokemon_pos, move_id),
-        "shellsidearm" => shellsidearm::on_after_sub_damage(battle, damage, target_pos, pokemon_pos, move_id),
+        "shellsidearm" => {
+            if let Some(target) = target_pos {
+                shellsidearm::on_after_sub_damage(battle, damage, target, pokemon_pos, move_id)
+            } else {
+                EventResult::Continue
+            }
+        },
         "splinteredstormshards" => splinteredstormshards::on_after_sub_damage(battle),
         "steelroller" => steelroller::on_after_sub_damage(battle),
         "stoneaxe" => stoneaxe::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id),
@@ -2170,7 +2182,7 @@ pub fn dispatch_condition_on_type(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "roost" => roost::condition::on_type(battle, source_pos),
+        "roost" => roost::condition::on_type(battle, Some(source_pos)),
         _ => EventResult::Continue,
     }
 }

@@ -16,8 +16,13 @@ use crate::event::EventResult;
 ///     }
 ///     this.add('-start', target, 'typechange', 'Water');
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
 
     // if (target.getTypes().join() === 'Water' || !target.setType('Water')) {
     //     // Soak should animate even when it fails.

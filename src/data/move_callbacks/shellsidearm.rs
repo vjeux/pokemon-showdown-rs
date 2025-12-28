@@ -12,10 +12,15 @@ use crate::event::EventResult;
 ///         this.attrLastMove('[anim] Shell Side Arm ' + move.category);
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // if (!source.isAlly(target)) {
     //     this.attrLastMove('[anim] Shell Side Arm ' + move.category);
     // }
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     let is_ally = battle.is_ally(source_pos, target_pos);
 
     if !is_ally {
@@ -99,8 +104,13 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///     // Shell Side Arm normally reveals its category via animation on cart, but doesn't play either custom animation against allies
 ///     if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     let is_ally = battle.is_ally(source_pos, target_pos);
 
     if !is_ally {

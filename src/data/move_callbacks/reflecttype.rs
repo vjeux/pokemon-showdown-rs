@@ -25,8 +25,13 @@ use crate::event::EventResult;
 ///     source.knownType = target.isAlly(source) && target.knownType;
 ///     if (!source.knownType) source.apparentType = oldApparentType;
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
 
     // if (source.species && (source.species.num === 493 || source.species.num === 773)) return false;
     // Species 493 is Arceus, 773 is Silvally
