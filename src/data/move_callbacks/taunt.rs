@@ -110,6 +110,8 @@ pub mod condition {
     /// }
     pub fn on_before_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
+        // Blocked: Signature is missing attacker position parameter
+        // Cannot add the 'cant' message without knowing which pokemon is the attacker
         EventResult::Continue
     }
 }
