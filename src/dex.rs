@@ -1371,9 +1371,11 @@ impl Dex {
 
             // Pokemon that should always be marked as unavailable (unreleased event Pokemon, etc.)
             let always_unavailable = matches!(species.name.as_str(),
-                "Floette-Eternal" |  // Never officially released (AZ's Floette)
-                "Magearna-Original"  // Unobtainable event forme
+                "Floette-Eternal"  // Never officially released (AZ's Floette)
             );
+
+            // Magearna-Original is marked "Unobtainable" in gen7 mod but available in Gen 9
+            let magearna_original_unavailable = species.name == "Magearna-Original" && gen < 9;
 
             // LGPE-exclusive Pokemon (Let's Go Pikachu/Eevee)
             // These Pokemon (Meltan #808, Melmetal #809) are marked "LGPE" in gen7 mod
@@ -1381,8 +1383,8 @@ impl Dex {
             let is_lgpe_exclusive = species.num == 808 || species.num == 809; // Meltan, Melmetal
             let lgpe_unavailable_in_gen7 = is_lgpe_exclusive && gen == 7;
 
-            let should_clear_past = if always_unavailable || lgpe_unavailable_in_gen7 {
-                // Never clear "Past" for unreleased Pokemon or LGPE Pokemon in Gen 7
+            let should_clear_past = if always_unavailable || magearna_original_unavailable || lgpe_unavailable_in_gen7 {
+                // Never clear "Past" for unreleased Pokemon, Magearna-Original in Gen < 9, or LGPE Pokemon in Gen 7
                 false
             } else if gen == current_gen {
                 // Gen 9: Keep "Past" markers (they're correct for this gen)
@@ -1397,8 +1399,8 @@ impl Dex {
                 true
             };
 
-            // Explicitly mark always_unavailable Pokemon as unavailable
-            if always_unavailable {
+            // Explicitly mark unavailable Pokemon as Illegal/Unobtainable
+            if always_unavailable || magearna_original_unavailable {
                 species.tier = Some("Illegal".to_string());
                 species.is_nonstandard = Some("Unobtainable".to_string());
             } else if should_clear_past {
