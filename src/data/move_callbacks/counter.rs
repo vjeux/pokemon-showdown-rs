@@ -121,9 +121,9 @@ pub mod condition {
         match slot {
             None | Some(serde_json::Value::Null) => EventResult::Continue,
             Some(slot_value) => {
-                if let Ok(slot_idx) = serde_json::from_value::<usize>(slot_value) {
+                if let Ok(slot_str) = serde_json::from_value::<String>(slot_value) {
                     // return this.getAtSlot(this.effectState.slot);
-                    if let Some(new_target) = battle.get_at_slot(slot_idx) {
+                    if let Some(_new_target) = battle.get_at_slot(Some(&slot_str)) {
                         // TODO: Return the new target position
                         // For now, we'll just continue
                     }

@@ -31,10 +31,10 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
         target_pokemon.item.clone()
     };
 
-    let item_id = match item_id {
-        Some(id) => id,
-        None => return EventResult::Continue,
-    };
+    // Check if item is empty
+    if item_id == ID::from("") {
+        return EventResult::Continue;
+    }
 
     // if (!this.singleEvent('TakeItem', item, target.itemState, target, target, move, item)) return;
     let can_take_item = battle.run_single_event("TakeItem", Some(&item_id), target, target, None);

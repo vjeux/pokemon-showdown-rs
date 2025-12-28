@@ -199,9 +199,7 @@ pub mod condition {
         if is_z_or_max_powered {
             let makes_contact = battle.check_move_makes_contact(None, source, target);
             if makes_contact {
-                let mut boosts = std::collections::HashMap::new();
-                boosts.insert("atk".to_string(), -1);
-                battle.boost(boosts, source, Some(target), Some(&ID::from("kingsshield")));
+                battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"));
             }
         }
 
