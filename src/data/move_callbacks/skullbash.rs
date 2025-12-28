@@ -45,7 +45,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        active_move.clone()
+        active_move.id.clone()
     };
 
     let removed = battle.remove_volatile(&move_id, attacker);
@@ -72,15 +72,13 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     ]);
 
     // this.boost({ def: 1 }, attacker, attacker, move);
-    let mut boosts = std::collections::HashMap::new();
-    boosts.insert("def".to_string(), 1);
-    battle.boost(&boosts, attacker, Some(attacker), Some(&move_id));
+    battle.boost(&[("def", 1)], attacker, Some(attacker), Some(move_id.as_str()));
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;
     // }
-    let charge_result = battle.run_event("ChargeMove", attacker, defender, None, None);
-    if !charge_result {
+    let charge_result = battle.run_event("ChargeMove", Some(attacker), defender, None, None);
+    if charge_result == Some(0) {
         return EventResult::Continue;
     }
 

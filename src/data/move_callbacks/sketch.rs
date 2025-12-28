@@ -88,7 +88,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     let has_nosketch = move_data.flags.get("nosketch").copied().unwrap_or(0) != 0;
-    if has_nosketch || move_data.is_z || move_data.is_max {
+    if has_nosketch || move_data.is_z.is_some() || move_data.is_max.is_some() {
         return EventResult::Boolean(false);
     }
 

@@ -212,9 +212,16 @@ pub mod condition {
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     this.boost({ spe: -1 }, source, target, this.dex.getActiveMove("Silk Trap"));
         // }
-        let makes_contact = battle.check_move_makes_contact(source, target);
+        let move_id = {
+            let active_move = match &battle.active_move {
+                Some(active_move) => active_move,
+                None => return EventResult::Boolean(false),
+            };
+            active_move.id.clone()
+        };
+        let makes_contact = battle.check_move_makes_contact(&move_id, source, target);
         if makes_contact {
-            battle.boost(&[("spe", -1)], source, Some(target), Some(&ID::from("silktrap")));
+            battle.boost(&[("spe", -1)], source, Some(target), Some("silktrap"));
         }
 
         // return this.NOT_FAIL;
@@ -250,10 +257,17 @@ pub mod condition {
         };
 
         if is_z_or_max_powered {
-            let makes_contact = battle.check_move_makes_contact(source, target);
+            let move_id = {
+                let active_move = match &battle.active_move {
+                    Some(active_move) => active_move,
+                    None => return EventResult::Continue,
+                };
+                active_move.id.clone()
+            };
+            let makes_contact = battle.check_move_makes_contact(&move_id, source, target);
             if makes_contact {
                 // this.boost({ spe: -1 }, source, target, this.dex.getActiveMove("Silk Trap"));
-                battle.boost(&[("spe", -1)], source, Some(target), Some(&ID::from("silktrap")));
+                battle.boost(&[("spe", -1)], source, Some(target), Some("silktrap"));
             }
         }
 
