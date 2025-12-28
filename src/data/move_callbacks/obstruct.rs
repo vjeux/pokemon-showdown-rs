@@ -112,7 +112,7 @@ pub mod condition {
                     Some(active_move) => active_move.id.clone(),
                     None => return EventResult::Continue,
                 };
-                move_id
+                active_move
             };
 
             if move_id == ID::from("gmaxoneblow") || move_id == ID::from("gmaxrapidflow") {
@@ -148,10 +148,10 @@ pub mod condition {
                 Some(m) => m.smart_target,
                 None => return EventResult::Continue,
             };
-            smart_target
+            active_move
         };
 
-        if smart_target {
+        if smart_target.unwrap_or(false) {
             // move.smartTarget = false;
             if let Some(ref mut active_move) = battle.active_move {
                 active_move.smart_target = Some(false);

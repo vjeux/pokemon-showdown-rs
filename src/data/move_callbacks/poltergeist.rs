@@ -35,7 +35,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     let target = target_pos;
 
     // this.add('-activate', target, 'move: Poltergeist', this.dex.items.get(target.item).name);
-    let (target_arg, item_name) = {
+    let (target_arg, item_id) = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
