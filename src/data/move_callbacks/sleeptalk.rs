@@ -26,7 +26,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         };
 
         let has_sleep = source_pokemon.status == ID::from("slp");
-        let has_comatose = battle.has_ability(source, "comatose");
+        let has_comatose = source_pokemon.has_ability(&["comatose"]);
 
         has_sleep || has_comatose
     };
