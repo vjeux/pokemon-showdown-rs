@@ -1,3 +1,6 @@
+Fixed in solarbeam.rs: weather = battle.effective_weather(attacker)
+Fixed in solarbeam.rs: weather = battle.effective_weather(pokemon)
+Total changes in solarbeam.rs: 2
 //! Solar Beam Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
@@ -98,7 +101,19 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     ]);
 
     // if (['sunnyday', 'desolateland'].includes(attacker.effectiveWeather())) {
-    let weather = battle.effective_weather(attacker);
+    let weather = {
+        let field_weather = battle.field.weather.as_str();
+        let pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let weather_str = pokemon.effective_weather(field_weather);
+        if weather_str.is_empty() {
+            None
+        } else {
+            Some(ID::from(weather_str.as_str()))
+        }
+    };
     if weather == Some(ID::from("sunnyday")) || weather == Some(ID::from("desolateland")) {
         // this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);
@@ -177,7 +192,19 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
 
     // const weakWeathers = ['raindance', 'primordialsea', 'sandstorm', 'hail', 'snowscape'];
     // if (weakWeathers.includes(pokemon.effectiveWeather())) {
-    let weather = battle.effective_weather(pokemon);
+    let weather = {
+        let field_weather = battle.field.weather.as_str();
+        let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let weather_str = pokemon.effective_weather(field_weather);
+        if weather_str.is_empty() {
+            None
+        } else {
+            Some(ID::from(weather_str.as_str()))
+        }
+    };
     let is_weak_weather = weather == Some(ID::from("raindance")) ||
                           weather == Some(ID::from("primordialsea")) ||
                           weather == Some(ID::from("sandstorm")) ||
@@ -194,4 +221,5 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
 
     EventResult::Continue
 }
+
 
