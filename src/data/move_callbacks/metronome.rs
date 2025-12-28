@@ -65,7 +65,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // this.actions.useMove(randomMove, pokemon);
-    crate::battle_actions::use_move(battle, &move_id, pokemon, None, None);
+    crate::battle_actions::use_move(battle, &move_id, pokemon, None, None, None, None);
 
     EventResult::Continue
 }

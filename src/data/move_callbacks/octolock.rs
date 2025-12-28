@@ -159,7 +159,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                pokemon_pokemon.try_trap();
+                pokemon_pokemon.try_trap(false);
             }
         }
 
