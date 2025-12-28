@@ -51,15 +51,15 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let target_arg = {
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
-        battle.add("-singleturn", &[target_arg, "move: Protect".into()]);
+        battle.add("-singleturn", &[target_ident.as_str().into(), "move: Protect".into()]);
 
         EventResult::Continue
     }
@@ -120,19 +120,15 @@ pub mod condition {
         //     this.add('-activate', target, 'move: Protect');
         // }
         // TODO: smartTarget not yet implemented, always add activate
-        let (target_arg, source_arg) = {
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            (Arg::from(target_pokemon), Arg::from(source_pokemon))
+            target_pokemon.get_slot()
         };
 
-        battle.add("-activate", &[target_arg, "move: Protect".into()]);
+        battle.add("-activate", &[target_ident.as_str().into(), "move: Protect".into()]);
 
         // const lockedmove = source.getVolatile('lockedmove');
         // if (lockedmove) {

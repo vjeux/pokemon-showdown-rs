@@ -27,12 +27,12 @@ pub mod condition {
             false
         };
 
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            Arg::from(pokemon)
+            pokemon.get_slot()
         };
 
         if is_special_ability {
@@ -43,10 +43,10 @@ pub mod condition {
             };
 
             let from_str = format!("[from] ability: {}", effect_id.unwrap_or(""));
-            battle.add("-start", &[pokemon_arg, "Charge".into(), active_move_name.into(), from_str.into()]);
+            battle.add("-start", &[pokemon_ident.as_str().into(), "Charge".into(), active_move_name.into(), from_str.into()]);
         } else {
             // this.add('-start', pokemon, 'Charge');
-            battle.add("-start", &[pokemon_arg, "Charge".into()]);
+            battle.add("-start", &[pokemon_ident.as_str().into(), "Charge".into()]);
         }
 
         EventResult::Continue
@@ -68,12 +68,12 @@ pub mod condition {
             false
         };
 
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            Arg::from(pokemon)
+            pokemon.get_slot()
         };
 
         if is_special_ability {
@@ -84,10 +84,10 @@ pub mod condition {
             };
 
             let from_str = format!("[from] ability: {}", effect_id.unwrap_or(""));
-            battle.add("-start", &[pokemon_arg, "Charge".into(), active_move_name.into(), from_str.into()]);
+            battle.add("-start", &[pokemon_ident.as_str().into(), "Charge".into(), active_move_name.into(), from_str.into()]);
         } else {
             // this.add('-start', pokemon, 'Charge');
-            battle.add("-start", &[pokemon_arg, "Charge".into()]);
+            battle.add("-start", &[pokemon_ident.as_str().into(), "Charge".into()]);
         }
 
         EventResult::Continue
