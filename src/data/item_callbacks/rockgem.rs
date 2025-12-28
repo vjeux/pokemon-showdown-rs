@@ -15,10 +15,49 @@ use crate::event::EventResult;
 /// }
 pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // if (target === source || move.category === 'Status') return;
-    // if (move.type === 'Rock' && source.useItem()) {
-    //     source.addVolatile('gem');
-    // }
-    // TODO: Need move.category, move.type, source.useItem(), and source.addVolatile('gem')
-    // Gem boosts Rock-type move power by 1.3x (or 1.5x in gen 5) then consumed
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if target === source
+    if target == source {
+        return EventResult::Continue;
+    }
+
+    // Check move.category === 'Status'
+    let active_move = match &battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    if active_move.category == "Status" {
+        return EventResult::Continue;
+    }
+
+    // if (move.type === 'Rock' && source.useItem()) { source.addVolatile('gem'); }
+    if active_move.move_type == "Rock" {
+        // Two-phase borrow: first get item, then modify pokemon
+        let item_used = {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.use_item()
+        };
+
+        if item_used.is_some() {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.add_volatile("gem".into());
+        }
+    }
+
     EventResult::Continue
 }

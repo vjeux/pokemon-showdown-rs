@@ -92,7 +92,7 @@ Items with callbacks: 326
 - [ ] dracoplate - Draco Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] dragalgite - Dragalgite (Gen 9) - 1 callback: onTakeItem
 - [ ] dragonfang - Dragon Fang (Gen 2) - 1 callback: onBasePower
-- [ ] dragongem - Dragon Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] dragongem - Dragon Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] dragoninite - Dragoninite (Gen 9) - 1 callback: onTakeItem
 - [ ] dragonmemory - Dragon Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] drampanite - Drampanite (Gen 9) - 1 callback: onTakeItem
@@ -110,11 +110,11 @@ Items with callbacks: 326
 - [ ] excadrite - Excadrite (Gen 9) - 1 callback: onTakeItem
 - [ ] expertbelt - Expert Belt (Gen 4) - 1 callback: onModifyDamage
 - [ ] fairyfeather - Fairy Feather (Gen 9) - 1 callback: onBasePower
-- [ ] fairygem - Fairy Gem (Gen 6) - 1 callback: onSourceTryPrimaryHit
+- [x] fairygem - Fairy Gem (Gen 6) - 1 callback: onSourceTryPrimaryHit
 - [ ] fairymemory - Fairy Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] falinksite - Falinksite (Gen 9) - 1 callback: onTakeItem
 - [ ] feraligite - Feraligite (Gen 9) - 1 callback: onTakeItem
-- [ ] fightinggem - Fighting Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] fightinggem - Fighting Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] fightingmemory - Fighting Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] figyberry - Figy Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] firegem - Fire Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
@@ -124,7 +124,7 @@ Items with callbacks: 326
 - [ ] flameplate - Flame Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] floatstone - Float Stone (Gen 5) - 1 callback: onModifyWeight - NEEDS onModifyWeight(weighthg) parameter
 - [ ] floettite - Floettite (Gen 9) - 1 callback: onTakeItem
-- [ ] flyinggem - Flying Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] flyinggem - Flying Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] flyingmemory - Flying Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] focusband - Focus Band (Gen 2) - 1 callback: onDamage
 - [ ] focussash - Focus Sash (Gen 4) - 1 callback: onDamage
@@ -135,20 +135,20 @@ Items with callbacks: 326
 - [ ] garchompitez - Garchompite Z (Gen 9) - 1 callback: onTakeItem
 - [ ] gardevoirite - Gardevoirite (Gen 6) - 1 callback: onTakeItem
 - [ ] gengarite - Gengarite (Gen 6) - 1 callback: onTakeItem
-- [ ] ghostgem - Ghost Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] ghostgem - Ghost Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] ghostmemory - Ghost Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] glalitite - Glalitite (Gen 6) - 1 callback: onTakeItem
 - [ ] glimmoranite - Glimmoranite (Gen 9) - 1 callback: onTakeItem
 - [ ] goldberry - Gold Berry (Gen 2) - 3 callbacks: onResidual, onTryEatItem, onEat
 - [ ] golisopite - Golisopite (Gen 9) - 1 callback: onTakeItem
 - [ ] golurkite - Golurkite (Gen 9) - 1 callback: onTakeItem
-- [ ] grassgem - Grass Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] grassgem - Grass Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] grassmemory - Grass Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] grassyseed - Grassy Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
 - [ ] greninjite - Greninjite (Gen 9) - 1 callback: onTakeItem
 - [ ] griseouscore - Griseous Core (Gen 8) - 2 callbacks: onBasePower, onTakeItem
 - [ ] griseousorb - Griseous Orb (Gen 4) - 1 callback: onBasePower
-- [ ] groundgem - Ground Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] groundgem - Ground Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] groundmemory - Ground Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] gyaradosite - Gyaradosite (Gen 6) - 1 callback: onTakeItem
 - [ ] habanberry - Haban Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
@@ -160,7 +160,7 @@ Items with callbacks: 326
 - [ ] houndoominite - Houndoominite (Gen 6) - 1 callback: onTakeItem
 - [ ] iapapaberry - Iapapa Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [ ] iceberry - Ice Berry (Gen 2) - 2 callbacks: onUpdate, onEat
-- [ ] icegem - Ice Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] icegem - Ice Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] icememory - Ice Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] icicleplate - Icicle Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] insectplate - Insect Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
@@ -236,7 +236,7 @@ Items with callbacks: 326
 - [ ] pinsirite - Pinsirite (Gen 6) - 1 callback: onTakeItem
 - [ ] pixieplate - Pixie Plate (Gen 6) - 2 callbacks: onBasePower, onTakeItem
 - [ ] poisonbarb - Poison Barb (Gen 2) - 1 callback: onBasePower
-- [ ] poisongem - Poison Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] poisongem - Poison Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] poisonmemory - Poison Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] polkadotbow - Polkadot Bow (Gen 2) - 1 callback: onBasePower
 - [ ] poweranklet - Power Anklet (Gen 4) - 1 callback: onModifySpe
@@ -248,7 +248,7 @@ Items with callbacks: 326
 - [ ] powerweight - Power Weight (Gen 4) - 1 callback: onModifySpe
 - [ ] przcureberry - PRZ Cure Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [ ] psncureberry - PSN Cure Berry (Gen 2) - 2 callbacks: onUpdate, onEat
-- [ ] psychicgem - Psychic Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] psychicgem - Psychic Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] psychicmemory - Psychic Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] psychicseed - Psychic Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
 - [ ] punchingglove - Punching Glove (Gen 9) - 2 callbacks: onBasePower, onModifyMove
@@ -263,7 +263,7 @@ Items with callbacks: 326
 - [ ] redcard - Red Card (Gen 5) - 1 callback: onAfterMoveSecondary
 - [ ] redorb - Red Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
 - [ ] rindoberry - Rindo Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] rockgem - Rock Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] rockgem - Rock Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] rockincense - Rock Incense (Gen 4) - 1 callback: onBasePower
 - [ ] rockmemory - Rock Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] rockyhelmet - Rocky Helmet (Gen 5) - 1 callback: onDamagingHit
