@@ -8105,7 +8105,7 @@ impl Battle {
     /// Rust helper method - JavaScript determines effect type dynamically via duck typing
     /// This method checks the effect ID against dex lookups to categorize it
     /// Returns: "Ability", "Item", "Move", "Status", "Volatile", "Weather", "Terrain", or "Unknown"
-    fn get_effect_type(&self, effect_id: &ID) -> &str {
+    pub fn get_effect_type(&self, effect_id: &ID) -> &str {
         // Check if it's an ability
         if self.dex.get_ability(effect_id.as_str()).is_some() {
             return "Ability";

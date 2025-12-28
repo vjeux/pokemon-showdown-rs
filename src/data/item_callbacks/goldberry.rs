@@ -40,7 +40,6 @@ pub fn on_try_eat_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, 
         Some(pokemon_pos),
         None,
         Some(&item_id.into()),
-        &[30.into()],
     );
 
     if !result {

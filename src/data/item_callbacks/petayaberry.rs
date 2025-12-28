@@ -17,8 +17,8 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     // Check conditions for eating the item
     let should_eat = {
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            let quarter_hp = pokemon.max_hp / 4;
-            let half_hp = pokemon.max_hp / 2;
+            let quarter_hp = pokemon.maxhp / 4;
+            let half_hp = pokemon.maxhp / 2;
 
             // if (pokemon.hp <= pokemon.maxhp / 4 || ...)
             if pokemon.hp <= quarter_hp {

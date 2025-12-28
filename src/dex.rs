@@ -996,6 +996,8 @@ impl Dex {
             cant_use_twice: flags.get("cantusetwice").map(|&v| v != 0).unwrap_or(false),
             future_move: flags.get("futuremove").map(|&v| v != 0).unwrap_or(false),
             gravity: flags.get("gravity").map(|&v| v != 0).unwrap_or(false),
+            bypasssub: flags.get("bypasssub").map(|&v| v != 0).unwrap_or(false),
+            pledgecombo: flags.get("pledgecombo").map(|&v| v != 0).unwrap_or(false),
         }
     }
 

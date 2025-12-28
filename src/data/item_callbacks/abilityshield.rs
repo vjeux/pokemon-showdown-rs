@@ -15,7 +15,8 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    use crate::battle::{Arg, EffectType};
+    use crate::battle::Arg;
+    use crate::event_system::EffectType;
 
     // if (effect && effect.effectType === 'Ability' && effect.name !== 'Trace') {
     //     this.add('-ability', source, effect);
@@ -23,10 +24,17 @@ pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, s
     if let Some(effect_data) = &battle.current_effect_data {
         if effect_data.effect_type == EffectType::Ability && effect_data.name != "trace" {
             if let Some(source_pos) = source_pos {
-                if let Some(source) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                let source_str = if let Some(source) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                    source.to_string()
+                } else {
+                    String::new()
+                };
+
+                if !source_str.is_empty() {
+                    let effect_name = effect_data.name.clone();
                     battle.add("-ability", &[
-                        Arg::Pokemon(source),
-                        Arg::String(effect_data.name.clone()),
+                        Arg::String(source_str),
+                        Arg::String(effect_name),
                     ]);
                 }
             }
@@ -35,9 +43,15 @@ pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, s
 
     // this.add('-block', target, 'item: Ability Shield');
     if let Some(target_pos) = target_pos {
-        if let Some(target) = battle.pokemon_at(target_pos.0, target_pos.1) {
+        let target_str = if let Some(target) = battle.pokemon_at(target_pos.0, target_pos.1) {
+            target.to_string()
+        } else {
+            String::new()
+        };
+
+        if !target_str.is_empty() {
             battle.add("-block", &[
-                Arg::Pokemon(target),
+                Arg::String(target_str),
                 Arg::Str("item: Ability Shield"),
             ]);
         }

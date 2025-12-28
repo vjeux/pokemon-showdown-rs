@@ -40,8 +40,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
 
     // move.flags['pledgecombo']
     let has_pledgecombo = battle.active_move.as_ref()
-        .and_then(|m| m.flags.get("pledgecombo"))
-        .map(|&v| v != 0)
+        .map(|m| m.flags.pledgecombo)
         .unwrap_or(false);
 
     if has_pledgecombo {

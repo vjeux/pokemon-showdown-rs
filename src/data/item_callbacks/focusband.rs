@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::battle::Arg;
 
 /// onDamage(damage, target, source, effect) {
 ///     if (this.randomChance(1, 10) && damage >= target.hp && effect && effect.effectType === 'Move') {
@@ -42,10 +43,19 @@ pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, us
         let effect_type = battle.get_effect_type(&eff_id.into());
         if effect_type == "Move" {
             // this.add("-activate", target, "item: Focus Band");
-            battle.add("-activate", &[
-                battle.pokemon_ident(target.0, target.1).into(),
-                "item: Focus Band".into(),
-            ]);
+            // Get the pokemon name first to avoid borrow checker issues
+            let target_str = if let Some(target_pokemon) = battle.pokemon_at(target.0, target.1) {
+                target_pokemon.to_string()
+            } else {
+                String::new()
+            };
+
+            if !target_str.is_empty() {
+                battle.add("-activate", &[
+                    Arg::String(target_str),
+                    Arg::Str("item: Focus Band"),
+                ]);
+            }
             // return target.hp - 1;
             return EventResult::Number(target_hp - 1);
         }
