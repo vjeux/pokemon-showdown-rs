@@ -26,8 +26,8 @@ pub enum PRNGSeed {
 impl PRNGSeed {
     /// Parse a seed string into a PRNGSeed
     pub fn from_string(s: &str) -> Result<Self, String> {
-        if s.starts_with("sodium,") {
-            Ok(PRNGSeed::Sodium(s[7..].to_string()))
+        if let Some(hex) = s.strip_prefix("sodium,") {
+            Ok(PRNGSeed::Sodium(hex.to_string()))
         } else if let Some(hex) = s.strip_prefix("gen5,") {
             if hex.len() < 16 {
                 return Err(format!("Gen5 seed too short: {}", s));

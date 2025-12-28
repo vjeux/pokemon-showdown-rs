@@ -1595,16 +1595,16 @@ pub fn parse_team(input: &str) -> Vec<ValidatorSet> {
             current = Some(pokemon);
         } else if let Some(ref mut pokemon) = current {
             // Parse subsequent lines
-            if line.starts_with("Ability:") {
-                pokemon.ability = line[8..].trim().to_string();
-            } else if line.starts_with("Level:") {
-                if let Ok(level) = line[6..].trim().parse() {
+            if let Some(ability) = line.strip_prefix("Ability:") {
+                pokemon.ability = ability.trim().to_string();
+            } else if let Some(level_str) = line.strip_prefix("Level:") {
+                if let Ok(level) = level_str.trim().parse() {
                     pokemon.level = level;
                 }
-            } else if line.starts_with("EVs:") {
-                pokemon.evs = parse_evs(&line[4..]);
-            } else if line.starts_with("IVs:") {
-                pokemon.ivs = parse_ivs(&line[4..]);
+            } else if let Some(evs) = line.strip_prefix("EVs:") {
+                pokemon.evs = parse_evs(evs);
+            } else if let Some(ivs) = line.strip_prefix("IVs:") {
+                pokemon.ivs = parse_ivs(ivs);
             } else if line.ends_with("Nature") {
                 pokemon.nature = Some(line.replace(" Nature", "").trim().to_string());
             } else if line.starts_with("- ") {
