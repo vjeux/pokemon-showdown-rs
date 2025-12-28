@@ -304,11 +304,11 @@ Moves with callbacks: 373
 - [ ] pursuit - Pursuit (Physical, Dark) - 5 callbacks: basePowerCallback, beforeTurnCallback, onModifyMove, onTryHit, condition::onBeforeSwitchOut
 - [x] quash - Quash (Status, Dark) - 1 callback: onHit
 - [x] quickguard - Quick Guard (Status, Fighting) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
-- [ ] rage - Rage (Physical, Normal) - 3 callbacks: condition::onStart, condition::onHit, condition::onBeforeMove
+- [x] rage - Rage (Physical, Normal) - 3 callbacks: condition::onStart, condition::onHit, condition::onBeforeMove
 - [x] ragefist - Rage Fist (Physical, Ghost) - 1 callback: basePowerCallback
-- [ ] ragepowder - Rage Powder (Status, Bug) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
-- [ ] ragingbull - Raging Bull (Physical, Normal) - 2 callbacks: onTryHit, onModifyType
-- [ ] rapidspin - Rapid Spin (Physical, Normal) - 2 callbacks: onAfterHit, onAfterSubDamage
+- [x] ragepowder - Rage Powder (Status, Bug) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
+- [x] ragingbull - Raging Bull (Physical, Normal) - 2 callbacks: onTryHit, onModifyType
+- [x] rapidspin - Rapid Spin (Physical, Normal) - 2 callbacks: onAfterHit, onAfterSubDamage
 - [x] razorwind - Razor Wind (Special, Normal) - 1 callback: onTryMove
 - [x] recycle - Recycle (Status, Normal) - 1 callback: onHit
 - [x] reflect - Reflect (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onAnyModifyDamage, condition::onSideStart, condition::onSideEnd
