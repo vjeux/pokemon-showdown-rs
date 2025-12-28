@@ -73,8 +73,20 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // this.add('-swapboost', source, target, '[from] move: Heart Swap');
-    let source_arg = crate::battle::Arg::Pos(source.0, source.1);
-    let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+    let source_arg = {
+        let pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        crate::battle::Arg::from(pokemon)
+    };
+    let target_arg = {
+        let pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        crate::battle::Arg::from(pokemon)
+    };
     battle.add("-swapboost", &[source_arg, target_arg, "[from] move: Heart Swap".into()]);
 
     EventResult::Continue

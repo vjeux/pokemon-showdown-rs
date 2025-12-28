@@ -81,7 +81,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (!success) {
     if !success {
         // this.add('-fail', target, 'heal');
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon)
+        };
         battle.add("-fail", &[target_arg, "heal".into()]);
 
         // return this.NOT_FAIL;

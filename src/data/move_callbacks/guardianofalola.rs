@@ -56,7 +56,13 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
 
     if has_protection || has_matblock {
         // this.add('-zbroken', target);
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon)
+        };
         battle.add("-zbroken", &[target_arg]);
 
         // return this.clampIntRange(Math.ceil(hp75 / 4 - 0.5), 1);

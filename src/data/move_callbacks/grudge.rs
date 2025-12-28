@@ -18,7 +18,13 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.add('-singlemove', pokemon, 'Grudge');
-        let pokemon_arg = crate::battle::Arg::Pos(pokemon.0, pokemon.1);
+        let pokemon_arg = {
+            let poke = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(poke)
+        };
         battle.add("-singlemove", &[pokemon_arg, "Grudge".into()]);
 
         EventResult::Continue
@@ -119,7 +125,13 @@ pub mod condition {
                     let move_name = battle.dex.get_move_by_id(&move_id)
                         .map(|m| m.name.clone())
                         .unwrap_or_else(|| move_id.to_string());
-                    let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+                    let source_arg = {
+                        let pokemon = match battle.pokemon_at(source.0, source.1) {
+                            Some(p) => p,
+                            None => return EventResult::Continue,
+                        };
+                        crate::battle::Arg::from(pokemon)
+                    };
                     battle.add("-activate", &[source_arg, "move: Grudge".into(), move_name.into()]);
                 }
             }

@@ -36,7 +36,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // this.add('-activate', source, 'move: Heal Bell');
-    let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+    let source_arg = {
+        let pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        crate::battle::Arg::from(pokemon)
+    };
     battle.add("-activate", &[source_arg, "move: Heal Bell".into()]);
 
     // let success = false;
@@ -72,7 +78,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
             if has_soundproof {
                 // this.add('-immune', ally, '[from] ability: Soundproof');
-                let ally_arg = crate::battle::Arg::Pos(ally_pos.0, ally_pos.1);
+                let ally_arg = {
+                    let pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    crate::battle::Arg::from(pokemon)
+                };
                 battle.add("-immune", &[ally_arg, "[from] ability: Soundproof".into()]);
                 // continue;
                 continue;
@@ -89,7 +101,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
             if has_goodasgold {
                 // this.add('-immune', ally, '[from] ability: Good as Gold');
-                let ally_arg = crate::battle::Arg::Pos(ally_pos.0, ally_pos.1);
+                let ally_arg = {
+                    let pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    crate::battle::Arg::from(pokemon)
+                };
                 battle.add("-immune", &[ally_arg, "[from] ability: Good as Gold".into()]);
                 // continue;
                 continue;
