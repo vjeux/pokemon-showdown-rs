@@ -88,9 +88,8 @@ pub mod condition {
             source_pokemon.last_move.clone()
         };
 
-        if is_move_effect && source_last_move.is_some() {
+        if let (true, Some(mut move_id)) = (is_move_effect, source_last_move) {
             // let move: Move = source.lastMove;
-            let mut move_id = source_last_move.unwrap();
 
             // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
             let move_data = battle.dex.get_move_by_id(&move_id);

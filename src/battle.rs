@@ -9487,37 +9487,40 @@ impl Battle {
                 };
 
                 // Gen 1 recoil damage
-                if self.gen <= 1 && recoil_data.is_some() && source.is_some() {
-                    let (recoil_num, recoil_denom) = recoil_data.unwrap();
-                    let amount = ((target_damage as f64 * recoil_num as f64) / recoil_denom as f64).floor() as i32;
-                    let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
+                if let (Some((recoil_num, recoil_denom)), Some(source_pos)) = (recoil_data, source) {
+                    if self.gen <= 1 {
+                        let amount = ((target_damage as f64 * recoil_num as f64) / recoil_denom as f64).floor() as i32;
+                        let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
 
-                    let recoil_id = ID::new("recoil");
-                    self.damage(amount, source, target, Some(&recoil_id), false);
+                        let recoil_id = ID::new("recoil");
+                        self.damage(amount, Some(source_pos), target, Some(&recoil_id), false);
+                    }
                 }
 
                 // Gen 1-4 drain healing
-                if self.gen <= 4 && drain_data.is_some() && source.is_some() {
-                    let (drain_num, drain_denom) = drain_data.unwrap();
-                    let amount = ((target_damage as f64 * drain_num as f64) / drain_denom as f64).floor() as i32;
-                    let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
+                if let (Some((drain_num, drain_denom)), Some(source_pos)) = (drain_data, source) {
+                    if self.gen <= 4 {
+                        let amount = ((target_damage as f64 * drain_num as f64) / drain_denom as f64).floor() as i32;
+                        let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
 
-                    // Draining can be countered in gen 1
-                    if self.gen <= 1 {
-                        self.last_damage = amount;
+                        // Draining can be countered in gen 1
+                        if self.gen <= 1 {
+                            self.last_damage = amount;
+                        }
+
+                        let drain_id = ID::new("drain");
+                        self.heal(amount, Some(source_pos), target, Some(&drain_id));
                     }
-
-                    let drain_id = ID::new("drain");
-                    self.heal(amount, source, target, Some(&drain_id));
                 }
 
                 // Gen 5+ drain healing (uses round instead of floor)
-                if self.gen > 4 && drain_data.is_some() && source.is_some() {
-                    let (drain_num, drain_denom) = drain_data.unwrap();
-                    let amount = ((target_damage as f64 * drain_num as f64) / drain_denom as f64).round() as i32;
+                if let (Some((drain_num, drain_denom)), Some(source_pos)) = (drain_data, source) {
+                    if self.gen > 4 {
+                        let amount = ((target_damage as f64 * drain_num as f64) / drain_denom as f64).round() as i32;
 
-                    let drain_id = ID::new("drain");
-                    self.heal(amount, source, target, Some(&drain_id));
+                        let drain_id = ID::new("drain");
+                        self.heal(amount, Some(source_pos), target, Some(&drain_id));
+                    }
                 }
             }
         }

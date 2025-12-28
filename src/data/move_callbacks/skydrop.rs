@@ -726,9 +726,8 @@ pub mod condition {
             (has_skydrop, twoturnmove_source)
         };
 
-        if has_skydrop && twoturnmove_source.is_some() {
+        if let (true, Some(source)) = (has_skydrop, twoturnmove_source) {
             // this.add('-end', target.volatiles['twoturnmove'].source, 'Sky Drop', '[interrupt]');
-            let source = twoturnmove_source.unwrap();
             let source_arg = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
