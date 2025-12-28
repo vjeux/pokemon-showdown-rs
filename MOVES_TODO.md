@@ -389,7 +389,7 @@ Moves with callbacks: 373
 - [x] synchronoise - Synchronoise (Special, Psychic) - 1 callback: onTryImmunity
 - [x] synthesis - Synthesis (Status, Grass) - 1 callback: onHit
 - [ ] syrupbomb - Syrup Bomb (Special, Grass) - 4 callbacks: condition::onStart, condition::onUpdate, condition::onResidual, condition::onEnd
-- [ ] tailwind - Tailwind (Status, Flying) - 4 callbacks: condition::durationCallback, condition::onSideStart, condition::onModifySpe, condition::onSideEnd
+- [x] tailwind - Tailwind (Status, Flying) - 4 callbacks: condition::durationCallback, condition::onSideStart, condition::onModifySpe, condition::onSideEnd
 - [x] takeheart - Take Heart (Status, Psychic) - 1 callback: onHit
 - [ ] tarshot - Tar Shot (Status, Rock) - 2 callbacks: condition::onStart, condition::onEffectiveness
 - [ ] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove, condition::onBeforeMove
@@ -411,9 +411,9 @@ Moves with callbacks: 373
 - [x] topsyturvy - Topsy-Turvy (Status, Dark) - 1 callback: onHit
 - [x] torment - Torment (Status, Dark) - 3 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove
 - [ ] toxicspikes - Toxic Spikes (Status, Poison) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
-- [ ] transform - Transform (Status, Normal) - 1 callback: onHit
+- [x] transform - Transform (Status, Normal) - 1 callback: onHit
 - [ ] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity, onHit
-- [ ] trickortreat - Trick-or-Treat (Status, Ghost) - 1 callback: onHit
+- [x] trickortreat - Trick-or-Treat (Status, Ghost) - 1 callback: onHit
 - [x] trickroom - Trick Room (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd (1/4 implemented)
 - [x] tripleaxel - Triple Axel (Physical, Ice) - 1 callback: basePowerCallback
 - [x] triplekick - Triple Kick (Physical, Fighting) - 1 callback: basePowerCallback
