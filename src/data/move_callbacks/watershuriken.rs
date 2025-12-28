@@ -15,10 +15,31 @@ use crate::event::EventResult;
 ///     return move.basePower;
 /// }
 pub fn base_power_callback(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    // Get the pokemon
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Get the active move
+    let active_move = match &battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // if (pokemon.species_id.as_str() === 'Greninja-Ash' && pokemon.hasAbility('battlebond') && !pokemon.transformed)
+    if pokemon.species_id == ID::from("greninjaash")
+        && pokemon.has_ability(&["battlebond"])
+        && !pokemon.transformed
+    {
+        return EventResult::Number(active_move.base_power + 5);
+    }
+
+    EventResult::Number(active_move.base_power)
 }
