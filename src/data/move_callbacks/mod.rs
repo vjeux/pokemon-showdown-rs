@@ -1055,11 +1055,11 @@ pub fn dispatch_on_try_immunity(
         "attract" => attract::on_try_immunity(battle, Some(pokemon_pos), None),
         "captivate" => captivate::on_try_immunity(battle, pokemon_pos, None),
         "dreameater" => dreameater::on_try_immunity(battle, Some(pokemon_pos)),
-        "endeavor" => endeavor::on_try_immunity(battle, pokemon_pos),
+        "endeavor" => endeavor::on_try_immunity(battle, None, pokemon_pos),
         "leechseed" => leechseed::on_try_immunity(battle, Some(pokemon_pos)),
         "octolock" => octolock::on_try_immunity(battle, Some(pokemon_pos)),
         "switcheroo" => switcheroo::on_try_immunity(battle, Some(pokemon_pos)),
-        "synchronoise" => synchronoise::on_try_immunity(battle, pokemon_pos),
+        "synchronoise" => synchronoise::on_try_immunity(battle, Some(pokemon_pos), None),
         "trick" => trick::on_try_immunity(battle, Some(pokemon_pos)),
         "worryseed" => worryseed::on_try_immunity(battle, Some(pokemon_pos)),
         _ => EventResult::Continue,
@@ -1200,7 +1200,7 @@ pub fn dispatch_condition_on_any_base_power(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "skydrop" => skydrop::condition::on_any_base_power(battle, source_pos),
+        "skydrop" => skydrop::condition::on_any_base_power(battle, 0, None, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1237,9 +1237,9 @@ pub fn dispatch_condition_on_any_modify_damage(
     target_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "auroraveil" => auroraveil::condition::on_any_modify_damage(battle, source_pos, target_pos),
-        "lightscreen" => lightscreen::condition::on_any_modify_damage(battle, source_pos, target_pos),
-        "reflect" => reflect::condition::on_any_modify_damage(battle, source_pos, target_pos),
+        "auroraveil" => auroraveil::condition::on_any_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
+        "lightscreen" => lightscreen::condition::on_any_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
+        "reflect" => reflect::condition::on_any_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1263,7 +1263,7 @@ pub fn dispatch_condition_on_any_set_status(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "uproar" => uproar::condition::on_any_set_status(battle, source_pos),
+        "uproar" => uproar::condition::on_any_set_status(battle, None, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1276,15 +1276,15 @@ pub fn dispatch_condition_on_base_power(
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "charge" => charge::condition::on_base_power(battle, source_pos, target_pos),
-        "electricterrain" => electricterrain::condition::on_base_power(battle, source_pos, target_pos),
-        "grassyterrain" => grassyterrain::condition::on_base_power(battle, source_pos, target_pos),
-        "helpinghand" => helpinghand::condition::on_base_power(battle, source_pos, target_pos),
-        "mefirst" => mefirst::condition::on_base_power(battle, source_pos, target_pos),
-        "mistyterrain" => mistyterrain::condition::on_base_power(battle, source_pos, target_pos),
-        "mudsport" => mudsport::condition::on_base_power(battle, source_pos, target_pos),
-        "psychicterrain" => psychicterrain::condition::on_base_power(battle, source_pos, target_pos),
-        "watersport" => watersport::condition::on_base_power(battle, source_pos, target_pos),
+        "charge" => charge::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "electricterrain" => electricterrain::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "grassyterrain" => grassyterrain::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "helpinghand" => helpinghand::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "mefirst" => mefirst::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "mistyterrain" => mistyterrain::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "mudsport" => mudsport::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "psychicterrain" => psychicterrain::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "watersport" => watersport::condition::on_base_power(battle, 0, source_pos, target_pos),
         _ => EventResult::Continue,
     }
 }
