@@ -25,3 +25,11 @@ pub mod choice;
 pub mod random_teams;
 pub mod move_types;
 pub mod teams;
+
+// Re-export commonly used types for convenience
+pub use battle::{Battle, BattleOptions, PlayerOptions, Arg};
+pub use dex::Dex;
+pub use dex_data::{ID, Gender, GameType, SideID};
+pub use prng::{PRNG, PRNGSeed};
+pub use pokemon::{Pokemon, PokemonSet};
+pub use battle_actions::{BattleActions, DamageResult};
