@@ -35,7 +35,7 @@ pub mod condition {
             target_pokemon.terastallized
         };
 
-        if terastallized {
+        if terastallized.is_some() {
             // if (target.hasType('Flying')) {
             //     this.add('-hint', "If a Terastallized Pokemon uses Roost, it remains Flying-type.");
             // }

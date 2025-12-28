@@ -53,7 +53,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         None => return EventResult::Continue,
     };
 
-    active_move.secondaries = Some(vec![]);
+    active_move.secondaries = vec![];
 
     // if (this.field.isTerrain('electricterrain')) {
     if *terrain_id == ID::from("electricterrain") {
@@ -66,9 +66,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             status: Some("par".to_string()),
             ..Default::default()
         };
-        if let Some(ref mut secondaries) = active_move.secondaries {
-            secondaries.push(secondary);
-        }
+        active_move.secondaries.push(secondary);
     } else if *terrain_id == ID::from("grassyterrain") {
         // move.secondaries.push({
         //     chance: 30,
@@ -79,9 +77,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             status: Some("slp".to_string()),
             ..Default::default()
         };
-        if let Some(ref mut secondaries) = active_move.secondaries {
-            secondaries.push(secondary);
-        }
+        active_move.secondaries.push(secondary);
     } else if *terrain_id == ID::from("mistyterrain") {
         // move.secondaries.push({
         //     chance: 30,
@@ -96,9 +92,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             boosts: Some(boosts),
             ..Default::default()
         };
-        if let Some(ref mut secondaries) = active_move.secondaries {
-            secondaries.push(secondary);
-        }
+        active_move.secondaries.push(secondary);
     } else if *terrain_id == ID::from("psychicterrain") {
         // move.secondaries.push({
         //     chance: 30,
@@ -113,9 +107,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             boosts: Some(boosts),
             ..Default::default()
         };
-        if let Some(ref mut secondaries) = active_move.secondaries {
-            secondaries.push(secondary);
-        }
+        active_move.secondaries.push(secondary);
     }
 
     EventResult::Continue

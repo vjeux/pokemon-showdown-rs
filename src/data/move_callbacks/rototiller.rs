@@ -80,11 +80,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
     //     this.boost({ atk: 1, spa: 1 }, pokemon, source);
     // }
     for pokemon_pos in targets {
-        let mut boosts = std::collections::HashMap::new();
-        boosts.insert("atk".to_string(), 1);
-        boosts.insert("spa".to_string(), 1);
-
-        battle.boost(&boosts, pokemon_pos, source, None);
+        battle.boost(&[("atk", 1), ("spa", 1)], pokemon_pos, source, None);
     }
 
     EventResult::Continue
