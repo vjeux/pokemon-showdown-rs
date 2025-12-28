@@ -81,7 +81,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        attacker_pokemon.effective_weather(battle)
+        attacker_pokemon.effective_weather()
     };
 
     if effective_weather == Some(ID::from("raindance")) || effective_weather == Some(ID::from("primordialsea")) {
@@ -109,8 +109,8 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;
     // }
-    let charge_result = battle.run_event("ChargeMove", attacker, defender, None, None);
-    if !charge_result {
+    let charge_result = battle.run_event("ChargeMove", Some(attacker), defender, None, None);
+    if charge_result.unwrap_or(0) == 0 {
         // return;
         return EventResult::Continue;
     }

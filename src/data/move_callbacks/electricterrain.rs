@@ -162,12 +162,7 @@ pub mod condition {
 
         // Get move type
         let move_type = match &battle.active_move {
-            Some(move_id) => {
-                match battle.dex.get_move_by_id(move_id) {
-                    Some(move_data) => move_data.move_type.clone(),
-                    None => return EventResult::Continue,
-                }
-            }
+            Some(active_move) => active_move.move_type.clone(),
             None => return EventResult::Continue,
         };
 

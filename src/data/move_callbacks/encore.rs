@@ -255,7 +255,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.has_move(&encore_id)
+            pokemon_pokemon.has_move(encore_id.as_str())
         };
 
         if !has_move {
