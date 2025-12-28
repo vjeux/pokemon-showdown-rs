@@ -185,7 +185,13 @@ pub mod condition {
 
         // this.effectState.slot = source.getSlot();
         // this.effectState.damage = 2 * damage;
-        let slot = battle.get_slot(source);
+        let slot = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.get_slot()
+        };
 
         if let Some(ref mut effect_state) = battle.current_effect_state {
             effect_state.data.insert("slot".to_string(), serde_json::to_value(slot).unwrap());
