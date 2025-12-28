@@ -68,7 +68,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.get_ability()
+        let ability_id = &target_pokemon.ability;
+        match battle.dex.get_ability(ability_id.as_str()) {
+            Some(data) => data,
+            None => return EventResult::Continue,
+        }
     };
 
     if target_ability_data.flags.contains_key("cantsuppress") {
@@ -84,7 +88,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.get_ability()
+        let ability_id = &source_pokemon.ability;
+        match battle.dex.get_ability(ability_id.as_str()) {
+            Some(data) => data,
+            None => return EventResult::Continue,
+        }
     };
 
     if source_ability_data.flags.contains_key("noentrain") {

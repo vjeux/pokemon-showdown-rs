@@ -27,8 +27,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let ability = target_pokemon.get_ability();
-        ability.flags.contains_key("cantsuppress")
+        let ability_id = &target_pokemon.ability;
+        match battle.dex.get_ability(ability_id.as_str()) {
+            Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
+            None => false,
+        }
     };
 
     // return false;
@@ -127,8 +130,11 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let ability = pokemon_pokemon.get_ability();
-            ability.flags.contains_key("cantsuppress")
+            let ability_id = &pokemon_pokemon.ability;
+            match battle.dex.get_ability(ability_id.as_str()) {
+                Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
+                None => false,
+            }
         };
 
         if cant_suppress {

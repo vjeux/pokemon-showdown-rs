@@ -480,6 +480,8 @@ pub struct AbilityData {
     pub short_desc: Option<String>,
     #[serde(default)]
     pub rating: Option<f64>,
+    #[serde(default)]
+    pub flags: HashMap<String, i32>,
 }
 
 /// Item data

@@ -412,6 +412,7 @@ pub struct EffectState {
     pub duration: Option<i32>,
     pub layers: Option<i32>,
     pub source_slot: Option<String>,
+    pub target_side: Option<usize>,
     #[serde(flatten)]
     pub data: HashMap<String, serde_json::Value>,
 }

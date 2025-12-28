@@ -8,7 +8,7 @@ use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// basePowerCallback(pokemon, target, move) {
-///     if (pokemon.species_id.name === 'Greninja-Ash' && pokemon.hasAbility('battlebond') &&
+///     if (pokemon.species_id.as_str() === 'Greninja-Ash' && pokemon.hasAbility('battlebond') &&
 ///         !pokemon.transformed) {
 ///         return move.basePower + 5;
 ///     }

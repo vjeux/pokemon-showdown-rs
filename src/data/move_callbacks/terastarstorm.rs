@@ -8,7 +8,7 @@ use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onModifyType(move, pokemon) {
-///     if (pokemon.species_id.name === 'Terapagos-Stellar') {
+///     if (pokemon.species_id.as_str() === 'Terapagos-Stellar') {
 ///         move.type = 'Stellar';
 ///         if (pokemon.terastallized && pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) {
 ///             move.category = 'Physical';
@@ -21,7 +21,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 }
 
 /// onModifyMove(move, pokemon) {
-///     if (pokemon.species_id.name === 'Terapagos-Stellar') {
+///     if (pokemon.species_id.as_str() === 'Terapagos-Stellar') {
 ///         move.target = 'allAdjacentFoes';
 ///     }
 /// }

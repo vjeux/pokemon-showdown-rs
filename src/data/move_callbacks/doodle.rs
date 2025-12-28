@@ -43,12 +43,17 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let mut success: Option<bool> = Some(false);
 
     // if (!target.getAbility().flags['failroleplay']) {
-    let target_ability = {
+    let target_ability_id = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.get_ability()
+        target_pokemon.ability.clone()
+    };
+
+    let target_ability = match battle.dex.get_ability(target_ability_id.as_str()) {
+        Some(a) => a,
+        None => return EventResult::Continue,
     };
 
     if !target_ability.flags.contains_key("failroleplay") {
@@ -57,16 +62,22 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
         for ally_pos in allies_and_self {
             // if (pokemon.ability === target.ability || pokemon.getAbility().flags['cantsuppress']) continue;
-            let (ally_ability, cant_suppress) = {
+            let ally_ability_id = {
                 let ally_pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
                     Some(p) => p,
                     None => continue,
                 };
-                let ability = ally_pokemon.get_ability();
-                (ally_pokemon.ability.clone(), ability.flags.contains_key("cantsuppress"))
+                ally_pokemon.ability.clone()
             };
 
-            if ally_ability == target_ability.id || cant_suppress {
+            let cant_suppress = {
+                match battle.dex.get_ability(ally_ability_id.as_str()) {
+                    Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
+                    None => false,
+                }
+            };
+
+            if ally_ability_id == target_ability_id || cant_suppress {
                 continue;
             }
 
@@ -77,7 +88,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     None => continue,
                 };
                 // setAbility returns Option<ID> - Some(old_ability) if successful, None if failed
-                ally_pokemon.set_ability(target_ability.id.clone(), None, None)
+                ally_pokemon.set_ability(target_ability_id.clone(), None, None)
             };
 
             // if (oldAbility) {

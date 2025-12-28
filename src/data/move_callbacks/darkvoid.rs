@@ -26,7 +26,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.species_id.name == "Darkrai"
+        source_pokemon.species_id.as_str() == "Darkrai"
     };
 
     // TODO: Check move.hasBounced - this requires access to the current move state

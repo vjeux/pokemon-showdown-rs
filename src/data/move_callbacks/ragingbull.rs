@@ -19,7 +19,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 }
 
 /// onModifyType(move, pokemon) {
-///     switch (pokemon.species_id.name) {
+///     switch (pokemon.species_id.as_str()) {
 ///     case 'Tauros-Paldea-Combat':
 ///         move.type = 'Fighting';
 ///         break;
