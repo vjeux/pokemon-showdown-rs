@@ -873,6 +873,9 @@ impl Dex {
             // Recoil
             recoil: move_data.recoil,
 
+            // Infiltrates flag (default to false)
+            infiltrates: false,
+
             // Hit targets (populated during execution)
             hit_targets: Vec::new(),
         };
@@ -886,6 +889,8 @@ impl Dex {
             contact: flags.get("contact").map(|&v| v != 0).unwrap_or(false),
             protect: flags.get("protect").map(|&v| v != 0).unwrap_or(false),
             mirror: flags.get("mirror").map(|&v| v != 0).unwrap_or(false),
+            reflectable: flags.get("reflectable").map(|&v| v != 0).unwrap_or(false),
+            snatch: flags.get("snatch").map(|&v| v != 0).unwrap_or(false),
             punch: flags.get("punch").map(|&v| v != 0).unwrap_or(false),
             bite: flags.get("bite").map(|&v| v != 0).unwrap_or(false),
             sound: flags.get("sound").map(|&v| v != 0).unwrap_or(false),

@@ -246,6 +246,7 @@ impl Pokemon {
         Self {
             name: if set.name.is_empty() { set.species.clone() } else { set.name.clone() },
             species_id: species_id.clone(),
+            base_species: species_id.clone(),
             level: set.level,
             gender: set.gender,
             happiness: set.happiness,
@@ -262,6 +263,7 @@ impl Pokemon {
             boosts: BoostsTable::new(),
             maxhp: 100,
             base_maxhp: 100,
+            max_hp_undynamaxed: 0,
             hp: 100,
 
             base_ability: ability_id.clone(),

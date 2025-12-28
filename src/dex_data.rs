@@ -425,6 +425,7 @@ impl EffectState {
             duration: None,
             layers: None,
             source_slot: None,
+            target_side: None,
             data: HashMap::new(),
         }
     }
