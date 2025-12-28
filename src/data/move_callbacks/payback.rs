@@ -30,7 +30,8 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         target_pokemon.newly_switched
     };
 
-    let will_move = battle.queue_will_move(target);
+    // TODO: Implement queue_will_move method in Battle
+    let will_move = false; // battle.queue_will_move(target);
 
     if newly_switched || will_move {
         // this.debug('Payback NOT boosted');

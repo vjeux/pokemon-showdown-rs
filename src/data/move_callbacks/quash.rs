@@ -28,14 +28,16 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // const action = this.queue.willMove(target);
     // if (!action) return false;
-    let has_action = battle.queue_will_move(target);
+    // TODO: Implement queue_will_move method in Battle
+    let has_action = false; // battle.queue_will_move(target);
 
     if !has_action {
         return EventResult::Boolean(false);
     }
 
     // action.order = 201;
-    battle.set_action_order(target, 201);
+    // TODO: Implement set_action_order method in Battle
+    // battle.set_action_order(target, 201);
 
     // this.add('-activate', target, 'move: Quash');
     let target_arg = {
