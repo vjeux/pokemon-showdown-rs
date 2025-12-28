@@ -31,24 +31,24 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 
     if has_gravity {
         // this.add('cant', source, 'move: Gravity', move);
-        let (source_arg, move_arg) = {
+        let (source_arg, move_id_string) = {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
 
             let active_move = match &battle.active_move {
-                Some(active_move) => active_move.id.as_str(),
+                Some(active_move) => active_move.id.to_string(),
                 None => return EventResult::Continue,
             };
 
-            (source_pokemon.get_slot(), crate::battle::Arg::Str(active_move))
+            (source_pokemon.get_slot(), active_move)
         };
 
         battle.add("cant", &[
             source_arg.into(),
             "move: Gravity".into(),
-            move_arg.into(),
+            move_id_string.into(),
         ]);
 
         // return null;

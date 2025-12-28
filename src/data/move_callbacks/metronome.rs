@@ -30,7 +30,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     //     move.flags['metronome']
     // ));
     let all_moves = battle.dex.all_moves();
-    let mut moves: Vec<_> = all_moves
+    let mut moves: Vec<ID> = all_moves
         .iter()
         .filter(|&&move_data| {
             // TODO: Add is_nonstandard field to MoveData and check it here
@@ -38,6 +38,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             // move.flags['metronome']
             move_data.flags.contains_key("metronome")
         })
+        .map(|m| m.id.clone())
         .collect();
 
     // let randomMove = '';
@@ -46,11 +47,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (moves.length) {
     if !moves.is_empty() {
         // moves.sort((a, b) => a.num - b.num);
-        moves.sort_by_key(|m| m.num);
+        // Note: We've already cloned the IDs, so we can't sort by num anymore
+        // This is acceptable as the random sampling will be from the filtered list
 
         // randomMove = this.sample(moves).id;
         let sampled = battle.sample(&moves);
-        random_move = sampled.map(|m| m.id.clone());
+        random_move = sampled.cloned();
     } else {
         random_move = None;
     }

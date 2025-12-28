@@ -274,7 +274,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
                 target_pokemon.get_slot()
             };
 
-            battle.add("-immune", &[target_arg]);
+            battle.add("-immune", &[target_arg.into()]);
             return EventResult::Stop;
         }
     } else {

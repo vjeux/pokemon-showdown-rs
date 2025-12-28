@@ -48,7 +48,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             source_pokemon.get_slot()
         };
 
-        battle.add("-fail", &[source_arg]);
+        battle.add("-fail", &[source_arg.into()]);
         return EventResult::Boolean(false); // this.NOT_FAIL
     }
 

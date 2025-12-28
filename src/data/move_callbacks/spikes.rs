@@ -22,14 +22,16 @@ pub mod condition {
         // }
 
         // this.add('-sidestart', side, 'Spikes');
-        if let Some(effect_state) = &mut battle.current_effect_state {
-            if let Some(side_index) = effect_state.side {
-                let side_id = if side_index == 0 { "p1" } else { "p2" };
-                let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sidestart", &[side_arg.into(), "Spikes".into()]);
-            }
+        let side_index = battle.current_effect_state.as_ref().and_then(|es| es.side);
 
-            // this.effectState.layers = 1;
+        if let Some(side_idx) = side_index {
+            let side_id = if side_idx == 0 { "p1" } else { "p2" };
+            let side_arg = crate::battle::Arg::Str(side_id);
+            battle.add("-sidestart", &[side_arg.into(), "Spikes".into()]);
+        }
+
+        // this.effectState.layers = 1;
+        if let Some(effect_state) = &mut battle.current_effect_state {
             effect_state.data.insert("layers".to_string(), serde_json::json!(1));
         }
 
@@ -49,21 +51,26 @@ pub mod condition {
         // }
 
         // if (this.effectState.layers >= 3) return false;
+        let layers = battle.current_effect_state.as_ref()
+            .and_then(|es| es.data.get("layers"))
+            .and_then(|v| v.as_i64())
+            .unwrap_or(0) as i32;
+
+        if layers >= 3 {
+            return EventResult::Boolean(false);
+        }
+
+        // this.add('-sidestart', side, 'Spikes');
+        let side_index = battle.current_effect_state.as_ref().and_then(|es| es.side);
+
+        if let Some(side_idx) = side_index {
+            let side_id = if side_idx == 0 { "p1" } else { "p2" };
+            let side_arg = crate::battle::Arg::Str(side_id);
+            battle.add("-sidestart", &[side_arg.into(), "Spikes".into()]);
+        }
+
+        // this.effectState.layers++;
         if let Some(effect_state) = &mut battle.current_effect_state {
-            let layers = effect_state.data.get("layers").and_then(|v| v.as_i64()).unwrap_or(0) as i32;
-
-            if layers >= 3 {
-                return EventResult::Boolean(false);
-            }
-
-            // this.add('-sidestart', side, 'Spikes');
-            if let Some(side_index) = effect_state.side {
-                let side_id = if side_index == 0 { "p1" } else { "p2" };
-                let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sidestart", &[side_arg.into(), "Spikes".into()]);
-            }
-
-            // this.effectState.layers++;
             effect_state.data.insert("layers".to_string(), serde_json::json!(layers + 1));
         }
 

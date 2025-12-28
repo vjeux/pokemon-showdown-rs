@@ -35,7 +35,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             source_pokemon.get_slot()
         };
 
-        battle.add("-fail", &[source_arg]);
+        battle.add("-fail", &[source_arg.into()]);
 
         // this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);
