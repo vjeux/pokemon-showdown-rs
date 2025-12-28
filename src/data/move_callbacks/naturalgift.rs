@@ -104,10 +104,10 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         pokemon_pokemon.item.clone()
     };
 
-    let item_id = match item_id {
-        Some(id) => id,
-        None => return EventResult::Boolean(false),
-    };
+    // Check if item is empty
+    if item_id == ID::from("") {
+        return EventResult::Boolean(false);
+    }
 
     let item_data = match battle.dex.get_item_by_id(&item_id) {
         Some(item) => item,
@@ -139,7 +139,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.item = None;
+        pokemon_pokemon.item = ID::from("");
         pokemon_pokemon.last_item = Some(item_id.clone());
         pokemon_pokemon.used_item_this_turn = true;
     }

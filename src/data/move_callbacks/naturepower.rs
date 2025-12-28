@@ -32,19 +32,19 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     let mut move_id = "triattack";
 
     // if (this.field.isTerrain('electricterrain')) {
-    if battle.field.terrain == Some(ID::from("electricterrain")) {
+    if battle.field.terrain == ID::from("electricterrain") {
         // move = 'thunderbolt';
         move_id = "thunderbolt";
     // } else if (this.field.isTerrain('grassyterrain')) {
-    } else if battle.field.terrain == Some(ID::from("grassyterrain")) {
+    } else if battle.field.terrain == ID::from("grassyterrain") {
         // move = 'energyball';
         move_id = "energyball";
     // } else if (this.field.isTerrain('mistyterrain')) {
-    } else if battle.field.terrain == Some(ID::from("mistyterrain")) {
+    } else if battle.field.terrain == ID::from("mistyterrain") {
         // move = 'moonblast';
         move_id = "moonblast";
     // } else if (this.field.isTerrain('psychicterrain')) {
-    } else if battle.field.terrain == Some(ID::from("psychicterrain")) {
+    } else if battle.field.terrain == ID::from("psychicterrain") {
         // move = 'psychic';
         move_id = "psychic";
     }
