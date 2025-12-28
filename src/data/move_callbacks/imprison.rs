@@ -21,7 +21,13 @@ pub mod condition {
         };
 
         // this.add('-start', target, 'move: Imprison');
-        let target_arg = crate::battle::Arg::Pos(target.0, target.1);
+        let target_arg = {
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon)
+        };
         battle.add("-start", &[target_arg, "move: Imprison".into()]);
 
         EventResult::Continue
@@ -133,7 +139,13 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            let attacker_arg = crate::battle::Arg::Pos(attacker_pos.0, attacker_pos.1);
+            let attacker_arg = {
+                let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                crate::battle::Arg::from(pokemon)
+            };
             let move_arg = crate::battle::Arg::Move(move_id_obj);
             battle.add("cant", &[attacker_arg, "move: Imprison".into(), move_arg]);
 
