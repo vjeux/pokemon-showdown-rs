@@ -33,15 +33,15 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     }
 
     // this.add('-fail', pokemon, 'move: Double Shock');
-    let pokemon_arg = {
+    let pokemon_ident = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(pokemon_pokemon)
+        pokemon_pokemon.get_slot()
     };
 
-    battle.add("-fail", &[pokemon_arg, "move: Double Shock".into()]);
+    battle.add("-fail", &[pokemon_ident.as_str().into(), "move: Double Shock".into()]);
 
     // this.attrLastMove('[still]');
     battle.attr_last_move(&["[still]"]);
