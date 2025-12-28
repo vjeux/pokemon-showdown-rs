@@ -385,10 +385,10 @@ Moves with callbacks: 373
 - [x] steelroller - Steel Roller (Physical, Steel) - 3 callbacks: onTry, onHit, onAfterSubDamage
 - [x] stickyweb - Sticky Web (Status, Bug) - 2 callbacks: condition::onSideStart, condition::onSwitchIn
 - [x] stockpile - Stockpile (Status, Normal) - 4 callbacks: onTry, condition::onStart, condition::onRestart, condition::onEnd
-- [ ] stompingtantrum - Stomping Tantrum (Physical, Ground) - 1 callback: basePowerCallback
-- [ ] stoneaxe - Stone Axe (Physical, Rock) - 2 callbacks: onAfterHit, onAfterSubDamage
-- [ ] storedpower - Stored Power (Special, Psychic) - 1 callback: basePowerCallback
-- [ ] strengthsap - Strength Sap (Status, Grass) - 1 callback: onHit
+- [x] stompingtantrum - Stomping Tantrum (Physical, Ground) - 1 callback: basePowerCallback
+- [x] stoneaxe - Stone Axe (Physical, Rock) - 2 callbacks: onAfterHit, onAfterSubDamage
+- [x] storedpower - Stored Power (Special, Psychic) - 1 callback: basePowerCallback
+- [x] strengthsap - Strength Sap (Status, Grass) - 1 callback: onHit
 - [ ] struggle - Struggle (Physical, Normal) - 1 callback: onModifyMove
 - [x] stuffcheeks - Stuff Cheeks (Status, Normal) - 3 callbacks: onDisableMove, onTry, onHit
 - [ ] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit, onHit, condition::onStart, condition::onTryPrimaryHit, condition::onEnd
