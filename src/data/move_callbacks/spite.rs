@@ -53,12 +53,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         }
     };
 
-    if is_z {
+    if is_z.is_some() {
         return EventResult::Boolean(false);
     }
 
     // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
-    let move_id = if is_max && base_move.is_some() {
+    let move_id = if is_max.is_some() && base_move.is_some() {
         base_move.unwrap()
     } else {
         last_move_id

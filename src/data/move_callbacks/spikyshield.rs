@@ -22,8 +22,8 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         return EventResult::Boolean(false);
     }
 
-    let stall_result = battle.run_event("StallMove", pokemon, None, None, None);
-    EventResult::Boolean(stall_result)
+    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, None);
+    EventResult::Boolean(stall_result != Some(0) && stall_result.is_some())
 }
 
 /// onHit(pokemon) {
@@ -162,7 +162,7 @@ pub mod condition {
         // } else {
         //     this.add('-activate', target, 'move: Protect');
         // }
-        if smart_target {
+        if smart_target.unwrap_or(false) {
             battle.set_active_move_smart_target(false);
         } else {
             let target_arg = {
@@ -206,7 +206,7 @@ pub mod condition {
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     this.damage(source.baseMaxhp / 8, source, target);
         // }
-        let makes_contact = battle.check_move_makes_contact(source, target);
+        let makes_contact = battle.check_move_makes_contact(&move_id, source, target);
         if makes_contact {
             let base_max_hp = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -241,15 +241,15 @@ pub mod condition {
         let source = pokemon_pos;
 
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
-        let is_z_or_max_powered = {
+        let (is_z_or_max_powered, move_id) = {
             let active_move = match &battle.active_move {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.is_z_or_max_powered
+            (active_move.is_z_or_max_powered, active_move.id.clone())
         };
 
-        let makes_contact = battle.check_move_makes_contact(source, target);
+        let makes_contact = battle.check_move_makes_contact(&move_id, source, target);
 
         if is_z_or_max_powered && makes_contact {
             // this.damage(source.baseMaxhp / 8, source, target);

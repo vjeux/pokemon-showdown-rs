@@ -92,7 +92,7 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos
                 Some(p) => p,
                 None => continue,
             };
-            (pokemon.is_active, pokemon.status == Some(ID::from("brn")))
+            (pokemon.is_active, pokemon.status == ID::from("brn"))
         };
 
         if !is_active {
