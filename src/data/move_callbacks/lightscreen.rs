@@ -102,9 +102,7 @@ pub mod condition {
             };
 
             let move_id_id = crate::dex_data::ID::from(move_id);
-            let is_crit = target_pokemon.get_move_hit_data(&move_id_id)
-                .map(|hd| hd.crit)
-                .unwrap_or(false);
+            let is_crit = target_pokemon.get_move_hit_data(&move_id_id).crit;
 
             let infiltrates = battle.active_move.as_ref()
                 .map(|m| m.infiltrates)

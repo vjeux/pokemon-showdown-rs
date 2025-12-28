@@ -89,28 +89,23 @@ pub mod condition {
         }
 
         // if (effect.effectType === 'Move' && effect.infiltrates && !target.isAlly(source)) return;
-        let effect_data = battle.dex.get_effect_by_id(&ID::from(effect_id));
-        if let Some(ref effect) = effect_data {
-            if effect.effect_type == "Move" {
-                // Check if the active move has infiltrates property (set by Infiltrator ability)
-                let infiltrates = {
-                    if let Some(ref active_move) = battle.active_move {
-                        if active_move.id == ID::from(effect_id) {
-                            active_move.infiltrates
-                        } else {
-                            false
-                        }
-                    } else {
-                        false
-                    }
-                };
-
-                if infiltrates {
-                    let is_ally = battle.is_ally(target, source);
-                    if !is_ally {
-                        return EventResult::Continue;
-                    }
+        // Check if the effect is a move with infiltrates
+        let is_infiltrating_move = {
+            if let Some(ref active_move) = battle.active_move {
+                if active_move.id == ID::from(effect_id) {
+                    active_move.infiltrates
+                } else {
+                    false
                 }
+            } else {
+                false
+            }
+        };
+
+        if is_infiltrating_move {
+            let is_ally = battle.is_ally(target, source);
+            if !is_ally {
+                return EventResult::Continue;
             }
         }
 
@@ -184,44 +179,36 @@ pub mod condition {
         };
 
         // if (effect.effectType === 'Move' && effect.infiltrates && !target.isAlly(source)) return;
-        let effect_data = battle.dex.get_effect_by_id(&ID::from(effect_id));
-        if let Some(ref effect) = effect_data {
-            if effect.effect_type == "Move" {
-                // Check if the active move has infiltrates property (set by Infiltrator ability)
-                let infiltrates = {
-                    if let Some(ref active_move) = battle.active_move {
-                        if active_move.id == ID::from(effect_id) {
-                            active_move.infiltrates
-                        } else {
-                            false
-                        }
-                    } else {
-                        false
-                    }
-                };
-
-                if infiltrates {
-                    let is_ally = battle.is_ally(target, source);
-                    if !is_ally {
-                        return EventResult::Continue;
-                    }
+        // Check if the effect is a move with infiltrates
+        let is_infiltrating_move = {
+            if let Some(ref active_move) = battle.active_move {
+                if active_move.id == ID::from(effect_id) {
+                    active_move.infiltrates
+                } else {
+                    false
                 }
+            } else {
+                false
+            }
+        };
+
+        if is_infiltrating_move {
+            let is_ally = battle.is_ally(target, source);
+            if !is_ally {
+                return EventResult::Continue;
             }
         }
 
         // if ((status.id === 'confusion' || status.id === 'yawn') && target !== source) {
         if (status == "confusion" || status == "yawn") && target != source {
             // if (effect.effectType === 'Move' && !effect.secondaries) this.add('-activate', target, 'move: Safeguard');
-            let should_activate = if let Some(ref effect) = effect_data {
-                effect.effect_type == "Move" && {
-                    if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id)) {
-                        move_data.secondaries.is_none() || move_data.secondaries.as_ref().map(|s| s.is_empty()).unwrap_or(true)
-                    } else {
-                        false
-                    }
+            // Check if should activate - if it's a move without secondaries
+            let should_activate = {
+                if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id)) {
+                    move_data.secondaries.is_none() || move_data.secondaries.as_ref().map(|s| s.is_empty()).unwrap_or(true)
+                } else {
+                    false
                 }
-            } else {
-                false
             };
 
             if should_activate {

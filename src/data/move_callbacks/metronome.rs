@@ -29,7 +29,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     //     (!move.isNonstandard || move.isNonstandard === 'Unobtainable') &&
     //     move.flags['metronome']
     // ));
-    let all_moves = battle.dex.get_all_moves();
+    let all_moves = battle.dex.all_moves();
     let mut moves: Vec<_> = all_moves
         .iter()
         .filter(|move_data| {

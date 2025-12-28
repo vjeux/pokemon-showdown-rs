@@ -33,13 +33,31 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
     // Run the Memory event to get the new type
     // This event is handled by Memory items (like Fairy Memory, Dragon Memory, etc.)
     // The default return value is 'Normal' if no Memory item changes it
-    let new_type = battle.run_event_with_default("Memory", pokemon, None, Some(&ID::from(move_id)), "Normal");
+    // TODO: Implement Memory event handling to change type based on held item
+    // For now, we'll check the item directly
+    let new_type = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        // Check if Pokemon holds a Memory item
+        if let Some(ref item_id) = pokemon_pokemon.item {
+            if let Some(item_data) = battle.dex.get_item_by_id(item_id) {
+                // Memory items have onMemory handler that returns the type
+                // For now, just use default "Normal" type
+                // TODO: Implement proper item onMemory callback
+                "Normal"
+            } else {
+                "Normal"
+            }
+        } else {
+            "Normal"
+        }
+    };
 
     // Set the move's type to the result
     if let Some(ref mut active_move) = battle.active_move {
-        if let Some(type_str) = new_type.as_str() {
-            active_move.move_type = Some(type_str.to_owned());
-        }
+        active_move.move_type = Some(new_type.to_owned());
     }
 
     EventResult::Continue

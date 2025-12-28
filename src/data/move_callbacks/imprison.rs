@@ -150,7 +150,7 @@ pub mod condition {
                 };
                 crate::battle::Arg::from(pokemon)
             };
-            let move_arg = crate::battle::Arg::Move(move_id_obj);
+            let move_arg = crate::battle::Arg::Str(move_id_obj.as_str());
             battle.add("cant", &[attacker_arg, "move: Imprison".into(), move_arg]);
 
             // return false;

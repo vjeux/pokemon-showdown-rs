@@ -65,7 +65,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // const attackType = target.lastMoveUsed.type;
     // for (const typeName of this.dex.types.names()) {
-    let type_names = battle.dex.get_type_names();
+    let type_names = battle.dex.all_type_names();
     for type_name in type_names {
         // if (source.hasType(typeName)) continue;
         let has_type = {

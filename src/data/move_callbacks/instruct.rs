@@ -156,7 +156,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         target_pokemon.last_move_target_loc.unwrap_or(0)
     };
 
-    battle.queue.prioritize_move(target, &last_move_id, target_loc);
+    // TODO: Implement resolveAction to create a move action with moveid and targetLoc
+    battle.queue.prioritize_action(target.0, target.1);
 
     EventResult::Continue
 }
