@@ -2,21 +2,22 @@
 
 ## Summary
 
-**Current Status:** 109 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 106 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Total Session Progress:**
-- **Callbacks implemented**: 7 total (5 this session + 2 previous session)
+- **Callbacks implemented**: 10 total (8 this session + 2 previous session)
   - This session:
-    - substitute.rs: condition::on_end
+    - substitute.rs: condition::on_end, on_try_hit, on_hit
     - trick.rs: on_try_immunity
     - switcheroo.rs: on_try_immunity
     - throatchop.rs: condition::on_before_move, condition::on_modify_move
+    - uproar.rs: on_try_hit
   - Previous session: swallow.rs: onTry, onHit
 - **Files marked complete**: 46 total (1 additional + 18 earlier + 27 previous session)
   - Now complete: throatchop
   - This session: takeheart, temperflare, upperhand, veeveevolley, teleport, thunder, thunderclap, topsyturvy, venomdrench, venoshock, wakeupslap, watershuriken, waterspout, wildboltstorm, wringout, tailwind, transform, trickortreat
   - Previous session: synthesis, synchronoise, + 25 others
-- **Partial implementations documented**: 15 moves now show partial completion status with ✓ markers (added trick, switcheroo)
+- **Partial implementations documented**: 17 moves now show partial completion status with ✓ markers (added trick, switcheroo, substitute, uproar)
 
 **Previously Completed:** 15 callbacks (4 from latest active implementation + 11 simple message callbacks)
 - throatchop.rs: condition::on_disable_move - Disables moves with sound flag
@@ -389,7 +390,7 @@ Moves with callbacks: 373
 - [x] strengthsap - Strength Sap (Status, Grass) - 1 callback: onHit
 - [x] struggle - Struggle (Physical, Normal) - 1 callback: onModifyMove
 - [x] stuffcheeks - Stuff Cheeks (Status, Normal) - 3 callbacks: onDisableMove, onTry, onHit
-- [ ] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit, onHit, condition::onStart, condition::onTryPrimaryHit, condition::onEnd ✓ (1/5 implemented)
+- [ ] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit ✓, onHit ✓, condition::onStart, condition::onTryPrimaryHit, condition::onEnd ✓ (3/5 implemented)
 - [x] suckerpunch - Sucker Punch (Physical, Dark) - 1 callback: onTry
 - [x] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail
 - [x] superfang - Super Fang (Physical, Normal) - 1 callback: damageCallback
@@ -428,7 +429,7 @@ Moves with callbacks: 373
 - [x] triplekick - Triple Kick (Physical, Fighting) - 1 callback: basePowerCallback
 - [x] trumpcard - Trump Card (Special, Normal) - 1 callback: basePowerCallback
 - [x] upperhand - Upper Hand (Physical, Fighting) - 1 callback: onTry
-- [ ] uproar - Uproar (Special, Normal) - 5 callbacks: onTryHit, condition::onStart ✓, condition::onResidual, condition::onEnd ✓, condition::onAnySetStatus (2/5 implemented)
+- [ ] uproar - Uproar (Special, Normal) - 5 callbacks: onTryHit ✓, condition::onStart ✓, condition::onResidual, condition::onEnd ✓, condition::onAnySetStatus (3/5 implemented)
 - [x] veeveevolley - Veevee Volley (Physical, Normal) - 1 callback: basePowerCallback
 - [x] venomdrench - Venom Drench (Status, Poison) - 1 callback: onHit
 - [x] venoshock - Venoshock (Special, Poison) - 1 callback: onBasePower
