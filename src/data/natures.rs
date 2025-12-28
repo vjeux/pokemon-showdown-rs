@@ -20,7 +20,7 @@ pub enum NatureStat {
 }
 
 impl NatureStat {
-    pub fn from_str(s: &str) -> Option<Self> {
+    pub fn parse(s: &str) -> Option<Self> {
         match s.to_lowercase().as_str() {
             "atk" | "attack" => Some(NatureStat::Atk),
             "def" | "defense" => Some(NatureStat::Def),
@@ -239,7 +239,7 @@ pub fn get_nature_by_name(name: &str) -> Option<&'static NatureDef> {
 /// Get stat multiplier for a nature and stat
 pub fn nature_stat_multiplier(nature: &str, stat: &str) -> f64 {
     let nature_id = ID::new(nature);
-    let stat_enum = NatureStat::from_str(stat);
+    let stat_enum = NatureStat::parse(stat);
 
     match (get_nature(&nature_id), stat_enum) {
         (Some(nature_def), Some(stat)) => nature_def.get_multiplier(stat),

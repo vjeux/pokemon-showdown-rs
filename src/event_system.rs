@@ -33,7 +33,7 @@ pub enum EffectType {
 }
 
 impl EffectType {
-    pub fn from_str(s: &str) -> Option<Self> {
+    pub fn parse(s: &str) -> Option<Self> {
         match s {
             "Ability" => Some(Self::Ability),
             "Item" => Some(Self::Item),

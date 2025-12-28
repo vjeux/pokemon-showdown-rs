@@ -97,7 +97,7 @@ pub enum Gender {
 }
 
 impl Gender {
-    pub fn from_str(s: &str) -> Self {
+    pub fn parse(s: &str) -> Self {
         match s {
             "M" => Gender::Male,
             "F" => Gender::Female,
@@ -147,7 +147,7 @@ impl StatID {
         ]
     }
 
-    pub fn from_str(s: &str) -> Option<StatID> {
+    pub fn parse(s: &str) -> Option<StatID> {
         match s.to_lowercase().as_str() {
             "hp" | "hitpoints" => Some(StatID::HP),
             "atk" | "attack" => Some(StatID::Atk),
@@ -355,7 +355,7 @@ pub enum SideID {
 }
 
 impl SideID {
-    pub fn from_str(s: &str) -> Option<Self> {
+    pub fn parse(s: &str) -> Option<Self> {
         match s.to_lowercase().as_str() {
             "p1" => Some(SideID::P1),
             "p2" => Some(SideID::P2),
@@ -1246,7 +1246,7 @@ impl DexStats {
         if name == "Spd" {
             return Some(StatID::Spe);
         }
-        StatID::from_str(name)
+        StatID::parse(name)
     }
 
     /// Get all stat IDs
