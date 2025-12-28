@@ -25,7 +25,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             None => return EventResult::Continue,
         };
 
-        let has_sleep = source_pokemon.status == Some(ID::from("slp"));
+        let has_sleep = source_pokemon.status == ID::from("slp");
         let has_comatose = battle.has_ability(source, "comatose");
 
         has_sleep || has_comatose
@@ -108,8 +108,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         // }
         if move_data.flags.get("nosleeptalk").copied().unwrap_or(0) != 0 ||
            move_data.flags.get("charge").copied().unwrap_or(0) != 0 ||
-           (move_data.is_z && move_data.base_power != 1) ||
-           move_data.is_max {
+           (move_data.is_z.is_some() && move_data.base_power != 1) ||
+           move_data.is_max.is_some() {
             continue;
         }
 

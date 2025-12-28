@@ -41,7 +41,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             None => return EventResult::Continue,
         };
         active_move.accuracy = 0; // true means always hit
-        active_move.flags.contact = None;
+        active_move.flags.contact = false;
     }
 
     EventResult::Continue
@@ -206,7 +206,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        active_move.clone()
+        active_move.id.clone()
     };
 
     // if (source.removeVolatile(move.id)) {

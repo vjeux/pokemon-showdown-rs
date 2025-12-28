@@ -25,7 +25,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             None => return EventResult::Continue,
         };
 
-        let has_sleep = source_pokemon.status == Some(ID::from("slp"));
+        let has_sleep = source_pokemon.status == ID::from("slp");
         let has_comatose = battle.has_ability(source, "comatose");
 
         has_sleep || has_comatose

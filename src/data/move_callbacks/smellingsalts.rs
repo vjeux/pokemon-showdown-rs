@@ -35,7 +35,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.status == Some(ID::from("par"))
+        target_pokemon.status == ID::from("par")
     };
 
     if has_paralysis {
@@ -86,7 +86,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.status == Some(ID::from("par"))
+        target_pokemon.status == ID::from("par")
     };
 
     if has_paralysis {
