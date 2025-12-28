@@ -319,7 +319,7 @@ pub mod condition {
 
         // if (move.flags['gravity'] && !move.isZ) {
         let has_gravity_flag = if let Some(move_data) = battle.active_move.as_ref() {
-            move_data.flags.contains_key("gravity")
+            move_data.flags.gravity
         } else {
             false
         };
@@ -360,7 +360,7 @@ pub mod condition {
 
         // if (move.flags['gravity'] && !move.isZ) {
         let has_gravity_flag = if let Some(move_data) = battle.active_move.as_ref() {
-            move_data.flags.contains_key("gravity")
+            move_data.flags.gravity
         } else {
             false
         };

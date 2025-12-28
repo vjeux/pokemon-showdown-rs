@@ -902,6 +902,7 @@ impl Dex {
             wind: flags.get("wind").map(|&v| v != 0).unwrap_or(false),
             cant_use_twice: flags.get("cantusetwice").map(|&v| v != 0).unwrap_or(false),
             future_move: flags.get("futuremove").map(|&v| v != 0).unwrap_or(false),
+            gravity: flags.get("gravity").map(|&v| v != 0).unwrap_or(false),
         }
     }
 
