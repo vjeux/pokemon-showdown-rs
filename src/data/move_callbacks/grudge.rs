@@ -87,7 +87,7 @@ pub mod condition {
             // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
             let move_data = battle.dex.get_move_by_id(&move_id);
             if let Some(move_data) = move_data {
-                if move_data.is_max && move_data.base_move.is_some() {
+                if move_data.is_max.is_some() && move_data.base_move.is_some() {
                     move_id = move_data.base_move.clone().unwrap();
                 }
             }

@@ -21,7 +21,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.effective_weather(battle)
+        pokemon_pokemon.effective_weather()
     };
 
     if effective_weather == Some(ID::from("sunnyday")) || effective_weather == Some(ID::from("desolateland")) {
