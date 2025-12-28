@@ -494,7 +494,7 @@ impl Battle {
 
         // Log start
         battle.input_log.push(format!(">start {{\"formatid\":\"{}\",\"seed\":\"{}\"}}",
-            format_id_str, seed.to_string()));
+            format_id_str, seed));
         battle.add_log("gametype", &[&game_type_to_string(&game_type)]);
 
         // Add players if provided
