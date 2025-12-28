@@ -117,6 +117,14 @@ pub struct EffectState {
 }
 
 impl EffectState {
+    /// Create a new EffectState with the given ID
+    pub fn new(id: ID) -> Self {
+        Self {
+            id,
+            ..Default::default()
+        }
+    }
+
     /// Get a boolean field from custom data
     /// Equivalent to volatile.fieldName or effectState.fieldName in TypeScript
     pub fn get_bool(&self, key: &str) -> Option<bool> {
