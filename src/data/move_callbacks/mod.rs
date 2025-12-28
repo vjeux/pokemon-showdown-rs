@@ -1595,8 +1595,8 @@ pub fn dispatch_condition_on_immunity(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "dig" => dig::condition::on_immunity(battle),
-        "dive" => dive::condition::on_immunity(battle),
+        "dig" => dig::condition::on_immunity(battle, source_pos),
+        "dive" => dive::condition::on_immunity(battle, source_pos),
         "magnetrise" => magnetrise::condition::on_immunity(battle),
         "telekinesis" => telekinesis::condition::on_immunity(battle),
         _ => EventResult::Continue,
@@ -1610,10 +1610,10 @@ pub fn dispatch_condition_on_invulnerability(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "bounce" => bounce::condition::on_invulnerability(battle, source_pos),
-        "dig" => dig::condition::on_invulnerability(battle, source_pos),
-        "dive" => dive::condition::on_invulnerability(battle, source_pos),
-        "fly" => fly::condition::on_invulnerability(battle, source_pos),
+        "bounce" => bounce::condition::on_invulnerability(battle, None, Some(source_pos), move_id),
+        "dig" => dig::condition::on_invulnerability(battle, None, Some(source_pos), move_id),
+        "dive" => dive::condition::on_invulnerability(battle, None, Some(source_pos), move_id),
+        "fly" => fly::condition::on_invulnerability(battle, None, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1666,11 +1666,11 @@ pub fn dispatch_condition_on_modify_move(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "gravity" => gravity::condition::on_modify_move(battle, source_pos),
-        "healblock" => healblock::condition::on_modify_move(battle, source_pos),
-        "throatchop" => throatchop::condition::on_modify_move(battle, source_pos),
-        "waterpledge" => waterpledge::condition::on_modify_move(battle, source_pos),
-        "wonderroom" => wonderroom::condition::on_modify_move(battle, source_pos),
+        "gravity" => gravity::condition::on_modify_move(battle, source_pos, None),
+        "healblock" => healblock::condition::on_modify_move(battle, source_pos, None),
+        "throatchop" => throatchop::condition::on_modify_move(battle, source_pos, None),
+        "waterpledge" => waterpledge::condition::on_modify_move(battle, source_pos, None),
+        "wonderroom" => wonderroom::condition::on_modify_move(battle, source_pos, None),
         _ => EventResult::Continue,
     }
 }
@@ -1709,7 +1709,7 @@ pub fn dispatch_condition_on_move_aborted(
 ) -> EventResult {
     match move_id {
         "bide" => bide::condition::on_move_aborted(battle, source_pos),
-        "charge" => charge::condition::on_move_aborted(battle, source_pos),
+        "charge" => charge::condition::on_move_aborted(battle, source_pos, None, move_id),
         "destinybond" => destinybond::condition::on_move_aborted(battle, source_pos),
         _ => EventResult::Continue,
     }
