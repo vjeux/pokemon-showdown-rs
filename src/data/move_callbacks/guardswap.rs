@@ -58,7 +58,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        *source_pokemon.boosts.get("def").unwrap_or(&0)
+        *source_pokemon.boosts.get(&ID::from("def")).unwrap_or(&0)
     };
 
     let source_spd_boost = {
@@ -66,7 +66,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        *source_pokemon.boosts.get("spd").unwrap_or(&0)
+        *source_pokemon.boosts.get(&ID::from("spd")).unwrap_or(&0)
     };
 
     // source.setBoost(targetBoosts);

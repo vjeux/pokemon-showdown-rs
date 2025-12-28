@@ -53,7 +53,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             };
             battle.modify_value(target_pokemon.base_maxhp as f64, 0.75) as i32
         };
-        success = battle.heal(heal_amount, target, Some(target), None) > 0;
+        success = battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0;
     } else {
         // success = !!this.heal(Math.ceil(target.baseMaxhp * 0.5));
         let heal_amount = {
@@ -63,7 +63,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             };
             ((target_pokemon.base_maxhp as f64 * 0.5).ceil() as i32)
         };
-        success = battle.heal(heal_amount, target, Some(target), None) > 0;
+        success = battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0;
     }
 
     // if (success && !target.isAlly(source)) {
