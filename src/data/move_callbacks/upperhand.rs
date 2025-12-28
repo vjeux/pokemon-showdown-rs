@@ -15,10 +15,34 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // const action = this.queue.willMove(target);
+    let action = battle.queue.will_move(target.0, target.1);
+
+    // const move = action?.choice === 'move' ? action.move : null;
+    let (move_id, move_priority) = match action {
+        Some(move_action) => (&move_action.move_id, move_action.priority),
+        None => return EventResult::NotFail,
+    };
+
+    // Get move data to check category
+    let move_data = match battle.dex.get_move_by_id(move_id) {
+        Some(m) => m,
+        None => return EventResult::NotFail,
+    };
+
+    // if (!move || move.priority <= 0.1 || move.category === 'Status')
+    if move_priority as f64 <= 0.1 || move_data.category.as_str() == "Status" {
+        return EventResult::NotFail;
+    }
+
     EventResult::Continue
 }
