@@ -66,11 +66,31 @@ pub fn before_turn_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize)) 
 ///     if (target?.beingCalledBack || target?.switchFlag) move.accuracy = true;
 /// }
 pub fn on_modify_move(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target?.beingCalledBack || target?.switchFlag) move.accuracy = true;
+    let should_always_hit = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.being_called_back || target_pokemon.switch_flag
+    };
+
+    if should_always_hit {
+        // move.accuracy = true;
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.accuracy = 0; // true in JS means always hit, represented as 0 in Rust
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -78,11 +98,25 @@ pub fn on_modify_move(
 ///     target.side.removeSideCondition('pursuit');
 /// }
 pub fn on_try_hit(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let target = target_pos;
+
+    // target.side.removeSideCondition('pursuit');
+    let target_side = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.side_index
+    };
+
+    battle.sides[target_side].remove_side_condition(&ID::from("pursuit"));
+
     EventResult::Continue
 }
 
