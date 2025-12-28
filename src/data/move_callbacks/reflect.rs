@@ -90,7 +90,7 @@ pub mod condition {
                 let crit = battle.get_move_hit_data(target, move_id).crit;
                 let infiltrates = {
                     let active_move = match &battle.active_move {
-                        Some(active_move) => &active_move.id,
+                        Some(active_move) => active_move,
                         None => return EventResult::Continue,
                     };
                     active_move.infiltrates

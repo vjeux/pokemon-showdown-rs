@@ -92,12 +92,23 @@ pub mod condition {
         let effect_data = battle.dex.get_effect_by_id(&ID::from(effect_id));
         if let Some(ref effect) = effect_data {
             if effect.effect_type == "Move" {
-                if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id)) {
-                    if move_data.infiltrates {
-                        let is_ally = battle.is_ally(target, source);
-                        if !is_ally {
-                            return EventResult::Continue;
+                // Check if the active move has infiltrates property (set by Infiltrator ability)
+                let infiltrates = {
+                    if let Some(ref active_move) = battle.active_move {
+                        if active_move.id == ID::from(effect_id) {
+                            active_move.infiltrates
+                        } else {
+                            false
                         }
+                    } else {
+                        false
+                    }
+                };
+
+                if infiltrates {
+                    let is_ally = battle.is_ally(target, source);
+                    if !is_ally {
+                        return EventResult::Continue;
                     }
                 }
             }
@@ -176,12 +187,23 @@ pub mod condition {
         let effect_data = battle.dex.get_effect_by_id(&ID::from(effect_id));
         if let Some(ref effect) = effect_data {
             if effect.effect_type == "Move" {
-                if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id)) {
-                    if move_data.infiltrates {
-                        let is_ally = battle.is_ally(target, source);
-                        if !is_ally {
-                            return EventResult::Continue;
+                // Check if the active move has infiltrates property (set by Infiltrator ability)
+                let infiltrates = {
+                    if let Some(ref active_move) = battle.active_move {
+                        if active_move.id == ID::from(effect_id) {
+                            active_move.infiltrates
+                        } else {
+                            false
                         }
+                    } else {
+                        false
+                    }
+                };
+
+                if infiltrates {
+                    let is_ally = battle.is_ally(target, source);
+                    if !is_ally {
+                        return EventResult::Continue;
                     }
                 }
             }
