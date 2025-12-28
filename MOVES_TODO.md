@@ -556,3 +556,153 @@ Missing methods on Battle:
 
 Missing fields on Move:
 - `override_offensive_stat: Option<String>` (mutable) - Stat used for damage calculation
+
+### wideguard.rs
+Missing methods on Battle:
+- `queue.will_act() -> bool` - Check if there are any pending actions
+
+Missing methods on Pokemon:
+- `add_volatile(volatile_name: &str)` - Add a volatile condition
+- `get_volatile(volatile_name: &str) -> Option<Volatile>` - Get volatile condition
+- `remove_volatile(volatile_name: &str)` - Remove volatile condition
+
+Missing fields on Move:
+- `target: MoveTargetType` - Move targeting (allAdjacent, allAdjacentFoes, etc.)
+- `is_z: bool` - Whether move is Z-move
+- `is_max: bool` - Whether move is Max move
+- `id: ID` - Move identifier
+
+Missing methods on Pokemon:
+- `get_move_hit_data(move) -> MoveHitData` - Get move hit data with zBrokeProtect field
+- Access to `volatiles` map with duration tracking
+
+### uproar.rs
+Missing methods on Battle:
+- `side.active_team() -> Vec<Pokemon>` - Get all active pokemon on a side
+- `cure_status()` on Pokemon - Cure status condition
+
+Missing methods on Pokemon:
+- `has_volatile(volatile_name: &str) -> bool` - Check for volatile condition
+- `remove_volatile(volatile_name: &str)` - Remove volatile condition
+- `last_move: Option<ID>` - Last move used by pokemon
+- `status: Option<String>` - Current status condition
+
+### syrupbomb.rs
+Missing fields on EffectState:
+- `source: Option<(usize, usize)>` - Source pokemon tracking
+
+Missing methods on Pokemon:
+- `is_active: bool` - Whether pokemon is active
+- `remove_volatile(volatile_name: &str)` - Remove volatile condition
+
+Missing methods on Battle:
+- `boost(stats: HashMap<String, i32>, target, source)` - Modify stats with source tracking
+
+### healblock.rs
+Missing methods on Pokemon:
+- `has_ability(ability_name: &str) -> bool` - Check if pokemon has a specific ability
+- `move_slots: Vec<MoveSlot>` - Pokemon's move slots
+- `disable_move(move_id: &str)` - Disable a move
+
+Missing fields on Move:
+- `flags: HashMap<String, bool>` - Move flags like 'heal'
+- `is_z: bool` - Whether move is Z-move
+- `is_max: bool` - Whether move is Max move
+- `name: String` - Move name for effect checking
+
+Missing methods on Battle:
+- `attr_last_move(attr: &str)` - Set move attribute
+- `heal(amount: i32, target, source, effect) -> Option<i32>` - Heal HP
+
+Missing fields on EffectState:
+- `duration: i32` (mutable) - Effect duration tracking
+
+### telekinesis.rs
+Missing methods on Battle:
+- `field.get_pseudo_weather(weather_name: &str) -> Option<Weather>` - Check for pseudo weather
+- `attr_last_move(attr: &str)` - Set move attribute
+
+Missing methods on Pokemon:
+- `has_volatile(volatile_name: &str) -> bool` - Check for volatile condition
+- `remove_volatile(volatile_name: &str)` - Remove volatile condition
+- `base_species.name: String` - Base species name
+- `base_species.base_species: String` - Base species identifier
+
+Missing fields for on_immunity:
+- Type parameter in signature
+
+### taunt.rs
+Missing fields on Pokemon:
+- `active_turns: i32` - Number of turns pokemon has been active
+- `move_slots: Vec<MoveSlot>` - Pokemon's move slots
+- `disable_move(move_id: &str)` - Disable a move
+
+Missing methods on Battle:
+- `queue.will_move(pokemon) -> bool` - Check if pokemon will move this turn
+- `dex.moves.get(move_id) -> MoveDef` - Get move definition
+
+Missing fields on EffectState:
+- `duration: i32` (mutable) - Effect duration tracking
+
+Missing fields on Move:
+- `category: MoveCategory` - Move category (Status, Physical, Special)
+- `id: ID` - Move identifier
+- `is_z: bool` - Whether move is Z-move
+- `is_z_or_max_powered: bool` - Whether Z/Max powered
+
+Missing methods on Pokemon:
+- Move slot iteration and checking
+
+### terablast.rs
+Missing methods on Battle:
+- `attr_last_move(attr: &str)` - Set move attributes like animation
+
+Missing methods on Pokemon:
+- `get_stat(stat: &str, boost: bool, real: bool) -> i32` - Get stat value
+- `tera_type: String` - Pokemon's tera type
+
+Missing fields on Move (mutable):
+- `move_type: String` - Move type
+- `category: MoveCategory` - Move category
+- `self_effect: Option<SelfEffect>` - Self-targeting effects with boosts
+
+### firepledge.rs, waterpledge.rs, grasspledge.rs
+Missing methods on Battle:
+- `queue.will_move(pokemon) -> bool` - Check if pokemon will move
+- `last_move: Option<ID>` - Get last move used in battle
+- Access to team members and their move queue
+
+Missing fields on Move:
+- `base_power: i32` (mutable) - Base power modification
+
+Missing side conditions:
+- Complex multi-turn side condition effects
+- Residual damage/speed modifications
+
+### wish.rs
+Missing fields on EffectState:
+- `hp: i32` - Stored HP value
+- `starting_turn: i32` - Turn when wish was used
+- `source_slot: usize` - Source pokemon slot
+- `source.name: String` - Source pokemon name
+
+Missing methods on Battle:
+- `get_overflowed_turn_count() -> i32` - Get turn counter with overflow
+- `hint(message: &str)` - Display hint to player
+- `heal(amount: i32, target, source) -> Option<i32>` - Heal pokemon
+- `side.remove_slot_condition(slot, condition)` - Remove slot condition
+- `get_at_slot(slot) -> Pokemon` - Get pokemon at slot
+
+Missing fields on Pokemon:
+- `fainted: bool` - Whether pokemon has fainted
+- `get_health: String` - Health status string for battle log
+
+### All G-Max and Z-moves (MoveHandlerResult files)
+These use MoveHandlerResult instead of EventResult and need:
+- `source.is_active: bool` - Check if source is active
+- `add_volatile(volatile, source, move, extra)` - Add volatile with full tracking
+- `try_set_status(status, source, move)` - Try to set status
+- `stats_raised_this_turn: bool` - Track if stats were raised
+- `allies_and_self()` - Iterator over allies and self
+- `heal(amount, pokemon, source, move)` - Heal with source tracking
+- Full move effect tracking infrastructure
