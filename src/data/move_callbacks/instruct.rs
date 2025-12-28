@@ -61,11 +61,11 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         let last_move = battle.dex.get_move_by_id(&last_move_id);
         let (has_failinstruct, is_z, is_max, has_charge, has_recharge) = match last_move {
             Some(m) => (
-                m.flags.fail_instruct,
+                m.flags.get("failinstruct").copied().unwrap_or(0) != 0,
                 m.is_z,
                 m.is_max,
-                m.flags.charge,
-                m.flags.recharge
+                m.flags.get("charge").copied().unwrap_or(0) != 0,
+                m.flags.get("recharge").copied().unwrap_or(0) != 0
             ),
             None => (false, false, false, false, false),
         };

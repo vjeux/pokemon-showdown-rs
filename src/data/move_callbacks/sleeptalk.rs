@@ -106,8 +106,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         // if (move.flags['nosleeptalk'] || move.flags['charge'] || (move.isZ && move.basePower !== 1) || move.isMax) {
         //     continue;
         // }
-        if move_data.flags.nosleeptalk.unwrap_or(0) != 0 ||
-           move_data.flags.charge.unwrap_or(0) != 0 ||
+        if move_data.flags.get("nosleeptalk").copied().unwrap_or(0) != 0 ||
+           move_data.flags.get("charge").copied().unwrap_or(0) != 0 ||
            (move_data.is_z && move_data.base_power != 1) ||
            move_data.is_max {
             continue;

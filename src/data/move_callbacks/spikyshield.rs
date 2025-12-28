@@ -130,12 +130,12 @@ pub mod condition {
         // if (!move.flags['protect']) {
         let (has_protect, move_id, is_z, is_max, smart_target) = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
             (
-                active_move.flags.protect.unwrap_or(0) != 0,
-                active_move.clone(),
+                active_move.flags.protect,
+                active_move.id.clone(),
                 active_move.is_z,
                 active_move.is_max,
                 active_move.smart_target,

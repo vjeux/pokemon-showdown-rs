@@ -98,10 +98,10 @@ pub mod condition {
         // if (!move.flags['protect']) {
         let has_protect_flag = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            active_move.flags.get("protect").copied().unwrap_or(false)
+            active_move.flags.protect
         };
 
         if !has_protect_flag {

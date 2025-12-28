@@ -96,10 +96,10 @@ pub mod condition {
         // if (!move.flags['protect'] || move.category === 'Status') {
         let (has_protect_flag, is_status) = {
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            let has_protect = active_move.flags.contains(&"protect".to_string());
+            let has_protect = active_move.flags.protect;
             let is_status = active_move.category == "Status";
             (has_protect, is_status)
         };
