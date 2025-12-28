@@ -1863,7 +1863,7 @@ impl Battle {
                         terastallize: None,
                     }
                 }
-                "pass" | _ => {
+                _ => {
                     crate::side::ChosenAction {
                         choice: crate::side::ChoiceType::Pass,
                         pokemon_index: slot,

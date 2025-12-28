@@ -412,17 +412,17 @@ pub fn serialize_with_refs(value: &serde_json::Value) -> serde_json::Value {
     serialize_with_refs_inner(value, &mut refs)
 }
 
-fn serialize_with_refs_inner(value: &serde_json::Value, refs: &mut Vec<serde_json::Value>) -> serde_json::Value {
+fn serialize_with_refs_inner(value: &serde_json::Value, _refs: &mut Vec<serde_json::Value>) -> serde_json::Value {
     match value {
         serde_json::Value::Object(obj) => {
             let mut new_obj = serde_json::Map::new();
             for (k, v) in obj {
-                new_obj.insert(k.clone(), serialize_with_refs_inner(v, refs));
+                new_obj.insert(k.clone(), serialize_with_refs_inner(v, _refs));
             }
             serde_json::Value::Object(new_obj)
         }
         serde_json::Value::Array(arr) => {
-            serde_json::Value::Array(arr.iter().map(|v| serialize_with_refs_inner(v, refs)).collect())
+            serde_json::Value::Array(arr.iter().map(|v| serialize_with_refs_inner(v, _refs)).collect())
         }
         _ => value.clone()
     }
