@@ -76,8 +76,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.boosts.insert("def".to_string(), target_def_boost);
-        source_pokemon.boosts.insert("spd".to_string(), target_spd_boost);
+        source_pokemon.boosts.def = target_def_boost;
+        source_pokemon.boosts.spd = target_spd_boost;
     }
 
     // target.setBoost(sourceBoosts);
@@ -86,8 +86,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.boosts.insert("def".to_string(), source_def_boost);
-        target_pokemon.boosts.insert("spd".to_string(), source_spd_boost);
+        target_pokemon.boosts.def = source_def_boost;
+        target_pokemon.boosts.spd = source_spd_boost;
     }
 
     // this.add('-swapboost', source, target, 'def, spd', '[from] move: Guard Swap');
