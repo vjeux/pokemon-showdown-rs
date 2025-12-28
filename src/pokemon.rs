@@ -1337,13 +1337,6 @@ impl Pokemon {
     // 		return this.isActive ? this.getSlot() + fullname.slice(2) : fullname;
     // 	}
     //
-    pub fn to_string(&self) -> String {
-        if self.is_active {
-            format!("{}{}", self.get_slot(), &self.name)
-        } else {
-            self.fullname(&format!("p{}", self.side_index + 1))
-        }
-    }
 
     /// Get updated details string for protocol
     // 

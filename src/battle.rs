@@ -11007,14 +11007,6 @@ impl Battle {
     // 		return `Battle: ${this.format}`;
     // 	}
     //
-    pub fn to_string(&self) -> String {
-        format!(
-            "Battle: {} (Turn {}, {})",
-            self.format_id.as_str(),
-            self.turn,
-            if self.ended { "ended" } else { "ongoing" }
-        )
-    }
 
     /// Find battle-level event handlers
     /// Equivalent to battle.ts findBattleEventHandlers()

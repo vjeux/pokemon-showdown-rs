@@ -115,7 +115,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     if has_failinstruct || is_z || is_max || has_charge || has_recharge ||
        has_beakblast || has_focuspunch || has_shelltrap ||
-       (move_slot_pp.is_some() && move_slot_pp.unwrap() <= 0) {
+       (move_slot_pp.is_some() && move_slot_pp.unwrap() == 0) {
         return EventResult::Boolean(false);
     }
 
