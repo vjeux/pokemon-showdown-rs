@@ -17,7 +17,13 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
     };
 
     // return this.dex.getImmunity('trapped', target);
-    let immune = battle.get_immunity("trapped", target);
+    let immune = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        battle.dex.get_immunity("trapped", &target_pokemon.types)
+    };
 
     if immune {
         EventResult::Continue
