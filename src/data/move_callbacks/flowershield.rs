@@ -47,7 +47,7 @@ pub fn on_hit_field(battle: &mut Battle, source_pos: Option<(usize, usize)>, mov
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.has_type(&ID::from("grass"), battle)
+            pokemon.has_type("grass")
         };
 
         if !has_grass_type {

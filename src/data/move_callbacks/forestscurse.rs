@@ -26,7 +26,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.has_type(&ID::from("grass"), battle)
+        target_pokemon.has_type("grass")
     };
 
     if has_grass_type {
