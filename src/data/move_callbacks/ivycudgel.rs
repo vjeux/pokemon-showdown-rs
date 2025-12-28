@@ -21,7 +21,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     let move_type = battle.active_move.as_ref().map(|m| m.move_type.clone());
 
     if let Some(move_type) = move_type {
-        if move_type != ID::from("grass") {
+        if move_type != "grass" {
             let anim_str = format!("[anim] Ivy Cudgel {}", move_type.as_str());
             battle.attr_last_move(&[&anim_str]);
         }

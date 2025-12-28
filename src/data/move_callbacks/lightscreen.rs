@@ -84,7 +84,7 @@ pub mod condition {
         // this.getCategory(move) === 'Special'
         let is_special = {
             if let Some(ref active_move) = battle.active_move {
-                active_move.category == crate::move_types::MoveCategory::Special
+                active_move.category == "Special"
             } else {
                 false
             }

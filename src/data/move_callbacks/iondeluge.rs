@@ -43,7 +43,7 @@ pub mod condition {
         // }
         let (is_normal, move_name) = {
             if let Some(ref active_move) = battle.active_move {
-                (active_move.move_type == ID::from("normal"), active_move.name.clone())
+                (active_move.move_type.as_ref().map(|t| t.as_str()) == Some("normal"), active_move.name.clone())
             } else {
                 return EventResult::Continue;
             }

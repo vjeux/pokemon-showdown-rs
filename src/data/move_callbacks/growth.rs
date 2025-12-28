@@ -25,7 +25,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         pokemon_pokemon.effective_weather(field_weather)
     };
 
-    if effective_weather == Some(ID::from("sunnyday")) || effective_weather == Some(ID::from("desolateland")) {
+    if effective_weather == Some("sunnyday".to_string()) || effective_weather == Some("desolateland".to_string()) {
         // move.boosts = { atk: 2, spa: 2 };
         // Modify the current move's boosts
         if let Some(ref mut current_move) = battle.active_move {

@@ -167,7 +167,7 @@ pub mod condition {
         };
 
         // if (move.type === 'Electric' && attacker.isGrounded() && !attacker.isSemiInvulnerable()) {
-        if move_type == ID::from("electric") {
+        if move_type == "electric" {
             let (is_grounded, is_semi_invulnerable) = {
                 let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                     Some(p) => p,
