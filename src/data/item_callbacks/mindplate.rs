@@ -21,7 +21,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
         None => return EventResult::Continue,
     };
 
-    if move_type == "psychic" {
+    if move_type == "Psychic" {
         battle.chain_modify_fraction(4915, 4096);
     }
 
