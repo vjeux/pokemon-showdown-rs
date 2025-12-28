@@ -51,12 +51,13 @@ impl PRNGSeed {
             Err(format!("Unrecognized RNG seed: {}", s))
         }
     }
+}
 
-    /// Convert to string representation
-    pub fn to_string(&self) -> String {
+impl std::fmt::Display for PRNGSeed {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            PRNGSeed::Sodium(hex) => format!("sodium,{}", hex),
-            PRNGSeed::Gen5(seed) => format!("{},{},{},{}", seed[0], seed[1], seed[2], seed[3]),
+            PRNGSeed::Sodium(hex) => write!(f, "sodium,{}", hex),
+            PRNGSeed::Gen5(seed) => write!(f, "{},{},{},{}", seed[0], seed[1], seed[2], seed[3]),
         }
     }
 }

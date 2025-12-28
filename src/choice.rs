@@ -184,32 +184,6 @@ impl Choice {
 
         Ok(Choice::Team { order })
     }
-
-    /// Convert choice back to string format
-    pub fn to_string(&self) -> String {
-        match self {
-            Choice::Move { slot, target, mega, zmove, dynamax, terastallize } => {
-                let mut s = format!("move {}", slot);
-                if let Some(t) = target {
-                    s.push_str(&format!(" {}", t));
-                }
-                if *mega { s.push_str(" mega"); }
-                if *zmove { s.push_str(" zmove"); }
-                if *dynamax { s.push_str(" dynamax"); }
-                if *terastallize { s.push_str(" terastallize"); }
-                s
-            }
-            Choice::Switch { slot } => format!("switch {}", slot),
-            Choice::Team { order } => {
-                let order_str: String = order.iter().map(|n| n.to_string()).collect();
-                format!("team {}", order_str)
-            }
-            Choice::Pass => "pass".to_string(),
-            Choice::Default => "default".to_string(),
-            Choice::Undo => "undo".to_string(),
-            Choice::Shift => "shift".to_string(),
-        }
-    }
 }
 
 /// Choice parsing error
@@ -222,6 +196,33 @@ pub enum ChoiceError {
     InvalidSwitchSlot(usize),
     MissingTeamOrder,
     InvalidTeamSlot(usize),
+}
+
+impl std::fmt::Display for Choice {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Choice::Move { slot, target, mega, zmove, dynamax, terastallize } => {
+                write!(f, "move {}", slot)?;
+                if let Some(t) = target {
+                    write!(f, " {}", t)?;
+                }
+                if *mega { write!(f, " mega")?; }
+                if *zmove { write!(f, " zmove")?; }
+                if *dynamax { write!(f, " dynamax")?; }
+                if *terastallize { write!(f, " terastallize")?; }
+                Ok(())
+            }
+            Choice::Switch { slot } => write!(f, "switch {}", slot),
+            Choice::Team { order } => {
+                let order_str: String = order.iter().map(|n| n.to_string()).collect();
+                write!(f, "team {}", order_str)
+            }
+            Choice::Pass => write!(f, "pass"),
+            Choice::Default => write!(f, "default"),
+            Choice::Undo => write!(f, "undo"),
+            Choice::Shift => write!(f, "shift"),
+        }
+    }
 }
 
 impl std::fmt::Display for ChoiceError {

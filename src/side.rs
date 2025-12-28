@@ -692,9 +692,6 @@ impl Side {
     // 		return `${this.id}: ${this.name}`;
     // 	}
     //
-    pub fn to_string(&self) -> String {
-        format!("{}: {}", self.id_str(), self.name)
-    }
 
     /// Check if this side can dynamax now (Gen 8)
     // 
