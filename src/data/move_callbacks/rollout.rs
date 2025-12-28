@@ -74,17 +74,17 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             pokemon_pokemon.status.clone()
         };
 
-        if status != Some(ID::from("slp")) {
+        if status != ID::from("slp") {
             let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
 
             if let Some(data) = pokemon_pokemon.volatiles.get_mut(&ID::from("rollout")) {
-                data.hit_count += 1;
-                data.contact_hit_count += 1;
-                if data.hit_count < 5 {
-                    data.duration = 2;
+                data.hit_count = Some(data.hit_count.unwrap_or(0) + 1);
+                data.contact_hit_count = Some(data.contact_hit_count.unwrap_or(0) + 1);
+                if data.hit_count.unwrap_or(0) < 5 {
+                    data.duration = Some(2);
                 }
             }
         }
@@ -131,7 +131,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         };
         (
             pokemon_pokemon.volatiles.contains_key(&ID::from("rollout")),
-            pokemon_pokemon.status == Some(ID::from("slp"))
+            pokemon_pokemon.status == ID::from("slp")
         )
     };
 
@@ -159,7 +159,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.last_move_target_loc = target_loc;
+        pokemon_pokemon.last_move_target_loc = Some(target_loc as i8);
     }
 
     EventResult::Continue
@@ -201,7 +201,7 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos
     };
 
     if let Some(data) = rollout_data {
-        if data.hit_count == 5 && data.contact_hit_count < 5 {
+        if data.hit_count.unwrap_or(0) == 5 && data.contact_hit_count.unwrap_or(0) < 5 {
             // source.addVolatile("rolloutstorage");
             battle.add_volatile(&ID::from("rolloutstorage"), source, None, None);
 
