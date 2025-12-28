@@ -57,15 +57,15 @@ pub mod condition {
         };
 
         // this.add('-singleturn', target, 'move: Endure');
-        let target_arg = {
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
-        battle.add("-singleturn", &[target_arg, "move: Endure".into()]);
+        battle.add("-singleturn", &[target_ident.as_str().into(), "move: Endure".into()]);
 
         EventResult::Continue
     }
@@ -100,15 +100,15 @@ pub mod condition {
 
                 if damage >= target_hp {
                     // this.add('-activate', target, 'move: Endure');
-                    let target_arg = {
+                    let target_ident = {
                         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                             Some(p) => p,
                             None => return EventResult::Continue,
                         };
-                        crate::battle::Arg::from(target_pokemon)
+                        target_pokemon.get_slot()
                     };
 
-                    battle.add("-activate", &[target_arg, "move: Endure".into()]);
+                    battle.add("-activate", &[target_ident.as_str().into(), "move: Endure".into()]);
 
                     // return target.hp - 1;
                     return EventResult::Number(target_hp - 1);

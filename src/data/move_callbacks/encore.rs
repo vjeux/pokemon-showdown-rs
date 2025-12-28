@@ -93,15 +93,15 @@ pub mod condition {
         }
 
         // this.add('-start', target, 'Encore');
-        let target_arg = {
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
-        battle.add("-start", &[target_arg, "Encore".into()]);
+        battle.add("-start", &[target_ident.as_str().into(), "Encore".into()]);
 
         // if (!this.queue.willMove(target)) {
         //     this.effectState.duration!++;
@@ -206,15 +206,15 @@ pub mod condition {
         };
 
         // this.add('-end', target, 'Encore');
-        let target_arg = {
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
-        battle.add("-end", &[target_arg, "Encore".into()]);
+        battle.add("-end", &[target_ident.as_str().into(), "Encore".into()]);
 
         EventResult::Continue
     }

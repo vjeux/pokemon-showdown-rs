@@ -23,15 +23,15 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
         battle.attr_last_move(&["[anim] Fickle Beam All Out"]);
 
         // this.add('-activate', pokemon, 'move: Fickle Beam');
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
 
-        battle.add("-activate", &[pokemon_arg, "move: Fickle Beam".into()]);
+        battle.add("-activate", &[pokemon_ident.as_str().into(), "move: Fickle Beam".into()]);
 
         // return this.chainModify(2);
         return EventResult::Number(battle.chain_modify(2.0 as f32));
