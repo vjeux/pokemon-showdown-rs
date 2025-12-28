@@ -5,11 +5,12 @@ Items with callbacks: 326
 
 ## Missing Infrastructure for Item Callbacks
 
-### Mega Stones (onTakeItem)
-- Need access to item data's `megaEvolves` property
-- Need access to pokemon's `baseSpecies.baseSpecies` property
+### ✅ COMPLETED: Mega Stones (onTakeItem)
+- ✅ Access to item data's `megaEvolves` property - IMPLEMENTED
+- ✅ Access to pokemon's `baseSpecies.baseSpecies` property - IMPLEMENTED
 - Items affected: abomasite, absolite, absolitez, aerodactylite, aggronite, alakazite, altarianite, ampharosite, audinite, banettite, barbaracite, baxcalibrite, beedrillite (and all other mega stones)
 - JS code pattern: `if (item.megaEvolves === source.baseSpecies.baseSpecies) return false; return true;`
+- **Status:** All 86 mega stone items have been implemented and are working correctly.
 
 ## Items with Callbacks (alphabetically)
 - [x] abilityshield - Ability Shield (Gen 9) - 1 callback: onSetAbility
