@@ -36,21 +36,28 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         None => return EventResult::Continue,
     };
 
-    let move_data = match battle.dex.get_move_by_id(&move_id) {
-        Some(m) => m,
-        None => return EventResult::Continue,
+    // Extract boosts before mutable borrow
+    let boost_vec: Vec<(String, i8)> = {
+        let move_data = match battle.dex.get_move_by_id(&move_id) {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+
+        if let Some(boosts) = &move_data.boosts {
+            // Convert HashMap<String, i32> to Vec<(String, i8)>
+            boosts.iter()
+                .map(|(k, v)| (k.clone(), *v as i8))
+                .collect()
+        } else {
+            return EventResult::Boolean(true);
+        }
     };
 
     // Apply boosts to the pokemon
-    let boost_success = if let Some(boosts) = &move_data.boosts {
-        // Convert HashMap<String, i32> to Vec<(&str, i8)>
-        let boost_vec: Vec<(&str, i8)> = boosts.iter()
-            .map(|(k, v)| (k.as_str(), *v as i8))
-            .collect();
-        battle.boost(&boost_vec, source_pos, None, None)
-    } else {
-        true
-    };
+    let boost_vec_refs: Vec<(&str, i8)> = boost_vec.iter()
+        .map(|(k, v)| (k.as_str(), *v))
+        .collect();
+    let boost_success = battle.boost(&boost_vec_refs, source_pos, None, None);
 
     if !boost_success {
         // return null;

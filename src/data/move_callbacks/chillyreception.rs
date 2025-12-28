@@ -43,15 +43,15 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let source_arg = {
+        let source_ident = {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            Arg::from(source_pokemon)
+            source_pokemon.get_slot()
         };
 
-        battle.add("-prepare", &[source_arg, "Chilly Reception".into(), "[premajor]".into()]);
+        battle.add("-prepare", &[source_ident.as_str().into(), "Chilly Reception".into(), "[premajor]".into()]);
 
         EventResult::Continue
     }
