@@ -27,14 +27,16 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // const damagedByTarget = pokemon.attackedBy.some(
     //     p => p.source === target && p.damage > 0 && p.thisTurn
     // );
+    // TODO: Pokemon struct doesn't have attacked_by field yet
+    // For now, use hurt_this_turn as a workaround to check if damaged this turn
     let damaged_by_target = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.attacked_by.iter().any(|p| {
-            p.source == Some(target) && p.damage > 0 && p.this_turn
-        })
+        // If pokemon was hurt this turn, assume it was by the target
+        // This is a simplification until attacked_by tracking is implemented
+        pokemon_pokemon.hurt_this_turn.unwrap_or(0) > 0
     };
 
     // if (damagedByTarget) {

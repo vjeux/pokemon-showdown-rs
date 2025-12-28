@@ -81,7 +81,7 @@ pub mod condition {
             Some(es) => es,
             None => return EventResult::Continue,
         };
-        effect_state.type_was = types.clone();
+        effect_state.data.insert("typeWas".to_string(), serde_json::json!(types.clone()));
 
         let filtered_types: Vec<String> = types.into_iter()
             .filter(|t| t != "Flying")
