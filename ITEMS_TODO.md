@@ -123,7 +123,7 @@ Items with callbacks: 326
 - [x] flameorb - Flame Orb (Gen 4) - 1 callback: onResidual
 - [x] flameplate - Flame Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] floatstone - Float Stone (Gen 5) - 1 callback: onModifyWeight - NEEDS onModifyWeight(weighthg) parameter
-- [ ] floettite - Floettite (Gen 9) - 1 callback: onTakeItem
+- [x] floettite - Floettite (Gen 9) - 1 callback: onTakeItem
 - [x] flyinggem - Flying Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] flyingmemory - Flying Memory (Gen 7) - 1 callback: onTakeItem
 - [x] focusband - Focus Band (Gen 2) - 1 callback: onDamage
@@ -192,7 +192,7 @@ Items with callbacks: 326
 - [x] lustrousglobe - Lustrous Globe (Gen 8) - 2 callbacks: onBasePower, onTakeItem
 - [x] lustrousorb - Lustrous Orb (Gen 4) - 1 callback: onBasePower
 - [x] machobrace - Macho Brace (Gen 3) - 1 callback: onModifySpe
-- [ ] magearnite - Magearnite (Gen 9) - 1 callback: onTakeItem
+- [x] magearnite - Magearnite (Gen 9) - 1 callback: onTakeItem
 - [x] magnet - Magnet (Gen 2) - 1 callback: onBasePower
 - [ ] magoberry - Mago Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] mail - Mail (Gen 2) - 1 callback: onTakeItem
@@ -204,7 +204,7 @@ Items with callbacks: 326
 - [x] medichamite - Medichamite (Gen 6) - 1 callback: onTakeItem
 - [x] meganiumite - Meganiumite (Gen 9) - 1 callback: onTakeItem
 - [x] mentalherb - Mental Herb (Gen 3) - 1 callback: onUpdate
-- [ ] meowsticite - Meowsticite (Gen 9) - 1 callback: onTakeItem
+- [x] meowsticite - Meowsticite (Gen 9) - 1 callback: onTakeItem
 - [x] metagrossite - Metagrossite (Gen 6) - 1 callback: onTakeItem
 - [x] metalcoat - Metal Coat (Gen 2) - 1 callback: onBasePower
 - [x] metalpowder - Metal Powder (Gen 2) - 1 callback: onModifyDef
@@ -255,8 +255,8 @@ Items with callbacks: 326
 - [x] pyroarite - Pyroarite (Gen 9) - 1 callback: onTakeItem
 - [ ] quickclaw - Quick Claw (Gen 2) - 1 callback: onFractionalPriority
 - [x] quickpowder - Quick Powder (Gen 4) - 1 callback: onModifySpe
-- [ ] raichunitex - Raichunite X (Gen 9) - 1 callback: onTakeItem
-- [ ] raichunitey - Raichunite Y (Gen 9) - 1 callback: onTakeItem
+- [x] raichunitex - Raichunite X (Gen 9) - 1 callback: onTakeItem
+- [x] raichunitey - Raichunite Y (Gen 9) - 1 callback: onTakeItem
 - [x] rawstberry - Rawst Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [ ] razorclaw - Razor Claw (Gen 4) - 1 callback: onModifyCritRatio
 - [ ] razorfang - Razor Fang (Gen 4) - 1 callback: onModifyMove
@@ -313,7 +313,7 @@ Items with callbacks: 326
 - [x] stoneplate - Stone Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] swampertite - Swampertite (Gen 6) - 1 callback: onTakeItem
 - [ ] tangaberry - Tanga Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] tatsugirinite - Tatsugirinite (Gen 9) - 1 callback: onTakeItem
+- [x] tatsugirinite - Tatsugirinite (Gen 9) - 1 callback: onTakeItem
 - [x] thickclub - Thick Club (Gen 2) - 1 callback: onModifyAtk
 - [ ] throatspray - Throat Spray (Gen 8) - 1 callback: onAfterMoveSecondarySelf
 - [x] toxicorb - Toxic Orb (Gen 4) - 1 callback: onResidual
@@ -459,7 +459,7 @@ By callback type:
 
 ## Blocked T-V Items
 - [ ] tangaberry - Tanga Berry (Gen 4) - Needs type effectiveness infrastructure
-- [ ] tatsugirinite - Tatsugirinite (Gen 9) - Needs item data
+- [x] tatsugirinite - Tatsugirinite (Gen 9) - Needs item data
 - [ ] throatspray - Throat Spray (Gen 8) - Needs move flags and useItem
 - [x] toxicorb - Toxic Orb (Gen 4) - Needs trySetStatus
 - [x] tyranitarite - Tyranitarite (Gen 6) - Needs item data
