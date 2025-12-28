@@ -13,11 +13,32 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _base_power: i32,
     _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.status === 'psn' || target.status === 'tox')
+    let status = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.status.clone()
+    };
+
+    if status == ID::from("psn") || status == ID::from("tox") {
+        // return this.chainModify(2);
+        let result = battle.chain_modify(2.0);
+        return EventResult::Number(result);
+    }
+
     EventResult::Continue
 }
