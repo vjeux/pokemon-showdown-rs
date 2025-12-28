@@ -86,7 +86,7 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.item = Some(your_item_id);
+        target_pokemon.item = your_item_id;
         // return;
         return EventResult::Continue;
     }

@@ -38,10 +38,7 @@ pub mod condition {
         if is_special_ability {
             // this.add('-start', pokemon, 'Charge', this.activeMove!.name, '[from] ability: ' + effect.name);
             let active_move_name = match &battle.active_move {
-                Some(id) => {
-                    let move_data = battle.dex.get_move_by_id(id);
-                    move_data.map(|m| m.name.clone()).unwrap_or_else(|| id.to_string())
-                },
+                Some(active_move) => active_move.name.clone(),
                 None => "".to_string(),
             };
 
@@ -82,10 +79,7 @@ pub mod condition {
         if is_special_ability {
             // this.add('-start', pokemon, 'Charge', this.activeMove!.name, '[from] ability: ' + effect.name);
             let active_move_name = match &battle.active_move {
-                Some(id) => {
-                    let move_data = battle.dex.get_move_by_id(id);
-                    move_data.map(|m| m.name.clone()).unwrap_or_else(|| id.to_string())
-                },
+                Some(active_move) => active_move.name.clone(),
                 None => "".to_string(),
             };
 

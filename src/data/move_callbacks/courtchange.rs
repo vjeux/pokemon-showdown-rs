@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex_data::GameType;
 
 /// onHitField(target, source) {
 ///     const sideConditions = [
@@ -83,7 +84,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
     let mut success = false;
 
     // if (this.gameType === "freeforall") {
-    if battle.game_type == "freeforall" {
+    if battle.game_type == GameType::FreeForAll {
         // TODO: Implement free-for-all rotation logic
         // For now, we'll skip this case as it's complex and requires 4-side support
         // The standard 2-side case below is the most common scenario
