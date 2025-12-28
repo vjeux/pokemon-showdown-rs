@@ -38,11 +38,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             };
 
             let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
+                Some(active_move) => active_move.id.as_str(),
                 None => return EventResult::Continue,
             };
 
-            (crate::battle::Arg::from(source_pokemon), crate::battle::Arg::from(active_move))
+            (crate::battle::Arg::from(source_pokemon), crate::battle::Arg::Str(active_move))
         };
 
         battle.add("cant", &[

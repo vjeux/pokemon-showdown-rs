@@ -33,13 +33,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let mut moves: Vec<_> = all_moves
         .iter()
         .filter(|&&move_data| {
-            // (!move.isNonstandard || move.isNonstandard === 'Unobtainable')
-            let nonstandard_ok = move_data.is_nonstandard.is_none() ||
-                                 move_data.is_nonstandard.as_deref() == Some("Unobtainable");
+            // TODO: Add is_nonstandard field to MoveData and check it here
+            // For now, just check for metronome flag
             // move.flags['metronome']
-            let has_metronome_flag = move_data.flags.contains_key("metronome");
-
-            nonstandard_ok && has_metronome_flag
+            move_data.flags.contains_key("metronome")
         })
         .collect();
 
