@@ -31,7 +31,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // let newType = 'Normal';
-    let mut new_type = ID::from("Normal");
+    let mut new_type = String::from("Normal");
 
     // if (this.field.isTerrain('electricterrain')) {
     //     newType = 'Electric';
@@ -43,13 +43,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     //     newType = 'Psychic';
     // }
     if battle.field.is_terrain("electricterrain") {
-        new_type = ID::from("Electric");
+        new_type = String::from("Electric");
     } else if battle.field.is_terrain("grassyterrain") {
-        new_type = ID::from("Grass");
+        new_type = String::from("Grass");
     } else if battle.field.is_terrain("mistyterrain") {
-        new_type = ID::from("Fairy");
+        new_type = String::from("Fairy");
     } else if battle.field.is_terrain("psychicterrain") {
-        new_type = ID::from("Psychic");
+        new_type = String::from("Psychic");
     }
 
     // if (target.getTypes().join() === newType || !target.setType(newType)) return false;
@@ -90,7 +90,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         Arg::from(target_pokemon)
     };
 
-    battle.add("-start", &[target_arg, "typechange".into(), new_type.to_string().into()]);
+    battle.add("-start", &[target_arg, "typechange".into(), new_type.into()]);
 
     EventResult::Continue
 }

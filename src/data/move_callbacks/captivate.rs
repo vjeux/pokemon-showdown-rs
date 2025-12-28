@@ -6,7 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::ID;
+use crate::dex_data::{ID, Gender};
 
 /// onTryImmunity(pokemon, source) {
 ///     return (pokemon.gender === 'M' && source.gender === 'F') || (pokemon.gender === 'F' && source.gender === 'M');
@@ -35,8 +35,8 @@ pub fn on_try_immunity(battle: &mut Battle, pokemon_pos: (usize, usize), source_
         source_pokemon.gender.clone()
     };
 
-    let result = (pokemon_gender == ID::from("M") && source_gender == ID::from("F")) ||
-                 (pokemon_gender == ID::from("F") && source_gender == ID::from("M"));
+    let result = (pokemon_gender == Gender::Male && source_gender == Gender::Female) ||
+                 (pokemon_gender == Gender::Female && source_gender == Gender::Male);
 
     EventResult::Boolean(result)
 }
