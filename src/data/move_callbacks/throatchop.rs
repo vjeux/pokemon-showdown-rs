@@ -94,12 +94,45 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_before_move(
-        _battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
         _move_id: &str,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // if (!move.isZOrMaxPowered && move.flags['sound'])
+        let should_block = {
+            let active_move = match &battle.active_move {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+
+            !active_move.is_z_or_max_powered && active_move.flags.sound
+        };
+
+        if should_block {
+            // this.add('cant', pokemon, 'move: Throat Chop');
+            let pokemon_slot = {
+                let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon_ref.get_slot()
+            };
+
+            battle.add(
+                "cant",
+                &[
+                    crate::battle::Arg::from(pokemon_slot),
+                    crate::battle::Arg::from("move: Throat Chop"),
+                ],
+            );
+
+            // return false;
+            return EventResult::Stop;
+        }
+
         EventResult::Continue
     }
 
@@ -110,11 +143,44 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_modify_move(
-        _battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // if (!move.isZOrMaxPowered && move.flags['sound'])
+        let should_block = {
+            let active_move = match &battle.active_move {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+
+            !active_move.is_z_or_max_powered && active_move.flags.sound
+        };
+
+        if should_block {
+            // this.add('cant', pokemon, 'move: Throat Chop');
+            let pokemon_slot = {
+                let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon_ref.get_slot()
+            };
+
+            battle.add(
+                "cant",
+                &[
+                    crate::battle::Arg::from(pokemon_slot),
+                    crate::battle::Arg::from("move: Throat Chop"),
+                ],
+            );
+
+            // return false;
+            return EventResult::Stop;
+        }
+
         EventResult::Continue
     }
 
