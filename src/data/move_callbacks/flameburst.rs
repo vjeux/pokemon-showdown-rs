@@ -22,13 +22,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // for (const ally of target.adjacentAllies()) {
-    let adjacent_allies = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.adjacent_allies(battle)
-    };
+    let adjacent_allies = battle.adjacent_allies(target.0, target.1);
 
     for ally_pos in adjacent_allies {
         // this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
@@ -65,13 +59,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
     };
 
     // for (const ally of target.adjacentAllies()) {
-    let adjacent_allies = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.adjacent_allies(battle)
-    };
+    let adjacent_allies = battle.adjacent_allies(target.0, target.1);
 
     for ally_pos in adjacent_allies {
         // this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
