@@ -64,7 +64,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         (crate::battle::Arg::from(attacker_pokemon), move_name)
     };
 
-    battle.add("-prepare", &[attacker_arg.clone(), move_name.clone().into()]);
+    battle.add("-prepare", &[attacker_arg, move_name.into()]);
 
     // this.boost({ spa: 1 }, attacker, attacker, move);
     let boosts = [("spa", 1)];
@@ -76,14 +76,15 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     //     return;
     // }
     let effective_weather = {
+        let field_weather = battle.field.weather.as_str();
         let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        attacker_pokemon.effective_weather()
+        attacker_pokemon.effective_weather(field_weather)
     };
 
-    if effective_weather == Some(ID::from("raindance")) || effective_weather == Some(ID::from("primordialsea")) {
+    if effective_weather == "raindance" || effective_weather == "primordialsea" {
         // this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);
 
@@ -96,9 +97,28 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
                 };
                 crate::battle::Arg::from(defender_pokemon)
             };
-            battle.add_move("-anim", &[attacker_arg, move_name.into(), defender_arg]);
+
+            // Need to recreate attacker_arg since it was moved
+            let attacker_arg2 = {
+                let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                crate::battle::Arg::from(attacker_pokemon)
+            };
+
+            battle.add("-anim", &[attacker_arg2, move_name.into(), defender_arg]);
         } else {
-            battle.add_move("-anim", &[attacker_arg, move_name.into()]);
+            // Need to recreate attacker_arg since it was moved
+            let attacker_arg2 = {
+                let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                crate::battle::Arg::from(attacker_pokemon)
+            };
+
+            battle.add("-anim", &[attacker_arg2, move_name.into()]);
         }
 
         // return;
