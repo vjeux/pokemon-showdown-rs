@@ -63,18 +63,15 @@ impl Choice {
 
 /// Request state
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Default)]
 pub enum RequestState {
+    #[default]
     None,
     TeamPreview,
     Move,
     Switch,
 }
 
-impl Default for RequestState {
-    fn default() -> Self {
-        RequestState::None
-    }
-}
 
 /// A side in the battle
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -740,12 +737,10 @@ impl Side {
     //
     pub fn allies(&self, include_fainted: bool) -> Vec<usize> {
         let mut allies = Vec::new();
-        for active_idx in &self.active {
-            if let Some(idx) = active_idx {
-                if let Some(pokemon) = self.pokemon.get(*idx) {
-                    if include_fainted || !pokemon.is_fainted() {
-                        allies.push(*idx);
-                    }
+        for idx in self.active.iter().flatten() {
+            if let Some(pokemon) = self.pokemon.get(*idx) {
+                if include_fainted || !pokemon.is_fainted() {
+                    allies.push(*idx);
                 }
             }
         }
@@ -1772,7 +1767,7 @@ impl Side {
         // Return all active Pokemon from opponent sides
         let mut foes = Vec::new();
         for (idx, side) in battle_sides.iter().enumerate() {
-            if idx != self.n as usize {
+            if idx != self.n {
                 for &active_idx in &side.active {
                     if let Some(poke_idx) = active_idx {
                         if let Some(pokemon) = side.pokemon.get(poke_idx) {

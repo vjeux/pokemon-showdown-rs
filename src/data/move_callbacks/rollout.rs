@@ -65,7 +65,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
     //         rolloutData.duration = 2;
     //     }
     // }
-    if let Some(_) = rollout_data {
+    if rollout_data.is_some() {
         let status = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,

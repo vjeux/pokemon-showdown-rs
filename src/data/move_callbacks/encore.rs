@@ -130,7 +130,7 @@ pub mod condition {
         let encore_move_id = if let Some(ref effect_state) = battle.current_effect_state {
             effect_state.data.get("move")
                 .and_then(|v| v.as_str())
-                .map(|s| ID::from(s))
+                .map(ID::from)
         } else {
             None
         };
@@ -167,7 +167,7 @@ pub mod condition {
         let encore_move_id = if let Some(ref effect_state) = battle.current_effect_state {
             effect_state.data.get("move")
                 .and_then(|v| v.as_str())
-                .map(|s| ID::from(s))
+                .map(ID::from)
         } else {
             None
         };
@@ -242,7 +242,7 @@ pub mod condition {
         let encore_move_id = if let Some(ref effect_state) = battle.current_effect_state {
             effect_state.data.get("move")
                 .and_then(|v| v.as_str())
-                .map(|s| ID::from(s))
+                .map(ID::from)
         } else {
             None
         };

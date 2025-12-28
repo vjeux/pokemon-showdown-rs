@@ -30,7 +30,7 @@ pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: 
         };
 
         let ability_data = battle.dex.get_ability_by_id(&target_pokemon.ability);
-        let cantsuppress = if let Some(ref ability) = ability_data {
+        let cantsuppress = if let Some(ability) = ability_data {
             ability.flags.get("cantsuppress").copied().unwrap_or(0) != 0
         } else {
             false

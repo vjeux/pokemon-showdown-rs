@@ -684,7 +684,7 @@ pub mod condition {
         let move_id = ID::from(move_id);
         if move_id == ID::from("gust") || move_id == ID::from("twister") {
             battle.debug("BP doubled on midair target");
-            return EventResult::Number(battle.chain_modify(2 as f32));
+            return EventResult::Number(battle.chain_modify(2_f32));
         }
 
         EventResult::Continue

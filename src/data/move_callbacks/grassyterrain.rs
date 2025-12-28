@@ -62,7 +62,7 @@ pub mod condition {
 
         // const weakenedMoves = ['earthquake', 'bulldoze', 'magnitude'];
         // if (weakenedMoves.includes(move.id) && defender.isGrounded() && !defender.isSemiInvulnerable()) {
-        let move_id = battle.active_move.as_ref().map(|m| m.clone());
+        let move_id = battle.active_move.clone();
 
         if let Some(ref id) = move_id {
             let weakened_moves = [
@@ -93,7 +93,7 @@ pub mod condition {
                     battle.debug("move weakened by grassy terrain");
 
                     // return this.chainModify(0.5);
-                    return EventResult::Number(battle.chain_modify(0.5 as f32));
+                    return EventResult::Number(battle.chain_modify(0.5_f32));
                 }
             }
         }
@@ -116,7 +116,7 @@ pub mod condition {
                     battle.debug("grassy terrain boost");
 
                     // return this.chainModify([5325, 4096]);
-                    return EventResult::Number(battle.chain_modify(5325.0 / 4096.0 as f32));
+                    return EventResult::Number(battle.chain_modify(5325.0 / 4096.0_f32));
                 }
             }
         }

@@ -184,11 +184,10 @@ impl RandomTeamGenerator {
         }
 
         // Bulky Pokemon
-        if species.base_stats.hp > 80 || species.base_stats.def > 100 || species.base_stats.spd > 100 {
-            if self.prng.random_int(100) < 50 {
+        if (species.base_stats.hp > 80 || species.base_stats.def > 100 || species.base_stats.spd > 100)
+            && self.prng.random_int(100) < 50 {
                 return "Leftovers".to_string();
             }
-        }
 
         // Default: random from common items
         let idx = self.prng.random_int(items.len() as i32) as usize;
@@ -221,9 +220,9 @@ impl RandomTeamGenerator {
 
         // Balanced/Defensive
         if species.base_stats.def > species.base_stats.spd {
-            return "Bold".to_string(); // +Def -Atk
+            "Bold".to_string()// +Def -Atk
         } else {
-            return "Calm".to_string(); // +SpD -Atk
+            "Calm".to_string()// +SpD -Atk
         }
     }
 

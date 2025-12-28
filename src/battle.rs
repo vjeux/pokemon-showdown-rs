@@ -645,7 +645,7 @@ impl Battle {
         if let Some(rating) = &options.rating {
             options_json.push_str(&format!(",\"rating\":\"{}\"", rating));
         }
-        options_json.push_str("}");
+        options_json.push('}');
 
         self.input_log.push(format!(">player {} {}", side_id.to_str(), options_json));
 
@@ -847,8 +847,7 @@ impl Battle {
         // JS: for (const rule of this.ruleTable.keys()) { subFormat.onBegin?.call(this); }
         if let Some(ref rule_table) = self.rule_table {
             // Collect rule keys to avoid borrow checker issues
-            let rule_keys: Vec<String> = rule_table.keys()
-                .map(|s| s.clone())
+            let rule_keys: Vec<String> = rule_table.keys().cloned()
                 .collect();
 
             for rule in rule_keys {
@@ -1206,7 +1205,7 @@ impl Battle {
     // 	}
     //
     pub fn p1(&self) -> Option<&Side> {
-        self.sides.get(0)
+        self.sides.first()
     }
 
     /// Get P2
@@ -1238,12 +1237,10 @@ impl Battle {
     pub fn get_all_active(&self, include_fainted: bool) -> Vec<(usize, usize)> {
         let mut result = Vec::new();
         for (side_idx, side) in self.sides.iter().enumerate() {
-            for (_slot, opt_idx) in side.active.iter().enumerate() {
-                if let Some(poke_idx) = opt_idx {
-                    if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                        if include_fainted || !pokemon.is_fainted() {
-                            result.push((side_idx, *poke_idx));
-                        }
+            for poke_idx in side.active.iter().flatten() {
+                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                    if include_fainted || !pokemon.is_fainted() {
+                        result.push((side_idx, *poke_idx));
                     }
                 }
             }
@@ -1326,7 +1323,7 @@ impl Battle {
                     self.sides.get(3).map(|s| s.pokemon_left).unwrap_or(0)
                 } else {
                     // Foes are P1 and P3
-                    self.sides.get(0).map(|s| s.pokemon_left).unwrap_or(0) +
+                    self.sides.first().map(|s| s.pokemon_left).unwrap_or(0) +
                     self.sides.get(2).map(|s| s.pokemon_left).unwrap_or(0)
                 }
             }
@@ -1608,11 +1605,10 @@ impl Battle {
                 }
 
                 // In Singles, zmove and mega require a target
-                if matches!(self.game_type, GameType::Singles) {
-                    if (has_zmove || has_mega) && target_count == 0 {
+                if matches!(self.game_type, GameType::Singles)
+                    && (has_zmove || has_mega) && target_count == 0 {
                         return Err("[Invalid choice] Z-moves and Mega Evolution require a target in Singles".to_string());
                     }
-                }
 
                 // Validate that Pokemon has required item for zmove/mega
                 if has_zmove || has_mega {
@@ -1656,9 +1652,9 @@ impl Battle {
                     // Not a number - check if it's an obvious invalid word
                     // Reject common English words that are clearly not Pokemon names
                     let lowercase_arg = arg.to_lowercase();
-                    let invalid_words = vec!["first", "second", "third", "fourth", "fifth", "last", "next"];
+                    let invalid_words = ["first", "second", "third", "fourth", "fifth", "last", "next"];
                     if invalid_words.contains(&lowercase_arg.as_str()) {
-                        return Err(format!("[Invalid choice] Can't switch: You must specify a Pokemon by number or name"));
+                        return Err("[Invalid choice] Can't switch: You must specify a Pokemon by number or name".to_string());
                     }
                     // Otherwise assume it's a Pokemon name (will be validated during execution)
                 }
@@ -1680,7 +1676,7 @@ impl Battle {
                         Ok(())
                     }
                     Err(_) => {
-                        return Err("[Invalid choice] Can't choose for Team Preview: You must select a team order".to_string());
+                        Err("[Invalid choice] Can't choose for Team Preview: You must select a team order".to_string())
                     }
                 }
             }
@@ -1828,8 +1824,8 @@ impl Battle {
                     };
 
                     // Check for mega/zmove flags
-                    let mega = words.iter().any(|&w| w == "mega");
-                    let terastallize = if words.iter().any(|&w| w == "terastallize") {
+                    let mega = words.contains(&"mega");
+                    let terastallize = if words.contains(&"terastallize") {
                         self.sides[side_idx].get_active(slot)
                             .and_then(|p| p.tera_type.clone())
                     } else {
@@ -1941,7 +1937,7 @@ impl Battle {
                             } else {
                                 0
                             };
-                            let speed = self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as i32;
+                            let speed = self.sides[side_idx].pokemon[poke_idx].stored_stats.spe;
                             actions.push((side_idx, poke_idx, action.clone(), priority, speed));
                         }
                     }
@@ -1953,7 +1949,7 @@ impl Battle {
 
                         // Get speed for ordering (use 0 if slot is empty)
                         let speed = if let Some(poke_idx) = pokemon_idx {
-                            self.sides[side_idx].pokemon[poke_idx].stored_stats.spe as i32
+                            self.sides[side_idx].pokemon[poke_idx].stored_stats.spe
                         } else {
                             0 // Empty slot - use speed 0 for ordering
                         };
@@ -2300,7 +2296,7 @@ impl Battle {
                 self.sides[side_idx].pokemon[poke_idx].set_status(ID::new(status));
 
                 let _status_msg = if layers >= 2 { "badly poisoned" } else { "poisoned" };
-                self.add_log("-status", &[&full_name, status, &format!("[from] Toxic Spikes")]);
+                self.add_log("-status", &[&full_name, status, "[from] Toxic Spikes"]);
             }
         }
 
@@ -2367,7 +2363,7 @@ impl Battle {
         if target_loc <= 0 {
             // Default to first active foe
             let target_poke_idx = self.sides.get(foe_idx)
-                .and_then(|s| s.active.get(0))
+                .and_then(|s| s.active.first())
                 .and_then(|opt| *opt)
                 .unwrap_or(0);
             (foe_idx, target_poke_idx)
@@ -3518,7 +3514,7 @@ impl Battle {
             side.pokemon_left = 0;
 
             // JavaScript: side.active[0]?.faint();
-            if let Some(Some(poke_idx)) = side.active.get(0) {
+            if let Some(Some(poke_idx)) = side.active.first() {
                 if let Some(pokemon) = side.pokemon.get_mut(*poke_idx) {
                     pokemon.faint();
                 }
@@ -3736,7 +3732,7 @@ impl Battle {
 
         // Get allies from the same side (active team)
         if let Some(side) = self.sides.get(side_idx) {
-            for (_i, active_slot) in side.active.iter().enumerate() {
+            for active_slot in side.active.iter() {
                 if let Some(ally_idx) = active_slot {
                     let ally_pos = (side_idx, *ally_idx);
                     // Skip if it's the same pokemon
@@ -3763,13 +3759,11 @@ impl Battle {
                 };
 
                 if let Some(ally_side) = self.sides.get(ally_side_idx) {
-                    for (_i, active_slot) in ally_side.active.iter().enumerate() {
-                        if let Some(ally_idx) = active_slot {
-                            let ally_pos = (ally_side_idx, *ally_idx);
-                            if let Some(ally) = ally_side.pokemon.get(*ally_idx) {
-                                if !ally.is_fainted() && self.is_adjacent(pokemon_pos, ally_pos) {
-                                    result.push(ally_pos);
-                                }
+                    for ally_idx in ally_side.active.iter().flatten() {
+                        let ally_pos = (ally_side_idx, *ally_idx);
+                        if let Some(ally) = ally_side.pokemon.get(*ally_idx) {
+                            if !ally.is_fainted() && self.is_adjacent(pokemon_pos, ally_pos) {
+                                result.push(ally_pos);
                             }
                         }
                     }
@@ -3803,12 +3797,10 @@ impl Battle {
                 }
                 // For non-multi battles, opposing sides are foes
                 if self.game_type != GameType::Multi || (foe_side_idx % 2) != (side_idx % 2) {
-                    for active_slot in &foe_side.active {
-                        if let Some(foe_idx) = active_slot {
-                            if let Some(foe) = foe_side.pokemon.get(*foe_idx) {
-                                if !foe.is_fainted() {
-                                    result.push((foe_side_idx, *foe_idx));
-                                }
+                    for foe_idx in foe_side.active.iter().flatten() {
+                        if let Some(foe) = foe_side.pokemon.get(*foe_idx) {
+                            if !foe.is_fainted() {
+                                result.push((foe_side_idx, *foe_idx));
                             }
                         }
                     }
@@ -3824,13 +3816,11 @@ impl Battle {
                 }
                 // For non-multi battles, opposing sides are foes
                 if self.game_type != GameType::Multi || (foe_side_idx % 2) != (side_idx % 2) {
-                    for active_slot in &foe_side.active {
-                        if let Some(foe_idx) = active_slot {
-                            let foe_pos = (foe_side_idx, *foe_idx);
-                            if let Some(foe) = foe_side.pokemon.get(*foe_idx) {
-                                if !foe.is_fainted() && self.is_adjacent(pokemon_pos, foe_pos) {
-                                    result.push(foe_pos);
-                                }
+                    for foe_idx in foe_side.active.iter().flatten() {
+                        let foe_pos = (foe_side_idx, *foe_idx);
+                        if let Some(foe) = foe_side.pokemon.get(*foe_idx) {
+                            if !foe.is_fainted() && self.is_adjacent(pokemon_pos, foe_pos) {
+                                result.push(foe_pos);
                             }
                         }
                     }
@@ -4028,7 +4018,7 @@ impl Battle {
                     targets.extend(self.foes(user_pos.0, true));
                 }
                 // JS: if (targets.length && !targets.includes(target)) this.battle.retargetLastMove(targets[targets.length - 1]);
-                if !targets.is_empty() && !target.map_or(false, |t| targets.contains(&t)) {
+                if !targets.is_empty() && !target.is_some_and(|t| targets.contains(&t)) {
                     if let Some(&last_target) = targets.last() {
                         self.retarget_last_move(last_target);
                     }
@@ -4039,7 +4029,7 @@ impl Battle {
                 targets.extend(self.adjacent_allies(user_pos.0, user_pos.1));
                 // falls through to allAdjacentFoes
                 targets.extend(self.adjacent_foes(user_pos.0, user_pos.1));
-                if !targets.is_empty() && !target.map_or(false, |t| targets.contains(&t)) {
+                if !targets.is_empty() && !target.is_some_and(|t| targets.contains(&t)) {
                     if let Some(&last_target) = targets.last() {
                         self.retarget_last_move(last_target);
                     }
@@ -4048,7 +4038,7 @@ impl Battle {
             "allAdjacentFoes" => {
                 // JS: targets.push(...this.adjacentFoes());
                 targets.extend(self.adjacent_foes(user_pos.0, user_pos.1));
-                if !targets.is_empty() && !target.map_or(false, |t| targets.contains(&t)) {
+                if !targets.is_empty() && !target.is_some_and(|t| targets.contains(&t)) {
                     if let Some(&last_target) = targets.last() {
                         self.retarget_last_move(last_target);
                     }
@@ -4157,7 +4147,7 @@ impl Battle {
                 }
 
                 // JS: if (target.fainted && !move.flags['futuremove']) return { targets: [], pressureTargets: [] };
-                if target.map_or(false, |t| self.is_pokemon_fainted(t)) && !has_futuremove {
+                if target.is_some_and(|t| self.is_pokemon_fainted(t)) && !has_futuremove {
                     return (vec![], vec![]);
                 }
 
@@ -4211,7 +4201,7 @@ impl Battle {
         self.sides
             .get(pos.0)
             .and_then(|s| s.pokemon.get(pos.1))
-            .map_or(true, |p| p.is_fainted())
+            .is_none_or(|p| p.is_fainted())
     }
 
     /// Get random target for a move
@@ -4280,7 +4270,7 @@ impl Battle {
             let foe_side = if user_side == 0 { 1 } else { 0 };
             if foe_side < self.sides.len() {
                 if let Some(side) = self.sides.get(foe_side) {
-                    if let Some(Some(poke_idx)) = side.active.get(0) {
+                    if let Some(Some(poke_idx)) = side.active.first() {
                         return Some((foe_side, *poke_idx));
                     }
                 }
@@ -4338,7 +4328,7 @@ impl Battle {
             }
 
             // Fallback: return first active
-            if let Some(Some(poke_idx)) = self.sides[foe_side].active.get(0) {
+            if let Some(Some(poke_idx)) = self.sides[foe_side].active.first() {
                 return Some((foe_side, *poke_idx));
             }
         }
@@ -4425,7 +4415,7 @@ impl Battle {
             effect,
             instafaint,
         );
-        result.get(0).copied().flatten()
+        result.first().copied().flatten()
     }
 
     /// Deal direct damage (bypasses most effects)
@@ -4544,7 +4534,7 @@ impl Battle {
         // JavaScript: if (this.gen <= 1 && this.dex.currentMod !== 'gen1stadium' && ...)
         if self.gen <= 1 && ["confusion", "jumpkick", "highjumpkick"].contains(&effect_id) {
             // Confusion and recoil damage can be countered
-            self.last_damage = damage as i32;
+            self.last_damage = damage;
 
             // Check if target has Substitute volatile
             let substitute_id = ID::new("substitute");
@@ -4563,7 +4553,7 @@ impl Battle {
                 let foe_side = if target_pos.0 == 0 { 1 } else { 0 };
                 let foe_has_substitute = if foe_side < self.sides.len() {
                     if let Some(side) = self.sides.get(foe_side) {
-                        if let Some(active_idx) = side.active.get(0) {
+                        if let Some(active_idx) = side.active.first() {
                             if let Some(poke_idx) = active_idx {
                                 if let Some(pokemon) = side.pokemon.get(*poke_idx) {
                                     pokemon.volatiles.contains_key(&substitute_id)
@@ -4591,7 +4581,7 @@ impl Battle {
                     // Get foe position
                     let foe_pos = if foe_side < self.sides.len() {
                         if let Some(side) = self.sides.get(foe_side) {
-                            if let Some(active_idx) = side.active.get(0) {
+                            if let Some(active_idx) = side.active.first() {
                                 active_idx.map(|idx| (foe_side, idx))
                             } else {
                                 None
@@ -4615,7 +4605,7 @@ impl Battle {
                                     .and_then(|v| v.as_i64())
                                     .unwrap_or(0) as i32;
 
-                                let new_hp = current_hp - damage as i32;
+                                let new_hp = current_hp - damage;
 
                                 if new_hp <= 0 {
                                     // JS: foe.volatiles['substitute'].hp <= 0
@@ -4662,8 +4652,8 @@ impl Battle {
         let actual_damage = if let Some(side) = self.sides.get_mut(target_pos.0) {
             if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
                 let old_hp = pokemon.hp;
-                pokemon.hp = pokemon.hp.saturating_sub(damage as i32);
-                (old_hp - pokemon.hp) as i32
+                pokemon.hp = pokemon.hp.saturating_sub(damage);
+                old_hp - pokemon.hp
             } else {
                 0
             }
@@ -4813,10 +4803,7 @@ impl Battle {
         // Fire TryHeal event
         // JavaScript: damage = this.runEvent('TryHeal', target, source, effect, damage);
         let event_result = self.run_event("TryHeal", Some(target_pos), source, effect, Some(damage));
-        damage = match event_result {
-            Some(d) => d,
-            None => return None,  // Event cancelled healing
-        };
+        damage = event_result?;
 
         if damage == 0 {
             return Some(0);
@@ -4848,8 +4835,8 @@ impl Battle {
         let final_damage = if let Some(side) = self.sides.get_mut(side_idx) {
             if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
                 let old_hp = pokemon.hp;
-                pokemon.hp = (pokemon.hp + damage as i32).min(pokemon.maxhp);
-                (pokemon.hp - old_hp) as i32
+                pokemon.hp = (pokemon.hp + damage).min(pokemon.maxhp);
+                pokemon.hp - old_hp
             } else {
                 0
             }
@@ -4918,7 +4905,7 @@ impl Battle {
                 // JS: else { this.add('-heal', target, target.getHealth, `[from] ${effect.fullname}`); }
 
                 // Check if effect type is Move
-                let is_move = effect.map_or(false, |e| self.get_effect_type(e) == "Move");
+                let is_move = effect.is_some_and(|e| self.get_effect_type(e) == "Move");
 
                 if is_move {
                     // Move effects: just show heal without [from] tag
@@ -5051,7 +5038,7 @@ impl Battle {
         // This event allows abilities/items to modify boost amounts before they're applied
         // Note: Full boost modification would require infrastructure changes to return modified boosts
         // For now, we call the event so abilities can react, even if they can't modify the boost amounts
-        let effect_id = effect.map(|s| ID::new(s));
+        let effect_id = effect.map(ID::new);
         self.run_event("ChangeBoost", Some(target), source, effect_id.as_ref(), None);
 
         // JS: boost = target.getCappedBoost(boost);
@@ -5182,7 +5169,7 @@ impl Battle {
                 pokemon.fainted = true;
 
                 // JS: this.faintQueue.push({target, source, effect});
-                let effect_id = effect.map(|e| ID::new(e));
+                let effect_id = effect.map(ID::new);
                 self.faint_queue.push(FaintData {
                     target,
                     source,
@@ -6660,8 +6647,7 @@ impl Battle {
 
                         // JS: for (const rule of this.ruleTable.keys()) { ... }
                         if let Some(ref rule_table) = self.rule_table {
-                            let rule_keys: Vec<String> = rule_table.keys()
-                                .map(|s| s.clone())
+                            let rule_keys: Vec<String> = rule_table.keys().cloned()
                                 .collect();
 
                             for rule in rule_keys {
@@ -6964,7 +6950,7 @@ impl Battle {
         if let Some(side) = self.sides.get(side_idx) {
             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                 // Apply speed boosts
-                let base_speed = pokemon.stored_stats.spe as i32;
+                let base_speed = pokemon.stored_stats.spe;
                 let stage = pokemon.boosts.spe;
                 let multiplier = if stage >= 0 {
                     (2 + stage as i32) as f64 / 2.0
@@ -7041,7 +7027,7 @@ impl Battle {
                         return false;
                     }
                 } else {
-                    target_active.clone()
+                    *target_active
                 }
             } else {
                 return false;
@@ -7644,12 +7630,11 @@ impl Battle {
         }
 
         // JavaScript: if (eventid === 'SwitchIn' && effect.effectType === 'Ability' && effect.flags['breakable'] && this.suppressingAbility(target))
-        if event_id == "SwitchIn" && effect_type == "Ability" {
-            if self.suppressing_ability(target) {
+        if event_id == "SwitchIn" && effect_type == "Ability"
+            && self.suppressing_ability(target) {
                 self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
                 return EventResult::Continue;
             }
-        }
 
         // JavaScript: if (eventid !== 'Start' && eventid !== 'TakeItem' && effect.effectType === 'Item' && target.ignoringItem())
         if event_id != "Start" && event_id != "TakeItem" && effect_type == "Item" {
@@ -7680,12 +7665,11 @@ impl Battle {
         }
 
         // JavaScript: if (effect.effectType === 'Weather' && eventid !== 'FieldStart' && eventid !== 'FieldResidual' && eventid !== 'FieldEnd' && this.field.suppressingWeather())
-        if effect_type == "Weather" && event_id != "FieldStart" && event_id != "FieldResidual" && event_id != "FieldEnd" {
-            if self.field.suppressing_weather() {
+        if effect_type == "Weather" && event_id != "FieldStart" && event_id != "FieldResidual" && event_id != "FieldEnd"
+            && self.field.suppressing_weather() {
                 self.debug(&format!("{} handler suppressed by Air Lock", event_id));
                 return EventResult::Continue;
             }
-        }
 
         // Save parent event context
         let parent_event = self.current_event.take();
@@ -8248,20 +8232,17 @@ impl Battle {
         _side_idx: usize,
         condition_id: &ID,
     ) {
-        match condition_id.as_str() {
-            "auroraveil" => {
-                match event_id {
-                    "SideStart" => {
-//                         let _result = crate::data::move_callbacks::auroraveil::on_side_start(self, side_idx);
+        if condition_id.as_str() == "auroraveil" {
+                        match event_id {
+                            "SideStart" => {
+        //                         let _result = crate::data::move_callbacks::auroraveil::on_side_start(self, side_idx);
+                            }
+                            "SideEnd" => {
+        //                         let _result = crate::data::move_callbacks::auroraveil::on_side_end(self, side_idx);
+                            }
+                            _ => {}
+                        }
                     }
-                    "SideEnd" => {
-//                         let _result = crate::data::move_callbacks::auroraveil::on_side_end(self, side_idx);
-                    }
-                    _ => {}
-                }
-            }
-            _ => {}
-        }
     }
 
     /// Run event on all relevant handlers
@@ -8750,7 +8731,7 @@ impl Battle {
 
                 // Get all active Pokemon on target's side (allies and self)
                 if let Some(side) = self.sides.get(target_side) {
-                    for (_slot_idx, opt_poke_idx) in side.active.iter().enumerate() {
+                    for opt_poke_idx in side.active.iter() {
                         if let Some(poke_idx) = opt_poke_idx {
                             let ally_pos = (target_side, *poke_idx);
                             // onAlly handlers
@@ -8775,7 +8756,7 @@ impl Battle {
                 // Get all active Pokemon on opposing side(s) (foes)
                 for (side_idx, side) in self.sides.iter().enumerate() {
                     if side_idx != target_side {
-                        for (_slot_idx, opt_poke_idx) in side.active.iter().enumerate() {
+                        for opt_poke_idx in side.active.iter() {
                             if let Some(poke_idx) = opt_poke_idx {
                                 let foe_pos = (side_idx, *poke_idx);
                                 // onFoe handlers
@@ -8882,7 +8863,7 @@ impl Battle {
         // JS: return tr(tr(baseDamage * (100 - this.random(16))) / 100);
         // Damage = baseDamage * (100 - random(16)) / 100
         // This gives range 85% to 100% damage
-        let roll = 100 - self.prng.random_int(16) as i32;
+        let roll = 100 - self.prng.random_int(16);
         let inner = self.trunc(base_damage as f64 * roll as f64);
         self.trunc(inner as f64 / 100.0)
     }
@@ -8910,12 +8891,10 @@ impl Battle {
         // Collect all active Pokemon with their speeds
         let mut actives: Vec<(usize, usize, i32)> = Vec::new();
         for (side_idx, side) in self.sides.iter().enumerate() {
-            for (_slot, active_idx) in side.active.iter().enumerate() {
-                if let Some(poke_idx) = active_idx {
-                    if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                        if !pokemon.fainted {
-                            actives.push((side_idx, *poke_idx, pokemon.speed));
-                        }
+            for poke_idx in side.active.iter().flatten() {
+                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                    if !pokemon.fainted {
+                        actives.push((side_idx, *poke_idx, pokemon.speed));
                     }
                 }
             }
@@ -9429,15 +9408,15 @@ impl Battle {
             if self.gen <= 1 {
                 // JavaScript: if (!['recoil', 'drain', 'leechseed'].includes(effect.id) && effect.effectType !== 'Status')
                 if effect_id != "recoil" && effect_id != "drain" && effect_id != "leechseed" {
-                    self.last_damage = target_damage as i32;
+                    self.last_damage = target_damage;
                 }
             }
 
             // Apply damage using Pokemon's damage method
             let actual_damage = if let Some(side) = self.sides.get_mut(side_idx) {
                 if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
-                    let dmg = pokemon.damage(target_damage as i32);
-                    dmg as i32
+                    
+                    pokemon.damage(target_damage)
                 } else {
                     0
                 }
@@ -9459,11 +9438,11 @@ impl Battle {
 
             // Set source.lastDamage for moves
             // JS: if (source && effect.effectType === 'Move') source.lastDamage = targetDamage;
-            if source.is_some() && effect.map_or(false, |e| self.get_effect_type(e) == "Move") {
+            if source.is_some() && effect.is_some_and(|e| self.get_effect_type(e) == "Move") {
                 if let Some((src_side, src_idx)) = source {
                     if let Some(side) = self.sides.get_mut(src_side) {
                         if let Some(pokemon) = side.pokemon.get_mut(src_idx) {
-                            pokemon.last_damage = target_damage as i32;
+                            pokemon.last_damage = target_damage;
                         }
                     }
                 }
@@ -9503,7 +9482,7 @@ impl Battle {
             // JS: 					this.heal(amount, source, target, 'drain');
             // JS: 				}
             // JS: 			}
-            if target_damage > 0 && effect.map_or(false, |e| self.get_effect_type(e) == "Move") {
+            if target_damage > 0 && effect.is_some_and(|e| self.get_effect_type(e) == "Move") {
                 // Get move data to check for recoil and drain (extract data first to avoid borrow issues)
                 let (recoil_data, drain_data) = if let Some(eff) = effect {
                     if let Some(move_data) = self.dex.get_move(eff.as_str()) {
@@ -9569,7 +9548,7 @@ impl Battle {
                     };
 
                     if should_faint {
-                        self.debug(&format!("instafaint"));
+                        self.debug("instafaint");
                         // JS: this.faintMessages(true);
                         self.faint_messages(true, false, true);
 
@@ -10375,7 +10354,7 @@ impl Battle {
             // Get Pokemon speed
             if let Some(side) = self.sides.get(effect_holder.0) {
                 if let Some(pokemon) = side.pokemon.get(effect_holder.1) {
-                    handler.speed = Some(pokemon.stored_stats.spe as i32);
+                    handler.speed = Some(pokemon.stored_stats.spe);
 
                     // JS: if (handler.effect.effectType === 'Ability' && handler.effect.name === 'Magic Bounce' && callbackName === 'onAllyTryHitSide')
                     if handler.effect_type == EffectType::Ability
@@ -10735,7 +10714,7 @@ impl Battle {
             "spd" => set.ivs.spd,
             "spe" => set.ivs.spe,
             _ => 31,
-        } as i32;
+        };
 
         let ev = match stat_name {
             "hp" => set.evs.hp,
@@ -10745,7 +10724,7 @@ impl Battle {
             "spd" => set.evs.spd,
             "spe" => set.evs.spe,
             _ => 0,
-        } as i32;
+        };
 
         if stat_name == "hp" {
             // JS: return tr(tr(2 * stat + set.ivs[statName] + tr(set.evs[statName] / 4) + 100) * set.level / 100 + 10);
@@ -11385,11 +11364,11 @@ impl Battle {
             if let Some(pokemon) = side.pokemon.get(source_pos.1) {
                 if is_physical {
                     let boost = pokemon.boosts.atk;
-                    let base_stat = pokemon.stored_stats.atk as i32;
+                    let base_stat = pokemon.stored_stats.atk;
                     crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
                 } else {
                     let boost = pokemon.boosts.spa;
-                    let base_stat = pokemon.stored_stats.spa as i32;
+                    let base_stat = pokemon.stored_stats.spa;
                     crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
                 }
             } else {
@@ -11404,11 +11383,11 @@ impl Battle {
             if let Some(pokemon) = side.pokemon.get(target_pos.1) {
                 if is_physical {
                     let boost = pokemon.boosts.def;
-                    let base_stat = pokemon.stored_stats.def as i32;
+                    let base_stat = pokemon.stored_stats.def;
                     crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
                 } else {
                     let boost = pokemon.boosts.spd;
-                    let base_stat = pokemon.stored_stats.spd as i32;
+                    let base_stat = pokemon.stored_stats.spd;
                     crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
                 }
             } else {
@@ -11690,7 +11669,7 @@ impl Battle {
     ) -> Vec<Option<i32>> {
         let result_damages = damages.to_vec();
 
-        for (_i, &target) in targets.iter().enumerate() {
+        for &target in targets.iter() {
             if target.is_none() {
                 continue;
             }
@@ -11920,7 +11899,7 @@ impl Battle {
         };
 
         self.events.entry(callback_name)
-            .or_insert_with(Vec::new)
+            .or_default()
             .push(handler);
     }
 

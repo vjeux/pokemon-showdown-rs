@@ -302,7 +302,9 @@ impl BoostsTable {
 
 /// Effect type enumeration
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Default)]
 pub enum EffectType {
+    #[default]
     Condition,
     Pokemon,
     Move,
@@ -318,11 +320,6 @@ pub enum EffectType {
     ValidatorRule,
 }
 
-impl Default for EffectType {
-    fn default() -> Self {
-        EffectType::Condition
-    }
-}
 
 /// Nonstandard classification
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]

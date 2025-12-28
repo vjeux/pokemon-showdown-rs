@@ -123,7 +123,7 @@ pub mod condition {
         if battle.active_per_half > 1 {
             EventResult::Number(battle.chain_modify_fraction(2732, 4096))
         } else {
-            EventResult::Number(battle.chain_modify(0.5 as f32))
+            EventResult::Number(battle.chain_modify(0.5_f32))
         }
     }
 

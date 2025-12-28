@@ -54,7 +54,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     // }
     let source_fails = {
         let source_ability = battle.dex.get_ability_by_id(&source_ability_id);
-        if let Some(ref ability) = source_ability {
+        if let Some(ability) = source_ability {
             ability.flags.get("failskillswap").copied().unwrap_or(0) != 0
         } else {
             false
@@ -63,7 +63,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     let target_fails = {
         let target_ability = battle.dex.get_ability_by_id(&target_ability_id);
-        if let Some(ref ability) = target_ability {
+        if let Some(ability) = target_ability {
             ability.flags.get("failskillswap").copied().unwrap_or(0) != 0
         } else {
             false

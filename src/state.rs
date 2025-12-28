@@ -124,6 +124,7 @@ pub struct MoveSlotState {
 
 /// Serializable stats
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct StatsState {
     pub hp: i32,
     pub atk: i32,
@@ -186,18 +187,6 @@ pub struct ReplayData {
     pub inputs: Vec<InputLogEntry>,
 }
 
-impl Default for StatsState {
-    fn default() -> Self {
-        Self {
-            hp: 0,
-            atk: 0,
-            def: 0,
-            spa: 0,
-            spd: 0,
-            spe: 0,
-        }
-    }
-}
 
 impl Default for FieldState {
     fn default() -> Self {

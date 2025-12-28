@@ -123,8 +123,10 @@ pub enum EffectType {
 
 /// Result from an event handler
 #[derive(Debug, Clone)]
+#[derive(Default)]
 pub enum EventResult {
     /// Continue to next handler, no modification
+    #[default]
     Continue,
     /// Stop event processing, event succeeded
     Stop,
@@ -144,11 +146,6 @@ pub enum EventResult {
     Types(Vec<String>),
 }
 
-impl Default for EventResult {
-    fn default() -> Self {
-        EventResult::Continue
-    }
-}
 
 impl EventResult {
     /// Check if the result indicates not failing

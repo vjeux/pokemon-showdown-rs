@@ -265,7 +265,7 @@ pub mod condition {
         // Already guaranteed to be a number by the type system
 
         // return this.chainModify([6840, 4096]);
-        EventResult::Number(battle.chain_modify(6840.0 / 4096.0 as f32))
+        EventResult::Number(battle.chain_modify(6840.0 / 4096.0_f32))
     }
 
     /// onDisableMove(pokemon) {

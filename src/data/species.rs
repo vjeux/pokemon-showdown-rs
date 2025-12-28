@@ -98,8 +98,8 @@ impl SpeciesDef {
         };
 
         check(self.abilities.0)
-            || self.abilities.1.map_or(false, check)
-            || self.abilities.2.map_or(false, check)
+            || self.abilities.1.is_some_and(check)
+            || self.abilities.2.is_some_and(check)
     }
 
     /// Get primary type

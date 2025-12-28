@@ -28,8 +28,7 @@ impl PRNGSeed {
     pub fn from_string(s: &str) -> Result<Self, String> {
         if s.starts_with("sodium,") {
             Ok(PRNGSeed::Sodium(s[7..].to_string()))
-        } else if s.starts_with("gen5,") {
-            let hex = &s[5..];
+        } else if let Some(hex) = s.strip_prefix("gen5,") {
             if hex.len() < 16 {
                 return Err(format!("Gen5 seed too short: {}", s));
             }

@@ -45,7 +45,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.boosts.clone()
+        target_pokemon.boosts
     };
 
     let source_boosts = {
@@ -53,7 +53,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.boosts.clone()
+        source_pokemon.boosts
     };
 
     // target.setBoost(sourceBoosts);

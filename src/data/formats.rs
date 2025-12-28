@@ -34,6 +34,7 @@ impl GameType {
 
 /// Format mod (generation)
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Default)]
 pub enum FormatMod {
     Gen1,
     Gen2,
@@ -43,6 +44,7 @@ pub enum FormatMod {
     Gen6,
     Gen7,
     Gen8,
+    #[default]
     Gen9,
 }
 
@@ -77,11 +79,6 @@ impl FormatMod {
     }
 }
 
-impl Default for FormatMod {
-    fn default() -> Self {
-        FormatMod::Gen9
-    }
-}
 
 /// Rule definition
 #[derive(Debug, Clone)]

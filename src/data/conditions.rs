@@ -11,10 +11,12 @@ use crate::dex_data::ID;
 
 /// Type of condition
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Default)]
 pub enum ConditionType {
     /// Non-volatile status (burn, paralysis, poison, sleep, freeze)
     Status,
     /// Volatile status (confusion, taunt, encore, etc.)
+    #[default]
     Volatile,
     /// Side condition (stealth rock, spikes, reflect, etc.)
     SideCondition,
@@ -28,11 +30,6 @@ pub enum ConditionType {
     PseudoWeather,
 }
 
-impl Default for ConditionType {
-    fn default() -> Self {
-        ConditionType::Volatile
-    }
-}
 
 /// Condition definition
 #[derive(Debug, Clone)]
@@ -663,17 +660,17 @@ pub fn get_condition(id: &ID) -> Option<&'static ConditionDef> {
 
 /// Check if a condition is a status (non-volatile)
 pub fn is_status_condition(id: &ID) -> bool {
-    get_condition(id).map_or(false, |c| c.condition_type == ConditionType::Status)
+    get_condition(id).is_some_and(|c| c.condition_type == ConditionType::Status)
 }
 
 /// Check if a condition is a volatile
 pub fn is_volatile_condition(id: &ID) -> bool {
-    get_condition(id).map_or(false, |c| c.condition_type == ConditionType::Volatile)
+    get_condition(id).is_some_and(|c| c.condition_type == ConditionType::Volatile)
 }
 
 /// Check if a condition traps the Pokemon
 pub fn condition_traps(id: &ID) -> bool {
-    get_condition(id).map_or(false, |c| c.traps)
+    get_condition(id).is_some_and(|c| c.traps)
 }
 
 /// Get residual damage for a condition

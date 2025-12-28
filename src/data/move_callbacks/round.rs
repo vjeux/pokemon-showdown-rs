@@ -66,7 +66,7 @@ pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Opt
         active_move.clone()
     };
 
-    for (_i, action) in queue_list.iter().enumerate() {
+    for action in queue_list.iter() {
         match action {
             crate::battle_queue::Action::Move(move_action) => {
                 // Skip if maxMove or zmove

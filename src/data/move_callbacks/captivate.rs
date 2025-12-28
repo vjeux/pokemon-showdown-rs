@@ -24,7 +24,7 @@ pub fn on_try_immunity(battle: &mut Battle, pokemon_pos: (usize, usize), source_
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.gender.clone()
+        pokemon.gender
     };
 
     let source_gender = {
@@ -32,7 +32,7 @@ pub fn on_try_immunity(battle: &mut Battle, pokemon_pos: (usize, usize), source_
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.gender.clone()
+        source_pokemon.gender
     };
 
     let result = (pokemon_gender == Gender::Male && source_gender == Gender::Female) ||

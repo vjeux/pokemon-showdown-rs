@@ -43,7 +43,7 @@ pub mod condition {
     /// }
     pub fn on_source_modify_damage(battle: &mut Battle) -> EventResult {
         // return this.chainModify(2);
-        EventResult::Number(battle.chain_modify(2.0 as f32))
+        EventResult::Number(battle.chain_modify(2.0_f32))
     }
 
     /// onBeforeMove(pokemon) {

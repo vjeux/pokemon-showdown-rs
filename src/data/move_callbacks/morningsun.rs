@@ -43,7 +43,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.effective_weather(&battle.field.weather.as_str())
+        pokemon_pokemon.effective_weather(battle.field.weather.as_str())
     };
 
     match effective_weather.as_str() {

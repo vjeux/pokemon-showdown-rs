@@ -141,7 +141,7 @@ pub mod condition {
         let lockedmove_id = ID::from("lockedmove");
         let should_remove_lockedmove = {
             let source_pokemon = battle.pokemon_at(source_pos.0, source_pos.1);
-            if let Some(ref pokemon) = source_pokemon {
+            if let Some(pokemon) = source_pokemon {
                 if let Some(volatile) = pokemon.volatiles.get(&lockedmove_id) {
                     volatile.duration == Some(2)
                 } else {

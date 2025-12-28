@@ -121,11 +121,11 @@ pub mod condition {
         if !has_protect_flag || is_status {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
             let move_id = {
-                let active_move = match &battle.active_move {
+                
+                match &battle.active_move {
                     Some(active_move) => active_move.id.clone(),
                     None => return EventResult::Continue,
-                };
-                active_move
+                }
             };
 
             if move_id == ID::from("gmaxoneblow") || move_id == ID::from("gmaxrapidflow") {
@@ -157,11 +157,11 @@ pub mod condition {
 
         // if (move.smartTarget) {
         let smart_target = {
-            let active_move = match &battle.active_move {
+            
+            match &battle.active_move {
                 Some(m) => m.smart_target,
                 None => return EventResult::Continue,
-            };
-            active_move
+            }
         };
 
         if smart_target.unwrap_or(false) {

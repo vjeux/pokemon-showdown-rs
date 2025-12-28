@@ -437,7 +437,7 @@ impl Pokemon {
         if !self.status.is_empty() {
             if self.status.as_str() == "slp" {
                 // Would need statusState.time for full implementation
-                secret.push_str(&format!(" slp"));
+                secret.push_str(" slp");
             } else {
                 secret.push_str(&format!(" {}", self.status.as_str()));
             }
@@ -756,7 +756,7 @@ impl Pokemon {
     // 	}
     //
     pub fn get_stat(&self, stat: StatID, unboosted: bool) -> i32 {
-        let base = self.stored_stats.get(stat) as i32;
+        let base = self.stored_stats.get(stat);
         if unboosted {
             return base;
         }
@@ -1122,7 +1122,7 @@ impl Pokemon {
         match copy_type {
             "copyvolatile" | "batonpass" => {
                 // Copy stat boosts
-                self.boosts = source.boosts.clone();
+                self.boosts = source.boosts;
 
                 // Copy certain volatiles
                 let copyable = [
@@ -1403,7 +1403,7 @@ impl Pokemon {
         }
 
         // Get base stat
-        let base_stat = self.stored_stats.get(stat) as i32;
+        let base_stat = self.stored_stats.get(stat);
 
         // Apply boost
         let clamped_boost = boost.clamp(-6, 6);
@@ -1816,7 +1816,7 @@ impl Pokemon {
             return 0;
         }
         let clamped = hp.clamp(1, self.maxhp);
-        let delta = clamped as i32 - self.hp as i32;
+        let delta = clamped - self.hp;
         self.hp = clamped;
         delta
     }
@@ -2225,7 +2225,7 @@ impl Pokemon {
         self.added_type = target.added_type.clone();
 
         // Copy stats
-        self.stored_stats = target.stored_stats.clone();
+        self.stored_stats = target.stored_stats;
 
         // Copy moves with reduced PP
         self.move_slots = target.move_slots.iter().map(|slot| {
@@ -2243,7 +2243,7 @@ impl Pokemon {
         }).collect();
 
         // Copy boosts
-        self.boosts = target.boosts.clone();
+        self.boosts = target.boosts;
 
         // Copy ability
         self.ability = target.ability.clone();
@@ -2255,7 +2255,7 @@ impl Pokemon {
     pub fn copy_volatile_from_full(&mut self, source: &Pokemon, is_shed_tail: bool) {
         // Copy boosts unless Shed Tail
         if !is_shed_tail {
-            self.boosts = source.boosts.clone();
+            self.boosts = source.boosts;
         }
 
         // List of volatiles that can be copied
@@ -2578,9 +2578,9 @@ impl Pokemon {
     /// Equivalent to getCombatPower in pokemon.ts
     pub fn get_combat_power(&self) -> i32 {
         // Simplified formula based on stats
-        let atk = self.stored_stats.atk as i32;
-        let def = self.stored_stats.def as i32;
-        let sta = (self.stored_stats.hp as i32).max(10); // Use HP as stamina proxy
+        let atk = self.stored_stats.atk;
+        let def = self.stored_stats.def;
+        let sta = self.stored_stats.hp.max(10); // Use HP as stamina proxy
 
         (((atk as f64) * (def as f64).powf(0.5) * (sta as f64).powf(0.5)) / 10.0) as i32
     }

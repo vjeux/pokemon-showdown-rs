@@ -45,7 +45,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
     // if (item.id) {
     //     return this.chainModify(1.5);
     // }
-    EventResult::Number(battle.chain_modify(1.5 as f32))
+    EventResult::Number(battle.chain_modify(1.5_f32))
 }
 
 /// onAfterHit(target, source) {

@@ -274,19 +274,19 @@ pub mod condition {
 
             if has_persistent {
                 battle.add("-sidestart", &[
-                    side_arg.into(),
+                    side_arg,
                     "Safeguard".into(),
                     "[persistent]".into(),
                 ]);
             } else {
                 battle.add("-sidestart", &[
-                    side_arg.into(),
+                    side_arg,
                     "Safeguard".into(),
                 ]);
             }
         } else {
             battle.add("-sidestart", &[
-                side_arg.into(),
+                side_arg,
                 "Safeguard".into(),
             ]);
         }
@@ -313,7 +313,7 @@ pub mod condition {
         let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
 
         battle.add("-sideend", &[
-            side_arg.into(),
+            side_arg,
             "Safeguard".into(),
         ]);
 

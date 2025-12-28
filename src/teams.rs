@@ -678,14 +678,11 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
         set.level = line[7..].parse().unwrap_or(100);
     } else if line.starts_with("Happiness: ") {
         set.happiness = line[11..].parse().unwrap_or(255);
-    } else if line.starts_with("Pokeball: ") {
-        let pokeball = &line[10..];
+    } else if let Some(pokeball) = line.strip_prefix("Pokeball: ") {
         set.pokeball = if aggressive { to_id(pokeball) } else { pokeball.to_string() };
-    } else if line.starts_with("Hidden Power: ") {
-        let hptype = &line[14..];
+    } else if let Some(hptype) = line.strip_prefix("Hidden Power: ") {
         set.hptype = Some(if aggressive { to_id(hptype) } else { hptype.to_string() });
-    } else if line.starts_with("Tera Type: ") {
-        let tera = &line[11..];
+    } else if let Some(tera) = line.strip_prefix("Tera Type: ") {
         set.tera_type = Some(if aggressive {
             tera.chars().filter(|c| c.is_alphanumeric()).collect()
         } else {
@@ -695,8 +692,7 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
         set.gigantamax = true;
     } else if line.starts_with("Dynamax Level: ") {
         set.dynamax_level = line[15..].parse().unwrap_or(10);
-    } else if line.starts_with("EVs: ") {
-        let ev_str = &line[5..];
+    } else if let Some(ev_str) = line.strip_prefix("EVs: ") {
         set.evs = StatsTable { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
         for part in ev_str.split('/') {
             let part = part.trim();
@@ -715,8 +711,7 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
                 }
             }
         }
-    } else if line.starts_with("IVs: ") {
-        let iv_str = &line[5..];
+    } else if let Some(iv_str) = line.strip_prefix("IVs: ") {
         set.ivs = StatsTable { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
         for part in iv_str.split('/') {
             let part = part.trim();

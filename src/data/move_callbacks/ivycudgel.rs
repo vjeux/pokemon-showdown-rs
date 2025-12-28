@@ -66,7 +66,7 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
     // case 'Ogerpon-Cornerstone': case 'Ogerpon-Cornerstone-Tera':
     //     move.type = 'Rock';
     //     break;
-    let new_type = match species_name.as_ref() {
+    let new_type = match species_name {
         "Ogerpon-Wellspring" | "Ogerpon-Wellspring-Tera" => Some("Water"),
         "Ogerpon-Hearthflame" | "Ogerpon-Hearthflame-Tera" => Some("Fire"),
         "Ogerpon-Cornerstone" | "Ogerpon-Cornerstone-Tera" => Some("Rock"),

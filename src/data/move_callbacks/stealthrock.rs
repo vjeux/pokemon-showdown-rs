@@ -24,7 +24,7 @@ pub mod condition {
             if let Some(side_index) = effect_state.side {
                 let side_id = if side_index == 0 { "p1" } else { "p2" };
                 let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sidestart", &[side_arg.into(), "move: Stealth Rock".into()]);
+                battle.add("-sidestart", &[side_arg, "move: Stealth Rock".into()]);
             }
         }
 
@@ -79,7 +79,7 @@ pub mod condition {
         };
 
         let multiplier = 2_i32.pow(type_mod as u32);
-        let damage_amount = (max_hp * multiplier as i32) / 8;
+        let damage_amount = (max_hp * multiplier) / 8;
         battle.damage(damage_amount, Some(pokemon), None, None, false);
 
         EventResult::Continue

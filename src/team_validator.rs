@@ -461,7 +461,7 @@ impl TeamValidator {
         let has_item_clause = format.rulesets.contains(&"Item Clause");
         let has_nickname_clause = format.rulesets.contains(&"Nickname Clause");
 
-        for (_i, pokemon) in team.iter().enumerate() {
+        for pokemon in team.iter() {
             // Validate individual Pokemon
             errors.extend(self.validate_pokemon(pokemon, format));
 

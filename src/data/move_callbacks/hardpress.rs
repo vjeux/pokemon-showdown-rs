@@ -34,7 +34,7 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), ta
     let bp = if max_hp == 0 {
         1
     } else {
-        let inner_floor = (hp * 4096 / max_hp) as i32;
+        let inner_floor = hp * 4096 / max_hp;
         let middle_calc = (100 * (100 * inner_floor) + 2048 - 1) / 4096;
         let outer_floor = middle_calc / 100;
         if outer_floor == 0 { 1 } else { outer_floor }

@@ -83,8 +83,8 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 
     // const physical = Math.floor(Math.floor(Math.floor(Math.floor(2 * pokemon.level / 5 + 2) * 90 * atk) / def) / 50);
     // const special = Math.floor(Math.floor(Math.floor(Math.floor(2 * pokemon.level / 5 + 2) * 90 * spa) / spd) / 50);
-    let physical = (((((2 * level as i32 / 5 + 2) * 90 * atk as i32) / def as i32) / 50)) as i32;
-    let special = (((((2 * level as i32 / 5 + 2) * 90 * spa as i32) / spd as i32) / 50)) as i32;
+    let physical = (((2 * level as i32 / 5 + 2) * 90 * atk) / def) / 50;
+    let special = (((2 * level as i32 / 5 + 2) * 90 * spa) / spd) / 50;
 
     // if (physical > special || (physical === special && this.randomChance(1, 2))) {
     //     move.category = 'Physical';

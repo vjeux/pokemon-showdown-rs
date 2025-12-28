@@ -50,12 +50,12 @@ pub struct BaseStatsData {
 impl From<BaseStatsData> for StatsTable {
     fn from(data: BaseStatsData) -> Self {
         StatsTable {
-            hp: data.hp as i32,
-            atk: data.atk as i32,
-            def: data.def as i32,
-            spa: data.spa as i32,
-            spd: data.spd as i32,
-            spe: data.spe as i32,
+            hp: data.hp,
+            atk: data.atk,
+            def: data.def,
+            spa: data.spa,
+            spd: data.spd,
+            spe: data.spe,
         }
     }
 }
@@ -717,7 +717,7 @@ impl Dex {
             for forme_name in &base_species.cosmetic_formes {
                 let forme_id = ID::new(forme_name);
                 // Only create entry if it doesn't already exist
-                if !species.contains_key(&forme_id) {
+                if let std::collections::hash_map::Entry::Vacant(e) = species.entry(forme_id) {
                     // Extract forme suffix (e.g., "Yellow" from "Flabébé-Yellow")
                     let forme_suffix = if let Some(pos) = forme_name.rfind('-') {
                         &forme_name[pos + 1..]
@@ -755,7 +755,7 @@ impl Dex {
                         exists: base_species.exists,
                     };
 
-                    species.insert(forme_id, cosmetic_forme);
+                    e.insert(cosmetic_forme);
                 }
             }
         }
@@ -916,7 +916,7 @@ impl Dex {
             self_effect: None,
 
             // Move data effects - copy from move_data
-            boosts: move_data.boosts.as_ref().map(|b| Self::convert_boosts_hash_to_table(b)),
+            boosts: move_data.boosts.as_ref().map(Self::convert_boosts_hash_to_table),
             heal: move_data.heal,
             status: move_data.status.clone(),
             force_status: None,
@@ -980,7 +980,7 @@ impl Dex {
     fn convert_secondary(secondary: &MoveSecondary) -> crate::battle_actions::SecondaryEffect {
         crate::battle_actions::SecondaryEffect {
             chance: secondary.chance,
-            boosts: secondary.boosts.as_ref().map(|b| Self::convert_boosts_hash_to_table(b)),
+            boosts: secondary.boosts.as_ref().map(Self::convert_boosts_hash_to_table),
             status: secondary.status.clone(),
             volatile_status: secondary.volatile_status_secondary.clone(),
             self_effect: false,
@@ -1239,12 +1239,12 @@ impl Dex {
     //
     pub fn get_hidden_power(ivs: &StatsTable) -> (&'static str, i32) {
         // Gen 3+ formula
-        let hp_bits = (ivs.hp & 1) as i32;
-        let atk_bits = ((ivs.atk & 1) as i32) << 1;
-        let def_bits = ((ivs.def & 1) as i32) << 2;
-        let spe_bits = ((ivs.spe & 1) as i32) << 3;
-        let spa_bits = ((ivs.spa & 1) as i32) << 4;
-        let spd_bits = ((ivs.spd & 1) as i32) << 5;
+        let hp_bits = ivs.hp & 1;
+        let atk_bits = (ivs.atk & 1) << 1;
+        let def_bits = (ivs.def & 1) << 2;
+        let spe_bits = (ivs.spe & 1) << 3;
+        let spa_bits = (ivs.spa & 1) << 4;
+        let spd_bits = (ivs.spd & 1) << 5;
 
         let type_num = (hp_bits | atk_bits | def_bits | spe_bits | spa_bits | spd_bits) * 15 / 63;
 
@@ -1257,12 +1257,12 @@ impl Dex {
         let hp_type = types.get(type_num as usize).unwrap_or(&"Dark");
 
         // Calculate power (Gen 3-5: 30-70, Gen 6+: always 60)
-        let hp2_bits = ((ivs.hp >> 1) & 1) as i32;
-        let atk2_bits = (((ivs.atk >> 1) & 1) as i32) << 1;
-        let def2_bits = (((ivs.def >> 1) & 1) as i32) << 2;
-        let spe2_bits = (((ivs.spe >> 1) & 1) as i32) << 3;
-        let spa2_bits = (((ivs.spa >> 1) & 1) as i32) << 4;
-        let spd2_bits = (((ivs.spd >> 1) & 1) as i32) << 5;
+        let hp2_bits = (ivs.hp >> 1) & 1;
+        let atk2_bits = ((ivs.atk >> 1) & 1) << 1;
+        let def2_bits = ((ivs.def >> 1) & 1) << 2;
+        let spe2_bits = ((ivs.spe >> 1) & 1) << 3;
+        let spa2_bits = ((ivs.spa >> 1) & 1) << 4;
+        let spd2_bits = ((ivs.spd >> 1) & 1) << 5;
 
         let power = (hp2_bits | atk2_bits | def2_bits | spe2_bits | spa2_bits | spd2_bits) * 40 / 63 + 30;
 

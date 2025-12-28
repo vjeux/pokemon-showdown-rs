@@ -107,13 +107,12 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
         // if (action.pokemon.isAlly(source) && ['waterpledge', 'firepledge'].includes(action.move.id)) {
         let is_ally = action_pokemon.0 == source.0;
 
-        if is_ally {
-            if move_action.move_id == ID::from("waterpledge") || move_action.move_id == ID::from("firepledge") {
+        if is_ally
+            && (move_action.move_id == ID::from("waterpledge") || move_action.move_id == ID::from("firepledge")) {
                 ally_pledge_action_index = Some(i);
                 ally_pokemon_pos = Some(action_pokemon);
                 break;
             }
-        }
     }
 
     if let Some(_action_index) = ally_pledge_action_index {
@@ -234,6 +233,6 @@ pub mod condition {
     /// }
     pub fn on_modify_spe(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // return this.chainModify(0.25);
-        EventResult::Number(battle.chain_modify(0.25 as f32))
+        EventResult::Number(battle.chain_modify(0.25_f32))
     }
 }

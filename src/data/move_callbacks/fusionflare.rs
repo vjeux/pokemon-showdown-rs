@@ -23,7 +23,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
             battle.debug("double power");
 
             // return this.chainModify(2);
-            return EventResult::Number(battle.chain_modify(2.0 as f32));
+            return EventResult::Number(battle.chain_modify(2.0_f32));
         }
     }
 

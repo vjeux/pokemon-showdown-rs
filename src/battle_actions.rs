@@ -308,8 +308,8 @@ impl<'a> BattleActions<'a> {
         let (attack, defense) = if move_data.category == "Special" {
             let atk_boost = attacker.boosts.spa;
             let def_boost = defender.boosts.spd;
-            let base_atk = attacker.stored_stats.spa as i32;
-            let base_def = defender.stored_stats.spd as i32;
+            let base_atk = attacker.stored_stats.spa;
+            let base_def = defender.stored_stats.spd;
             (
                 Self::calculate_stat_with_boost(base_atk, atk_boost),
                 Self::calculate_stat_with_boost(base_def, def_boost),
@@ -317,8 +317,8 @@ impl<'a> BattleActions<'a> {
         } else {
             let atk_boost = attacker.boosts.atk;
             let def_boost = defender.boosts.def;
-            let base_atk = attacker.stored_stats.atk as i32;
-            let base_def = defender.stored_stats.def as i32;
+            let base_atk = attacker.stored_stats.atk;
+            let base_def = defender.stored_stats.def;
             (
                 Self::calculate_stat_with_boost(base_atk, atk_boost),
                 Self::calculate_stat_with_boost(base_def, def_boost),
@@ -394,7 +394,7 @@ impl<'a> BattleActions<'a> {
     /// Calculate the effective stat value with boost applied
     pub fn calculate_stat_with_boost(base_stat: i32, boost: i8) -> i32 {
         let (num, denom) = Self::get_boost_modifier(boost);
-        (base_stat as i32 * num / denom).max(1) as i32
+        (base_stat * num / denom).max(1)
     }
 
     /// Calculate recoil damage
@@ -932,11 +932,11 @@ impl<'a> BattleActions<'a> {
         // Calculate effective accuracy
         let mut accuracy_stages = if ignore_accuracy { 0 } else { attacker_accuracy_boost };
         let evasion_stages = if ignore_evasion { 0 } else { defender_evasion_boost };
-        accuracy_stages = accuracy_stages - evasion_stages;
+        accuracy_stages -= evasion_stages;
 
         // Apply stage modifier
         let (num, denom) = Self::get_accuracy_modifier(accuracy_stages);
-        let effective_accuracy = (move_accuracy as i32 * num / denom) as i32;
+        let effective_accuracy = move_accuracy * num / denom;
 
         // OHKO moves have special accuracy handling
         if move_ohko {
@@ -1985,18 +1985,15 @@ pub struct UseMoveOptions {
 /// Spread move damage result type
 /// Can be damage amount, false (failed), or true/undefined (success with no damage)
 #[derive(Debug, Clone, Copy)]
+#[derive(Default)]
 pub enum SpreadMoveDamageValue {
     Damage(i32),
     Failed,
     Success,
+    #[default]
     Undefined,
 }
 
-impl Default for SpreadMoveDamageValue {
-    fn default() -> Self {
-        SpreadMoveDamageValue::Undefined
-    }
-}
 
 /// Result of spread move hit containing damage and target info
 pub type SpreadMoveDamage = Vec<SpreadMoveDamageValue>;
@@ -2127,9 +2124,7 @@ impl<'a> BattleActions<'a> {
         let _ = (pokemon_index, move_id, is_secondary, is_self);
 
         // Set placeholder damage for each target
-        for i in 0..damage.len() {
-            damage[i] = SpreadMoveDamageValue::Damage(50);
-        }
+        damage.fill(SpreadMoveDamageValue::Damage(50));
 
         (damage, targets)
     }
@@ -2160,7 +2155,7 @@ impl<'a> BattleActions<'a> {
             is_self,
         );
 
-        match damage.get(0) {
+        match damage.first() {
             Some(SpreadMoveDamageValue::Damage(d)) => Some(*d),
             Some(SpreadMoveDamageValue::Success) => None,
             _ => None,
@@ -2256,7 +2251,7 @@ impl<'a> BattleActions<'a> {
 
         // Status Z-moves can have boosts or effects
         if let Some(boosts) = z_move_boost {
-            return ZPowerResult::Boost(boosts.clone());
+            return ZPowerResult::Boost(*boosts);
         }
 
         if let Some(effect) = z_move_effect {
@@ -2314,11 +2309,10 @@ impl<'a> BattleActions<'a> {
         let _ = pokemon_index;
 
         // Handle Ogerpon special case
-        if species_base_species == "Ogerpon" {
-            if !["Fire", "Grass", "Rock", "Water"].contains(&tera_type) {
+        if species_base_species == "Ogerpon"
+            && !["Fire", "Grass", "Rock", "Water"].contains(&tera_type) {
                 return TerastallizeResult::InvalidOgerpon;
             }
-        }
 
         TerastallizeResult::Success {
             tera_type: tera_type.to_string(),
@@ -2531,7 +2525,13 @@ pub fn use_move(
 
     // const oldMoveResult: boolean | null | undefined = pokemon.moveThisTurnResult;
     // const moveResult = this.useMoveInner(move, pokemon, options);
-    let move_result = use_move_inner(
+    
+
+    // if (oldMoveResult === pokemon.moveThisTurnResult) pokemon.moveThisTurnResult = moveResult;
+    // Note: moveThisTurnResult syncing would go here
+
+    // return moveResult;
+    use_move_inner(
         battle,
         move_id,
         pokemon_pos,
@@ -2539,13 +2539,7 @@ pub fn use_move(
         source_effect,
         z_move,
         max_move,
-    );
-
-    // if (oldMoveResult === pokemon.moveThisTurnResult) pokemon.moveThisTurnResult = moveResult;
-    // Note: moveThisTurnResult syncing would go here
-
-    // return moveResult;
-    move_result
+    )
 }
 
 /// Inner implementation of useMove - handles the actual move execution
@@ -2779,9 +2773,9 @@ pub fn use_move_inner(
     // if (zMove || (move.category !== 'Status' && sourceEffect && (sourceEffect as ActiveMove).isZ)) {
     //     move = this.getActiveZMove(move, pokemon);
     // }
-    if z_move.is_some() || (active_move.category != "Status" && source_effect.as_ref().map_or(false, |eff| {
+    if z_move.is_some() || (active_move.category != "Status" && source_effect.as_ref().is_some_and(|eff| {
         // Check if source effect is a Z-move
-        battle.dex.get_active_move(eff.as_str()).map_or(false, |m| m.is_z)
+        battle.dex.get_active_move(eff.as_str()).is_some_and(|m| m.is_z)
     })) {
         // Transform to Z-move
         active_move = BattleActions::get_active_z_move(
@@ -2805,9 +2799,9 @@ pub fn use_move_inner(
     // if (maxMove || (move.category !== 'Status' && sourceEffect && (sourceEffect as ActiveMove).isMax)) {
     //     move = this.getActiveMaxMove(move, pokemon);
     // }
-    if max_move.is_some() || (active_move.category != "Status" && source_effect.as_ref().map_or(false, |eff| {
+    if max_move.is_some() || (active_move.category != "Status" && source_effect.as_ref().is_some_and(|eff| {
         // Check if source effect is a Max move
-        battle.dex.get_active_move(eff.as_str()).map_or(false, |m| m.is_max)
+        battle.dex.get_active_move(eff.as_str()).is_some_and(|m| m.is_max)
     })) {
         // Transform to Max move
         active_move = BattleActions::get_active_max_move(

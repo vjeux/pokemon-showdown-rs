@@ -89,7 +89,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
                 None => return EventResult::Continue,
             };
             let arg = source_pokemon.get_slot();
-            let str_repr = format!("{}", arg);
+            let str_repr = arg.to_string();
             (arg, str_repr)
         };
 
@@ -120,7 +120,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
                 None => return EventResult::Continue,
             };
             let arg = source_pokemon.get_slot();
-            let str_repr = format!("{}", arg);
+            let str_repr = arg.to_string();
             (arg, str_repr)
         };
 

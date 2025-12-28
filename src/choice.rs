@@ -55,22 +55,22 @@ impl Choice {
 
         // Parse move choice
         if input.starts_with("move ") || input.starts_with("move") && input.len() > 4 {
-            return Self::parse_move(&input[4..].trim());
+            return Self::parse_move(input[4..].trim());
         }
 
         // Parse switch choice
         if input.starts_with("switch ") || input.starts_with("switch") && input.len() > 6 {
-            return Self::parse_switch(&input[6..].trim());
+            return Self::parse_switch(input[6..].trim());
         }
 
         // Parse team choice
         if input.starts_with("team ") || input.starts_with("team") && input.len() > 4 {
-            return Self::parse_team(&input[4..].trim());
+            return Self::parse_team(input[4..].trim());
         }
 
         // Try parsing as just a number (move slot)
         if let Ok(slot) = input.parse::<usize>() {
-            if slot >= 1 && slot <= 4 {
+            if (1..=4).contains(&slot) {
                 return Ok(Choice::Move {
                     slot,
                     target: None,
@@ -94,7 +94,7 @@ impl Choice {
 
         // Parse move slot (1-4 or move name)
         let slot = if let Ok(n) = parts[0].parse::<usize>() {
-            if n < 1 || n > 4 {
+            if !(1..=4).contains(&n) {
                 return Err(ChoiceError::InvalidMoveSlot(n));
             }
             n
@@ -147,7 +147,7 @@ impl Choice {
 
         // Parse switch slot (1-6 or Pokemon name)
         let slot = if let Ok(n) = parts[0].parse::<usize>() {
-            if n < 1 || n > 6 {
+            if !(1..=6).contains(&n) {
                 return Err(ChoiceError::InvalidSwitchSlot(n));
             }
             n
@@ -170,7 +170,7 @@ impl Choice {
         for c in input.chars() {
             if let Some(digit) = c.to_digit(10) {
                 let slot = digit as usize;
-                if slot >= 1 && slot <= 6 {
+                if (1..=6).contains(&slot) {
                     order.push(slot);
                 } else {
                     return Err(ChoiceError::InvalidTeamSlot(slot));
@@ -286,6 +286,7 @@ pub enum RequestType {
 
 /// Active Pokemon request data
 #[derive(Debug, Clone)]
+#[derive(Default)]
 pub struct ActiveRequest {
     /// Available moves
     pub moves: Vec<MoveRequest>,
@@ -331,6 +332,7 @@ pub struct ZMoveRequest {
 
 /// Side request data (team info)
 #[derive(Debug, Clone)]
+#[derive(Default)]
 pub struct SideRequest {
     /// Player name
     pub name: String,
@@ -375,29 +377,7 @@ pub struct RequestStats {
     pub spe: i32,
 }
 
-impl Default for ActiveRequest {
-    fn default() -> Self {
-        Self {
-            moves: Vec::new(),
-            can_mega: false,
-            can_zmove: None,
-            can_dynamax: false,
-            can_terastallize: None,
-            trapped: false,
-            maybe_trapped: false,
-        }
-    }
-}
 
-impl Default for SideRequest {
-    fn default() -> Self {
-        Self {
-            name: String::new(),
-            id: String::new(),
-            pokemon: Vec::new(),
-        }
-    }
-}
 
 impl Default for BattleRequest {
     fn default() -> Self {

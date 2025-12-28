@@ -159,7 +159,7 @@ pub mod condition {
         // }
         if move_id == "surf" || move_id == "whirlpool" {
             // return this.chainModify(2);
-            return EventResult::Number(battle.chain_modify(2.0 as f32));
+            return EventResult::Number(battle.chain_modify(2.0_f32));
         }
 
         EventResult::Continue
