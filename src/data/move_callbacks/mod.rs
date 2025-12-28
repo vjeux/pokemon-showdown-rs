@@ -847,7 +847,7 @@ pub fn dispatch_on_modify_priority(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "grassyglide" => grassyglide::on_modify_priority(battle, pokemon_pos),
+        "grassyglide" => grassyglide::on_modify_priority(battle, Some(pokemon_pos), None, move_id),
         _ => EventResult::Continue,
     }
 }
