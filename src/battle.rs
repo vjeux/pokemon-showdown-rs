@@ -8091,11 +8091,8 @@ impl Battle {
                 EventResult::Continue
             }
             "DamagePriority" => {
-                if let Some(target_pos) = target {
-                    move_callbacks::dispatch_on_damage_priority(self, move_id, source_pos, target_pos)
-                } else {
-                    EventResult::Continue
-                }
+                // No moves implement DamagePriority event
+                EventResult::Continue
             }
             "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_id, source_pos),
             "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_id, source_pos),
