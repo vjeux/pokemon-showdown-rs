@@ -376,7 +376,7 @@ Moves with callbacks: 373
 - [ ] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onModifyMove, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
 - [ ] worryseed - Worry Seed (Status, Grass) - 3 callbacks: onTryImmunity, onTryHit, onHit
 - [ ] wringout - Wring Out (Special, Normal) - 1 callback: basePowerCallback
-- [ ] yawn - Yawn (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onEnd
+- [x] yawn - Yawn (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onEnd
 
 ## Statistics
 
