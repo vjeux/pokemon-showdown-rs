@@ -44,11 +44,50 @@ pub mod condition {
     ///     this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
     /// }
     pub fn on_start(
-        _battle: &mut Battle,
-        _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // this.effectState.multiplier = 1.5;
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            effect_state.data.insert(
+                "multiplier".to_string(),
+                serde_json::to_value(1.5).unwrap_or(serde_json::Value::Null),
+            );
+        }
+
+        // this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
+        let (target_slot, source_slot) = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            (target_pokemon.get_slot(), source_pokemon.get_slot())
+        };
+
+        battle.add(
+            "-singleturn",
+            &[
+                crate::battle::Arg::from(target_slot),
+                crate::battle::Arg::from("Helping Hand"),
+                crate::battle::Arg::from(format!("[of] {}", source_slot)),
+            ],
+        );
+
         EventResult::Continue
     }
 
@@ -57,11 +96,58 @@ pub mod condition {
     ///     this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
     /// }
     pub fn on_restart(
-        _battle: &mut Battle,
-        _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // this.effectState.multiplier *= 1.5;
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            let current_multiplier = effect_state
+                .data
+                .get("multiplier")
+                .and_then(|v| v.as_f64())
+                .unwrap_or(1.0);
+
+            let new_multiplier = current_multiplier * 1.5;
+
+            effect_state.data.insert(
+                "multiplier".to_string(),
+                serde_json::to_value(new_multiplier).unwrap_or(serde_json::Value::Null),
+            );
+        }
+
+        // this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
+        let (target_slot, source_slot) = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            (target_pokemon.get_slot(), source_pokemon.get_slot())
+        };
+
+        battle.add(
+            "-singleturn",
+            &[
+                crate::battle::Arg::from(target_slot),
+                crate::battle::Arg::from("Helping Hand"),
+                crate::battle::Arg::from(format!("[of] {}", source_slot)),
+            ],
+        );
+
         EventResult::Continue
     }
 
@@ -70,12 +156,25 @@ pub mod condition {
     ///     return this.chainModify(this.effectState.multiplier);
     /// }
     pub fn on_base_power(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _base_power: i32,
         _pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        // this.debug('Boosting from Helping Hand: ' + this.effectState.multiplier);
+        let multiplier = if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("multiplier")
+                .and_then(|v| v.as_f64())
+                .unwrap_or(1.0)
+        } else {
+            1.0
+        };
+
+        battle.debug(&format!("Boosting from Helping Hand: {}", multiplier));
+
+        // return this.chainModify(this.effectState.multiplier);
+        EventResult::Number(battle.chain_modify(multiplier as f32))
     }
 }
