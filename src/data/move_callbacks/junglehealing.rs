@@ -23,8 +23,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         battle.modify_value(pokemon_pokemon.maxhp, 0.25)
     };
 
-    let heal_success = battle.heal(heal_amount, pokemon, None, None);
-    let success = heal_success != 0;
+    let heal_success = battle.heal(heal_amount, Some(pokemon), None, None);
+    let success = heal_success.unwrap_or(0) != 0;
 
     // return pokemon.cureStatus() || success;
     let cure_status_result = {

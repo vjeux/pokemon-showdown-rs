@@ -40,10 +40,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
             None => return EventResult::Continue,
         };
 
-        let item_id = match &pokemon_pokemon.item {
-            Some(id) => id,
-            None => return EventResult::Continue,
-        };
+        let item_id = &pokemon_pokemon.item;
 
         let item = battle.dex.get_item_by_id(item_id);
         match item {
