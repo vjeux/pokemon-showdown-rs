@@ -1,6 +1,3 @@
-Fixed in solarblade.rs: weather = battle.effective_weather(attacker)
-Fixed in solarblade.rs: weather = battle.effective_weather(pokemon)
-Total changes in solarblade.rs: 2
 //! Solar Blade Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/

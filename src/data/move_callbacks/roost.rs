@@ -7,6 +7,9 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+pub mod condition {
+    use super::*;
+
 /// condition: {
 ///     duration: 1,
 ///     onResidualOrder: 25,
@@ -105,5 +108,7 @@ pub fn on_type(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Event
     let filtered_types: Vec<_> = types.into_iter().filter(|t| t.as_str() != "Flying").collect();
 
     EventResult::Types(filtered_types)
+}
+
 }
 

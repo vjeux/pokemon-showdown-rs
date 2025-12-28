@@ -120,3 +120,33 @@ pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usiz
     EventResult::Continue
 }
 
+/// onAfterSubDamage(damage, target, source, move) {
+///     if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
+/// }
+pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
+    let source_pos = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let is_ally = {
+        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source.is_ally(target)
+    };
+
+    if !is_ally {
+        let category = battle.active_move.as_ref().map(|m| m.category.as_str()).unwrap_or("Special");
+        battle.hint(&format!("{} Shell Side Arm", category));
+    }
+
+    EventResult::Continue
+}
+

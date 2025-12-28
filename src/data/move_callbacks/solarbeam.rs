@@ -1,6 +1,3 @@
-Fixed in solarbeam.rs: weather = battle.effective_weather(attacker)
-Fixed in solarbeam.rs: weather = battle.effective_weather(pokemon)
-Total changes in solarbeam.rs: 2
 //! Solar Beam Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
