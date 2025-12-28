@@ -1156,12 +1156,14 @@ pub fn dispatch_condition_duration_callback(
 pub fn dispatch_condition_on_accuracy(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    accuracy: i32,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "glaiverush" => glaiverush::condition::on_accuracy(battle, source_pos),
-        "minimize" => minimize::condition::on_accuracy(battle, source_pos),
-        "telekinesis" => telekinesis::condition::on_accuracy(battle, source_pos),
+        "glaiverush" => glaiverush::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "minimize" => minimize::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "telekinesis" => telekinesis::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
