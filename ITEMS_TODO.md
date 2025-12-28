@@ -305,7 +305,7 @@ Items with callbacks: 326
 - [ ] staraptite - Staraptite (Gen 9) - 1 callback: onTakeItem
 - [ ] starfberry - Starf Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [ ] starminite - Starminite (Gen 9) - 1 callback: onTakeItem
-- [ ] steelgem - Steel Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] steelgem - Steel Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] steelixite - Steelixite (Gen 6) - 1 callback: onTakeItem
 - [ ] steelmemory - Steel Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] stick - Stick (Gen 2) - 1 callback: onModifyCritRatio
