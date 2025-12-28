@@ -471,3 +471,16 @@ By callback type:
 - condition::onTryPrimaryHit: 1 moves
 - condition::onEffectiveness: 1 moves
 - condition::onAnySetStatus: 1 moves
+
+## Missing Infrastructure
+
+### trick.rs
+Missing methods on Pokemon:
+- `has_ability(ability_name: &str) -> bool` - Check if pokemon has a specific ability
+- `take_item(source: Option<Pokemon>) -> Option<Item>` - Take/remove item from pokemon
+- `set_item(item: Item)` - Set pokemon's item
+- `item: Option<Item>` - Current item field
+- `item_state` - Item state tracking
+
+Missing methods on Battle:
+- `single_event(event_name: &str, item: Item, item_state, target, source, move, item) -> bool` - Fire single event like TakeItem

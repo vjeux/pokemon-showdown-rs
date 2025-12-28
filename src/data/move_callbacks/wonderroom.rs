@@ -75,8 +75,10 @@ pub mod condition {
     /// onFieldEnd() {
     ///     this.add('-fieldend', 'move: Wonder Room');
     /// }
-    pub fn on_field_end(_battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_field_end(battle: &mut Battle) -> EventResult {
+        // this.add('-fieldend', 'move: Wonder Room');
+        battle.add("-fieldend", &[crate::battle::Arg::from("move: Wonder Room")]);
+
         EventResult::Continue
     }
 }
