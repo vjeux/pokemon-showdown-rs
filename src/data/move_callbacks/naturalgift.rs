@@ -40,10 +40,10 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
         pokemon_pokemon.item.clone()
     };
 
-    let item_id = match item_id {
-        Some(id) => id,
-        None => return EventResult::Continue,
-    };
+    // Check if item is empty
+    if item_id == ID::from("") {
+        return EventResult::Continue;
+    }
 
     let item_data = match battle.dex.get_item_by_id(&item_id) {
         Some(item) => item,
