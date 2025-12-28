@@ -62,10 +62,46 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // source.setBoost(targetBoosts);
-    battle.set_boost(&target_boosts, source, None, None);
+    {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        for (stat, value) in &target_boosts {
+            let boost_id = match stat.as_str() {
+                "atk" => crate::dex_data::BoostID::Atk,
+                "def" => crate::dex_data::BoostID::Def,
+                "spa" => crate::dex_data::BoostID::SpA,
+                "spd" => crate::dex_data::BoostID::SpD,
+                "spe" => crate::dex_data::BoostID::Spe,
+                "accuracy" => crate::dex_data::BoostID::Accuracy,
+                "evasion" => crate::dex_data::BoostID::Evasion,
+                _ => continue,
+            };
+            source_pokemon.set_boost(boost_id, *value);
+        }
+    }
 
     // target.setBoost(sourceBoosts);
-    battle.set_boost(&source_boosts, target, None, None);
+    {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        for (stat, value) in &source_boosts {
+            let boost_id = match stat.as_str() {
+                "atk" => crate::dex_data::BoostID::Atk,
+                "def" => crate::dex_data::BoostID::Def,
+                "spa" => crate::dex_data::BoostID::SpA,
+                "spd" => crate::dex_data::BoostID::SpD,
+                "spe" => crate::dex_data::BoostID::Spe,
+                "accuracy" => crate::dex_data::BoostID::Accuracy,
+                "evasion" => crate::dex_data::BoostID::Evasion,
+                _ => continue,
+            };
+            target_pokemon.set_boost(boost_id, *value);
+        }
+    }
 
     // this.add('-swapboost', source, target, 'atk, spa', '[from] move: Power Swap');
     let (source_arg, target_arg) = {
