@@ -89,7 +89,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     let mut did_something = false;
     for target in targets {
         let boost_result = battle.boost(&[("atk", 1), ("spa", 1)], target, source, Some(move_id));
-        did_something = (boost_result.unwrap_or(0) != 0) || did_something;
+        did_something = boost_result || did_something;
     }
 
     // return didSomething;

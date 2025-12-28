@@ -83,7 +83,7 @@ pub fn on_hit_field(battle: &mut Battle, source_pos: Option<(usize, usize)>, mov
     let mut success = false;
     for target in targets {
         let boost_result = battle.boost(&[("def", 1)], target, source, Some(move_id));
-        success = (boost_result.unwrap_or(0) != 0) || success;
+        success = boost_result || success;
     }
 
     // return success;

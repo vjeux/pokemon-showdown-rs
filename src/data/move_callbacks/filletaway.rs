@@ -40,7 +40,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     // boosts: { atk: 2, spa: 2, spe: 2 }
     let boost_result = battle.boost(&[("atk", 2), ("spa", 2), ("spe", 2)], pokemon, Some(pokemon), None);
 
-    if boost_result.unwrap_or(0) == 0 {
+    if !boost_result {
         return EventResult::Stop;
     }
 
