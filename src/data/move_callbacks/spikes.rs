@@ -22,11 +22,16 @@ pub mod condition {
         // }
 
         // this.add('-sidestart', side, 'Spikes');
-        let side = battle.get_effect_state_side();
-        battle.add_side("-sidestart", side, &["Spikes".into()]);
+        if let Some(effect_state) = &mut battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sidestart", &[side_arg, "Spikes".into()]);
+            }
 
-        // this.effectState.layers = 1;
-        battle.set_effect_state_layers(1);
+            // this.effectState.layers = 1;
+            effect_state.data.insert("layers".to_string(), serde_json::json!(1));
+        }
 
         EventResult::Continue
     }
@@ -44,17 +49,23 @@ pub mod condition {
         // }
 
         // if (this.effectState.layers >= 3) return false;
-        let layers = battle.get_effect_state_layers();
-        if layers >= 3 {
-            return EventResult::Boolean(false);
+        if let Some(effect_state) = &mut battle.current_effect_state {
+            let layers = effect_state.data.get("layers").and_then(|v| v.as_i64()).unwrap_or(0) as i32;
+
+            if layers >= 3 {
+                return EventResult::Boolean(false);
+            }
+
+            // this.add('-sidestart', side, 'Spikes');
+            if let Some(side_index) = effect_state.side {
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sidestart", &[side_arg, "Spikes".into()]);
+            }
+
+            // this.effectState.layers++;
+            effect_state.data.insert("layers".to_string(), serde_json::json!(layers + 1));
         }
-
-        // this.add('-sidestart', side, 'Spikes');
-        let side = battle.get_effect_state_side();
-        battle.add_side("-sidestart", side, &["Spikes".into()]);
-
-        // this.effectState.layers++;
-        battle.set_effect_state_layers(layers + 1);
 
         EventResult::Continue
     }
