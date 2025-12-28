@@ -98,7 +98,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                (source_pokemon.active, source_pokemon.hp, source_pokemon.active_turns)
+                (source_pokemon.is_active, source_pokemon.hp, source_pokemon.active_turns)
             };
 
             if !is_active || hp <= 0 || active_turns == 0 {

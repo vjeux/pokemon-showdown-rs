@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex_data::ID;
 
 /// onTryHit(target, source) {
 ///     if (target.ability === source.ability) return false;

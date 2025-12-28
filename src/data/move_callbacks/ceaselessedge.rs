@@ -36,7 +36,7 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
         // Get foe sides (opposite side in a 2-player battle)
         for side_idx in 0..battle.sides.len() {
             if side_idx != source_side_idx {
-                battle.sides[side_idx].add_side_condition(&ID::from("spikes"));
+                battle.sides[side_idx].add_side_condition(ID::from("spikes"), None);
             }
         }
     }
@@ -78,7 +78,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
         // Get foe sides (opposite side in a 2-player battle)
         for side_idx in 0..battle.sides.len() {
             if side_idx != source_side_idx {
-                battle.sides[side_idx].add_side_condition(&ID::from("spikes"));
+                battle.sides[side_idx].add_side_condition(ID::from("spikes"), None);
             }
         }
     }

@@ -200,6 +200,13 @@ pub mod condition {
                 // if (!possibleTarget) {
                 if possible_target.is_none() {
                     // this.add('-miss', pokemon);
+                    let pokemon_arg = {
+                        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                            Some(p) => p,
+                            None => return EventResult::Continue,
+                        };
+                        Arg::from(pokemon)
+                    };
                     battle.add("-miss", &[pokemon_arg]);
 
                     // return false;
