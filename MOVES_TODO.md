@@ -2,9 +2,14 @@
 
 ## Summary
 
-**Current Status:** 120 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 117 TODO callbacks remaining (out of ~700+ original callbacks)
 
-**Recently Completed:** 11 callbacks in the last session
+**Recently Completed in Latest Session:** 3 on_disable_move callbacks
+- throatchop.rs: condition::on_disable_move - Disables moves with sound flag
+- taunt.rs: condition::on_disable_move - Disables Status moves except Me First
+- healblock.rs: condition::on_disable_move - Disables moves with heal flag
+
+**Previously Completed:** 11 callbacks (simple message-adding callbacks)
 - wonderroom.rs: condition::on_field_end
 - trickroom.rs: condition::on_field_end
 - taunt.rs: condition::on_end
@@ -16,18 +21,31 @@
 - telekinesis.rs: condition::on_end
 - wideguard.rs: condition::on_side_start
 
-**Blocking Issues:** All 120 remaining callbacks require missing infrastructure:
-- Volatile condition management (add_volatile, remove_volatile, has_volatile)
-- Move property access (flags, isZ, isMax, target type)
-- Pokemon methods (has_ability, get_types, disable_move, cure_status, etc.)
+**Total Progress This Session:** 14 callbacks implemented
+
+**Key Infrastructure Discovery:**
+The Pokemon struct already has more methods than initially documented:
+- `pokemon.disable_move(move_id, source)` - Disable specific moves
+- `pokemon.move_slots` - Access to pokemon's move list
+- `battle.dex.moves` - HashMap for move definitions
+- `MoveData.flags` - HashMap for checking move flags (sound, heal, etc.)
+- `MoveData.category` - Move category (Status, Physical, Special)
+
+**Blocking Issues:** All 117 remaining callbacks require missing infrastructure:
+- Volatile condition management (add_volatile, remove_volatile, has_volatile) ✓ EXISTS
+- Move property access (flags ✓, isZ, isMax, target type)
+- Pokemon methods (has_ability, get_types, cure_status ✓, etc.)
 - Move modification (type, category, base_power changes)
 - Effect state tracking (source, duration, custom fields)
 - Queue/action system (will_act, will_move)
 - Status setting (try_set_status)
 - Healing system (heal with source tracking)
 - Item system (get_item, take_item, set_item)
-- PP management (deduct_pp)
+- PP management (deduct_pp ✓ EXISTS)
 - Turn counting and timing
+- moveThisTurnResult tracking
+
+Note: ✓ marks indicate infrastructure that exists but may need additional wrapper methods or modifications.
 
 See "Missing Infrastructure" section below for comprehensive details.
 
