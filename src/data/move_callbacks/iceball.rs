@@ -92,7 +92,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             iceball_volatile.data.insert("contactHitCount".to_string(), serde_json::json!(contact_hit_count + 1));
 
             if hit_count + 1 < 5 {
-                iceball_volatile.duration = 2;
+                iceball_volatile.duration = Some(2);
             }
         }
     }

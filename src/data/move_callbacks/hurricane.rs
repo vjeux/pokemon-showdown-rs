@@ -44,8 +44,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     // case 'desolateland':
     //     move.accuracy = 50;
     //     break;
-    if let Some(weather) = effective_weather {
-        let weather_id = ID::from(weather.as_str());
+    if let Some(weather_id) = effective_weather {
         if weather_id == ID::from("raindance") || weather_id == ID::from("primordialsea") {
             if let Some(ref mut active_move) = battle.active_move {
                 active_move.accuracy = 0;

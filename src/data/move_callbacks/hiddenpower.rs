@@ -21,7 +21,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.hp_type.clone().unwrap_or(ID::from("dark"))
+        pokemon_pokemon.hp_type.unwrap_or(ID::from("dark"))
     };
 
     if let Some(ref current_move_id) = battle.active_move {
