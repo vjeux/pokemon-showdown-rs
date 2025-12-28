@@ -13,10 +13,20 @@ use crate::event::EventResult;
 ///     return bp;
 /// }
 pub fn base_power_callback(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // Get the pokemon
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // const bp = Math.floor((pokemon.happiness * 10) / 25) || 1;
+    let bp = ((pokemon.happiness as i32 * 10) / 25).max(1);
+
+    // Note: JS has this.debug call which we don't have infrastructure for yet
+    // this.debug(`BP: ${bp}`);
+    EventResult::Number(bp)
 }
