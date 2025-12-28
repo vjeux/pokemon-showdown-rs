@@ -55,7 +55,7 @@ pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.add_volatile(&ID::from("mirrorcoat"), battle);
+        pokemon_pokemon.add_volatile(ID::from("mirrorcoat"));
     }
 
     EventResult::Continue
@@ -139,7 +139,7 @@ pub mod condition {
         // return this.getAtSlot(this.effectState.slot);
         if let Some(serde_json::Value::Number(slot_num)) = effect_slot {
             if let Some(slot_val) = slot_num.as_u64() {
-                let new_target = battle.get_at_slot(slot_val as usize);
+                let new_target = battle.get_at_slot(Some(&slot_val.to_string()));
                 if let Some(target) = new_target {
                     // TODO: Return the new target position
                     // This needs infrastructure to return position from this event

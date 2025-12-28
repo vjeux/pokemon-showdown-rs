@@ -43,7 +43,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
         // if (this.runEvent('Invulnerability', pokemon, source, move) === false) {
         let invulnerability_result = battle.run_event("Invulnerability", pokemon_pos, source, Some(&ID::from(move_id)));
 
-        if matches!(invulnerability_result, EventResult::Boolean(false)) {
+        if invulnerability_result == Some(0) {
             // this.add('-miss', source, pokemon);
             let (source_arg, pokemon_arg) = {
                 let source_arg = if let Some(src) = source {
@@ -71,7 +71,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
         } else {
             let try_hit_result = battle.run_event("TryHit", pokemon_pos, source, Some(&ID::from(move_id)));
 
-            if matches!(try_hit_result, EventResult::Stop) {
+            if try_hit_result.is_none() {
                 // result = true;
                 result = true;
             // } else if (!pokemon.volatiles['perishsong']) {

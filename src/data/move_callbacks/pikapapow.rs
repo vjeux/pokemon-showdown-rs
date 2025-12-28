@@ -30,6 +30,6 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // (debug is typically not needed in Rust implementation)
 
     // return bp;
-    EventResult::Number(bp)
+    EventResult::Number(bp as i32)
 }
 
