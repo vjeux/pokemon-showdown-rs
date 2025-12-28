@@ -930,9 +930,9 @@ impl Battle {
         let pokemon_counts: Vec<usize> = self.sides.iter().map(|s| s.pokemon.len()).collect();
 
         let mut switch_ops = Vec::new();
-        for side_idx in 0..num_sides {
+        for (side_idx, &pokemon_count) in pokemon_counts.iter().enumerate().take(num_sides) {
             for slot in 0..active_per_half {
-                if slot < pokemon_counts[side_idx] {
+                if slot < pokemon_count {
                     switch_ops.push((side_idx, slot, slot));
                 }
             }

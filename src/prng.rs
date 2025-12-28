@@ -124,9 +124,9 @@ impl Gen5RNG {
         let mut carry: u32 = 0;
 
         for out_index in (0..4).rev() {
-            for b_index in out_index..4 {
-                let a_index = 3 - (b_index - out_index);
-                carry = carry.wrapping_add((a[a_index] as u32).wrapping_mul(b[b_index] as u32));
+            for (local_b_index, &b_val) in b[out_index..].iter().enumerate() {
+                let a_index = 3 - local_b_index;
+                carry = carry.wrapping_add((a[a_index] as u32).wrapping_mul(b_val as u32));
             }
             carry = carry.wrapping_add(c[out_index] as u32);
             out[out_index] = (carry & 0xFFFF) as u16;

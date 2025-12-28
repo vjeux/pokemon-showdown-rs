@@ -2092,11 +2092,11 @@ impl<'a> BattleActions<'a> {
         let mut damage = vec![SpreadMoveDamageValue::Damage(0); target_indices.len()];
 
         // Stub implementation - just returns placeholder damage
-        for i in 0..target_hits {
+        for (i, damage_val) in damage.iter_mut().enumerate().take(target_hits) {
             if i >= target_indices.len() {
                 break;
             }
-            damage[i] = SpreadMoveDamageValue::Damage(50);
+            *damage_val = SpreadMoveDamageValue::Damage(50);
         }
 
         let _ = (pokemon_index, move_id, gen);
