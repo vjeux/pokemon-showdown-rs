@@ -184,15 +184,15 @@ pub mod condition {
     /// }
     pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // this.add('-end', pokemon, 'Charge', '[silent]');
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            Arg::from(pokemon)
+            pokemon.get_slot()
         };
 
-        battle.add("-end", &[pokemon_arg, "Charge".into(), "[silent]".into()]);
+        battle.add("-end", &[pokemon_ident.as_str().into(), "Charge".into(), "[silent]".into()]);
 
         EventResult::Continue
     }

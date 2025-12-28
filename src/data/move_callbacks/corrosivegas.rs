@@ -35,7 +35,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (item) {
     if let Some(item_id) = item {
         // this.add('-enditem', target, item.name, '[from] move: Corrosive Gas', `[of] ${source}`);
-        let (target_arg, source_arg, item_name) = {
+        let (target_ident, source_ident, item_name) = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -47,26 +47,26 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             let item_data = battle.dex.get_item_by_id(&item_id);
             let item_name = item_data.map(|i| i.name.clone()).unwrap_or_else(|| item_id.to_string());
 
-            (Arg::from(target_pokemon), Arg::from(source_pokemon), item_name)
+            (target_pokemon.get_slot(), source_pokemon.get_slot(), item_name)
         };
 
         battle.add("-enditem", &[
-            target_arg,
+            target_ident.as_str().into(),
             item_name.into(),
             "[from] move: Corrosive Gas".into(),
-            format!("[of] {}", source_arg).into(),
+            format!("[of] {}", source_ident).into(),
         ]);
     } else {
         // this.add('-fail', target, 'move: Corrosive Gas');
-        let target_arg = {
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
-        battle.add("-fail", &[target_arg, "move: Corrosive Gas".into()]);
+        battle.add("-fail", &[target_ident.as_str().into(), "move: Corrosive Gas".into()]);
     }
 
     EventResult::Continue

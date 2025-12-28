@@ -28,15 +28,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // this.add('-clearboost', target);
-    let target_arg = {
+    let target_ident = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        Arg::from(target_pokemon)
+        target_pokemon.get_slot()
     };
 
-    battle.add("-clearboost", &[target_arg]);
+    battle.add("-clearboost", &[target_ident.as_str().into()]);
 
     EventResult::Continue
 }

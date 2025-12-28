@@ -61,11 +61,11 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // const possibleTypes = [];
-    let mut possible_types: Vec<&str> = Vec::new();
+    let mut possible_types: Vec<String> = Vec::new();
 
     // const attackType = target.lastMoveUsed.type;
     // for (const typeName of this.dex.types.names()) {
-    let type_names = battle.dex.all_type_names();
+    let type_names: Vec<String> = battle.dex.all_type_names().iter().map(|s| s.to_string()).collect();
     for type_name in type_names {
         // if (source.hasType(typeName)) continue;
         let has_type = {
@@ -86,7 +86,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         // }
         let type_check = battle.dex.get_type_damage_taken(&type_name, &attack_type);
         if type_check == 2 || type_check == 3 {
-            possible_types.push(&type_name);
+            possible_types.push(type_name);
         }
     }
 
@@ -98,7 +98,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // const randomType = this.sample(possibleTypes);
-    let random_type = battle.sample(&possible_types[..]);
+    let possible_types_refs: Vec<&str> = possible_types.iter().map(|s| s.as_str()).collect();
+    let random_type = battle.sample(&possible_types_refs[..]);
 
     // if (!source.setType(randomType)) return false;
     let random_type_str = match random_type {
@@ -115,15 +116,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // this.add('-start', source, 'typechange', randomType);
-    let source_arg = {
+    let source_ident = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        Arg::from(source_pokemon)
+        source_pokemon.get_slot()
     };
 
-    battle.add("-start", &[source_arg, "typechange".into(), random_type_str.into()]);
+    battle.add("-start", &[source_ident.as_str().into(), "typechange".into(), random_type_str.into()]);
 
     EventResult::Continue
 }

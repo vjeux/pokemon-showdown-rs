@@ -62,15 +62,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // this.add('-start', target, 'typechange', type);
-    let target_arg = {
+    let target_ident = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        Arg::from(target_pokemon)
+        target_pokemon.get_slot()
     };
 
-    battle.add("-start", &[target_arg, "typechange".into(), move_type.to_string().into()]);
+    battle.add("-start", &[target_ident.as_str().into(), "typechange".into(), move_type.to_string().into()]);
 
     EventResult::Continue
 }
