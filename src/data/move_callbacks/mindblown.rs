@@ -52,7 +52,7 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos
         let damage_amount = (max_hp as f64 / 2.0).round() as i32;
         battle.damage(
             damage_amount,
-            pokemon,
+            Some(pokemon),
             Some(pokemon),
             Some(&ID::from("mindblown")),
             true, // ignoreability

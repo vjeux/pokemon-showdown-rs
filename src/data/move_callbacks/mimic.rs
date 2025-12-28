@@ -112,8 +112,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         if let Some(slot) = source_pokemon.move_slots.get_mut(mimic_index) {
             slot.move_name = move_data.name.clone();
             slot.id = move_data.id.clone();
-            slot.pp = move_data.pp;
-            slot.maxpp = move_data.pp;
+            slot.pp = move_data.pp as u8;
+            slot.maxpp = move_data.pp as u8;
             slot.target = Some(move_data.target.clone());
             slot.disabled = false;
             slot.used = false;
