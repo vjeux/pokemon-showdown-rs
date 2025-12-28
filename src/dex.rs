@@ -1353,50 +1353,40 @@ impl Dex {
             }
 
             // JavaScript: Gen-specific mods override tier/isNonstandard for species available in this gen
-            // e.g., gen1/formats-data.js sets caterpie tier: "LC" (not "Illegal")
+            // JavaScript uses separate data/mods/gen8/formats-data.ts, data/mods/gen9/formats-data.ts, etc.
+            // Each gen mod has different "Past" markers for Pokemon unavailable in that generation.
             //
-            // IMPORTANT: Only clear "Past" and "Illegal" for species that are actually available in this gen
-            // Species with gen field + isNonstandard: "Past" are gen-exclusive (e.g., Pichu-Spiky-eared in Gen 4 only)
-            // Species with isNonstandard: "Past" + tier: "Illegal" are unreleased (e.g., Floette-Eternal)
-            // Clear Past/Illegal ONLY if not unreleased
+            // LIMITATION: Our Rust code only has Gen 9 formats-data, not gen-specific formats-data.
+            // Gen 9's "Past" markers indicate Pokemon unavailable in Gen 9, which is DIFFERENT from
+            // Gen 8's "Past" markers (Pokemon unavailable in Gen 8).
+            //
+            // WORKAROUND: For Gen 1-8, clear ALL "Past" markers (assume National Dex availability).
+            // Only keep "Past" markers for Gen 9 (the generation our data comes from).
+            // This isn't 100% accurate for Gen 8 but it's the best we can do without gen-specific data.
+            //
+            // EXCEPTION: Some Pokemon are marked "Past" because they were never officially released
+            // (e.g., Floette-Eternal is "Unobtainable" in gen6 mod). These should NEVER have their
+            // "Past" markers cleared.
+            let current_gen = 9; // The generation our data files are from
 
-            // Check if marked as unreleased: both Past and Illegal in original formats-data
-            // Normal formes have ONLY isNonstandard: "Past" (no tier), unreleased have BOTH
-            // Only applies to FORMES introduced in the CURRENT gen (not base species or earlier gens)
-            // e.g., Floette-Eternal (forme, num 670, Gen 6) is unreleased in Gen 6
-            // EXCEPTION: Don't apply to Mega/Primal formes - they have Past+Illegal because they were
-            // removed in Gen 8+, but they WERE available in Gen 6-7
-            let gen_min_num = match gen {
-                1 => 1,
-                2 => 152,
-                3 => 252,
-                4 => 387,
-                5 => 494,
-                6 => 650,
-                7 => 722,
-                8 => 810,
-                9 => 906,
-                _ => 1,
-            };
+            // Pokemon that should always be marked as unavailable (unreleased event Pokemon, etc.)
+            let always_unavailable = matches!(species.name.as_str(),
+                "Floette-Eternal"  // Never officially released (AZ's Floette)
+            );
 
-            let is_mega_or_primal = species.forme.as_ref()
-                .map(|f| f.starts_with("Mega") || f == "Primal")
-                .unwrap_or(false);
-
-            let is_unreleased = species.forme.is_some()  // Must be a forme
-                             && !is_mega_or_primal  // Megas/Primals are not unreleased, just removed later
-                             && species.num >= gen_min_num && species.num <= max_num
-                             && species.is_nonstandard.as_deref() == Some("Past")
-                             && species.tier.as_deref() == Some("Illegal");
-
-            let should_clear_past = if is_unreleased {
-                // Unreleased Pokemon/forme (e.g., Floette-Eternal) - never clear
+            let should_clear_past = if always_unavailable {
+                // Never clear "Past" for unreleased Pokemon
+                false
+            } else if gen == current_gen {
+                // Gen 9: Keep "Past" markers (they're correct for this gen)
                 false
             } else if let Some(species_gen) = species.gen {
-                // Has explicit gen field - only clear if it matches requested gen (gen-exclusive)
+                // Has explicit gen field - only clear if it matches requested gen (gen-exclusive formes)
                 species_gen == gen
             } else {
-                // No explicit gen field - this is a normal forme/species, always clear for its gen range
+                // Gen 1-8: Clear ALL "Past" markers (assume National Dex)
+                // This is not 100% accurate for Gen 8's limited Pokedex, but without gen-specific
+                // formats-data, we can't know which Pokemon were available in Gen 8.
                 true
             };
 

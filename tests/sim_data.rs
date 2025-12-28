@@ -646,6 +646,29 @@ fn test_gen6_should_have_721_species_and_113_formes() {
     let dex = Dex::for_gen(6).unwrap();
     let (species_count, formes_count) = count_pokemon(&dex);
 
+    // Debug: print all formes if count is wrong
+    if formes_count != 113 {
+        eprintln!("Gen 6 formes count mismatch: {} vs 113 expected", formes_count);
+        let mut formes: Vec<_> = dex.species.iter()
+            .filter(|(_id, pkmn)| {
+                pkmn.exists &&
+                pkmn.is_nonstandard.is_none() &&
+                pkmn.tier.as_deref() != Some("Illegal") &&
+                !pkmn.is_cosmetic_forme
+            })
+            .filter(|(_id, pkmn)| {
+                let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
+                &pkmn.name != base
+            })
+            .map(|(_id, pkmn)| pkmn.name.clone())
+            .collect();
+        formes.sort();
+        eprintln!("All formes:");
+        for (i, forme) in formes.iter().enumerate() {
+            eprintln!("{}: {}", i + 1, forme);
+        }
+    }
+
     assert_eq!(species_count, 721, "Gen 6 should have 721 species");
     // Arceus (1) + Vivillon (2) + Meowstic (1) + Primal (2) + Aegislash (1) + Pumpkaboo (3) + Gourgeist (3) + Hoopa (1) + Pikachu (6) + Mega (48)
     assert_eq!(formes_count, 113, "Gen 6 should have 113 formes"); // formes[5] + 1 + 2 + 1 + 2 + 1 + 3 + 3 + 1 + 6 + 48
