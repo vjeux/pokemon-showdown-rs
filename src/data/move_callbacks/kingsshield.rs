@@ -136,11 +136,16 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
+                // TODO: Implement move_hit_data system
+                // In JavaScript: target.getMoveHitData(move).zBrokeProtect = true;
+                // Needs proper MoveHitData tracking on Pokemon or Battle
+                /*
                 if let Some(ref move_id) = battle.active_move.as_ref().map(|m| m.clone()) {
                     if let Some(hit_data) = target_pokemon.get_move_hit_data_mut(move_id) {
                         hit_data.z_broke_protect = true;
                     }
                 }
+                */
             }
 
             //     return;
