@@ -320,7 +320,7 @@ Moves with callbacks: 373
 - [ ] storedpower - Stored Power (Special, Psychic) - 1 callback: basePowerCallback
 - [ ] strengthsap - Strength Sap (Status, Grass) - 1 callback: onHit
 - [ ] struggle - Struggle (Physical, Normal) - 1 callback: onModifyMove
-- [ ] stuffcheeks - Stuff Cheeks (Status, Normal) - 3 callbacks: onDisableMove, onTry, onHit
+- [x] stuffcheeks - Stuff Cheeks (Status, Normal) - 3 callbacks: onDisableMove, onTry, onHit
 - [ ] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit, onHit, condition::onStart, condition::onTryPrimaryHit, condition::onEnd
 - [ ] suckerpunch - Sucker Punch (Physical, Dark) - 1 callback: onTry
 - [ ] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail

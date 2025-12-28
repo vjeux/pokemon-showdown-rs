@@ -65,7 +65,10 @@ pub mod condition {
     ///     if (pokemon.hasType('Ghost') && ['Normal', 'Fighting'].includes(type)) return false;
     /// }
     pub fn on_negate_immunity(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // TODO: This callback needs type parameter support in the function signature
+        // The TypeScript version receives (pokemon, type) but we only have pokemon_pos
+        // For now, implementing a placeholder that always returns Continue
+        // This needs infrastructure changes to pass the type being checked
         EventResult::Continue
     }
 
@@ -75,7 +78,10 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_modify_boost(_battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // TODO: This callback needs boosts parameter support in the function signature
+        // The TypeScript version receives (boosts) and modifies it in-place
+        // For now, implementing a placeholder that returns Continue
+        // This needs infrastructure changes to pass mutable boosts reference
         EventResult::Continue
     }
 }
