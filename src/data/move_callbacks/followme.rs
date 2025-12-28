@@ -104,8 +104,8 @@ pub mod condition {
 
         if is_valid_target {
             // if (move.smartTarget) move.smartTarget = false;
-            if let Some(move_data) = battle.dex.get_move_by_id_mut(&crate::dex_data::ID::from(move_id)) {
-                move_data.smart_target = Some(false);
+            if let Some(ref mut active_move) = battle.active_move {
+                active_move.smart_target = Some(false);
             }
 
             // this.debug("Follow Me redirected target of move");

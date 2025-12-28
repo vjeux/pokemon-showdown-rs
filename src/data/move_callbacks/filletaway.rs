@@ -46,10 +46,8 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     // delete move.boosts;
     // We need to clear the boosts from the current move
-    if let Some(ref move_id) = battle.active_move {
-        if let Some(move_data) = battle.dex.get_move_by_id_mut(move_id) {
-            move_data.boosts = None;
-        }
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.boosts = None;
     }
 
     EventResult::Continue

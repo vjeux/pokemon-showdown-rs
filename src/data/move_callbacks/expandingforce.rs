@@ -69,10 +69,8 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         if is_grounded {
             // move.target = 'allAdjacentFoes';
             // We need to modify the current move's target
-            if let Some(ref move_id) = battle.active_move {
-                if let Some(move_data) = battle.dex.get_move_by_id_mut(move_id) {
-                    move_data.target = Some("allAdjacentFoes".to_string());
-                }
+            if let Some(ref mut active_move) = battle.active_move {
+                active_move.target = "allAdjacentFoes".to_string();
             }
         }
     }

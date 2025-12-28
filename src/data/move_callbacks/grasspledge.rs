@@ -169,12 +169,10 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             // move.type = 'Grass';
             // move.forceSTAB = true;
             // move.sideCondition = 'grasspledge';
-            if let Some(ref current_move_id) = battle.active_move {
-                if let Some(current_move) = battle.dex.get_move_by_id_mut(current_move_id) {
-                    current_move.move_type = ID::from("grass");
-                    current_move.force_stab = true;
-                    current_move.side_condition = Some(ID::from("grasspledge"));
-                }
+            if let Some(ref mut current_move) = battle.active_move {
+                current_move.move_type = "Grass".to_string();
+                current_move.force_stab = true;
+                current_move.side_condition = Some("grasspledge".to_string());
             }
         }
 
@@ -183,12 +181,10 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             // move.type = 'Fire';
             // move.forceSTAB = true;
             // move.sideCondition = 'firepledge';
-            if let Some(ref current_move_id) = battle.active_move {
-                if let Some(current_move) = battle.dex.get_move_by_id_mut(current_move_id) {
-                    current_move.move_type = ID::from("fire");
-                    current_move.force_stab = true;
-                    current_move.side_condition = Some(ID::from("firepledge"));
-                }
+            if let Some(ref mut current_move) = battle.active_move {
+                current_move.move_type = "Fire".to_string();
+                current_move.force_stab = true;
+                current_move.side_condition = Some("firepledge".to_string());
             }
         }
     }
