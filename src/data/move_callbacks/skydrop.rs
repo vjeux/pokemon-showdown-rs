@@ -101,7 +101,7 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
         //     this.add('-end', target, 'Sky Drop', '[interrupt]');
         // }
         let effect_target = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };
@@ -375,7 +375,7 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         let (effect_target, effect_source) = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };
@@ -399,7 +399,7 @@ pub mod condition {
         //     defender.trapped = true;
         // }
         let effect_source = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };
@@ -433,7 +433,7 @@ pub mod condition {
         //     }
         // }
         let effect_source = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };
@@ -468,7 +468,7 @@ pub mod condition {
         };
 
         let (effect_target, effect_source) = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };
@@ -535,7 +535,7 @@ pub mod condition {
         let source = source_pos;
 
         let (effect_target, effect_source) = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };
@@ -604,7 +604,7 @@ pub mod condition {
         let source = source_pos;
 
         let (effect_target, effect_source) = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };

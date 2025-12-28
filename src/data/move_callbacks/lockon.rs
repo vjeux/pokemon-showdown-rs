@@ -73,7 +73,7 @@ pub mod condition {
         };
 
         // if (move && source === this.effectState.target && target === this.effectState.source) return 0;
-        let (effect_target, effect_source) = match &battle.effect_state {
+        let (effect_target, effect_source) = match &battle.current_effect_state {
             Some(es) => (es.target, es.source),
             None => return EventResult::Continue,
         };
@@ -100,7 +100,7 @@ pub mod condition {
         };
 
         // if (move && source === this.effectState.target && target === this.effectState.source) return true;
-        let (effect_target, effect_source) = match &battle.effect_state {
+        let (effect_target, effect_source) = match &battle.current_effect_state {
             Some(es) => (es.target, es.source),
             None => return EventResult::Continue,
         };

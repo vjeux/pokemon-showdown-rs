@@ -77,7 +77,7 @@ pub mod condition {
         // return types.filter(type => type !== 'Flying');
         let types = battle.get_types(pokemon, false);
 
-        let effect_state = match &mut battle.effect_state {
+        let effect_state = match &mut battle.current_effect_state {
             Some(es) => es,
             None => return EventResult::Continue,
         };

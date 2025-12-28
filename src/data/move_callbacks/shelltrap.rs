@@ -149,7 +149,7 @@ pub mod condition {
 
         if !is_ally && is_physical {
             // this.effectState.gotHit = true;
-            if let Some(ref mut effect_state) = battle.effect_state {
+            if let Some(ref mut effect_state) = battle.current_effect_state {
                 effect_state.got_hit = Some(true);
             }
 

@@ -54,7 +54,7 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.effectState.duration = 2;
-        if let Some(ref mut effect_state) = battle.effect_state {
+        if let Some(ref mut effect_state) = battle.current_effect_state {
             effect_state.duration = 2;
         }
 

@@ -65,7 +65,7 @@ pub mod condition {
         // if (target !== source && this.effectState.target.hasAlly(target) && this.getCategory(move) === 'Physical') {
         if target != source {
             let effect_target = {
-                let effect_state = match &battle.effect_state {
+                let effect_state = match &battle.current_effect_state {
                     Some(es) => es,
                     None => return EventResult::Continue,
                 };
@@ -118,7 +118,7 @@ pub mod condition {
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', side, 'Reflect');
         let side = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };
@@ -144,7 +144,7 @@ pub mod condition {
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', side, 'Reflect');
         let side = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };

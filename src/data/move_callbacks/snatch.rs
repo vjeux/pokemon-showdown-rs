@@ -66,7 +66,7 @@ pub mod condition {
 
         // const snatchUser = this.effectState.source;
         let snatch_user = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };

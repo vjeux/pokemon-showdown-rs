@@ -242,7 +242,7 @@ pub mod condition {
         //     }
         // }
         let side = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };
@@ -291,7 +291,7 @@ pub mod condition {
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', side, 'Safeguard');
         let side = {
-            let effect_state = match &battle.effect_state {
+            let effect_state = match &battle.current_effect_state {
                 Some(es) => es,
                 None => return EventResult::Continue,
             };

@@ -68,7 +68,7 @@ pub mod condition {
         }
 
         // this.effectState.target.hasAlly(target)
-        let effect_state_target = match &battle.effect_state {
+        let effect_state_target = match &battle.current_effect_state {
             Some(es) => es.target,
             None => return EventResult::Continue,
         };
@@ -81,7 +81,7 @@ pub mod condition {
         // this.getCategory(move) === 'Special'
         let is_special = {
             if let Some(ref active_move) = battle.active_move {
-                active_move.category == crate::data::MoveCategory::Special
+                active_move.category == crate::move_types::MoveCategory::Special
             } else {
                 false
             }
@@ -131,7 +131,7 @@ pub mod condition {
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', side, 'move: Light Screen');
-        let side_index = match &battle.effect_state {
+        let side_index = match &battle.current_effect_state {
             Some(es) => es.target.0,
             None => return EventResult::Continue,
         };
@@ -147,7 +147,7 @@ pub mod condition {
     /// }
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', side, 'move: Light Screen');
-        let side_index = match &battle.effect_state {
+        let side_index = match &battle.current_effect_state {
             Some(es) => es.target.0,
             None => return EventResult::Continue,
         };

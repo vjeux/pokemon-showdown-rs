@@ -35,7 +35,7 @@ pub mod condition {
             if effect.is_some() {
                 // It's a move
                 if let Some(ref move_data) = battle.active_move {
-                    if let Some(ref mut effect_state) = battle.effect_state {
+                    if let Some(ref mut effect_state) = battle.current_effect_state {
                         effect_state.prankster_boosted = move_data.prankster_boosted;
                     }
                 }
@@ -100,7 +100,7 @@ pub mod condition {
                 Some(m) => m.id.clone(),
                 None => return EventResult::Continue,
             };
-            let prankster_boosted = match &battle.effect_state {
+            let prankster_boosted = match &battle.current_effect_state {
                 Some(es) => es.prankster_boosted,
                 None => false,
             };
@@ -174,7 +174,7 @@ pub mod condition {
         // newMove.hasBounced = true;
         // newMove.pranksterBoosted = false;
         // this.actions.useMove(newMove, this.effectState.target, { target: source });
-        let effect_state_target = match &battle.effect_state {
+        let effect_state_target = match &battle.current_effect_state {
             Some(es) => es.target,
             None => return EventResult::Continue,
         };

@@ -13,6 +13,7 @@
 //! - runEvent(): Fires all matching event handlers with priority ordering (battle.ts:758-937)
 
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// Effect types - matches JavaScript effectType
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

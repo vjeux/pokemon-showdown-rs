@@ -90,7 +90,7 @@ pub mod condition {
             if let Some(ref active_move) = battle.active_move {
                 (
                     active_move.flags.protect,
-                    active_move.category == crate::data::MoveCategory::Status,
+                    active_move.category == crate::move_types::MoveCategory::Status,
                     active_move.id.clone(),
                     active_move.is_z,
                     active_move.is_max
