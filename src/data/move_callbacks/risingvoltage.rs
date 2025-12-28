@@ -25,7 +25,13 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     // if (this.field.isTerrain('electricterrain') && target.isGrounded()) {
     let is_electric_terrain = battle.is_terrain("electricterrain");
-    let target_is_grounded = battle.is_grounded(target);
+    let target_is_grounded = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.is_grounded()
+    };
 
     if is_electric_terrain && target_is_grounded {
         // if (!source.isAlly(target)) this.hint(`${move.name}'s BP doubled on grounded target.`);
