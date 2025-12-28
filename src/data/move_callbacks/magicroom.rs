@@ -136,7 +136,7 @@ pub mod condition {
         use crate::dex_data::ID;
 
         // this.field.removePseudoWeather('magicroom');
-        battle.remove_pseudo_weather(&ID::from("magicroom"));
+        battle.field.remove_pseudo_weather(&ID::from("magicroom"));
 
         EventResult::Continue
     }

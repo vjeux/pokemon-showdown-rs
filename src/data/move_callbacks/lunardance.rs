@@ -174,7 +174,9 @@ pub mod condition {
             battle.add("-heal", &[target_arg, health.into(), "[from] move: Lunar Dance".into()]);
 
             //     target.side.removeSlotCondition(target, 'lunardance');
-            battle.remove_slot_condition(target, &ID::from("lunardance"));
+            if let Some(target_side) = battle.sides.get_mut(target.0) {
+                target_side.remove_slot_condition(target.1, &ID::from("lunardance"));
+            }
         }
 
         EventResult::Continue
