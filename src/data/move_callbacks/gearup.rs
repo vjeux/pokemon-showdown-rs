@@ -67,7 +67,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
         };
 
         let should_add = if has_maxguard {
-            battle.run_event_for_pokemon("TryHit", pokemon_pos, source, Some(move_id))
+            battle.run_event_bool("TryHit", Some(pokemon_pos), source, Some(&ID::from(move_id)))
         } else {
             true
         };
