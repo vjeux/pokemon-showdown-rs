@@ -42,12 +42,15 @@ pub mod condition {
         }
 
         // this.add('-start', pokemon, 'move: Bide');
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let pokemon_ident = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
         };
 
-        battle.add("-start", &[pokemon.into(), "move: Bide".into()]);
+        battle.add("-start", &[pokemon_ident.as_str().into(), "move: Bide".into()]);
 
         EventResult::Continue
     }
@@ -155,14 +158,14 @@ pub mod condition {
         if duration == 1 {
             // this.add('-end', pokemon, 'move: Bide');
             {
-                let pokemon_arg = {
+                let pokemon_ident = {
                     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    Arg::from(pokemon)
+                    pokemon.get_slot()
                 };
-                battle.add("-end", &[pokemon_arg, "move: Bide".into()]);
+                battle.add("-end", &[pokemon_ident.as_str().into(), "move: Bide".into()]);
             }
 
             // target = this.effectState.lastDamageSource;
@@ -173,14 +176,14 @@ pub mod condition {
                 battle.attr_last_move(&["[still]"]);
 
                 // this.add('-fail', pokemon);
-                let pokemon_arg = {
+                let pokemon_ident = {
                     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    Arg::from(pokemon)
+                    pokemon.get_slot()
                 };
-                battle.add("-fail", &[pokemon_arg]);
+                battle.add("-fail", &[pokemon_ident.as_str().into()]);
 
                 // return false;
                 return EventResult::Boolean(false);
@@ -200,14 +203,14 @@ pub mod condition {
                 // if (!possibleTarget) {
                 if possible_target.is_none() {
                     // this.add('-miss', pokemon);
-                    let pokemon_arg = {
+                    let pokemon_ident = {
                         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                             Some(p) => p,
                             None => return EventResult::Continue,
                         };
-                        Arg::from(pokemon)
+                        pokemon.get_slot()
                     };
-                    battle.add("-miss", &[pokemon_arg]);
+                    battle.add("-miss", &[pokemon_ident.as_str().into()]);
 
                     // return false;
                     return EventResult::Boolean(false);
@@ -236,11 +239,14 @@ pub mod condition {
         }
 
         // this.add('-activate', pokemon, 'move: Bide');
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let pokemon_ident = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
         };
-        battle.add("-activate", &[pokemon.into(), "move: Bide".into()]);
+        battle.add("-activate", &[pokemon_ident.as_str().into(), "move: Bide".into()]);
 
         EventResult::Continue
     }
@@ -265,12 +271,15 @@ pub mod condition {
     /// }
     pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // this.add('-end', pokemon, 'move: Bide', '[silent]');
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let pokemon_ident = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
         };
 
-        battle.add("-end", &[pokemon.into(), "move: Bide".into(), "[silent]".into()]);
+        battle.add("-end", &[pokemon_ident.as_str().into(), "move: Bide".into(), "[silent]".into()]);
 
         EventResult::Continue
     }
