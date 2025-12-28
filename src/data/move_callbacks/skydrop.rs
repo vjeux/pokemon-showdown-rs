@@ -126,7 +126,7 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(target_pokemon)
+                target_pokemon.get_slot()
             };
 
             battle.add("-end", &[
@@ -271,7 +271,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(target_pokemon)
+                target_pokemon.get_slot()
             };
 
             battle.add("-immune", &[target_arg]);
@@ -307,7 +307,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(target_pokemon)
+                target_pokemon.get_slot()
             };
 
             battle.add("-fail", &[
@@ -333,9 +333,9 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
                 None => return EventResult::Continue,
             };
             (
-                crate::battle::Arg::from(source_pokemon),
+                source_pokemon.get_slot(),
                 active_move.name.clone(),
-                crate::battle::Arg::from(target_pokemon),
+                target_pokemon.get_slot(),
             )
         };
 
@@ -393,7 +393,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
         battle.add("-end", &[
@@ -726,7 +726,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(source_pokemon)
+                source_pokemon.get_slot()
             };
 
             battle.add("-end", &[

@@ -65,7 +65,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let attacker_arg = crate::battle::Arg::from(attacker_pokemon);
+        let attacker_arg = attacker_pokemon.get_slot();
 
         let move_name = {
             let active_move = match &battle.active_move {
@@ -78,7 +78,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         (attacker_arg, move_name)
     };
 
-    battle.add("-prepare", &[attacker_arg, move_name.into()]);
+    battle.add("-prepare", &[attacker_arg.into(), move_name.into()]);
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;

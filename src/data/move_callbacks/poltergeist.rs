@@ -41,7 +41,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let target_arg = crate::battle::Arg::from(target_pokemon);
+        let target_arg = target_pokemon.get_slot();
 
         let item_id = target_pokemon.item.clone();
 

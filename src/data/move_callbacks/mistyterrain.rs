@@ -85,7 +85,7 @@ pub mod condition {
                         Some(p) => p,
                         None => return EventResult::Boolean(false),
                     };
-                    crate::battle::Arg::from(target_pokemon)
+                    target_pokemon.get_slot()
                 };
 
                 battle.add("-activate", &[target_arg.into(), "move: Misty Terrain".into()]);
@@ -139,7 +139,7 @@ pub mod condition {
                             Some(p) => p,
                             None => return EventResult::Stop,
                         };
-                        crate::battle::Arg::from(target_pokemon)
+                        target_pokemon.get_slot()
                     };
 
                     battle.add("-activate", &[target_arg.into(), "move: Misty Terrain".into()]);
@@ -223,7 +223,7 @@ pub mod condition {
                             Some(p) => p,
                             None => return EventResult::Continue,
                         };
-                        crate::battle::Arg::from(source_pokemon)
+                        source_pokemon.get_slot()
                     };
 
                     battle.add("-fieldstart", &[

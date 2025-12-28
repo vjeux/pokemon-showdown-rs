@@ -74,7 +74,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
         battle.add("-singleturn", &[target_arg.into(), "Protect".into()]);
@@ -188,7 +188,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(target_pokemon)
+                target_pokemon.get_slot()
             };
 
             battle.add("-activate", &[target_arg.into(), "move: Protect".into()]);

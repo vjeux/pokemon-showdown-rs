@@ -87,7 +87,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         let move_data = battle.dex.get_move_by_id(&move_id);
         let move_name = move_data.map(|m| m.name.clone()).unwrap_or_default();
 
-        (crate::battle::Arg::from(target_pokemon), move_name)
+        (target_pokemon.get_slot(), move_name)
     };
 
     battle.add("-activate", &[

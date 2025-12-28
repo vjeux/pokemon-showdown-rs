@@ -49,7 +49,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let pokemon_arg = crate::battle::Arg::from(pokemon_pokemon);
+        let pokemon_arg = pokemon_pokemon.get_slot();
 
         let item_data = match battle.dex.get_item_by_id(&item) {
             Some(i) => i,

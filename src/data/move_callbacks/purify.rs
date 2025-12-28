@@ -32,7 +32,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(source_pokemon)
+            source_pokemon.get_slot()
         };
 
         battle.add("-fail", &[source_arg]);

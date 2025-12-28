@@ -26,7 +26,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_data)
+            pokemon_data.get_slot()
         };
 
         battle.add("-singleturn", &[
@@ -123,7 +123,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(snatch_user_pokemon)
+            snatch_user_pokemon.get_slot()
         };
 
         if let Some(src) = source {
@@ -132,7 +132,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(source_pokemon)
+                source_pokemon.get_slot()
             };
 
             battle.add("-activate", &[

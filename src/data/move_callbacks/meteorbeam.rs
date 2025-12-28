@@ -56,10 +56,10 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         let move_data = battle.dex.get_move_by_id(&move_id);
         let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| move_id.to_string());
 
-        (crate::battle::Arg::from(attacker_pokemon), move_name)
+        (attacker_pokemon.get_slot(), move_name)
     };
 
-    battle.add("-prepare", &[attacker_arg, move_name.into()]);
+    battle.add("-prepare", &[attacker_arg.into(), move_name.into()]);
 
     // this.boost({ spa: 1 }, attacker, attacker, move);
     battle.boost(&[("spa", 1)], attacker, Some(attacker), Some(&move_id.to_string()));

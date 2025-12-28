@@ -170,7 +170,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(source_pokemon)
+        source_pokemon.get_slot()
     };
 
     let target_arg = {
@@ -178,7 +178,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(target_pokemon)
+        target_pokemon.get_slot()
     };
 
     if is_ally {

@@ -69,8 +69,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             None => return EventResult::Continue,
         };
         (
-            crate::battle::Arg::from(source_pokemon),
-            crate::battle::Arg::from(target_pokemon),
+            source_pokemon.get_slot(),
+            target_pokemon.get_slot(),
         )
     };
 

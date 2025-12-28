@@ -42,7 +42,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
                 None => return EventResult::Continue,
             };
 
-            (crate::battle::Arg::from(source_pokemon), crate::battle::Arg::Str(active_move))
+            (source_pokemon.get_slot(), crate::battle::Arg::Str(active_move))
         };
 
         battle.add("cant", &[

@@ -60,7 +60,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(source_pokemon)
+            source_pokemon.get_slot()
         };
 
         battle.add("-fail", &[source_arg.into(), "heal".into()]);
@@ -86,7 +86,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let arg = crate::battle::Arg::from(source_pokemon);
+            let arg = source_pokemon.get_slot();
             let str_repr = format!("{}", arg);
             (arg, str_repr)
         };
@@ -117,7 +117,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let arg = crate::battle::Arg::from(source_pokemon);
+            let arg = source_pokemon.get_slot();
             let str_repr = format!("{}", arg);
             (arg, str_repr)
         };

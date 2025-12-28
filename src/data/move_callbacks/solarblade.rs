@@ -89,7 +89,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        (crate::battle::Arg::from(attacker_pokemon), active_move.name.clone())
+        (attacker_pokemon.get_slot(), active_move.name.clone())
     };
 
     battle.add("-prepare", &[
@@ -122,7 +122,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(defender_pokemon)
+                defender_pokemon.get_slot()
             };
 
             battle.add("-anim", &[

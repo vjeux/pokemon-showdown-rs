@@ -186,7 +186,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_data)
+            pokemon_data.get_slot()
         };
 
         battle.add("-start", &[
@@ -250,7 +250,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(pokemon_data)
+                pokemon_data.get_slot()
             };
 
             battle.add("-start", &[

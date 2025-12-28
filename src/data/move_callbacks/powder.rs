@@ -26,7 +26,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
         battle.add("-singleturn", &[target_arg.into(), "Powder".into()]);
@@ -61,7 +61,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(pokemon_pokemon)
+                pokemon_pokemon.get_slot()
             };
 
             battle.add("-activate", &[pokemon_arg.into(), "move: Powder".into()]);

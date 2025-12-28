@@ -72,7 +72,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(target)
+        target.get_slot()
     };
 
     battle.add("-singleturn", &[

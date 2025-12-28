@@ -51,7 +51,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
                         Some(p) => p,
                         None => continue,
                     };
-                    crate::battle::Arg::from(src_pokemon)
+                    src_pokemon.get_slot()
                 } else {
                     continue
                 };
@@ -60,7 +60,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
                     Some(p) => p,
                     None => continue,
                 };
-                let pokemon_arg = crate::battle::Arg::from(pokemon_pokemon);
+                let pokemon_arg = pokemon_pokemon.get_slot();
                 (source_arg, pokemon_arg)
             };
 
@@ -106,7 +106,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
                             Some(p) => p,
                             None => continue,
                         };
-                        crate::battle::Arg::from(pokemon_pokemon)
+                        pokemon_pokemon.get_slot()
                     };
 
                     battle.add("-start", &[pokemon_arg.into(), "perish3".into(), "[silent]".into()]);
@@ -152,7 +152,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
         battle.add("-start", &[target_arg.into(), "perish0".into()]);
@@ -189,7 +189,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
 
         battle.add("-start", &[pokemon_arg.into(), format!("perish{}", duration).into()]);

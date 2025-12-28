@@ -46,10 +46,10 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
 
-        battle.add("-start", &[pokemon_arg, "Miracle Eye".into()]);
+        battle.add("-start", &[pokemon_arg.into(), "Miracle Eye".into()]);
 
         EventResult::Continue
     }

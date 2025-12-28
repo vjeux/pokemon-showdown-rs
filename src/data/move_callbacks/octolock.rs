@@ -47,14 +47,14 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let pokemon_arg = crate::battle::Arg::from(pokemon_pokemon);
+            let pokemon_arg = pokemon_pokemon.get_slot();
 
             let source_arg = if let Some(source) = source_pos {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                format!("[of] {}", crate::battle::Arg::from(source_pokemon))
+                format!("[of] {}", source_pokemon.get_slot())
             } else {
                 "".to_string()
             };
@@ -117,7 +117,7 @@ pub mod condition {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    crate::battle::Arg::from(pokemon_pokemon)
+                    pokemon_pokemon.get_slot()
                 };
 
                 battle.add("-end", &[

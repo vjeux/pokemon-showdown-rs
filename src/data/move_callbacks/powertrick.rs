@@ -27,10 +27,10 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
 
-        battle.add("-start", &[pokemon_arg, "Power Trick".into()]);
+        battle.add("-start", &[pokemon_arg.into(), "Power Trick".into()]);
 
         // const newatk = pokemon.storedStats.def;
         // const newdef = pokemon.storedStats.atk;
@@ -91,10 +91,10 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
 
-        battle.add("-end", &[pokemon_arg, "Power Trick".into()]);
+        battle.add("-end", &[pokemon_arg.into(), "Power Trick".into()]);
 
         // const newatk = pokemon.storedStats.def;
         // const newdef = pokemon.storedStats.atk;

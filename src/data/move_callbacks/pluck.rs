@@ -84,7 +84,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let target_arg = crate::battle::Arg::from(target_pokemon);
+        let target_arg = target_pokemon.get_slot();
 
         let item_data = match battle.dex.get_item_by_id(&item_id) {
             Some(item) => item,
@@ -96,7 +96,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let source_arg = crate::battle::Arg::from(source_pokemon);
+        let source_arg = source_pokemon.get_slot();
 
         (target_arg, item_name, source_arg)
     };

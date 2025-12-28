@@ -77,7 +77,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            target_pokemon.get_slot()
         };
 
         battle.add("-singleturn", &[
@@ -188,7 +188,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(target_pokemon)
+                target_pokemon.get_slot()
             };
 
             battle.add("-activate", &[
