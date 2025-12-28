@@ -13,10 +13,31 @@ use crate::event::EventResult;
 ///     return bp;
 /// }
 pub fn base_power_callback(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // Get the pokemon (user of the move)
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Get the active move
+    let move_id = match &battle.active_move {
+        Some(active_move) => &active_move.id,
+        None => return EventResult::Continue,
+    };
+
+    // Get the move data
+    let move_data = match battle.dex.get_move_by_id(move_id) {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // Calculate base power based on current HP ratio
+    let bp = move_data.base_power * pokemon.hp / pokemon.maxhp;
+    // Note: JS has this.debug call which we don't have infrastructure for yet
+    // this.debug(`BP: ${bp}`);
+    EventResult::Number(bp)
 }
