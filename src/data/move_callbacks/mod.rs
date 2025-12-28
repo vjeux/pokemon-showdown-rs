@@ -775,11 +775,11 @@ pub fn dispatch_on_hit_field(
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "courtchange" => courtchange::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
-        "flowershield" => flowershield::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
-        "haze" => haze::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
+        "courtchange" => courtchange::on_hit_field(battle, target_pos, Some(pokemon_pos)),
+        "flowershield" => flowershield::on_hit_field(battle, Some(pokemon_pos), move_id),
+        "haze" => haze::on_hit_field(battle),
         "perishsong" => perishsong::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
-        "rototiller" => rototiller::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
+        "rototiller" => rototiller::on_hit_field(battle, target_pos, Some(pokemon_pos)),
         "teatime" => teatime::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
         _ => EventResult::Continue,
     }
@@ -792,8 +792,8 @@ pub fn dispatch_on_hit_side(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "gearup" => gearup::on_hit_side(battle, pokemon_pos),
-        "magneticflux" => magneticflux::on_hit_side(battle, pokemon_pos),
+        "gearup" => gearup::on_hit_side(battle, Some(pokemon_pos), move_id),
+        "magneticflux" => magneticflux::on_hit_side(battle, Some(pokemon_pos), move_id),
         "quickguard" => quickguard::on_hit_side(battle, Some(pokemon_pos)),
         "wideguard" => wideguard::on_hit_side(battle, Some(pokemon_pos)),
         _ => EventResult::Continue,
@@ -899,7 +899,7 @@ pub fn dispatch_on_move_fail(
         "axekick" => axekick::on_move_fail(battle, None, Some(pokemon_pos), move_id),
         "highjumpkick" => highjumpkick::on_move_fail(battle, None, Some(pokemon_pos), move_id),
         "jumpkick" => jumpkick::on_move_fail(battle, None, Some(pokemon_pos), move_id),
-        "skydrop" => skydrop::on_move_fail(battle, None, Some(pokemon_pos), move_id),
+        "skydrop" => skydrop::on_move_fail(battle, None, Some(pokemon_pos)),
         "supercellslam" => supercellslam::on_move_fail(battle, None, Some(pokemon_pos), move_id),
         _ => EventResult::Continue,
     }
@@ -1052,8 +1052,8 @@ pub fn dispatch_on_try_immunity(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "attract" => attract::on_try_immunity(battle, pokemon_pos),
-        "captivate" => captivate::on_try_immunity(battle, pokemon_pos),
+        "attract" => attract::on_try_immunity(battle, Some(pokemon_pos), None),
+        "captivate" => captivate::on_try_immunity(battle, pokemon_pos, None),
         "dreameater" => dreameater::on_try_immunity(battle, Some(pokemon_pos)),
         "endeavor" => endeavor::on_try_immunity(battle, pokemon_pos),
         "leechseed" => leechseed::on_try_immunity(battle, Some(pokemon_pos)),
