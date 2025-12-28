@@ -28,7 +28,9 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         };
 
         if let Some(volatile) = pokemon_data.volatiles.get(&ID::from("stockpile")) {
-            volatile.layers.unwrap_or(0)
+            volatile.data.get("layers")
+                .and_then(|l| l.as_i64())
+                .unwrap_or(0) as i32
         } else {
             0
         }
