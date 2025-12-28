@@ -1462,16 +1462,16 @@ pub fn dispatch_condition_on_field_end(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "electricterrain" => electricterrain::condition::on_field_end(battle, source_pos),
-        "grassyterrain" => grassyterrain::condition::on_field_end(battle, source_pos),
-        "gravity" => gravity::condition::on_field_end(battle, source_pos),
-        "magicroom" => magicroom::condition::on_field_end(battle, source_pos),
-        "mistyterrain" => mistyterrain::condition::on_field_end(battle, source_pos),
-        "mudsport" => mudsport::condition::on_field_end(battle, source_pos),
-        "psychicterrain" => psychicterrain::condition::on_field_end(battle, source_pos),
-        "trickroom" => trickroom::condition::on_field_end(battle, source_pos),
-        "watersport" => watersport::condition::on_field_end(battle, source_pos),
-        "wonderroom" => wonderroom::condition::on_field_end(battle, source_pos),
+        "electricterrain" => electricterrain::condition::on_field_end(battle),
+        "grassyterrain" => grassyterrain::condition::on_field_end(battle),
+        "gravity" => gravity::condition::on_field_end(battle),
+        "magicroom" => magicroom::condition::on_field_end(battle),
+        "mistyterrain" => mistyterrain::condition::on_field_end(battle),
+        "mudsport" => mudsport::condition::on_field_end(battle),
+        "psychicterrain" => psychicterrain::condition::on_field_end(battle),
+        "trickroom" => trickroom::condition::on_field_end(battle),
+        "watersport" => watersport::condition::on_field_end(battle),
+        "wonderroom" => wonderroom::condition::on_field_end(battle),
         _ => EventResult::Continue,
     }
 }
