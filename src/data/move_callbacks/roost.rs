@@ -1,3 +1,11 @@
+WARNING: Found inline has_type in roost.rs line 1: WARNING: Found inline has_type in roost.rs line 1: Fixed in roost.rs: has_flying = battle.has_type(target, "Flying")
+  This needs manual fixing
+WARNING: Found inline has_type in roost.rs line 3: Fixed in roost.rs: has_flying = battle.has_type(target, "Flying")
+  This needs manual fixing
+WARNING: Found inline has_type in roost.rs line 1: Fixed in roost.rs: has_flying = battle.has_type(target, "Flying")
+  This needs manual fixing
+Fixed in roost.rs: has_flying = battle.has_type(target, "Flying")
+Total changes in roost.rs: 1
 //! Roost Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
@@ -39,7 +47,13 @@ pub mod condition {
             // if (target.hasType('Flying')) {
             //     this.add('-hint', "If a Terastallized Pokemon uses Roost, it remains Flying-type.");
             // }
-            let has_flying = battle.has_type(target, "Flying");
+            let has_flying = {
+                let pokemon = match battle.pokemon_at(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon.has_type("Flying")
+            };
 
             if has_flying {
                 battle.add("-hint", &["If a Terastallized Pokemon uses Roost, it remains Flying-type.".into()]);
@@ -90,3 +104,6 @@ pub mod condition {
         EventResult::Types(filtered_types)
     }
 }
+
+
+

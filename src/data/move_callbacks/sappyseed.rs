@@ -1,3 +1,5 @@
+Fixed in sappyseed.rs: has_grass = battle.has_type(target, "Grass")
+Total changes in sappyseed.rs: 1
 //! Sappy Seed Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
@@ -21,7 +23,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // if (target.hasType('Grass')) return null;
-    let has_grass = battle.has_type(target, "Grass");
+    let has_grass = {
+        let pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.has_type("Grass")
+    };
 
     if has_grass {
         return EventResult::Stop;
@@ -44,4 +52,5 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
+
 

@@ -1,3 +1,5 @@
+Fixed in skydrop.rs: has_flying = battle.has_type(target, "Flying")
+Total changes in skydrop.rs: 1
 //! Sky Drop Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
@@ -258,7 +260,13 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         //     this.add('-immune', target);
         //     return null;
         // }
-        let has_flying = battle.has_type(target, "Flying");
+        let has_flying = {
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.has_type("Flying")
+        };
         if has_flying {
             let target_arg = {
                 let target_pokemon = match battle.pokemon_at(target.0, target.1) {
@@ -731,3 +739,4 @@ pub mod condition {
         EventResult::Continue
     }
 }
+

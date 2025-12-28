@@ -1,3 +1,5 @@
+Fixed in smackdown.rs: has_flying = battle.has_type(pokemon, "Flying")
+Total changes in smackdown.rs: 1
 //! Smack Down Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
@@ -62,7 +64,13 @@ pub mod condition {
         let mut applies = false;
 
         // if (pokemon.hasType('Flying') || pokemon.hasAbility('levitate')) applies = true;
-        let has_flying = battle.has_type(pokemon, "Flying");
+        let has_flying = {
+            let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.has_type("Flying")
+        };
         let has_levitate = battle.has_ability(pokemon, "levitate");
         if has_flying || has_levitate {
             applies = true;
@@ -244,3 +252,4 @@ pub mod condition {
         EventResult::Continue
     }
 }
+

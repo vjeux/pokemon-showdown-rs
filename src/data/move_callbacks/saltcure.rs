@@ -39,7 +39,13 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.damage(pokemon.baseMaxhp / (pokemon.hasType(['Water', 'Steel']) ? 4 : 8));
-        let has_water_or_steel = battle.has_type(pokemon, "Water") || battle.has_type(pokemon, "Steel");
+        let has_water_or_steel = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.has_type("Water") || pokemon_ref.has_type("Steel")
+        };
 
         let divisor = if has_water_or_steel { 4 } else { 8 };
 

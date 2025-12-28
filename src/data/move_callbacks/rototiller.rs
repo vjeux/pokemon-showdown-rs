@@ -1,3 +1,5 @@
+Fixed in rototiller.rs: has_grass = battle.has_type(pokemon_pos, "Grass")
+Total changes in rototiller.rs: 1
 //! Rototiller Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
@@ -64,7 +66,13 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
         //     // This move affects every grounded Grass-type Pokemon in play.
         //     targets.push(pokemon);
         // }
-        let has_grass = battle.has_type(pokemon_pos, "Grass");
+        let has_grass = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.has_type("Grass")
+        };
 
         if has_grass {
             targets.push(pokemon_pos);
@@ -85,4 +93,5 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 
     EventResult::Continue
 }
+
 
