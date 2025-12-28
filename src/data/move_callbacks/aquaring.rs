@@ -16,14 +16,14 @@ pub mod condition {
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // this.add('-start', pokemon, 'Aqua Ring');
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon)
+            format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident)
         };
-        battle.add("-start", &[pokemon_arg, "Aqua Ring".into()]);
+        battle.add("-start", &[pokemon_ident.into(), "Aqua Ring".into()]);
         EventResult::Continue
     }
 

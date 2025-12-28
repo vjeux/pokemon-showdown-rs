@@ -38,14 +38,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         battle.queue.prioritize_action(target.0, target.1);
 
         // this.add('-activate', target, 'move: After You');
-        let target_arg = {
+        // Extract pokemon identifier before the mutable borrow
+        let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target_pokemon)
+            format!("p{}{}",  target.0 + 1, target_pokemon.ident)
         };
-        battle.add("-activate", &[target_arg, "move: After You".into()]);
+        battle.add("-activate", &[target_ident.into(), "move: After You".into()]);
 
         EventResult::Continue
     } else {

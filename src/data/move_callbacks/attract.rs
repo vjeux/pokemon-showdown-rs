@@ -105,8 +105,8 @@ pub mod condition {
             return EventResult::Boolean(false);
         }
 
-        // Get pokemon and source again for battle.add
-        let (pokemon_arg, source_name) = {
+        // Get pokemon identifier and source name for battle.add
+        let (pokemon_ident, source_name) = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -117,7 +117,7 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            (crate::battle::Arg::from(pokemon), source_pokemon.name.clone())
+            (format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident), source_pokemon.name.clone())
         };
 
         // if (effect.name === 'Cute Charm') {
@@ -130,23 +130,23 @@ pub mod condition {
         if let Some(effect_name) = effect_id {
             if effect_name == "Cute Charm" {
                 battle.add("-start", &[
-                    pokemon_arg,
+                    pokemon_ident.as_str().into(),
                     "Attract".into(),
                     "[from] ability: Cute Charm".into(),
                     format!("[of] {}", source_name).into(),
                 ]);
             } else if effect_name == "Destiny Knot" {
                 battle.add("-start", &[
-                    pokemon_arg,
+                    pokemon_ident.as_str().into(),
                     "Attract".into(),
                     "[from] item: Destiny Knot".into(),
                     format!("[of] {}", source_name).into(),
                 ]);
             } else {
-                battle.add("-start", &[pokemon_arg, "Attract".into()]);
+                battle.add("-start", &[pokemon_ident.as_str().into(), "Attract".into()]);
             }
         } else {
-            battle.add("-start", &[pokemon_arg, "Attract".into()]);
+            battle.add("-start", &[pokemon_ident.as_str().into(), "Attract".into()]);
         }
 
         // Store the source in the effect state
@@ -235,31 +235,38 @@ pub mod condition {
 
         // this.add('-activate', pokemon, 'move: Attract', '[of] ' + this.effectState.source);
         if let Some(source) = source_pos {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
+            let (pokemon_ident, source_name) = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
 
-            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
+                let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+
+                (format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident), source_pokemon.name.clone())
             };
 
             battle.add("-activate", &[
-                pokemon.into(),
+                pokemon_ident.as_str().into(),
                 "move: Attract".into(),
-                format!("[of] {}", source_pokemon.name).into(),
+                format!("[of] {}", source_name).into(),
             ]);
         }
 
         // if (this.randomChance(1, 2)) {
         if battle.random_chance(1, 2) {
             // this.add('cant', pokemon, 'Attract');
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
+            let pokemon_ident = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident)
             };
-            battle.add("cant", &[pokemon.into(), "Attract".into()]);
+            battle.add("cant", &[pokemon_ident.as_str().into(), "Attract".into()]);
 
             // return false;
             return EventResult::Boolean(false);
@@ -273,12 +280,15 @@ pub mod condition {
     /// }
     pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // this.add('-end', pokemon, 'Attract', '[silent]');
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let pokemon_ident = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident)
         };
 
-        battle.add("-end", &[pokemon.into(), "Attract".into(), "[silent]".into()]);
+        battle.add("-end", &[pokemon_ident.as_str().into(), "Attract".into(), "[silent]".into()]);
 
         EventResult::Continue
     }

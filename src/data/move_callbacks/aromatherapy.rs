@@ -30,14 +30,14 @@ use crate::dex_data::ID;
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // this.add('-activate', source, 'move: Aromatherapy');
-    let source_arg = {
+    let source_ident = {
         let source_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(source_pokemon)
+        format!("p{}{}", pokemon_pos.0 + 1, source_pokemon.ident)
     };
-    battle.add("-activate", &[source_arg, "move: Aromatherapy".into()]);
+    battle.add("-activate", &[source_ident.into(), "move: Aromatherapy".into()]);
 
     // let success = false;
     let mut success = false;
@@ -74,14 +74,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             // if (ally.hasAbility('sapsipper')) {
             if has_sapsipper {
                 // this.add('-immune', ally, '[from] ability: Sap Sipper');
-                let ally_arg = {
+                let ally_ident = {
                     let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
                         Some(p) => p,
                         None => continue,
                     };
-                    crate::battle::Arg::from(ally)
+                    format!("p{}{}", ally_pos.0 + 1, ally.ident)
                 };
-                battle.add("-immune", &[ally_arg, "[from] ability: Sap Sipper".into()]);
+                battle.add("-immune", &[ally_ident.into(), "[from] ability: Sap Sipper".into()]);
                 // continue;
                 continue;
             }
@@ -89,14 +89,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             // if (ally.hasAbility('goodasgold')) {
             if has_goodasgold {
                 // this.add('-immune', ally, '[from] ability: Good as Gold');
-                let ally_arg = {
+                let ally_ident = {
                     let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
                         Some(p) => p,
                         None => continue,
                     };
-                    crate::battle::Arg::from(ally)
+                    format!("p{}{}", ally_pos.0 + 1, ally.ident)
                 };
-                battle.add("-immune", &[ally_arg, "[from] ability: Good as Gold".into()]);
+                battle.add("-immune", &[ally_ident.into(), "[from] ability: Good as Gold".into()]);
                 // continue;
                 continue;
             }
