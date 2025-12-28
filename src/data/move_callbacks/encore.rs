@@ -286,7 +286,7 @@ pub mod condition {
         };
 
         for move_id in move_ids_to_disable {
-            pokemon_pokemon.disable_move(move_id.as_ref(), None);
+            pokemon_pokemon.disable_move(move_id.as_str(), None);
         }
 
         EventResult::Continue
