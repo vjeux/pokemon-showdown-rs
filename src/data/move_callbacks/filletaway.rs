@@ -34,20 +34,13 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 ///     delete move.boosts;
 /// }
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    use std::collections::HashMap;
-
     let pokemon = source_pos;
 
     // if (!this.boost(move.boosts!)) return null;
     // boosts: { atk: 2, spa: 2, spe: 2 }
-    let mut boosts = HashMap::new();
-    boosts.insert("atk".to_string(), 2);
-    boosts.insert("spa".to_string(), 2);
-    boosts.insert("spe".to_string(), 2);
+    let boost_result = battle.boost(&[("atk", 2), ("spa", 2), ("spe", 2)], pokemon, Some(pokemon), None);
 
-    let boost_result = battle.boost(boosts, pokemon, Some(pokemon), None);
-
-    if !boost_result {
+    if boost_result.unwrap_or(0) == 0 {
         return EventResult::Stop;
     }
 
@@ -77,7 +70,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         pokemon_pokemon.maxhp
     };
 
-    battle.direct_damage(max_hp / 2, pokemon, None, None);
+    battle.direct_damage(max_hp / 2, Some(pokemon), None, None);
 
     EventResult::Continue
 }

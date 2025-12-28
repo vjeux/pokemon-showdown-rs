@@ -23,12 +23,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     // Get current move's base power
     let base_power = match &battle.active_move {
-        Some(move_id) => {
-            match battle.dex.get_move_by_id(move_id) {
-                Some(move_data) => move_data.base_power,
-                None => return EventResult::Continue,
-            }
-        }
+        Some(active_move) => active_move.base_power,
         None => return EventResult::Continue,
     };
 
@@ -43,7 +38,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     let will_move = battle.queue.will_move(target);
 
-    if newly_switched || will_move {
+    if newly_switched || will_move.is_some() {
         // this.debug('Fishious Rend damage boost');
         battle.debug("Fishious Rend damage boost");
 

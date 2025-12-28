@@ -56,12 +56,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         }
     };
 
-    let success = battle.heal(heal_amount, target, None, None);
+    let success = battle.heal(heal_amount, Some(target), None, None);
 
     // if (success && !target.isAlly(source)) {
     //     target.staleness = 'external';
     // }
-    if success {
+    if success.unwrap_or(0) != 0 {
         let is_ally = battle.is_ally(target, source);
         if !is_ally {
             let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
@@ -76,7 +76,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     //     this.add('-fail', target, 'heal');
     //     return this.NOT_FAIL;
     // }
-    if !success {
+    if success.unwrap_or(0) == 0 {
         let target_arg = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
@@ -91,6 +91,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // return success;
-    EventResult::Boolean(success)
+    EventResult::Boolean(success.unwrap_or(0) != 0)
 }
 
