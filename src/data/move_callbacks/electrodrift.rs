@@ -35,7 +35,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
         target_pokemon.run_effectiveness(&move_id, battle)
     };
 
-    if effectiveness > 0 {
+    if effectiveness > 0.0 {
         // this.debug(`electro drift super effective buff`);
         battle.debug("electro drift super effective buff");
 

@@ -98,15 +98,20 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // const randomType = this.sample(possibleTypes);
-    let random_type = battle.sample(&possible_types);
+    let random_type = battle.sample(&possible_types[..]);
 
     // if (!source.setType(randomType)) return false;
+    let random_type_str = match random_type {
+        Some(t) => t.clone(),
+        None => return EventResult::Boolean(false),
+    };
+
     let set_type_success = {
         let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.set_type(vec![random_type.clone()])
+        source_pokemon.set_type(vec![random_type_str.clone()])
     };
 
     if !set_type_success {
@@ -122,7 +127,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         Arg::from(source_pokemon)
     };
 
-    battle.add("-start", &[source_arg, "typechange".into(), random_type.to_string().into()]);
+    battle.add("-start", &[source_arg, "typechange".into(), random_type_str.into()]);
 
     EventResult::Continue
 }
