@@ -3732,18 +3732,16 @@ impl Battle {
 
         // Get allies from the same side (active team)
         if let Some(side) = self.sides.get(side_idx) {
-            for active_slot in side.active.iter() {
-                if let Some(ally_idx) = active_slot {
-                    let ally_pos = (side_idx, *ally_idx);
-                    // Skip if it's the same pokemon
-                    if ally_pos == pokemon_pos {
-                        continue;
-                    }
-                    // Check if alive
-                    if let Some(ally) = side.pokemon.get(*ally_idx) {
-                        if !ally.is_fainted() && self.is_adjacent(pokemon_pos, ally_pos) {
-                            result.push(ally_pos);
-                        }
+            for ally_idx in side.active.iter().flatten() {
+                let ally_pos = (side_idx, *ally_idx);
+                // Skip if it's the same pokemon
+                if ally_pos == pokemon_pos {
+                    continue;
+                }
+                // Check if alive
+                if let Some(ally) = side.pokemon.get(*ally_idx) {
+                    if !ally.is_fainted() && self.is_adjacent(pokemon_pos, ally_pos) {
+                        result.push(ally_pos);
                     }
                 }
             }
@@ -3852,13 +3850,11 @@ impl Battle {
 
         if let Some(side) = self.sides.get(side_idx) {
             // Iterate through active slots on this side
-            for active_slot in &side.active {
-                if let Some(poke_idx) = active_slot {
-                    if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                        // Include if: include_fainted=true OR pokemon has HP
-                        if include_fainted || pokemon.hp > 0 {
-                            result.push((side_idx, *poke_idx));
-                        }
+            for poke_idx in side.active.iter().flatten() {
+                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                    // Include if: include_fainted=true OR pokemon has HP
+                    if include_fainted || pokemon.hp > 0 {
+                        result.push((side_idx, *poke_idx));
                     }
                 }
             }
@@ -8731,19 +8727,17 @@ impl Battle {
 
                 // Get all active Pokemon on target's side (allies and self)
                 if let Some(side) = self.sides.get(target_side) {
-                    for opt_poke_idx in side.active.iter() {
-                        if let Some(poke_idx) = opt_poke_idx {
-                            let ally_pos = (target_side, *poke_idx);
-                            // onAlly handlers
-                            let ally_event = format!("onAlly{}", event_name);
-                            let mut ally_handlers = self.find_pokemon_event_handlers(&ally_event, ally_pos);
-                            handlers.append(&mut ally_handlers);
+                    for poke_idx in side.active.iter().flatten() {
+                        let ally_pos = (target_side, *poke_idx);
+                        // onAlly handlers
+                        let ally_event = format!("onAlly{}", event_name);
+                        let mut ally_handlers = self.find_pokemon_event_handlers(&ally_event, ally_pos);
+                        handlers.append(&mut ally_handlers);
 
-                            // onAny handlers
-                            let any_event = format!("onAny{}", event_name);
-                            let mut any_handlers = self.find_pokemon_event_handlers(&any_event, ally_pos);
-                            handlers.append(&mut any_handlers);
-                        }
+                        // onAny handlers
+                        let any_event = format!("onAny{}", event_name);
+                        let mut any_handlers = self.find_pokemon_event_handlers(&any_event, ally_pos);
+                        handlers.append(&mut any_handlers);
                     }
                 }
 
@@ -8756,19 +8750,17 @@ impl Battle {
                 // Get all active Pokemon on opposing side(s) (foes)
                 for (side_idx, side) in self.sides.iter().enumerate() {
                     if side_idx != target_side {
-                        for opt_poke_idx in side.active.iter() {
-                            if let Some(poke_idx) = opt_poke_idx {
-                                let foe_pos = (side_idx, *poke_idx);
-                                // onFoe handlers
-                                let foe_event = format!("onFoe{}", event_name);
-                                let mut foe_handlers = self.find_pokemon_event_handlers(&foe_event, foe_pos);
-                                handlers.append(&mut foe_handlers);
+                        for poke_idx in side.active.iter().flatten() {
+                            let foe_pos = (side_idx, *poke_idx);
+                            // onFoe handlers
+                            let foe_event = format!("onFoe{}", event_name);
+                            let mut foe_handlers = self.find_pokemon_event_handlers(&foe_event, foe_pos);
+                            handlers.append(&mut foe_handlers);
 
-                                // onAny handlers
-                                let any_event = format!("onAny{}", event_name);
-                                let mut any_handlers = self.find_pokemon_event_handlers(&any_event, foe_pos);
-                                handlers.append(&mut any_handlers);
-                            }
+                            // onAny handlers
+                            let any_event = format!("onAny{}", event_name);
+                            let mut any_handlers = self.find_pokemon_event_handlers(&any_event, foe_pos);
+                            handlers.append(&mut any_handlers);
                         }
                     }
                 }
