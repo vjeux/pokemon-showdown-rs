@@ -859,8 +859,8 @@ pub fn dispatch_on_modify_target(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "comeuppance" => comeuppance::on_modify_target(battle, pokemon_pos),
-        "metalburst" => metalburst::on_modify_target(battle, pokemon_pos),
+        "comeuppance" => comeuppance::on_modify_target(battle, Some(pokemon_pos), None, move_id),
+        "metalburst" => metalburst::on_modify_target(battle, Some(pokemon_pos), None, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -872,19 +872,19 @@ pub fn dispatch_on_modify_type(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "aurawheel" => aurawheel::on_modify_type(battle, pokemon_pos),
-        "hiddenpower" => hiddenpower::on_modify_type(battle, pokemon_pos),
-        "ivycudgel" => ivycudgel::on_modify_type(battle, pokemon_pos),
-        "judgment" => judgment::on_modify_type(battle, pokemon_pos),
-        "multiattack" => multiattack::on_modify_type(battle, pokemon_pos),
-        "naturalgift" => naturalgift::on_modify_type(battle, pokemon_pos),
-        "ragingbull" => ragingbull::on_modify_type(battle, pokemon_pos),
-        "revelationdance" => revelationdance::on_modify_type(battle, pokemon_pos),
-        "technoblast" => technoblast::on_modify_type(battle, pokemon_pos),
-        "terablast" => terablast::on_modify_type(battle, pokemon_pos),
-        "terastarstorm" => terastarstorm::on_modify_type(battle, pokemon_pos),
-        "terrainpulse" => terrainpulse::on_modify_type(battle, pokemon_pos),
-        "weatherball" => weatherball::on_modify_type(battle, pokemon_pos),
+        "aurawheel" => aurawheel::on_modify_type(battle, move_id, pokemon_pos),
+        "hiddenpower" => hiddenpower::on_modify_type(battle, move_id, pokemon_pos),
+        "ivycudgel" => ivycudgel::on_modify_type(battle, move_id, pokemon_pos),
+        "judgment" => judgment::on_modify_type(battle, move_id, pokemon_pos),
+        "multiattack" => multiattack::on_modify_type(battle, move_id, pokemon_pos),
+        "naturalgift" => naturalgift::on_modify_type(battle, move_id, pokemon_pos),
+        "ragingbull" => ragingbull::on_modify_type(battle, move_id, pokemon_pos),
+        "revelationdance" => revelationdance::on_modify_type(battle, move_id, pokemon_pos),
+        "technoblast" => technoblast::on_modify_type(battle, move_id, pokemon_pos),
+        "terablast" => terablast::on_modify_type(battle, move_id, pokemon_pos, None),
+        "terastarstorm" => terastarstorm::on_modify_type(battle, move_id, pokemon_pos),
+        "terrainpulse" => terrainpulse::on_modify_type(battle, move_id, pokemon_pos),
+        "weatherball" => weatherball::on_modify_type(battle, move_id, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -896,11 +896,11 @@ pub fn dispatch_on_move_fail(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "axekick" => axekick::on_move_fail(battle, pokemon_pos),
-        "highjumpkick" => highjumpkick::on_move_fail(battle, pokemon_pos),
-        "jumpkick" => jumpkick::on_move_fail(battle, pokemon_pos),
-        "skydrop" => skydrop::on_move_fail(battle, pokemon_pos),
-        "supercellslam" => supercellslam::on_move_fail(battle, pokemon_pos),
+        "axekick" => axekick::on_move_fail(battle, None, Some(pokemon_pos), move_id),
+        "highjumpkick" => highjumpkick::on_move_fail(battle, None, Some(pokemon_pos), move_id),
+        "jumpkick" => jumpkick::on_move_fail(battle, None, Some(pokemon_pos), move_id),
+        "skydrop" => skydrop::on_move_fail(battle, None, Some(pokemon_pos), move_id),
+        "supercellslam" => supercellslam::on_move_fail(battle, None, Some(pokemon_pos), move_id),
         _ => EventResult::Continue,
     }
 }
