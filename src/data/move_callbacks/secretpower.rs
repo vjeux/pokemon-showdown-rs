@@ -40,12 +40,11 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     use crate::dex_data::ID;
 
     // if (this.field.isTerrain('')) return;
-    let terrain = battle.field.terrain.as_ref();
-    if terrain.is_none() {
+    if battle.field.terrain == ID::from("") {
         return EventResult::Continue;
     }
 
-    let terrain_id = terrain.unwrap();
+    let terrain_id = &battle.field.terrain;
 
     // move.secondaries = [];
     let active_move = match &mut battle.active_move {

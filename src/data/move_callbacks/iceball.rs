@@ -76,7 +76,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.status.as_ref().map(|s| s.as_str()) == Some("slp")
+        pokemon_pokemon.status == ID::from("slp")
     };
 
     if has_iceball && !is_sleeping {
@@ -147,7 +147,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.status.as_ref().map(|s| s.as_str()) == Some("slp")
+        pokemon_pokemon.status == ID::from("slp")
     };
 
     if has_iceball || is_sleeping {
