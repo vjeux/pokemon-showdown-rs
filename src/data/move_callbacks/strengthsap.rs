@@ -14,10 +14,49 @@ use crate::event::EventResult;
 ///     return !!(this.heal(atk, source, target) || success);
 /// }
 pub fn on_hit(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::StatID;
+
+    let source = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.boosts.atk === -6) return false;
+    let atk_boost = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.boosts.atk
+    };
+
+    if atk_boost == -6 {
+        return EventResult::NotFail;
+    }
+
+    // const atk = target.getStat('atk', false, true);
+    let atk = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.get_stat(StatID::Atk, false)
+    };
+
+    // const success = this.boost({ atk: -1 }, target, source, null, false, true);
+    let success = battle.boost(&[("atk", -1)], target, Some(source), None);
+
+    // return !!(this.heal(atk, source, target) || success);
+    let heal_result = battle.heal(atk, Some(source), None, None);
+
+    if heal_result.is_some() || success {
+        EventResult::Continue
+    } else {
+        EventResult::NotFail
+    }
 }
