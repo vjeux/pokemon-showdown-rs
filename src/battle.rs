@@ -348,7 +348,7 @@ pub struct Battle {
     pub last_damage: i32,
 
     /// Currently active move being executed
-    pub active_move: Option<ID>,
+    pub active_move: Option<crate::battle_actions::ActiveMove>,
     /// Pokemon currently using a move
     pub active_pokemon: Option<(usize, usize)>, // (side_idx, poke_idx)
     /// Target of the current move
@@ -3588,7 +3588,8 @@ impl Battle {
     pub fn clear_active_move(&mut self, failed: bool) {
         if self.active_move.is_some() {
             if !failed {
-                self.last_move = self.active_move.take();
+                self.last_move = self.active_move.as_ref().map(|m| m.id.clone());
+                self.active_move = None;
             } else {
                 self.active_move = None;
             }
