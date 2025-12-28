@@ -48,7 +48,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     battle.add("-fail", &[source_arg, "move: Dark Void".into()]);
 
     // this.hint("Only a Pokemon whose form is Darkrai can use this move.");
-    battle.hint("Only a Pokemon whose form is Darkrai can use this move.");
+    battle.hint("Only a Pokemon whose form is Darkrai can use this move.", true, None);
 
     // return null;
     EventResult::Stop

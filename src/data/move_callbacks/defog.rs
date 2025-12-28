@@ -54,9 +54,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // For now, we'll check substitute status
     if !has_substitute {
         // success = !!this.boost({ evasion: -1 });
-        let mut boosts = std::collections::HashMap::new();
-        boosts.insert("evasion".to_string(), -1);
-        let boost_result = battle.boost(&boosts, target);
+        let boosts = [("evasion", -1)];
+        let boost_result = battle.boost(&boosts, target, Some(pokemon_pos), None);
         success = boost_result;
     }
 

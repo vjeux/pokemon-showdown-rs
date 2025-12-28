@@ -85,7 +85,7 @@ pub mod condition {
         // }
         let pokemon = pokemon_pos;
 
-        let will_move = battle.queue.will_move(pokemon);
+        let will_move = battle.queue.will_move(pokemon.0, pokemon.1);
 
         // TODO: Check if pokemon === this.activePokemon && this.activeMove && !this.activeMove.isExternal
         // For now, just check willMove
@@ -271,7 +271,7 @@ pub mod condition {
                 // if (moveSlot.id === this.effectState.move)
                 if move_slot.id == disabled_id {
                     // pokemon.disableMove(moveSlot.id);
-                    pokemon_pokemon.disable_move(&move_slot.id);
+                    pokemon_pokemon.disable_move(&move_slot.id, None);
                     break;
                 }
             }

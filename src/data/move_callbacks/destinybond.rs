@@ -111,7 +111,7 @@ pub mod condition {
 
             if source_has_dynamax {
                 // this.add('-hint', "Dynamaxed Pokémon are immune to Destiny Bond.");
-                battle.hint("Dynamaxed Pokémon are immune to Destiny Bond.");
+                battle.hint("Dynamaxed Pokémon are immune to Destiny Bond.", true, None);
                 // return;
                 return EventResult::Continue;
             }
