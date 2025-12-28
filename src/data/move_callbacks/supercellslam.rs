@@ -11,11 +11,34 @@ use crate::event::EventResult;
 ///     this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('Supercell Slam'));
 /// }
 pub fn on_move_fail(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _target_pos: Option<(usize, usize)>,
-    _source_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
     _move_id: &str,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('Supercell Slam'));
+    let damage_amount = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.base_maxhp / 2
+    };
+
+    battle.damage(
+        damage_amount,
+        Some(source),
+        Some(source),
+        Some(&ID::from("supercellslam")),
+        false,
+    );
+
     EventResult::Continue
 }
