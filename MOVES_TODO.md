@@ -350,7 +350,7 @@ Moves with callbacks: 373
 - [ ] thunderclap - Thunderclap (Special, Electric) - 1 callback: onTry
 - [x] tidyup - Tidy Up (Status, Normal) - 1 callback: onHit
 - [ ] topsyturvy - Topsy-Turvy (Status, Dark) - 1 callback: onHit
-- [ ] torment - Torment (Status, Dark) - 3 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove
+- [x] torment - Torment (Status, Dark) - 3 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove
 - [ ] toxicspikes - Toxic Spikes (Status, Poison) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
 - [ ] transform - Transform (Status, Normal) - 1 callback: onHit
 - [ ] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity, onHit

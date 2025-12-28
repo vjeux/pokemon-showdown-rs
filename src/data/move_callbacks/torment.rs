@@ -19,28 +19,126 @@ pub mod condition {
     ///     this.add('-start', pokemon, 'Torment');
     /// }
     pub fn on_start(
-        _battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        effect_id: Option<&str>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // if (pokemon.volatiles['dynamax']) {
+        //     delete pokemon.volatiles['torment'];
+        //     return false;
+        // }
+        let has_dynamax = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.has_volatile(&ID::from("dynamax"))
+        };
+
+        if has_dynamax {
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_mut.remove_volatile(&ID::from("torment"));
+            return EventResult::NotFail;
+        }
+
+        // if (effect?.id === 'gmaxmeltdown') this.effectState.duration = 3;
+        if let Some(effect) = effect_id {
+            if effect == "gmaxmeltdown" {
+                if let Some(ref mut effect_state) = battle.current_effect_state {
+                    effect_state.duration = Some(3);
+                }
+            }
+        }
+
+        // this.add('-start', pokemon, 'Torment');
+        let pokemon_slot = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.get_slot()
+        };
+
+        battle.add(
+            "-start",
+            &[
+                crate::battle::Arg::from(pokemon_slot),
+                crate::battle::Arg::from("Torment"),
+            ],
+        );
+
         EventResult::Continue
     }
 
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Torment');
     /// }
-    pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        let pokemon = pokemon_pos;
+
+        // this.add('-end', pokemon, 'Torment');
+        let pokemon_slot = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.get_slot()
+        };
+
+        battle.add(
+            "-end",
+            &[
+                crate::battle::Arg::from(pokemon_slot),
+                crate::battle::Arg::from("Torment"),
+            ],
+        );
+
         EventResult::Continue
     }
 
     /// onDisableMove(pokemon) {
     ///     if (pokemon.lastMove && pokemon.lastMove.id !== 'struggle') pokemon.disableMove(pokemon.lastMove.id);
     /// }
-    pub fn on_disable_move(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // if (pokemon.lastMove && pokemon.lastMove.id !== 'struggle') pokemon.disableMove(pokemon.lastMove.id);
+        let last_move_id = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            if let Some(ref last_move) = pokemon_ref.last_move {
+                if *last_move != ID::from("struggle") {
+                    Some(last_move.clone())
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        };
+
+        if let Some(move_id) = last_move_id {
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            pokemon_mut.disable_move(&move_id.to_string(), None);
+        }
+
         EventResult::Continue
     }
 }
