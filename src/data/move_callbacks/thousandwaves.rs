@@ -11,10 +11,35 @@ use crate::event::EventResult;
 ///     if (source.isActive) target.addVolatile('trapped', source, move, 'trapper');
 /// }
 pub fn on_hit(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let source = pokemon_pos;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (source.isActive) target.addVolatile('trapped', source, move, 'trapper');
+    let source_is_active = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.is_active
+    };
+
+    if source_is_active {
+        let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        target_mut.add_volatile(ID::from("trapped"));
+    }
+
     EventResult::Continue
 }

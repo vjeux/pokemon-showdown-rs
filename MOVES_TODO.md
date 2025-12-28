@@ -344,7 +344,7 @@ Moves with callbacks: 373
 - [ ] terrainpulse - Terrain Pulse (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [ ] thief - Thief (Physical, Dark) - 1 callback: onAfterHit
 - [ ] thousandarrows - Thousand Arrows (Physical, Ground) - 1 callback: onEffectiveness
-- [ ] thousandwaves - Thousand Waves (Physical, Ground) - 1 callback: onHit
+- [x] thousandwaves - Thousand Waves (Physical, Ground) - 1 callback: onHit
 - [ ] throatchop - Throat Chop (Physical, Dark) - 5 callbacks: condition::onStart, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onEnd
 - [ ] thunder - Thunder (Special, Electric) - 1 callback: onModifyMove
 - [ ] thunderclap - Thunderclap (Special, Electric) - 1 callback: onTry
