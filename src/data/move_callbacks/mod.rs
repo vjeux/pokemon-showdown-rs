@@ -642,10 +642,12 @@ pub fn dispatch_on_effectiveness(
     move_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
+    // TODO: Effectiveness event needs type_mod and target_type for some moves
+    // This requires architectural changes to thread these values through dispatch
     match move_id {
-        "flyingpress" => flyingpress::on_effectiveness(battle, pokemon_pos),
-        "freezedry" => freezedry::on_effectiveness(battle, pokemon_pos),
-        "thousandarrows" => thousandarrows::on_effectiveness(battle, pokemon_pos),
+        "flyingpress" => flyingpress::on_effectiveness(battle, 0, ""),
+        "freezedry" => freezedry::on_effectiveness(battle, 0, ""),
+        "thousandarrows" => thousandarrows::on_effectiveness(battle, Some(pokemon_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1833,15 +1835,15 @@ pub fn dispatch_condition_on_side_end(
         "gmaxcannonade" => gmaxcannonade::condition::on_side_end(battle),
         "gmaxvinelash" => gmaxvinelash::condition::on_side_end(battle),
         "gmaxvolcalith" => gmaxvolcalith::condition::on_side_end(battle),
-        "gmaxwildfire" => gmaxwildfire::condition::on_side_end(battle, source_pos),
-        "grasspledge" => grasspledge::condition::on_side_end(battle, source_pos),
-        "lightscreen" => lightscreen::condition::on_side_end(battle, source_pos),
-        "luckychant" => luckychant::condition::on_side_end(battle, source_pos),
-        "mist" => mist::condition::on_side_end(battle, source_pos),
-        "reflect" => reflect::condition::on_side_end(battle, source_pos),
-        "safeguard" => safeguard::condition::on_side_end(battle, source_pos),
-        "tailwind" => tailwind::condition::on_side_end(battle, source_pos),
-        "waterpledge" => waterpledge::condition::on_side_end(battle, source_pos),
+        "gmaxwildfire" => gmaxwildfire::condition::on_side_end(battle),
+        "grasspledge" => grasspledge::condition::on_side_end(battle),
+        "lightscreen" => lightscreen::condition::on_side_end(battle),
+        "luckychant" => luckychant::condition::on_side_end(battle),
+        "mist" => mist::condition::on_side_end(battle),
+        "reflect" => reflect::condition::on_side_end(battle),
+        "safeguard" => safeguard::condition::on_side_end(battle),
+        "tailwind" => tailwind::condition::on_side_end(battle),
+        "waterpledge" => waterpledge::condition::on_side_end(battle),
         _ => EventResult::Continue,
     }
 }
