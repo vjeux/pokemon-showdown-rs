@@ -17,10 +17,66 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_after_move(
-    _battle: &mut Battle,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let pokemon = source_pos;
+
+    // Get the current move data
+    let (mind_blown_recoil, is_multihit) = {
+        let active_move = match &battle.active_move {
+            Some(active_move) => &active_move.id,
+            None => return EventResult::Continue,
+        };
+        let move_data = battle.dex.get_move_by_id(active_move);
+        if let Some(m) = move_data {
+            let mind_blown_recoil = m.flags.contains_key("mindBlownRecoil");
+            let is_multihit = m.multihit.is_some();
+            (mind_blown_recoil, is_multihit)
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    // if (move.mindBlownRecoil && !move.multihit) {
+    if mind_blown_recoil && !is_multihit {
+        // const hpBeforeRecoil = pokemon.hp;
+        let (hp_before_recoil, max_hp) = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            (pokemon_pokemon.hp, pokemon_pokemon.maxhp)
+        };
+
+        // this.damage(Math.round(pokemon.maxhp / 2), pokemon, pokemon, this.dex.conditions.get('Steel Beam'), true);
+        let damage_amount = (max_hp as f64 / 2.0).round() as i32;
+        battle.damage(
+            damage_amount,
+            Some(pokemon),
+            Some(pokemon),
+            Some(&ID::from("steelbeam")),
+            true, // ignoreability
+        );
+
+        // if (pokemon.hp <= pokemon.maxhp / 2 && hpBeforeRecoil > pokemon.maxhp / 2) {
+        let hp_after_recoil = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.hp
+        };
+
+        let half_hp = max_hp / 2;
+        if hp_after_recoil <= half_hp && hp_before_recoil > half_hp {
+            // this.runEvent('EmergencyExit', pokemon, pokemon);
+            battle.run_event("EmergencyExit", Some(pokemon), Some(pokemon), None, None);
+        }
+    }
+
     EventResult::Continue
 }
