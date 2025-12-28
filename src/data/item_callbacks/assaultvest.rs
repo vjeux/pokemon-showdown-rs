@@ -11,7 +11,8 @@ use crate::event::EventResult;
 ///     return this.chainModify(1.5);
 /// }
 pub fn on_modify_sp_d(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // return this.chainModify(1.5);
+    battle.chain_modify(1.5);
     EventResult::Continue
 }
 
