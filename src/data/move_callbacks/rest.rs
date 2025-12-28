@@ -81,18 +81,20 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     if has_insomnia {
-        let source_arg = {
+        let (source_arg, source_str) = {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(source_pokemon)
+            let arg = crate::battle::Arg::from(source_pokemon);
+            let str_repr = format!("{}", arg);
+            (arg, str_repr)
         };
 
         battle.add("-fail", &[
             source_arg,
             "[from] ability: Insomnia".into(),
-            format!("[of] {}", source_arg).into(),
+            format!("[of] {}", source_str).into(),
         ]);
         return EventResult::Stop;
     }
