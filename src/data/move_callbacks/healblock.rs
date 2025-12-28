@@ -89,8 +89,26 @@ pub mod condition {
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'move: Heal Block');
     /// }
-    pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        let pokemon = pokemon_pos;
+
+        // this.add('-end', pokemon, 'move: Heal Block');
+        let pokemon_slot = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.get_slot()
+        };
+
+        battle.add(
+            "-end",
+            &[
+                crate::battle::Arg::from(pokemon_slot),
+                crate::battle::Arg::from("move: Heal Block"),
+            ],
+        );
+
         EventResult::Continue
     }
 
