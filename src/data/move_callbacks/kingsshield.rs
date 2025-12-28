@@ -128,10 +128,10 @@ pub mod condition {
         //     } else {
         //         this.add('-activate', target, 'move: Protect');
         //     }
-        let smart_target = battle.active_move.as_ref().map(|m| m.smart_target).unwrap_or(false);
+        let smart_target = battle.active_move.as_ref().and_then(|m| m.smart_target).unwrap_or(false);
         if smart_target {
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = false;
+                active_move.smart_target = Some(false);
             }
         } else {
             let target_arg = crate::battle::Arg::Pos(target.0, target.1);
@@ -151,7 +151,7 @@ pub mod condition {
                 None => return EventResult::NotFail,
             };
             if let Some(lockedmove_volatile) = source_pokemon.volatiles.get(&ID::from("lockedmove")) {
-                lockedmove_volatile.duration == 2
+                lockedmove_volatile.duration == Some(2)
             } else {
                 false
             }
@@ -170,9 +170,7 @@ pub mod condition {
         //     }
         let makes_contact = battle.check_move_makes_contact(None, source, target);
         if makes_contact {
-            let mut boosts = std::collections::HashMap::new();
-            boosts.insert("atk".to_string(), -1);
-            battle.boost(boosts, source, Some(target), Some(&ID::from("kingsshield")));
+            battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"));
         }
 
         //     return this.NOT_FAIL;
