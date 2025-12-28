@@ -7608,7 +7608,7 @@ impl Battle {
             if let Some(ref evt) = self.current_event {
                 self.add_log("message", &[&format!("Parent event: {}", evt.id)]);
             }
-            return EventResult::Fail;
+            return EventResult::Boolean(false);
         }
 
         // JavaScript: if (this.log.length - this.sentLogPos > 1000) throw Error
@@ -7619,7 +7619,7 @@ impl Battle {
             if let Some(ref evt) = self.current_event {
                 self.add_log("message", &[&format!("Parent event: {}", evt.id)]);
             }
-            return EventResult::Fail;
+            return EventResult::Boolean(false);
         }
 
         // Determine effect type for suppression checks
@@ -8587,7 +8587,7 @@ impl Battle {
             let event_result = self.dispatch_single_event(event_id, &effect_id, holder_target, source);
 
             match event_result {
-                EventResult::Fail => {
+                EventResult::Boolean(false) => {
                     result = None;
                     break;
                 }
@@ -11561,7 +11561,7 @@ impl Battle {
                     let hit_result = self.single_event("TryHit", move_id, Some(target_pos), Some(source_pos), Some(move_id));
 
                     // If TryHit returns false, the move fails
-                    if matches!(hit_result, crate::event::EventResult::Boolean(false) | crate::event::EventResult::Fail) {
+                    if matches!(hit_result, crate::event::EventResult::Boolean(false)) {
                         damages[i] = None;
                         final_targets[i] = None;
                     }

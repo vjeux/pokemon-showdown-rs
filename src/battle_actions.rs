@@ -3118,7 +3118,7 @@ pub fn use_move_inner(
     //     return false;
     // }
     let try_move_result = battle.single_event("TryMove", move_or_move_name, Some(pokemon_pos), target_pos.into(), Some(move_or_move_name));
-    if matches!(try_move_result, crate::event::EventResult::Fail | crate::event::EventResult::Boolean(false)) {
+    if matches!(try_move_result, crate::event::EventResult::Boolean(false)) {
         // move.mindBlownRecoil = false (this would be set in move state if we tracked it)
         return false;
     }
