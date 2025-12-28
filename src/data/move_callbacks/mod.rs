@@ -1346,8 +1346,8 @@ pub fn dispatch_condition_on_damage(
     target_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "bide" => bide::condition::on_damage(battle, source_pos, target_pos),
-        "endure" => endure::condition::on_damage(battle, source_pos, target_pos),
+        "bide" => bide::condition::on_damage(battle, 0, target_pos, Some(source_pos), None),
+        "endure" => endure::condition::on_damage(battle, 0, target_pos, Some(source_pos), None),
         _ => EventResult::Continue,
     }
 }
@@ -1359,8 +1359,8 @@ pub fn dispatch_condition_on_damaging_hit(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "counter" => counter::condition::on_damaging_hit(battle, source_pos),
-        "mirrorcoat" => mirrorcoat::condition::on_damaging_hit(battle, source_pos),
+        "counter" => counter::condition::on_damaging_hit(battle, 0, None, Some(source_pos), move_id),
+        "mirrorcoat" => mirrorcoat::condition::on_damaging_hit(battle, 0, None, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1402,7 +1402,7 @@ pub fn dispatch_condition_on_effectiveness(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "tarshot" => tarshot::condition::on_effectiveness(battle, source_pos),
+        "tarshot" => tarshot::condition::on_effectiveness(battle, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1448,8 +1448,8 @@ pub fn dispatch_condition_on_faint(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "destinybond" => destinybond::condition::on_faint(battle, source_pos),
-        "grudge" => grudge::condition::on_faint(battle, source_pos),
+        "destinybond" => destinybond::condition::on_faint(battle, None, Some(source_pos), None),
+        "grudge" => grudge::condition::on_faint(battle, None, Some(source_pos), None),
         "skydrop" => skydrop::condition::on_faint(battle, Some(source_pos)),
         _ => EventResult::Continue,
     }
@@ -1484,9 +1484,9 @@ pub fn dispatch_condition_on_field_restart(
 ) -> EventResult {
     match move_id {
         "echoedvoice" => echoedvoice::condition::on_field_restart(battle),
-        "magicroom" => magicroom::condition::on_field_restart(battle),
-        "trickroom" => trickroom::condition::on_field_restart(battle),
-        "wonderroom" => wonderroom::condition::on_field_restart(battle),
+        "magicroom" => magicroom::condition::on_field_restart(battle, None, None),
+        "trickroom" => trickroom::condition::on_field_restart(battle, None, None),
+        "wonderroom" => wonderroom::condition::on_field_restart(battle, None, None),
         _ => EventResult::Continue,
     }
 }
