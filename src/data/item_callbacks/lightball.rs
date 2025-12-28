@@ -13,7 +13,24 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.baseSpecies.baseSpecies === 'Pikachu')
+    let is_pikachu = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        battle.dex.get_species(pokemon.base_species.as_str())
+            .and_then(|species| species.base_species.as_ref())
+            .map(|base_species| base_species == "Pikachu")
+            .unwrap_or(false)
+    };
+
+    if is_pikachu {
+        // return this.chainModify(2);
+        battle.chain_modify(2.0);
+    }
+
     EventResult::Continue
 }
 
@@ -23,6 +40,23 @@ pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
 ///     }
 /// }
 pub fn on_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.baseSpecies.baseSpecies === 'Pikachu')
+    let is_pikachu = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        battle.dex.get_species(pokemon.base_species.as_str())
+            .and_then(|species| species.base_species.as_ref())
+            .map(|base_species| base_species == "Pikachu")
+            .unwrap_or(false)
+    };
+
+    if is_pikachu {
+        // return this.chainModify(2);
+        battle.chain_modify(2.0);
+    }
+
     EventResult::Continue
 }
