@@ -355,10 +355,10 @@ Moves with callbacks: 373
 - [ ] transform - Transform (Status, Normal) - 1 callback: onHit
 - [ ] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity, onHit
 - [ ] trickortreat - Trick-or-Treat (Status, Ghost) - 1 callback: onHit
-- [ ] trickroom - Trick Room (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
-- [ ] tripleaxel - Triple Axel (Physical, Ice) - 1 callback: basePowerCallback
-- [ ] triplekick - Triple Kick (Physical, Fighting) - 1 callback: basePowerCallback
-- [ ] trumpcard - Trump Card (Special, Normal) - 1 callback: basePowerCallback
+- [x] trickroom - Trick Room (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd (1/4 implemented)
+- [x] tripleaxel - Triple Axel (Physical, Ice) - 1 callback: basePowerCallback
+- [x] triplekick - Triple Kick (Physical, Fighting) - 1 callback: basePowerCallback
+- [x] trumpcard - Trump Card (Special, Normal) - 1 callback: basePowerCallback
 - [ ] upperhand - Upper Hand (Physical, Fighting) - 1 callback: onTry
 - [ ] uproar - Uproar (Special, Normal) - 5 callbacks: onTryHit, condition::onStart, condition::onResidual, condition::onEnd, condition::onAnySetStatus
 - [ ] veeveevolley - Veevee Volley (Physical, Normal) - 1 callback: basePowerCallback
@@ -373,7 +373,7 @@ Moves with callbacks: 373
 - [ ] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
 - [ ] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
 - [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
-- [ ] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onModifyMove, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
+- [x] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onModifyMove, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd (1/5 implemented)
 - [x] worryseed - Worry Seed (Status, Grass) - 3 callbacks: onTryImmunity, onTryHit, onHit
 - [ ] wringout - Wring Out (Special, Normal) - 1 callback: basePowerCallback
 - [x] yawn - Yawn (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onEnd
@@ -484,3 +484,75 @@ Missing methods on Pokemon:
 
 Missing methods on Battle:
 - `single_event(event_name: &str, item: Item, item_state, target, source, move, item) -> bool` - Fire single event like TakeItem
+
+### toxicspikes.rs
+Missing methods on Pokemon:
+- `is_grounded() -> bool` - Check if pokemon is grounded
+- `has_type(type_name: &str) -> bool` - Check if pokemon has a specific type
+- `has_item(item_name: &str) -> bool` - Check if pokemon has a specific item
+- `try_set_status(status: &str, source: Pokemon) -> bool` - Try to set status condition
+
+### substitute.rs
+Missing fields on Pokemon:
+- `hp: i32` - Current HP
+- `maxhp: i32` - Maximum HP
+
+Missing methods on Battle:
+- `direct_damage(amount: i32)` - Deal direct damage
+
+Missing fields on EffectState:
+- `hp: i32` - HP tracking for substitute
+
+Missing methods:
+- `battle.actions.getDamage()` - Calculate damage
+- `battle.attrLastMove()` - Set move attribute
+
+Missing fields on Move:
+- `flags: HashMap<String, bool>` - Move flags like bypasssub
+- `infiltrates: bool` - Whether move infiltrates
+- `ohko: bool` - One-hit KO flag
+- `recoil: Option<[i32; 2]>` - Recoil damage ratio
+- `drain: Option<[i32; 2]>` - Drain HP ratio
+
+Missing fields on Pokemon:
+- `last_damage: i32` - Last damage dealt
+
+### thousandarrows.rs
+Missing methods on Pokemon:
+- `run_immunity(type_name: &str) -> bool` - Check type immunity
+- `has_type(type_name: &str) -> bool` - Check if pokemon has a specific type
+
+### terastarstorm.rs
+Missing fields on Pokemon:
+- `species_id: ID` - Species identifier
+- `terastallized: bool` - Terastallization state
+
+Missing methods on Pokemon:
+- `get_stat(stat: &str, boost: bool, real: bool) -> i32` - Get stat value
+
+Missing fields on Move:
+- `move_type: String` (mutable) - Move type that can be modified
+- `category: String` (mutable) - Move category that can be modified
+- `target: String` (mutable) - Move targeting that can be modified
+
+### teatime.rs
+Missing methods on Battle:
+- `run_event(event: &str, ...) -> EventResult` - Fire battle events
+- `attr_last_move(attr: &str)` - Set move attribute
+
+Missing methods on Pokemon:
+- `get_item() -> Item` - Get pokemon's item
+- `eat_item(force: bool)` - Make pokemon eat its berry
+
+Missing fields on Item:
+- `is_berry: bool` - Whether item is a berry
+
+### trickroom.rs, wonderroom.rs
+Missing methods on Pokemon:
+- `has_ability(ability_name: &str) -> bool` - Check if pokemon has a specific ability
+
+Missing methods on Battle:
+- `field.remove_pseudo_weather(weather_name: &str)` - Remove pseudo weather
+
+Missing fields on Move:
+- `override_offensive_stat: Option<String>` (mutable) - Stat used for damage calculation
