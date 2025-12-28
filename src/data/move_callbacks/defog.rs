@@ -28,7 +28,11 @@ use crate::event::EventResult;
 ///     this.field.clearTerrain();
 ///     return success;
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // Get source and target
@@ -47,7 +51,9 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.volatiles.contains_key(&ID::from("substitute"))
+        target_pokemon
+            .volatiles
+            .contains_key(&ID::from("substitute"))
     };
 
     // TODO: Check if move infiltrates - requires access to current move data
@@ -61,13 +67,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // const removeAll = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
     let remove_all = vec![
-        "spikes", "toxicspikes", "stealthrock", "stickyweb", "gmaxsteelsurge"
+        "spikes",
+        "toxicspikes",
+        "stealthrock",
+        "stickyweb",
+        "gmaxsteelsurge",
     ];
 
     // const removeTarget = ['reflect', 'lightscreen', 'auroraveil', 'safeguard', 'mist', ...removeAll];
-    let mut remove_target = vec![
-        "reflect", "lightscreen", "auroraveil", "safeguard", "mist"
-    ];
+    let mut remove_target = vec!["reflect", "lightscreen", "auroraveil", "safeguard", "mist"];
     remove_target.extend_from_slice(&remove_all);
 
     // for (const targetCondition of removeTarget) {
@@ -108,15 +116,22 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 let condition_name = condition_id.to_string();
 
                 let side_id = if target_side_index == 0 { "p1" } else { "p2" };
-                (crate::battle::Arg::Str(side_id), source_pokemon.get_slot(), condition_name)
+                (
+                    crate::battle::Arg::Str(side_id),
+                    source_pokemon.get_slot(),
+                    condition_name,
+                )
             };
 
-            battle.add("-sideend", &[
-                target_side_arg,
-                condition_name.into(),
-                "[from] move: Defog".into(),
-                format!("[of] {}", source_ident).into(),
-            ]);
+            battle.add(
+                "-sideend",
+                &[
+                    target_side_arg,
+                    condition_name.into(),
+                    "[from] move: Defog".into(),
+                    format!("[of] {}", source_ident).into(),
+                ],
+            );
 
             // success = true;
             success = true;
@@ -155,15 +170,22 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 let condition_name = condition_id.to_string();
 
                 let side_id = if source_side_index == 0 { "p1" } else { "p2" };
-                (crate::battle::Arg::Str(side_id), source_pokemon.get_slot(), condition_name)
+                (
+                    crate::battle::Arg::Str(side_id),
+                    source_pokemon.get_slot(),
+                    condition_name,
+                )
             };
 
-            battle.add("-sideend", &[
-                source_side_arg,
-                condition_name.into(),
-                "[from] move: Defog".into(),
-                format!("[of] {}", source_ident).into(),
-            ]);
+            battle.add(
+                "-sideend",
+                &[
+                    source_side_arg,
+                    condition_name.into(),
+                    "[from] move: Defog".into(),
+                    format!("[of] {}", source_ident).into(),
+                ],
+            );
 
             // success = true;
             success = true;
@@ -176,4 +198,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // return success;
     EventResult::Boolean(success)
 }
-

@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -37,8 +36,6 @@ pub mod condition {
     ///     this.damage(pokemon.maxhp * (2 ** typeMod) / 8);
     /// }
     pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        
-
         // onSwitchIn(pokemon) {
         //     if (pokemon.hasItem('heavydutyboots')) return;
         //     const typeMod = this.clampIntRange(pokemon.runEffectiveness(this.dex.getActiveMove('stealthrock')), -6, 6);

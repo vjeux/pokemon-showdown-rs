@@ -11,8 +11,6 @@ use crate::event::EventResult;
 ///     return !target.hasType('Grass');
 /// }
 pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -44,17 +42,13 @@ pub mod condition {
 
         // this.add('-start', target, 'move: Leech Seed');
         let target_arg = {
-
             let pokemon = match battle.pokemon_at(target.0, target.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.get_slot()
-
         };
         battle.add("-start", &[target_arg.into(), "move: Leech Seed".into()]);
 
@@ -95,7 +89,7 @@ pub mod condition {
                 // Convert slot index to string and pass to get_at_slot
                 let slot_str = slot.to_string();
                 battle.get_at_slot(Some(&slot_str))
-            },
+            }
             None => None,
         };
 

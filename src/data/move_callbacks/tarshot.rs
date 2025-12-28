@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -26,7 +25,11 @@ pub mod condition {
     ///     if (type !== target.getTypes()[0]) return;
     ///     return typeMod + 1;
     /// }
-    pub fn on_effectiveness(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    pub fn on_effectiveness(
+        _battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _move_id: &str,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

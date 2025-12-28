@@ -544,10 +544,18 @@ pub fn dispatch_on_after_move_secondary_self(
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "fellstinger" => fellstinger::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id),
-        "orderup" => orderup::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id),
-        "polarflare" => polarflare::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id),
-        "relicsong" => relicsong::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id),
+        "fellstinger" => {
+            fellstinger::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id)
+        }
+        "orderup" => {
+            orderup::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id)
+        }
+        "polarflare" => {
+            polarflare::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id)
+        }
+        "relicsong" => {
+            relicsong::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -561,29 +569,43 @@ pub fn dispatch_on_after_sub_damage(
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "ceaselessedge" => ceaselessedge::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id),
+        "ceaselessedge" => ceaselessedge::on_after_sub_damage(
+            battle,
+            damage,
+            target_pos,
+            Some(pokemon_pos),
+            move_id,
+        ),
         "coreenforcer" => coreenforcer::on_after_sub_damage(battle, damage, target_pos),
-        "flameburst" => flameburst::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id),
+        "flameburst" => {
+            flameburst::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id)
+        }
         "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, damage, target_pos),
-        "icespinner" => icespinner::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "icespinner" => {
+            icespinner::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos))
+        }
         "mortalspin" => {
             if let Some(target) = target_pos {
                 mortalspin::on_after_sub_damage(battle, damage, target, pokemon_pos)
             } else {
                 EventResult::Continue
             }
-        },
-        "rapidspin" => rapidspin::on_after_sub_damage(battle, damage, target_pos, pokemon_pos, move_id),
+        }
+        "rapidspin" => {
+            rapidspin::on_after_sub_damage(battle, damage, target_pos, pokemon_pos, move_id)
+        }
         "shellsidearm" => {
             if let Some(target) = target_pos {
                 shellsidearm::on_after_sub_damage(battle, damage, target, pokemon_pos, move_id)
             } else {
                 EventResult::Continue
             }
-        },
+        }
         "splinteredstormshards" => splinteredstormshards::on_after_sub_damage(battle),
         "steelroller" => steelroller::on_after_sub_damage(battle),
-        "stoneaxe" => stoneaxe::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id),
+        "stoneaxe" => {
+            stoneaxe::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -599,9 +621,13 @@ pub fn dispatch_on_base_power(
     match move_id {
         "barbbarrage" => barbbarrage::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "brine" => brine::on_base_power(battle, base_power, pokemon_pos, target_pos),
-        "collisioncourse" => collisioncourse::on_base_power(battle, base_power, pokemon_pos, target_pos),
+        "collisioncourse" => {
+            collisioncourse::on_base_power(battle, base_power, pokemon_pos, target_pos)
+        }
         "electrodrift" => electrodrift::on_base_power(battle, base_power, pokemon_pos, target_pos),
-        "expandingforce" => expandingforce::on_base_power(battle, base_power, pokemon_pos, target_pos),
+        "expandingforce" => {
+            expandingforce::on_base_power(battle, base_power, pokemon_pos, target_pos)
+        }
         "facade" => facade::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "ficklebeam" => ficklebeam::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "fusionbolt" => fusionbolt::on_base_power(battle, base_power, pokemon_pos, target_pos),
@@ -609,7 +635,9 @@ pub fn dispatch_on_base_power(
         "gravapple" => gravapple::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "knockoff" => knockoff::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "lashout" => lashout::on_base_power(battle, base_power, pokemon_pos, target_pos),
-        "mistyexplosion" => mistyexplosion::on_base_power(battle, base_power, pokemon_pos, target_pos),
+        "mistyexplosion" => {
+            mistyexplosion::on_base_power(battle, base_power, pokemon_pos, target_pos)
+        }
         "psyblade" => psyblade::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "retaliate" => retaliate::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "solarbeam" => solarbeam::on_base_power(battle, base_power, pokemon_pos, target_pos),
@@ -832,7 +860,9 @@ pub fn dispatch_on_modify_move(
         "growth" => growth::on_modify_move(battle, pokemon_pos, target_pos),
         "hurricane" => hurricane::on_modify_move(battle, pokemon_pos, target_pos),
         "iceball" => iceball::on_modify_move(battle, pokemon_pos, target_pos),
-        "lightthatburnsthesky" => lightthatburnsthesky::on_modify_move(battle, pokemon_pos, target_pos),
+        "lightthatburnsthesky" => {
+            lightthatburnsthesky::on_modify_move(battle, pokemon_pos, target_pos)
+        }
         "magnitude" => magnitude::on_modify_move(battle, pokemon_pos, target_pos),
         "photongeyser" => photongeyser::on_modify_move(battle, pokemon_pos, target_pos),
         "present" => present::on_modify_move(battle, pokemon_pos, target_pos),
@@ -1148,20 +1178,60 @@ pub fn dispatch_condition_duration_callback(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "auroraveil" => auroraveil::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "electricterrain" => electricterrain::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "grassyterrain" => grassyterrain::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "gravity" => gravity::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "healblock" => healblock::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "lightscreen" => lightscreen::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "magicroom" => magicroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "mistyterrain" => mistyterrain::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "psychicterrain" => psychicterrain::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "reflect" => reflect::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "safeguard" => safeguard::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "tailwind" => tailwind::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "trickroom" => trickroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
-        "wonderroom" => wonderroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "auroraveil" => {
+            auroraveil::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
+        "electricterrain" => electricterrain::condition::duration_callback(
+            battle,
+            None,
+            Some(source_pos),
+            Some(move_id),
+        ),
+        "grassyterrain" => grassyterrain::condition::duration_callback(
+            battle,
+            None,
+            Some(source_pos),
+            Some(move_id),
+        ),
+        "gravity" => {
+            gravity::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
+        "healblock" => {
+            healblock::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
+        "lightscreen" => {
+            lightscreen::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
+        "magicroom" => {
+            magicroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
+        "mistyterrain" => mistyterrain::condition::duration_callback(
+            battle,
+            None,
+            Some(source_pos),
+            Some(move_id),
+        ),
+        "psychicterrain" => psychicterrain::condition::duration_callback(
+            battle,
+            None,
+            Some(source_pos),
+            Some(move_id),
+        ),
+        "reflect" => {
+            reflect::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
+        "safeguard" => {
+            safeguard::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
+        "tailwind" => {
+            tailwind::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
+        "trickroom" => {
+            trickroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
+        "wonderroom" => {
+            wonderroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1175,9 +1245,15 @@ pub fn dispatch_condition_on_accuracy(
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "glaiverush" => glaiverush::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id),
-        "minimize" => minimize::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id),
-        "telekinesis" => telekinesis::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "glaiverush" => {
+            glaiverush::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id)
+        }
+        "minimize" => {
+            minimize::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id)
+        }
+        "telekinesis" => {
+            telekinesis::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1202,7 +1278,9 @@ pub fn dispatch_condition_on_ally_try_hit_side(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "magiccoat" => magiccoat::condition::on_ally_try_hit_side(battle, None, Some(source_pos), move_id),
+        "magiccoat" => {
+            magiccoat::condition::on_ally_try_hit_side(battle, None, Some(source_pos), move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1214,7 +1292,9 @@ pub fn dispatch_condition_on_any_base_power(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "skydrop" => skydrop::condition::on_any_base_power(battle, 0, None, Some(source_pos), move_id),
+        "skydrop" => {
+            skydrop::condition::on_any_base_power(battle, 0, None, Some(source_pos), move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1238,7 +1318,9 @@ pub fn dispatch_condition_on_any_invulnerability(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "skydrop" => skydrop::condition::on_any_invulnerability(battle, None, Some(source_pos), move_id),
+        "skydrop" => {
+            skydrop::condition::on_any_invulnerability(battle, None, Some(source_pos), move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1251,9 +1333,27 @@ pub fn dispatch_condition_on_any_modify_damage(
     target_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "auroraveil" => auroraveil::condition::on_any_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
-        "lightscreen" => lightscreen::condition::on_any_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
-        "reflect" => reflect::condition::on_any_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
+        "auroraveil" => auroraveil::condition::on_any_modify_damage(
+            battle,
+            0,
+            Some(source_pos),
+            Some(target_pos),
+            move_id,
+        ),
+        "lightscreen" => lightscreen::condition::on_any_modify_damage(
+            battle,
+            0,
+            Some(source_pos),
+            Some(target_pos),
+            move_id,
+        ),
+        "reflect" => reflect::condition::on_any_modify_damage(
+            battle,
+            0,
+            Some(source_pos),
+            Some(target_pos),
+            move_id,
+        ),
         _ => EventResult::Continue,
     }
 }
@@ -1291,13 +1391,19 @@ pub fn dispatch_condition_on_base_power(
 ) -> EventResult {
     match move_id {
         "charge" => charge::condition::on_base_power(battle, 0, source_pos, target_pos),
-        "electricterrain" => electricterrain::condition::on_base_power(battle, 0, source_pos, target_pos),
-        "grassyterrain" => grassyterrain::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "electricterrain" => {
+            electricterrain::condition::on_base_power(battle, 0, source_pos, target_pos)
+        }
+        "grassyterrain" => {
+            grassyterrain::condition::on_base_power(battle, 0, source_pos, target_pos)
+        }
         "helpinghand" => helpinghand::condition::on_base_power(battle, 0, source_pos, target_pos),
         "mefirst" => mefirst::condition::on_base_power(battle, 0, source_pos, target_pos),
         "mistyterrain" => mistyterrain::condition::on_base_power(battle, 0, source_pos, target_pos),
         "mudsport" => mudsport::condition::on_base_power(battle, 0, source_pos, target_pos),
-        "psychicterrain" => psychicterrain::condition::on_base_power(battle, 0, source_pos, target_pos),
+        "psychicterrain" => {
+            psychicterrain::condition::on_base_power(battle, 0, source_pos, target_pos)
+        }
         "watersport" => watersport::condition::on_base_power(battle, 0, source_pos, target_pos),
         _ => EventResult::Continue,
     }
@@ -1312,7 +1418,9 @@ pub fn dispatch_condition_on_before_move(
     match move_id {
         "attract" => attract::condition::on_before_move(battle, source_pos, None, move_id),
         "bide" => bide::condition::on_before_move(battle, source_pos, None, move_id),
-        "chillyreception" => chillyreception::condition::on_before_move(battle, Some(source_pos), None, move_id),
+        "chillyreception" => {
+            chillyreception::condition::on_before_move(battle, Some(source_pos), None, move_id)
+        }
         "destinybond" => destinybond::condition::on_before_move(battle, source_pos, None, move_id),
         "disable" => disable::condition::on_before_move(battle, move_id),
         "glaiverush" => glaiverush::condition::on_before_move(battle, source_pos),
@@ -1373,8 +1481,12 @@ pub fn dispatch_condition_on_damaging_hit(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "counter" => counter::condition::on_damaging_hit(battle, 0, None, Some(source_pos), move_id),
-        "mirrorcoat" => mirrorcoat::condition::on_damaging_hit(battle, 0, None, Some(source_pos), move_id),
+        "counter" => {
+            counter::condition::on_damaging_hit(battle, 0, None, Some(source_pos), move_id)
+        }
+        "mirrorcoat" => {
+            mirrorcoat::condition::on_damaging_hit(battle, 0, None, Some(source_pos), move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1513,15 +1625,23 @@ pub fn dispatch_condition_on_field_start(
 ) -> EventResult {
     match move_id {
         "echoedvoice" => echoedvoice::condition::on_field_start(battle),
-        "electricterrain" => electricterrain::condition::on_field_start(battle, None, Some(source_pos), None),
+        "electricterrain" => {
+            electricterrain::condition::on_field_start(battle, None, Some(source_pos), None)
+        }
         "fairylock" => fairylock::condition::on_field_start(battle, Some(source_pos)),
-        "grassyterrain" => grassyterrain::condition::on_field_start(battle, None, Some(source_pos), None),
+        "grassyterrain" => {
+            grassyterrain::condition::on_field_start(battle, None, Some(source_pos), None)
+        }
         "gravity" => gravity::condition::on_field_start(battle, None, Some(source_pos)),
         "iondeluge" => iondeluge::condition::on_field_start(battle, None, None),
         "magicroom" => magicroom::condition::on_field_start(battle, None, None),
-        "mistyterrain" => mistyterrain::condition::on_field_start(battle, None, Some(source_pos), None),
+        "mistyterrain" => {
+            mistyterrain::condition::on_field_start(battle, None, Some(source_pos), None)
+        }
         "mudsport" => mudsport::condition::on_field_start(battle, None, None),
-        "psychicterrain" => psychicterrain::condition::on_field_start(battle, None, Some(source_pos), None),
+        "psychicterrain" => {
+            psychicterrain::condition::on_field_start(battle, None, Some(source_pos), None)
+        }
         "trickroom" => trickroom::condition::on_field_start(battle, None, None),
         "watersport" => watersport::condition::on_field_start(battle, None, None),
         "wonderroom" => wonderroom::condition::on_field_start(battle, None, None),
@@ -1561,9 +1681,15 @@ pub fn dispatch_condition_on_foe_redirect_target(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "followme" => followme::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id),
-        "ragepowder" => ragepowder::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id),
-        "spotlight" => spotlight::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id),
+        "followme" => {
+            followme::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id)
+        }
+        "ragepowder" => {
+            ragepowder::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id)
+        }
+        "spotlight" => {
+            spotlight::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1665,7 +1791,9 @@ pub fn dispatch_condition_on_modify_crit_ratio(
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "dragoncheer" => dragoncheer::condition::on_modify_crit_ratio(battle, crit_ratio, source_pos),
+        "dragoncheer" => {
+            dragoncheer::condition::on_modify_crit_ratio(battle, crit_ratio, source_pos)
+        }
         "focusenergy" => focusenergy::condition::on_modify_crit_ratio(battle, crit_ratio),
         "gmaxchistrike" => gmaxchistrike::condition::on_modify_crit_ratio(battle),
         "laserfocus" => laserfocus::condition::on_modify_crit_ratio(battle),
@@ -1761,8 +1889,12 @@ pub fn dispatch_condition_on_redirect_target(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "counter" => counter::condition::on_redirect_target(battle, None, Some(source_pos), move_id),
-        "mirrorcoat" => mirrorcoat::condition::on_redirect_target(battle, None, Some(source_pos), move_id),
+        "counter" => {
+            counter::condition::on_redirect_target(battle, None, Some(source_pos), move_id)
+        }
+        "mirrorcoat" => {
+            mirrorcoat::condition::on_redirect_target(battle, None, Some(source_pos), move_id)
+        }
         "skydrop" => skydrop::condition::on_redirect_target(battle, None, Some(source_pos)),
         _ => EventResult::Continue,
     }
@@ -1809,7 +1941,9 @@ pub fn dispatch_condition_on_restart(
         "allyswitch" => allyswitch::condition::on_restart(battle, source_pos),
         "charge" => charge::condition::on_restart(battle, source_pos, None, None),
         "furycutter" => furycutter::condition::on_restart(battle),
-        "gmaxchistrike" => gmaxchistrike::condition::on_restart(battle, None, Some(source_pos), None),
+        "gmaxchistrike" => {
+            gmaxchistrike::condition::on_restart(battle, None, Some(source_pos), None)
+        }
         "healblock" => healblock::condition::on_restart(battle, None, Some(source_pos), None),
         "helpinghand" => helpinghand::condition::on_restart(battle, None, Some(source_pos)),
         "laserfocus" => laserfocus::condition::on_restart(battle, source_pos),
@@ -1828,9 +1962,15 @@ pub fn dispatch_condition_on_set_status(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "electricterrain" => electricterrain::condition::on_set_status(battle, None, None, Some(source_pos), None),
-        "mistyterrain" => mistyterrain::condition::on_set_status(battle, None, None, Some(source_pos), None),
-        "safeguard" => safeguard::condition::on_set_status(battle, None, None, Some(source_pos), None),
+        "electricterrain" => {
+            electricterrain::condition::on_set_status(battle, None, None, Some(source_pos), None)
+        }
+        "mistyterrain" => {
+            mistyterrain::condition::on_set_status(battle, None, None, Some(source_pos), None)
+        }
+        "safeguard" => {
+            safeguard::condition::on_set_status(battle, None, None, Some(source_pos), None)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1914,7 +2054,9 @@ pub fn dispatch_condition_on_source_accuracy(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "lockon" => lockon::condition::on_source_accuracy(battle, 0, None, Some(source_pos), move_id),
+        "lockon" => {
+            lockon::condition::on_source_accuracy(battle, 0, None, Some(source_pos), move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1926,7 +2068,9 @@ pub fn dispatch_condition_on_source_base_power(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "bounce" => bounce::condition::on_source_base_power(battle, 0, None, Some(source_pos), move_id),
+        "bounce" => {
+            bounce::condition::on_source_base_power(battle, 0, None, Some(source_pos), move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1938,7 +2082,9 @@ pub fn dispatch_condition_on_source_invulnerability(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "lockon" => lockon::condition::on_source_invulnerability(battle, None, Some(source_pos), move_id),
+        "lockon" => {
+            lockon::condition::on_source_invulnerability(battle, None, Some(source_pos), move_id)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -1951,11 +2097,35 @@ pub fn dispatch_condition_on_source_modify_damage(
     target_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "dig" => dig::condition::on_source_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
-        "dive" => dive::condition::on_source_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
-        "fly" => fly::condition::on_source_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
+        "dig" => dig::condition::on_source_modify_damage(
+            battle,
+            0,
+            Some(source_pos),
+            Some(target_pos),
+            move_id,
+        ),
+        "dive" => dive::condition::on_source_modify_damage(
+            battle,
+            0,
+            Some(source_pos),
+            Some(target_pos),
+            move_id,
+        ),
+        "fly" => fly::condition::on_source_modify_damage(
+            battle,
+            0,
+            Some(source_pos),
+            Some(target_pos),
+            move_id,
+        ),
         "glaiverush" => glaiverush::condition::on_source_modify_damage(battle),
-        "minimize" => minimize::condition::on_source_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
+        "minimize" => minimize::condition::on_source_modify_damage(
+            battle,
+            0,
+            Some(source_pos),
+            Some(target_pos),
+            move_id,
+        ),
         _ => EventResult::Continue,
     }
 }
@@ -2005,7 +2175,9 @@ pub fn dispatch_condition_on_start(
         "magnetrise" => magnetrise::condition::on_start(battle, Some(source_pos)),
         "maxguard" => maxguard::condition::on_start(battle, Some(source_pos)),
         "miracleeye" => miracleeye::condition::on_start(battle, source_pos),
-        "mirrorcoat" => mirrorcoat::condition::on_start(battle, Some(source_pos), None, "mirrorcoat"),
+        "mirrorcoat" => {
+            mirrorcoat::condition::on_start(battle, Some(source_pos), None, "mirrorcoat")
+        }
         "nightmare" => nightmare::condition::on_start(battle, source_pos),
         "noretreat" => noretreat::condition::on_start(battle, source_pos),
         "obstruct" => obstruct::condition::on_start(battle, Some(source_pos)),
@@ -2093,10 +2265,16 @@ pub fn dispatch_condition_on_try_add_volatile(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "electricterrain" => electricterrain::condition::on_try_add_volatile(battle, None, Some(source_pos)),
+        "electricterrain" => {
+            electricterrain::condition::on_try_add_volatile(battle, None, Some(source_pos))
+        }
         "focuspunch" => focuspunch::condition::on_try_add_volatile(battle, None, source_pos),
-        "mistyterrain" => mistyterrain::condition::on_try_add_volatile(battle, None, Some(source_pos), None, None),
-        "safeguard" => safeguard::condition::on_try_add_volatile(battle, None, Some(source_pos), None, None),
+        "mistyterrain" => {
+            mistyterrain::condition::on_try_add_volatile(battle, None, Some(source_pos), None, None)
+        }
+        "safeguard" => {
+            safeguard::condition::on_try_add_volatile(battle, None, Some(source_pos), None, None)
+        }
         _ => EventResult::Continue,
     }
 }
@@ -2170,7 +2348,9 @@ pub fn dispatch_condition_on_try_primary_hit(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "substitute" => substitute::condition::on_try_primary_hit(battle, Some(source_pos), None, "substitute"),
+        "substitute" => {
+            substitute::condition::on_try_primary_hit(battle, Some(source_pos), None, "substitute")
+        }
         _ => EventResult::Continue,
     }
 }

@@ -26,7 +26,12 @@ use crate::event::EventResult;
 ///     if (!result) return false;
 ///     if (message) this.add('-fieldactivate', 'move: Perish Song');
 /// }
-pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_hit_field(
+    battle: &mut Battle,
+    _target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -41,7 +46,13 @@ pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
 
     for pokemon_pos in all_active {
         // if (this.runEvent('Invulnerability', pokemon, source, move) === false) {
-        let invulnerability_result = battle.run_event("Invulnerability", Some(pokemon_pos), source, Some(&ID::from(move_id)), None);
+        let invulnerability_result = battle.run_event(
+            "Invulnerability",
+            Some(pokemon_pos),
+            source,
+            Some(&ID::from(move_id)),
+            None,
+        );
 
         if invulnerability_result == Some(0) {
             // this.add('-miss', source, pokemon);
@@ -53,7 +64,7 @@ pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
                     };
                     src_pokemon.get_slot()
                 } else {
-                    continue
+                    continue;
                 };
 
                 let pokemon_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -69,7 +80,13 @@ pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
             result = true;
         // } else if (this.runEvent('TryHit', pokemon, source, move) === null) {
         } else {
-            let try_hit_result = battle.run_event("TryHit", Some(pokemon_pos), source, Some(&ID::from(move_id)), None);
+            let try_hit_result = battle.run_event(
+                "TryHit",
+                Some(pokemon_pos),
+                source,
+                Some(&ID::from(move_id)),
+                None,
+            );
 
             if try_hit_result.is_none() {
                 // result = true;
@@ -81,35 +98,37 @@ pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
                         Some(p) => p,
                         None => continue,
                     };
-                    pokemon_pokemon.volatiles.contains_key(&ID::from("perishsong"))
+                    pokemon_pokemon
+                        .volatiles
+                        .contains_key(&ID::from("perishsong"))
                 };
 
                 if !has_perishsong {
                     // pokemon.addVolatile('perishsong');
                     {
-
                         let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-
                             Some(p) => p,
 
                             None => return EventResult::Continue,
-
                         };
 
                         pokemon.add_volatile(ID::from("perishsong"));
-
                     }
 
                     // this.add('-start', pokemon, 'perish3', '[silent]');
                     let pokemon_arg = {
-                        let pokemon_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        let pokemon_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
+                        {
                             Some(p) => p,
                             None => continue,
                         };
                         pokemon_pokemon.get_slot()
                     };
 
-                    battle.add("-start", &[pokemon_arg.into(), "perish3".into(), "[silent]".into()]);
+                    battle.add(
+                        "-start",
+                        &[pokemon_arg.into(), "perish3".into(), "[silent]".into()],
+                    );
 
                     // result = true;
                     result = true;
@@ -178,7 +197,9 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.volatiles.get(&ID::from("perishsong"))
+            pokemon_pokemon
+                .volatiles
+                .get(&ID::from("perishsong"))
                 .and_then(|v| v.duration)
                 .unwrap_or(0)
         };
@@ -192,7 +213,10 @@ pub mod condition {
             pokemon_pokemon.get_slot()
         };
 
-        battle.add("-start", &[pokemon_arg.into(), format!("perish{}", duration).into()]);
+        battle.add(
+            "-start",
+            &[pokemon_arg.into(), format!("perish{}", duration).into()],
+        );
 
         EventResult::Continue
     }

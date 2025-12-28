@@ -16,9 +16,11 @@ use crate::event::EventResult;
 ///     }
 ///     this.add('-start', target, 'typechange', 'Water');
 /// }
-pub fn on_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -70,12 +72,10 @@ pub fn on_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Opti
         target.get_slot()
     };
 
-    battle.add("-start", &[
-        target_ident.into(),
-        "typechange".into(),
-        "Water".into(),
-    ]);
+    battle.add(
+        "-start",
+        &[target_ident.into(), "typechange".into(), "Water".into()],
+    );
 
     EventResult::Continue
 }
-

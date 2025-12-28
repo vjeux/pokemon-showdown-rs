@@ -16,9 +16,11 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    
-
+pub fn on_try_hit(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     let target = target_pos;
 
     // if (target.getAbility().flags['cantsuppress']) {
@@ -57,7 +59,10 @@ pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: 
             };
             target_pokemon.get_slot()
         };
-        battle.add("-block", &[target_ident.as_str().into(), "item: Ability Shield".into()]);
+        battle.add(
+            "-block",
+            &[target_ident.as_str().into(), "item: Ability Shield".into()],
+        );
 
         // return null;
         return EventResult::Stop;
@@ -111,7 +116,13 @@ pub mod condition {
             pokemon_pokemon.ability.clone()
         };
 
-        battle.single_event("End", &ability_id, Some(pokemon), Some(pokemon), Some(&ID::from("gastroacid")));
+        battle.single_event(
+            "End",
+            &ability_id,
+            Some(pokemon),
+            Some(pokemon),
+            Some(&ID::from("gastroacid")),
+        );
 
         EventResult::Continue
     }

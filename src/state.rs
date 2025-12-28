@@ -5,10 +5,10 @@
 //! This module handles battle state serialization and deserialization,
 //! enabling battle saving, loading, and replay functionality.
 
+use crate::dex_data::{EffectState, ID};
+use crate::prng::PRNGSeed;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use crate::dex_data::{ID, EffectState};
-use crate::prng::PRNGSeed;
 
 /// Serializable battle state
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -123,8 +123,7 @@ pub struct MoveSlotState {
 }
 
 /// Serializable stats
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[derive(Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct StatsState {
     pub hp: i32,
     pub atk: i32,
@@ -186,7 +185,6 @@ pub struct ReplayData {
     /// All input choices in order
     pub inputs: Vec<InputLogEntry>,
 }
-
 
 impl Default for FieldState {
     fn default() -> Self {
@@ -285,8 +283,8 @@ impl ReplayData {
 /// Check if a value is referable (can be serialized with references)
 /// Equivalent to state.ts isReferable()
 // TypeScript source:
-// 
-// 
+//
+//
 // 	isReferable(obj: object): obj is Referable {
 // 		// NOTE: see explanation on the declaration above for why this must be defined lazily.
 // 		if (!this.REFERABLE) {
@@ -299,12 +297,15 @@ impl ReplayData {
 // 	}
 //
 pub fn is_referable(value: &serde_json::Value) -> bool {
-    matches!(value, serde_json::Value::Object(_) | serde_json::Value::Array(_))
+    matches!(
+        value,
+        serde_json::Value::Object(_) | serde_json::Value::Array(_)
+    )
 }
 
 /// Convert a value to a reference ID
 /// Equivalent to state.ts toRef()
-// 
+//
 // 	toRef(obj: Referable): string {
 // 		// Pokemon's 'id' is not only more verbose than a position, it also isn't guaranteed
 // 		// to be uniquely identifying in custom games without Nickname/Species Clause.
@@ -327,7 +328,7 @@ pub fn to_ref(refs: &mut Vec<serde_json::Value>, value: serde_json::Value) -> se
 
 /// Resolve a reference to its value
 /// Equivalent to state.ts fromRef()
-// 
+//
 // 	fromRef(ref: string, battle: Battle): Referable | undefined {
 // 		// References are sort of fragile - we're mostly just counting on there
 // 		// being a low chance that some string field in a simulator object will not
@@ -336,12 +337,12 @@ pub fn to_ref(refs: &mut Vec<serde_json::Value>, value: serde_json::Value) -> se
 // 		// markers more esoteric with additional sigils etc to avoid collisions, but
 // 		// we're making a conscious decision to favor readability over robustness.
 // 		if (!ref.startsWith('[') && !ref.endsWith(']')) return undefined;
-// 
+//
 // 		ref = ref.substring(1, ref.length - 1);
 // 		// There's only one instance of these thus they don't need an id to differentiate.
 // 		if (ref === 'Battle') return battle;
 // 		if (ref === 'Field') return battle.field;
-// 
+//
 // 		const [type, id] = ref.split(':');
 // 		switch (type) {
 // 		case 'Side': return battle.sides[Number(id[1]) - 1];
@@ -355,7 +356,10 @@ pub fn to_ref(refs: &mut Vec<serde_json::Value>, value: serde_json::Value) -> se
 // 		}
 // 	}
 //
-pub fn from_ref(refs: &[serde_json::Value], ref_val: &serde_json::Value) -> Option<serde_json::Value> {
+pub fn from_ref(
+    refs: &[serde_json::Value],
+    ref_val: &serde_json::Value,
+) -> Option<serde_json::Value> {
     if let Some(idx) = ref_val.get("$ref").and_then(|v| v.as_u64()) {
         refs.get(idx as usize).cloned()
     } else {
@@ -365,7 +369,7 @@ pub fn from_ref(refs: &[serde_json::Value], ref_val: &serde_json::Value) -> Opti
 
 /// Serialize with references (for reducing duplicate data)
 /// Equivalent to state.ts serializeWithRefs()
-// 
+//
 // 	serializeWithRefs(obj: unknown, battle: Battle): unknown {
 // 		switch (typeof obj) {
 // 		case 'function':
@@ -384,7 +388,7 @@ pub fn from_ref(refs: &[serde_json::Value], ref_val: &serde_json::Value) -> Opti
 // 				}
 // 				return arr;
 // 			}
-// 
+//
 // 			if (this.isActiveMove(obj)) return this.serializeActiveMove(obj, battle);
 // 			if (this.isReferable(obj)) return this.toRef(obj);
 // 			if (obj.constructor !== Object) {
@@ -396,7 +400,7 @@ pub fn from_ref(refs: &[serde_json::Value], ref_val: &serde_json::Value) -> Opti
 // 				// need to add the new field to the respective skip constant).
 // 				throw new TypeError(`Unsupported type ${obj.constructor.name}: ${obj as any}`);
 // 			}
-// 
+//
 // 			const o: any = {};
 // 			for (const [key, value] of Object.entries(obj)) {
 // 				o[key] = this.serializeWithRefs(value, battle);
@@ -412,7 +416,10 @@ pub fn serialize_with_refs(value: &serde_json::Value) -> serde_json::Value {
     serialize_with_refs_inner(value, &mut refs)
 }
 
-fn serialize_with_refs_inner(value: &serde_json::Value, _refs: &mut Vec<serde_json::Value>) -> serde_json::Value {
+fn serialize_with_refs_inner(
+    value: &serde_json::Value,
+    _refs: &mut Vec<serde_json::Value>,
+) -> serde_json::Value {
     match value {
         serde_json::Value::Object(obj) => {
             let mut new_obj = serde_json::Map::new();
@@ -421,16 +428,18 @@ fn serialize_with_refs_inner(value: &serde_json::Value, _refs: &mut Vec<serde_js
             }
             serde_json::Value::Object(new_obj)
         }
-        serde_json::Value::Array(arr) => {
-            serde_json::Value::Array(arr.iter().map(|v| serialize_with_refs_inner(v, _refs)).collect())
-        }
-        _ => value.clone()
+        serde_json::Value::Array(arr) => serde_json::Value::Array(
+            arr.iter()
+                .map(|v| serialize_with_refs_inner(v, _refs))
+                .collect(),
+        ),
+        _ => value.clone(),
     }
 }
 
 /// Deserialize with references
 /// Equivalent to state.ts deserializeWithRefs()
-// 
+//
 // 	deserializeWithRefs(obj: unknown, battle: Battle) {
 // 		switch (typeof obj) {
 // 		case 'undefined':
@@ -448,9 +457,9 @@ fn serialize_with_refs_inner(value: &serde_json::Value, _refs: &mut Vec<serde_js
 // 				}
 // 				return arr;
 // 			}
-// 
+//
 // 			if (this.isActiveMove(obj)) return this.deserializeActiveMove(obj, battle);
-// 
+//
 // 			const o: any = {};
 // 			for (const [key, value] of Object.entries(obj)) {
 // 				o[key] = this.deserializeWithRefs(value, battle);
@@ -462,7 +471,10 @@ fn serialize_with_refs_inner(value: &serde_json::Value, _refs: &mut Vec<serde_js
 // 		}
 // 	}
 //
-pub fn deserialize_with_refs(value: &serde_json::Value, refs: &[serde_json::Value]) -> serde_json::Value {
+pub fn deserialize_with_refs(
+    value: &serde_json::Value,
+    refs: &[serde_json::Value],
+) -> serde_json::Value {
     match value {
         serde_json::Value::Object(obj) => {
             // Check if this is a ref
@@ -481,13 +493,13 @@ pub fn deserialize_with_refs(value: &serde_json::Value, refs: &[serde_json::Valu
         serde_json::Value::Array(arr) => {
             serde_json::Value::Array(arr.iter().map(|v| deserialize_with_refs(v, refs)).collect())
         }
-        _ => value.clone()
+        _ => value.clone(),
     }
 }
 
 /// Normalize a battle state for comparison
 /// Equivalent to state.ts normalize()
-// 
+//
 // 	// Direct comparisons of serialized state will be flakey as the timestamp
 // 	// protocol message |t:| can diverge between two different runs over the same state.
 // 	// State must first be normalized before it is comparable.
@@ -498,11 +510,15 @@ pub fn deserialize_with_refs(value: &serde_json::Value, refs: &[serde_json::Valu
 //
 pub fn normalize(state: &mut BattleState) {
     // Normalize log entries (trim whitespace, etc.)
-    state.log = state.log.iter()
+    state.log = state
+        .log
+        .iter()
         .map(|l| l.trim().to_string())
         .filter(|l| !l.is_empty())
         .collect();
-    state.input_log = state.input_log.iter()
+    state.input_log = state
+        .input_log
+        .iter()
         .map(|l| l.trim().to_string())
         .filter(|l| !l.is_empty())
         .collect();
@@ -510,7 +526,7 @@ pub fn normalize(state: &mut BattleState) {
 
 /// Normalize log entries for comparison
 /// Equivalent to state.ts normalizeLog()
-// 
+//
 // 	normalizeLog(log?: null | string | string[]) {
 // 		if (!log) return log;
 // 		const normalized = (typeof log === 'string' ? log.split('\n') : log).map(line =>
@@ -527,7 +543,7 @@ pub fn normalize_log(log: &[String]) -> Vec<String> {
 
 /// Check if a value looks like an ActiveMove
 /// Equivalent to state.ts isActiveMove()
-// 
+//
 // 	// Simply looking for a 'hit' field to determine if an object is an ActiveMove or not seems
 // 	// pretty fragile, but its no different than what the simulator is doing. We go further and
 // 	// also check if the object has an 'id', as that's what we will interpret as the Move.
@@ -546,7 +562,7 @@ pub fn is_active_move(value: &serde_json::Value) -> bool {
 
 /// Serialize a Battle to JSON value
 /// Equivalent to state.ts serializeBattle()
-// 
+//
 // 	serializeBattle(battle: Battle): /* Battle */ AnyObject {
 // 		const state: /* Battle */ AnyObject = this.serialize(battle, BATTLE, battle);
 // 		state.field = this.serializeField(battle.field);
@@ -581,7 +597,7 @@ pub fn deserialize_battle_state(state: &serde_json::Value, battle: &mut crate::b
 
 /// Serialize a Field to JSON value
 /// Equivalent to state.ts serializeField()
-// 
+//
 // 	serializeField(field: Field): /* Field */ AnyObject {
 // 		return this.serialize(field, FIELD, field.battle);
 // 	}
@@ -592,7 +608,7 @@ pub fn serialize_field(field: &crate::field::Field) -> serde_json::Value {
 
 /// Deserialize Field from JSON value
 /// Equivalent to state.ts deserializeField()
-// 
+//
 // 	deserializeField(state: /* Field */ AnyObject, field: Field) {
 // 		this.deserialize(state, field, FIELD, field.battle);
 // 	}
@@ -608,7 +624,7 @@ pub fn deserialize_field(state: &serde_json::Value, field: &mut crate::field::Fi
 
 /// Serialize a Side to JSON value
 /// Equivalent to state.ts serializeSide()
-// 
+//
 // 	serializeSide(side: Side): /* Side */ AnyObject {
 // 		const state: /* Side */ AnyObject = this.serialize(side, SIDE, side.battle);
 // 		state.pokemon = new Array(side.pokemon.length);
@@ -639,7 +655,7 @@ pub fn serialize_side(side: &crate::side::Side) -> serde_json::Value {
 
 /// Deserialize Side from JSON value
 /// Equivalent to state.ts deserializeSide()
-// 
+//
 // 	deserializeSide(state: /* Side */ AnyObject, side: Side) {
 // 		this.deserialize(state, side, SIDE, side.battle);
 // 		for (const [i, pokemon] of state.pokemon.entries()) {
@@ -655,7 +671,7 @@ pub fn deserialize_side(_state: &serde_json::Value, _side: &mut crate::side::Sid
 
 /// Serialize a Pokemon to JSON value
 /// Equivalent to state.ts serializePokemon()
-// 
+//
 // 	serializePokemon(pokemon: Pokemon): /* Pokemon */ AnyObject {
 // 		const state: /* Pokemon */ AnyObject = this.serialize(pokemon, POKEMON, pokemon.battle);
 // 		state.set = pokemon.set;
@@ -674,7 +690,7 @@ pub fn serialize_pokemon(pokemon: &crate::pokemon::Pokemon) -> serde_json::Value
 
 /// Deserialize Pokemon from JSON value
 /// Equivalent to state.ts deserializePokemon()
-// 
+//
 // 	deserializePokemon(state: /* Pokemon */ AnyObject, pokemon: Pokemon) {
 // 		this.deserialize(state, pokemon, POKEMON, pokemon.battle);
 // 		(pokemon as any).set = state.set;
@@ -708,7 +724,7 @@ pub fn deserialize_pokemon(state: &serde_json::Value, pokemon: &mut crate::pokem
 
 /// Serialize an ActiveMove to JSON value
 /// Equivalent to state.ts serializeActiveMove()
-// 
+//
 // 	// ActiveMove is somewhat problematic (#5415) as it sometimes extends a Move and adds on
 // 	// some mutable fields. We'd like to avoid displaying all the readonly fields of Move
 // 	// (which in theory should not be changed by the ActiveMove...), so we collapse them
@@ -739,7 +755,7 @@ pub fn serialize_active_move(move_data: &serde_json::Value) -> serde_json::Value
 
 /// Deserialize ActiveMove from JSON value
 /// Equivalent to state.ts deserializeActiveMove()
-// 
+//
 // 	deserializeActiveMove(state: /* ActiveMove */ AnyObject, battle: Battle): ActiveMove {
 // 		const move = battle.dex.getActiveMove(this.fromRef(state.move, battle)! as Move);
 // 		this.deserialize(state, move, ACTIVE_MOVE, battle);
@@ -752,7 +768,7 @@ pub fn deserialize_active_move(state: &serde_json::Value) -> serde_json::Value {
 
 /// Generic serialize function for objects with refs
 /// Equivalent to state.ts serialize()
-// 
+//
 // 	serialize(obj: object, skip: Set<string>, battle: Battle): AnyObject {
 // 		const state: AnyObject = {};
 // 		for (const [key, value] of Object.entries(obj)) {
@@ -781,7 +797,7 @@ pub fn serialize(obj: &serde_json::Value, skip_keys: &[&str]) -> serde_json::Val
 
 /// Generic deserialize function for objects with refs
 /// Equivalent to state.ts deserialize()
-// 
+//
 // 	deserialize(state: AnyObject, obj: object, skip: Set<string>, battle: Battle) {
 // 		for (const [key, value] of Object.entries(state)) {
 // 			if (skip.has(key)) continue;
@@ -796,7 +812,7 @@ pub fn deserialize(state: &serde_json::Value, refs: &[serde_json::Value]) -> ser
 
 /// Serialize a Choice to JSON value
 /// Equivalent to state.ts serializeChoice()
-// 
+//
 // 	serializeChoice(choice: Choice, battle: Battle): /* Choice */ AnyObject {
 // 		const state: /* Choice */ AnyObject = this.serialize(choice, CHOICE, battle);
 // 		state.switchIns = Array.from(choice.switchIns);
@@ -809,7 +825,7 @@ pub fn serialize_choice(choice: &serde_json::Value) -> serde_json::Value {
 
 /// Deserialize Choice from JSON value
 /// Equivalent to state.ts deserializeChoice()
-// 
+//
 // 	deserializeChoice(state: /* Choice */ AnyObject, choice: Choice, battle: Battle) {
 // 		this.deserialize(state, choice, CHOICE, battle);
 // 		choice.switchIns = new Set(state.switchIns);

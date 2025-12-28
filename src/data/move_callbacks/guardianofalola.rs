@@ -18,7 +18,11 @@ use crate::event::EventResult;
 ///     }
 ///     return this.clampIntRange(hp75, 1);
 /// }
-pub fn damage_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let target = match target_pos {
@@ -43,10 +47,16 @@ pub fn damage_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), target
             None => return EventResult::Continue,
         };
 
-        target_pokemon.volatiles.contains_key(&ID::from("protect")) ||
-        target_pokemon.volatiles.contains_key(&ID::from("banefulbunker")) ||
-        target_pokemon.volatiles.contains_key(&ID::from("kingsshield")) ||
-        target_pokemon.volatiles.contains_key(&ID::from("spikyshield"))
+        target_pokemon.volatiles.contains_key(&ID::from("protect"))
+            || target_pokemon
+                .volatiles
+                .contains_key(&ID::from("banefulbunker"))
+            || target_pokemon
+                .volatiles
+                .contains_key(&ID::from("kingsshield"))
+            || target_pokemon
+                .volatiles
+                .contains_key(&ID::from("spikyshield"))
     };
 
     let has_matblock = {
@@ -74,4 +84,3 @@ pub fn damage_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), target
     let damage = hp75.max(1);
     EventResult::Number(damage)
 }
-

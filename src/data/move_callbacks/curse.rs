@@ -14,9 +14,11 @@ use crate::event::EventResult;
 ///         move.target = 'randomNormal';
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_modify_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // if (!source.hasType('Ghost')) {
     //     move.target = move.nonGhostTarget!;
     // } else if (source.isAlly(target)) {
@@ -60,7 +62,11 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///         return false;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     // if (!source.hasType('Ghost')) {
@@ -114,7 +120,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 /// onHit(target, source) {
 ///     this.directDamage(source.maxhp / 2, source, source);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // this.directDamage(source.maxhp / 2, source, source);
     let source = pokemon_pos;
 
@@ -137,7 +147,11 @@ pub mod condition {
     /// onStart(pokemon, source) {
     ///     this.add('-start', pokemon, 'Curse', `[of] ${source}`);
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // this.add('-start', pokemon, 'Curse', `[of] ${source}`);
         let pokemon = pokemon_pos;
         let source = match source_pos {
@@ -158,11 +172,14 @@ pub mod condition {
             (pokemon_pokemon.get_slot(), source_pokemon.get_slot())
         };
 
-        battle.add("-start", &[
-            pokemon_ident.as_str().into(),
-            "Curse".into(),
-            format!("[of] {}", source_ident).into(),
-        ]);
+        battle.add(
+            "-start",
+            &[
+                pokemon_ident.as_str().into(),
+                "Curse".into(),
+                format!("[of] {}", source_ident).into(),
+            ],
+        );
 
         EventResult::Continue
     }

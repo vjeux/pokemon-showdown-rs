@@ -26,7 +26,11 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -76,7 +80,11 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), ta
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     let target = target_pos;
@@ -100,7 +108,14 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             };
             pokemon.get_slot()
         };
-        battle.add("-fail", &[source_ident.as_str().into(), "move: Grass Knot".into(), "[from] Dynamax".into()]);
+        battle.add(
+            "-fail",
+            &[
+                source_ident.as_str().into(),
+                "move: Grass Knot".into(),
+                "[from] Dynamax".into(),
+            ],
+        );
 
         // this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);
@@ -111,4 +126,3 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     EventResult::Continue
 }
-

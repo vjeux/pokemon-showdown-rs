@@ -11,7 +11,11 @@ use crate::event::EventResult;
 ///     if (!pokemon.volatiles['mirrorcoat']) return 0;
 ///     return pokemon.volatiles['mirrorcoat'].damage || 1;
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -26,7 +30,9 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target
         match pokemon_pokemon.volatiles.get(&ID::from("mirrorcoat")) {
             Some(volatile) => {
                 // return pokemon.volatiles['mirrorcoat'].damage || 1;
-                volatile.data.get("damage")
+                volatile
+                    .data
+                    .get("damage")
                     .and_then(|v| v.as_i64())
                     .map(|d| d as i32)
                     .unwrap_or(1)
@@ -65,7 +71,11 @@ pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
 ///     if (!source.volatiles['mirrorcoat']) return false;
 ///     if (source.volatiles['mirrorcoat'].slot === null) return false;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -97,12 +107,21 @@ pub mod condition {
     ///     this.effectState.slot = null;
     ///     this.effectState.damage = 0;
     /// }
-    pub fn on_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        _move_id: &str,
+    ) -> EventResult {
         // this.effectState.slot = null;
         if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert("slot".to_string(), serde_json::Value::Null);
+            effect_state
+                .data
+                .insert("slot".to_string(), serde_json::Value::Null);
             // this.effectState.damage = 0;
-            effect_state.data.insert("damage".to_string(), serde_json::to_value(0).unwrap());
+            effect_state
+                .data
+                .insert("damage".to_string(), serde_json::to_value(0).unwrap());
         }
 
         EventResult::Continue
@@ -113,9 +132,12 @@ pub mod condition {
     ///     if (source !== this.effectState.target || !this.effectState.slot) return;
     ///     return this.getAtSlot(this.effectState.slot);
     /// }
-    pub fn on_redirect_target(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-        
-
+    pub fn on_redirect_target(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         // if (move.id !== 'mirrorcoat') return;
         if move_id != "mirrorcoat" {
             return EventResult::Continue;
@@ -132,7 +154,10 @@ pub mod condition {
             }
         };
 
-        if source_pos != effect_target || effect_slot.is_none() || effect_slot == Some(serde_json::Value::Null) {
+        if source_pos != effect_target
+            || effect_slot.is_none()
+            || effect_slot == Some(serde_json::Value::Null)
+        {
             return EventResult::Continue;
         }
 
@@ -156,7 +181,13 @@ pub mod condition {
     ///         this.effectState.damage = 2 * damage;
     ///     }
     /// }
-    pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_damaging_hit(
+        battle: &mut Battle,
+        damage: i32,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let source = match source_pos {
@@ -194,8 +225,13 @@ pub mod condition {
         };
 
         if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert("slot".to_string(), serde_json::to_value(slot).unwrap());
-            effect_state.data.insert("damage".to_string(), serde_json::to_value(2 * damage).unwrap());
+            effect_state
+                .data
+                .insert("slot".to_string(), serde_json::to_value(slot).unwrap());
+            effect_state.data.insert(
+                "damage".to_string(),
+                serde_json::to_value(2 * damage).unwrap(),
+            );
         }
 
         EventResult::Continue

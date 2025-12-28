@@ -15,8 +15,11 @@ use crate::event::EventResult;
 ///         if (target.hasType('Flying')) return 0;
 ///     }
 /// }
-pub fn on_effectiveness(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_effectiveness(
+    _battle: &mut Battle,
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
-

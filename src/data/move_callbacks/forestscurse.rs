@@ -12,9 +12,11 @@ use crate::event::EventResult;
 ///     if (!target.addType('Grass')) return false;
 ///     this.add('-start', target, 'typeadd', 'Grass', '[from] move: Forest\'s Curse');
 /// }
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -51,13 +53,15 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Opt
         target_pokemon.get_slot()
     };
 
-    battle.add("-start", &[
-        target_ident.as_str().into(),
-        "typeadd".into(),
-        "Grass".into(),
-        "[from] move: Forest's Curse".into(),
-    ]);
+    battle.add(
+        "-start",
+        &[
+            target_ident.as_str().into(),
+            "typeadd".into(),
+            "Grass".into(),
+            "[from] move: Forest's Curse".into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

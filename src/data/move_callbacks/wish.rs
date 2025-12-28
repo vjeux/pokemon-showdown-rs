@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -18,7 +17,11 @@ pub mod condition {
     ///         this.hint(`In Gen 8+, Wish will never resolve when used on the ${this.turn}th turn.`);
     ///     }
     /// }
-    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(
+        _battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

@@ -5,15 +5,20 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onBasePower(basePower, pokemon, target) {
 ///     if (target.status === 'psn' || target.status === 'tox') {
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(
+    battle: &mut Battle,
+    _base_power: i32,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the target
     let target = match target_pos {
         Some(pos) => pos,
@@ -35,4 +40,3 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
 
     EventResult::Continue
 }
-

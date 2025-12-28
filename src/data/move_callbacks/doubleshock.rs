@@ -13,9 +13,11 @@ use crate::event::EventResult;
 ///     this.attrLastMove('[still]');
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_try_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // if (pokemon.hasType('Electric')) return;
     let pokemon = source_pos;
 
@@ -41,7 +43,10 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos:
         pokemon_pokemon.get_slot()
     };
 
-    battle.add("-fail", &[pokemon_ident.as_str().into(), "move: Double Shock".into()]);
+    battle.add(
+        "-fail",
+        &[pokemon_ident.as_str().into(), "move: Double Shock".into()],
+    );
 
     // this.attrLastMove('[still]');
     battle.attr_last_move(&["[still]"]);
@@ -49,4 +54,3 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos:
     // return null;
     EventResult::Stop
 }
-

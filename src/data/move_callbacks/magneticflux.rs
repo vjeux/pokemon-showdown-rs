@@ -22,7 +22,11 @@ use crate::event::EventResult;
 ///     return didSomething;
 /// }
 /// ```
-pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_hit_side(
+    battle: &mut Battle,
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = match source_pos {
@@ -36,7 +40,8 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     // ));
     let side_index = source.0;
     // Get all allies excluding self (source)
-    let allies: Vec<(usize, usize)> = battle.allies_and_self(side_index, false)
+    let allies: Vec<(usize, usize)> = battle
+        .allies_and_self(side_index, false)
         .into_iter()
         .filter(|&pos| pos != source)
         .collect();
@@ -48,8 +53,8 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
                 Some(p) => p,
                 None => continue,
             };
-            let has_ability = ally_pokemon.has_ability(&["plus"]) ||
-                             ally_pokemon.has_ability(&["minus"]);
+            let has_ability =
+                ally_pokemon.has_ability(&["plus"]) || ally_pokemon.has_ability(&["minus"]);
             let has_maxguard = ally_pokemon.volatiles.contains_key(&ID::from("maxguard"));
             (has_ability, has_maxguard)
         };
@@ -59,7 +64,8 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
         }
 
         if has_maxguard {
-            let try_hit_result = battle.run_event("TryHit", Some(ally_pos), Some(source), None, None);
+            let try_hit_result =
+                battle.run_event("TryHit", Some(ally_pos), Some(source), None, None);
             if try_hit_result.unwrap_or(0) == 0 {
                 continue;
             }
@@ -87,4 +93,3 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     // return didSomething;
     EventResult::Boolean(did_something)
 }
-

@@ -28,9 +28,11 @@ use crate::event::EventResult;
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get source and target
     let source = pokemon_pos;
     let target = match target_pos {
@@ -135,4 +137,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
-

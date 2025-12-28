@@ -26,9 +26,11 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 1, spa: 1 }, pokemon, source);
 ///     }
 /// }
-pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit_field(
+    battle: &mut Battle,
+    _target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = source_pos;
 
     // const targets: Pokemon[] = [];
@@ -78,5 +80,3 @@ pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
 
     EventResult::Continue
 }
-
-

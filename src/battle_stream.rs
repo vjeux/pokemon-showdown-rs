@@ -12,112 +12,325 @@ use std::collections::VecDeque;
 #[derive(Debug, Clone, PartialEq)]
 pub enum BattleMessage {
     // Battle initialization
-    Player { slot: String, name: String, avatar: Option<String>, rating: Option<i32> },
-    TeamSize { slot: String, size: usize },
-    GameType { game_type: String },
-    Gen { gen: u8 },
-    Tier { tier: String },
-    Rule { rule: String },
+    Player {
+        slot: String,
+        name: String,
+        avatar: Option<String>,
+        rating: Option<i32>,
+    },
+    TeamSize {
+        slot: String,
+        size: usize,
+    },
+    GameType {
+        game_type: String,
+    },
+    Gen {
+        gen: u8,
+    },
+    Tier {
+        tier: String,
+    },
+    Rule {
+        rule: String,
+    },
     ClearPoke,
-    Poke { slot: String, details: String, item: Option<String> },
+    Poke {
+        slot: String,
+        details: String,
+        item: Option<String>,
+    },
     Start,
     TeamPreview,
 
     // Turn management
-    Turn { number: i32 },
+    Turn {
+        number: i32,
+    },
     Upkeep,
-    Request { request_json: String },
-    Win { winner: String },
+    Request {
+        request_json: String,
+    },
+    Win {
+        winner: String,
+    },
     Tie,
 
     // Pokemon actions
-    Switch { pokemon: String, details: String, hp_status: String },
-    Drag { pokemon: String, details: String, hp_status: String },
-    DetailsChange { pokemon: String, details: String },
-    FormeChange { pokemon: String, species: String, hp_status: Option<String> },
-    Replace { pokemon: String, details: String },
-    Swap { pokemon: String, position: u8 },
+    Switch {
+        pokemon: String,
+        details: String,
+        hp_status: String,
+    },
+    Drag {
+        pokemon: String,
+        details: String,
+        hp_status: String,
+    },
+    DetailsChange {
+        pokemon: String,
+        details: String,
+    },
+    FormeChange {
+        pokemon: String,
+        species: String,
+        hp_status: Option<String>,
+    },
+    Replace {
+        pokemon: String,
+        details: String,
+    },
+    Swap {
+        pokemon: String,
+        position: u8,
+    },
 
     // Move actions
-    Move { pokemon: String, move_name: String, target: Option<String> },
-    CantMove { pokemon: String, reason: String, move_name: Option<String> },
-    Faint { pokemon: String },
+    Move {
+        pokemon: String,
+        move_name: String,
+        target: Option<String>,
+    },
+    CantMove {
+        pokemon: String,
+        reason: String,
+        move_name: Option<String>,
+    },
+    Faint {
+        pokemon: String,
+    },
 
     // Damage/healing
-    Damage { pokemon: String, hp_status: String, from: Option<String>, of: Option<String> },
-    Heal { pokemon: String, hp_status: String, from: Option<String>, of: Option<String> },
-    SetHP { pokemon: String, hp: String },
-    Sethp { pokemon: String, hp: String }, // Alias
+    Damage {
+        pokemon: String,
+        hp_status: String,
+        from: Option<String>,
+        of: Option<String>,
+    },
+    Heal {
+        pokemon: String,
+        hp_status: String,
+        from: Option<String>,
+        of: Option<String>,
+    },
+    SetHP {
+        pokemon: String,
+        hp: String,
+    },
+    Sethp {
+        pokemon: String,
+        hp: String,
+    }, // Alias
 
     // Status
-    Status { pokemon: String, status: String },
-    CureStatus { pokemon: String, status: String },
-    CureTeam { pokemon: String },
+    Status {
+        pokemon: String,
+        status: String,
+    },
+    CureStatus {
+        pokemon: String,
+        status: String,
+    },
+    CureTeam {
+        pokemon: String,
+    },
 
     // Boosts
-    Boost { pokemon: String, stat: String, amount: i8 },
-    Unboost { pokemon: String, stat: String, amount: i8 },
-    SetBoost { pokemon: String, stat: String, amount: i8 },
-    ClearBoost { pokemon: String },
+    Boost {
+        pokemon: String,
+        stat: String,
+        amount: i8,
+    },
+    Unboost {
+        pokemon: String,
+        stat: String,
+        amount: i8,
+    },
+    SetBoost {
+        pokemon: String,
+        stat: String,
+        amount: i8,
+    },
+    ClearBoost {
+        pokemon: String,
+    },
     ClearAllBoost,
-    ClearPositiveBoost { target: String, source: String, effect: String },
-    ClearNegativeBoost { pokemon: String },
-    CopyBoost { source: String, target: String },
-    InvertBoost { pokemon: String },
+    ClearPositiveBoost {
+        target: String,
+        source: String,
+        effect: String,
+    },
+    ClearNegativeBoost {
+        pokemon: String,
+    },
+    CopyBoost {
+        source: String,
+        target: String,
+    },
+    InvertBoost {
+        pokemon: String,
+    },
 
     // Weather/terrain/field
-    Weather { weather: String, from: Option<String>, of: Option<String> },
-    FieldStart { condition: String, from: Option<String>, of: Option<String> },
-    FieldEnd { condition: String },
-    SideStart { side: String, condition: String },
-    SideEnd { side: String, condition: String },
+    Weather {
+        weather: String,
+        from: Option<String>,
+        of: Option<String>,
+    },
+    FieldStart {
+        condition: String,
+        from: Option<String>,
+        of: Option<String>,
+    },
+    FieldEnd {
+        condition: String,
+    },
+    SideStart {
+        side: String,
+        condition: String,
+    },
+    SideEnd {
+        side: String,
+        condition: String,
+    },
     SwapSideConditions,
 
     // Volatile status
-    VolatileStart { pokemon: String, effect: String, from: Option<String>, of: Option<String> },
-    VolatileEnd { pokemon: String, effect: String },
-    Block { pokemon: String, effect: String, move_name: Option<String>, attacker: Option<String> },
+    VolatileStart {
+        pokemon: String,
+        effect: String,
+        from: Option<String>,
+        of: Option<String>,
+    },
+    VolatileEnd {
+        pokemon: String,
+        effect: String,
+    },
+    Block {
+        pokemon: String,
+        effect: String,
+        move_name: Option<String>,
+        attacker: Option<String>,
+    },
 
     // Items/abilities
-    Item { pokemon: String, item: String, from: Option<String>, of: Option<String> },
-    EndItem { pokemon: String, item: String, from: Option<String>, eat: bool },
-    Ability { pokemon: String, ability: String, from: Option<String>, of: Option<String> },
-    EndAbility { pokemon: String, ability: String },
+    Item {
+        pokemon: String,
+        item: String,
+        from: Option<String>,
+        of: Option<String>,
+    },
+    EndItem {
+        pokemon: String,
+        item: String,
+        from: Option<String>,
+        eat: bool,
+    },
+    Ability {
+        pokemon: String,
+        ability: String,
+        from: Option<String>,
+        of: Option<String>,
+    },
+    EndAbility {
+        pokemon: String,
+        ability: String,
+    },
 
     // Transform/mega/etc
-    Transform { pokemon: String, target: String },
-    Mega { pokemon: String, mega_stone: String },
-    Primal { pokemon: String },
-    Burst { pokemon: String, species: String, item: String },
-    ZMove { pokemon: String },
-    ZBroken { pokemon: String },
-    Terastallize { pokemon: String, tera_type: String },
+    Transform {
+        pokemon: String,
+        target: String,
+    },
+    Mega {
+        pokemon: String,
+        mega_stone: String,
+    },
+    Primal {
+        pokemon: String,
+    },
+    Burst {
+        pokemon: String,
+        species: String,
+        item: String,
+    },
+    ZMove {
+        pokemon: String,
+    },
+    ZBroken {
+        pokemon: String,
+    },
+    Terastallize {
+        pokemon: String,
+        tera_type: String,
+    },
 
     // Battle mechanics
-    Activate { effect: String, pokemon: Option<String>, target: Option<String> },
-    Hint { message: String },
+    Activate {
+        effect: String,
+        pokemon: Option<String>,
+        target: Option<String>,
+    },
+    Hint {
+        message: String,
+    },
     Center,
-    Message { message: String },
+    Message {
+        message: String,
+    },
 
     // Effectiveness
-    SuperEffective { pokemon: String },
-    Resisted { pokemon: String },
-    Immune { pokemon: String },
-    Crit { pokemon: String },
-    Miss { source: String, target: String },
+    SuperEffective {
+        pokemon: String,
+    },
+    Resisted {
+        pokemon: String,
+    },
+    Immune {
+        pokemon: String,
+    },
+    Crit {
+        pokemon: String,
+    },
+    Miss {
+        source: String,
+        target: String,
+    },
 
     // Misc
-    Fail { pokemon: String, effect: Option<String> },
-    NoTarget { pokemon: String },
-    PrepareMove { pokemon: String, move_name: String, target: Option<String> },
-    MustRecharge { pokemon: String },
+    Fail {
+        pokemon: String,
+        effect: Option<String>,
+    },
+    NoTarget {
+        pokemon: String,
+    },
+    PrepareMove {
+        pokemon: String,
+        move_name: String,
+        target: Option<String>,
+    },
+    MustRecharge {
+        pokemon: String,
+    },
     Nothing,
-    HitCount { pokemon: String, count: u8 },
-    SingleMove { pokemon: String, move_name: String },
-    SingleTurn { pokemon: String, move_name: String },
+    HitCount {
+        pokemon: String,
+        count: u8,
+    },
+    SingleMove {
+        pokemon: String,
+        move_name: String,
+    },
+    SingleTurn {
+        pokemon: String,
+        move_name: String,
+    },
 
     // Raw/unknown
-    Raw { line: String },
+    Raw {
+        line: String,
+    },
 }
 
 impl BattleMessage {
@@ -132,7 +345,9 @@ impl BattleMessage {
 
         // Lines starting with | are protocol messages
         if !line.starts_with('|') {
-            return Some(BattleMessage::Raw { line: line.to_string() });
+            return Some(BattleMessage::Raw {
+                line: line.to_string(),
+            });
         }
 
         let parts: Vec<&str> = line[1..].splitn(2, '|').collect();
@@ -156,10 +371,18 @@ impl BattleMessage {
                     size: parts.get(1).and_then(|s| s.parse().ok()).unwrap_or(0),
                 })
             }
-            "gametype" => Some(BattleMessage::GameType { game_type: args.to_string() }),
-            "gen" => Some(BattleMessage::Gen { gen: args.parse().unwrap_or(9) }),
-            "tier" => Some(BattleMessage::Tier { tier: args.to_string() }),
-            "rule" => Some(BattleMessage::Rule { rule: args.to_string() }),
+            "gametype" => Some(BattleMessage::GameType {
+                game_type: args.to_string(),
+            }),
+            "gen" => Some(BattleMessage::Gen {
+                gen: args.parse().unwrap_or(9),
+            }),
+            "tier" => Some(BattleMessage::Tier {
+                tier: args.to_string(),
+            }),
+            "rule" => Some(BattleMessage::Rule {
+                rule: args.to_string(),
+            }),
             "clearpoke" => Some(BattleMessage::ClearPoke),
             "poke" => {
                 let parts: Vec<&str> = args.splitn(3, '|').collect();
@@ -171,10 +394,16 @@ impl BattleMessage {
             }
             "start" => Some(BattleMessage::Start),
             "teampreview" => Some(BattleMessage::TeamPreview),
-            "turn" => Some(BattleMessage::Turn { number: args.parse().unwrap_or(0) }),
+            "turn" => Some(BattleMessage::Turn {
+                number: args.parse().unwrap_or(0),
+            }),
             "upkeep" => Some(BattleMessage::Upkeep),
-            "request" => Some(BattleMessage::Request { request_json: args.to_string() }),
-            "win" => Some(BattleMessage::Win { winner: args.to_string() }),
+            "request" => Some(BattleMessage::Request {
+                request_json: args.to_string(),
+            }),
+            "win" => Some(BattleMessage::Win {
+                winner: args.to_string(),
+            }),
             "tie" => Some(BattleMessage::Tie),
             "switch" | "drag" => {
                 let parts: Vec<&str> = args.splitn(3, '|').collect();
@@ -201,7 +430,9 @@ impl BattleMessage {
                     target: parts.get(2).map(|s| s.to_string()),
                 })
             }
-            "faint" => Some(BattleMessage::Faint { pokemon: args.to_string() }),
+            "faint" => Some(BattleMessage::Faint {
+                pokemon: args.to_string(),
+            }),
             "-damage" => {
                 let parts: Vec<&str> = args.splitn(4, '|').collect();
                 Some(BattleMessage::Damage {
@@ -266,7 +497,9 @@ impl BattleMessage {
                     of: parts.get(2).map(|s| s.to_string()),
                 })
             }
-            "-fieldend" => Some(BattleMessage::FieldEnd { condition: args.to_string() }),
+            "-fieldend" => Some(BattleMessage::FieldEnd {
+                condition: args.to_string(),
+            }),
             "-sidestart" => {
                 let parts: Vec<&str> = args.splitn(2, '|').collect();
                 Some(BattleMessage::SideStart {
@@ -345,10 +578,18 @@ impl BattleMessage {
                     tera_type: parts.get(1).copied().unwrap_or("").to_string(),
                 })
             }
-            "-supereffective" => Some(BattleMessage::SuperEffective { pokemon: args.to_string() }),
-            "-resisted" => Some(BattleMessage::Resisted { pokemon: args.to_string() }),
-            "-immune" => Some(BattleMessage::Immune { pokemon: args.to_string() }),
-            "-crit" => Some(BattleMessage::Crit { pokemon: args.to_string() }),
+            "-supereffective" => Some(BattleMessage::SuperEffective {
+                pokemon: args.to_string(),
+            }),
+            "-resisted" => Some(BattleMessage::Resisted {
+                pokemon: args.to_string(),
+            }),
+            "-immune" => Some(BattleMessage::Immune {
+                pokemon: args.to_string(),
+            }),
+            "-crit" => Some(BattleMessage::Crit {
+                pokemon: args.to_string(),
+            }),
             "-miss" => {
                 let parts: Vec<&str> = args.splitn(2, '|').collect();
                 Some(BattleMessage::Miss {
@@ -378,9 +619,15 @@ impl BattleMessage {
                     target: parts.get(2).map(|s| s.to_string()),
                 })
             }
-            "-hint" => Some(BattleMessage::Hint { message: args.to_string() }),
-            "-message" | "" => Some(BattleMessage::Message { message: args.to_string() }),
-            _ => Some(BattleMessage::Raw { line: line.to_string() }),
+            "-hint" => Some(BattleMessage::Hint {
+                message: args.to_string(),
+            }),
+            "-message" | "" => Some(BattleMessage::Message {
+                message: args.to_string(),
+            }),
+            _ => Some(BattleMessage::Raw {
+                line: line.to_string(),
+            }),
         }
     }
 
@@ -389,7 +636,12 @@ impl BattleMessage {
     /// This method provides type-safe serialization for the Rust implementation.
     pub fn to_protocol(&self) -> String {
         match self {
-            BattleMessage::Player { slot, name, avatar, rating } => {
+            BattleMessage::Player {
+                slot,
+                name,
+                avatar,
+                rating,
+            } => {
                 let mut parts = vec![format!("|player|{}|{}", slot, name)];
                 if let Some(av) = avatar {
                     parts.push(av.clone());
@@ -412,9 +664,16 @@ impl BattleMessage {
             BattleMessage::Request { request_json } => format!("|request|{}", request_json),
             BattleMessage::Win { winner } => format!("|win|{}", winner),
             BattleMessage::Tie => "|tie".to_string(),
-            BattleMessage::Switch { pokemon, details, hp_status } =>
-                format!("|switch|{}|{}|{}", pokemon, details, hp_status),
-            BattleMessage::Move { pokemon, move_name, target } => {
+            BattleMessage::Switch {
+                pokemon,
+                details,
+                hp_status,
+            } => format!("|switch|{}|{}|{}", pokemon, details, hp_status),
+            BattleMessage::Move {
+                pokemon,
+                move_name,
+                target,
+            } => {
                 if let Some(t) = target {
                     format!("|move|{}|{}|{}", pokemon, move_name, t)
                 } else {
@@ -422,37 +681,81 @@ impl BattleMessage {
                 }
             }
             BattleMessage::Faint { pokemon } => format!("|faint|{}", pokemon),
-            BattleMessage::Damage { pokemon, hp_status, from, of } => {
+            BattleMessage::Damage {
+                pokemon,
+                hp_status,
+                from,
+                of,
+            } => {
                 let mut s = format!("|-damage|{}|{}", pokemon, hp_status);
-                if let Some(f) = from { s.push_str(&format!("|{}", f)); }
-                if let Some(o) = of { s.push_str(&format!("|{}", o)); }
+                if let Some(f) = from {
+                    s.push_str(&format!("|{}", f));
+                }
+                if let Some(o) = of {
+                    s.push_str(&format!("|{}", o));
+                }
                 s
             }
-            BattleMessage::Heal { pokemon, hp_status, from, of } => {
+            BattleMessage::Heal {
+                pokemon,
+                hp_status,
+                from,
+                of,
+            } => {
                 let mut s = format!("|-heal|{}|{}", pokemon, hp_status);
-                if let Some(f) = from { s.push_str(&format!("|{}", f)); }
-                if let Some(o) = of { s.push_str(&format!("|{}", o)); }
+                if let Some(f) = from {
+                    s.push_str(&format!("|{}", f));
+                }
+                if let Some(o) = of {
+                    s.push_str(&format!("|{}", o));
+                }
                 s
             }
             BattleMessage::Status { pokemon, status } => format!("|-status|{}|{}", pokemon, status),
-            BattleMessage::CureStatus { pokemon, status } => format!("|-curestatus|{}|{}", pokemon, status),
-            BattleMessage::Boost { pokemon, stat, amount } => format!("|-boost|{}|{}|{}", pokemon, stat, amount),
-            BattleMessage::Unboost { pokemon, stat, amount } => format!("|-unboost|{}|{}|{}", pokemon, stat, amount),
+            BattleMessage::CureStatus { pokemon, status } => {
+                format!("|-curestatus|{}|{}", pokemon, status)
+            }
+            BattleMessage::Boost {
+                pokemon,
+                stat,
+                amount,
+            } => format!("|-boost|{}|{}|{}", pokemon, stat, amount),
+            BattleMessage::Unboost {
+                pokemon,
+                stat,
+                amount,
+            } => format!("|-unboost|{}|{}|{}", pokemon, stat, amount),
             BattleMessage::Weather { weather, from, of } => {
                 let mut s = format!("|-weather|{}", weather);
-                if let Some(f) = from { s.push_str(&format!("|{}", f)); }
-                if let Some(o) = of { s.push_str(&format!("|{}", o)); }
+                if let Some(f) = from {
+                    s.push_str(&format!("|{}", f));
+                }
+                if let Some(o) = of {
+                    s.push_str(&format!("|{}", o));
+                }
                 s
             }
-            BattleMessage::FieldStart { condition, from, of } => {
+            BattleMessage::FieldStart {
+                condition,
+                from,
+                of,
+            } => {
                 let mut s = format!("|-fieldstart|{}", condition);
-                if let Some(f) = from { s.push_str(&format!("|{}", f)); }
-                if let Some(o) = of { s.push_str(&format!("|{}", o)); }
+                if let Some(f) = from {
+                    s.push_str(&format!("|{}", f));
+                }
+                if let Some(o) = of {
+                    s.push_str(&format!("|{}", o));
+                }
                 s
             }
             BattleMessage::FieldEnd { condition } => format!("|-fieldend|{}", condition),
-            BattleMessage::SideStart { side, condition } => format!("|-sidestart|{}|{}", side, condition),
-            BattleMessage::SideEnd { side, condition } => format!("|-sideend|{}|{}", side, condition),
+            BattleMessage::SideStart { side, condition } => {
+                format!("|-sidestart|{}|{}", side, condition)
+            }
+            BattleMessage::SideEnd { side, condition } => {
+                format!("|-sideend|{}|{}", side, condition)
+            }
             BattleMessage::SuperEffective { pokemon } => format!("|-supereffective|{}", pokemon),
             BattleMessage::Resisted { pokemon } => format!("|-resisted|{}", pokemon),
             BattleMessage::Immune { pokemon } => format!("|-immune|{}", pokemon),
@@ -587,7 +890,7 @@ impl BattleStream {
                 // Note: In full implementation, would parse JSON into BattleOptions
                 // For now, create default options
                 let _ = args; // Would parse args as JSON
-                // Would call: self.start(options);
+                              // Would call: self.start(options);
             }
             "player" => {
                 // Set player info
@@ -664,14 +967,16 @@ impl BattleStream {
             "requestlog" => {
                 if let Some(ref battle) = self.battle {
                     let log = battle.input_log.join("\n");
-                    self.output_queue.push_back(format!("requesteddata\n{}", log));
+                    self.output_queue
+                        .push_back(format!("requesteddata\n{}", log));
                 }
             }
             "requestexport" => {
                 if let Some(ref battle) = self.battle {
                     // Would include PRNG seed and input log
                     let log = battle.input_log.join("\n");
-                    self.output_queue.push_back(format!("requesteddata\n{}", log));
+                    self.output_queue
+                        .push_back(format!("requesteddata\n{}", log));
                 }
             }
             "requestteam" => {
@@ -705,7 +1010,7 @@ impl BattleStream {
 
     /// Push a message to the output queue
     /// Equivalent to pushMessage() in battle-stream.ts
-    // 
+    //
     // 	pushMessage(type: string, data: string) {
     // 		if (this.replay) {
     // 			if (type === 'update') {
@@ -725,7 +1030,8 @@ impl BattleStream {
     pub fn push_message(&mut self, msg_type: &str, data: &str) {
         match self.replay {
             ReplayMode::Off => {
-                self.output_queue.push_back(format!("{}\n{}", msg_type, data));
+                self.output_queue
+                    .push_back(format!("{}\n{}", msg_type, data));
             }
             ReplayMode::Spectator => {
                 // In spectator mode, filter channel messages
@@ -921,7 +1227,12 @@ mod tests {
     fn test_parse_switch() {
         let msg = BattleMessage::parse("|switch|p1a: Pikachu|Pikachu, L50, M|100/100");
         assert!(matches!(msg, Some(BattleMessage::Switch { .. })));
-        if let Some(BattleMessage::Switch { pokemon, details, hp_status }) = msg {
+        if let Some(BattleMessage::Switch {
+            pokemon,
+            details,
+            hp_status,
+        }) = msg
+        {
             assert_eq!(pokemon, "p1a: Pikachu");
             assert_eq!(details, "Pikachu, L50, M");
             assert_eq!(hp_status, "100/100");
@@ -932,7 +1243,12 @@ mod tests {
     fn test_parse_move() {
         let msg = BattleMessage::parse("|move|p1a: Pikachu|Thunderbolt|p2a: Charizard");
         assert!(matches!(msg, Some(BattleMessage::Move { .. })));
-        if let Some(BattleMessage::Move { pokemon, move_name, target }) = msg {
+        if let Some(BattleMessage::Move {
+            pokemon,
+            move_name,
+            target,
+        }) = msg
+        {
             assert_eq!(pokemon, "p1a: Pikachu");
             assert_eq!(move_name, "Thunderbolt");
             assert_eq!(target, Some("p2a: Charizard".to_string()));
@@ -948,7 +1264,12 @@ mod tests {
     #[test]
     fn test_parse_boost() {
         let msg = BattleMessage::parse("|-boost|p1a: Garchomp|atk|2");
-        if let Some(BattleMessage::Boost { pokemon, stat, amount }) = msg {
+        if let Some(BattleMessage::Boost {
+            pokemon,
+            stat,
+            amount,
+        }) = msg
+        {
             assert_eq!(pokemon, "p1a: Garchomp");
             assert_eq!(stat, "atk");
             assert_eq!(amount, 2);
@@ -957,7 +1278,8 @@ mod tests {
 
     #[test]
     fn test_parse_weather() {
-        let msg = BattleMessage::parse("|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Kyogre");
+        let msg =
+            BattleMessage::parse("|-weather|RainDance|[from] ability: Drizzle|[of] p1a: Kyogre");
         assert!(matches!(msg, Some(BattleMessage::Weather { .. })));
     }
 

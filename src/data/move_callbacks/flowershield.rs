@@ -25,9 +25,12 @@ use crate::event::EventResult;
 ///     }
 ///     return success;
 /// }
-pub fn on_hit_field(battle: &mut Battle, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_hit_field(
+    battle: &mut Battle,
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
+) -> EventResult {
     use crate::dex_data::ID;
-    
 
     let source = source_pos;
 
@@ -64,7 +67,12 @@ pub fn on_hit_field(battle: &mut Battle, source_pos: Option<(usize, usize)>, mov
 
         let should_add = if has_maxguard {
             // this.runEvent('TryHit', pokemon, source, move)
-            battle.run_event_bool("TryHit", Some(pokemon_pos), source, Some(&ID::from(move_id)))
+            battle.run_event_bool(
+                "TryHit",
+                Some(pokemon_pos),
+                source,
+                Some(&ID::from(move_id)),
+            )
         } else {
             true
         };
@@ -89,4 +97,3 @@ pub fn on_hit_field(battle: &mut Battle, source_pos: Option<(usize, usize)>, mov
     // return success;
     EventResult::Boolean(success)
 }
-

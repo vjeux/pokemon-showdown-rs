@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     // Get the pokemon (target is the user for this move)
     let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
         Some(p) => p,
@@ -40,7 +44,11 @@ pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: 
 ///         this.add('-start', pokemon, 'Autotomize');
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the pokemon (use target_pos if available, otherwise pokemon_pos)
     let target = target_pos.unwrap_or(pokemon_pos);
 
@@ -72,9 +80,11 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         // this.add('-start', pokemon, 'Autotomize');
-        battle.add("-start", &[pokemon_ident.as_str().into(), "Autotomize".into()]);
+        battle.add(
+            "-start",
+            &[pokemon_ident.as_str().into(), "Autotomize".into()],
+        );
     }
 
     EventResult::Continue
 }
-

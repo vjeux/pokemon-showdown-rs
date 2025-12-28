@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -25,7 +24,10 @@ pub mod condition {
             };
             poke.get_slot()
         };
-        battle.add("-start", &[pokemon_ident.as_str().into(), "move: Ingrain".into()]);
+        battle.add(
+            "-start",
+            &[pokemon_ident.as_str().into(), "move: Ingrain".into()],
+        );
 
         EventResult::Continue
     }
@@ -81,7 +83,10 @@ pub mod condition {
             };
             poke.get_slot()
         };
-        battle.add("-activate", &[pokemon_ident.as_str().into(), "move: Ingrain".into()]);
+        battle.add(
+            "-activate",
+            &[pokemon_ident.as_str().into(), "move: Ingrain".into()],
+        );
 
         // return null;
         EventResult::Stop

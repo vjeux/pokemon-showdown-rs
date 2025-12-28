@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
@@ -28,7 +32,11 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -65,7 +73,10 @@ pub mod condition {
             target_pokemon.get_slot()
         };
 
-        battle.add("-singleturn", &[target_ident.as_str().into(), "move: Endure".into()]);
+        battle.add(
+            "-singleturn",
+            &[target_ident.as_str().into(), "move: Endure".into()],
+        );
 
         EventResult::Continue
     }
@@ -76,7 +87,13 @@ pub mod condition {
     ///         return target.hp - 1;
     ///     }
     /// }
-    pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_damage(
+        battle: &mut Battle,
+        damage: i32,
+        target_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let target = target_pos;
@@ -108,7 +125,10 @@ pub mod condition {
                         target_pokemon.get_slot()
                     };
 
-                    battle.add("-activate", &[target_ident.as_str().into(), "move: Endure".into()]);
+                    battle.add(
+                        "-activate",
+                        &[target_ident.as_str().into(), "move: Endure".into()],
+                    );
 
                     // return target.hp - 1;
                     return EventResult::Number(target_hp - 1);

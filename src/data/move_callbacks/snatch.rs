@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -29,10 +28,7 @@ pub mod condition {
             pokemon_data.get_slot()
         };
 
-        battle.add("-singleturn", &[
-            pokemon_arg.into(),
-            "Snatch".into(),
-        ]);
+        battle.add("-singleturn", &[pokemon_arg.into(), "Snatch".into()]);
 
         EventResult::Continue
     }
@@ -48,7 +44,12 @@ pub mod condition {
     ///     this.actions.useMove(move.id, snatchUser);
     ///     return null;
     /// }
-    pub fn on_any_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_prepare_hit(
+        battle: &mut Battle,
+        source_pos: Option<(usize, usize)>,
+        _target_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // onAnyPrepareHit(source, target, move) {
@@ -135,16 +136,19 @@ pub mod condition {
                 source_pokemon.get_slot()
             };
 
-            battle.add("-activate", &[
-                snatch_user_arg.into(),
-                "move: Snatch".into(),
-                format!("[of] {}", source_arg).into(),
-            ]);
+            battle.add(
+                "-activate",
+                &[
+                    snatch_user_arg.into(),
+                    "move: Snatch".into(),
+                    format!("[of] {}", source_arg).into(),
+                ],
+            );
         } else {
-            battle.add("-activate", &[
-                snatch_user_arg.into(),
-                "move: Snatch".into(),
-            ]);
+            battle.add(
+                "-activate",
+                &[snatch_user_arg.into(), "move: Snatch".into()],
+            );
         }
 
         // this.actions.useMove(move.id, snatchUser);

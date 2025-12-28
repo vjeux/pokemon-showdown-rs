@@ -11,20 +11,24 @@ use crate::event::EventResult;
 /// onHit(target, source) {
 ///     const targetBoosts: SparseBoostsTable = {};
 ///     const sourceBoosts: SparseBoostsTable = {};
-/// 
+///
 ///     const defSpd: BoostID[] = ['def', 'spd'];
 ///     for (const stat of defSpd) {
 ///         targetBoosts[stat] = target.boosts[stat];
 ///         sourceBoosts[stat] = source.boosts[stat];
 ///     }
-/// 
+///
 ///     source.setBoost(targetBoosts);
 ///     target.setBoost(sourceBoosts);
-/// 
+///
 ///     this.add('-swapboost', source, target, 'def, spd', '[from] move: Guard Swap');
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -106,8 +110,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
         pokemon.get_slot()
     };
-    battle.add("-swapboost", &[source_ident.as_str().into(), target_ident.as_str().into(), "def, spd".into(), "[from] move: Guard Swap".into()]);
+    battle.add(
+        "-swapboost",
+        &[
+            source_ident.as_str().into(),
+            target_ident.as_str().into(),
+            "def, spd".into(),
+            "[from] move: Guard Swap".into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

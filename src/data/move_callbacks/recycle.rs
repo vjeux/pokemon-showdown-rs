@@ -14,7 +14,11 @@ use crate::event::EventResult;
 ///     this.add('-item', pokemon, this.dex.items.get(item), '[from] move: Recycle');
 ///     pokemon.setItem(item, source, move);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -26,7 +30,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon_pokemon.item != ID::from(""), pokemon_pokemon.last_item.clone())
+        (
+            pokemon_pokemon.item != ID::from(""),
+            pokemon_pokemon.last_item.clone(),
+        )
     };
 
     if has_item || last_item == ID::from("") {
@@ -59,11 +66,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
         (pokemon_arg, item_data.name.clone())
     };
 
-    battle.add("-item", &[
-        pokemon_arg.into(),
-        item_name.into(),
-        "[from] move: Recycle".into(),
-    ]);
+    battle.add(
+        "-item",
+        &[
+            pokemon_arg.into(),
+            item_name.into(),
+            "[from] move: Recycle".into(),
+        ],
+    );
 
     // pokemon.setItem(item, source, move);
     {
@@ -76,4 +86,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
 
     EventResult::Continue
 }
-

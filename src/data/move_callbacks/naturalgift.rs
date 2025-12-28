@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///     if (!item.naturalGift) return;
 ///     move.type = item.naturalGift.type;
 /// }
-pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_type(
+    battle: &mut Battle,
+    _move_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -77,7 +81,11 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
 ///     pokemon.usedItemThisTurn = true;
 ///     this.runEvent('AfterUseItem', pokemon, null, null, item);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -121,7 +129,8 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
     };
 
     // move.basePower = item.naturalGift.basePower;
-    let base_power = natural_gift.get("basePower")
+    let base_power = natural_gift
+        .get("basePower")
         .and_then(|v| v.as_i64())
         .unwrap_or(0) as i32;
     if let Some(ref mut active_move) = battle.active_move {
@@ -149,4 +158,3 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 
     EventResult::Continue
 }
-

@@ -11,7 +11,11 @@ use crate::event::EventResult;
 ///     const success = !!this.heal(this.modify(pokemon.maxhp, 0.25));
 ///     return pokemon.cureStatus() || success;
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // const success = !!this.heal(this.modify(pokemon.maxhp, 0.25));
@@ -37,4 +41,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
 
     EventResult::Boolean(cure_status_result || success)
 }
-

@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onTry() {
 ///     return !!this.queue.willAct();
 /// }
-pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // return !!this.queue.willAct();
     let will_act = battle.queue.will_act();
     EventResult::Boolean(will_act)
@@ -22,7 +26,11 @@ pub mod condition {
     /// onSideStart(target, source) {
     ///     this.add('-singleturn', source, 'Crafty Shield');
     /// }
-    pub fn on_side_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_side_start(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // this.add('-singleturn', source, 'Crafty Shield');
         let source = match source_pos {
             Some(pos) => pos,
@@ -37,7 +45,10 @@ pub mod condition {
             source_pokemon.get_slot()
         };
 
-        battle.add("-singleturn", &[source_ident.as_str().into(), "Crafty Shield".into()]);
+        battle.add(
+            "-singleturn",
+            &[source_ident.as_str().into(), "Crafty Shield".into()],
+        );
 
         EventResult::Continue
     }
@@ -47,9 +58,11 @@ pub mod condition {
     ///     this.add('-activate', target, 'move: Crafty Shield');
     ///     return this.NOT_FAIL;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-        
-
+    pub fn on_try_hit(
+        battle: &mut Battle,
+        _source_pos: (usize, usize),
+        target_pos: (usize, usize),
+    ) -> EventResult {
         // if (['self', 'all'].includes(move.target) || move.category !== 'Status') return;
         // We need to get the current move being used
         // TODO: The move should be passed as a parameter, but for now we'll try to get it from context
@@ -67,7 +80,8 @@ pub mod condition {
         };
 
         // if (['self', 'all'].includes(move.target) || move.category !== 'Status') return;
-        if move_data.target == "self" || move_data.target == "all" || move_data.category != "Status" {
+        if move_data.target == "self" || move_data.target == "all" || move_data.category != "Status"
+        {
             // return;
             return EventResult::Continue;
         }
@@ -81,7 +95,10 @@ pub mod condition {
             target_pokemon.get_slot()
         };
 
-        battle.add("-activate", &[target_ident.as_str().into(), "move: Crafty Shield".into()]);
+        battle.add(
+            "-activate",
+            &[target_ident.as_str().into(), "move: Crafty Shield".into()],
+        );
 
         // return this.NOT_FAIL;
         // In Rust, NOT_FAIL is typically represented as a specific EventResult variant

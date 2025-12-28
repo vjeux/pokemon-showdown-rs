@@ -19,7 +19,11 @@ use crate::event::EventResult;
 ///     }
 ///     return hasLastResort;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -56,4 +60,3 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
     // return hasLastResort;
     EventResult::Boolean(has_last_resort)
 }
-

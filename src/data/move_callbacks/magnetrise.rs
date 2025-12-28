@@ -18,7 +18,11 @@ use crate::event::EventResult;
 ///     }
 /// }
 /// ```
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let target = match target_pos {
@@ -32,8 +36,10 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.volatiles.contains_key(&ID::from("smackdown")) ||
-        target_pokemon.volatiles.contains_key(&ID::from("ingrain"))
+        target_pokemon
+            .volatiles
+            .contains_key(&ID::from("smackdown"))
+            || target_pokemon.volatiles.contains_key(&ID::from("ingrain"))
     };
 
     if has_smackdown_or_ingrain {
@@ -45,26 +51,32 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     //     this.add('cant', source, 'move: Gravity', move);
     //     return null;
     // }
-    let has_gravity = battle.field.pseudo_weather.contains_key(&ID::from("gravity"));
+    let has_gravity = battle
+        .field
+        .pseudo_weather
+        .contains_key(&ID::from("gravity"));
     if has_gravity {
         let source_arg = {
-
             let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.get_slot()
-
         };
         let move_id = match &battle.active_move {
             Some(active_move) => active_move.id.clone(),
             None => ID::from(""),
         };
-        battle.add("cant", &[source_arg.into(), "move: Gravity".into(), move_id.to_string().into()]);
+        battle.add(
+            "cant",
+            &[
+                source_arg.into(),
+                "move: Gravity".into(),
+                move_id.to_string().into(),
+            ],
+        );
         return EventResult::Stop;
     }
 
@@ -85,17 +97,13 @@ pub mod condition {
 
         // this.add('-start', target, 'Magnet Rise');
         let target_arg = {
-
             let pokemon = match battle.pokemon_at(target.0, target.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.get_slot()
-
         };
         battle.add("-start", &[target_arg.into(), "Magnet Rise".into()]);
 
@@ -124,17 +132,13 @@ pub mod condition {
 
         // this.add('-end', target, 'Magnet Rise');
         let target_arg = {
-
             let pokemon = match battle.pokemon_at(target.0, target.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.get_slot()
-
         };
         battle.add("-end", &[target_arg.into(), "Magnet Rise".into()]);
 

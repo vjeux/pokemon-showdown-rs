@@ -16,7 +16,11 @@ use crate::event::EventResult;
 ///     this.hint("Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.");
 ///     return null;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the source pokemon
     let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
         Some(p) => p,
@@ -33,7 +37,10 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
     // if (source.species.baseSpecies === 'Morpeko') {
     //     return;
     // }
-    let base_species = species_data.base_species.as_ref().unwrap_or(&species_data.name);
+    let base_species = species_data
+        .base_species
+        .as_ref()
+        .unwrap_or(&species_data.name);
     if base_species == "Morpeko" {
         return EventResult::Continue;
     }
@@ -51,10 +58,17 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
     };
 
     // this.add('-fail', source, 'move: Aura Wheel');
-    battle.add("-fail", &[source_ident.as_str().into(), "move: Aura Wheel".into()]);
+    battle.add(
+        "-fail",
+        &[source_ident.as_str().into(), "move: Aura Wheel".into()],
+    );
 
     // this.hint("Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.");
-    battle.hint("Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.", false, None);
+    battle.hint(
+        "Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.",
+        false,
+        None,
+    );
 
     // return null;
     EventResult::Stop
@@ -67,7 +81,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 ///         move.type = 'Electric';
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_type(
+    battle: &mut Battle,
+    _move_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
     // Get the pokemon
     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
@@ -92,4 +110,3 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
         EventResult::String("Electric".to_string())
     }
 }
-

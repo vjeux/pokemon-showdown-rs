@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///         this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = pokemon_pos;
@@ -34,7 +38,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             ally_pokemon.base_maxhp
         };
 
-        battle.damage(base_max_hp / 16, Some(ally_pos), Some(source), Some(&ID::from("flameburst")), false);
+        battle.damage(
+            base_max_hp / 16,
+            Some(ally_pos),
+            Some(source),
+            Some(&ID::from("flameburst")),
+            false,
+        );
     }
 
     EventResult::Continue
@@ -45,7 +55,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 ///         this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
 ///     }
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_after_sub_damage(
+    battle: &mut Battle,
+    _damage: i32,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    _move_id: &str,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let target = match target_pos {
@@ -71,9 +87,14 @@ pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option
             ally_pokemon.base_maxhp
         };
 
-        battle.damage(base_max_hp / 16, Some(ally_pos), Some(source), Some(&ID::from("flameburst")), false);
+        battle.damage(
+            base_max_hp / 16,
+            Some(ally_pos),
+            Some(source),
+            Some(&ID::from("flameburst")),
+            false,
+        );
     }
 
     EventResult::Continue
 }
-

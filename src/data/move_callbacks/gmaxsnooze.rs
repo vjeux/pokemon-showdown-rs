@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///     if (this.randomChance(1, 2)) return;
 ///     target.addVolatile('yawn');
 /// }
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let target = match target_pos {
@@ -65,7 +69,11 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Opt
 ///     if (this.randomChance(1, 2)) return;
 ///     target.addVolatile('yawn');
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_sub_damage(
+    battle: &mut Battle,
+    _damage: i32,
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let target = match target_pos {
@@ -112,4 +120,3 @@ pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option
 
     EventResult::Continue
 }
-

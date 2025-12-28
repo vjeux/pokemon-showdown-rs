@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// basePowerCallback(pokemon) {
 ///     return Math.floor((pokemon.happiness * 10) / 25) || 1;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // return Math.floor((pokemon.happiness * 10) / 25) || 1;
@@ -26,4 +30,3 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
 
     EventResult::Number(base_power as i32)
 }
-

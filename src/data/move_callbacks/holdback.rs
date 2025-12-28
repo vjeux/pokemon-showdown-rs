@@ -10,7 +10,13 @@ use crate::event::EventResult;
 /// onDamage(damage, target, source, effect) {
 ///     if (damage >= target.hp) return target.hp - 1;
 /// }
-pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(
+    battle: &mut Battle,
+    damage: i32,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
+) -> EventResult {
     let target = target_pos;
 
     // if (damage >= target.hp) return target.hp - 1;
@@ -28,4 +34,3 @@ pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), _
 
     EventResult::Continue
 }
-

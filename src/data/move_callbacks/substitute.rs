@@ -17,7 +17,11 @@ use crate::event::EventResult;
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_try_hit(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    _battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -25,7 +29,11 @@ pub fn on_try_hit(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos
 /// onHit(target) {
 ///     this.directDamage(target.maxhp / 4);
 /// }
-pub fn on_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    _battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -45,7 +53,12 @@ pub mod condition {
     ///         delete target.volatiles['partiallytrapped'];
     ///     }
     /// }
-    pub fn on_start(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(
+        _battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -81,7 +94,12 @@ pub mod condition {
     ///     this.runEvent('AfterSubDamage', target, source, move, damage);
     ///     return this.HIT_SUBSTITUTE;
     /// }
-    pub fn on_try_primary_hit(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    pub fn on_try_primary_hit(
+        _battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        _move_id: &str,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

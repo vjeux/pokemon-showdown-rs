@@ -15,7 +15,11 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    _battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -40,7 +44,13 @@ pub mod condition {
     /// onAccuracy(accuracy, target, source, move) {
     ///     if (move && !move.ohko) return true;
     /// }
-    pub fn on_accuracy(_battle: &mut Battle, _accuracy: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    pub fn on_accuracy(
+        _battle: &mut Battle,
+        _accuracy: i32,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        _move_id: &str,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

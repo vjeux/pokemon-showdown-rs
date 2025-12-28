@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -19,7 +18,12 @@ pub mod condition {
     ///     if (effect?.id === 'gmaxmeltdown') this.effectState.duration = 3;
     ///     this.add('-start', pokemon, 'Torment');
     /// }
-    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(
+        _battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

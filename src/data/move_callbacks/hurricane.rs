@@ -19,9 +19,11 @@ use crate::event::EventResult;
 ///         break;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_modify_move(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -58,4 +60,3 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), target_
 
     EventResult::Continue
 }
-

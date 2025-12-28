@@ -27,7 +27,11 @@ use crate::event::EventResult;
 ///         targetLoc: target.lastMoveTargetLoc!,
 ///     })[0] as MoveAction);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = pokemon_pos;
@@ -45,7 +49,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         (
             target_pokemon.last_move.is_some(),
             target_pokemon.last_move.clone(),
-            target_pokemon.volatiles.contains_key(&ID::from("dynamax"))
+            target_pokemon.volatiles.contains_key(&ID::from("dynamax")),
         )
     };
 
@@ -65,7 +69,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 m.is_z.is_some(),
                 m.is_max.is_some(),
                 m.flags.get("charge").copied().unwrap_or(0) != 0,
-                m.flags.get("recharge").copied().unwrap_or(0) != 0
+                m.flags.get("recharge").copied().unwrap_or(0) != 0,
             ),
             None => (false, false, false, false, false),
         };
@@ -75,10 +79,18 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             None => return EventResult::Continue,
         };
 
-        let move_slot_pp = target_pokemon.get_move_data(&last_move_id)
+        let move_slot_pp = target_pokemon
+            .get_move_data(&last_move_id)
             .map(|slot| slot.pp);
 
-        (has_failinstruct, is_z, is_max, has_charge, has_recharge, move_slot_pp)
+        (
+            has_failinstruct,
+            is_z,
+            is_max,
+            has_charge,
+            has_recharge,
+            move_slot_pp,
+        )
     };
 
     // if (
@@ -94,7 +106,9 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.volatiles.contains_key(&ID::from("beakblast"))
+        target_pokemon
+            .volatiles
+            .contains_key(&ID::from("beakblast"))
     };
 
     let has_focuspunch = {
@@ -102,7 +116,9 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.volatiles.contains_key(&ID::from("focuspunch"))
+        target_pokemon
+            .volatiles
+            .contains_key(&ID::from("focuspunch"))
     };
 
     let has_shelltrap = {
@@ -110,28 +126,33 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.volatiles.contains_key(&ID::from("shelltrap"))
+        target_pokemon
+            .volatiles
+            .contains_key(&ID::from("shelltrap"))
     };
 
-    if has_failinstruct || is_z || is_max || has_charge || has_recharge ||
-       has_beakblast || has_focuspunch || has_shelltrap ||
-       (move_slot_pp.is_some() && move_slot_pp.unwrap() == 0) {
+    if has_failinstruct
+        || is_z
+        || is_max
+        || has_charge
+        || has_recharge
+        || has_beakblast
+        || has_focuspunch
+        || has_shelltrap
+        || (move_slot_pp.is_some() && move_slot_pp.unwrap() == 0)
+    {
         return EventResult::Boolean(false);
     }
 
     // this.add('-singleturn', target, 'move: Instruct', `[of] ${source}`);
     let target_ident = {
-
         let pokemon = match battle.pokemon_at(target.0, target.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.get_slot()
-
     };
     let source_ident = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -140,7 +161,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
         source_pokemon.get_slot()
     };
-    battle.add("-singleturn", &[target_ident.as_str().into(), "move: Instruct".into(), format!("[of] {}", source_ident).into()]);
+    battle.add(
+        "-singleturn",
+        &[
+            target_ident.as_str().into(),
+            "move: Instruct".into(),
+            format!("[of] {}", source_ident).into(),
+        ],
+    );
 
     // this.queue.prioritizeAction(this.queue.resolveAction({
     //     choice: 'move',
@@ -161,4 +189,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
-

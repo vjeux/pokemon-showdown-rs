@@ -5,15 +5,19 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::{Gender, ID};
 use crate::event::EventResult;
-use crate::dex_data::{ID, Gender};
 
 /// ```ignore
 /// onTryImmunity(target, source) {
 ///     return (target.gender === 'M' && source.gender === 'F') || (target.gender === 'F' && source.gender === 'M');
 /// }
 /// ```
-pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_immunity(
+    battle: &mut Battle,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the target
     let target = match target_pos {
         Some(pos) => pos,
@@ -37,9 +41,9 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
     };
 
     // return (target.gender === 'M' && source.gender === 'F') || (target.gender === 'F' && source.gender === 'M');
-    let is_compatible =
-        (target_pokemon.gender == Gender::Male && source_pokemon.gender == Gender::Female) ||
-        (target_pokemon.gender == Gender::Female && source_pokemon.gender == Gender::Male);
+    let is_compatible = (target_pokemon.gender == Gender::Male
+        && source_pokemon.gender == Gender::Female)
+        || (target_pokemon.gender == Gender::Female && source_pokemon.gender == Gender::Male);
 
     EventResult::Boolean(is_compatible)
 }
@@ -67,7 +71,12 @@ pub mod condition {
     ///     }
     /// }
     /// ```
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         // Get source position
         let source = match source_pos {
             Some(pos) => pos,
@@ -90,9 +99,9 @@ pub mod condition {
         //     this.debug('incompatible gender');
         //     return false;
         // }
-        let is_compatible =
-            (pokemon.gender == Gender::Male && source_pokemon.gender == Gender::Female) ||
-            (pokemon.gender == Gender::Female && source_pokemon.gender == Gender::Male);
+        let is_compatible = (pokemon.gender == Gender::Male
+            && source_pokemon.gender == Gender::Female)
+            || (pokemon.gender == Gender::Female && source_pokemon.gender == Gender::Male);
 
         if !is_compatible {
             battle.debug("incompatible gender");
@@ -133,19 +142,25 @@ pub mod condition {
         // }
         if let Some(effect_name) = effect_id {
             if effect_name == "Cute Charm" {
-                battle.add("-start", &[
-                    pokemon_ident.as_str().into(),
-                    "Attract".into(),
-                    "[from] ability: Cute Charm".into(),
-                    format!("[of] {}", source_name).into(),
-                ]);
+                battle.add(
+                    "-start",
+                    &[
+                        pokemon_ident.as_str().into(),
+                        "Attract".into(),
+                        "[from] ability: Cute Charm".into(),
+                        format!("[of] {}", source_name).into(),
+                    ],
+                );
             } else if effect_name == "Destiny Knot" {
-                battle.add("-start", &[
-                    pokemon_ident.as_str().into(),
-                    "Attract".into(),
-                    "[from] item: Destiny Knot".into(),
-                    format!("[of] {}", source_name).into(),
-                ]);
+                battle.add(
+                    "-start",
+                    &[
+                        pokemon_ident.as_str().into(),
+                        "Attract".into(),
+                        "[from] item: Destiny Knot".into(),
+                        format!("[of] {}", source_name).into(),
+                    ],
+                );
             } else {
                 battle.add("-start", &[pokemon_ident.as_str().into(), "Attract".into()]);
             }
@@ -222,7 +237,12 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    pub fn on_before_move(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+        _move_id: &str,
+    ) -> EventResult {
         // Get the pokemon to access its volatiles
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -253,11 +273,14 @@ pub mod condition {
                 (pokemon.get_slot(), source_pokemon.name.clone())
             };
 
-            battle.add("-activate", &[
-                pokemon_ident.as_str().into(),
-                "move: Attract".into(),
-                format!("[of] {}", source_name).into(),
-            ]);
+            battle.add(
+                "-activate",
+                &[
+                    pokemon_ident.as_str().into(),
+                    "move: Attract".into(),
+                    format!("[of] {}", source_name).into(),
+                ],
+            );
         }
 
         // if (this.randomChance(1, 2)) {
@@ -292,7 +315,14 @@ pub mod condition {
             pokemon.get_slot()
         };
 
-        battle.add("-end", &[pokemon_ident.as_str().into(), "Attract".into(), "[silent]".into()]);
+        battle.add(
+            "-end",
+            &[
+                pokemon_ident.as_str().into(),
+                "Attract".into(),
+                "[silent]".into(),
+            ],
+        );
 
         EventResult::Continue
     }

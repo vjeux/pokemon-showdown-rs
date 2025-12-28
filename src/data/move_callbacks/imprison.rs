@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -28,7 +27,10 @@ pub mod condition {
             };
             pokemon.get_slot()
         };
-        battle.add("-start", &[target_ident.as_str().into(), "move: Imprison".into()]);
+        battle.add(
+            "-start",
+            &[target_ident.as_str().into(), "move: Imprison".into()],
+        );
 
         EventResult::Continue
     }
@@ -63,7 +65,9 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            source_pokemon.move_slots.iter()
+            source_pokemon
+                .move_slots
+                .iter()
                 .map(|slot| slot.id.clone())
                 .filter(|id| id != &ID::from("struggle"))
                 .collect()
@@ -107,7 +111,11 @@ pub mod condition {
 
         // Check if move is Z or Max powered
         let is_z_or_max_powered = {
-            battle.active_move.as_ref().map(|m| m.is_z_or_max_powered).unwrap_or(false)
+            battle
+                .active_move
+                .as_ref()
+                .map(|m| m.is_z_or_max_powered)
+                .unwrap_or(false)
         };
 
         if is_z_or_max_powered {
@@ -151,7 +159,14 @@ pub mod condition {
                 pokemon.get_slot()
             };
             let move_arg = crate::battle::Arg::Str(move_id_obj.as_str());
-            battle.add("cant", &[attacker_ident.as_str().into(), "move: Imprison".into(), move_arg]);
+            battle.add(
+                "cant",
+                &[
+                    attacker_ident.as_str().into(),
+                    "move: Imprison".into(),
+                    move_arg,
+                ],
+            );
 
             // return false;
             return EventResult::Boolean(false);

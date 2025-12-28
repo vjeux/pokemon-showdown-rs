@@ -24,7 +24,11 @@ use crate::event::EventResult;
 ///     this.add('-start', target, 'typechange', newType);
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the target
     let target = match target_pos {
         Some(pos) => pos,
@@ -87,7 +91,14 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Opt
         target_pokemon.get_slot()
     };
 
-    battle.add("-start", &[target_ident.as_str().into(), "typechange".into(), new_type.into()]);
+    battle.add(
+        "-start",
+        &[
+            target_ident.as_str().into(),
+            "typechange".into(),
+            new_type.into(),
+        ],
+    );
 
     EventResult::Continue
 }

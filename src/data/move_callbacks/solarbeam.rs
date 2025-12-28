@@ -23,7 +23,11 @@ use crate::event::EventResult;
 ///     attacker.addVolatile('twoturnmove', defender);
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onTryMove(attacker, defender, move) {
@@ -57,23 +61,13 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     };
 
     let removed = {
-
-
         let pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
-
-
             Some(p) => p,
 
-
             None => return EventResult::Continue,
-
-
         };
 
-
         pokemon.remove_volatile(&move_id)
-
-
     };
     if removed {
         return EventResult::Continue;
@@ -92,10 +86,10 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         (attacker_pokemon.get_slot(), active_move.name.clone())
     };
 
-    battle.add("-prepare", &[
-        attacker_arg.clone().into(),
-        move_name.clone().into(),
-    ]);
+    battle.add(
+        "-prepare",
+        &[attacker_arg.clone().into(), move_name.clone().into()],
+    );
 
     // if (['sunnyday', 'desolateland'].includes(attacker.effectiveWeather())) {
     let weather = {
@@ -125,16 +119,12 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
                 defender_pokemon.get_slot()
             };
 
-            battle.add("-anim", &[
-                attacker_arg.into(),
-                move_name.into(),
-                defender_arg.into(),
-            ]);
+            battle.add(
+                "-anim",
+                &[attacker_arg.into(), move_name.into(), defender_arg.into()],
+            );
         } else {
-            battle.add("-anim", &[
-                attacker_arg.into(),
-                move_name.into(),
-            ]);
+            battle.add("-anim", &[attacker_arg.into(), move_name.into()]);
         }
 
         // return;
@@ -151,17 +141,13 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 
     // attacker.addVolatile('twoturnmove', defender);
     {
-
         let pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("twoturnmove"));
-
     }
 
     // return null;
@@ -175,7 +161,12 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(
+    battle: &mut Battle,
+    _base_power: i32,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onBasePower(basePower, pokemon, target) {
@@ -202,11 +193,11 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
             Some(ID::from(weather_str.as_str()))
         }
     };
-    let is_weak_weather = weather == Some(ID::from("raindance")) ||
-                          weather == Some(ID::from("primordialsea")) ||
-                          weather == Some(ID::from("sandstorm")) ||
-                          weather == Some(ID::from("hail")) ||
-                          weather == Some(ID::from("snowscape"));
+    let is_weak_weather = weather == Some(ID::from("raindance"))
+        || weather == Some(ID::from("primordialsea"))
+        || weather == Some(ID::from("sandstorm"))
+        || weather == Some(ID::from("hail"))
+        || weather == Some(ID::from("snowscape"));
 
     if is_weak_weather {
         // this.debug('weakened by weather');
@@ -218,5 +209,3 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
 
     EventResult::Continue
 }
-
-

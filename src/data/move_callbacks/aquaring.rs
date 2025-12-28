@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -23,7 +22,10 @@ pub mod condition {
             };
             pokemon.get_slot()
         };
-        battle.add("-start", &[pokemon_ident.as_str().into(), "Aqua Ring".into()]);
+        battle.add(
+            "-start",
+            &[pokemon_ident.as_str().into(), "Aqua Ring".into()],
+        );
         EventResult::Continue
     }
 

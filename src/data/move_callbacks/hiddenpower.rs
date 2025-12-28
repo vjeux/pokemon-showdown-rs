@@ -10,9 +10,11 @@ use crate::event::EventResult;
 /// onModifyType(move, pokemon) {
 ///     move.type = pokemon.hpType || 'Dark';
 /// }
-pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    
-
+pub fn on_modify_type(
+    battle: &mut Battle,
+    _move_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // move.type = pokemon.hpType || 'Dark';
@@ -21,7 +23,10 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.hp_type.clone().unwrap_or_else(|| String::from("Dark"))
+        pokemon_pokemon
+            .hp_type
+            .clone()
+            .unwrap_or_else(|| String::from("Dark"))
     };
 
     if let Some(ref mut current_move) = battle.active_move {
@@ -30,4 +35,3 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
 
     EventResult::Continue
 }
-

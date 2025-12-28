@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onTryHit(target) {
 ///     if (target.volatiles['miracleeye']) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     let target = target_pos;
@@ -21,7 +25,9 @@ pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.volatiles.contains_key(&ID::from("miracleeye"))
+        target_pokemon
+            .volatiles
+            .contains_key(&ID::from("miracleeye"))
     };
 
     if has_miracleeye {
@@ -30,4 +36,3 @@ pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: 
 
     EventResult::Continue
 }
-

@@ -5,9 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
-use crate::dex_data::ID;
 use crate::battle_actions;
+use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onHit(target) {
 ///     const moves = [];
@@ -29,7 +29,11 @@ use crate::battle_actions;
 ///     }
 ///     this.actions.useMove(randomMove, target);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the target position
     let target = match target_pos {
         Some(pos) => pos,
@@ -67,7 +71,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             // if (move.flags['noassist'] || move.isZ || move.isMax) {
             //     continue;
             // }
-            if move_data.flags.contains_key("noassist") || move_data.is_z.is_some() || move_data.is_max.is_some() {
+            if move_data.flags.contains_key("noassist")
+                || move_data.is_z.is_some()
+                || move_data.is_max.is_some()
+            {
                 continue;
             }
 
@@ -93,8 +100,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // this.actions.useMove(randomMove, target);
-    battle_actions::use_move(battle, random_move, pokemon_pos, Some(target), None, None, None);
+    battle_actions::use_move(
+        battle,
+        random_move,
+        pokemon_pos,
+        Some(target),
+        None,
+        None,
+        None,
+    );
 
     EventResult::Continue
 }
-

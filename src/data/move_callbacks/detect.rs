@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     let pokemon = pokemon_pos;
 
@@ -31,7 +35,11 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // pokemon.addVolatile('stall');
@@ -45,4 +53,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
 
     EventResult::Continue
 }
-

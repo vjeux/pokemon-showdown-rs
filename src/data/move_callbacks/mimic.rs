@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///     if (move.isZ || move.isMax) return false;
 ///     const mimicIndex = source.moves.indexOf('mimic');
 ///     if (mimicIndex < 0) return false;
-/// 
+///
 ///     source.moveSlots[mimicIndex] = {
 ///         move: move.name,
 ///         id: move.id,
@@ -30,7 +30,11 @@ use crate::event::EventResult;
 ///     this.add('-start', source, 'Mimic', move.name);
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = pokemon_pos;
@@ -75,7 +79,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             None => return EventResult::Boolean(false),
         };
         let transformed = source_pokemon.transformed;
-        let has_move = source_pokemon.move_slots.iter().any(|slot| slot.id == move_id);
+        let has_move = source_pokemon
+            .move_slots
+            .iter()
+            .any(|slot| slot.id == move_id);
         (transformed, has_move)
     };
 
@@ -95,7 +102,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Boolean(false),
         };
-        source_pokemon.move_slots.iter().position(|slot| slot.id == ID::from("mimic"))
+        source_pokemon
+            .move_slots
+            .iter()
+            .position(|slot| slot.id == ID::from("mimic"))
     };
 
     let mimic_index = match mimic_index {
@@ -140,8 +150,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         source_pokemon.get_slot()
     };
 
-    battle.add("-start", &[source_arg.into(), "Mimic".into(), move_name.into()]);
+    battle.add(
+        "-start",
+        &[source_arg.into(), "Mimic".into(), move_name.into()],
+    );
 
     EventResult::Continue
 }
-

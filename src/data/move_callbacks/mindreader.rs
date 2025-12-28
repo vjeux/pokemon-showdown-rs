@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onTryHit(target, source) {
 ///     if (source.volatiles['lockon']) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -35,7 +39,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
 ///     source.addVolatile('lockon', target);
 ///     this.add('-activate', source, 'move: Mind Reader', `[of] ${target}`);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = pokemon_pos;
@@ -66,12 +74,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         (source_pokemon.get_slot(), target_pokemon.get_slot())
     };
 
-    battle.add("-activate", &[
-        source_arg.into(),
-        "move: Mind Reader".into(),
-        format!("[of] {}", target_arg).into(),
-    ]);
+    battle.add(
+        "-activate",
+        &[
+            source_arg.into(),
+            "move: Mind Reader".into(),
+            format!("[of] {}", target_arg).into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

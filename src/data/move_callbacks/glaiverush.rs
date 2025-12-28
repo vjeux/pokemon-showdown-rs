@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -25,7 +24,14 @@ pub mod condition {
             };
             pokemon_pokemon.get_slot()
         };
-        battle.add("-singlemove", &[pokemon_ident.as_str().into(), "Glaive Rush".into(), "[silent]".into()]);
+        battle.add(
+            "-singlemove",
+            &[
+                pokemon_ident.as_str().into(),
+                "Glaive Rush".into(),
+                "[silent]".into(),
+            ],
+        );
 
         EventResult::Continue
     }
@@ -33,7 +39,13 @@ pub mod condition {
     /// onAccuracy() {
     ///     return true;
     /// }
-    pub fn on_accuracy(_battle: &mut Battle, _accuracy: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    pub fn on_accuracy(
+        _battle: &mut Battle,
+        _accuracy: i32,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        _move_id: &str,
+    ) -> EventResult {
         // return true;
         EventResult::Boolean(true)
     }

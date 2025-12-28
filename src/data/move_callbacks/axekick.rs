@@ -5,13 +5,18 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onMoveFail(target, source, move) {
 ///     this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('High Jump Kick'));
 /// }
-pub fn on_move_fail(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_move_fail(
+    battle: &mut Battle,
+    _target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    _move_id: &str,
+) -> EventResult {
     // Get the source
     let source = match source_pos {
         Some(pos) => pos,
@@ -28,8 +33,13 @@ pub fn on_move_fail(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
     let damage_amount = source_pokemon.base_maxhp / 2;
     let highjumpkick_id = ID::from("highjumpkick");
 
-    battle.damage(damage_amount, Some(source), Some(source), Some(&highjumpkick_id), false);
+    battle.damage(
+        damage_amount,
+        Some(source),
+        Some(source),
+        Some(&highjumpkick_id),
+        false,
+    );
 
     EventResult::Continue
 }
-

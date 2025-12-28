@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -24,10 +23,7 @@ pub mod condition {
             pokemon.get_slot()
         };
 
-        battle.add("-start", &[
-            pokemon_arg.into(),
-            "Salt Cure".into(),
-        ]);
+        battle.add("-start", &[pokemon_arg.into(), "Salt Cure".into()]);
 
         EventResult::Continue
     }
@@ -75,10 +71,7 @@ pub mod condition {
             pokemon.get_slot()
         };
 
-        battle.add("-end", &[
-            pokemon_arg.into(),
-            "Salt Cure".into(),
-        ]);
+        battle.add("-end", &[pokemon_arg.into(), "Salt Cure".into()]);
 
         EventResult::Continue
     }

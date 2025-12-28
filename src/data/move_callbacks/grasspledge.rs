@@ -14,11 +14,18 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // if (['waterpledge', 'firepledge'].includes(move.sourceEffect)) {
-    let source_effect = battle.active_move.as_ref().and_then(|m| m.source_effect.clone());
+    let source_effect = battle
+        .active_move
+        .as_ref()
+        .and_then(|m| m.source_effect.clone());
 
     if let Some(ref effect_id) = source_effect {
         if effect_id == &ID::from("waterpledge") || effect_id == &ID::from("firepledge") {
@@ -53,7 +60,11 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _t
 ///         }
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = pokemon_pos;
@@ -108,11 +119,13 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
         let is_ally = action_pokemon.0 == source.0;
 
         if is_ally
-            && (move_action.move_id == ID::from("waterpledge") || move_action.move_id == ID::from("firepledge")) {
-                ally_pledge_action_index = Some(i);
-                ally_pokemon_pos = Some(action_pokemon);
-                break;
-            }
+            && (move_action.move_id == ID::from("waterpledge")
+                || move_action.move_id == ID::from("firepledge"))
+        {
+            ally_pledge_action_index = Some(i);
+            ally_pokemon_pos = Some(action_pokemon);
+            break;
+        }
     }
 
     if let Some(_action_index) = ally_pledge_action_index {
@@ -136,7 +149,10 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
             };
             pokemon.get_slot()
         };
-        battle.add("-waiting", &[source_ident.as_str().into(), ally_ident.as_str().into()]);
+        battle.add(
+            "-waiting",
+            &[source_ident.as_str().into(), ally_ident.as_str().into()],
+        );
 
         // return null;
         return EventResult::Stop;
@@ -157,11 +173,18 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 ///         move.sideCondition = 'firepledge';
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // if (move.sourceEffect === 'waterpledge') {
-    let source_effect = battle.active_move.as_ref().and_then(|m| m.source_effect.clone());
+    let source_effect = battle
+        .active_move
+        .as_ref()
+        .and_then(|m| m.source_effect.clone());
 
     if let Some(ref effect_id) = source_effect {
         if effect_id == &ID::from("waterpledge") {
@@ -201,11 +224,11 @@ pub mod condition {
         // this.add('-sidestart', targetSide, 'Grass Pledge');
         if let Some(effect_state) = &battle.current_effect_state {
             if let Some(side_index) = effect_state.side {
-            let side_id = if side_index == 0 { "p1" } else { "p2" };
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
 
-            let side_arg = crate::battle::Arg::Str(side_id);
-            battle.add("-sidestart", &[side_arg, "Grass Pledge".into()]);
-                    }
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sidestart", &[side_arg, "Grass Pledge".into()]);
+            }
         }
 
         EventResult::Continue
@@ -218,11 +241,11 @@ pub mod condition {
         // this.add('-sideend', targetSide, 'Grass Pledge');
         if let Some(effect_state) = &battle.current_effect_state {
             if let Some(side_index) = effect_state.side {
-            let side_id = if side_index == 0 { "p1" } else { "p2" };
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
 
-            let side_arg = crate::battle::Arg::Str(side_id);
-            battle.add("-sideend", &[side_arg, "Grass Pledge".into()]);
-                    }
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sideend", &[side_arg, "Grass Pledge".into()]);
+            }
         }
 
         EventResult::Continue

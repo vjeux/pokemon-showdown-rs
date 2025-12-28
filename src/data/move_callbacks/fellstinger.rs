@@ -10,7 +10,12 @@ use crate::event::EventResult;
 /// onAfterMoveSecondarySelf(pokemon, target, move) {
 ///     if (!target || target.fainted || target.hp <= 0) this.boost({ atk: 3 }, pokemon, pokemon, move);
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_after_move_secondary_self(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    move_id: &str,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // if (!target || target.fainted || target.hp <= 0) this.boost({ atk: 3 }, pokemon, pokemon, move);
@@ -21,7 +26,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
         };
         target_pokemon.fainted || target_pokemon.hp <= 0
     } else {
-        true  // No target means we should boost
+        true // No target means we should boost
     };
 
     if should_boost {
@@ -31,4 +36,3 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
 
     EventResult::Continue
 }
-

@@ -23,9 +23,11 @@ use crate::event::EventResult;
 ///     }
 ///     return success;
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -51,7 +53,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             };
             battle.modify_f(target_pokemon.base_maxhp, 0.75)
         };
-        battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0
+        battle
+            .heal(heal_amount, Some(target), Some(target), None)
+            .unwrap_or(0)
+            > 0
     } else {
         // success = !!this.heal(Math.ceil(target.baseMaxhp * 0.5));
         let heal_amount = {
@@ -61,7 +66,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             };
             (target_pokemon.base_maxhp as f64 * 0.5).ceil() as i32
         };
-        battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0
+        battle
+            .heal(heal_amount, Some(target), Some(target), None)
+            .unwrap_or(0)
+            > 0
     };
 
     // if (success && !target.isAlly(source)) {
@@ -95,4 +103,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // return success;
     EventResult::Boolean(success)
 }
-

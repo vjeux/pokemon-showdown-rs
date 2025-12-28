@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -32,7 +31,9 @@ pub mod condition {
 
         // this.effectState.layers = 1;
         if let Some(effect_state) = &mut battle.current_effect_state {
-            effect_state.data.insert("layers".to_string(), serde_json::json!(1));
+            effect_state
+                .data
+                .insert("layers".to_string(), serde_json::json!(1));
         }
 
         EventResult::Continue
@@ -51,7 +52,9 @@ pub mod condition {
         // }
 
         // if (this.effectState.layers >= 3) return false;
-        let layers = battle.current_effect_state.as_ref()
+        let layers = battle
+            .current_effect_state
+            .as_ref()
             .and_then(|es| es.data.get("layers"))
             .and_then(|v| v.as_i64())
             .unwrap_or(0) as i32;
@@ -71,7 +74,9 @@ pub mod condition {
 
         // this.effectState.layers++;
         if let Some(effect_state) = &mut battle.current_effect_state {
-            effect_state.data.insert("layers".to_string(), serde_json::json!(layers + 1));
+            effect_state
+                .data
+                .insert("layers".to_string(), serde_json::json!(layers + 1));
         }
 
         EventResult::Continue
@@ -113,7 +118,9 @@ pub mod condition {
         // const damageAmounts = [0, 3, 4, 6]; // 1/8, 1/6, 1/4
         // this.damage(damageAmounts[this.effectState.layers] * pokemon.maxhp / 24);
         let layers = match &battle.current_effect_state {
-            Some(state) => state.data.get("layers")
+            Some(state) => state
+                .data
+                .get("layers")
                 .and_then(|v| v.as_i64())
                 .unwrap_or(1) as i32,
             None => 1,

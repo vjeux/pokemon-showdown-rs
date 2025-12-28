@@ -16,7 +16,11 @@ use crate::event::EventResult;
 ///     source.storedStats.spa = newspa;
 ///     this.add('-activate', source, 'move: Power Split', `[of] ${target}`);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -74,12 +78,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         (source_pokemon.get_slot(), target_pokemon.get_slot())
     };
 
-    battle.add("-activate", &[
-        source_arg.into(),
-        "move: Power Split".into(),
-        format!("[of] {}", target_arg).into(),
-    ]);
+    battle.add(
+        "-activate",
+        &[
+            source_arg.into(),
+            "move: Power Split".into(),
+            format!("[of] {}", target_arg).into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

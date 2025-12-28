@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -17,9 +16,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-        
-
+    pub fn duration_callback(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // if (source?.hasItem('terrainextender')) {
         if let Some(source) = source_pos {
             let has_terrain_extender = {
@@ -51,7 +53,12 @@ pub mod condition {
     ///         return this.chainModify([5325, 4096]);
     ///     }
     /// }
-    pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_base_power(
+        battle: &mut Battle,
+        _base_power: i32,
+        pokemon_pos: (usize, usize),
+        target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let attacker = pokemon_pos;
@@ -131,10 +138,18 @@ pub mod condition {
     ///         this.add('-fieldstart', 'move: Grassy Terrain');
     ///     }
     /// }
-    pub fn on_field_start(battle: &mut Battle, _field_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_field_start(
+        battle: &mut Battle,
+        _field_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         // if (effect?.effectType === 'Ability') {
         let is_ability_effect = if let Some(eid) = effect_id {
-            if let Some(ability) = battle.dex.get_ability_by_id(&crate::dex_data::ID::from(eid)) {
+            if let Some(ability) = battle
+                .dex
+                .get_ability_by_id(&crate::dex_data::ID::from(eid))
+            {
                 ability.effect_type.as_deref() == Some("Ability")
             } else {
                 false
@@ -146,8 +161,12 @@ pub mod condition {
         if is_ability_effect {
             // this.add('-fieldstart', 'move: Grassy Terrain', '[from] ability: ' + effect.name, `[of] ${source}`);
             if let (Some(eid), Some(source)) = (effect_id, source_pos) {
-                let ability = battle.dex.get_ability_by_id(&crate::dex_data::ID::from(eid));
-                let ability_name = ability.map(|a| a.name.clone()).unwrap_or_else(|| eid.to_string());
+                let ability = battle
+                    .dex
+                    .get_ability_by_id(&crate::dex_data::ID::from(eid));
+                let ability_name = ability
+                    .map(|a| a.name.clone())
+                    .unwrap_or_else(|| eid.to_string());
                 let from_msg = format!("[from] ability: {}", ability_name);
                 let source_ident = {
                     let pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -156,7 +175,15 @@ pub mod condition {
                     };
                     pokemon.get_slot()
                 };
-                battle.add("-fieldstart", &["move: Grassy Terrain".into(), from_msg.into(), "[of]".into(), source_ident.as_str().into()]);
+                battle.add(
+                    "-fieldstart",
+                    &[
+                        "move: Grassy Terrain".into(),
+                        from_msg.into(),
+                        "[of]".into(),
+                        source_ident.as_str().into(),
+                    ],
+                );
             }
         } else {
             // this.add('-fieldstart', 'move: Grassy Terrain');

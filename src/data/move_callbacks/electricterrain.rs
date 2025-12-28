@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -17,9 +16,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-        
-
+    pub fn duration_callback(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // if (source?.hasItem('terrainextender')) {
         //     return 8;
         // }
@@ -49,7 +51,13 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_set_status(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_set_status(
+        battle: &mut Battle,
+        status: Option<&str>,
+        target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -62,7 +70,10 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                (target_pokemon.is_grounded(), target_pokemon.is_semi_invulnerable())
+                (
+                    target_pokemon.is_grounded(),
+                    target_pokemon.is_semi_invulnerable(),
+                )
             };
 
             if is_grounded && !is_semi_invulnerable {
@@ -74,8 +85,17 @@ pub mod condition {
                         true
                     } else {
                         // Check if effect is a Move without secondaries
-                        battle.dex.get_move_by_id(&crate::dex_data::ID::from(effect))
-                            .map(|move_data| move_data.secondaries.is_none() || move_data.secondaries.as_ref().map(|s| s.is_empty()).unwrap_or(true))
+                        battle
+                            .dex
+                            .get_move_by_id(&crate::dex_data::ID::from(effect))
+                            .map(|move_data| {
+                                move_data.secondaries.is_none()
+                                    || move_data
+                                        .secondaries
+                                        .as_ref()
+                                        .map(|s| s.is_empty())
+                                        .unwrap_or(true)
+                            })
                             .unwrap_or(false)
                     };
 
@@ -88,7 +108,13 @@ pub mod condition {
                             target_pokemon.get_slot()
                         };
 
-                        battle.add("-activate", &[target_ident.as_str().into(), "move: Electric Terrain".into()]);
+                        battle.add(
+                            "-activate",
+                            &[
+                                target_ident.as_str().into(),
+                                "move: Electric Terrain".into(),
+                            ],
+                        );
                     }
                 }
 
@@ -107,7 +133,11 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_try_add_volatile(
+        battle: &mut Battle,
+        status: Option<&str>,
+        target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -119,7 +149,10 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (target_pokemon.is_grounded(), target_pokemon.is_semi_invulnerable())
+            (
+                target_pokemon.is_grounded(),
+                target_pokemon.is_semi_invulnerable(),
+            )
         };
 
         if !is_grounded || is_semi_invulnerable {
@@ -140,7 +173,13 @@ pub mod condition {
                 target_pokemon.get_slot()
             };
 
-            battle.add("-activate", &[target_ident.as_str().into(), "move: Electric Terrain".into()]);
+            battle.add(
+                "-activate",
+                &[
+                    target_ident.as_str().into(),
+                    "move: Electric Terrain".into(),
+                ],
+            );
 
             // return null;
             return EventResult::Stop;
@@ -155,9 +194,12 @@ pub mod condition {
     ///         return this.chainModify([5325, 4096]);
     ///     }
     /// }
-    pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-        
-
+    pub fn on_base_power(
+        battle: &mut Battle,
+        _base_power: i32,
+        pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         let attacker = pokemon_pos;
 
         // Get move type
@@ -173,7 +215,10 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                (attacker_pokemon.is_grounded(), attacker_pokemon.is_semi_invulnerable())
+                (
+                    attacker_pokemon.is_grounded(),
+                    attacker_pokemon.is_semi_invulnerable(),
+                )
             };
 
             if is_grounded && !is_semi_invulnerable {
@@ -195,7 +240,12 @@ pub mod condition {
     ///         this.add('-fieldstart', 'move: Electric Terrain');
     ///     }
     /// }
-    pub fn on_field_start(battle: &mut Battle, _field_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_field_start(
+        battle: &mut Battle,
+        _field_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (effect?.effectType === 'Ability') {
@@ -214,17 +264,22 @@ pub mod condition {
                             Some(p) => p,
                             None => return EventResult::Continue,
                         };
-                        let ability_name = battle.dex.get_ability_by_id(&ID::from(effect))
+                        let ability_name = battle
+                            .dex
+                            .get_ability_by_id(&ID::from(effect))
                             .map(|a| a.name.clone())
                             .unwrap_or_else(|| effect.to_string());
                         (source_pokemon.get_slot(), ability_name)
                     };
 
-                    battle.add("-fieldstart", &[
-                        "move: Electric Terrain".into(),
-                        format!("[from] ability: {}", ability_name).into(),
-                        format!("[of] {}", source_ident).into(),
-                    ]);
+                    battle.add(
+                        "-fieldstart",
+                        &[
+                            "move: Electric Terrain".into(),
+                            format!("[from] ability: {}", ability_name).into(),
+                            format!("[of] {}", source_ident).into(),
+                        ],
+                    );
                 } else {
                     battle.add("-fieldstart", &["move: Electric Terrain".into()]);
                 }

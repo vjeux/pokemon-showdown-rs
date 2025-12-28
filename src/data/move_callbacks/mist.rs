@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -27,7 +26,12 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_try_boost(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+    pub fn on_try_boost(
+        _battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // TODO: This callback needs boost parameter support in the function signature
         // The TypeScript version receives (boost, target, source, effect) and modifies boost in-place
         // It removes negative boosts from the boost object and shows a message

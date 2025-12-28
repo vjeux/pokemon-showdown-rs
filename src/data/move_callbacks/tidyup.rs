@@ -25,8 +25,11 @@ use crate::event::EventResult;
 ///     if (success) this.add('-activate', pokemon, 'move: Tidy Up');
 ///     return !!this.boost({ atk: 1, spe: 1 }, pokemon, pokemon, null, false, true) || success;
 /// }
-pub fn on_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    _battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
-

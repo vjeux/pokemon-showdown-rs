@@ -5,13 +5,17 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onTry() {
 ///     return this.field.isWeather(['hail', 'snowscape']);
 /// }
-pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // return this.field.isWeather(['hail', 'snowscape']);
     let weather_id = &battle.field.weather;
     let is_weather_valid = weather_id == &ID::from("hail") || weather_id == &ID::from("snowscape");
@@ -28,7 +32,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+    pub fn duration_callback(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // if (source?.hasItem('lightclay')) {
         //     return 8;
         // }
@@ -60,7 +69,13 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_any_modify_damage(battle: &mut Battle, _damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_modify_damage(
+        battle: &mut Battle,
+        _damage: i32,
+        source_pos: Option<(usize, usize)>,
+        target_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         // Get target and source positions
         let target = match target_pos {
             Some(pos) => pos,
@@ -94,8 +109,10 @@ pub mod condition {
         let reflect_id = ID::from("reflect");
         let lightscreen_id = ID::from("lightscreen");
 
-        if (battle.sides[target_side_idx].has_side_condition(&reflect_id) && category == "Physical") ||
-           (battle.sides[target_side_idx].has_side_condition(&lightscreen_id) && category == "Special") {
+        if (battle.sides[target_side_idx].has_side_condition(&reflect_id) && category == "Physical")
+            || (battle.sides[target_side_idx].has_side_condition(&lightscreen_id)
+                && category == "Special")
+        {
             return EventResult::Continue;
         }
 

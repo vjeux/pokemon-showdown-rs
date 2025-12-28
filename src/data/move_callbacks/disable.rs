@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     // if (!target.lastMove || target.lastMove.isZOrMaxPowered || target.lastMove.isMax || target.lastMove.id === 'struggle') {
     //     return false;
     // }
@@ -73,9 +77,12 @@ pub mod condition {
     ///     }
     ///     this.effectState.move = pokemon.lastMove.id;
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-        
-
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // // The target hasn't taken its turn, or Cursed Body activated and the move was not used through Dancer or Instruct
         // if (
         //     this.queue.willMove(pokemon) ||
@@ -155,22 +162,30 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
             let move_data = battle.dex.get_move_by_id(&last_move_id);
-            let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| last_move_id.to_string());
+            let move_name = move_data
+                .map(|m| m.name.clone())
+                .unwrap_or_else(|| last_move_id.to_string());
 
             (pokemon_pokemon.get_slot(), move_name)
         };
 
         // TODO: Check effect.effectType === 'Ability'
         // For now, just add the simple version
-        battle.add("-start", &[
-            pokemon_ident.as_str().into(),
-            "Disable".into(),
-            last_move_name.into(),
-        ]);
+        battle.add(
+            "-start",
+            &[
+                pokemon_ident.as_str().into(),
+                "Disable".into(),
+                last_move_name.into(),
+            ],
+        );
 
         // this.effectState.move = pokemon.lastMove.id;
         if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert("move".to_string(), serde_json::to_value(last_move_id.to_string()).unwrap());
+            effect_state.data.insert(
+                "move".to_string(),
+                serde_json::to_value(last_move_id.to_string()).unwrap(),
+            );
         }
 
         EventResult::Continue
@@ -210,7 +225,9 @@ pub mod condition {
 
         // Get the disabled move from effect state
         let disabled_move_id = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.data.get("move")
+            effect_state
+                .data
+                .get("move")
                 .and_then(|v| v.as_str())
                 .map(|s| s.to_string())
         } else {
@@ -253,7 +270,9 @@ pub mod condition {
 
         // Get the disabled move from effect state
         let disabled_move_id = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.data.get("move")
+            effect_state
+                .data
+                .get("move")
                 .and_then(|v| v.as_str())
                 .map(ID::from)
         } else {
@@ -268,7 +287,9 @@ pub mod condition {
 
             // for (const moveSlot of pokemon.moveSlots)
             // Find the move to disable, then disable it
-            let move_id_to_disable = pokemon_pokemon.move_slots.iter()
+            let move_id_to_disable = pokemon_pokemon
+                .move_slots
+                .iter()
                 .find(|move_slot| move_slot.id == disabled_id)
                 .map(|move_slot| move_slot.id.clone());
 

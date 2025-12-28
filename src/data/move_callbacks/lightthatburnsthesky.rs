@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onModifyMove(move, pokemon) {
 ///     if (pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) move.category = 'Physical';
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // if (pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) move.category = 'Physical';
@@ -32,4 +36,3 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 
     EventResult::Continue
 }
-

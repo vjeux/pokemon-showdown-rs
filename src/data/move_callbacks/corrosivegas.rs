@@ -15,7 +15,11 @@ use crate::event::EventResult;
 ///         this.add('-fail', target, 'move: Corrosive Gas');
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get target and source
     let target = match target_pos {
         Some(pos) => pos,
@@ -45,17 +49,26 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 None => return EventResult::Continue,
             };
             let item_data = battle.dex.get_item_by_id(&item_id);
-            let item_name = item_data.map(|i| i.name.clone()).unwrap_or_else(|| item_id.to_string());
+            let item_name = item_data
+                .map(|i| i.name.clone())
+                .unwrap_or_else(|| item_id.to_string());
 
-            (target_pokemon.get_slot(), source_pokemon.get_slot(), item_name)
+            (
+                target_pokemon.get_slot(),
+                source_pokemon.get_slot(),
+                item_name,
+            )
         };
 
-        battle.add("-enditem", &[
-            target_ident.as_str().into(),
-            item_name.into(),
-            "[from] move: Corrosive Gas".into(),
-            format!("[of] {}", source_ident).into(),
-        ]);
+        battle.add(
+            "-enditem",
+            &[
+                target_ident.as_str().into(),
+                item_name.into(),
+                "[from] move: Corrosive Gas".into(),
+                format!("[of] {}", source_ident).into(),
+            ],
+        );
     } else {
         // this.add('-fail', target, 'move: Corrosive Gas');
         let target_ident = {
@@ -66,7 +79,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             target_pokemon.get_slot()
         };
 
-        battle.add("-fail", &[target_ident.as_str().into(), "move: Corrosive Gas".into()]);
+        battle.add(
+            "-fail",
+            &[target_ident.as_str().into(), "move: Corrosive Gas".into()],
+        );
     }
 
     EventResult::Continue

@@ -12,9 +12,12 @@ use crate::event::EventResult;
 ///         return priority + 1;
 ///     }
 /// }
-pub fn on_modify_priority(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    
-
+pub fn on_modify_priority(
+    battle: &mut Battle,
+    source_pos: Option<(usize, usize)>,
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
+) -> EventResult {
     let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -38,4 +41,3 @@ pub fn on_modify_priority(battle: &mut Battle, source_pos: Option<(usize, usize)
 
     EventResult::Continue
 }
-

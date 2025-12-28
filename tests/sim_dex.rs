@@ -42,7 +42,10 @@ fn test_get_move_gmax() {
     if let Some(move_data) = dex.get_move("G-Max Befuddle") {
         assert_eq!(move_data.name, "G-Max Befuddle");
         // G-Max moves were introduced in Gen 8
-        assert!(move_data.num >= 743, "G-Max moves should have high move numbers");
+        assert!(
+            move_data.num >= 743,
+            "G-Max moves should have high move numbers"
+        );
     }
 }
 

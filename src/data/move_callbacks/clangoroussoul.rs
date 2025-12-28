@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onTry(source) {
 ///     if (source.hp <= (source.maxhp * 33 / 100) || source.maxhp === 1) return false;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // if (source.hp <= (source.maxhp * 33 / 100) || source.maxhp === 1) return false;
     let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
         Some(p) => p,
@@ -28,7 +32,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 ///     if (!this.boost(move.boosts!)) return null;
 ///     delete move.boosts;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> EventResult {
     // if (!this.boost(move.boosts!)) return null;
     // Get the move boosts from the active move
     let move_id = match &battle.active_move {
@@ -45,18 +53,14 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
 
         if let Some(boosts) = &move_data.boosts {
             // Convert HashMap<String, i32> to Vec<(String, i8)>
-            boosts.iter()
-                .map(|(k, v)| (k.clone(), *v as i8))
-                .collect()
+            boosts.iter().map(|(k, v)| (k.clone(), *v as i8)).collect()
         } else {
             return EventResult::Boolean(true);
         }
     };
 
     // Apply boosts to the pokemon
-    let boost_vec_refs: Vec<(&str, i8)> = boost_vec.iter()
-        .map(|(k, v)| (k.as_str(), *v))
-        .collect();
+    let boost_vec_refs: Vec<(&str, i8)> = boost_vec.iter().map(|(k, v)| (k.as_str(), *v)).collect();
     let boost_success = battle.boost(&boost_vec_refs, source_pos, None, None);
 
     if !boost_success {
@@ -74,7 +78,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
 /// onHit(pokemon) {
 ///     this.directDamage(pokemon.maxhp * 33 / 100);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // this.directDamage(pokemon.maxhp * 33 / 100);
     let maxhp = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

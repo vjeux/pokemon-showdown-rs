@@ -38,7 +38,11 @@ pub mod condition {
     /// onStart(pokemon, source) {
     ///     this.add('-start', pokemon, 'move: Octolock', `[of] ${source}`);
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         let pokemon = pokemon_pos;
 
         // this.add('-start', pokemon, 'move: Octolock', `[of] ${source}`);
@@ -62,11 +66,14 @@ pub mod condition {
             (pokemon_arg, source_arg)
         };
 
-        battle.add("-start", &[
-            pokemon_arg.into(),
-            "move: Octolock".into(),
-            source_arg.into(),
-        ]);
+        battle.add(
+            "-start",
+            &[
+                pokemon_arg.into(),
+                "move: Octolock".into(),
+                source_arg.into(),
+            ],
+        );
 
         EventResult::Continue
     }
@@ -98,7 +105,11 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                (source_pokemon.is_active, source_pokemon.hp, source_pokemon.active_turns)
+                (
+                    source_pokemon.is_active,
+                    source_pokemon.hp,
+                    source_pokemon.active_turns,
+                )
             };
 
             if !is_active || hp <= 0 || active_turns == 0 {
@@ -120,19 +131,27 @@ pub mod condition {
                     pokemon_pokemon.get_slot()
                 };
 
-                battle.add("-end", &[
-                    pokemon_arg.into(),
-                    "Octolock".into(),
-                    "[partiallytrapped]".into(),
-                    "[silent]".into(),
-                ]);
+                battle.add(
+                    "-end",
+                    &[
+                        pokemon_arg.into(),
+                        "Octolock".into(),
+                        "[partiallytrapped]".into(),
+                        "[silent]".into(),
+                    ],
+                );
 
                 // return;
                 return EventResult::Continue;
             }
 
             // this.boost({ def: -1, spd: -1 }, pokemon, source, this.dex.getActiveMove('octolock'));
-            battle.boost(&[("def", -1), ("spd", -1)], pokemon, Some(source), Some("octolock"));
+            battle.boost(
+                &[("def", -1), ("spd", -1)],
+                pokemon,
+                Some(source),
+                Some("octolock"),
+            );
         }
 
         EventResult::Continue

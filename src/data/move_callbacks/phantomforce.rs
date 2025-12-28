@@ -18,7 +18,11 @@ use crate::event::EventResult;
 ///     attacker.addVolatile('twoturnmove', defender);
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let attacker = source_pos;
@@ -26,7 +30,6 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 
     // if (attacker.removeVolatile(move.id)) {
     let move_id = {
-        
         match &battle.active_move {
             Some(active_move) => active_move.id.clone(),
             None => return EventResult::Continue,
@@ -55,7 +58,9 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         let attacker_arg = attacker_pokemon.get_slot();
 
         let move_data = battle.dex.get_move_by_id(&move_id);
-        let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| move_id.to_string());
+        let move_name = move_data
+            .map(|m| m.name.clone())
+            .unwrap_or_else(|| move_id.to_string());
 
         (attacker_arg, move_name)
     };
@@ -63,7 +68,8 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     battle.add("-prepare", &[attacker_arg.into(), move_name.into()]);
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
-    let charge_result = battle.run_event("ChargeMove", Some(attacker), defender, Some(&move_id), None);
+    let charge_result =
+        battle.run_event("ChargeMove", Some(attacker), defender, Some(&move_id), None);
 
     if charge_result == Some(0) {
         // return;
@@ -72,20 +78,15 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 
     // attacker.addVolatile('twoturnmove', defender);
     {
-
         let pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("twoturnmove"));
-
     }
 
     // return null;
     EventResult::Stop
 }
-

@@ -14,9 +14,11 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn base_power_callback(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -44,12 +46,19 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), ta
         battle.debug("BP doubled from status condition");
 
         // return move.basePower * 2;
-        let base_power = battle.active_move.as_ref().map(|m| m.base_power).unwrap_or(0);
+        let base_power = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.base_power)
+            .unwrap_or(0);
         return EventResult::Number(base_power * 2);
     }
 
     // return move.basePower;
-    let base_power = battle.active_move.as_ref().map(|m| m.base_power).unwrap_or(0);
+    let base_power = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.base_power)
+        .unwrap_or(0);
     EventResult::Number(base_power)
 }
-

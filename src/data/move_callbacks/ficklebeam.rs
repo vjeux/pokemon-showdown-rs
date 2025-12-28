@@ -14,7 +14,12 @@ use crate::event::EventResult;
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(
+    battle: &mut Battle,
+    _base_power: i32,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // if (this.randomChance(3, 10)) {
@@ -31,7 +36,10 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
             pokemon_pokemon.get_slot()
         };
 
-        battle.add("-activate", &[pokemon_ident.as_str().into(), "move: Fickle Beam".into()]);
+        battle.add(
+            "-activate",
+            &[pokemon_ident.as_str().into(), "move: Fickle Beam".into()],
+        );
 
         // return this.chainModify(2);
         return EventResult::Number(battle.chain_modify(2.0_f32));
@@ -39,4 +47,3 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
 
     EventResult::Continue
 }
-

@@ -14,7 +14,12 @@ use crate::event::EventResult;
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(
+    battle: &mut Battle,
+    _base_power: i32,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let target = match target_pos {
@@ -56,7 +61,11 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
 ///         }
 ///     }
 /// }
-pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_after_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     let source = source_pos;
     let target = target_pos;
 
@@ -86,7 +95,9 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
     //         this.add('-enditem', target, item.name, '[from] move: Knock Off', `[of] ${source}`);
     //     }
     if let Some(item_id) = taken_item {
-        let item_name = battle.dex.get_item_by_id(&item_id)
+        let item_name = battle
+            .dex
+            .get_item_by_id(&item_id)
             .map(|i| i.name.clone())
             .unwrap_or_else(|| item_id.to_string());
 
@@ -104,14 +115,16 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
             };
             pokemon.get_slot()
         };
-        battle.add("-enditem", &[
-            target_arg.clone().into(),
-            item_name.into(),
-            "[from] move: Knock Off".into(),
-            format!("[of] {}", source_arg).into(),
-        ]);
+        battle.add(
+            "-enditem",
+            &[
+                target_arg.clone().into(),
+                item_name.into(),
+                "[from] move: Knock Off".into(),
+                format!("[of] {}", source_arg).into(),
+            ],
+        );
     }
 
     EventResult::Continue
 }
-

@@ -18,7 +18,11 @@ use crate::event::EventResult;
 ///         if (item.onEat) source.ateBerry = true;
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = pokemon_pos;
@@ -101,16 +105,25 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         (target_arg, item_name, source_arg)
     };
 
-    battle.add("-enditem", &[
-        target_arg.into(),
-        item_name.into(),
-        "[from] stealeat".into(),
-        "[move] Pluck".into(),
-        format!("[of] {}", source_arg).into(),
-    ]);
+    battle.add(
+        "-enditem",
+        &[
+            target_arg.into(),
+            item_name.into(),
+            "[from] stealeat".into(),
+            "[move] Pluck".into(),
+            format!("[of] {}", source_arg).into(),
+        ],
+    );
 
     // if (this.singleEvent('Eat', item, target.itemState, source, source, move)) {
-    let eat_result = battle.single_event("Eat", &item_id, Some(source), Some(source), Some(&ID::from("pluck")));
+    let eat_result = battle.single_event(
+        "Eat",
+        &item_id,
+        Some(source),
+        Some(source),
+        Some(&ID::from("pluck")),
+    );
 
     if !matches!(eat_result, EventResult::Boolean(false)) {
         // this.runEvent('EatItem', source, source, move, item);
@@ -147,4 +160,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
-

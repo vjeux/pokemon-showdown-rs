@@ -201,15 +201,30 @@ pub enum ChoiceError {
 impl std::fmt::Display for Choice {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Choice::Move { slot, target, mega, zmove, dynamax, terastallize } => {
+            Choice::Move {
+                slot,
+                target,
+                mega,
+                zmove,
+                dynamax,
+                terastallize,
+            } => {
                 write!(f, "move {}", slot)?;
                 if let Some(t) = target {
                     write!(f, " {}", t)?;
                 }
-                if *mega { write!(f, " mega")?; }
-                if *zmove { write!(f, " zmove")?; }
-                if *dynamax { write!(f, " dynamax")?; }
-                if *terastallize { write!(f, " terastallize")?; }
+                if *mega {
+                    write!(f, " mega")?;
+                }
+                if *zmove {
+                    write!(f, " zmove")?;
+                }
+                if *dynamax {
+                    write!(f, " dynamax")?;
+                }
+                if *terastallize {
+                    write!(f, " terastallize")?;
+                }
                 Ok(())
             }
             Choice::Switch { slot } => write!(f, "switch {}", slot),
@@ -232,7 +247,9 @@ impl std::fmt::Display for ChoiceError {
             ChoiceError::MissingMoveSlot => write!(f, "Missing move slot"),
             ChoiceError::InvalidMoveSlot(n) => write!(f, "Invalid move slot: {} (must be 1-4)", n),
             ChoiceError::MissingSwitchSlot => write!(f, "Missing switch slot"),
-            ChoiceError::InvalidSwitchSlot(n) => write!(f, "Invalid switch slot: {} (must be 1-6)", n),
+            ChoiceError::InvalidSwitchSlot(n) => {
+                write!(f, "Invalid switch slot: {} (must be 1-6)", n)
+            }
             ChoiceError::MissingTeamOrder => write!(f, "Missing team order"),
             ChoiceError::InvalidTeamSlot(n) => write!(f, "Invalid team slot: {} (must be 1-6)", n),
         }
@@ -286,8 +303,7 @@ pub enum RequestType {
 }
 
 /// Active Pokemon request data
-#[derive(Debug, Clone)]
-#[derive(Default)]
+#[derive(Debug, Clone, Default)]
 pub struct ActiveRequest {
     /// Available moves
     pub moves: Vec<MoveRequest>,
@@ -332,8 +348,7 @@ pub struct ZMoveRequest {
 }
 
 /// Side request data (team info)
-#[derive(Debug, Clone)]
-#[derive(Default)]
+#[derive(Debug, Clone, Default)]
 pub struct SideRequest {
     /// Player name
     pub name: String,
@@ -378,8 +393,6 @@ pub struct RequestStats {
     pub spe: i32,
 }
 
-
-
 impl Default for BattleRequest {
     fn default() -> Self {
         Self {
@@ -399,14 +412,17 @@ mod tests {
     #[test]
     fn test_parse_move() {
         let choice = Choice::parse("move 1").unwrap();
-        assert_eq!(choice, Choice::Move {
-            slot: 1,
-            target: None,
-            mega: false,
-            zmove: false,
-            dynamax: false,
-            terastallize: false,
-        });
+        assert_eq!(
+            choice,
+            Choice::Move {
+                slot: 1,
+                target: None,
+                mega: false,
+                zmove: false,
+                dynamax: false,
+                terastallize: false,
+            }
+        );
     }
 
     #[test]
@@ -460,7 +476,12 @@ mod tests {
     #[test]
     fn test_parse_team() {
         let choice = Choice::parse("team 312456").unwrap();
-        assert_eq!(choice, Choice::Team { order: vec![3, 1, 2, 4, 5, 6] });
+        assert_eq!(
+            choice,
+            Choice::Team {
+                order: vec![3, 1, 2, 4, 5, 6]
+            }
+        );
     }
 
     #[test]
@@ -481,14 +502,17 @@ mod tests {
     #[test]
     fn test_parse_number_only() {
         let choice = Choice::parse("2").unwrap();
-        assert_eq!(choice, Choice::Move {
-            slot: 2,
-            target: None,
-            mega: false,
-            zmove: false,
-            dynamax: false,
-            terastallize: false,
-        });
+        assert_eq!(
+            choice,
+            Choice::Move {
+                slot: 2,
+                target: None,
+                mega: false,
+                zmove: false,
+                dynamax: false,
+                terastallize: false,
+            }
+        );
     }
 
     #[test]
@@ -514,7 +538,9 @@ mod tests {
         let choice = Choice::Switch { slot: 4 };
         assert_eq!(choice.to_string(), "switch 4");
 
-        let choice = Choice::Team { order: vec![3, 1, 2] };
+        let choice = Choice::Team {
+            order: vec![3, 1, 2],
+        };
         assert_eq!(choice.to_string(), "team 312");
     }
 

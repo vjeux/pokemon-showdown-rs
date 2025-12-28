@@ -5,8 +5,8 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::GameType;
+use crate::event::EventResult;
 
 /// onHitField(target, source) {
 ///     const sideConditions = [
@@ -63,7 +63,11 @@ use crate::dex_data::GameType;
 ///     this.add('-swapsideconditions');
 ///     this.add('-activate', source, 'move: Court Change');
 /// }
-pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit_field(
+    battle: &mut Battle,
+    _target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get source position
     let source = match source_pos {
         Some(pos) => pos,
@@ -74,10 +78,25 @@ pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
     //     'mist', 'lightscreen', 'reflect', 'spikes', 'safeguard', 'tailwind', 'toxicspikes', 'stealthrock', 'waterpledge', 'firepledge', 'grasspledge', 'stickyweb', 'auroraveil', 'luckychant', 'gmaxsteelsurge', 'gmaxcannonade', 'gmaxvinelash', 'gmaxwildfire', 'gmaxvolcalith',
     // ];
     let side_conditions = vec![
-        "mist", "lightscreen", "reflect", "spikes", "safeguard", "tailwind",
-        "toxicspikes", "stealthrock", "waterpledge", "firepledge", "grasspledge",
-        "stickyweb", "auroraveil", "luckychant", "gmaxsteelsurge", "gmaxcannonade",
-        "gmaxvinelash", "gmaxwildfire", "gmaxvolcalith",
+        "mist",
+        "lightscreen",
+        "reflect",
+        "spikes",
+        "safeguard",
+        "tailwind",
+        "toxicspikes",
+        "stealthrock",
+        "waterpledge",
+        "firepledge",
+        "grasspledge",
+        "stickyweb",
+        "auroraveil",
+        "luckychant",
+        "gmaxsteelsurge",
+        "gmaxcannonade",
+        "gmaxvinelash",
+        "gmaxwildfire",
+        "gmaxvolcalith",
     ];
 
     // let success = false;
@@ -106,7 +125,9 @@ pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
         //     success = true;
         // }
         if let Some(source_side) = battle.sides.get_mut(source_side_index) {
-            let keys_to_remove: Vec<_> = source_side.side_conditions.keys()
+            let keys_to_remove: Vec<_> = source_side
+                .side_conditions
+                .keys()
                 .filter(|id| side_conditions.contains(&id.as_str()))
                 .cloned()
                 .collect();
@@ -126,7 +147,9 @@ pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
         //     success = true;
         // }
         if let Some(target_side) = battle.sides.get_mut(target_side_index) {
-            let keys_to_remove: Vec<_> = target_side.side_conditions.keys()
+            let keys_to_remove: Vec<_> = target_side
+                .side_conditions
+                .keys()
                 .filter(|id| side_conditions.contains(&id.as_str()))
                 .cloned()
                 .collect();
@@ -181,8 +204,10 @@ pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, so
         source_pokemon.get_slot()
     };
 
-    battle.add("-activate", &[source_ident.as_str().into(), "move: Court Change".into()]);
+    battle.add(
+        "-activate",
+        &[source_ident.as_str().into(), "move: Court Change".into()],
+    );
 
     EventResult::Continue
 }
-

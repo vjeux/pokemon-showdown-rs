@@ -16,7 +16,11 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = source_pos;
@@ -76,4 +80,3 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_po
 
     EventResult::Continue
 }
-

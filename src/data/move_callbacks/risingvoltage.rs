@@ -14,9 +14,11 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn base_power_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -45,7 +47,11 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
                 };
                 active_move.name.clone()
             };
-            battle.hint(&format!("{}'s BP doubled on grounded target.", move_name), true, None);
+            battle.hint(
+                &format!("{}'s BP doubled on grounded target.", move_name),
+                true,
+                None,
+            );
         }
 
         // return move.basePower * 2;
@@ -70,4 +76,3 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     EventResult::Number(base_power)
 }
-

@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // onPrepareHit(pokemon) {
     //     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     // }
@@ -30,7 +34,11 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onHit(pokemon) {
@@ -40,17 +48,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
 
     // pokemon.addVolatile('stall');
     {
-
         let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("stall"));
-
     }
 
     EventResult::Continue
@@ -80,10 +84,7 @@ pub mod condition {
             target_pokemon.get_slot()
         };
 
-        battle.add("-singleturn", &[
-            target_arg.into(),
-            "move: Protect".into(),
-        ]);
+        battle.add("-singleturn", &[target_arg.into(), "move: Protect".into()]);
 
         EventResult::Continue
     }
@@ -111,7 +112,11 @@ pub mod condition {
     ///     }
     ///     return this.NOT_FAIL;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_hit(
+        battle: &mut Battle,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // onTryHit(target, source, move) {
@@ -191,10 +196,7 @@ pub mod condition {
                 target_pokemon.get_slot()
             };
 
-            battle.add("-activate", &[
-                target_arg.into(),
-                "move: Protect".into(),
-            ]);
+            battle.add("-activate", &[target_arg.into(), "move: Protect".into()]);
         }
 
         // const lockedmove = source.getVolatile('lockedmove');
@@ -252,7 +254,11 @@ pub mod condition {
     ///         this.damage(source.baseMaxhp / 8, source, target);
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_hit(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // onHit(target, source, move) {
         //     if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         //         this.damage(source.baseMaxhp / 8, source, target);

@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///         this.field.clearTerrain();
 ///     }
 /// }
-pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+pub fn on_after_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> EventResult {
     let source = source_pos;
 
     // if (source.hp) {
@@ -38,7 +42,12 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos
 ///         this.field.clearTerrain();
 ///     }
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_sub_damage(
+    battle: &mut Battle,
+    _damage: i32,
+    _target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -61,4 +70,3 @@ pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, _target_pos: Optio
 
     EventResult::Continue
 }
-

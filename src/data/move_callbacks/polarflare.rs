@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///         move.willChangeForme = true;
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -23,7 +27,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon_pokemon.base_species == ID::from("ramnarok"), pokemon_pokemon.transformed)
+        (
+            pokemon_pokemon.base_species == ID::from("ramnarok"),
+            pokemon_pokemon.transformed,
+        )
     };
 
     if is_ramnarok && !transformed {
@@ -42,7 +49,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
 ///         pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_after_move_secondary_self(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -80,4 +92,3 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
 
     EventResult::Continue
 }
-

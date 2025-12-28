@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///         move.infiltrates = true;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     let source = source_pos;
     let target = target_pos;
 
@@ -39,7 +43,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 ///         return false;
 ///     }
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -60,7 +68,9 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.volatiles.contains_key(&ID::from("healblock"))
+        source_pokemon
+            .volatiles
+            .contains_key(&ID::from("healblock"))
     };
 
     if has_healblock {
@@ -81,12 +91,21 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             };
 
             let move_data = battle.dex.get_move_by_id(&move_id);
-            let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| move_id.to_string());
+            let move_name = move_data
+                .map(|m| m.name.clone())
+                .unwrap_or_else(|| move_id.to_string());
 
             (source_arg, move_name)
         };
 
-        battle.add("cant", &[source_arg.into(), "move: Heal Block".into(), move_name.into()]);
+        battle.add(
+            "cant",
+            &[
+                source_arg.into(),
+                "move: Heal Block".into(),
+                move_name.into(),
+            ],
+        );
 
         // return false;
         return EventResult::Boolean(false);
@@ -102,7 +121,11 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 ///         }
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -132,4 +155,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
-

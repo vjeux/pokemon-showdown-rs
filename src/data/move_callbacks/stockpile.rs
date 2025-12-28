@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onTry(source) {
 ///     if (source.volatiles['stockpile'] && source.volatiles['stockpile'].layers >= 3) return false;
 /// }
-pub fn on_try(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    _battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

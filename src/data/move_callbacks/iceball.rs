@@ -26,13 +26,21 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
 
     // let bp = move.basePower;
-    let mut bp = battle.active_move.as_ref().map(|m| m.base_power).unwrap_or(0);
+    let mut bp = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.base_power)
+        .unwrap_or(0);
 
     // const iceballData = pokemon.volatiles['iceball'];
     // if (iceballData?.hitCount) {
@@ -44,8 +52,16 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
             None => return EventResult::Continue,
         };
         if let Some(iceball_volatile) = pokemon_pokemon.volatiles.get(&ID::from("iceball")) {
-            let hit_count = iceball_volatile.data.get("hitCount").and_then(|v| v.as_i64()).unwrap_or(0);
-            let contact_hit_count = iceball_volatile.data.get("contactHitCount").and_then(|v| v.as_i64()).unwrap_or(0);
+            let hit_count = iceball_volatile
+                .data
+                .get("hitCount")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            let contact_hit_count = iceball_volatile
+                .data
+                .get("contactHitCount")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
             (hit_count > 0, contact_hit_count as u32)
         } else {
             (false, 0)
@@ -85,11 +101,24 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
             None => return EventResult::Continue,
         };
         if let Some(iceball_volatile) = pokemon_pokemon.volatiles.get_mut(&ID::from("iceball")) {
-            let hit_count = iceball_volatile.data.get("hitCount").and_then(|v| v.as_i64()).unwrap_or(0);
-            iceball_volatile.data.insert("hitCount".to_string(), serde_json::json!(hit_count + 1));
+            let hit_count = iceball_volatile
+                .data
+                .get("hitCount")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            iceball_volatile
+                .data
+                .insert("hitCount".to_string(), serde_json::json!(hit_count + 1));
 
-            let contact_hit_count = iceball_volatile.data.get("contactHitCount").and_then(|v| v.as_i64()).unwrap_or(0);
-            iceball_volatile.data.insert("contactHitCount".to_string(), serde_json::json!(contact_hit_count + 1));
+            let contact_hit_count = iceball_volatile
+                .data
+                .get("contactHitCount")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            iceball_volatile.data.insert(
+                "contactHitCount".to_string(),
+                serde_json::json!(contact_hit_count + 1),
+            );
 
             if hit_count + 1 < 5 {
                 iceball_volatile.duration = Some(2);
@@ -105,7 +134,9 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.volatiles.contains_key(&ID::from("defensecurl"))
+        pokemon_pokemon
+            .volatiles
+            .contains_key(&ID::from("defensecurl"))
     };
 
     if has_defense_curl {
@@ -124,7 +155,11 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
 ///     pokemon.addVolatile('iceball');
 ///     if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -156,21 +191,22 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 
     // pokemon.addVolatile('iceball');
     {
-
         let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("iceball"));
-
     }
 
     // if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
-    if battle.active_move.as_ref().and_then(|m| m.source_effect.as_ref()).is_some() {
+    if battle
+        .active_move
+        .as_ref()
+        .and_then(|m| m.source_effect.as_ref())
+        .is_some()
+    {
         let target_loc = {
             let active_per_half = battle.active_per_half;
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
@@ -204,7 +240,11 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///         iceballData.contactHitCount;
 ///     }
 /// }
-pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -223,8 +263,16 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_po
             None => return EventResult::Continue,
         };
         if let Some(iceball_volatile) = source_pokemon.volatiles.get(&ID::from("iceball")) {
-            let hit_count = iceball_volatile.data.get("hitCount").and_then(|v| v.as_i64()).unwrap_or(0);
-            let contact_hit_count = iceball_volatile.data.get("contactHitCount").and_then(|v| v.as_i64()).unwrap_or(0);
+            let hit_count = iceball_volatile
+                .data
+                .get("hitCount")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            let contact_hit_count = iceball_volatile
+                .data
+                .get("contactHitCount")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
             (true, hit_count == 5, contact_hit_count)
         } else {
             (false, false, 0)
@@ -234,17 +282,13 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_po
     if has_iceball && hit_count_is_5 && contact_hit_count < 5 {
         // source.addVolatile("rolloutstorage");
         {
-
             let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.add_volatile(ID::from("rolloutstorage"));
-
         }
 
         // source.volatiles["rolloutstorage"].contactHitCount =
@@ -253,8 +297,14 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_po
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        if let Some(rollout_volatile) = source_pokemon.volatiles.get_mut(&ID::from("rolloutstorage")) {
-            rollout_volatile.data.insert("contactHitCount".to_string(), serde_json::json!(contact_hit_count));
+        if let Some(rollout_volatile) = source_pokemon
+            .volatiles
+            .get_mut(&ID::from("rolloutstorage"))
+        {
+            rollout_volatile.data.insert(
+                "contactHitCount".to_string(),
+                serde_json::json!(contact_hit_count),
+            );
         }
     }
 
@@ -272,8 +322,12 @@ pub mod condition {
         // this.effectState.hitCount = 0;
         // this.effectState.contactHitCount = 0;
         if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert("hitCount".to_string(), serde_json::json!(0));
-            effect_state.data.insert("contactHitCount".to_string(), serde_json::json!(0));
+            effect_state
+                .data
+                .insert("hitCount".to_string(), serde_json::json!(0));
+            effect_state
+                .data
+                .insert("contactHitCount".to_string(), serde_json::json!(0));
         }
 
         EventResult::Continue

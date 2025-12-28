@@ -5,13 +5,17 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::{GameType, ID};
 use crate::event::EventResult;
-use crate::dex_data::{ID, GameType};
 
 /// onPrepareHit(pokemon) {
 ///     return pokemon.addVolatile('allyswitch');
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // return pokemon.addVolatile('allyswitch');
     let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
@@ -27,10 +31,10 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 ///     let success = true;
 ///     // Fail in formats where you don't control allies
 ///     if (this.format.gameType !== 'doubles' && this.format.gameType !== 'triples') success = false;
-/// 
+///
 ///     // Fail in triples if the Pokemon is in the middle
 ///     if (pokemon.side.active.length === 3 && pokemon.position === 1) success = false;
-/// 
+///
 ///     const newPosition = (pokemon.position === 0 ? pokemon.side.active.length - 1 : 0);
 ///     if (!pokemon.side.active[newPosition]) success = false;
 ///     if (pokemon.side.active[newPosition].fainted) success = false;
@@ -42,7 +46,11 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 ///     this.swapPosition(pokemon, newPosition, '[from] move: Ally Switch');
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // let success = true;
     let mut success = true;
 
@@ -61,7 +69,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.position, battle.sides[pokemon_side_idx].active.len())
+        (
+            pokemon.position,
+            battle.sides[pokemon_side_idx].active.len(),
+        )
     };
 
     // Fail in triples if the Pokemon is in the middle
@@ -78,7 +89,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
     };
 
     // if (!pokemon.side.active[newPosition]) success = false;
-    if battle.sides[pokemon_side_idx].active.get(new_position).and_then(|&idx| idx).is_none() {
+    if battle.sides[pokemon_side_idx]
+        .active
+        .get(new_position)
+        .and_then(|&idx| idx)
+        .is_none()
+    {
         success = false;
     }
 
@@ -101,7 +117,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
             };
             pokemon.get_slot()
         };
-        battle.add("-fail", &[pokemon_ident.as_str().into(), "move: Ally Switch".into()]);
+        battle.add(
+            "-fail",
+            &[pokemon_ident.as_str().into(), "move: Ally Switch".into()],
+        );
 
         // this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);
@@ -188,11 +207,7 @@ pub mod condition {
             // if (this.effectState.counter < (this.effect as Condition).counterMax!) {
             //     this.effectState.counter *= 3;
             // }
-            let new_counter = if counter < 729 {
-                counter * 3
-            } else {
-                counter
-            };
+            let new_counter = if counter < 729 { counter * 3 } else { counter };
 
             (new_counter, false)
         };

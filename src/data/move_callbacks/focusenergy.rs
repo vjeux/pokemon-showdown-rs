@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -21,7 +20,12 @@ pub mod condition {
     ///         this.add('-start', target, 'move: Focus Energy');
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let target = match target_pos {
@@ -35,7 +39,9 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.volatiles.contains_key(&ID::from("dragoncheer"))
+            target_pokemon
+                .volatiles
+                .contains_key(&ID::from("dragoncheer"))
         };
 
         if has_dragoncheer {
@@ -59,14 +65,38 @@ pub mod condition {
 
         if let Some(effect) = effect_id {
             if effect == "zpower" {
-                battle.add("-start", &[target_ident.as_str().into(), "move: Focus Energy".into(), "[zeffect]".into()]);
-            } else if effect == "costar" || effect == "imposter" || effect == "psychup" || effect == "transform" {
-                battle.add("-start", &[target_ident.as_str().into(), "move: Focus Energy".into(), "[silent]".into()]);
+                battle.add(
+                    "-start",
+                    &[
+                        target_ident.as_str().into(),
+                        "move: Focus Energy".into(),
+                        "[zeffect]".into(),
+                    ],
+                );
+            } else if effect == "costar"
+                || effect == "imposter"
+                || effect == "psychup"
+                || effect == "transform"
+            {
+                battle.add(
+                    "-start",
+                    &[
+                        target_ident.as_str().into(),
+                        "move: Focus Energy".into(),
+                        "[silent]".into(),
+                    ],
+                );
             } else {
-                battle.add("-start", &[target_ident.as_str().into(), "move: Focus Energy".into()]);
+                battle.add(
+                    "-start",
+                    &[target_ident.as_str().into(), "move: Focus Energy".into()],
+                );
             }
         } else {
-            battle.add("-start", &[target_ident.as_str().into(), "move: Focus Energy".into()]);
+            battle.add(
+                "-start",
+                &[target_ident.as_str().into(), "move: Focus Energy".into()],
+            );
         }
 
         EventResult::Continue

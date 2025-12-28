@@ -26,7 +26,11 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -98,7 +102,9 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.volatiles.contains_key(&ID::from("defensecurl"))
+        pokemon_pokemon
+            .volatiles
+            .contains_key(&ID::from("defensecurl"))
     };
 
     if has_defense_curl {
@@ -117,7 +123,11 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
 ///     pokemon.addVolatile('rollout');
 ///     if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -131,7 +141,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         };
         (
             pokemon_pokemon.volatiles.contains_key(&ID::from("rollout")),
-            pokemon_pokemon.status == ID::from("slp")
+            pokemon_pokemon.status == ID::from("slp"),
         )
     };
 
@@ -141,17 +151,13 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 
     // pokemon.addVolatile('rollout');
     {
-
         let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("rollout"));
-
     }
 
     // if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
@@ -191,7 +197,11 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///             rolloutData.contactHitCount;
 ///     }
 /// }
-pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -216,17 +226,13 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_po
         if data.hit_count.unwrap_or(0) == 5 && data.contact_hit_count.unwrap_or(0) < 5 {
             // source.addVolatile("rolloutstorage");
             {
-
                 let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-
                     Some(p) => p,
 
                     None => return EventResult::Continue,
-
                 };
 
                 pokemon.add_volatile(ID::from("rolloutstorage"));
-
             }
 
             // source.volatiles["rolloutstorage"].contactHitCount = rolloutData.contactHitCount;
@@ -235,7 +241,10 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_po
                 None => return EventResult::Continue,
             };
 
-            if let Some(storage_data) = source_pokemon.volatiles.get_mut(&ID::from("rolloutstorage")) {
+            if let Some(storage_data) = source_pokemon
+                .volatiles
+                .get_mut(&ID::from("rolloutstorage"))
+            {
                 storage_data.contact_hit_count = data.contact_hit_count;
             }
         }
@@ -288,7 +297,11 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.last_move.as_ref().map(|m| *m == ID::from("struggle")).unwrap_or(false)
+            target_pokemon
+                .last_move
+                .as_ref()
+                .map(|m| *m == ID::from("struggle"))
+                .unwrap_or(false)
         };
 
         if last_move_is_struggle {

@@ -30,7 +30,11 @@ use crate::event::EventResult;
 ///     this.add('-start', source, 'typechange', randomType);
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get target and source
     let target = match target_pos {
         Some(pos) => pos,
@@ -66,7 +70,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // const attackType = target.lastMoveUsed.type;
     // for (const typeName of this.dex.types.names()) {
-    let type_names: Vec<String> = battle.dex.all_type_names().iter().map(|s| s.to_string()).collect();
+    let type_names: Vec<String> = battle
+        .dex
+        .all_type_names()
+        .iter()
+        .map(|s| s.to_string())
+        .collect();
     for type_name in type_names {
         // if (source.hasType(typeName)) continue;
         let has_type = {
@@ -125,7 +134,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         source_pokemon.get_slot()
     };
 
-    battle.add("-start", &[source_ident.as_str().into(), "typechange".into(), random_type_str.into()]);
+    battle.add(
+        "-start",
+        &[
+            source_ident.as_str().into(),
+            "typechange".into(),
+            random_type_str.into(),
+        ],
+    );
 
     EventResult::Continue
 }

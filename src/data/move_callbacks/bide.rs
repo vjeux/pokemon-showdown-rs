@@ -5,8 +5,8 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// beforeMoveCallback(pokemon) {
 ///     if (pokemon.volatiles['bide']) return true;
@@ -50,7 +50,10 @@ pub mod condition {
             pokemon.get_slot()
         };
 
-        battle.add("-start", &[pokemon_ident.as_str().into(), "move: Bide".into()]);
+        battle.add(
+            "-start",
+            &[pokemon_ident.as_str().into(), "move: Bide".into()],
+        );
 
         EventResult::Continue
     }
@@ -60,7 +63,13 @@ pub mod condition {
     ///     this.effectState.totalDamage += damage;
     ///     this.effectState.lastDamageSource = source;
     /// }
-    pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_damage(
+        battle: &mut Battle,
+        damage: i32,
+        target_pos: (usize, usize),
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         // if (!move || move.effectType !== 'Move' || !source) return;
         // effect_id represents the move, source_pos is the source
         if effect_id.is_none() || source_pos.is_none() {
@@ -78,7 +87,9 @@ pub mod condition {
 
         if let Some(volatile) = pokemon.volatiles.get_mut(&bide_id) {
             // this.effectState.totalDamage += damage;
-            let current_damage = volatile.data.get("totalDamage")
+            let current_damage = volatile
+                .data
+                .get("totalDamage")
                 .and_then(|v| v.as_i64())
                 .unwrap_or(0) as i32;
             volatile.data.insert(
@@ -130,7 +141,12 @@ pub mod condition {
     ///     }
     ///     this.add('-activate', pokemon, 'move: Bide');
     /// }
-    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    pub fn on_before_move(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+        _move_id: &str,
+    ) -> EventResult {
         // Get the volatile state
         let bide_id = ID::from("bide");
         let (duration, total_damage, last_damage_source) = {
@@ -145,10 +161,14 @@ pub mod condition {
             };
 
             let duration = volatile.duration.unwrap_or(0);
-            let total_damage = volatile.data.get("totalDamage")
+            let total_damage = volatile
+                .data
+                .get("totalDamage")
                 .and_then(|v| v.as_i64())
                 .unwrap_or(0) as i32;
-            let last_damage_source = volatile.data.get("lastDamageSource")
+            let last_damage_source = volatile
+                .data
+                .get("lastDamageSource")
                 .and_then(|v| serde_json::from_value::<(usize, usize)>(v.clone()).ok());
 
             (duration, total_damage, last_damage_source)
@@ -165,7 +185,10 @@ pub mod condition {
                     };
                     pokemon.get_slot()
                 };
-                battle.add("-end", &[pokemon_ident.as_str().into(), "move: Bide".into()]);
+                battle.add(
+                    "-end",
+                    &[pokemon_ident.as_str().into(), "move: Bide".into()],
+                );
             }
 
             // target = this.effectState.lastDamageSource;
@@ -192,13 +215,15 @@ pub mod condition {
             let target = target.unwrap();
 
             // if (!target.isActive) {
-            let target_active = battle.pokemon_at(target.0, target.1)
+            let target_active = battle
+                .pokemon_at(target.0, target.1)
                 .map(|p| p.is_active)
                 .unwrap_or(false);
 
             let final_target = if !target_active {
                 // const possibleTarget = this.getRandomTarget(pokemon, this.dex.moves.get('pound'));
-                let possible_target = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, "normal");
+                let possible_target =
+                    battle.get_random_target(pokemon_pos.0, pokemon_pos.1, "normal");
 
                 // if (!possibleTarget) {
                 if possible_target.is_none() {
@@ -225,7 +250,12 @@ pub mod condition {
             // this.actions.tryMoveHit(target, pokemon, moveData as ActiveMove);
             // TODO: tryMoveHit with custom move data not yet fully implemented
             // For now, we'll use a simplified version that deals direct damage
-            battle.direct_damage(total_damage * 2, Some(final_target), Some(pokemon_pos), None);
+            battle.direct_damage(
+                total_damage * 2,
+                Some(final_target),
+                Some(pokemon_pos),
+                None,
+            );
 
             // pokemon.removeVolatile('bide');
             let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -246,7 +276,10 @@ pub mod condition {
             };
             pokemon.get_slot()
         };
-        battle.add("-activate", &[pokemon_ident.as_str().into(), "move: Bide".into()]);
+        battle.add(
+            "-activate",
+            &[pokemon_ident.as_str().into(), "move: Bide".into()],
+        );
 
         EventResult::Continue
     }
@@ -279,7 +312,14 @@ pub mod condition {
             pokemon.get_slot()
         };
 
-        battle.add("-end", &[pokemon_ident.as_str().into(), "move: Bide".into(), "[silent]".into()]);
+        battle.add(
+            "-end",
+            &[
+                pokemon_ident.as_str().into(),
+                "move: Bide".into(),
+                "[silent]".into(),
+            ],
+        );
 
         EventResult::Continue
     }

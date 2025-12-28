@@ -5,17 +5,17 @@
 //! This file is where the battle simulation itself happens.
 //! The most important part of the simulation is the event system.
 
-use std::collections::{HashSet, HashMap};
 use serde::{Deserialize, Serialize};
+use std::collections::{HashMap, HashSet};
 
-use crate::dex_data::{ID, GameType, SideID, StatsTable, StatID};
+use crate::battle_queue::BattleQueue;
+use crate::data::formats::{get_format, DexFormats, Format};
+use crate::dex_data::{GameType, SideID, StatID, StatsTable, ID};
 use crate::event_system::EffectState;
 use crate::field::Field;
-use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
-use crate::side::{Side, RequestState, Choice};
-use crate::prng::{PRNG, PRNGSeed};
-use crate::data::formats::{get_format, Format, DexFormats};
+use crate::prng::{PRNGSeed, PRNG};
+use crate::side::{Choice, RequestState, Side};
 
 /// Split message for side-specific content
 /// JavaScript equivalent: { side: SideID, secret: string, shared: string }
@@ -461,7 +461,7 @@ impl Battle {
             log: Vec::new(),
             input_log: Vec::new(),
             request_state: BattleRequestState::None,
-            sent_requests: false,  // JavaScript: sentRequests defaults to false
+            sent_requests: false, // JavaScript: sentRequests defaults to false
             turn: 0,
             mid_turn: false,
             started: false,
@@ -502,8 +502,10 @@ impl Battle {
         }
 
         // Log start
-        battle.input_log.push(format!(">start {{\"formatid\":\"{}\",\"seed\":\"{}\"}}",
-            format_id_str, seed));
+        battle.input_log.push(format!(
+            ">start {{\"formatid\":\"{}\",\"seed\":\"{}\"}}",
+            format_id_str, seed
+        ));
         battle.add_log("gametype", &[&game_type_to_string(&game_type)]);
 
         // Add players if provided
@@ -546,8 +548,8 @@ impl Battle {
     /// Add or update a player in the battle
     ///
     // TypeScript source:
-    // 
-    // 
+    //
+    //
     // 	setPlayer(slot: SideID, options: PlayerOptions) {
     // 		let side;
     // 		let didSomething = true;
@@ -578,7 +580,7 @@ impl Battle {
     // 		if (!didSomething) return;
     // 		this.inputLog.push(`>player ${slot} ` + JSON.stringify(options));
     // 		this.add('player', side.id, side.name, side.avatar, options.rating || '');
-    // 
+    //
     // 		// Start the battle if it's ready to start
     // 		if (this.sides.every(playerSide => !!playerSide) && !this.started) this.start();
     // 	}
@@ -604,7 +606,8 @@ impl Battle {
         }
 
         // Check if this is a new player or editing existing
-        let is_new = self.sides[slot_num].name.is_empty() && self.sides[slot_num].pokemon.is_empty();
+        let is_new =
+            self.sides[slot_num].name.is_empty() && self.sides[slot_num].pokemon.is_empty();
 
         if is_new {
             // Create player
@@ -656,7 +659,8 @@ impl Battle {
         }
         options_json.push('}');
 
-        self.input_log.push(format!(">player {} {}", side_id.to_str(), options_json));
+        self.input_log
+            .push(format!(">player {} {}", side_id.to_str(), options_json));
 
         // this.add('player', side.id, side.name, side.avatar, options.rating || '');
         // Clone the values to avoid borrow checker issues
@@ -665,16 +669,22 @@ impl Battle {
         let side_avatar = self.sides[slot_num].avatar.clone();
         let rating_str = options.rating.as_deref().unwrap_or("").to_string();
 
-        self.add("player", &[
-            Arg::Str(&side_id_str),
-            Arg::Str(&side_name),
-            Arg::Str(&side_avatar),
-            Arg::Str(&rating_str),
-        ]);
+        self.add(
+            "player",
+            &[
+                Arg::Str(&side_id_str),
+                Arg::Str(&side_name),
+                Arg::Str(&side_avatar),
+                Arg::Str(&rating_str),
+            ],
+        );
 
         // Start the battle if it's ready to start
         // if (this.sides.every(playerSide => !!playerSide) && !this.started)
-        let all_sides_ready = self.sides.iter().all(|s| !s.name.is_empty() && !s.pokemon.is_empty());
+        let all_sides_ready = self
+            .sides
+            .iter()
+            .all(|s| !s.name.is_empty() && !s.pokemon.is_empty());
         if all_sides_ready && !self.started {
             self.start();
         }
@@ -683,15 +693,15 @@ impl Battle {
     /// Start the battle
     /// Source: battle.ts:1859
     /// Deserialized games should use restart()
-    // 
+    //
     // 	start() {
     // 		// Deserialized games should use restart()
     // 		if (this.deserialized) return;
     // 		// need all players to start
     // 		if (!this.sides.every(side => !!side)) throw new Error(`Missing sides: ${this.sides}`);
-    // 
+    //
     // 		if (this.started) throw new Error(`Battle already started`);
-    // 
+    //
     // 		const format = this.format;
     // 		this.started = true;
     // 		if (this.gameType === 'multi') {
@@ -714,36 +724,36 @@ impl Battle {
     // 				this.sides[3]!.foe = this.sides[2]!;
     // 			}
     // 		}
-    // 
+    //
     // 		this.add('gen', this.gen);
-    // 
+    //
     // 		this.add('tier', format.name);
     // 		if (this.rated) {
     // 			if (this.rated === 'Rated battle') this.rated = true;
     // 			this.add('rated', typeof this.rated === 'string' ? this.rated : '');
     // 		}
-    // 
+    //
     // 		format.onBegin?.call(this);
     // 		for (const rule of this.ruleTable.keys()) {
     // 			if ('+*-!'.includes(rule.charAt(0))) continue;
     // 			const subFormat = this.dex.formats.get(rule);
     // 			subFormat.onBegin?.call(this);
     // 		}
-    // 
+    //
     // 		if (this.sides.some(side => !side.pokemon[0])) {
     // 			throw new Error('Battle not started: A player has an empty team.');
     // 		}
-    // 
+    //
     // 		if (this.debugMode) {
     // 			this.checkEVBalance();
     // 		}
-    // 
+    //
     // 		if (format.customRules) {
     // 			const plural = format.customRules.length === 1 ? '' : 's';
     // 			const open = format.customRules.length <= 5 ? ' open' : '';
     // 			this.add(`raw|<div class="infobox"><details class="readmore"${open}><summary><strong>${format.customRules.length} custom rule${plural}:</strong></summary> ${format.customRules.join(', ')}</details></div>`);
     // 		}
-    // 
+    //
     // 		this.runPickTeam();
     // 		this.queue.addChoice({ choice: 'start' });
     // 		this.midTurn = true;
@@ -856,13 +866,16 @@ impl Battle {
         // JS: for (const rule of this.ruleTable.keys()) { subFormat.onBegin?.call(this); }
         if let Some(ref rule_table) = self.rule_table {
             // Collect rule keys to avoid borrow checker issues
-            let rule_keys: Vec<String> = rule_table.keys().cloned()
-                .collect();
+            let rule_keys: Vec<String> = rule_table.keys().cloned().collect();
 
             for rule in rule_keys {
                 // JS: if ('+*-!'.includes(rule.charAt(0))) continue;
                 if let Some(first_char) = rule.chars().next() {
-                    if first_char == '+' || first_char == '*' || first_char == '-' || first_char == '!' {
+                    if first_char == '+'
+                        || first_char == '*'
+                        || first_char == '-'
+                        || first_char == '!'
+                    {
                         continue;
                     }
                 }
@@ -985,7 +998,11 @@ impl Battle {
         };
 
         if pokemon_is_active {
-            self.hint("A switch failed because the Pokémon trying to switch in is already in.", false, None);
+            self.hint(
+                "A switch failed because the Pokémon trying to switch in is already in.",
+                false,
+                None,
+            );
             return SwitchResult::Failed;
         }
 
@@ -1006,9 +1023,16 @@ impl Battle {
                 self.sides[side_index].pokemon[old_idx].being_called_back = true;
 
                 // Run BeforeSwitchOut event (unless skipBeforeSwitchOutEventFlag or is_drag)
-                let skip_event = self.sides[side_index].pokemon[old_idx].skip_before_switch_out_event_flag;
+                let skip_event =
+                    self.sides[side_index].pokemon[old_idx].skip_before_switch_out_event_flag;
                 if !skip_event && !is_drag {
-                    self.run_event("BeforeSwitchOut", Some((side_index, old_idx)), None, None, None);
+                    self.run_event(
+                        "BeforeSwitchOut",
+                        Some((side_index, old_idx)),
+                        None,
+                        None,
+                        None,
+                    );
                     if self.gen >= 5 {
                         self.each_event_internal("Update");
                     }
@@ -1084,7 +1108,13 @@ impl Battle {
         }
 
         // Run BeforeSwitchIn event
-        self.run_event("BeforeSwitchIn", Some((side_index, pokemon_index)), None, None, None);
+        self.run_event(
+            "BeforeSwitchIn",
+            Some((side_index, pokemon_index)),
+            None,
+            None,
+            None,
+        );
 
         // Log the switch
         let (details, hp_display) = {
@@ -1098,11 +1128,20 @@ impl Battle {
 
         let event_type = if is_drag { "drag" } else { "switch" };
         if let Some(effect) = source_effect {
-            self.log.push(format!("|{}|{}: {}|{}|{}|[from] {}",
-                event_type, side_id, pokemon_name, details, hp_display, effect.as_str()));
+            self.log.push(format!(
+                "|{}|{}: {}|{}|{}|[from] {}",
+                event_type,
+                side_id,
+                pokemon_name,
+                details,
+                hp_display,
+                effect.as_str()
+            ));
         } else {
-            self.log.push(format!("|{}|{}: {}|{}|{}",
-                event_type, side_id, pokemon_name, details, hp_display));
+            self.log.push(format!(
+                "|{}|{}: {}|{}|{}",
+                event_type, side_id, pokemon_name, details, hp_display
+            ));
         }
 
         // Gen 2 drag tracking
@@ -1130,7 +1169,13 @@ impl Battle {
         let active: Vec<(usize, usize)> = self.get_all_active(false);
         for (side_idx, poke_idx) in active {
             let effect_id = ID::new(event_name);
-            self.single_event(event_name, &effect_id, Some((side_idx, poke_idx)), None, None);
+            self.single_event(
+                event_name,
+                &effect_id,
+                Some((side_idx, poke_idx)),
+                None,
+                None,
+            );
         }
     }
 
@@ -1151,7 +1196,7 @@ impl Battle {
     }
 
     /// Random number in [0, n)
-    // 
+    //
     // 	random(m?: number, n?: number) {
     // 		return this.prng.random(m, n);
     // 	}
@@ -1161,7 +1206,7 @@ impl Battle {
     }
 
     /// Random chance
-    // 
+    //
     // 	randomChance(numerator: number, denominator: number) {
     // 		if (this.forceRandomChance !== null) return this.forceRandomChance;
     // 		return this.prng.randomChance(numerator, denominator);
@@ -1175,7 +1220,7 @@ impl Battle {
     }
 
     /// Sample from a slice
-    // 
+    //
     // 	sample<T>(items: readonly T[]): T {
     // 		return this.prng.sample(items);
     // 	}
@@ -1192,7 +1237,7 @@ impl Battle {
     }
 
     /// Get a side by ID
-    // 
+    //
     // 	getSide(sideid: SideID): Side {
     // 		return this.sides[parseInt(sideid[1]) - 1];
     // 	}
@@ -1230,7 +1275,7 @@ impl Battle {
     /// Get all active Pokemon
     /// Get all active Pokemon, optionally including fainted ones
     /// Equivalent to battle.ts getAllActive(includeFainted?)
-    // 
+    //
     // 	getAllActive(includeFainted?: boolean) {
     // 		const pokemonList: Pokemon[] = [];
     // 		for (const side of this.sides) {
@@ -1260,7 +1305,7 @@ impl Battle {
     /// Check if battle is over
     /// Check if the battle has a winner
     /// Equivalent to battle.ts checkWin()
-    // 
+    //
     // 	checkWin(faintData?: Battle['faintQueue'][0]) {
     // 		if (this.sides.every(side => !side.pokemonLeft)) {
     // 			this.win(faintData && this.gen > 4 ? faintData.target.side : null);
@@ -1318,7 +1363,9 @@ impl Battle {
         match self.game_type {
             GameType::FreeForAll => {
                 // In FFA, all other sides are foes
-                self.sides.iter().enumerate()
+                self.sides
+                    .iter()
+                    .enumerate()
                     .filter(|(i, _)| *i != side_idx)
                     .map(|(_, s)| s.pokemon_left)
                     .sum()
@@ -1328,12 +1375,12 @@ impl Battle {
                 // P1/P3 are a team, P2/P4 are a team
                 if side_idx == 0 || side_idx == 2 {
                     // Foes are P2 and P4
-                    self.sides.get(1).map(|s| s.pokemon_left).unwrap_or(0) +
-                    self.sides.get(3).map(|s| s.pokemon_left).unwrap_or(0)
+                    self.sides.get(1).map(|s| s.pokemon_left).unwrap_or(0)
+                        + self.sides.get(3).map(|s| s.pokemon_left).unwrap_or(0)
                 } else {
                     // Foes are P1 and P3
-                    self.sides.first().map(|s| s.pokemon_left).unwrap_or(0) +
-                    self.sides.get(2).map(|s| s.pokemon_left).unwrap_or(0)
+                    self.sides.first().map(|s| s.pokemon_left).unwrap_or(0)
+                        + self.sides.get(2).map(|s| s.pokemon_left).unwrap_or(0)
                 }
             }
             _ => {
@@ -1362,7 +1409,7 @@ impl Battle {
     }
 
     /// Initialize an effect state
-    // 
+    //
     // 	initEffectState(obj: Partial<EffectState>, effectOrder?: number): EffectState {
     // 		if (!obj.id) obj.id = '';
     // 		if (effectOrder !== undefined) {
@@ -1389,14 +1436,14 @@ impl Battle {
     // 	 */
     // 	choose(sideid: SideID, input: string) {
     // 		const side = this.getSide(sideid);
-    // 
+    //
     // 		if (!side.choose(input)) {
     // 			if (!side.choice.error) {
     // 				side.emitChoiceError(`Unknown error for choice: ${input}. If you're not using a custom client, please report this as a bug.`);
     // 			}
     // 			return false;
     // 		}
-    // 
+    //
     // 		if (!side.isChoiceDone()) {
     // 			side.emitChoiceError(`Incomplete choice: ${input} - missing other pokemon`);
     // 			return false;
@@ -1411,7 +1458,8 @@ impl Battle {
             return Err(format!("Invalid side: {}", side_id.to_str()));
         }
 
-        self.input_log.push(format!(">{} {}", side_id.to_str(), choice));
+        self.input_log
+            .push(format!(">{} {}", side_id.to_str(), choice));
 
         // Check if this is a comma-separated choice (for Doubles/Triples with multiple active Pokemon)
         if choice.contains(',') {
@@ -1432,7 +1480,12 @@ impl Battle {
 
     /// Validate a single choice (not comma-separated)
     /// pokemon_index: Which active slot this choice is for (0-2 in triples, 0-1 in doubles, 0 in singles)
-    fn validate_single_choice(&mut self, side_id: SideID, choice: &str, pokemon_index: Option<usize>) -> Result<(), String> {
+    fn validate_single_choice(
+        &mut self,
+        side_id: SideID,
+        choice: &str,
+        pokemon_index: Option<usize>,
+    ) -> Result<(), String> {
         // Parse and validate choice
         let parts: Vec<&str> = choice.split_whitespace().collect();
         if parts.is_empty() {
@@ -1446,7 +1499,10 @@ impl Battle {
             BattleRequestState::TeamPreview => {
                 // During team preview, only 'team' choices are valid
                 if choice_type != "team" {
-                    return Err(format!("[Invalid choice] Can't {} for Team Preview: You must select a team order", choice_type));
+                    return Err(format!(
+                        "[Invalid choice] Can't {} for Team Preview: You must select a team order",
+                        choice_type
+                    ));
                 }
             }
             BattleRequestState::Switch => {
@@ -1464,8 +1520,13 @@ impl Battle {
             }
             _ => {
                 // In other states (Move, None), certain choices are not valid
-                if choice_type == "team" && !matches!(self.request_state, BattleRequestState::TeamPreview) {
-                    return Err("[Invalid choice] Team choices are only valid during Team Preview".to_string());
+                if choice_type == "team"
+                    && !matches!(self.request_state, BattleRequestState::TeamPreview)
+                {
+                    return Err(
+                        "[Invalid choice] Team choices are only valid during Team Preview"
+                            .to_string(),
+                    );
                 }
                 // Pass validation:
                 // - During Switch requests: always valid (except in Singles)
@@ -1482,15 +1543,23 @@ impl Battle {
                         // Check if this slot has a fainted Pokemon
                         let side_idx = side_id.index();
                         if let Some(poke_idx) = pokemon_index {
-                            if let Some(active_poke_idx) = self.sides[side_idx].active.get(poke_idx).and_then(|&x| x) {
+                            if let Some(active_poke_idx) =
+                                self.sides[side_idx].active.get(poke_idx).and_then(|&x| x)
+                            {
                                 let pokemon = &self.sides[side_idx].pokemon[active_poke_idx];
                                 if !pokemon.is_fainted() {
-                                    return Err("[Invalid choice] Can't pass: Pokemon is not fainted".to_string());
+                                    return Err(
+                                        "[Invalid choice] Can't pass: Pokemon is not fainted"
+                                            .to_string(),
+                                    );
                                 }
                             }
                         }
                     } else {
-                        return Err("[Invalid choice] Can't pass: You can only pass during switch requests".to_string());
+                        return Err(
+                            "[Invalid choice] Can't pass: You can only pass during switch requests"
+                                .to_string(),
+                        );
                     }
                 }
             }
@@ -1526,16 +1595,19 @@ impl Battle {
                     // For now, simple heuristic: if next part is numeric and not a modifier, include it in move name
                     // This handles cases like "Conversion 2" where "2" is part of the move name
                     let mut i = 2;
-                    while i < parts.len() && move_name_parts < 3 { // Limit to 3 words max
+                    while i < parts.len() && move_name_parts < 3 {
+                        // Limit to 3 words max
                         let part = parts[i];
                         // If it's a number and we don't have modifiers yet, could be part of move name
-                        let is_modifier = matches!(part.to_lowercase().as_str(),
-                            "mega" | "zmove" | "dynamax" | "max" | "ultra");
+                        let is_modifier = matches!(
+                            part.to_lowercase().as_str(),
+                            "mega" | "zmove" | "dynamax" | "max" | "ultra"
+                        );
 
                         // Targets are: positive numbers, or explicit + relative (not -)
-                        let is_explicit_relative = part.starts_with('+') &&
-                                                   part.len() > 1 &&
-                                                   part[1..].parse::<i32>().is_ok();
+                        let is_explicit_relative = part.starts_with('+')
+                            && part.len() > 1
+                            && part[1..].parse::<i32>().is_ok();
                         let is_absolute = part.parse::<usize>().is_ok() && !part.starts_with('-');
                         let is_likely_target = is_explicit_relative || (is_absolute && i > 2);
 
@@ -1569,13 +1641,19 @@ impl Battle {
                         }
                         "zmove" => {
                             if has_mega || has_zmove || has_dynamax {
-                                return Err("[Invalid choice] Can't combine multiple move modifiers".to_string());
+                                return Err(
+                                    "[Invalid choice] Can't combine multiple move modifiers"
+                                        .to_string(),
+                                );
                             }
                             has_zmove = true;
                         }
                         "dynamax" | "max" => {
                             if has_zmove || has_dynamax {
-                                return Err("[Invalid choice] Can't combine multiple move modifiers".to_string());
+                                return Err(
+                                    "[Invalid choice] Can't combine multiple move modifiers"
+                                        .to_string(),
+                                );
                             }
                             has_dynamax = true;
                         }
@@ -1588,22 +1666,26 @@ impl Battle {
                         _ => {
                             // Check if it's a target (positive number or explicit + relative target)
                             // Only + prefix is valid for relative targets, not -
-                            let is_explicit_relative = part.starts_with('+') &&
-                                                       part.len() > 1 &&
-                                                       part[1..].parse::<i32>().is_ok();
-                            let is_absolute = part.parse::<usize>().is_ok() && !part.starts_with('-');
+                            let is_explicit_relative = part.starts_with('+')
+                                && part.len() > 1
+                                && part[1..].parse::<i32>().is_ok();
+                            let is_absolute =
+                                part.parse::<usize>().is_ok() && !part.starts_with('-');
 
                             let is_target = is_explicit_relative || is_absolute;
 
                             if is_target {
                                 target_count += 1;
                                 if target_count > 1 {
-                                    return Err("[Invalid choice] Move can only have one target".to_string());
+                                    return Err("[Invalid choice] Move can only have one target"
+                                        .to_string());
                                 }
                             } else {
                                 // Check if it looks like an invalid target (negative number)
                                 if part.starts_with('-') && part[1..].parse::<i32>().is_ok() {
-                                    return Err("[Invalid choice] Invalid target format".to_string());
+                                    return Err(
+                                        "[Invalid choice] Invalid target format".to_string()
+                                    );
                                 }
                                 // Not a modifier or target - might be part of move name
                                 // For now, we'll allow it (multi-word move names)
@@ -1615,16 +1697,23 @@ impl Battle {
 
                 // In Singles, zmove and mega require a target
                 if matches!(self.game_type, GameType::Singles)
-                    && (has_zmove || has_mega) && target_count == 0 {
-                        return Err("[Invalid choice] Z-moves and Mega Evolution require a target in Singles".to_string());
-                    }
+                    && (has_zmove || has_mega)
+                    && target_count == 0
+                {
+                    return Err(
+                        "[Invalid choice] Z-moves and Mega Evolution require a target in Singles"
+                            .to_string(),
+                    );
+                }
 
                 // Validate that Pokemon has required item for zmove/mega
                 if has_zmove || has_mega {
                     let side_idx = side_id.index();
                     if let Some(poke_idx) = pokemon_index {
                         // Get the active Pokemon at this slot
-                        if let Some(active_poke_idx) = self.sides[side_idx].active.get(poke_idx).and_then(|&x| x) {
+                        if let Some(active_poke_idx) =
+                            self.sides[side_idx].active.get(poke_idx).and_then(|&x| x)
+                        {
                             let pokemon = &self.sides[side_idx].pokemon[active_poke_idx];
                             let item_id = pokemon.item.as_str();
 
@@ -1639,7 +1728,10 @@ impl Battle {
                             if has_mega {
                                 // Check if Pokemon has a mega stone
                                 // Mega stones end with "ite" (e.g., "gengarite", "charizarditex")
-                                if !item_id.ends_with("ite") && !item_id.ends_with("itex") && !item_id.ends_with("itey") {
+                                if !item_id.ends_with("ite")
+                                    && !item_id.ends_with("itex")
+                                    && !item_id.ends_with("itey")
+                                {
                                     return Err("[Invalid choice] Can't Mega Evolve: Pokemon doesn't have a Mega Stone".to_string());
                                 }
                             }
@@ -1661,7 +1753,9 @@ impl Battle {
                     // Not a number - check if it's an obvious invalid word
                     // Reject common English words that are clearly not Pokemon names
                     let lowercase_arg = arg.to_lowercase();
-                    let invalid_words = ["first", "second", "third", "fourth", "fifth", "last", "next"];
+                    let invalid_words = [
+                        "first", "second", "third", "fourth", "fifth", "last", "next",
+                    ];
                     if invalid_words.contains(&lowercase_arg.as_str()) {
                         return Err("[Invalid choice] Can't switch: You must specify a Pokemon by number or name".to_string());
                     }
@@ -1699,12 +1793,16 @@ impl Battle {
             "shift" => {
                 // Shift is only valid in triples
                 if !matches!(self.game_type, GameType::Triples) {
-                    return Err("[Invalid choice] Shift is only valid in Triple Battles".to_string());
+                    return Err(
+                        "[Invalid choice] Shift is only valid in Triple Battles".to_string()
+                    );
                 }
                 // Shift cannot be used in the center position (slot 1)
                 if let Some(poke_idx) = pokemon_index {
                     if poke_idx == 1 {
-                        return Err("[Invalid choice] The center Pokemon cannot shift position".to_string());
+                        return Err(
+                            "[Invalid choice] The center Pokemon cannot shift position".to_string()
+                        );
                     }
                 }
                 // Shift does not accept any arguments
@@ -1811,19 +1909,20 @@ impl Battle {
                     };
 
                     // Check Choice item lock - if locked, override with locked move
-                    let move_id = if let Some(Some(poke_idx)) = self.sides[side_idx].active.get(slot) {
-                        if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
-                            if let Some(ref locked) = pokemon.locked_move {
-                                Some(locked.clone())
+                    let move_id =
+                        if let Some(Some(poke_idx)) = self.sides[side_idx].active.get(slot) {
+                            if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
+                                if let Some(ref locked) = pokemon.locked_move {
+                                    Some(locked.clone())
+                                } else {
+                                    move_id
+                                }
                             } else {
                                 move_id
                             }
                         } else {
                             move_id
-                        }
-                    } else {
-                        move_id
-                    };
+                        };
 
                     // Parse target if present
                     let target_loc = if words.len() > 2 {
@@ -1835,7 +1934,8 @@ impl Battle {
                     // Check for mega/zmove flags
                     let mega = words.contains(&"mega");
                     let terastallize = if words.contains(&"terastallize") {
-                        self.sides[side_idx].get_active(slot)
+                        self.sides[side_idx]
+                            .get_active(slot)
                             .and_then(|p| p.tera_type.clone())
                     } else {
                         None
@@ -1872,19 +1972,17 @@ impl Battle {
                         terastallize: None,
                     }
                 }
-                _ => {
-                    crate::side::ChosenAction {
-                        choice: crate::side::ChoiceType::Pass,
-                        pokemon_index: slot,
-                        target_loc: None,
-                        move_id: None,
-                        switch_index: None,
-                        mega: false,
-                        zmove: None,
-                        max_move: None,
-                        terastallize: None,
-                    }
-                }
+                _ => crate::side::ChosenAction {
+                    choice: crate::side::ChoiceType::Pass,
+                    pokemon_index: slot,
+                    target_loc: None,
+                    move_id: None,
+                    switch_index: None,
+                    mega: false,
+                    zmove: None,
+                    max_move: None,
+                    terastallize: None,
+                },
             };
 
             self.sides[side_idx].choice.actions.push(action);
@@ -1892,10 +1990,10 @@ impl Battle {
     }
 
     /// Commit choices and run the turn
-    // 
+    //
     // 	commitChoices() {
     // 		this.updateSpeed();
-    // 
+    //
     // 		// Sometimes you need to make switch choices mid-turn (e.g. U-turn,
     // 		// fainting). When this happens, the rest of the turn is saved (and not
     // 		// re-sorted), but the new switch choices are sorted and inserted before
@@ -1903,7 +2001,7 @@ impl Battle {
     // 		const oldQueue = this.queue.list;
     // 		this.queue.clear();
     // 		if (!this.allChoicesDone()) throw new Error("Not all choices done");
-    // 
+    //
     // 		for (const side of this.sides) {
     // 			const choice = side.getChoice();
     // 			if (choice) this.inputLog.push(`>${side.id} ${choice}`);
@@ -1912,17 +2010,17 @@ impl Battle {
     // 			this.queue.addChoice(side.choice.actions);
     // 		}
     // 		this.clearRequest();
-    // 
+    //
     // 		this.queue.sort();
     // 		this.queue.list.push(...oldQueue);
-    // 
+    //
     // 		this.requestState = '';
     // 		for (const side of this.sides) {
     // 			side.activeRequest = null;
     // 		}
-    // 
+    //
     // 		this.turnLoop();
-    // 
+    //
     // 		// workaround for tests
     // 		if (this.log.length - this.sentLogPos > 500) this.sendUpdates();
     // 	}
@@ -1938,7 +2036,9 @@ impl Battle {
             for action in &self.sides[side_idx].choice.actions {
                 match action.choice {
                     crate::side::ChoiceType::Move => {
-                        let pokemon_idx = self.sides[side_idx].active.get(action.pokemon_index)
+                        let pokemon_idx = self.sides[side_idx]
+                            .active
+                            .get(action.pokemon_index)
                             .and_then(|opt| *opt);
                         if let Some(poke_idx) = pokemon_idx {
                             let priority = if let Some(ref move_id) = action.move_id {
@@ -1953,7 +2053,9 @@ impl Battle {
                     crate::side::ChoiceType::Switch => {
                         // Switches happen before moves (priority 7 effectively)
                         // When switching into an empty slot (after fainting), there's no current Pokemon
-                        let pokemon_idx = self.sides[side_idx].active.get(action.pokemon_index)
+                        let pokemon_idx = self.sides[side_idx]
+                            .active
+                            .get(action.pokemon_index)
                             .and_then(|opt| *opt);
 
                         // Get speed for ordering (use 0 if slot is empty)
@@ -2024,13 +2126,16 @@ impl Battle {
                         // Handle pivot switch (U-Turn, Volt Switch, Flip Turn)
                         let pivot_switch_id = ID::new("pivotswitch");
                         if self.sides[side_idx].pokemon[poke_idx].has_volatile(&pivot_switch_id) {
-                            self.sides[side_idx].pokemon[poke_idx].remove_volatile(&pivot_switch_id);
+                            self.sides[side_idx].pokemon[poke_idx]
+                                .remove_volatile(&pivot_switch_id);
 
                             // Find a valid switch target
                             let switch_target = self.find_valid_switch_target(side_idx, poke_idx);
                             if let Some(target_idx) = switch_target {
                                 // Get slot from the Pokemon's position
-                                let slot = self.sides[side_idx].pokemon.get(poke_idx)
+                                let slot = self.sides[side_idx]
+                                    .pokemon
+                                    .get(poke_idx)
                                     .map(|p| p.position)
                                     .unwrap_or(0);
                                 self.do_switch(side_idx, slot, target_idx);
@@ -2093,12 +2198,19 @@ impl Battle {
             let has_status = !self.sides[side_idx].pokemon[active_idx].status.is_empty();
             if has_status {
                 let naturalcure_id = ID::new("naturalcure");
-                self.single_event("CheckShow", &naturalcure_id, Some((side_idx, active_idx)), None, None);
+                self.single_event(
+                    "CheckShow",
+                    &naturalcure_id,
+                    Some((side_idx, active_idx)),
+                    None,
+                    None,
+                );
             }
         }
 
         // Get the old Pokemon's name for logging
-        let _old_name = self.sides[side_idx].get_active(slot)
+        let _old_name = self.sides[side_idx]
+            .get_active(slot)
             .map(|p| p.name.clone())
             .unwrap_or_default();
 
@@ -2110,7 +2222,10 @@ impl Battle {
             let side_id = self.sides[side_idx].id_str();
             let details = pokemon.details();
             let hp = format!("{}/{}", pokemon.hp, pokemon.maxhp);
-            self.log.push(format!("|switch|{}: {}|{}|{}", side_id, pokemon.name, details, hp));
+            self.log.push(format!(
+                "|switch|{}: {}|{}|{}",
+                side_id, pokemon.name, details, hp
+            ));
         }
 
         // Apply entry hazard damage
@@ -2148,14 +2263,23 @@ impl Battle {
         }
 
         // Call switchIn with is_drag = true
-        matches!(self.switch_in(side_idx, slot, switch_target, None, true), SwitchResult::Success)
+        matches!(
+            self.switch_in(side_idx, slot, switch_target, None, true),
+            SwitchResult::Success
+        )
     }
 
     /// Execute a switch with optional drag flag
     /// Rust helper - breaks down switch logic for borrow checker
     /// JavaScript integrates this into switch/drag handling
     #[allow(dead_code)]
-    fn do_switch_with_drag(&mut self, side_idx: usize, slot: usize, switch_to: usize, is_drag: bool) {
+    fn do_switch_with_drag(
+        &mut self,
+        side_idx: usize,
+        slot: usize,
+        switch_to: usize,
+        is_drag: bool,
+    ) {
         if side_idx >= self.sides.len() {
             return;
         }
@@ -2180,7 +2304,10 @@ impl Battle {
             let details = pokemon.details();
             let hp = format!("{}/{}", pokemon.hp, pokemon.maxhp);
             let event = if is_drag { "drag" } else { "switch" };
-            self.log.push(format!("|{}|{}: {}|{}|{}", event, side_id, pokemon.name, details, hp));
+            self.log.push(format!(
+                "|{}|{}: {}|{}|{}",
+                event, side_id, pokemon.name, details, hp
+            ));
         }
 
         // Apply entry hazard damage
@@ -2254,7 +2381,12 @@ impl Battle {
         let (maxhp, pokemon_types, pokemon_name, is_grounded) = {
             let pokemon = &self.sides[side_idx].pokemon[poke_idx];
             let is_grounded = !pokemon.types.iter().any(|t| t.to_lowercase() == "flying");
-            (pokemon.maxhp, pokemon.types.clone(), pokemon.name.clone(), is_grounded)
+            (
+                pokemon.maxhp,
+                pokemon.types.clone(),
+                pokemon.name.clone(),
+                is_grounded,
+            )
         };
 
         let side_id = self.sides[side_idx].id_str();
@@ -2267,7 +2399,14 @@ impl Battle {
             self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
 
             let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-            self.add_log("-damage", &[&full_name, &format!("{}/{}", hp, maxhp), "[from] Stealth Rock"]);
+            self.add_log(
+                "-damage",
+                &[
+                    &full_name,
+                    &format!("{}/{}", hp, maxhp),
+                    "[from] Stealth Rock",
+                ],
+            );
         }
 
         // Spikes - only affects grounded Pokemon
@@ -2279,7 +2418,10 @@ impl Battle {
                 self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
 
                 let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                self.add_log("-damage", &[&full_name, &format!("{}/{}", hp, maxhp), "[from] Spikes"]);
+                self.add_log(
+                    "-damage",
+                    &[&full_name, &format!("{}/{}", hp, maxhp), "[from] Spikes"],
+                );
             }
         }
 
@@ -2293,7 +2435,10 @@ impl Battle {
             if is_poison {
                 // Poison type absorbs Toxic Spikes
                 self.sides[side_idx].remove_side_condition(&tspikes_id);
-                self.add_log("-sideend", &[side_id, "Toxic Spikes", "[from] ability: Poison Touch"]); // Generic message
+                self.add_log(
+                    "-sideend",
+                    &[side_id, "Toxic Spikes", "[from] ability: Poison Touch"],
+                ); // Generic message
             } else if !self.sides[side_idx].pokemon[poke_idx].status.is_empty() {
                 // Already has a status - can't be poisoned
             } else {
@@ -2301,7 +2446,11 @@ impl Battle {
                 let status = if layers >= 2 { "tox" } else { "psn" };
                 self.sides[side_idx].pokemon[poke_idx].set_status(ID::new(status));
 
-                let _status_msg = if layers >= 2 { "badly poisoned" } else { "poisoned" };
+                let _status_msg = if layers >= 2 {
+                    "badly poisoned"
+                } else {
+                    "poisoned"
+                };
                 self.add_log("-status", &[&full_name, status, "[from] Toxic Spikes"]);
             }
         }
@@ -2340,7 +2489,10 @@ impl Battle {
         let (attacker_name, move_name) = {
             let side_id = self.sides[side_idx].id_str();
             let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-            (format!("{}: {}", side_id, pokemon.name), move_id.as_str().to_string())
+            (
+                format!("{}: {}", side_id, pokemon.name),
+                move_id.as_str().to_string(),
+            )
         };
         self.add_log("move", &[&attacker_name, &move_name]);
 
@@ -2368,7 +2520,9 @@ impl Battle {
 
         if target_loc <= 0 {
             // Default to first active foe
-            let target_poke_idx = self.sides.get(foe_idx)
+            let target_poke_idx = self
+                .sides
+                .get(foe_idx)
                 .and_then(|s| s.active.first())
                 .and_then(|opt| *opt)
                 .unwrap_or(0);
@@ -2376,7 +2530,9 @@ impl Battle {
         } else {
             // Specific target position
             let slot = (target_loc.abs() - 1) as usize;
-            let target_poke_idx = self.sides.get(foe_idx)
+            let target_poke_idx = self
+                .sides
+                .get(foe_idx)
                 .and_then(|s| s.active.get(slot))
                 .and_then(|opt| *opt)
                 .unwrap_or(0);
@@ -2453,7 +2609,8 @@ impl Battle {
         // Confusion lasts 2-5 turns
         let duration = 2 + self.random(4);
         self.sides[side_idx].pokemon[poke_idx].add_volatile(confusion_id.clone());
-        if let Some(state) = self.sides[side_idx].pokemon[poke_idx].get_volatile_mut(&confusion_id) {
+        if let Some(state) = self.sides[side_idx].pokemon[poke_idx].get_volatile_mut(&confusion_id)
+        {
             state.duration = Some(duration);
         }
 
@@ -2505,7 +2662,12 @@ impl Battle {
             }
 
             // Check type immunities
-            let has_type = |t: &str| pokemon.types.iter().any(|pt| pt.to_lowercase() == t.to_lowercase());
+            let has_type = |t: &str| {
+                pokemon
+                    .types
+                    .iter()
+                    .any(|pt| pt.to_lowercase() == t.to_lowercase())
+            };
 
             match status {
                 "brn" if has_type("fire") => return,
@@ -2554,7 +2716,12 @@ impl Battle {
         // JS: if (!this.hp || !this.status) return false;
         let (has_hp, has_status, status, name) = if let Some(side) = self.sides.get(side_idx) {
             if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                (pokemon.hp > 0, !pokemon.status.is_empty(), pokemon.status.as_str().to_string(), pokemon.name.clone())
+                (
+                    pokemon.hp > 0,
+                    !pokemon.status.is_empty(),
+                    pokemon.status.as_str().to_string(),
+                    pokemon.name.clone(),
+                )
             } else {
                 return false;
             }
@@ -2669,7 +2836,7 @@ impl Battle {
     /// Process faint messages
     /// Equivalent to battle.ts faintMessages(lastFirst?, forceCheck?, checkWin?)
     ///
-    // 
+    //
     // 	faintMessages(lastFirst = false, forceCheck = false, checkWin = true) {
     // 		if (this.ended) return;
     // 		const length = this.faintQueue.length;
@@ -2715,7 +2882,7 @@ impl Battle {
     // 				if (this.faintQueue.length >= faintQueueLeft) checkWin = true;
     // 			}
     // 		}
-    // 
+    //
     // 		if (this.gen <= 1) {
     // 			// in gen 1, fainting skips the rest of the turn
     // 			// residuals don't exist in gen 1
@@ -2740,9 +2907,9 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		if (checkWin && this.checkWin(faintData)) return true;
-    // 
+    //
     // 		if (faintData && length) {
     // 			this.runEvent('AfterFaint', faintData.target, faintData.source, faintData.effect, length);
     // 		}
@@ -2759,10 +2926,14 @@ impl Battle {
         // This handles cases where damage was applied without calling Battle.faint()
         for side_idx in 0..self.sides.len() {
             for poke_idx in 0..self.sides[side_idx].pokemon.len() {
-                if self.sides[side_idx].pokemon[poke_idx].hp == 0 &&
-                   !self.sides[side_idx].pokemon[poke_idx].fainted {
+                if self.sides[side_idx].pokemon[poke_idx].hp == 0
+                    && !self.sides[side_idx].pokemon[poke_idx].fainted
+                {
                     // Check if already in queue
-                    let already_queued = self.faint_queue.iter().any(|fd| fd.target == (side_idx, poke_idx));
+                    let already_queued = self
+                        .faint_queue
+                        .iter()
+                        .any(|fd| fd.target == (side_idx, poke_idx));
                     if !already_queued {
                         self.faint_queue.push(FaintData {
                             target: (side_idx, poke_idx),
@@ -2841,7 +3012,7 @@ impl Battle {
                     Some((side_idx, poke_idx)),
                     faint_data.source,
                     faint_data.effect.as_ref(),
-                    None,  // relay_var
+                    None, // relay_var
                 );
 
                 // JS: this.singleEvent('End', pokemon.getAbility(), pokemon.abilityState, pokemon);
@@ -2931,7 +3102,9 @@ impl Battle {
                             if let Some(damage) = damage_value.as_i64() {
                                 if damage > 0 {
                                     // Reset damage to 0
-                                    bide_state.data.insert("damage".to_string(), serde_json::json!(0));
+                                    bide_state
+                                        .data
+                                        .insert("damage".to_string(), serde_json::json!(0));
                                     bide_cleared = true;
                                 }
                             }
@@ -2942,22 +3115,27 @@ impl Battle {
 
             if bide_cleared {
                 self.hint("Desync Clause Mod activated!", false, None);
-                self.hint("In Gen 1, Bide's accumulated damage is reset to 0 when a Pokemon faints.", false, None);
+                self.hint(
+                    "In Gen 1, Bide's accumulated damage is reset to 0 when a Pokemon faints.",
+                    false,
+                    None,
+                );
             }
         }
-
         // JS: else if (this.gen <= 3 && this.gameType === 'singles') { ... }
         else if self.gen <= 3 && self.game_type == GameType::Singles {
             // in gen 3 or earlier, fainting in singles skips to residuals
             // JS: for (const pokemon of this.getAllActive()) { ... }
 
             // Collect active pokemon positions to avoid borrow checker issues
-            let active_positions: Vec<(usize, usize)> = self.sides.iter().enumerate()
+            let active_positions: Vec<(usize, usize)> = self
+                .sides
+                .iter()
+                .enumerate()
                 .flat_map(|(side_idx, side)| {
-                    side.active.iter()
-                        .filter_map(move |&opt_idx| {
-                            opt_idx.map(|poke_idx| (side_idx, poke_idx))
-                        })
+                    side.active
+                        .iter()
+                        .filter_map(move |&opt_idx| opt_idx.map(|poke_idx| (side_idx, poke_idx)))
                 })
                 .collect();
 
@@ -2987,7 +3165,7 @@ impl Battle {
                     Some(faint_data.target),
                     faint_data.source,
                     faint_data.effect.as_ref(),
-                    None,  // relay_var
+                    None, // relay_var
                 );
             }
         }
@@ -3010,7 +3188,8 @@ impl Battle {
         let mut needs_switch = false;
         for side in &self.sides {
             // First check if this side has any available Pokemon to switch in
-            let has_available_pokemon = side.pokemon.iter().any(|p| !p.is_fainted() && !p.is_active);
+            let has_available_pokemon =
+                side.pokemon.iter().any(|p| !p.is_fainted() && !p.is_active);
 
             if has_available_pokemon {
                 // Only require switches if there are Pokemon available to switch in
@@ -3020,7 +3199,12 @@ impl Battle {
                         needs_switch = true;
                         break;
                     } else if let Some(poke_idx) = active_idx {
-                        if side.pokemon.get(poke_idx).map(|p| p.is_fainted()).unwrap_or(false) {
+                        if side
+                            .pokemon
+                            .get(poke_idx)
+                            .map(|p| p.is_fainted())
+                            .unwrap_or(false)
+                        {
                             needs_switch = true;
                             break;
                         }
@@ -3068,7 +3252,7 @@ impl Battle {
     }
 
     /// Get the debug log (all lines)
-    // 
+    //
     // 	getDebugLog() {
     // 		const channelMessages = extractChannelMessages(this.log.join('\n'), [-1]);
     // 		return channelMessages[-1].join('\n');
@@ -3081,13 +3265,13 @@ impl Battle {
     /// Add a log entry - matches JS this.add()
     /// JavaScript: add(...parts: (Part | (() => { side: SideID, secret: string, shared: string }))[])
     /// Usage: battle.add("-activate", &[pokemon.into(), "ability: Immunity".into()])
-    // 
+    //
     // 	add(...parts: (Part | (() => { side: SideID, secret: string, shared: string }))[]) {
     // 		if (!parts.some(part => typeof part === 'function')) {
     // 			this.log.push(`|${parts.join('|')}`);
     // 			return;
     // 		}
-    // 
+    //
     // 		let side: SideID | null = null;
     // 		const secret = [];
     // 		const shared = [];
@@ -3168,13 +3352,16 @@ impl Battle {
                 SideID::P3 => "p3",
                 SideID::P4 => "p4",
             };
-            self.add_split(side_str, &secret.iter().map(|s| s.as_str()).collect::<Vec<_>>(),
-                          Some(&shared.iter().map(|s| s.as_str()).collect::<Vec<_>>()));
+            self.add_split(
+                side_str,
+                &secret.iter().map(|s| s.as_str()).collect::<Vec<_>>(),
+                Some(&shared.iter().map(|s| s.as_str()).collect::<Vec<_>>()),
+            );
         }
     }
 
     /// Add a move log entry and track the last move line
-    // 
+    //
     // 	addMove(...args: (string | number | Function | AnyObject)[]) {
     // 		this.lastMoveLine = this.log.length;
     // 		// eslint-disable-next-line @typescript-eslint/no-base-to-string
@@ -3190,16 +3377,16 @@ impl Battle {
     /// Show a hint to the player
     /// Equivalent to battle.ts hint(hint, once?, side?)
     ///
-    // 
+    //
     // 	hint(hint: string, once?: boolean, side?: Side) {
     // 		if (this.hints.has(side ? `${side.id}|${hint}` : hint)) return;
-    // 
+    //
     // 		if (side) {
     // 			this.addSplit(side.id, ['-hint', hint]);
     // 		} else {
     // 			this.add('-hint', hint);
     // 		}
-    // 
+    //
     // 		if (once) this.hints.add(side ? `${side.id}|${hint}` : hint);
     // 	}
     //
@@ -3247,7 +3434,7 @@ impl Battle {
     /// Chain two modifiers together
     /// Equivalent to battle.ts chain(previousMod, nextMod)
     ///
-    // 
+    //
     // 	chain(previousMod: number | number[], nextMod: number | number[]) {
     // 		// previousMod or nextMod can be either a number or an array [numerator, denominator]
     // 		if (Array.isArray(previousMod)) {
@@ -3255,7 +3442,7 @@ impl Battle {
     // 		} else {
     // 			previousMod = this.trunc(previousMod * 4096);
     // 		}
-    // 
+    //
     // 		if (Array.isArray(nextMod)) {
     // 			nextMod = this.trunc(nextMod[0] * 4096 / nextMod[1]);
     // 		} else {
@@ -3290,7 +3477,7 @@ impl Battle {
     /// Apply a modifier to a value
     /// Equivalent to battle.ts modify(value, numerator, denominator)
     ///
-    // 
+    //
     // 	modify(value: number, numerator: number | number[], denominator = 1) {
     // 		// You can also use:
     // 		// modify(value, [numerator, denominator])
@@ -3353,17 +3540,19 @@ impl Battle {
         result
     }
 
-
     /// Get the current event's modifier (4096 = 1.0x)
     /// Rust accessor method - JavaScript directly accesses this.event.modifier field
     /// Used in event handlers to get the current relay variable modifier
     pub fn event_modifier(&self) -> i32 {
-        self.current_event.as_ref().map(|e| e.modifier).unwrap_or(4096)
+        self.current_event
+            .as_ref()
+            .map(|e| e.modifier)
+            .unwrap_or(4096)
     }
 
     /// Declare a tie
     /// Equivalent to battle.ts tie()
-    // 
+    //
     // 	tie() {
     // 		return this.win();
     // 	}
@@ -3375,7 +3564,7 @@ impl Battle {
     /// Declare a winner
     /// Equivalent to battle.ts win() (battle.ts:1474-1497)
     /// Pass None for a tie, or Some(side_id) for a winner
-    // 
+    //
     // 	win(side?: SideID | '' | Side | null) {
     // 		if (this.ended) return false;
     // 		if (side && typeof side === 'string') {
@@ -3384,7 +3573,7 @@ impl Battle {
     // 			side = null;
     // 		}
     // 		this.winner = side ? side.name : '';
-    // 
+    //
     // 		this.add('');
     // 		if (side?.allySide) {
     // 			this.add('win', side.name + ' & ' + side.allySide.name);
@@ -3416,7 +3605,8 @@ impl Battle {
         // JavaScript: this.winner = side ? side.name : '';
         let (winner_name, ally_name) = if let Some(side_id) = side {
             if let Some(side) = self.get_side(side_id) {
-                let ally = side.ally_index
+                let ally = side
+                    .ally_index
                     .and_then(|idx| self.sides.get(idx))
                     .map(|s| s.name.clone());
                 (Some(side.name.clone()), ally)
@@ -3461,7 +3651,7 @@ impl Battle {
 
     /// Force a side to lose
     /// Equivalent to battle.ts lose() (battle.ts:1499-1518)
-    // 
+    //
     // 	lose(side: SideID | Side) {
     // 		if (typeof side === 'string') {
     // 			side = this.getSide(side);
@@ -3471,7 +3661,7 @@ impl Battle {
     // 			return this.win(side.foe);
     // 		}
     // 		if (!side.pokemonLeft) return;
-    // 
+    //
     // 		side.pokemonLeft = 0;
     // 		side.active[0]?.faint();
     // 		this.faintMessages(false, true);
@@ -3543,7 +3733,7 @@ impl Battle {
 
     /// Force a win for a specific side
     /// Equivalent to battle.ts forceWin()
-    // 
+    //
     // 	forceWin(side: SideID | null = null) {
     // 		if (this.ended) return false;
     // 		this.inputLog.push(side ? `>forcewin ${side}` : `>forcetie`);
@@ -3561,14 +3751,19 @@ impl Battle {
 
     /// Set the currently active move
     /// Equivalent to battle.ts setActiveMove()
-    // 
+    //
     // 	setActiveMove(move?: ActiveMove | null, pokemon?: Pokemon | null, target?: Pokemon | null) {
     // 		this.activeMove = move || null;
     // 		this.activePokemon = pokemon || null;
     // 		this.activeTarget = target || pokemon || null;
     // 	}
     //
-    pub fn set_active_move(&mut self, move_id: Option<ID>, pokemon: Option<(usize, usize)>, target: Option<(usize, usize)>) {
+    pub fn set_active_move(
+        &mut self,
+        move_id: Option<ID>,
+        pokemon: Option<(usize, usize)>,
+        target: Option<(usize, usize)>,
+    ) {
         self.active_move = move_id.and_then(|id| self.dex.get_active_move(&id.to_string()));
         self.active_pokemon = pokemon;
         self.active_target = target.or(pokemon);
@@ -3576,7 +3771,7 @@ impl Battle {
 
     /// Clear the currently active move
     /// Equivalent to battle.ts clearActiveMove()
-    // 
+    //
     // 	clearActiveMove(failed?: boolean) {
     // 		if (this.activeMove) {
     // 			if (!failed) {
@@ -3603,7 +3798,7 @@ impl Battle {
 
     /// Check if an ability is being suppressed (Mold Breaker, etc.)
     /// Equivalent to battle.ts suppressingAbility()
-    // 
+    //
     // 	suppressingAbility(target?: Pokemon) {
     // 		return this.activePokemon && this.activePokemon.isActive && (this.activePokemon !== target || this.gen < 8) &&
     // 			this.activeMove && this.activeMove.ignoreAbility && !target?.hasItem('Ability Shield');
@@ -3622,7 +3817,9 @@ impl Battle {
                     if self.active_move.is_some() {
                         // Mold Breaker, Teravolt, Turboblaze
                         let ability = pokemon.ability.as_str();
-                        let ignores = ability == "moldbreaker" || ability == "teravolt" || ability == "turboblaze";
+                        let ignores = ability == "moldbreaker"
+                            || ability == "teravolt"
+                            || ability == "turboblaze";
 
                         // In Gen 8+, can't suppress your own ability
                         if self.gen >= 8 {
@@ -3654,7 +3851,7 @@ impl Battle {
 
     /// Get all Pokemon in the battle (not just active)
     /// Equivalent to battle.ts getAllPokemon()
-    // 
+    //
     // 	getAllPokemon() {
     // 		const pokemonList: Pokemon[] = [];
     // 		for (const side of this.sides) {
@@ -3992,15 +4189,16 @@ impl Battle {
         let mut targets: Vec<(usize, usize)> = Vec::new();
 
         // Get move data to access target and flags
-        let (move_target, has_mustpressure, has_futuremove, has_smart_target) = match self.dex.get_move(move_id.as_str()) {
-            Some(m) => (
-                m.target.clone(),
-                m.flags.contains_key("mustpressure"),
-                m.flags.contains_key("futuremove"),
-                m.smart_target.unwrap_or(false)
-            ),
-            None => return (vec![], vec![]),
-        };
+        let (move_target, has_mustpressure, has_futuremove, has_smart_target) =
+            match self.dex.get_move(move_id.as_str()) {
+                Some(m) => (
+                    m.target.clone(),
+                    m.flags.contains_key("mustpressure"),
+                    m.flags.contains_key("futuremove"),
+                    m.smart_target.unwrap_or(false),
+                ),
+                None => return (vec![], vec![]),
+            };
 
         // Handle different target types
         match move_target.as_str() {
@@ -4203,18 +4401,18 @@ impl Battle {
     /// Get random target for a move
     /// Equivalent to battle.ts getRandomTarget()
     ///
-    // 
+    //
     // 	getRandomTarget(pokemon: Pokemon, move: string | Move) {
     // 		// A move was used without a chosen target
-    // 
+    //
     // 		// For instance: Metronome chooses Ice Beam. Since the user didn't
     // 		// choose a target when choosing Metronome, Ice Beam's target must
     // 		// be chosen randomly.
-    // 
+    //
     // 		// The target is chosen randomly from possible targets, EXCEPT that
     // 		// moves that can target either allies or foes will only target foes
     // 		// when used without an explicit target.
-    // 
+    //
     // 		move = this.dex.moves.get(move);
     // 		if (['self', 'all', 'allySide', 'allyTeam', 'adjacentAllyOrSelf'].includes(move.target)) {
     // 			return pokemon;
@@ -4224,7 +4422,7 @@ impl Battle {
     // 			return adjacentAllies.length ? this.sample(adjacentAllies) : null;
     // 		}
     // 		if (this.gameType === 'singles') return pokemon.side.foe.active[0];
-    // 
+    //
     // 		if (this.activePerHalf > 2) {
     // 			if (move.target === 'adjacentFoe' || move.target === 'normal' || move.target === 'randomNormal') {
     // 				// even if a move can target an ally, auto-resolution will never make it target an ally
@@ -4238,10 +4436,19 @@ impl Battle {
     // 		return pokemon.side.randomFoe() || pokemon.side.foe.active[0];
     // 	}
     //
-    pub fn get_random_target(&mut self, user_side: usize, user_idx: usize, move_target: &str) -> Option<(usize, usize)> {
+    pub fn get_random_target(
+        &mut self,
+        user_side: usize,
+        user_idx: usize,
+        move_target: &str,
+    ) -> Option<(usize, usize)> {
         // JS: if (['self', 'all', 'allySide', 'allyTeam', 'adjacentAllyOrSelf'].includes(move.target)) return pokemon;
-        if move_target == "Self" || move_target == "All" || move_target == "AllySide"
-            || move_target == "AllyTeam" || move_target == "AdjacentAllyOrSelf" {
+        if move_target == "Self"
+            || move_target == "All"
+            || move_target == "AllySide"
+            || move_target == "AllyTeam"
+            || move_target == "AdjacentAllyOrSelf"
+        {
             return Some((user_side, user_idx));
         }
 
@@ -4277,7 +4484,10 @@ impl Battle {
         // JS: if (this.activePerHalf > 2) {
         if self.active_per_half > 2 {
             // JS: if (move.target === 'adjacentFoe' || move.target === 'normal' || move.target === 'randomNormal') {
-            if move_target == "AdjacentFoe" || move_target == "Normal" || move_target == "RandomNormal" {
+            if move_target == "AdjacentFoe"
+                || move_target == "Normal"
+                || move_target == "RandomNormal"
+            {
                 // JS: const adjacentFoes = pokemon.adjacentFoes();
                 // JS: if (adjacentFoes.length) return this.sample(adjacentFoes);
                 let adjacent_foes = self.adjacent_foes(user_side, user_idx);
@@ -4299,7 +4509,8 @@ impl Battle {
                         } else {
                             0
                         };
-                        let target_slot = side.active.len().saturating_sub(1).saturating_sub(position);
+                        let target_slot =
+                            side.active.len().saturating_sub(1).saturating_sub(position);
                         if let Some(Some(poke_idx)) = side.active.get(target_slot) {
                             return Some((foe_side, *poke_idx));
                         }
@@ -4312,7 +4523,9 @@ impl Battle {
         let foe_side = if user_side == 0 { 1 } else { 0 };
         if foe_side < self.sides.len() {
             // Try to get a random active foe
-            let valid_targets: Vec<usize> = self.sides[foe_side].pokemon.iter()
+            let valid_targets: Vec<usize> = self.sides[foe_side]
+                .pokemon
+                .iter()
                 .enumerate()
                 .filter(|(_, p)| p.is_active && !p.is_fainted())
                 .map(|(idx, _)| idx)
@@ -4335,7 +4548,7 @@ impl Battle {
     /// Update speed for all active Pokemon
     /// Equivalent to battle.ts updateSpeed()
     ///
-    // 
+    //
     // 	updateSpeed() {
     // 		for (const pokemon of this.getAllActive()) {
     // 			pokemon.updateSpeed();
@@ -4364,7 +4577,7 @@ impl Battle {
     /// Deal damage to Pokemon
     /// Equivalent to battle.ts damage() (battle.ts:2165-2175)
     ///
-    // 
+    //
     // 	damage(
     // 		damage: number, target: Pokemon | null = null, source: Pokemon | null = null,
     // 		effect: 'drain' | 'recoil' | Effect | null = null, instafaint = false
@@ -4387,7 +4600,8 @@ impl Battle {
     ) -> Option<i32> {
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
-        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event {
+        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event
+        {
             (event.target, event.source, event.effect.clone())
         } else {
             (None, None, None)
@@ -4404,20 +4618,14 @@ impl Battle {
         };
 
         // JavaScript: return this.spreadDamage([damage], [target], source, effect, instafaint)[0];
-        let result = self.spread_damage(
-            &[Some(damage)],
-            &[target],
-            source,
-            effect,
-            instafaint,
-        );
+        let result = self.spread_damage(&[Some(damage)], &[target], source, effect, instafaint);
         result.first().copied().flatten()
     }
 
     /// Deal direct damage (bypasses most effects)
     /// Matches JavaScript battle.ts:2177-2230 directDamage()
     ///
-    // 
+    //
     // 	directDamage(damage: number, target?: Pokemon, source: Pokemon | null = null, effect: Effect | null = null) {
     // 		if (this.event) {
     // 			target ||= this.event.target;
@@ -4427,9 +4635,9 @@ impl Battle {
     // 		if (!target?.hp) return 0;
     // 		if (!damage) return 0;
     // 		damage = this.clampIntRange(damage, 1);
-    // 
+    //
     // 		if (typeof effect === 'string' || !effect) effect = this.dex.conditions.getByID((effect || '') as ID);
-    // 
+    //
     // 		// In Gen 1 BUT NOT STADIUM, Substitute also takes confusion and HJK recoil damage
     // 		if (this.gen <= 1 && this.dex.currentMod !== 'gen1stadium' &&
     // 			['confusion', 'jumpkick', 'highjumpkick'].includes(effect.id)) {
@@ -4455,7 +4663,7 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		damage = target.damage(damage, source, effect);
     // 		switch (effect.id) {
     // 		case 'strugglerecoil':
@@ -4481,14 +4689,15 @@ impl Battle {
     ) -> i32 {
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
-        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event {
+        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event
+        {
             (event.target, event.source, event.effect.clone())
         } else {
             (None, None, None)
         };
 
         let target = target.or(event_target);
-        let _source = source.or(event_source);  // Not used in current implementation but matches JS signature
+        let _source = source.or(event_source); // Not used in current implementation but matches JS signature
         let effect_owned: Option<ID>;
         let effect = if effect.is_none() {
             effect_owned = event_effect;
@@ -4588,14 +4797,19 @@ impl Battle {
                     if let Some((foe_side_idx, foe_poke_idx)) = foe_pos {
                         // Deduct damage from substitute HP
                         let mut sub_destroyed = false;
-                        if let Some(foe_pokemon) = self.sides.get_mut(foe_side_idx)
-                            .and_then(|s| s.pokemon.get_mut(foe_poke_idx)) {
-
+                        if let Some(foe_pokemon) = self
+                            .sides
+                            .get_mut(foe_side_idx)
+                            .and_then(|s| s.pokemon.get_mut(foe_poke_idx))
+                        {
                             if let Some(sub_state) = foe_pokemon.volatiles.get_mut(&substitute_id) {
                                 // Get current HP from volatile data
-                                let current_hp = sub_state.data.get("hp")
+                                let current_hp = sub_state
+                                    .data
+                                    .get("hp")
                                     .and_then(|v| v.as_i64())
-                                    .unwrap_or(0) as i32;
+                                    .unwrap_or(0)
+                                    as i32;
 
                                 let new_hp = current_hp - damage;
 
@@ -4604,7 +4818,9 @@ impl Battle {
                                     sub_destroyed = true;
                                 } else {
                                     // Update HP
-                                    sub_state.data.insert("hp".to_string(), serde_json::json!(new_hp));
+                                    sub_state
+                                        .data
+                                        .insert("hp".to_string(), serde_json::json!(new_hp));
                                 }
                             }
                         }
@@ -4612,15 +4828,21 @@ impl Battle {
                         // Handle substitute destruction or damage log
                         if sub_destroyed {
                             // JS: foe.removeVolatile('substitute'); foe.subFainted = true;
-                            if let Some(foe_pokemon) = self.sides.get_mut(foe_side_idx)
-                                .and_then(|s| s.pokemon.get_mut(foe_poke_idx)) {
+                            if let Some(foe_pokemon) = self
+                                .sides
+                                .get_mut(foe_side_idx)
+                                .and_then(|s| s.pokemon.get_mut(foe_poke_idx))
+                            {
                                 foe_pokemon.volatiles.remove(&substitute_id);
                                 foe_pokemon.sub_fainted = true;
                             }
                         } else {
                             // JS: this.add('-activate', foe, 'Substitute', '[damage]');
-                            let foe_ident = if let Some(foe_pokemon) = self.sides.get(foe_side_idx)
-                                .and_then(|s| s.pokemon.get(foe_poke_idx)) {
+                            let foe_ident = if let Some(foe_pokemon) = self
+                                .sides
+                                .get(foe_side_idx)
+                                .and_then(|s| s.pokemon.get(foe_poke_idx))
+                            {
                                 foe_pokemon.get_slot()
                             } else {
                                 String::new()
@@ -4631,10 +4853,24 @@ impl Battle {
                         }
                     }
 
-                    self.hint(&format!("{} has a Substitute, the target's Substitute takes the damage.", hint), false, None);
+                    self.hint(
+                        &format!(
+                            "{} has a Substitute, the target's Substitute takes the damage.",
+                            hint
+                        ),
+                        false,
+                        None,
+                    );
                     return damage;
                 } else {
-                    self.hint(&format!("{} does not have a Substitute there is no damage dealt.", hint), false, None);
+                    self.hint(
+                        &format!(
+                            "{} does not have a Substitute there is no damage dealt.",
+                            hint
+                        ),
+                        false,
+                        None,
+                    );
                     return 0;
                 }
             }
@@ -4709,7 +4945,7 @@ impl Battle {
     /// Heal HP
     /// Equivalent to battle.ts heal() (battle.ts:2231-2273)
     ///
-    // 
+    //
     // 	heal(damage: number, target?: Pokemon, source: Pokemon | null = null, effect: 'drain' | Effect | null = null) {
     // 		if (this.event) {
     // 			target ||= this.event.target;
@@ -4763,7 +4999,8 @@ impl Battle {
     ) -> Option<i32> {
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
-        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event {
+        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event
+        {
             (event.target, event.source, event.effect.clone())
         } else {
             (None, None, None)
@@ -4794,7 +5031,8 @@ impl Battle {
 
         // Fire TryHeal event
         // JavaScript: damage = this.runEvent('TryHeal', target, source, effect, damage);
-        let event_result = self.run_event("TryHeal", Some(target_pos), source, effect, Some(damage));
+        let event_result =
+            self.run_event("TryHeal", Some(target_pos), source, effect, Some(damage));
         damage = event_result?;
 
         if damage == 0 {
@@ -4805,9 +5043,13 @@ impl Battle {
         let (side_idx, poke_idx) = target_pos;
         let (has_hp, is_active, at_max_hp) = if let Some(side) = self.sides.get(side_idx) {
             if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                (pokemon.hp > 0, pokemon.is_active, pokemon.hp >= pokemon.maxhp)
+                (
+                    pokemon.hp > 0,
+                    pokemon.is_active,
+                    pokemon.hp >= pokemon.maxhp,
+                )
             } else {
-                return None;  // JavaScript returns false
+                return None; // JavaScript returns false
             }
         } else {
             return None;
@@ -4846,11 +5088,15 @@ impl Battle {
         Some(final_damage)
     }
 
-
     /// Helper to add heal log messages
     /// Rust helper method - JavaScript has this logic inline in heal() method (battle.ts:2246-2268)
     /// Extracted for borrow checker compatibility
-    fn add_heal_log(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&ID>) {
+    fn add_heal_log(
+        &mut self,
+        target: (usize, usize),
+        source: Option<(usize, usize)>,
+        effect: Option<&ID>,
+    ) {
         let (side_idx, poke_idx) = target;
 
         // Get target health string
@@ -4876,7 +5122,10 @@ impl Battle {
                 if let Some(src) = source {
                     let src_str = format!("p{}a", src.0 + 1);
                     let of_str = format!("[of] {}", src_str);
-                    self.add_log("-heal", &[&target_str, &health_str, "[from] drain", &of_str]);
+                    self.add_log(
+                        "-heal",
+                        &[&target_str, &health_str, "[from] drain", &of_str],
+                    );
                 } else {
                     self.add_log("-heal", &[&target_str, &health_str, "[from] drain"]);
                 }
@@ -4917,13 +5166,12 @@ impl Battle {
         }
     }
 
-
     /// Boost a Pokemon's stats (legacy signature for compatibility)
     /// TODO: This should be migrated to use the new boost_new() method
     /// Apply stat boosts to a Pokemon
     /// Equivalent to battle.ts boost() (battle.ts:1974-2043)
     ///
-    // 
+    //
     // 	boost(
     // 		boost: SparseBoostsTable, target: Pokemon | null = null, source: Pokemon | null = null,
     // 		effect: Effect | null = null, isSecondary = false, isSelf = false
@@ -4995,7 +5243,13 @@ impl Battle {
     // 		return success;
     // 	}
     //
-    pub fn boost(&mut self, boosts: &[(&str, i8)], target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) -> bool {
+    pub fn boost(
+        &mut self,
+        boosts: &[(&str, i8)],
+        target: (usize, usize),
+        source: Option<(usize, usize)>,
+        effect: Option<&str>,
+    ) -> bool {
         let (target_side, target_idx) = target;
 
         // JS: if (!target?.hp) return 0;
@@ -5018,8 +5272,7 @@ impl Battle {
         if self.gen > 5 {
             let foe_side = if target_side == 0 { 1 } else { 0 };
             if foe_side < self.sides.len() {
-                let foe_pokemon_left = self.sides[foe_side].pokemon.iter()
-                    .any(|p| p.hp > 0);
+                let foe_pokemon_left = self.sides[foe_side].pokemon.iter().any(|p| p.hp > 0);
                 if !foe_pokemon_left {
                     return false;
                 }
@@ -5031,7 +5284,13 @@ impl Battle {
         // Note: Full boost modification would require infrastructure changes to return modified boosts
         // For now, we call the event so abilities can react, even if they can't modify the boost amounts
         let effect_id = effect.map(ID::new);
-        self.run_event("ChangeBoost", Some(target), source, effect_id.as_ref(), None);
+        self.run_event(
+            "ChangeBoost",
+            Some(target),
+            source,
+            effect_id.as_ref(),
+            None,
+        );
 
         // JS: boost = target.getCappedBoost(boost);
         // Clamp boosts to [-6, 6] range - done per-stat below
@@ -5092,7 +5351,10 @@ impl Battle {
                         // JS: Special effect handling (bellydrum, angerpoint, zpower, etc.)
                         // For now, simplified logging
                         if let Some(eff) = effect {
-                            self.add_log(msg, &[&pokemon_name, stat, &boost_str, &format!("[from] {}", eff)]);
+                            self.add_log(
+                                msg,
+                                &[&pokemon_name, stat, &boost_str, &format!("[from] {}", eff)],
+                            );
                         } else {
                             self.add_log(msg, &[&pokemon_name, stat, &boost_str]);
                         }
@@ -5130,7 +5392,12 @@ impl Battle {
     #[allow(dead_code)]
     /// This helper converts HashMap format to the Vec<(&str, i8)> format used by boost()
     /// Allows calling boost() when stat boosts are stored in HashMap format
-    fn boost_stats(&mut self, target_side: usize, target_idx: usize, boosts_map: &HashMap<String, i32>) {
+    fn boost_stats(
+        &mut self,
+        target_side: usize,
+        target_idx: usize,
+        boosts_map: &HashMap<String, i32>,
+    ) {
         // Convert HashMap to Vec of tuples for boost method
         let mut boosts: Vec<(&str, i8)> = Vec::new();
         for (stat, &val) in boosts_map.iter() {
@@ -5142,12 +5409,17 @@ impl Battle {
 
     /// Faint a Pokemon
     /// Equivalent to battle.ts faint()
-    // 
+    //
     // 	faint(pokemon: Pokemon, source?: Pokemon, effect?: Effect) {
     // 		pokemon.faint(source, effect);
     // 	}
     //
-    pub fn faint(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&str>) {
+    pub fn faint(
+        &mut self,
+        target: (usize, usize),
+        source: Option<(usize, usize)>,
+        effect: Option<&str>,
+    ) {
         // JS: pokemon.faint(source, effect)
         // JS: battle.faintQueue.push({target: pokemon, source, effect})
 
@@ -5174,7 +5446,7 @@ impl Battle {
     /// Check all active Pokemon for fainting and update their status
     /// Equivalent to battle.ts checkFainted() (battle.ts:2487-2496)
     ///
-    // 
+    //
     // 	checkFainted() {
     // 		for (const side of this.sides) {
     // 			for (const pokemon of side.active) {
@@ -5239,7 +5511,10 @@ impl Battle {
     //
     pub fn compare_priority(a: &PriorityItem, b: &PriorityItem) -> std::cmp::Ordering {
         // 1. Order, low to high (default last)
-        let order_cmp = a.order.unwrap_or(i32::MAX).cmp(&b.order.unwrap_or(i32::MAX));
+        let order_cmp = a
+            .order
+            .unwrap_or(i32::MAX)
+            .cmp(&b.order.unwrap_or(i32::MAX));
         if order_cmp != std::cmp::Ordering::Equal {
             return order_cmp;
         }
@@ -5267,7 +5542,7 @@ impl Battle {
     }
 
     /// Compare for redirect order (abilities like Lightning Rod)
-    // 
+    //
     // 	static compareRedirectOrder(this: void, a: AnyObject, b: AnyObject) {
     // 		return ((b.priority || 0) - (a.priority || 0)) ||
     // 			((b.speed || 0) - (a.speed || 0)) ||
@@ -5294,7 +5569,7 @@ impl Battle {
     }
 
     /// Compare for left-to-right order (hazards, etc.)
-    // 
+    //
     // 	static compareLeftToRightOrder(this: void, a: AnyObject, b: AnyObject) {
     // 		return -((b.order || 4294967296) - (a.order || 4294967296)) ||
     // 			((b.priority || 0) - (a.priority || 0)) ||
@@ -5304,7 +5579,10 @@ impl Battle {
     //
     pub fn compare_left_to_right_order(a: &PriorityItem, b: &PriorityItem) -> std::cmp::Ordering {
         // Order first
-        let order_cmp = a.order.unwrap_or(i32::MAX).cmp(&b.order.unwrap_or(i32::MAX));
+        let order_cmp = a
+            .order
+            .unwrap_or(i32::MAX)
+            .cmp(&b.order.unwrap_or(i32::MAX));
         if order_cmp != std::cmp::Ordering::Equal {
             return order_cmp;
         }
@@ -5371,7 +5649,10 @@ impl Battle {
 
             // Find the next item(s) with highest priority
             for i in (sorted + 1)..list.len() {
-                let cmp = Self::compare_priority(&get_priority(&list[next_indexes[0]]), &get_priority(&list[i]));
+                let cmp = Self::compare_priority(
+                    &get_priority(&list[next_indexes[0]]),
+                    &get_priority(&list[i]),
+                );
                 match cmp {
                     std::cmp::Ordering::Less => continue,
                     std::cmp::Ordering::Greater => next_indexes = vec![i],
@@ -5413,7 +5694,7 @@ impl Battle {
 
     /// Get a Pokemon by its full name (e.g., "p1: Pikachu")
     /// Equivalent to battle.ts getPokemon()
-    // 
+    //
     // 	getPokemon(fullname: string | Pokemon) {
     // 		if (typeof fullname !== 'string') fullname = fullname.fullname;
     // 		for (const side of this.sides) {
@@ -5454,7 +5735,7 @@ impl Battle {
 
     /// Check if a side can switch
     /// Equivalent to battle.ts canSwitch()
-    // 
+    //
     // 	canSwitch(side: Side) {
     // 		return this.possibleSwitches(side).length;
     // 	}
@@ -5465,7 +5746,7 @@ impl Battle {
 
     /// Get a random switchable Pokemon
     /// Equivalent to battle.ts getRandomSwitchable()
-    // 
+    //
     // 	getRandomSwitchable(side: Side) {
     // 		const canSwitchIn = this.possibleSwitches(side);
     // 		return canSwitchIn.length ? this.sample(canSwitchIn) : null;
@@ -5481,10 +5762,10 @@ impl Battle {
     }
 
     /// Get list of Pokemon that can switch in
-    // 
+    //
     // 	private possibleSwitches(side: Side) {
     // 		if (!side.pokemonLeft) return [];
-    // 
+    //
     // 		const canSwitchIn = [];
     // 		for (let i = side.active.length; i < side.pokemon.length; i++) {
     // 			const pokemon = side.pokemon[i];
@@ -5563,12 +5844,12 @@ impl Battle {
     // 		const isAdjacent = (targetLoc > 0 ?
     // 			Math.abs(acrossFromTargetLoc - sourceLoc) <= 1 :
     // 			Math.abs(targetLoc - sourceLoc) === 1);
-    // 
+    //
     // 		if (this.gameType === 'freeforall' && targetType === 'adjacentAlly') {
     // 			// moves targeting one ally can instead target foes in Battle Royal
     // 			return isAdjacent;
     // 		}
-    // 
+    //
     // 		switch (targetType) {
     // 		case 'randomNormal':
     // 		case 'scripted':
@@ -5586,7 +5867,12 @@ impl Battle {
     // 		return false;
     // 	}
     //
-    pub fn valid_target_loc(&self, target_loc: i32, source: (usize, usize), target_type: &str) -> bool {
+    pub fn valid_target_loc(
+        &self,
+        target_loc: i32,
+        source: (usize, usize),
+        target_type: &str,
+    ) -> bool {
         // JS: if (targetLoc === 0) return true;
         if target_loc == 0 {
             return true;
@@ -5663,12 +5949,17 @@ impl Battle {
 
     /// Check if a target is valid for a move
     /// Equivalent to battle.ts validTarget()
-    // 
+    //
     // 	validTarget(target: Pokemon, source: Pokemon, targetType: string) {
     // 		return this.validTargetLoc(source.getLocOf(target), source, targetType);
     // 	}
     //
-    pub fn valid_target(&self, target: (usize, usize), source: (usize, usize), target_type: &str) -> bool {
+    pub fn valid_target(
+        &self,
+        target: (usize, usize),
+        source: (usize, usize),
+        target_type: &str,
+    ) -> bool {
         // JS: return this.validTargetLoc(source.getLocOf(target), source, targetType);
         let target_loc = self.get_loc_of(source, target);
         self.valid_target_loc(target_loc, source, target_type)
@@ -5677,7 +5968,7 @@ impl Battle {
     /// Get Pokemon at a specific slot location
     /// Get Pokemon at a slot string (e.g., "p1a", "p2b")
     /// Equivalent to battle.ts getAtSlot()
-    // 
+    //
     // 	getAtSlot(slot: PokemonSlot): Pokemon;
     //
     pub fn get_at_slot(&self, slot: Option<&str>) -> Option<&Pokemon> {
@@ -5713,11 +6004,11 @@ impl Battle {
     /// End the current turn
     /// Equivalent to battle.ts endTurn() (battle.ts:1577-1754)
     ///
-    // 
+    //
     // 	endTurn() {
     // 		this.turn++;
     // 		this.lastSuccessfulMoveThisTurn = null;
-    // 
+    //
     // 		const dynamaxEnding: Pokemon[] = [];
     // 		for (const pokemon of this.getAllActive()) {
     // 			if (pokemon.volatiles['dynamax']?.turns === 3) {
@@ -5731,7 +6022,7 @@ impl Battle {
     // 		for (const pokemon of dynamaxEnding) {
     // 			pokemon.removeVolatile('dynamax');
     // 		}
-    // 
+    //
     // 		// Gen 1 partial trapping ends when either Pokemon or a switch in faints to residual damage
     // 		if (this.gen === 1) {
     // 			for (const pokemon of this.getAllActive()) {
@@ -5755,7 +6046,7 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		const trappedBySide: boolean[] = [];
     // 		const stalenessBySide: ('internal' | 'external' | undefined)[] = [];
     // 		for (const side of this.sides) {
@@ -5775,7 +6066,7 @@ impl Battle {
     // 					// However, this could be potentially relevant in certain OMs
     // 					pokemon.hurtThisTurn = null;
     // 				}
-    // 
+    //
     // 				pokemon.maybeDisabled = false;
     // 				pokemon.maybeLocked = false;
     // 				for (const moveSlot of pokemon.moveSlots) {
@@ -5790,10 +6081,10 @@ impl Battle {
     // 						pokemon.disableMove(pokemon.lastMove.id);
     // 					}
     // 				}
-    // 
+    //
     // 				// If it was an illusion, it's not any more
     // 				if (pokemon.getLastAttackedBy() && this.gen >= 7) pokemon.knownType = true;
-    // 
+    //
     // 				for (let i = pokemon.attackedBy.length - 1; i >= 0; i--) {
     // 					const attack = pokemon.attackedBy[i];
     // 					if (attack.source.isActive) {
@@ -5802,7 +6093,7 @@ impl Battle {
     // 						pokemon.attackedBy.splice(pokemon.attackedBy.indexOf(attack), 1);
     // 					}
     // 				}
-    // 
+    //
     // 				if (this.gen >= 7 && !pokemon.terastallized) {
     // 					// In Gen 7, the real type of every Pokemon is visible to all players via the bottom screen while making choices
     // 					const seenPokemon = pokemon.illusion || pokemon;
@@ -5816,7 +6107,7 @@ impl Battle {
     // 						}
     // 					}
     // 				}
-    // 
+    //
     // 				pokemon.trapped = pokemon.maybeTrapped = false;
     // 				this.runEvent('TrapPokemon', pokemon);
     // 				if (!pokemon.knownType || this.dex.getImmunity('trapped', pokemon)) {
@@ -5850,9 +6141,9 @@ impl Battle {
     // 						}
     // 					}
     // 				}
-    // 
+    //
     // 				if (pokemon.fainted) continue;
-    // 
+    //
     // 				sideTrapped = sideTrapped && pokemon.trapped;
     // 				const staleness = pokemon.volatileStaleness || pokemon.staleness;
     // 				if (staleness) sideStaleness = sideStaleness === 'external' ? sideStaleness : staleness;
@@ -5863,9 +6154,9 @@ impl Battle {
     // 			side.faintedLastTurn = side.faintedThisTurn;
     // 			side.faintedThisTurn = null;
     // 		}
-    // 
+    //
     // 		if (this.maybeTriggerEndlessBattleClause(trappedBySide, stalenessBySide)) return;
-    // 
+    //
     // 		if (this.gameType === 'triples' && this.sides.every(side => side.pokemonLeft === 1)) {
     // 			// If both sides have one Pokemon left in triples and they are not adjacent, they are both moved to the center.
     // 			const actives = this.getAllActive();
@@ -5875,7 +6166,7 @@ impl Battle {
     // 				this.add('-center');
     // 			}
     // 		}
-    // 
+    //
     // 		this.add('turn', this.turn);
     // 		if (this.gameType === 'multi') {
     // 			for (const side of this.sides) {
@@ -5890,7 +6181,7 @@ impl Battle {
     // 		}
     // 		if (this.gen === 2) this.quickClawRoll = this.randomChance(60, 256);
     // 		if (this.gen === 3) this.quickClawRoll = this.randomChance(1, 5);
-    // 
+    //
     // 		this.makeRequest('move');
     // 	}
     //
@@ -5916,7 +6207,9 @@ impl Battle {
                     if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
                         // Check if Pokemon has dynamax volatile with turns === 3
                         if let Some(dynamax_state) = pokemon.volatiles.get(&dynamax_id) {
-                            let turns = dynamax_state.data.get("turns")
+                            let turns = dynamax_state
+                                .data
+                                .get("turns")
                                 .and_then(|v| v.as_i64())
                                 .unwrap_or(0);
                             if turns == 3 {
@@ -5935,19 +6228,26 @@ impl Battle {
         if dynamax_ending.len() > 1 {
             // Update speed for all Pokemon ending Dynamax
             for &(side_idx, poke_idx) in &dynamax_ending {
-                if let Some(pokemon) = self.sides.get_mut(side_idx)
-                    .and_then(|s| s.pokemon.get_mut(poke_idx)) {
+                if let Some(pokemon) = self
+                    .sides
+                    .get_mut(side_idx)
+                    .and_then(|s| s.pokemon.get_mut(poke_idx))
+                {
                     pokemon.update_speed();
                 }
             }
 
             // Speed sort the Pokemon ending Dynamax
             dynamax_ending.sort_by(|&(side_a, poke_a), &(side_b, poke_b)| {
-                let speed_a = self.sides.get(side_a)
+                let speed_a = self
+                    .sides
+                    .get(side_a)
                     .and_then(|s| s.pokemon.get(poke_a))
                     .map(|p| p.speed)
                     .unwrap_or(0);
-                let speed_b = self.sides.get(side_b)
+                let speed_b = self
+                    .sides
+                    .get(side_b)
                     .and_then(|s| s.pokemon.get(poke_b))
                     .map(|p| p.speed)
                     .unwrap_or(0);
@@ -5959,8 +6259,11 @@ impl Battle {
         // JS:     pokemon.removeVolatile('dynamax');
         // JS: }
         for (side_idx, poke_idx) in dynamax_ending {
-            if let Some(pokemon) = self.sides.get_mut(side_idx)
-                .and_then(|s| s.pokemon.get_mut(poke_idx)) {
+            if let Some(pokemon) = self
+                .sides
+                .get_mut(side_idx)
+                .and_then(|s| s.pokemon.get_mut(poke_idx))
+            {
                 pokemon.volatiles.remove(&dynamax_id);
             }
         }
@@ -5982,28 +6285,36 @@ impl Battle {
 
                         // Check partialtrappinglock
                         if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
-                            if let Some(lock_state) = pokemon.volatiles.get(&partialtrappinglock_id) {
+                            if let Some(lock_state) = pokemon.volatiles.get(&partialtrappinglock_id)
+                            {
                                 // JS: const target = pokemon.volatiles['partialtrappinglock'].locked;
                                 // The locked target is stored in the volatile's data
-                                let should_remove = if let Some(locked_data) = lock_state.data.get("locked") {
-                                    // Extract target position (stored as side_idx * 10 + poke_idx)
-                                    if let Some(locked_val) = locked_data.as_i64() {
-                                        let target_side = (locked_val / 10) as usize;
-                                        let target_poke = (locked_val % 10) as usize;
+                                let should_remove =
+                                    if let Some(locked_data) = lock_state.data.get("locked") {
+                                        // Extract target position (stored as side_idx * 10 + poke_idx)
+                                        if let Some(locked_val) = locked_data.as_i64() {
+                                            let target_side = (locked_val / 10) as usize;
+                                            let target_poke = (locked_val % 10) as usize;
 
-                                        // JS: if (target.hp <= 0 || !target.volatiles['partiallytrapped'])
-                                        if let Some(target) = self.sides.get(target_side)
-                                            .and_then(|s| s.pokemon.get(target_poke)) {
-                                            target.hp <= 0 || !target.volatiles.contains_key(&partiallytrapped_id)
+                                            // JS: if (target.hp <= 0 || !target.volatiles['partiallytrapped'])
+                                            if let Some(target) = self
+                                                .sides
+                                                .get(target_side)
+                                                .and_then(|s| s.pokemon.get(target_poke))
+                                            {
+                                                target.hp <= 0
+                                                    || !target
+                                                        .volatiles
+                                                        .contains_key(&partiallytrapped_id)
+                                            } else {
+                                                true // Target doesn't exist, remove
+                                            }
                                         } else {
-                                            true // Target doesn't exist, remove
+                                            true // Invalid data, remove
                                         }
                                     } else {
-                                        true // Invalid data, remove
-                                    }
-                                } else {
-                                    true // No locked data, remove
-                                };
+                                        true // No locked data, remove
+                                    };
 
                                 if should_remove {
                                     volatiles_to_remove.push((pos, partialtrappinglock_id.clone()));
@@ -6011,27 +6322,35 @@ impl Battle {
                             }
 
                             // Check partiallytrapped
-                            if let Some(trapped_state) = pokemon.volatiles.get(&partiallytrapped_id) {
+                            if let Some(trapped_state) = pokemon.volatiles.get(&partiallytrapped_id)
+                            {
                                 // JS: const source = pokemon.volatiles['partiallytrapped'].source;
-                                let should_remove = if let Some(source_data) = trapped_state.data.get("source") {
-                                    // Extract source position
-                                    if let Some(source_val) = source_data.as_i64() {
-                                        let source_side = (source_val / 10) as usize;
-                                        let source_poke = (source_val % 10) as usize;
+                                let should_remove =
+                                    if let Some(source_data) = trapped_state.data.get("source") {
+                                        // Extract source position
+                                        if let Some(source_val) = source_data.as_i64() {
+                                            let source_side = (source_val / 10) as usize;
+                                            let source_poke = (source_val % 10) as usize;
 
-                                        // JS: if (source.hp <= 0 || !source.volatiles['partialtrappinglock'])
-                                        if let Some(source) = self.sides.get(source_side)
-                                            .and_then(|s| s.pokemon.get(source_poke)) {
-                                            source.hp <= 0 || !source.volatiles.contains_key(&partialtrappinglock_id)
+                                            // JS: if (source.hp <= 0 || !source.volatiles['partialtrappinglock'])
+                                            if let Some(source) = self
+                                                .sides
+                                                .get(source_side)
+                                                .and_then(|s| s.pokemon.get(source_poke))
+                                            {
+                                                source.hp <= 0
+                                                    || !source
+                                                        .volatiles
+                                                        .contains_key(&partialtrappinglock_id)
+                                            } else {
+                                                true // Source doesn't exist, remove
+                                            }
                                         } else {
-                                            true // Source doesn't exist, remove
+                                            true // Invalid data, remove
                                         }
                                     } else {
-                                        true // Invalid data, remove
-                                    }
-                                } else {
-                                    true // No source data, remove
-                                };
+                                        true // No source data, remove
+                                    };
 
                                 if should_remove {
                                     volatiles_to_remove.push((pos, partiallytrapped_id.clone()));
@@ -6039,18 +6358,28 @@ impl Battle {
                             }
 
                             // Check fakepartiallytrapped
-                            if let Some(fake_state) = pokemon.volatiles.get(&fakepartiallytrapped_id) {
+                            if let Some(fake_state) =
+                                pokemon.volatiles.get(&fakepartiallytrapped_id)
+                            {
                                 // JS: const counterpart = pokemon.volatiles['fakepartiallytrapped'].counterpart;
-                                let should_remove = if let Some(counterpart_data) = fake_state.data.get("counterpart") {
+                                let should_remove = if let Some(counterpart_data) =
+                                    fake_state.data.get("counterpart")
+                                {
                                     // Extract counterpart position
                                     if let Some(counterpart_val) = counterpart_data.as_i64() {
                                         let counterpart_side = (counterpart_val / 10) as usize;
                                         let counterpart_poke = (counterpart_val % 10) as usize;
 
                                         // JS: if (counterpart.hp <= 0 || !counterpart.volatiles['fakepartiallytrapped'])
-                                        if let Some(counterpart) = self.sides.get(counterpart_side)
-                                            .and_then(|s| s.pokemon.get(counterpart_poke)) {
-                                            counterpart.hp <= 0 || !counterpart.volatiles.contains_key(&fakepartiallytrapped_id)
+                                        if let Some(counterpart) = self
+                                            .sides
+                                            .get(counterpart_side)
+                                            .and_then(|s| s.pokemon.get(counterpart_poke))
+                                        {
+                                            counterpart.hp <= 0
+                                                || !counterpart
+                                                    .volatiles
+                                                    .contains_key(&fakepartiallytrapped_id)
                                         } else {
                                             true // Counterpart doesn't exist, remove
                                         }
@@ -6062,7 +6391,8 @@ impl Battle {
                                 };
 
                                 if should_remove {
-                                    volatiles_to_remove.push((pos, fakepartiallytrapped_id.clone()));
+                                    volatiles_to_remove
+                                        .push((pos, fakepartiallytrapped_id.clone()));
                                 }
                             }
                         }
@@ -6072,8 +6402,11 @@ impl Battle {
 
             // Remove the volatiles
             for ((side_idx, poke_idx), volatile_id) in volatiles_to_remove {
-                if let Some(pokemon) = self.sides.get_mut(side_idx)
-                    .and_then(|s| s.pokemon.get_mut(poke_idx)) {
+                if let Some(pokemon) = self
+                    .sides
+                    .get_mut(side_idx)
+                    .and_then(|s| s.pokemon.get_mut(poke_idx))
+                {
                     pokemon.volatiles.remove(&volatile_id);
                 }
             }
@@ -6211,19 +6544,19 @@ impl Battle {
     // 		this.add('');
     // 		this.add('t:', Math.floor(Date.now() / 1000));
     // 		if (this.requestState) this.requestState = '';
-    // 
+    //
     // 		if (!this.midTurn) {
     // 			this.queue.insertChoice({ choice: 'beforeTurn' });
     // 			this.queue.addChoice({ choice: 'residual' });
     // 			this.midTurn = true;
     // 		}
-    // 
+    //
     // 		let action;
     // 		while ((action = this.queue.shift())) {
     // 			this.runAction(action);
     // 			if (this.requestState || this.ended) return;
     // 		}
-    // 
+    //
     // 		this.endTurn();
     // 		this.midTurn = false;
     // 		this.queue.clear();
@@ -6263,7 +6596,7 @@ impl Battle {
 
     /// Run a single action from the queue
     /// Equivalent to battle.ts runAction()
-    // 
+    //
     // 	runAction(action: Action) {
     // 		const pokemonOriginalHP = action.pokemon?.hp;
     // 		let residualPokemon: (readonly [Pokemon, number])[] = [];
@@ -6274,9 +6607,9 @@ impl Battle {
     // 				if (side.pokemonLeft) side.pokemonLeft = side.pokemon.length;
     // 				this.add('teamsize', side.id, side.pokemon.length);
     // 			}
-    // 
+    //
     // 			this.add('start');
-    // 
+    //
     // 			// Change Zacian/Zamazenta into their Crowned formes
     // 			for (const pokemon of this.getAllPokemon()) {
     // 				let rawSpecies: Species | null = null;
@@ -6292,7 +6625,7 @@ impl Battle {
     // 				pokemon.details = pokemon.getUpdatedDetails();
     // 				pokemon.setAbility(species.abilities['0'], null, null, true);
     // 				pokemon.baseAbility = pokemon.ability;
-    // 
+    //
     // 				const behemothMove: { [k: string]: string } = {
     // 					'Zacian-Crowned': 'behemothblade', 'Zamazenta-Crowned': 'behemothbash',
     // 				};
@@ -6312,14 +6645,14 @@ impl Battle {
     // 					pokemon.moveSlots = pokemon.baseMoveSlots.slice();
     // 				}
     // 			}
-    // 
+    //
     // 			this.format.onBattleStart?.call(this);
     // 			for (const rule of this.ruleTable.keys()) {
     // 				if ('+*-!'.includes(rule.charAt(0))) continue;
     // 				const subFormat = this.dex.formats.get(rule);
     // 				subFormat.onBattleStart?.call(this);
     // 			}
-    // 
+    //
     // 			for (const side of this.sides) {
     // 				for (let i = 0; i < side.active.length; i++) {
     // 					if (!side.pokemonLeft) {
@@ -6338,7 +6671,7 @@ impl Battle {
     // 			this.midTurn = true;
     // 			break;
     // 		}
-    // 
+    //
     // 		case 'move':
     // 			if (!action.pokemon.isActive) return false;
     // 			if (action.pokemon.fainted) return false;
@@ -6380,7 +6713,7 @@ impl Battle {
     // 			if (!action.move.priorityChargeCallback) throw new Error(`priorityChargeMove has no priorityChargeCallback`);
     // 			action.move.priorityChargeCallback.call(this, action.pokemon);
     // 			break;
-    // 
+    //
     // 		case 'event':
     // 			this.runEvent(action.event!, action.pokemon);
     // 			break;
@@ -6392,7 +6725,7 @@ impl Battle {
     // 			action.pokemon.position = action.index;
     // 			// we return here because the update event would crash since there are no active pokemon yet
     // 			return;
-    // 
+    //
     // 		case 'pass':
     // 			return;
     // 		case 'instaswitch':
@@ -6441,7 +6774,7 @@ impl Battle {
     // 			if (action.pokemon.fainted) return false;
     // 			this.swapPosition(action.pokemon, 1);
     // 			break;
-    // 
+    //
     // 		case 'beforeTurn':
     // 			this.eachEvent('BeforeTurn');
     // 			break;
@@ -6454,7 +6787,7 @@ impl Battle {
     // 			if (!this.ended) this.add('upkeep');
     // 			break;
     // 		}
-    // 
+    //
     // 		// phazing (Roar, etc)
     // 		for (const side of this.sides) {
     // 			for (const pokemon of side.active) {
@@ -6464,16 +6797,16 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		this.clearActiveMove();
-    // 
+    //
     // 		// fainting
-    // 
+    //
     // 		this.faintMessages();
     // 		if (this.ended) return true;
-    // 
+    //
     // 		// switching (fainted pokemon, U-turn, Baton Pass, etc)
-    // 
+    //
     // 		if (!this.queue.peek() || (this.gen <= 3 && ['move', 'residual'].includes(this.queue.peek()!.choice))) {
     // 			// in gen 3 or earlier, switching in fainted pokemon is done after
     // 			// every move, rather than only at the end of the turn.
@@ -6493,7 +6826,7 @@ impl Battle {
     // 		} else if (this.queue.peek()?.choice === 'instaswitch') {
     // 			return false;
     // 		}
-    // 
+    //
     // 		if (this.gen >= 5 && action.choice !== 'start') {
     // 			this.eachEvent('Update');
     // 			for (const [pokemon, originalHP] of residualPokemon) {
@@ -6503,18 +6836,18 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		if (action.choice === 'runSwitch') {
     // 			const pokemon = action.pokemon;
     // 			if (pokemon.hp && pokemon.hp <= pokemon.maxhp / 2 && pokemonOriginalHP! > pokemon.maxhp / 2) {
     // 				this.runEvent('EmergencyExit', pokemon);
     // 			}
     // 		}
-    // 
+    //
     // 		const switches = this.sides.map(
     // 			side => side.active.some(pokemon => pokemon && !!pokemon.switchFlag)
     // 		);
-    // 
+    //
     // 		for (let i = 0; i < this.sides.length; i++) {
     // 			let reviveSwitch = false; // Used to ignore the fake switch for Revival Blessing
     // 			if (switches[i] && !this.canSwitch(this.sides[i])) {
@@ -6543,16 +6876,16 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		for (const playerSwitch of switches) {
     // 			if (playerSwitch) {
     // 				this.makeRequest('switch');
     // 				return true;
     // 			}
     // 		}
-    // 
+    //
     // 		if (this.gen < 5) this.eachEvent('Update');
-    // 
+    //
     // 		if (this.gen >= 8 && (this.queue.peek()?.choice === 'move' || this.queue.peek()?.choice === 'runDynamax')) {
     // 			// In gen 8, speed is updated dynamically so update the queue's speed properties and sort it.
     // 			this.updateSpeed();
@@ -6561,7 +6894,7 @@ impl Battle {
     // 			}
     // 			this.queue.sort();
     // 		}
-    // 
+    //
     // 		return false;
     // 	}
     //
@@ -6637,13 +6970,16 @@ impl Battle {
 
                         // JS: for (const rule of this.ruleTable.keys()) { ... }
                         if let Some(ref rule_table) = self.rule_table {
-                            let rule_keys: Vec<String> = rule_table.keys().cloned()
-                                .collect();
+                            let rule_keys: Vec<String> = rule_table.keys().cloned().collect();
 
                             for rule in rule_keys {
                                 // Skip rules starting with +, *, -, !
                                 if let Some(first_char) = rule.chars().next() {
-                                    if first_char == '+' || first_char == '*' || first_char == '-' || first_char == '!' {
+                                    if first_char == '+'
+                                        || first_char == '*'
+                                        || first_char == '-'
+                                        || first_char == '!'
+                                    {
                                         continue;
                                     }
                                 }
@@ -6651,7 +6987,13 @@ impl Battle {
                                 // JS: const subFormat = this.dex.formats.get(rule);
                                 // JS: subFormat.onBattleStart?.call(this);
                                 // Emit event for rule-specific battle start hooks
-                                self.run_event(&format!("RuleBattleStart:{}", rule), None, None, None, None);
+                                self.run_event(
+                                    &format!("RuleBattleStart:{}", rule),
+                                    None,
+                                    None,
+                                    None,
+                                    None,
+                                );
                             }
                         }
 
@@ -6670,8 +7012,15 @@ impl Battle {
                         // Call Start event for each Pokemon's species
                         for side_idx in 0..self.sides.len() {
                             for poke_idx in 0..self.sides[side_idx].pokemon.len() {
-                                let species_id = self.sides[side_idx].pokemon[poke_idx].species_id.clone();
-                                self.single_event("Start", &species_id, Some((side_idx, poke_idx)), None, None);
+                                let species_id =
+                                    self.sides[side_idx].pokemon[poke_idx].species_id.clone();
+                                self.single_event(
+                                    "Start",
+                                    &species_id,
+                                    Some((side_idx, poke_idx)),
+                                    None,
+                                    None,
+                                );
                             }
                         }
 
@@ -6743,7 +7092,7 @@ impl Battle {
 
     /// Check if move makes contact
     /// Equivalent to battle.ts checkMoveMakesContact()
-    // 
+    //
     // 	checkMoveMakesContact(move: ActiveMove, attacker: Pokemon, defender: Pokemon, announcePads = false) {
     // 		if (move.flags['contact'] && attacker.hasItem('protectivepads')) {
     // 			if (announcePads) {
@@ -6781,7 +7130,7 @@ impl Battle {
     /// Get action speed for sorting the action queue
     /// Equivalent to battle.ts getActionSpeed() (battle.ts:2590-2627)
     ///
-    // 
+    //
     // 	getActionSpeed(action: AnyObject) {
     // 		if (action.choice === 'move') {
     // 			let move = action.move;
@@ -6813,7 +7162,7 @@ impl Battle {
     // 			// In Gen 6, Quick Guard blocks moves with artificially enhanced priority.
     // 			if (this.gen > 5) action.move.priority = priority;
     // 		}
-    // 
+    //
     // 		if (!action.pokemon) {
     // 			action.speed = 1;
     // 		} else {
@@ -6882,7 +7231,8 @@ impl Battle {
                 // Allows move-specific priority modification (e.g., Grassy Glide in Grassy Terrain)
                 let move_id_ref = &move_action.move_id.clone();
                 let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
-                let result = self.single_event("ModifyPriority", move_id_ref, Some(pokemon_pos), None, None);
+                let result =
+                    self.single_event("ModifyPriority", move_id_ref, Some(pokemon_pos), None, None);
                 if let Some(new_priority) = result.number() {
                     priority = new_priority as i8;
                 }
@@ -6914,18 +7264,23 @@ impl Battle {
                 }
 
                 // JS: action.speed = action.pokemon.getActionSpeed();
-                let pokemon_speed = self.get_pokemon_action_speed(move_action.side_index, move_action.pokemon_index);
+                let pokemon_speed = self
+                    .get_pokemon_action_speed(move_action.side_index, move_action.pokemon_index);
                 move_action.speed = pokemon_speed;
             }
             Action::Switch(ref mut switch_action) => {
                 // JS: if (!action.pokemon) { action.speed = 1; }
                 // For switches, get the pokemon's speed
-                let pokemon_speed = self.get_pokemon_action_speed(switch_action.side_index, switch_action.pokemon_index);
+                let pokemon_speed = self.get_pokemon_action_speed(
+                    switch_action.side_index,
+                    switch_action.pokemon_index,
+                );
                 switch_action.speed = pokemon_speed;
             }
             Action::Pokemon(ref mut poke_action) => {
                 // Get pokemon speed for pokemon actions
-                let pokemon_speed = self.get_pokemon_action_speed(poke_action.side_index, poke_action.pokemon_index);
+                let pokemon_speed = self
+                    .get_pokemon_action_speed(poke_action.side_index, poke_action.pokemon_index);
                 poke_action.speed = pokemon_speed;
             }
             _ => {
@@ -6955,16 +7310,16 @@ impl Battle {
 
     /// Swap position of a Pokemon to a new position on their side
     /// Equivalent to battle.ts swapPosition()
-    // 
+    //
     // 	swapPosition(pokemon: Pokemon, newPosition: number, attributes?: string) {
     // 		if (newPosition >= pokemon.side.active.length) {
     // 			throw new Error("Invalid swap position");
     // 		}
     // 		const target = pokemon.side.active[newPosition];
     // 		if (newPosition !== 1 && (!target || target.fainted)) return false;
-    // 
+    //
     // 		this.add('swap', pokemon, newPosition, attributes || '');
-    // 
+    //
     // 		const side = pokemon.side;
     // 		side.pokemon[pokemon.position] = target;
     // 		side.pokemon[newPosition] = pokemon;
@@ -6977,7 +7332,12 @@ impl Battle {
     // 		return true;
     // 	}
     //
-    pub fn swap_position(&mut self, pokemon: (usize, usize), new_position: usize, attributes: Option<&str>) -> bool {
+    pub fn swap_position(
+        &mut self,
+        pokemon: (usize, usize),
+        new_position: usize,
+        attributes: Option<&str>,
+    ) -> bool {
         let (side_idx, poke_idx) = pokemon;
 
         // JS: if (newPosition >= pokemon.side.active.length)
@@ -7037,7 +7397,14 @@ impl Battle {
             return false;
         };
 
-        self.add("swap", &[Arg::String(pokemon_str), Arg::String(new_position.to_string()), Arg::Str(attributes.unwrap_or(""))]);
+        self.add(
+            "swap",
+            &[
+                Arg::String(pokemon_str),
+                Arg::String(new_position.to_string()),
+                Arg::Str(attributes.unwrap_or("")),
+            ],
+        );
 
         // Perform the swap
         // JS: side.pokemon[pokemon.position] = target;
@@ -7064,9 +7431,21 @@ impl Battle {
         // Fire Swap events for both pokemon involved
         if let Some(target_idx) = target_idx {
             // First event: Swap on target (source=pokemon)
-            self.run_event("Swap", Some((side_idx, target_idx)), Some((side_idx, poke_idx)), None, None);
+            self.run_event(
+                "Swap",
+                Some((side_idx, target_idx)),
+                Some((side_idx, poke_idx)),
+                None,
+                None,
+            );
             // Second event: Swap on pokemon (source=target)
-            self.run_event("Swap", Some((side_idx, poke_idx)), Some((side_idx, target_idx)), None, None);
+            self.run_event(
+                "Swap",
+                Some((side_idx, poke_idx)),
+                Some((side_idx, target_idx)),
+                None,
+                None,
+            );
         }
 
         true
@@ -7075,7 +7454,7 @@ impl Battle {
     /// Get move category, defaulting to "Physical" if move not found
     /// Equivalent to battle.ts getCategory() (battle.ts:2350-2352)
     ///
-    // 
+    //
     // 	getCategory(move: string | Move) {
     // 		return this.dex.moves.get(move).category || 'Physical';
     // 	}
@@ -7089,7 +7468,7 @@ impl Battle {
 
     /// Clear request state
     /// Equivalent to battle.ts clearRequest() (battle.ts:1364-1370)
-    // 
+    //
     // 	clearRequest() {
     // 		this.requestState = '';
     // 		for (const side of this.sides) {
@@ -7105,14 +7484,14 @@ impl Battle {
         // JavaScript: for (const side of this.sides) { side.activeRequest = null; side.clearChoice(); }
         for side in &mut self.sides {
             side.request_state = RequestState::None;
-            side.choice = Choice::new();  // clearChoice()
+            side.choice = Choice::new(); // clearChoice()
         }
     }
 
     /// Make a request for player input
     /// Equivalent to battle.ts makeRequest()
     ///
-    // 
+    //
     // 	makeRequest(type?: RequestState) {
     // 		if (type) {
     // 			this.requestState = type;
@@ -7122,11 +7501,11 @@ impl Battle {
     // 		} else {
     // 			type = this.requestState;
     // 		}
-    // 
+    //
     // 		for (const side of this.sides) {
     // 			side.activeRequest = null;
     // 		}
-    // 
+    //
     // 		if (type === 'teampreview') {
     // 			// `pickedTeamSize = 6` means the format wants the user to select
     // 			// the entire team order, unlike `pickedTeamSize = undefined` which
@@ -7134,13 +7513,13 @@ impl Battle {
     // 			const pickedTeamSize = this.ruleTable.pickedTeamSize;
     // 			this.add(`teampreview${pickedTeamSize ? `|${pickedTeamSize}` : ''}`);
     // 		}
-    // 
+    //
     // 		const requests = this.getRequests(type);
     // 		for (let i = 0; i < this.sides.length; i++) {
     // 			this.sides[i].activeRequest = requests[i];
     // 		}
     // 		this.sentRequests = false;
-    // 
+    //
     // 		if (this.sides.every(side => side.isChoiceDone())) {
     // 			throw new Error(`Choices are done immediately after a request`);
     // 		}
@@ -7170,7 +7549,13 @@ impl Battle {
             // JS: this.add(`teampreview${pickedTeamSize ? `|${pickedTeamSize}` : ''}`);
             if let Some(ref rule_table) = self.rule_table {
                 if let Some(picked_team_size) = rule_table.picked_team_size {
-                    self.add("-", &[Arg::Str("teampreview"), Arg::String(picked_team_size.to_string())]);
+                    self.add(
+                        "-",
+                        &[
+                            Arg::Str("teampreview"),
+                            Arg::String(picked_team_size.to_string()),
+                        ],
+                    );
                 } else {
                     self.add("-", &[Arg::Str("teampreview")]);
                 }
@@ -7199,7 +7584,11 @@ impl Battle {
         // JS: if (this.sides.every(side => side.isChoiceDone())) { throw new Error(...); }
         // Safety check to prevent infinite loops
         let picked_team_size = self.rule_table.as_ref().and_then(|rt| rt.picked_team_size);
-        if self.sides.iter().all(|side| side.is_choice_done(picked_team_size)) {
+        if self
+            .sides
+            .iter()
+            .all(|side| side.is_choice_done(picked_team_size))
+        {
             panic!("Choices are done immediately after a request");
         }
     }
@@ -7207,7 +7596,7 @@ impl Battle {
     /// Check and trigger Endless Battle Clause
     /// Equivalent to battle.ts maybeTriggerEndlessBattleClause() (battle.ts:1757-1856)
     ///
-    // 
+    //
     // 	maybeTriggerEndlessBattleClause(
     // 		trappedBySide: boolean[], stalenessBySide: ('internal' | 'external' | undefined)[]
     // 	) {
@@ -7240,9 +7629,9 @@ impl Battle {
     // 				return this.tie();
     // 			}
     // 		}
-    // 
+    //
     // 		if (this.turn <= 100) return;
-    // 
+    //
     // 		// the turn limit is not a part of Endless Battle Clause
     // 		if (this.turn >= 1000) {
     // 			this.add('message', `It is turn 1000. You have hit the turn limit!`);
@@ -7258,21 +7647,21 @@ impl Battle {
     // 			const turnsLeftText = (turnsLeft === 1 ? `1 turn` : `${turnsLeft} turns`);
     // 			this.add('bigerror', `You will auto-tie if the battle doesn't end in ${turnsLeftText} (on turn 1000).`);
     // 		}
-    // 
+    //
     // 		if (!this.ruleTable.has('endlessbattleclause')) return;
     // 		// for now, FFA doesn't support Endless Battle Clause
     // 		if (this.format.gameType === 'freeforall') return;
-    // 
+    //
     // 		// Are all Pokemon on every side stale, with at least one side containing an externally stale Pokemon?
     // 		if (!stalenessBySide.every(s => !!s) || !stalenessBySide.some(s => s === 'external')) return;
-    // 
+    //
     // 		// Can both sides switch to a non-stale Pokemon?
     // 		const canSwitch = [];
     // 		for (const [i, trapped] of trappedBySide.entries()) {
     // 			canSwitch[i] = false;
     // 			if (trapped) break;
     // 			const side = this.sides[i];
-    // 
+    //
     // 			for (const pokemon of side.pokemon) {
     // 				if (!pokemon.fainted && !(pokemon.volatileStaleness || pokemon.staleness)) {
     // 					canSwitch[i] = true;
@@ -7281,7 +7670,7 @@ impl Battle {
     // 			}
     // 		}
     // 		if (canSwitch.every(s => s)) return;
-    // 
+    //
     // 		// Endless Battle Clause activates - we determine the winner by looking at each side's sets.
     // 		const losers: Side[] = [];
     // 		for (const side of this.sides) {
@@ -7297,7 +7686,7 @@ impl Battle {
     // 			}
     // 			if (berry && cycle) losers.push(side);
     // 		}
-    // 
+    //
     // 		if (losers.length === 1) {
     // 			const loser = losers[0];
     // 			this.add('-message', `${loser.name}'s team started with the rudimentary means to perform restorative berry-cycling and thus loses.`);
@@ -7306,7 +7695,7 @@ impl Battle {
     // 		if (losers.length === this.sides.length) {
     // 			this.add('-message', `Each side's team started with the rudimentary means to perform restorative berry-cycling.`);
     // 		}
-    // 
+    //
     // 		return this.tie();
     // 	}
     //
@@ -7318,23 +7707,33 @@ impl Battle {
 
         // JS: if (this.turn >= 1000) { this.add('message', ...); this.tie(); return true; }
         if self.turn >= 1000 {
-            self.add_log("message", &["It is turn 1000. You have hit the turn limit!"]);
+            self.add_log(
+                "message",
+                &["It is turn 1000. You have hit the turn limit!"],
+            );
             self.tie();
             return true;
         }
 
         // JS: Turn limit warnings
         // if ((turn >= 500 && turn % 100 === 0) || (turn >= 900 && turn % 10 === 0) || turn >= 990)
-        if (self.turn >= 500 && self.turn % 100 == 0) ||
-           (self.turn >= 900 && self.turn % 10 == 0) ||
-           self.turn >= 990 {
+        if (self.turn >= 500 && self.turn % 100 == 0)
+            || (self.turn >= 900 && self.turn % 10 == 0)
+            || self.turn >= 990
+        {
             let turns_left = 1000 - self.turn;
             let turns_text = if turns_left == 1 {
                 "1 turn".to_string()
             } else {
                 format!("{} turns", turns_left)
             };
-            self.add_log("bigerror", &[&format!("You will auto-tie if the battle doesn't end in {} (on turn 1000).", turns_text)]);
+            self.add_log(
+                "bigerror",
+                &[&format!(
+                    "You will auto-tie if the battle doesn't end in {} (on turn 1000).",
+                    turns_text
+                )],
+            );
         }
 
         // TODO: Gen 1 no-progress checks (requires Pokemon.hasType())
@@ -7352,10 +7751,10 @@ impl Battle {
     ///   if (!this.deserialized) throw new Error('Attempt to restart a battle which has not been deserialized');
     ///   (this as any).send = send;
     /// }
-    // 
+    //
     // 	restart(send?: (type: string, data: string | string[]) => void) {
     // 		if (!this.deserialized) throw new Error('Attempt to restart a battle which has not been deserialized');
-    // 
+    //
     // 		(this as any).send = send;
     // 	}
     //
@@ -7410,7 +7809,11 @@ impl Battle {
         // JS: this.setPlayer(slot, { name, avatar, team });
         let options = PlayerOptions {
             name: name.to_string(),
-            avatar: if avatar.is_empty() { None } else { Some(avatar.to_string()) },
+            avatar: if avatar.is_empty() {
+                None
+            } else {
+                Some(avatar.to_string())
+            },
             team: vec![], // Team is handled separately in Rust
             rating: None,
         };
@@ -7441,14 +7844,14 @@ impl Battle {
     ///   this.queue.battle = null!;
     ///   (this as any).log = [];
     /// }
-    // 
+    //
     // 	destroy() {
     // 		// deallocate ourself
-    // 
+    //
     // 		// deallocate children and get rid of references to them
     // 		this.field.destroy();
     // 		(this as any).field = null!;
-    // 
+    //
     // 		for (let i = 0; i < this.sides.length; i++) {
     // 			if (this.sides[i]) {
     // 				this.sides[i].destroy();
@@ -7458,7 +7861,7 @@ impl Battle {
     // 		for (const action of this.queue.list) {
     // 			delete (action as any).pokemon;
     // 		}
-    // 
+    //
     // 		this.queue.battle = null!;
     // 		this.queue = null!;
     // 		// in case the garbage collector really sucks, at least deallocate the log
@@ -7512,7 +7915,7 @@ impl Battle {
     // 			relayVar = true;
     // 			hasRelayVar = false;
     // 		}
-    // 
+    //
     // 		if (effect.effectType === 'Status' && (target instanceof Pokemon) && target.status !== effect.id) {
     // 			// it's changed; call it off
     // 			return relayVar;
@@ -7538,34 +7941,34 @@ impl Battle {
     // 			this.debug(eventid + ' handler suppressed by Air Lock');
     // 			return relayVar;
     // 		}
-    // 
+    //
     // 		const callback = customCallback || (effect as any)[`on${eventid}`];
     // 		if (callback === undefined) return relayVar;
-    // 
+    //
     // 		const parentEffect = this.effect;
     // 		const parentEffectState = this.effectState;
     // 		const parentEvent = this.event;
-    // 
+    //
     // 		this.effect = effect;
     // 		this.effectState = state as EffectState || this.initEffectState({});
     // 		this.event = { id: eventid, target, source, effect: sourceEffect };
     // 		this.eventDepth++;
-    // 
+    //
     // 		const args = [target, source, sourceEffect];
     // 		if (hasRelayVar) args.unshift(relayVar);
-    // 
+    //
     // 		let returnVal;
     // 		if (typeof callback === 'function') {
     // 			returnVal = callback.apply(this, args);
     // 		} else {
     // 			returnVal = callback;
     // 		}
-    // 
+    //
     // 		this.eventDepth--;
     // 		this.effect = parentEffect;
     // 		this.effectState = parentEffectState;
     // 		this.event = parentEvent;
-    // 
+    //
     // 		return returnVal === undefined ? relayVar : returnVal;
     // 	}
     //
@@ -7620,11 +8023,10 @@ impl Battle {
         }
 
         // JavaScript: if (eventid === 'SwitchIn' && effect.effectType === 'Ability' && effect.flags['breakable'] && this.suppressingAbility(target))
-        if event_id == "SwitchIn" && effect_type == "Ability"
-            && self.suppressing_ability(target) {
-                self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
-                return EventResult::Continue;
-            }
+        if event_id == "SwitchIn" && effect_type == "Ability" && self.suppressing_ability(target) {
+            self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
+            return EventResult::Continue;
+        }
 
         // JavaScript: if (eventid !== 'Start' && eventid !== 'TakeItem' && effect.effectType === 'Item' && target.ignoringItem())
         if event_id != "Start" && event_id != "TakeItem" && effect_type == "Item" {
@@ -7632,7 +8034,10 @@ impl Battle {
                 if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
                         if pokemon.ignoring_item() {
-                            self.debug(&format!("{} handler suppressed by Embargo, Klutz or Magic Room", event_id));
+                            self.debug(&format!(
+                                "{} handler suppressed by Embargo, Klutz or Magic Room",
+                                event_id
+                            ));
                             return EventResult::Continue;
                         }
                     }
@@ -7646,7 +8051,10 @@ impl Battle {
                 if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
                         if pokemon.ignoring_ability() {
-                            self.debug(&format!("{} handler suppressed by Gastro Acid or Neutralizing Gas", event_id));
+                            self.debug(&format!(
+                                "{} handler suppressed by Gastro Acid or Neutralizing Gas",
+                                event_id
+                            ));
                             return EventResult::Continue;
                         }
                     }
@@ -7655,11 +8063,15 @@ impl Battle {
         }
 
         // JavaScript: if (effect.effectType === 'Weather' && eventid !== 'FieldStart' && eventid !== 'FieldResidual' && eventid !== 'FieldEnd' && this.field.suppressingWeather())
-        if effect_type == "Weather" && event_id != "FieldStart" && event_id != "FieldResidual" && event_id != "FieldEnd"
-            && self.field.suppressing_weather() {
-                self.debug(&format!("{} handler suppressed by Air Lock", event_id));
-                return EventResult::Continue;
-            }
+        if effect_type == "Weather"
+            && event_id != "FieldStart"
+            && event_id != "FieldResidual"
+            && event_id != "FieldEnd"
+            && self.field.suppressing_weather()
+        {
+            self.debug(&format!("{} handler suppressed by Air Lock", event_id));
+            return EventResult::Continue;
+        }
 
         // Save parent event context
         let parent_event = self.current_event.take();
@@ -7717,10 +8129,28 @@ impl Battle {
             }
             // Check for weather/terrain by ID
             let id_str = effect_id.as_str();
-            if ["sunnyday", "raindance", "sandstorm", "hail", "snow", "harsh sunshine", "heavy rain", "strong winds"].contains(&id_str) {
+            if [
+                "sunnyday",
+                "raindance",
+                "sandstorm",
+                "hail",
+                "snow",
+                "harsh sunshine",
+                "heavy rain",
+                "strong winds",
+            ]
+            .contains(&id_str)
+            {
                 return "Weather";
             }
-            if ["electricterrain", "grassyterrain", "mistyterrain", "psychicterrain"].contains(&id_str) {
+            if [
+                "electricterrain",
+                "grassyterrain",
+                "mistyterrain",
+                "psychicterrain",
+            ]
+            .contains(&id_str)
+            {
                 return "Terrain";
             }
         }
@@ -7775,147 +8205,601 @@ impl Battle {
         ability_id: &ID,
         target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
-        use crate::event::EventResult;
         use crate::data::ability_callbacks;
+        use crate::event::EventResult;
 
         let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
-            "AfterBoost" => ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), pokemon_pos),
-            "AfterEachBoost" => ability_callbacks::dispatch_on_after_each_boost(self, ability_id.as_str(), pokemon_pos),
-            "AfterMoveSecondary" => ability_callbacks::dispatch_on_after_move_secondary(self, ability_id.as_str(), pokemon_pos),
-            "AfterMoveSecondarySelf" => ability_callbacks::dispatch_on_after_move_secondary_self(self, ability_id.as_str(), pokemon_pos),
-            "AfterSetStatus" => ability_callbacks::dispatch_on_after_set_status(self, ability_id.as_str(), pokemon_pos),
-            "AfterTerastallization" => ability_callbacks::dispatch_on_after_terastallization(self, ability_id.as_str(), pokemon_pos),
-            "AfterUseItem" => ability_callbacks::dispatch_on_after_use_item(self, ability_id.as_str(), pokemon_pos),
-            "AllyAfterUseItem" => ability_callbacks::dispatch_on_ally_after_use_item(self, ability_id.as_str(), pokemon_pos),
-            "AllyBasePower" => ability_callbacks::dispatch_on_ally_base_power(self, ability_id.as_str(), pokemon_pos),
-            "AllyBasePowerPriority" => ability_callbacks::dispatch_on_ally_base_power_priority(self, ability_id.as_str(), pokemon_pos),
-            "AllyFaint" => ability_callbacks::dispatch_on_ally_faint(self, ability_id.as_str(), pokemon_pos),
-            "AllyModifyAtk" => ability_callbacks::dispatch_on_ally_modify_atk(self, ability_id.as_str(), pokemon_pos),
-            "AllyModifyAtkPriority" => ability_callbacks::dispatch_on_ally_modify_atk_priority(self, ability_id.as_str(), pokemon_pos),
-            "AllyModifySpD" => ability_callbacks::dispatch_on_ally_modify_sp_d(self, ability_id.as_str(), pokemon_pos),
-            "AllyModifySpDPriority" => ability_callbacks::dispatch_on_ally_modify_sp_d_priority(self, ability_id.as_str(), pokemon_pos),
-            "AllySetStatus" => ability_callbacks::dispatch_on_ally_set_status(self, ability_id.as_str(), pokemon_pos),
-            "AllyTryAddVolatile" => ability_callbacks::dispatch_on_ally_try_add_volatile(self, ability_id.as_str(), pokemon_pos),
-            "AllyTryBoost" => ability_callbacks::dispatch_on_ally_try_boost(self, ability_id.as_str(), pokemon_pos),
-            "AllyTryHitSide" => ability_callbacks::dispatch_on_ally_try_hit_side(self, ability_id.as_str(), pokemon_pos),
-            "AnyAccuracy" => ability_callbacks::dispatch_on_any_accuracy(self, ability_id.as_str(), pokemon_pos),
-            "AnyAfterMega" => ability_callbacks::dispatch_on_any_after_mega(self, ability_id.as_str(), pokemon_pos),
-            "AnyAfterMove" => ability_callbacks::dispatch_on_any_after_move(self, ability_id.as_str(), pokemon_pos),
-            "AnyAfterSetStatus" => ability_callbacks::dispatch_on_any_after_set_status(self, ability_id.as_str(), pokemon_pos),
-            "AnyAfterTerastallization" => ability_callbacks::dispatch_on_any_after_terastallization(self, ability_id.as_str(), pokemon_pos),
-            "AnyBasePower" => ability_callbacks::dispatch_on_any_base_power(self, ability_id.as_str(), pokemon_pos),
-            "AnyBasePowerPriority" => ability_callbacks::dispatch_on_any_base_power_priority(self, ability_id.as_str(), pokemon_pos),
-            "AnyBeforeMove" => ability_callbacks::dispatch_on_any_before_move(self, ability_id.as_str(), pokemon_pos),
-            "AnyDamage" => ability_callbacks::dispatch_on_any_damage(self, ability_id.as_str(), pokemon_pos),
-            "AnyFaint" => ability_callbacks::dispatch_on_any_faint(self, ability_id.as_str(), pokemon_pos),
-            "AnyFaintPriority" => ability_callbacks::dispatch_on_any_faint_priority(self, ability_id.as_str(), pokemon_pos),
-            "AnyInvulnerability" => ability_callbacks::dispatch_on_any_invulnerability(self, ability_id.as_str(), pokemon_pos),
-            "AnyInvulnerabilityPriority" => ability_callbacks::dispatch_on_any_invulnerability_priority(self, ability_id.as_str(), pokemon_pos),
-            "AnyModifyAccuracy" => ability_callbacks::dispatch_on_any_modify_accuracy(self, ability_id.as_str(), pokemon_pos),
-            "AnyModifyAccuracyPriority" => ability_callbacks::dispatch_on_any_modify_accuracy_priority(self, ability_id.as_str(), pokemon_pos),
-            "AnyModifyAtk" => ability_callbacks::dispatch_on_any_modify_atk(self, ability_id.as_str(), pokemon_pos),
-            "AnyModifyBoost" => ability_callbacks::dispatch_on_any_modify_boost(self, ability_id.as_str(), pokemon_pos),
-            "AnyModifyDamage" => ability_callbacks::dispatch_on_any_modify_damage(self, ability_id.as_str(), pokemon_pos),
-            "AnyModifyDef" => ability_callbacks::dispatch_on_any_modify_def(self, ability_id.as_str(), pokemon_pos),
-            "AnyModifySpA" => ability_callbacks::dispatch_on_any_modify_sp_a(self, ability_id.as_str(), pokemon_pos),
-            "AnyModifySpD" => ability_callbacks::dispatch_on_any_modify_sp_d(self, ability_id.as_str(), pokemon_pos),
-            "AnyRedirectTarget" => ability_callbacks::dispatch_on_any_redirect_target(self, ability_id.as_str(), pokemon_pos),
-            "AnySetWeather" => ability_callbacks::dispatch_on_any_set_weather(self, ability_id.as_str(), pokemon_pos),
-            "AnySwitchIn" => ability_callbacks::dispatch_on_any_switch_in(self, ability_id.as_str(), pokemon_pos),
-            "AnySwitchInPriority" => ability_callbacks::dispatch_on_any_switch_in_priority(self, ability_id.as_str(), pokemon_pos),
-            "AnyTryMove" => ability_callbacks::dispatch_on_any_try_move(self, ability_id.as_str(), pokemon_pos),
-            "AnyTryPrimaryHit" => ability_callbacks::dispatch_on_any_try_primary_hit(self, ability_id.as_str(), pokemon_pos),
-            "BasePower" => ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), pokemon_pos),
-            "BasePowerPriority" => ability_callbacks::dispatch_on_base_power_priority(self, ability_id.as_str(), pokemon_pos),
-            "BeforeMove" => ability_callbacks::dispatch_on_before_move(self, ability_id.as_str(), pokemon_pos),
-            "BeforeMovePriority" => ability_callbacks::dispatch_on_before_move_priority(self, ability_id.as_str(), pokemon_pos),
-            "BeforeSwitchIn" => ability_callbacks::dispatch_on_before_switch_in(self, ability_id.as_str(), pokemon_pos),
-            "ChangeBoost" => ability_callbacks::dispatch_on_change_boost(self, ability_id.as_str(), pokemon_pos),
-            "CheckShow" => ability_callbacks::dispatch_on_check_show(self, ability_id.as_str(), pokemon_pos),
-            "CriticalHit" => ability_callbacks::dispatch_on_critical_hit(self, ability_id.as_str(), pokemon_pos),
-            "Damage" => ability_callbacks::dispatch_on_damage(self, ability_id.as_str(), pokemon_pos),
-            "DamagePriority" => ability_callbacks::dispatch_on_damage_priority(self, ability_id.as_str(), pokemon_pos),
-            "DamagingHit" => ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), pokemon_pos),
-            "DamagingHitOrder" => ability_callbacks::dispatch_on_damaging_hit_order(self, ability_id.as_str(), pokemon_pos),
-            "DeductPP" => ability_callbacks::dispatch_on_deduct_p_p(self, ability_id.as_str(), pokemon_pos),
-            "DisableMove" => ability_callbacks::dispatch_on_disable_move(self, ability_id.as_str(), pokemon_pos),
-            "DragOut" => ability_callbacks::dispatch_on_drag_out(self, ability_id.as_str(), pokemon_pos),
-            "DragOutPriority" => ability_callbacks::dispatch_on_drag_out_priority(self, ability_id.as_str(), pokemon_pos),
-            "EatItem" => ability_callbacks::dispatch_on_eat_item(self, ability_id.as_str(), pokemon_pos),
-            "Effectiveness" => ability_callbacks::dispatch_on_effectiveness(self, ability_id.as_str(), pokemon_pos),
-            "EmergencyExit" => ability_callbacks::dispatch_on_emergency_exit(self, ability_id.as_str(), pokemon_pos),
+            "AfterBoost" => {
+                ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), pokemon_pos)
+            }
+            "AfterEachBoost" => ability_callbacks::dispatch_on_after_each_boost(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AfterMoveSecondary" => ability_callbacks::dispatch_on_after_move_secondary(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AfterMoveSecondarySelf" => ability_callbacks::dispatch_on_after_move_secondary_self(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AfterSetStatus" => ability_callbacks::dispatch_on_after_set_status(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AfterTerastallization" => ability_callbacks::dispatch_on_after_terastallization(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AfterUseItem" => ability_callbacks::dispatch_on_after_use_item(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyAfterUseItem" => ability_callbacks::dispatch_on_ally_after_use_item(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyBasePower" => ability_callbacks::dispatch_on_ally_base_power(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyBasePowerPriority" => ability_callbacks::dispatch_on_ally_base_power_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyFaint" => {
+                ability_callbacks::dispatch_on_ally_faint(self, ability_id.as_str(), pokemon_pos)
+            }
+            "AllyModifyAtk" => ability_callbacks::dispatch_on_ally_modify_atk(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyModifyAtkPriority" => ability_callbacks::dispatch_on_ally_modify_atk_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyModifySpD" => ability_callbacks::dispatch_on_ally_modify_sp_d(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyModifySpDPriority" => ability_callbacks::dispatch_on_ally_modify_sp_d_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllySetStatus" => ability_callbacks::dispatch_on_ally_set_status(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyTryAddVolatile" => ability_callbacks::dispatch_on_ally_try_add_volatile(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyTryBoost" => ability_callbacks::dispatch_on_ally_try_boost(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AllyTryHitSide" => ability_callbacks::dispatch_on_ally_try_hit_side(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyAccuracy" => {
+                ability_callbacks::dispatch_on_any_accuracy(self, ability_id.as_str(), pokemon_pos)
+            }
+            "AnyAfterMega" => ability_callbacks::dispatch_on_any_after_mega(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyAfterMove" => ability_callbacks::dispatch_on_any_after_move(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyAfterSetStatus" => ability_callbacks::dispatch_on_any_after_set_status(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyAfterTerastallization" => {
+                ability_callbacks::dispatch_on_any_after_terastallization(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                )
+            }
+            "AnyBasePower" => ability_callbacks::dispatch_on_any_base_power(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyBasePowerPriority" => ability_callbacks::dispatch_on_any_base_power_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyBeforeMove" => ability_callbacks::dispatch_on_any_before_move(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyDamage" => {
+                ability_callbacks::dispatch_on_any_damage(self, ability_id.as_str(), pokemon_pos)
+            }
+            "AnyFaint" => {
+                ability_callbacks::dispatch_on_any_faint(self, ability_id.as_str(), pokemon_pos)
+            }
+            "AnyFaintPriority" => ability_callbacks::dispatch_on_any_faint_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyInvulnerability" => ability_callbacks::dispatch_on_any_invulnerability(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyInvulnerabilityPriority" => {
+                ability_callbacks::dispatch_on_any_invulnerability_priority(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                )
+            }
+            "AnyModifyAccuracy" => ability_callbacks::dispatch_on_any_modify_accuracy(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyModifyAccuracyPriority" => {
+                ability_callbacks::dispatch_on_any_modify_accuracy_priority(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                )
+            }
+            "AnyModifyAtk" => ability_callbacks::dispatch_on_any_modify_atk(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyModifyBoost" => ability_callbacks::dispatch_on_any_modify_boost(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyModifyDamage" => ability_callbacks::dispatch_on_any_modify_damage(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyModifyDef" => ability_callbacks::dispatch_on_any_modify_def(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyModifySpA" => ability_callbacks::dispatch_on_any_modify_sp_a(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyModifySpD" => ability_callbacks::dispatch_on_any_modify_sp_d(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyRedirectTarget" => ability_callbacks::dispatch_on_any_redirect_target(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnySetWeather" => ability_callbacks::dispatch_on_any_set_weather(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnySwitchIn" => {
+                ability_callbacks::dispatch_on_any_switch_in(self, ability_id.as_str(), pokemon_pos)
+            }
+            "AnySwitchInPriority" => ability_callbacks::dispatch_on_any_switch_in_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyTryMove" => {
+                ability_callbacks::dispatch_on_any_try_move(self, ability_id.as_str(), pokemon_pos)
+            }
+            "AnyTryPrimaryHit" => ability_callbacks::dispatch_on_any_try_primary_hit(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "BasePower" => {
+                ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), pokemon_pos)
+            }
+            "BasePowerPriority" => ability_callbacks::dispatch_on_base_power_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "BeforeMove" => {
+                ability_callbacks::dispatch_on_before_move(self, ability_id.as_str(), pokemon_pos)
+            }
+            "BeforeMovePriority" => ability_callbacks::dispatch_on_before_move_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "BeforeSwitchIn" => ability_callbacks::dispatch_on_before_switch_in(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ChangeBoost" => {
+                ability_callbacks::dispatch_on_change_boost(self, ability_id.as_str(), pokemon_pos)
+            }
+            "CheckShow" => {
+                ability_callbacks::dispatch_on_check_show(self, ability_id.as_str(), pokemon_pos)
+            }
+            "CriticalHit" => {
+                ability_callbacks::dispatch_on_critical_hit(self, ability_id.as_str(), pokemon_pos)
+            }
+            "Damage" => {
+                ability_callbacks::dispatch_on_damage(self, ability_id.as_str(), pokemon_pos)
+            }
+            "DamagePriority" => ability_callbacks::dispatch_on_damage_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "DamagingHit" => {
+                ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), pokemon_pos)
+            }
+            "DamagingHitOrder" => ability_callbacks::dispatch_on_damaging_hit_order(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "DeductPP" => {
+                ability_callbacks::dispatch_on_deduct_p_p(self, ability_id.as_str(), pokemon_pos)
+            }
+            "DisableMove" => {
+                ability_callbacks::dispatch_on_disable_move(self, ability_id.as_str(), pokemon_pos)
+            }
+            "DragOut" => {
+                ability_callbacks::dispatch_on_drag_out(self, ability_id.as_str(), pokemon_pos)
+            }
+            "DragOutPriority" => ability_callbacks::dispatch_on_drag_out_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "EatItem" => {
+                ability_callbacks::dispatch_on_eat_item(self, ability_id.as_str(), pokemon_pos)
+            }
+            "Effectiveness" => {
+                ability_callbacks::dispatch_on_effectiveness(self, ability_id.as_str(), pokemon_pos)
+            }
+            "EmergencyExit" => ability_callbacks::dispatch_on_emergency_exit(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
             "End" => ability_callbacks::dispatch_on_end(self, ability_id.as_str(), pokemon_pos),
             "Faint" => ability_callbacks::dispatch_on_faint(self, ability_id.as_str(), pokemon_pos),
-            "Flinch" => ability_callbacks::dispatch_on_flinch(self, ability_id.as_str(), pokemon_pos),
-            "FoeAfterBoost" => ability_callbacks::dispatch_on_foe_after_boost(self, ability_id.as_str(), pokemon_pos),
-            "FoeMaybeTrapPokemon" => ability_callbacks::dispatch_on_foe_maybe_trap_pokemon(self, ability_id.as_str(), pokemon_pos),
-            "FoeTrapPokemon" => ability_callbacks::dispatch_on_foe_trap_pokemon(self, ability_id.as_str(), pokemon_pos),
-            "FoeTryEatItem" => ability_callbacks::dispatch_on_foe_try_eat_item(self, ability_id.as_str(), pokemon_pos),
-            "FoeTryMove" => ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), pokemon_pos),
-            "FractionalPriority" => ability_callbacks::dispatch_on_fractional_priority(self, ability_id.as_str(), pokemon_pos),
-            "FractionalPriorityPriority" => ability_callbacks::dispatch_on_fractional_priority_priority(self, ability_id.as_str(), pokemon_pos),
+            "Flinch" => {
+                ability_callbacks::dispatch_on_flinch(self, ability_id.as_str(), pokemon_pos)
+            }
+            "FoeAfterBoost" => ability_callbacks::dispatch_on_foe_after_boost(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "FoeMaybeTrapPokemon" => ability_callbacks::dispatch_on_foe_maybe_trap_pokemon(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "FoeTrapPokemon" => ability_callbacks::dispatch_on_foe_trap_pokemon(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "FoeTryEatItem" => ability_callbacks::dispatch_on_foe_try_eat_item(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "FoeTryMove" => {
+                ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), pokemon_pos)
+            }
+            "FractionalPriority" => ability_callbacks::dispatch_on_fractional_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "FractionalPriorityPriority" => {
+                ability_callbacks::dispatch_on_fractional_priority_priority(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                )
+            }
             "Hit" => ability_callbacks::dispatch_on_hit(self, ability_id.as_str(), pokemon_pos),
-            "Immunity" => ability_callbacks::dispatch_on_immunity(self, ability_id.as_str(), pokemon_pos),
-            "ModifyAccuracy" => ability_callbacks::dispatch_on_modify_accuracy(self, ability_id.as_str(), pokemon_pos),
-            "ModifyAccuracyPriority" => ability_callbacks::dispatch_on_modify_accuracy_priority(self, ability_id.as_str(), pokemon_pos),
-            "ModifyAtk" => ability_callbacks::dispatch_on_modify_atk(self, ability_id.as_str(), pokemon_pos),
-            "ModifyAtkPriority" => ability_callbacks::dispatch_on_modify_atk_priority(self, ability_id.as_str(), pokemon_pos),
-            "ModifyCritRatio" => ability_callbacks::dispatch_on_modify_crit_ratio(self, ability_id.as_str(), pokemon_pos),
-            "ModifyDamage" => ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), pokemon_pos),
-            "ModifyDef" => ability_callbacks::dispatch_on_modify_def(self, ability_id.as_str(), pokemon_pos),
-            "ModifyDefPriority" => ability_callbacks::dispatch_on_modify_def_priority(self, ability_id.as_str(), pokemon_pos),
-            "ModifyMove" => ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), pokemon_pos),
-            "ModifyMovePriority" => ability_callbacks::dispatch_on_modify_move_priority(self, ability_id.as_str(), pokemon_pos),
-            "ModifyPriority" => ability_callbacks::dispatch_on_modify_priority(self, ability_id.as_str(), pokemon_pos),
-            "ModifySTAB" => ability_callbacks::dispatch_on_modify_s_t_a_b(self, ability_id.as_str(), pokemon_pos),
-            "ModifySecondaries" => ability_callbacks::dispatch_on_modify_secondaries(self, ability_id.as_str(), pokemon_pos),
-            "ModifySpA" => ability_callbacks::dispatch_on_modify_sp_a(self, ability_id.as_str(), pokemon_pos),
-            "ModifySpAPriority" => ability_callbacks::dispatch_on_modify_sp_a_priority(self, ability_id.as_str(), pokemon_pos),
-            "ModifySpe" => ability_callbacks::dispatch_on_modify_spe(self, ability_id.as_str(), pokemon_pos),
-            "ModifyType" => ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), pokemon_pos),
-            "ModifyTypePriority" => ability_callbacks::dispatch_on_modify_type_priority(self, ability_id.as_str(), pokemon_pos),
-            "ModifyWeight" => ability_callbacks::dispatch_on_modify_weight(self, ability_id.as_str(), pokemon_pos),
-            "ModifyWeightPriority" => ability_callbacks::dispatch_on_modify_weight_priority(self, ability_id.as_str(), pokemon_pos),
-            "PrepareHit" => ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), pokemon_pos),
-            "Residual" => ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos),
-            "ResidualOrder" => ability_callbacks::dispatch_on_residual_order(self, ability_id.as_str(), pokemon_pos),
-            "ResidualSubOrder" => ability_callbacks::dispatch_on_residual_sub_order(self, ability_id.as_str(), pokemon_pos),
-            "SetStatus" => ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), pokemon_pos),
-            "SideConditionStart" => ability_callbacks::dispatch_on_side_condition_start(self, ability_id.as_str(), pokemon_pos),
-            "SourceAfterFaint" => ability_callbacks::dispatch_on_source_after_faint(self, ability_id.as_str(), pokemon_pos),
-            "SourceBasePower" => ability_callbacks::dispatch_on_source_base_power(self, ability_id.as_str(), pokemon_pos),
-            "SourceBasePowerPriority" => ability_callbacks::dispatch_on_source_base_power_priority(self, ability_id.as_str(), pokemon_pos),
-            "SourceDamagingHit" => ability_callbacks::dispatch_on_source_damaging_hit(self, ability_id.as_str(), pokemon_pos),
-            "SourceModifyAccuracy" => ability_callbacks::dispatch_on_source_modify_accuracy(self, ability_id.as_str(), pokemon_pos),
-            "SourceModifyAccuracyPriority" => ability_callbacks::dispatch_on_source_modify_accuracy_priority(self, ability_id.as_str(), pokemon_pos),
-            "SourceModifyAtk" => ability_callbacks::dispatch_on_source_modify_atk(self, ability_id.as_str(), pokemon_pos),
-            "SourceModifyAtkPriority" => ability_callbacks::dispatch_on_source_modify_atk_priority(self, ability_id.as_str(), pokemon_pos),
-            "SourceModifyDamage" => ability_callbacks::dispatch_on_source_modify_damage(self, ability_id.as_str(), pokemon_pos),
-            "SourceModifyDamagePriority" => ability_callbacks::dispatch_on_source_modify_damage_priority(self, ability_id.as_str(), pokemon_pos),
-            "SourceModifySecondaries" => ability_callbacks::dispatch_on_source_modify_secondaries(self, ability_id.as_str(), pokemon_pos),
-            "SourceModifySpA" => ability_callbacks::dispatch_on_source_modify_sp_a(self, ability_id.as_str(), pokemon_pos),
-            "SourceModifySpAPriority" => ability_callbacks::dispatch_on_source_modify_sp_a_priority(self, ability_id.as_str(), pokemon_pos),
-            "SourceTryHeal" => ability_callbacks::dispatch_on_source_try_heal(self, ability_id.as_str(), pokemon_pos),
-            "SourceTryPrimaryHit" => ability_callbacks::dispatch_on_source_try_primary_hit(self, ability_id.as_str(), pokemon_pos),
+            "Immunity" => {
+                ability_callbacks::dispatch_on_immunity(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ModifyAccuracy" => ability_callbacks::dispatch_on_modify_accuracy(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifyAccuracyPriority" => ability_callbacks::dispatch_on_modify_accuracy_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifyAtk" => {
+                ability_callbacks::dispatch_on_modify_atk(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ModifyAtkPriority" => ability_callbacks::dispatch_on_modify_atk_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifyCritRatio" => ability_callbacks::dispatch_on_modify_crit_ratio(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifyDamage" => {
+                ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ModifyDef" => {
+                ability_callbacks::dispatch_on_modify_def(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ModifyDefPriority" => ability_callbacks::dispatch_on_modify_def_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifyMove" => {
+                ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ModifyMovePriority" => ability_callbacks::dispatch_on_modify_move_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifyPriority" => ability_callbacks::dispatch_on_modify_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifySTAB" => ability_callbacks::dispatch_on_modify_s_t_a_b(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifySecondaries" => ability_callbacks::dispatch_on_modify_secondaries(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifySpA" => {
+                ability_callbacks::dispatch_on_modify_sp_a(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ModifySpAPriority" => ability_callbacks::dispatch_on_modify_sp_a_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifySpe" => {
+                ability_callbacks::dispatch_on_modify_spe(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ModifyType" => {
+                ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ModifyTypePriority" => ability_callbacks::dispatch_on_modify_type_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifyWeight" => {
+                ability_callbacks::dispatch_on_modify_weight(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ModifyWeightPriority" => ability_callbacks::dispatch_on_modify_weight_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "PrepareHit" => {
+                ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), pokemon_pos)
+            }
+            "Residual" => {
+                ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos)
+            }
+            "ResidualOrder" => ability_callbacks::dispatch_on_residual_order(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "ResidualSubOrder" => ability_callbacks::dispatch_on_residual_sub_order(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SetStatus" => {
+                ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), pokemon_pos)
+            }
+            "SideConditionStart" => ability_callbacks::dispatch_on_side_condition_start(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceAfterFaint" => ability_callbacks::dispatch_on_source_after_faint(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceBasePower" => ability_callbacks::dispatch_on_source_base_power(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceBasePowerPriority" => ability_callbacks::dispatch_on_source_base_power_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceDamagingHit" => ability_callbacks::dispatch_on_source_damaging_hit(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceModifyAccuracy" => ability_callbacks::dispatch_on_source_modify_accuracy(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceModifyAccuracyPriority" => {
+                ability_callbacks::dispatch_on_source_modify_accuracy_priority(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                )
+            }
+            "SourceModifyAtk" => ability_callbacks::dispatch_on_source_modify_atk(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceModifyAtkPriority" => ability_callbacks::dispatch_on_source_modify_atk_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceModifyDamage" => ability_callbacks::dispatch_on_source_modify_damage(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceModifyDamagePriority" => {
+                ability_callbacks::dispatch_on_source_modify_damage_priority(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                )
+            }
+            "SourceModifySecondaries" => ability_callbacks::dispatch_on_source_modify_secondaries(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceModifySpA" => ability_callbacks::dispatch_on_source_modify_sp_a(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceModifySpAPriority" => {
+                ability_callbacks::dispatch_on_source_modify_sp_a_priority(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                )
+            }
+            "SourceTryHeal" => ability_callbacks::dispatch_on_source_try_heal(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceTryPrimaryHit" => ability_callbacks::dispatch_on_source_try_primary_hit(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
             "Start" => ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos),
-            "SwitchIn" => ability_callbacks::dispatch_on_switch_in(self, ability_id.as_str(), pokemon_pos),
-            "SwitchInPriority" => ability_callbacks::dispatch_on_switch_in_priority(self, ability_id.as_str(), pokemon_pos),
-            "SwitchOut" => ability_callbacks::dispatch_on_switch_out(self, ability_id.as_str(), pokemon_pos),
-            "TakeItem" => ability_callbacks::dispatch_on_take_item(self, ability_id.as_str(), pokemon_pos),
-            "TerrainChange" => ability_callbacks::dispatch_on_terrain_change(self, ability_id.as_str(), pokemon_pos),
-            "TryAddVolatile" => ability_callbacks::dispatch_on_try_add_volatile(self, ability_id.as_str(), pokemon_pos),
-            "TryBoost" => ability_callbacks::dispatch_on_try_boost(self, ability_id.as_str(), pokemon_pos),
-            "TryBoostPriority" => ability_callbacks::dispatch_on_try_boost_priority(self, ability_id.as_str(), pokemon_pos),
-            "TryEatItem" => ability_callbacks::dispatch_on_try_eat_item(self, ability_id.as_str(), pokemon_pos),
-            "TryEatItemPriority" => ability_callbacks::dispatch_on_try_eat_item_priority(self, ability_id.as_str(), pokemon_pos),
-            "TryHeal" => ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), pokemon_pos),
-            "TryHit" => ability_callbacks::dispatch_on_try_hit(self, ability_id.as_str(), pokemon_pos),
-            "TryHitPriority" => ability_callbacks::dispatch_on_try_hit_priority(self, ability_id.as_str(), pokemon_pos),
-            "Update" => ability_callbacks::dispatch_on_update(self, ability_id.as_str(), pokemon_pos),
-            "Weather" => ability_callbacks::dispatch_on_weather(self, ability_id.as_str(), pokemon_pos),
-            "WeatherChange" => ability_callbacks::dispatch_on_weather_change(self, ability_id.as_str(), pokemon_pos),
+            "SwitchIn" => {
+                ability_callbacks::dispatch_on_switch_in(self, ability_id.as_str(), pokemon_pos)
+            }
+            "SwitchInPriority" => ability_callbacks::dispatch_on_switch_in_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "SwitchOut" => {
+                ability_callbacks::dispatch_on_switch_out(self, ability_id.as_str(), pokemon_pos)
+            }
+            "TakeItem" => {
+                ability_callbacks::dispatch_on_take_item(self, ability_id.as_str(), pokemon_pos)
+            }
+            "TerrainChange" => ability_callbacks::dispatch_on_terrain_change(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "TryAddVolatile" => ability_callbacks::dispatch_on_try_add_volatile(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "TryBoost" => {
+                ability_callbacks::dispatch_on_try_boost(self, ability_id.as_str(), pokemon_pos)
+            }
+            "TryBoostPriority" => ability_callbacks::dispatch_on_try_boost_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "TryEatItem" => {
+                ability_callbacks::dispatch_on_try_eat_item(self, ability_id.as_str(), pokemon_pos)
+            }
+            "TryEatItemPriority" => ability_callbacks::dispatch_on_try_eat_item_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "TryHeal" => {
+                ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), pokemon_pos)
+            }
+            "TryHit" => {
+                ability_callbacks::dispatch_on_try_hit(self, ability_id.as_str(), pokemon_pos)
+            }
+            "TryHitPriority" => ability_callbacks::dispatch_on_try_hit_priority(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
+            "Update" => {
+                ability_callbacks::dispatch_on_update(self, ability_id.as_str(), pokemon_pos)
+            }
+            "Weather" => {
+                ability_callbacks::dispatch_on_weather(self, ability_id.as_str(), pokemon_pos)
+            }
+            "WeatherChange" => ability_callbacks::dispatch_on_weather_change(
+                self,
+                ability_id.as_str(),
+                pokemon_pos,
+            ),
             _ => EventResult::Continue,
         }
     }
@@ -7930,94 +8814,267 @@ impl Battle {
         item_id: &ID,
         target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
-        use crate::event::EventResult;
         use crate::data::item_callbacks;
+        use crate::event::EventResult;
 
         let source = self.current_event.as_ref().and_then(|e| e.source);
         let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
-            "AfterBoost" => item_callbacks::dispatch_on_after_boost(self, item_id.as_str(), pokemon_pos),
-            "AfterMoveSecondary" => item_callbacks::dispatch_on_after_move_secondary(self, item_id.as_str(), pokemon_pos),
-            "AfterMoveSecondaryPriority" => item_callbacks::dispatch_on_after_move_secondary_priority(self, item_id.as_str(), pokemon_pos),
+            "AfterBoost" => {
+                item_callbacks::dispatch_on_after_boost(self, item_id.as_str(), pokemon_pos)
+            }
+            "AfterMoveSecondary" => item_callbacks::dispatch_on_after_move_secondary(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "AfterMoveSecondaryPriority" => {
+                item_callbacks::dispatch_on_after_move_secondary_priority(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                )
+            }
             "AfterMoveSecondarySelf" => {
                 if let Some(source_pos) = source {
-                    item_callbacks::dispatch_on_after_move_secondary_self(self, item_id.as_str(), source_pos, target)
+                    item_callbacks::dispatch_on_after_move_secondary_self(
+                        self,
+                        item_id.as_str(),
+                        source_pos,
+                        target,
+                    )
                 } else {
                     EventResult::Continue
                 }
             }
-            "AfterMoveSecondarySelfPriority" => item_callbacks::dispatch_on_after_move_secondary_self_priority(self, item_id.as_str(), pokemon_pos),
-            "AfterSetStatus" => item_callbacks::dispatch_on_after_set_status(self, item_id.as_str(), pokemon_pos),
-            "AfterSetStatusPriority" => item_callbacks::dispatch_on_after_set_status_priority(self, item_id.as_str(), pokemon_pos),
-            "AfterSubDamage" => item_callbacks::dispatch_on_after_sub_damage(self, item_id.as_str(), pokemon_pos),
-            "AnyAfterMega" => item_callbacks::dispatch_on_any_after_mega(self, item_id.as_str(), pokemon_pos),
-            "AnyAfterMove" => item_callbacks::dispatch_on_any_after_move(self, item_id.as_str(), pokemon_pos),
-            "AnyAfterTerastallization" => item_callbacks::dispatch_on_any_after_terastallization(self, item_id.as_str(), pokemon_pos),
-            "AnyPseudoWeatherChange" => item_callbacks::dispatch_on_any_pseudo_weather_change(self, item_id.as_str(), pokemon_pos),
-            "AnySwitchIn" => item_callbacks::dispatch_on_any_switch_in(self, item_id.as_str(), pokemon_pos),
-            "AnySwitchInPriority" => item_callbacks::dispatch_on_any_switch_in_priority(self, item_id.as_str(), pokemon_pos),
+            "AfterMoveSecondarySelfPriority" => {
+                item_callbacks::dispatch_on_after_move_secondary_self_priority(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                )
+            }
+            "AfterSetStatus" => {
+                item_callbacks::dispatch_on_after_set_status(self, item_id.as_str(), pokemon_pos)
+            }
+            "AfterSetStatusPriority" => item_callbacks::dispatch_on_after_set_status_priority(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "AfterSubDamage" => {
+                item_callbacks::dispatch_on_after_sub_damage(self, item_id.as_str(), pokemon_pos)
+            }
+            "AnyAfterMega" => {
+                item_callbacks::dispatch_on_any_after_mega(self, item_id.as_str(), pokemon_pos)
+            }
+            "AnyAfterMove" => {
+                item_callbacks::dispatch_on_any_after_move(self, item_id.as_str(), pokemon_pos)
+            }
+            "AnyAfterTerastallization" => item_callbacks::dispatch_on_any_after_terastallization(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnyPseudoWeatherChange" => item_callbacks::dispatch_on_any_pseudo_weather_change(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "AnySwitchIn" => {
+                item_callbacks::dispatch_on_any_switch_in(self, item_id.as_str(), pokemon_pos)
+            }
+            "AnySwitchInPriority" => item_callbacks::dispatch_on_any_switch_in_priority(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
             "Attract" => item_callbacks::dispatch_on_attract(self, item_id.as_str(), pokemon_pos),
-            "AttractPriority" => item_callbacks::dispatch_on_attract_priority(self, item_id.as_str(), pokemon_pos),
-            "BasePower" => item_callbacks::dispatch_on_base_power(self, item_id.as_str(), pokemon_pos),
-            "BasePowerPriority" => item_callbacks::dispatch_on_base_power_priority(self, item_id.as_str(), pokemon_pos),
-            "ChargeMove" => item_callbacks::dispatch_on_charge_move(self, item_id.as_str(), pokemon_pos),
+            "AttractPriority" => {
+                item_callbacks::dispatch_on_attract_priority(self, item_id.as_str(), pokemon_pos)
+            }
+            "BasePower" => {
+                item_callbacks::dispatch_on_base_power(self, item_id.as_str(), pokemon_pos)
+            }
+            "BasePowerPriority" => {
+                item_callbacks::dispatch_on_base_power_priority(self, item_id.as_str(), pokemon_pos)
+            }
+            "ChargeMove" => {
+                item_callbacks::dispatch_on_charge_move(self, item_id.as_str(), pokemon_pos)
+            }
             "Damage" => item_callbacks::dispatch_on_damage(self, item_id.as_str(), pokemon_pos),
-            "DamagePriority" => item_callbacks::dispatch_on_damage_priority(self, item_id.as_str(), pokemon_pos),
-            "DamagingHit" => item_callbacks::dispatch_on_damaging_hit(self, item_id.as_str(), pokemon_pos),
-            "DamagingHitOrder" => item_callbacks::dispatch_on_damaging_hit_order(self, item_id.as_str(), pokemon_pos),
-            "DisableMove" => item_callbacks::dispatch_on_disable_move(self, item_id.as_str(), pokemon_pos),
+            "DamagePriority" => {
+                item_callbacks::dispatch_on_damage_priority(self, item_id.as_str(), pokemon_pos)
+            }
+            "DamagingHit" => {
+                item_callbacks::dispatch_on_damaging_hit(self, item_id.as_str(), pokemon_pos)
+            }
+            "DamagingHitOrder" => {
+                item_callbacks::dispatch_on_damaging_hit_order(self, item_id.as_str(), pokemon_pos)
+            }
+            "DisableMove" => {
+                item_callbacks::dispatch_on_disable_move(self, item_id.as_str(), pokemon_pos)
+            }
             "Drive" => item_callbacks::dispatch_on_drive(self, item_id.as_str(), pokemon_pos),
             "Eat" => item_callbacks::dispatch_on_eat(self, item_id.as_str(), pokemon_pos),
-            "Effectiveness" => item_callbacks::dispatch_on_effectiveness(self, item_id.as_str(), pokemon_pos),
+            "Effectiveness" => {
+                item_callbacks::dispatch_on_effectiveness(self, item_id.as_str(), pokemon_pos)
+            }
             "End" => item_callbacks::dispatch_on_end(self, item_id.as_str(), pokemon_pos),
-            "FoeAfterBoost" => item_callbacks::dispatch_on_foe_after_boost(self, item_id.as_str(), pokemon_pos),
-            "FractionalPriority" => item_callbacks::dispatch_on_fractional_priority(self, item_id.as_str(), pokemon_pos),
-            "FractionalPriorityPriority" => item_callbacks::dispatch_on_fractional_priority_priority(self, item_id.as_str(), pokemon_pos),
+            "FoeAfterBoost" => {
+                item_callbacks::dispatch_on_foe_after_boost(self, item_id.as_str(), pokemon_pos)
+            }
+            "FractionalPriority" => {
+                item_callbacks::dispatch_on_fractional_priority(self, item_id.as_str(), pokemon_pos)
+            }
+            "FractionalPriorityPriority" => {
+                item_callbacks::dispatch_on_fractional_priority_priority(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                )
+            }
             "Hit" => item_callbacks::dispatch_on_hit(self, item_id.as_str(), pokemon_pos),
             "Immunity" => item_callbacks::dispatch_on_immunity(self, item_id.as_str(), pokemon_pos),
-            "MaybeTrapPokemon" => item_callbacks::dispatch_on_maybe_trap_pokemon(self, item_id.as_str(), pokemon_pos),
-            "MaybeTrapPokemonPriority" => item_callbacks::dispatch_on_maybe_trap_pokemon_priority(self, item_id.as_str(), pokemon_pos),
+            "MaybeTrapPokemon" => {
+                item_callbacks::dispatch_on_maybe_trap_pokemon(self, item_id.as_str(), pokemon_pos)
+            }
+            "MaybeTrapPokemonPriority" => item_callbacks::dispatch_on_maybe_trap_pokemon_priority(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
             "Memory" => item_callbacks::dispatch_on_memory(self, item_id.as_str(), pokemon_pos),
-            "ModifyAccuracy" => item_callbacks::dispatch_on_modify_accuracy(self, item_id.as_str(), pokemon_pos),
-            "ModifyAccuracyPriority" => item_callbacks::dispatch_on_modify_accuracy_priority(self, item_id.as_str(), pokemon_pos),
-            "ModifyAtk" => item_callbacks::dispatch_on_modify_atk(self, item_id.as_str(), pokemon_pos),
-            "ModifyAtkPriority" => item_callbacks::dispatch_on_modify_atk_priority(self, item_id.as_str(), pokemon_pos),
-            "ModifyCritRatio" => item_callbacks::dispatch_on_modify_crit_ratio(self, item_id.as_str(), pokemon_pos),
-            "ModifyDamage" => item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), pokemon_pos),
-            "ModifyDef" => item_callbacks::dispatch_on_modify_def(self, item_id.as_str(), pokemon_pos),
-            "ModifyDefPriority" => item_callbacks::dispatch_on_modify_def_priority(self, item_id.as_str(), pokemon_pos),
-            "ModifyMove" => item_callbacks::dispatch_on_modify_move(self, item_id.as_str(), pokemon_pos),
-            "ModifyMovePriority" => item_callbacks::dispatch_on_modify_move_priority(self, item_id.as_str(), pokemon_pos),
-            "ModifySecondaries" => item_callbacks::dispatch_on_modify_secondaries(self, item_id.as_str(), pokemon_pos),
-            "ModifySpA" => item_callbacks::dispatch_on_modify_sp_a(self, item_id.as_str(), pokemon_pos),
-            "ModifySpAPriority" => item_callbacks::dispatch_on_modify_sp_a_priority(self, item_id.as_str(), pokemon_pos),
-            "ModifySpD" => item_callbacks::dispatch_on_modify_sp_d(self, item_id.as_str(), pokemon_pos),
-            "ModifySpDPriority" => item_callbacks::dispatch_on_modify_sp_d_priority(self, item_id.as_str(), pokemon_pos),
-            "ModifySpe" => item_callbacks::dispatch_on_modify_spe(self, item_id.as_str(), pokemon_pos),
-            "ModifyWeight" => item_callbacks::dispatch_on_modify_weight(self, item_id.as_str(), pokemon_pos),
-            "NegateImmunity" => item_callbacks::dispatch_on_negate_immunity(self, item_id.as_str(), pokemon_pos),
+            "ModifyAccuracy" => {
+                item_callbacks::dispatch_on_modify_accuracy(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifyAccuracyPriority" => item_callbacks::dispatch_on_modify_accuracy_priority(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifyAtk" => {
+                item_callbacks::dispatch_on_modify_atk(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifyAtkPriority" => {
+                item_callbacks::dispatch_on_modify_atk_priority(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifyCritRatio" => {
+                item_callbacks::dispatch_on_modify_crit_ratio(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifyDamage" => {
+                item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifyDef" => {
+                item_callbacks::dispatch_on_modify_def(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifyDefPriority" => {
+                item_callbacks::dispatch_on_modify_def_priority(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifyMove" => {
+                item_callbacks::dispatch_on_modify_move(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifyMovePriority" => item_callbacks::dispatch_on_modify_move_priority(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifySecondaries" => {
+                item_callbacks::dispatch_on_modify_secondaries(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifySpA" => {
+                item_callbacks::dispatch_on_modify_sp_a(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifySpAPriority" => item_callbacks::dispatch_on_modify_sp_a_priority(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifySpD" => {
+                item_callbacks::dispatch_on_modify_sp_d(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifySpDPriority" => item_callbacks::dispatch_on_modify_sp_d_priority(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "ModifySpe" => {
+                item_callbacks::dispatch_on_modify_spe(self, item_id.as_str(), pokemon_pos)
+            }
+            "ModifyWeight" => {
+                item_callbacks::dispatch_on_modify_weight(self, item_id.as_str(), pokemon_pos)
+            }
+            "NegateImmunity" => {
+                item_callbacks::dispatch_on_negate_immunity(self, item_id.as_str(), pokemon_pos)
+            }
             "Plate" => item_callbacks::dispatch_on_plate(self, item_id.as_str(), pokemon_pos),
             "Residual" => item_callbacks::dispatch_on_residual(self, item_id.as_str(), pokemon_pos),
-            "ResidualOrder" => item_callbacks::dispatch_on_residual_order(self, item_id.as_str(), pokemon_pos),
-            "ResidualSubOrder" => item_callbacks::dispatch_on_residual_sub_order(self, item_id.as_str(), pokemon_pos),
-            "SetAbility" => item_callbacks::dispatch_on_set_ability(self, item_id.as_str(), pokemon_pos),
-            "SourceModifyAccuracy" => item_callbacks::dispatch_on_source_modify_accuracy(self, item_id.as_str(), pokemon_pos),
-            "SourceModifyAccuracyPriority" => item_callbacks::dispatch_on_source_modify_accuracy_priority(self, item_id.as_str(), pokemon_pos),
-            "SourceModifyDamage" => item_callbacks::dispatch_on_source_modify_damage(self, item_id.as_str(), pokemon_pos),
-            "SourceTryPrimaryHit" => item_callbacks::dispatch_on_source_try_primary_hit(self, item_id.as_str(), pokemon_pos),
+            "ResidualOrder" => {
+                item_callbacks::dispatch_on_residual_order(self, item_id.as_str(), pokemon_pos)
+            }
+            "ResidualSubOrder" => {
+                item_callbacks::dispatch_on_residual_sub_order(self, item_id.as_str(), pokemon_pos)
+            }
+            "SetAbility" => {
+                item_callbacks::dispatch_on_set_ability(self, item_id.as_str(), pokemon_pos)
+            }
+            "SourceModifyAccuracy" => item_callbacks::dispatch_on_source_modify_accuracy(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceModifyAccuracyPriority" => {
+                item_callbacks::dispatch_on_source_modify_accuracy_priority(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                )
+            }
+            "SourceModifyDamage" => item_callbacks::dispatch_on_source_modify_damage(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "SourceTryPrimaryHit" => item_callbacks::dispatch_on_source_try_primary_hit(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
             "Start" => item_callbacks::dispatch_on_start(self, item_id.as_str(), pokemon_pos),
-            "SwitchIn" => item_callbacks::dispatch_on_switch_in(self, item_id.as_str(), pokemon_pos),
-            "SwitchInPriority" => item_callbacks::dispatch_on_switch_in_priority(self, item_id.as_str(), pokemon_pos),
-            "TakeItem" => item_callbacks::dispatch_on_take_item(self, item_id.as_str(), pokemon_pos),
-            "TerrainChange" => item_callbacks::dispatch_on_terrain_change(self, item_id.as_str(), pokemon_pos),
-            "TrapPokemon" => item_callbacks::dispatch_on_trap_pokemon(self, item_id.as_str(), pokemon_pos),
-            "TrapPokemonPriority" => item_callbacks::dispatch_on_trap_pokemon_priority(self, item_id.as_str(), pokemon_pos),
-            "TryBoost" => item_callbacks::dispatch_on_try_boost(self, item_id.as_str(), pokemon_pos),
-            "TryBoostPriority" => item_callbacks::dispatch_on_try_boost_priority(self, item_id.as_str(), pokemon_pos),
-            "TryEatItem" => item_callbacks::dispatch_on_try_eat_item(self, item_id.as_str(), pokemon_pos),
+            "SwitchIn" => {
+                item_callbacks::dispatch_on_switch_in(self, item_id.as_str(), pokemon_pos)
+            }
+            "SwitchInPriority" => {
+                item_callbacks::dispatch_on_switch_in_priority(self, item_id.as_str(), pokemon_pos)
+            }
+            "TakeItem" => {
+                item_callbacks::dispatch_on_take_item(self, item_id.as_str(), pokemon_pos)
+            }
+            "TerrainChange" => {
+                item_callbacks::dispatch_on_terrain_change(self, item_id.as_str(), pokemon_pos)
+            }
+            "TrapPokemon" => {
+                item_callbacks::dispatch_on_trap_pokemon(self, item_id.as_str(), pokemon_pos)
+            }
+            "TrapPokemonPriority" => item_callbacks::dispatch_on_trap_pokemon_priority(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+            ),
+            "TryBoost" => {
+                item_callbacks::dispatch_on_try_boost(self, item_id.as_str(), pokemon_pos)
+            }
+            "TryBoostPriority" => {
+                item_callbacks::dispatch_on_try_boost_priority(self, item_id.as_str(), pokemon_pos)
+            }
+            "TryEatItem" => {
+                item_callbacks::dispatch_on_try_eat_item(self, item_id.as_str(), pokemon_pos)
+            }
             "TryHeal" => item_callbacks::dispatch_on_try_heal(self, item_id.as_str(), pokemon_pos),
-            "TryHealPriority" => item_callbacks::dispatch_on_try_heal_priority(self, item_id.as_str(), pokemon_pos),
+            "TryHealPriority" => {
+                item_callbacks::dispatch_on_try_heal_priority(self, item_id.as_str(), pokemon_pos)
+            }
             "TryHit" => item_callbacks::dispatch_on_try_hit(self, item_id.as_str(), pokemon_pos),
             "Update" => item_callbacks::dispatch_on_update(self, item_id.as_str(), pokemon_pos),
             "Use" => item_callbacks::dispatch_on_use(self, item_id.as_str(), pokemon_pos),
@@ -8036,8 +9093,8 @@ impl Battle {
         move_id: &str,
         target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
-        use crate::event::EventResult;
         use crate::data::move_callbacks;
+        use crate::event::EventResult;
 
         let source = self.current_event.as_ref().and_then(|e| e.source);
         let source_pos = source.unwrap_or((0, 0));
@@ -8051,8 +9108,12 @@ impl Battle {
                     EventResult::Continue
                 }
             }
-            "AfterMove" => move_callbacks::dispatch_on_after_move(self, move_id, source_pos, target),
-            "AfterMoveSecondarySelf" => move_callbacks::dispatch_on_after_move_secondary_self(self, move_id, source_pos, target),
+            "AfterMove" => {
+                move_callbacks::dispatch_on_after_move(self, move_id, source_pos, target)
+            }
+            "AfterMoveSecondarySelf" => move_callbacks::dispatch_on_after_move_secondary_self(
+                self, move_id, source_pos, target,
+            ),
             "AfterSubDamage" => {
                 // TODO: AfterSubDamage needs damage value from relay_var
                 move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos, 0, target)
@@ -8082,12 +9143,18 @@ impl Battle {
             }
             "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, source_pos, target),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_id, source_pos),
-            "ModifyMove" => move_callbacks::dispatch_on_modify_move(self, move_id, source_pos, target),
-            "ModifyPriority" => move_callbacks::dispatch_on_modify_priority(self, move_id, source_pos),
+            "ModifyMove" => {
+                move_callbacks::dispatch_on_modify_move(self, move_id, source_pos, target)
+            }
+            "ModifyPriority" => {
+                move_callbacks::dispatch_on_modify_priority(self, move_id, source_pos)
+            }
             "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, move_id, source_pos),
             "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, source_pos),
             "MoveFail" => move_callbacks::dispatch_on_move_fail(self, move_id, source_pos),
-            "PrepareHit" => move_callbacks::dispatch_on_prepare_hit(self, move_id, source_pos, target),
+            "PrepareHit" => {
+                move_callbacks::dispatch_on_prepare_hit(self, move_id, source_pos, target)
+            }
             "Try" => move_callbacks::dispatch_on_try(self, move_id, source_pos, target),
             "TryHit" => {
                 if let Some(target_pos) = target {
@@ -8098,7 +9165,9 @@ impl Battle {
             }
             "TryImmunity" => move_callbacks::dispatch_on_try_immunity(self, move_id, source_pos),
             "TryMove" => move_callbacks::dispatch_on_try_move(self, move_id, source_pos, target),
-            "UseMoveMessage" => move_callbacks::dispatch_on_use_move_message(self, move_id, source_pos),
+            "UseMoveMessage" => {
+                move_callbacks::dispatch_on_use_move_message(self, move_id, source_pos)
+            }
             _ => EventResult::Continue,
         }
     }
@@ -8152,60 +9221,168 @@ impl Battle {
         condition_id: &str,
         target: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
-        use crate::event::EventResult;
         use crate::data::condition_callbacks;
+        use crate::event::EventResult;
 
         let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
-            "AfterMove" => condition_callbacks::dispatch_on_after_move(self, condition_id, pokemon_pos),
-            "AfterMoveSecondary" => condition_callbacks::dispatch_on_after_move_secondary(self, condition_id, pokemon_pos),
-            "BasePower" => condition_callbacks::dispatch_on_base_power(self, condition_id, pokemon_pos),
-            "BasePowerPriority" => condition_callbacks::dispatch_on_base_power_priority(self, condition_id, pokemon_pos),
-            "BeforeMove" => condition_callbacks::dispatch_on_before_move(self, condition_id, pokemon_pos),
-            "BeforeMovePriority" => condition_callbacks::dispatch_on_before_move_priority(self, condition_id, pokemon_pos),
-            "BeforeSwitchOut" => condition_callbacks::dispatch_on_before_switch_out(self, condition_id, pokemon_pos),
-            "BeforeSwitchOutPriority" => condition_callbacks::dispatch_on_before_switch_out_priority(self, condition_id, pokemon_pos),
-            "BeforeTurn" => condition_callbacks::dispatch_on_before_turn(self, condition_id, pokemon_pos),
-            "DamagingHit" => condition_callbacks::dispatch_on_damaging_hit(self, condition_id, pokemon_pos),
-            "DisableMove" => condition_callbacks::dispatch_on_disable_move(self, condition_id, pokemon_pos),
+            "AfterMove" => {
+                condition_callbacks::dispatch_on_after_move(self, condition_id, pokemon_pos)
+            }
+            "AfterMoveSecondary" => condition_callbacks::dispatch_on_after_move_secondary(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
+            "BasePower" => {
+                condition_callbacks::dispatch_on_base_power(self, condition_id, pokemon_pos)
+            }
+            "BasePowerPriority" => condition_callbacks::dispatch_on_base_power_priority(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
+            "BeforeMove" => {
+                condition_callbacks::dispatch_on_before_move(self, condition_id, pokemon_pos)
+            }
+            "BeforeMovePriority" => condition_callbacks::dispatch_on_before_move_priority(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
+            "BeforeSwitchOut" => {
+                condition_callbacks::dispatch_on_before_switch_out(self, condition_id, pokemon_pos)
+            }
+            "BeforeSwitchOutPriority" => {
+                condition_callbacks::dispatch_on_before_switch_out_priority(
+                    self,
+                    condition_id,
+                    pokemon_pos,
+                )
+            }
+            "BeforeTurn" => {
+                condition_callbacks::dispatch_on_before_turn(self, condition_id, pokemon_pos)
+            }
+            "DamagingHit" => {
+                condition_callbacks::dispatch_on_damaging_hit(self, condition_id, pokemon_pos)
+            }
+            "DisableMove" => {
+                condition_callbacks::dispatch_on_disable_move(self, condition_id, pokemon_pos)
+            }
             "DragOut" => condition_callbacks::dispatch_on_drag_out(self, condition_id, pokemon_pos),
-            "DragOutPriority" => condition_callbacks::dispatch_on_drag_out_priority(self, condition_id, pokemon_pos),
-            "Effectiveness" => condition_callbacks::dispatch_on_effectiveness(self, condition_id, pokemon_pos),
-            "EffectivenessPriority" => condition_callbacks::dispatch_on_effectiveness_priority(self, condition_id, pokemon_pos),
+            "DragOutPriority" => {
+                condition_callbacks::dispatch_on_drag_out_priority(self, condition_id, pokemon_pos)
+            }
+            "Effectiveness" => {
+                condition_callbacks::dispatch_on_effectiveness(self, condition_id, pokemon_pos)
+            }
+            "EffectivenessPriority" => condition_callbacks::dispatch_on_effectiveness_priority(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
             "End" => condition_callbacks::dispatch_on_end(self, condition_id, pokemon_pos),
-            "FieldEnd" => condition_callbacks::dispatch_on_field_end(self, condition_id, pokemon_pos),
-            "FieldResidual" => condition_callbacks::dispatch_on_field_residual(self, condition_id, pokemon_pos),
-            "FieldResidualOrder" => condition_callbacks::dispatch_on_field_residual_order(self, condition_id, pokemon_pos),
-            "FieldStart" => condition_callbacks::dispatch_on_field_start(self, condition_id, pokemon_pos),
-            "Immunity" => condition_callbacks::dispatch_on_immunity(self, condition_id, pokemon_pos),
-            "Invulnerability" => condition_callbacks::dispatch_on_invulnerability(self, condition_id, pokemon_pos),
-            "LockMove" => condition_callbacks::dispatch_on_lock_move(self, condition_id, pokemon_pos),
-            "ModifyDef" => condition_callbacks::dispatch_on_modify_def(self, condition_id, pokemon_pos),
-            "ModifyDefPriority" => condition_callbacks::dispatch_on_modify_def_priority(self, condition_id, pokemon_pos),
-            "ModifyMove" => condition_callbacks::dispatch_on_modify_move(self, condition_id, pokemon_pos),
-            "ModifySpD" => condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, pokemon_pos),
-            "ModifySpDPriority" => condition_callbacks::dispatch_on_modify_sp_d_priority(self, condition_id, pokemon_pos),
-            "ModifySpe" => condition_callbacks::dispatch_on_modify_spe(self, condition_id, pokemon_pos),
-            "ModifySpePriority" => condition_callbacks::dispatch_on_modify_spe_priority(self, condition_id, pokemon_pos),
-            "MoveAborted" => condition_callbacks::dispatch_on_move_aborted(self, condition_id, pokemon_pos),
-            "Residual" => condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos),
-            "ResidualOrder" => condition_callbacks::dispatch_on_residual_order(self, condition_id, pokemon_pos),
-            "ResidualPriority" => condition_callbacks::dispatch_on_residual_priority(self, condition_id, pokemon_pos),
+            "FieldEnd" => {
+                condition_callbacks::dispatch_on_field_end(self, condition_id, pokemon_pos)
+            }
+            "FieldResidual" => {
+                condition_callbacks::dispatch_on_field_residual(self, condition_id, pokemon_pos)
+            }
+            "FieldResidualOrder" => condition_callbacks::dispatch_on_field_residual_order(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
+            "FieldStart" => {
+                condition_callbacks::dispatch_on_field_start(self, condition_id, pokemon_pos)
+            }
+            "Immunity" => {
+                condition_callbacks::dispatch_on_immunity(self, condition_id, pokemon_pos)
+            }
+            "Invulnerability" => {
+                condition_callbacks::dispatch_on_invulnerability(self, condition_id, pokemon_pos)
+            }
+            "LockMove" => {
+                condition_callbacks::dispatch_on_lock_move(self, condition_id, pokemon_pos)
+            }
+            "ModifyDef" => {
+                condition_callbacks::dispatch_on_modify_def(self, condition_id, pokemon_pos)
+            }
+            "ModifyDefPriority" => condition_callbacks::dispatch_on_modify_def_priority(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
+            "ModifyMove" => {
+                condition_callbacks::dispatch_on_modify_move(self, condition_id, pokemon_pos)
+            }
+            "ModifySpD" => {
+                condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, pokemon_pos)
+            }
+            "ModifySpDPriority" => condition_callbacks::dispatch_on_modify_sp_d_priority(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
+            "ModifySpe" => {
+                condition_callbacks::dispatch_on_modify_spe(self, condition_id, pokemon_pos)
+            }
+            "ModifySpePriority" => condition_callbacks::dispatch_on_modify_spe_priority(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
+            "MoveAborted" => {
+                condition_callbacks::dispatch_on_move_aborted(self, condition_id, pokemon_pos)
+            }
+            "Residual" => {
+                condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos)
+            }
+            "ResidualOrder" => {
+                condition_callbacks::dispatch_on_residual_order(self, condition_id, pokemon_pos)
+            }
+            "ResidualPriority" => {
+                condition_callbacks::dispatch_on_residual_priority(self, condition_id, pokemon_pos)
+            }
             "Restart" => condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos),
-            "SourceModifyDamage" => condition_callbacks::dispatch_on_source_modify_damage(self, condition_id, pokemon_pos),
-            "StallMove" => condition_callbacks::dispatch_on_stall_move(self, condition_id, pokemon_pos),
+            "SourceModifyDamage" => condition_callbacks::dispatch_on_source_modify_damage(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
+            "StallMove" => {
+                condition_callbacks::dispatch_on_stall_move(self, condition_id, pokemon_pos)
+            }
             "Start" => condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos),
-            "SwitchIn" => condition_callbacks::dispatch_on_switch_in(self, condition_id, pokemon_pos),
-            "TrapPokemon" => condition_callbacks::dispatch_on_trap_pokemon(self, condition_id, pokemon_pos),
-            "TrapPokemonPriority" => condition_callbacks::dispatch_on_trap_pokemon_priority(self, condition_id, pokemon_pos),
-            "TryAddVolatile" => condition_callbacks::dispatch_on_try_add_volatile(self, condition_id, pokemon_pos),
+            "SwitchIn" => {
+                condition_callbacks::dispatch_on_switch_in(self, condition_id, pokemon_pos)
+            }
+            "TrapPokemon" => {
+                condition_callbacks::dispatch_on_trap_pokemon(self, condition_id, pokemon_pos)
+            }
+            "TrapPokemonPriority" => condition_callbacks::dispatch_on_trap_pokemon_priority(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
+            "TryAddVolatile" => {
+                condition_callbacks::dispatch_on_try_add_volatile(self, condition_id, pokemon_pos)
+            }
             "TryMove" => condition_callbacks::dispatch_on_try_move(self, condition_id, pokemon_pos),
-            "TryMovePriority" => condition_callbacks::dispatch_on_try_move_priority(self, condition_id, pokemon_pos),
+            "TryMovePriority" => {
+                condition_callbacks::dispatch_on_try_move_priority(self, condition_id, pokemon_pos)
+            }
             "Type" => condition_callbacks::dispatch_on_type(self, condition_id, pokemon_pos),
-            "TypePriority" => condition_callbacks::dispatch_on_type_priority(self, condition_id, pokemon_pos),
+            "TypePriority" => {
+                condition_callbacks::dispatch_on_type_priority(self, condition_id, pokemon_pos)
+            }
             "Weather" => condition_callbacks::dispatch_on_weather(self, condition_id, pokemon_pos),
-            "WeatherModifyDamage" => condition_callbacks::dispatch_on_weather_modify_damage(self, condition_id, pokemon_pos),
+            "WeatherModifyDamage" => condition_callbacks::dispatch_on_weather_modify_damage(
+                self,
+                condition_id,
+                pokemon_pos,
+            ),
             _ => EventResult::Continue,
         }
     }
@@ -8216,23 +9393,18 @@ impl Battle {
     #[allow(dead_code)]
     /// This method dispatches to move_callbacks for side condition events
     /// Currently only implements auroraveil - more side conditions need to be added
-    fn handle_side_condition_event(
-        &mut self,
-        event_id: &str,
-        _side_idx: usize,
-        condition_id: &ID,
-    ) {
+    fn handle_side_condition_event(&mut self, event_id: &str, _side_idx: usize, condition_id: &ID) {
         if condition_id.as_str() == "auroraveil" {
-                        match event_id {
-                            "SideStart" => {
-        //                         let _result = crate::data::move_callbacks::auroraveil::on_side_start(self, side_idx);
-                            }
-                            "SideEnd" => {
-        //                         let _result = crate::data::move_callbacks::auroraveil::on_side_end(self, side_idx);
-                            }
-                            _ => {}
-                        }
-                    }
+            match event_id {
+                "SideStart" => {
+                    //                         let _result = crate::data::move_callbacks::auroraveil::on_side_start(self, side_idx);
+                }
+                "SideEnd" => {
+                    //                         let _result = crate::data::move_callbacks::auroraveil::on_side_end(self, side_idx);
+                }
+                _ => {}
+            }
+        }
     }
 
     /// Run event on all relevant handlers
@@ -8374,7 +9546,7 @@ impl Battle {
     // 				}, `on${eventid}`));
     // 			}
     // 		}
-    // 
+    //
     // 		if (['Invulnerability', 'TryHit', 'DamagingHit', 'EntryHazard'].includes(eventid)) {
     // 			handlers.sort(Battle.compareLeftToRightOrder);
     // 		} else if (fastExit) {
@@ -8391,11 +9563,11 @@ impl Battle {
     // 		} else {
     // 			args.unshift(relayVar);
     // 		}
-    // 
+    //
     // 		const parentEvent = this.event;
     // 		this.event = { id: eventid, target, source, effect: sourceEffect, modifier: 1 };
     // 		this.eventDepth++;
-    // 
+    //
     // 		let targetRelayVars = [];
     // 		if (Array.isArray(target)) {
     // 			if (Array.isArray(relayVar)) {
@@ -8489,15 +9661,15 @@ impl Battle {
     // 				this.effect = handler.effect;
     // 				this.effectState = handler.state || this.initEffectState({});
     // 				this.effectState.target = effectHolder;
-    // 
+    //
     // 				returnVal = handler.callback.apply(this, args);
-    // 
+    //
     // 				this.effect = parentEffect;
     // 				this.effectState = parentEffectState;
     // 			} else {
     // 				returnVal = handler.callback;
     // 			}
-    // 
+    //
     // 			if (returnVal !== undefined) {
     // 				relayVar = returnVal;
     // 				if (!relayVar || fastExit) {
@@ -8513,7 +9685,7 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		this.eventDepth--;
     // 		if (typeof relayVar === 'number' && relayVar === Math.abs(Math.floor(relayVar))) {
     // 			// this.debug(eventid + ' modifier: 0x' +
@@ -8521,7 +9693,7 @@ impl Battle {
     // 			relayVar = this.modify(relayVar, this.event.modifier);
     // 		}
     // 		this.event = parentEvent;
-    // 
+    //
     // 		return Array.isArray(target) ? targetRelayVars : relayVar;
     // 	}
     //
@@ -8560,7 +9732,8 @@ impl Battle {
         let handlers = self.find_event_handlers(event_id, target, source);
 
         for (effect_id, holder_target) in handlers {
-            let event_result = self.dispatch_single_event(event_id, &effect_id, holder_target, source);
+            let event_result =
+                self.dispatch_single_event(event_id, &effect_id, holder_target, source);
 
             match event_result {
                 EventResult::Boolean(false) => {
@@ -8610,7 +9783,8 @@ impl Battle {
         source: Option<(usize, usize)>,
         source_effect: Option<&ID>,
     ) -> bool {
-        self.run_event(event_id, target, source, source_effect, Some(1)).is_some()
+        self.run_event(event_id, target, source, source_effect, Some(1))
+            .is_some()
     }
 
     /// Find all event handlers for an event
@@ -8627,7 +9801,7 @@ impl Battle {
     /// - No array recursion (not used in current Rust codebase)
     /// - Calls specialized find*EventHandlers methods
     /// - TODO: Add prefixed handler support when needed
-    // 
+    //
     // 	findEventHandlers(target: Pokemon | Pokemon[] | Side | Battle, eventName: string, source?: Pokemon | null) {
     // 		let handlers: EventListener[] = [];
     // 		if (Array.isArray(target)) {
@@ -8700,7 +9874,10 @@ impl Battle {
 
         // JavaScript: const prefixedHandlers = !['BeforeTurn', 'Update', 'Weather', 'WeatherChange', 'TerrainChange'].includes(eventName);
         let event_name = event_id.trim_start_matches("on");
-        let prefixed_handlers = !matches!(event_name, "BeforeTurn" | "Update" | "Weather" | "WeatherChange" | "TerrainChange");
+        let prefixed_handlers = !matches!(
+            event_name,
+            "BeforeTurn" | "Update" | "Weather" | "WeatherChange" | "TerrainChange"
+        );
 
         // JavaScript: if (target instanceof Pokemon && (target.isActive || source?.isActive))
         // Rust: We only handle Pokemon targets currently
@@ -8725,12 +9902,14 @@ impl Battle {
                         let ally_pos = (target_side, *poke_idx);
                         // onAlly handlers
                         let ally_event = format!("onAlly{}", event_name);
-                        let mut ally_handlers = self.find_pokemon_event_handlers(&ally_event, ally_pos);
+                        let mut ally_handlers =
+                            self.find_pokemon_event_handlers(&ally_event, ally_pos);
                         handlers.append(&mut ally_handlers);
 
                         // onAny handlers
                         let any_event = format!("onAny{}", event_name);
-                        let mut any_handlers = self.find_pokemon_event_handlers(&any_event, ally_pos);
+                        let mut any_handlers =
+                            self.find_pokemon_event_handlers(&any_event, ally_pos);
                         handlers.append(&mut any_handlers);
                     }
                 }
@@ -8748,12 +9927,14 @@ impl Battle {
                             let foe_pos = (side_idx, *poke_idx);
                             // onFoe handlers
                             let foe_event = format!("onFoe{}", event_name);
-                            let mut foe_handlers = self.find_pokemon_event_handlers(&foe_event, foe_pos);
+                            let mut foe_handlers =
+                                self.find_pokemon_event_handlers(&foe_event, foe_pos);
                             handlers.append(&mut foe_handlers);
 
                             // onAny handlers
                             let any_event = format!("onAny{}", event_name);
-                            let mut any_handlers = self.find_pokemon_event_handlers(&any_event, foe_pos);
+                            let mut any_handlers =
+                                self.find_pokemon_event_handlers(&any_event, foe_pos);
                             handlers.append(&mut any_handlers);
                         }
                     }
@@ -8767,7 +9948,8 @@ impl Battle {
         if let Some(source_pos) = source {
             if prefixed_handlers {
                 let source_event = format!("onSource{}", event_name);
-                let mut source_handlers = self.find_pokemon_event_handlers(&source_event, source_pos);
+                let mut source_handlers =
+                    self.find_pokemon_event_handlers(&source_event, source_pos);
                 handlers.append(&mut source_handlers);
             }
         }
@@ -8816,7 +9998,10 @@ impl Battle {
     /// This method provides safe access to current event's modifier value
     /// Returns 4096 (1.0x) if no event is active
     pub fn get_event_modifier(&self) -> i32 {
-        self.current_event.as_ref().map(|e| e.modifier).unwrap_or(4096)
+        self.current_event
+            .as_ref()
+            .map(|e| e.modifier)
+            .unwrap_or(4096)
     }
 
     /// Set event modifier (for chainModify pattern, 4096 = 1.0x)
@@ -8839,7 +10024,7 @@ impl Battle {
     /// Apply damage randomization (85%-100%)
     /// Equivalent to battle.ts randomizer(baseDamage)
     ///
-    // 
+    //
     // 	randomizer(baseDamage: number) {
     // 		const tr = this.trunc;
     // 		return tr(tr(baseDamage * (100 - this.random(16))) / 100);
@@ -8903,10 +10088,10 @@ impl Battle {
     /// Get target for a move
     /// Equivalent to battle.ts getTarget()
     ///
-    // 
+    //
     // 	getTarget(pokemon: Pokemon, move: string | Move, targetLoc: number, originalTarget?: Pokemon) {
     // 		move = this.dex.moves.get(move);
-    // 
+    //
     // 		let tracksTarget = move.tracksTarget;
     // 		// Stalwart sets trackTarget in ModifyMove, but ModifyMove happens after getTarget, so
     // 		// we need to manually check for Stalwart here
@@ -8915,14 +10100,14 @@ impl Battle {
     // 			// smart-tracking move's original target is on the field: target it
     // 			return originalTarget;
     // 		}
-    // 
+    //
     // 		// banning Dragon Darts from directly targeting itself is done in side.ts, but
     // 		// Dragon Darts can target itself if Ally Switch is used afterwards
     // 		if (move.smartTarget) {
     // 			const curTarget = pokemon.getAtLoc(targetLoc);
     // 			return curTarget && !curTarget.fainted ? curTarget : this.getRandomTarget(pokemon, move);
     // 		}
-    // 
+    //
     // 		// Fails if the target is the user and the move can't target its own position
     // 		const selfLoc = pokemon.getLocOf(pokemon);
     // 		if (
@@ -8950,7 +10135,7 @@ impl Battle {
     // 				// Target is unfainted: use selected target location
     // 				return target;
     // 			}
-    // 
+    //
     // 			// Chosen target not valid,
     // 			// retarget randomly with getRandomTarget
     // 		}
@@ -9039,17 +10224,19 @@ impl Battle {
 
             if !has_self_targeting_volatile {
                 // If move has futuremove flag, return user (self), otherwise return None
-                let has_futuremove = move_def.flags.get("futuremove").map(|&v| v != 0).unwrap_or(false);
-                return if has_futuremove {
-                    Some(user)
-                } else {
-                    None
-                };
+                let has_futuremove = move_def
+                    .flags
+                    .get("futuremove")
+                    .map(|&v| v != 0)
+                    .unwrap_or(false);
+                return if has_futuremove { Some(user) } else { None };
             }
         }
 
         // JS: if (move.target !== 'randomNormal' && this.validTargetLoc(targetLoc, pokemon, move.target)) {
-        if target_type != "RandomNormal" && self.valid_target_loc(target_loc as i32, user, &target_type) {
+        if target_type != "RandomNormal"
+            && self.valid_target_loc(target_loc as i32, user, &target_type)
+        {
             // JS: const target = pokemon.getAtLoc(targetLoc);
             if let Some(target) = self.get_at_loc(user, target_loc) {
                 let (target_side, target_idx) = target;
@@ -9123,16 +10310,16 @@ impl Battle {
 
     /// Undo a player's choice
     /// Equivalent to battle.ts undoChoice()
-    // 
+    //
     // 	undoChoice(sideid: SideID) {
     // 		const side = this.getSide(sideid);
     // 		if (!side.requestState) return;
-    // 
+    //
     // 		if (side.choice.cantUndo) {
     // 			side.emitChoiceError(`Can't undo: A trapping/disabling effect would cause undo to leak information`);
     // 			return;
     // 		}
-    // 
+    //
     // 		let updated = false;
     // 		if (side.requestState === 'move') {
     // 			for (const action of side.choice.actions) {
@@ -9143,9 +10330,9 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		side.clearChoice();
-    // 
+    //
     // 		if (updated) side.emitRequest(side.activeRequest!, true);
     // 	}
     //
@@ -9165,7 +10352,7 @@ impl Battle {
 
     /// Spread damage to multiple targets
     /// Matches JavaScript battle.ts:2045-2164 spreadDamage()
-    // 
+    //
     // 	spreadDamage(
     // 		damage: SpreadMoveDamage, targetArray: (false | Pokemon | null)[] | null = null,
     // 		source: Pokemon | null = null, effect: 'drain' | 'recoil' | Effect | null = null, instafaint = false
@@ -9189,7 +10376,7 @@ impl Battle {
     // 				continue;
     // 			}
     // 			if (targetDamage !== 0) targetDamage = this.clampIntRange(targetDamage, 1);
-    // 
+    //
     // 			if (effect.id !== 'struggle-recoil') { // Struggle recoil is not affected by effects
     // 				if (effect.effectType === 'Weather' && !target.runStatusImmunity(effect.id)) {
     // 					this.debug('weather immunity');
@@ -9204,18 +10391,18 @@ impl Battle {
     // 				}
     // 			}
     // 			if (targetDamage !== 0) targetDamage = this.clampIntRange(targetDamage, 1);
-    // 
+    //
     // 			if (this.gen <= 1) {
     // 				if (this.dex.currentMod === 'gen1stadium' ||
     // 					!['recoil', 'drain', 'leechseed'].includes(effect.id) && effect.effectType !== 'Status') {
     // 					this.lastDamage = targetDamage;
     // 				}
     // 			}
-    // 
+    //
     // 			retVals[i] = targetDamage = target.damage(targetDamage, source, effect);
     // 			if (targetDamage !== 0) target.hurtThisTurn = target.hp;
     // 			if (source && effect.effectType === 'Move') source.lastDamage = targetDamage;
-    // 
+    //
     // 			const name = effect.fullname === 'tox' ? 'psn' : effect.fullname;
     // 			switch (effect.id) {
     // 			case 'partiallytrapped':
@@ -9237,7 +10424,7 @@ impl Battle {
     // 				}
     // 				break;
     // 			}
-    // 
+    //
     // 			if (targetDamage && effect.effectType === 'Move') {
     // 				if (this.gen <= 1 && effect.recoil && source) {
     // 					if (this.dex.currentMod !== 'gen1stadium' || target.hp > 0) {
@@ -9257,11 +10444,11 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		if (instafaint) {
     // 			for (const [i, target] of targetArray.entries()) {
     // 				if (!retVals[i] || !target) continue;
-    // 
+    //
     // 				if (target.hp <= 0) {
     // 					this.debug(`instafaint: ${this.faintQueue.map(entry => entry.target.name)}`);
     // 					this.faintMessages(true);
@@ -9282,13 +10469,13 @@ impl Battle {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		return retVals;
     // 	}
     //
     pub fn spread_damage(
         &mut self,
-        damages: &[Option<i32>],  // Can be true (max damage), false, number, or undefined
+        damages: &[Option<i32>], // Can be true (max damage), false, number, or undefined
         targets: &[Option<(usize, usize)>],
         source: Option<(usize, usize)>,
         effect: Option<&ID>,
@@ -9335,7 +10522,7 @@ impl Battle {
             }
 
             if !is_active {
-                ret_vals.push(None);  // JavaScript returns false
+                ret_vals.push(None); // JavaScript returns false
                 continue;
             }
 
@@ -9372,7 +10559,7 @@ impl Battle {
                     Some(target_pos),
                     source,
                     effect,
-                    Some(target_damage)
+                    Some(target_damage),
                 );
 
                 if let Some(modified_damage) = event_result {
@@ -9401,7 +10588,6 @@ impl Battle {
             // Apply damage using Pokemon's damage method
             let actual_damage = if let Some(side) = self.sides.get_mut(side_idx) {
                 if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
-                    
                     pokemon.damage(target_damage)
                 } else {
                     0
@@ -9481,9 +10667,12 @@ impl Battle {
                 };
 
                 // Gen 1 recoil damage
-                if let (Some((recoil_num, recoil_denom)), Some(source_pos)) = (recoil_data, source) {
+                if let (Some((recoil_num, recoil_denom)), Some(source_pos)) = (recoil_data, source)
+                {
                     if self.gen <= 1 {
-                        let amount = ((target_damage as f64 * recoil_num as f64) / recoil_denom as f64).floor() as i32;
+                        let amount = ((target_damage as f64 * recoil_num as f64)
+                            / recoil_denom as f64)
+                            .floor() as i32;
                         let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
 
                         let recoil_id = ID::new("recoil");
@@ -9494,7 +10683,9 @@ impl Battle {
                 // Gen 1-4 drain healing
                 if let (Some((drain_num, drain_denom)), Some(source_pos)) = (drain_data, source) {
                     if self.gen <= 4 {
-                        let amount = ((target_damage as f64 * drain_num as f64) / drain_denom as f64).floor() as i32;
+                        let amount = ((target_damage as f64 * drain_num as f64)
+                            / drain_denom as f64)
+                            .floor() as i32;
                         let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
 
                         // Draining can be countered in gen 1
@@ -9510,7 +10701,9 @@ impl Battle {
                 // Gen 5+ drain healing (uses round instead of floor)
                 if let (Some((drain_num, drain_denom)), Some(source_pos)) = (drain_data, source) {
                     if self.gen > 4 {
-                        let amount = ((target_damage as f64 * drain_num as f64) / drain_denom as f64).round() as i32;
+                        let amount = ((target_damage as f64 * drain_num as f64)
+                            / drain_denom as f64)
+                            .round() as i32;
 
                         let drain_id = ID::new("drain");
                         self.heal(amount, Some(source_pos), target, Some(&drain_id));
@@ -9575,13 +10768,20 @@ impl Battle {
                                         }
 
                                         // Check if pokemon has bide volatile with damage > 0
-                                        if let Some(bide_state) = pokemon.volatiles.get_mut(&bide_id) {
+                                        if let Some(bide_state) =
+                                            pokemon.volatiles.get_mut(&bide_id)
+                                        {
                                             // Check if the bide state has a damage field
-                                            if let Some(damage_value) = bide_state.data.get("damage") {
+                                            if let Some(damage_value) =
+                                                bide_state.data.get("damage")
+                                            {
                                                 if let Some(damage) = damage_value.as_i64() {
                                                     if damage > 0 {
                                                         // Clear Bide damage
-                                                        bide_state.data.insert("damage".to_string(), serde_json::json!(0));
+                                                        bide_state.data.insert(
+                                                            "damage".to_string(),
+                                                            serde_json::json!(0),
+                                                        );
                                                         bide_cleared = true;
                                                     }
                                                 }
@@ -9609,7 +10809,12 @@ impl Battle {
     /// Rust helper method - JavaScript has this logic inline in spreadDamage()
     /// This method extracts the damage logging logic for code organization
     /// Handles special cases: partiallytrapped, powder, confused, and default damage logs
-    fn add_damage_log(&mut self, target: (usize, usize), source: Option<(usize, usize)>, effect: Option<&ID>) {
+    fn add_damage_log(
+        &mut self,
+        target: (usize, usize),
+        source: Option<(usize, usize)>,
+        effect: Option<&ID>,
+    ) {
         let (side_idx, poke_idx) = target;
 
         // Get target health string
@@ -9637,7 +10842,8 @@ impl Battle {
                         if let Some(trap_state) = pokemon.volatiles.get(&trap_id) {
                             // Extract sourceEffect.fullname from data HashMap
                             if let Some(source_effect) = trap_state.data.get("sourceEffect") {
-                                source_effect.get("fullname")
+                                source_effect
+                                    .get("fullname")
                                     .and_then(|v| v.as_str())
                                     .unwrap_or("partiallytrapped")
                             } else {
@@ -9654,7 +10860,10 @@ impl Battle {
                 };
 
                 let from_str = format!("[from] {}", source_effect_name);
-                self.add_log("-damage", &[&target_str, &health_str, &from_str, "[partiallytrapped]"]);
+                self.add_log(
+                    "-damage",
+                    &[&target_str, &health_str, &from_str, "[partiallytrapped]"],
+                );
             }
             "powder" => {
                 self.add_log("-damage", &[&target_str, &health_str, "[silent]"]);
@@ -9683,7 +10892,7 @@ impl Battle {
     /// Apply final modifier to value
     /// Equivalent to battle.ts finalModify() (battle.ts:2344-2347)
     ///
-    // 
+    //
     // 	finalModify(relayVar: number) {
     // 		relayVar = this.modify(relayVar, this.event.modifier);
     // 		this.event.modifier = 1;
@@ -9722,7 +10931,7 @@ impl Battle {
     /// Add split message for different players
     /// Equivalent to battle.ts addSplit()
     ///
-    // 
+    //
     // 	addSplit(side: SideID, secret: Part[], shared?: Part[]) {
     // 		this.log.push(`|split|${side}`);
     // 		this.add(...secret);
@@ -9756,7 +10965,7 @@ impl Battle {
 
     /// Attribute damage to last move
     /// Equivalent to battle.ts attrLastMove()
-    // 
+    //
     // 	attrLastMove(...args: (string | number | Function | AnyObject)[]) {
     // 		if (this.lastMoveLine < 0) return;
     // 		if (this.log[this.lastMoveLine].startsWith('|-anim|')) {
@@ -9870,7 +11079,7 @@ impl Battle {
     /// Check if teams have balanced EVs
     /// Equivalent to battle.ts checkEVBalance()
     ///
-    // 
+    //
     // 	checkEVBalance() {
     // 		let limitedEVs: boolean | null = null;
     // 		for (const side of this.sides) {
@@ -9917,7 +11126,7 @@ impl Battle {
 
     /// Clear effect state data
     /// Equivalent to battle.ts clearEffectState()
-    // 
+    //
     // 	clearEffectState(state: EffectState) {
     // 		state.id = '';
     // 		for (const k in state) {
@@ -9942,7 +11151,7 @@ impl Battle {
     /// Log a debug error message
     /// Equivalent to battle.ts debugError() (battle.ts:3158-3160)
     ///
-    // 
+    //
     // 	debugError(activity: string) {
     // 		this.add('debug', activity);
     // 	}
@@ -10000,7 +11209,7 @@ impl Battle {
     // 					continue;
     // 				}
     // 			}
-    // 
+    //
     // 			// effect may have been removed by a prior handler, i.e. Toxic Spikes being absorbed during a double switch
     // 			if (handler.state?.target instanceof Pokemon) {
     // 				let expectedStateLocation;
@@ -10033,14 +11242,14 @@ impl Battle {
     // 					continue;
     // 				}
     // 			}
-    // 
+    //
     // 			let handlerEventid = eventid;
     // 			if ((handler.effectHolder as Side).sideConditions) handlerEventid = `Side${eventid}`;
     // 			if ((handler.effectHolder as Field).pseudoWeather) handlerEventid = `Field${eventid}`;
     // 			if (handler.callback) {
     // 				this.singleEvent(handlerEventid, effect, handler.state, handler.effectHolder, null, null, undefined, handler.callback);
     // 			}
-    // 
+    //
     // 			this.faintMessages();
     // 			if (this.ended) return;
     // 		}
@@ -10068,7 +11277,7 @@ impl Battle {
 
     /// Get callback for an effect's event handler
     /// Equivalent to battle.ts getCallback()
-    // 
+    //
     // 	getCallback(target: Pokemon | Side | Field | Battle, effect: Effect, callbackName: string) {
     // 		let callback: Function | undefined = (effect as any)[callbackName];
     // 		// Abilities and items Start at different times during the SwitchIn event, so we run their onStart handlers
@@ -10116,11 +11325,11 @@ impl Battle {
 
     /// Get requests for all players
     /// Equivalent to battle.ts getRequests()
-    // 
+    //
     // 	getRequests(type: RequestState) {
     // 		// default to no request
     // 		const requests: ChoiceRequest[] = Array(this.sides.length).fill(null);
-    // 
+    //
     // 		switch (type) {
     // 		case 'switch':
     // 			for (let i = 0; i < this.sides.length; i++) {
@@ -10132,7 +11341,7 @@ impl Battle {
     // 				}
     // 			}
     // 			break;
-    // 
+    //
     // 		case 'teampreview':
     // 			for (let i = 0; i < this.sides.length; i++) {
     // 				const side = this.sides[i];
@@ -10140,7 +11349,7 @@ impl Battle {
     // 				requests[i] = { teamPreview: true, maxChosenTeamSize, side: side.getRequestData() };
     // 			}
     // 			break;
-    // 
+    //
     // 		default:
     // 			for (let i = 0; i < this.sides.length; i++) {
     // 				const side = this.sides[i];
@@ -10153,7 +11362,7 @@ impl Battle {
     // 			}
     // 			break;
     // 		}
-    // 
+    //
     // 		const multipleRequestsExist = requests.filter(Boolean).length >= 2;
     // 		for (let i = 0; i < this.sides.length; i++) {
     // 			if (requests[i]) {
@@ -10162,45 +11371,48 @@ impl Battle {
     // 				requests[i] = { wait: true, side: this.sides[i].getRequestData() };
     // 			}
     // 		}
-    // 
+    //
     // 		return requests;
     // 	}
     //
     pub fn get_requests(&self) -> Vec<serde_json::Value> {
-        self.sides.iter().map(|side| {
-            serde_json::json!({
-                "side": side.id_str(),
-                "rqid": self.turn, // Use turn as request ID
-                "requestType": match self.request_state {
-                    BattleRequestState::Move => "move",
-                    BattleRequestState::Switch => "switch",
-                    BattleRequestState::TeamPreview => "teampreview",
-                    BattleRequestState::None => "none",
-                }
+        self.sides
+            .iter()
+            .map(|side| {
+                serde_json::json!({
+                    "side": side.id_str(),
+                    "rqid": self.turn, // Use turn as request ID
+                    "requestType": match self.request_state {
+                        BattleRequestState::Move => "move",
+                        BattleRequestState::Switch => "switch",
+                        BattleRequestState::TeamPreview => "teampreview",
+                        BattleRequestState::None => "none",
+                    }
+                })
             })
-        }).collect()
+            .collect()
     }
 
     /// Get team based on player options
     /// Equivalent to battle.ts getTeam()
-    // 
+    //
     // 	// players
-    // 
+    //
     // 	getTeam(options: PlayerOptions): PokemonSet[] {
     // 		let team = options.team;
     // 		if (typeof team === 'string') team = Teams.unpack(team);
     // 		if (team) return team;
-    // 
+    //
     // 		if (!options.seed) {
     // 			options.seed = PRNG.generateSeed();
     // 		}
-    // 
+    //
     // 		if (!this.teamGenerator) {
     // 			this.teamGenerator = Teams.getGenerator(this.format, options.seed);
     // 		} else {
     // 			this.teamGenerator.setSeed(options.seed);
     // 		}
-    // 
+    //
     // 		team = this.teamGenerator.getTeam(options);
     // 		return team as PokemonSet[];
     // 	}
@@ -10215,7 +11427,7 @@ impl Battle {
     /// JavaScript Source (battle.ts:950-1017):
     /// Takes an EventListenerWithoutPriority and enriches it with priority/order/subOrder
     /// based on effect callback properties and effectType ordering
-    // 
+    //
     // 	resolvePriority(h: EventListenerWithoutPriority, callbackName: string) {
     // 		const handler = h as EventListener;
     // 		handler.order = (handler.effect as any)[`${callbackName}Order`] || false;
@@ -10346,7 +11558,8 @@ impl Battle {
                     // JS: if (handler.effect.effectType === 'Ability' && handler.effect.name === 'Magic Bounce' && callbackName === 'onAllyTryHitSide')
                     if handler.effect_type == EffectType::Ability
                         && handler.effect_id.as_str() == "magicbounce"
-                        && callback_name == "onAllyTryHitSide" {
+                        && callback_name == "onAllyTryHitSide"
+                    {
                         // JS: handler.speed = pokemon.getStat('spe', true, true);
                         // Get unmodified speed stat (unboosted=true, unmodified=true)
                         // When both flags are true, getStat returns storedStats without any modifications
@@ -10371,7 +11584,7 @@ impl Battle {
 
     /// Retarget the last executed move
     /// Equivalent to battle.ts retargetLastMove()
-    // 
+    //
     // 	retargetLastMove(newTarget: Pokemon) {
     // 		if (this.lastMoveLine < 0) return;
     // 		const parts = this.log[this.lastMoveLine].split('|');
@@ -10415,7 +11628,7 @@ impl Battle {
     /// Handle team preview phase
     /// Equivalent to battle.ts runPickTeam()
     ///
-    // 
+    //
     // 	runPickTeam() {
     // 		// onTeamPreview handlers are expected to show full teams to all active sides,
     // 		// and send a 'teampreview' request for players to pick their leads / team order.
@@ -10425,11 +11638,11 @@ impl Battle {
     // 			const subFormat = this.dex.formats.get(rule);
     // 			subFormat.onTeamPreview?.call(this);
     // 		}
-    // 
+    //
     // 		if (this.requestState === 'teampreview') {
     // 			return;
     // 		}
-    // 
+    //
     // 		if (this.ruleTable.pickedTeamSize) {
     // 			// There was no onTeamPreview handler (e.g. Team Preview rule missing).
     // 			// Players must still pick their own Pokémon, so we show them privately.
@@ -10469,48 +11682,51 @@ impl Battle {
                 // JS: for (const pokemon of this.getAllPokemon()) { ... }
                 // Collect Pokemon data first to avoid borrow checker issues
                 let all_pokemon = self.get_all_pokemon();
-                let pokemon_data: Vec<(String, usize)> = all_pokemon.iter().map(|pokemon| {
-                    // Still need to hide these formes since they change on battle start
-                    // JS: const details = pokemon.details.replace(', shiny', '')
-                    //         .replace(/(Zacian|Zamazenta)(?!-Crowned)/g, '$1-*')
-                    //         .replace(/(Xerneas)(-[a-zA-Z?-]+)?/g, '$1-*');
-                    let mut details = pokemon.details().clone();
-                    details = details.replace(", shiny", "");
+                let pokemon_data: Vec<(String, usize)> = all_pokemon
+                    .iter()
+                    .map(|pokemon| {
+                        // Still need to hide these formes since they change on battle start
+                        // JS: const details = pokemon.details.replace(', shiny', '')
+                        //         .replace(/(Zacian|Zamazenta)(?!-Crowned)/g, '$1-*')
+                        //         .replace(/(Xerneas)(-[a-zA-Z?-]+)?/g, '$1-*');
+                        let mut details = pokemon.details().clone();
+                        details = details.replace(", shiny", "");
 
-                    // Hide Zacian/Zamazenta forme (becomes Crowned on battle start)
-                    if details.contains("Zacian") && !details.contains("Zacian-Crowned") {
-                        details = details.replace("Zacian", "Zacian-*");
-                    }
-                    if details.contains("Zamazenta") && !details.contains("Zamazenta-Crowned") {
-                        details = details.replace("Zamazenta", "Zamazenta-*");
-                    }
-
-                    // Hide Xerneas forme - replace "Xerneas" or "Xerneas-<forme>" with "Xerneas-*"
-                    // JS regex: /(Xerneas)(-[a-zA-Z?-]+)?/g -> $1-*
-                    if details.contains("Xerneas") {
-                        if let Some(pos) = details.find("Xerneas") {
-                            let before = &details[..pos];
-                            let after = &details[pos + 7..]; // "Xerneas" is 7 chars
-
-                            // Find where the forme name ends (at comma or end of string)
-                            let after_cleaned = if after.starts_with('-') {
-                                // Has a forme suffix - find the next comma or use empty string
-                                if let Some(comma_pos) = after.find(',') {
-                                    &after[comma_pos..]
-                                } else {
-                                    ""
-                                }
-                            } else {
-                                // No forme suffix, keep the rest as-is
-                                after
-                            };
-
-                            details = format!("{}Xerneas-*{}", before, after_cleaned);
+                        // Hide Zacian/Zamazenta forme (becomes Crowned on battle start)
+                        if details.contains("Zacian") && !details.contains("Zacian-Crowned") {
+                            details = details.replace("Zacian", "Zacian-*");
                         }
-                    }
+                        if details.contains("Zamazenta") && !details.contains("Zamazenta-Crowned") {
+                            details = details.replace("Zamazenta", "Zamazenta-*");
+                        }
 
-                    (details, pokemon.side_index)
-                }).collect();
+                        // Hide Xerneas forme - replace "Xerneas" or "Xerneas-<forme>" with "Xerneas-*"
+                        // JS regex: /(Xerneas)(-[a-zA-Z?-]+)?/g -> $1-*
+                        if details.contains("Xerneas") {
+                            if let Some(pos) = details.find("Xerneas") {
+                                let before = &details[..pos];
+                                let after = &details[pos + 7..]; // "Xerneas" is 7 chars
+
+                                // Find where the forme name ends (at comma or end of string)
+                                let after_cleaned = if after.starts_with('-') {
+                                    // Has a forme suffix - find the next comma or use empty string
+                                    if let Some(comma_pos) = after.find(',') {
+                                        &after[comma_pos..]
+                                    } else {
+                                        ""
+                                    }
+                                } else {
+                                    // No forme suffix, keep the rest as-is
+                                    after
+                                };
+
+                                details = format!("{}Xerneas-*{}", before, after_cleaned);
+                            }
+                        }
+
+                        (details, pokemon.side_index)
+                    })
+                    .collect();
 
                 // Drop the immutable borrow
                 drop(all_pokemon);
@@ -10535,7 +11751,7 @@ impl Battle {
 
     /// Send updates to connected players
     /// Equivalent to battle.ts sendUpdates()
-    // 
+    //
     // 	sendUpdates() {
     // 		if (this.sentLogPos >= this.log.length) return;
     // 		this.send('update', this.log.slice(this.sentLogPos));
@@ -10544,7 +11760,7 @@ impl Battle {
     // 			this.sentRequests = true;
     // 		}
     // 		this.sentLogPos = this.log.length;
-    // 
+    //
     // 		if (!this.sentEnd && this.ended) {
     // 			const log = {
     // 				winner: this.winner,
@@ -10586,7 +11802,7 @@ impl Battle {
 
     /// Show open team sheets to players
     /// Equivalent to battle.ts showOpenTeamSheets()
-    // 
+    //
     // 	showOpenTeamSheets() {
     // 		if (this.turn !== 0) return;
     // 		for (const side of this.sides) {
@@ -10624,7 +11840,7 @@ impl Battle {
     // 				}
     // 				return newSet;
     // 			});
-    // 
+    //
     // 			this.add('showteam', side.id, Teams.pack(team));
     // 		}
     // 	}
@@ -10661,7 +11877,7 @@ impl Battle {
     /// Calculate a single stat from base stat, IVs, EVs, level, and nature
     /// Equivalent to battle.ts statModify(baseStats, set, statName)
     ///
-    // 
+    //
     // 	statModify(baseStats: StatsTable, set: PokemonSet, statName: StatID): number {
     // 		const tr = this.trunc;
     // 		let stat = baseStats[statName];
@@ -10750,7 +11966,10 @@ impl Battle {
                         }
                         // Apply 1.1x multiplier with 16-bit truncation
                         // Natures are calculated with 16-bit truncation
-                        stat = crate::dex::Dex::trunc(crate::dex::Dex::trunc(stat as f64 * 110.0, 16) as f64 / 100.0, 0);
+                        stat = crate::dex::Dex::trunc(
+                            crate::dex::Dex::trunc(stat as f64 * 110.0, 16) as f64 / 100.0,
+                            0,
+                        );
                     }
                 }
 
@@ -10764,7 +11983,10 @@ impl Battle {
                             }
                         }
                         // Apply 0.9x multiplier with 16-bit truncation
-                        stat = crate::dex::Dex::trunc(crate::dex::Dex::trunc(stat as f64 * 90.0, 16) as f64 / 100.0, 0);
+                        stat = crate::dex::Dex::trunc(
+                            crate::dex::Dex::trunc(stat as f64 * 90.0, 16) as f64 / 100.0,
+                            0,
+                        );
                     }
                 }
             }
@@ -10778,10 +12000,10 @@ impl Battle {
     /// Tiebreaker logic for determining winner when time runs out
     /// Equivalent to battle.ts tiebreak() (battle.ts:1421-1462)
     ///
-    // 
+    //
     // 	tiebreak() {
     // 		if (this.ended) return false;
-    // 
+    //
     // 		this.inputLog.push(`>tiebreak`);
     // 		this.add('message', "Time's up! Going to tiebreaker...");
     // 		const notFainted = this.sides.map(side => (
@@ -10795,7 +12017,7 @@ impl Battle {
     // 		if (tiedSides.length <= 1) {
     // 			return this.win(tiedSides[0]);
     // 		}
-    // 
+    //
     // 		const hpPercentage = tiedSides.map(side => (
     // 			side.pokemon.map(pokemon => pokemon.hp / pokemon.maxhp).reduce((a, b) => a + b) * 100 / 6
     // 		));
@@ -10807,7 +12029,7 @@ impl Battle {
     // 		if (tiedSides.length <= 1) {
     // 			return this.win(tiedSides[0]);
     // 		}
-    // 
+    //
     // 		const hpTotal = tiedSides.map(side => (
     // 			side.pokemon.map(pokemon => pokemon.hp).reduce((a, b) => a + b)
     // 		));
@@ -10844,7 +12066,9 @@ impl Battle {
         // JS: const notFainted = this.sides.map(side => (
         //         side.pokemon.filter(pokemon => !pokemon.fainted).length
         //     ));
-        let not_fainted: Vec<usize> = self.sides.iter()
+        let not_fainted: Vec<usize> = self
+            .sides
+            .iter()
             .map(|side| side.pokemon.iter().filter(|p| !p.fainted).count())
             .collect();
 
@@ -10875,11 +12099,20 @@ impl Battle {
         // JS: const hpPercentage = tiedSides.map(side => (
         //         side.pokemon.map(pokemon => pokemon.hp / pokemon.maxhp).reduce((a, b) => a + b) * 100 / 6
         //     ));
-        let hp_percentage: Vec<f64> = tied_sides.iter()
+        let hp_percentage: Vec<f64> = tied_sides
+            .iter()
             .map(|&side_idx| {
                 let side = &self.sides[side_idx];
-                let total: f64 = side.pokemon.iter()
-                    .map(|p| if p.maxhp > 0 { p.hp as f64 / p.maxhp as f64 } else { 0.0 })
+                let total: f64 = side
+                    .pokemon
+                    .iter()
+                    .map(|p| {
+                        if p.maxhp > 0 {
+                            p.hp as f64 / p.maxhp as f64
+                        } else {
+                            0.0
+                        }
+                    })
                     .sum();
                 total * 100.0 / 6.0
             })
@@ -10888,16 +12121,19 @@ impl Battle {
         // Log HP percentages
         let mut messages = Vec::new();
         for (i, &side_idx) in tied_sides.iter().enumerate() {
-            messages.push(format!("{}: {}% total HP left",
+            messages.push(format!(
+                "{}: {}% total HP left",
                 self.sides[side_idx].name,
-                hp_percentage[i].round() as i32));
+                hp_percentage[i].round() as i32
+            ));
         }
         self.add("-message", &[Arg::Str(&messages.join("; "))]);
 
         // JS: const maxPercentage = Math.max(...hpPercentage);
         // JS: tiedSides = tiedSides.filter((side, i) => hpPercentage[i] === maxPercentage);
         let max_percentage = hp_percentage.iter().cloned().fold(0.0_f64, f64::max);
-        tied_sides = tied_sides.into_iter()
+        tied_sides = tied_sides
+            .into_iter()
             .enumerate()
             .filter(|(i, _)| (hp_percentage[*i] - max_percentage).abs() < 0.0001)
             .map(|(_, side_idx)| side_idx)
@@ -10916,27 +12152,26 @@ impl Battle {
         // JS: const hpTotal = tiedSides.map(side => (
         //         side.pokemon.map(pokemon => pokemon.hp).reduce((a, b) => a + b)
         //     ));
-        let hp_total: Vec<i32> = tied_sides.iter()
-            .map(|&side_idx| {
-                self.sides[side_idx].pokemon.iter()
-                    .map(|p| p.hp)
-                    .sum()
-            })
+        let hp_total: Vec<i32> = tied_sides
+            .iter()
+            .map(|&side_idx| self.sides[side_idx].pokemon.iter().map(|p| p.hp).sum())
             .collect();
 
         // Log HP totals
         let mut messages = Vec::new();
         for (i, &side_idx) in tied_sides.iter().enumerate() {
-            messages.push(format!("{}: {} total HP left",
-                self.sides[side_idx].name,
-                hp_total[i]));
+            messages.push(format!(
+                "{}: {} total HP left",
+                self.sides[side_idx].name, hp_total[i]
+            ));
         }
         self.add("-message", &[Arg::Str(&messages.join("; "))]);
 
         // JS: const maxTotal = Math.max(...hpTotal);
         // JS: tiedSides = tiedSides.filter((side, i) => hpTotal[i] === maxTotal);
         let max_total = *hp_total.iter().max().unwrap_or(&0);
-        tied_sides = tied_sides.into_iter()
+        tied_sides = tied_sides
+            .into_iter()
             .enumerate()
             .filter(|(i, _)| hp_total[*i] == max_total)
             .map(|(_, side_idx)| side_idx)
@@ -10956,7 +12191,7 @@ impl Battle {
     /// Convert battle to JSON value
     /// Equivalent to battle.ts toJSON()
     ///
-    // 
+    //
     // 	toJSON(): AnyObject {
     // 		return State.serializeBattle(this);
     // 	}
@@ -10968,7 +12203,7 @@ impl Battle {
 
     /// Convert battle to string representation
     /// Equivalent to battle.ts toString()
-    // 
+    //
     // 	toString() {
     // 		return `Battle: ${this.format}`;
     // 	}
@@ -10978,7 +12213,7 @@ impl Battle {
     //
     // 	findBattleEventHandlers(callbackName: string, getKey?: 'duration', customHolder?: Pokemon) {
     // 		const handlers: EventListener[] = [];
-    // 
+    //
     // 		let callback;
     // 		const format = this.format;
     // 		callback = this.getCallback(this, format, callbackName);
@@ -11007,10 +12242,10 @@ impl Battle {
 
     /// Find field event handlers
     /// Equivalent to battle.ts findFieldEventHandlers()
-    // 
+    //
     // 	findFieldEventHandlers(field: Field, callbackName: string, getKey?: 'duration', customHolder?: Pokemon) {
     // 		const handlers: EventListener[] = [];
-    // 
+    //
     // 		let callback;
     // 		for (const id in field.pseudoWeather) {
     // 			const pseudoWeatherState = field.pseudoWeather[id];
@@ -11039,7 +12274,7 @@ impl Battle {
     // 				end: customHolder ? null : field.clearTerrain, effectHolder: customHolder || field,
     // 			}, callbackName));
     // 		}
-    // 
+    //
     // 		return handlers;
     // 	}
     //
@@ -11067,10 +12302,10 @@ impl Battle {
 
     /// Find side event handlers
     /// Equivalent to battle.ts findSideEventHandlers()
-    // 
+    //
     // 	findSideEventHandlers(side: Side, callbackName: string, getKey?: 'duration', customHolder?: Pokemon) {
     // 		const handlers: EventListener[] = [];
-    // 
+    //
     // 		for (const id in side.sideConditions) {
     // 			const sideConditionData = side.sideConditions[id];
     // 			const sideCondition = this.dex.conditions.getByID(id as ID);
@@ -11085,7 +12320,11 @@ impl Battle {
     // 		return handlers;
     // 	}
     //
-    pub fn find_side_event_handlers(&self, _event_id: &str, side_idx: usize) -> Vec<(ID, Option<(usize, usize)>)> {
+    pub fn find_side_event_handlers(
+        &self,
+        _event_id: &str,
+        side_idx: usize,
+    ) -> Vec<(ID, Option<(usize, usize)>)> {
         let mut handlers = Vec::new();
 
         if let Some(side) = self.sides.get(side_idx) {
@@ -11101,10 +12340,10 @@ impl Battle {
     /// Find Pokemon event handlers
     /// Equivalent to battle.ts findPokemonEventHandlers() (battle.ts:1098-1157)
     ///
-    // 
+    //
     // 	findPokemonEventHandlers(pokemon: Pokemon, callbackName: string, getKey?: 'duration') {
     // 		const handlers: EventListener[] = [];
-    // 
+    //
     // 		const status = pokemon.getStatus();
     // 		let callback = this.getCallback(pokemon, status, callbackName);
     // 		if (callback !== undefined || (getKey && pokemon.statusState[getKey])) {
@@ -11159,11 +12398,15 @@ impl Battle {
     // 				}, callbackName));
     // 			}
     // 		}
-    // 
+    //
     // 		return handlers;
     // 	}
     //
-    pub fn find_pokemon_event_handlers(&self, _event_id: &str, target: (usize, usize)) -> Vec<(ID, Option<(usize, usize)>)> {
+    pub fn find_pokemon_event_handlers(
+        &self,
+        _event_id: &str,
+        target: (usize, usize),
+    ) -> Vec<(ID, Option<(usize, usize)>)> {
         let mut handlers = Vec::new();
         let (side_idx, poke_idx) = target;
 
@@ -11252,7 +12495,8 @@ impl Battle {
         };
 
         // Check type immunity
-        let effectiveness = crate::data::typechart::get_effectiveness_multi(&move_data.move_type, &target_types);
+        let effectiveness =
+            crate::data::typechart::get_effectiveness_multi(&move_data.move_type, &target_types);
         if effectiveness == 0.0 {
             return None; // Immune
         }
@@ -11293,7 +12537,13 @@ impl Battle {
         let mut crit_ratio = move_data.crit_ratio;
 
         // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
-        if let Some(modified_crit) = self.run_event("ModifyCritRatio", Some(source_pos), Some(target_pos), Some(&move_data.id), Some(crit_ratio)) {
+        if let Some(modified_crit) = self.run_event(
+            "ModifyCritRatio",
+            Some(source_pos),
+            Some(target_pos),
+            Some(&move_data.id),
+            Some(crit_ratio),
+        ) {
             crit_ratio = modified_crit;
         }
 
@@ -11322,12 +12572,19 @@ impl Battle {
         // Trigger CriticalHit event to allow abilities to prevent/modify crit
         // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
         if is_crit {
-            is_crit = self.run_event_bool("CriticalHit", Some(target_pos), None, Some(&move_data.id));
+            is_crit =
+                self.run_event_bool("CriticalHit", Some(target_pos), None, Some(&move_data.id));
         }
 
         // Trigger BasePower event to allow abilities/items to modify base power
         // JavaScript: basePower = this.battle.runEvent('BasePower', source, target, move, basePower, true);
-        if let Some(modified_bp) = self.run_event("BasePower", Some(source_pos), Some(target_pos), Some(&move_data.id), Some(base_power)) {
+        if let Some(modified_bp) = self.run_event(
+            "BasePower",
+            Some(source_pos),
+            Some(target_pos),
+            Some(&move_data.id),
+            Some(base_power),
+        ) {
             base_power = modified_bp;
         }
 
@@ -11351,11 +12608,15 @@ impl Battle {
                 if is_physical {
                     let boost = pokemon.boosts.atk;
                     let base_stat = pokemon.stored_stats.atk;
-                    crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
+                    crate::battle_actions::BattleActions::calculate_stat_with_boost(
+                        base_stat, boost,
+                    )
                 } else {
                     let boost = pokemon.boosts.spa;
                     let base_stat = pokemon.stored_stats.spa;
-                    crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
+                    crate::battle_actions::BattleActions::calculate_stat_with_boost(
+                        base_stat, boost,
+                    )
                 }
             } else {
                 return None;
@@ -11370,11 +12631,15 @@ impl Battle {
                 if is_physical {
                     let boost = pokemon.boosts.def;
                     let base_stat = pokemon.stored_stats.def;
-                    crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
+                    crate::battle_actions::BattleActions::calculate_stat_with_boost(
+                        base_stat, boost,
+                    )
                 } else {
                     let boost = pokemon.boosts.spd;
                     let base_stat = pokemon.stored_stats.spd;
-                    crate::battle_actions::BattleActions::calculate_stat_with_boost(base_stat, boost)
+                    crate::battle_actions::BattleActions::calculate_stat_with_boost(
+                        base_stat, boost,
+                    )
                 }
             } else {
                 return None;
@@ -11445,7 +12710,8 @@ impl Battle {
         }
 
         // Apply type effectiveness
-        let effectiveness = crate::data::typechart::get_effectiveness_multi(&move_data.move_type, &target_types);
+        let effectiveness =
+            crate::data::typechart::get_effectiveness_multi(&move_data.move_type, &target_types);
         base_damage = (base_damage as f64 * effectiveness) as i32;
 
         // Random factor (85-100%)
@@ -11454,7 +12720,13 @@ impl Battle {
 
         // Trigger ModifyDamage event to allow custom damage modification
         // JavaScript: damage = this.battle.runEvent('ModifyDamage', pokemon, target, move, damage)
-        if let Some(modified) = self.run_event("ModifyDamage", Some(target_pos), Some(source_pos), Some(&move_data.id), Some(base_damage)) {
+        if let Some(modified) = self.run_event(
+            "ModifyDamage",
+            Some(target_pos),
+            Some(source_pos),
+            Some(&move_data.id),
+            Some(base_damage),
+        ) {
             base_damage = modified;
         }
 
@@ -11480,7 +12752,8 @@ impl Battle {
 
         let target_list: Vec<Option<(usize, usize)>> = targets.iter().map(|&t| Some(t)).collect();
 
-        let (damages, final_targets) = self.spread_move_hit(&target_list, pokemon_pos, move_id, false, false);
+        let (damages, final_targets) =
+            self.spread_move_hit(&target_list, pokemon_pos, move_id, false, false);
 
         // Check if any target was hit
         for (i, damage) in damages.iter().enumerate() {
@@ -11520,7 +12793,13 @@ impl Battle {
             for (i, &target) in targets.iter().enumerate() {
                 if let Some(target_pos) = target {
                     // JavaScript: hitResult = this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
-                    let hit_result = self.single_event("TryHit", move_id, Some(target_pos), Some(source_pos), Some(move_id));
+                    let hit_result = self.single_event(
+                        "TryHit",
+                        move_id,
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(move_id),
+                    );
 
                     // If TryHit returns false, the move fails
                     if matches!(hit_result, crate::event::EventResult::Boolean(false)) {
@@ -11556,7 +12835,13 @@ impl Battle {
                     // Trigger Accuracy event to allow abilities/items to modify accuracy
                     // JavaScript: accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
                     let mut accuracy = base_accuracy;
-                    if let Some(modified_acc) = self.run_event("Accuracy", Some(target_pos), Some(source_pos), Some(move_id), Some(accuracy)) {
+                    if let Some(modified_acc) = self.run_event(
+                        "Accuracy",
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(move_id),
+                        Some(accuracy),
+                    ) {
                         accuracy = modified_acc;
                     }
 
@@ -11576,7 +12861,14 @@ impl Battle {
         }
 
         // Step 2: Get damage for each target
-        damages = self.get_spread_damage(&damages, targets, source_pos, move_id, is_secondary, is_self);
+        damages = self.get_spread_damage(
+            &damages,
+            targets,
+            source_pos,
+            move_id,
+            is_secondary,
+            is_self,
+        );
 
         // Step 3: Apply damage using spread_damage
         let damage_vals: Vec<Option<i32>> = damages.clone();
@@ -11605,13 +12897,26 @@ impl Battle {
             if let Some(target_pos) = target {
                 // Only trigger Hit if we actually dealt damage or the move succeeded
                 if damages[i].is_some() {
-                    self.run_event("Hit", Some(target_pos), Some(source_pos), Some(move_id), None);
+                    self.run_event(
+                        "Hit",
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(move_id),
+                        None,
+                    );
                 }
             }
         }
 
         // Step 4: Run move effects (boosts, status, healing, etc.)
-        damages = self.run_move_effects(&damages, &final_targets, source_pos, &move_data, is_secondary, is_self);
+        damages = self.run_move_effects(
+            &damages,
+            &final_targets,
+            source_pos,
+            &move_data,
+            is_secondary,
+            is_self,
+        );
 
         (damages, final_targets)
     }
@@ -11707,7 +13012,8 @@ impl Battle {
                 if target_maxhp > 0 {
                     let heal_amount = target_maxhp * heal_num / heal_denom;
                     // Apply healing
-                    let (current_hp, max_hp) = if let Some(side) = self.sides.get_mut(target_pos.0) {
+                    let (current_hp, max_hp) = if let Some(side) = self.sides.get_mut(target_pos.0)
+                    {
                         if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
                             let old_hp = pokemon.hp;
                             pokemon.hp = (pokemon.hp + heal_amount).min(pokemon.maxhp);
@@ -11726,10 +13032,13 @@ impl Battle {
 
                     // Log healing after releasing mutable borrow
                     if current_hp > 0 {
-                        self.add_log("-heal", &[
-                            &format!("p{}a", target_pos.0 + 1),
-                            &format!("{}/{}", current_hp, max_hp),
-                        ]);
+                        self.add_log(
+                            "-heal",
+                            &[
+                                &format!("p{}a", target_pos.0 + 1),
+                                &format!("{}/{}", current_hp, max_hp),
+                            ],
+                        );
                     }
                 }
             }
@@ -11741,10 +13050,7 @@ impl Battle {
                         // Simple status application (full version would check immunity)
                         if pokemon.status.is_empty() {
                             pokemon.status = crate::dex_data::ID::new(status);
-                            self.add_log("-status", &[
-                                &format!("p{}a", target_pos.0 + 1),
-                                status,
-                            ]);
+                            self.add_log("-status", &[&format!("p{}a", target_pos.0 + 1), status]);
                         }
                     }
                 }
@@ -11817,11 +13123,11 @@ impl Battle {
     // 		if (!eventid) throw new TypeError("Event handlers must have an event to listen to");
     // 		if (!target) throw new TypeError("Event handlers must have a target");
     // 		if (!rest.length) throw new TypeError("Event handlers must have a callback");
-    // 
+    //
     // 		if (target.effectType !== 'Format') {
     // 			throw new TypeError(`${target.name} is a ${target.effectType} but only Format targets are supported right now`);
     // 		}
-    // 
+    //
     // 		let callback, priority, order, subOrder, data;
     // 		if (rest.length === 1) {
     // 			[callback] = rest;
@@ -11840,9 +13146,9 @@ impl Battle {
     // 				subOrder = 0;
     // 			}
     // 		}
-    // 
+    //
     // 		const eventHandler = { callback, target, priority, order, subOrder };
-    // 
+    //
     // 		if (!this.events) this.events = {};
     // 		const callbackName = `on${eventid}`;
     // 		const eventHandlers = this.events[callbackName];
@@ -11884,9 +13190,7 @@ impl Battle {
             sub_order: 0,
         };
 
-        self.events.entry(callback_name)
-            .or_default()
-            .push(handler);
+        self.events.entry(callback_name).or_default().push(handler);
     }
 
     /// Call custom event handlers for a given event
@@ -12062,7 +13366,7 @@ mod tests {
 
         // Same seed should produce same random numbers
         for _ in 0..10 {
-                       assert_eq!(battle1.random(100), battle2.random(100));
+            assert_eq!(battle1.random(100), battle2.random(100));
         }
     }
 }

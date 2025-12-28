@@ -24,7 +24,11 @@ use crate::event::EventResult;
 ///     this.add('-swapboost', source, target, 'atk, spa', '[from] move: Power Swap');
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use std::collections::HashMap;
 
     let source = pokemon_pos;
@@ -118,13 +122,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         (source_pokemon.get_slot(), target_pokemon.get_slot())
     };
 
-    battle.add("-swapboost", &[
-        source_arg.into(),
-        target_arg.into(),
-        "atk, spa".into(),
-        "[from] move: Power Swap".into(),
-    ]);
+    battle.add(
+        "-swapboost",
+        &[
+            source_arg.into(),
+            target_arg.into(),
+            "atk, spa".into(),
+            "[from] move: Power Swap".into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

@@ -15,7 +15,11 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    _battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -39,7 +43,11 @@ pub fn before_turn_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize)) 
 /// onModifyMove(move, source, target) {
 ///     if (target?.beingCalledBack || target?.switchFlag) move.accuracy = true;
 /// }
-pub fn on_modify_move(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    _battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -47,7 +55,11 @@ pub fn on_modify_move(_battle: &mut Battle, _pokemon_pos: (usize, usize), _targe
 /// onTryHit(target, pokemon) {
 ///     target.side.removeSideCondition('pursuit');
 /// }
-pub fn on_try_hit(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    _battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -19,9 +19,11 @@ use crate::event::EventResult;
 ///     }
 ///     return success;
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // onHit(pokemon) {
     //     let factor = 0.5;
     //     if (this.field.isWeather('sandstorm')) {
@@ -41,11 +43,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
     //     factor = 0.667;
     // }
     let is_sandstorm = battle.field.is_weather("sandstorm");
-    let factor = if is_sandstorm {
-        0.667
-    } else {
-        0.5
-    };
+    let factor = if is_sandstorm { 0.667 } else { 0.5 };
 
     // const success = !!this.heal(this.modify(pokemon.maxhp, factor));
     let maxhp = {
@@ -73,10 +71,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
             pokemon_pokemon.get_slot()
         };
 
-        battle.add("-fail", &[
-            pokemon_arg.into(),
-            "heal".into(),
-        ]);
+        battle.add("-fail", &[pokemon_arg.into(), "heal".into()]);
 
         return EventResult::Boolean(false); // this.NOT_FAIL
     }
@@ -84,4 +79,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
     // return success;
     EventResult::Boolean(success)
 }
-

@@ -19,23 +19,13 @@ pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)
     let pokemon = pokemon_pos;
 
     {
-
-
         let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-
-
             Some(p) => p,
 
-
             None => return EventResult::Continue,
-
-
         };
 
-
         pokemon.add_volatile(ID::from("shelltrap"));
-
-
     }
 
     EventResult::Continue
@@ -48,7 +38,11 @@ pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)
 ///         return null;
 ///     }
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onTryMove(pokemon) {
@@ -68,7 +62,9 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos:
         };
 
         if let Some(volatile) = pokemon_pokemon.volatiles.get(&ID::from("shelltrap")) {
-            volatile.data.get("gotHit")
+            volatile
+                .data
+                .get("gotHit")
                 .and_then(|v| v.as_bool())
                 .unwrap_or(false)
         } else {
@@ -89,11 +85,10 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos:
             pokemon_pokemon.get_slot()
         };
 
-        battle.add("cant", &[
-            pokemon_arg.into(),
-            "Shell Trap".into(),
-            "Shell Trap".into(),
-        ]);
+        battle.add(
+            "cant",
+            &[pokemon_arg.into(), "Shell Trap".into(), "Shell Trap".into()],
+        );
 
         // return null;
         return EventResult::Stop;
@@ -122,10 +117,10 @@ pub mod condition {
             pokemon_pokemon.get_slot()
         };
 
-        battle.add("-singleturn", &[
-            pokemon_arg.into(),
-            "move: Shell Trap".into(),
-        ]);
+        battle.add(
+            "-singleturn",
+            &[pokemon_arg.into(), "move: Shell Trap".into()],
+        );
 
         EventResult::Continue
     }
@@ -139,9 +134,11 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-        
-
+    pub fn on_hit(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // onHit(pokemon, source, move) {
         //     if (!pokemon.isAlly(source) && move.category === 'Physical') {
         //         this.effectState.gotHit = true;
@@ -170,7 +167,9 @@ pub mod condition {
         if !is_ally && is_physical {
             // this.effectState.gotHit = true;
             if let Some(ref mut effect_state) = battle.current_effect_state {
-                effect_state.data.insert("gotHit".to_string(), serde_json::json!(true));
+                effect_state
+                    .data
+                    .insert("gotHit".to_string(), serde_json::json!(true));
             }
 
             // const action = this.queue.willMove(pokemon);

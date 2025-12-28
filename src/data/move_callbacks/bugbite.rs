@@ -18,7 +18,11 @@ use crate::event::EventResult;
 ///         if (item.onEat) source.ateBerry = true;
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get target
     let target = match target_pos {
         Some(pos) => pos,
@@ -74,25 +78,42 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                         None => return EventResult::Continue,
                     };
                     let item_data = battle.dex.get_item_by_id(&item_id);
-                    let item_name = item_data.map(|i| i.name.clone()).unwrap_or_else(|| item_id.to_string());
+                    let item_name = item_data
+                        .map(|i| i.name.clone())
+                        .unwrap_or_else(|| item_id.to_string());
 
-                    (target_pokemon.get_slot(), source_pokemon.get_slot(), item_name)
+                    (
+                        target_pokemon.get_slot(),
+                        source_pokemon.get_slot(),
+                        item_name,
+                    )
                 };
 
-                battle.add("-enditem", &[
-                    target_ident.as_str().into(),
-                    item_name.into(),
-                    "[from] stealeat".into(),
-                    "[move] Bug Bite".into(),
-                    format!("[of] {}", source_ident).into(),
-                ]);
+                battle.add(
+                    "-enditem",
+                    &[
+                        target_ident.as_str().into(),
+                        item_name.into(),
+                        "[from] stealeat".into(),
+                        "[move] Bug Bite".into(),
+                        format!("[of] {}", source_ident).into(),
+                    ],
+                );
 
                 // if (this.singleEvent('Eat', item, target.itemState, source, source, move)) {
                 //     this.runEvent('EatItem', source, source, move, item);
                 //     if (item.id === 'leppaberry') target.staleness = 'external';
                 // }
-                let eat_result = battle.single_event("Eat", &item_id, Some(pokemon_pos), Some(pokemon_pos), None);
-                if matches!(eat_result, EventResult::Boolean(true)) || matches!(eat_result, EventResult::Continue) {
+                let eat_result = battle.single_event(
+                    "Eat",
+                    &item_id,
+                    Some(pokemon_pos),
+                    Some(pokemon_pos),
+                    None,
+                );
+                if matches!(eat_result, EventResult::Boolean(true))
+                    || matches!(eat_result, EventResult::Continue)
+                {
                     battle.run_event("EatItem", Some(pokemon_pos), Some(pokemon_pos), None, None);
 
                     // if (item.id === 'leppaberry') target.staleness = 'external';
@@ -112,4 +133,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
-

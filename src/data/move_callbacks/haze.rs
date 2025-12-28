@@ -31,4 +31,3 @@ pub fn on_hit_field(battle: &mut Battle) -> EventResult {
 
     EventResult::Continue
 }
-

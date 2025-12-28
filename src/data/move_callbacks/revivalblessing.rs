@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> EventResult {
     let source = source_pos;
 
     // if (!source.side.pokemon.filter(ally => ally.fainted).length) {
@@ -32,4 +36,3 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
 
     EventResult::Continue
 }
-

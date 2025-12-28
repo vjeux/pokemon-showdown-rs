@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -96,7 +95,10 @@ pub mod condition {
             };
             pokemon_data.volatiles.contains_key(&ID::from("ingrain"))
         };
-        let has_gravity = battle.field.pseudo_weather.contains_key(&ID::from("gravity"));
+        let has_gravity = battle
+            .field
+            .pseudo_weather
+            .contains_key(&ID::from("gravity"));
 
         if has_ironball || has_ingrain || has_gravity {
             applies = false;
@@ -161,7 +163,9 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_data.volatiles.contains_key(&ID::from("telekinesis"))
+            pokemon_data
+                .volatiles
+                .contains_key(&ID::from("telekinesis"))
         };
 
         if has_telekinesis {
@@ -189,10 +193,7 @@ pub mod condition {
             pokemon_data.get_slot()
         };
 
-        battle.add("-start", &[
-            pokemon_arg.into(),
-            "Smack Down".into(),
-        ]);
+        battle.add("-start", &[pokemon_arg.into(), "Smack Down".into()]);
 
         EventResult::Continue
     }
@@ -253,13 +254,9 @@ pub mod condition {
                 pokemon_data.get_slot()
             };
 
-            battle.add("-start", &[
-                pokemon_arg.into(),
-                "Smack Down".into(),
-            ]);
+            battle.add("-start", &[pokemon_arg.into(), "Smack Down".into()]);
         }
 
         EventResult::Continue
     }
 }
-

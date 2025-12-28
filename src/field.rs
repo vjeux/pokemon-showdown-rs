@@ -4,10 +4,10 @@
 //!
 //! Represents the battle field - weather, terrain, and pseudo-weather conditions.
 
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
-use crate::dex_data::{ID, EffectState};
+use crate::dex_data::{EffectState, ID};
 
 /// The battle field - contains weather, terrain, and field-wide effects
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -56,14 +56,14 @@ impl Field {
 
     /// Set the weather
     // TypeScript source:
-    // 
-    // 
+    //
+    //
     // 	setWeather(status: string | Condition, source: Pokemon | 'debug' | null = null, sourceEffect: Effect | null = null) {
     // 		status = this.battle.dex.conditions.get(status);
     // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
     // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
     // 		if (source === 'debug') source = this.battle.sides[0].active[0];
-    // 
+    //
     // 		if (this.weather === status.id) {
     // 			if (sourceEffect && sourceEffect.effectType === 'Ability') {
     // 				if (this.battle.gen > 5 || this.weatherState.duration === 0) {
@@ -123,7 +123,7 @@ impl Field {
     }
 
     /// Clear the weather
-    // 
+    //
     // 	clearWeather() {
     // 		if (!this.weather) return false;
     // 		const prevWeather = this.getWeather();
@@ -145,7 +145,7 @@ impl Field {
 
     /// Get effective weather (accounting for abilities that suppress weather)
     /// For now, just returns the weather (suppression will be handled at battle level)
-    // 
+    //
     // 	effectiveWeather() {
     // 		if (this.suppressingWeather()) return '';
     // 		return this.weather;
@@ -156,7 +156,7 @@ impl Field {
     }
 
     /// Check if weather matches
-    // 
+    //
     // 	isWeather(weather: string | string[]) {
     // 		const ourWeather = this.effectiveWeather();
     // 		if (!Array.isArray(weather)) {
@@ -185,14 +185,14 @@ impl Field {
     }
 
     /// Set the terrain
-    // 
+    //
     // 	setTerrain(status: string | Effect, source: Pokemon | 'debug' | null = null, sourceEffect: Effect | null = null) {
     // 		status = this.battle.dex.conditions.get(status);
     // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
     // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
     // 		if (source === 'debug') source = this.battle.sides[0].active[0];
     // 		if (!source) throw new Error(`setting terrain without a source`);
-    // 
+    //
     // 		if (this.terrain === status.id) return false;
     // 		const prevTerrain = this.terrain;
     // 		const prevTerrainState = this.terrainState;
@@ -228,7 +228,7 @@ impl Field {
     }
 
     /// Clear the terrain
-    // 
+    //
     // 	clearTerrain() {
     // 		if (!this.terrain) return false;
     // 		const prevTerrain = this.getTerrain();
@@ -249,7 +249,7 @@ impl Field {
     }
 
     /// Check if terrain matches
-    // 
+    //
     // 	isTerrain(terrain: string | string[], target?: Pokemon | Side | Battle) {
     // 		const ourTerrain = this.effectiveTerrain(target);
     // 		if (!Array.isArray(terrain)) {
@@ -263,7 +263,7 @@ impl Field {
     }
 
     /// Add a pseudo-weather condition
-    // 
+    //
     // 	addPseudoWeather(
     // 		status: string | Condition,
     // 		source: Pokemon | 'debug' | null = null,
@@ -272,7 +272,7 @@ impl Field {
     // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
     // 		if (source === 'debug') source = this.battle.sides[0].active[0];
     // 		status = this.battle.dex.conditions.get(status);
-    // 
+    //
     // 		let state = this.pseudoWeather[status.id];
     // 		if (state) {
     // 			if (!(status as any).onFieldRestart) return false;
@@ -312,7 +312,7 @@ impl Field {
     }
 
     /// Get pseudo-weather state
-    // 
+    //
     // 	getPseudoWeather(status: string | Effect) {
     // 		status = this.battle.dex.conditions.get(status);
     // 		return this.pseudoWeather[status.id] ? status : null;
@@ -328,7 +328,7 @@ impl Field {
     }
 
     /// Remove a pseudo-weather
-    // 
+    //
     // 	removePseudoWeather(status: string | Effect) {
     // 		status = this.battle.dex.conditions.get(status);
     // 		const state = this.pseudoWeather[status.id];
@@ -347,7 +347,7 @@ impl Field {
     // ==========================================
 
     /// Get weather state
-    // 
+    //
     // 	getWeather() {
     // 		return this.battle.dex.conditions.getByID(this.weather);
     // 	}
@@ -367,7 +367,7 @@ impl Field {
     }
 
     /// Get terrain
-    // 
+    //
     // 	getTerrain() {
     // 		return this.battle.dex.conditions.getByID(this.terrain);
     // 	}
@@ -388,7 +388,7 @@ impl Field {
 
     /// Effective terrain (accounts for Pokemon abilities)
     /// For now, just returns the terrain (suppression at battle level)
-    // 
+    //
     // 	effectiveTerrain(target?: Pokemon | Side | Battle) {
     // 		if (this.battle.event && !target) target = this.battle.event.target;
     // 		return this.battle.runEvent('TryTerrain', target) ? this.terrain : '';
@@ -404,7 +404,7 @@ impl Field {
     }
 
     /// Check if suppressing weather (would need battle context)
-    // 
+    //
     // 	suppressingWeather() {
     // 		for (const side of this.battle.sides) {
     // 			for (const pokemon of side.active) {
@@ -424,10 +424,10 @@ impl Field {
     }
 
     /// Destroy field (cleanup)
-    // 
+    //
     // 	destroy() {
     // 		// deallocate ourself
-    // 
+    //
     // 		// get rid of some possibly-circular references
     // 		(this as any).battle = null!;
     // 	}
@@ -442,7 +442,7 @@ impl Field {
 
     /// Convert field to JSON
     /// Equivalent to field.ts toJSON()
-    // 
+    //
     // 	toJSON(): AnyObject {
     // 		return State.serializeField(this);
     // 	}
@@ -507,7 +507,11 @@ impl Field {
 
 /// Weather damage calculation helper
 pub fn get_weather_damage_fraction(weather: &str, pokemon_types: &[String]) -> f64 {
-    let has_type = |t: &str| pokemon_types.iter().any(|pt| pt.to_lowercase() == t.to_lowercase());
+    let has_type = |t: &str| {
+        pokemon_types
+            .iter()
+            .any(|pt| pt.to_lowercase() == t.to_lowercase())
+    };
 
     match weather {
         // Sandstorm damages non-Rock/Ground/Steel types

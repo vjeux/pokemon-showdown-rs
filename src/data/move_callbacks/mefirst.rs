@@ -21,7 +21,11 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 /// ```
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = source_pos;
@@ -55,7 +59,9 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Boolean(false),
         };
-        target_pokemon.volatiles.contains_key(&ID::from("mustrecharge"))
+        target_pokemon
+            .volatiles
+            .contains_key(&ID::from("mustrecharge"))
     };
 
     if has_mustrecharge {
@@ -89,7 +95,12 @@ pub mod condition {
     /// onBasePower(basePower) {
     ///     return this.chainModify(1.5);
     /// }
-    pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_base_power(
+        battle: &mut Battle,
+        _base_power: i32,
+        _pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // return this.chainModify(1.5);
         EventResult::Number(battle.chain_modify_fraction(3, 2)) // 1.5 = 3/2
     }

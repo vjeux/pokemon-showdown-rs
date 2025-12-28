@@ -23,13 +23,21 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_after_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_after_hit(
+    battle: &mut Battle,
+    _target_pos: (usize, usize),
+    source_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon_pos = source_pos;
 
     // if (!move.hasSheerForce) {
-    let has_sheer_force = battle.active_move.as_ref().map(|m| m.has_sheer_force).unwrap_or(false);
+    let has_sheer_force = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.has_sheer_force)
+        .unwrap_or(false);
 
     if !has_sheer_force {
         // if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
@@ -51,12 +59,15 @@ pub fn on_after_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos
         };
 
         if has_hp && removed_leechseed {
-            battle.add("-end", &[
-                pokemon_ident.clone().into(),
-                "Leech Seed".into(),
-                "[from] move: Mortal Spin".into(),
-                format!("[of] {}", pokemon_ident).into(),
-            ]);
+            battle.add(
+                "-end",
+                &[
+                    pokemon_ident.clone().into(),
+                    "Leech Seed".into(),
+                    "[from] move: Mortal Spin".into(),
+                    format!("[of] {}", pokemon_ident).into(),
+                ],
+            );
         }
 
         // const sideConditions = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb', 'gmaxsteelsurge'];
@@ -65,7 +76,13 @@ pub fn on_after_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos
         //         this.add('-sideend', pokemon.side, this.dex.conditions.get(condition).name, '[from] move: Mortal Spin', `[of] ${pokemon}`);
         //     }
         // }
-        let side_conditions = vec!["spikes", "toxicspikes", "stealthrock", "stickyweb", "gmaxsteelsurge"];
+        let side_conditions = vec![
+            "spikes",
+            "toxicspikes",
+            "stealthrock",
+            "stickyweb",
+            "gmaxsteelsurge",
+        ];
         let side_idx = pokemon_pos.0;
 
         for condition in side_conditions {
@@ -97,12 +114,15 @@ pub fn on_after_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos
                 };
 
                 let side_id = if side_idx == 0 { "p1" } else { "p2" };
-                battle.add("-sideend", &[
-                    side_id.into(),
-                    condition.into(),
-                    "[from] move: Mortal Spin".into(),
-                    format!("[of] {}", pokemon_ident).into(),
-                ]);
+                battle.add(
+                    "-sideend",
+                    &[
+                        side_id.into(),
+                        condition.into(),
+                        "[from] move: Mortal Spin".into(),
+                        format!("[of] {}", pokemon_ident).into(),
+                    ],
+                );
             }
         }
 
@@ -145,7 +165,11 @@ pub fn on_after_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos
 ///         }
 ///     }
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_after_sub_damage(
+    battle: &mut Battle,
+    _damage: i32,
+    target_pos: (usize, usize),
+    source_pos: (usize, usize),
+) -> EventResult {
     on_after_hit(battle, target_pos, source_pos)
 }
-

@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// ```ignore
 /// onTry(source) {
 ///     if (source.status === 'slp' || source.hasAbility('comatose')) return false;
-/// 
+///
 ///     if (source.hp === source.maxhp) {
 ///         this.add('-fail', source, 'heal');
 ///         return null;
@@ -26,7 +26,11 @@ use crate::event::EventResult;
 ///     }
 /// }
 /// ```
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -37,7 +41,10 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (source_pokemon.status.clone(), source_pokemon.has_ability(&["comatose"]))
+        (
+            source_pokemon.status.clone(),
+            source_pokemon.has_ability(&["comatose"]),
+        )
     };
 
     if status == ID::from("slp") || has_comatose {
@@ -93,11 +100,14 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
             (arg, str_repr)
         };
 
-        battle.add("-fail", &[
-            source_arg.into(),
-            "[from] ability: Insomnia".into(),
-            format!("[of] {}", source_str).into(),
-        ]);
+        battle.add(
+            "-fail",
+            &[
+                source_arg.into(),
+                "[from] ability: Insomnia".into(),
+                format!("[of] {}", source_str).into(),
+            ],
+        );
         return EventResult::Stop;
     }
 
@@ -124,11 +134,14 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
             (arg, str_repr)
         };
 
-        battle.add("-fail", &[
-            source_arg.into(),
-            "[from] ability: Vital Spirit".into(),
-            format!("[of] {}", source_str).into(),
-        ]);
+        battle.add(
+            "-fail",
+            &[
+                source_arg.into(),
+                "[from] ability: Vital Spirit".into(),
+                format!("[of] {}", source_str).into(),
+            ],
+        );
         return EventResult::Stop;
     }
 
@@ -144,7 +157,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 ///     this.heal(target.maxhp); // Aesthetic only as the healing happens after you fall asleep in-game
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let target = pokemon_pos;
@@ -171,7 +188,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
         None => return EventResult::Continue,
     };
     target_pokemon.status_state.time = Some(3);
-    target_pokemon.status_state.data.insert("startTime".to_string(), serde_json::json!(3));
+    target_pokemon
+        .status_state
+        .data
+        .insert("startTime".to_string(), serde_json::json!(3));
 
     // this.heal(target.maxhp); // Aesthetic only as the healing happens after you fall asleep in-game
     let maxhp = target_pokemon.maxhp;
@@ -179,4 +199,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
 
     EventResult::Continue
 }
-

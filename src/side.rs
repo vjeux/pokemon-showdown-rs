@@ -4,10 +4,10 @@
 //!
 //! Represents one side (player) in a battle.
 
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
-use crate::dex_data::{ID, EffectState, SideID};
+use crate::dex_data::{EffectState, SideID, ID};
 use crate::pokemon::{Pokemon, PokemonSet};
 
 /// A single action that can be chosen
@@ -62,8 +62,7 @@ impl Choice {
 }
 
 /// Request state
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[derive(Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum RequestState {
     #[default]
     None,
@@ -71,7 +70,6 @@ pub enum RequestState {
     Move,
     Switch,
 }
-
 
 /// A side in the battle
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -133,15 +131,21 @@ pub struct Side {
 
 impl Side {
     /// Create a new side
-    pub fn new(id: SideID, n: usize, name: String, team: Vec<PokemonSet>, active_count: usize) -> Self {
-        let pokemon: Vec<Pokemon> = team.iter().enumerate()
+    pub fn new(
+        id: SideID,
+        n: usize,
+        name: String,
+        team: Vec<PokemonSet>,
+        active_count: usize,
+    ) -> Self {
+        let pokemon: Vec<Pokemon> = team
+            .iter()
+            .enumerate()
             .map(|(i, set)| Pokemon::new(set, n, i))
             .collect();
 
         let pokemon_left = pokemon.len();
-        let slot_conditions = (0..active_count)
-            .map(|_| HashMap::new())
-            .collect();
+        let slot_conditions = (0..active_count).map(|_| HashMap::new()).collect();
 
         Self {
             id,
@@ -186,9 +190,9 @@ impl Side {
 
     /// Get the active Pokemon in a slot
     pub fn get_active(&self, slot: usize) -> Option<&Pokemon> {
-        self.active.get(slot).and_then(|opt| {
-            opt.and_then(|idx| self.pokemon.get(idx))
-        })
+        self.active
+            .get(slot)
+            .and_then(|opt| opt.and_then(|idx| self.pokemon.get(idx)))
     }
 
     /// Get a mutable reference to the active Pokemon in a slot
@@ -202,7 +206,8 @@ impl Side {
 
     /// Get all active Pokemon
     pub fn all_active(&self) -> Vec<&Pokemon> {
-        self.active.iter()
+        self.active
+            .iter()
             .filter_map(|opt| opt.and_then(|idx| self.pokemon.get(idx)))
             .collect()
     }
@@ -252,8 +257,8 @@ impl Side {
 
     /// Add a side condition
     // TypeScript source:
-    // 
-    // 
+    //
+    //
     // 	addSideCondition(
     // 		status: string | Condition, source: Pokemon | 'debug' | null = null, sourceEffect: Effect | null = null
     // 	): boolean {
@@ -261,7 +266,7 @@ impl Side {
     // 		if (source === 'debug') source = this.active[0];
     // 		if (!source) throw new Error(`setting sidecond without a source`);
     // 		if (!source.getSlot) source = (source as any as Side).active[0];
-    // 
+    //
     // 		status = this.battle.dex.conditions.get(status);
     // 		if (this.sideConditions[status.id]) {
     // 			if (!(status as any).onSideRestart) return false;
@@ -302,7 +307,7 @@ impl Side {
     }
 
     /// Get side condition state
-    // 
+    //
     // 	getSideCondition(status: string | Effect): Effect | null {
     // 		status = this.battle.dex.conditions.get(status) as Effect;
     // 		if (!this.sideConditions[status.id]) return null;
@@ -319,7 +324,7 @@ impl Side {
     }
 
     /// Remove a side condition
-    // 
+    //
     // 	removeSideCondition(status: string | Effect): boolean {
     // 		status = this.battle.dex.conditions.get(status) as Effect;
     // 		if (!this.sideConditions[status.id]) return false;
@@ -333,7 +338,7 @@ impl Side {
     }
 
     /// Add a slot condition
-    // 
+    //
     // 	addSlotCondition(
     // 		target: Pokemon | number, status: string | Condition, source: Pokemon | 'debug' | null = null,
     // 		sourceEffect: Effect | null = null
@@ -342,7 +347,7 @@ impl Side {
     // 		if (source === 'debug') source = this.active[0];
     // 		if (target instanceof Pokemon) target = target.position;
     // 		if (!source) throw new Error(`setting sidecond without a source`);
-    // 
+    //
     // 		status = this.battle.dex.conditions.get(status);
     // 		if (this.slotConditions[target][status.id]) {
     // 			if (!status.onRestart) return false;
@@ -382,13 +387,14 @@ impl Side {
 
     /// Check if a slot condition is active
     pub fn has_slot_condition(&self, slot: usize, id: &ID) -> bool {
-        self.slot_conditions.get(slot)
+        self.slot_conditions
+            .get(slot)
             .map(|conds| conds.contains_key(id))
             .unwrap_or(false)
     }
 
     /// Remove a slot condition
-    // 
+    //
     // 	removeSlotCondition(target: Pokemon | number, status: string | Effect) {
     // 		if (target instanceof Pokemon) target = target.position;
     // 		status = this.battle.dex.conditions.get(status) as Effect;
@@ -399,7 +405,8 @@ impl Side {
     // 	}
     //
     pub fn remove_slot_condition(&mut self, slot: usize, id: &ID) -> bool {
-        self.slot_conditions.get_mut(slot)
+        self.slot_conditions
+            .get_mut(slot)
             .map(|conds| conds.remove(id).is_some())
             .unwrap_or(false)
     }
@@ -416,7 +423,9 @@ impl Side {
 
     /// Get Pokemon that can switch in
     pub fn get_switchable(&self) -> Vec<usize> {
-        self.pokemon.iter().enumerate()
+        self.pokemon
+            .iter()
+            .enumerate()
             .filter(|(_, p)| !p.is_fainted() && !p.is_active)
             .map(|(i, _)| i)
             .collect()
@@ -481,10 +490,15 @@ impl Side {
     // 	}
     //
     pub fn get_choice(&self) -> String {
-        self.choice.actions.iter().map(|action| {
-            match action.choice {
+        self.choice
+            .actions
+            .iter()
+            .map(|action| match action.choice {
                 ChoiceType::Move => {
-                    let mut s = format!("move {}", action.move_id.as_ref().map(|id| id.as_str()).unwrap_or(""));
+                    let mut s = format!(
+                        "move {}",
+                        action.move_id.as_ref().map(|id| id.as_str()).unwrap_or("")
+                    );
                     if let Some(target) = action.target_loc {
                         s.push_str(&format!(" {}", target));
                     }
@@ -504,8 +518,9 @@ impl Side {
                 }
                 ChoiceType::Pass => "pass".to_string(),
                 _ => format!("{:?}", action.choice),
-            }
-        }).collect::<Vec<_>>().join(", ")
+            })
+            .collect::<Vec<_>>()
+            .join(", ")
     }
 
     /// Add an entry hazard with layer support
@@ -538,22 +553,23 @@ impl Side {
 
     /// Get the number of layers of a hazard
     pub fn get_hazard_layers(&self, hazard_id: &ID) -> i32 {
-        self.side_conditions.get(hazard_id)
+        self.side_conditions
+            .get(hazard_id)
             .and_then(|state| state.layers)
             .unwrap_or(0)
     }
 
     /// Check if choice for this turn is complete
     /// Equivalent to side.ts isChoiceDone()
-    // 
+    //
     // 	isChoiceDone() {
     // 		if (!this.requestState) return true;
     // 		if (this.choice.forcedSwitchesLeft) return false;
-    // 
+    //
     // 		if (this.requestState === 'teampreview') {
     // 			return this.choice.actions.length >= this.pickedTeamSize();
     // 		}
-    // 
+    //
     // 		// current request is move/switch
     // 		this.getChoiceIndex(); // auto-pass
     // 		return this.choice.actions.length >= this.active.length;
@@ -620,15 +636,22 @@ impl Side {
         let mut forced_switches = 0;
         let mut forced_passes = 0;
 
-        if matches!(battle_request_state, crate::battle::BattleRequestState::Switch) {
+        if matches!(
+            battle_request_state,
+            crate::battle::BattleRequestState::Switch
+        ) {
             // Count active Pokemon with switchFlag set
-            let can_switch_out = self.active.iter()
+            let can_switch_out = self
+                .active
+                .iter()
                 .filter_map(|&opt_idx| opt_idx.and_then(|idx| self.pokemon.get(idx)))
                 .filter(|p| p.switch_flag)
                 .count();
 
             // Count benched Pokemon that aren't fainted
-            let can_switch_in = self.pokemon.iter()
+            let can_switch_in = self
+                .pokemon
+                .iter()
                 .skip(self.active.len())
                 .filter(|p| !p.is_fainted())
                 .count();
@@ -693,7 +716,7 @@ impl Side {
     // 	}
     //
     /// Check if this side can dynamax now (Gen 8)
-    // 
+    //
     // 	canDynamaxNow(): boolean {
     // 		if (this.battle.gen !== 8) return false;
     // 		// In multi battles, players on a team are alternatingly given the option to dynamax each turn
@@ -727,7 +750,7 @@ impl Side {
     // 		// called during the first switch-in, so `active` can still contain nulls at this point
     // 		let allies = this.activeTeam().filter(ally => ally);
     // 		if (!all) allies = allies.filter(ally => !!ally.hp);
-    // 
+    //
     // 		return allies;
     // 	}
     //
@@ -761,7 +784,7 @@ impl Side {
     }
 
     /// Add a Pokemon to the team
-    // 
+    //
     // 	addPokemon(set: PokemonSet) {
     // 		if (this.pokemon.length >= 24) return null;
     // 		const newPokemon = new Pokemon(set, this);
@@ -784,7 +807,7 @@ impl Side {
     }
 
     /// Get a random foe (would need RNG in real implementation)
-    // 
+    //
     // 	randomFoe() {
     // 		const actives = this.foes();
     // 		if (!actives.length) return null;
@@ -801,9 +824,9 @@ impl Side {
     // 		if (this.battle.gameType === 'freeforall') {
     // 			return this.battle.sides.filter(side => side !== this).map(side => side.pokemonLeft).reduce((a, b) => a + b);
     // 		}
-    // 
+    //
     // 		if (this.foe.allySide) return this.foe.pokemonLeft + this.foe.allySide.pokemonLeft;
-    // 
+    //
     // 		return this.foe.pokemonLeft;
     // 	}
     //
@@ -813,7 +836,7 @@ impl Side {
     }
 
     /// Get slot condition data
-    // 
+    //
     // 	getSlotCondition(target: Pokemon | number, status: string | Effect) {
     // 		if (target instanceof Pokemon) target = target.position;
     // 		status = this.battle.dex.conditions.get(status) as Effect;
@@ -830,12 +853,11 @@ impl Side {
         self.slot_conditions.get_mut(slot)?.get_mut(id)
     }
 
-
     /// Get the current choice action index
-    // 
+    //
     // 	getChoiceIndex(isPass?: boolean) {
     // 		let index = this.choice.actions.length;
-    // 
+    //
     // 		if (!isPass) {
     // 			switch (this.requestState) {
     // 			case 'move':
@@ -856,7 +878,7 @@ impl Side {
     // 				break;
     // 			}
     // 		}
-    // 
+    //
     // 		return index;
     // 	}
     //
@@ -865,12 +887,12 @@ impl Side {
     }
 
     /// Choose pass action
-    // 
+    //
     // 	choosePass(): boolean | Side {
     // 		const index = this.getChoiceIndex(true);
     // 		if (index >= this.active.length) return false;
     // 		const pokemon: Pokemon = this.active[index];
-    // 
+    //
     // 		switch (this.requestState) {
     // 		case 'switch':
     // 			if (pokemon.switchFlag) { // This condition will always happen if called by Battle#choose()
@@ -888,7 +910,7 @@ impl Side {
     // 		default:
     // 			return this.emitChoiceError(`Can't pass: Not a move or switch request`);
     // 		}
-    // 
+    //
     // 		this.choice.actions.push({
     // 			choice: 'pass',
     // 		} as ChosenAction);
@@ -936,7 +958,7 @@ impl Side {
     }
 
     /// Choose switch action
-    // 
+    //
     // 	chooseSwitch(slotText?: string) {
     // 		if (this.requestState !== 'move' && this.requestState !== 'switch') {
     // 			return this.emitChoiceError(`Can't switch: You need a ${this.requestState} response`);
@@ -986,7 +1008,7 @@ impl Side {
     // 			return this.emitChoiceError(`Can't switch: The Pokémon in slot ${slot + 1} can only switch in once`);
     // 		}
     // 		const targetPokemon = this.pokemon[slot];
-    // 
+    //
     // 		if (this.slotConditions[pokemon.position]['revivalblessing']) {
     // 			if (!targetPokemon.fainted) {
     // 				return this.emitChoiceError(`Can't switch: You have to pass to a fainted Pokémon`);
@@ -1001,11 +1023,11 @@ impl Side {
     // 			} as ChosenAction);
     // 			return true;
     // 		}
-    // 
+    //
     // 		if (targetPokemon.fainted) {
     // 			return this.emitChoiceError(`Can't switch: You can't switch to a fainted Pokémon`);
     // 		}
-    // 
+    //
     // 		if (this.requestState === 'move') {
     // 			if (pokemon.trapped) {
     // 				return this.emitChoiceError(`Can't switch: The active Pokémon is trapped`, { pokemon, update: req => {
@@ -1029,15 +1051,15 @@ impl Side {
     // 			}
     // 			this.choice.forcedSwitchesLeft--;
     // 		}
-    // 
+    //
     // 		this.choice.switchIns.add(slot);
-    // 
+    //
     // 		this.choice.actions.push({
     // 			choice: (this.requestState === 'switch' ? 'instaswitch' : 'switch'),
     // 			pokemon,
     // 			target: targetPokemon,
     // 		} as ChosenAction);
-    // 
+    //
     // 		return true;
     // 	}
     //
@@ -1092,7 +1114,7 @@ impl Side {
     }
 
     /// Choose move action
-    // 
+    //
     // 	chooseMove(
     // 		moveText?: string | number,
     // 		targetLoc = 0,
@@ -1107,10 +1129,10 @@ impl Side {
     // 		}
     // 		const autoChoose = !moveText;
     // 		const pokemon: Pokemon = this.active[index];
-    // 
+    //
     // 		// Parse moveText (name or index)
     // 		// If the move is not found, the action is invalid without requiring further inspection.
-    // 
+    //
     // 		const request = pokemon.getMoveRequestData();
     // 		let moveid = '';
     // 		let targetType = '';
@@ -1162,7 +1184,7 @@ impl Side {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		const moves = pokemon.getMoves();
     // 		if (autoChoose) {
     // 			for (const [i, move] of request.moves.entries()) {
@@ -1174,9 +1196,9 @@ impl Side {
     // 			}
     // 		}
     // 		const move = this.battle.dex.moves.get(moveid);
-    // 
+    //
     // 		// Z-move
-    // 
+    //
     // 		const zMove = event === 'zmove' ? this.battle.actions.getZMove(move, pokemon) : undefined;
     // 		if (event === 'zmove' && !zMove) {
     // 			return this.emitChoiceError(`Can't move: ${pokemon.name} can't use ${move.name} as a Z-move`);
@@ -1184,9 +1206,9 @@ impl Side {
     // 		if (zMove && this.choice.zMove) {
     // 			return this.emitChoiceError(`Can't move: You can't Z-move more than once per battle`);
     // 		}
-    // 
+    //
     // 		if (zMove) targetType = this.battle.dex.moves.get(zMove).target;
-    // 
+    //
     // 		// Dynamax
     // 		// Is dynamaxed or will dynamax this turn.
     // 		const maxMove = (event === 'dynamax' || pokemon.volatiles['dynamax']) ?
@@ -1194,11 +1216,11 @@ impl Side {
     // 		if (event === 'dynamax' && !maxMove) {
     // 			return this.emitChoiceError(`Can't move: ${pokemon.name} can't use ${move.name} as a Max Move`);
     // 		}
-    // 
+    //
     // 		if (maxMove) targetType = this.battle.dex.moves.get(maxMove).target;
-    // 
+    //
     // 		// Validate targeting
-    // 
+    //
     // 		if (autoChoose || moveid === 'testfight') {
     // 			targetLoc = 0;
     // 		} else if (this.battle.actions.targetTypeChoices(targetType)) {
@@ -1213,7 +1235,7 @@ impl Side {
     // 				return this.emitChoiceError(`Can't move: You can't choose a target for ${move.name}`);
     // 			}
     // 		}
-    // 
+    //
     // 		const lockedMove = pokemon.getLockedMove();
     // 		if (lockedMove) {
     // 			let lockedMoveTargetLoc = pokemon.lastMoveTargetLoc || 0;
@@ -1290,9 +1312,9 @@ impl Side {
     // 			}
     // 			// The chosen move is valid yay
     // 		}
-    // 
+    //
     // 		// Mega evolution
-    // 
+    //
     // 		const mixandmega = this.battle.format.mod === 'mixandmega';
     // 		const mega = (event === 'mega');
     // 		const megax = (event === 'megax');
@@ -1344,7 +1366,7 @@ impl Side {
     // 			// Make this work properly
     // 			return this.emitChoiceError(`Can't move: You can only Terastallize in Gen 9.`);
     // 		}
-    // 
+    //
     // 		this.choice.actions.push({
     // 			choice: 'move',
     // 			pokemon,
@@ -1357,30 +1379,41 @@ impl Side {
     // 			maxMove: maxMove ? maxMove.id : undefined,
     // 			terastallize: terastallize ? pokemon.teraType : undefined,
     // 		});
-    // 
+    //
     // 		if (pokemon.maybeDisabled && (this.battle.gameType === 'singles' || (
     // 			this.battle.gen <= 3 && !this.battle.actions.targetTypeChoices(targetType)
     // 		))) {
     // 			this.choice.cantUndo = true;
     // 		}
-    // 
+    //
     // 		if (mega || megax || megay) this.choice.mega = true;
     // 		if (ultra) this.choice.ultra = true;
     // 		if (zMove) this.choice.zMove = true;
     // 		if (dynamax) this.choice.dynamax = true;
     // 		if (terastallize) this.choice.terastallize = true;
-    // 
+    //
     // 		return true;
     // 	}
     //
-    pub fn choose_move(&mut self, move_id: ID, target_loc: Option<i8>, mega: bool, zmove: Option<String>, max_move: Option<String>, terastallize: Option<String>) -> Result<(), String> {
+    pub fn choose_move(
+        &mut self,
+        move_id: ID,
+        target_loc: Option<i8>,
+        mega: bool,
+        zmove: Option<String>,
+        max_move: Option<String>,
+        terastallize: Option<String>,
+    ) -> Result<(), String> {
         let index = self.get_choice_index();
         if index >= self.active.len() {
             return Err("You sent more choices than unfainted Pokemon".to_string());
         }
 
         if self.request_state != RequestState::Move {
-            return Err(format!("Can't move: You need a {:?} response", self.request_state));
+            return Err(format!(
+                "Can't move: You need a {:?} response",
+                self.request_state
+            ));
         }
 
         // Check mega/dynamax/tera restrictions
@@ -1426,17 +1459,17 @@ impl Side {
     }
 
     /// Choose team action (team preview)
-    // 
+    //
     // 	chooseTeam(data?: string) {
     // 		if (this.requestState !== 'teampreview') {
     // 			return this.emitChoiceError(`Can't choose for Team Preview: You're not in a Team Preview phase`);
     // 		}
-    // 
+    //
     // 		const ruleTable = this.battle.ruleTable;
     // 		let positions = data ? data.split(data.includes(',') ? ',' : '').map(datum => parseInt(datum) - 1) :
     // 			[...this.pokemon.keys()]; // autoChoose
     // 		const pickedTeamSize = this.pickedTeamSize();
-    // 
+    //
     // 		// make sure positions is exactly of length pickedTeamSize
     // 		// - If too big: the client automatically sends a full list, so we just trim it down to size
     // 		positions.splice(pickedTeamSize);
@@ -1448,7 +1481,7 @@ impl Side {
     // 				if (positions.length >= pickedTeamSize) break;
     // 			}
     // 		}
-    // 
+    //
     // 		for (const [index, pos] of positions.entries()) {
     // 			if (isNaN(pos) || pos < 0 || pos >= this.pokemon.length) {
     // 				return this.emitChoiceError(`Can't choose for Team Preview: You do not have a Pokémon in slot ${pos + 1}`);
@@ -1457,7 +1490,7 @@ impl Side {
     // 				return this.emitChoiceError(`Can't choose for Team Preview: The Pokémon in slot ${pos + 1} can only switch in once`);
     // 			}
     // 		}
-    // 
+    //
     // 		const result = ruleTable.onChooseTeam?.[0].call(this.battle, positions, this.pokemon, !data);
     // 		if (result) {
     // 			if (typeof result === 'string') {
@@ -1468,7 +1501,7 @@ impl Side {
     // 			}
     // 			positions = result.slice(0, pickedTeamSize);
     // 		}
-    // 
+    //
     // 		for (const [index, pos] of positions.entries()) {
     // 			this.choice.switchIns.add(pos);
     // 			this.choice.actions.push({
@@ -1478,7 +1511,7 @@ impl Side {
     // 				priority: -index,
     // 			} as ChosenAction);
     // 		}
-    // 
+    //
     // 		return true;
     // 	}
     //
@@ -1515,7 +1548,7 @@ impl Side {
     }
 
     /// Choose shift action (triples)
-    // 
+    //
     // 	chooseShift() {
     // 		const index = this.getChoiceIndex();
     // 		if (index >= this.active.length) {
@@ -1528,12 +1561,12 @@ impl Side {
     // 			return this.emitChoiceError(`Can't shift: You can only shift from the edge to the center`);
     // 		}
     // 		const pokemon: Pokemon = this.active[index];
-    // 
+    //
     // 		this.choice.actions.push({
     // 			choice: 'shift',
     // 			pokemon,
     // 		} as ChosenAction);
-    // 
+    //
     // 		return true;
     // 	}
     //
@@ -1631,7 +1664,14 @@ impl Side {
                                 let _ = self.choose_move(move_id, None, false, None, None, None);
                             } else {
                                 // Struggle
-                                let _ = self.choose_move(ID::new("struggle"), None, false, None, None, None);
+                                let _ = self.choose_move(
+                                    ID::new("struggle"),
+                                    None,
+                                    false,
+                                    None,
+                                    None,
+                                    None,
+                                );
                             }
                         }
                     }
@@ -1658,26 +1698,28 @@ impl Side {
     // 	}
     //
     pub fn picked_team_size(&self, rule_table_size: Option<usize>) -> usize {
-        rule_table_size.unwrap_or(self.pokemon.len()).min(self.pokemon.len())
+        rule_table_size
+            .unwrap_or(self.pokemon.len())
+            .min(self.pokemon.len())
     }
 
     /// Destroy side (cleanup)
-    // 
+    //
     // 	destroy() {
     // 		// deallocate ourself
-    // 
+    //
     // 		// deallocate children and get rid of references to them
     // 		for (const pokemon of this.pokemon) {
     // 			if (pokemon) pokemon.destroy();
     // 		}
-    // 
+    //
     // 		for (const action of this.choice.actions) {
     // 			delete action.side;
     // 			delete action.pokemon;
     // 			delete action.target;
     // 		}
     // 		this.choice.actions = [];
-    // 
+    //
     // 		// get rid of some possibly-circular references
     // 		this.pokemon = [];
     // 		this.active = [];
@@ -1703,19 +1745,17 @@ impl Side {
     /// Equivalent to side.ts activeTeam()
     // 	activeTeam() {
     // 		if (this.battle.gameType !== 'multi') return this.active;
-    // 
+    //
     // 		return this.battle.sides[this.n % 2].active.concat(this.battle.sides[this.n % 2 + 2].active);
     // 	}
     //
     pub fn active_team(&self) -> Vec<usize> {
-        self.active.iter()
-            .filter_map(|&idx| idx)
-            .collect()
+        self.active.iter().filter_map(|&idx| idx).collect()
     }
 
     /// Emit choice error to client
     /// Equivalent to side.ts emitChoiceError()
-    // 
+    //
     // 	emitChoiceError(
     // 		message: string, update?: { pokemon: Pokemon, update: (req: PokemonMoveRequestData) => boolean | void }
     // 	) {
@@ -1737,7 +1777,7 @@ impl Side {
 
     /// Emit request to client
     /// Equivalent to side.ts emitRequest()
-    // 
+    //
     // 	emitRequest(update: ChoiceRequest = this.activeRequest!, updatedRequest = false) {
     // 		if (updatedRequest) (this.activeRequest as MoveRequest | SwitchRequest).update = true;
     // 		this.battle.send('sideupdate', `${this.id}\n|request|${JSON.stringify(update)}`);
@@ -1784,19 +1824,20 @@ impl Side {
     // /** Intended as a way to iterate through all foe side conditions - do not use for anything else. */
     // 	foeSidesWithConditions() {
     // 		if (this.battle.gameType === 'freeforall') return this.battle.sides.filter(side => side !== this);
-    // 
+    //
     // 		return [this.foe];
     // 	}
     //
     pub fn foe_sides_with_conditions<'a>(&self, battle_sides: &'a [Side]) -> Vec<&'a Side> {
-        battle_sides.iter()
+        battle_sides
+            .iter()
             .filter(|s| s.n != self.n && !s.side_conditions.is_empty())
             .collect()
     }
 
     /// Get request data for protocol
     /// Equivalent to side.ts getRequestData()
-    // 
+    //
     // 	getRequestData(forAlly?: boolean): SideRequestData {
     // 		const data: SideRequestData = {
     // 			name: this.name,
@@ -1829,7 +1870,7 @@ impl Side {
 
     /// Get side condition data
     /// Equivalent to side.ts getSideConditionData()
-    // 
+    //
     // 	getSideConditionData(status: string | Effect): AnyObject {
     // 		status = this.battle.dex.conditions.get(status) as Effect;
     // 		return this.sideConditions[status.id] || null;
@@ -1841,7 +1882,7 @@ impl Side {
 
     /// Send message to client
     /// Equivalent to side.ts send()
-    // 
+    //
     // 	send(...parts: (string | number | Function | AnyObject)[]) {
     // 		const sideUpdate = '|' + parts.map(part => {
     // 			if (typeof part !== 'function') return part;
@@ -1856,7 +1897,7 @@ impl Side {
 
     /// Convert to JSON
     /// Equivalent to side.ts toJSON()
-    // 
+    //
     // 	toJSON(): AnyObject {
     // 		return State.serializeSide(this);
     // 	}
@@ -1874,7 +1915,7 @@ impl Side {
 
     /// Update disabled moves in request
     /// Equivalent to side.ts updateDisabledRequest()
-    // 
+    //
     // 	updateDisabledRequest(pokemon: Pokemon, req: PokemonMoveRequestData) {
     // 		let updated = false;
     // 		if (pokemon.maybeLocked) {
@@ -1944,7 +1985,7 @@ impl Side {
 
     /// Update request for specific Pokemon
     /// Equivalent to side.ts updateRequestForPokemon()
-    // 
+    //
     // 	updateRequestForPokemon(pokemon: Pokemon, update: (req: PokemonMoveRequestData) => boolean | void) {
     // 		if (!(this.activeRequest as MoveRequest)?.active) {
     // 			throw new Error(`Can't update a request without active Pokemon`);
@@ -1962,28 +2003,28 @@ impl Side {
 
     /// Process a choice command
     /// Equivalent to side.ts choose()
-    // 
+    //
     // 	choose(input: string) {
     // 		if (!this.requestState) {
     // 			return this.emitChoiceError(
     // 				this.battle.ended ? `Can't do anything: The game is over` : `Can't do anything: It's not your turn`
     // 			);
     // 		}
-    // 
+    //
     // 		if (this.choice.cantUndo) {
     // 			return this.emitChoiceError(`Can't undo: A trapping/disabling effect would cause undo to leak information`);
     // 		}
-    // 
+    //
     // 		this.clearChoice();
-    // 
+    //
     // 		const choiceStrings = (input.startsWith('team ') ? [input] : input.split(','));
-    // 
+    //
     // 		if (choiceStrings.length > this.active.length) {
     // 			return this.emitChoiceError(
     // 				`Can't make choices: You sent choices for ${choiceStrings.length} Pokémon, but this is a ${this.battle.gameType} game!`
     // 			);
     // 		}
-    // 
+    //
     // 		for (const choiceString of choiceStrings) {
     // 			let [choiceType, data] = Utils.splitFirst(choiceString.trim(), ' ');
     // 			data = data.trim();
@@ -1991,7 +2032,7 @@ impl Side {
     // 				choiceType = 'move';
     // 				data = 'testfight';
     // 			}
-    // 
+    //
     // 			switch (choiceType) {
     // 			case 'move':
     // 				const original = data;
@@ -2077,7 +2118,7 @@ impl Side {
     // 				break;
     // 			}
     // 		}
-    // 
+    //
     // 		return !this.choice.error;
     // 	}
     //
@@ -2129,10 +2170,10 @@ impl Side {
                         self.choose_team(pos)?;
                         Ok(true)
                     }
-                    Err(_) => Err("Invalid team positions".to_string())
+                    Err(_) => Err("Invalid team positions".to_string()),
                 }
             }
-            _ => Err(format!("Unknown choice: {}", parts[0]))
+            _ => Err(format!("Unknown choice: {}", parts[0])),
         }
     }
 }

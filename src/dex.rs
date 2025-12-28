@@ -2,11 +2,11 @@
 //!
 //! Handles getting data about Pokemon, items, moves, abilities, etc.
 
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
-use crate::dex_data::{ID, StatsTable};
 use crate::battle_actions::ActiveMove;
+use crate::dex_data::{StatsTable, ID};
 
 /// Helper function for default value of true
 fn default_true() -> bool {
@@ -131,7 +131,7 @@ pub struct MoveData {
     pub num: i32,
     pub name: String,
     #[serde(default)]
-    pub id: ID,  // Move ID (computed from name or provided)
+    pub id: ID, // Move ID (computed from name or provided)
     #[serde(rename = "type")]
     pub move_type: String,
     pub category: String,
@@ -249,8 +249,8 @@ where
 /// IsMax can be true (generic Max move) or a string (species-specific G-Max move)
 #[derive(Debug, Clone)]
 pub enum IsMax {
-    Generic,  // true
-    Species(String),  // Pokemon name like "Butterfree"
+    Generic,         // true
+    Species(String), // Pokemon name like "Butterfree"
 }
 
 impl Serialize for IsMax {
@@ -326,8 +326,8 @@ where
 /// OHKO can be true (generic OHKO) or a string (type-based OHKO like "Ice")
 #[derive(Debug, Clone)]
 pub enum Ohko {
-    Generic,  // true
-    TypeBased(String),  // Type name like "Ice", "Normal"
+    Generic,           // true
+    TypeBased(String), // Type name like "Ice", "Normal"
 }
 
 impl Serialize for Ohko {
@@ -434,8 +434,12 @@ impl<'de> Deserialize<'de> for Multihit {
             where
                 A: SeqAccess<'de>,
             {
-                let min: i32 = seq.next_element()?.ok_or_else(|| de::Error::invalid_length(0, &self))?;
-                let max: i32 = seq.next_element()?.ok_or_else(|| de::Error::invalid_length(1, &self))?;
+                let min: i32 = seq
+                    .next_element()?
+                    .ok_or_else(|| de::Error::invalid_length(0, &self))?;
+                let max: i32 = seq
+                    .next_element()?
+                    .ok_or_else(|| de::Error::invalid_length(1, &self))?;
                 Ok(Multihit::Range(min, max))
             }
         }
@@ -669,15 +673,20 @@ impl Dex {
 
     /// Load data from JSON strings
     pub fn load_from_json(json_data: DexJsonData) -> Result<Self, serde_json::Error> {
-        let mut species_raw: HashMap<String, SpeciesData> = serde_json::from_str(json_data.species_json)?;
+        let mut species_raw: HashMap<String, SpeciesData> =
+            serde_json::from_str(json_data.species_json)?;
         let moves_raw: HashMap<String, MoveData> = serde_json::from_str(json_data.moves_json)?;
-        let abilities_raw: HashMap<String, AbilityData> = serde_json::from_str(json_data.abilities_json)?;
+        let abilities_raw: HashMap<String, AbilityData> =
+            serde_json::from_str(json_data.abilities_json)?;
         let items_raw: HashMap<String, ItemData> = serde_json::from_str(json_data.items_json)?;
         let types: HashMap<String, TypeData> = serde_json::from_str(json_data.types_json)?;
-        let natures_raw: HashMap<String, NatureData> = serde_json::from_str(json_data.natures_json)?;
-        let rulesets_raw: HashMap<String, RulesetData> = serde_json::from_str(json_data.rulesets_json)?;
+        let natures_raw: HashMap<String, NatureData> =
+            serde_json::from_str(json_data.natures_json)?;
+        let rulesets_raw: HashMap<String, RulesetData> =
+            serde_json::from_str(json_data.rulesets_json)?;
         let aliases_raw: HashMap<String, String> = serde_json::from_str(json_data.aliases_json)?;
-        let compound_word_names: Vec<String> = serde_json::from_str(json_data.compound_word_names_json)?;
+        let compound_word_names: Vec<String> =
+            serde_json::from_str(json_data.compound_word_names_json)?;
         let formats: Vec<FormatData> = serde_json::from_str(json_data.formats_json)?;
 
         // Load formats data and merge into species
@@ -692,7 +701,8 @@ impl Dex {
             #[serde(rename = "isNonstandard", default)]
             is_nonstandard: Option<String>,
         }
-        let formats_data: HashMap<String, FormatsDataEntry> = serde_json::from_str(json_data.formats_data_json)?;
+        let formats_data: HashMap<String, FormatsDataEntry> =
+            serde_json::from_str(json_data.formats_data_json)?;
 
         // Merge formats data into species data
         for (species_id, formats_entry) in formats_data {
@@ -705,13 +715,15 @@ impl Dex {
         }
 
         // Convert string keys to ID keys
-        let mut species: HashMap<ID, SpeciesData> = species_raw.into_iter()
+        let mut species: HashMap<ID, SpeciesData> = species_raw
+            .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
 
         // Generate cosmetic forme entries
         // Collect species with cosmetic formes first to avoid borrow issues
-        let species_with_cosmetic_formes: Vec<(ID, SpeciesData)> = species.iter()
+        let species_with_cosmetic_formes: Vec<(ID, SpeciesData)> = species
+            .iter()
             .filter(|(_, s)| !s.cosmetic_formes.is_empty())
             .map(|(id, s)| (id.clone(), s.clone()))
             .collect();
@@ -763,22 +775,28 @@ impl Dex {
             }
         }
 
-        let moves = moves_raw.into_iter()
+        let moves = moves_raw
+            .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
-        let abilities = abilities_raw.into_iter()
+        let abilities = abilities_raw
+            .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
-        let items = items_raw.into_iter()
+        let items = items_raw
+            .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
-        let natures = natures_raw.into_iter()
+        let natures = natures_raw
+            .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
-        let rulesets = rulesets_raw.into_iter()
+        let rulesets = rulesets_raw
+            .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
-        let aliases = aliases_raw.into_iter()
+        let aliases = aliases_raw
+            .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
 
@@ -919,7 +937,10 @@ impl Dex {
             self_effect: None,
 
             // Move data effects - copy from move_data
-            boosts: move_data.boosts.as_ref().map(Self::convert_boosts_hash_to_table),
+            boosts: move_data
+                .boosts
+                .as_ref()
+                .map(Self::convert_boosts_hash_to_table),
             heal: move_data.heal,
             status: move_data.status.clone(),
             force_status: None,
@@ -983,7 +1004,10 @@ impl Dex {
     fn convert_secondary(secondary: &MoveSecondary) -> crate::battle_actions::SecondaryEffect {
         crate::battle_actions::SecondaryEffect {
             chance: secondary.chance,
-            boosts: secondary.boosts.as_ref().map(Self::convert_boosts_hash_to_table),
+            boosts: secondary
+                .boosts
+                .as_ref()
+                .map(Self::convert_boosts_hash_to_table),
             status: secondary.status.clone(),
             volatile_status: secondary.volatile_status_secondary.clone(),
             self_effect: false,
@@ -1036,8 +1060,8 @@ impl Dex {
     /// 0 = immune (0x), 1 = not very effective (0.5x), 2 = neutral (1x), 3 = super effective (2x)
     /// Returns the numeric multiplier
     // TypeScript source:
-    // 
-    // 
+    //
+    //
     // 	getEffectiveness(
     // 		source: { type: string } | string,
     // 		target: { getTypes: () => string[] } | { types: string[] } | string[] | string
@@ -1066,10 +1090,10 @@ impl Dex {
         if let Some(type_data) = self.get_type(defend_type) {
             if let Some(&effectiveness) = type_data.damage_taken.get(attack_type) {
                 return match effectiveness {
-                    0 => 1.0,  // Neutral
-                    1 => 2.0,  // Super effective
-                    2 => 0.5,  // Not very effective
-                    3 => 0.0,  // Immune
+                    0 => 1.0, // Neutral
+                    1 => 2.0, // Super effective
+                    2 => 0.5, // Not very effective
+                    3 => 0.0, // Immune
                     _ => 1.0,
                 };
             }
@@ -1129,14 +1153,14 @@ impl Dex {
     // 		if (typeof name !== 'string' && typeof name !== 'number') return '';
     // 		name = `${name}`.replace(/[|\s[\],\u202e]+/g, ' ').trim();
     // 		if (name.length > 18) name = name.substr(0, 18).trim();
-    // 
+    //
     // 		// remove zalgo
     // 		name = name.replace(
     // 			/[\u0300-\u036f\u0483-\u0489\u0610-\u0615\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06ED\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]{3,}/g,
     // 			''
     // 		);
     // 		name = name.replace(/[\u239b-\u23b9]/g, '');
-    // 
+    //
     // 		return name;
     // 	}
     //
@@ -1146,7 +1170,8 @@ impl Dex {
         }
         let name = name.trim();
         // Remove any ASCII control characters and newlines
-        let name: String = name.chars()
+        let name: String = name
+            .chars()
             .filter(|c| !c.is_control() || *c == ' ')
             .collect();
         // Collapse multiple spaces
@@ -1202,7 +1227,7 @@ impl Dex {
 
     /// Calculate Hidden Power type from IVs
     /// Equivalent to getHiddenPower() in dex.ts
-    // 
+    //
     // 	getHiddenPower(ivs: StatsTable) {
     // 		const hpTypes = [
     // 			'Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel',
@@ -1252,9 +1277,8 @@ impl Dex {
         let type_num = (hp_bits | atk_bits | def_bits | spe_bits | spa_bits | spd_bits) * 15 / 63;
 
         let types = [
-            "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug",
-            "Ghost", "Steel", "Fire", "Water", "Grass", "Electric",
-            "Psychic", "Ice", "Dragon", "Dark"
+            "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire",
+            "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark",
         ];
 
         let hp_type = types.get(type_num as usize).unwrap_or(&"Dark");
@@ -1267,7 +1291,8 @@ impl Dex {
         let spa2_bits = ((ivs.spa >> 1) & 1) << 4;
         let spd2_bits = ((ivs.spd >> 1) & 1) << 5;
 
-        let power = (hp2_bits | atk2_bits | def2_bits | spe2_bits | spa2_bits | spd2_bits) * 40 / 63 + 30;
+        let power =
+            (hp2_bits | atk2_bits | def2_bits | spe2_bits | spa2_bits | spd2_bits) * 40 / 63 + 30;
 
         (hp_type, power)
     }
@@ -1304,7 +1329,7 @@ impl Dex {
 
     /// Create a Dex for a specific generation
     /// Equivalent to forGen() in dex.ts
-    // 
+    //
     // 	forGen(gen: number) {
     // 		if (!gen) return this;
     // 		return this.mod(`gen${gen}`);
@@ -1338,7 +1363,7 @@ impl Dex {
             5 => 649,
             6 => 721,
             7 => 809,
-            8 => 905, // Enamorus is 905
+            8 => 905,  // Enamorus is 905
             9 => 1025, // Current max
             _ => 1025,
         };
@@ -1363,25 +1388,45 @@ impl Dex {
                 if forme.contains("Paldea") {
                     gen < 9
                 // Gen 8+ formes: Hisui, Galar, Gmax
-                } else if forme.contains("Hisui") || forme.contains("Galar") || forme.contains("Galarian") || forme.contains("Gmax") {
+                } else if forme.contains("Hisui")
+                    || forme.contains("Galar")
+                    || forme.contains("Galarian")
+                    || forme.contains("Gmax")
+                {
                     gen < 8
                 // Gen 7+ formes: Alola, Totem
-                } else if forme.contains("Alola") || forme.contains("Alolan") || forme.contains("Totem") {
+                } else if forme.contains("Alola")
+                    || forme.contains("Alolan")
+                    || forme.contains("Totem")
+                {
                     gen < 7
                 // Gen 6+ formes: Mega Evolution, Cap Pikachu, Cosplay Pikachu
-                } else if forme.contains("Mega") || forme.contains("Primal") ||
-                          forme == "Original" || forme == "Hoenn" || forme == "Sinnoh" ||
-                          forme == "Kalos" || forme == "Unova" || forme == "Partner" ||
-                          forme == "World" || forme == "Rock-Star" || forme == "Belle" ||
-                          forme == "Pop-Star" || forme == "PhD" || forme == "Libre" || forme == "Cosplay" {
+                } else if forme.contains("Mega")
+                    || forme.contains("Primal")
+                    || forme == "Original"
+                    || forme == "Hoenn"
+                    || forme == "Sinnoh"
+                    || forme == "Kalos"
+                    || forme == "Unova"
+                    || forme == "Partner"
+                    || forme == "World"
+                    || forme == "Rock-Star"
+                    || forme == "Belle"
+                    || forme == "Pop-Star"
+                    || forme == "PhD"
+                    || forme == "Libre"
+                    || forme == "Cosplay"
+                {
                     gen < 6
                 // Starter/Let's Go formes (Gen 7+)
                 } else if forme == "Starter" {
                     gen < 7
                 // Gen 5: Therian formes, Black/White Kyurem, forme Keldeo, etc.
-                } else if forme.contains("Therian") || forme.contains("Black") && species.name.contains("Kyurem") ||
-                          forme.contains("White") && species.name.contains("Kyurem") ||
-                          forme == "Resolute" {
+                } else if forme.contains("Therian")
+                    || forme.contains("Black") && species.name.contains("Kyurem")
+                    || forme.contains("White") && species.name.contains("Kyurem")
+                    || forme == "Resolute"
+                {
                     gen < 5
                 // Gen 4: Rotom formes, Giratina-Origin, Shaymin-Sky, Arceus types
                 } else if (forme.contains("Heat") || forme.contains("Wash") || forme.contains("Frost") ||
@@ -1389,17 +1434,21 @@ impl Dex {
                           forme == "Origin" ||
                           forme == "Sky" ||
                           // Arceus plate formes
-                          (species.num == 493 && forme != "Normal") {
+                          (species.num == 493 && forme != "Normal")
+                {
                     gen < 4
                 // Gen 3: Deoxys formes, Castform formes
-                } else if ((forme == "Attack" || forme == "Defense" || forme == "Speed") && species.name.contains("Deoxys")) ||
-                          ((forme == "Sunny" || forme == "Rainy" || forme == "Snowy") && species.name.contains("Castform")) {
+                } else if ((forme == "Attack" || forme == "Defense" || forme == "Speed")
+                    && species.name.contains("Deoxys"))
+                    || ((forme == "Sunny" || forme == "Rainy" || forme == "Snowy")
+                        && species.name.contains("Castform"))
+                {
                     gen < 3
                 } else {
-                    false  // Forme exists in all gens or is gen-appropriate
+                    false // Forme exists in all gens or is gen-appropriate
                 }
             } else {
-                false  // Base species within gen range
+                false // Base species within gen range
             };
 
             if is_future {
@@ -1427,8 +1476,9 @@ impl Dex {
             let current_gen = 9; // The generation our data files are from
 
             // Pokemon that should always be marked as unavailable (unreleased event Pokemon, etc.)
-            let always_unavailable = matches!(species.name.as_str(),
-                "Floette-Eternal"  // Never officially released (AZ's Floette)
+            let always_unavailable = matches!(
+                species.name.as_str(),
+                "Floette-Eternal" // Never officially released (AZ's Floette)
             );
 
             // Magearna-Original is marked "Unobtainable" in gen7 mod but available in Gen 8+ (Isle of Armor DLC)
@@ -1444,9 +1494,18 @@ impl Dex {
             // Gmax formes are marked "Gigantamax" in gen8 formats-data but "Past" in gen9 formats-data
             // They should remain marked as non-standard in ALL gens (including Gen 8)
             // because the JavaScript test excludes Pokemon with any isNonstandard value
-            let is_gmax_forme = species.forme.as_deref().map(|f| f.contains("Gmax")).unwrap_or(false);
+            let is_gmax_forme = species
+                .forme
+                .as_deref()
+                .map(|f| f.contains("Gmax"))
+                .unwrap_or(false);
 
-            let should_clear_past = if always_unavailable || magearna_original_unavailable || lgpe_unavailable_in_gen7 || gen8_unavailable || is_gmax_forme {
+            let should_clear_past = if always_unavailable
+                || magearna_original_unavailable
+                || lgpe_unavailable_in_gen7
+                || gen8_unavailable
+                || is_gmax_forme
+            {
                 // Never clear "Past" for:
                 // - unreleased Pokemon (Floette-Eternal)
                 // - Magearna-Original in Gen < 8
@@ -1581,9 +1640,12 @@ impl Dex {
     /// Get all formes for a base species
     pub fn get_all_formes(&self, base_species: &str) -> Vec<&SpeciesData> {
         let base_id = ID::new(base_species);
-        self.species.values()
+        self.species
+            .values()
             .filter(|s| {
-                let species_base = s.base_species.as_ref()
+                let species_base = s
+                    .base_species
+                    .as_ref()
                     .map(|b| ID::new(b))
                     .unwrap_or_else(|| ID::new(&s.name));
                 species_base == base_id
@@ -1600,8 +1662,7 @@ impl Dex {
 
     /// Get the pre-evolution for a species
     pub fn get_prevo(&self, species_name: &str) -> Option<String> {
-        self.get_species(species_name)
-            .and_then(|s| s.prevo.clone())
+        self.get_species(species_name).and_then(|s| s.prevo.clone())
     }
 
     /// Check if a species can evolve
@@ -1614,8 +1675,12 @@ impl Dex {
     /// Calculate Base Stat Total for a species
     pub fn get_bst(&self, species_name: &str) -> Option<i32> {
         self.get_species(species_name).map(|s| {
-            s.base_stats.hp + s.base_stats.atk + s.base_stats.def +
-            s.base_stats.spa + s.base_stats.spd + s.base_stats.spe
+            s.base_stats.hp
+                + s.base_stats.atk
+                + s.base_stats.def
+                + s.base_stats.spa
+                + s.base_stats.spd
+                + s.base_stats.spe
         })
     }
 
@@ -1690,8 +1755,7 @@ impl Dex {
 
     /// Get ability rating
     pub fn get_ability_rating(&self, ability_name: &str) -> Option<f64> {
-        self.get_ability(ability_name)
-            .and_then(|a| a.rating)
+        self.get_ability(ability_name).and_then(|a| a.rating)
     }
 
     /// Get ability description
@@ -1722,15 +1786,21 @@ impl Dex {
     pub fn get_rule_table(&self, format: &FormatData) -> Result<(), String> {
         // JavaScript: if (format.name.length > 50) throw new Error(...)
         if format.name.len() > 50 {
-            return Err(format!("Format \"{}\" has a name longer than 50 characters", format.name));
+            return Err(format!(
+                "Format \"{}\" has a name longer than 50 characters",
+                format.name
+            ));
         }
 
         // Validate that all rulesets referenced exist
         for ruleset_name in &format.ruleset {
             // Skip special rules that start with !, +, -, *, or ^
-            if ruleset_name.starts_with('!') || ruleset_name.starts_with('+') ||
-               ruleset_name.starts_with('-') || ruleset_name.starts_with('*') ||
-               ruleset_name.starts_with('^') {
+            if ruleset_name.starts_with('!')
+                || ruleset_name.starts_with('+')
+                || ruleset_name.starts_with('-')
+                || ruleset_name.starts_with('*')
+                || ruleset_name.starts_with('^')
+            {
                 continue;
             }
 
@@ -1779,7 +1849,8 @@ impl Dex {
     /// Equivalent to this.dex.types.get(typeName).damageTaken[attackType] in conversion2.ts
     /// Returns: 0 = normal, 1 = super effective, 2 = not very effective, 3 = immune
     pub fn get_type_damage_taken(&self, defending_type: &str, attacking_type: &str) -> u8 {
-        self.types.get(defending_type)
+        self.types
+            .get(defending_type)
             .and_then(|type_data| type_data.damage_taken.get(attacking_type))
             .copied()
             .unwrap_or(0) // Default to normal effectiveness

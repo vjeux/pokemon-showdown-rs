@@ -45,9 +45,7 @@ fn test_on_event_allows_multiple_handlers() {
     });
 
     // Add ModifyDamage event handler
-    battle.on_event("ModifyDamage", move |_ctx| {
-        Some(5)
-    });
+    battle.on_event("ModifyDamage", move |_ctx| Some(5));
 
     // Transition out of team preview to Move state
     battle.start_battle();

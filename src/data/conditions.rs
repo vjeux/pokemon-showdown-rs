@@ -5,13 +5,12 @@
 //! This module defines conditions (status effects, volatiles, side conditions,
 //! weather, terrain) as data structures following the JS architecture.
 
-use std::collections::HashMap;
-use once_cell::sync::Lazy;
 use crate::dex_data::ID;
+use once_cell::sync::Lazy;
+use std::collections::HashMap;
 
 /// Type of condition
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-#[derive(Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub enum ConditionType {
     /// Non-volatile status (burn, paralysis, poison, sleep, freeze)
     Status,
@@ -29,7 +28,6 @@ pub enum ConditionType {
     /// Pseudo-weather (Trick Room, Magic Room, etc.)
     PseudoWeather,
 }
-
 
 /// Condition definition
 #[derive(Debug, Clone)]
@@ -190,465 +188,628 @@ pub static CONDITIONS: Lazy<HashMap<ID, ConditionDef>> = Lazy::new(|| {
     // STATUS CONDITIONS (non-volatile)
     // ==========================================
 
-    map.insert(ID::new("brn"), ConditionDef {
-        id: ID::new("brn"),
-        name: "Burn".to_string(),
-        condition_type: ConditionType::Status,
-        residual_damage: Some(1.0 / 16.0),
-        attack_modifier: Some(0.5), // Physical moves deal half damage
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("brn"),
+        ConditionDef {
+            id: ID::new("brn"),
+            name: "Burn".to_string(),
+            condition_type: ConditionType::Status,
+            residual_damage: Some(1.0 / 16.0),
+            attack_modifier: Some(0.5), // Physical moves deal half damage
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("par"), ConditionDef {
-        id: ID::new("par"),
-        name: "Paralysis".to_string(),
-        condition_type: ConditionType::Status,
-        speed_modifier: Some(0.5),
-        skip_turn_chance: Some(25),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("par"),
+        ConditionDef {
+            id: ID::new("par"),
+            name: "Paralysis".to_string(),
+            condition_type: ConditionType::Status,
+            speed_modifier: Some(0.5),
+            skip_turn_chance: Some(25),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("psn"), ConditionDef {
-        id: ID::new("psn"),
-        name: "Poison".to_string(),
-        condition_type: ConditionType::Status,
-        residual_damage: Some(1.0 / 8.0),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("psn"),
+        ConditionDef {
+            id: ID::new("psn"),
+            name: "Poison".to_string(),
+            condition_type: ConditionType::Status,
+            residual_damage: Some(1.0 / 8.0),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("tox"), ConditionDef {
-        id: ID::new("tox"),
-        name: "Toxic".to_string(),
-        condition_type: ConditionType::Status,
-        residual_damage: Some(1.0 / 16.0), // Starts at 1/16, increases
-        escalating_damage: true,
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("tox"),
+        ConditionDef {
+            id: ID::new("tox"),
+            name: "Toxic".to_string(),
+            condition_type: ConditionType::Status,
+            residual_damage: Some(1.0 / 16.0), // Starts at 1/16, increases
+            escalating_damage: true,
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("slp"), ConditionDef {
-        id: ID::new("slp"),
-        name: "Sleep".to_string(),
-        condition_type: ConditionType::Status,
-        min_duration: Some(1),
-        max_duration: Some(3),
-        skip_turn_chance: Some(100), // Can't move while asleep
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("slp"),
+        ConditionDef {
+            id: ID::new("slp"),
+            name: "Sleep".to_string(),
+            condition_type: ConditionType::Status,
+            min_duration: Some(1),
+            max_duration: Some(3),
+            skip_turn_chance: Some(100), // Can't move while asleep
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("frz"), ConditionDef {
-        id: ID::new("frz"),
-        name: "Freeze".to_string(),
-        condition_type: ConditionType::Status,
-        skip_turn_chance: Some(100), // Can't move while frozen
-        // 20% chance to thaw each turn - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("frz"),
+        ConditionDef {
+            id: ID::new("frz"),
+            name: "Freeze".to_string(),
+            condition_type: ConditionType::Status,
+            skip_turn_chance: Some(100), // Can't move while frozen
+            // 20% chance to thaw each turn - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
     // ==========================================
     // VOLATILE CONDITIONS
     // ==========================================
 
-    map.insert(ID::new("confusion"), ConditionDef {
-        id: ID::new("confusion"),
-        name: "Confusion".to_string(),
-        condition_type: ConditionType::Volatile,
-        min_duration: Some(2),
-        max_duration: Some(5),
-        confusion_chance: Some(33), // 33% chance to hit self
-        baton_passable: false,
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("confusion"),
+        ConditionDef {
+            id: ID::new("confusion"),
+            name: "Confusion".to_string(),
+            condition_type: ConditionType::Volatile,
+            min_duration: Some(2),
+            max_duration: Some(5),
+            confusion_chance: Some(33), // 33% chance to hit self
+            baton_passable: false,
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("flinch"), ConditionDef {
-        id: ID::new("flinch"),
-        name: "Flinch".to_string(),
-        condition_type: ConditionType::Volatile,
-        duration: Some(1),
-        skip_turn_chance: Some(100),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("flinch"),
+        ConditionDef {
+            id: ID::new("flinch"),
+            name: "Flinch".to_string(),
+            condition_type: ConditionType::Volatile,
+            duration: Some(1),
+            skip_turn_chance: Some(100),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("taunt"), ConditionDef {
-        id: ID::new("taunt"),
-        name: "Taunt".to_string(),
-        condition_type: ConditionType::Volatile,
-        duration: Some(3),
-        move_restriction: Some(MoveRestriction::NoStatusMoves),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("taunt"),
+        ConditionDef {
+            id: ID::new("taunt"),
+            name: "Taunt".to_string(),
+            condition_type: ConditionType::Volatile,
+            duration: Some(3),
+            move_restriction: Some(MoveRestriction::NoStatusMoves),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("torment"), ConditionDef {
-        id: ID::new("torment"),
-        name: "Torment".to_string(),
-        condition_type: ConditionType::Volatile,
-        move_restriction: Some(MoveRestriction::NoRepeat),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("torment"),
+        ConditionDef {
+            id: ID::new("torment"),
+            name: "Torment".to_string(),
+            condition_type: ConditionType::Volatile,
+            move_restriction: Some(MoveRestriction::NoRepeat),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("healblock"), ConditionDef {
-        id: ID::new("healblock"),
-        name: "Heal Block".to_string(),
-        condition_type: ConditionType::Volatile,
-        duration: Some(5),
-        move_restriction: Some(MoveRestriction::NoHealing),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("healblock"),
+        ConditionDef {
+            id: ID::new("healblock"),
+            name: "Heal Block".to_string(),
+            condition_type: ConditionType::Volatile,
+            duration: Some(5),
+            move_restriction: Some(MoveRestriction::NoHealing),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("substitute"), ConditionDef {
-        id: ID::new("substitute"),
-        name: "Substitute".to_string(),
-        condition_type: ConditionType::Volatile,
-        baton_passable: true,
-        // HP stored separately in volatile state
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("substitute"),
+        ConditionDef {
+            id: ID::new("substitute"),
+            name: "Substitute".to_string(),
+            condition_type: ConditionType::Volatile,
+            baton_passable: true,
+            // HP stored separately in volatile state
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("protect"), ConditionDef {
-        id: ID::new("protect"),
-        name: "Protect".to_string(),
-        condition_type: ConditionType::Volatile,
-        duration: Some(1),
-        protection: true,
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("protect"),
+        ConditionDef {
+            id: ID::new("protect"),
+            name: "Protect".to_string(),
+            condition_type: ConditionType::Volatile,
+            duration: Some(1),
+            protection: true,
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("leechseed"), ConditionDef {
-        id: ID::new("leechseed"),
-        name: "Leech Seed".to_string(),
-        condition_type: ConditionType::Volatile,
-        volatile_damage: Some(1.0 / 8.0),
-        // Heals the seeder - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("leechseed"),
+        ConditionDef {
+            id: ID::new("leechseed"),
+            name: "Leech Seed".to_string(),
+            condition_type: ConditionType::Volatile,
+            volatile_damage: Some(1.0 / 8.0),
+            // Heals the seeder - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("aquaring"), ConditionDef {
-        id: ID::new("aquaring"),
-        name: "Aqua Ring".to_string(),
-        condition_type: ConditionType::Volatile,
-        volatile_heal: Some(1.0 / 16.0),
-        baton_passable: true,
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("aquaring"),
+        ConditionDef {
+            id: ID::new("aquaring"),
+            name: "Aqua Ring".to_string(),
+            condition_type: ConditionType::Volatile,
+            volatile_heal: Some(1.0 / 16.0),
+            baton_passable: true,
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("ingrain"), ConditionDef {
-        id: ID::new("ingrain"),
-        name: "Ingrain".to_string(),
-        condition_type: ConditionType::Volatile,
-        volatile_heal: Some(1.0 / 16.0),
-        traps: true, // Can't switch
-        baton_passable: true,
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("ingrain"),
+        ConditionDef {
+            id: ID::new("ingrain"),
+            name: "Ingrain".to_string(),
+            condition_type: ConditionType::Volatile,
+            volatile_heal: Some(1.0 / 16.0),
+            traps: true, // Can't switch
+            baton_passable: true,
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("trapped"), ConditionDef {
-        id: ID::new("trapped"),
-        name: "Trapped".to_string(),
-        condition_type: ConditionType::Volatile,
-        traps: true,
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("trapped"),
+        ConditionDef {
+            id: ID::new("trapped"),
+            name: "Trapped".to_string(),
+            condition_type: ConditionType::Volatile,
+            traps: true,
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("partiallytrapped"), ConditionDef {
-        id: ID::new("partiallytrapped"),
-        name: "Partially Trapped".to_string(),
-        condition_type: ConditionType::Volatile,
-        min_duration: Some(4),
-        max_duration: Some(5),
-        traps: true,
-        volatile_damage: Some(1.0 / 8.0), // 1/8 per turn (Bind, Wrap, etc.)
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("partiallytrapped"),
+        ConditionDef {
+            id: ID::new("partiallytrapped"),
+            name: "Partially Trapped".to_string(),
+            condition_type: ConditionType::Volatile,
+            min_duration: Some(4),
+            max_duration: Some(5),
+            traps: true,
+            volatile_damage: Some(1.0 / 8.0), // 1/8 per turn (Bind, Wrap, etc.)
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("curse"), ConditionDef {
-        id: ID::new("curse"),
-        name: "Curse".to_string(),
-        condition_type: ConditionType::Volatile,
-        volatile_damage: Some(0.25),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("curse"),
+        ConditionDef {
+            id: ID::new("curse"),
+            name: "Curse".to_string(),
+            condition_type: ConditionType::Volatile,
+            volatile_damage: Some(0.25),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("nightmare"), ConditionDef {
-        id: ID::new("nightmare"),
-        name: "Nightmare".to_string(),
-        condition_type: ConditionType::Volatile,
-        volatile_damage: Some(0.25),
-        // Only works while asleep - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("nightmare"),
+        ConditionDef {
+            id: ID::new("nightmare"),
+            name: "Nightmare".to_string(),
+            condition_type: ConditionType::Volatile,
+            volatile_damage: Some(0.25),
+            // Only works while asleep - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("perishsong"), ConditionDef {
-        id: ID::new("perishsong"),
-        name: "Perish Song".to_string(),
-        condition_type: ConditionType::Volatile,
-        duration: Some(4), // Faints when counter reaches 0
-        baton_passable: false,
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("perishsong"),
+        ConditionDef {
+            id: ID::new("perishsong"),
+            name: "Perish Song".to_string(),
+            condition_type: ConditionType::Volatile,
+            duration: Some(4), // Faints when counter reaches 0
+            baton_passable: false,
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("attract"), ConditionDef {
-        id: ID::new("attract"),
-        name: "Infatuation".to_string(),
-        condition_type: ConditionType::Volatile,
-        skip_turn_chance: Some(50),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("attract"),
+        ConditionDef {
+            id: ID::new("attract"),
+            name: "Infatuation".to_string(),
+            condition_type: ConditionType::Volatile,
+            skip_turn_chance: Some(50),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("yawn"), ConditionDef {
-        id: ID::new("yawn"),
-        name: "Yawn".to_string(),
-        condition_type: ConditionType::Volatile,
-        duration: Some(2), // Falls asleep at end of next turn
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("yawn"),
+        ConditionDef {
+            id: ID::new("yawn"),
+            name: "Yawn".to_string(),
+            condition_type: ConditionType::Volatile,
+            duration: Some(2), // Falls asleep at end of next turn
+            ..Default::default()
+        },
+    );
 
     // Pivot move marker
-    map.insert(ID::new("pivotswitch"), ConditionDef {
-        id: ID::new("pivotswitch"),
-        name: "Pivot Switch".to_string(),
-        condition_type: ConditionType::Volatile,
-        duration: Some(1),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("pivotswitch"),
+        ConditionDef {
+            id: ID::new("pivotswitch"),
+            name: "Pivot Switch".to_string(),
+            condition_type: ConditionType::Volatile,
+            duration: Some(1),
+            ..Default::default()
+        },
+    );
 
     // ==========================================
     // SIDE CONDITIONS
     // ==========================================
 
-    map.insert(ID::new("stealthrock"), ConditionDef {
-        id: ID::new("stealthrock"),
-        name: "Stealth Rock".to_string(),
-        condition_type: ConditionType::SideCondition,
-        hazard_type: Some("Rock".to_string()),
-        // Damage based on type effectiveness: 1/8 neutral, scales with weakness/resistance
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("stealthrock"),
+        ConditionDef {
+            id: ID::new("stealthrock"),
+            name: "Stealth Rock".to_string(),
+            condition_type: ConditionType::SideCondition,
+            hazard_type: Some("Rock".to_string()),
+            // Damage based on type effectiveness: 1/8 neutral, scales with weakness/resistance
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("spikes"), ConditionDef {
-        id: ID::new("spikes"),
-        name: "Spikes".to_string(),
-        condition_type: ConditionType::SideCondition,
-        max_layers: Some(3),
-        // 1/8, 1/6, 1/4 damage based on layers
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("spikes"),
+        ConditionDef {
+            id: ID::new("spikes"),
+            name: "Spikes".to_string(),
+            condition_type: ConditionType::SideCondition,
+            max_layers: Some(3),
+            // 1/8, 1/6, 1/4 damage based on layers
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("toxicspikes"), ConditionDef {
-        id: ID::new("toxicspikes"),
-        name: "Toxic Spikes".to_string(),
-        condition_type: ConditionType::SideCondition,
-        max_layers: Some(2),
-        entry_status: Some("psn".to_string()), // 1 layer = poison, 2 = toxic
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("toxicspikes"),
+        ConditionDef {
+            id: ID::new("toxicspikes"),
+            name: "Toxic Spikes".to_string(),
+            condition_type: ConditionType::SideCondition,
+            max_layers: Some(2),
+            entry_status: Some("psn".to_string()), // 1 layer = poison, 2 = toxic
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("stickyweb"), ConditionDef {
-        id: ID::new("stickyweb"),
-        name: "Sticky Web".to_string(),
-        condition_type: ConditionType::SideCondition,
-        entry_speed_drop: Some(-1),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("stickyweb"),
+        ConditionDef {
+            id: ID::new("stickyweb"),
+            name: "Sticky Web".to_string(),
+            condition_type: ConditionType::SideCondition,
+            entry_speed_drop: Some(-1),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("reflect"), ConditionDef {
-        id: ID::new("reflect"),
-        name: "Reflect".to_string(),
-        condition_type: ConditionType::SideCondition,
-        duration: Some(5),
-        screen_reduction: Some(0.5), // Halves physical damage
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("reflect"),
+        ConditionDef {
+            id: ID::new("reflect"),
+            name: "Reflect".to_string(),
+            condition_type: ConditionType::SideCondition,
+            duration: Some(5),
+            screen_reduction: Some(0.5), // Halves physical damage
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("lightscreen"), ConditionDef {
-        id: ID::new("lightscreen"),
-        name: "Light Screen".to_string(),
-        condition_type: ConditionType::SideCondition,
-        duration: Some(5),
-        screen_reduction: Some(0.5), // Halves special damage
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("lightscreen"),
+        ConditionDef {
+            id: ID::new("lightscreen"),
+            name: "Light Screen".to_string(),
+            condition_type: ConditionType::SideCondition,
+            duration: Some(5),
+            screen_reduction: Some(0.5), // Halves special damage
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("auroraveil"), ConditionDef {
-        id: ID::new("auroraveil"),
-        name: "Aurora Veil".to_string(),
-        condition_type: ConditionType::SideCondition,
-        duration: Some(5),
-        screen_reduction: Some(0.5), // Halves all damage
-        // Requires hail/snow - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("auroraveil"),
+        ConditionDef {
+            id: ID::new("auroraveil"),
+            name: "Aurora Veil".to_string(),
+            condition_type: ConditionType::SideCondition,
+            duration: Some(5),
+            screen_reduction: Some(0.5), // Halves all damage
+            // Requires hail/snow - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("tailwind"), ConditionDef {
-        id: ID::new("tailwind"),
-        name: "Tailwind".to_string(),
-        condition_type: ConditionType::SideCondition,
-        duration: Some(4),
-        // 2x speed - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("tailwind"),
+        ConditionDef {
+            id: ID::new("tailwind"),
+            name: "Tailwind".to_string(),
+            condition_type: ConditionType::SideCondition,
+            duration: Some(4),
+            // 2x speed - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
     // ==========================================
     // WEATHER
     // ==========================================
 
-    map.insert(ID::new("raindance"), ConditionDef {
-        id: ID::new("raindance"),
-        name: "Rain".to_string(),
-        condition_type: ConditionType::Weather,
-        duration: Some(5),
-        type_boost: Some(("Water".to_string(), 1.5)),
-        type_weaken: Some(("Fire".to_string(), 0.5)),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("raindance"),
+        ConditionDef {
+            id: ID::new("raindance"),
+            name: "Rain".to_string(),
+            condition_type: ConditionType::Weather,
+            duration: Some(5),
+            type_boost: Some(("Water".to_string(), 1.5)),
+            type_weaken: Some(("Fire".to_string(), 0.5)),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("sunnyday"), ConditionDef {
-        id: ID::new("sunnyday"),
-        name: "Sun".to_string(),
-        condition_type: ConditionType::Weather,
-        duration: Some(5),
-        type_boost: Some(("Fire".to_string(), 1.5)),
-        type_weaken: Some(("Water".to_string(), 0.5)),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("sunnyday"),
+        ConditionDef {
+            id: ID::new("sunnyday"),
+            name: "Sun".to_string(),
+            condition_type: ConditionType::Weather,
+            duration: Some(5),
+            type_boost: Some(("Fire".to_string(), 1.5)),
+            type_weaken: Some(("Water".to_string(), 0.5)),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("sandstorm"), ConditionDef {
-        id: ID::new("sandstorm"),
-        name: "Sandstorm".to_string(),
-        condition_type: ConditionType::Weather,
-        duration: Some(5),
-        weather_damage: Some(1.0 / 16.0),
-        immune_types: Some(vec!["Rock".to_string(), "Ground".to_string(), "Steel".to_string()]),
-        immune_abilities: Some(vec!["sandveil".to_string(), "sandrush".to_string(), "sandforce".to_string(), "magicguard".to_string(), "overcoat".to_string()]),
-        // Also boosts Rock SpD by 1.5x - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("sandstorm"),
+        ConditionDef {
+            id: ID::new("sandstorm"),
+            name: "Sandstorm".to_string(),
+            condition_type: ConditionType::Weather,
+            duration: Some(5),
+            weather_damage: Some(1.0 / 16.0),
+            immune_types: Some(vec![
+                "Rock".to_string(),
+                "Ground".to_string(),
+                "Steel".to_string(),
+            ]),
+            immune_abilities: Some(vec![
+                "sandveil".to_string(),
+                "sandrush".to_string(),
+                "sandforce".to_string(),
+                "magicguard".to_string(),
+                "overcoat".to_string(),
+            ]),
+            // Also boosts Rock SpD by 1.5x - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("hail"), ConditionDef {
-        id: ID::new("hail"),
-        name: "Hail".to_string(),
-        condition_type: ConditionType::Weather,
-        duration: Some(5),
-        weather_damage: Some(1.0 / 16.0),
-        immune_types: Some(vec!["Ice".to_string()]),
-        immune_abilities: Some(vec!["icebody".to_string(), "snowcloak".to_string(), "magicguard".to_string(), "overcoat".to_string()]),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("hail"),
+        ConditionDef {
+            id: ID::new("hail"),
+            name: "Hail".to_string(),
+            condition_type: ConditionType::Weather,
+            duration: Some(5),
+            weather_damage: Some(1.0 / 16.0),
+            immune_types: Some(vec!["Ice".to_string()]),
+            immune_abilities: Some(vec![
+                "icebody".to_string(),
+                "snowcloak".to_string(),
+                "magicguard".to_string(),
+                "overcoat".to_string(),
+            ]),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("snow"), ConditionDef {
-        id: ID::new("snow"),
-        name: "Snow".to_string(),
-        condition_type: ConditionType::Weather,
-        duration: Some(5),
-        // Gen 9: No damage, but boosts Ice Def by 1.5x
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("snow"),
+        ConditionDef {
+            id: ID::new("snow"),
+            name: "Snow".to_string(),
+            condition_type: ConditionType::Weather,
+            duration: Some(5),
+            // Gen 9: No damage, but boosts Ice Def by 1.5x
+            ..Default::default()
+        },
+    );
 
     // Primal weathers (permanent, blocks other weather)
-    map.insert(ID::new("primordialsea"), ConditionDef {
-        id: ID::new("primordialsea"),
-        name: "Primordial Sea".to_string(),
-        condition_type: ConditionType::Weather,
-        // Permanent, blocks Fire moves entirely
-        type_boost: Some(("Water".to_string(), 1.5)),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("primordialsea"),
+        ConditionDef {
+            id: ID::new("primordialsea"),
+            name: "Primordial Sea".to_string(),
+            condition_type: ConditionType::Weather,
+            // Permanent, blocks Fire moves entirely
+            type_boost: Some(("Water".to_string(), 1.5)),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("desolateland"), ConditionDef {
-        id: ID::new("desolateland"),
-        name: "Desolate Land".to_string(),
-        condition_type: ConditionType::Weather,
-        // Permanent, blocks Water moves entirely
-        type_boost: Some(("Fire".to_string(), 1.5)),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("desolateland"),
+        ConditionDef {
+            id: ID::new("desolateland"),
+            name: "Desolate Land".to_string(),
+            condition_type: ConditionType::Weather,
+            // Permanent, blocks Water moves entirely
+            type_boost: Some(("Fire".to_string(), 1.5)),
+            ..Default::default()
+        },
+    );
 
     // ==========================================
     // TERRAIN
     // ==========================================
 
-    map.insert(ID::new("electricterrain"), ConditionDef {
-        id: ID::new("electricterrain"),
-        name: "Electric Terrain".to_string(),
-        condition_type: ConditionType::Terrain,
-        duration: Some(5),
-        grounded_only: true,
-        type_boost: Some(("Electric".to_string(), 1.3)),
-        prevents_status: Some(vec!["slp".to_string()]),
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("electricterrain"),
+        ConditionDef {
+            id: ID::new("electricterrain"),
+            name: "Electric Terrain".to_string(),
+            condition_type: ConditionType::Terrain,
+            duration: Some(5),
+            grounded_only: true,
+            type_boost: Some(("Electric".to_string(), 1.3)),
+            prevents_status: Some(vec!["slp".to_string()]),
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("grassyterrain"), ConditionDef {
-        id: ID::new("grassyterrain"),
-        name: "Grassy Terrain".to_string(),
-        condition_type: ConditionType::Terrain,
-        duration: Some(5),
-        grounded_only: true,
-        type_boost: Some(("Grass".to_string(), 1.3)),
-        volatile_heal: Some(1.0 / 16.0), // Heals grounded Pokemon
-        // Also weakens Earthquake/Bulldoze/Magnitude - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("grassyterrain"),
+        ConditionDef {
+            id: ID::new("grassyterrain"),
+            name: "Grassy Terrain".to_string(),
+            condition_type: ConditionType::Terrain,
+            duration: Some(5),
+            grounded_only: true,
+            type_boost: Some(("Grass".to_string(), 1.3)),
+            volatile_heal: Some(1.0 / 16.0), // Heals grounded Pokemon
+            // Also weakens Earthquake/Bulldoze/Magnitude - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("psychicterrain"), ConditionDef {
-        id: ID::new("psychicterrain"),
-        name: "Psychic Terrain".to_string(),
-        condition_type: ConditionType::Terrain,
-        duration: Some(5),
-        grounded_only: true,
-        type_boost: Some(("Psychic".to_string(), 1.3)),
-        blocks_priority: true,
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("psychicterrain"),
+        ConditionDef {
+            id: ID::new("psychicterrain"),
+            name: "Psychic Terrain".to_string(),
+            condition_type: ConditionType::Terrain,
+            duration: Some(5),
+            grounded_only: true,
+            type_boost: Some(("Psychic".to_string(), 1.3)),
+            blocks_priority: true,
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("mistyterrain"), ConditionDef {
-        id: ID::new("mistyterrain"),
-        name: "Misty Terrain".to_string(),
-        condition_type: ConditionType::Terrain,
-        duration: Some(5),
-        grounded_only: true,
-        prevents_status: Some(vec!["brn".to_string(), "par".to_string(), "psn".to_string(), "tox".to_string(), "slp".to_string(), "frz".to_string()]),
-        // Also halves Dragon damage - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("mistyterrain"),
+        ConditionDef {
+            id: ID::new("mistyterrain"),
+            name: "Misty Terrain".to_string(),
+            condition_type: ConditionType::Terrain,
+            duration: Some(5),
+            grounded_only: true,
+            prevents_status: Some(vec![
+                "brn".to_string(),
+                "par".to_string(),
+                "psn".to_string(),
+                "tox".to_string(),
+                "slp".to_string(),
+                "frz".to_string(),
+            ]),
+            // Also halves Dragon damage - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
     // ==========================================
     // PSEUDO-WEATHER
     // ==========================================
 
-    map.insert(ID::new("trickroom"), ConditionDef {
-        id: ID::new("trickroom"),
-        name: "Trick Room".to_string(),
-        condition_type: ConditionType::PseudoWeather,
-        duration: Some(5),
-        // Reverses speed order - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("trickroom"),
+        ConditionDef {
+            id: ID::new("trickroom"),
+            name: "Trick Room".to_string(),
+            condition_type: ConditionType::PseudoWeather,
+            duration: Some(5),
+            // Reverses speed order - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("magicroom"), ConditionDef {
-        id: ID::new("magicroom"),
-        name: "Magic Room".to_string(),
-        condition_type: ConditionType::PseudoWeather,
-        duration: Some(5),
-        // Suppresses held items - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("magicroom"),
+        ConditionDef {
+            id: ID::new("magicroom"),
+            name: "Magic Room".to_string(),
+            condition_type: ConditionType::PseudoWeather,
+            duration: Some(5),
+            // Suppresses held items - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("wonderroom"), ConditionDef {
-        id: ID::new("wonderroom"),
-        name: "Wonder Room".to_string(),
-        condition_type: ConditionType::PseudoWeather,
-        duration: Some(5),
-        // Swaps Def and SpD - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("wonderroom"),
+        ConditionDef {
+            id: ID::new("wonderroom"),
+            name: "Wonder Room".to_string(),
+            condition_type: ConditionType::PseudoWeather,
+            duration: Some(5),
+            // Swaps Def and SpD - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
-    map.insert(ID::new("gravity"), ConditionDef {
-        id: ID::new("gravity"),
-        name: "Gravity".to_string(),
-        condition_type: ConditionType::PseudoWeather,
-        duration: Some(5),
-        // Grounds all Pokemon, prevents fly/bounce/etc - handled in battle.rs
-        ..Default::default()
-    });
+    map.insert(
+        ID::new("gravity"),
+        ConditionDef {
+            id: ID::new("gravity"),
+            name: "Gravity".to_string(),
+            condition_type: ConditionType::PseudoWeather,
+            duration: Some(5),
+            // Grounds all Pokemon, prevents fly/bounce/etc - handled in battle.rs
+            ..Default::default()
+        },
+    );
 
     map
 });

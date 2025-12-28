@@ -5,13 +5,17 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     let will_act = battle.queue.will_act();
     let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None, None);
@@ -25,7 +29,11 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // pokemon.addVolatile('stall');
     let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
@@ -60,7 +68,10 @@ pub mod condition {
         };
 
         // this.add('-singleturn', target, 'move: Protect');
-        battle.add("-singleturn", &[target_ident.as_str().into(), "move: Protect".into()]);
+        battle.add(
+            "-singleturn",
+            &[target_ident.as_str().into(), "move: Protect".into()],
+        );
 
         EventResult::Continue
     }
@@ -88,7 +99,11 @@ pub mod condition {
     ///     }
     ///     return this.NOT_FAIL;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_hit(
+        battle: &mut Battle,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
+    ) -> EventResult {
         // Get the active move
         let move_id = match &battle.active_move {
             Some(active_move) => active_move.id.clone(),
@@ -129,7 +144,10 @@ pub mod condition {
         //     this.add('-activate', target, 'move: Protect');
         // }
         // TODO: smartTarget not yet implemented, just add the message
-        battle.add("-activate", &[target_ident.as_str().into(), "move: Protect".into()]);
+        battle.add(
+            "-activate",
+            &[target_ident.as_str().into(), "move: Protect".into()],
+        );
 
         // const lockedmove = source.getVolatile('lockedmove');
         // if (lockedmove) {
@@ -180,7 +198,11 @@ pub mod condition {
     ///         source.trySetStatus('psn', target);
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_hit(
+        battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // Get source from target_pos (in condition context, pokemon_pos is the protected pokemon, target is the attacker)
         let source = match target_pos {
             Some(pos) => pos,

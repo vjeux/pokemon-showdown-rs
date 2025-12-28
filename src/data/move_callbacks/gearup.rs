@@ -19,9 +19,12 @@ use crate::event::EventResult;
 ///     }
 ///     return didSomething;
 /// }
-pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_hit_side(
+    battle: &mut Battle,
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
+) -> EventResult {
     use crate::dex_data::ID;
-    
 
     let source = source_pos;
 
@@ -38,7 +41,8 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     };
 
     // Get all active Pokemon on the same side
-    let allies = battle.get_all_active(false)
+    let allies = battle
+        .get_all_active(false)
         .into_iter()
         .filter(|pos| pos.0 == side_index)
         .collect::<Vec<_>>();
@@ -67,7 +71,12 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
         };
 
         let should_add = if has_maxguard {
-            battle.run_event_bool("TryHit", Some(pokemon_pos), source, Some(&ID::from(move_id)))
+            battle.run_event_bool(
+                "TryHit",
+                Some(pokemon_pos),
+                source,
+                Some(&ID::from(move_id)),
+            )
         } else {
             true
         };
@@ -95,4 +104,3 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     // return didSomething;
     EventResult::Boolean(did_something)
 }
-

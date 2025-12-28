@@ -14,7 +14,11 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // if (move.sourceEffect === 'round') {
@@ -28,7 +32,11 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _t
     };
 
     let base_power = active_move.base_power;
-    let is_round_source = active_move.source_effect.as_ref().map(|se| se == &ID::from("round")).unwrap_or(false);
+    let is_round_source = active_move
+        .source_effect
+        .as_ref()
+        .map(|se| se == &ID::from("round"))
+        .unwrap_or(false);
 
     if is_round_source {
         battle.debug("BP doubled");
@@ -47,7 +55,11 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _t
 ///         }
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // for (const action of this.queue.list as MoveAction[]) {
@@ -76,7 +88,9 @@ pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Opt
 
                 // Check if move is 'round'
                 if move_action.move_id == ID::from("round") {
-                    battle.queue.prioritize_action(move_action.side_index, move_action.pokemon_index);
+                    battle
+                        .queue
+                        .prioritize_action(move_action.side_index, move_action.pokemon_index);
                     return EventResult::Continue;
                 }
             }
@@ -86,4 +100,3 @@ pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Opt
 
     EventResult::Continue
 }
-

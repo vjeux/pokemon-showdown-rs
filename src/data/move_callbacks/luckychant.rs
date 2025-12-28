@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -25,7 +24,6 @@ pub mod condition {
         };
 
         let side_id = if side_index == 0 { "p1" } else { "p2" };
-
 
         let side_arg = crate::battle::Arg::Str(side_id);
         battle.add("-sidestart", &[side_arg, "move: Lucky Chant".into()]);
@@ -47,7 +45,6 @@ pub mod condition {
         };
 
         let side_id = if side_index == 0 { "p1" } else { "p2" };
-
 
         let side_arg = crate::battle::Arg::Str(side_id);
         battle.add("-sideend", &[side_arg, "move: Lucky Chant".into()]);

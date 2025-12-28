@@ -28,7 +28,11 @@ use crate::event::EventResult;
 ///     this.add('-copyboost', source, target, '[from] move: Psych Up');
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = pokemon_pos;
@@ -107,7 +111,9 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    target_pokemon.volatiles.get(volatile)
+                    target_pokemon
+                        .volatiles
+                        .get(volatile)
                         .and_then(|v| v.data.get("layers"))
                         .and_then(|l| l.as_i64())
                         .unwrap_or(0) as i32
@@ -118,7 +124,9 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     None => return EventResult::Continue,
                 };
                 if let Some(volatile_effect) = source_pokemon.volatiles.get_mut(volatile) {
-                    volatile_effect.data.insert("layers".to_string(), serde_json::json!(layers));
+                    volatile_effect
+                        .data
+                        .insert("layers".to_string(), serde_json::json!(layers));
                 }
             }
 
@@ -128,7 +136,9 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    target_pokemon.volatiles.get(volatile)
+                    target_pokemon
+                        .volatiles
+                        .get(volatile)
                         .and_then(|v| v.data.get("hasDragonType"))
                         .and_then(|d| d.as_bool())
                         .unwrap_or(false)
@@ -139,7 +149,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     None => return EventResult::Continue,
                 };
                 if let Some(volatile_effect) = source_pokemon.volatiles.get_mut(volatile) {
-                    volatile_effect.data.insert("hasDragonType".to_string(), serde_json::json!(has_dragon_type));
+                    volatile_effect.data.insert(
+                        "hasDragonType".to_string(),
+                        serde_json::json!(has_dragon_type),
+                    );
                 }
             }
         }
@@ -158,12 +171,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         (source_pokemon.get_slot(), target_pokemon.get_slot())
     };
 
-    battle.add("-copyboost", &[
-        source_arg.into(),
-        target_arg.into(),
-        "[from] move: Psych Up".into(),
-    ]);
+    battle.add(
+        "-copyboost",
+        &[
+            source_arg.into(),
+            target_arg.into(),
+            "[from] move: Psych Up".into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

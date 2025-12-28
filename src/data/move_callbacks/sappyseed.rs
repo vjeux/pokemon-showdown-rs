@@ -11,7 +11,11 @@ use crate::event::EventResult;
 ///     if (target.hasType('Grass')) return null;
 ///     target.addVolatile('leechseed', source);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let _source = pokemon_pos;
@@ -35,20 +39,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // target.addVolatile('leechseed', source);
     {
-
         let pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("leechseed"));
-
     }
 
     EventResult::Continue
 }
-
-

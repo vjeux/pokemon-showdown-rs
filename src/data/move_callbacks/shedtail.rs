@@ -21,7 +21,11 @@ use crate::event::EventResult;
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -36,7 +40,9 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.volatiles.contains_key(&ID::from("commanded"))
+        source_pokemon
+            .volatiles
+            .contains_key(&ID::from("commanded"))
     };
 
     if can_switch == 0 || has_commanded {
@@ -61,7 +67,9 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.volatiles.contains_key(&ID::from("substitute"))
+        source_pokemon
+            .volatiles
+            .contains_key(&ID::from("substitute"))
     };
 
     if has_substitute {
@@ -73,10 +81,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
             source_pokemon.get_slot()
         };
 
-        battle.add("-fail", &[
-            source_arg.into(),
-            "move: Shed Tail".into(),
-        ]);
+        battle.add("-fail", &[source_arg.into(), "move: Shed Tail".into()]);
         return EventResult::Boolean(false); // this.NOT_FAIL
     }
 
@@ -92,7 +97,8 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
         (source_pokemon.hp, source_pokemon.maxhp)
     };
 
-    if hp <= (maxhp + 1) / 2 {  // Ceiling division
+    if hp <= (maxhp + 1) / 2 {
+        // Ceiling division
         let source_arg = {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
@@ -101,11 +107,10 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
             source_pokemon.get_slot()
         };
 
-        battle.add("-fail", &[
-            source_arg.into(),
-            "move: Shed Tail".into(),
-            "[weak]".into(),
-        ]);
+        battle.add(
+            "-fail",
+            &[source_arg.into(), "move: Shed Tail".into(), "[weak]".into()],
+        );
         return EventResult::Boolean(false); // this.NOT_FAIL
     }
 
@@ -115,7 +120,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
 /// onHit(target) {
 ///     this.directDamage(Math.ceil(target.maxhp / 2));
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // onHit(target) {
     //     this.directDamage(Math.ceil(target.maxhp / 2));
     // }
@@ -126,11 +135,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (target_pokemon.maxhp + 1) / 2  // Ceiling division
+        (target_pokemon.maxhp + 1) / 2 // Ceiling division
     };
 
     battle.direct_damage(damage, Some(target), None, None);
 
     EventResult::Continue
 }
-

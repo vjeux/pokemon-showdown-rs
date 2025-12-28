@@ -26,9 +26,11 @@ use crate::event::EventResult;
 ///     }
 ///     return success;
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -43,7 +45,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
         pokemon.get_slot()
     };
-    battle.add("-activate", &[source_ident.as_str().into(), "move: Heal Bell".into()]);
+    battle.add(
+        "-activate",
+        &[source_ident.as_str().into(), "move: Heal Bell".into()],
+    );
 
     // let success = false;
     let mut success = false;
@@ -51,9 +56,17 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // const allies = [...target.side.pokemon, ...target.side.allySide?.pokemon || []];
     // For now, we'll just iterate through the target's side pokemon
     // TODO: Add ally side support when double battles are fully implemented
-    let allies: Vec<(usize, usize)> = battle.sides[target.0].active.iter()
+    let allies: Vec<(usize, usize)> = battle.sides[target.0]
+        .active
+        .iter()
         .enumerate()
-        .filter_map(|(i, &active)| if active.is_some() { Some((target.0, i)) } else { None })
+        .filter_map(|(i, &active)| {
+            if active.is_some() {
+                Some((target.0, i))
+            } else {
+                None
+            }
+        })
         .collect();
 
     // for (const ally of allies) {
@@ -85,7 +98,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     };
                     pokemon.get_slot()
                 };
-                battle.add("-immune", &[ally_ident.as_str().into(), "[from] ability: Soundproof".into()]);
+                battle.add(
+                    "-immune",
+                    &[
+                        ally_ident.as_str().into(),
+                        "[from] ability: Soundproof".into(),
+                    ],
+                );
                 // continue;
                 continue;
             }
@@ -108,7 +127,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     };
                     pokemon.get_slot()
                 };
-                battle.add("-immune", &[ally_ident.as_str().into(), "[from] ability: Good as Gold".into()]);
+                battle.add(
+                    "-immune",
+                    &[
+                        ally_ident.as_str().into(),
+                        "[from] ability: Good as Gold".into(),
+                    ],
+                );
                 // continue;
                 continue;
             }
@@ -131,4 +156,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // return success;
     EventResult::Boolean(success)
 }
-

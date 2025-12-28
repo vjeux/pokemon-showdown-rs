@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onTry() {
 ///     return !!this.queue.willAct();
 /// }
-pub fn on_try(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    _battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -29,7 +33,11 @@ pub mod condition {
     /// onSideStart(target, source) {
     ///     this.add('-singleturn', source, 'Quick Guard');
     /// }
-    pub fn on_side_start(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_side_start(
+        _battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -53,7 +61,11 @@ pub mod condition {
     ///     }
     ///     return this.NOT_FAIL;
     /// }
-    pub fn on_try_hit(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_hit(
+        _battle: &mut Battle,
+        _source_pos: (usize, usize),
+        _target_pos: (usize, usize),
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

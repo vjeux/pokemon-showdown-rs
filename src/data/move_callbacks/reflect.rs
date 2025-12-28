@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -17,9 +16,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-        
-
+    pub fn duration_callback(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // if (source?.hasItem('lightclay')) {
         //     return 8;
         // }
@@ -50,7 +52,13 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_any_modify_damage(battle: &mut Battle, _damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_modify_damage(
+        battle: &mut Battle,
+        _damage: i32,
+        source_pos: Option<(usize, usize)>,
+        target_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let source = match source_pos {
@@ -136,10 +144,7 @@ pub mod condition {
 
         let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
 
-        battle.add("-sidestart", &[
-            side_arg,
-            "Reflect".into(),
-        ]);
+        battle.add("-sidestart", &[side_arg, "Reflect".into()]);
 
         EventResult::Continue
     }
@@ -162,10 +167,7 @@ pub mod condition {
 
         let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
 
-        battle.add("-sideend", &[
-            side_arg,
-            "Reflect".into(),
-        ]);
+        battle.add("-sideend", &[side_arg, "Reflect".into()]);
 
         EventResult::Continue
     }

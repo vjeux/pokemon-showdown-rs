@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -17,9 +16,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-        
-
+    pub fn duration_callback(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // if (source?.hasItem('terrainextender')) {
         if let Some(source) = source_pos {
             let has_terrain_extender = {
@@ -47,7 +49,13 @@ pub mod condition {
     ///     }
     ///     return false;
     /// }
-    pub fn on_set_status(battle: &mut Battle, _status: Option<&str>, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_set_status(
+        battle: &mut Battle,
+        _status: Option<&str>,
+        target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let target = match target_pos {
@@ -61,7 +69,10 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (target_pokemon.is_grounded(), target_pokemon.is_semi_invulnerable())
+            (
+                target_pokemon.is_grounded(),
+                target_pokemon.is_semi_invulnerable(),
+            )
         };
 
         if !is_grounded || is_semi_invulnerable {
@@ -88,7 +99,10 @@ pub mod condition {
                     target_pokemon.get_slot()
                 };
 
-                battle.add("-activate", &[target_arg.into(), "move: Misty Terrain".into()]);
+                battle.add(
+                    "-activate",
+                    &[target_arg.into(), "move: Misty Terrain".into()],
+                );
             }
         }
 
@@ -103,7 +117,13 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_try_add_volatile(
+        battle: &mut Battle,
+        status: Option<&str>,
+        target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let target = match target_pos {
@@ -117,7 +137,10 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (target_pokemon.is_grounded(), target_pokemon.is_semi_invulnerable())
+            (
+                target_pokemon.is_grounded(),
+                target_pokemon.is_semi_invulnerable(),
+            )
         };
 
         if !is_grounded || is_semi_invulnerable {
@@ -129,9 +152,12 @@ pub mod condition {
             // if (effect.effectType === 'Move' && !effect.secondaries) this.add('-activate', target, 'move: Misty Terrain');
             if let Some(eff_id) = effect_id {
                 let move_data = battle.dex.get_move_by_id(&ID::from(eff_id));
-                let is_move_without_secondaries = move_data.map(|m| {
-                    m.secondaries.is_none() || m.secondaries.as_ref().map(|s| s.is_empty()).unwrap_or(true)
-                }).unwrap_or(false);
+                let is_move_without_secondaries = move_data
+                    .map(|m| {
+                        m.secondaries.is_none()
+                            || m.secondaries.as_ref().map(|s| s.is_empty()).unwrap_or(true)
+                    })
+                    .unwrap_or(false);
 
                 if is_move_without_secondaries {
                     let target_arg = {
@@ -142,7 +168,10 @@ pub mod condition {
                         target_pokemon.get_slot()
                     };
 
-                    battle.add("-activate", &[target_arg.into(), "move: Misty Terrain".into()]);
+                    battle.add(
+                        "-activate",
+                        &[target_arg.into(), "move: Misty Terrain".into()],
+                    );
                 }
             }
 
@@ -159,9 +188,12 @@ pub mod condition {
     ///         return this.chainModify(0.5);
     ///     }
     /// }
-    pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-        
-
+    pub fn on_base_power(
+        battle: &mut Battle,
+        _base_power: i32,
+        _pokemon_pos: (usize, usize),
+        target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         let defender = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -187,7 +219,10 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (defender_pokemon.is_grounded(), defender_pokemon.is_semi_invulnerable())
+            (
+                defender_pokemon.is_grounded(),
+                defender_pokemon.is_semi_invulnerable(),
+            )
         };
 
         if is_grounded && !is_semi_invulnerable {
@@ -208,7 +243,12 @@ pub mod condition {
     ///         this.add('-fieldstart', 'move: Misty Terrain');
     ///     }
     /// }
-    pub fn on_field_start(battle: &mut Battle, _field_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_field_start(
+        battle: &mut Battle,
+        _field_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (effect?.effectType === 'Ability') {
@@ -226,11 +266,14 @@ pub mod condition {
                         source_pokemon.get_slot()
                     };
 
-                    battle.add("-fieldstart", &[
-                        "move: Misty Terrain".into(),
-                        format!("[from] ability: {}", ability.name).into(),
-                        format!("[of] {}", source_arg).into(),
-                    ]);
+                    battle.add(
+                        "-fieldstart",
+                        &[
+                            "move: Misty Terrain".into(),
+                            format!("[from] ability: {}", ability.name).into(),
+                            format!("[of] {}", source_arg).into(),
+                        ],
+                    );
                     return EventResult::Continue;
                 }
             }

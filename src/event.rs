@@ -6,8 +6,8 @@
 //! Effects (Abilities, Items, Moves, Status, Volatiles) can register handlers
 //! for events, and the battle dispatches to them.
 
-use serde::{Deserialize, Serialize};
 use crate::dex_data::ID;
+use serde::{Deserialize, Serialize};
 
 /// Event types that can be dispatched
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -122,8 +122,7 @@ pub enum EffectType {
 }
 
 /// Result from an event handler
-#[derive(Debug, Clone)]
-#[derive(Default)]
+#[derive(Debug, Clone, Default)]
 pub enum EventResult {
     /// Continue to next handler, no modification
     #[default]
@@ -145,7 +144,6 @@ pub enum EventResult {
     /// Return a list of types
     Types(Vec<String>),
 }
-
 
 impl EventResult {
     /// Check if the result indicates not failing
@@ -233,9 +231,13 @@ impl HandlerPriority {
 
 /// Compare two handler priorities for sorting
 /// Returns true if a should come before b
-pub fn compare_priorities(a: &HandlerPriority, b: &HandlerPriority, trick_room: bool) -> std::cmp::Ordering {
+pub fn compare_priorities(
+    a: &HandlerPriority,
+    b: &HandlerPriority,
+    trick_room: bool,
+) -> std::cmp::Ordering {
     use std::cmp::Ordering;
-    
+
     // First compare order (None = highest priority, like JS false)
     match (a.order, b.order) {
         (None, Some(_)) => return Ordering::Less,
@@ -247,17 +249,17 @@ pub fn compare_priorities(a: &HandlerPriority, b: &HandlerPriority, trick_room: 
         }
         (None, None) => {}
     }
-    
+
     // Then priority (higher = earlier)
     if a.priority != b.priority {
         return b.priority.cmp(&a.priority);
     }
-    
+
     // Then sub_order
     if a.sub_order != b.sub_order {
         return a.sub_order.cmp(&b.sub_order);
     }
-    
+
     // Finally speed (higher = earlier, unless Trick Room)
     if trick_room {
         a.speed.cmp(&b.speed)
@@ -404,7 +406,7 @@ impl ConditionData {
             ..Default::default()
         }
     }
-    
+
     pub fn with_duration(mut self, duration: i32) -> Self {
         self.duration = Some(duration);
         self
@@ -431,20 +433,20 @@ pub enum ImmunityType {
 pub trait EffectHandler: Send + Sync {
     /// Get the effect ID
     fn id(&self) -> &ID;
-    
+
     /// Get the effect type
     fn effect_type(&self) -> EffectType;
-    
+
     /// Get condition data if this effect creates a condition
     fn condition_data(&self) -> Option<&ConditionData> {
         None
     }
-    
+
     /// Get handler priority for an event
     fn priority_for(&self, _event: &EventType) -> Option<HandlerPriority> {
         None
     }
-    
+
     /// Check if this handler responds to an event
     fn handles_event(&self, event: &EventType) -> bool {
         self.priority_for(event).is_some()
@@ -479,15 +481,24 @@ pub fn sort_handlers(handlers: &mut [EventHandler], trick_room: bool) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_priority_comparison() {
-        let high = HandlerPriority { priority: 10, ..Default::default() };
-        let low = HandlerPriority { priority: 5, ..Default::default() };
-        
-        assert_eq!(compare_priorities(&high, &low, false), std::cmp::Ordering::Less);
+        let high = HandlerPriority {
+            priority: 10,
+            ..Default::default()
+        };
+        let low = HandlerPriority {
+            priority: 5,
+            ..Default::default()
+        };
+
+        assert_eq!(
+            compare_priorities(&high, &low, false),
+            std::cmp::Ordering::Less
+        );
     }
-    
+
     #[test]
     fn test_event_result() {
         let result = EventResult::Number(150);

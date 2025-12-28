@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///         move.accuracy = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // if (target && ['raindance', 'primordialsea'].includes(target.effectiveWeather())) {
     let target = match target_pos {
         Some(pos) => pos,
@@ -32,13 +36,11 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), target_
         // move.accuracy = true;
         // Store accuracy override in current effect state
         if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert(
-                "accuracy".to_string(),
-                serde_json::Value::Bool(true),
-            );
+            effect_state
+                .data
+                .insert("accuracy".to_string(), serde_json::Value::Bool(true));
         }
     }
 
     EventResult::Continue
 }
-

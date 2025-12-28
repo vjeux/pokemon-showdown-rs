@@ -10,8 +10,8 @@
 //! - we go through the action queue
 //! - repeat
 
-use serde::{Deserialize, Serialize};
 use crate::dex_data::ID;
+use serde::{Deserialize, Serialize};
 
 /// Move action
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -180,21 +180,25 @@ impl Action {
                 FieldActionType::Pass => 200,
                 FieldActionType::Residual => 300,
             },
-            Action::Pokemon(a) => if a.order != 0 { a.order } else {
-                match a.choice {
-                    PokemonActionType::Start => 2,
-                    PokemonActionType::BeforeTurn => 4,
-                    PokemonActionType::RunSwitch => 101,
-                    PokemonActionType::MegaEvo |
-                    PokemonActionType::MegaEvoX |
-                    PokemonActionType::MegaEvoY => 104,
-                    PokemonActionType::RunDynamax => 105,
-                    PokemonActionType::Terastallize => 106,
-                    PokemonActionType::Shift => 200,
-                    PokemonActionType::Event => 200,
-                    PokemonActionType::Residual => 300,
+            Action::Pokemon(a) => {
+                if a.order != 0 {
+                    a.order
+                } else {
+                    match a.choice {
+                        PokemonActionType::Start => 2,
+                        PokemonActionType::BeforeTurn => 4,
+                        PokemonActionType::RunSwitch => 101,
+                        PokemonActionType::MegaEvo
+                        | PokemonActionType::MegaEvoX
+                        | PokemonActionType::MegaEvoY => 104,
+                        PokemonActionType::RunDynamax => 105,
+                        PokemonActionType::Terastallize => 106,
+                        PokemonActionType::Shift => 200,
+                        PokemonActionType::Event => 200,
+                        PokemonActionType::Residual => 300,
+                    }
                 }
-            },
+            }
         }
     }
 
@@ -289,8 +293,8 @@ impl BattleQueue {
 
     /// Get the next action (removes from front)
     // TypeScript source:
-    // 
-    // 
+    //
+    //
     // 	shift() {
     // 		return this.list.shift();
     // 	}
@@ -346,7 +350,7 @@ impl BattleQueue {
     }
 
     /// Clear all actions
-    // 
+    //
     // 	clear() {
     // 		this.list = [];
     // 	}
@@ -356,7 +360,7 @@ impl BattleQueue {
     }
 
     /// Cancel all actions for a specific pokemon
-    // 
+    //
     // 	cancelAction(pokemon: Pokemon) {
     // 		const oldLength = this.list.length;
     // 		for (let i = 0; i < this.list.length; i++) {
@@ -371,13 +375,14 @@ impl BattleQueue {
     pub fn cancel_action(&mut self, side_index: usize, pokemon_index: usize) -> bool {
         let old_len = self.list.len();
         self.list.retain(|action| {
-            !(action.side_index() == Some(side_index) && action.pokemon_index() == Some(pokemon_index))
+            !(action.side_index() == Some(side_index)
+                && action.pokemon_index() == Some(pokemon_index))
         });
         self.list.len() != old_len
     }
 
     /// Cancel move action for a specific pokemon
-    // 
+    //
     // 	cancelMove(pokemon: Pokemon) {
     // 		for (const [i, action] of this.list.entries()) {
     // 			if (action.choice === 'move' && action.pokemon === pokemon) {
@@ -390,9 +395,9 @@ impl BattleQueue {
     //
     pub fn cancel_move(&mut self, side_index: usize, pokemon_index: usize) -> bool {
         let pos = self.list.iter().position(|action| {
-            action.is_move() &&
-            action.side_index() == Some(side_index) &&
-            action.pokemon_index() == Some(pokemon_index)
+            action.is_move()
+                && action.side_index() == Some(side_index)
+                && action.pokemon_index() == Some(pokemon_index)
         });
         if let Some(i) = pos {
             self.list.remove(i);
@@ -403,7 +408,7 @@ impl BattleQueue {
     }
 
     /// Check if a pokemon will move this turn
-    // 
+    //
     // 	willMove(pokemon: Pokemon) {
     // 		if (pokemon.fainted) return null;
     // 		for (const action of this.list) {
@@ -417,7 +422,9 @@ impl BattleQueue {
     pub fn will_move(&self, side_index: usize, pokemon_index: usize) -> Option<&MoveAction> {
         for action in &self.list {
             if let Action::Move(move_action) = action {
-                if move_action.side_index == side_index && move_action.pokemon_index == pokemon_index {
+                if move_action.side_index == side_index
+                    && move_action.pokemon_index == pokemon_index
+                {
                     return Some(move_action);
                 }
             }
@@ -432,7 +439,7 @@ impl BattleQueue {
     }
 
     /// Check if a pokemon will switch this turn
-    // 
+    //
     // 	willSwitch(pokemon: Pokemon) {
     // 		for (const action of this.list) {
     // 			if (['switch', 'instaswitch'].includes(action.choice) && action.pokemon === pokemon) {
@@ -445,7 +452,9 @@ impl BattleQueue {
     pub fn will_switch(&self, side_index: usize, pokemon_index: usize) -> Option<&SwitchAction> {
         for action in &self.list {
             if let Action::Switch(switch_action) = action {
-                if switch_action.side_index == side_index && switch_action.pokemon_index == pokemon_index {
+                if switch_action.side_index == side_index
+                    && switch_action.pokemon_index == pokemon_index
+                {
                     return Some(switch_action);
                 }
             }
@@ -454,7 +463,7 @@ impl BattleQueue {
     }
 
     /// Check if any pokemon will act
-    // 
+    //
     // 	willAct() {
     // 		for (const action of this.list) {
     // 			if (['move', 'switch', 'instaswitch', 'shift'].includes(action.choice)) {
@@ -465,9 +474,9 @@ impl BattleQueue {
     // 	}
     //
     pub fn will_act(&self) -> bool {
-        self.list.iter().any(|action| {
-            matches!(action, Action::Move(_) | Action::Switch(_))
-        })
+        self.list
+            .iter()
+            .any(|action| matches!(action, Action::Move(_) | Action::Switch(_)))
     }
 
     /// Insert a runSwitch action for a pokemon
@@ -500,12 +509,12 @@ impl BattleQueue {
     // 			return;
     // 		}
     // 		const choice = choices;
-    // 
+    //
     // 		if (choice.pokemon) {
     // 			choice.pokemon.updateSpeed();
     // 		}
     // 		const actions = this.resolveAction(choice, midTurn);
-    // 
+    //
     // 		let firstIndex = null;
     // 		let lastIndex = null;
     // 		for (const [i, curAction] of this.list.entries()) {
@@ -518,7 +527,7 @@ impl BattleQueue {
     // 				break;
     // 			}
     // 		}
-    // 
+    //
     // 		if (firstIndex === null) {
     // 			this.list.push(...actions);
     // 		} else {
@@ -534,7 +543,7 @@ impl BattleQueue {
 
     /// Sort the queue by priority
     /// Order: order (lower first), priority (higher first), speed (higher first)
-    // 
+    //
     // 	sort() {
     // 		// this.log.push('SORT ' + this.debugQueue());
     // 		this.battle.speedSort(this.list);
@@ -559,7 +568,9 @@ impl BattleQueue {
             let frac_a = a.fractional_priority();
             let frac_b = b.fractional_priority();
             if frac_a != frac_b {
-                return frac_b.partial_cmp(&frac_a).unwrap_or(std::cmp::Ordering::Equal);
+                return frac_b
+                    .partial_cmp(&frac_a)
+                    .unwrap_or(std::cmp::Ordering::Equal);
             }
 
             // Speed: higher first
@@ -586,8 +597,7 @@ impl BattleQueue {
     //
     pub fn prioritize_action(&mut self, side_index: usize, pokemon_index: usize) -> bool {
         let pos = self.list.iter().position(|action| {
-            action.side_index() == Some(side_index) &&
-            action.pokemon_index() == Some(pokemon_index)
+            action.side_index() == Some(side_index) && action.pokemon_index() == Some(pokemon_index)
         });
         if let Some(i) = pos {
             let action = self.list.remove(i);
@@ -687,7 +697,7 @@ impl BattleQueue {
     }
 
     /// Add one or more action choices and resolve them
-    // 
+    //
     // 	addChoice(choices: ActionChoice | ActionChoice[]) {
     // 		if (!Array.isArray(choices)) choices = [choices];
     // 		for (const choice of choices) {
@@ -706,7 +716,7 @@ impl BattleQueue {
     }
 
     /// Debug output for queue state
-    // 
+    //
     // 	debug(action?: any): string {
     // 		if (action) {
     // 			return `${action.order || ''}:${action.priority || ''}:${action.speed || ''}:${action.subOrder || ''} - ${action.choice}${action.pokemon ? ' ' + action.pokemon : ''}${action.move ? ' ' + action.move : ''}`;
@@ -717,11 +727,17 @@ impl BattleQueue {
     // 	}
     //
     pub fn debug(&self) -> String {
-        self.list.iter().map(|action| {
-            match action {
+        self.list
+            .iter()
+            .map(|action| match action {
                 Action::Move(m) => format!(
                     "{}:{}:{}:0 - move {} (side {}, pos {})",
-                    m.order, m.priority, m.speed, m.move_id.as_str(), m.side_index, m.pokemon_index
+                    m.order,
+                    m.priority,
+                    m.speed,
+                    m.move_id.as_str(),
+                    m.side_index,
+                    m.pokemon_index
                 ),
                 Action::Switch(s) => format!(
                     "{}:{}:{}:0 - switch (side {}, pos {} -> {})",
@@ -731,16 +747,21 @@ impl BattleQueue {
                     "1:{}:1:0 - team (side {}, pos {})",
                     t.priority, t.side_index, t.pokemon_index
                 ),
-                Action::Field(f) => format!(
-                    "{}:{}:1:0 - {:?}",
-                    action.order(), f.priority, f.choice
-                ),
+                Action::Field(f) => {
+                    format!("{}:{}:1:0 - {:?}", action.order(), f.priority, f.choice)
+                }
                 Action::Pokemon(p) => format!(
                     "{}:{}:{}:0 - {:?} (side {}, pos {})",
-                    action.order(), p.priority, p.speed, p.choice, p.side_index, p.pokemon_index
+                    action.order(),
+                    p.priority,
+                    p.speed,
+                    p.choice,
+                    p.side_index,
+                    p.pokemon_index
                 ),
-            }
-        }).collect::<Vec<_>>().join("\n")
+            })
+            .collect::<Vec<_>>()
+            .join("\n")
     }
 
     /// Get entries as iterator with indices
@@ -785,9 +806,9 @@ impl BattleQueue {
     /// Prioritize an action by action itself (move to front with new order)
     pub fn prioritize_action_ref(&mut self, action: &Action) -> bool {
         let pos = self.list.iter().position(|a| {
-            a.side_index() == action.side_index() &&
-            a.pokemon_index() == action.pokemon_index() &&
-            std::mem::discriminant(a) == std::mem::discriminant(action)
+            a.side_index() == action.side_index()
+                && a.pokemon_index() == action.pokemon_index()
+                && std::mem::discriminant(a) == std::mem::discriminant(action)
         });
         if let Some(i) = pos {
             let mut removed = self.list.remove(i);
@@ -819,7 +840,7 @@ impl BattleQueue {
     // 		if (!action) throw new Error(`Action not passed to resolveAction`);
     // 		if (action.choice === 'pass') return [];
     // 		const actions = [action];
-    // 
+    //
     // 		if (!action.side && action.pokemon) action.side = action.pokemon.side;
     // 		if (!action.move && action.moveid) action.move = this.battle.dex.getActiveMove(action.moveid);
     // 		if (!action.order) {
@@ -830,7 +851,7 @@ impl BattleQueue {
     // 				beforeTurn: 4,
     // 				beforeTurnMove: 5,
     // 				revivalblessing: 6,
-    // 
+    //
     // 				runSwitch: 101,
     // 				switch: 103,
     // 				megaEvo: 104,
@@ -839,10 +860,10 @@ impl BattleQueue {
     // 				runDynamax: 105,
     // 				terastallize: 106,
     // 				priorityChargeMove: 107,
-    // 
+    //
     // 				shift: 200,
     // 				// default is 200 (for moves)
-    // 
+    //
     // 				residual: 300,
     // 			};
     // 			if (action.choice in orders) {
@@ -906,12 +927,12 @@ impl BattleQueue {
     // 				action.pokemon.switchFlag = false;
     // 			}
     // 		}
-    // 
+    //
     // 		const deferPriority = this.battle.gen === 7 && action.mega && action.mega !== 'done';
     // 		if (action.move) {
     // 			let target = null;
     // 			action.move = this.battle.dex.getActiveMove(action.move);
-    // 
+    //
     // 			if (!action.targetLoc) {
     // 				target = this.battle.getRandomTarget(action.pokemon, action.move);
     // 				// TODO: what actually happens here?

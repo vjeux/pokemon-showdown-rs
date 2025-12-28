@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = source_pos;
 
     // if (source.activeMoveActions > 1) {
@@ -27,7 +31,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 
     if active_move_actions > 1 {
         // this.hint("First Impression only works on your first turn out.");
-        battle.hint("First Impression only works on your first turn out.", true, None);
+        battle.hint(
+            "First Impression only works on your first turn out.",
+            true,
+            None,
+        );
 
         // return false;
         return EventResult::Boolean(false);
@@ -35,4 +43,3 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 
     EventResult::Continue
 }
-

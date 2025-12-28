@@ -5,11 +5,11 @@
 //! This module handles team validation for battle formats,
 //! ensuring teams comply with format rules.
 
-use std::collections::{HashMap, HashSet};
-use crate::dex_data::ID;
 use crate::data::formats::{get_format, FormatDef};
 use crate::data::species::get_species;
 use crate::dex::Dex;
+use crate::dex_data::ID;
+use std::collections::{HashMap, HashSet};
 
 // =========================================================================
 // PokemonSources - tracks possible ways to get a Pokemon with a given set
@@ -72,7 +72,7 @@ impl PokemonSources {
 
     /// Get the size of the sources set
     // TypeScript source:
-    // 
+    //
     // 	size() {
     // 		if (this.sourcesBefore) return Infinity;
     // 		return this.sources.length;
@@ -228,9 +228,17 @@ pub enum ValidationError {
     /// Invalid EV spread (total > 510)
     InvalidEVs { pokemon: String, total: i32 },
     /// Single EV too high (> 252)
-    EVTooHigh { pokemon: String, stat: String, value: i32 },
+    EVTooHigh {
+        pokemon: String,
+        stat: String,
+        value: i32,
+    },
     /// Invalid IV (> 31)
-    InvalidIV { pokemon: String, stat: String, value: i32 },
+    InvalidIV {
+        pokemon: String,
+        stat: String,
+        value: i32,
+    },
     /// Nickname too long
     NicknameTooLong { pokemon: String, length: usize },
     /// Duplicate nickname
@@ -242,50 +250,72 @@ pub enum ValidationError {
 impl std::fmt::Display for ValidationError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ValidationError::TeamTooLarge { max, actual } =>
-                write!(f, "Team has {} Pokemon but max is {}", actual, max),
-            ValidationError::TeamTooSmall { min, actual } =>
-                write!(f, "Team has {} Pokemon but min is {}", actual, min),
-            ValidationError::TooManyMoves { pokemon, count } =>
-                write!(f, "{} has {} moves (max 4)", pokemon, count),
-            ValidationError::NoMoves { pokemon } =>
-                write!(f, "{} has no moves", pokemon),
-            ValidationError::DuplicateMove { pokemon, move_name } =>
-                write!(f, "{} has duplicate move: {}", pokemon, move_name),
-            ValidationError::BannedPokemon { pokemon } =>
-                write!(f, "{} is banned", pokemon),
-            ValidationError::BannedMove { pokemon, move_name } =>
-                write!(f, "{} has banned move: {}", pokemon, move_name),
-            ValidationError::BannedAbility { pokemon, ability } =>
-                write!(f, "{} has banned ability: {}", pokemon, ability),
-            ValidationError::BannedItem { pokemon, item } =>
-                write!(f, "{} has banned item: {}", pokemon, item),
-            ValidationError::SpeciesClause { species } =>
-                write!(f, "Species Clause: multiple {} on team", species),
-            ValidationError::ItemClause { item } =>
-                write!(f, "Item Clause: multiple Pokemon holding {}", item),
-            ValidationError::LevelTooHigh { pokemon, level, max } =>
-                write!(f, "{} is level {} but max is {}", pokemon, level, max),
-            ValidationError::InvalidSpecies { pokemon } =>
-                write!(f, "Invalid species: {}", pokemon),
-            ValidationError::InvalidMove { pokemon, move_name } =>
-                write!(f, "{} has invalid move: {}", pokemon, move_name),
-            ValidationError::InvalidAbility { pokemon, ability } =>
-                write!(f, "{} has invalid ability: {}", pokemon, ability),
-            ValidationError::InvalidItem { pokemon, item } =>
-                write!(f, "{} has invalid item: {}", pokemon, item),
-            ValidationError::InvalidEVs { pokemon, total } =>
-                write!(f, "{} has {} total EVs (max 510)", pokemon, total),
-            ValidationError::EVTooHigh { pokemon, stat, value } =>
-                write!(f, "{} has {} {} EVs (max 252)", pokemon, value, stat),
-            ValidationError::InvalidIV { pokemon, stat, value } =>
-                write!(f, "{} has {} {} IVs (max 31)", pokemon, value, stat),
-            ValidationError::NicknameTooLong { pokemon, length } =>
-                write!(f, "{} nickname is {} chars (max 18)", pokemon, length),
-            ValidationError::DuplicateNickname { nickname } =>
-                write!(f, "Duplicate nickname: {}", nickname),
-            ValidationError::FormatNotFound { format } =>
-                write!(f, "Format not found: {}", format),
+            ValidationError::TeamTooLarge { max, actual } => {
+                write!(f, "Team has {} Pokemon but max is {}", actual, max)
+            }
+            ValidationError::TeamTooSmall { min, actual } => {
+                write!(f, "Team has {} Pokemon but min is {}", actual, min)
+            }
+            ValidationError::TooManyMoves { pokemon, count } => {
+                write!(f, "{} has {} moves (max 4)", pokemon, count)
+            }
+            ValidationError::NoMoves { pokemon } => write!(f, "{} has no moves", pokemon),
+            ValidationError::DuplicateMove { pokemon, move_name } => {
+                write!(f, "{} has duplicate move: {}", pokemon, move_name)
+            }
+            ValidationError::BannedPokemon { pokemon } => write!(f, "{} is banned", pokemon),
+            ValidationError::BannedMove { pokemon, move_name } => {
+                write!(f, "{} has banned move: {}", pokemon, move_name)
+            }
+            ValidationError::BannedAbility { pokemon, ability } => {
+                write!(f, "{} has banned ability: {}", pokemon, ability)
+            }
+            ValidationError::BannedItem { pokemon, item } => {
+                write!(f, "{} has banned item: {}", pokemon, item)
+            }
+            ValidationError::SpeciesClause { species } => {
+                write!(f, "Species Clause: multiple {} on team", species)
+            }
+            ValidationError::ItemClause { item } => {
+                write!(f, "Item Clause: multiple Pokemon holding {}", item)
+            }
+            ValidationError::LevelTooHigh {
+                pokemon,
+                level,
+                max,
+            } => write!(f, "{} is level {} but max is {}", pokemon, level, max),
+            ValidationError::InvalidSpecies { pokemon } => {
+                write!(f, "Invalid species: {}", pokemon)
+            }
+            ValidationError::InvalidMove { pokemon, move_name } => {
+                write!(f, "{} has invalid move: {}", pokemon, move_name)
+            }
+            ValidationError::InvalidAbility { pokemon, ability } => {
+                write!(f, "{} has invalid ability: {}", pokemon, ability)
+            }
+            ValidationError::InvalidItem { pokemon, item } => {
+                write!(f, "{} has invalid item: {}", pokemon, item)
+            }
+            ValidationError::InvalidEVs { pokemon, total } => {
+                write!(f, "{} has {} total EVs (max 510)", pokemon, total)
+            }
+            ValidationError::EVTooHigh {
+                pokemon,
+                stat,
+                value,
+            } => write!(f, "{} has {} {} EVs (max 252)", pokemon, value, stat),
+            ValidationError::InvalidIV {
+                pokemon,
+                stat,
+                value,
+            } => write!(f, "{} has {} {} IVs (max 31)", pokemon, value, stat),
+            ValidationError::NicknameTooLong { pokemon, length } => {
+                write!(f, "{} nickname is {} chars (max 18)", pokemon, length)
+            }
+            ValidationError::DuplicateNickname { nickname } => {
+                write!(f, "Duplicate nickname: {}", nickname)
+            }
+            ValidationError::FormatNotFound { format } => write!(f, "Format not found: {}", format),
         }
     }
 }
@@ -409,7 +439,7 @@ impl TeamValidator {
     }
 
     /// Validate a team
-    // 
+    //
     // 	validateTeam(
     // 		team: PokemonSet[] | null,
     // 		options: {
@@ -480,9 +510,7 @@ impl TeamValidator {
                 if !item_id.is_empty() {
                     *seen_items.entry(item_id.clone()).or_insert(0) += 1;
                     if has_item_clause && seen_items[&item_id] > 1 {
-                        errors.push(ValidationError::ItemClause {
-                            item: item.clone(),
-                        });
+                        errors.push(ValidationError::ItemClause { item: item.clone() });
                     }
                 }
             }
@@ -506,7 +534,11 @@ impl TeamValidator {
     /// Validate a single Pokemon
     fn validate_pokemon(&self, pokemon: &ValidatorSet, format: &FormatDef) -> Vec<ValidationError> {
         let mut errors = Vec::new();
-        let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
+        let pokemon_name = pokemon
+            .nickname
+            .as_ref()
+            .unwrap_or(&pokemon.species)
+            .clone();
 
         // Check species exists
         let species_id = ID::new(&pokemon.species);
@@ -739,7 +771,7 @@ impl TeamValidator {
     /// Get event-only data for a species
     /// Equivalent to TeamValidator.getEventOnlyData() in team-validator.ts
     /// Returns None if the species isn't event-only
-    // 
+    //
     // 	getEventOnlyData(species: Species, noRecurse?: boolean): { species: Species, eventData: EventInfo[] } | null {
     // 		const dex = this.dex;
     // 		const learnset = dex.species.getLearnsetData(species.id);
@@ -747,14 +779,14 @@ impl TeamValidator {
     // 			if (noRecurse) return null;
     // 			return this.getEventOnlyData(dex.species.get(species.prevo), true);
     // 		}
-    // 
+    //
     // 		if (!learnset.eventData && species.forme) {
     // 			return this.getEventOnlyData(dex.species.get(species.baseSpecies), true);
     // 		}
     // 		if (!learnset.eventData) {
     // 			throw new Error(`Event-only species ${species.name} has no eventData table`);
     // 		}
-    // 
+    //
     // 		return { species, eventData: learnset.eventData };
     // 	}
     //
@@ -768,14 +800,14 @@ impl TeamValidator {
     /// Get the validation species for a set
     /// Handles form differences between what's used in battle vs what's validated
     /// Equivalent to TeamValidator.getValidationSpecies() in team-validator.ts
-    // 
+    //
     // 	getValidationSpecies(set: PokemonSet): { outOfBattleSpecies: Species, tierSpecies: Species } {
     // 		const dex = this.dex;
     // 		const ruleTable = this.ruleTable;
     // 		const species = dex.species.get(set.species);
     // 		const item = dex.items.get(set.item);
     // 		const ability = dex.abilities.get(set.ability);
-    // 
+    //
     // 		let outOfBattleSpecies = species;
     // 		let tierSpecies = species;
     // 		if (ability.id === 'battlebond' && toID(species.baseSpecies) === 'greninja' &&
@@ -791,7 +823,7 @@ impl TeamValidator {
     // 				tierSpecies = outOfBattleSpecies;
     // 			}
     // 		}
-    // 
+    //
     // 		if (ruleTable.has('obtainableformes')) {
     // 			const canMegaEvo = dex.gen <= 7 || ruleTable.has('+pokemontag:past');
     // 			if (item.megaEvolves?.includes(species.name)) {
@@ -817,7 +849,7 @@ impl TeamValidator {
     // 				tierSpecies = dex.species.get('Zamazenta-Crowned');
     // 			}
     // 		}
-    // 
+    //
     // 		return { outOfBattleSpecies, tierSpecies };
     // 	}
     //
@@ -830,16 +862,16 @@ impl TeamValidator {
 
     /// Validate moves for a Pokemon
     /// Equivalent to TeamValidator.validateMoves() in team-validator.ts
-    // 
+    //
     // 	validateMoves(
     // 		species: Species, moves: string[], setSources: PokemonSources, set?: Partial<PokemonSet>,
     // 		name: string = species.name, moveLegalityWhitelist: { [k: string]: true | undefined } = {}
     // 	) {
     // 		const dex = this.dex;
     // 		const ruleTable = this.ruleTable;
-    // 
+    //
     // 		const problems = [];
-    // 
+    //
     // 		const checkCanLearn = (ruleTable.checkCanLearn?.[0] || this.checkCanLearn);
     // 		for (const moveName of moves) {
     // 			const move = dex.moves.get(moveName);
@@ -850,7 +882,7 @@ impl TeamValidator {
     // 				break;
     // 			}
     // 		}
-    // 
+    //
     // 		if (setSources.size() && setSources.moveEvoCarryCount > 3) {
     // 			if (setSources.sourcesBefore < 6) setSources.sourcesBefore = 0;
     // 			setSources.sources = setSources.sources.filter(
@@ -860,9 +892,9 @@ impl TeamValidator {
     // 				problems.push(`${name} needs to know ${species.evoMove || 'a Fairy-type move'} to evolve, so it can only know 3 other moves from ${species.prevo}.`);
     // 			}
     // 		}
-    // 
+    //
     // 		if (problems.length) return problems;
-    // 
+    //
     // 		if (setSources.isHidden) {
     // 			setSources.sources = setSources.sources.filter(
     // 				source => parseInt(source.charAt(0)) >= 5
@@ -874,7 +906,7 @@ impl TeamValidator {
     // 				return problems;
     // 			}
     // 		}
-    // 
+    //
     // 		if (setSources.babyOnly && setSources.sources.length) {
     // 			const baby = dex.species.get(setSources.babyOnly);
     // 			const babyEvo = toID(baby.evos[0]);
@@ -911,13 +943,17 @@ impl TeamValidator {
     // 				problems.push(`${name} has moves from before Gen ${baby.gen}, which are incompatible with its moves from ${baby.name}.`);
     // 			}
     // 		}
-    // 
+    //
     // 		return problems;
     // 	}
     //
     pub fn validate_moves(&self, pokemon: &ValidatorSet) -> Vec<ValidationError> {
         let mut errors = Vec::new();
-        let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
+        let pokemon_name = pokemon
+            .nickname
+            .as_ref()
+            .unwrap_or(&pokemon.species)
+            .clone();
 
         // Check move count
         if pokemon.moves.len() > 4 {
@@ -969,35 +1005,35 @@ impl TeamValidator {
     // 	): string | null {
     // 		const dex = this.dex;
     // 		if (!setSources.size()) throw new Error(`Bad sources passed to checkCanLearn`);
-    // 
+    //
     // 		move = dex.moves.get(move);
     // 		const moveid = move.id;
     // 		const baseSpecies = dex.species.get(originalSpecies);
-    // 
+    //
     // 		const format = this.format;
     // 		const ruleTable = this.ruleTable;
     // 		const level = set.level || 100;
     // 		const canLearnSpecies: ID[] = [];
-    // 
+    //
     // 		let cantLearnReason = null;
-    // 
+    //
     // 		let limit1 = true;
     // 		let sketch = false;
     // 		let blockedHM = false;
-    // 
+    //
     // 		let babyOnly = '';
     // 		let minLearnGen = dex.gen;
-    // 
+    //
     // 		// This is a pretty complicated algorithm
-    // 
+    //
     // 		// Abstractly, what it does is construct the union of sets of all
     // 		// possible ways this pokemon could be obtained, and then intersect
     // 		// it with a the pokemon's existing set of all possible ways it could
     // 		// be obtained. If this intersection is non-empty, the move is legal.
-    // 
+    //
     // 		// set of possible sources of a pokemon with this move
     // 		const moveSources = new PokemonSources();
-    // 
+    //
     // 		/**
     // 		 * The format doesn't allow Pokemon traded from the future
     // 		 * (This is everything except in Gen 1 Tradeback)
@@ -1007,17 +1043,17 @@ impl TeamValidator {
     // 		 * The format allows Sketch to copy moves in Gen 8
     // 		 */
     // 		const canSketchPostGen7Moves = ruleTable.has('sketchpostgen7moves') || this.dex.currentMod === 'gen8bdsp';
-    // 
+    //
     // 		let tradebackEligible = false;
     // 		const fullLearnset = dex.species.getFullLearnset(originalSpecies.id);
     // 		if (!fullLearnset.length) {
     // 			// It's normal for a nonstandard species not to have learnset data
-    // 
+    //
     // 			// Formats should replace the `Obtainable Moves` rule if they want to
     // 			// allow pokemon without learnsets.
     // 			return ` can't learn any moves at all.`;
     // 		}
-    // 
+    //
     // 		for (const { species, learnset } of fullLearnset) {
     // 			if (dex.gen <= 2 && species.gen === 1) tradebackEligible = true;
     // 			const checkingPrevo = species.baseSpecies !== originalSpecies.baseSpecies;
@@ -1026,10 +1062,10 @@ impl TeamValidator {
     // 					babyOnly = species.id;
     // 				}
     // 			}
-    // 
+    //
     // 			const formeCantInherit = dex.species.eggMovesOnly(species, baseSpecies);
     // 			if (formeCantInherit && dex.gen < 9) break;
-    // 
+    //
     // 			let sources = learnset[moveid] || [];
     // 			if (moveid === 'sketch') {
     // 				sketch = true;
@@ -1045,7 +1081,7 @@ impl TeamValidator {
     // 					sources = [...learnset['sketch'], ...sources];
     // 				}
     // 			}
-    // 
+    //
     // 			let canUseHomeRelearner = false;
     // 			for (let learned of sources) {
     // 				// Every `learned` represents a single way a pokemon might
@@ -1063,7 +1099,7 @@ impl TeamValidator {
     // 				//   means we can learn it only if obtained at or before learnedGen
     // 				//   (i.e. get the pokemon however you want, transfer to that gen,
     // 				//   teach it, and transfer it to the current gen.)
-    // 
+    //
     // 				const learnedGen = parseInt(learned.charAt(0));
     // 				if (formeCantInherit && (learned.charAt(1) !== 'E' || learnedGen < 9)) continue;
     // 				if (setSources.learnsetDomain && !setSources.learnsetDomain.includes(`${learnedGen}${toID(species.baseSpecies)}`) &&
@@ -1086,9 +1122,9 @@ impl TeamValidator {
     // 					}
     // 					continue;
     // 				}
-    // 
+    //
     // 				if (learnedGen === 9 && learned.charAt(1) !== 'S') canUseHomeRelearner = true;
-    // 
+    //
     // 				if (
     // 					baseSpecies.evoRegion === 'Alola' && checkingPrevo && learnedGen >= 8 &&
     // 					(dex.gen < 9 || learned.charAt(1) !== 'E')
@@ -1096,7 +1132,7 @@ impl TeamValidator {
     // 					cantLearnReason = `is from a ${species.name} that can't be transferred to USUM to evolve into ${baseSpecies.name}.`;
     // 					continue;
     // 				}
-    // 
+    //
     // 				const canUseAbilityPatch = dex.gen >= 8 && format.mod !== 'gen8dlc1';
     // 				if (
     // 					learnedGen < 7 && setSources.isHidden && !canUseAbilityPatch &&
@@ -1105,14 +1141,14 @@ impl TeamValidator {
     // 					cantLearnReason = `can only be learned in gens without Hidden Abilities.`;
     // 					continue;
     // 				}
-    // 
+    //
     // 				const ability = dex.abilities.get(set.ability);
     // 				if (dex.gen < 6 && ability.gen > learnedGen && !checkingPrevo) {
     // 					// You can evolve a transferred mon to reroll for its new Ability.
     // 					cantLearnReason = `is learned in gen ${learnedGen}, but the Ability ${ability.name} did not exist then.`;
     // 					continue;
     // 				}
-    // 
+    //
     // 				if (species.isNonstandard !== 'CAP') {
     // 					// HMs can't be transferred
     // 					if (dex.gen >= 4 && learnedGen <= 3 && [
@@ -1130,7 +1166,7 @@ impl TeamValidator {
     // 					// Defog and Whirlpool can't be transferred together
     // 					if (dex.gen >= 5 && ['defog', 'whirlpool'].includes(moveid) && learnedGen <= 4) blockedHM = true;
     // 				}
-    // 
+    //
     // 				if (learned.charAt(1) === 'L') {
     // 					// special checking for level-up moves
     // 					if (level >= parseInt(learned.substr(2)) || learnedGen === 7) {
@@ -1156,7 +1192,7 @@ impl TeamValidator {
     // 						continue;
     // 					}
     // 				}
-    // 
+    //
     // 				// Gen 8+ egg moves can be taught to any pokemon from any source
     // 				if (learnedGen >= 8 && learned.charAt(1) === 'E' && learned.slice(1) !== 'Eany' &&
     // 					learned.slice(1) !== 'Epomeg' || 'LMTR'.includes(learned.charAt(1))) {
@@ -1274,7 +1310,7 @@ impl TeamValidator {
     // 					}
     // 				}
     // 			}
-    // 
+    //
     // 			if (!moveSources.size()) {
     // 				if (
     // 					(species.evoType === 'levelMove' && species.evoMove !== move.name) ||
@@ -1284,7 +1320,7 @@ impl TeamValidator {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		if (limit1 && sketch) {
     // 			// limit 1 sketch move
     // 			if (setSources.sketchMove) {
@@ -1292,20 +1328,20 @@ impl TeamValidator {
     // 			}
     // 			setSources.sketchMove = move.name;
     // 		}
-    // 
+    //
     // 		if (blockedHM) {
     // 			// Limit one of Defog/Whirlpool to be transferred
     // 			if (setSources.hm) return ` can't simultaneously transfer Defog and Whirlpool from Gen 4 to 5.`;
     // 			setSources.hm = moveid;
     // 		}
-    // 
+    //
     // 		if (!setSources.restrictiveMoves) {
     // 			setSources.restrictiveMoves = [];
     // 		}
     // 		if (!setSources.restrictiveMoves.includes(move.name)) {
     // 			setSources.restrictiveMoves.push(move.name);
     // 		}
-    // 
+    //
     // 		const checkedSpecies = babyOnly ? fullLearnset[fullLearnset.length - 1].species : baseSpecies;
     // 		if (checkedSpecies && setSources.isFromPokemonGo &&
     // 			(setSources.pokemonGoSource === 'purified' || checkedSpecies.id === 'mew')) {
@@ -1338,7 +1374,7 @@ impl TeamValidator {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		let nextSpecies;
     // 		nextSpecies = baseSpecies;
     // 		let speciesCount = 0;
@@ -1368,7 +1404,7 @@ impl TeamValidator {
     // 				nextSpecies = dex.species.learnsetParent(nextSpecies);
     // 			}
     // 		}
-    // 
+    //
     // 		// Now that we have our list of possible sources, intersect it with the current list
     // 		if (!moveSources.size()) {
     // 			if (cantLearnReason) return `'s move ${move.name} ${cantLearnReason}`;
@@ -1389,7 +1425,7 @@ impl TeamValidator {
     // 			if (setSources.isFromPokemonGo) return `'s move ${move.name} is incompatible with its Pokemon GO origin.`;
     // 			return `'s moves ${(setSources.restrictiveMoves || []).join(', ')} are incompatible.`;
     // 		}
-    // 
+    //
     // 		if (babyOnly) setSources.babyOnly = babyOnly;
     // 		return null;
     // 	}
@@ -1423,14 +1459,17 @@ impl TeamValidator {
     /// Equivalent to TeamValidator.getExternalLearnsetData() in team-validator.ts
     ///
     /// Stub - would load learnset data from external files
-    // 
+    //
     // 	getExternalLearnsetData(species: ID, mod: string) {
     // 		const moddedDex = this.dex.mod(mod);
     // 		if (moddedDex.species.get(species).isNonstandard) return null;
     // 		return moddedDex.species.getLearnsetData(species);
     // 	}
     //
-    pub fn get_external_learnset_data(&self, _species: &str) -> Option<HashMap<String, Vec<String>>> {
+    pub fn get_external_learnset_data(
+        &self,
+        _species: &str,
+    ) -> Option<HashMap<String, Vec<String>>> {
         // Stub - would need learnset JSON data
         None
     }
@@ -1439,7 +1478,11 @@ impl TeamValidator {
     /// Equivalent to part of TeamValidator.validateSet() in team-validator.ts
     pub fn validate_species(&self, pokemon: &ValidatorSet) -> Vec<ValidationError> {
         let mut errors = Vec::new();
-        let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
+        let pokemon_name = pokemon
+            .nickname
+            .as_ref()
+            .unwrap_or(&pokemon.species)
+            .clone();
 
         let species_id = ID::new(&pokemon.species);
         if get_species(&species_id).is_none() {
@@ -1461,7 +1504,11 @@ impl TeamValidator {
     /// Equivalent to part of TeamValidator.validateSet() in team-validator.ts
     pub fn validate_ability(&self, pokemon: &ValidatorSet) -> Vec<ValidationError> {
         let mut errors = Vec::new();
-        let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
+        let pokemon_name = pokemon
+            .nickname
+            .as_ref()
+            .unwrap_or(&pokemon.species)
+            .clone();
 
         if !pokemon.ability.is_empty() {
             let _ability_id = ID::new(&pokemon.ability);
@@ -1487,7 +1534,11 @@ impl TeamValidator {
     /// Equivalent to part of TeamValidator.validateSet() in team-validator.ts
     pub fn validate_item(&self, pokemon: &ValidatorSet) -> Vec<ValidationError> {
         let mut errors = Vec::new();
-        let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
+        let pokemon_name = pokemon
+            .nickname
+            .as_ref()
+            .unwrap_or(&pokemon.species)
+            .clone();
 
         if let Some(ref item) = pokemon.item {
             if !item.is_empty() {
@@ -1719,18 +1770,17 @@ IVs: 0 Spe
     fn test_validate_valid_team() {
         let validator = TeamValidator::new("gen9ou");
 
-        let team = vec![
-            ValidatorSet {
-                species: "Garchomp".to_string(),
-                ability: "Rough Skin".to_string(),
-                moves: vec!["Earthquake".to_string(), "Outrage".to_string()],
-                ..Default::default()
-            },
-        ];
+        let team = vec![ValidatorSet {
+            species: "Garchomp".to_string(),
+            ability: "Rough Skin".to_string(),
+            moves: vec!["Earthquake".to_string(), "Outrage".to_string()],
+            ..Default::default()
+        }];
 
         let errors = validator.validate_team(&team);
         // Should have no critical errors for valid species
-        let critical_errors: Vec<_> = errors.iter()
+        let critical_errors: Vec<_> = errors
+            .iter()
             .filter(|e| matches!(e, ValidationError::InvalidSpecies { .. }))
             .collect();
         assert!(critical_errors.is_empty());
@@ -1740,59 +1790,59 @@ IVs: 0 Spe
     fn test_validate_banned_pokemon() {
         let validator = TeamValidator::new("gen9ou");
 
-        let team = vec![
-            ValidatorSet {
-                species: "Koraidon".to_string(),
-                ability: "Orichalcum Pulse".to_string(),
-                moves: vec!["Earthquake".to_string()],
-                ..Default::default()
-            },
-        ];
+        let team = vec![ValidatorSet {
+            species: "Koraidon".to_string(),
+            ability: "Orichalcum Pulse".to_string(),
+            moves: vec!["Earthquake".to_string()],
+            ..Default::default()
+        }];
 
         let errors = validator.validate_team(&team);
-        assert!(errors.iter().any(|e| matches!(e, ValidationError::BannedPokemon { .. })));
+        assert!(errors
+            .iter()
+            .any(|e| matches!(e, ValidationError::BannedPokemon { .. })));
     }
 
     #[test]
     fn test_validate_banned_move() {
         let validator = TeamValidator::new("gen9ou");
 
-        let team = vec![
-            ValidatorSet {
-                species: "Pikachu".to_string(),
-                ability: "Static".to_string(),
-                moves: vec!["Baton Pass".to_string(), "Thunderbolt".to_string()],
-                ..Default::default()
-            },
-        ];
+        let team = vec![ValidatorSet {
+            species: "Pikachu".to_string(),
+            ability: "Static".to_string(),
+            moves: vec!["Baton Pass".to_string(), "Thunderbolt".to_string()],
+            ..Default::default()
+        }];
 
         let errors = validator.validate_team(&team);
-        assert!(errors.iter().any(|e| matches!(e, ValidationError::BannedMove { .. })));
+        assert!(errors
+            .iter()
+            .any(|e| matches!(e, ValidationError::BannedMove { .. })));
     }
 
     #[test]
     fn test_validate_invalid_evs() {
         let validator = TeamValidator::new("gen9ou");
 
-        let team = vec![
-            ValidatorSet {
-                species: "Pikachu".to_string(),
-                ability: "Static".to_string(),
-                moves: vec!["Thunderbolt".to_string()],
-                evs: EVSpread {
-                    hp: 252,
-                    atk: 252,
-                    def: 252,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                ..Default::default()
+        let team = vec![ValidatorSet {
+            species: "Pikachu".to_string(),
+            ability: "Static".to_string(),
+            moves: vec!["Thunderbolt".to_string()],
+            evs: EVSpread {
+                hp: 252,
+                atk: 252,
+                def: 252,
+                spa: 0,
+                spd: 0,
+                spe: 0,
             },
-        ];
+            ..Default::default()
+        }];
 
         let errors = validator.validate_team(&team);
-        assert!(errors.iter().any(|e| matches!(e, ValidationError::InvalidEVs { .. })));
+        assert!(errors
+            .iter()
+            .any(|e| matches!(e, ValidationError::InvalidEVs { .. })));
     }
 
     #[test]
@@ -1833,7 +1883,9 @@ IVs: 0 Spe
             .collect();
 
         let errors = validator.validate_team(&big_team);
-        assert!(errors.iter().any(|e| matches!(e, ValidationError::TeamTooLarge { .. })));
+        assert!(errors
+            .iter()
+            .any(|e| matches!(e, ValidationError::TeamTooLarge { .. })));
     }
 
     #[test]
@@ -1857,6 +1909,8 @@ IVs: 0 Spe
         ];
 
         let errors = validator.validate_team(&team);
-        assert!(errors.iter().any(|e| matches!(e, ValidationError::SpeciesClause { .. })));
+        assert!(errors
+            .iter()
+            .any(|e| matches!(e, ValidationError::SpeciesClause { .. })));
     }
 }

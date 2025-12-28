@@ -1,5 +1,5 @@
 //! Move type definitions for compatibility with generated ability callbacks
-//! 
+//!
 //! These types are used by auto-generated ability callback code.
 //! The actual move data comes from JSON via the Dex system.
 
@@ -53,7 +53,7 @@ pub struct MoveDef {
     pub ignore_immunity_types: Vec<String>,
     pub type_changer_boosted: bool,
     pub is_z: bool,
-    pub secondaries: Vec<String>,  // Simplified from complex secondary type
+    pub secondaries: Vec<String>, // Simplified from complex secondary type
     pub ignores_evasion: bool,
     pub tracks_target: bool,
     pub ignore_immunity: bool,
@@ -63,7 +63,7 @@ pub struct MoveDef {
     pub volatile_status: Option<String>,
     pub recoil: Option<f64>,
     pub prankster_boosted: bool,
-    pub multi_hit: Option<String>,  // Simplified
+    pub multi_hit: Option<String>, // Simplified
     pub is_max: bool,
     pub infiltrates: bool,
     pub ignores_ability: bool,

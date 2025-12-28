@@ -17,7 +17,11 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // if (this.activePerHalf === 1) return false; // fails in singles
     if battle.active_per_half == 1 {
         return EventResult::Boolean(false);
@@ -46,7 +50,10 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Opt
             };
             target_pokemon.get_slot()
         };
-        battle.add("-activate", &[target_ident.as_str().into(), "move: After You".into()]);
+        battle.add(
+            "-activate",
+            &[target_ident.as_str().into(), "move: After You".into()],
+        );
 
         EventResult::Continue
     } else {
@@ -54,4 +61,3 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Opt
         EventResult::Boolean(false)
     }
 }
-

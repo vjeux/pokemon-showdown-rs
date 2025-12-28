@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -15,16 +14,14 @@ pub mod condition {
     ///     this.add('-sidestart', targetSide, 'G-Max Volcalith');
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
-        
-
         // this.add('-sidestart', targetSide, 'G-Max Volcalith');
         if let Some(effect_state) = &battle.current_effect_state {
             if let Some(side_index) = effect_state.side {
-            let side_id = if side_index == 0 { "p1" } else { "p2" };
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
 
-            let side_arg = crate::battle::Arg::Str(side_id);
-            battle.add("-sidestart", &[side_arg, "G-Max Volcalith".into()]);
-                    }
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sidestart", &[side_arg, "G-Max Volcalith".into()]);
+            }
         }
 
         EventResult::Continue
@@ -34,8 +31,6 @@ pub mod condition {
     ///     if (!target.hasType('Rock')) this.damage(target.baseMaxhp / 6, target);
     /// }
     pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        
-
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -73,11 +68,11 @@ pub mod condition {
         // this.add('-sideend', targetSide, 'G-Max Volcalith');
         if let Some(effect_state) = &battle.current_effect_state {
             if let Some(side_index) = effect_state.side {
-            let side_id = if side_index == 0 { "p1" } else { "p2" };
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
 
-            let side_arg = crate::battle::Arg::Str(side_id);
-            battle.add("-sideend", &[side_arg, "G-Max Volcalith".into()]);
-                    }
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sideend", &[side_arg, "G-Max Volcalith".into()]);
+            }
         }
 
         EventResult::Continue

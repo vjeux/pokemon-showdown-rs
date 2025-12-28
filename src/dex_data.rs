@@ -184,7 +184,14 @@ pub struct StatsTable {
 
 impl StatsTable {
     pub fn new(hp: i32, atk: i32, def: i32, spa: i32, spd: i32, spe: i32) -> Self {
-        Self { hp, atk, def, spa, spd, spe }
+        Self {
+            hp,
+            atk,
+            def,
+            spa,
+            spd,
+            spe,
+        }
     }
 
     pub fn get(&self, stat: StatID) -> i32 {
@@ -301,8 +308,7 @@ impl BoostsTable {
 }
 
 /// Effect type enumeration
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[derive(Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum EffectType {
     #[default]
     Condition,
@@ -319,7 +325,6 @@ pub enum EffectType {
     Rule,
     ValidatorRule,
 }
-
 
 /// Nonstandard classification
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -601,10 +606,10 @@ impl TypeInfo {
     /// Get the damage multiplier when attacked by a move of the given type
     pub fn damage_multiplier(&self, attacking_type: &str) -> f64 {
         match self.damage_taken.get(attacking_type) {
-            Some(1) => 2.0,  // Weakness
-            Some(2) => 0.5,  // Resistance
-            Some(3) => 0.0,  // Immunity
-            _ => 1.0,        // Normal
+            Some(1) => 2.0, // Weakness
+            Some(2) => 0.5, // Resistance
+            Some(3) => 0.0, // Immunity
+            _ => 1.0,       // Normal
         }
     }
 }
@@ -761,12 +766,14 @@ fn get_nature_data(id: &str) -> Option<Nature> {
 /// Get all natures
 fn get_all_natures() -> Vec<Nature> {
     let nature_ids = [
-        "adamant", "bashful", "bold", "brave", "calm", "careful", "docile",
-        "gentle", "hardy", "hasty", "impish", "jolly", "lax", "lonely",
-        "mild", "modest", "naive", "naughty", "quiet", "quirky", "rash",
-        "relaxed", "sassy", "serious", "timid",
+        "adamant", "bashful", "bold", "brave", "calm", "careful", "docile", "gentle", "hardy",
+        "hasty", "impish", "jolly", "lax", "lonely", "mild", "modest", "naive", "naughty", "quiet",
+        "quirky", "rash", "relaxed", "sassy", "serious", "timid",
     ];
-    nature_ids.iter().filter_map(|id| get_nature_data(id)).collect()
+    nature_ids
+        .iter()
+        .filter_map(|id| get_nature_data(id))
+        .collect()
 }
 
 // =========================================================================
@@ -794,8 +801,8 @@ impl DexTypes {
 
     /// Get a type by name
     // TypeScript source:
-    // 
-    // 
+    //
+    //
     // 	get(name: string | Nature): Nature {
     // 		if (name && typeof name !== 'string') return name;
     // 		return this.getByID(toID(name));
@@ -810,7 +817,7 @@ impl DexTypes {
     // 		if (id === '') return EMPTY_NATURE;
     // 		let nature = this.natureCache.get(id);
     // 		if (nature) return nature;
-    // 
+    //
     // 		const alias = this.dex.getAlias(id);
     // 		if (alias) {
     // 			nature = this.get(alias);
@@ -826,7 +833,7 @@ impl DexTypes {
     // 		} else {
     // 			nature = new Nature({ name: id, exists: false });
     // 		}
-    // 
+    //
     // 		if (nature.exists) this.natureCache.set(id, this.dex.deepFreeze(nature));
     // 		return nature;
     // 	}
@@ -874,7 +881,8 @@ impl DexTypes {
             return names.clone();
         }
 
-        let names: Vec<String> = self.all()
+        let names: Vec<String> = self
+            .all()
             .into_iter()
             .filter(|t| t.is_nonstandard.is_none())
             .map(|t| t.name)
@@ -884,7 +892,7 @@ impl DexTypes {
     }
 
     /// Check if a name is a valid type name
-    // 
+    //
     // 	isName(name: string | null | undefined): boolean {
     // 		if (!name) return false;
     // 		const id = name.toLowerCase();
@@ -902,7 +910,7 @@ impl DexTypes {
     }
 
     /// Get all types
-    // 
+    //
     // 	all(): readonly Nature[] {
     // 		if (this.allCache) return this.allCache;
     // 		const natures = [];
@@ -933,10 +941,26 @@ fn capitalize_first(s: &str) -> String {
 }
 
 fn is_valid_type(id: &str) -> bool {
-    matches!(id,
-        "normal" | "fire" | "water" | "electric" | "grass" | "ice" |
-        "fighting" | "poison" | "ground" | "flying" | "psychic" | "bug" |
-        "rock" | "ghost" | "dragon" | "dark" | "steel" | "fairy"
+    matches!(
+        id,
+        "normal"
+            | "fire"
+            | "water"
+            | "electric"
+            | "grass"
+            | "ice"
+            | "fighting"
+            | "poison"
+            | "ground"
+            | "flying"
+            | "psychic"
+            | "bug"
+            | "rock"
+            | "ghost"
+            | "dragon"
+            | "dark"
+            | "steel"
+            | "fairy"
     )
 }
 
@@ -946,8 +970,22 @@ fn get_type_data(id: &str, name: &str, gen: u8) -> Option<TypeInfo> {
 
     // Check if type exists in this gen
     let (type_gen, is_nonstandard) = match id {
-        "dark" | "steel" => (2, if gen < 2 { Some(Nonstandard::Future) } else { None }),
-        "fairy" => (6, if gen < 6 { Some(Nonstandard::Future) } else { None }),
+        "dark" | "steel" => (
+            2,
+            if gen < 2 {
+                Some(Nonstandard::Future)
+            } else {
+                None
+            },
+        ),
+        "fairy" => (
+            6,
+            if gen < 6 {
+                Some(Nonstandard::Future)
+            } else {
+                None
+            },
+        ),
         _ => (1, None),
     };
 
@@ -1131,12 +1169,12 @@ fn get_type_chart(id: &str) -> Option<HashMap<String, u8>> {
 
 fn get_all_types(gen: u8) -> Vec<TypeInfo> {
     let type_ids = [
-        "normal", "fire", "water", "electric", "grass", "ice",
-        "fighting", "poison", "ground", "flying", "psychic", "bug",
-        "rock", "ghost", "dragon", "dark", "steel", "fairy",
+        "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground",
+        "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy",
     ];
 
-    type_ids.iter()
+    type_ids
+        .iter()
         .filter_map(|id| {
             let name = capitalize_first(id);
             get_type_data(id, &name, gen)
@@ -1203,12 +1241,12 @@ impl DexStats {
     }
 
     /// Get full stat names
-    // 
+    //
     // 	names(): readonly string[] {
     // 		if (this.namesCache) return this.namesCache;
-    // 
+    //
     // 		this.namesCache = this.all().filter(type => !type.isNonstandard).map(type => type.name);
-    // 
+    //
     // 		return this.namesCache;
     // 	}
     //

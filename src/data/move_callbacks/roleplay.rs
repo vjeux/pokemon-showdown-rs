@@ -5,14 +5,18 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onTryHit(target, source) {
 ///     if (target.ability === source.ability) return false;
 ///     if (target.getAbility().flags['failroleplay'] || source.getAbility().flags['cantsuppress']) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     let source = source_pos;
     let target = target_pos;
 
@@ -26,7 +30,10 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (target_pokemon.ability.clone(), source_pokemon.ability.clone())
+        (
+            target_pokemon.ability.clone(),
+            source_pokemon.ability.clone(),
+        )
     };
 
     if target_ability == source_ability {
@@ -43,8 +50,19 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         None => return EventResult::Continue,
     };
 
-    if target_ability_data.flags.get("failroleplay").copied().unwrap_or(0) != 0 ||
-       source_ability_data.flags.get("cantsuppress").copied().unwrap_or(0) != 0 {
+    if target_ability_data
+        .flags
+        .get("failroleplay")
+        .copied()
+        .unwrap_or(0)
+        != 0
+        || source_ability_data
+            .flags
+            .get("cantsuppress")
+            .copied()
+            .unwrap_or(0)
+            != 0
+    {
         return EventResult::Boolean(false);
     }
 
@@ -55,7 +73,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 ///     const oldAbility = source.setAbility(target.ability, target);
 ///     if (!oldAbility) return oldAbility as false | null;
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -86,4 +108,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
-

@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///         delete move.volatileStatus;
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -24,7 +28,9 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.volatiles.contains_key(&ID::from("noretreat"))
+        source_pokemon
+            .volatiles
+            .contains_key(&ID::from("noretreat"))
     };
 
     if has_noretreat {

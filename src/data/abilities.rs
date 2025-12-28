@@ -9,4 +9,3 @@
 
 // Re-export ability data type from dex
 pub use crate::dex::AbilityData;
-

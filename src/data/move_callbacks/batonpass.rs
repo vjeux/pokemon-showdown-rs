@@ -5,8 +5,8 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onHit(target) {
 ///     if (!this.canSwitch(target.side) || target.volatiles['commanded']) {
@@ -15,7 +15,11 @@ use crate::dex_data::ID;
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the target (which is the user of Baton Pass)
     let target = target_pos.unwrap_or(pokemon_pos);
 
@@ -27,7 +31,9 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // if (!this.canSwitch(target.side) || target.volatiles['commanded']) {
     let can_switch_count = battle.can_switch(target.0);
-    let has_commanded = target_pokemon.volatiles.contains_key(&ID::from("commanded"));
+    let has_commanded = target_pokemon
+        .volatiles
+        .contains_key(&ID::from("commanded"));
 
     if can_switch_count == 0 || has_commanded {
         // this.attrLastMove('[still]');
@@ -51,4 +57,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
-

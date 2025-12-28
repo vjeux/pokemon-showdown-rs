@@ -36,7 +36,11 @@ use crate::event::EventResult;
 ///         });
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // if (this.field.isTerrain('')) return;
@@ -119,4 +123,3 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target
 
     EventResult::Continue
 }
-

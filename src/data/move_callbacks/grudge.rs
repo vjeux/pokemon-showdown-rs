@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -25,7 +24,10 @@ pub mod condition {
             };
             poke.get_slot()
         };
-        battle.add("-singlemove", &[pokemon_ident.as_str().into(), "Grudge".into()]);
+        battle.add(
+            "-singlemove",
+            &[pokemon_ident.as_str().into(), "Grudge".into()],
+        );
 
         EventResult::Continue
     }
@@ -46,7 +48,12 @@ pub mod condition {
     ///     }
     /// }
     /// ```
-    pub fn on_faint(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_faint(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (!source || source.fainted || !effect) return;
@@ -74,11 +81,12 @@ pub mod condition {
         let effect_id_str = effect_id.unwrap();
 
         // if (effect.effectType === 'Move' && !effect.flags['futuremove'] && source.lastMove) {
-        let is_move_effect = if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id_str)) {
-            !move_data.flags.contains_key("futuremove")
-        } else {
-            false
-        };
+        let is_move_effect =
+            if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id_str)) {
+                !move_data.flags.contains_key("futuremove")
+            } else {
+                false
+            };
 
         let source_last_move = {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -123,7 +131,9 @@ pub mod condition {
                     }
 
                     // this.add('-activate', source, 'move: Grudge', move.name);
-                    let move_name = battle.dex.get_move_by_id(&move_id)
+                    let move_name = battle
+                        .dex
+                        .get_move_by_id(&move_id)
                         .map(|m| m.name.clone())
                         .unwrap_or_else(|| move_id.to_string());
                     let source_ident = {
@@ -133,7 +143,14 @@ pub mod condition {
                         };
                         pokemon.get_slot()
                     };
-                    battle.add("-activate", &[source_ident.as_str().into(), "move: Grudge".into(), move_name.into()]);
+                    battle.add(
+                        "-activate",
+                        &[
+                            source_ident.as_str().into(),
+                            "move: Grudge".into(),
+                            move_name.into(),
+                        ],
+                    );
                 }
             }
         }

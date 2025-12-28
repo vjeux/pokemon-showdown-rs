@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///     pokemon.faint();
 ///     return damage;
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // const damage = pokemon.hp;
@@ -35,4 +39,3 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target
     // return damage;
     EventResult::Number(damage)
 }
-

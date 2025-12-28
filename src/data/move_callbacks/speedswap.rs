@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///     source.storedStats.spe = targetSpe;
 ///     this.add('-activate', source, 'move: Speed Swap', `[of] ${target}`);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // onHit(target, source) {
     //     const targetSpe = target.storedStats.spe;
     //     target.storedStats.spe = source.storedStats.spe;
@@ -68,18 +72,17 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (
-            source_pokemon.get_slot(),
-            target_pokemon.get_slot(),
-        )
+        (source_pokemon.get_slot(), target_pokemon.get_slot())
     };
 
-    battle.add("-activate", &[
-        source_arg.into(),
-        "move: Speed Swap".into(),
-        format!("[of] {}", target_arg).into(),
-    ]);
+    battle.add(
+        "-activate",
+        &[
+            source_arg.into(),
+            "move: Speed Swap".into(),
+            format!("[of] {}", target_arg).into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

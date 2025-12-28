@@ -18,7 +18,11 @@ use crate::event::EventResult;
 ///     const targetCanBeSet = this.runEvent('SetAbility', target, source, this.effect, sourceAbility);
 ///     if (!targetCanBeSet) return targetCanBeSet;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onTryHit(target, source) {
@@ -46,7 +50,10 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (target_pokemon.ability.clone(), source_pokemon.ability.clone())
+        (
+            target_pokemon.ability.clone(),
+            source_pokemon.ability.clone(),
+        )
     };
 
     // if (sourceAbility.flags['failskillswap'] || targetAbility.flags['failskillswap'] || target.volatiles['dynamax']) {
@@ -84,14 +91,24 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     // const sourceCanBeSet = this.runEvent('SetAbility', source, source, this.effect, targetAbility);
     // if (!sourceCanBeSet) return sourceCanBeSet;
-    let source_can_be_set = battle.run_event_bool("SetAbility", Some(source), Some(source), Some(&target_ability_id));
+    let source_can_be_set = battle.run_event_bool(
+        "SetAbility",
+        Some(source),
+        Some(source),
+        Some(&target_ability_id),
+    );
     if !source_can_be_set {
         return EventResult::Boolean(false);
     }
 
     // const targetCanBeSet = this.runEvent('SetAbility', target, source, this.effect, sourceAbility);
     // if (!targetCanBeSet) return targetCanBeSet;
-    let target_can_be_set = battle.run_event_bool("SetAbility", Some(target), Some(source), Some(&source_ability_id));
+    let target_can_be_set = battle.run_event_bool(
+        "SetAbility",
+        Some(target),
+        Some(source),
+        Some(&source_ability_id),
+    );
     if !target_can_be_set {
         return EventResult::Boolean(false);
     }
@@ -118,7 +135,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 ///     this.singleEvent('Start', targetAbility, source.abilityState, source);
 ///     this.singleEvent('Start', sourceAbility, target.abilityState, target);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // onHit(target, source, move) {
     //     const targetAbility = target.getAbility();
     //     const sourceAbility = source.getAbility();
@@ -155,7 +176,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (target_pokemon.ability.clone(), source_pokemon.ability.clone())
+        (
+            target_pokemon.ability.clone(),
+            source_pokemon.ability.clone(),
+        )
     };
 
     // if (target.isAlly(source)) {
@@ -182,27 +206,37 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if is_ally {
-        battle.add("-activate", &[
-            source_arg.into(),
-            "move: Skill Swap".into(),
-            "".into(),
-            "".into(),
-            format!("[of] {}", target_arg).into(),
-        ]);
+        battle.add(
+            "-activate",
+            &[
+                source_arg.into(),
+                "move: Skill Swap".into(),
+                "".into(),
+                "".into(),
+                format!("[of] {}", target_arg).into(),
+            ],
+        );
     } else {
         let target_ability_data = battle.dex.get_ability_by_id(&target_ability_id);
         let source_ability_data = battle.dex.get_ability_by_id(&source_ability_id);
 
-        let target_ability_name = target_ability_data.map(|a| a.name.clone()).unwrap_or_default();
-        let source_ability_name = source_ability_data.map(|a| a.name.clone()).unwrap_or_default();
+        let target_ability_name = target_ability_data
+            .map(|a| a.name.clone())
+            .unwrap_or_default();
+        let source_ability_name = source_ability_data
+            .map(|a| a.name.clone())
+            .unwrap_or_default();
 
-        battle.add("-activate", &[
-            source_arg.into(),
-            "move: Skill Swap".into(),
-            target_ability_name.into(),
-            source_ability_name.into(),
-            format!("[of] {}", target_arg).into(),
-        ]);
+        battle.add(
+            "-activate",
+            &[
+                source_arg.into(),
+                "move: Skill Swap".into(),
+                target_ability_name.into(),
+                source_ability_name.into(),
+                format!("[of] {}", target_arg).into(),
+            ],
+        );
     }
 
     // this.singleEvent('End', sourceAbility, source.abilityState, source);
@@ -234,14 +268,16 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.ability_state = crate::event_system::EffectState::new(target_ability_id.clone());
+        source_pokemon.ability_state =
+            crate::event_system::EffectState::new(target_ability_id.clone());
     }
     {
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.ability_state = crate::event_system::EffectState::new(source_ability_id.clone());
+        target_pokemon.ability_state =
+            crate::event_system::EffectState::new(source_ability_id.clone());
     }
 
     // source.volatileStaleness = undefined;
@@ -268,4 +304,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
-

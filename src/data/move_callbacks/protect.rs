@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
@@ -33,24 +37,24 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
 
     // pokemon.addVolatile('stall');
     {
-
         let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("stall"));
-
     }
 
     EventResult::Continue
@@ -102,7 +106,11 @@ pub mod condition {
     ///     }
     ///     return this.NOT_FAIL;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_hit(
+        battle: &mut Battle,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let source = source_pos;
@@ -206,7 +214,9 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.volatiles.contains_key(&ID::from("lockedmove"))
+            source_pokemon
+                .volatiles
+                .contains_key(&ID::from("lockedmove"))
         };
 
         if has_lockedmove {
@@ -215,7 +225,9 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                source_pokemon.volatiles.get(&ID::from("lockedmove"))
+                source_pokemon
+                    .volatiles
+                    .get(&ID::from("lockedmove"))
                     .and_then(|v| v.duration)
                     .unwrap_or(0)
             };

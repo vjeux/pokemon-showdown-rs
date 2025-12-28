@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///         move.accuracy = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // if (target && ['raindance', 'primordialsea'].includes(target.effectiveWeather())) {
@@ -33,7 +37,9 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), target_
             }
         };
 
-        if effective_weather == Some(ID::from("raindance")) || effective_weather == Some(ID::from("primordialsea")) {
+        if effective_weather == Some(ID::from("raindance"))
+            || effective_weather == Some(ID::from("primordialsea"))
+        {
             let active_move = match &mut battle.active_move {
                 Some(m) => m,
                 None => return EventResult::Continue,
@@ -44,5 +50,3 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), target_
 
     EventResult::Continue
 }
-
-

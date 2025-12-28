@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// damageCallback(pokemon) {
 ///     return (this.random(50, 151) * pokemon.level) / 100;
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // return (this.random(50, 151) * pokemon.level) / 100;
@@ -28,4 +32,3 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target
 
     EventResult::Number(damage)
 }
-

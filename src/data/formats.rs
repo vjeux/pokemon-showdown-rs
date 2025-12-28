@@ -5,9 +5,9 @@
 //! This module contains data-driven definitions for battle formats and rulesets,
 //! following the Pokemon Showdown JS architecture.
 
-use std::collections::HashMap;
-use once_cell::sync::Lazy;
 use crate::dex_data::ID;
+use once_cell::sync::Lazy;
+use std::collections::HashMap;
 
 /// Game type (singles, doubles, etc.)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
@@ -33,8 +33,7 @@ impl GameType {
 }
 
 /// Format mod (generation)
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[derive(Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum FormatMod {
     Gen1,
     Gen2,
@@ -78,7 +77,6 @@ impl FormatMod {
         }
     }
 }
-
 
 /// Rule definition
 #[derive(Debug, Clone)]
@@ -130,109 +128,148 @@ pub struct FormatDef {
 pub static RULESETS: Lazy<HashMap<ID, RuleDef>> = Lazy::new(|| {
     let mut rulesets = HashMap::new();
 
-    rulesets.insert(ID::new("Standard"), RuleDef {
-        name: "Standard",
-        desc: "Standard rules for competitive play",
-        is_ban: false,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Standard"),
+        RuleDef {
+            name: "Standard",
+            desc: "Standard rules for competitive play",
+            is_ban: false,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Team Preview"), RuleDef {
-        name: "Team Preview",
-        desc: "Pokemon are revealed before battle begins",
-        is_ban: false,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Team Preview"),
+        RuleDef {
+            name: "Team Preview",
+            desc: "Pokemon are revealed before battle begins",
+            is_ban: false,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Sleep Clause Mod"), RuleDef {
-        name: "Sleep Clause Mod",
-        desc: "Only one Pokemon on a team can be asleep at a time",
-        is_ban: false,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Sleep Clause Mod"),
+        RuleDef {
+            name: "Sleep Clause Mod",
+            desc: "Only one Pokemon on a team can be asleep at a time",
+            is_ban: false,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Species Clause"), RuleDef {
-        name: "Species Clause",
-        desc: "No two Pokemon on a team can have the same National Dex number",
-        is_ban: false,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Species Clause"),
+        RuleDef {
+            name: "Species Clause",
+            desc: "No two Pokemon on a team can have the same National Dex number",
+            is_ban: false,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Nickname Clause"), RuleDef {
-        name: "Nickname Clause",
-        desc: "No two Pokemon on a team can have the same nickname",
-        is_ban: false,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Nickname Clause"),
+        RuleDef {
+            name: "Nickname Clause",
+            desc: "No two Pokemon on a team can have the same nickname",
+            is_ban: false,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("OHKO Clause"), RuleDef {
-        name: "OHKO Clause",
-        desc: "OHKO moves are banned",
-        is_ban: true,
-        bans: &["Fissure", "Guillotine", "Horn Drill", "Sheer Cold"],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("OHKO Clause"),
+        RuleDef {
+            name: "OHKO Clause",
+            desc: "OHKO moves are banned",
+            is_ban: true,
+            bans: &["Fissure", "Guillotine", "Horn Drill", "Sheer Cold"],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Evasion Clause"), RuleDef {
-        name: "Evasion Clause",
-        desc: "Evasion-boosting moves and abilities are banned",
-        is_ban: true,
-        bans: &["Double Team", "Minimize"],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Evasion Clause"),
+        RuleDef {
+            name: "Evasion Clause",
+            desc: "Evasion-boosting moves and abilities are banned",
+            is_ban: true,
+            bans: &["Double Team", "Minimize"],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Moody Clause"), RuleDef {
-        name: "Moody Clause",
-        desc: "Moody ability is banned",
-        is_ban: true,
-        bans: &["Moody"],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Moody Clause"),
+        RuleDef {
+            name: "Moody Clause",
+            desc: "Moody ability is banned",
+            is_ban: true,
+            bans: &["Moody"],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Endless Battle Clause"), RuleDef {
-        name: "Endless Battle Clause",
-        desc: "Combinations that can cause an endless battle are banned",
-        is_ban: false,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Endless Battle Clause"),
+        RuleDef {
+            name: "Endless Battle Clause",
+            desc: "Combinations that can cause an endless battle are banned",
+            is_ban: false,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("HP Percentage Mod"), RuleDef {
-        name: "HP Percentage Mod",
-        desc: "HP is shown as a percentage rather than raw HP",
-        is_ban: false,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("HP Percentage Mod"),
+        RuleDef {
+            name: "HP Percentage Mod",
+            desc: "HP is shown as a percentage rather than raw HP",
+            is_ban: false,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Cancel Mod"), RuleDef {
-        name: "Cancel Mod",
-        desc: "Players can cancel their moves before both have chosen",
-        is_ban: false,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Cancel Mod"),
+        RuleDef {
+            name: "Cancel Mod",
+            desc: "Players can cancel their moves before both have chosen",
+            is_ban: false,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Dynamax Clause"), RuleDef {
-        name: "Dynamax Clause",
-        desc: "Dynamaxing is banned",
-        is_ban: true,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Dynamax Clause"),
+        RuleDef {
+            name: "Dynamax Clause",
+            desc: "Dynamaxing is banned",
+            is_ban: true,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
-    rulesets.insert(ID::new("Terastal Clause"), RuleDef {
-        name: "Terastal Clause",
-        desc: "Terastallization is banned",
-        is_ban: true,
-        bans: &[],
-        unbans: &[],
-    });
+    rulesets.insert(
+        ID::new("Terastal Clause"),
+        RuleDef {
+            name: "Terastal Clause",
+            desc: "Terastallization is banned",
+            is_ban: true,
+            bans: &[],
+            unbans: &[],
+        },
+    );
 
     rulesets
 });
@@ -242,171 +279,333 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
     let mut formats = HashMap::new();
 
     // Gen 9 formats
-    formats.insert(ID::new("gen9ou"), FormatDef {
-        id: "gen9ou",
-        name: "Gen 9 OU",
-        game_type: GameType::Singles,
-        mod_: FormatMod::Gen9,
-        team_size: 6,
-        min_team_size: 1,
-        max_level: 100,
-        default_level: 100,
-        rulesets: &["Standard", "Team Preview", "Sleep Clause Mod", "Species Clause", "Nickname Clause", "OHKO Clause", "Evasion Clause", "Moody Clause", "Endless Battle Clause", "HP Percentage Mod", "Cancel Mod"],
-        bans: &[
-            // Uber Pokemon
-            "Koraidon", "Miraidon", "Mewtwo", "Ho-Oh", "Lugia", "Kyogre", "Groudon", "Rayquaza",
-            "Dialga", "Palkia", "Giratina", "Arceus", "Reshiram", "Zekrom", "Kyurem-White", "Kyurem-Black",
-            "Xerneas", "Yveltal", "Zygarde-Complete", "Solgaleo", "Lunala", "Necrozma-Dusk-Mane",
-            "Necrozma-Dawn-Wings", "Zacian", "Zamazenta", "Eternatus", "Calyrex-Ice", "Calyrex-Shadow",
-            // Banned abilities
-            "Arena Trap", "Shadow Tag", "Moody",
-            // Banned items
-            "King's Rock", "Razor Fang",
-            // Banned moves
-            "Baton Pass", "Last Respects", "Shed Tail",
-        ],
-        unbans: &[],
-        rated: true,
-        min_elo: None,
-    });
+    formats.insert(
+        ID::new("gen9ou"),
+        FormatDef {
+            id: "gen9ou",
+            name: "Gen 9 OU",
+            game_type: GameType::Singles,
+            mod_: FormatMod::Gen9,
+            team_size: 6,
+            min_team_size: 1,
+            max_level: 100,
+            default_level: 100,
+            rulesets: &[
+                "Standard",
+                "Team Preview",
+                "Sleep Clause Mod",
+                "Species Clause",
+                "Nickname Clause",
+                "OHKO Clause",
+                "Evasion Clause",
+                "Moody Clause",
+                "Endless Battle Clause",
+                "HP Percentage Mod",
+                "Cancel Mod",
+            ],
+            bans: &[
+                // Uber Pokemon
+                "Koraidon",
+                "Miraidon",
+                "Mewtwo",
+                "Ho-Oh",
+                "Lugia",
+                "Kyogre",
+                "Groudon",
+                "Rayquaza",
+                "Dialga",
+                "Palkia",
+                "Giratina",
+                "Arceus",
+                "Reshiram",
+                "Zekrom",
+                "Kyurem-White",
+                "Kyurem-Black",
+                "Xerneas",
+                "Yveltal",
+                "Zygarde-Complete",
+                "Solgaleo",
+                "Lunala",
+                "Necrozma-Dusk-Mane",
+                "Necrozma-Dawn-Wings",
+                "Zacian",
+                "Zamazenta",
+                "Eternatus",
+                "Calyrex-Ice",
+                "Calyrex-Shadow",
+                // Banned abilities
+                "Arena Trap",
+                "Shadow Tag",
+                "Moody",
+                // Banned items
+                "King's Rock",
+                "Razor Fang",
+                // Banned moves
+                "Baton Pass",
+                "Last Respects",
+                "Shed Tail",
+            ],
+            unbans: &[],
+            rated: true,
+            min_elo: None,
+        },
+    );
 
-    formats.insert(ID::new("gen9ubers"), FormatDef {
-        id: "gen9ubers",
-        name: "Gen 9 Ubers",
-        game_type: GameType::Singles,
-        mod_: FormatMod::Gen9,
-        team_size: 6,
-        min_team_size: 1,
-        max_level: 100,
-        default_level: 100,
-        rulesets: &["Standard", "Team Preview", "Sleep Clause Mod", "Species Clause", "Nickname Clause", "OHKO Clause", "Evasion Clause", "Endless Battle Clause", "HP Percentage Mod", "Cancel Mod"],
-        bans: &["Moody", "Baton Pass"],
-        unbans: &[],
-        rated: true,
-        min_elo: None,
-    });
+    formats.insert(
+        ID::new("gen9ubers"),
+        FormatDef {
+            id: "gen9ubers",
+            name: "Gen 9 Ubers",
+            game_type: GameType::Singles,
+            mod_: FormatMod::Gen9,
+            team_size: 6,
+            min_team_size: 1,
+            max_level: 100,
+            default_level: 100,
+            rulesets: &[
+                "Standard",
+                "Team Preview",
+                "Sleep Clause Mod",
+                "Species Clause",
+                "Nickname Clause",
+                "OHKO Clause",
+                "Evasion Clause",
+                "Endless Battle Clause",
+                "HP Percentage Mod",
+                "Cancel Mod",
+            ],
+            bans: &["Moody", "Baton Pass"],
+            unbans: &[],
+            rated: true,
+            min_elo: None,
+        },
+    );
 
-    formats.insert(ID::new("gen9uu"), FormatDef {
-        id: "gen9uu",
-        name: "Gen 9 UU",
-        game_type: GameType::Singles,
-        mod_: FormatMod::Gen9,
-        team_size: 6,
-        min_team_size: 1,
-        max_level: 100,
-        default_level: 100,
-        rulesets: &["Standard", "Team Preview", "Sleep Clause Mod", "Species Clause", "Nickname Clause", "OHKO Clause", "Evasion Clause", "Moody Clause", "Endless Battle Clause", "HP Percentage Mod", "Cancel Mod"],
-        bans: &[
-            // Everything in OU
-            "OU", "UUBL",
-            // Specific bans
-            "Drizzle", "Drought",
-        ],
-        unbans: &[],
-        rated: true,
-        min_elo: None,
-    });
+    formats.insert(
+        ID::new("gen9uu"),
+        FormatDef {
+            id: "gen9uu",
+            name: "Gen 9 UU",
+            game_type: GameType::Singles,
+            mod_: FormatMod::Gen9,
+            team_size: 6,
+            min_team_size: 1,
+            max_level: 100,
+            default_level: 100,
+            rulesets: &[
+                "Standard",
+                "Team Preview",
+                "Sleep Clause Mod",
+                "Species Clause",
+                "Nickname Clause",
+                "OHKO Clause",
+                "Evasion Clause",
+                "Moody Clause",
+                "Endless Battle Clause",
+                "HP Percentage Mod",
+                "Cancel Mod",
+            ],
+            bans: &[
+                // Everything in OU
+                "OU", "UUBL", // Specific bans
+                "Drizzle", "Drought",
+            ],
+            unbans: &[],
+            rated: true,
+            min_elo: None,
+        },
+    );
 
-    formats.insert(ID::new("gen9doublesou"), FormatDef {
-        id: "gen9doublesou",
-        name: "Gen 9 Doubles OU",
-        game_type: GameType::Doubles,
-        mod_: FormatMod::Gen9,
-        team_size: 6,
-        min_team_size: 1,
-        max_level: 100,
-        default_level: 100,
-        rulesets: &["Standard", "Team Preview", "Species Clause", "Nickname Clause", "OHKO Clause", "Evasion Clause", "Moody Clause", "Endless Battle Clause", "HP Percentage Mod", "Cancel Mod"],
-        bans: &["Koraidon", "Miraidon", "Mewtwo", "Kyogre", "Groudon", "Rayquaza", "Arceus", "Calyrex-Shadow"],
-        unbans: &[],
-        rated: true,
-        min_elo: None,
-    });
+    formats.insert(
+        ID::new("gen9doublesou"),
+        FormatDef {
+            id: "gen9doublesou",
+            name: "Gen 9 Doubles OU",
+            game_type: GameType::Doubles,
+            mod_: FormatMod::Gen9,
+            team_size: 6,
+            min_team_size: 1,
+            max_level: 100,
+            default_level: 100,
+            rulesets: &[
+                "Standard",
+                "Team Preview",
+                "Species Clause",
+                "Nickname Clause",
+                "OHKO Clause",
+                "Evasion Clause",
+                "Moody Clause",
+                "Endless Battle Clause",
+                "HP Percentage Mod",
+                "Cancel Mod",
+            ],
+            bans: &[
+                "Koraidon",
+                "Miraidon",
+                "Mewtwo",
+                "Kyogre",
+                "Groudon",
+                "Rayquaza",
+                "Arceus",
+                "Calyrex-Shadow",
+            ],
+            unbans: &[],
+            rated: true,
+            min_elo: None,
+        },
+    );
 
-    formats.insert(ID::new("gen9vgc2024"), FormatDef {
-        id: "gen9vgc2024",
-        name: "Gen 9 VGC 2024",
-        game_type: GameType::Doubles,
-        mod_: FormatMod::Gen9,
-        team_size: 6,
-        min_team_size: 4,
-        max_level: 50,
-        default_level: 50,
-        rulesets: &["Standard", "Team Preview", "Species Clause", "Nickname Clause", "HP Percentage Mod"],
-        bans: &["Mewtwo", "Mew", "Lugia", "Ho-Oh", "Celebi", "Kyogre", "Groudon", "Rayquaza", "Jirachi", "Deoxys"],
-        unbans: &[],
-        rated: true,
-        min_elo: None,
-    });
+    formats.insert(
+        ID::new("gen9vgc2024"),
+        FormatDef {
+            id: "gen9vgc2024",
+            name: "Gen 9 VGC 2024",
+            game_type: GameType::Doubles,
+            mod_: FormatMod::Gen9,
+            team_size: 6,
+            min_team_size: 4,
+            max_level: 50,
+            default_level: 50,
+            rulesets: &[
+                "Standard",
+                "Team Preview",
+                "Species Clause",
+                "Nickname Clause",
+                "HP Percentage Mod",
+            ],
+            bans: &[
+                "Mewtwo", "Mew", "Lugia", "Ho-Oh", "Celebi", "Kyogre", "Groudon", "Rayquaza",
+                "Jirachi", "Deoxys",
+            ],
+            unbans: &[],
+            rated: true,
+            min_elo: None,
+        },
+    );
 
-    formats.insert(ID::new("gen9randombattle"), FormatDef {
-        id: "gen9randombattle",
-        name: "Gen 9 Random Battle",
-        game_type: GameType::Singles,
-        mod_: FormatMod::Gen9,
-        team_size: 6,
-        min_team_size: 6,
-        max_level: 100,
-        default_level: 100,
-        rulesets: &["HP Percentage Mod", "Cancel Mod"],
-        bans: &[],
-        unbans: &[],
-        rated: true,
-        min_elo: None,
-    });
+    formats.insert(
+        ID::new("gen9randombattle"),
+        FormatDef {
+            id: "gen9randombattle",
+            name: "Gen 9 Random Battle",
+            game_type: GameType::Singles,
+            mod_: FormatMod::Gen9,
+            team_size: 6,
+            min_team_size: 6,
+            max_level: 100,
+            default_level: 100,
+            rulesets: &["HP Percentage Mod", "Cancel Mod"],
+            bans: &[],
+            unbans: &[],
+            rated: true,
+            min_elo: None,
+        },
+    );
 
     // Gen 8 formats
-    formats.insert(ID::new("gen8ou"), FormatDef {
-        id: "gen8ou",
-        name: "Gen 8 OU",
-        game_type: GameType::Singles,
-        mod_: FormatMod::Gen8,
-        team_size: 6,
-        min_team_size: 1,
-        max_level: 100,
-        default_level: 100,
-        rulesets: &["Standard", "Team Preview", "Sleep Clause Mod", "Species Clause", "Nickname Clause", "OHKO Clause", "Evasion Clause", "Moody Clause", "Dynamax Clause", "Endless Battle Clause", "HP Percentage Mod", "Cancel Mod"],
-        bans: &[
-            "Uber", "Arena Trap", "Power Construct", "Shadow Tag", "Baton Pass",
-        ],
-        unbans: &[],
-        rated: true,
-        min_elo: None,
-    });
+    formats.insert(
+        ID::new("gen8ou"),
+        FormatDef {
+            id: "gen8ou",
+            name: "Gen 8 OU",
+            game_type: GameType::Singles,
+            mod_: FormatMod::Gen8,
+            team_size: 6,
+            min_team_size: 1,
+            max_level: 100,
+            default_level: 100,
+            rulesets: &[
+                "Standard",
+                "Team Preview",
+                "Sleep Clause Mod",
+                "Species Clause",
+                "Nickname Clause",
+                "OHKO Clause",
+                "Evasion Clause",
+                "Moody Clause",
+                "Dynamax Clause",
+                "Endless Battle Clause",
+                "HP Percentage Mod",
+                "Cancel Mod",
+            ],
+            bans: &[
+                "Uber",
+                "Arena Trap",
+                "Power Construct",
+                "Shadow Tag",
+                "Baton Pass",
+            ],
+            unbans: &[],
+            rated: true,
+            min_elo: None,
+        },
+    );
 
     // Gen 7 formats
-    formats.insert(ID::new("gen7ou"), FormatDef {
-        id: "gen7ou",
-        name: "Gen 7 OU",
-        game_type: GameType::Singles,
-        mod_: FormatMod::Gen7,
-        team_size: 6,
-        min_team_size: 1,
-        max_level: 100,
-        default_level: 100,
-        rulesets: &["Standard", "Team Preview", "Sleep Clause Mod", "Species Clause", "Nickname Clause", "OHKO Clause", "Evasion Clause", "Moody Clause", "Endless Battle Clause", "HP Percentage Mod", "Cancel Mod"],
-        bans: &["Uber", "Arena Trap", "Power Construct", "Shadow Tag", "Baton Pass"],
-        unbans: &[],
-        rated: true,
-        min_elo: None,
-    });
+    formats.insert(
+        ID::new("gen7ou"),
+        FormatDef {
+            id: "gen7ou",
+            name: "Gen 7 OU",
+            game_type: GameType::Singles,
+            mod_: FormatMod::Gen7,
+            team_size: 6,
+            min_team_size: 1,
+            max_level: 100,
+            default_level: 100,
+            rulesets: &[
+                "Standard",
+                "Team Preview",
+                "Sleep Clause Mod",
+                "Species Clause",
+                "Nickname Clause",
+                "OHKO Clause",
+                "Evasion Clause",
+                "Moody Clause",
+                "Endless Battle Clause",
+                "HP Percentage Mod",
+                "Cancel Mod",
+            ],
+            bans: &[
+                "Uber",
+                "Arena Trap",
+                "Power Construct",
+                "Shadow Tag",
+                "Baton Pass",
+            ],
+            unbans: &[],
+            rated: true,
+            min_elo: None,
+        },
+    );
 
     // Gen 1 formats
-    formats.insert(ID::new("gen1ou"), FormatDef {
-        id: "gen1ou",
-        name: "Gen 1 OU",
-        game_type: GameType::Singles,
-        mod_: FormatMod::Gen1,
-        team_size: 6,
-        min_team_size: 1,
-        max_level: 100,
-        default_level: 100,
-        rulesets: &["Standard", "Sleep Clause Mod", "Species Clause", "Nickname Clause", "OHKO Clause", "Evasion Clause", "Endless Battle Clause"],
-        bans: &["Uber", "Baton Pass"],
-        unbans: &[],
-        rated: true,
-        min_elo: None,
-    });
+    formats.insert(
+        ID::new("gen1ou"),
+        FormatDef {
+            id: "gen1ou",
+            name: "Gen 1 OU",
+            game_type: GameType::Singles,
+            mod_: FormatMod::Gen1,
+            team_size: 6,
+            min_team_size: 1,
+            max_level: 100,
+            default_level: 100,
+            rulesets: &[
+                "Standard",
+                "Sleep Clause Mod",
+                "Species Clause",
+                "Nickname Clause",
+                "OHKO Clause",
+                "Evasion Clause",
+                "Endless Battle Clause",
+            ],
+            bans: &["Uber", "Baton Pass"],
+            unbans: &[],
+            rated: true,
+            min_elo: None,
+        },
+    );
 
     formats
 });
@@ -433,21 +632,21 @@ pub fn get_ruleset(id: &ID) -> Option<&'static RuleDef> {
 
 /// Get all formats for a generation
 pub fn get_formats_by_gen(gen: FormatMod) -> Vec<&'static FormatDef> {
-    FORMATS.values()
-        .filter(|f| f.mod_ == gen)
-        .collect()
+    FORMATS.values().filter(|f| f.mod_ == gen).collect()
 }
 
 /// Get all singles formats
 pub fn get_singles_formats() -> Vec<&'static FormatDef> {
-    FORMATS.values()
+    FORMATS
+        .values()
         .filter(|f| f.game_type == GameType::Singles)
         .collect()
 }
 
 /// Get all doubles formats
 pub fn get_doubles_formats() -> Vec<&'static FormatDef> {
-    FORMATS.values()
+    FORMATS
+        .values()
         .filter(|f| f.game_type == GameType::Doubles)
         .collect()
 }
@@ -571,8 +770,8 @@ impl RuleTable {
     /// Check if something is banned
     /// Equivalent to isBanned()
     // TypeScript source:
-    // 
-    // 
+    //
+    //
     // 	isBanned(thing: string) {
     // 		if (this.has(`+${thing}`)) return false;
     // 		return this.has(`-${thing}`);
@@ -587,7 +786,7 @@ impl RuleTable {
 
     /// Check if a species is banned
     /// Equivalent to isBannedSpecies()
-    // 
+    //
     // 	isBannedSpecies(species: Species) {
     // 		if (this.has(`+pokemon:${species.id}`)) return false;
     // 		if (this.has(`-pokemon:${species.id}`)) return true;
@@ -626,7 +825,7 @@ impl RuleTable {
 
     /// Check if something is restricted
     /// Equivalent to isRestricted()
-    // 
+    //
     // 	isRestricted(thing: string) {
     // 		if (this.has(`+${thing}`)) return false;
     // 		return this.has(`*${thing}`);
@@ -641,7 +840,7 @@ impl RuleTable {
 
     /// Check if a species is restricted
     /// Equivalent to isRestrictedSpecies()
-    // 
+    //
     // 	isRestrictedSpecies(species: Species) {
     // 		if (this.has(`+pokemon:${species.id}`)) return false;
     // 		if (this.has(`*pokemon:${species.id}`)) return true;
@@ -680,7 +879,7 @@ impl RuleTable {
 
     /// Get tag rules
     /// Equivalent to getTagRules()
-    // 
+    //
     // 	getTagRules() {
     // 		const tagRules = [];
     // 		for (const ruleid of this.keys()) {
@@ -705,13 +904,23 @@ impl RuleTable {
     pub fn get_tag_rules(&mut self) -> &Vec<String> {
         let mut tag_rules = Vec::new();
         for ruleid in self.rules.keys() {
-            if ruleid.starts_with("+pokemontag:") || ruleid.starts_with("*pokemontag:") || ruleid.starts_with("-pokemontag:") {
+            if ruleid.starts_with("+pokemontag:")
+                || ruleid.starts_with("*pokemontag:")
+                || ruleid.starts_with("-pokemontag:")
+            {
                 let banid = &ruleid[12..];
-                if banid != "allpokemon" && banid != "allitems" && banid != "allmoves"
-                    && banid != "allabilities" && banid != "allnatures" {
+                if banid != "allpokemon"
+                    && banid != "allitems"
+                    && banid != "allmoves"
+                    && banid != "allabilities"
+                    && banid != "allnatures"
+                {
                     tag_rules.push(ruleid.clone());
                 }
-            } else if ruleid.len() > 1 && "+*-".contains(&ruleid[..1]) && &ruleid[1..] == "nonexistent" {
+            } else if ruleid.len() > 1
+                && "+*-".contains(&ruleid[..1])
+                && &ruleid[1..] == "nonexistent"
+            {
                 tag_rules.push(format!("{}pokemontag:nonexistent", &ruleid[..1]));
             }
         }
@@ -744,7 +953,7 @@ impl RuleTable {
 
     /// Get reason for a rule
     /// Equivalent to getReason()
-    // 
+    //
     // 	getReason(key: string): string | null {
     // 		const source = this.get(key);
     // 		if (source === undefined) return null;
@@ -771,7 +980,7 @@ impl RuleTable {
 
     /// Get blame string for a rule
     /// Equivalent to blame()
-    // 
+    //
     // 	blame(key: string): string {
     // 		const source = this.get(key);
     // 		return source ? ` from ${source}` : ``;
@@ -786,7 +995,7 @@ impl RuleTable {
 
     /// Get index of a complex ban
     /// Equivalent to getComplexBanIndex()
-    // 
+    //
     // 	getComplexBanIndex(complexBans: ComplexBan[], rule: string): number {
     // 		const ruleId = toID(rule);
     // 		let complexBanIndex = -1;
@@ -801,12 +1010,14 @@ impl RuleTable {
     //
     pub fn get_complex_ban_index(&self, complex_bans: &[ComplexBan], rule: &str) -> Option<usize> {
         let rule_id = ID::new(rule);
-        complex_bans.iter().position(|(r, _, _, _)| ID::new(r) == rule_id)
+        complex_bans
+            .iter()
+            .position(|(r, _, _, _)| ID::new(r) == rule_id)
     }
 
     /// Add a complex ban
     /// Equivalent to addComplexBan()
-    // 
+    //
     // 	addComplexBan(rule: string, source: string, limit: number, bans: string[]) {
     // 		const complexBanIndex = this.getComplexBanIndex(this.complexBans, rule);
     // 		if (complexBanIndex !== -1) {
@@ -824,13 +1035,14 @@ impl RuleTable {
             }
             self.complex_bans[idx] = (rule.to_string(), source.to_string(), limit, bans);
         } else {
-            self.complex_bans.push((rule.to_string(), source.to_string(), limit, bans));
+            self.complex_bans
+                .push((rule.to_string(), source.to_string(), limit, bans));
         }
     }
 
     /// Add a complex team ban
     /// Equivalent to addComplexTeamBan()
-    // 
+    //
     // 	addComplexTeamBan(rule: string, source: string, limit: number, bans: string[]) {
     // 		const complexBanTeamIndex = this.getComplexBanIndex(this.complexTeamBans, rule);
     // 		if (complexBanTeamIndex !== -1) {
@@ -841,14 +1053,21 @@ impl RuleTable {
     // 		}
     // 	}
     //
-    pub fn add_complex_team_ban(&mut self, rule: &str, source: &str, limit: i32, bans: Vec<String>) {
+    pub fn add_complex_team_ban(
+        &mut self,
+        rule: &str,
+        source: &str,
+        limit: i32,
+        bans: Vec<String>,
+    ) {
         if let Some(idx) = self.get_complex_ban_index(&self.complex_team_bans, rule) {
             if self.complex_team_bans[idx].2 == i32::MAX {
                 return;
             }
             self.complex_team_bans[idx] = (rule.to_string(), source.to_string(), limit, bans);
         } else {
-            self.complex_team_bans.push((rule.to_string(), source.to_string(), limit, bans));
+            self.complex_team_bans
+                .push((rule.to_string(), source.to_string(), limit, bans));
         }
     }
 
@@ -860,16 +1079,16 @@ impl RuleTable {
     // 		const gameTypeMinTeamSize = ['triples', 'rotation'].includes(format.gameType as 'triples') ? 3 :
     // 			format.gameType === 'doubles' ? 2 :
     // 			1;
-    // 
+    //
     // 		// NOTE: These numbers are pre-calculated here because they're hardcoded
     // 		// into the team validator and battle engine, and can affect validation
     // 		// in complicated ways.
-    // 
+    //
     // 		// If you're making your own rule, it nearly definitely does not not
     // 		// belong here: `onValidateRule`, `onValidateSet`, and `onValidateTeam`
     // 		// should be enough for a validator rule, and the battle event system
     // 		// should be enough for a battle rule.
-    // 
+    //
     // 		this.minTeamSize = Number(this.valueRules.get('minteamsize')) || 0;
     // 		this.maxTeamSize = Number(this.valueRules.get('maxteamsize')) || 6;
     // 		this.pickedTeamSize = Number(this.valueRules.get('pickedteamsize')) || null;
@@ -890,7 +1109,7 @@ impl RuleTable {
     // 				this.minSourceGen = 1;
     // 			}
     // 		}
-    // 
+    //
     // 		const timer: Partial<GameTimerSettings> = {};
     // 		if (this.valueRules.has('timerstarting')) {
     // 			timer.starting = Number(this.valueRules.get('timerstarting'));
@@ -920,7 +1139,7 @@ impl RuleTable {
     // 			timer.accelerate = true;
     // 		}
     // 		if (Object.keys(timer).length) this.timer = [timer, format.name];
-    // 
+    //
     // 		if (this.valueRules.get('pickedteamsize') === 'Auto') {
     // 			this.pickedTeamSize = (
     // 				['doubles', 'rotation'].includes(format.gameType) ? 4 :
@@ -936,10 +1155,10 @@ impl RuleTable {
     // 			// Gen 6 hackmons also has a limit, which is currently implemented
     // 			// at the appropriate format.
     // 		}
-    // 
+    //
     // 		// sanity checks; these _could_ be inside `onValidateRule` but this way
     // 		// involves less string conversion.
-    // 
+    //
     // 		// engine hard limits
     // 		if (this.maxTeamSize > 24) {
     // 			throw new Error(`Max team size ${this.maxTeamSize}${this.blame('maxteamsize')} is unsupported (we only support up to 24).`);
@@ -953,7 +1172,7 @@ impl RuleTable {
     // 			// allowed in Custom Game.
     // 			throw new Error(`Max move count ${this.maxMoveCount}${this.blame('maxmovecount')} is unsupported (we only support up to 24)`);
     // 		}
-    // 
+    //
     // 		if (!this.defaultLevel) {
     // 			// defaultLevel will set level 100 pokemon to the default level, which can break
     // 			// Max Total Level if Max Level is above 100.
@@ -1001,7 +1220,7 @@ impl RuleTable {
     // 		if (this.evLimit && this.evLimit < 0) {
     // 			throw new Error(`EV Limit ${this.evLimit}${this.blame('evlimit')} can't be less than 0 (you might have meant: "! EV Limit" to remove the limit, or "EV Limit = 0" to ban EVs).`);
     // 		}
-    // 
+    //
     // 		if (timer.starting !== undefined && (timer.starting < 10 || timer.starting > 1200)) {
     // 			throw new Error(`Timer starting value ${timer.starting}${this.blame('timerstarting')} must be between 10 and 1200 seconds.`);
     // 		}
@@ -1017,7 +1236,7 @@ impl RuleTable {
     // 		if (timer.maxFirstTurn !== undefined && (timer.maxFirstTurn < 10 || timer.maxFirstTurn > 1200)) {
     // 			throw new Error(`Timer max first turn value ${timer.maxFirstTurn}${this.blame('timermaxfirstturn')} must be between 10 and 1200 seconds.`);
     // 		}
-    // 
+    //
     // 		if ((format as any).cupLevelLimit) {
     // 			throw new Error(`cupLevelLimit.range[0], cupLevelLimit.range[1], cupLevelLimit.total are now rules, respectively: "Min Level = NUMBER", "Max Level = NUMBER", and "Max Total Level = NUMBER"`);
     // 		}
@@ -1048,37 +1267,58 @@ impl RuleTable {
             _ => 1,
         };
 
-        self.min_team_size = self.value_rules.get("minteamsize")
+        self.min_team_size = self
+            .value_rules
+            .get("minteamsize")
             .and_then(|v| v.parse().ok())
             .unwrap_or(0);
-        self.max_team_size = self.value_rules.get("maxteamsize")
+        self.max_team_size = self
+            .value_rules
+            .get("maxteamsize")
             .and_then(|v| v.parse().ok())
             .unwrap_or(6);
-        self.picked_team_size = self.value_rules.get("pickedteamsize")
+        self.picked_team_size = self
+            .value_rules
+            .get("pickedteamsize")
             .and_then(|v| v.parse().ok());
-        self.max_total_level = self.value_rules.get("maxtotallevel")
+        self.max_total_level = self
+            .value_rules
+            .get("maxtotallevel")
             .and_then(|v| v.parse().ok());
-        self.max_move_count = self.value_rules.get("maxmovecount")
+        self.max_move_count = self
+            .value_rules
+            .get("maxmovecount")
             .and_then(|v| v.parse().ok())
             .unwrap_or(4);
-        self.min_source_gen = self.value_rules.get("minsourcegen")
+        self.min_source_gen = self
+            .value_rules
+            .get("minsourcegen")
             .and_then(|v| v.parse().ok())
             .unwrap_or(1);
-        self.min_level = self.value_rules.get("minlevel")
+        self.min_level = self
+            .value_rules
+            .get("minlevel")
             .and_then(|v| v.parse().ok())
             .unwrap_or(1);
-        self.max_level = self.value_rules.get("maxlevel")
+        self.max_level = self
+            .value_rules
+            .get("maxlevel")
             .and_then(|v| v.parse().ok())
             .unwrap_or(100);
-        self.default_level = self.value_rules.get("defaultlevel")
+        self.default_level = self
+            .value_rules
+            .get("defaultlevel")
             .and_then(|v| v.parse().ok())
             .unwrap_or(0);
-        self.adjust_level = self.value_rules.get("adjustlevel")
+        self.adjust_level = self
+            .value_rules
+            .get("adjustlevel")
             .and_then(|v| v.parse().ok());
-        self.adjust_level_down = self.value_rules.get("adjustleveldown")
+        self.adjust_level_down = self
+            .value_rules
+            .get("adjustleveldown")
             .and_then(|v| v.parse().ok());
-        self.ev_limit = self.value_rules.get("evlimit")
-            .and_then(|v| v.parse().ok());
+        self.ev_limit = self.value_rules.get("evlimit").and_then(|v| v.parse().ok());
 
         // Handle auto values for picked team size
         if self.value_rules.get("pickedteamsize").map(|s| s.as_str()) == Some("Auto") {
@@ -1102,7 +1342,7 @@ impl RuleTable {
 
     /// Check if there are complex bans
     /// Equivalent to hasComplexBans()
-    // 
+    //
     // 	hasComplexBans() {
     // 		return (this.complexBans?.length > 0) || (this.complexTeamBans?.length > 0);
     // 	}
@@ -1148,7 +1388,11 @@ impl Format {
             debug: false,
             rated: def.rated,
             game_type: def.game_type,
-            player_count: if matches!(def.game_type, GameType::Multi | GameType::FreeForAll) { 4 } else { 2 },
+            player_count: if matches!(def.game_type, GameType::Multi | GameType::FreeForAll) {
+                4
+            } else {
+                2
+            },
             ruleset: def.rulesets.iter().map(|s| s.to_string()).collect(),
             base_ruleset: def.rulesets.iter().map(|s| s.to_string()).collect(),
             banlist: def.bans.iter().map(|s| s.to_string()).collect(),
@@ -1205,14 +1449,14 @@ impl DexFormats {
 
     /// Load formats from static definitions
     /// Equivalent to load()
-    // 
+    //
     // 	load(): this {
     // 		if (!this.dex.isBase) throw new Error(`This should only be run on the base mod`);
     // 		this.dex.includeMods();
     // 		if (this.formatsListCache) return this;
-    // 
+    //
     // 		const formatsList = [];
-    // 
+    //
     // 		// Load formats
     // 		let customFormats;
     // 		try {
@@ -1230,7 +1474,7 @@ impl DexFormats {
     // 			throw new TypeError(`Exported property 'Formats' from "./config/formats.ts" must be an array`);
     // 		}
     // 		if (customFormats) Formats = mergeFormatLists(Formats as any, customFormats);
-    // 
+    //
     // 		let section = '';
     // 		let column = 1;
     // 		for (const [i, format] of Formats.entries()) {
@@ -1253,12 +1497,12 @@ impl DexFormats {
     // 			if (format.teraPreviewDefault === undefined) format.teraPreviewDefault = false;
     // 			if (format.mod === undefined) format.mod = 'gen9';
     // 			if (!this.dex.dexes[format.mod]) throw new Error(`Format "${format.name}" requires nonexistent mod: '${format.mod}'`);
-    // 
+    //
     // 			const ruleset = new Format(format);
     // 			this.rulesetCache.set(id, ruleset);
     // 			formatsList.push(ruleset);
     // 		}
-    // 
+    //
     // 		this.formatsListCache = formatsList;
     // 		return this;
     // 	}
@@ -1324,10 +1568,7 @@ impl DexFormats {
         }
 
         // Has custom rules
-        let custom_rules: Vec<String> = parts[1]
-            .split(',')
-            .map(|r| r.trim().to_string())
-            .collect();
+        let custom_rules: Vec<String> = parts[1].split(',').map(|r| r.trim().to_string()).collect();
 
         Ok(format!("{}@@@{}", format.id, custom_rules.join(",")))
     }
@@ -1343,15 +1584,15 @@ impl DexFormats {
     // 	 */
     // 	get(name?: string | Format, isTrusted = false): Format {
     // 		if (name && typeof name !== 'string') return name;
-    // 
+    //
     // 		name = (name || '').trim();
     // 		let id = toID(name);
-    // 
+    //
     // 		if (!name.includes('@@@')) {
     // 			const ruleset = this.rulesetCache.get(id);
     // 			if (ruleset) return ruleset;
     // 		}
-    // 
+    //
     // 		if (this.dex.getAlias(id)) {
     // 			id = this.dex.getAlias(id)!;
     // 			name = id;
@@ -1410,7 +1651,7 @@ impl DexFormats {
 
     /// Get all formats
     /// Equivalent to all()
-    // 
+    //
     // 	all() {
     // 		this.load();
     // 		return this.formatsListCache!;
@@ -1423,7 +1664,7 @@ impl DexFormats {
 
     /// Check if a rule spec is for Pokemon
     /// Equivalent to isPokemonRule()
-    // 
+    //
     // 	isPokemonRule(ruleSpec: string) {
     // 		return (
     // 			ruleSpec.slice(1).startsWith('pokemontag:') || ruleSpec.slice(1).startsWith('pokemon:') ||
@@ -1432,8 +1673,14 @@ impl DexFormats {
     // 	}
     //
     pub fn is_pokemon_rule(rule_spec: &str) -> bool {
-        let rest = if rule_spec.len() > 1 { &rule_spec[1..] } else { "" };
-        rest.starts_with("pokemontag:") || rest.starts_with("pokemon:") || rest.starts_with("basepokemon:")
+        let rest = if rule_spec.len() > 1 {
+            &rule_spec[1..]
+        } else {
+            ""
+        };
+        rest.starts_with("pokemontag:")
+            || rest.starts_with("pokemon:")
+            || rest.starts_with("basepokemon:")
     }
 
     /// Get rule table for a format
@@ -1450,7 +1697,7 @@ impl DexFormats {
     // 			}
     // 		}
     // 		const ruleTable = new RuleTable();
-    // 
+    //
     // 		const ruleset = format.ruleset.slice();
     // 		for (const ban of format.banlist) {
     // 			ruleset.push('-' + ban);
@@ -1470,7 +1717,7 @@ impl DexFormats {
     // 		if (format.onChooseTeam) {
     // 			ruleTable.onChooseTeam = [format.onChooseTeam, format.name];
     // 		}
-    // 
+    //
     // 		// apply rule repeals before other rules
     // 		// repeals is a ruleid:depth map (positive: unused, negative: used)
     // 		const ruleSpecs = ruleset.map(rule => this.validateRule(rule, format));
@@ -1482,14 +1729,14 @@ impl DexFormats {
     // 				repeals.set(ruleSpec.slice(1), depth);
     // 			}
     // 		}
-    // 
+    //
     // 		let skipPokemonBans = ruleSpecs.filter(r => r === '+pokemontag:allpokemon').length;
     // 		let hasPokemonBans = false;
     // 		const warnForNoPokemonBans = !!skipPokemonBans && !format.customRules;
     // 		skipPokemonBans += ruleSpecs.filter(r => r === '-pokemontag:allpokemon').length;
-    // 
+    //
     // 		// if (format.customRules) console.log(`${format.id}: ${format.customRules.join(', ')}`);
-    // 
+    //
     // 		for (let ruleSpec of ruleSpecs) {
     // 			// complex ban/unban
     // 			if (typeof ruleSpec !== 'string') {
@@ -1504,11 +1751,11 @@ impl DexFormats {
     // 				}
     // 				continue;
     // 			}
-    // 
+    //
     // 			// ^ is undocumented because I really don't want it used outside of tests
     // 			const noWarn = ruleSpec.startsWith('^');
     // 			if (noWarn) ruleSpec = ruleSpec.slice(1);
-    // 
+    //
     // 			// repeal rule
     // 			if (ruleSpec.startsWith('!') && !ruleSpec.startsWith('!!')) {
     // 				const repealDepth = repeals!.get(ruleSpec.slice(1));
@@ -1519,7 +1766,7 @@ impl DexFormats {
     // 				if (repealDepth === -depth) repeals!.delete(ruleSpec.slice(1));
     // 				continue;
     // 			}
-    // 
+    //
     // 			// individual ban/unban
     // 			if ('+*-'.includes(ruleSpec.charAt(0))) {
     // 				if (ruleTable.has(ruleSpec)) {
@@ -1539,7 +1786,7 @@ impl DexFormats {
     // 				ruleTable.set(ruleSpec, '');
     // 				continue;
     // 			}
-    // 
+    //
     // 			// rule
     // 			let [formatid, value] = ruleSpec.split('=');
     // 			const subformat = this.get(formatid);
@@ -1567,7 +1814,7 @@ impl DexFormats {
     // 						throw new Error(`In rule "${ruleSpec}", "${value}" must be positive.`);
     // 					}
     // 				}
-    // 
+    //
     // 				const oldValue = ruleTable.valueRules.get(subformat.id);
     // 				if (oldValue === value) {
     // 					if (!noWarn) {
@@ -1610,14 +1857,14 @@ impl DexFormats {
     // 			for (const [ruleid, sourceFormat] of subRuleTable) {
     // 				// don't check for "already exists" here; multiple inheritance is allowed
     // 				if (repeals?.has(ruleid)) continue;
-    // 
+    //
     // 				if (skipPokemonBans && '+*-'.includes(ruleid.charAt(0))) {
     // 					if (this.isPokemonRule(ruleid)) {
     // 						hasPokemonBans = true;
     // 						continue;
     // 					}
     // 				}
-    // 
+    //
     // 				const newValue = subRuleTable.valueRules.get(ruleid);
     // 				const oldValue = ruleTable.valueRules.get(ruleid);
     // 				if (newValue !== undefined) {
@@ -1666,9 +1913,9 @@ impl DexFormats {
     // 			throw new Error(`"+All Pokemon" rule has no effect (no species are banned by default, and it does not override obtainability rules)`);
     // 		}
     // 		ruleTable.getTagRules();
-    // 
+    //
     // 		ruleTable.resolveNumbers(format, this.dex);
-    // 
+    //
     // 		const canMegaEvo = this.dex.gen <= 7 || ruleTable.has('+pokemontag:past');
     // 		if (ruleTable.has('obtainableformes') && canMegaEvo &&
     // 			ruleTable.isBannedSpecies(this.dex.species.get('rayquazamega')) &&
@@ -1678,7 +1925,7 @@ impl DexFormats {
     // 			// note that already having it explicitly in the ruleset is ok
     // 			ruleTable.set('megarayquazaclause', '');
     // 		}
-    // 
+    //
     // 		for (const rule of ruleTable.keys()) {
     // 			if ("+*-!".includes(rule.charAt(0))) continue;
     // 			const subFormat = this.dex.formats.get(rule);
@@ -1689,7 +1936,7 @@ impl DexFormats {
     // 				if (typeof value === 'string') ruleTable.valueRules.set(subFormat.id, value);
     // 			}
     // 		}
-    // 
+    //
     // 		if (!repeals) format.ruleTable = ruleTable;
     // 		return ruleTable;
     // 	}
@@ -1736,7 +1983,7 @@ impl DexFormats {
 
     /// Validate a rule string
     /// Equivalent to validateRule()
-    // 
+    //
     // 	validateRule(rule: string, format: Format | null = null) {
     // 		if (rule !== rule.trim()) throw new Error(`Rule "${rule}" should be trimmed`);
     // 		switch (rule.charAt(0)) {
@@ -1756,7 +2003,7 @@ impl DexFormats {
     // 				if (banNames.length === 1 && limit > 0) checkTeam = true;
     // 				const innerRule = banNames.join(checkTeam ? ' ++ ' : ' + ');
     // 				const bans = banNames.map(v => this.validateBanRule(v));
-    // 
+    //
     // 				if (checkTeam) {
     // 					return ['complexTeamBan', innerRule, '', limit, bans];
     // 				}
@@ -1795,7 +2042,8 @@ impl DexFormats {
             '-' | '*' | '+' => {
                 // Ban/unban/restrict rule
                 let rest = &rule[1..];
-                self.validate_ban_rule(rest).map(|r| format!("{}{}", first_char, r))
+                self.validate_ban_rule(rest)
+                    .map(|r| format!("{}{}", first_char, r))
             }
             '!' => {
                 // Repeal rule
@@ -1816,7 +2064,7 @@ impl DexFormats {
 
     /// Check if a tag is a valid Pokemon tag
     /// Equivalent to validPokemonTag()
-    // 
+    //
     // 	validPokemonTag(tagid: ID) {
     // 		const tag = Tags.hasOwnProperty(tagid) && Tags[tagid];
     // 		if (!tag) return false;
@@ -1830,7 +2078,7 @@ impl DexFormats {
 
     /// Validate a ban rule
     /// Equivalent to validateBanRule()
-    // 
+    //
     // 	validateBanRule(rule: string) {
     // 		let id = toID(rule);
     // 		if (id === 'unreleased') return 'unreleased';

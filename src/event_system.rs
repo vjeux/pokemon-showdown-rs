@@ -149,28 +149,39 @@ impl EffectState {
 
     /// Set a boolean field in custom data
     pub fn set_bool(&mut self, key: &str, value: bool) {
-        self.data.insert(key.to_string(), serde_json::Value::Bool(value));
+        self.data
+            .insert(key.to_string(), serde_json::Value::Bool(value));
     }
 
     /// Get an integer field from custom data
     /// Equivalent to volatile.fieldName or effectState.fieldName in TypeScript
     pub fn get_i32(&self, key: &str) -> Option<i32> {
-        self.data.get(key).and_then(|v| v.as_i64()).map(|n| n as i32)
+        self.data
+            .get(key)
+            .and_then(|v| v.as_i64())
+            .map(|n| n as i32)
     }
 
     /// Set an integer field in custom data
     pub fn set_i32(&mut self, key: &str, value: i32) {
-        self.data.insert(key.to_string(), serde_json::Value::Number(value.into()));
+        self.data
+            .insert(key.to_string(), serde_json::Value::Number(value.into()));
     }
 
     /// Get a usize field from custom data (for slot indices)
     pub fn get_usize(&self, key: &str) -> Option<usize> {
-        self.data.get(key).and_then(|v| v.as_u64()).map(|n| n as usize)
+        self.data
+            .get(key)
+            .and_then(|v| v.as_u64())
+            .map(|n| n as usize)
     }
 
     /// Set a usize field in custom data
     pub fn set_usize(&mut self, key: &str, value: usize) {
-        self.data.insert(key.to_string(), serde_json::Value::Number((value as u64).into()));
+        self.data.insert(
+            key.to_string(),
+            serde_json::Value::Number((value as u64).into()),
+        );
     }
 
     /// Get source slot from custom data

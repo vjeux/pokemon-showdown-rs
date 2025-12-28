@@ -17,7 +17,11 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the pokemon (user of the move)
     let _pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
@@ -56,4 +60,3 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // return move.basePower;
     EventResult::Number(move_data.base_power)
 }
-

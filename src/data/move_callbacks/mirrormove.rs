@@ -15,9 +15,11 @@ use crate::event::EventResult;
 ///     this.actions.useMove(move.id, pokemon, { target });
 ///     return null;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    
-
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     let pokemon = source_pos;
     let target = target_pos;
 
@@ -59,4 +61,3 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     // return null;
     EventResult::Stop
 }
-

@@ -18,9 +18,11 @@ use crate::event::EventResult;
 ///     this.add("-activate", target, 'move: Spite', move.name, ppDeducted);
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // onHit(target) {
     //     let move: Move | ActiveMove | null = target.lastMove;
     //     if (!move || move.isZ) return false;
@@ -47,7 +49,12 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Opt
             Some(move_id) => {
                 let move_data = battle.dex.get_move_by_id(move_id);
                 match move_data {
-                    Some(m) => (move_id.clone(), m.is_z.clone(), m.is_max.clone(), m.base_move.clone()),
+                    Some(m) => (
+                        move_id.clone(),
+                        m.is_z.clone(),
+                        m.is_max.clone(),
+                        m.base_move.clone(),
+                    ),
                     None => return EventResult::Boolean(false),
                 }
             }
@@ -92,13 +99,15 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Opt
         (target_pokemon.get_slot(), move_name)
     };
 
-    battle.add("-activate", &[
-        target_arg.into(),
-        "move: Spite".into(),
-        move_name.into(),
-        pp_deducted.to_string().into(),
-    ]);
+    battle.add(
+        "-activate",
+        &[
+            target_arg.into(),
+            "move: Spite".into(),
+            move_name.into(),
+            pp_deducted.to_string().into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

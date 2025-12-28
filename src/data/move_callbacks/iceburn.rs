@@ -18,7 +18,11 @@ use crate::event::EventResult;
 ///     attacker.addVolatile('twoturnmove', defender);
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let attacker = source_pos;
@@ -33,30 +37,24 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     };
 
     let removed = {
-
-
         let pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
-
-
             Some(p) => p,
 
-
             None => return EventResult::Continue,
-
-
         };
 
-
         pokemon.remove_volatile(&move_id.id)
-
-
     };
     if removed {
         return EventResult::Continue;
     }
 
     // this.add('-prepare', attacker, move.name);
-    let move_name = battle.active_move.as_ref().map(|m| m.name.clone()).unwrap_or_default();
+    let move_name = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.name.clone())
+        .unwrap_or_default();
     let attacker_ident = {
         let pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
             Some(p) => p,
@@ -64,7 +62,10 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         };
         pokemon.get_slot()
     };
-    battle.add("-prepare", &[attacker_ident.as_str().into(), move_name.into()]);
+    battle.add(
+        "-prepare",
+        &[attacker_ident.as_str().into(), move_name.into()],
+    );
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;
@@ -76,20 +77,15 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 
     // attacker.addVolatile('twoturnmove', defender);
     {
-
         let pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("twoturnmove"));
-
     }
 
     // return null;
     EventResult::Stop
 }
-

@@ -5,8 +5,8 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onHit(target, source, move) {
 ///     this.add('-activate', source, 'move: Aromatherapy');
@@ -28,7 +28,11 @@ use crate::dex_data::ID;
 ///     }
 ///     return success;
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // this.add('-activate', source, 'move: Aromatherapy');
     let source_ident = {
         let source_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -37,7 +41,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
         source_pokemon.get_slot()
     };
-    battle.add("-activate", &[source_ident.as_str().into(), "move: Aromatherapy".into()]);
+    battle.add(
+        "-activate",
+        &[source_ident.as_str().into(), "move: Aromatherapy".into()],
+    );
 
     // let success = false;
     let mut success = false;
@@ -68,7 +75,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     Some(p) => p,
                     None => continue,
                 };
-                (ally.has_ability(&["sapsipper"]), ally.has_ability(&["goodasgold"]))
+                (
+                    ally.has_ability(&["sapsipper"]),
+                    ally.has_ability(&["goodasgold"]),
+                )
             };
 
             // if (ally.hasAbility('sapsipper')) {
@@ -81,7 +91,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     };
                     ally.get_slot()
                 };
-                battle.add("-immune", &[ally_ident.as_str().into(), "[from] ability: Sap Sipper".into()]);
+                battle.add(
+                    "-immune",
+                    &[
+                        ally_ident.as_str().into(),
+                        "[from] ability: Sap Sipper".into(),
+                    ],
+                );
                 // continue;
                 continue;
             }
@@ -96,7 +112,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     };
                     ally.get_slot()
                 };
-                battle.add("-immune", &[ally_ident.as_str().into(), "[from] ability: Good as Gold".into()]);
+                battle.add(
+                    "-immune",
+                    &[
+                        ally_ident.as_str().into(),
+                        "[from] ability: Good as Gold".into(),
+                    ],
+                );
                 // continue;
                 continue;
             }
@@ -121,4 +143,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // return success;
     EventResult::Boolean(success)
 }
-

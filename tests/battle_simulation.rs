@@ -1,34 +1,29 @@
 //! Full battle simulation integration tests
 
 use pokemon_showdown::{
-    Battle, BattleOptions, PlayerOptions, Dex,
-    PRNG, PRNGSeed, BattleActions, DamageResult,
-    PokemonSet, ID,
+    Battle, BattleActions, BattleOptions, DamageResult, Dex, PRNGSeed, PlayerOptions, PokemonSet,
+    ID, PRNG,
 };
 
 /// Create a simple battle with two Pokemon teams
 fn create_test_battle() -> Battle {
-    let team1 = vec![
-        PokemonSet {
-            name: "Pikachu".to_string(),
-            species: "Pikachu".to_string(),
-            level: 50,
-            ability: "Static".to_string(),
-            moves: vec!["Thunderbolt".to_string(), "Quick Attack".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Pikachu".to_string(),
+        species: "Pikachu".to_string(),
+        level: 50,
+        ability: "Static".to_string(),
+        moves: vec!["Thunderbolt".to_string(), "Quick Attack".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Squirtle".to_string(),
-            species: "Squirtle".to_string(),
-            level: 50,
-            ability: "Torrent".to_string(),
-            moves: vec!["Tackle".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Squirtle".to_string(),
+        species: "Squirtle".to_string(),
+        level: 50,
+        ability: "Torrent".to_string(),
+        moves: vec!["Tackle".to_string()],
+        ..Default::default()
+    }];
 
     Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -76,7 +71,7 @@ fn test_damage_calculation_super_effective() {
     };
     let mut attacker = pokemon_showdown::Pokemon::new(&attacker_set, 0, 0);
     attacker.types = vec!["Electric".to_string()];
-    attacker.stored_stats.spa = 80;  // Set Sp.Atk
+    attacker.stored_stats.spa = 80; // Set Sp.Atk
 
     let defender_set = PokemonSet {
         name: "Squirtle".to_string(),
@@ -86,7 +81,7 @@ fn test_damage_calculation_super_effective() {
     };
     let mut defender = pokemon_showdown::Pokemon::new(&defender_set, 1, 0);
     defender.types = vec!["Water".to_string()];
-    defender.stored_stats.spd = 64;  // Set Sp.Def
+    defender.stored_stats.spd = 64; // Set Sp.Def
     defender.hp = 100;
     defender.maxhp = 100;
 
@@ -227,9 +222,15 @@ fn test_stat_boosts_in_damage() {
         _ => panic!("Expected damage"),
     };
 
-    println!("Base damage: {}, Boosted (+2 Atk) damage: {}", base_damage, boosted_damage);
+    println!(
+        "Base damage: {}, Boosted (+2 Atk) damage: {}",
+        base_damage, boosted_damage
+    );
     // +2 should give 2x attack
-    assert!(boosted_damage > base_damage * 3 / 2, "Expected roughly 2x damage with +2 boost");
+    assert!(
+        boosted_damage > base_damage * 3 / 2,
+        "Expected roughly 2x damage with +2 boost"
+    );
 }
 
 #[test]
@@ -273,7 +274,10 @@ fn test_critical_hit_damage() {
         _ => panic!("Expected damage"),
     };
 
-    println!("Normal damage: {}, Crit damage: {}", normal_damage, crit_damage);
+    println!(
+        "Normal damage: {}, Crit damage: {}",
+        normal_damage, crit_damage
+    );
     // Gen 6+ crits do 1.5x damage
     assert!(crit_damage > normal_damage, "Crit should do more damage");
 }
@@ -312,14 +316,38 @@ fn test_type_chart() {
     // Test various type matchups
     assert_eq!(dex.get_effectiveness("Fire", "Grass"), 2.0, "Fire > Grass");
     assert_eq!(dex.get_effectiveness("Water", "Fire"), 2.0, "Water > Fire");
-    assert_eq!(dex.get_effectiveness("Grass", "Water"), 2.0, "Grass > Water");
+    assert_eq!(
+        dex.get_effectiveness("Grass", "Water"),
+        2.0,
+        "Grass > Water"
+    );
 
-    assert_eq!(dex.get_effectiveness("Electric", "Ground"), 0.0, "Electric immune to Ground");
-    assert_eq!(dex.get_effectiveness("Normal", "Ghost"), 0.0, "Normal immune to Ghost");
-    assert_eq!(dex.get_effectiveness("Fighting", "Ghost"), 0.0, "Fighting immune to Ghost");
+    assert_eq!(
+        dex.get_effectiveness("Electric", "Ground"),
+        0.0,
+        "Electric immune to Ground"
+    );
+    assert_eq!(
+        dex.get_effectiveness("Normal", "Ghost"),
+        0.0,
+        "Normal immune to Ghost"
+    );
+    assert_eq!(
+        dex.get_effectiveness("Fighting", "Ghost"),
+        0.0,
+        "Fighting immune to Ghost"
+    );
 
-    assert_eq!(dex.get_effectiveness("Fire", "Water"), 0.5, "Fire resisted by Water");
-    assert_eq!(dex.get_effectiveness("Electric", "Electric"), 0.5, "Electric resisted by Electric");
+    assert_eq!(
+        dex.get_effectiveness("Fire", "Water"),
+        0.5,
+        "Fire resisted by Water"
+    );
+    assert_eq!(
+        dex.get_effectiveness("Electric", "Electric"),
+        0.5,
+        "Electric resisted by Electric"
+    );
 }
 
 #[test]
@@ -329,37 +357,39 @@ fn test_dual_type_effectiveness() {
     // Water/Flying (like Gyarados) takes 4x from Electric
     let types = vec!["Water".to_string(), "Flying".to_string()];
     let effectiveness = dex.get_type_effectiveness("Electric", &types);
-    assert_eq!(effectiveness, 4.0, "Electric should be 4x effective vs Water/Flying");
+    assert_eq!(
+        effectiveness, 4.0,
+        "Electric should be 4x effective vs Water/Flying"
+    );
 
     // Electric/Flying takes 0x from Ground
     let types = vec!["Electric".to_string(), "Flying".to_string()];
     let effectiveness = dex.get_type_effectiveness("Ground", &types);
-    assert_eq!(effectiveness, 0.0, "Ground should be immune to Electric/Flying");
+    assert_eq!(
+        effectiveness, 0.0,
+        "Ground should be immune to Electric/Flying"
+    );
 }
 
 #[test]
 fn test_make_choices_basic() {
-    let team1 = vec![
-        PokemonSet {
-            name: "Pikachu".to_string(),
-            species: "Pikachu".to_string(),
-            level: 50,
-            ability: "Static".to_string(),
-            moves: vec!["Thunderbolt".to_string(), "Quick Attack".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Pikachu".to_string(),
+        species: "Pikachu".to_string(),
+        level: 50,
+        ability: "Static".to_string(),
+        moves: vec!["Thunderbolt".to_string(), "Quick Attack".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Squirtle".to_string(),
-            species: "Squirtle".to_string(),
-            level: 50,
-            ability: "Torrent".to_string(),
-            moves: vec!["Tackle".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Squirtle".to_string(),
+        species: "Squirtle".to_string(),
+        level: 50,
+        ability: "Torrent".to_string(),
+        moves: vec!["Tackle".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -396,27 +426,23 @@ fn test_make_choices_basic() {
 
 #[test]
 fn test_damage_dealt() {
-    let team1 = vec![
-        PokemonSet {
-            name: "Pikachu".to_string(),
-            species: "Pikachu".to_string(),
-            level: 50,
-            ability: "Static".to_string(),
-            moves: vec!["Thunderbolt".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Pikachu".to_string(),
+        species: "Pikachu".to_string(),
+        level: 50,
+        ability: "Static".to_string(),
+        moves: vec!["Thunderbolt".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Squirtle".to_string(),
-            species: "Squirtle".to_string(),
-            level: 50,
-            ability: "Torrent".to_string(),
-            moves: vec!["Tackle".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Squirtle".to_string(),
+        species: "Squirtle".to_string(),
+        level: 50,
+        ability: "Torrent".to_string(),
+        moves: vec!["Tackle".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -448,7 +474,7 @@ fn test_damage_dealt() {
     if let Some(p2_pokemon) = battle.sides[1].get_active_mut(0) {
         p2_pokemon.types = vec!["Water".to_string()];
         p2_pokemon.stored_stats.spd = 64;
-        p2_pokemon.hp = 500;  // High HP so it survives
+        p2_pokemon.hp = 500; // High HP so it survives
         p2_pokemon.maxhp = 500;
     }
 
@@ -457,37 +483,32 @@ fn test_damage_dealt() {
     battle.make_choices("move thunderbolt", "move tackle");
 
     // After the move, check HP - might be fainted or still active
-    let final_hp = battle.sides[1].pokemon[0].hp;  // Use pokemon directly instead of get_active
+    let final_hp = battle.sides[1].pokemon[0].hp; // Use pokemon directly instead of get_active
     println!("Initial HP: {}, Final HP: {}", initial_hp, final_hp);
 
     // Thunderbolt should deal damage (super effective against water)
     assert!(final_hp < initial_hp, "Thunderbolt should deal damage");
 }
 
-
 #[test]
 fn test_status_paralysis_speed() {
-    let team1 = vec![
-        PokemonSet {
-            name: "Pikachu".to_string(),
-            species: "Pikachu".to_string(),
-            level: 50,
-            ability: "Static".to_string(),
-            moves: vec!["Thunder Wave".to_string(), "Tackle".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Pikachu".to_string(),
+        species: "Pikachu".to_string(),
+        level: 50,
+        ability: "Static".to_string(),
+        moves: vec!["Thunder Wave".to_string(), "Tackle".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Rattata".to_string(),
-            species: "Rattata".to_string(),
-            level: 50,
-            ability: "Run Away".to_string(),
-            moves: vec!["Quick Attack".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Rattata".to_string(),
+        species: "Rattata".to_string(),
+        level: 50,
+        ability: "Run Away".to_string(),
+        moves: vec!["Quick Attack".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -519,7 +540,11 @@ fn test_status_paralysis_speed() {
 
     // Check Rattata is paralyzed
     let rattata = battle.sides[1].get_active(0).unwrap();
-    assert_eq!(rattata.status.as_str(), "par", "Rattata should be paralyzed");
+    assert_eq!(
+        rattata.status.as_str(),
+        "par",
+        "Rattata should be paralyzed"
+    );
 }
 
 #[test]
@@ -543,16 +568,14 @@ fn test_switch_in_battle() {
         },
     ];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Squirtle".to_string(),
-            species: "Squirtle".to_string(),
-            level: 50,
-            ability: "Torrent".to_string(),
-            moves: vec!["Tackle".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Squirtle".to_string(),
+        species: "Squirtle".to_string(),
+        level: 50,
+        ability: "Torrent".to_string(),
+        moves: vec!["Tackle".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -585,35 +608,32 @@ fn test_switch_in_battle() {
 
     // Log should contain switch message
     let log = battle.get_log();
-    assert!(log.contains("switch") && log.contains("Charizard"), "Log should contain Charizard switch");
+    assert!(
+        log.contains("switch") && log.contains("Charizard"),
+        "Log should contain Charizard switch"
+    );
 }
-
-
 
 #[test]
 fn test_paralysis_cant_move() {
     // Test that paralysis can prevent movement (25% chance in Gen 7+)
-    let team1 = vec![
-        PokemonSet {
-            name: "Pikachu".to_string(),
-            species: "Pikachu".to_string(),
-            level: 50,
-            ability: "Static".to_string(),
-            moves: vec!["Thunder Wave".to_string(), "Thunderbolt".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Pikachu".to_string(),
+        species: "Pikachu".to_string(),
+        level: 50,
+        ability: "Static".to_string(),
+        moves: vec!["Thunder Wave".to_string(), "Thunderbolt".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Rattata".to_string(),
-            species: "Rattata".to_string(),
-            level: 50,
-            ability: "Run Away".to_string(),
-            moves: vec!["Tackle".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Rattata".to_string(),
+        species: "Rattata".to_string(),
+        level: 50,
+        ability: "Run Away".to_string(),
+        moves: vec!["Tackle".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -643,7 +663,11 @@ fn test_paralysis_cant_move() {
     // Paralyze the Rattata
     battle.make_choices("move thunderwave", "move tackle");
 
-    assert_eq!(battle.sides[1].pokemon[0].status.as_str(), "par", "Rattata should be paralyzed");
+    assert_eq!(
+        battle.sides[1].pokemon[0].status.as_str(),
+        "par",
+        "Rattata should be paralyzed"
+    );
 
     // Run multiple turns - statistically some should be blocked by paralysis
     for _ in 0..10 {
@@ -661,27 +685,23 @@ fn test_paralysis_cant_move() {
 
 #[test]
 fn test_stat_boosts_sword_dance() {
-    let team1 = vec![
-        PokemonSet {
-            name: "Scizor".to_string(),
-            species: "Scizor".to_string(),
-            level: 50,
-            ability: "Technician".to_string(),
-            moves: vec!["Swords Dance".to_string(), "Bullet Punch".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Scizor".to_string(),
+        species: "Scizor".to_string(),
+        level: 50,
+        ability: "Technician".to_string(),
+        moves: vec!["Swords Dance".to_string(), "Bullet Punch".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Blissey".to_string(),
-            species: "Blissey".to_string(),
-            level: 50,
-            ability: "Natural Cure".to_string(),
-            moves: vec!["Soft Boiled".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Blissey".to_string(),
+        species: "Blissey".to_string(),
+        level: 50,
+        ability: "Natural Cure".to_string(),
+        moves: vec!["Soft Boiled".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -710,51 +730,59 @@ fn test_stat_boosts_sword_dance() {
     }
 
     // Initial attack boost should be 0
-    assert_eq!(battle.sides[0].pokemon[0].boosts.atk, 0, "Attack boost should start at 0");
+    assert_eq!(
+        battle.sides[0].pokemon[0].boosts.atk, 0,
+        "Attack boost should start at 0"
+    );
 
     // Use Swords Dance
     battle.make_choices("move swordsdance", "move softboiled");
 
     // Attack boost should now be +2
-    assert_eq!(battle.sides[0].pokemon[0].boosts.atk, 2, "Attack boost should be +2 after Swords Dance");
+    assert_eq!(
+        battle.sides[0].pokemon[0].boosts.atk, 2,
+        "Attack boost should be +2 after Swords Dance"
+    );
 
     // Use Swords Dance again
     battle.make_choices("move swordsdance", "move softboiled");
 
     // Attack boost should now be +4
-    assert_eq!(battle.sides[0].pokemon[0].boosts.atk, 4, "Attack boost should be +4 after two Swords Dances");
+    assert_eq!(
+        battle.sides[0].pokemon[0].boosts.atk, 4,
+        "Attack boost should be +4 after two Swords Dances"
+    );
 
     // Use Swords Dance a third time
     battle.make_choices("move swordsdance", "move softboiled");
 
     // Attack boost should cap at +6
-    assert_eq!(battle.sides[0].pokemon[0].boosts.atk, 6, "Attack boost should cap at +6");
+    assert_eq!(
+        battle.sides[0].pokemon[0].boosts.atk, 6,
+        "Attack boost should cap at +6"
+    );
 }
 
 #[test]
 fn test_speed_order() {
     // Test that faster Pokemon moves first
-    let team1 = vec![
-        PokemonSet {
-            name: "Electrode".to_string(),  // Fast
-            species: "Electrode".to_string(),
-            level: 50,
-            ability: "Static".to_string(),
-            moves: vec!["Thunderbolt".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Electrode".to_string(), // Fast
+        species: "Electrode".to_string(),
+        level: 50,
+        ability: "Static".to_string(),
+        moves: vec!["Thunderbolt".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Slowpoke".to_string(),  // Slow
-            species: "Slowpoke".to_string(),
-            level: 50,
-            ability: "Own Tempo".to_string(),
-            moves: vec!["Tackle".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Slowpoke".to_string(), // Slow
+        species: "Slowpoke".to_string(),
+        level: 50,
+        ability: "Own Tempo".to_string(),
+        moves: vec!["Tackle".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -794,7 +822,10 @@ fn test_speed_order() {
     let slowpoke_move_pos = log.find("Slowpoke");
 
     // Both should appear in log
-    assert!(electrode_move_pos.is_some(), "Electrode should appear in log");
+    assert!(
+        electrode_move_pos.is_some(),
+        "Electrode should appear in log"
+    );
     assert!(slowpoke_move_pos.is_some(), "Slowpoke should appear in log");
 
     // In a normal turn, faster moves first - but this is complex to verify
@@ -805,27 +836,23 @@ fn test_speed_order() {
 #[test]
 fn test_weather_rain_boost() {
     // Rain should boost Water moves by 1.5x and weaken Fire moves by 0.5x
-    let team1 = vec![
-        PokemonSet {
-            name: "Pelipper".to_string(),
-            species: "Pelipper".to_string(),
-            level: 50,
-            ability: "Drizzle".to_string(),
-            moves: vec!["Surf".to_string(), "Scald".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Pelipper".to_string(),
+        species: "Pelipper".to_string(),
+        level: 50,
+        ability: "Drizzle".to_string(),
+        moves: vec!["Surf".to_string(), "Scald".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Blissey".to_string(),
-            species: "Blissey".to_string(),
-            level: 50,
-            ability: "Natural Cure".to_string(),
-            moves: vec!["Flamethrower".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Blissey".to_string(),
+        species: "Blissey".to_string(),
+        level: 50,
+        ability: "Natural Cure".to_string(),
+        moves: vec!["Flamethrower".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -859,34 +886,32 @@ fn test_weather_rain_boost() {
 
     // Rain should have boosted the Water move
     assert!(damage_dealt > 0, "Surf should deal damage");
-    println!("Rain boost test - Surf dealt {} damage in rain", damage_dealt);
+    println!(
+        "Rain boost test - Surf dealt {} damage in rain",
+        damage_dealt
+    );
 }
-
 
 #[test]
 fn test_terrain_electric_boost() {
     // Electric Terrain should boost Electric moves by 1.3x for grounded Pokemon
-    let team1 = vec![
-        PokemonSet {
-            name: "Pikachu".to_string(),
-            species: "Pikachu".to_string(),
-            level: 50,
-            ability: "Static".to_string(),
-            moves: vec!["Thunderbolt".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Pikachu".to_string(),
+        species: "Pikachu".to_string(),
+        level: 50,
+        ability: "Static".to_string(),
+        moves: vec!["Thunderbolt".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Blissey".to_string(),
-            species: "Blissey".to_string(),
-            level: 50,
-            ability: "Natural Cure".to_string(),
-            moves: vec!["Tackle".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Blissey".to_string(),
+        species: "Blissey".to_string(),
+        level: 50,
+        ability: "Natural Cure".to_string(),
+        moves: vec!["Tackle".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -914,7 +939,9 @@ fn test_terrain_electric_boost() {
     }
 
     // Set Electric Terrain
-    battle.field.set_terrain(ID::new("electricterrain"), Some(5));
+    battle
+        .field
+        .set_terrain(ID::new("electricterrain"), Some(5));
 
     let hp_before = battle.sides[1].pokemon[0].hp;
     battle.make_choices("move thunderbolt", "move tackle");
@@ -923,24 +950,23 @@ fn test_terrain_electric_boost() {
     let damage_dealt = hp_before - hp_after;
 
     assert!(damage_dealt > 0, "Thunderbolt should deal damage");
-    println!("Electric Terrain test - Thunderbolt dealt {} damage", damage_dealt);
+    println!(
+        "Electric Terrain test - Thunderbolt dealt {} damage",
+        damage_dealt
+    );
 }
-
-
 
 #[test]
 fn test_flying_immune_to_spikes() {
     // Flying types should be immune to Spikes and Toxic Spikes
-    let team1 = vec![
-        PokemonSet {
-            name: "Skarmory".to_string(),
-            species: "Skarmory".to_string(),
-            level: 50,
-            ability: "Sturdy".to_string(),
-            moves: vec!["Spikes".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Skarmory".to_string(),
+        species: "Skarmory".to_string(),
+        level: 50,
+        ability: "Sturdy".to_string(),
+        moves: vec!["Spikes".to_string()],
+        ..Default::default()
+    }];
 
     let team2 = vec![
         PokemonSet {
@@ -1004,27 +1030,23 @@ fn test_flying_immune_to_spikes() {
 #[test]
 fn test_protect_blocks_damage() {
     // Protect should block damage from attacks
-    let team1 = vec![
-        PokemonSet {
-            name: "Blissey".to_string(),
-            species: "Blissey".to_string(),
-            level: 50,
-            ability: "Natural Cure".to_string(),
-            moves: vec!["Protect".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Blissey".to_string(),
+        species: "Blissey".to_string(),
+        level: 50,
+        ability: "Natural Cure".to_string(),
+        moves: vec!["Protect".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Machamp".to_string(),
-            species: "Machamp".to_string(),
-            level: 50,
-            ability: "Guts".to_string(),
-            moves: vec!["Close Combat".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Machamp".to_string(),
+        species: "Machamp".to_string(),
+        level: 50,
+        ability: "Guts".to_string(),
+        moves: vec!["Close Combat".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),
@@ -1055,31 +1077,26 @@ fn test_protect_blocks_damage() {
     assert!(log.contains("Protect"), "Protect should be logged");
 }
 
-
 #[test]
 fn test_recovery_move() {
     // Recover should heal 50% HP
-    let team1 = vec![
-        PokemonSet {
-            name: "Blissey".to_string(),
-            species: "Blissey".to_string(),
-            level: 50,
-            ability: "Natural Cure".to_string(),
-            moves: vec!["Recover".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team1 = vec![PokemonSet {
+        name: "Blissey".to_string(),
+        species: "Blissey".to_string(),
+        level: 50,
+        ability: "Natural Cure".to_string(),
+        moves: vec!["Recover".to_string()],
+        ..Default::default()
+    }];
 
-    let team2 = vec![
-        PokemonSet {
-            name: "Machamp".to_string(),
-            species: "Machamp".to_string(),
-            level: 50,
-            ability: "Guts".to_string(),
-            moves: vec!["Tackle".to_string()],
-            ..Default::default()
-        },
-    ];
+    let team2 = vec![PokemonSet {
+        name: "Machamp".to_string(),
+        species: "Machamp".to_string(),
+        level: 50,
+        ability: "Guts".to_string(),
+        moves: vec!["Tackle".to_string()],
+        ..Default::default()
+    }];
 
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9ou"),

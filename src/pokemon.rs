@@ -4,11 +4,11 @@
 //!
 //! This module contains the Pokemon struct and related types.
 
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
-use serde::{Deserialize, Serialize};
 
-use crate::dex_data::{ID, Gender, StatsTable, BoostsTable, StatID};
+use crate::dex_data::{BoostsTable, Gender, StatID, StatsTable, ID};
 use crate::event_system::EffectState;
 
 /// A Pokemon's move slot
@@ -151,7 +151,7 @@ pub struct Pokemon {
     pub types: Vec<String>,
     pub added_type: Option<String>,
     pub base_types: Vec<String>,
-    pub known_type: Option<String>,  // Known type for illusion/disguise mechanics
+    pub known_type: Option<String>, // Known type for illusion/disguise mechanics
 
     // Tera
     pub tera_type: Option<String>,
@@ -189,10 +189,10 @@ pub struct Pokemon {
     pub skip_before_switch_out_event_flag: bool,
     pub stats_raised_this_turn: bool,
     pub stats_lowered_this_turn: bool,
-    pub sub_fainted: bool,  // Gen 1: Substitute fainted (different from main faint)
+    pub sub_fainted: bool, // Gen 1: Substitute fainted (different from main faint)
 
     // Ability-specific flags
-    pub sword_boost: bool,  // Intrepid Sword / Dauntless Shield
+    pub sword_boost: bool, // Intrepid Sword / Dauntless Shield
 
     // Turn state
     pub last_move: Option<ID>,
@@ -238,13 +238,21 @@ impl Pokemon {
         let item_id = ID::new(&set.item);
 
         // Convert moves to move slots
-        let move_slots: Vec<MoveSlot> = set.moves.iter().map(|m| {
-            let id = ID::new(m);
-            MoveSlot::new(id, m.clone(), 5, 5) // Default PP, will be set by Dex
-        }).collect();
+        let move_slots: Vec<MoveSlot> = set
+            .moves
+            .iter()
+            .map(|m| {
+                let id = ID::new(m);
+                MoveSlot::new(id, m.clone(), 5, 5) // Default PP, will be set by Dex
+            })
+            .collect();
 
         Self {
-            name: if set.name.is_empty() { set.species.clone() } else { set.name.clone() },
+            name: if set.name.is_empty() {
+                set.species.clone()
+            } else {
+                set.name.clone()
+            },
             species_id: species_id.clone(),
             base_species: species_id.clone(),
             level: set.level,
@@ -282,7 +290,7 @@ impl Pokemon {
             types: Vec::new(),
             added_type: None,
             base_types: Vec::new(),
-            known_type: None,  // Initially null, set when type becomes known (e.g., Illusion breaks)
+            known_type: None, // Initially null, set when type becomes known (e.g., Illusion breaks)
 
             tera_type: set.tera_type.clone(),
             terastallized: None,
@@ -339,7 +347,11 @@ impl Pokemon {
 
             can_mega_evo: None,
             can_ultra_burst: None,
-            can_gigantamax: if set.gigantamax { Some(set.species.clone()) } else { None },
+            can_gigantamax: if set.gigantamax {
+                Some(set.species.clone())
+            } else {
+                None
+            },
 
             stellar_boosted_types: Vec::new(),
 
@@ -446,7 +458,6 @@ impl Pokemon {
         secret
     }
 
-
     /// Take damage
     pub fn take_damage(&mut self, damage: i32) -> i32 {
         let actual = damage.min(self.hp);
@@ -487,8 +498,8 @@ impl Pokemon {
 
     /// Set status condition
     // TypeScript source:
-    // 
-    // 
+    //
+    //
     // 	setStatus(
     // 		status: string | Condition,
     // 		source: Pokemon | null = null,
@@ -502,7 +513,7 @@ impl Pokemon {
     // 			if (!sourceEffect) sourceEffect = this.battle.effect;
     // 		}
     // 		if (!source) source = this;
-    // 
+    //
     // 		if (this.status === status.id) {
     // 			if ((sourceEffect as Move)?.status === this.status) {
     // 				this.battle.add('-fail', this, this.status);
@@ -512,7 +523,7 @@ impl Pokemon {
     // 			}
     // 			return false;
     // 		}
-    // 
+    //
     // 		if (
     // 			!ignoreImmunities && status.id && !(source?.hasAbility('corrosion') && ['tox', 'psn'].includes(status.id))
     // 		) {
@@ -534,7 +545,7 @@ impl Pokemon {
     // 				return result;
     // 			}
     // 		}
-    // 
+    //
     // 		this.status = status.id;
     // 		this.statusState = this.battle.initEffectState({ id: status.id, target: this });
     // 		if (source) this.statusState.source = source;
@@ -542,7 +553,7 @@ impl Pokemon {
     // 		if (status.durationCallback) {
     // 			this.statusState.duration = status.durationCallback.call(this.battle, this, source, sourceEffect);
     // 		}
-    // 
+    //
     // 		if (status.id && !this.battle.singleEvent('Start', status, this.statusState, this, source, sourceEffect)) {
     // 			this.battle.debug('status start [' + status.id + '] interrupted');
     // 			// cancel the setstatus
@@ -593,7 +604,7 @@ impl Pokemon {
     }
 
     /// Add a volatile condition
-    // 
+    //
     // 	addVolatile(
     // 		status: string | Condition, source: Pokemon | null = null, sourceEffect: Effect | null = null,
     // 		linkedStatus: string | Condition | null = null
@@ -607,7 +618,7 @@ impl Pokemon {
     // 			if (!sourceEffect) sourceEffect = this.battle.effect;
     // 		}
     // 		if (!source) source = this;
-    // 
+    //
     // 		if (this.volatiles[status.id]) {
     // 			if (!status.onRestart) return false;
     // 			return this.battle.singleEvent('Restart', status, this.volatiles[status.id], this, source, sourceEffect);
@@ -663,7 +674,7 @@ impl Pokemon {
     }
 
     /// Remove a volatile condition
-    // 
+    //
     // 	removeVolatile(status: string | Effect) {
     // 		if (!this.hp) return false;
     // 		status = this.battle.dex.conditions.get(status) as Effect;
@@ -687,7 +698,7 @@ impl Pokemon {
     }
 
     /// Get volatile state
-    // 
+    //
     // 	getVolatile(status: string | Effect) {
     // 		status = this.battle.dex.conditions.get(status) as Effect;
     // 		if (!this.volatiles[status.id]) return null;
@@ -709,15 +720,15 @@ impl Pokemon {
     }
 
     /// Get a stat value with boosts applied
-    // 
+    //
     // 	getStat(statName: StatIDExceptHP, unboosted?: boolean, unmodified?: boolean) {
     // 		statName = toID(statName) as StatIDExceptHP;
     // 		// @ts-expect-error type checking prevents 'hp' from being passed, but we're paranoid
     // 		if (statName === 'hp') throw new Error("Please read `maxhp` directly");
-    // 
+    //
     // 		// base stat
     // 		let stat = this.storedStats[statName];
-    // 
+    //
     // 		// Download ignores Wonder Room's effect, but this results in
     // 		// stat stages being calculated on the opposite defensive stat
     // 		if (unmodified && 'wonderroom' in this.battle.field.pseudoWeather) {
@@ -727,7 +738,7 @@ impl Pokemon {
     // 				statName = 'def';
     // 			}
     // 		}
-    // 
+    //
     // 		// stat boosts
     // 		if (!unboosted) {
     // 			let boosts = this.boosts;
@@ -744,13 +755,13 @@ impl Pokemon {
     // 				stat = Math.floor(stat / boostTable[-boost]);
     // 			}
     // 		}
-    // 
+    //
     // 		// stat modifier effects
     // 		if (!unmodified) {
     // 			const statTable: { [s in StatIDExceptHP]: string } = { atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe' };
     // 			stat = this.battle.runEvent('Modify' + statTable[statName], this, null, null, stat);
     // 		}
-    // 
+    //
     // 		if (statName === 'spe' && stat > 10000 && !this.battle.format.battle?.trunc) stat = 10000;
     // 		return stat;
     // 	}
@@ -785,7 +796,7 @@ impl Pokemon {
     }
 
     /// Clear all boosts
-    // 
+    //
     // 	clearBoosts() {
     // 		let boostName: BoostID;
     // 		for (boostName in this.boosts) {
@@ -798,7 +809,7 @@ impl Pokemon {
     }
 
     /// Update speed (called when boosts or conditions change)
-    // 
+    //
     // 	updateSpeed() {
     // 		this.speed = this.getActionSpeed();
     // 	}
@@ -835,7 +846,7 @@ impl Pokemon {
     }
 
     /// Get the slot ID for protocol messages (e.g., "p1a", "p2b")
-    // 
+    //
     // 	getSlot(): PokemonSlot {
     // 		const positionOffset = Math.floor(this.side.n / 2) * this.side.active.length;
     // 		const positionLetter = 'abcdef'.charAt(this.position + positionOffset);
@@ -862,13 +873,14 @@ impl Pokemon {
 
     /// Get move PP for a move
     pub fn get_move_pp(&self, move_id: &ID) -> Option<u8> {
-        self.move_slots.iter()
+        self.move_slots
+            .iter()
             .find(|slot| &slot.id == move_id)
             .map(|slot| slot.pp)
     }
 
     /// Deduct PP for a move
-    // 
+    //
     // 	deductPP(move: string | Move, amount?: number | null, target?: Pokemon | null | false) {
     // 		const gen = this.battle.gen;
     // 		move = this.battle.dex.moves.get(move);
@@ -876,7 +888,7 @@ impl Pokemon {
     // 		if (!ppData) return 0;
     // 		ppData.used = true;
     // 		if (!ppData.pp && gen > 1) return 0;
-    // 
+    //
     // 		if (!amount) amount = 1;
     // 		ppData.pp -= amount;
     // 		if (ppData.pp < 0 && gen > 1) {
@@ -907,7 +919,7 @@ impl Pokemon {
     }
 
     /// Check if Pokemon has a specific move
-    // 
+    //
     // 	hasMove(moveid: string) {
     // 		moveid = toID(moveid);
     // 		if (moveid.substr(0, 11) === 'hiddenpower') moveid = 'hiddenpower';
@@ -925,7 +937,7 @@ impl Pokemon {
     }
 
     /// Get the types of this Pokemon
-    // 
+    //
     // 	getTypes(excludeAdded?: boolean, preterastallized?: boolean): string[] {
     // 		if (!preterastallized && this.terastallized && this.terastallized !== 'Stellar') {
     // 			return [this.terastallized];
@@ -953,7 +965,7 @@ impl Pokemon {
     }
 
     /// Check if Pokemon is grounded (affected by Ground moves and terrain)
-    // 
+    //
     // 	isGrounded(negateImmunity = false) {
     // 		if ('gravity' in this.battle.field.pseudoWeather) return true;
     // 		if ('ingrain' in this.volatiles && this.battle.gen >= 4) return true;
@@ -999,20 +1011,20 @@ impl Pokemon {
     }
 
     /// Check if Pokemon is semi-invulnerable (Fly, Dig, Dive, etc.)
-    // 
+    //
     // 	isSemiInvulnerable() {
     // 		return (this.volatiles['fly'] || this.volatiles['bounce'] || this.volatiles['dive'] || this.volatiles['dig'] ||
     // 			this.volatiles['phantomforce'] || this.volatiles['shadowforce'] || this.isSkyDropped());
     // 	}
     //
     pub fn is_semi_invulnerable(&self) -> bool {
-        self.has_volatile(&ID::new("fly")) ||
-        self.has_volatile(&ID::new("bounce")) ||
-        self.has_volatile(&ID::new("skydrop")) ||
-        self.has_volatile(&ID::new("dig")) ||
-        self.has_volatile(&ID::new("dive")) ||
-        self.has_volatile(&ID::new("phantomforce")) ||
-        self.has_volatile(&ID::new("shadowforce"))
+        self.has_volatile(&ID::new("fly"))
+            || self.has_volatile(&ID::new("bounce"))
+            || self.has_volatile(&ID::new("skydrop"))
+            || self.has_volatile(&ID::new("dig"))
+            || self.has_volatile(&ID::new("dive"))
+            || self.has_volatile(&ID::new("phantomforce"))
+            || self.has_volatile(&ID::new("shadowforce"))
     }
 
     /// Check if Pokemon is protected
@@ -1027,12 +1039,12 @@ impl Pokemon {
     // 	}
     //
     pub fn is_protected(&self) -> bool {
-        self.has_volatile(&ID::new("protect")) ||
-        self.has_volatile(&ID::new("banefulbunker")) ||
-        self.has_volatile(&ID::new("kingsshield")) ||
-        self.has_volatile(&ID::new("spikyshield")) ||
-        self.has_volatile(&ID::new("silktrap")) ||
-        self.has_volatile(&ID::new("burningbulwark"))
+        self.has_volatile(&ID::new("protect"))
+            || self.has_volatile(&ID::new("banefulbunker"))
+            || self.has_volatile(&ID::new("kingsshield"))
+            || self.has_volatile(&ID::new("spikyshield"))
+            || self.has_volatile(&ID::new("silktrap"))
+            || self.has_volatile(&ID::new("burningbulwark"))
     }
 
     /// Get effective weather considering abilities
@@ -1061,7 +1073,7 @@ impl Pokemon {
     }
 
     /// Check if Pokemon has a specific item
-    // 
+    //
     // 	hasItem(item: string | string[]) {
     // 		if (Array.isArray(item)) {
     // 			if (!item.map(toID).includes(this.item)) return false;
@@ -1077,7 +1089,7 @@ impl Pokemon {
     }
 
     /// Check if Pokemon has a specific ability
-    // 
+    //
     // 	hasAbility(ability: string | string[]) {
     // 		if (Array.isArray(ability)) {
     // 			if (!ability.map(toID).includes(this.ability)) return false;
@@ -1089,11 +1101,13 @@ impl Pokemon {
     //
     pub fn has_ability(&self, abilities: &[&str]) -> bool {
         let ability_id = self.ability.as_str();
-        abilities.iter().any(|&a| crate::dex_data::to_id(a) == ability_id)
+        abilities
+            .iter()
+            .any(|&a| crate::dex_data::to_id(a) == ability_id)
     }
 
     /// Copy volatiles from another Pokemon (for Baton Pass, etc.)
-    // 
+    //
     // 	copyVolatileFrom(pokemon: Pokemon, switchCause?: string | boolean) {
     // 		this.clearVolatile();
     // 		if (switchCause !== 'shedtail') this.boosts = pokemon.boosts;
@@ -1126,10 +1140,22 @@ impl Pokemon {
 
                 // Copy certain volatiles
                 let copyable = [
-                    "aquaring", "confusion", "curse", "embargo", "focusenergy",
-                    "gmaxchistrike", "healblock", "ingrain", "laserfocus",
-                    "leechseed", "magnetrise", "perishsong", "powertrick",
-                    "substitute", "telekinesis", "torment",
+                    "aquaring",
+                    "confusion",
+                    "curse",
+                    "embargo",
+                    "focusenergy",
+                    "gmaxchistrike",
+                    "healblock",
+                    "ingrain",
+                    "laserfocus",
+                    "leechseed",
+                    "magnetrise",
+                    "perishsong",
+                    "powertrick",
+                    "substitute",
+                    "telekinesis",
+                    "torment",
                 ];
 
                 for volatile_id in &copyable {
@@ -1155,7 +1181,7 @@ impl Pokemon {
     }
 
     /// Get the weight in hectograms
-    // 
+    //
     // 	/* Commented out for now until a use for Combat Power is found in Let's Go
     // 	getCombatPower() {
     // 		let statSum = 0;
@@ -1170,7 +1196,7 @@ impl Pokemon {
     // 		return this.battle.clampIntRange(combatPower, 0, 10000);
     // 	}
     // 	*/
-    // 
+    //
     // 	getWeight() {
     // 		const weighthg = this.battle.runEvent('ModifyWeight', this, null, null, this.weighthg);
     // 		return Math.max(1, weighthg);
@@ -1199,13 +1225,13 @@ impl Pokemon {
     // 			// Terastallized Pokemon cannot have their base type changed except via forme change
     // 			if (this.terastallized) return false;
     // 		}
-    // 
+    //
     // 		if (!newType) throw new Error("Must pass type to setType");
     // 		this.types = (typeof newType === 'string' ? [newType] : newType);
     // 		this.addedType = '';
     // 		this.knownType = true;
     // 		this.apparentType = this.types.join('/');
-    // 
+    //
     // 		return true;
     // 	}
     //
@@ -1229,7 +1255,7 @@ impl Pokemon {
     }
 
     /// Get positive boost count (for Stored Power, etc.)
-    // 
+    //
     // 	positiveBoosts() {
     // 		let boosts = 0;
     // 		let boost: BoostID;
@@ -1241,18 +1267,32 @@ impl Pokemon {
     //
     pub fn positive_boosts(&self) -> i32 {
         let mut count = 0;
-        if self.boosts.atk > 0 { count += self.boosts.atk as i32; }
-        if self.boosts.def > 0 { count += self.boosts.def as i32; }
-        if self.boosts.spa > 0 { count += self.boosts.spa as i32; }
-        if self.boosts.spd > 0 { count += self.boosts.spd as i32; }
-        if self.boosts.spe > 0 { count += self.boosts.spe as i32; }
-        if self.boosts.accuracy > 0 { count += self.boosts.accuracy as i32; }
-        if self.boosts.evasion > 0 { count += self.boosts.evasion as i32; }
+        if self.boosts.atk > 0 {
+            count += self.boosts.atk as i32;
+        }
+        if self.boosts.def > 0 {
+            count += self.boosts.def as i32;
+        }
+        if self.boosts.spa > 0 {
+            count += self.boosts.spa as i32;
+        }
+        if self.boosts.spd > 0 {
+            count += self.boosts.spd as i32;
+        }
+        if self.boosts.spe > 0 {
+            count += self.boosts.spe as i32;
+        }
+        if self.boosts.accuracy > 0 {
+            count += self.boosts.accuracy as i32;
+        }
+        if self.boosts.evasion > 0 {
+            count += self.boosts.evasion as i32;
+        }
         count
     }
 
     /// Get the action speed (speed used for turn order)
-    // 
+    //
     // 	getActionSpeed() {
     // 		let speed = this.getStat('spe', false, false);
     // 		const trickRoomCheck = this.battle.ruleTable.has('twisteddimensionmod') ?
@@ -1275,13 +1315,13 @@ impl Pokemon {
     }
 
     /// Disable a move
-    // 
+    //
     // 	disableMove(moveid: string, isHidden?: boolean, sourceEffect?: Effect) {
     // 		if (!sourceEffect && this.battle.event) {
     // 			sourceEffect = this.battle.effect;
     // 		}
     // 		moveid = toID(moveid);
-    // 
+    //
     // 		for (const moveSlot of this.moveSlots) {
     // 			if (moveSlot.id === moveid && moveSlot.disabled !== true) {
     // 				moveSlot.disabled = isHidden ? 'hidden' : true;
@@ -1308,7 +1348,8 @@ impl Pokemon {
 
     /// Get usable moves (not disabled, has PP)
     pub fn get_usable_moves(&self) -> Vec<&MoveSlot> {
-        self.move_slots.iter()
+        self.move_slots
+            .iter()
             .filter(|slot| !slot.disabled && slot.pp > 0)
             .collect()
     }
@@ -1338,7 +1379,7 @@ impl Pokemon {
     // 	}
     //
     /// Get updated details string for protocol
-    // 
+    //
     // 	getUpdatedDetails(level?: number) {
     // 		let name = this.species.name;
     // 		if (['Greninja-Bond', 'Rockruff-Dusk'].includes(name)) name = this.species.baseSpecies;
@@ -1359,15 +1400,15 @@ impl Pokemon {
     }
 
     /// Calculate a stat with boost
-    // 
+    //
     // 	calculateStat(statName: StatIDExceptHP, boost: number, modifier?: number, statUser?: Pokemon) {
     // 		statName = toID(statName) as StatIDExceptHP;
     // 		// @ts-expect-error type checking prevents 'hp' from being passed, but we're paranoid
     // 		if (statName === 'hp') throw new Error("Please read `maxhp` directly");
-    // 
+    //
     // 		// base stat
     // 		let stat = this.storedStats[statName];
-    // 
+    //
     // 		// Wonder Room swaps defenses before calculating anything else
     // 		if ('wonderroom' in this.battle.field.pseudoWeather) {
     // 			if (statName === 'def') {
@@ -1376,7 +1417,7 @@ impl Pokemon {
     // 				stat = this.storedStats['def'];
     // 			}
     // 		}
-    // 
+    //
     // 		// stat boosts
     // 		let boosts: SparseBoostsTable = {};
     // 		const boostName = statName as BoostID;
@@ -1391,7 +1432,7 @@ impl Pokemon {
     // 		} else {
     // 			stat = Math.floor(stat / boostTable[-boost]);
     // 		}
-    // 
+    //
     // 		// stat modifier
     // 		return this.battle.modify(stat, (modifier || 1));
     // 	}
@@ -1435,12 +1476,18 @@ impl Pokemon {
     // 				bestStat = this.getStat(i, unboosted, unmodified);
     // 			}
     // 		}
-    // 
+    //
     // 		return statName;
     // 	}
     //
     pub fn get_best_stat(&self, unboosted: bool) -> StatID {
-        let stats = [StatID::Atk, StatID::Def, StatID::SpA, StatID::SpD, StatID::Spe];
+        let stats = [
+            StatID::Atk,
+            StatID::Def,
+            StatID::SpA,
+            StatID::SpD,
+            StatID::Spe,
+        ];
         let mut best_stat = StatID::Atk;
         let mut best_value = 0;
 
@@ -1456,13 +1503,13 @@ impl Pokemon {
     }
 
     /// Check if Pokemon has a specific type
-    // 
+    //
     // 	hasType(type: string | string[]) {
     // 		const thisTypes = this.getTypes();
     // 		if (typeof type === 'string') {
     // 			return thisTypes.includes(type);
     // 		}
-    // 
+    //
     // 		for (const typeName of type) {
     // 			if (thisTypes.includes(typeName)) return true;
     // 		}
@@ -1470,14 +1517,19 @@ impl Pokemon {
     // 	}
     //
     pub fn has_type(&self, type_name: &str) -> bool {
-        self.get_types(false).iter().any(|t| t.to_lowercase() == type_name.to_lowercase())
+        self.get_types(false)
+            .iter()
+            .any(|t| t.to_lowercase() == type_name.to_lowercase())
     }
 
     /// Check if Pokemon has any of the given types
     pub fn has_any_type(&self, types: &[&str]) -> bool {
         let pokemon_types = self.get_types(false);
         for t in types {
-            if pokemon_types.iter().any(|pt| pt.to_lowercase() == t.to_lowercase()) {
+            if pokemon_types
+                .iter()
+                .any(|pt| pt.to_lowercase() == t.to_lowercase())
+            {
                 return true;
             }
         }
@@ -1521,7 +1573,7 @@ impl Pokemon {
 
     /// Apply damage to Pokemon
     /// Returns actual damage dealt
-    // 
+    //
     // 	damage(d: number, source: Pokemon | null = null, effect: Effect | null = null) {
     // 		if (!this.hp || isNaN(d) || d <= 0) return 0;
     // 		if (d < 1 && d > 0) d = 1;
@@ -1547,7 +1599,7 @@ impl Pokemon {
     }
 
     /// Check if this Pokemon is an ally of another
-    // 
+    //
     // 	isAlly(pokemon: Pokemon | null) {
     // 		return !!pokemon && (this.side === pokemon.side || this.side.allySide === pokemon.side);
     // 	}
@@ -1563,7 +1615,7 @@ impl Pokemon {
     }
 
     /// Check if another Pokemon is adjacent (for targeting)
-    // 
+    //
     // 	isAdjacent(pokemon2: Pokemon) {
     // 		if (this.fainted || pokemon2.fainted) return false;
     // 		if (this.battle.activePerHalf <= 2) return this !== pokemon2;
@@ -1571,7 +1623,12 @@ impl Pokemon {
     // 		return Math.abs(this.position + pokemon2.position + 1 - this.side.active.length) <= 1;
     // 	}
     //
-    pub fn is_adjacent(&self, other_position: usize, other_fainted: bool, active_per_half: usize) -> bool {
+    pub fn is_adjacent(
+        &self,
+        other_position: usize,
+        other_fainted: bool,
+        active_per_half: usize,
+    ) -> bool {
         if self.fainted || other_fainted {
             return false;
         }
@@ -1583,7 +1640,7 @@ impl Pokemon {
     }
 
     /// Get capped boost - returns the actual change that would be applied
-    // 
+    //
     // 	getCappedBoost(boosts: SparseBoostsTable) {
     // 		const cappedBoost: SparseBoostsTable = {};
     // 		let boostName: BoostID;
@@ -1602,7 +1659,7 @@ impl Pokemon {
     }
 
     /// Boost stat by amount, respecting caps
-    // 
+    //
     // 	boostBy(boosts: SparseBoostsTable) {
     // 		boosts = this.getCappedBoost(boosts);
     // 		let delta = 0;
@@ -1626,7 +1683,7 @@ impl Pokemon {
     }
 
     /// Set a specific boost value
-    // 
+    //
     // 	setBoost(boosts: SparseBoostsTable) {
     // 		let boostName: BoostID;
     // 		for (boostName in boosts) {
@@ -1640,7 +1697,7 @@ impl Pokemon {
     }
 
     /// Clear ability (set to empty)
-    // 
+    //
     // 	clearAbility() {
     // 		return this.setAbility('');
     // 	}
@@ -1653,7 +1710,7 @@ impl Pokemon {
     }
 
     /// Set ability
-    // 
+    //
     // 	setAbility(
     // 		ability: string | Ability, source?: Pokemon | null, sourceEffect?: Effect | null,
     // 		isFromFormeChange = false, isTransform = false,
@@ -1694,7 +1751,7 @@ impl Pokemon {
     }
 
     /// Get ability ID
-    // 
+    //
     // 	getAbility() {
     // 		return this.battle.dex.abilities.getByID(this.ability);
     // 	}
@@ -1704,7 +1761,7 @@ impl Pokemon {
     }
 
     /// Clear item
-    // 
+    //
     // 	clearItem() {
     // 		return this.setItem('');
     // 	}
@@ -1717,11 +1774,11 @@ impl Pokemon {
     }
 
     /// Set item
-    // 
+    //
     // 	setItem(item: string | Item, source?: Pokemon, effect?: Effect) {
     // 		if (!this.hp || !this.isActive) return false;
     // 		if (typeof item === 'string') item = this.battle.dex.items.get(item);
-    // 
+    //
     // 		const effectid = this.battle.effect ? this.battle.effect.id : '';
     // 		if (RESTORATIVE_BERRIES.has('leppaberry' as ID)) {
     // 			const inflicted = ['trick', 'switcheroo'].includes(effectid);
@@ -1751,7 +1808,7 @@ impl Pokemon {
     }
 
     /// Take item (remove and return it)
-    // 
+    //
     // 	takeItem(source?: Pokemon) {
     // 		if (!this.item) return false;
     // 		if (!source) source = this;
@@ -1784,7 +1841,7 @@ impl Pokemon {
     }
 
     /// Get item ID
-    // 
+    //
     // 	getItem() {
     // 		return this.battle.dex.items.getByID(this.item);
     // 	}
@@ -1821,7 +1878,7 @@ impl Pokemon {
     }
 
     /// Record that a move was used
-    // 
+    //
     // 	moveUsed(move: ActiveMove, targetLoc?: number) {
     // 		this.lastMove = move;
     // 		if (this.battle.gen === 2) this.lastMoveEncore = move;
@@ -1837,7 +1894,7 @@ impl Pokemon {
     }
 
     /// Check if this is the last active Pokemon on the side
-    // 
+    //
     // 	isLastActive() {
     // 		if (!this.isActive) return false;
     // 		const allyActive = this.side.active;
@@ -1854,15 +1911,15 @@ impl Pokemon {
     }
 
     /// Check if ability is being suppressed
-    // 
+    //
     // 	ignoringAbility() {
     // 		if (this.battle.gen >= 5 && !this.isActive) return true;
-    // 
+    //
     // 		// Certain Abilities won't activate while Transformed, even if they ordinarily couldn't be suppressed (e.g. Disguise)
     // 		if (this.getAbility().flags['notransform'] && this.transformed) return true;
     // 		if (this.getAbility().flags['cantsuppress']) return false;
     // 		if (this.volatiles['gastroacid']) return true;
-    // 
+    //
     // 		// Check if any active pokemon have the ability Neutralizing Gas
     // 		if (this.hasItem('Ability Shield') || this.ability === ('neutralizinggas' as ID)) return false;
     // 		for (const pokemon of this.battle.getAllActive()) {
@@ -1872,7 +1929,7 @@ impl Pokemon {
     // 				return true;
     // 			}
     // 		}
-    // 
+    //
     // 		return false;
     // 	}
     //
@@ -1893,7 +1950,7 @@ impl Pokemon {
     }
 
     /// Check if item is being ignored
-    // 
+    //
     // 	ignoringItem(isFling = false) {
     // 		if (this.getItem().isPrimalOrb) return false;
     // 		if (this.battle.gen >= 5 && !this.isActive) return true;
@@ -1920,7 +1977,7 @@ impl Pokemon {
     }
 
     /// Update max HP (for forme changes)
-    // 
+    //
     // 	updateMaxHp() {
     // 		const newBaseMaxHp = this.battle.statModify(this.species.baseStats, this.set, 'hp');
     // 		if (newBaseMaxHp === this.baseMaxhp) return;
@@ -1947,7 +2004,7 @@ impl Pokemon {
     }
 
     /// Check if Pokemon is in Sky Drop
-    // 
+    //
     // 	isSkyDropped() {
     // 		if (this.volatiles['skydrop']) return true;
     // 		for (const foeActive of this.side.foe.active) {
@@ -1963,7 +2020,7 @@ impl Pokemon {
     }
 
     /// Get move slot data
-    // 
+    //
     // 	getMoveData(move: string | Move) {
     // 		move = this.battle.dex.moves.get(move);
     // 		for (const moveSlot of this.moveSlots) {
@@ -1986,18 +2043,32 @@ impl Pokemon {
     /// Get positive boost count (for Stored Power)
     pub fn get_positive_boosts(&self) -> i32 {
         let mut count = 0;
-        if self.boosts.atk > 0 { count += self.boosts.atk as i32; }
-        if self.boosts.def > 0 { count += self.boosts.def as i32; }
-        if self.boosts.spa > 0 { count += self.boosts.spa as i32; }
-        if self.boosts.spd > 0 { count += self.boosts.spd as i32; }
-        if self.boosts.spe > 0 { count += self.boosts.spe as i32; }
-        if self.boosts.accuracy > 0 { count += self.boosts.accuracy as i32; }
-        if self.boosts.evasion > 0 { count += self.boosts.evasion as i32; }
+        if self.boosts.atk > 0 {
+            count += self.boosts.atk as i32;
+        }
+        if self.boosts.def > 0 {
+            count += self.boosts.def as i32;
+        }
+        if self.boosts.spa > 0 {
+            count += self.boosts.spa as i32;
+        }
+        if self.boosts.spd > 0 {
+            count += self.boosts.spd as i32;
+        }
+        if self.boosts.spe > 0 {
+            count += self.boosts.spe as i32;
+        }
+        if self.boosts.accuracy > 0 {
+            count += self.boosts.accuracy as i32;
+        }
+        if self.boosts.evasion > 0 {
+            count += self.boosts.evasion as i32;
+        }
         count
     }
 
     /// Get HP as if not dynamaxed
-    // 
+    //
     // 	getUndynamaxedHP(amount?: number) {
     // 		const hp = amount || this.hp;
     // 		if (this.volatiles['dynamax']) {
@@ -2016,7 +2087,7 @@ impl Pokemon {
     }
 
     /// Try to trap the Pokemon
-    // 
+    //
     // 	tryTrap(isHidden = false) {
     // 		if (!this.runStatusImmunity('trapped')) return false;
     // 		if (this.trapped && isHidden) return true;
@@ -2033,7 +2104,7 @@ impl Pokemon {
     }
 
     /// Record that this Pokemon was attacked
-    // 
+    //
     // 	gotAttacked(move: string | Move, damage: number | false | undefined, source: Pokemon) {
     // 		const damageNumber = (typeof damage === 'number') ? damage : 0;
     // 		move = this.battle.dex.moves.get(move);
@@ -2047,7 +2118,13 @@ impl Pokemon {
     // 		});
     // 	}
     //
-    pub fn got_attacked(&mut self, move_id: ID, damage: i32, _source_side: usize, _source_pos: usize) {
+    pub fn got_attacked(
+        &mut self,
+        move_id: ID,
+        damage: i32,
+        _source_side: usize,
+        _source_pos: usize,
+    ) {
         self.last_damage = damage;
         self.times_attacked += 1;
         // Would store in attackedBy array in full implementation
@@ -2092,7 +2169,7 @@ impl Pokemon {
     }
 
     /// Transform into another Pokemon
-    // 
+    //
     // 	transformInto(pokemon: Pokemon, effect?: Effect) {
     // 		const species = pokemon.species;
     // 		if (
@@ -2104,25 +2181,25 @@ impl Pokemon {
     // 		) {
     // 			return false;
     // 		}
-    // 
+    //
     // 		if (this.battle.dex.currentMod === 'gen1stadium' && (
     // 			species.name === 'Ditto' ||
     // 			(this.species.name === 'Ditto' && pokemon.moves.includes('transform'))
     // 		)) {
     // 			return false;
     // 		}
-    // 
+    //
     // 		if (!this.setSpecies(species, effect, true)) return false;
-    // 
+    //
     // 		this.transformed = true;
     // 		this.weighthg = pokemon.weighthg;
-    // 
+    //
     // 		const types = pokemon.getTypes(true, true);
     // 		this.setType(pokemon.volatiles['roost'] ? pokemon.volatiles['roost'].typeWas : types, true);
     // 		this.addedType = pokemon.addedType;
     // 		this.knownType = this.isAlly(pokemon) && pokemon.knownType;
     // 		this.apparentType = pokemon.apparentType;
-    // 
+    //
     // 		let statName: StatIDExceptHP;
     // 		for (statName in this.storedStats) {
     // 			this.storedStats[statName] = pokemon.storedStats[statName];
@@ -2174,7 +2251,7 @@ impl Pokemon {
     // 			this.apparentType = this.terastallized;
     // 		}
     // 		if (this.battle.gen > 2) this.setAbility(pokemon.ability, this, null, true, true);
-    // 
+    //
     // 		// Change formes based on held items (for Transform)
     // 		// Only ever relevant in Generation 4 since Generation 3 didn't have item-based forme changes
     // 		if (this.battle.gen === 4) {
@@ -2195,11 +2272,11 @@ impl Pokemon {
     // 				}
     // 			}
     // 		}
-    // 
+    //
     // 		// Pokemon transformed into Ogerpon cannot Terastallize
     // 		// restoring their ability to tera after they untransform is handled ELSEWHERE
     // 		if (['Ogerpon', 'Terapagos'].includes(this.species.baseSpecies) && this.canTerastallize) this.canTerastallize = false;
-    // 
+    //
     // 		return true;
     // 	}
     //
@@ -2227,8 +2304,10 @@ impl Pokemon {
         self.stored_stats = target.stored_stats;
 
         // Copy moves with reduced PP
-        self.move_slots = target.move_slots.iter().map(|slot| {
-            MoveSlot {
+        self.move_slots = target
+            .move_slots
+            .iter()
+            .map(|slot| MoveSlot {
                 id: slot.id.clone(),
                 move_name: slot.move_name.clone(),
                 pp: 5.min(slot.maxpp),
@@ -2238,8 +2317,8 @@ impl Pokemon {
                 disabled_source: None,
                 used: false,
                 virtual_move: true,
-            }
-        }).collect();
+            })
+            .collect();
 
         // Copy boosts
         self.boosts = target.boosts;
@@ -2259,10 +2338,22 @@ impl Pokemon {
 
         // List of volatiles that can be copied
         let copyable_volatiles = [
-            "aquaring", "confusion", "curse", "embargo", "focusenergy",
-            "gmaxchistrike", "healblock", "ingrain", "laserfocus",
-            "leechseed", "magnetrise", "perishsong", "powertrick",
-            "substitute", "telekinesis", "torment",
+            "aquaring",
+            "confusion",
+            "curse",
+            "embargo",
+            "focusenergy",
+            "gmaxchistrike",
+            "healblock",
+            "ingrain",
+            "laserfocus",
+            "leechseed",
+            "magnetrise",
+            "perishsong",
+            "powertrick",
+            "substitute",
+            "telekinesis",
+            "torment",
         ];
 
         for volatile_name in copyable_volatiles {
@@ -2287,22 +2378,22 @@ impl Pokemon {
     // 		const species = this.battle.runEvent('ModifySpecies', this, null, source, rawSpecies);
     // 		if (!species) return null;
     // 		this.species = species;
-    // 
+    //
     // 		this.setType(species.types, true);
     // 		this.apparentType = rawSpecies.types.join('/');
     // 		this.addedType = species.addedType || '';
     // 		this.knownType = true;
     // 		this.weighthg = species.weighthg;
-    // 
+    //
     // 		const stats = this.battle.spreadModify(this.species.baseStats, this.set);
     // 		if (this.species.maxHP) stats.hp = this.species.maxHP;
-    // 
+    //
     // 		if (!this.maxhp) {
     // 			this.baseMaxhp = stats.hp;
     // 			this.maxhp = stats.hp;
     // 			this.hp = stats.hp;
     // 		}
-    // 
+    //
     // 		if (!isTransform) this.baseStoredStats = stats;
     // 		let statName: StatIDExceptHP;
     // 		for (statName in this.storedStats) {
@@ -2337,12 +2428,12 @@ impl Pokemon {
     // 		isPermanent?: boolean, abilitySlot = '0', message?: string
     // 	) {
     // 		const rawSpecies = this.battle.dex.species.get(speciesId);
-    // 
+    //
     // 		const species = this.setSpecies(rawSpecies, source);
     // 		if (!species) return false;
-    // 
+    //
     // 		if (this.battle.gen <= 2) return true;
-    // 
+    //
     // 		// The species the opponent sees
     // 		const apparentSpecies =
     // 			this.illusion ? this.illusion.species.name : species.baseSpecies;
@@ -2403,7 +2494,12 @@ impl Pokemon {
     // 		return true;
     // 	}
     //
-    pub fn forme_change(&mut self, new_species_id: ID, new_types: Vec<String>, new_ability: Option<ID>) {
+    pub fn forme_change(
+        &mut self,
+        new_species_id: ID,
+        new_types: Vec<String>,
+        new_ability: Option<ID>,
+    ) {
         self.species_id = new_species_id;
         self.types = new_types;
         if let Some(ability) = new_ability {
@@ -2418,7 +2514,12 @@ impl Pokemon {
     /// Equivalent to pokemon.baseSpecies.name in TypeScript
     pub fn get_base_species_name(&self, dex: &crate::dex::Dex) -> Option<String> {
         let species = dex.get_species(self.species_id.as_str())?;
-        Some(species.base_species.clone().unwrap_or_else(|| species.name.clone()))
+        Some(
+            species
+                .base_species
+                .clone()
+                .unwrap_or_else(|| species.name.clone()),
+        )
     }
 
     /// Get base species of base species for this Pokemon
@@ -2428,7 +2529,12 @@ impl Pokemon {
         let species = dex.get_species(self.species_id.as_str())?;
         let base_species_name = species.base_species.as_ref().unwrap_or(&species.name);
         let base_species = dex.get_species(base_species_name)?;
-        Some(base_species.base_species.clone().unwrap_or_else(|| base_species.name.clone()))
+        Some(
+            base_species
+                .base_species
+                .clone()
+                .unwrap_or_else(|| base_species.name.clone()),
+        )
     }
 
     /// Get forme name for this Pokemon
@@ -2457,7 +2563,7 @@ impl Pokemon {
 
     /// Get moves as string list
     /// Equivalent to moves getter in pokemon.ts
-    // 
+    //
     // 	getMoves(lockedMove?: ID | null, restrictData?: boolean): {
     // 		move: string, id: ID, disabled?: string | boolean, disabledSource?: string,
     // 		target?: string, pp?: number, maxpp?: number,
@@ -2522,14 +2628,14 @@ impl Pokemon {
     // 			} else if (moveSlot.pp <= 0 && !this.volatiles['partialtrappinglock']) {
     // 				disabled = true;
     // 			}
-    // 
+    //
     // 			if (disabled === 'hidden') {
     // 				disabled = !restrictData;
     // 			}
     // 			if (!disabled) {
     // 				hasValidMove = true;
     // 			}
-    // 
+    //
     // 			moves.push({
     // 				move: moveName,
     // 				id: moveSlot.id,
@@ -2543,18 +2649,24 @@ impl Pokemon {
     // 	}
     //
     pub fn get_moves(&self) -> Vec<String> {
-        self.move_slots.iter().map(|slot| slot.id.as_str().to_string()).collect()
+        self.move_slots
+            .iter()
+            .map(|slot| slot.id.as_str().to_string())
+            .collect()
     }
 
     /// Get base moves as string list
     /// Equivalent to baseMoves getter in pokemon.ts
     pub fn get_base_moves(&self) -> Vec<String> {
-        self.base_move_slots.iter().map(|slot| slot.id.as_str().to_string()).collect()
+        self.base_move_slots
+            .iter()
+            .map(|slot| slot.id.as_str().to_string())
+            .collect()
     }
 
     /// Convert to JSON representation
     /// Equivalent to toJSON in pokemon.ts
-    // 
+    //
     // 	toJSON(): AnyObject {
     // 		return State.serializePokemon(this);
     // 	}
@@ -2598,7 +2710,12 @@ impl Pokemon {
     // 		return sameHalf ? -position : position;
     // 	}
     //
-    pub fn get_loc_of(&self, target_side_index: usize, target_position: usize, active_per_half: usize) -> i8 {
+    pub fn get_loc_of(
+        &self,
+        target_side_index: usize,
+        target_position: usize,
+        active_per_half: usize,
+    ) -> i8 {
         if self.side_index == target_side_index {
             // Same side - positive numbers
             (target_position as i8 - self.position as i8 + 1).max(-(active_per_half as i8))
@@ -2611,7 +2728,7 @@ impl Pokemon {
     /// Get Pokemon at a location relative to this one
     /// Returns (side_index, position)
     /// Equivalent to getAtLoc in pokemon.ts
-    // 
+    //
     // 	getAtLoc(targetLoc: number) {
     // 		let side = this.battle.sides[targetLoc < 0 ? this.side.n % 2 : (this.side.n + 1) % 2];
     // 		targetLoc = Math.abs(targetLoc);
@@ -2664,7 +2781,12 @@ impl Pokemon {
     // 		return [target, target2];
     // 	}
     //
-    pub fn get_smart_targets(&self, target_side: usize, target_pos: usize, move_smart_target: bool) -> Vec<(usize, usize)> {
+    pub fn get_smart_targets(
+        &self,
+        target_side: usize,
+        target_pos: usize,
+        move_smart_target: bool,
+    ) -> Vec<(usize, usize)> {
         if !move_smart_target {
             return vec![(target_side, target_pos)];
         }
@@ -2676,7 +2798,7 @@ impl Pokemon {
 
     /// Get last attacker info
     /// Equivalent to getLastAttackedBy in pokemon.ts
-    // 
+    //
     // 	getLastAttackedBy() {
     // 		if (this.attackedBy.length === 0) return undefined;
     // 		return this.attackedBy[this.attackedBy.length - 1];
@@ -2711,7 +2833,7 @@ impl Pokemon {
 
     /// Get Dynamax request data
     /// Equivalent to getDynamaxRequest in pokemon.ts
-    // 
+    //
     // 	getDynamaxRequest(skipChecks?: boolean) {
     // 		// {gigantamax?: string, maxMoves: {[k: string]: string} | null}[]
     // 		if (!skipChecks) {
@@ -2756,24 +2878,24 @@ impl Pokemon {
 
     /// Get move request data for protocol
     /// Equivalent to getMoveRequestData in pokemon.ts
-    // 
+    //
     // 	getMoveRequestData() {
     // 		let lockedMove = this.maybeLocked ? null : this.getLockedMove();
-    // 
+    //
     // 		// Information should be restricted for the last active Pokémon
     // 		const isLastActive = this.isLastActive();
     // 		const canSwitchIn = this.battle.canSwitch(this.side) > 0;
     // 		let moves = this.getMoves(lockedMove, isLastActive);
-    // 
+    //
     // 		if (!moves.length) {
     // 			moves = [{ move: 'Struggle', id: 'struggle' as ID, target: 'randomNormal', disabled: false }];
     // 			lockedMove = 'struggle' as ID;
     // 		}
-    // 
+    //
     // 		const data: PokemonMoveRequestData = {
     // 			moves,
     // 		};
-    // 
+    //
     // 		if (isLastActive) {
     // 			this.maybeDisabled = this.maybeDisabled && !lockedMove;
     // 			this.maybeLocked = this.maybeLocked || this.maybeDisabled;
@@ -2799,7 +2921,7 @@ impl Pokemon {
     // 			}
     // 			this.maybeTrapped = false;
     // 		}
-    // 
+    //
     // 		if (!lockedMove) {
     // 			if (this.canMegaEvo) data.canMegaEvo = true;
     // 			if (this.canMegaEvoX) data.canMegaEvoX = true;
@@ -2807,26 +2929,30 @@ impl Pokemon {
     // 			if (this.canUltraBurst) data.canUltraBurst = true;
     // 			const canZMove = this.battle.actions.canZMove(this);
     // 			if (canZMove) data.canZMove = canZMove;
-    // 
+    //
     // 			if (this.getDynamaxRequest()) data.canDynamax = true;
     // 			if (data.canDynamax || this.volatiles['dynamax']) data.maxMoves = this.getDynamaxRequest(true);
     // 			if (this.canTerastallize) data.canTerastallize = this.canTerastallize;
     // 		}
-    // 
+    //
     // 		return data;
     // 	}
     //
     pub fn get_move_request_data(&self) -> serde_json::Value {
-        let moves: Vec<serde_json::Value> = self.move_slots.iter().map(|slot| {
-            serde_json::json!({
-                "move": slot.move_name,
-                "id": slot.id.as_str(),
-                "pp": slot.pp,
-                "maxpp": slot.maxpp,
-                "target": slot.target,
-                "disabled": slot.disabled
+        let moves: Vec<serde_json::Value> = self
+            .move_slots
+            .iter()
+            .map(|slot| {
+                serde_json::json!({
+                    "move": slot.move_name,
+                    "id": slot.id.as_str(),
+                    "pp": slot.pp,
+                    "maxpp": slot.maxpp,
+                    "target": slot.target,
+                    "disabled": slot.disabled
+                })
             })
-        }).collect();
+            .collect();
 
         serde_json::json!({
             "moves": moves,
@@ -2836,7 +2962,7 @@ impl Pokemon {
 
     /// Get switch request data for protocol
     /// Equivalent to getSwitchRequestData in pokemon.ts
-    // 
+    //
     // 	getSwitchRequestData(forAlly?: boolean): PokemonSwitchRequestData {
     // 		const entry: PokemonSwitchRequestData = {
     // 			ident: this.fullname,
@@ -2892,7 +3018,7 @@ impl Pokemon {
 
     /// Try to set status with immunity checks
     /// Equivalent to trySetStatus in pokemon.ts
-    // 
+    //
     // 	trySetStatus(status: string | Condition, source: Pokemon | null = null, sourceEffect: Effect | null = null) {
     // 		return this.setStatus(this.status || status, source, sourceEffect);
     // 	}
@@ -2938,11 +3064,11 @@ impl Pokemon {
 
     /// Use held item
     /// Equivalent to useItem in pokemon.ts
-    // 
+    //
     // 	useItem(source?: Pokemon, sourceEffect?: Effect) {
     // 		if ((!this.hp && !this.getItem().isGem) || !this.isActive) return false;
     // 		if (!this.item) return false;
-    // 
+    //
     // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
     // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
     // 		const item = this.getItem();
@@ -2966,9 +3092,9 @@ impl Pokemon {
     // 			if (item.boosts) {
     // 				this.battle.boost(item.boosts, this, source, item);
     // 			}
-    // 
+    //
     // 			this.battle.singleEvent('Use', item, this.itemState, this, source, sourceEffect);
-    // 
+    //
     // 			this.lastItem = this.item;
     // 			this.item = '';
     // 			this.battle.clearEffectState(this.itemState);
@@ -2993,11 +3119,11 @@ impl Pokemon {
 
     /// Eat held item (berries)
     /// Equivalent to eatItem in pokemon.ts
-    // 
+    //
     // 	eatItem(force?: boolean, source?: Pokemon, sourceEffect?: Effect) {
     // 		if (!this.item) return false;
     // 		if ((!this.hp && this.item !== 'jabocaberry' && this.item !== 'rowapberry') || !this.isActive) return false;
-    // 
+    //
     // 		if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
     // 		if (!source && this.battle.event?.target) source = this.battle.event.target;
     // 		const item = this.getItem();
@@ -3010,10 +3136,10 @@ impl Pokemon {
     // 			(force || this.battle.runEvent('TryEatItem', this, null, null, item))
     // 		) {
     // 			this.battle.add('-enditem', this, item, '[eat]');
-    // 
+    //
     // 			this.battle.singleEvent('Eat', item, this.itemState, this, source, sourceEffect);
     // 			this.battle.runEvent('EatItem', this, source, sourceEffect, item);
-    // 
+    //
     // 			if (RESTORATIVE_BERRIES.has(item.id)) {
     // 				switch (this.pendingStaleness) {
     // 				case 'internal':
@@ -3025,7 +3151,7 @@ impl Pokemon {
     // 				}
     // 				this.pendingStaleness = undefined;
     // 			}
-    // 
+    //
     // 			this.lastItem = this.item;
     // 			this.item = '';
     // 			this.battle.clearEffectState(this.itemState);
@@ -3049,7 +3175,7 @@ impl Pokemon {
 
     /// Run type effectiveness check
     /// Equivalent to runEffectiveness in pokemon.ts
-    // 
+    //
     // 	runEffectiveness(move: ActiveMove) {
     // 		let totalTypeMod = 0;
     // 		if (this.terastallized && move.type === 'Stellar') {
@@ -3068,7 +3194,7 @@ impl Pokemon {
     // 				totalTypeMod < 0 || this.hp < this.maxhp) {
     // 				return totalTypeMod;
     // 			}
-    // 
+    //
     // 			this.battle.add('-activate', this, 'ability: Tera Shell');
     // 			this.abilityState.resisted = true;
     // 			return -1;
@@ -3096,7 +3222,7 @@ impl Pokemon {
     // 		if (!this.battle.dex.types.isName(type)) {
     // 			throw new Error("Use runStatusImmunity for " + type);
     // 		}
-    // 
+    //
     // 		const negateImmunity = !this.battle.runEvent('NegateImmunity', this, type);
     // 		const notImmune = type === 'Ground' ?
     // 			this.isGrounded(negateImmunity) :
@@ -3118,11 +3244,11 @@ impl Pokemon {
 
     /// Run status immunity check
     /// Equivalent to runStatusImmunity in pokemon.ts
-    // 
+    //
     // 	runStatusImmunity(type: string, message?: string) {
     // 		if (this.fainted) return false;
     // 		if (!type) return true;
-    // 
+    //
     // 		if (!this.battle.dex.getImmunity(type, this)) {
     // 			this.battle.debug('natural status immunity');
     // 			if (message) {
@@ -3154,7 +3280,7 @@ impl Pokemon {
 
     /// Remove linked volatiles
     /// Equivalent to removeLinkedVolatiles in pokemon.ts
-    // 
+    //
     // 	removeLinkedVolatiles(linkedStatus: string | Effect, linkedPokemon: Pokemon[]) {
     // 		linkedStatus = linkedStatus.toString();
     // 		for (const linkedPoke of linkedPokemon) {
@@ -3170,7 +3296,9 @@ impl Pokemon {
     pub fn remove_linked_volatiles(&mut self, linked_status: &ID) {
         // Remove volatiles that are linked to this one
         // For example, Leech Seed removes when source switches
-        let to_remove: Vec<ID> = self.volatiles.keys()
+        let to_remove: Vec<ID> = self
+            .volatiles
+            .keys()
             .filter(|k| k.as_str().starts_with(linked_status.as_str()))
             .cloned()
             .collect();
@@ -3199,7 +3327,7 @@ impl Pokemon {
     /// Get nature
     /// Equivalent to getNature in pokemon.ts
     /// Note: Nature is applied at stat calculation time; we return default here
-    // 
+    //
     // 	getNature() {
     // 		return this.battle.dex.natures.get(this.set.nature);
     // 	}
@@ -3212,7 +3340,7 @@ impl Pokemon {
 
     /// Get status object
     /// Equivalent to getStatus in pokemon.ts
-    // 
+    //
     // 	getStatus() {
     // 		return this.battle.dex.conditions.getByID(this.status);
     // 	}
@@ -3227,7 +3355,7 @@ impl Pokemon {
 
     /// Destroy/cleanup Pokemon
     /// Equivalent to destroy in pokemon.ts
-    // 
+    //
     // 	destroy() {
     // 		// deallocate ourself
     // 		// get rid of some possibly-circular references
@@ -3287,7 +3415,11 @@ impl Pokemon {
 
     /// Get indices of adjacent foes
     /// Equivalent to pokemon.ts adjacentFoes()
-    pub fn adjacent_foes_stub(&self, foe_side_index: usize, active_per_half: usize) -> Vec<(usize, usize)> {
+    pub fn adjacent_foes_stub(
+        &self,
+        foe_side_index: usize,
+        active_per_half: usize,
+    ) -> Vec<(usize, usize)> {
         // This is a stub - full implementation needs battle context
         let _ = (foe_side_index, active_per_half);
         vec![]
@@ -3322,7 +3454,7 @@ impl Pokemon {
     /// Equivalent to pokemon.ts getMoveHitData()
     ///
     /// Returns a new MoveHitData struct for this target
-    // 
+    //
     // 	getMoveHitData(move: ActiveMove) {
     // 		if (!move.moveHitData) move.moveHitData = {};
     // 		const slot = this.getSlot();

@@ -14,7 +14,11 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onTry(source, target, move) {
@@ -45,11 +49,14 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
             (source_pokemon.get_slot(), active_move)
         };
 
-        battle.add("cant", &[
-            source_arg.into(),
-            "move: Gravity".into(),
-            move_id_string.into(),
-        ]);
+        battle.add(
+            "cant",
+            &[
+                source_arg.into(),
+                "move: Gravity".into(),
+                move_id_string.into(),
+            ],
+        );
 
         // return null;
         return EventResult::Stop;
@@ -61,7 +68,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 /// onTryHit(target, source) {
 ///     this.add('-nothing');
 /// }
-pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> EventResult {
     // onTryHit(target, source) {
     //     this.add('-nothing');
     // }
@@ -71,4 +82,3 @@ pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), _target_pos:
 
     EventResult::Continue
 }
-

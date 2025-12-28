@@ -5,8 +5,8 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// priorityChargeCallback(source) {
 ///     source.addVolatile('chillyreception');
@@ -30,7 +30,12 @@ pub mod condition {
     ///     if (move.id !== 'chillyreception') return;
     ///     this.add('-prepare', source, 'Chilly Reception', '[premajor]');
     /// }
-    pub fn on_before_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_before_move(
+        battle: &mut Battle,
+        source_pos: Option<(usize, usize)>,
+        _target_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         // if (move.id !== 'chillyreception') return;
         if move_id != "chillyreception" {
             // return;
@@ -51,7 +56,14 @@ pub mod condition {
             source_pokemon.get_slot()
         };
 
-        battle.add("-prepare", &[source_ident.as_str().into(), "Chilly Reception".into(), "[premajor]".into()]);
+        battle.add(
+            "-prepare",
+            &[
+                source_ident.as_str().into(),
+                "Chilly Reception".into(),
+                "[premajor]".into(),
+            ],
+        );
 
         EventResult::Continue
     }

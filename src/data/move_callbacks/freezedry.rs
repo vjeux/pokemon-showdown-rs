@@ -18,4 +18,3 @@ pub fn on_effectiveness(_battle: &mut Battle, _type_mod: i32, target_type: &str)
 
     EventResult::Continue
 }
-

@@ -5,8 +5,8 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::BoostID;
+use crate::event::EventResult;
 
 /// onHit(target) {
 ///     const stats: BoostID[] = [];
@@ -25,7 +25,11 @@ use crate::dex_data::BoostID;
 ///         return false;
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the target pokemon
     let target = match target_pos {
         Some(pos) => pos,
@@ -79,4 +83,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         EventResult::Boolean(false)
     }
 }
-

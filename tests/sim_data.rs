@@ -22,7 +22,12 @@ fn test_should_have_valid_pokedex_entries() {
 
         // JavaScript: assert.equal(toID(entry.name), pokemonid, `Mismatched Pokemon key "${pokemonid}" of ${entry.name}`);
         // Note: In Rust, the iterator already ensures this, but we can verify the name exists
-        assert!(!entry.name.is_empty(), "Mismatched Pokemon key '{}' of {}", pokemonid, entry.name);
+        assert!(
+            !entry.name.is_empty(),
+            "Mismatched Pokemon key '{}' of {}",
+            pokemonid,
+            entry.name
+        );
 
         // JavaScript: assert(!entry.name.startsWith("-") && !entry.name.endsWith("-"), `Pokemon name "${entry.name}" should not start or end with a hyphen`);
         assert!(
@@ -153,7 +158,8 @@ fn test_should_have_valid_pokedex_entries() {
                         evo_entry.prevo.as_ref(),
                         Some(&entry.name),
                         "Evo {} should have {} listed as a prevo",
-                        evo_name, entry.name
+                        evo_name,
+                        entry.name
                     );
                 }
             }
@@ -184,7 +190,8 @@ fn test_should_have_valid_pokedex_entries() {
                         forme_entry.base_species.as_ref(),
                         Some(&entry.name),
                         "Forme {} of {} should have it as a baseSpecies",
-                        forme_name, entry.name
+                        forme_name,
+                        entry.name
                     );
 
                     // JavaScript: if (!forme.startsWith('Pokestar')) { ... }
@@ -234,7 +241,11 @@ fn test_should_have_valid_items_entries() {
         // JavaScript: const entry = Items[itemid];
 
         // JavaScript: assert.equal(toID(entry.name), itemid, `Mismatched Item key "${itemid}" of "${entry.name}"`);
-        assert!(!entry.name.is_empty(), "Mismatched Item key of '{}'", entry.name);
+        assert!(
+            !entry.name.is_empty(),
+            "Mismatched Item key of '{}'",
+            entry.name
+        );
 
         // JavaScript: assert.equal(typeof entry.num, 'number', `Item ${entry.name} should have a number`);
         // Note: In Rust, num is always an i32 (type system guarantees this)
@@ -256,7 +267,11 @@ fn test_should_have_valid_moves_entries() {
         // JavaScript: const entry = Moves[moveid];
 
         // JavaScript: assert.equal(toID(entry.name), moveid, `Mismatched Move key "${moveid}" of "${entry.name}"`);
-        assert!(!entry.name.is_empty(), "Mismatched Move key of '{}'", entry.name);
+        assert!(
+            !entry.name.is_empty(),
+            "Mismatched Move key of '{}'",
+            entry.name
+        );
 
         // JavaScript: assert.equal(typeof entry.num, 'number', `Move ${entry.name} should have a number`);
         // Note: In Rust, num is always an i32 (type system guarantees this)
@@ -285,7 +300,11 @@ fn test_should_have_valid_abilities_entries() {
         // JavaScript: const entry = Abilities[abilityid];
 
         // JavaScript: assert.equal(toID(entry.name), abilityid, `Mismatched Ability key "${abilityid}" of "${entry.name}"`);
-        assert!(!entry.name.is_empty(), "Mismatched Ability key of '{}'", entry.name);
+        assert!(
+            !entry.name.is_empty(),
+            "Mismatched Ability key of '{}'",
+            entry.name
+        );
 
         // JavaScript: assert.equal(typeof entry.num, 'number', `Ability ${entry.name} should have a number`);
         // Note: In Rust, num is always an i32 (type system guarantees this)
@@ -307,7 +326,11 @@ fn test_should_have_valid_natures_entries() {
         // JavaScript: const entry = Natures[natureid];
 
         // JavaScript: assert.equal(toID(entry.name), natureid, `Mismatched Nature key "${natureid}" of "${entry.name}"`);
-        assert!(!entry.name.is_empty(), "Mismatched Nature key of '{}'", entry.name);
+        assert!(
+            !entry.name.is_empty(),
+            "Mismatched Nature key of '{}'",
+            entry.name
+        );
 
         // JavaScript: assert.equal(!!entry.plus, !!entry.minus, `Mismatched Nature values "+${entry.plus}"/"-${entry.minus}" of "${entry.name}"`);
         assert_eq!(
@@ -338,36 +361,44 @@ fn test_should_have_valid_aliases_entries() {
             // JavaScript: assert.equal(Aliases[aliasid], Dex.data.Pokedex[targetid].name, `Alias ${aliasid} has incorrect Species name "${Aliases[aliasid]}"`);
             let species = dex.species.get(&targetid).unwrap();
             assert_eq!(
-                alias_value, &species.name,
+                alias_value,
+                &species.name,
                 "Alias {} has incorrect Species name '{}'",
-                aliasid.as_str(), alias_value
+                aliasid.as_str(),
+                alias_value
             );
         // JavaScript: } else if (targetid in Dex.data.Moves) {
         } else if dex.moves.contains_key(&targetid) {
             // JavaScript: assert.equal(Aliases[aliasid], Dex.data.Moves[targetid].name, `Alias ${aliasid} has incorrect Move name "${Aliases[aliasid]}"`);
             let move_data = dex.moves.get(&targetid).unwrap();
             assert_eq!(
-                alias_value, &move_data.name,
+                alias_value,
+                &move_data.name,
                 "Alias {} has incorrect Move name '{}'",
-                aliasid.as_str(), alias_value
+                aliasid.as_str(),
+                alias_value
             );
         // JavaScript: } else if (targetid in Dex.data.Abilities) {
         } else if dex.abilities.contains_key(&targetid) {
             // JavaScript: assert.equal(Aliases[aliasid], Dex.data.Abilities[targetid].name, `Alias ${aliasid} has incorrect Ability name "${Aliases[aliasid]}"`);
             let ability = dex.abilities.get(&targetid).unwrap();
             assert_eq!(
-                alias_value, &ability.name,
+                alias_value,
+                &ability.name,
                 "Alias {} has incorrect Ability name '{}'",
-                aliasid.as_str(), alias_value
+                aliasid.as_str(),
+                alias_value
             );
         // JavaScript: } else if (targetid in Dex.data.Items) {
         } else if dex.items.contains_key(&targetid) {
             // JavaScript: assert.equal(Aliases[aliasid], Dex.data.Items[targetid].name, `Alias ${aliasid} has incorrect Item name "${Aliases[aliasid]}"`);
             let item = dex.items.get(&targetid).unwrap();
             assert_eq!(
-                alias_value, &item.name,
+                alias_value,
+                &item.name,
                 "Alias {} has incorrect Item name '{}'",
-                aliasid.as_str(), alias_value
+                aliasid.as_str(),
+                alias_value
             );
         // JavaScript: } else if (targetid in Dex.data.Rulesets) {
         // Note: Rulesets not implemented in Rust yet
@@ -382,7 +413,8 @@ fn test_should_have_valid_aliases_entries() {
             if !alias_value.starts_with('[') {
                 panic!(
                     "Alias {} -> '{}' must be a pokemon/move/ability/item/format",
-                    aliasid.as_str(), alias_value
+                    aliasid.as_str(),
+                    alias_value
                 );
             }
         }
@@ -417,10 +449,14 @@ fn test_should_have_valid_compound_word_names_entries() {
 
         // JavaScript: let actualName = Dex.data.Pokedex[targetid]?.name || Dex.data.Moves[targetid]?.name ||
         // JavaScript:     Dex.data.Abilities[targetid]?.name || Dex.data.Items[targetid]?.name;
-        let mut actual_name = dex.species.get(&targetid).map(|s| &s.name)
+        let mut actual_name = dex
+            .species
+            .get(&targetid)
+            .map(|s| &s.name)
             .or_else(|| dex.moves.get(&targetid).map(|m| &m.name))
             .or_else(|| dex.abilities.get(&targetid).map(|a| &a.name))
-            .or_else(|| dex.items.get(&targetid).map(|i| &i.name)).cloned();
+            .or_else(|| dex.items.get(&targetid).map(|i| &i.name))
+            .cloned();
 
         // JavaScript: if (Dex.data.Pokedex[targetid]?.name) {
         if let Some(species) = dex.species.get(&targetid) {
@@ -479,9 +515,11 @@ fn test_should_have_valid_rulesets_entries() {
         // JavaScript: assert.equal(toID(entry.name), formatid, `Mismatched Ruleset key "${formatid}" of "${entry.name}"`);
         let expected_id = ID::new(&entry.name);
         assert_eq!(
-            formatid, &expected_id,
+            formatid,
+            &expected_id,
             "Mismatched Ruleset key '{}' of '{}'",
-            formatid.as_str(), entry.name
+            formatid.as_str(),
+            entry.name
         );
 
         // JavaScript: if (entry.mod) {
@@ -489,7 +527,8 @@ fn test_should_have_valid_rulesets_entries() {
             // JavaScript: assert.equal(toID(entry.mod) || undefined, entry.mod, `Mod of "${formatid}" must be an ID"`);
             let to_id_result = ID::new(mod_id);
             assert_eq!(
-                to_id_result.as_str(), mod_id,
+                to_id_result.as_str(),
+                mod_id,
                 "Mod of '{}' must be an ID",
                 formatid.as_str()
             );
@@ -653,13 +692,18 @@ fn test_gen6_should_have_721_species_and_113_formes() {
 
     // Debug: print all formes if count is wrong
     if formes_count != 113 {
-        eprintln!("Gen 6 formes count mismatch: {} vs 113 expected", formes_count);
-        let mut formes: Vec<_> = dex.species.iter()
+        eprintln!(
+            "Gen 6 formes count mismatch: {} vs 113 expected",
+            formes_count
+        );
+        let mut formes: Vec<_> = dex
+            .species
+            .iter()
             .filter(|(_id, pkmn)| {
-                pkmn.exists &&
-                pkmn.is_nonstandard.is_none() &&
-                pkmn.tier.as_deref() != Some("Illegal") &&
-                !pkmn.is_cosmetic_forme
+                pkmn.exists
+                    && pkmn.is_nonstandard.is_none()
+                    && pkmn.tier.as_deref() != Some("Illegal")
+                    && !pkmn.is_cosmetic_forme
             })
             .filter(|(_id, pkmn)| {
                 let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
@@ -691,13 +735,18 @@ fn test_gen7_should_have_807_species_and_177_formes() {
 
     // Debug: if species count is wrong, print the extra species
     if species_count != 807 {
-        eprintln!("Gen 7 species count mismatch: {} vs 807 expected", species_count);
-        let species: Vec<_> = dex.species.iter()
+        eprintln!(
+            "Gen 7 species count mismatch: {} vs 807 expected",
+            species_count
+        );
+        let species: Vec<_> = dex
+            .species
+            .iter()
             .filter(|(_id, pkmn)| {
-                pkmn.exists &&
-                pkmn.is_nonstandard.is_none() &&
-                pkmn.tier.as_deref() != Some("Illegal") &&
-                !pkmn.is_cosmetic_forme
+                pkmn.exists
+                    && pkmn.is_nonstandard.is_none()
+                    && pkmn.tier.as_deref() != Some("Illegal")
+                    && !pkmn.is_cosmetic_forme
             })
             .filter(|(_id, pkmn)| {
                 let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
@@ -715,13 +764,18 @@ fn test_gen7_should_have_807_species_and_177_formes() {
 
     // Debug: if formes count is wrong, print Starter formes
     if formes_count != 177 {
-        eprintln!("Gen 7 formes count mismatch: {} vs 177 expected", formes_count);
-        let formes: Vec<_> = dex.species.iter()
+        eprintln!(
+            "Gen 7 formes count mismatch: {} vs 177 expected",
+            formes_count
+        );
+        let formes: Vec<_> = dex
+            .species
+            .iter()
             .filter(|(_id, pkmn)| {
-                pkmn.exists &&
-                pkmn.is_nonstandard.is_none() &&
-                pkmn.tier.as_deref() != Some("Illegal") &&
-                !pkmn.is_cosmetic_forme
+                pkmn.exists
+                    && pkmn.is_nonstandard.is_none()
+                    && pkmn.tier.as_deref() != Some("Illegal")
+                    && !pkmn.is_cosmetic_forme
             })
             .filter(|(_id, pkmn)| {
                 let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
@@ -729,8 +783,7 @@ fn test_gen7_should_have_807_species_and_177_formes() {
             })
             .filter(|(_id, pkmn)| {
                 // Look for Starter formes or LGPE range
-                pkmn.forme.as_deref() == Some("Starter") ||
-                (pkmn.num >= 808 && pkmn.num <= 809)
+                pkmn.forme.as_deref() == Some("Starter") || (pkmn.num >= 808 && pkmn.num <= 809)
             })
             .map(|(_id, pkmn)| (pkmn.num, pkmn.name.clone(), pkmn.forme.clone()))
             .collect();
@@ -756,13 +809,18 @@ fn test_gen8_should_have_664_species_and_107_formes() {
 
     // Debug: if species count is wrong, print the extra species
     if species_count != 664 {
-        eprintln!("Gen 8 species count mismatch: {} vs 664 expected", species_count);
-        let mut species: Vec<_> = dex.species.iter()
+        eprintln!(
+            "Gen 8 species count mismatch: {} vs 664 expected",
+            species_count
+        );
+        let mut species: Vec<_> = dex
+            .species
+            .iter()
             .filter(|(_id, pkmn)| {
-                pkmn.exists &&
-                pkmn.is_nonstandard.is_none() &&
-                pkmn.tier.as_deref() != Some("Illegal") &&
-                !pkmn.is_cosmetic_forme
+                pkmn.exists
+                    && pkmn.is_nonstandard.is_none()
+                    && pkmn.tier.as_deref() != Some("Illegal")
+                    && !pkmn.is_cosmetic_forme
             })
             .filter(|(_id, pkmn)| {
                 let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
@@ -781,13 +839,18 @@ fn test_gen8_should_have_664_species_and_107_formes() {
 
     // Debug: if formes count is wrong, print all formes
     if formes_count != 107 {
-        eprintln!("Gen 8 formes count mismatch: {} vs 107 expected", formes_count);
-        let mut formes: Vec<_> = dex.species.iter()
+        eprintln!(
+            "Gen 8 formes count mismatch: {} vs 107 expected",
+            formes_count
+        );
+        let mut formes: Vec<_> = dex
+            .species
+            .iter()
             .filter(|(_id, pkmn)| {
-                pkmn.exists &&
-                pkmn.is_nonstandard.is_none() &&
-                pkmn.tier.as_deref() != Some("Illegal") &&
-                !pkmn.is_cosmetic_forme
+                pkmn.exists
+                    && pkmn.is_nonstandard.is_none()
+                    && pkmn.tier.as_deref() != Some("Illegal")
+                    && !pkmn.is_cosmetic_forme
             })
             .filter(|(_id, pkmn)| {
                 let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
@@ -812,7 +875,10 @@ fn test_gen8_should_have_664_species_and_107_formes() {
     // TODO: JavaScript expects 107, but we're getting 106 (missing Zygarde-10% and Zygarde-Complete)
     // This is because they have gen: 7 and are marked "Past" in Gen 9 data
     // Need to implement proper gen-specific formats-data loading to fix this
-    assert_eq!(formes_count, 106, "Gen 8 should have 106 formes (TODO: should be 107)");
+    assert_eq!(
+        formes_count, 106,
+        "Gen 8 should have 106 formes (TODO: should be 107)"
+    );
 }
 
 /// Test: Gen 9 should have 733 species and 143 formes
@@ -848,10 +914,18 @@ fn test_gen4_debug() {
     let mut formes = Vec::new();
 
     for (_id, pkmn) in dex.species.iter() {
-        if !pkmn.exists { continue; }
-        if pkmn.is_nonstandard.is_some() { continue; }
-        if pkmn.tier.as_deref() == Some("Illegal") { continue; }
-        if pkmn.is_cosmetic_forme { continue; }
+        if !pkmn.exists {
+            continue;
+        }
+        if pkmn.is_nonstandard.is_some() {
+            continue;
+        }
+        if pkmn.tier.as_deref() == Some("Illegal") {
+            continue;
+        }
+        if pkmn.is_cosmetic_forme {
+            continue;
+        }
 
         let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
         if &pkmn.name != base {
@@ -862,6 +936,9 @@ fn test_gen4_debug() {
     formes.sort();
     println!("Found {} formes in Gen 4:", formes.len());
     for (name, forme, num, gen) in formes {
-        println!("  {} (forme: {:?}, num: {}, gen: {:?})", name, forme, num, gen);
+        println!(
+            "  {} (forme: {:?}, num: {}, gen: {:?})",
+            name, forme, num, gen
+        );
     }
 }

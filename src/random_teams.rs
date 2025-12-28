@@ -4,10 +4,10 @@
 //!
 //! This module generates random teams for Random Battle format.
 
+use crate::data::species::{SpeciesDef, SPECIES};
 use crate::dex_data::ID;
 use crate::prng::PRNG;
-use crate::data::species::{SpeciesDef, SPECIES};
-use crate::team_validator::{ValidatorSet, EVSpread, IVSpread};
+use crate::team_validator::{EVSpread, IVSpread, ValidatorSet};
 
 /// Random team generator
 pub struct RandomTeamGenerator {
@@ -52,7 +52,8 @@ impl RandomTeamGenerator {
     /// Generate a single random Pokemon
     fn generate_pokemon(&mut self, excluded: &[String]) -> Option<ValidatorSet> {
         // Get all available species
-        let available: Vec<_> = SPECIES.iter()
+        let available: Vec<_> = SPECIES
+            .iter()
             .filter(|(id, spec)| {
                 // Filter out already used species
                 !excluded.iter().any(|e| ID::new(e) == **id)
@@ -183,10 +184,13 @@ impl RandomTeamGenerator {
         }
 
         // Bulky Pokemon
-        if (species.base_stats.hp > 80 || species.base_stats.def > 100 || species.base_stats.spd > 100)
-            && self.prng.random_int(100) < 50 {
-                return "Leftovers".to_string();
-            }
+        if (species.base_stats.hp > 80
+            || species.base_stats.def > 100
+            || species.base_stats.spd > 100)
+            && self.prng.random_int(100) < 50
+        {
+            return "Leftovers".to_string();
+        }
 
         // Default: random from common items
         let idx = self.prng.random_int(items.len() as i32) as usize;
@@ -219,9 +223,9 @@ impl RandomTeamGenerator {
 
         // Balanced/Defensive
         if species.base_stats.def > species.base_stats.spd {
-            "Bold".to_string()// +Def -Atk
+            "Bold".to_string() // +Def -Atk
         } else {
-            "Calm".to_string()// +SpD -Atk
+            "Calm".to_string() // +SpD -Atk
         }
     }
 
@@ -235,23 +239,73 @@ impl RandomTeamGenerator {
         // Common attacking moves by type
         let type_moves: Vec<(&str, &[&str])> = vec![
             ("Normal", &["Body Slam", "Return", "Facade", "Hyper Voice"]),
-            ("Fire", &["Flamethrower", "Fire Blast", "Flare Blitz", "Heat Wave"]),
+            (
+                "Fire",
+                &["Flamethrower", "Fire Blast", "Flare Blitz", "Heat Wave"],
+            ),
             ("Water", &["Surf", "Hydro Pump", "Scald", "Waterfall"]),
-            ("Electric", &["Thunderbolt", "Thunder", "Volt Switch", "Wild Charge"]),
-            ("Grass", &["Energy Ball", "Leaf Storm", "Giga Drain", "Power Whip"]),
-            ("Ice", &["Ice Beam", "Blizzard", "Ice Punch", "Icicle Crash"]),
-            ("Fighting", &["Close Combat", "Aura Sphere", "Drain Punch", "High Jump Kick"]),
-            ("Poison", &["Sludge Bomb", "Sludge Wave", "Gunk Shot", "Poison Jab"]),
-            ("Ground", &["Earthquake", "Earth Power", "Drill Run", "Stomping Tantrum"]),
-            ("Flying", &["Hurricane", "Brave Bird", "Air Slash", "Dual Wingbeat"]),
-            ("Psychic", &["Psychic", "Psyshock", "Zen Headbutt", "Expanding Force"]),
+            (
+                "Electric",
+                &["Thunderbolt", "Thunder", "Volt Switch", "Wild Charge"],
+            ),
+            (
+                "Grass",
+                &["Energy Ball", "Leaf Storm", "Giga Drain", "Power Whip"],
+            ),
+            (
+                "Ice",
+                &["Ice Beam", "Blizzard", "Ice Punch", "Icicle Crash"],
+            ),
+            (
+                "Fighting",
+                &[
+                    "Close Combat",
+                    "Aura Sphere",
+                    "Drain Punch",
+                    "High Jump Kick",
+                ],
+            ),
+            (
+                "Poison",
+                &["Sludge Bomb", "Sludge Wave", "Gunk Shot", "Poison Jab"],
+            ),
+            (
+                "Ground",
+                &["Earthquake", "Earth Power", "Drill Run", "Stomping Tantrum"],
+            ),
+            (
+                "Flying",
+                &["Hurricane", "Brave Bird", "Air Slash", "Dual Wingbeat"],
+            ),
+            (
+                "Psychic",
+                &["Psychic", "Psyshock", "Zen Headbutt", "Expanding Force"],
+            ),
             ("Bug", &["Bug Buzz", "X-Scissor", "U-turn", "Megahorn"]),
-            ("Rock", &["Stone Edge", "Rock Slide", "Power Gem", "Head Smash"]),
-            ("Ghost", &["Shadow Ball", "Shadow Claw", "Phantom Force", "Poltergeist"]),
-            ("Dragon", &["Draco Meteor", "Dragon Pulse", "Outrage", "Dragon Claw"]),
-            ("Dark", &["Dark Pulse", "Knock Off", "Crunch", "Sucker Punch"]),
-            ("Steel", &["Flash Cannon", "Iron Head", "Steel Beam", "Heavy Slam"]),
-            ("Fairy", &["Moonblast", "Dazzling Gleam", "Play Rough", "Draining Kiss"]),
+            (
+                "Rock",
+                &["Stone Edge", "Rock Slide", "Power Gem", "Head Smash"],
+            ),
+            (
+                "Ghost",
+                &["Shadow Ball", "Shadow Claw", "Phantom Force", "Poltergeist"],
+            ),
+            (
+                "Dragon",
+                &["Draco Meteor", "Dragon Pulse", "Outrage", "Dragon Claw"],
+            ),
+            (
+                "Dark",
+                &["Dark Pulse", "Knock Off", "Crunch", "Sucker Punch"],
+            ),
+            (
+                "Steel",
+                &["Flash Cannon", "Iron Head", "Steel Beam", "Heavy Slam"],
+            ),
+            (
+                "Fairy",
+                &["Moonblast", "Dazzling Gleam", "Play Rough", "Draining Kiss"],
+            ),
         ];
 
         // Add STAB moves
@@ -267,8 +321,14 @@ impl RandomTeamGenerator {
 
         // Add coverage moves
         let coverage = [
-            "Earthquake", "Ice Beam", "Thunderbolt", "Flamethrower",
-            "Shadow Ball", "Psychic", "Dark Pulse", "Focus Blast",
+            "Earthquake",
+            "Ice Beam",
+            "Thunderbolt",
+            "Flamethrower",
+            "Shadow Ball",
+            "Psychic",
+            "Dark Pulse",
+            "Focus Blast",
         ];
 
         while moves.len() < 3 {
@@ -281,9 +341,18 @@ impl RandomTeamGenerator {
 
         // Add a utility/status move
         let utility = [
-            "Protect", "Substitute", "Toxic", "Will-O-Wisp",
-            "Thunder Wave", "Stealth Rock", "Roost", "Recover",
-            "Swords Dance", "Nasty Plot", "Calm Mind", "Dragon Dance",
+            "Protect",
+            "Substitute",
+            "Toxic",
+            "Will-O-Wisp",
+            "Thunder Wave",
+            "Stealth Rock",
+            "Roost",
+            "Recover",
+            "Swords Dance",
+            "Nasty Plot",
+            "Calm Mind",
+            "Dragon Dance",
         ];
 
         if moves.len() < 4 {
@@ -388,12 +457,24 @@ pub fn generate_random_team_string(format: &str) -> String {
 
         // EVs
         let mut ev_parts = Vec::new();
-        if pokemon.evs.hp > 0 { ev_parts.push(format!("{} HP", pokemon.evs.hp)); }
-        if pokemon.evs.atk > 0 { ev_parts.push(format!("{} Atk", pokemon.evs.atk)); }
-        if pokemon.evs.def > 0 { ev_parts.push(format!("{} Def", pokemon.evs.def)); }
-        if pokemon.evs.spa > 0 { ev_parts.push(format!("{} SpA", pokemon.evs.spa)); }
-        if pokemon.evs.spd > 0 { ev_parts.push(format!("{} SpD", pokemon.evs.spd)); }
-        if pokemon.evs.spe > 0 { ev_parts.push(format!("{} Spe", pokemon.evs.spe)); }
+        if pokemon.evs.hp > 0 {
+            ev_parts.push(format!("{} HP", pokemon.evs.hp));
+        }
+        if pokemon.evs.atk > 0 {
+            ev_parts.push(format!("{} Atk", pokemon.evs.atk));
+        }
+        if pokemon.evs.def > 0 {
+            ev_parts.push(format!("{} Def", pokemon.evs.def));
+        }
+        if pokemon.evs.spa > 0 {
+            ev_parts.push(format!("{} SpA", pokemon.evs.spa));
+        }
+        if pokemon.evs.spd > 0 {
+            ev_parts.push(format!("{} SpD", pokemon.evs.spd));
+        }
+        if pokemon.evs.spe > 0 {
+            ev_parts.push(format!("{} Spe", pokemon.evs.spe));
+        }
         if !ev_parts.is_empty() {
             output.push_str(&format!("EVs: {}\n", ev_parts.join(" / ")));
         }
@@ -473,8 +554,12 @@ mod tests {
         let team = generator.generate_team();
 
         for pokemon in &team {
-            let total = pokemon.evs.hp + pokemon.evs.atk + pokemon.evs.def +
-                        pokemon.evs.spa + pokemon.evs.spd + pokemon.evs.spe;
+            let total = pokemon.evs.hp
+                + pokemon.evs.atk
+                + pokemon.evs.def
+                + pokemon.evs.spa
+                + pokemon.evs.spd
+                + pokemon.evs.spe;
             assert!(total <= 510, "EVs exceed 510 for {}", pokemon.species);
         }
     }

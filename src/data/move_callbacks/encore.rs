@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -45,7 +44,10 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (target_pokemon.last_move.clone(), target_pokemon.volatiles.contains_key(&ID::from("dynamax")))
+            (
+                target_pokemon.last_move.clone(),
+                target_pokemon.volatiles.contains_key(&ID::from("dynamax")),
+            )
         };
 
         let move_id = match last_move_id {
@@ -91,7 +93,10 @@ pub mod condition {
 
         // this.effectState.move = move.id;
         if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert("move".to_string(), serde_json::to_value(move_id.to_string()).unwrap());
+            effect_state.data.insert(
+                "move".to_string(),
+                serde_json::to_value(move_id.to_string()).unwrap(),
+            );
         }
 
         // this.add('-start', target, 'Encore');
@@ -123,12 +128,19 @@ pub mod condition {
     /// onOverrideAction(pokemon, target, move) {
     ///     if (move.id !== this.effectState.move) return this.effectState.move;
     /// }
-    pub fn on_override_action(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_override_action(
+        battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (move.id !== this.effectState.move) return this.effectState.move;
         let encore_move_id = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.data.get("move")
+            effect_state
+                .data
+                .get("move")
                 .and_then(|v| v.as_str())
                 .map(ID::from)
         } else {
@@ -165,7 +177,9 @@ pub mod condition {
         //     target.removeVolatile('encore');
         // }
         let encore_move_id = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.data.get("move")
+            effect_state
+                .data
+                .get("move")
                 .and_then(|v| v.as_str())
                 .map(ID::from)
         } else {
@@ -240,7 +254,9 @@ pub mod condition {
         //     return;
         // }
         let encore_move_id = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.data.get("move")
+            effect_state
+                .data
+                .get("move")
                 .and_then(|v| v.as_str())
                 .map(ID::from)
         } else {
@@ -276,7 +292,9 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            pokemon_pokemon.move_slots.iter()
+            pokemon_pokemon
+                .move_slots
+                .iter()
                 .filter(|slot| slot.id != encore_id)
                 .map(|slot| slot.id.clone())
                 .collect()

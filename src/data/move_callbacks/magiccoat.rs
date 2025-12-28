@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -17,7 +16,12 @@ pub mod condition {
     ///         this.effectState.pranksterBoosted = effect.pranksterBoosted;
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -25,25 +29,26 @@ pub mod condition {
 
         // this.add('-singleturn', target, 'move: Magic Coat');
         let target_arg = {
-
             let pokemon = match battle.pokemon_at(target.0, target.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.get_slot()
-
         };
-        battle.add("-singleturn", &[target_arg.into(), "move: Magic Coat".into()]);
+        battle.add(
+            "-singleturn",
+            &[target_arg.into(), "move: Magic Coat".into()],
+        );
 
         // if (effect?.effectType === 'Move') {
         //     this.effectState.pranksterBoosted = effect.pranksterBoosted;
         // }
         if let Some(eff_id) = effect_id {
-            let effect = battle.dex.get_move_by_id(&crate::dex_data::ID::from(eff_id));
+            let effect = battle
+                .dex
+                .get_move_by_id(&crate::dex_data::ID::from(eff_id));
             if effect.is_some() {
                 // It's a move
                 if let Some(ref move_data) = battle.active_move {
@@ -67,7 +72,11 @@ pub mod condition {
     ///     this.actions.useMove(newMove, target, { target: source });
     ///     return null;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_hit(
+        battle: &mut Battle,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
+    ) -> EventResult {
         let target = target_pos;
         let source = source_pos;
 
@@ -81,13 +90,21 @@ pub mod condition {
         }
 
         // move.hasBounced
-        let has_bounced = battle.active_move.as_ref().map(|m| m.has_bounced).unwrap_or(false);
+        let has_bounced = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.has_bounced)
+            .unwrap_or(false);
         if has_bounced {
             return EventResult::Continue;
         }
 
         // !move.flags['reflectable']
-        let is_reflectable = battle.active_move.as_ref().map(|m| m.flags.reflectable).unwrap_or(false);
+        let is_reflectable = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.flags.reflectable)
+            .unwrap_or(false);
         if !is_reflectable {
             return EventResult::Continue;
         }
@@ -138,7 +155,12 @@ pub mod condition {
     ///     move.hasBounced = true; // only bounce once in free-for-all battles
     ///     return null;
     /// }
-    pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    pub fn on_ally_try_hit_side(
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _move_id: &str,
+    ) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -160,13 +182,21 @@ pub mod condition {
         }
 
         // move.hasBounced
-        let has_bounced = battle.active_move.as_ref().map(|m| m.has_bounced).unwrap_or(false);
+        let has_bounced = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.has_bounced)
+            .unwrap_or(false);
         if has_bounced {
             return EventResult::Continue;
         }
 
         // !move.flags['reflectable']
-        let is_reflectable = battle.active_move.as_ref().map(|m| m.flags.reflectable).unwrap_or(false);
+        let is_reflectable = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.flags.reflectable)
+            .unwrap_or(false);
         if !is_reflectable {
             return EventResult::Continue;
         }

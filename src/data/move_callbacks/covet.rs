@@ -24,7 +24,11 @@ use crate::event::EventResult;
 ///     }
 ///     this.add('-item', source, yourItem, '[from] move: Covet', `[of] ${target}`);
 /// }
-pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_after_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     // if (source.item || source.volatiles['gem']) {
@@ -102,18 +106,26 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
             None => return EventResult::Continue,
         };
         let item_data = battle.dex.get_item_by_id(&your_item_id);
-        let item_name = item_data.map(|i| i.name.clone()).unwrap_or_else(|| your_item_id.to_string());
+        let item_name = item_data
+            .map(|i| i.name.clone())
+            .unwrap_or_else(|| your_item_id.to_string());
 
-        (source_pokemon.get_slot(), target_pokemon.get_slot(), item_name)
+        (
+            source_pokemon.get_slot(),
+            target_pokemon.get_slot(),
+            item_name,
+        )
     };
 
-    battle.add("-item", &[
-        source_ident.as_str().into(),
-        item_name.into(),
-        "[from] move: Covet".into(),
-        format!("[of] {}", target_ident).into(),
-    ]);
+    battle.add(
+        "-item",
+        &[
+            source_ident.as_str().into(),
+            item_name.into(),
+            "[from] move: Covet".into(),
+            format!("[of] {}", target_ident).into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///         pokemon.clearBoosts();
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // this.add('-clearallboost');
     battle.add("-clearallboost", &[]);
 
@@ -32,4 +36,3 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Op
 
     EventResult::Continue
 }
-

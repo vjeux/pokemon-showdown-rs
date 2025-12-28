@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -18,7 +17,12 @@ pub mod condition {
     ///         this.add('-start', pokemon, 'move: Laser Focus');
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let pokemon = pokemon_pos;
@@ -30,8 +34,10 @@ pub mod condition {
         // }
         let is_silent_effect = if let Some(eff_id) = effect_id {
             let id = ID::from(eff_id);
-            id == ID::from("costar") || id == ID::from("imposter") ||
-            id == ID::from("psychup") || id == ID::from("transform")
+            id == ID::from("costar")
+                || id == ID::from("imposter")
+                || id == ID::from("psychup")
+                || id == ID::from("transform")
         } else {
             false
         };
@@ -44,7 +50,14 @@ pub mod condition {
             pokemon.get_slot()
         };
         if is_silent_effect {
-            battle.add("-start", &[pokemon_arg.clone().into(), "move: Laser Focus".into(), "[silent]".into()]);
+            battle.add(
+                "-start",
+                &[
+                    pokemon_arg.clone().into(),
+                    "move: Laser Focus".into(),
+                    "[silent]".into(),
+                ],
+            );
         } else {
             battle.add("-start", &[pokemon_arg.into(), "move: Laser Focus".into()]);
         }
@@ -99,7 +112,14 @@ pub mod condition {
             };
             pokemon.get_slot()
         };
-        battle.add("-end", &[pokemon_arg.into(), "move: Laser Focus".into(), "[silent]".into()]);
+        battle.add(
+            "-end",
+            &[
+                pokemon_arg.into(),
+                "move: Laser Focus".into(),
+                "[silent]".into(),
+            ],
+        );
 
         EventResult::Continue
     }

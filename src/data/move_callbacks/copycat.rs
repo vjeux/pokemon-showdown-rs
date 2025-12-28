@@ -19,7 +19,11 @@ use crate::event::EventResult;
 ///     this.actions.useMove(move.id, pokemon);
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // let move: Move | ActiveMove | null = this.lastMove;
     // if (!move) return;
     let move_id = match &battle.last_move {

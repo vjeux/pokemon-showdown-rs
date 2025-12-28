@@ -14,7 +14,11 @@ use crate::event::EventResult;
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+) -> EventResult {
     let source = source_pos;
 
     // if (!this.canSwitch(source.side)) {
@@ -26,17 +30,13 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: 
 
         //     this.add('-fail', source);
         let source_arg = {
-
             let pokemon = match battle.pokemon_at(source.0, source.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.get_slot()
-
         };
         battle.add("-fail", &[source_arg.into()]);
 
@@ -111,9 +111,9 @@ pub mod condition {
             if target_pokemon.fainted {
                 false
             } else {
-                target_pokemon.hp < target_pokemon.maxhp ||
-                target_pokemon.status != ID::from("") ||
-                target_pokemon.move_slots.iter().any(|ms| ms.pp < ms.maxpp)
+                target_pokemon.hp < target_pokemon.maxhp
+                    || target_pokemon.status != ID::from("")
+                    || target_pokemon.move_slots.iter().any(|ms| ms.pp < ms.maxpp)
             }
         };
 
@@ -159,19 +159,22 @@ pub mod condition {
                 target_pokemon.get_health()
             };
             let target_arg = {
-
                 let pokemon = match battle.pokemon_at(target.0, target.1) {
-
                     Some(p) => p,
 
                     None => return EventResult::Continue,
-
                 };
 
                 pokemon.get_slot()
-
             };
-            battle.add("-heal", &[target_arg.into(), health.into(), "[from] move: Lunar Dance".into()]);
+            battle.add(
+                "-heal",
+                &[
+                    target_arg.into(),
+                    health.into(),
+                    "[from] move: Lunar Dance".into(),
+                ],
+            );
 
             //     target.side.removeSlotCondition(target, 'lunardance');
             if let Some(target_side) = battle.sides.get_mut(target.0) {

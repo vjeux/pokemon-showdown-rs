@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -17,9 +16,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-        
-
+    pub fn duration_callback(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // if (source?.hasItem('lightclay')) {
         //     return 8;
         // }
@@ -50,7 +52,13 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_any_modify_damage(battle: &mut Battle, _damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_modify_damage(
+        battle: &mut Battle,
+        _damage: i32,
+        source_pos: Option<(usize, usize)>,
+        target_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -104,7 +112,9 @@ pub mod condition {
             let move_id_id = crate::dex_data::ID::from(move_id);
             let is_crit = target_pokemon.get_move_hit_data(&move_id_id).crit;
 
-            let infiltrates = battle.active_move.as_ref()
+            let infiltrates = battle
+                .active_move
+                .as_ref()
                 .map(|m| m.infiltrates)
                 .unwrap_or(false);
 
@@ -142,7 +152,6 @@ pub mod condition {
 
         let side_id = if side_index == 0 { "p1" } else { "p2" };
 
-
         let side_arg = crate::battle::Arg::Str(side_id);
         battle.add("-sidestart", &[side_arg, "move: Light Screen".into()]);
 
@@ -163,7 +172,6 @@ pub mod condition {
         };
 
         let side_id = if side_index == 0 { "p1" } else { "p2" };
-
 
         let side_arg = crate::battle::Arg::Str(side_id);
         battle.add("-sideend", &[side_arg, "move: Light Screen".into()]);

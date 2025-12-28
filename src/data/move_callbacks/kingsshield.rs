@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
@@ -26,24 +30,24 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
 
     // pokemon.addVolatile('stall');
     {
-
         let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("stall"));
-
     }
 
     EventResult::Continue
@@ -63,19 +67,18 @@ pub mod condition {
 
         // this.add('-singleturn', target, 'Protect');
         let target_ident = {
-
             let pokemon = match battle.pokemon_at(target.0, target.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.get_slot()
-
         };
-        battle.add("-singleturn", &[target_ident.as_str().into(), "Protect".into()]);
+        battle.add(
+            "-singleturn",
+            &[target_ident.as_str().into(), "Protect".into()],
+        );
 
         EventResult::Continue
     }
@@ -103,7 +106,11 @@ pub mod condition {
     ///     }
     ///     return this.NOT_FAIL;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_hit(
+        battle: &mut Battle,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let source = source_pos;
@@ -117,7 +124,7 @@ pub mod condition {
                     active_move.category == "Status",
                     active_move.clone(),
                     active_move.is_z,
-                    active_move.is_max
+                    active_move.is_max,
                 )
             } else {
                 return EventResult::Continue;
@@ -157,26 +164,29 @@ pub mod condition {
         //     } else {
         //         this.add('-activate', target, 'move: Protect');
         //     }
-        let smart_target = battle.active_move.as_ref().and_then(|m| m.smart_target).unwrap_or(false);
+        let smart_target = battle
+            .active_move
+            .as_ref()
+            .and_then(|m| m.smart_target)
+            .unwrap_or(false);
         if smart_target {
             if let Some(ref mut active_move) = battle.active_move {
                 active_move.smart_target = Some(false);
             }
         } else {
             let target_ident = {
-
                 let pokemon = match battle.pokemon_at(target.0, target.1) {
-
                     Some(p) => p,
 
                     None => return EventResult::Continue,
-
                 };
 
                 pokemon.get_slot()
-
             };
-            battle.add("-activate", &[target_ident.as_str().into(), "move: Protect".into()]);
+            battle.add(
+                "-activate",
+                &[target_ident.as_str().into(), "move: Protect".into()],
+            );
         }
 
         //     const lockedmove = source.getVolatile('lockedmove');
@@ -191,7 +201,8 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::NotFail,
             };
-            if let Some(lockedmove_volatile) = source_pokemon.volatiles.get(&ID::from("lockedmove")) {
+            if let Some(lockedmove_volatile) = source_pokemon.volatiles.get(&ID::from("lockedmove"))
+            {
                 lockedmove_volatile.duration == Some(2)
             } else {
                 false
@@ -210,7 +221,11 @@ pub mod condition {
         //         this.boost({ atk: -1 }, source, target, this.dex.getActiveMove("King's Shield"));
         //     }
         let empty_id = ID::from("");
-        let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&empty_id);
+        let move_id = battle
+            .active_move
+            .as_ref()
+            .map(|m| &m.id)
+            .unwrap_or(&empty_id);
         let makes_contact = battle.check_move_makes_contact(move_id, source);
         if makes_contact {
             battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"));
@@ -225,7 +240,11 @@ pub mod condition {
     ///         this.boost({ atk: -1 }, source, target, this.dex.getActiveMove("King's Shield"));
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_hit(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let target = pokemon_pos;
@@ -237,11 +256,19 @@ pub mod condition {
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         //     this.boost({ atk: -1 }, source, target, this.dex.getActiveMove("King's Shield"));
         // }
-        let is_z_or_max_powered = battle.active_move.as_ref().map(|m| m.is_z_or_max_powered).unwrap_or(false);
+        let is_z_or_max_powered = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.is_z_or_max_powered)
+            .unwrap_or(false);
 
         if is_z_or_max_powered {
             let empty_id = ID::from("");
-            let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&empty_id);
+            let move_id = battle
+                .active_move
+                .as_ref()
+                .map(|m| &m.id)
+                .unwrap_or(&empty_id);
             let makes_contact = battle.check_move_makes_contact(move_id, source);
             if makes_contact {
                 battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"));

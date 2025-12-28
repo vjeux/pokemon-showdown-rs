@@ -26,7 +26,11 @@ use crate::event::EventResult;
 ///     source.baseMoveSlots[sketchIndex] = sketchedMove;
 ///     this.add('-activate', source, 'move: Sketch', move.name);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onHit(target, source) {
@@ -73,7 +77,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             None => return EventResult::Continue,
         };
         let is_transformed = source_pokemon.transformed;
-        let has_move = source_pokemon.move_slots.iter().any(|slot| slot.id == move_id);
+        let has_move = source_pokemon
+            .move_slots
+            .iter()
+            .any(|slot| slot.id == move_id);
         (is_transformed, has_move)
     };
 
@@ -103,7 +110,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.move_slots.iter().position(|slot| slot.id == ID::from("sketch"))
+        source_pokemon
+            .move_slots
+            .iter()
+            .position(|slot| slot.id == ID::from("sketch"))
     };
 
     let sketch_index = match sketch_index {
@@ -131,7 +141,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             move_id.clone(),
             move_name.clone(),
             move_pp as u8,
-            move_pp as u8
+            move_pp as u8,
         );
         source_pokemon.move_slots[sketch_index] = sketched_move.clone();
         source_pokemon.base_move_slots[sketch_index] = sketched_move;
@@ -146,12 +156,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         source_pokemon.get_slot()
     };
 
-    battle.add("-activate", &[
-        source_arg.into(),
-        "move: Sketch".into(),
-        move_name.into(),
-    ]);
+    battle.add(
+        "-activate",
+        &[source_arg.into(), "move: Sketch".into(), move_name.into()],
+    );
 
     EventResult::Continue
 }
-

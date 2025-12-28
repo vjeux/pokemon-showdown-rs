@@ -18,7 +18,11 @@ use crate::event::EventResult;
 ///     attacker.addVolatile('twoturnmove', defender);
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // if (attacker.removeVolatile(move.id)) {
@@ -53,12 +57,17 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             None => return EventResult::Continue,
         };
         let move_data = battle.dex.get_move_by_id(&move_id);
-        let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| move_id.to_string());
+        let move_name = move_data
+            .map(|m| m.name.clone())
+            .unwrap_or_else(|| move_id.to_string());
 
         (attacker_pokemon.get_slot(), move_name)
     };
 
-    battle.add("-prepare", &[attacker_ident.as_str().into(), move_name.into()]);
+    battle.add(
+        "-prepare",
+        &[attacker_ident.as_str().into(), move_name.into()],
+    );
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;
@@ -100,7 +109,12 @@ pub mod condition {
     ///     }
     ///     return false;
     /// }
-    pub fn on_invulnerability(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_invulnerability(
+        _battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         // if (['earthquake', 'magnitude'].includes(move.id)) {
         //     return;
         // }
@@ -118,7 +132,13 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_source_modify_damage(
+        battle: &mut Battle,
+        _damage: i32,
+        _source_pos: Option<(usize, usize)>,
+        _target_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         // if (move.id === 'earthquake' || move.id === 'magnitude') {
         //     return this.chainModify(2);
         // }

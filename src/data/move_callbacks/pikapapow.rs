@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // const bp = Math.floor((pokemon.happiness * 10) / 25) || 1;
@@ -23,7 +27,11 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
         };
         let happiness = pokemon_pokemon.happiness;
         let calculated_bp = (happiness * 10) / 25;
-        if calculated_bp == 0 { 1 } else { calculated_bp }
+        if calculated_bp == 0 {
+            1
+        } else {
+            calculated_bp
+        }
     };
 
     // this.debug(`BP: ${bp}`);
@@ -32,4 +40,3 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
     // return bp;
     EventResult::Number(bp as i32)
 }
-

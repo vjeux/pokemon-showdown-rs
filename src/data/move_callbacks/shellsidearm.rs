@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///         this.attrLastMove('[anim] Shell Side Arm ' + move.category);
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // if (!source.isAlly(target)) {
     //     this.attrLastMove('[anim] Shell Side Arm ' + move.category);
     // }
@@ -24,7 +28,11 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: (usize, usize), target_po
     let is_ally = battle.is_ally(source_pos, target_pos);
 
     if !is_ally {
-        let category = battle.active_move.as_ref().map(|m| m.category.as_str()).unwrap_or("Special");
+        let category = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.category.as_str())
+            .unwrap_or("Special");
         let anim_str = format!("[anim] Shell Side Arm {}", category);
         battle.attr_last_move(&[&anim_str]);
     }
@@ -45,7 +53,11 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: (usize, usize), target_po
 ///         move.flags.contact = 1;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::StatID;
 
     // if (!target) return;
@@ -104,7 +116,11 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///     // Shell Side Arm normally reveals its category via animation on cart, but doesn't play either custom animation against allies
 ///     if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
 /// }
-pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
     let target_pos = match target_pos {
         Some(pos) => pos,
@@ -114,7 +130,11 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     let is_ally = battle.is_ally(source_pos, target_pos);
 
     if !is_ally {
-        let category = battle.active_move.as_ref().map(|m| m.category.as_str()).unwrap_or("Special");
+        let category = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.category.as_str())
+            .unwrap_or("Special");
         let hint_str = format!("{} Shell Side Arm", category);
         battle.hint(&hint_str, false, None);
     }
@@ -125,16 +145,25 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 /// onAfterSubDamage(damage, target, source, move) {
 ///     if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), source_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_after_sub_damage(
+    battle: &mut Battle,
+    _damage: i32,
+    target_pos: (usize, usize),
+    source_pos: (usize, usize),
+    _move_id: &str,
+) -> EventResult {
     // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
     let is_ally = battle.is_ally(source_pos, target_pos);
 
     if !is_ally {
-        let category = battle.active_move.as_ref().map(|m| m.category.as_str()).unwrap_or("Special");
+        let category = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.category.as_str())
+            .unwrap_or("Special");
         let hint_str = format!("{} Shell Side Arm", category);
         battle.hint(&hint_str, false, None);
     }
 
     EventResult::Continue
 }
-

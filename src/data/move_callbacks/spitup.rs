@@ -11,7 +11,11 @@ use crate::event::EventResult;
 ///     if (!pokemon.volatiles['stockpile']?.layers) return false;
 ///     return pokemon.volatiles['stockpile'].layers * 100;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // basePowerCallback(pokemon) {
@@ -28,7 +32,9 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
         };
 
         if let Some(volatile) = pokemon_data.volatiles.get(&ID::from("stockpile")) {
-            volatile.data.get("layers")
+            volatile
+                .data
+                .get("layers")
                 .and_then(|l| l.as_i64())
                 .unwrap_or(0) as i32
         } else {
@@ -47,7 +53,11 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
 /// onTry(source) {
 ///     return !!source.volatiles['stockpile'];
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onTry(source) {
@@ -61,7 +71,9 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.volatiles.contains_key(&ID::from("stockpile"))
+        source_pokemon
+            .volatiles
+            .contains_key(&ID::from("stockpile"))
     };
 
     EventResult::Boolean(has_stockpile)
@@ -70,7 +82,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 /// onAfterMove(pokemon) {
 ///     pokemon.removeVolatile('stockpile');
 /// }
-pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onAfterMove(pokemon) {
@@ -89,4 +105,3 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_po
 
     EventResult::Continue
 }
-

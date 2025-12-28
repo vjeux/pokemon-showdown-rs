@@ -12,7 +12,11 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // Get current move's base power
@@ -36,4 +40,3 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _ta
     // return bp;
     EventResult::Number(bp)
 }
-

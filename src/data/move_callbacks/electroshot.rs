@@ -24,7 +24,11 @@ use crate::event::EventResult;
 ///     attacker.addVolatile('twoturnmove', defender);
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let attacker = source_pos;
@@ -59,12 +63,17 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             None => return EventResult::Continue,
         };
         let move_data = battle.dex.get_move_by_id(&move_id);
-        let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| move_id.to_string());
+        let move_name = move_data
+            .map(|m| m.name.clone())
+            .unwrap_or_else(|| move_id.to_string());
 
         (attacker_pokemon.get_slot(), move_name)
     };
 
-    battle.add("-prepare", &[attacker_ident.as_str().into(), move_name.clone().into()]);
+    battle.add(
+        "-prepare",
+        &[attacker_ident.as_str().into(), move_name.clone().into()],
+    );
 
     // this.boost({ spa: 1 }, attacker, attacker, move);
     let boosts = [("spa", 1)];
@@ -107,7 +116,14 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
                 attacker_pokemon.get_slot()
             };
 
-            battle.add("-anim", &[attacker_ident2.as_str().into(), move_name.into(), defender_ident.as_str().into()]);
+            battle.add(
+                "-anim",
+                &[
+                    attacker_ident2.as_str().into(),
+                    move_name.into(),
+                    defender_ident.as_str().into(),
+                ],
+            );
         } else {
             // Need to recreate attacker_ident since it was moved
             let attacker_ident2 = {
@@ -118,7 +134,10 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
                 attacker_pokemon.get_slot()
             };
 
-            battle.add("-anim", &[attacker_ident2.as_str().into(), move_name.into()]);
+            battle.add(
+                "-anim",
+                &[attacker_ident2.as_str().into(), move_name.into()],
+            );
         }
 
         // return;
@@ -144,4 +163,3 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     // return null;
     EventResult::Stop
 }
-

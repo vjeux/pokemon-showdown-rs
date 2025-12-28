@@ -42,7 +42,11 @@ pub mod condition {
     ///         this.effectState.lostFocus = true;
     ///     }
     /// }
-    pub fn on_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_hit(
+        _battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -50,7 +54,11 @@ pub mod condition {
     /// onTryAddVolatile(status, pokemon) {
     ///     if (status.id === 'flinch') return null;
     /// }
-    pub fn on_try_add_volatile(_battle: &mut Battle, _status: Option<&str>, _pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_add_volatile(
+        _battle: &mut Battle,
+        _status: Option<&str>,
+        _pokemon_pos: (usize, usize),
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// damageCallback(pokemon, target) {
 ///     return target.getUndynamaxedHP() - pokemon.hp;
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -42,7 +46,11 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
 /// onTryImmunity(target, pokemon) {
 ///     return pokemon.hp < target.hp;
 /// }
-pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_immunity(
+    battle: &mut Battle,
+    target_pos: Option<(usize, usize)>,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
     let pokemon = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -68,4 +76,3 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 
     EventResult::Boolean(pokemon_hp < target_hp)
 }
-

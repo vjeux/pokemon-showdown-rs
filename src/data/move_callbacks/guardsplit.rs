@@ -16,7 +16,11 @@ use crate::event::EventResult;
 ///     source.storedStats.spd = newspd;
 ///     this.add('-activate', source, 'move: Guard Split', `[of] ${target}`);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -114,8 +118,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
         pokemon.get_slot()
     };
-    battle.add("-activate", &[source_ident.as_str().into(), "move: Guard Split".into(), "[of]".into(), target_ident.as_str().into()]);
+    battle.add(
+        "-activate",
+        &[
+            source_ident.as_str().into(),
+            "move: Guard Split".into(),
+            "[of]".into(),
+            target_ident.as_str().into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

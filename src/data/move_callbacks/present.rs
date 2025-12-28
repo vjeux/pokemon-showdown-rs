@@ -20,7 +20,11 @@ use crate::event::EventResult;
 ///         move.basePower = 120;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // const rand = this.random(10);
     let rand = battle.random(10);
 
@@ -50,4 +54,3 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target
 
     EventResult::Continue
 }
-

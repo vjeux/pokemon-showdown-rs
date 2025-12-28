@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
@@ -29,24 +33,24 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
 
     // pokemon.addVolatile('stall');
     {
-
         let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.add_volatile(ID::from("stall"));
-
     }
 
     EventResult::Continue
@@ -101,7 +105,11 @@ pub mod condition {
     ///     }
     ///     return this.NOT_FAIL;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_hit(
+        battle: &mut Battle,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let source = source_pos;
@@ -121,7 +129,6 @@ pub mod condition {
         if !has_protect_flag || is_status {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
             let move_id = {
-                
                 match &battle.active_move {
                     Some(active_move) => active_move.id.clone(),
                     None => return EventResult::Continue,
@@ -157,7 +164,6 @@ pub mod condition {
 
         // if (move.smartTarget) {
         let smart_target = {
-            
             match &battle.active_move {
                 Some(m) => m.smart_target,
                 None => return EventResult::Continue,
@@ -189,7 +195,9 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.volatiles.contains_key(&ID::from("lockedmove"))
+            source_pokemon
+                .volatiles
+                .contains_key(&ID::from("lockedmove"))
         };
 
         if has_lockedmove {
@@ -199,7 +207,9 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                source_pokemon.volatiles.get(&ID::from("lockedmove"))
+                source_pokemon
+                    .volatiles
+                    .get(&ID::from("lockedmove"))
                     .and_then(|v| v.duration)
                     .map(|d| d == 2)
                     .unwrap_or(false)
@@ -217,7 +227,11 @@ pub mod condition {
 
         // if (this.checkMoveMakesContact(move, source, target)) {
         let empty_id = ID::from("");
-        let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&empty_id);
+        let move_id = battle
+            .active_move
+            .as_ref()
+            .map(|m| &m.id)
+            .unwrap_or(&empty_id);
         if battle.check_move_makes_contact(move_id, source) {
             // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
             battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"));
@@ -232,7 +246,11 @@ pub mod condition {
     ///         this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_hit(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let target = match target_pos {
@@ -252,7 +270,11 @@ pub mod condition {
 
         if is_z_or_max_powered {
             let empty_id = ID::from("");
-            let move_id = battle.active_move.as_ref().map(|m| &m.id).unwrap_or(&empty_id);
+            let move_id = battle
+                .active_move
+                .as_ref()
+                .map(|m| &m.id)
+                .unwrap_or(&empty_id);
             if battle.check_move_makes_contact(move_id, source) {
                 // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
                 battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"));

@@ -5,8 +5,8 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onTryMove(attacker, defender, move) {
 ///     if (attacker.removeVolatile(move.id)) {
@@ -19,7 +19,11 @@ use crate::dex_data::ID;
 ///     attacker.addVolatile('twoturnmove', defender);
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the active move
     let move_id = match &battle.active_move {
         Some(active_move) => active_move.id.clone(),
@@ -50,17 +54,26 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         };
 
         let move_data = battle.dex.get_move_by_id(&move_id);
-        let move_name = move_data.map(|m| m.name.clone()).unwrap_or_else(|| move_id.to_string());
+        let move_name = move_data
+            .map(|m| m.name.clone())
+            .unwrap_or_else(|| move_id.to_string());
 
         (attacker.get_slot(), move_name)
     };
 
-    battle.add("-prepare", &[attacker_ident.as_str().into(), move_name.into()]);
+    battle.add(
+        "-prepare",
+        &[attacker_ident.as_str().into(), move_name.into()],
+    );
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;
     // }
-    if battle.run_event("ChargeMove", Some(source_pos), target_pos, None, None).unwrap_or(0) == 0 {
+    if battle
+        .run_event("ChargeMove", Some(source_pos), target_pos, None, None)
+        .unwrap_or(0)
+        == 0
+    {
         // return;
         return EventResult::Continue;
     }
@@ -86,13 +99,23 @@ pub mod condition {
     ///     }
     ///     return false;
     /// }
-    pub fn on_invulnerability(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_invulnerability(
+        _battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         // if (['gust', 'twister', 'skyuppercut', 'thunder', 'hurricane', 'smackdown', 'thousandarrows'].includes(move.id)) {
         //     return;
         // }
-        if move_id == "gust" || move_id == "twister" || move_id == "skyuppercut"
-            || move_id == "thunder" || move_id == "hurricane" || move_id == "smackdown"
-            || move_id == "thousandarrows" {
+        if move_id == "gust"
+            || move_id == "twister"
+            || move_id == "skyuppercut"
+            || move_id == "thunder"
+            || move_id == "hurricane"
+            || move_id == "smackdown"
+            || move_id == "thousandarrows"
+        {
             // return;
             return EventResult::Continue;
         }
@@ -106,7 +129,13 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_source_base_power(battle: &mut Battle, _base_power: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_source_base_power(
+        battle: &mut Battle,
+        _base_power: i32,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         // if (move.id === 'gust' || move.id === 'twister') {
         //     return this.chainModify(2);
         // }

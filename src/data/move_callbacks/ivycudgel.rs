@@ -12,9 +12,11 @@ use crate::event::EventResult;
 ///         this.attrLastMove('[anim] Ivy Cudgel ' + move.type);
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // if (move.type !== "Grass") {
     //     this.attrLastMove('[anim] Ivy Cudgel ' + move.type);
     // }
@@ -43,9 +45,11 @@ pub fn on_prepare_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target
 ///         break;
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    
-
+pub fn on_modify_type(
+    battle: &mut Battle,
+    _move_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // switch (pokemon.species_id.as_str()) {
@@ -81,4 +85,3 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
 
     EventResult::Continue
 }
-

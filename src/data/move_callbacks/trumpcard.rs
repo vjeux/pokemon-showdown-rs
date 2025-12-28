@@ -33,13 +33,16 @@ use crate::event::EventResult;
 ///             break;
 ///         }
 ///     }
-/// 
+///
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
 /// ```
-pub fn base_power_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    _battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
-

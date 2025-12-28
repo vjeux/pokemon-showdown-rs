@@ -11,9 +11,11 @@ use crate::event::EventResult;
 ///     if (target.getTypes().join() === 'Psychic' || !target.setType('Psychic')) return false;
 ///     this.add('-start', target, 'typechange', 'Psychic');
 /// }
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -42,20 +44,18 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Opt
 
     // this.add('-start', target, 'typechange', 'Psychic');
     let target_arg = {
-
         let pokemon = match battle.pokemon_at(target.0, target.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.get_slot()
-
     };
-    battle.add("-start", &[target_arg.into(), "typechange".into(), "Psychic".into()]);
+    battle.add(
+        "-start",
+        &[target_arg.into(), "typechange".into(), "Psychic".into()],
+    );
 
     EventResult::Continue
 }
-

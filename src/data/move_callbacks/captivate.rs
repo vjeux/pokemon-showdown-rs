@@ -5,13 +5,17 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::Gender;
+use crate::event::EventResult;
 
 /// onTryImmunity(pokemon, source) {
 ///     return (pokemon.gender === 'M' && source.gender === 'F') || (pokemon.gender === 'F' && source.gender === 'M');
 /// }
-pub fn on_try_immunity(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_immunity(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the source
     let source = match source_pos {
         Some(pos) => pos,
@@ -35,8 +39,8 @@ pub fn on_try_immunity(battle: &mut Battle, pokemon_pos: (usize, usize), source_
         source_pokemon.gender
     };
 
-    let result = (pokemon_gender == Gender::Male && source_gender == Gender::Female) ||
-                 (pokemon_gender == Gender::Female && source_gender == Gender::Male);
+    let result = (pokemon_gender == Gender::Male && source_gender == Gender::Female)
+        || (pokemon_gender == Gender::Female && source_gender == Gender::Male);
 
     EventResult::Boolean(result)
 }

@@ -7,14 +7,17 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
     /// onFieldStart(field, source) {
     ///     this.add('-fieldstart', 'move: Mud Sport', `[of] ${source}`);
     /// }
-    pub fn on_field_start(battle: &mut Battle, _field_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_start(
+        battle: &mut Battle,
+        _field_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // this.add('-fieldstart', 'move: Mud Sport', `[of] ${source}`);
         if let Some(source) = source_pos {
             let source_arg = {
@@ -25,10 +28,13 @@ pub mod condition {
                 source_pokemon.get_slot()
             };
 
-            battle.add("-fieldstart", &[
-                "move: Mud Sport".into(),
-                format!("[of] {}", source_arg).into(),
-            ]);
+            battle.add(
+                "-fieldstart",
+                &[
+                    "move: Mud Sport".into(),
+                    format!("[of] {}", source_arg).into(),
+                ],
+            );
         } else {
             battle.add("-fieldstart", &["move: Mud Sport".into()]);
         }
@@ -42,9 +48,12 @@ pub mod condition {
     ///         return this.chainModify([1352, 4096]);
     ///     }
     /// }
-    pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-        
-
+    pub fn on_base_power(
+        battle: &mut Battle,
+        _base_power: i32,
+        _pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // Get the move type
         let move_type = {
             let active_move = match &battle.active_move {

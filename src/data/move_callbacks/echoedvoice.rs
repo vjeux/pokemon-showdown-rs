@@ -15,7 +15,11 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${move.basePower}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // let bp = move.basePower;
@@ -31,7 +35,9 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _t
     // }
     if let Some(echoedvoice_condition) = battle.field.pseudo_weather.get(&ID::from("echoedvoice")) {
         // Get multiplier from effect state
-        let multiplier = echoedvoice_condition.data.get("multiplier")
+        let multiplier = echoedvoice_condition
+            .data
+            .get("multiplier")
             .and_then(|v| v.as_i64())
             .unwrap_or(1) as i32;
 
@@ -48,11 +54,17 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _t
 /// onTryMove() {
 ///     this.field.addPseudoWeather('echoedvoice');
 /// }
-pub fn on_try_move(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // this.field.addPseudoWeather('echoedvoice');
-    battle.field.add_pseudo_weather(ID::from("echoedvoice"), None);
+    battle
+        .field
+        .add_pseudo_weather(ID::from("echoedvoice"), None);
 
     EventResult::Continue
 }
@@ -66,7 +78,10 @@ pub mod condition {
     pub fn on_field_start(battle: &mut Battle) -> EventResult {
         // this.effectState.multiplier = 1;
         if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert("multiplier".to_string(), serde_json::Value::Number(1.into()));
+            effect_state.data.insert(
+                "multiplier".to_string(),
+                serde_json::Value::Number(1.into()),
+            );
         }
 
         EventResult::Continue
@@ -97,12 +112,17 @@ pub mod condition {
                 // if (this.effectState.multiplier < 5) {
                 //     this.effectState.multiplier++;
                 // }
-                let current_multiplier = effect_state.data.get("multiplier")
+                let current_multiplier = effect_state
+                    .data
+                    .get("multiplier")
                     .and_then(|v| v.as_i64())
                     .unwrap_or(1);
 
                 if current_multiplier < 5 {
-                    effect_state.data.insert("multiplier".to_string(), serde_json::Value::Number((current_multiplier + 1).into()));
+                    effect_state.data.insert(
+                        "multiplier".to_string(),
+                        serde_json::Value::Number((current_multiplier + 1).into()),
+                    );
                 }
             }
         }

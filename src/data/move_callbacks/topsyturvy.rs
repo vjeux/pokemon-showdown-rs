@@ -18,8 +18,11 @@ use crate::event::EventResult;
 ///     if (!success) return false;
 ///     this.add('-invertboost', target, '[from] move: Topsy-Turvy');
 /// }
-pub fn on_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    _battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
-

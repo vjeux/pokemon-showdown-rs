@@ -25,9 +25,11 @@ use crate::event::EventResult;
 ///     source.knownType = target.isAlly(source) && target.knownType;
 ///     if (!source.knownType) source.apparentType = oldApparentType;
 /// }
-pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -67,7 +69,11 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.get_types(true).into_iter().filter(|t| t.as_str() != "???").collect::<Vec<_>>()
+        target
+            .get_types(true)
+            .into_iter()
+            .filter(|t| t.as_str() != "???")
+            .collect::<Vec<_>>()
     };
 
     // if (!newBaseTypes.length) {
@@ -106,12 +112,15 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         (source.get_slot(), target.get_slot())
     };
 
-    battle.add("-start", &[
-        source_ident.clone().into(),
-        "typechange".into(),
-        "[from] move: Reflect Type".into(),
-        format!("[of] {}", target_ident).into(),
-    ]);
+    battle.add(
+        "-start",
+        &[
+            source_ident.clone().into(),
+            "typechange".into(),
+            "[from] move: Reflect Type".into(),
+            format!("[of] {}", target_ident).into(),
+        ],
+    );
 
     // source.setType(newBaseTypes);
     // source.addedType = target.addedType;
@@ -133,4 +142,3 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 
     EventResult::Continue
 }
-

@@ -19,7 +19,11 @@ use crate::event::EventResult;
 ///     }
 ///     this.add('-item', target, myItem.name, '[from] move: Bestow', `[of] ${source}`);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get target
     let target = match target_pos {
         Some(pos) => pos,
@@ -57,7 +61,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // if (!this.singleEvent('TakeItem', myItem, source.itemState, target, source, move, myItem) || !target.setItem(myItem)) {
-    let take_item_event = battle.single_event("TakeItem", &my_item, Some(target), Some(pokemon_pos), None);
+    let take_item_event =
+        battle.single_event("TakeItem", &my_item, Some(target), Some(pokemon_pos), None);
 
     let set_item_success = {
         let target_pokemon = battle.pokemon_at_mut(target.0, target.1);
@@ -94,18 +99,26 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         let item_data = battle.dex.get_item_by_id(&my_item);
-        let item_name = item_data.map(|i| i.name.clone()).unwrap_or_else(|| my_item.to_string());
+        let item_name = item_data
+            .map(|i| i.name.clone())
+            .unwrap_or_else(|| my_item.to_string());
 
-        (item_name, target_pokemon.get_slot(), source_pokemon.get_slot())
+        (
+            item_name,
+            target_pokemon.get_slot(),
+            source_pokemon.get_slot(),
+        )
     };
 
-    battle.add("-item", &[
-        target_ident.as_str().into(),
-        item_name.into(),
-        "[from] move: Bestow".into(),
-        format!("[of] {}", source_ident).into(),
-    ]);
+    battle.add(
+        "-item",
+        &[
+            target_ident.as_str().into(),
+            item_name.into(),
+            "[from] move: Bestow".into(),
+            format!("[of] {}", source_ident).into(),
+        ],
+    );
 
     EventResult::Continue
 }
-

@@ -14,7 +14,11 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -56,4 +60,3 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // return bp;
     EventResult::Number(bp)
 }
-

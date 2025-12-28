@@ -45,8 +45,11 @@ pub fn on_try_immunity(_battle: &mut Battle, _target_pos: Option<(usize, usize)>
 ///         this.add('-enditem', source, myItem, '[silent]', '[from] move: Trick');
 ///     }
 /// }
-pub fn on_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    _battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
-

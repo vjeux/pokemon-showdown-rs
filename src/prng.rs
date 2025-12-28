@@ -39,7 +39,12 @@ impl PRNGSeed {
                 u16::from_str_radix(&hex[12..16], 16).map_err(|e| e.to_string())?,
             ];
             Ok(PRNGSeed::Gen5(seed))
-        } else if s.chars().next().map(|c| c.is_ascii_digit()).unwrap_or(false) {
+        } else if s
+            .chars()
+            .next()
+            .map(|c| c.is_ascii_digit())
+            .unwrap_or(false)
+        {
             // Old format: comma-separated numbers
             let parts: Result<Vec<u16>, _> = s.split(',').map(|p| p.parse::<u16>()).collect();
             let parts = parts.map_err(|e| e.to_string())?;
@@ -103,19 +108,19 @@ impl Gen5RNG {
     // 		// If you've done long multiplication, this is the same thing.
     // 		const out: Gen5RNGSeed = [0, 0, 0, 0];
     // 		let carry = 0;
-    // 
+    //
     // 		for (let outIndex = 3; outIndex >= 0; outIndex--) {
     // 			for (let bIndex = outIndex; bIndex < 4; bIndex++) {
     // 				const aIndex = 3 - (bIndex - outIndex);
-    // 
+    //
     // 				carry += a[aIndex] * b[bIndex];
     // 			}
     // 			carry += c[outIndex];
-    // 
+    //
     // 			out[outIndex] = carry & 0xFFFF;
     // 			carry >>>= 16;
     // 		}
-    // 
+    //
     // 		return out;
     // 	}
     //
@@ -160,12 +165,12 @@ impl Gen5RNG {
     // 	nextFrame(seed: Gen5RNGSeed, framesToAdvance = 1): Gen5RNGSeed {
     // 		const a: Gen5RNGSeed = [0x5D58, 0x8B65, 0x6C07, 0x8965];
     // 		const c: Gen5RNGSeed = [0, 0, 0x26, 0x9EC3];
-    // 
+    //
     // 		for (let i = 0; i < framesToAdvance; i++) {
     // 			// seed = seed * a + c
     // 			seed = this.multiplyAdd(seed, a, c);
     // 		}
-    // 
+    //
     // 		return seed;
     // 	}
     //
@@ -230,14 +235,14 @@ impl RNG for SodiumRNG {
     }
 
     // TypeScript source:
-    // 
-    // 
+    //
+    //
     // 	next() {
     // 		const zeroBuf = new Uint8Array(36);
     // 		// tested to do the exact same thing as
     // 		// sodium.randombytes_buf_deterministic(buf, this.seed);
     // 		const buf = new Chacha20(this.seed, SodiumRNG.NONCE).encrypt(zeroBuf);
-    // 
+    //
     // 		// use the first 32 bytes for the next seed, and the next 4 bytes for the output
     // 		this.seed = buf.slice(0, 32);
     // 		// reading big-endian
@@ -317,7 +322,7 @@ impl PRNG {
     }
 
     /// Set the seed
-    // 
+    //
     // 	setSeed(seed: PRNGSeed) {
     // 		if (seed.startsWith('sodium,')) {
     // 			this.rng = new SodiumRNG(seed.split(',') as SodiumRNGSeed);
@@ -369,7 +374,7 @@ impl PRNG {
     // 	 */
     // 	random(from?: number, to?: number): number {
     // 		const result = this.rng.next();
-    // 
+    //
     // 		if (from) from = Math.floor(from);
     // 		if (to) to = Math.floor(to);
     // 		if (from === undefined) {
@@ -496,7 +501,7 @@ impl PRNG {
     }
 
     /// Generate a random seed (sodium format)
-    // 
+    //
     // 	static generateSeed(): PRNGSeed {
     // 		return PRNG.convertSeed(SodiumRNG.generateSeed());
     // 	}
@@ -559,7 +564,9 @@ mod tests {
         // Test case 1: Seed [0x1234, 0x5678, 0x9ABC, 0xDEF0]
         // Expected from JS: [85,74,94,18,28,70,9,0,38,13,6,60,1,55,88,37,21,97,15,12]
         let mut prng = PRNG::new(Some(PRNGSeed::Gen5([0x1234, 0x5678, 0x9ABC, 0xDEF0])));
-        let expected = [85, 74, 94, 18, 28, 70, 9, 0, 38, 13, 6, 60, 1, 55, 88, 37, 21, 97, 15, 12];
+        let expected = [
+            85, 74, 94, 18, 28, 70, 9, 0, 38, 13, 6, 60, 1, 55, 88, 37, 21, 97, 15, 12,
+        ];
         for (i, &exp) in expected.iter().enumerate() {
             let val = prng.random_int(100);
             assert_eq!(val, exp, "Mismatch at index {} for seed1", i);
@@ -568,7 +575,9 @@ mod tests {
         // Test case 2: Seed [1, 2, 3, 4]
         // Expected from JS: [47,88,66,13,84,57,95,38,77,82,10,22,6,84,31,85,14,93,14,1]
         let mut prng2 = PRNG::new(Some(PRNGSeed::Gen5([1, 2, 3, 4])));
-        let expected2 = [47, 88, 66, 13, 84, 57, 95, 38, 77, 82, 10, 22, 6, 84, 31, 85, 14, 93, 14, 1];
+        let expected2 = [
+            47, 88, 66, 13, 84, 57, 95, 38, 77, 82, 10, 22, 6, 84, 31, 85, 14, 93, 14, 1,
+        ];
         for (i, &exp) in expected2.iter().enumerate() {
             let val = prng2.random_int(100);
             assert_eq!(val, exp, "Mismatch at index {} for seed2", i);
@@ -578,8 +587,8 @@ mod tests {
         // Expected from JS: [2795446293,2744431784,3501875646,746470024,1664743198,3087483402,966965533,2002677306,2482317012,1229306196]
         let mut rng3 = Gen5RNG::new([0xAAAA, 0xBBBB, 0xCCCC, 0xDDDD]);
         let expected_raw: [u32; 10] = [
-            2795446293, 2744431784, 3501875646, 746470024, 1664743198,
-            3087483402, 966965533, 2002677306, 2482317012, 1229306196
+            2795446293, 2744431784, 3501875646, 746470024, 1664743198, 3087483402, 966965533,
+            2002677306, 2482317012, 1229306196,
         ];
         for (i, &exp) in expected_raw.iter().enumerate() {
             let val = rng3.next();

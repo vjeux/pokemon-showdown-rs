@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -18,9 +17,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-        
-
+    pub fn duration_callback(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // if (source?.hasAbility('persistent')) {
         //     this.add('-activate', source, 'ability: Persistent', '[move] Safeguard');
         //     return 7;
@@ -44,11 +46,14 @@ pub mod condition {
                     source_pokemon.get_slot()
                 };
 
-                battle.add("-activate", &[
-                    source_arg.into(),
-                    "ability: Persistent".into(),
-                    "[move] Safeguard".into(),
-                ]);
+                battle.add(
+                    "-activate",
+                    &[
+                        source_arg.into(),
+                        "ability: Persistent".into(),
+                        "[move] Safeguard".into(),
+                    ],
+                );
                 return EventResult::Number(7);
             }
         }
@@ -68,7 +73,13 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_set_status(battle: &mut Battle, _status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_set_status(
+        battle: &mut Battle,
+        _status: Option<&str>,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (!effect || !source) return;
@@ -123,7 +134,12 @@ pub mod condition {
                 if effect_id == "synchronize" {
                     true
                 } else if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id)) {
-                    move_data.secondaries.is_none() || move_data.secondaries.as_ref().map(|s| s.is_empty()).unwrap_or(true)
+                    move_data.secondaries.is_none()
+                        || move_data
+                            .secondaries
+                            .as_ref()
+                            .map(|s| s.is_empty())
+                            .unwrap_or(true)
                 } else {
                     false
                 }
@@ -138,10 +154,7 @@ pub mod condition {
                     target_pokemon.get_slot()
                 };
 
-                battle.add("-activate", &[
-                    target_arg.into(),
-                    "move: Safeguard".into(),
-                ]);
+                battle.add("-activate", &[target_arg.into(), "move: Safeguard".into()]);
             }
 
             // return null;
@@ -159,7 +172,13 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_try_add_volatile(
+        battle: &mut Battle,
+        status: Option<&str>,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (!effect || !source) return;
@@ -205,7 +224,12 @@ pub mod condition {
             // Check if should activate - if it's a move without secondaries
             let should_activate = {
                 if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id)) {
-                    move_data.secondaries.is_none() || move_data.secondaries.as_ref().map(|s| s.is_empty()).unwrap_or(true)
+                    move_data.secondaries.is_none()
+                        || move_data
+                            .secondaries
+                            .as_ref()
+                            .map(|s| s.is_empty())
+                            .unwrap_or(true)
                 } else {
                     false
                 }
@@ -220,10 +244,7 @@ pub mod condition {
                     target_pokemon.get_slot()
                 };
 
-                battle.add("-activate", &[
-                    target_arg.into(),
-                    "move: Safeguard".into(),
-                ]);
+                battle.add("-activate", &[target_arg.into(), "move: Safeguard".into()]);
             }
 
             // return null;
@@ -241,8 +262,6 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_side_start(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
-        
-
         // onSideStart(side, source) {
         //     if (source?.hasAbility('persistent')) {
         //         this.add('-sidestart', side, 'Safeguard', '[persistent]');
@@ -273,22 +292,15 @@ pub mod condition {
             };
 
             if has_persistent {
-                battle.add("-sidestart", &[
-                    side_arg,
-                    "Safeguard".into(),
-                    "[persistent]".into(),
-                ]);
+                battle.add(
+                    "-sidestart",
+                    &[side_arg, "Safeguard".into(), "[persistent]".into()],
+                );
             } else {
-                battle.add("-sidestart", &[
-                    side_arg,
-                    "Safeguard".into(),
-                ]);
+                battle.add("-sidestart", &[side_arg, "Safeguard".into()]);
             }
         } else {
-            battle.add("-sidestart", &[
-                side_arg,
-                "Safeguard".into(),
-            ]);
+            battle.add("-sidestart", &[side_arg, "Safeguard".into()]);
         }
 
         EventResult::Continue
@@ -312,10 +324,7 @@ pub mod condition {
 
         let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
 
-        battle.add("-sideend", &[
-            side_arg,
-            "Safeguard".into(),
-        ]);
+        battle.add("-sideend", &[side_arg, "Safeguard".into()]);
 
         EventResult::Continue
     }

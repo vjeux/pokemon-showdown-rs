@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -18,9 +17,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-        
-
+    pub fn duration_callback(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // if (source?.hasAbility('persistent')) {
         let has_persistent = if let Some(source) = source_pos {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -36,19 +38,22 @@ pub mod condition {
             //     this.add('-activate', source, 'ability: Persistent', '[move] Magic Room');
             if let Some(source) = source_pos {
                 let source_arg = {
-
                     let pokemon = match battle.pokemon_at(source.0, source.1) {
-
                         Some(p) => p,
 
                         None => return EventResult::Continue,
-
                     };
 
                     pokemon.get_slot()
-
                 };
-                battle.add("-activate", &[source_arg.into(), "ability: Persistent".into(), "[move] Magic Room".into()]);
+                battle.add(
+                    "-activate",
+                    &[
+                        source_arg.into(),
+                        "ability: Persistent".into(),
+                        "[move] Magic Room".into(),
+                    ],
+                );
             }
             //     return 7;
             return EventResult::Number(7);
@@ -68,7 +73,11 @@ pub mod condition {
     ///         this.singleEvent('End', mon.getItem(), mon.itemState, mon);
     ///     }
     /// }
-    pub fn on_field_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_start(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (source?.hasAbility('persistent')) {
@@ -88,22 +97,31 @@ pub mod condition {
 
         if let Some(source) = source_pos {
             let source_arg = {
-
                 let pokemon = match battle.pokemon_at(source.0, source.1) {
-
                     Some(p) => p,
 
                     None => return EventResult::Continue,
-
                 };
 
                 pokemon.get_slot()
-
             };
             if has_persistent {
-                battle.add("-fieldstart", &["move: Magic Room".into(), format!("[of] {}", source_arg).into(), "[persistent]".into()]);
+                battle.add(
+                    "-fieldstart",
+                    &[
+                        "move: Magic Room".into(),
+                        format!("[of] {}", source_arg).into(),
+                        "[persistent]".into(),
+                    ],
+                );
             } else {
-                battle.add("-fieldstart", &["move: Magic Room".into(), format!("[of] {}", source_arg).into()]);
+                battle.add(
+                    "-fieldstart",
+                    &[
+                        "move: Magic Room".into(),
+                        format!("[of] {}", source_arg).into(),
+                    ],
+                );
             }
         }
 
@@ -132,7 +150,11 @@ pub mod condition {
     /// onFieldRestart(target, source) {
     ///     this.field.removePseudoWeather('magicroom');
     /// }
-    pub fn on_field_restart(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_restart(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // this.field.removePseudoWeather('magicroom');
@@ -153,19 +175,21 @@ pub mod condition {
 
         if let Some(source_pos) = source {
             let source_arg = {
-
                 let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
-
                     Some(p) => p,
 
                     None => return EventResult::Continue,
-
                 };
 
                 pokemon.get_slot()
-
             };
-            battle.add("-fieldend", &["move: Magic Room".into(), format!("[of] {}", source_arg).into()]);
+            battle.add(
+                "-fieldend",
+                &[
+                    "move: Magic Room".into(),
+                    format!("[of] {}", source_arg).into(),
+                ],
+            );
         }
 
         EventResult::Continue

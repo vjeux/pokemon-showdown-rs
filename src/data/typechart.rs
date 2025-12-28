@@ -5,23 +5,22 @@
 //! This module contains the complete type effectiveness chart
 //! for all 18 Pokemon types.
 
-use std::collections::HashMap;
 use once_cell::sync::Lazy;
+use std::collections::HashMap;
 
 /// All Pokemon types
 pub const TYPES: [&str; 18] = [
-    "Normal", "Fire", "Water", "Electric", "Grass", "Ice",
-    "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug",
-    "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy",
+    "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground",
+    "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy",
 ];
 
 /// Type effectiveness values
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Effectiveness {
-    Immune,      // 0x
-    Resistant,   // 0.5x
-    Neutral,     // 1x
-    Weak,        // 2x
+    Immune,    // 0x
+    Resistant, // 0.5x
+    Neutral,   // 1x
+    Weak,      // 2x
 }
 
 impl Effectiveness {

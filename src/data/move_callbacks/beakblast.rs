@@ -5,8 +5,8 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// priorityChargeCallback(pokemon) {
 ///     pokemon.addVolatile('beakblast');
@@ -26,7 +26,11 @@ pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)
 /// onAfterMove(pokemon) {
 ///     pokemon.removeVolatile('beakblast');
 /// }
-pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_move(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // pokemon.removeVolatile('beakblast');
     let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
         Some(p) => p,
@@ -54,7 +58,10 @@ pub mod condition {
             pokemon.get_slot()
         };
 
-        battle.add("-singleturn", &[pokemon_ident.as_str().into(), "move: Beak Blast".into()]);
+        battle.add(
+            "-singleturn",
+            &[pokemon_ident.as_str().into(), "move: Beak Blast".into()],
+        );
 
         EventResult::Continue
     }
@@ -64,7 +71,11 @@ pub mod condition {
     ///         source.trySetStatus('brn', target);
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_hit(
+        battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // Get source from target_pos (in condition context, pokemon_pos is the pokemon with beakblast, target is the attacker)
         let source = match target_pos {
             Some(pos) => pos,

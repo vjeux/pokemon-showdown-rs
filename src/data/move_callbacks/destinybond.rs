@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return !pokemon.removeVolatile('destinybond');
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // return !pokemon.removeVolatile('destinybond');
@@ -46,7 +50,10 @@ pub mod condition {
             pokemon_pokemon.get_slot()
         };
 
-        battle.add("-singlemove", &[pokemon_ident.as_str().into(), "Destiny Bond".into()]);
+        battle.add(
+            "-singlemove",
+            &[pokemon_ident.as_str().into(), "Destiny Bond".into()],
+        );
 
         EventResult::Continue
     }
@@ -62,7 +69,12 @@ pub mod condition {
     ///         source.faint();
     ///     }
     /// }
-    pub fn on_faint(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_faint(
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (!source || !effect || target.isAlly(source)) return;
@@ -125,7 +137,10 @@ pub mod condition {
                 target_pokemon.get_slot()
             };
 
-            battle.add("-activate", &[target_ident.as_str().into(), "move: Destiny Bond".into()]);
+            battle.add(
+                "-activate",
+                &[target_ident.as_str().into(), "move: Destiny Bond".into()],
+            );
 
             // source.faint();
             let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
@@ -143,7 +158,12 @@ pub mod condition {
     ///     this.debug('removing Destiny Bond before attack');
     ///     pokemon.removeVolatile('destinybond');
     /// }
-    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_before_move(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (move.id === 'destinybond') return;
@@ -169,7 +189,12 @@ pub mod condition {
     /// onMoveAborted(pokemon, target, move) {
     ///     pokemon.removeVolatile('destinybond');
     /// }
-    pub fn on_move_aborted(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    pub fn on_move_aborted(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+        _move_id: &str,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // pokemon.removeVolatile('destinybond');

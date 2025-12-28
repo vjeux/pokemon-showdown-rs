@@ -28,7 +28,11 @@ use crate::event::EventResult;
 ///     this.add('-start', source, 'move: Future Sight');
 ///     return this.NOT_FAIL;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // Get source and target
@@ -77,31 +81,64 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 
         if let Some(target_side) = battle.sides.get_mut(target_side_index) {
             if let Some(slot_conditions) = target_side.slot_conditions.get_mut(target_position) {
-                if let Some(future_move_condition) = slot_conditions.get_mut(&ID::from("futuremove")) {
+                if let Some(future_move_condition) =
+                    slot_conditions.get_mut(&ID::from("futuremove"))
+                {
                     // Set move data
-                    future_move_condition.data.insert("move".to_string(), serde_json::Value::String("futuresight".to_string()));
-                    future_move_condition.data.insert("source".to_string(), serde_json::to_value(source).unwrap());
+                    future_move_condition.data.insert(
+                        "move".to_string(),
+                        serde_json::Value::String("futuresight".to_string()),
+                    );
+                    future_move_condition
+                        .data
+                        .insert("source".to_string(), serde_json::to_value(source).unwrap());
 
                     // Set moveData object
                     let mut move_data = serde_json::Map::new();
-                    move_data.insert("id".to_string(), serde_json::Value::String("futuresight".to_string()));
-                    move_data.insert("name".to_string(), serde_json::Value::String("Future Sight".to_string()));
-                    move_data.insert("accuracy".to_string(), serde_json::Value::Number(100.into()));
-                    move_data.insert("basePower".to_string(), serde_json::Value::Number(120.into()));
-                    move_data.insert("category".to_string(), serde_json::Value::String("Special".to_string()));
+                    move_data.insert(
+                        "id".to_string(),
+                        serde_json::Value::String("futuresight".to_string()),
+                    );
+                    move_data.insert(
+                        "name".to_string(),
+                        serde_json::Value::String("Future Sight".to_string()),
+                    );
+                    move_data.insert(
+                        "accuracy".to_string(),
+                        serde_json::Value::Number(100.into()),
+                    );
+                    move_data.insert(
+                        "basePower".to_string(),
+                        serde_json::Value::Number(120.into()),
+                    );
+                    move_data.insert(
+                        "category".to_string(),
+                        serde_json::Value::String("Special".to_string()),
+                    );
                     move_data.insert("priority".to_string(), serde_json::Value::Number(0.into()));
 
                     let mut flags = serde_json::Map::new();
                     flags.insert("allyanim".to_string(), serde_json::Value::Number(1.into()));
                     flags.insert("metronome".to_string(), serde_json::Value::Number(1.into()));
-                    flags.insert("futuremove".to_string(), serde_json::Value::Number(1.into()));
+                    flags.insert(
+                        "futuremove".to_string(),
+                        serde_json::Value::Number(1.into()),
+                    );
                     move_data.insert("flags".to_string(), serde_json::Value::Object(flags));
 
                     move_data.insert("ignoreImmunity".to_string(), serde_json::Value::Bool(false));
-                    move_data.insert("effectType".to_string(), serde_json::Value::String("Move".to_string()));
-                    move_data.insert("type".to_string(), serde_json::Value::String("Psychic".to_string()));
+                    move_data.insert(
+                        "effectType".to_string(),
+                        serde_json::Value::String("Move".to_string()),
+                    );
+                    move_data.insert(
+                        "type".to_string(),
+                        serde_json::Value::String("Psychic".to_string()),
+                    );
 
-                    future_move_condition.data.insert("moveData".to_string(), serde_json::Value::Object(move_data));
+                    future_move_condition
+                        .data
+                        .insert("moveData".to_string(), serde_json::Value::Object(move_data));
                 }
             }
         }
@@ -116,9 +153,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         source_pokemon.get_slot()
     };
 
-    battle.add("-start", &[source_ident.as_str().into(), "move: Future Sight".into()]);
+    battle.add(
+        "-start",
+        &[source_ident.as_str().into(), "move: Future Sight".into()],
+    );
 
     // return this.NOT_FAIL;
     EventResult::Boolean(true)
 }
-

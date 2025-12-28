@@ -5,14 +5,18 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::event::EventResult;
 
 /// onModifyMove(move, pokemon) {
 ///     move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
 ///     move.multihit = move.allies.length;
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
     // Build list of allies that are not fainted and not statused
     let mut allies = Vec::new();
@@ -49,7 +53,11 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 ///     this.debug(`BP for ${setSpecies.name} hit: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get allies from current effect state
     let ally_pos = if let Some(ref mut effect_state) = battle.current_effect_state {
         if let Some(allies_value) = effect_state.data.get_mut("allies") {
@@ -98,4 +106,3 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _t
     // return bp;
     EventResult::Number(bp)
 }
-

@@ -16,7 +16,11 @@ use crate::event::EventResult;
 ///     pokemon.sethp(averagehp);
 ///     this.add('-sethp', pokemon, pokemon.getHealth, '[from] move: Pain Split');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -43,7 +47,11 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         let avg = (target_hp + pokemon_hp) / 2;
-        if avg == 0 { 1 } else { avg }
+        if avg == 0 {
+            1
+        } else {
+            avg
+        }
     };
 
     // const targetChange = targetHP - averagehp;
@@ -75,12 +83,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             (target_pokemon.get_slot(), target_pokemon.get_health())
         };
 
-        battle.add("-sethp", &[
-            target_arg.into(),
-            target_health.into(),
-            "[from] move: Pain Split".into(),
-            "[silent]".into(),
-        ]);
+        battle.add(
+            "-sethp",
+            &[
+                target_arg.into(),
+                target_health.into(),
+                "[from] move: Pain Split".into(),
+                "[silent]".into(),
+            ],
+        );
     }
 
     // pokemon.sethp(averagehp);
@@ -102,13 +113,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             (pokemon_pokemon.get_slot(), pokemon_pokemon.get_health())
         };
 
-        battle.add("-sethp", &[
-            pokemon_arg.into(),
-            pokemon_health.into(),
-            "[from] move: Pain Split".into(),
-        ]);
+        battle.add(
+            "-sethp",
+            &[
+                pokemon_arg.into(),
+                pokemon_health.into(),
+                "[from] move: Pain Split".into(),
+            ],
+        );
     }
 
     EventResult::Continue
 }
-

@@ -23,4 +23,3 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
 
     EventResult::Continue
 }
-

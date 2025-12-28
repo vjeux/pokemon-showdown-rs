@@ -35,9 +35,7 @@ pub fn to_id(name: &str) -> String {
 // 	}
 //
 pub fn pack_name(name: &str) -> String {
-    name.chars()
-        .filter(|c| c.is_alphanumeric())
-        .collect()
+    name.chars().filter(|c| c.is_alphanumeric()).collect()
 }
 
 /// Unpack a name to a more readable format (best-effort without dex)
@@ -62,9 +60,10 @@ pub fn unpack_name(name: &str) -> String {
     for (i, c) in chars.iter().enumerate() {
         if i > 0 {
             // Add space when transitioning between different character types
-            if (c.is_uppercase() && chars[i - 1].is_lowercase()) ||
-               (c.is_numeric() && chars[i - 1].is_alphabetic()) ||
-               (c.is_alphabetic() && chars[i - 1].is_numeric()) {
+            if (c.is_uppercase() && chars[i - 1].is_lowercase())
+                || (c.is_numeric() && chars[i - 1].is_alphabetic())
+                || (c.is_alphabetic() && chars[i - 1].is_numeric())
+            {
                 result.push(' ');
             }
         }
@@ -85,7 +84,11 @@ pub fn pack_team(team: &[PokemonSet]) -> String {
             buf.push(']');
         }
 
-        let name = if set.name.is_empty() { &set.species } else { &set.name };
+        let name = if set.name.is_empty() {
+            &set.species
+        } else {
+            &set.name
+        };
         buf.push_str(name);
 
         let species_id = to_id(&set.species);
@@ -112,14 +115,45 @@ pub fn pack_team(team: &[PokemonSet]) -> String {
 
         buf.push('|');
         let evs = &set.evs;
-        if evs.hp != 0 || evs.atk != 0 || evs.def != 0 || evs.spa != 0 || evs.spd != 0 || evs.spe != 0 {
-            let ev_str = format!("{},{},{},{},{},{}",
-                if evs.hp == 0 { String::new() } else { evs.hp.to_string() },
-                if evs.atk == 0 { String::new() } else { evs.atk.to_string() },
-                if evs.def == 0 { String::new() } else { evs.def.to_string() },
-                if evs.spa == 0 { String::new() } else { evs.spa.to_string() },
-                if evs.spd == 0 { String::new() } else { evs.spd.to_string() },
-                if evs.spe == 0 { String::new() } else { evs.spe.to_string() },
+        if evs.hp != 0
+            || evs.atk != 0
+            || evs.def != 0
+            || evs.spa != 0
+            || evs.spd != 0
+            || evs.spe != 0
+        {
+            let ev_str = format!(
+                "{},{},{},{},{},{}",
+                if evs.hp == 0 {
+                    String::new()
+                } else {
+                    evs.hp.to_string()
+                },
+                if evs.atk == 0 {
+                    String::new()
+                } else {
+                    evs.atk.to_string()
+                },
+                if evs.def == 0 {
+                    String::new()
+                } else {
+                    evs.def.to_string()
+                },
+                if evs.spa == 0 {
+                    String::new()
+                } else {
+                    evs.spa.to_string()
+                },
+                if evs.spd == 0 {
+                    String::new()
+                } else {
+                    evs.spd.to_string()
+                },
+                if evs.spe == 0 {
+                    String::new()
+                } else {
+                    evs.spe.to_string()
+                },
             );
             buf.push_str(&ev_str);
         }
@@ -129,14 +163,45 @@ pub fn pack_team(team: &[PokemonSet]) -> String {
 
         buf.push('|');
         let ivs = &set.ivs;
-        if ivs.hp != 31 || ivs.atk != 31 || ivs.def != 31 || ivs.spa != 31 || ivs.spd != 31 || ivs.spe != 31 {
-            let iv_str = format!("{},{},{},{},{},{}",
-                if ivs.hp == 31 { String::new() } else { ivs.hp.to_string() },
-                if ivs.atk == 31 { String::new() } else { ivs.atk.to_string() },
-                if ivs.def == 31 { String::new() } else { ivs.def.to_string() },
-                if ivs.spa == 31 { String::new() } else { ivs.spa.to_string() },
-                if ivs.spd == 31 { String::new() } else { ivs.spd.to_string() },
-                if ivs.spe == 31 { String::new() } else { ivs.spe.to_string() },
+        if ivs.hp != 31
+            || ivs.atk != 31
+            || ivs.def != 31
+            || ivs.spa != 31
+            || ivs.spd != 31
+            || ivs.spe != 31
+        {
+            let iv_str = format!(
+                "{},{},{},{},{},{}",
+                if ivs.hp == 31 {
+                    String::new()
+                } else {
+                    ivs.hp.to_string()
+                },
+                if ivs.atk == 31 {
+                    String::new()
+                } else {
+                    ivs.atk.to_string()
+                },
+                if ivs.def == 31 {
+                    String::new()
+                } else {
+                    ivs.def.to_string()
+                },
+                if ivs.spa == 31 {
+                    String::new()
+                } else {
+                    ivs.spa.to_string()
+                },
+                if ivs.spd == 31 {
+                    String::new()
+                } else {
+                    ivs.spd.to_string()
+                },
+                if ivs.spe == 31 {
+                    String::new()
+                } else {
+                    ivs.spe.to_string()
+                },
             );
             buf.push_str(&iv_str);
         }
@@ -156,8 +221,12 @@ pub fn pack_team(team: &[PokemonSet]) -> String {
             buf.push_str(&set.happiness.to_string());
         }
 
-        if set.hptype.is_some() || !set.pokeball.is_empty() || set.gigantamax
-            || set.dynamax_level != 10 || set.tera_type.is_some() {
+        if set.hptype.is_some()
+            || !set.pokeball.is_empty()
+            || set.gigantamax
+            || set.dynamax_level != 10
+            || set.tera_type.is_some()
+        {
             buf.push(',');
             if let Some(ref hptype) = set.hptype {
                 buf.push_str(hptype);
@@ -219,7 +288,8 @@ pub fn unpack_team(buf: &str) -> Option<Vec<PokemonSet>> {
         };
         set.item = parts[2].to_string();
         set.ability = parts[3].to_string();
-        set.moves = parts[4].split(',')
+        set.moves = parts[4]
+            .split(',')
             .filter(|m| !m.is_empty())
             .map(|m| m.to_string())
             .collect();
@@ -253,12 +323,36 @@ pub fn unpack_team(buf: &str) -> Option<Vec<PokemonSet>> {
             let iv_parts: Vec<&str> = parts[8].split(',').collect();
             if iv_parts.len() >= 6 {
                 set.ivs = StatsTable {
-                    hp: if iv_parts[0].is_empty() { 31 } else { iv_parts[0].parse().unwrap_or(31) },
-                    atk: if iv_parts[1].is_empty() { 31 } else { iv_parts[1].parse().unwrap_or(31) },
-                    def: if iv_parts[2].is_empty() { 31 } else { iv_parts[2].parse().unwrap_or(31) },
-                    spa: if iv_parts[3].is_empty() { 31 } else { iv_parts[3].parse().unwrap_or(31) },
-                    spd: if iv_parts[4].is_empty() { 31 } else { iv_parts[4].parse().unwrap_or(31) },
-                    spe: if iv_parts[5].is_empty() { 31 } else { iv_parts[5].parse().unwrap_or(31) },
+                    hp: if iv_parts[0].is_empty() {
+                        31
+                    } else {
+                        iv_parts[0].parse().unwrap_or(31)
+                    },
+                    atk: if iv_parts[1].is_empty() {
+                        31
+                    } else {
+                        iv_parts[1].parse().unwrap_or(31)
+                    },
+                    def: if iv_parts[2].is_empty() {
+                        31
+                    } else {
+                        iv_parts[2].parse().unwrap_or(31)
+                    },
+                    spa: if iv_parts[3].is_empty() {
+                        31
+                    } else {
+                        iv_parts[3].parse().unwrap_or(31)
+                    },
+                    spd: if iv_parts[4].is_empty() {
+                        31
+                    } else {
+                        iv_parts[4].parse().unwrap_or(31)
+                    },
+                    spe: if iv_parts[5].is_empty() {
+                        31
+                    } else {
+                        iv_parts[5].parse().unwrap_or(31)
+                    },
                 };
             }
         }
@@ -321,11 +415,11 @@ pub fn export_team_with_options(team: &[PokemonSet], options: &ExportOptions) ->
 
 /// Export a single Pokemon set
 // TypeScript source:
-// 
-// 
+//
+//
 // 	exportSet(set: PokemonSet, { hideStats, removeNicknames }: ExportOptions = {}) {
 // 		let out = ``;
-// 
+//
 // 		// core
 // 		if (typeof removeNicknames === 'function' && set.name && set.name !== set.species) {
 // 			set.name = removeNicknames(set.name) || set.species;
@@ -339,11 +433,11 @@ pub fn export_team_with_options(team: &[PokemonSet], options: &ExportOptions) ->
 // 		if (set.gender === 'F') out += ` (F)`;
 // 		if (set.item) out += ` @ ${set.item}`;
 // 		out += `  \n`;
-// 
+//
 // 		if (set.ability) {
 // 			out += `Ability: ${set.ability}  \n`;
 // 		}
-// 
+//
 // 		// details
 // 		if (set.level && set.level !== 100) {
 // 			out += `Level: ${set.level}  \n`;
@@ -369,7 +463,7 @@ pub fn export_team_with_options(team: &[PokemonSet], options: &ExportOptions) ->
 // 		if (set.teraType) {
 // 			out += `Tera Type: ${set.teraType}  \n`;
 // 		}
-// 
+//
 // 		// stats
 // 		if (!hideStats) {
 // 			if (set.evs) {
@@ -394,7 +488,7 @@ pub fn export_team_with_options(team: &[PokemonSet], options: &ExportOptions) ->
 // 				}
 // 			}
 // 		}
-// 
+//
 // 		// moves
 // 		for (let move of set.moves) {
 // 			if (move.startsWith(`Hidden Power `) && move.charAt(13) !== '[') {
@@ -402,14 +496,15 @@ pub fn export_team_with_options(team: &[PokemonSet], options: &ExportOptions) ->
 // 			}
 // 			out += `- ${move}  \n`;
 // 		}
-// 
+//
 // 		return out;
 // 	}
 //
 pub fn export_set(set: &PokemonSet, options: &ExportOptions) -> String {
     let mut output = String::new();
 
-    let display_name = if options.remove_nicknames || set.name.is_empty() || set.name == set.species {
+    let display_name = if options.remove_nicknames || set.name.is_empty() || set.name == set.species
+    {
         set.species.clone()
     } else {
         format!("{} ({})", set.name, set.species)
@@ -480,15 +575,33 @@ pub fn export_set(set: &PokemonSet, options: &ExportOptions) -> String {
 
     if !options.hide_stats {
         let evs = &set.evs;
-        if evs.hp != 0 || evs.atk != 0 || evs.def != 0 || evs.spa != 0 || evs.spd != 0 || evs.spe != 0 {
+        if evs.hp != 0
+            || evs.atk != 0
+            || evs.def != 0
+            || evs.spa != 0
+            || evs.spd != 0
+            || evs.spe != 0
+        {
             output.push_str("EVs: ");
             let mut ev_parts = Vec::new();
-            if evs.hp != 0 { ev_parts.push(format!("{} HP", evs.hp)); }
-            if evs.atk != 0 { ev_parts.push(format!("{} Atk", evs.atk)); }
-            if evs.def != 0 { ev_parts.push(format!("{} Def", evs.def)); }
-            if evs.spa != 0 { ev_parts.push(format!("{} SpA", evs.spa)); }
-            if evs.spd != 0 { ev_parts.push(format!("{} SpD", evs.spd)); }
-            if evs.spe != 0 { ev_parts.push(format!("{} Spe", evs.spe)); }
+            if evs.hp != 0 {
+                ev_parts.push(format!("{} HP", evs.hp));
+            }
+            if evs.atk != 0 {
+                ev_parts.push(format!("{} Atk", evs.atk));
+            }
+            if evs.def != 0 {
+                ev_parts.push(format!("{} Def", evs.def));
+            }
+            if evs.spa != 0 {
+                ev_parts.push(format!("{} SpA", evs.spa));
+            }
+            if evs.spd != 0 {
+                ev_parts.push(format!("{} SpD", evs.spd));
+            }
+            if evs.spe != 0 {
+                ev_parts.push(format!("{} Spe", evs.spe));
+            }
             output.push_str(&ev_parts.join(" / "));
             output.push_str("  \n");
         }
@@ -499,15 +612,33 @@ pub fn export_set(set: &PokemonSet, options: &ExportOptions) -> String {
         }
 
         let ivs = &set.ivs;
-        if ivs.hp != 31 || ivs.atk != 31 || ivs.def != 31 || ivs.spa != 31 || ivs.spd != 31 || ivs.spe != 31 {
+        if ivs.hp != 31
+            || ivs.atk != 31
+            || ivs.def != 31
+            || ivs.spa != 31
+            || ivs.spd != 31
+            || ivs.spe != 31
+        {
             output.push_str("IVs: ");
             let mut iv_parts = Vec::new();
-            if ivs.hp != 31 { iv_parts.push(format!("{} HP", ivs.hp)); }
-            if ivs.atk != 31 { iv_parts.push(format!("{} Atk", ivs.atk)); }
-            if ivs.def != 31 { iv_parts.push(format!("{} Def", ivs.def)); }
-            if ivs.spa != 31 { iv_parts.push(format!("{} SpA", ivs.spa)); }
-            if ivs.spd != 31 { iv_parts.push(format!("{} SpD", ivs.spd)); }
-            if ivs.spe != 31 { iv_parts.push(format!("{} Spe", ivs.spe)); }
+            if ivs.hp != 31 {
+                iv_parts.push(format!("{} HP", ivs.hp));
+            }
+            if ivs.atk != 31 {
+                iv_parts.push(format!("{} Atk", ivs.atk));
+            }
+            if ivs.def != 31 {
+                iv_parts.push(format!("{} Def", ivs.def));
+            }
+            if ivs.spa != 31 {
+                iv_parts.push(format!("{} SpA", ivs.spa));
+            }
+            if ivs.spd != 31 {
+                iv_parts.push(format!("{} SpD", ivs.spd));
+            }
+            if ivs.spe != 31 {
+                iv_parts.push(format!("{} Spe", ivs.spe));
+            }
             output.push_str(&iv_parts.join(" / "));
             output.push_str("  \n");
         }
@@ -540,7 +671,7 @@ fn get_stat_id(stat_name: &str) -> Option<&'static str> {
 }
 
 /// Parse a line from an exported team
-// 
+//
 // 	parseExportedTeamLine(line: string, isFirstLine: boolean, set: PokemonSet, aggressive?: boolean) {
 // 		if (isFirstLine) {
 // 			let item;
@@ -639,7 +770,12 @@ fn get_stat_id(stat_name: &str) -> Option<&'static str> {
 // 		}
 // 	}
 //
-pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut PokemonSet, aggressive: bool) {
+pub fn parse_exported_team_line(
+    line: &str,
+    is_first_line: bool,
+    set: &mut PokemonSet,
+    aggressive: bool,
+) {
     let line = line.trim();
 
     if is_first_line {
@@ -660,12 +796,18 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
 
         if remaining.ends_with(')') && remaining.contains('(') {
             let paren_idx = remaining.rfind('(').unwrap();
-            let species = remaining[paren_idx + 1..remaining.len() - 1].trim().to_string();
+            let species = remaining[paren_idx + 1..remaining.len() - 1]
+                .trim()
+                .to_string();
             let name = remaining[..paren_idx].trim().to_string();
             set.species = if aggressive { to_id(&species) } else { species };
             set.name = name;
         } else {
-            set.species = if aggressive { to_id(&remaining) } else { remaining.clone() };
+            set.species = if aggressive {
+                to_id(&remaining)
+            } else {
+                remaining.clone()
+            };
             set.name = String::new();
         }
     } else if line.starts_with("Trait: ") || line.starts_with("Ability: ") {
@@ -674,7 +816,11 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
         } else {
             line.strip_prefix("Ability: ").unwrap_or_default()
         };
-        set.ability = if aggressive { to_id(ability) } else { ability.to_string() };
+        set.ability = if aggressive {
+            to_id(ability)
+        } else {
+            ability.to_string()
+        };
     } else if line == "Shiny: Yes" {
         set.shiny = true;
     } else if let Some(level_str) = line.strip_prefix("Level: ") {
@@ -682,9 +828,17 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
     } else if let Some(happiness_str) = line.strip_prefix("Happiness: ") {
         set.happiness = happiness_str.parse().unwrap_or(255);
     } else if let Some(pokeball) = line.strip_prefix("Pokeball: ") {
-        set.pokeball = if aggressive { to_id(pokeball) } else { pokeball.to_string() };
+        set.pokeball = if aggressive {
+            to_id(pokeball)
+        } else {
+            pokeball.to_string()
+        };
     } else if let Some(hptype) = line.strip_prefix("Hidden Power: ") {
-        set.hptype = Some(if aggressive { to_id(hptype) } else { hptype.to_string() });
+        set.hptype = Some(if aggressive {
+            to_id(hptype)
+        } else {
+            hptype.to_string()
+        });
     } else if let Some(tera) = line.strip_prefix("Tera Type: ") {
         set.tera_type = Some(if aggressive {
             tera.chars().filter(|c| c.is_alphanumeric()).collect()
@@ -696,12 +850,20 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
     } else if let Some(dynamax_str) = line.strip_prefix("Dynamax Level: ") {
         set.dynamax_level = dynamax_str.parse().unwrap_or(10);
     } else if let Some(ev_str) = line.strip_prefix("EVs: ") {
-        set.evs = StatsTable { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+        set.evs = StatsTable {
+            hp: 0,
+            atk: 0,
+            def: 0,
+            spa: 0,
+            spd: 0,
+            spe: 0,
+        };
         for part in ev_str.split('/') {
             let part = part.trim();
             let parts: Vec<&str> = part.split_whitespace().collect();
             if parts.len() >= 2 {
-                if let (Ok(value), Some(stat_id)) = (parts[0].parse::<i32>(), get_stat_id(parts[1])) {
+                if let (Ok(value), Some(stat_id)) = (parts[0].parse::<i32>(), get_stat_id(parts[1]))
+                {
                     match stat_id {
                         "hp" => set.evs.hp = value,
                         "atk" => set.evs.atk = value,
@@ -715,12 +877,20 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
             }
         }
     } else if let Some(iv_str) = line.strip_prefix("IVs: ") {
-        set.ivs = StatsTable { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
+        set.ivs = StatsTable {
+            hp: 31,
+            atk: 31,
+            def: 31,
+            spa: 31,
+            spd: 31,
+            spe: 31,
+        };
         for part in iv_str.split('/') {
             let part = part.trim();
             let parts: Vec<&str> = part.split_whitespace().collect();
             if parts.len() >= 2 {
-                if let (Ok(value), Some(stat_id)) = (parts[0].parse::<i32>(), get_stat_id(parts[1])) {
+                if let (Ok(value), Some(stat_id)) = (parts[0].parse::<i32>(), get_stat_id(parts[1]))
+                {
                     match stat_id {
                         "hp" => set.ivs.hp = value,
                         "atk" => set.ivs.atk = value,
@@ -738,11 +908,19 @@ pub fn parse_exported_team_line(line: &str, is_first_line: bool, set: &mut Pokem
         if let Some(idx) = nature_idx {
             let nature = &line[..idx];
             if nature != "undefined" {
-                set.nature = if aggressive { to_id(nature) } else { nature.to_string() };
+                set.nature = if aggressive {
+                    to_id(nature)
+                } else {
+                    nature.to_string()
+                };
             }
         }
     } else if line.starts_with('-') || line.starts_with('~') {
-        let move_str = if line.chars().nth(1) == Some(' ') { &line[2..] } else { &line[1..] };
+        let move_str = if line.chars().nth(1) == Some(' ') {
+            &line[2..]
+        } else {
+            &line[1..]
+        };
         let move_name = if move_str.starts_with("Hidden Power [") {
             let hp_type = &move_str[14..move_str.len() - 1];
             format!("Hidden Power {}", hp_type)
@@ -803,8 +981,22 @@ pub fn import_team(buffer: &str, aggressive: bool) -> Option<Vec<PokemonSet>> {
                 ability: String::new(),
                 gender: Gender::None,
                 nature: String::new(),
-                evs: StatsTable { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-                ivs: StatsTable { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
+                evs: StatsTable {
+                    hp: 0,
+                    atk: 0,
+                    def: 0,
+                    spa: 0,
+                    spd: 0,
+                    spe: 0,
+                },
+                ivs: StatsTable {
+                    hp: 31,
+                    atk: 31,
+                    def: 31,
+                    spa: 31,
+                    spd: 31,
+                    spe: 31,
+                },
                 level: 100,
                 happiness: 255,
                 shiny: false,
@@ -834,7 +1026,7 @@ pub fn import_team(buffer: &str, aggressive: bool) -> Option<Vec<PokemonSet>> {
 }
 
 /// Stub for team generator - requires random-battles data modules
-// 
+//
 // 	getGenerator(format: Format | string, seed: PRNG | PRNGSeed | null = null) {
 // 		let TeamGenerator;
 // 		format = Dex.formats.get(format);
@@ -852,7 +1044,7 @@ pub fn import_team(buffer: &str, aggressive: bool) -> Option<Vec<PokemonSet>> {
 // 		} else {
 // 			TeamGenerator = require(`../data/random-battles/${mod}/teams`).default;
 // 		}
-// 
+//
 // 		return new TeamGenerator(format, seed);
 // 	}
 //
@@ -861,7 +1053,7 @@ pub fn get_generator(_format: &str, _seed: Option<u64>) -> Option<()> {
 }
 
 /// Stub for team generation - requires random-battles data modules
-// 
+//
 // 	generate(format: Format | string, options: PlayerOptions | null = null): PokemonSet[] {
 // 		return this.getGenerator(format, options?.seed).getTeam(options);
 // 	}
@@ -898,18 +1090,16 @@ mod tests {
 
     #[test]
     fn test_pack_unpack_basic() {
-        let team = vec![
-            PokemonSet {
-                name: "Pikachu".to_string(),
-                species: "Pikachu".to_string(),
-                item: "Light Ball".to_string(),
-                ability: "Static".to_string(),
-                moves: vec!["Thunderbolt".to_string(), "Volt Tackle".to_string()],
-                nature: "Jolly".to_string(),
-                level: 50,
-                ..Default::default()
-            },
-        ];
+        let team = vec![PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            item: "Light Ball".to_string(),
+            ability: "Static".to_string(),
+            moves: vec!["Thunderbolt".to_string(), "Volt Tackle".to_string()],
+            nature: "Jolly".to_string(),
+            level: 50,
+            ..Default::default()
+        }];
 
         let packed = pack_team(&team);
         assert!(packed.contains("Pikachu"));
@@ -923,19 +1113,24 @@ mod tests {
 
     #[test]
     fn test_export_team() {
-        let team = vec![
-            PokemonSet {
-                name: "Garchomp".to_string(),
-                species: "Garchomp".to_string(),
-                item: "Life Orb".to_string(),
-                ability: "Rough Skin".to_string(),
-                moves: vec!["Earthquake".to_string(), "Outrage".to_string()],
-                nature: "Jolly".to_string(),
-                evs: StatsTable { hp: 0, atk: 252, def: 0, spa: 0, spd: 4, spe: 252 },
-                level: 50,
-                ..Default::default()
+        let team = vec![PokemonSet {
+            name: "Garchomp".to_string(),
+            species: "Garchomp".to_string(),
+            item: "Life Orb".to_string(),
+            ability: "Rough Skin".to_string(),
+            moves: vec!["Earthquake".to_string(), "Outrage".to_string()],
+            nature: "Jolly".to_string(),
+            evs: StatsTable {
+                hp: 0,
+                atk: 252,
+                def: 0,
+                spa: 0,
+                spd: 4,
+                spe: 252,
             },
-        ];
+            level: 50,
+            ..Default::default()
+        }];
 
         let exported = export_team(&team);
         assert!(exported.contains("Garchomp @ Life Orb"));

@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onTry(source) {
 ///     return source.status === 'slp' || source.hasAbility('comatose');
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onTry(source) {
@@ -52,9 +56,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 ///     }
 ///     this.actions.useMove(randomMove, pokemon);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    
-
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // onHit(pokemon) {
     //     const moves = [];
     //     for (const moveSlot of pokemon.moveSlots) {
@@ -106,10 +112,11 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
         // if (move.flags['nosleeptalk'] || move.flags['charge'] || (move.isZ && move.basePower !== 1) || move.isMax) {
         //     continue;
         // }
-        if move_data.flags.get("nosleeptalk").copied().unwrap_or(0) != 0 ||
-           move_data.flags.get("charge").copied().unwrap_or(0) != 0 ||
-           (move_data.is_z.is_some() && move_data.base_power != 1) ||
-           move_data.is_max.is_some() {
+        if move_data.flags.get("nosleeptalk").copied().unwrap_or(0) != 0
+            || move_data.flags.get("charge").copied().unwrap_or(0) != 0
+            || (move_data.is_z.is_some() && move_data.base_power != 1)
+            || move_data.is_max.is_some()
+        {
             continue;
         }
 
@@ -139,4 +146,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Opt
 
     EventResult::Continue
 }
-

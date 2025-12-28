@@ -15,7 +15,11 @@ use crate::event::EventResult;
 ///     this.hint("Only a Pokemon whose form is Darkrai can use this move.");
 ///     return null;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // if (source.species.name === 'Darkrai' || move.hasBounced) {
     //     return;
     // }
@@ -45,12 +49,18 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
         source_pokemon.get_slot()
     };
 
-    battle.add("-fail", &[source_ident.as_str().into(), "move: Dark Void".into()]);
+    battle.add(
+        "-fail",
+        &[source_ident.as_str().into(), "move: Dark Void".into()],
+    );
 
     // this.hint("Only a Pokemon whose form is Darkrai can use this move.");
-    battle.hint("Only a Pokemon whose form is Darkrai can use this move.", true, None);
+    battle.hint(
+        "Only a Pokemon whose form is Darkrai can use this move.",
+        true,
+        None,
+    );
 
     // return null;
     EventResult::Stop
 }
-

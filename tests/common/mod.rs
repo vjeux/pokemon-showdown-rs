@@ -1,7 +1,9 @@
 //! Common test utilities
 //! Equivalent to pokemon-showdown-js/test/common.js
 
-use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, ID, PRNGSeed, Gender, GameType};
+use pokemon_showdown::{
+    Battle, BattleOptions, GameType, Gender, PRNGSeed, PlayerOptions, PokemonSet, ID,
+};
 
 /// Default PRNG seed for consistent test results
 pub const DEFAULT_SEED: PRNGSeed = PRNGSeed::Gen5([1, 2, 3, 4]);
@@ -16,10 +18,7 @@ pub struct CreateBattleOptions {
 
 /// Create a battle from team specs
 /// Teams is an array of two arrays of Pokemon specs
-pub fn create_battle(
-    options: CreateBattleOptions,
-    teams: [Vec<PokemonSpec>; 2],
-) -> Battle {
+pub fn create_battle(options: CreateBattleOptions, teams: [Vec<PokemonSpec>; 2]) -> Battle {
     let [team1_specs, team2_specs] = teams;
 
     let team1: Vec<PokemonSet> = team1_specs.into_iter().map(|spec| spec.into()).collect();

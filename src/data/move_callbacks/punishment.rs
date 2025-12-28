@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${power}`);
 ///     return power;
 /// }
-pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -28,13 +32,27 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), ta
 
         // Count all positive boosts (atk, def, spa, spd, spe, accuracy, evasion)
         let mut count = 0i32;
-        if target_pokemon.boosts.atk > 0 { count += target_pokemon.boosts.atk as i32; }
-        if target_pokemon.boosts.def > 0 { count += target_pokemon.boosts.def as i32; }
-        if target_pokemon.boosts.spa > 0 { count += target_pokemon.boosts.spa as i32; }
-        if target_pokemon.boosts.spd > 0 { count += target_pokemon.boosts.spd as i32; }
-        if target_pokemon.boosts.spe > 0 { count += target_pokemon.boosts.spe as i32; }
-        if target_pokemon.boosts.accuracy > 0 { count += target_pokemon.boosts.accuracy as i32; }
-        if target_pokemon.boosts.evasion > 0 { count += target_pokemon.boosts.evasion as i32; }
+        if target_pokemon.boosts.atk > 0 {
+            count += target_pokemon.boosts.atk as i32;
+        }
+        if target_pokemon.boosts.def > 0 {
+            count += target_pokemon.boosts.def as i32;
+        }
+        if target_pokemon.boosts.spa > 0 {
+            count += target_pokemon.boosts.spa as i32;
+        }
+        if target_pokemon.boosts.spd > 0 {
+            count += target_pokemon.boosts.spd as i32;
+        }
+        if target_pokemon.boosts.spe > 0 {
+            count += target_pokemon.boosts.spe as i32;
+        }
+        if target_pokemon.boosts.accuracy > 0 {
+            count += target_pokemon.boosts.accuracy as i32;
+        }
+        if target_pokemon.boosts.evasion > 0 {
+            count += target_pokemon.boosts.evasion as i32;
+        }
         count
     };
 
@@ -51,4 +69,3 @@ pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), ta
     // return power;
     EventResult::Number(power)
 }
-

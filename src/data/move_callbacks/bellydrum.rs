@@ -14,7 +14,11 @@ use crate::event::EventResult;
 ///     this.directDamage(target.maxhp / 2);
 ///     this.boost({ atk: 12 }, target);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // Get the target (self for belly drum)
     let target = target_pos.unwrap_or(pokemon_pos);
 
@@ -46,4 +50,3 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     EventResult::Continue
 }
-

@@ -10,7 +10,11 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
@@ -27,7 +31,11 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -56,17 +64,13 @@ pub mod condition {
 
         // this.add('-singleturn', target, 'Max Guard');
         let target_arg = {
-
             let pokemon = match battle.pokemon_at(target.0, target.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.get_slot()
-
         };
         battle.add("-singleturn", &[target_arg.into(), "Max Guard".into()]);
 
@@ -92,7 +96,11 @@ pub mod condition {
     ///     }
     ///     return this.NOT_FAIL;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_hit(
+        battle: &mut Battle,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let source = source_pos;
@@ -100,13 +108,40 @@ pub mod condition {
 
         // const bypassesMaxGuard = [...]
         // if (bypassesMaxGuard.includes(move.id)) return;
-        let move_id = battle.active_move.as_ref().map(|m| m.id.as_str()).unwrap_or("");
-        let bypasses_max_guard = matches!(move_id,
-            "acupressure" | "afteryou" | "allyswitch" | "aromatherapy" | "aromaticmist" |
-            "coaching" | "confide" | "copycat" | "curse" | "decorate" | "doomdesire" |
-            "feint" | "futuresight" | "gmaxoneblow" | "gmaxrapidflow" | "healbell" |
-            "holdhands" | "howl" | "junglehealing" | "lifedew" | "meanlook" | "perishsong" |
-            "playnice" | "powertrick" | "roar" | "roleplay" | "tearfullook"
+        let move_id = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.id.as_str())
+            .unwrap_or("");
+        let bypasses_max_guard = matches!(
+            move_id,
+            "acupressure"
+                | "afteryou"
+                | "allyswitch"
+                | "aromatherapy"
+                | "aromaticmist"
+                | "coaching"
+                | "confide"
+                | "copycat"
+                | "curse"
+                | "decorate"
+                | "doomdesire"
+                | "feint"
+                | "futuresight"
+                | "gmaxoneblow"
+                | "gmaxrapidflow"
+                | "healbell"
+                | "holdhands"
+                | "howl"
+                | "junglehealing"
+                | "lifedew"
+                | "meanlook"
+                | "perishsong"
+                | "playnice"
+                | "powertrick"
+                | "roar"
+                | "roleplay"
+                | "tearfullook"
         );
 
         if bypasses_max_guard {
@@ -118,8 +153,7 @@ pub mod condition {
         // } else {
         //     this.add('-activate', target, 'move: Max Guard');
         // }
-        let smart_target = battle.active_move.as_ref()
-            .and_then(|m| m.smart_target);
+        let smart_target = battle.active_move.as_ref().and_then(|m| m.smart_target);
 
         if let Some(true) = smart_target {
             // Set smartTarget to false
@@ -135,17 +169,13 @@ pub mod condition {
         } else {
             // this.add('-activate', target, 'move: Max Guard');
             let target_arg = {
-
                 let pokemon = match battle.pokemon_at(target.0, target.1) {
-
                     Some(p) => p,
 
                     None => return EventResult::Continue,
-
                 };
 
                 pokemon.get_slot()
-
             };
             battle.add("-activate", &[target_arg.into(), "move: Max Guard".into()]);
         }

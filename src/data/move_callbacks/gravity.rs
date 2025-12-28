@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -18,9 +17,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-        
-
+    pub fn duration_callback(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // if (source?.hasAbility('persistent')) {
         if let Some(source) = source_pos {
             let has_persistent = {
@@ -40,7 +42,14 @@ pub mod condition {
                     };
                     pokemon.get_slot()
                 };
-                battle.add("-activate", &[source_ident.as_str().into(), "ability: Persistent".into(), "[move] Gravity".into()]);
+                battle.add(
+                    "-activate",
+                    &[
+                        source_ident.as_str().into(),
+                        "ability: Persistent".into(),
+                        "[move] Gravity".into(),
+                    ],
+                );
 
                 // return 7;
                 return EventResult::Number(7);
@@ -87,7 +96,11 @@ pub mod condition {
     ///     }
     /// }
     /// ```
-    pub fn on_field_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_start(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // if (source?.hasAbility('persistent')) {
@@ -103,7 +116,10 @@ pub mod condition {
 
         if has_persistent {
             // this.add('-fieldstart', 'move: Gravity', '[persistent]');
-            battle.add("-fieldstart", &["move: Gravity".into(), "[persistent]".into()]);
+            battle.add(
+                "-fieldstart",
+                &["move: Gravity".into(), "[persistent]".into()],
+            );
         } else {
             // this.add('-fieldstart', 'move: Gravity');
             battle.add("-fieldstart", &["move: Gravity".into()]);
@@ -173,7 +189,9 @@ pub mod condition {
                         Some(p) => p,
                         None => continue,
                     };
-                    pokemon.volatiles.get(&ID::from("skydrop"))
+                    pokemon
+                        .volatiles
+                        .get(&ID::from("skydrop"))
                         .and_then(|v| v.source)
                 };
 
@@ -185,7 +203,14 @@ pub mod condition {
                         };
                         pokemon.get_slot()
                     };
-                    battle.add("-end", &[source_ident.as_str().into(), "Sky Drop".into(), "[interrupt]".into()]);
+                    battle.add(
+                        "-end",
+                        &[
+                            source_ident.as_str().into(),
+                            "Sky Drop".into(),
+                            "[interrupt]".into(),
+                        ],
+                    );
                 }
 
                 // pokemon.removeVolatile('skydrop');
@@ -249,7 +274,10 @@ pub mod condition {
                     };
                     pokemon.get_slot()
                 };
-                battle.add("-activate", &[pokemon_ident.as_str().into(), "move: Gravity".into()]);
+                battle.add(
+                    "-activate",
+                    &[pokemon_ident.as_str().into(), "move: Gravity".into()],
+                );
             }
         }
 
@@ -276,8 +304,6 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        
-
         let pokemon = pokemon_pos;
 
         // for (const moveSlot of pokemon.moveSlots) {
@@ -291,7 +317,8 @@ pub mod condition {
 
         for move_slot in move_slots {
             // if (this.dex.moves.get(moveSlot.id).flags['gravity']) {
-            let has_gravity_flag = if let Some(move_data) = battle.dex.get_move_by_id(&move_slot.id) {
+            let has_gravity_flag = if let Some(move_data) = battle.dex.get_move_by_id(&move_slot.id)
+            {
                 move_data.flags.contains_key("gravity")
             } else {
                 false
@@ -316,7 +343,12 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_before_move(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         let pokemon = pokemon_pos;
 
         // if (move.flags['gravity'] && !move.isZ) {
@@ -341,7 +373,14 @@ pub mod condition {
                 };
                 poke.get_slot()
             };
-            battle.add("cant", &[pokemon_ident.as_str().into(), "move: Gravity".into(), move_id.into()]);
+            battle.add(
+                "cant",
+                &[
+                    pokemon_ident.as_str().into(),
+                    "move: Gravity".into(),
+                    move_id.into(),
+                ],
+            );
 
             // return false;
             return EventResult::Boolean(false);
@@ -356,7 +395,11 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_modify_move(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         let pokemon = pokemon_pos;
 
         // if (move.flags['gravity'] && !move.isZ) {
@@ -372,7 +415,11 @@ pub mod condition {
             false
         };
 
-        let move_id = battle.active_move.as_ref().map(|m| m.id.as_str().to_string()).unwrap_or_default();
+        let move_id = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.id.as_str().to_string())
+            .unwrap_or_default();
 
         if has_gravity_flag && !is_z_move {
             // this.add('cant', pokemon, 'move: Gravity', move);
@@ -383,7 +430,14 @@ pub mod condition {
                 };
                 poke.get_slot()
             };
-            battle.add("cant", &[pokemon_ident.as_str().into(), "move: Gravity".into(), move_id.as_str().into()]);
+            battle.add(
+                "cant",
+                &[
+                    pokemon_ident.as_str().into(),
+                    "move: Gravity".into(),
+                    move_id.as_str().into(),
+                ],
+            );
 
             // return false;
             return EventResult::Boolean(false);

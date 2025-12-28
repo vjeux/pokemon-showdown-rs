@@ -21,7 +21,11 @@ use crate::event::EventResult;
 ///     this.add('-fail', source, 'move: Hyperspace Fury');
 ///     return null;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let source = source_pos;
 
     // if (source.species.name === 'Hoopa-Unbound') {
@@ -40,7 +44,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
     }
 
     // this.hint("Only a Pokemon whose form is Hoopa Unbound can use this move.");
-    battle.hint("Only a Pokemon whose form is Hoopa Unbound can use this move.", true, None);
+    battle.hint(
+        "Only a Pokemon whose form is Hoopa Unbound can use this move.",
+        true,
+        None,
+    );
 
     // if (source.species.name === 'Hoopa') {
     if species_name == "Hoopa" {
@@ -55,7 +63,14 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
             };
             pokemon.get_slot()
         };
-        battle.add("-fail", &[source_ident.as_str().into(), "move: Hyperspace Fury".into(), "[forme]".into()]);
+        battle.add(
+            "-fail",
+            &[
+                source_ident.as_str().into(),
+                "move: Hyperspace Fury".into(),
+                "[forme]".into(),
+            ],
+        );
 
         // return null;
         return EventResult::Stop;
@@ -72,9 +87,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
         };
         pokemon.get_slot()
     };
-    battle.add("-fail", &[source_ident.as_str().into(), "move: Hyperspace Fury".into()]);
+    battle.add(
+        "-fail",
+        &[source_ident.as_str().into(), "move: Hyperspace Fury".into()],
+    );
 
     // return null;
     EventResult::Stop
 }
-

@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
-
 pub mod condition {
     use super::*;
 
@@ -18,7 +17,12 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+    pub fn duration_callback(
+        _battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+        _effect_id: Option<&str>,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -31,7 +35,11 @@ pub mod condition {
     ///     move.overrideOffensiveStat = statAndBoosts === 'def' ? 'spd' : 'def';
     ///     this.hint(`${move.name} uses ${statAndBoosts === 'def' ? '' : 'Sp. '}Def boosts when Wonder Room is active.`);
     /// }
-    pub fn on_modify_move(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_modify_move(
+        _battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -43,7 +51,11 @@ pub mod condition {
     ///         this.add('-fieldstart', 'move: Wonder Room', `[of] ${source}`);
     ///     }
     /// }
-    pub fn on_field_start(_battle: &mut Battle, _field_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_start(
+        _battle: &mut Battle,
+        _field_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -51,7 +63,11 @@ pub mod condition {
     /// onFieldRestart(target, source) {
     ///     this.field.removePseudoWeather('wonderroom');
     /// }
-    pub fn on_field_restart(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_restart(
+        _battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        _source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

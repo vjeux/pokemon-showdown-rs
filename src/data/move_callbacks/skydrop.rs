@@ -15,7 +15,11 @@ use crate::event::EventResult;
 ///     }
 /// }
 /// ```
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onModifyMove(move, source) {
@@ -60,7 +64,11 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 ///     }
 /// }
 /// ```
-pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_move_fail(
+    battle: &mut Battle,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onMoveFail(target, source) {
@@ -133,11 +141,10 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
                 target_pokemon.get_slot()
             };
 
-            battle.add("-end", &[
-                target_arg.into(),
-                "Sky Drop".into(),
-                "[interrupt]".into(),
-            ]);
+            battle.add(
+                "-end",
+                &[target_arg.into(), "Sky Drop".into(), "[interrupt]".into()],
+            );
         }
     }
 
@@ -147,7 +154,11 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 /// onTry(source, target) {
 ///     return !target.fainted;
 /// }
-pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // onTry(source, target) {
     //     return !target.fainted;
     // }
@@ -171,7 +182,7 @@ pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Opti
 /// onTryHit(target, source, move) {
 ///     if (source.removeVolatile(move.id)) {
 ///         if (target !== source.volatiles['twoturnmove'].source) return false;
-/// 
+///
 ///         if (target.hasType('Flying')) {
 ///             this.add('-immune', target);
 ///             return null;
@@ -184,14 +195,18 @@ pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Opti
 ///             this.add('-fail', target, 'move: Sky Drop', '[heavy]');
 ///             return null;
 ///         }
-/// 
+///
 ///         this.add('-prepare', source, move.name, target);
 ///         source.addVolatile('twoturnmove', target);
 ///         return null;
 ///     }
 /// }
 /// ```
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
     use crate::dex_data::ID;
 
     // onTryHit(target, source, move) {
@@ -229,17 +244,13 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     // if (source.removeVolatile(move.id)) {
     let removed = {
-
         let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-
             Some(p) => p,
 
             None => return EventResult::Continue,
-
         };
 
         pokemon.remove_volatile(&move_id)
-
     };
 
     if removed {
@@ -292,7 +303,9 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.volatiles.contains_key(&ID::from("substitute"))
+            target_pokemon
+                .volatiles
+                .contains_key(&ID::from("substitute"))
         };
 
         let is_ally = battle.is_ally(target, source);
@@ -316,11 +329,10 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
                 target_pokemon.get_slot()
             };
 
-            battle.add("-fail", &[
-                target_arg.into(),
-                "move: Sky Drop".into(),
-                "[heavy]".into(),
-            ]);
+            battle.add(
+                "-fail",
+                &[target_arg.into(), "move: Sky Drop".into(), "[heavy]".into()],
+            );
             return EventResult::Stop;
         }
 
@@ -345,25 +357,20 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             )
         };
 
-        battle.add("-prepare", &[
-            source_arg.into(),
-            move_name.into(),
-            target_arg.into(),
-        ]);
+        battle.add(
+            "-prepare",
+            &[source_arg.into(), move_name.into(), target_arg.into()],
+        );
 
         // source.addVolatile('twoturnmove', target);
         {
-
             let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-
                 Some(p) => p,
 
                 None => return EventResult::Continue,
-
             };
 
             pokemon.add_volatile(ID::from("twoturnmove"));
-
         }
 
         // return null;
@@ -378,7 +385,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 ///     if (target.hp) this.add('-end', target, 'Sky Drop');
 /// }
 /// ```
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     // onHit(target, source) {
     //     if (target.hp) this.add('-end', target, 'Sky Drop');
     // }
@@ -404,10 +415,7 @@ pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Opt
             target_pokemon.get_slot()
         };
 
-        battle.add("-end", &[
-            target_arg.into(),
-            "Sky Drop".into(),
-        ]);
+        battle.add("-end", &[target_arg.into(), "Sky Drop".into()]);
     }
 
     EventResult::Continue
@@ -508,7 +516,11 @@ pub mod condition {
     ///     if (this.effectState.source.fainted) return;
     ///     return this.effectState.source;
     /// }
-    pub fn on_redirect_target(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_redirect_target(
+        battle: &mut Battle,
+        _target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
         // onRedirectTarget(target, source, source2) {
         //     if (source !== this.effectState.target) return;
         //     if (this.effectState.source.fainted) return;
@@ -565,7 +577,12 @@ pub mod condition {
     ///     }
     ///     return false;
     /// }
-    pub fn on_any_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_invulnerability(
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // onAnyInvulnerability(target, source, move) {
@@ -612,9 +629,14 @@ pub mod condition {
         //     return;
         // }
         let move_id = ID::from(move_id);
-        if move_id == ID::from("gust") || move_id == ID::from("twister") || move_id == ID::from("skyuppercut") ||
-           move_id == ID::from("thunder") || move_id == ID::from("hurricane") ||
-           move_id == ID::from("smackdown") || move_id == ID::from("thousandarrows") {
+        if move_id == ID::from("gust")
+            || move_id == ID::from("twister")
+            || move_id == ID::from("skyuppercut")
+            || move_id == ID::from("thunder")
+            || move_id == ID::from("hurricane")
+            || move_id == ID::from("smackdown")
+            || move_id == ID::from("thousandarrows")
+        {
             return EventResult::Continue;
         }
 
@@ -634,7 +656,13 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_base_power(
+        battle: &mut Battle,
+        _base_power: i32,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        move_id: &str,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         // onAnyBasePower(basePower, target, source, move) {
@@ -717,11 +745,12 @@ pub mod condition {
 
             let has_skydrop = target_pokemon.volatiles.contains_key(&ID::from("skydrop"));
 
-            let twoturnmove_source = if let Some(volatile) = target_pokemon.volatiles.get(&ID::from("twoturnmove")) {
-                volatile.source
-            } else {
-                None
-            };
+            let twoturnmove_source =
+                if let Some(volatile) = target_pokemon.volatiles.get(&ID::from("twoturnmove")) {
+                    volatile.source
+                } else {
+                    None
+                };
 
             (has_skydrop, twoturnmove_source)
         };
@@ -736,14 +765,12 @@ pub mod condition {
                 source_pokemon.get_slot()
             };
 
-            battle.add("-end", &[
-                source_arg.into(),
-                "Sky Drop".into(),
-                "[interrupt]".into(),
-            ]);
+            battle.add(
+                "-end",
+                &[source_arg.into(), "Sky Drop".into(), "[interrupt]".into()],
+            );
         }
 
         EventResult::Continue
     }
 }
-

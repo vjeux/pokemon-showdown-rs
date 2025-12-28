@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///         this.add('-enditem', pokemon, item.name, '[from] move: Incinerate');
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
     let pokemon = pokemon_pos;
     let _source = target_pos;
 
@@ -51,10 +55,16 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 };
                 poke.get_slot()
             };
-            battle.add("-enditem", &[pokemon_ident.as_str().into(), item_name.into(), "[from] move: Incinerate".into()]);
+            battle.add(
+                "-enditem",
+                &[
+                    pokemon_ident.as_str().into(),
+                    item_name.into(),
+                    "[from] move: Incinerate".into(),
+                ],
+            );
         }
     }
 
     EventResult::Continue
 }
-
