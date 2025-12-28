@@ -14,6 +14,59 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (target === source || move.category === 'Status' || move.flags['pledgecombo']) return;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // target === source
+    if target == source {
+        return EventResult::Continue;
+    }
+
+    // move.category === 'Status' || move.flags['pledgecombo']
+    let (is_status, is_pledgecombo) = match &battle.active_move {
+        Some(active_move) => (
+            active_move.category == "Status",
+            active_move.flags.pledgecombo,
+        ),
+        None => return EventResult::Continue,
+    };
+
+    if is_status || is_pledgecombo {
+        return EventResult::Continue;
+    }
+
+    // if (move.type === 'Electric' && source.useItem())
+    let is_electric = match &battle.active_move {
+        Some(active_move) => active_move.move_type == "Electric",
+        None => return EventResult::Continue,
+    };
+
+    if is_electric {
+        let used_item = {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.use_item().is_some()
+        };
+
+        if used_item {
+            // source.addVolatile('gem');
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.add_volatile(crate::dex_data::ID::new("gem"));
+        }
+    }
+
     EventResult::Continue
 }

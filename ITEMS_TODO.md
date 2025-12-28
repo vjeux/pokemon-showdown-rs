@@ -101,7 +101,7 @@ Items with callbacks: 326
 - [ ] eelektrossite - Eelektrossite (Gen 9) - 1 callback: onTakeItem
 - [ ] ejectbutton - Eject Button (Gen 5) - 1 callback: onAfterMoveSecondary
 - [ ] ejectpack - Eject Pack (Gen 8) - 8 callbacks: onAfterBoost, onAnySwitchIn, onAnyAfterMega, onAnyAfterMove, onResidual, onUseItem, onUse, onEnd
-- [ ] electricgem - Electric Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] electricgem - Electric Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] electricmemory - Electric Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] electricseed - Electric Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
 - [ ] emboarite - Emboarite (Gen 9) - 1 callback: onTakeItem
@@ -117,7 +117,7 @@ Items with callbacks: 326
 - [ ] fightinggem - Fighting Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] fightingmemory - Fighting Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] figyberry - Figy Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
-- [ ] firegem - Fire Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] firegem - Fire Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] firememory - Fire Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] fistplate - Fist Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] flameorb - Flame Orb (Gen 4) - 1 callback: onResidual
@@ -222,7 +222,7 @@ Items with callbacks: 326
 - [ ] mysteryberry - Mystery Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [ ] mysticwater - Mystic Water (Gen 2) - 1 callback: onBasePower
 - [ ] nevermeltice - Never-Melt Ice (Gen 2) - 1 callback: onBasePower
-- [ ] normalgem - Normal Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] normalgem - Normal Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] occaberry - Occa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [ ] oddincense - Odd Incense (Gen 4) - 1 callback: onBasePower
 - [ ] oranberry - Oran Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
@@ -325,7 +325,7 @@ Items with callbacks: 326
 - [ ] victreebelite - Victreebelite (Gen 9) - 1 callback: onTakeItem
 - [ ] vilevial - Vile Vial (Gen 8) - 2 callbacks: onBasePower, onTakeItem
 - [ ] wacanberry - Wacan Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] watergem - Water Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] watergem - Water Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] watermemory - Water Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] waveincense - Wave Incense (Gen 4) - 1 callback: onBasePower
 - [ ] weaknesspolicy - Weakness Policy (Gen 6) - 1 callback: onDamagingHit
