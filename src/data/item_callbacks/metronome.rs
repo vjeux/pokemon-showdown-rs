@@ -11,6 +11,17 @@ use crate::event::EventResult;
 ///     pokemon.addVolatile('metronome');
 /// }
 pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // pokemon.addVolatile('metronome');
+    let pokemon_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+    pokemon_mut.add_volatile(crate::dex_data::ID::new("metronome"));
+
     EventResult::Continue
 }
