@@ -80,7 +80,7 @@ Items with callbacks: 326
 - [ ] crabominite - Crabominite (Gen 9) - 1 callback: onTakeItem
 - [ ] crucibellite - Crucibellite (Gen 6) - 1 callback: onTakeItem
 - [ ] custapberry - Custap Berry (Gen 4) - 2 callbacks: onFractionalPriority, onEat
-- [ ] darkgem - Dark Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
+- [x] darkgem - Dark Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] darkmemory - Dark Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] darkranite - Darkranite (Gen 9) - 1 callback: onTakeItem
 - [ ] deepseascale - Deep Sea Scale (Gen 3) - 1 callback: onModifySpD
