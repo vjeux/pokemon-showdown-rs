@@ -100,7 +100,7 @@ impl EffectData {
 
 /// Effect state - matches JavaScript EffectState
 /// Stores state for temporary effects (volatiles, side conditions, etc.)
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct EffectState {
     /// Effect ID
     pub id: ID,

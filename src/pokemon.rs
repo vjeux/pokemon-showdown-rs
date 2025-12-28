@@ -8,7 +8,8 @@ use std::collections::HashMap;
 use std::fmt;
 use serde::{Deserialize, Serialize};
 
-use crate::dex_data::{ID, Gender, StatsTable, BoostsTable, EffectState, StatID};
+use crate::dex_data::{ID, Gender, StatsTable, BoostsTable, StatID};
+use crate::event_system::EffectState;
 
 /// A Pokemon's move slot
 #[derive(Debug, Clone, Serialize, Deserialize)]

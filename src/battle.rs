@@ -8,7 +8,8 @@
 use std::collections::{HashSet, HashMap};
 use serde::{Deserialize, Serialize};
 
-use crate::dex_data::{ID, GameType, SideID, EffectState, StatsTable, StatID};
+use crate::dex_data::{ID, GameType, SideID, StatsTable, StatID};
+use crate::event_system::EffectState;
 use crate::field::Field;
 use crate::battle_queue::BattleQueue;
 use crate::pokemon::{Pokemon, PokemonSet};
@@ -363,7 +364,7 @@ pub struct Battle {
     /// Current effect being processed
     pub current_effect: Option<ID>,
     /// Current effect state
-    pub current_effect_state: Option<crate::dex_data::EffectState>,
+    pub current_effect_state: Option<EffectState>,
     /// Current effect metadata (name, type, pranksterBoosted, etc.)
     pub current_effect_data: Option<crate::event_system::EffectData>,
     /// Log position for line limit checking
