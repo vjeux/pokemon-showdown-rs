@@ -51,15 +51,18 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // target.sethp(target.hp - targetChange);
     {
-        let target_current_hp = {
+        let new_hp = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.hp
+            target_pokemon.hp - target_change
         };
-        let new_hp = target_current_hp - target_change;
-        battle.set_hp(new_hp, target, None, None);
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.set_hp(new_hp);
     }
 
     // this.add('-sethp', target, target.getHealth, '[from] move: Pain Split', '[silent]');
@@ -81,7 +84,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // pokemon.sethp(averagehp);
-    battle.set_hp(average_hp, pokemon, None, None);
+    {
+        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_pokemon.set_hp(average_hp);
+    }
 
     // this.add('-sethp', pokemon, pokemon.getHealth, '[from] move: Pain Split');
     {
