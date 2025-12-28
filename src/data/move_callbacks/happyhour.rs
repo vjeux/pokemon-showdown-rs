@@ -14,14 +14,14 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     let target = target_pos;
 
     // this.add('-activate', target, 'move: Happy Hour');
-    let target_arg = {
+    let target_ident = {
         let pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
     };
-    battle.add("-activate", &[target_arg, "move: Happy Hour".into()]);
+    battle.add("-activate", &[target_ident.as_str().into(), "move: Happy Hour".into()]);
 
     EventResult::Continue
 }

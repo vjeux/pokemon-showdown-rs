@@ -91,21 +91,21 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // this.add('-swapboost', source, target, 'def, spd', '[from] move: Guard Swap');
-    let source_arg = {
+    let source_ident = {
         let pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
     };
-    let target_arg = {
+    let target_ident = {
         let pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
     };
-    battle.add("-swapboost", &[source_arg, target_arg, "def, spd".into(), "[from] move: Guard Swap".into()]);
+    battle.add("-swapboost", &[source_ident.as_str().into(), target_ident.as_str().into(), "def, spd".into(), "[from] move: Guard Swap".into()]);
 
     EventResult::Continue
 }

@@ -100,21 +100,21 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // this.add('-activate', source, 'move: Guard Split', `[of] ${target}`);
-    let source_arg = {
+    let source_ident = {
         let pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
     };
-    let target_arg = {
+    let target_ident = {
         let pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
     };
-    battle.add("-activate", &[source_arg, "move: Guard Split".into(), "[of]".into(), target_arg]);
+    battle.add("-activate", &[source_ident.as_str().into(), "move: Guard Split".into(), "[of]".into(), target_ident.as_str().into()]);
 
     EventResult::Continue
 }

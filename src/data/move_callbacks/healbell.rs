@@ -36,14 +36,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // this.add('-activate', source, 'move: Heal Bell');
-    let source_arg = {
+    let source_ident = {
         let pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
     };
-    battle.add("-activate", &[source_arg, "move: Heal Bell".into()]);
+    battle.add("-activate", &[source_ident.as_str().into(), "move: Heal Bell".into()]);
 
     // let success = false;
     let mut success = false;
@@ -78,14 +78,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
             if has_soundproof {
                 // this.add('-immune', ally, '[from] ability: Soundproof');
-                let ally_arg = {
+                let ally_ident = {
                     let pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
                         Some(p) => p,
                         None => continue,
                     };
-                    crate::battle::Arg::from(pokemon)
+                    pokemon.get_slot()
                 };
-                battle.add("-immune", &[ally_arg, "[from] ability: Soundproof".into()]);
+                battle.add("-immune", &[ally_ident.as_str().into(), "[from] ability: Soundproof".into()]);
                 // continue;
                 continue;
             }
@@ -101,14 +101,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
             if has_goodasgold {
                 // this.add('-immune', ally, '[from] ability: Good as Gold');
-                let ally_arg = {
+                let ally_ident = {
                     let pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
                         Some(p) => p,
                         None => continue,
                     };
-                    crate::battle::Arg::from(pokemon)
+                    pokemon.get_slot()
                 };
-                battle.add("-immune", &[ally_arg, "[from] ability: Good as Gold".into()]);
+                battle.add("-immune", &[ally_ident.as_str().into(), "[from] ability: Good as Gold".into()]);
                 // continue;
                 continue;
             }

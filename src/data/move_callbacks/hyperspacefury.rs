@@ -48,14 +48,14 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         battle.attr_last_move(&["[still]"]);
 
         // this.add('-fail', source, 'move: Hyperspace Fury', '[forme]');
-        let source_arg = {
+        let source_ident = {
             let pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
         };
-        battle.add("-fail", &[source_arg, "move: Hyperspace Fury".into(), "[forme]".into()]);
+        battle.add("-fail", &[source_ident.as_str().into(), "move: Hyperspace Fury".into(), "[forme]".into()]);
 
         // return null;
         return EventResult::Stop;
@@ -65,14 +65,14 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     battle.attr_last_move(&["[still]"]);
 
     // this.add('-fail', source, 'move: Hyperspace Fury');
-    let source_arg = {
+    let source_ident = {
         let pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
     };
-    battle.add("-fail", &[source_arg, "move: Hyperspace Fury".into()]);
+    battle.add("-fail", &[source_ident.as_str().into(), "move: Hyperspace Fury".into()]);
 
     // return null;
     EventResult::Stop
