@@ -77,7 +77,8 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             }
         };
 
-        battle.forme_change(attacker, forme, false, None, None);
+        // TODO: Implement forme_change method in Battle
+        // battle.forme_change(attacker, forme, false, None, None);
     }
 
     // this.add('-prepare', attacker, move.name);

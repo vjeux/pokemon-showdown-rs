@@ -75,7 +75,8 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
 
     // pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
     let target_forme = format!("Ramnarok{}", forme);
-    battle.forme_change(pokemon, &target_forme, false, Some("0"), Some("[msg]"));
+    // TODO: Implement forme_change method in Battle
+    // battle.forme_change(...);
 
     EventResult::Continue
 }
