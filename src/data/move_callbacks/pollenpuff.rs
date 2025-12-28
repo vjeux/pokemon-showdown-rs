@@ -119,7 +119,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.base_max_hp / 2
+            target_pokemon.base_maxhp / 2
         };
 
         let healed = battle.heal(heal_amount, target, None, None);

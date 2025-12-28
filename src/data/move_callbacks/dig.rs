@@ -28,7 +28,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     let defender = target_pos;
 
     // Get move ID - for dig it should be "dig"
-    let move_id = match &battle.current_move {
+    let move_id = match &battle.active_move {
         Some(id) => id.clone(),
         None => return EventResult::Continue,
     };

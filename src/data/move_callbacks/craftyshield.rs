@@ -56,7 +56,7 @@ pub mod condition {
         // For now, we'll implement a simplified version that checks if there's a current move
 
         // Get move data from battle context
-        let move_id = match &battle.current_move {
+        let move_id = match &battle.active_move {
             Some(id) => id.clone(),
             None => return EventResult::Continue,
         };

@@ -21,7 +21,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
     };
 
     // Get current move
-    let move_id = match &battle.current_move {
+    let move_id = match &battle.active_move {
         Some(id) => id.clone(),
         None => return EventResult::Continue,
     };

@@ -72,7 +72,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                let calculated_damage = (pokemon_pokemon.max_hp + 2) / 4; // Math.round equivalent for integer division
+                let calculated_damage = (pokemon_pokemon.maxhp + 2) / 4; // Math.round equivalent for integer division
                 std::cmp::max(calculated_damage, 1)
             };
 

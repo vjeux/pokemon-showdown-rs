@@ -35,7 +35,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        std::cmp::max((pokemon_pokemon.hp * 48 / pokemon_pokemon.max_hp) as i32, 1)
+        std::cmp::max((pokemon_pokemon.hp * 48 / pokemon_pokemon.maxhp) as i32, 1)
     };
 
     // let bp;

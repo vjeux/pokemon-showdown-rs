@@ -161,7 +161,7 @@ pub mod condition {
         let attacker = pokemon_pos;
 
         // Get move type
-        let move_type = match &battle.current_move {
+        let move_type = match &battle.active_move {
             Some(move_id) => {
                 match battle.dex.get_move_by_id(move_id) {
                     Some(move_data) => move_data.move_type.clone(),

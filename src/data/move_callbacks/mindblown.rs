@@ -45,7 +45,7 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (pokemon_pokemon.hp, pokemon_pokemon.max_hp)
+            (pokemon_pokemon.hp, pokemon_pokemon.maxhp)
         };
 
         // this.damage(Math.round(pokemon.maxhp / 2), pokemon, pokemon, this.dex.conditions.get('Mind Blown'), true);

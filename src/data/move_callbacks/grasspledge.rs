@@ -154,7 +154,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             // move.type = 'Grass';
             // move.forceSTAB = true;
             // move.sideCondition = 'grasspledge';
-            if let Some(ref current_move_id) = battle.current_move {
+            if let Some(ref current_move_id) = battle.active_move {
                 if let Some(current_move) = battle.dex.get_move_by_id_mut(current_move_id) {
                     current_move.move_type = ID::from("grass");
                     current_move.force_stab = true;
@@ -168,7 +168,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             // move.type = 'Fire';
             // move.forceSTAB = true;
             // move.sideCondition = 'firepledge';
-            if let Some(ref current_move_id) = battle.current_move {
+            if let Some(ref current_move_id) = battle.active_move {
                 if let Some(current_move) = battle.dex.get_move_by_id_mut(current_move_id) {
                     current_move.move_type = ID::from("fire");
                     current_move.force_stab = true;

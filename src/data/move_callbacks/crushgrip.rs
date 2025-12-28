@@ -28,7 +28,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (target_pokemon.hp as f64, target_pokemon.max_hp as f64)
+        (target_pokemon.hp as f64, target_pokemon.maxhp as f64)
     };
 
     // const bp = Math.floor(Math.floor((120 * (100 * Math.floor(hp * 4096 / maxHP)) + 2048 - 1) / 4096) / 100) || 1;

@@ -64,7 +64,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.base_max_hp / 4
+            pokemon_pokemon.base_maxhp / 4
         };
 
         battle.damage(damage, pokemon, None, None);

@@ -24,7 +24,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
         pokemon_pokemon.hp_type.clone().unwrap_or_else(|| ID::from("dark"))
     };
 
-    if let Some(ref current_move_id) = battle.current_move {
+    if let Some(ref current_move_id) = battle.active_move {
         if let Some(current_move) = battle.dex.get_move_by_id_mut(current_move_id) {
             current_move.move_type = hp_type;
         }

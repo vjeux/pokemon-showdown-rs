@@ -19,7 +19,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (source_pokemon.hp, source_pokemon.max_hp)
+        (source_pokemon.hp, source_pokemon.maxhp)
     };
 
     if hp <= max_hp / 2 || max_hp == 1 {
@@ -53,7 +53,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     // delete move.boosts;
     // We need to clear the boosts from the current move
-    if let Some(ref move_id) = battle.current_move {
+    if let Some(ref move_id) = battle.active_move {
         if let Some(move_data) = battle.dex.get_move_by_id_mut(move_id) {
             move_data.boosts = None;
         }

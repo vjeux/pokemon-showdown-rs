@@ -32,7 +32,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     let defender = target_pos;
 
     // Get move ID - for dive it should be "dive"
-    let move_id = match &battle.current_move {
+    let move_id = match &battle.active_move {
         Some(id) => id.clone(),
         None => return EventResult::Continue,
     };
@@ -70,7 +70,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            if attacker_pokemon.hp <= attacker_pokemon.max_hp / 2 {
+            if attacker_pokemon.hp <= attacker_pokemon.maxhp / 2 {
                 "cramorantgorging"
             } else {
                 "cramorantgulping"

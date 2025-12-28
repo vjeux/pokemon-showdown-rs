@@ -19,7 +19,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     use crate::dex_data::ID;
 
     // let bp = move.basePower;
-    let base_power = match &battle.current_move {
+    let base_power = match &battle.active_move {
         Some(move_id) => {
             match battle.dex.get_move_by_id(move_id) {
                 Some(move_data) => move_data.base_power,

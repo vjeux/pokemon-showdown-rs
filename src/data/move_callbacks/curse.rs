@@ -123,7 +123,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.max_hp / 2
+        source_pokemon.maxhp / 2
     };
 
     battle.direct_damage(damage, source, Some(source));
@@ -179,7 +179,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.base_max_hp / 4
+            pokemon_pokemon.base_maxhp / 4
         };
 
         battle.damage(damage, pokemon);
