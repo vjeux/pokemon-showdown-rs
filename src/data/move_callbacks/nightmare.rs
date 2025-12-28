@@ -33,7 +33,7 @@ pub mod condition {
             (status, has_comatose)
         };
 
-        if status != Some(ID::from("slp")) && !has_comatose {
+        if status != ID::from("slp") && !has_comatose {
             // return false;
             return EventResult::Boolean(false);
         }

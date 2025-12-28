@@ -140,7 +140,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             None => return EventResult::Continue,
         };
         pokemon_pokemon.item = ID::from("");
-        pokemon_pokemon.last_item = Some(item_id.clone());
+        pokemon_pokemon.last_item = item_id.clone();
         pokemon_pokemon.used_item_this_turn = true;
     }
 

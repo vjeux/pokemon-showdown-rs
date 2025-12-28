@@ -153,7 +153,7 @@ pub mod condition {
         if smart_target {
             // move.smartTarget = false;
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = false;
+                active_move.smart_target = Some(false);
             }
         } else {
             // this.add('-activate', target, 'move: Protect');
