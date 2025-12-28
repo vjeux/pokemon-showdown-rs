@@ -37,7 +37,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_type(&ID::from("psychic"), battle)
+        target_pokemon.set_type(ID::from("psychic"))
     };
 
     if !set_type_success {

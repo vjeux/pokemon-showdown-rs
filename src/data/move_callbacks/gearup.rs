@@ -50,7 +50,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.has_ability(&["plus", "minus"], battle)
+            pokemon.has_ability(&["plus", "minus"])
         };
 
         if !has_plus_or_minus {

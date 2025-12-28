@@ -78,7 +78,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    attacker_pokemon.add_volatile(&ID::from("twoturnmove"), battle);
+    attacker_pokemon.add_volatile(ID::from("twoturnmove"));
 
     // return null;
     EventResult::Stop
