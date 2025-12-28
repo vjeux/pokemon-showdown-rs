@@ -6,6 +6,7 @@
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use unicode_normalization::UnicodeNormalization;
 
 /// An ID must be lowercase alphanumeric.
 /// This is the core identifier type used throughout Pokemon Showdown.
@@ -77,7 +78,10 @@ impl std::fmt::Display for ID {
 // }
 //
 pub fn to_id(text: &str) -> String {
-    text.chars()
+    // Normalize to NFD (decomposed form) to match JSON data format
+    // This ensures "é" (U+00E9) becomes "e" + "́" (U+0301)
+    // Then we filter for ASCII characters, keeping the base letter
+    text.nfd()
         .filter(|c| c.is_ascii_alphanumeric())
         .map(|c| c.to_ascii_lowercase())
         .collect()

@@ -15,6 +15,8 @@ fn test_get_species_flabebe() {
             "Expected 'Flabébé-Yellow' or 'Flabebe-Yellow', got '{}'",
             species.name
         );
+    } else {
+        panic!("Species 'Flabébé-yellow' not found");
     }
 }
 

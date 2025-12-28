@@ -92,6 +92,8 @@ pub struct SpeciesData {
     #[serde(default)]
     pub other_formes: Vec<String>,
     #[serde(default)]
+    pub cosmetic_formes: Vec<String>,
+    #[serde(default)]
     pub is_cosmetic_forme: bool,
     #[serde(default)]
     pub gen: Option<u8>,
@@ -700,9 +702,64 @@ impl Dex {
         }
 
         // Convert string keys to ID keys
-        let species = species_raw.into_iter()
+        let mut species: HashMap<ID, SpeciesData> = species_raw.into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
+
+        // Generate cosmetic forme entries
+        // Collect species with cosmetic formes first to avoid borrow issues
+        let species_with_cosmetic_formes: Vec<(ID, SpeciesData)> = species.iter()
+            .filter(|(_, s)| !s.cosmetic_formes.is_empty())
+            .map(|(id, s)| (id.clone(), s.clone()))
+            .collect();
+
+        for (_base_id, base_species) in species_with_cosmetic_formes {
+            for forme_name in &base_species.cosmetic_formes {
+                let forme_id = ID::new(forme_name);
+                // Only create entry if it doesn't already exist
+                if !species.contains_key(&forme_id) {
+                    // Extract forme suffix (e.g., "Yellow" from "Flabébé-Yellow")
+                    let forme_suffix = if let Some(pos) = forme_name.rfind('-') {
+                        &forme_name[pos + 1..]
+                    } else {
+                        forme_name.as_str()
+                    };
+
+                    // Normalize names to NFC (precomposed) form for consistency
+                    use unicode_normalization::UnicodeNormalization;
+                    let normalized_name: String = forme_name.nfc().collect();
+                    let normalized_base_species: String = base_species.name.nfc().collect();
+
+                    let cosmetic_forme = SpeciesData {
+                        num: base_species.num,
+                        name: normalized_name,
+                        types: base_species.types.clone(),
+                        base_stats: base_species.base_stats.clone(),
+                        abilities: base_species.abilities.clone(),
+                        heightm: base_species.heightm,
+                        weightkg: base_species.weightkg,
+                        gender_ratio: base_species.gender_ratio.clone(),
+                        evos: base_species.evos.clone(),
+                        prevo: base_species.prevo.clone(),
+                        evo_level: base_species.evo_level,
+                        base_species: Some(normalized_base_species),
+                        forme: Some(forme_suffix.to_string()),
+                        other_formes: Vec::new(),
+                        cosmetic_formes: Vec::new(),
+                        is_cosmetic_forme: true,
+                        gen: base_species.gen,
+                        tier: base_species.tier.clone(),
+                        doubles_tier: base_species.doubles_tier.clone(),
+                        nat_dex_tier: base_species.nat_dex_tier.clone(),
+                        is_nonstandard: base_species.is_nonstandard.clone(),
+                        exists: base_species.exists,
+                    };
+
+                    species.insert(forme_id, cosmetic_forme);
+                }
+            }
+        }
+
         let moves = moves_raw.into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
@@ -1254,6 +1311,15 @@ impl Dex {
         let mut dex = Self::load_default()?;
         dex.gen = gen;
 
+        // Load Gen 8-specific unavailable Pokemon list
+        // Gen 8 (Sword/Shield) had a limited Pokedex ("Dexit")
+        let gen8_past_ids: std::collections::HashSet<ID> = if gen == 8 {
+            let gen8_past: Vec<String> = serde_json::from_str(embedded::GEN8_PAST_JSON)?;
+            gen8_past.into_iter().map(|s| ID::new(&s)).collect()
+        } else {
+            std::collections::HashSet::new()
+        };
+
         // JavaScript: Dex.forGen() uses mod system where gen1/pokedex.js, gen2/pokedex.js, etc.
         // physically don't include formes from future generations
         // We replicate this by pattern-matching forme names and marking as Future
@@ -1274,7 +1340,10 @@ impl Dex {
             _ => 1025,
         };
 
-        for species in dex.species.values_mut() {
+        for (species_id, species) in dex.species.iter_mut() {
+            // Gen 8-specific: Check if this Pokemon is unavailable in Gen 8
+            let gen8_unavailable = gen == 8 && gen8_past_ids.contains(species_id);
+
             // JavaScript: Check if this Pokemon/forme was introduced after requested gen
             let is_future = if let Some(species_gen) = species.gen {
                 // Explicit gen field (e.g., Pikachu-World has gen: 8)
@@ -1374,8 +1443,8 @@ impl Dex {
                 "Floette-Eternal"  // Never officially released (AZ's Floette)
             );
 
-            // Magearna-Original is marked "Unobtainable" in gen7 mod but available in Gen 9
-            let magearna_original_unavailable = species.name == "Magearna-Original" && gen < 9;
+            // Magearna-Original is marked "Unobtainable" in gen7 mod but available in Gen 8+ (Isle of Armor DLC)
+            let magearna_original_unavailable = species.name == "Magearna-Original" && gen < 8;
 
             // LGPE-exclusive Pokemon (Let's Go Pikachu/Eevee)
             // These Pokemon (Meltan #808, Melmetal #809) are marked "LGPE" in gen7 mod
@@ -1383,26 +1452,43 @@ impl Dex {
             let is_lgpe_exclusive = species.num == 808 || species.num == 809; // Meltan, Melmetal
             let lgpe_unavailable_in_gen7 = is_lgpe_exclusive && gen == 7;
 
-            let should_clear_past = if always_unavailable || magearna_original_unavailable || lgpe_unavailable_in_gen7 {
-                // Never clear "Past" for unreleased Pokemon, Magearna-Original in Gen < 9, or LGPE Pokemon in Gen 7
+            // Gmax formes (Gigantamax)
+            // Gmax formes are marked "Gigantamax" in gen8 formats-data but "Past" in gen9 formats-data
+            // They should remain marked as non-standard in ALL gens (including Gen 8)
+            // because the JavaScript test excludes Pokemon with any isNonstandard value
+            let is_gmax_forme = species.forme.as_deref().map(|f| f.contains("Gmax")).unwrap_or(false);
+
+            let should_clear_past = if always_unavailable || magearna_original_unavailable || lgpe_unavailable_in_gen7 || gen8_unavailable || is_gmax_forme {
+                // Never clear "Past" for:
+                // - unreleased Pokemon (Floette-Eternal)
+                // - Magearna-Original in Gen < 8
+                // - LGPE Pokemon in Gen 7
+                // - Gen 8 Dexit Pokemon
+                // - Gmax formes (should be excluded in all gens)
                 false
             } else if gen == current_gen {
                 // Gen 9: Keep "Past" markers (they're correct for this gen)
                 false
             } else if let Some(species_gen) = species.gen {
-                // Has explicit gen field - only clear if it matches requested gen (gen-exclusive formes)
+                // Has explicit gen field
+                // For now, only clear "Past" if it matches exactly
+                // TODO: This causes Gen 8 to have 106 formes instead of 107
+                // Need to implement proper gen-specific formats-data loading
                 species_gen == gen
             } else {
+                // No explicit gen field
                 // Gen 1-8: Clear ALL "Past" markers (assume National Dex)
-                // This is not 100% accurate for Gen 8's limited Pokedex, but without gen-specific
-                // formats-data, we can't know which Pokemon were available in Gen 8.
+                // Note: Gen 8 uses gen8_past_ids for selective filtering
                 true
             };
 
-            // Explicitly mark unavailable Pokemon as Illegal/Unobtainable
+            // Explicitly mark unavailable Pokemon as Illegal/Unobtainable or Past
             if always_unavailable || magearna_original_unavailable {
                 species.tier = Some("Illegal".to_string());
                 species.is_nonstandard = Some("Unobtainable".to_string());
+            } else if gen8_unavailable {
+                species.tier = Some("Illegal".to_string());
+                species.is_nonstandard = Some("Past".to_string());
             } else if should_clear_past {
                 if species.is_nonstandard.as_deref() == Some("Past") {
                     species.is_nonstandard = None;
@@ -1411,6 +1497,9 @@ impl Dex {
                     species.tier = None;
                 }
             }
+            // Note: Gmax formes keep their "Past" isNonstandard marker from Gen 9 data
+            // This matches the JavaScript behavior where Gmax formes are excluded in Gen 8
+            // because they have isNonstandard: "Gigantamax"
         }
 
         Ok(dex)
@@ -1722,6 +1811,7 @@ pub mod embedded {
     pub const COMPOUNDWORDNAMES_JSON: &str = include_str!("../data/compoundwordnames.json");
     pub const FORMATS_JSON: &str = include_str!("../data/formats.json");
     pub const FORMATS_DATA_JSON: &str = include_str!("../data/formats-data.json");
+    pub const GEN8_PAST_JSON: &str = include_str!("../data/gen8-past.json");
 }
 
 impl Dex {
