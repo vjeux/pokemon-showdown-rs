@@ -367,7 +367,7 @@ Moves with callbacks: 373
 - [ ] wakeupslap - Wake-Up Slap (Physical, Fighting) - 2 callbacks: basePowerCallback, onHit
 - [ ] waterpledge - Water Pledge (Special, Water) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onSideEnd, condition::onModifyMove
 - [ ] watershuriken - Water Shuriken (Special, Water) - 1 callback: basePowerCallback
-- [ ] watersport - Water Sport (Status, Water) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
+- [x] watersport - Water Sport (Status, Water) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
 - [ ] waterspout - Water Spout (Special, Water) - 1 callback: basePowerCallback
 - [x] weatherball - Weather Ball (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [ ] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
