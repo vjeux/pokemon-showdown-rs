@@ -121,7 +121,7 @@ pub mod condition {
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             let (is_z, is_max) = {
                 let active_move = match &battle.active_move {
-                    Some(active_move) => &active_move.id,
+                    Some(active_move) => active_move,
                     None => return EventResult::Continue,
                 };
                 (active_move.is_z, active_move.is_max)

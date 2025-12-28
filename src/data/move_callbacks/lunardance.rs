@@ -49,7 +49,7 @@ pub mod condition {
 
         // this.singleEvent('Swap', this.effect, this.effectState, target);
         let effect_id = match &battle.current_effect_state {
-            Some(es) => es.effect_id.clone(),
+            Some(es) => es.id.clone(),
             None => return EventResult::Continue,
         };
 
