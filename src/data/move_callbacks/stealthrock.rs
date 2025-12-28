@@ -67,7 +67,7 @@ pub mod condition {
             };
             pokemon_data.run_effectiveness("rock")
         };
-        let type_mod = battle.clamp_int_range(effectiveness, Some(-6), Some(6));
+        let type_mod = battle.clamp_int_range(effectiveness as i32, Some(-6), Some(6));
 
         // this.damage(pokemon.maxhp * (2 ** typeMod) / 8);
         let max_hp = {
