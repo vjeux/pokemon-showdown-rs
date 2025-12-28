@@ -16,7 +16,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // }
 
     // this.field.clearTerrain();
-    battle.clear_terrain();
+    battle.field.clear_terrain();
 
     EventResult::Continue
 }
@@ -30,7 +30,7 @@ pub fn on_after_sub_damage(battle: &mut Battle) -> EventResult {
     // }
 
     // this.field.clearTerrain();
-    battle.clear_terrain();
+    battle.field.clear_terrain();
 
     EventResult::Continue
 }
