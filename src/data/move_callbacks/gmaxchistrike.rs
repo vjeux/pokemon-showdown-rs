@@ -19,7 +19,9 @@ pub mod condition {
     /// }
     pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // this.effectState.layers = 1;
-        battle.current_effect_state.data.insert("layers".to_string(), serde_json::Value::Number(1.into()));
+        if let Some(effect_state) = &mut battle.current_effect_state {
+            effect_state.data.insert("layers".to_string(), serde_json::Value::Number(1.into()));
+        }
 
         // if (!['costar', 'imposter', 'psychup', 'transform'].includes(effect?.id)) {
         let should_show_message = match effect_id {
@@ -53,7 +55,8 @@ pub mod condition {
     /// }
     pub fn on_restart(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // if (this.effectState.layers >= 3) return false;
-        let layers = battle.current_effect_state.data.get("layers")
+        let layers = battle.current_effect_state.as_ref()
+            .and_then(|es| es.data.get("layers"))
             .and_then(|v| v.as_i64())
             .unwrap_or(1) as i32;
 
@@ -63,7 +66,9 @@ pub mod condition {
 
         // this.effectState.layers++;
         let new_layers = layers + 1;
-        battle.current_effect_state.data.insert("layers".to_string(), serde_json::Value::Number(new_layers.into()));
+        if let Some(effect_state) = &mut battle.current_effect_state {
+            effect_state.data.insert("layers".to_string(), serde_json::Value::Number(new_layers.into()));
+        }
 
         // if (!['costar', 'imposter', 'psychup', 'transform'].includes(effect?.id)) {
         let should_show_message = match effect_id {
@@ -93,7 +98,8 @@ pub mod condition {
     /// }
     pub fn on_modify_crit_ratio(battle: &mut Battle) -> EventResult {
         // return critRatio + this.effectState.layers;
-        let layers = battle.current_effect_state.data.get("layers")
+        let layers = battle.current_effect_state.as_ref()
+            .and_then(|es| es.data.get("layers"))
             .and_then(|v| v.as_i64())
             .unwrap_or(1) as i32;
 
