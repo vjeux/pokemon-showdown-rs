@@ -315,7 +315,7 @@ Items with callbacks: 326
 - [ ] tangaberry - Tanga Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] tatsugirinite - Tatsugirinite (Gen 9) - 1 callback: onTakeItem
 - [x] thickclub - Thick Club (Gen 2) - 1 callback: onModifyAtk
-- [ ] throatspray - Throat Spray (Gen 8) - 1 callback: onAfterMoveSecondarySelf
+- [x] throatspray - Throat Spray (Gen 8) - 1 callback: onAfterMoveSecondarySelf
 - [x] toxicorb - Toxic Orb (Gen 4) - 1 callback: onResidual
 - [x] toxicplate - Toxic Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] twistedspoon - Twisted Spoon (Gen 2) - 1 callback: onBasePower
