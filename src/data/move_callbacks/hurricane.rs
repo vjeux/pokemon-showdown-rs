@@ -29,11 +29,12 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 
     // switch (target?.effectiveWeather()) {
     let effective_weather = {
+        let field_weather = battle.field.weather.as_str();
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.effective_weather()
+        target_pokemon.effective_weather(field_weather)
     };
 
     // case 'raindance':

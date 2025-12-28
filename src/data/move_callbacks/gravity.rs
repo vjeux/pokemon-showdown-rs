@@ -129,7 +129,7 @@ pub mod condition {
                 applies = true;
 
                 // this.queue.cancelMove(pokemon);
-                battle.queue.cancel_move(pokemon_pos);
+                battle.queue.cancel_move(pokemon_pos.0, pokemon_pos.1);
 
                 // pokemon.removeVolatile('twoturnmove');
                 let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -153,7 +153,7 @@ pub mod condition {
                 applies = true;
 
                 // this.queue.cancelMove(pokemon);
-                battle.queue.cancel_move(pokemon_pos);
+                battle.queue.cancel_move(pokemon_pos.0, pokemon_pos.1);
 
                 // if (pokemon.volatiles['skydrop'].source) {
                 //     this.add('-end', pokemon.volatiles['twoturnmove'].source, 'Sky Drop', '[interrupt]');
@@ -283,7 +283,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                pokemon_pokemon.disable_move(&move_slot.id);
+                pokemon_pokemon.disable_move(&move_slot.id, None);
             }
         }
 

@@ -17,11 +17,12 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 
     // if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather())) move.boosts = { atk: 2, spa: 2 };
     let effective_weather = {
+        let field_weather = battle.field.weather.as_str();
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.effective_weather()
+        pokemon_pokemon.effective_weather(field_weather)
     };
 
     if effective_weather == Some(ID::from("sunnyday")) || effective_weather == Some(ID::from("desolateland")) {

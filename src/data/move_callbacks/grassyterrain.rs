@@ -77,7 +77,7 @@ pub mod condition {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    defender_pokemon.is_grounded(battle)
+                    defender_pokemon.is_grounded()
                 };
 
                 let defender_semi_invuln = {
@@ -108,7 +108,7 @@ pub mod condition {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    attacker_pokemon.is_grounded(battle)
+                    attacker_pokemon.is_grounded()
                 };
 
                 if attacker_grounded {
@@ -176,7 +176,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.is_grounded(battle)
+            pokemon_pokemon.is_grounded()
         };
 
         let is_semi_invuln = {

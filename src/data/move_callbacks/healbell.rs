@@ -102,7 +102,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => continue,
             };
-            ally.cure_status(battle)
+            ally.cure_status()
         };
 
         if cured {

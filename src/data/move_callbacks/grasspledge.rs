@@ -118,7 +118,8 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 
     if let Some(action_index) = ally_pledge_action_index {
         // this.queue.prioritizeAction(action, move);
-        battle.queue.prioritize_action(action_index);
+        let ally_pos = ally_pokemon_pos.unwrap();
+        battle.queue.prioritize_action(ally_pos.0, ally_pos.1);
 
         // this.add('-waiting', source, action.pokemon);
         let source_arg = crate::battle::Arg::Pos(source.0, source.1);
