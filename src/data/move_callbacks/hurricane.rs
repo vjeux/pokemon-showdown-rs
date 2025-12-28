@@ -52,7 +52,6 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     } else if weather_id == "sunnyday" || weather_id == "desolateland" {
         if let Some(ref mut active_move) = battle.active_move {
             active_move.accuracy = 50;
-            }
         }
     }
 
