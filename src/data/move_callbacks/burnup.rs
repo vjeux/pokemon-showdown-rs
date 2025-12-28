@@ -30,15 +30,15 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     }
 
     // this.add('-fail', pokemon, 'move: Burn Up');
-    let pokemon_arg = {
+    let pokemon_ident = {
         let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        Arg::from(pokemon)
+        pokemon.get_slot()
     };
 
-    battle.add("-fail", &[pokemon_arg, "move: Burn Up".into()]);
+    battle.add("-fail", &[pokemon_ident.as_str().into(), "move: Burn Up".into()]);
 
     // this.attrLastMove('[still]');
     battle.attr_last_move(&["[still]"]);
