@@ -32,7 +32,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        active_move.clone()
+        active_move.id.clone()
     };
 
     let removed = battle.remove_volatile(&move_id, attacker);
@@ -65,9 +65,9 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;
     // }
-    let charge_result = battle.run_event("ChargeMove", attacker, defender, Some(&move_id));
+    let charge_result = battle.run_event("ChargeMove", Some(attacker), defender, Some(&move_id));
 
-    if matches!(charge_result, EventResult::Boolean(false)) {
+    if charge_result == Some(0) {
         return EventResult::Continue;
     }
 

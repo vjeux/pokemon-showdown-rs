@@ -57,7 +57,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         source_pokemon.terastallized
     };
 
-    if terastallized {
+    if terastallized.is_some() {
         return EventResult::Boolean(false);
     }
 
@@ -156,7 +156,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    source_pokemon.known_type = is_ally && target_known_type;
+    source_pokemon.known_type = if is_ally { target_known_type } else { None };
 
     // if (!source.knownType) source.apparentType = oldApparentType;
     // apparentType is computed from types, no need to store it separately

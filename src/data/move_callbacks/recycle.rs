@@ -15,6 +15,8 @@ use crate::event::EventResult;
 ///     pokemon.setItem(item, source, move);
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    use crate::dex_data::ID;
+
     let pokemon = pokemon_pos;
     let source = pokemon_pos;
 
@@ -24,22 +26,22 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon_pokemon.item.is_some(), pokemon_pokemon.last_item.clone())
+        (pokemon_pokemon.item != ID::from(""), pokemon_pokemon.last_item.clone())
     };
 
-    if has_item || last_item.is_none() {
+    if has_item || last_item == ID::from("") {
         return EventResult::Boolean(false);
     }
 
     // const item = pokemon.lastItem;
-    let item = last_item.unwrap();
+    let item = last_item;
 
     // pokemon.lastItem = '';
     let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_pokemon.last_item = None;
+    pokemon_pokemon.last_item = ID::from("");
 
     // this.add('-item', pokemon, this.dex.items.get(item), '[from] move: Recycle');
     let (pokemon_arg, item_name) = {
