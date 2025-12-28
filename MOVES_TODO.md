@@ -1,5 +1,36 @@
 # Moves Implementation Tracking
 
+## Summary
+
+**Current Status:** 120 TODO callbacks remaining (out of ~700+ original callbacks)
+
+**Recently Completed:** 11 callbacks in the last session
+- wonderroom.rs: condition::on_field_end
+- trickroom.rs: condition::on_field_end
+- taunt.rs: condition::on_end
+- tarshot.rs: condition::on_start
+- throatchop.rs: condition::on_start, condition::on_end (2 callbacks)
+- healblock.rs: condition::on_end
+- syrupbomb.rs: condition::on_start, condition::on_end (2 callbacks)
+- uproar.rs: condition::on_start, condition::on_end (2 callbacks)
+- telekinesis.rs: condition::on_end
+- wideguard.rs: condition::on_side_start
+
+**Blocking Issues:** All 120 remaining callbacks require missing infrastructure:
+- Volatile condition management (add_volatile, remove_volatile, has_volatile)
+- Move property access (flags, isZ, isMax, target type)
+- Pokemon methods (has_ability, get_types, disable_move, cure_status, etc.)
+- Move modification (type, category, base_power changes)
+- Effect state tracking (source, duration, custom fields)
+- Queue/action system (will_act, will_move)
+- Status setting (try_set_status)
+- Healing system (heal with source tracking)
+- Item system (get_item, take_item, set_item)
+- PP management (deduct_pp)
+- Turn counting and timing
+
+See "Missing Infrastructure" section below for comprehensive details.
+
 Total: 953 moves
 Moves with callbacks: 373
 
