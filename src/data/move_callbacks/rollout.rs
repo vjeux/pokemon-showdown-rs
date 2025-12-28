@@ -235,8 +235,8 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        effect_state.hit_count = 0;
-        effect_state.contact_hit_count = 0;
+        effect_state.hit_count = Some(0);
+        effect_state.contact_hit_count = Some(0);
 
         EventResult::Continue
     }
