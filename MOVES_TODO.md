@@ -2,12 +2,13 @@
 
 ## Summary
 
-**Current Status:** 117 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 116 TODO callbacks remaining (out of ~700+ original callbacks)
 
-**Recently Completed in Latest Session:** 3 on_disable_move callbacks
+**Recently Completed in Latest Session:** 4 callbacks using existing infrastructure
 - throatchop.rs: condition::on_disable_move - Disables moves with sound flag
 - taunt.rs: condition::on_disable_move - Disables Status moves except Me First
 - healblock.rs: condition::on_disable_move - Disables moves with heal flag
+- wideguard.rs: on_hit_side - Adds stall volatile to source pokemon
 
 **Previously Completed:** 11 callbacks (simple message-adding callbacks)
 - wonderroom.rs: condition::on_field_end
@@ -21,18 +22,21 @@
 - telekinesis.rs: condition::on_end
 - wideguard.rs: condition::on_side_start
 
-**Total Progress This Session:** 14 callbacks implemented
+**Total Progress This Session:** 15 callbacks implemented
 
 **Key Infrastructure Discovery:**
 The Pokemon struct already has more methods than initially documented:
 - `pokemon.disable_move(move_id, source)` - Disable specific moves
 - `pokemon.move_slots` - Access to pokemon's move list
+- `pokemon.add_volatile(ID)` - Add volatile conditions ✓ USED
+- `pokemon.remove_volatile(&ID)` - Remove volatile conditions
+- `pokemon.has_volatile(&ID)` - Check for volatile conditions
 - `battle.dex.moves` - HashMap for move definitions
 - `MoveData.flags` - HashMap for checking move flags (sound, heal, etc.)
 - `MoveData.category` - Move category (Status, Physical, Special)
 
-**Blocking Issues:** All 117 remaining callbacks require missing infrastructure:
-- Volatile condition management (add_volatile, remove_volatile, has_volatile) ✓ EXISTS
+**Blocking Issues:** All 116 remaining callbacks require missing infrastructure:
+- Volatile condition management with source tracking (add_volatile with source parameter)
 - Move property access (flags ✓, isZ, isMax, target type)
 - Pokemon methods (has_ability, get_types, cure_status ✓, etc.)
 - Move modification (type, category, base_power changes)
@@ -41,9 +45,10 @@ The Pokemon struct already has more methods than initially documented:
 - Status setting (try_set_status)
 - Healing system (heal with source tracking)
 - Item system (get_item, take_item, set_item)
-- PP management (deduct_pp ✓ EXISTS)
+- PP management (deduct_pp ✓ EXISTS but returns bool, not amount deducted)
 - Turn counting and timing
 - moveThisTurnResult tracking
+- statsRaisedThisTurn field
 
 Note: ✓ marks indicate infrastructure that exists but may need additional wrapper methods or modifications.
 
