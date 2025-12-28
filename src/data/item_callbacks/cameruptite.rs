@@ -44,9 +44,9 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
 
     // if (item.megaEvolves === source.baseSpecies.baseSpecies) return false;
     if mega_evolves == base_species_base {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // return true;
-    EventResult::Bool(true)
+    EventResult::Boolean(true)
 }

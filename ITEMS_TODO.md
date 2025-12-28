@@ -645,11 +645,17 @@ onModifyCritRatio(critRatio) {
 
 ### ItemData missing fields
 The following fields need to be added to `ItemData` in `src/dex.rs`:
-- `mega_evolves: Option<String>` - For mega stones (cameruptite, chandelurite, charizarditex, charizarditey, etc.)
-- `mega_stone: Option<String>` - The species this stone evolves into
-- `item_user: Option<Vec<String>>` - Species that can use this item
+- `mega_evolves: Option<String>` - For mega stones (cameruptite, chandelurite, charizarditex, charizarditey, etc.) ✓ ADDED
+- `mega_stone: Option<String>` - The species this stone evolves into ✓ ADDED
+- `item_user: Option<Vec<String>>` - Species that can use this item ✓ ADDED
+- `boosts: Option<HashMap<String, i32>>` - Stat boosts for one-time use items ✓ ADDED
 
 ### Methods needed
-- Access to item data from item position or ID in callbacks
-- Access to species data from pokemon's base_species
-- Methods to check if pokemon can use items (for mega stones)
+- Access to item data from item position or ID in callbacks ✓ EXISTS (battle.dex.get_item_by_id)
+- Access to species data from pokemon's base_species ✓ EXISTS (battle.dex.get_species_by_id)
+- Methods to check if pokemon can use items (for mega stones) ✓ IMPLEMENTED in callbacks
+- **MISSING: Battle-level useItem method that applies item effects and boosts**
+  - JavaScript `target.useItem()` does more than just remove the item
+  - It triggers item effects, applies boosts, and runs events
+  - Need to implement this in battle.rs or battle_actions.rs
+  - For now, implementing manual boost application in item callbacks
