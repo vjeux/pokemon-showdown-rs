@@ -56,7 +56,7 @@ pub mod condition {
             pokemon.get_slot()
 
         };
-        battle.add("-start", &[target_arg, "move: Leech Seed".into()]);
+        battle.add("-start", &[target_arg.into(), "move: Leech Seed".into()]);
 
         EventResult::Continue
     }

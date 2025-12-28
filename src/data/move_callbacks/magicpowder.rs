@@ -54,7 +54,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         pokemon.get_slot()
 
     };
-    battle.add("-start", &[target_arg, "typechange".into(), "Psychic".into()]);
+    battle.add("-start", &[target_arg.into(), "typechange".into(), "Psychic".into()]);
 
     EventResult::Continue
 }

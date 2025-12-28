@@ -73,7 +73,7 @@ pub mod condition {
             crate::battle::Arg::from(target_pokemon)
         };
 
-        battle.add("-singleturn", &[target_arg, "Protect".into()]);
+        battle.add("-singleturn", &[target_arg.into(), "Protect".into()]);
 
         EventResult::Continue
     }
@@ -179,7 +179,7 @@ pub mod condition {
                 crate::battle::Arg::from(target_pokemon)
             };
 
-            battle.add("-activate", &[target_arg, "move: Protect".into()]);
+            battle.add("-activate", &[target_arg.into(), "move: Protect".into()]);
         }
 
         // const lockedmove = source.getVolatile('lockedmove');

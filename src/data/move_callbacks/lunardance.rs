@@ -171,7 +171,7 @@ pub mod condition {
                 pokemon.get_slot()
 
             };
-            battle.add("-heal", &[target_arg, health.into(), "[from] move: Lunar Dance".into()]);
+            battle.add("-heal", &[target_arg.into(), health.into(), "[from] move: Lunar Dance".into()]);
 
             //     target.side.removeSlotCondition(target, 'lunardance');
             if let Some(target_side) = battle.sides.get_mut(target.0) {

@@ -48,7 +48,7 @@ pub mod condition {
                     pokemon.get_slot()
 
                 };
-                battle.add("-activate", &[source_arg, "ability: Persistent".into(), "[move] Magic Room".into()]);
+                battle.add("-activate", &[source_arg.into(), "ability: Persistent".into(), "[move] Magic Room".into()]);
             }
             //     return 7;
             return EventResult::Number(7);

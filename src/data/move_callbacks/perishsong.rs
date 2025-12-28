@@ -64,7 +64,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
                 (source_arg, pokemon_arg)
             };
 
-            battle.add("-miss", &[source_arg, pokemon_arg]);
+            battle.add("-miss", &[source_arg.into(), pokemon_arg]);
             // result = true;
             result = true;
         // } else if (this.runEvent('TryHit', pokemon, source, move) === null) {
@@ -109,7 +109,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
                         crate::battle::Arg::from(pokemon_pokemon)
                     };
 
-                    battle.add("-start", &[pokemon_arg, "perish3".into(), "[silent]".into()]);
+                    battle.add("-start", &[pokemon_arg.into(), "perish3".into(), "[silent]".into()]);
 
                     // result = true;
                     result = true;
@@ -155,7 +155,7 @@ pub mod condition {
             crate::battle::Arg::from(target_pokemon)
         };
 
-        battle.add("-start", &[target_arg, "perish0".into()]);
+        battle.add("-start", &[target_arg.into(), "perish0".into()]);
 
         // target.faint();
         battle.faint(target, None, None);
@@ -192,7 +192,7 @@ pub mod condition {
             crate::battle::Arg::from(pokemon_pokemon)
         };
 
-        battle.add("-start", &[pokemon_arg, format!("perish{}", duration).into()]);
+        battle.add("-start", &[pokemon_arg.into(), format!("perish{}", duration).into()]);
 
         EventResult::Continue
     }

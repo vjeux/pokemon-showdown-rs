@@ -91,7 +91,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             crate::battle::Arg::from(pokemon_pokemon)
         };
 
-        battle.add("-fail", &[pokemon_arg, "heal".into()]);
+        battle.add("-fail", &[pokemon_arg.into(), "heal".into()]);
 
         // return this.NOT_FAIL;
         return EventResult::NotFail;

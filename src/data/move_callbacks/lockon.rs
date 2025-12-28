@@ -86,7 +86,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         pokemon.get_slot()
 
     };
-    battle.add("-activate", &[source_arg, "move: Lock-On".into(), format!("[of] {}", target_arg).into()]);
+    battle.add("-activate", &[source_arg.into(), "move: Lock-On".into(), format!("[of] {}", target_arg).into()]);
 
     EventResult::Continue
 }

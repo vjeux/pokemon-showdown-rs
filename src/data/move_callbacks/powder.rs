@@ -29,7 +29,7 @@ pub mod condition {
             crate::battle::Arg::from(target_pokemon)
         };
 
-        battle.add("-singleturn", &[target_arg, "Powder".into()]);
+        battle.add("-singleturn", &[target_arg.into(), "Powder".into()]);
 
         EventResult::Continue
     }
@@ -64,7 +64,7 @@ pub mod condition {
                 crate::battle::Arg::from(pokemon_pokemon)
             };
 
-            battle.add("-activate", &[pokemon_arg, "move: Powder".into()]);
+            battle.add("-activate", &[pokemon_arg.into(), "move: Powder".into()]);
 
             // this.damage(this.clampIntRange(Math.round(pokemon.maxhp / 4), 1));
             let damage = {

@@ -48,7 +48,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         crate::battle::Arg::from(target_pokemon)
     };
 
-    battle.add("-activate", &[target_arg, "move: Quash".into()]);
+    battle.add("-activate", &[target_arg.into(), "move: Quash".into()]);
 
     EventResult::Continue
 }

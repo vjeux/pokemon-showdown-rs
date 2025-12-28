@@ -63,7 +63,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             crate::battle::Arg::from(source_pokemon)
         };
 
-        battle.add("-fail", &[source_arg, "heal".into()]);
+        battle.add("-fail", &[source_arg.into(), "heal".into()]);
         return EventResult::Stop;
     }
 

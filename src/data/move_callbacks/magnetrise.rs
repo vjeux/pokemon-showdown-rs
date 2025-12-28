@@ -62,7 +62,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(active_move) => active_move.id.clone(),
             None => ID::from(""),
         };
-        battle.add("cant", &[source_arg, "move: Gravity".into(), move_id.to_string().into()]);
+        battle.add("cant", &[source_arg.into(), "move: Gravity".into(), move_id.to_string().into()]);
         return EventResult::Stop;
     }
 
@@ -95,7 +95,7 @@ pub mod condition {
             pokemon.get_slot()
 
         };
-        battle.add("-start", &[target_arg, "Magnet Rise".into()]);
+        battle.add("-start", &[target_arg.into(), "Magnet Rise".into()]);
 
         EventResult::Continue
     }
@@ -134,7 +134,7 @@ pub mod condition {
             pokemon.get_slot()
 
         };
-        battle.add("-end", &[target_arg, "Magnet Rise".into()]);
+        battle.add("-end", &[target_arg.into(), "Magnet Rise".into()]);
 
         EventResult::Continue
     }

@@ -37,7 +37,7 @@ pub mod condition {
             pokemon.get_slot()
 
         };
-        battle.add("-singleturn", &[target_arg, "move: Magic Coat".into()]);
+        battle.add("-singleturn", &[target_arg.into(), "move: Magic Coat".into()]);
 
         // if (effect?.effectType === 'Move') {
         //     this.effectState.pranksterBoosted = effect.pranksterBoosted;

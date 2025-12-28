@@ -65,7 +65,7 @@ pub mod condition {
             pokemon.get_slot()
 
         };
-        battle.add("-singleturn", &[source_arg, "Mat Block".into()]);
+        battle.add("-singleturn", &[source_arg.into(), "Mat Block".into()]);
 
         EventResult::Continue
     }
@@ -160,7 +160,7 @@ pub mod condition {
             pokemon.get_slot()
 
         };
-        battle.add("-activate", &[target_arg, "move: Mat Block".into(), move_name.into()]);
+        battle.add("-activate", &[target_arg.into(), "move: Mat Block".into(), move_name.into()]);
 
         // const lockedmove = source.getVolatile('lockedmove');
         // if (lockedmove) {

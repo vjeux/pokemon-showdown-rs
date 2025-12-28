@@ -68,7 +68,7 @@ pub mod condition {
             crate::battle::Arg::from(pokemon_pokemon)
         };
 
-        battle.add("-start", &[pokemon_arg, "move: No Retreat".into()]);
+        battle.add("-start", &[pokemon_arg.into(), "move: No Retreat".into()]);
 
         EventResult::Continue
     }

@@ -47,7 +47,7 @@ pub mod condition {
             crate::battle::Arg::from(pokemon_pokemon)
         };
 
-        battle.add("-start", &[pokemon_arg, "Nightmare".into()]);
+        battle.add("-start", &[pokemon_arg.into(), "Nightmare".into()]);
 
         EventResult::Continue
     }

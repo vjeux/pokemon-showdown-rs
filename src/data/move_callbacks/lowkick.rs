@@ -113,7 +113,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             pokemon.get_slot()
 
         };
-        battle.add("-fail", &[pokemon_arg, "Dynamax".into()]);
+        battle.add("-fail", &[pokemon_arg.into(), "Dynamax".into()]);
 
         //     this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);

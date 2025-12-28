@@ -88,7 +88,7 @@ pub mod condition {
                     crate::battle::Arg::from(target_pokemon)
                 };
 
-                battle.add("-activate", &[target_arg, "move: Misty Terrain".into()]);
+                battle.add("-activate", &[target_arg.into(), "move: Misty Terrain".into()]);
             }
         }
 
@@ -142,7 +142,7 @@ pub mod condition {
                         crate::battle::Arg::from(target_pokemon)
                     };
 
-                    battle.add("-activate", &[target_arg, "move: Misty Terrain".into()]);
+                    battle.add("-activate", &[target_arg.into(), "move: Misty Terrain".into()]);
                 }
             }
 

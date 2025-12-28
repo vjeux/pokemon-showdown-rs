@@ -26,7 +26,7 @@ pub mod condition {
             if let Some(side_index) = effect_state.side {
                 let side_id = if side_index == 0 { "p1" } else { "p2" };
                 let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sidestart", &[side_arg, "Spikes".into()]);
+                battle.add("-sidestart", &[side_arg.into(), "Spikes".into()]);
             }
 
             // this.effectState.layers = 1;
@@ -60,7 +60,7 @@ pub mod condition {
             if let Some(side_index) = effect_state.side {
                 let side_id = if side_index == 0 { "p1" } else { "p2" };
                 let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sidestart", &[side_arg, "Spikes".into()]);
+                battle.add("-sidestart", &[side_arg.into(), "Spikes".into()]);
             }
 
             // this.effectState.layers++;
