@@ -31,8 +31,29 @@ pub mod condition {
     /// onStart(target) {
     ///     this.add('-start', target, 'Uproar');
     /// }
-    pub fn on_start(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // this.add('-start', target, 'Uproar');
+        let target_slot = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.get_slot()
+        };
+
+        battle.add(
+            "-start",
+            &[
+                crate::battle::Arg::from(target_slot),
+                crate::battle::Arg::from("Uproar"),
+            ],
+        );
+
         EventResult::Continue
     }
 
@@ -55,8 +76,29 @@ pub mod condition {
     /// onEnd(target) {
     ///     this.add('-end', target, 'Uproar');
     /// }
-    pub fn on_end(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // this.add('-end', target, 'Uproar');
+        let target_slot = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.get_slot()
+        };
+
+        battle.add(
+            "-end",
+            &[
+                crate::battle::Arg::from(target_slot),
+                crate::battle::Arg::from("Uproar"),
+            ],
+        );
+
         EventResult::Continue
     }
 
