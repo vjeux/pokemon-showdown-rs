@@ -20,7 +20,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     // if (!this.canSwitch(source.side)) {
     let can_switch = battle.can_switch(source.0);
 
-    if !can_switch {
+    if can_switch == 0 {
         //     this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);
 
@@ -114,7 +114,7 @@ pub mod condition {
                 };
                 target_pokemon.maxhp
             };
-            battle.heal(maxhp, target, None, None);
+            battle.heal(maxhp, Some(target), None, None);
 
             //     target.clearStatus();
             {

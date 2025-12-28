@@ -62,9 +62,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     battle.add("-prepare", &[attacker_arg.0.clone(), attacker_arg.1.clone().into()]);
 
     // this.boost({ spa: 1 }, attacker, attacker, move);
-    let mut boosts = std::collections::HashMap::new();
-    boosts.insert("spa".to_string(), 1);
-    battle.boost(boosts, attacker, Some(attacker), Some(&move_id));
+    battle.boost(&[("spa", 1)], attacker, Some(attacker), Some(&move_id.to_string()));
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;

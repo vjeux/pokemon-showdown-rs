@@ -78,7 +78,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        if source == effect_target && target == effect_source {
+        if Some(source) == effect_target && Some(target) == effect_source {
             return EventResult::Number(0);
         }
 
@@ -105,7 +105,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        if source == effect_target && target == effect_source {
+        if Some(source) == effect_target && Some(target) == effect_source {
             return EventResult::Boolean(true);
         }
 
