@@ -374,7 +374,7 @@ Moves with callbacks: 373
 - [ ] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
 - [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
 - [ ] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onModifyMove, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
-- [ ] worryseed - Worry Seed (Status, Grass) - 3 callbacks: onTryImmunity, onTryHit, onHit
+- [x] worryseed - Worry Seed (Status, Grass) - 3 callbacks: onTryImmunity, onTryHit, onHit
 - [ ] wringout - Wring Out (Special, Normal) - 1 callback: basePowerCallback
 - [x] yawn - Yawn (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onEnd
 

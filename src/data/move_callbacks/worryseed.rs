@@ -14,8 +14,29 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_try_immunity(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    use crate::dex_data::ID;
+
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.ability === 'truant' || target.ability === 'insomnia') {
+    //     return false;
+    // }
+    let ability_id = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.ability.clone()
+    };
+
+    if ability_id == ID::from("truant") || ability_id == ID::from("insomnia") {
+        return EventResult::NotFail;
+    }
+
     EventResult::Continue
 }
 
@@ -25,11 +46,34 @@ pub fn on_try_immunity(_battle: &mut Battle, _target_pos: Option<(usize, usize)>
 ///     }
 /// }
 pub fn on_try_hit(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target = target_pos;
+
+    // if (target.getAbility().flags['cantsuppress']) {
+    //     return false;
+    // }
+    let cant_suppress = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let target_ability = target_pokemon.get_ability();
+        let ability_data = battle.dex.get_ability_by_id(&target_ability);
+
+        match ability_data {
+            Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
+            None => false,
+        }
+    };
+
+    if cant_suppress {
+        return EventResult::NotFail;
+    }
+
     EventResult::Continue
 }
 
@@ -39,10 +83,50 @@ pub fn on_try_hit(
 ///     if (target.status === 'slp') target.cureStatus();
 /// }
 pub fn on_hit(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // const oldAbility = target.setAbility('insomnia');
+    // if (!oldAbility) return oldAbility as false | null;
+    let old_ability = {
+        let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        target_mut.set_ability(ID::from("insomnia"))
+    };
+
+    if old_ability.is_empty() {
+        return EventResult::Stop; // return null/false
+    }
+
+    // if (target.status === 'slp') target.cureStatus();
+    let has_sleep = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        target_pokemon.status == ID::from("slp")
+    };
+
+    if has_sleep {
+        let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        target_mut.cure_status();
+    }
+
     EventResult::Continue
 }
