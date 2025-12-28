@@ -387,10 +387,10 @@ Moves with callbacks: 373
 - [x] suckerpunch - Sucker Punch (Physical, Dark) - 1 callback: onTry
 - [x] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail
 - [x] superfang - Super Fang (Physical, Normal) - 1 callback: damageCallback
-- [ ] swallow - Swallow (Status, Normal) - 2 callbacks: onTry, onHit
+- [x] swallow - Swallow (Status, Normal) - 2 callbacks: onTry, onHit
 - [ ] switcheroo - Switcheroo (Status, Dark) - 2 callbacks: onTryImmunity, onHit
-- [ ] synchronoise - Synchronoise (Special, Psychic) - 1 callback: onTryImmunity
-- [ ] synthesis - Synthesis (Status, Grass) - 1 callback: onHit
+- [x] synchronoise - Synchronoise (Special, Psychic) - 1 callback: onTryImmunity
+- [x] synthesis - Synthesis (Status, Grass) - 1 callback: onHit
 - [ ] syrupbomb - Syrup Bomb (Special, Grass) - 4 callbacks: condition::onStart, condition::onUpdate, condition::onResidual, condition::onEnd
 - [ ] tailwind - Tailwind (Status, Flying) - 4 callbacks: condition::durationCallback, condition::onSideStart, condition::onModifySpe, condition::onSideEnd
 - [ ] takeheart - Take Heart (Status, Psychic) - 1 callback: onHit

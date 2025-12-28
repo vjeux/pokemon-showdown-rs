@@ -12,12 +12,37 @@ use crate::event::EventResult;
 ///     return !!source.volatiles['stockpile'];
 /// }
 pub fn on_try(
-    _battle: &mut Battle,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    let source = source_pos;
+
+    // if (move.sourceEffect === 'snatch') return;
+    // Check if this move was called by Snatch
+    let source_effect = battle.current_effect_state.as_ref().and_then(|es| es.source_effect.clone());
+    if let Some(effect) = source_effect {
+        if effect.as_str() == "snatch" {
+            return EventResult::Continue;
+        }
+    }
+
+    // return !!source.volatiles['stockpile'];
+    let has_stockpile = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.has_volatile(&ID::from("stockpile"))
+    };
+
+    if has_stockpile {
+        EventResult::Continue
+    } else {
+        EventResult::NotFail
+    }
 }
 
 /// onHit(pokemon) {
@@ -29,10 +54,73 @@ pub fn on_try(
 ///     return success || this.NOT_FAIL;
 /// }
 pub fn on_hit(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+
+    // const layers = pokemon.volatiles['stockpile']?.layers || 1;
+    let layers = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        if let Some(stockpile_volatile) = pokemon_pokemon.volatiles.get(&ID::from("stockpile")) {
+            stockpile_volatile
+                .data
+                .get("layers")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(1) as i32
+        } else {
+            1
+        }
+    };
+
+    // const healAmount = [0.25, 0.5, 1];
+    // const success = !!this.heal(this.modify(pokemon.maxhp, healAmount[layers - 1]));
+    let heal_amounts = [(1, 4), (1, 2), (1, 1)]; // [0.25, 0.5, 1.0] as fractions
+    let (numerator, denominator) = heal_amounts[(layers - 1).max(0).min(2) as usize];
+
+    let heal_amount = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        battle.modify(pokemon_pokemon.maxhp, numerator, denominator)
+    };
+
+    let success = battle.heal(heal_amount, Some(pokemon), None, None);
+
+    // if (!success) this.add('-fail', pokemon, 'heal');
+    if success.is_none() {
+        let pokemon_arg = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.get_slot()
+        };
+
+        battle.add("-fail", &[pokemon_arg.into(), "heal".into()]);
+    }
+
+    // pokemon.removeVolatile('stockpile');
+    {
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.remove_volatile(&ID::from("stockpile"));
+    }
+
+    // return success || this.NOT_FAIL;
+    if success.is_some() {
+        EventResult::Continue
+    } else {
+        EventResult::NotFail
+    }
 }
