@@ -197,7 +197,7 @@ Moves with callbacks: 373
 - [x] haze - Haze (Status, Ice) - 1 callback: onHitField
 - [x] healbell - Heal Bell (Status, Normal) - 1 callback: onHit
 - [ ] healblock - Heal Block (Status, Psychic) - 8 callbacks: condition::durationCallback, condition::onStart, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onEnd, condition::onTryHeal, condition::onRestart
-- [ ] healingwish - Healing Wish (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
+- [x] healingwish - Healing Wish (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
 - [x] healpulse - Heal Pulse (Status, Psychic) - 1 callback: onHit
 - [x] heartswap - Heart Swap (Status, Psychic) - 1 callback: onHit
 - [x] heatcrash - Heat Crash (Physical, Fire) - 2 callbacks: basePowerCallback, onTryHit
@@ -295,7 +295,7 @@ Moves with callbacks: 373
 - [x] protect - Protect (Status, Normal) - 4 callbacks: onPrepareHit, onHit, condition::onStart, condition::onTryHit
 - [x] psyblade - Psyblade (Physical, Psychic) - 1 callback: onBasePower
 - [x] psychicfangs - Psychic Fangs (Physical, Psychic) - 1 callback: onTryHit
-- [ ] psychicterrain - Psychic Terrain (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onTryHit, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
+- [x] psychicterrain - Psychic Terrain (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onTryHit, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd
 - [x] psychoshift - Psycho Shift (Status, Psychic) - 1 callback: onTryHit
 - [x] psychup - Psych Up (Status, Normal) - 1 callback: onHit
 - [x] psywave - Psywave (Special, Psychic) - 1 callback: damageCallback
@@ -303,7 +303,7 @@ Moves with callbacks: 373
 - [x] purify - Purify (Status, Poison) - 1 callback: onHit
 - [ ] pursuit - Pursuit (Physical, Dark) - 5 callbacks: basePowerCallback, beforeTurnCallback, onModifyMove, onTryHit, condition::onBeforeSwitchOut
 - [x] quash - Quash (Status, Dark) - 1 callback: onHit
-- [ ] quickguard - Quick Guard (Status, Fighting) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
+- [x] quickguard - Quick Guard (Status, Fighting) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
 - [ ] rage - Rage (Physical, Normal) - 3 callbacks: condition::onStart, condition::onHit, condition::onBeforeMove
 - [x] ragefist - Rage Fist (Physical, Ghost) - 1 callback: basePowerCallback
 - [ ] ragepowder - Rage Powder (Status, Bug) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
