@@ -57,8 +57,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     let heal_amount = battle.modify(maxhp, factor);
-    let heal_result = battle.heal(heal_amount, pokemon, None, None);
-    let success = heal_result != 0;
+    let heal_result = battle.heal(heal_amount, Some(pokemon), None, None);
+    let success = heal_result != Some(0) && heal_result.is_some();
 
     // if (!success) {
     //     this.add('-fail', pokemon, 'heal');

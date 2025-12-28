@@ -37,7 +37,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         };
 
         let anim_string = format!("[anim] Shell Side Arm {}", category);
-        battle.attr_last_move(&anim_string);
+        battle.attr_last_move(&[&anim_string]);
     }
 
     EventResult::Continue
@@ -119,7 +119,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             None => return EventResult::Continue,
         };
         active_move.category = "Physical".to_string();
-        active_move.flags.contact = Some(1);
+        active_move.flags.contact = true;
     }
 
     EventResult::Continue

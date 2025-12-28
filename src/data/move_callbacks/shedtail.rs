@@ -39,7 +39,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         source_pokemon.volatiles.contains_key(&ID::from("commanded"))
     };
 
-    if !can_switch || has_commanded {
+    if can_switch == 0 || has_commanded {
         let source_arg = {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
@@ -129,7 +129,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         (target_pokemon.maxhp + 1) / 2  // Ceiling division
     };
 
-    battle.direct_damage(damage, target, None, None);
+    battle.direct_damage(damage, Some(target), None, None);
 
     EventResult::Continue
 }

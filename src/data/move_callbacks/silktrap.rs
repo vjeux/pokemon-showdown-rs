@@ -21,8 +21,8 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         return EventResult::Boolean(false);
     }
 
-    let stall_result = battle.run_event("StallMove", pokemon, None, None, None);
-    EventResult::Boolean(stall_result)
+    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, None);
+    EventResult::Boolean(stall_result != Some(0) && stall_result.is_some())
 }
 
 /// onHit(pokemon) {
@@ -157,9 +157,9 @@ pub mod condition {
             active_move.smart_target
         };
 
-        if smart_target {
+        if smart_target.unwrap_or(false) {
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = false;
+                active_move.smart_target = Some(false);
             }
         } else {
             let target_arg = {
@@ -214,9 +214,7 @@ pub mod condition {
         // }
         let makes_contact = battle.check_move_makes_contact(source, target);
         if makes_contact {
-            let mut boosts = std::collections::HashMap::new();
-            boosts.insert("spe".to_string(), -1);
-            battle.boost(&boosts, source, Some(target), Some(&ID::from("silktrap")));
+            battle.boost(&[("spe", -1)], source, Some(target), Some(&ID::from("silktrap")));
         }
 
         // return this.NOT_FAIL;
@@ -255,9 +253,7 @@ pub mod condition {
             let makes_contact = battle.check_move_makes_contact(source, target);
             if makes_contact {
                 // this.boost({ spe: -1 }, source, target, this.dex.getActiveMove("Silk Trap"));
-                let mut boosts = std::collections::HashMap::new();
-                boosts.insert("spe".to_string(), -1);
-                battle.boost(&boosts, source, Some(target), Some(&ID::from("silktrap")));
+                battle.boost(&[("spe", -1)], source, Some(target), Some(&ID::from("silktrap")));
             }
         }
 
