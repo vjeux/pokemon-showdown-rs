@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex_data::ID;
 
 /// onTry(source, target) {
 ///     return !!target.item;
