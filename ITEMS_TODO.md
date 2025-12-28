@@ -39,8 +39,8 @@ Items with callbacks: 326
 - [ ] beedrillite - Beedrillite (Gen 6) - 1 callback: onTakeItem
 - [ ] berry - Berry (Gen 2) - 3 callbacks: onResidual, onTryEatItem, onEat
 - [ ] berryjuice - Berry Juice (Gen 2) - 1 callback: onUpdate
-- [ ] berserkgene - Berserk Gene (Gen 2) - 1 callback: onUpdate
-- [ ] bigroot - Big Root (Gen 4) - 1 callback: onTryHeal
+- [x] berserkgene - Berserk Gene (Gen 2) - 1 callback: onUpdate
+- [x] bigroot - Big Root (Gen 4) - 1 callback: onTryHeal
 - [ ] bitterberry - Bitter Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [x] blackbelt - Black Belt (Gen 2) - 1 callback: onBasePower
 - [x] blackglasses - Black Glasses (Gen 2) - 1 callback: onBasePower
@@ -120,7 +120,7 @@ Items with callbacks: 326
 - [x] firegem - Fire Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] firememory - Fire Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] fistplate - Fist Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
-- [ ] flameorb - Flame Orb (Gen 4) - 1 callback: onResidual
+- [x] flameorb - Flame Orb (Gen 4) - 1 callback: onResidual
 - [ ] flameplate - Flame Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] floatstone - Float Stone (Gen 5) - 1 callback: onModifyWeight - NEEDS onModifyWeight(weighthg) parameter
 - [ ] floettite - Floettite (Gen 9) - 1 callback: onTakeItem
@@ -175,12 +175,12 @@ Items with callbacks: 326
 - [ ] lansatberry - Lansat Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [ ] latiasite - Latiasite (Gen 6) - 1 callback: onTakeItem
 - [ ] latiosite - Latiosite (Gen 6) - 1 callback: onTakeItem
-- [ ] laxincense - Lax Incense (Gen 3) - 1 callback: onModifyAccuracy
+- [x] laxincense - Lax Incense (Gen 3) - 1 callback: onModifyAccuracy
 - [ ] leek - Leek (Gen 8) - 1 callback: onModifyCritRatio
-- [ ] leftovers - Leftovers (Gen 2) - 1 callback: onResidual
+- [x] leftovers - Leftovers (Gen 2) - 1 callback: onResidual
 - [ ] leppaberry - Leppa Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [ ] liechiberry - Liechi Berry (Gen 3) - 2 callbacks: onUpdate, onEat
-- [ ] lifeorb - Life Orb (Gen 4) - 2 callbacks: onModifyDamage, onAfterMoveSecondarySelf
+- [x] lifeorb - Life Orb (Gen 4) - 2 callbacks: onModifyDamage, onAfterMoveSecondarySelf
 - [ ] lightball - Light Ball (Gen 2) - 2 callbacks: onModifyAtk, onModifySpA
 - [ ] loadeddice - Loaded Dice (Gen 9) - 1 callback: onModifyMove
 - [ ] lopunnite - Lopunnite (Gen 6) - 1 callback: onTakeItem
@@ -188,7 +188,7 @@ Items with callbacks: 326
 - [ ] lucarionitez - Lucarionite Z (Gen 9) - 1 callback: onTakeItem
 - [ ] luckypunch - Lucky Punch (Gen 2) - 1 callback: onModifyCritRatio
 - [ ] lumberry - Lum Berry (Gen 3) - 3 callbacks: onAfterSetStatus, onUpdate, onEat
-- [ ] luminousmoss - Luminous Moss (Gen 6) - 1 callback: onDamagingHit
+- [x] luminousmoss - Luminous Moss (Gen 6) - 1 callback: onDamagingHit
 - [ ] lustrousglobe - Lustrous Globe (Gen 8) - 2 callbacks: onBasePower, onTakeItem
 - [ ] lustrousorb - Lustrous Orb (Gen 4) - 1 callback: onBasePower
 - [ ] machobrace - Macho Brace (Gen 3) - 1 callback: onModifySpe
@@ -203,12 +203,12 @@ Items with callbacks: 326
 - [ ] meadowplate - Meadow Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] medichamite - Medichamite (Gen 6) - 1 callback: onTakeItem
 - [ ] meganiumite - Meganiumite (Gen 9) - 1 callback: onTakeItem
-- [ ] mentalherb - Mental Herb (Gen 3) - 1 callback: onUpdate
+- [x] mentalherb - Mental Herb (Gen 3) - 1 callback: onUpdate
 - [ ] meowsticite - Meowsticite (Gen 9) - 1 callback: onTakeItem
 - [ ] metagrossite - Metagrossite (Gen 6) - 1 callback: onTakeItem
 - [ ] metalcoat - Metal Coat (Gen 2) - 1 callback: onBasePower
 - [ ] metalpowder - Metal Powder (Gen 2) - 1 callback: onModifyDef
-- [ ] metronome - Metronome (Gen 4) - 1 callback: onStart
+- [x] metronome - Metronome (Gen 4) - 1 callback: onStart
 - [ ] mewtwonitex - Mewtwonite X (Gen 6) - 1 callback: onTakeItem
 - [ ] mewtwonitey - Mewtwonite Y (Gen 6) - 1 callback: onTakeItem
 - [ ] micleberry - Micle Berry (Gen 4) - 2 callbacks: onResidual, onEat
@@ -217,7 +217,7 @@ Items with callbacks: 326
 - [ ] miracleberry - Miracle Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [ ] miracleseed - Miracle Seed (Gen 2) - 1 callback: onBasePower
 - [ ] mirrorherb - Mirror Herb (Gen 9) - 8 callbacks: onFoeAfterBoost, onAnySwitchIn, onAnyAfterMega, onAnyAfterTerastallization, onAnyAfterMove, onResidual, onUse, onEnd
-- [ ] mistyseed - Misty Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
+- [x] mistyseed - Misty Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
 - [ ] muscleband - Muscle Band (Gen 4) - 1 callback: onBasePower
 - [ ] mysteryberry - Mystery Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [ ] mysticwater - Mystic Water (Gen 2) - 1 callback: onBasePower
@@ -316,7 +316,7 @@ Items with callbacks: 326
 - [ ] tatsugirinite - Tatsugirinite (Gen 9) - 1 callback: onTakeItem
 - [ ] thickclub - Thick Club (Gen 2) - 1 callback: onModifyAtk
 - [ ] throatspray - Throat Spray (Gen 8) - 1 callback: onAfterMoveSecondarySelf
-- [ ] toxicorb - Toxic Orb (Gen 4) - 1 callback: onResidual
+- [x] toxicorb - Toxic Orb (Gen 4) - 1 callback: onResidual
 - [ ] toxicplate - Toxic Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] twistedspoon - Twisted Spoon (Gen 2) - 1 callback: onBasePower
 - [ ] tyranitarite - Tyranitarite (Gen 6) - 1 callback: onTakeItem
@@ -338,7 +338,7 @@ Items with callbacks: 326
 - [ ] zapplate - Zap Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] zeraorite - Zeraorite (Gen 9) - 1 callback: onTakeItem
 - [ ] zoomlens - Zoom Lens (Gen 4) - 1 callback: onSourceModifyAccuracy
-- [ ] zygardite - Zygardite (Gen 9) - 1 callback: onTakeItem
+- [x] zygardite - Zygardite (Gen 9) - 1 callback: onTakeItem
 
 ## Statistics
 
@@ -461,7 +461,7 @@ By callback type:
 - [ ] tangaberry - Tanga Berry (Gen 4) - Needs type effectiveness infrastructure
 - [ ] tatsugirinite - Tatsugirinite (Gen 9) - Needs item data
 - [ ] throatspray - Throat Spray (Gen 8) - Needs move flags and useItem
-- [ ] toxicorb - Toxic Orb (Gen 4) - Needs trySetStatus
+- [x] toxicorb - Toxic Orb (Gen 4) - Needs trySetStatus
 - [ ] tyranitarite - Tyranitarite (Gen 6) - Needs item data
 - [ ] utilityumbrella - Utility Umbrella (Gen 8) - Needs weather infrastructure
 - [ ] venusaurite - Venusaurite (Gen 6) - Needs item data
