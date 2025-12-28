@@ -33,14 +33,14 @@ pub mod condition {
 
             if has_persistent {
                 // this.add('-activate', source, 'ability: Persistent', '[move] Gravity');
-                let source_arg = {
+                let source_ident = {
                     let pokemon = match battle.pokemon_at(source.0, source.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    crate::battle::Arg::from(pokemon)
+                    pokemon.get_slot()
                 };
-                battle.add("-activate", &[source_arg, "ability: Persistent".into(), "[move] Gravity".into()]);
+                battle.add("-activate", &[source_ident.as_str().into(), "ability: Persistent".into(), "[move] Gravity".into()]);
 
                 // return 7;
                 return EventResult::Number(7);
@@ -176,14 +176,14 @@ pub mod condition {
                 };
 
                 if let Some(source) = skydrop_source {
-                    let source_arg = {
+                    let source_ident = {
                         let pokemon = match battle.pokemon_at(source.0, source.1) {
                             Some(p) => p,
                             None => continue,
                         };
-                        crate::battle::Arg::from(pokemon)
+                        pokemon.get_slot()
                     };
-                    battle.add("-end", &[source_arg, "Sky Drop".into(), "[interrupt]".into()]);
+                    battle.add("-end", &[source_ident.as_str().into(), "Sky Drop".into(), "[interrupt]".into()]);
                 }
 
                 // pokemon.removeVolatile('skydrop');
@@ -240,14 +240,14 @@ pub mod condition {
 
             // if (applies) this.add('-activate', pokemon, 'move: Gravity');
             if applies {
-                let pokemon_arg = {
+                let pokemon_ident = {
                     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                         Some(p) => p,
                         None => continue,
                     };
-                    crate::battle::Arg::from(pokemon)
+                    pokemon.get_slot()
                 };
-                battle.add("-activate", &[pokemon_arg, "move: Gravity".into()]);
+                battle.add("-activate", &[pokemon_ident.as_str().into(), "move: Gravity".into()]);
             }
         }
 
@@ -332,15 +332,14 @@ pub mod condition {
 
         if has_gravity_flag && !is_z_move {
             // this.add('cant', pokemon, 'move: Gravity', move);
-            let pokemon_arg = {
+            let pokemon_ident = {
                 let poke = match battle.pokemon_at(pokemon.0, pokemon.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(poke)
+                poke.get_slot()
             };
-            let move_arg = crate::battle::Arg::from(move_id);
-            battle.add("cant", &[pokemon_arg, "move: Gravity".into(), move_arg]);
+            battle.add("cant", &[pokemon_ident.as_str().into(), "move: Gravity".into(), move_id.into()]);
 
             // return false;
             return EventResult::Boolean(false);
@@ -375,15 +374,14 @@ pub mod condition {
 
         if has_gravity_flag && !is_z_move {
             // this.add('cant', pokemon, 'move: Gravity', move);
-            let pokemon_arg = {
+            let pokemon_ident = {
                 let poke = match battle.pokemon_at(pokemon.0, pokemon.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(poke)
+                poke.get_slot()
             };
-            let move_arg = crate::battle::Arg::from(move_id.as_str());
-            battle.add("cant", &[pokemon_arg, "move: Gravity".into(), move_arg]);
+            battle.add("cant", &[pokemon_ident.as_str().into(), "move: Gravity".into(), move_id.as_str().into()]);
 
             // return false;
             return EventResult::Boolean(false);
