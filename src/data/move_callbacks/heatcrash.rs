@@ -75,10 +75,38 @@ pub fn base_power_callback(
 ///     }
 /// }
 pub fn on_try_hit(
-    _battle: &mut Battle,
-    _source_pos: (usize, usize),
-    _target_pos: (usize, usize),
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // Get the target
+    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.volatiles['dynamax'])
+    if target.has_volatile(&ID::from("dynamax")) {
+        // Get source ident for the add call
+        let source_ident = {
+            let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source.get_slot()
+        };
+
+        // this.add('-fail', pokemon, 'Dynamax');
+        battle.add("-fail", &[source_ident.as_str().into(), "Dynamax".into()]);
+
+        // this.attrLastMove('[still]');
+        battle.attr_last_move(&["[still]"]);
+
+        // return null;
+        return EventResult::Stop;
+    }
+
     EventResult::Continue
 }
