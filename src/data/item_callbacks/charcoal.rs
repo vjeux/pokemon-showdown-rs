@@ -13,22 +13,18 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    // Get the active move
-    let move_type = match &battle.active_move {
-        Some(active_move) => {
-            // Get the move data to check its type
-            match battle.dex.get_move_by_id(&active_move.id) {
-                Some(move_data) => &move_data.move_type,
-                None => return EventResult::Continue,
-            }
+    // if (move && move.type === 'Fire')
+    let is_fire = {
+        if let Some(ref active_move) = battle.active_move {
+            active_move.move_type == "Fire"
+        } else {
+            false
         }
-        None => return EventResult::Continue,
     };
 
-    // if (move && move.type === 'Fire')
-    if move_type == "Fire" {
+    if is_fire {
         // return this.chainModify([4915, 4096]);
-        return EventResult::Number(battle.chain_modify_fraction(4915, 4096));
+        battle.chain_modify_fraction(4915, 4096);
     }
 
     EventResult::Continue
