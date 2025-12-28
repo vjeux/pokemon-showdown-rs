@@ -38,11 +38,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         battle.queue.prioritize_action(target.0, target.1);
 
         // this.add('-activate', target, 'move: After You');
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let target_arg = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(target_pokemon)
         };
-        battle.add("-activate", &[target_pokemon.into(), "move: After You".into()]);
+        battle.add("-activate", &[target_arg, "move: After You".into()]);
 
         EventResult::Continue
     } else {
