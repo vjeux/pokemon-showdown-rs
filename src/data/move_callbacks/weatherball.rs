@@ -27,11 +27,50 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_type(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _move_id: &str,
-    _pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = pokemon_pos;
+
+    // switch (pokemon.effectiveWeather()) {
+    let effective_weather = {
+        let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_ref.effective_weather(battle.field.weather.as_str())
+    };
+
+    if let Some(ref mut active_move) = battle.active_move {
+        match effective_weather.as_str() {
+            // case 'sunnyday':
+            // case 'desolateland':
+            //     move.type = 'Fire';
+            "sunnyday" | "desolateland" => {
+                active_move.move_type = "Fire".to_string();
+            }
+            // case 'raindance':
+            // case 'primordialsea':
+            //     move.type = 'Water';
+            "raindance" | "primordialsea" => {
+                active_move.move_type = "Water".to_string();
+            }
+            // case 'sandstorm':
+            //     move.type = 'Rock';
+            "sandstorm" => {
+                active_move.move_type = "Rock".to_string();
+            }
+            // case 'hail':
+            // case 'snowscape':
+            //     move.type = 'Ice';
+            "hail" | "snowscape" => {
+                active_move.move_type = "Ice".to_string();
+            }
+            _ => {}
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -56,10 +95,51 @@ pub fn on_modify_type(
 ///     this.debug(`BP: ${move.basePower}`);
 /// }
 pub fn on_modify_move(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = pokemon_pos;
+
+    // switch (pokemon.effectiveWeather()) {
+    let effective_weather = {
+        let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_ref.effective_weather(battle.field.weather.as_str())
+    };
+
+    let should_double = match effective_weather.as_str() {
+        "sunnyday" | "desolateland" | "raindance" | "primordialsea" | "sandstorm" | "hail"
+        | "snowscape" => true,
+        _ => false,
+    };
+
+    if should_double {
+        if let Some(ref mut active_move) = battle.active_move {
+            // case 'sunnyday':
+            // case 'desolateland':
+            //     move.basePower *= 2;
+            // case 'raindance':
+            // case 'primordialsea':
+            //     move.basePower *= 2;
+            // case 'sandstorm':
+            //     move.basePower *= 2;
+            // case 'hail':
+            // case 'snowscape':
+            //     move.basePower *= 2;
+            active_move.base_power *= 2;
+        }
+    }
+
+    // this.debug(`BP: ${move.basePower}`);
+    let base_power = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.base_power)
+        .unwrap_or(0);
+    battle.debug(&format!("BP: {}", base_power));
+
     EventResult::Continue
 }

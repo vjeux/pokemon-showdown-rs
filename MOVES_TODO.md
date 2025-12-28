@@ -369,7 +369,7 @@ Moves with callbacks: 373
 - [ ] watershuriken - Water Shuriken (Special, Water) - 1 callback: basePowerCallback
 - [ ] watersport - Water Sport (Status, Water) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
 - [ ] waterspout - Water Spout (Special, Water) - 1 callback: basePowerCallback
-- [ ] weatherball - Weather Ball (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
+- [x] weatherball - Weather Ball (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [ ] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
 - [ ] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
 - [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
