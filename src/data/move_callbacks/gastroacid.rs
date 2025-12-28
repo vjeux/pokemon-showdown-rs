@@ -93,14 +93,14 @@ pub mod condition {
         }
 
         // this.add('-endability', pokemon);
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
-        battle.add("-endability", &[pokemon_arg]);
+        battle.add("-endability", &[pokemon_ident.as_str().into()]);
 
         // this.singleEvent('End', pokemon.getAbility(), pokemon.abilityState, pokemon, pokemon, 'gastroacid');
         let ability_id = {

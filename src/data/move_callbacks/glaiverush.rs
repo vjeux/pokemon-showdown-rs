@@ -18,14 +18,14 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.add('-singlemove', pokemon, 'Glaive Rush', '[silent]');
-        let pokemon_arg = {
+        let pokemon_ident = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(pokemon_pokemon)
+            pokemon_pokemon.get_slot()
         };
-        battle.add("-singlemove", &[pokemon_arg, "Glaive Rush".into(), "[silent]".into()]);
+        battle.add("-singlemove", &[pokemon_ident.as_str().into(), "Glaive Rush".into(), "[silent]".into()]);
 
         EventResult::Continue
     }

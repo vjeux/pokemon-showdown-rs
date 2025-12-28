@@ -32,14 +32,14 @@ pub mod condition {
         if should_show_message {
             // this.add('-start', target, 'move: G-Max Chi Strike');
             if let Some(target) = target_pos {
-                let target_arg = {
+                let target_ident = {
                     let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    crate::battle::Arg::from(target_pokemon)
+                    target_pokemon.get_slot()
                 };
-                battle.add("-start", &[target_arg, "move: G-Max Chi Strike".into()]);
+                battle.add("-start", &[target_ident.as_str().into(), "move: G-Max Chi Strike".into()]);
             }
         }
 
@@ -79,14 +79,14 @@ pub mod condition {
         if should_show_message {
             // this.add('-start', target, 'move: G-Max Chi Strike');
             if let Some(target) = target_pos {
-                let target_arg = {
+                let target_ident = {
                     let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    crate::battle::Arg::from(target_pokemon)
+                    target_pokemon.get_slot()
                 };
-                battle.add("-start", &[target_arg, "move: G-Max Chi Strike".into()]);
+                battle.add("-start", &[target_ident.as_str().into(), "move: G-Max Chi Strike".into()]);
             }
         }
 
