@@ -38,7 +38,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             };
 
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
 

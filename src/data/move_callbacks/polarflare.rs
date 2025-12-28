@@ -48,7 +48,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
     // if (move.willChangeForme) {
     let will_change_forme = {
         let active_move = match &battle.active_move {
-            Some(m) => m,
+            Some(active_move) => &active_move.id,
             None => return EventResult::Continue,
         };
         active_move.will_change_forme

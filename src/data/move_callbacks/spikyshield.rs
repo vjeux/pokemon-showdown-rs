@@ -130,7 +130,7 @@ pub mod condition {
         // if (!move.flags['protect']) {
         let (has_protect, move_id, is_z, is_max, smart_target) = {
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
             (
@@ -243,7 +243,7 @@ pub mod condition {
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         let is_z_or_max_powered = {
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
             active_move.is_z_or_max_powered

@@ -102,7 +102,7 @@ pub mod condition {
 
             if is_z_or_max {
                 let move_id = match &battle.active_move {
-                    Some(id) => id.clone(),
+                    Some(active_move) => active_move.id.clone(),
                     None => return EventResult::Continue,
                 };
 

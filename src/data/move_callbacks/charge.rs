@@ -108,7 +108,7 @@ pub mod condition {
     pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
         // Get the active move
         let move_id = match &battle.active_move {
-            Some(id) => id.clone(),
+            Some(active_move) => active_move.id.clone(),
             None => return EventResult::Continue,
         };
 
@@ -163,7 +163,7 @@ pub mod condition {
     pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
         // Get the active move
         let move_id = match &battle.active_move {
-            Some(id) => id.clone(),
+            Some(active_move) => active_move.id.clone(),
             None => return EventResult::Continue,
         };
 

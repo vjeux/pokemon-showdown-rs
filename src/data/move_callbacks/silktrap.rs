@@ -125,7 +125,7 @@ pub mod condition {
         // if (!move.flags['protect'] || move.category === 'Status') {
         let (has_protect_flag, is_status, is_z, is_max) = {
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
             let has_protect = active_move.flags.protect.unwrap_or(0) != 0;
@@ -151,7 +151,7 @@ pub mod condition {
         // }
         let smart_target = {
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
             active_move.smart_target
@@ -245,7 +245,7 @@ pub mod condition {
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         let is_z_or_max_powered = {
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
             active_move.is_z_or_max_powered

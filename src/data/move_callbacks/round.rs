@@ -23,7 +23,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // }
     // return move.basePower;
     let active_move = match &battle.active_move {
-        Some(m) => m,
+        Some(active_move) => &active_move.id,
         None => return EventResult::Continue,
     };
 
@@ -57,7 +57,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     let queue_list = battle.queue.list.clone();
     let active_move_id = {
         let active_move = match &battle.active_move {
-            Some(m) => m,
+            Some(active_move) => &active_move.id,
             None => return EventResult::Continue,
         };
         active_move.clone()

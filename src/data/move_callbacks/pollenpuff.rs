@@ -76,7 +76,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             let source_arg = crate::battle::Arg::from(source_pokemon);
 
             let move_id = match &battle.active_move {
-                Some(m) => m.clone(),
+                Some(active_move) => active_move.id.clone(),
                 None => return EventResult::Continue,
             };
 

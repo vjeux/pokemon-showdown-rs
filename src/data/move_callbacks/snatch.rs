@@ -87,7 +87,7 @@ pub mod condition {
         // }
         let (is_z, is_max, has_snatch_flag, source_effect) = {
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
             (

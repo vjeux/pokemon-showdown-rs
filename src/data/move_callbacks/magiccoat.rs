@@ -97,7 +97,7 @@ pub mod condition {
         // newMove.pranksterBoosted = this.effectState.pranksterBoosted;
         let (move_id, prankster_boosted) = {
             let move_id = match &battle.active_move {
-                Some(m) => m.clone(),
+                Some(active_move) => active_move.id.clone(),
                 None => return EventResult::Continue,
             };
             let prankster_boosted = match &battle.current_effect_state {

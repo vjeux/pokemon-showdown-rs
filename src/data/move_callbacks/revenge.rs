@@ -52,7 +52,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         // return move.basePower * 2;
         let base_power = {
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
             active_move.base_power
@@ -63,7 +63,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // return move.basePower;
     let base_power = {
         let active_move = match &battle.active_move {
-            Some(m) => m,
+            Some(active_move) => &active_move.id,
             None => return EventResult::Continue,
         };
         active_move.base_power

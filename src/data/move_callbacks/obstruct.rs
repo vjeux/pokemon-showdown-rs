@@ -96,7 +96,7 @@ pub mod condition {
         // if (!move.flags['protect'] || move.category === 'Status') {
         let (has_protect_flag, is_status) = {
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
             let has_protect = active_move.flags.contains(&"protect".to_string());
@@ -108,7 +108,7 @@ pub mod condition {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
             let move_id = {
                 let active_move = match &battle.active_move {
-                    Some(m) => m.clone(),
+                    Some(active_move) => active_move.id.clone(),
                     None => return EventResult::Continue,
                 };
                 move_id
@@ -121,7 +121,7 @@ pub mod condition {
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             let is_z_or_max = {
                 let active_move = match &battle.active_move {
-                    Some(m) => m,
+                    Some(active_move) => &active_move.id,
                     None => return EventResult::Continue,
                 };
                 active_move.is_z || active_move.is_max
@@ -229,7 +229,7 @@ pub mod condition {
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         let is_z_or_max_powered = {
             let active_move = match &battle.active_move {
-                Some(m) => m,
+                Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
             active_move.is_z || active_move.is_max

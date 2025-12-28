@@ -27,7 +27,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     // if (attacker.removeVolatile(move.id)) {
     let move_id = {
         let active_move = match &battle.active_move {
-            Some(m) => m.clone(),
+            Some(active_move) => active_move.id.clone(),
             None => return EventResult::Continue,
         };
         active_move

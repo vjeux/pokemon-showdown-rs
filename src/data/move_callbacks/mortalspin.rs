@@ -31,7 +31,7 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
     // if (!move.hasSheerForce) {
     let has_sheer_force = {
         let active_move = match &battle.active_move {
-            Some(m) => m,
+            Some(active_move) => &active_move.id,
             None => return EventResult::Continue,
         };
         active_move.has_sheer_force
@@ -182,7 +182,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
     // if (!move.hasSheerForce) {
     let has_sheer_force = {
         let active_move = match &battle.active_move {
-            Some(m) => m,
+            Some(active_move) => &active_move.id,
             None => return EventResult::Continue,
         };
         active_move.has_sheer_force

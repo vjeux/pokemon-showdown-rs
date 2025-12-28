@@ -32,7 +32,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     // Get the active move
     let move_id = match &battle.active_move {
-        Some(id) => id,
+        Some(active_move) => &active_move.id,
         None => return EventResult::Continue,
     };
 

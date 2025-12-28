@@ -103,7 +103,7 @@ pub struct MoveHitData {
 
 /// Active move state - represents a move being executed
 /// Equivalent to ActiveMove in battle-actions.ts
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct ActiveMove {
     pub id: ID,
     pub name: String,
