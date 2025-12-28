@@ -28,8 +28,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
          Some(p) => p,
          None => return EventResult::Continue,
      };
-     pokemon.add_volatile(ID::from("trapped"));
- }
+     pokemon.add_volatile(ID::from("trapped"))
+ };
 
     EventResult::Boolean(result)
 }
