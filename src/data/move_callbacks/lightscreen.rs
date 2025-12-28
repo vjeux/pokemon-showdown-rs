@@ -73,7 +73,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let has_ally = battle.has_ally(effect_state_target, target);
+        let has_ally = battle.is_ally(effect_state_target, target);
         if !has_ally {
             return EventResult::Continue;
         }

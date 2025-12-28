@@ -75,7 +75,7 @@ pub mod condition {
                 }
             };
 
-            let has_ally = battle.has_ally(effect_target, target);
+            let has_ally = battle.is_ally(effect_target, target);
 
             let category = {
                 let move_data = match battle.dex.get_move_by_id(&ID::from(move_id)) {

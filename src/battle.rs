@@ -4181,7 +4181,7 @@ impl Battle {
     }
 
     /// Check if two pokemon are allies
-    fn is_ally(&self, pos1: (usize, usize), pos2: (usize, usize)) -> bool {
+    pub fn is_ally(&self, pos1: (usize, usize), pos2: (usize, usize)) -> bool {
         // JS: return !!pokemon && (this.side === pokemon.side || this.side.allySide === pokemon.side);
         if pos1.0 == pos2.0 {
             return true;
