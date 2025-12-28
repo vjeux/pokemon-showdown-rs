@@ -29,7 +29,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_type(&ID::from("ghost"))
+        source_pokemon.has_type("ghost")
     };
 
     if !source_has_ghost {
@@ -78,7 +78,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_type(&ID::from("ghost"))
+        source_pokemon.has_type("ghost")
     };
 
     if !source_has_ghost {

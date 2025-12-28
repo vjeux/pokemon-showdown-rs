@@ -171,7 +171,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.try_set_status(ID::from("brn"), Some(target_pos));
+            source_pokemon.try_set_status(ID::from("brn"), None);
         }
 
         // return this.NOT_FAIL;

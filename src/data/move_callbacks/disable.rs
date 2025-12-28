@@ -271,7 +271,7 @@ pub mod condition {
                 // if (moveSlot.id === this.effectState.move)
                 if move_slot.id == disabled_id {
                     // pokemon.disableMove(moveSlot.id);
-                    pokemon_pokemon.disable_move(&move_slot.id, None);
+                    pokemon_pokemon.disable_move(move_slot.id.as_str(), None);
                     break;
                 }
             }
