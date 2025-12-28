@@ -20,10 +20,42 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_move(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // switch (target?.effectiveWeather())
+    let weather = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.effective_weather(battle.field.weather.as_str())
+    };
+
+    // Modify move accuracy based on weather
+    if let Some(ref mut active_move) = battle.active_move {
+        match weather.as_str() {
+            // case 'raindance':
+            // case 'primordialsea':
+            //     move.accuracy = true;
+            "raindance" | "primordialsea" => {
+                active_move.accuracy = 0; // true in JS means always hit, represented as 0 in Rust
+            }
+            // case 'sunnyday':
+            // case 'desolateland':
+            //     move.accuracy = 50;
+            "sunnyday" | "desolateland" => {
+                active_move.accuracy = 50;
+            }
+            _ => {}
+        }
+    }
+
     EventResult::Continue
 }
