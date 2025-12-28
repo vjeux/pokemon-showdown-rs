@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onHit(target, source) {
 ///     const move = target.lastMove;
 ///     if (source.transformed || !move || move.flags['failmimic'] || source.moves.includes(move.id)) {
@@ -28,6 +29,7 @@ use crate::event::EventResult;
 ///     };
 ///     this.add('-start', source, 'Mimic', move.name);
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 

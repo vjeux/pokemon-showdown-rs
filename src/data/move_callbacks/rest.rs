@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onTry(source) {
 ///     if (source.status === 'slp' || source.hasAbility('comatose')) return false;
 /// 
@@ -24,6 +25,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
+/// ```
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
@@ -133,6 +135,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
     EventResult::Continue
 }
 
+/// ```ignore
 /// onHit(target, source, move) {
 ///     const result = target.setStatus('slp', source, move);
 ///     if (!result) return result;
@@ -140,6 +143,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 ///     target.statusState.startTime = 3;
 ///     this.heal(target.maxhp); // Aesthetic only as the healing happens after you fall asleep in-game
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 

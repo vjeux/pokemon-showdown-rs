@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// basePowerCallback(source, target, move) {
 ///     const callerMoveId = move.sourceEffect || move.id;
 ///     const moveSlot = callerMoveId === 'instruct' ? source.getMoveData(move.id) : source.getMoveData(callerMoveId);
@@ -36,6 +37,7 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
+/// ```
 pub fn base_power_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue

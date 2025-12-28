@@ -7,9 +7,11 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onTry(source) {
 ///     return this.activePerHalf > 1;
 /// }
+/// ```
 pub fn on_try(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
@@ -26,16 +28,18 @@ pub mod condition {
         EventResult::Continue
     }
 
+    /// ```ignore
     /// onFoeRedirectTarget(target, source, source2, move) {
     ///     const ragePowderUser = this.effectState.target;
     ///     if (ragePowderUser.isSkyDropped()) return;
-    /// 
+    ///
     ///     if (source.runStatusImmunity('powder') && this.validTarget(ragePowderUser, source, move.target)) {
     ///         if (move.smartTarget) move.smartTarget = false;
     ///         this.debug("Rage Powder redirected target of move");
     ///         return ragePowderUser;
     ///     }
     /// }
+    /// ```
     pub fn on_foe_redirect_target(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue

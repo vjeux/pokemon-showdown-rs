@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onHit(target) {
 ///     let move: Move | ActiveMove | null = target.lastMove;
 ///     if (!move || move.isZ) return false;
@@ -16,6 +17,7 @@ use crate::event::EventResult;
 ///     if (!ppDeducted) return false;
 ///     this.add("-activate", target, 'move: Spite', move.name, ppDeducted);
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     
 

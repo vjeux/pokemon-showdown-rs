@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onHit(target, source) {
 ///     if (!target.lastMoveUsed) {
 ///         return false;
@@ -28,6 +29,7 @@ use crate::event::EventResult;
 ///     if (!source.setType(randomType)) return false;
 ///     this.add('-start', source, 'typechange', randomType);
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // Get target and source
     let target = match target_pos {

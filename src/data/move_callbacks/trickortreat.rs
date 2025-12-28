@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onHit(target) {
 ///     if (target.hasType('Ghost')) return false;
 ///     if (!target.addType('Ghost')) return false;
@@ -20,6 +21,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
+/// ```
 pub fn on_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue

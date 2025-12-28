@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onHit(target) {
 ///     let newType = 'Normal';
 ///     if (this.field.isTerrain('electricterrain')) {
@@ -22,6 +23,7 @@ use crate::event::EventResult;
 ///     if (target.getTypes().join() === newType || !target.setType(newType)) return false;
 ///     this.add('-start', target, 'typechange', newType);
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the target
     let target = match target_pos {

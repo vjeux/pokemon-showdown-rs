@@ -11,6 +11,7 @@ use crate::event::EventResult;
 pub mod condition {
     use super::*;
 
+    /// ```ignore
     /// onStart(target) {
     ///     let move: Move | ActiveMove | null = target.lastMove;
     ///     if (!move || target.volatiles['dynamax']) return false;
@@ -28,6 +29,7 @@ pub mod condition {
     ///         this.effectState.duration!++;
     ///     }
     /// }
+    /// ```
     pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         use crate::dex_data::ID;
 

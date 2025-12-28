@@ -22,6 +22,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
     EventResult::Boolean(result)
 }
 
+/// ```ignore
 /// onHit(pokemon) {
 ///     let success = true;
 ///     // Fail in formats where you don't control allies
@@ -40,6 +41,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 ///     }
 ///     this.swapPosition(pokemon, newPosition, '[from] move: Ally Switch');
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // let success = true;
     let mut success = true;

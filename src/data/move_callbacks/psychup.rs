@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onHit(target, source) {
 ///     let i: BoostID;
 ///     for (i in target.boosts) {
@@ -26,6 +27,7 @@ use crate::event::EventResult;
 ///     }
 ///     this.add('-copyboost', source, target, '[from] move: Psych Up');
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 

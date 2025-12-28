@@ -30,12 +30,13 @@ pub mod condition {
         EventResult::Continue
     }
 
+    /// ```ignore
     /// onFaint(target, source, effect) {
     ///     if (!source || source.fainted || !effect) return;
     ///     if (effect.effectType === 'Move' && !effect.flags['futuremove'] && source.lastMove) {
     ///         let move: Move = source.lastMove;
     ///         if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
-    /// 
+    ///
     ///         for (const moveSlot of source.moveSlots) {
     ///             if (moveSlot.id === move.id) {
     ///                 moveSlot.pp = 0;
@@ -44,6 +45,7 @@ pub mod condition {
     ///         }
     ///     }
     /// }
+    /// ```
     pub fn on_faint(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         use crate::dex_data::ID;
 

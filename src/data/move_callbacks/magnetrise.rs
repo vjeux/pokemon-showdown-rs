@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onTry(source, target, move) {
 ///     if (target.volatiles['smackdown'] || target.volatiles['ingrain']) return false;
 ///
@@ -16,6 +17,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
+/// ```
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 

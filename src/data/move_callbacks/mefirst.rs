@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onTryHit(target, pokemon) {
 ///     const action = this.queue.willMove(target);
 ///     if (!action) return false;
@@ -19,6 +20,7 @@ use crate::event::EventResult;
 ///     this.actions.useMove(move, pokemon, { target });
 ///     return null;
 /// }
+/// ```
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 

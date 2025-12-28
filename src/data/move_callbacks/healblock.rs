@@ -92,14 +92,16 @@ pub mod condition {
         EventResult::Continue
     }
 
+    /// ```ignore
     /// onRestart(target, source, effect) {
     ///     if (effect?.name === 'Psychic Noise') return;
-    /// 
+    ///
     ///     this.add('-fail', target, 'move: Heal Block'); // Succeeds to suppress downstream messages
     ///     if (!source.moveThisTurnResult) {
     ///         source.moveThisTurnResult = false;
     ///     }
     /// }
+    /// ```
     pub fn on_restart(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue

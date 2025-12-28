@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onHitSide(side, source, move) {
 ///     const targets = side.allies().filter(ally => (
 ///         ally.hasAbility(['plus', 'minus']) &&
@@ -20,6 +21,7 @@ use crate::event::EventResult;
 ///     }
 ///     return didSomething;
 /// }
+/// ```
 pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     use crate::dex_data::ID;
 

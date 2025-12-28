@@ -8,9 +8,11 @@ use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::dex_data::{ID, Gender};
 
+/// ```ignore
 /// onTryImmunity(target, source) {
 ///     return (target.gender === 'M' && source.gender === 'F') || (target.gender === 'F' && source.gender === 'M');
 /// }
+/// ```
 pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
     // Get the target
     let target = match target_pos {
@@ -45,6 +47,7 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 pub mod condition {
     use super::*;
 
+    /// ```ignore
     /// onStart(pokemon, source, effect) {
     ///     if (!(pokemon.gender === 'M' && source.gender === 'F') && !(pokemon.gender === 'F' && source.gender === 'M')) {
     ///         this.debug('incompatible gender');
@@ -63,6 +66,7 @@ pub mod condition {
     ///         this.add('-start', pokemon, 'Attract');
     ///     }
     /// }
+    /// ```
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // Get source position
         let source = match source_pos {

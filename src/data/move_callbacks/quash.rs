@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onHit(target) {
 ///     if (this.activePerHalf === 1) return false; // fails in singles
 ///     const action = this.queue.willMove(target);
@@ -15,6 +16,7 @@ use crate::event::EventResult;
 ///     action.order = 201;
 ///     this.add('-activate', target, 'move: Quash');
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,

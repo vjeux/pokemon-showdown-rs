@@ -51,6 +51,7 @@ pub mod condition {
         EventResult::Number(5)
     }
 
+    /// ```ignore
     /// onFieldStart(target, source) {
     ///     if (source?.hasAbility('persistent')) {
     ///         this.add('-fieldstart', 'move: Gravity', '[persistent]');
@@ -67,7 +68,7 @@ pub mod condition {
     ///         if (pokemon.volatiles['skydrop']) {
     ///             applies = true;
     ///             this.queue.cancelMove(pokemon);
-    /// 
+    ///
     ///             if (pokemon.volatiles['skydrop'].source) {
     ///                 this.add('-end', pokemon.volatiles['twoturnmove'].source, 'Sky Drop', '[interrupt]');
     ///             }
@@ -85,6 +86,7 @@ pub mod condition {
     ///         if (applies) this.add('-activate', pokemon, 'move: Gravity');
     ///     }
     /// }
+    /// ```
     pub fn on_field_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
         use crate::dex_data::ID;
 

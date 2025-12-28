@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onHit(target, source) {
 ///     const targetBoosts: SparseBoostsTable = {};
 ///     const sourceBoosts: SparseBoostsTable = {};
@@ -22,6 +23,7 @@ use crate::event::EventResult;
 /// 
 ///     this.add('-swapboost', source, target, 'def, spd', '[from] move: Guard Swap');
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     let source = pokemon_pos;
     let target = match target_pos {

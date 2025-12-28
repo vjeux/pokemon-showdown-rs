@@ -7,12 +7,14 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// ```ignore
 /// onModifyMove(move, source) {
 ///     if (!source.volatiles['skydrop']) {
 ///         move.accuracy = true;
 ///         delete move.flags['contact'];
 ///     }
 /// }
+/// ```
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
@@ -47,6 +49,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
     EventResult::Continue
 }
 
+/// ```ignore
 /// onMoveFail(target, source) {
 ///     if (source.volatiles['twoturnmove'] && source.volatiles['twoturnmove'].duration === 1) {
 ///         source.removeVolatile('skydrop');
@@ -56,6 +59,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 ///         }
 ///     }
 /// }
+/// ```
 pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
@@ -163,6 +167,7 @@ pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Opti
     EventResult::Boolean(!is_fainted)
 }
 
+/// ```ignore
 /// onTryHit(target, source, move) {
 ///     if (source.removeVolatile(move.id)) {
 ///         if (target !== source.volatiles['twoturnmove'].source) return false;
@@ -185,6 +190,7 @@ pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Opti
 ///         return null;
 ///     }
 /// }
+/// ```
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
@@ -367,9 +373,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     EventResult::Continue
 }
 
+/// ```ignore
 /// onHit(target, source) {
 ///     if (target.hp) this.add('-end', target, 'Sky Drop');
 /// }
+/// ```
 pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // onHit(target, source) {
     //     if (target.hp) this.add('-end', target, 'Sky Drop');
