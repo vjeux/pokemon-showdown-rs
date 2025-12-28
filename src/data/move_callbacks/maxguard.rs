@@ -68,7 +68,7 @@ pub mod condition {
             pokemon.get_slot()
 
         };
-        battle.add("-singleturn", &[target_arg, "Max Guard".into()]);
+        battle.add("-singleturn", &[target_arg.into(), "Max Guard".into()]);
 
         EventResult::Continue
     }
@@ -147,7 +147,7 @@ pub mod condition {
                 pokemon.get_slot()
 
             };
-            battle.add("-activate", &[target_arg, "move: Max Guard".into()]);
+            battle.add("-activate", &[target_arg.into(), "move: Max Guard".into()]);
         }
 
         // const lockedmove = source.getVolatile('lockedmove');
