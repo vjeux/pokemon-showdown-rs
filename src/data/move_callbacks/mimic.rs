@@ -59,6 +59,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         None => return EventResult::Boolean(false),
     };
 
+    // Clone all needed data from move_data to avoid holding the borrow
+    let move_name = move_data.name.clone();
+    let move_id_clone = move_data.id.clone();
+    let move_pp = move_data.pp;
+    let move_target = move_data.target.clone();
+    let move_flags_has_failmimic = move_data.flags.contains_key("failmimic");
+    let move_is_z_or_max = move_data.is_z_or_max_powered;
+
     let (source_transformed, source_has_move) = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
@@ -69,12 +77,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         (transformed, has_move)
     };
 
-    if source_transformed || move_data.flags.contains_key("failmimic") || source_has_move {
+    if source_transformed || move_flags_has_failmimic || source_has_move {
         return EventResult::Boolean(false);
     }
 
     // if (move.isZ || move.isMax) return false;
-    if move_data.is_z_or_max_powered {
+    if move_is_z_or_max {
         return EventResult::Boolean(false);
     }
 
@@ -110,11 +118,11 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         if let Some(slot) = source_pokemon.move_slots.get_mut(mimic_index) {
-            slot.move_name = move_data.name.clone();
-            slot.id = move_data.id.clone();
-            slot.pp = move_data.pp as u8;
-            slot.maxpp = move_data.pp as u8;
-            slot.target = Some(move_data.target.clone());
+            slot.move_name = move_name.clone();
+            slot.id = move_id_clone.clone();
+            slot.pp = move_pp as u8;
+            slot.maxpp = move_pp as u8;
+            slot.target = Some(move_target.clone());
             slot.disabled = false;
             slot.used = false;
             slot.virtual_move = true;
@@ -127,10 +135,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Boolean(false),
         };
-        crate::battle::Arg::from(source_pokemon)
+        source_pokemon.get_slot()
     };
 
-    battle.add("-start", &[source_arg, "Mimic".into(), move_data.name.clone().into()]);
+    battle.add("-start", &[source_arg.into(), "Mimic".into(), move_name.into()]);
 
     EventResult::Continue
 }

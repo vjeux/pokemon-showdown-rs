@@ -146,7 +146,7 @@ pub mod condition {
         }
 
         // this.add('-activate', target, 'move: Mat Block', move.name);
-        let move_name = move_data.map(|m| m.name.as_str()).unwrap_or("");
+        let move_name = move_data.map(|m| m.name.to_string()).unwrap_or_default();
         let target_arg = {
 
             let pokemon = match battle.pokemon_at(target.0, target.1) {
