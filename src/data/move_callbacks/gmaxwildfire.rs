@@ -20,7 +20,9 @@ pub mod condition {
         // this.add('-sidestart', targetSide, 'G-Max Wildfire');
         if let Some(effect_state) = &battle.current_effect_state {
             if let Some(side_index) = effect_state.side {
-            let side_arg = crate::battle::Arg::Side(side_index);
+            let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+            let side_arg = crate::battle::Arg::Str(side_id);
             battle.add("-sidestart", &[side_arg, "G-Max Wildfire".into()]);
                     }
         }
@@ -71,7 +73,9 @@ pub mod condition {
         // this.add('-sideend', targetSide, 'G-Max Wildfire');
         if let Some(effect_state) = &battle.current_effect_state {
             if let Some(side_index) = effect_state.side {
-            let side_arg = crate::battle::Arg::Side(side_index);
+            let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+            let side_arg = crate::battle::Arg::Str(side_id);
             battle.add("-sideend", &[side_arg, "G-Max Wildfire".into()]);
                     }
         }

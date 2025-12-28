@@ -107,7 +107,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 let condition_data = battle.dex.get_condition_by_id(&condition_id);
                 let condition_name = condition_data.map(|c| c.name.clone()).unwrap_or_else(|| condition_id.to_string());
 
-                (crate::battle::Arg::SideID(target_side_index), crate::battle::Arg::from(source_pokemon), condition_name)
+                let side_id = if target_side_index == 0 { "p1" } else { "p2" };
+                (crate::battle::Arg::Str(side_id), crate::battle::Arg::from(source_pokemon), condition_name)
             };
 
             battle.add("-sideend", &[
@@ -153,7 +154,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 let condition_data = battle.dex.get_condition_by_id(&condition_id);
                 let condition_name = condition_data.map(|c| c.name.clone()).unwrap_or_else(|| condition_id.to_string());
 
-                (crate::battle::Arg::SideID(source_side_index), crate::battle::Arg::from(source_pokemon), condition_name)
+                let side_id = if source_side_index == 0 { "p1" } else { "p2" };
+                (crate::battle::Arg::Str(side_id), crate::battle::Arg::from(source_pokemon), condition_name)
             };
 
             battle.add("-sideend", &[

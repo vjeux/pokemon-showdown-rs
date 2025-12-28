@@ -112,7 +112,8 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    let side_arg = crate::battle::Arg::Side(pokemon.0);
+                    let side_id = if pokemon.0 == 0 { "p1" } else { "p2" };
+                    let side_arg = crate::battle::Arg::Str(side_id);
                     let pokemon_arg = crate::battle::Arg::from(pokemon_pokemon);
                     (side_arg, pokemon_arg)
                 };
@@ -263,7 +264,8 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    let side_arg = crate::battle::Arg::Side(pokemon.0);
+                    let side_id = if pokemon.0 == 0 { "p1" } else { "p2" };
+                    let side_arg = crate::battle::Arg::Str(side_id);
                     let pokemon_arg = crate::battle::Arg::from(pokemon_pokemon);
                     (side_arg, pokemon_arg)
                 };

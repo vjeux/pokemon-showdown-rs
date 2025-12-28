@@ -24,7 +24,10 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let side_arg = crate::battle::Arg::Side(side_index);
+        let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+
+        let side_arg = crate::battle::Arg::Str(side_id);
         battle.add("-sidestart", &[side_arg, "move: Lucky Chant".into()]);
 
         EventResult::Continue
@@ -43,7 +46,10 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let side_arg = crate::battle::Arg::Side(side_index);
+        let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+
+        let side_arg = crate::battle::Arg::Str(side_id);
         battle.add("-sideend", &[side_arg, "move: Lucky Chant".into()]);
 
         EventResult::Continue
