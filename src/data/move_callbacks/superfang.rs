@@ -11,10 +11,21 @@ use crate::event::EventResult;
 ///     return this.clampIntRange(target.getUndynamaxedHP() / 2, 1);
 /// }
 pub fn damage_callback(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // Get the target
+    let target = match target_pos {
+        Some(pos) => match battle.pokemon_at(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        },
+        None => return EventResult::Continue,
+    };
+
+    // return this.clampIntRange(target.getUndynamaxedHP() / 2, 1);
+    let damage = (target.get_undynamaxed_hp() / 2).max(1);
+
+    EventResult::Number(damage)
 }
