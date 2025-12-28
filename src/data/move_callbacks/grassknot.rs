@@ -48,15 +48,15 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // else if (targetWeight >= 250) { bp = 60; }
     // else if (targetWeight >= 100) { bp = 40; }
     // else { bp = 20; }
-    let bp = if target_weight >= 2000.0 {
+    let bp = if target_weight >= 200 {
         120
-    } else if target_weight >= 1000.0 {
+    } else if target_weight >= 100 {
         100
-    } else if target_weight >= 500.0 {
+    } else if target_weight >= 50 {
         80
-    } else if target_weight >= 250.0 {
+    } else if target_weight >= 25 {
         60
-    } else if target_weight >= 100.0 {
+    } else if target_weight >= 10 {
         40
     } else {
         20

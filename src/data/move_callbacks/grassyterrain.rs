@@ -71,7 +71,7 @@ pub mod condition {
                 ID::from("magnitude"),
             ];
 
-            if weakened_moves.contains(id) {
+            if weakened_moves.contains(&id.id) {
                 let defender_grounded = {
                     let defender_pokemon = match battle.pokemon_at(defender.0, defender.1) {
                         Some(p) => p,
@@ -197,7 +197,7 @@ pub mod condition {
                 pokemon_pokemon.base_maxhp / 16
             };
 
-            battle.heal(heal_amount, pokemon, Some(pokemon), None);
+            battle.heal(heal_amount, Some(pokemon), Some(pokemon), None);
         } else {
             // this.debug(`Pokemon semi-invuln or not grounded; Grassy Terrain skipped`);
             battle.debug("Pokemon semi-invuln or not grounded; Grassy Terrain skipped");

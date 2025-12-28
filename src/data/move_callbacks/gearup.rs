@@ -50,7 +50,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.has_ability(&[ID::from("plus"), ID::from("minus")])
+            pokemon.has_ability(&["plus", "minus"], battle)
         };
 
         if !has_plus_or_minus {
@@ -88,12 +88,8 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     // }
     let mut did_something = false;
     for target in targets {
-        let mut boosts = HashMap::new();
-        boosts.insert("atk".to_string(), 1);
-        boosts.insert("spa".to_string(), 1);
-
-        let boost_result = battle.boost(boosts, target, source, Some(move_id));
-        did_something = boost_result || did_something;
+        let boost_result = battle.boost(&[("atk", 1), ("spa", 1)], target, source, Some(move_id));
+        did_something = (boost_result.unwrap_or(0) != 0) || did_something;
     }
 
     // return didSomething;
