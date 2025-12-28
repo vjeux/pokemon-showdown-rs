@@ -1188,7 +1188,7 @@ pub fn dispatch_condition_on_ally_try_hit_side(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "magiccoat" => magiccoat::condition::on_ally_try_hit_side(battle, source_pos),
+        "magiccoat" => magiccoat::condition::on_ally_try_hit_side(battle, None, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1224,7 +1224,7 @@ pub fn dispatch_condition_on_any_invulnerability(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "skydrop" => skydrop::condition::on_any_invulnerability(battle, source_pos),
+        "skydrop" => skydrop::condition::on_any_invulnerability(battle, None, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1251,7 +1251,7 @@ pub fn dispatch_condition_on_any_prepare_hit(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "snatch" => snatch::condition::on_any_prepare_hit(battle, source_pos),
+        "snatch" => snatch::condition::on_any_prepare_hit(battle, Some(source_pos), None, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1296,18 +1296,18 @@ pub fn dispatch_condition_on_before_move(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "attract" => attract::condition::on_before_move(battle, source_pos),
-        "bide" => bide::condition::on_before_move(battle, source_pos),
-        "chillyreception" => chillyreception::condition::on_before_move(battle, source_pos),
-        "destinybond" => destinybond::condition::on_before_move(battle, source_pos),
+        "attract" => attract::condition::on_before_move(battle, source_pos, None, move_id),
+        "bide" => bide::condition::on_before_move(battle, source_pos, None, move_id),
+        "chillyreception" => chillyreception::condition::on_before_move(battle, Some(source_pos), None, move_id),
+        "destinybond" => destinybond::condition::on_before_move(battle, source_pos, None, move_id),
         "disable" => disable::condition::on_before_move(battle, move_id),
         "glaiverush" => glaiverush::condition::on_before_move(battle, source_pos),
-        "gravity" => gravity::condition::on_before_move(battle, source_pos),
+        "gravity" => gravity::condition::on_before_move(battle, source_pos, None, move_id),
         "grudge" => grudge::condition::on_before_move(battle, source_pos),
-        "healblock" => healblock::condition::on_before_move(battle, source_pos),
+        "healblock" => healblock::condition::on_before_move(battle, source_pos, None, move_id),
         "rage" => rage::condition::on_before_move(battle, source_pos),
         "taunt" => taunt::condition::on_before_move(battle, move_id),
-        "throatchop" => throatchop::condition::on_before_move(battle, source_pos),
+        "throatchop" => throatchop::condition::on_before_move(battle, source_pos, None, move_id),
         _ => EventResult::Continue,
     }
 }
