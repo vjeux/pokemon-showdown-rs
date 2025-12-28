@@ -12,6 +12,8 @@ use crate::team_validator::{ValidatorSet, EVSpread, IVSpread};
 /// Random team generator
 pub struct RandomTeamGenerator {
     prng: PRNG,
+    /// Format ID (not yet implemented)
+    #[allow(dead_code)]
     format_id: ID,
 }
 

@@ -2152,6 +2152,7 @@ impl Battle {
     /// Execute a switch with optional drag flag
     /// Rust helper - breaks down switch logic for borrow checker
     /// JavaScript integrates this into switch/drag handling
+    #[allow(dead_code)]
     fn do_switch_with_drag(&mut self, side_idx: usize, slot: usize, switch_to: usize, is_drag: bool) {
         if side_idx >= self.sides.len() {
             return;
@@ -2390,6 +2391,7 @@ impl Battle {
             0 // Default priority for unknown moves
         }
     }
+    #[allow(dead_code)]
 
     /// Get number of hits for multi-hit moves
     fn get_multi_hit_count(&mut self, move_id: &ID) -> i32 {
@@ -2422,6 +2424,7 @@ impl Battle {
 
         1 // Default: single hit
     }
+    #[allow(dead_code)]
 
     /// Get move accuracy (0-100, where 100+ means never miss)
     fn get_move_accuracy(&self, move_id: &ID) -> i32 {
@@ -2435,6 +2438,7 @@ impl Battle {
             100 // Default accuracy for unknown moves
         }
     }
+    #[allow(dead_code)]
 
     /// Apply confusion volatile to a Pokemon
     fn apply_confusion(&mut self, side_idx: usize, poke_idx: usize) {
@@ -2461,6 +2465,7 @@ impl Battle {
         };
         self.add_log("-start", &[&name, "confusion"]);
     }
+    #[allow(dead_code)]
 
     /// Remove all entry hazards from a side
     fn remove_all_hazards(&mut self, side_idx: usize) {
@@ -2485,6 +2490,7 @@ impl Battle {
             }
         }
     }
+    #[allow(dead_code)]
 
     /// Apply a status condition
     fn apply_status(&mut self, side_idx: usize, poke_idx: usize, status: &str) {
@@ -2596,6 +2602,7 @@ impl Battle {
         // JS: return true;
         true
     }
+    #[allow(dead_code)]
 
     /// Apply a stat boost
     fn apply_boost(&mut self, side_idx: usize, poke_idx: usize, stat: &str, amount: i8) {
@@ -5141,6 +5148,7 @@ impl Battle {
 
     /// Helper to boost stats from a HashMap
     /// Rust helper method - JavaScript boost() accepts SparseBoostsTable (object with stat names as keys)
+    #[allow(dead_code)]
     /// This helper converts HashMap format to the Vec<(&str, i8)> format used by boost()
     /// Allows calling boost() when stat boosts are stored in HashMap format
     fn boost_stats(&mut self, target_side: usize, target_idx: usize, boosts_map: &HashMap<String, i32>) {
@@ -8121,6 +8129,7 @@ impl Battle {
         }
     }
 
+    #[allow(dead_code)]
     /// Check volatile condition TryHit events
     /// Returns true if the move should proceed, false if blocked (e.g., by Protect)
     fn check_volatile_try_hit(
@@ -8230,6 +8239,7 @@ impl Battle {
     /// Handle side condition events (SideStart, SideEnd, AnyModifyDamage, etc.)
     /// Calls the appropriate callback for each side condition
     /// Rust helper method - JavaScript's singleEvent() directly invokes side condition callbacks
+    #[allow(dead_code)]
     /// This method dispatches to move_callbacks for side condition events
     /// Currently only implements auroraveil - more side conditions need to be added
     fn handle_side_condition_event(

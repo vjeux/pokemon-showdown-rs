@@ -480,7 +480,8 @@ pub struct BattleStream {
     battle: Option<Battle>,
     /// Output message queue
     output_queue: VecDeque<String>,
-    /// Input buffer
+    /// Input buffer (not yet implemented)
+    #[allow(dead_code)]
     input_buffer: String,
     /// Debug mode
     pub debug: bool,
