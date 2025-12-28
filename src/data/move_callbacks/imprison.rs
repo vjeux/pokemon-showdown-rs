@@ -45,7 +45,10 @@ pub mod condition {
         // }
         let source_move_ids: Vec<ID> = {
             let source_pos = match &battle.current_effect_state {
-                Some(state) => state.source,
+                Some(state) => match state.source {
+                    Some(pos) => pos,
+                    None => return EventResult::Continue,
+                },
                 None => return EventResult::Continue,
             };
 
@@ -104,7 +107,10 @@ pub mod condition {
         // Check if source has this move
         let source_has_move = {
             let source_pos = match &battle.current_effect_state {
-                Some(state) => state.source,
+                Some(state) => match state.source {
+                    Some(pos) => pos,
+                    None => return EventResult::Continue,
+                },
                 None => return EventResult::Continue,
             };
 
@@ -120,7 +126,10 @@ pub mod condition {
             // this.add('cant', attacker, 'move: Imprison', move);
             // We need to get the attacker position from current_effect_state.target
             let attacker_pos = match &battle.current_effect_state {
-                Some(state) => state.target,
+                Some(state) => match state.target {
+                    Some(pos) => pos,
+                    None => return EventResult::Continue,
+                },
                 None => return EventResult::Continue,
             };
 
