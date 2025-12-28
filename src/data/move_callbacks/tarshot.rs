@@ -14,8 +14,39 @@ pub mod condition {
     ///     if (pokemon.terastallized) return false;
     ///     this.add('-start', pokemon, 'Tar Shot');
     /// }
-    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        let pokemon = pokemon_pos;
+
+        // if (pokemon.terastallized) return false;
+        let is_terastallized = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.terastallized.is_some()
+        };
+
+        if is_terastallized {
+            return EventResult::NotFail;
+        }
+
+        // this.add('-start', pokemon, 'Tar Shot');
+        let pokemon_slot = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.get_slot()
+        };
+
+        battle.add(
+            "-start",
+            &[
+                crate::battle::Arg::from(pokemon_slot),
+                crate::battle::Arg::from("Tar Shot"),
+            ],
+        );
+
         EventResult::Continue
     }
 
