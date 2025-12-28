@@ -69,7 +69,10 @@ pub mod condition {
 
         // this.effectState.target.hasAlly(target)
         let effect_state_target = match &battle.current_effect_state {
-            Some(es) => es.target,
+            Some(es) => match es.target {
+                Some(t) => t,
+                None => return EventResult::Continue,
+            },
             None => return EventResult::Continue,
         };
 

@@ -301,7 +301,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                pokemon_pokemon.disable_move(&move_slot.id, None);
+                pokemon_pokemon.disable_move(move_slot.id.as_ref(), None);
             }
         }
 

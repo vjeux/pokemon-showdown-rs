@@ -47,7 +47,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         };
 
 
-        pokemon.remove_volatile(&move_id)
+        pokemon.remove_volatile(&move_id.id)
 
 
     };
