@@ -36,10 +36,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         target_pokemon.item.clone()
     };
 
-    let item_id = match item_id {
-        Some(id) => id,
-        None => return EventResult::Continue,
-    };
+    // Check if item is empty
+    if item_id == ID::from("") {
+        return EventResult::Continue;
+    }
 
     // if (source.hp && item.isBerry && target.takeItem(source)) {
     let source_hp = {

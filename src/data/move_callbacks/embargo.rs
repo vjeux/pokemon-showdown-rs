@@ -38,7 +38,7 @@ pub mod condition {
             pokemon_pokemon.item.clone()
         };
 
-        battle.single_event("End", Some(&item_id), Some(pokemon), None, None);
+        battle.single_event("End", &item_id, Some(pokemon), None, None);
 
         EventResult::Continue
     }
