@@ -126,7 +126,7 @@ pub mod condition {
 
         if !has_protect || is_status {
             //     if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
-            if move_id == ID::from("gmaxoneblow") || move_id == ID::from("gmaxrapidflow") {
+            if move_id.id == ID::from("gmaxoneblow") || move_id.id == ID::from("gmaxrapidflow") {
                 return EventResult::Continue;
             }
 
