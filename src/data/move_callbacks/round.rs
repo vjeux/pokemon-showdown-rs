@@ -73,7 +73,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 
                 // Check if move is 'round'
                 if move_action.move_id == ID::from("round") {
-                    battle.prioritize_action(i, &active_move_id);
+                    battle.queue.prioritize_action(i, &active_move_id);
                     return EventResult::Continue;
                 }
             }
