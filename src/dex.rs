@@ -1371,11 +1371,18 @@ impl Dex {
 
             // Pokemon that should always be marked as unavailable (unreleased event Pokemon, etc.)
             let always_unavailable = matches!(species.name.as_str(),
-                "Floette-Eternal"  // Never officially released (AZ's Floette)
+                "Floette-Eternal" |  // Never officially released (AZ's Floette)
+                "Magearna-Original"  // Unobtainable event forme
             );
 
-            let should_clear_past = if always_unavailable {
-                // Never clear "Past" for unreleased Pokemon
+            // LGPE-exclusive Pokemon (Let's Go Pikachu/Eevee)
+            // These Pokemon (Meltan #808, Melmetal #809) are marked "LGPE" in gen7 mod
+            // but "Past" in gen9 data. They should be excluded from Gen 7 but available in Gen 8+.
+            let is_lgpe_exclusive = species.num == 808 || species.num == 809; // Meltan, Melmetal
+            let lgpe_unavailable_in_gen7 = is_lgpe_exclusive && gen == 7;
+
+            let should_clear_past = if always_unavailable || lgpe_unavailable_in_gen7 {
+                // Never clear "Past" for unreleased Pokemon or LGPE Pokemon in Gen 7
                 false
             } else if gen == current_gen {
                 // Gen 9: Keep "Past" markers (they're correct for this gen)
@@ -1390,7 +1397,11 @@ impl Dex {
                 true
             };
 
-            if should_clear_past {
+            // Explicitly mark always_unavailable Pokemon as unavailable
+            if always_unavailable {
+                species.tier = Some("Illegal".to_string());
+                species.is_nonstandard = Some("Unobtainable".to_string());
+            } else if should_clear_past {
                 if species.is_nonstandard.as_deref() == Some("Past") {
                     species.is_nonstandard = None;
                 }

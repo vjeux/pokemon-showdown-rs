@@ -684,6 +684,57 @@ fn test_gen7_should_have_807_species_and_177_formes() {
     let dex = Dex::for_gen(7).unwrap();
     let (species_count, formes_count) = count_pokemon(&dex);
 
+    // Debug: if species count is wrong, print the extra species
+    if species_count != 807 {
+        eprintln!("Gen 7 species count mismatch: {} vs 807 expected", species_count);
+        let species: Vec<_> = dex.species.iter()
+            .filter(|(_id, pkmn)| {
+                pkmn.exists &&
+                pkmn.is_nonstandard.is_none() &&
+                pkmn.tier.as_deref() != Some("Illegal") &&
+                !pkmn.is_cosmetic_forme
+            })
+            .filter(|(_id, pkmn)| {
+                let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
+                &pkmn.name == base
+            })
+            .map(|(_id, pkmn)| (pkmn.num, pkmn.name.clone()))
+            .collect();
+
+        // Print high-numbered species (Gen 7 range is 722-809)
+        eprintln!("Species in Gen 7 range (722-809):");
+        for (num, name) in species.iter().filter(|(n, _)| *n >= 722 && *n <= 809) {
+            eprintln!("  #{}: {}", num, name);
+        }
+    }
+
+    // Debug: if formes count is wrong, print Starter formes
+    if formes_count != 177 {
+        eprintln!("Gen 7 formes count mismatch: {} vs 177 expected", formes_count);
+        let formes: Vec<_> = dex.species.iter()
+            .filter(|(_id, pkmn)| {
+                pkmn.exists &&
+                pkmn.is_nonstandard.is_none() &&
+                pkmn.tier.as_deref() != Some("Illegal") &&
+                !pkmn.is_cosmetic_forme
+            })
+            .filter(|(_id, pkmn)| {
+                let base = pkmn.base_species.as_ref().unwrap_or(&pkmn.name);
+                &pkmn.name != base
+            })
+            .filter(|(_id, pkmn)| {
+                // Look for Starter formes or LGPE range
+                pkmn.forme.as_deref() == Some("Starter") ||
+                (pkmn.num >= 808 && pkmn.num <= 809)
+            })
+            .map(|(_id, pkmn)| (pkmn.num, pkmn.name.clone(), pkmn.forme.clone()))
+            .collect();
+        eprintln!("LGPE-related formes (Starter or #808-809):");
+        for (num, name, forme) in formes {
+            eprintln!("  #{}: {} (forme: {:?})", num, name, forme);
+        }
+    }
+
     assert_eq!(species_count, 807, "Gen 7 should have 807 species");
     // Alola (18) + Totem (12) + Pikachu (7) - Pikachu (6) + Greninja (2) + Zygarde (2) + Oricorio (3) + Rockruff (1) + Lycanroc (2) + Wishiwashi (1) + Silvally (17) + Minior (1) + Mimikyu (1) + Necrozma (3)
     assert_eq!(formes_count, 177, "Gen 7 should have 177 formes"); // formes[6] + 18 + 12 + 7 - 6 + 2 + 2 + 3 + 1 + 2 + 1 + 17 + 1 + 1 + 3
