@@ -13,7 +13,29 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (!pokemon.ignoringItem() && this.field.isTerrain('psychicterrain')) { pokemon.useItem(); }
+    let should_use_item = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        !pokemon.ignoring_item() && battle.field.terrain.as_str() == "psychicterrain"
+    };
+
+    if should_use_item {
+        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -23,6 +45,14 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 ///     }
 /// }
 pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (this.field.isTerrain('psychicterrain')) { pokemon.useItem(); }
+    if battle.field.terrain.as_str() == "psychicterrain" {
+        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.use_item();
+    }
+
     EventResult::Continue
 }

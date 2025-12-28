@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!pokemon.ignoringItem() && this.field.getPseudoWeather('trickroom')) {
+    //     pokemon.useItem();
+    // }
+    // TODO: Need pokemon.ignoringItem() and battle.field.getPseudoWeather('trickroom')
+    // to check if Trick Room is active, then pokemon.useItem() to consume
     EventResult::Continue
 }
 
@@ -24,6 +28,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 ///     }
 /// }
 pub fn on_any_pseudo_weather_change(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // TODO: Need effectState.target to get pokemon holding this item,
+    // battle.field.getPseudoWeather('trickroom'), and pokemon.useItem()
     EventResult::Continue
 }

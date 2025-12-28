@@ -21,6 +21,17 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (source && source !== target && source.hp && target.hp && move && move.category !== 'Status') {
+    //     if (!source.isActive || !this.canSwitch(source.side) || source.forceSwitchFlag || target.forceSwitchFlag) {
+    //         return;
+    //     }
+    //     if (target.useItem(source)) {
+    //         if (this.runEvent('DragOut', source, target, move)) {
+    //             source.forceSwitchFlag = true;
+    //         }
+    //     }
+    // }
+    // TODO: Need move.category, pokemon.isActive, battle.canSwitch(), pokemon.forceSwitchFlag
+    // pokemon.useItem(source), battle.runEvent('DragOut', ...) to force opponent switch
     EventResult::Continue
 }

@@ -16,6 +16,9 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_charge_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.useItem())
+    // TODO: Need pokemon.useItem(), battle.debug(), battle.attrLastMove(), battle.addMove()
+    // This callback skips the charge turn for charging moves like Solar Beam
+    // return false to skip charge turn if item is used successfully
     EventResult::Continue
 }

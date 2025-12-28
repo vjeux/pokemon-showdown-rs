@@ -13,6 +13,10 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_spe(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.species.name === 'Ditto' && !pokemon.transformed) {
+    //     return this.chainModify(2);
+    // }
+    // TODO: Need pokemon.species.name and pokemon.transformed to check if Ditto
+    // Also need ability to modify speed value by chainModify(2)
     EventResult::Continue
 }

@@ -13,7 +13,11 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.isActive && pokemon.baseSpecies.name === 'Groudon' && !pokemon.transformed) {
+    //     pokemon.formeChange('Groudon-Primal', this.effect, true);
+    // }
+    // TODO: Need pokemon.isActive, pokemon.baseSpecies.name, pokemon.transformed,
+    // and pokemon.formeChange() to transform Groudon to Primal form
     EventResult::Continue
 }
 
@@ -22,6 +26,8 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 ///     return true;
 /// }
 pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (source.baseSpecies.baseSpecies === 'Groudon') return false;
+    // TODO: Need source.baseSpecies.baseSpecies to check if Groudon
+    // Should return EventResult::Boolean(false) to prevent taking if Groudon
     EventResult::Continue
 }

@@ -13,7 +13,22 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.volatiles['confusion'])
+    let has_confusion = {
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.has_volatile(&"confusion".into())
+        } else {
+            false
+        }
+    };
+
+    if has_confusion {
+        // pokemon.eatItem();
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.eat_item(false);
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -21,6 +36,10 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     pokemon.removeVolatile('confusion');
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // pokemon.removeVolatile('confusion');
+    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        pokemon.remove_volatile(&"confusion".into());
+    }
+
     EventResult::Continue
 }
