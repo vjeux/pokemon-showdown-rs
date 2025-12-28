@@ -78,7 +78,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
                 Some(m) => m,
                 None => return EventResult::Continue,
             };
-            active_move.id.clone()
+            active_move.clone()
         };
 
         battle.forme_change(pokemon, &forme_name, Some(&effect_id), false, Some("0"), Some("[msg]"));

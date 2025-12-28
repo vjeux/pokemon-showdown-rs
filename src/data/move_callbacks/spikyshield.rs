@@ -135,7 +135,7 @@ pub mod condition {
             };
             (
                 active_move.flags.protect.unwrap_or(0) != 0,
-                active_move.id.clone(),
+                active_move.clone(),
                 active_move.is_z,
                 active_move.is_max,
                 active_move.smart_target,

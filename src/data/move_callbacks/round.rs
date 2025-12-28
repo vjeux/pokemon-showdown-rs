@@ -60,7 +60,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(m) => m,
             None => return EventResult::Continue,
         };
-        active_move.id.clone()
+        active_move.clone()
     };
 
     for (i, action) in queue_list.iter().enumerate() {

@@ -347,7 +347,7 @@ pub mod condition {
             false
         };
 
-        let move_id = battle.active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
+        let move_id = battle.active_move.as_ref().map(|m| m.to_string()).unwrap_or_default();
 
         if has_gravity_flag && !is_z_move {
             // this.add('cant', pokemon, 'move: Gravity', move);

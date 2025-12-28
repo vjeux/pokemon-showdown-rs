@@ -62,7 +62,7 @@ pub mod condition {
 
         // const weakenedMoves = ['earthquake', 'bulldoze', 'magnitude'];
         // if (weakenedMoves.includes(move.id) && defender.isGrounded() && !defender.isSemiInvulnerable()) {
-        let move_id = battle.active_move.as_ref().map(|m| m.id.clone());
+        let move_id = battle.active_move.as_ref().map(|m| m.clone());
 
         if let Some(ref id) = move_id {
             let weakened_moves = [

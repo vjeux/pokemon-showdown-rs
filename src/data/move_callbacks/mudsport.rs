@@ -48,7 +48,7 @@ pub mod condition {
         // Get the move type
         let move_type = {
             let active_move = match &battle.active_move {
-                Some(m) => &m.id,
+                Some(m) => m,
                 None => return EventResult::Continue,
             };
             let move_data = battle.dex.get_move_by_id(active_move);

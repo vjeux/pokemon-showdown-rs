@@ -27,7 +27,7 @@ pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos
             Some(m) => m,
             None => return EventResult::Continue,
         };
-        let move_data = battle.dex.get_move_by_id(&active_move.id);
+        let move_data = battle.dex.get_move_by_id(active_move);
         if let Some(m) = move_data {
             let mind_blown_recoil = m.flags.contains_key("mindBlownRecoil");
             let is_multihit = m.multihit.is_some();

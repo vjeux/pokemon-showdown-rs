@@ -108,7 +108,7 @@ pub mod condition {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
             let move_id = {
                 let active_move = match &battle.active_move {
-                    Some(m) => m.id.clone(),
+                    Some(m) => m.clone(),
                     None => return EventResult::Continue,
                 };
                 move_id

@@ -97,7 +97,7 @@ pub mod condition {
         // newMove.pranksterBoosted = this.effectState.pranksterBoosted;
         let (move_id, prankster_boosted) = {
             let move_id = match &battle.active_move {
-                Some(m) => m.id.clone(),
+                Some(m) => m.clone(),
                 None => return EventResult::Continue,
             };
             let prankster_boosted = match &battle.current_effect_state {
@@ -179,7 +179,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let move_id_id = battle.active_move.as_ref().map(|m| m.id.clone());
+        let move_id_id = battle.active_move.as_ref().map(|m| m.clone());
         if let Some(move_id_id) = move_id_id {
             battle.use_move_with_bounced(&move_id_id, effect_state_target, Some(source), true, false);
         }

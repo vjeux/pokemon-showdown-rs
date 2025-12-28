@@ -28,7 +28,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     //     return;
     // }
     let move_id = match battle.active_move.as_ref() {
-        Some(m) => m.id.clone(),
+        Some(m) => m.clone(),
         None => return EventResult::Continue,
     };
 

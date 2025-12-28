@@ -206,7 +206,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(m) => m,
             None => return EventResult::Continue,
         };
-        active_move.id.clone()
+        active_move.clone()
     };
 
     // if (source.removeVolatile(move.id)) {

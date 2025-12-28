@@ -45,7 +45,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(m) => m,
             None => return EventResult::Continue,
         };
-        active_move.id.clone()
+        active_move.clone()
     };
 
     let removed = battle.remove_volatile(&move_id, attacker);

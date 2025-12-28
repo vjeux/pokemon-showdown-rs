@@ -148,7 +148,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(m) => m,
             None => return EventResult::Continue,
         };
-        active_move.id.clone()
+        active_move.clone()
     };
 
     let result = battle.set_status(&ID::from("slp"), target, Some(source), Some(&move_id));

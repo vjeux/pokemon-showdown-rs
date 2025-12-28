@@ -47,7 +47,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     if has_gravity {
         let source_arg = crate::battle::Arg::Pos(source_pos.0, source_pos.1);
         let move_id = match &battle.active_move {
-            Some(m) => m.id.clone(),
+            Some(m) => m.clone(),
             None => ID::from(""),
         };
         battle.add("cant", &[source_arg, "move: Gravity".into(), move_id.to_string().into()]);

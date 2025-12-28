@@ -111,7 +111,7 @@ pub mod condition {
                     Some(m) => m,
                     None => return EventResult::Continue,
                 };
-                active_move.id.clone()
+                active_move.clone()
             };
 
             if move_id == ID::from("gmaxoneblow") || move_id == ID::from("gmaxrapidflow") {
@@ -133,7 +133,7 @@ pub mod condition {
                         Some(m) => m,
                         None => return EventResult::Continue,
                     };
-                    active_move.id.clone()
+                    active_move.clone()
                 };
 
                 battle.get_move_hit_data(target, &move_id).z_broke_protect = true;

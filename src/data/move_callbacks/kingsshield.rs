@@ -91,7 +91,7 @@ pub mod condition {
                 (
                     active_move.flags.protect,
                     active_move.category == crate::move_types::MoveCategory::Status,
-                    active_move.id.clone(),
+                    active_move.clone(),
                     active_move.is_z,
                     active_move.is_max
                 )
@@ -112,7 +112,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                if let Some(ref move_id) = battle.active_move.as_ref().map(|m| m.id.clone()) {
+                if let Some(ref move_id) = battle.active_move.as_ref().map(|m| m.clone()) {
                     if let Some(hit_data) = target_pokemon.get_move_hit_data_mut(move_id) {
                         hit_data.z_broke_protect = true;
                     }
