@@ -41,7 +41,8 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
             None => return EventResult::Continue,
         };
         // Check if Pokemon holds a Memory item
-        if let Some(ref item_id) = pokemon_pokemon.item {
+        let item_id = &pokemon_pokemon.item;
+        if !item_id.is_empty() {
             if let Some(item_data) = battle.dex.get_item_by_id(item_id) {
                 // Memory items have onMemory handler that returns the type
                 // For now, just use default "Normal" type
@@ -57,7 +58,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 
     // Set the move's type to the result
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.move_type = Some(new_type.to_owned());
+        active_move.move_type = new_type.to_owned();
     }
 
     EventResult::Continue
