@@ -16,12 +16,34 @@ use crate::event::EventResult;
 ///     return move.basePower;
 /// }
 pub fn base_power_callback(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // Get the target
+    let target = match target_pos {
+        Some(pos) => match battle.pokemon_at(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        },
+        None => return EventResult::Continue,
+    };
+
+    // Get the active move
+    let active_move = match &battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // You can't get here unless the pursuit succeeds
+    // if (target.beingCalledBack || target.switchFlag)
+    if target.being_called_back || target.switch_flag {
+        // Note: JS has this.debug call which we don't have infrastructure for yet
+        // this.debug('Pursuit damage boost');
+        return EventResult::Number(active_move.base_power * 2);
+    }
+
+    EventResult::Number(active_move.base_power)
 }
 
 /// beforeTurnCallback(pokemon) {
