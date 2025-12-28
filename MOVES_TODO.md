@@ -154,12 +154,12 @@ Moves with callbacks: 373
 - [ ] fling - Fling (Physical, Dark) - 2 callbacks: onPrepareHit, condition::onUpdate
 - [x] floralhealing - Floral Healing (Status, Fairy) - 1 callback: onHit
 - [x] flowershield - Flower Shield (Status, Fairy) - 1 callback: onHitField
-- [ ] fly - Fly (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceModifyDamage
+- [x] fly - Fly (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceModifyDamage
 - [x] flyingpress - Flying Press (Physical, Fighting) - 1 callback: onEffectiveness
 - [x] focusenergy - Focus Energy (Status, Normal) - 2 callbacks: condition::onStart, condition::onModifyCritRatio
-- [ ] focuspunch - Focus Punch (Physical, Fighting) - 5 callbacks: priorityChargeCallback, beforeMoveCallback, condition::onStart, condition::onHit, condition::onTryAddVolatile
+- [x] focuspunch - Focus Punch (Physical, Fighting) - 5 callbacks: priorityChargeCallback, beforeMoveCallback, condition::onStart, condition::onHit, condition::onTryAddVolatile
 - [x] followme - Follow Me (Status, Normal) - 3 callbacks: onTry, condition::onStart, condition::onFoeRedirectTarget
-- [ ] foresight - Foresight (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
+- [x] foresight - Foresight (Status, Normal) - 4 callbacks: onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost
 - [x] forestscurse - Forest's Curse (Status, Grass) - 1 callback: onHit
 - [x] freezedry - Freeze-Dry (Special, Ice) - 1 callback: onEffectiveness
 - [ ] freezeshock - Freeze Shock (Physical, Ice) - 1 callback: onTryMove
