@@ -19,7 +19,8 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     }
 
     let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None, None);
-    EventResult::Boolean(stall_move_result)
+    // Convert Option<i32> to bool
+    EventResult::Boolean(stall_move_result.unwrap_or(0) != 0)
 }
 
 /// onHit(pokemon) {
@@ -148,7 +149,7 @@ pub mod condition {
             };
 
             if let Some(volatile) = source_pokemon.volatiles.get(&lockedmove_id) {
-                volatile.duration == 2
+                volatile.duration == Some(2)
             } else {
                 false
             }

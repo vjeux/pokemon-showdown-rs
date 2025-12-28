@@ -16,7 +16,9 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     let will_act = battle.queue.will_act();
     let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None, None);
 
-    let result = will_act && stall_move_result;
+    // Convert Option<i32> to bool: Some(x) where x != 0 is true
+    let stall_move_ok = stall_move_result.unwrap_or(0) != 0;
+    let result = will_act && stall_move_ok;
     EventResult::Boolean(result)
 }
 
