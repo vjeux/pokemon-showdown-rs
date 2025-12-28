@@ -3159,6 +3159,13 @@ pub fn use_move_inner(
         battle.try_spread_move_hit(&[target_pos], pokemon_pos, move_or_move_name)
     };
 
+    // if (moveData.selfdestruct === 'ifHit' && damage[i] !== false) {
+    //     this.battle.faint(source, source, move);
+    // }
+    if active_move.self_destruct == Some("ifHit".to_string()) && move_result {
+        battle.faint(pokemon_pos, Some(pokemon_pos), Some(move_or_move_name.as_str()));
+    }
+
     // if (move.selfBoost && moveResult) this.moveHit(pokemon, pokemon, move, move.selfBoost, false, true);
     // Self-boost is handled through move data and event system
     // This would call apply_move_secondary or similar with the selfBoost data
