@@ -10,9 +10,23 @@ use crate::event::EventResult;
 /// onTryImmunity(target) {
 ///     return !target.hasAbility('stickyhold');
 /// }
-pub fn on_try_immunity(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // return !target.hasAbility('stickyhold');
+    let has_stickyhold = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.has_ability(&["stickyhold"])
+    };
+
+    // Return the negation - if has stickyhold, return false (immune), otherwise true (not immune)
+    EventResult::Boolean(!has_stickyhold)
 }
 
 /// onHit(target, source, move) {
