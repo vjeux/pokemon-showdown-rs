@@ -14,12 +14,29 @@ use crate::event::EventResult;
 ///     return move.basePower;
 /// }
 pub fn base_power_callback(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // Get the pokemon
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    // Get the active move
+    let active_move = match &battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // if (pokemon.terastallized === 'Stellar')
+    if pokemon.terastallized.as_deref() == Some("Stellar") {
+        return EventResult::Number(100);
+    }
+
+    // return move.basePower;
+    EventResult::Number(active_move.base_power)
 }
 
 /// onPrepareHit(target, source, move) {
