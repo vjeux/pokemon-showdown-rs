@@ -67,10 +67,16 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // const oldAbility = target.setAbility('simple');
-    let old_ability = battle.set_ability(target, &ID::from("simple"), None, None);
+    let old_ability = {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.set_ability(ID::from("simple"))
+    };
 
     // if (!oldAbility) return oldAbility as false | null;
-    if !old_ability {
+    if old_ability == ID::from("") {
         return EventResult::Boolean(false);
     }
 

@@ -70,11 +70,17 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         target_pokemon.ability.clone()
     };
 
-    let old_ability = battle.set_ability(&target_ability, source, Some(target), None);
+    let old_ability = {
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.set_ability(target_ability)
+    };
 
     // if (!oldAbility) return oldAbility as false | null;
-    if matches!(old_ability, EventResult::Boolean(false) | EventResult::Stop) {
-        return old_ability;
+    if old_ability == ID::from("") {
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

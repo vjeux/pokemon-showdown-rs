@@ -143,19 +143,17 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let source = pokemon_pos;
 
     // const result = target.setStatus('slp', source, move);
-    let move_id = {
-        let active_move = match &battle.active_move {
-            Some(active_move) => &active_move.id,
+    let result = {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
             None => return EventResult::Continue,
         };
-        active_move.clone()
+        target_pokemon.set_status(ID::from("slp"))
     };
 
-    let result = battle.set_status(&ID::from("slp"), target, Some(source), Some(&move_id));
-
     // if (!result) return result;
-    if matches!(result, EventResult::Boolean(false)) {
-        return result;
+    if !result {
+        return EventResult::Boolean(false);
     }
 
     // target.statusState.time = 3;
