@@ -13,7 +13,16 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (move.type === 'Bug')
+    let is_bug = battle.active_move.as_ref()
+        .map(|m| m.move_type.as_str() == "Bug")
+        .unwrap_or(false);
+
+    if is_bug {
+        // return this.chainModify([4915, 4096]);
+        battle.chain_modify_fraction(4915, 4096);
+    }
+
     EventResult::Continue
 }
 
@@ -24,6 +33,35 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
 ///     return true;
 /// }
 pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // Check pokemon.baseSpecies.num === 493
+    let pokemon_is_arceus = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        battle.dex.get_species(pokemon.base_species.as_str())
+            .map(|s| s.num == 493)
+            .unwrap_or(false)
+    };
+
+    // Check source?.baseSpecies.num === 493
+    let source_is_arceus = if let Some(src_pos) = source_pos {
+        let source = match battle.pokemon_at(src_pos.0, src_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        battle.dex.get_species(source.base_species.as_str())
+            .map(|s| s.num == 493)
+            .unwrap_or(false)
+    } else {
+        false
+    };
+
+    if source_is_arceus || pokemon_is_arceus {
+        // return false;
+        return EventResult::Boolean(false);
+    }
+
+    // return true;
+    EventResult::Boolean(true)
 }

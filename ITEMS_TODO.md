@@ -121,7 +121,7 @@ Items with callbacks: 326
 - [ ] fistplate - Fist Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [ ] flameorb - Flame Orb (Gen 4) - 1 callback: onResidual
 - [ ] flameplate - Flame Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
-- [ ] floatstone - Float Stone (Gen 5) - 1 callback: onModifyWeight
+- [ ] floatstone - Float Stone (Gen 5) - 1 callback: onModifyWeight - NEEDS onModifyWeight(weighthg) parameter
 - [ ] floettite - Floettite (Gen 9) - 1 callback: onTakeItem
 - [ ] flyinggem - Flying Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] flyingmemory - Flying Memory (Gen 7) - 1 callback: onTakeItem

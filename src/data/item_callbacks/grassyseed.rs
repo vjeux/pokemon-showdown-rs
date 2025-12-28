@@ -13,7 +13,32 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!pokemon.ignoringItem() && this.field.isTerrain('grassyterrain'))
+    let pokemon_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let ignoring_item = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        pokemon.ignoring_item()
+    } else {
+        return EventResult::Continue;
+    };
+
+    if ignoring_item {
+        return EventResult::Continue;
+    }
+
+    // this.field.isTerrain('grassyterrain')
+    let is_grassy_terrain = battle.field.terrain.as_str() == "grassyterrain";
+
+    if is_grassy_terrain {
+        // pokemon.useItem();
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.use_item();
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -23,6 +48,15 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 ///     }
 /// }
 pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (this.field.isTerrain('grassyterrain'))
+    let is_grassy_terrain = battle.field.terrain.as_str() == "grassyterrain";
+
+    if is_grassy_terrain {
+        // pokemon.useItem();
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.use_item();
+        }
+    }
+
     EventResult::Continue
 }
