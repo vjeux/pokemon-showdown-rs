@@ -67,7 +67,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     Some(p) => p,
                     None => continue,
                 };
-                ally.has_ability(&ID::from("soundproof"))
+                ally.has_ability(&["soundproof"])
             };
 
             if has_soundproof {
@@ -84,7 +84,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                     Some(p) => p,
                     None => continue,
                 };
-                ally.has_ability(&ID::from("goodasgold"))
+                ally.has_ability(&["goodasgold"])
             };
 
             if has_goodasgold {

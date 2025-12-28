@@ -28,7 +28,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Number(5),
                 };
-                source_pokemon.has_ability(&ID::from("persistent"))
+                source_pokemon.has_ability(&["persistent"])
             };
 
             if has_persistent {
@@ -88,7 +88,7 @@ pub mod condition {
                 Some(p) => p,
                 None => false,
             };
-            source_pokemon && battle.pokemon_at(source.0, source.1).unwrap().has_ability(&ID::from("persistent"))
+            source_pokemon && battle.pokemon_at(source.0, source.1).unwrap().has_ability(&["persistent"])
         } else {
             false
         };

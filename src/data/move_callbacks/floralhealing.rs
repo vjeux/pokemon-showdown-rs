@@ -38,7 +38,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // } else {
     //     success = !!this.heal(Math.ceil(target.baseMaxhp * 0.5));
     // }
-    let is_grassy_terrain = battle.field.is_terrain(&ID::from("grassyterrain"));
+    let is_grassy_terrain = battle.field.is_terrain("grassyterrain");
 
     let heal_amount = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {

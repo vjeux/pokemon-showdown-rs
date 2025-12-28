@@ -65,7 +65,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 
     if has_healblock {
         // this.attrLastMove('[still]');
-        battle.attr_last_move("[still]");
+        battle.attr_last_move(&["[still]"]);
 
         // this.add('cant', source, 'move: Heal Block', move);
         let (source_arg, move_name) = {

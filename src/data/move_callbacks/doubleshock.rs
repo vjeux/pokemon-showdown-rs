@@ -44,7 +44,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     battle.add("-fail", &[pokemon_arg, "move: Double Shock".into()]);
 
     // this.attrLastMove('[still]');
-    battle.attr_last_move("[still]");
+    battle.attr_last_move(&["[still]"]);
 
     // return null;
     EventResult::Stop

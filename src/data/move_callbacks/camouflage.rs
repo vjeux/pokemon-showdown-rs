@@ -42,13 +42,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // } else if (this.field.isTerrain('psychicterrain')) {
     //     newType = 'Psychic';
     // }
-    if battle.field.is_terrain(&ID::from("electricterrain")) {
+    if battle.field.is_terrain("electricterrain") {
         new_type = ID::from("Electric");
-    } else if battle.field.is_terrain(&ID::from("grassyterrain")) {
+    } else if battle.field.is_terrain("grassyterrain") {
         new_type = ID::from("Grass");
-    } else if battle.field.is_terrain(&ID::from("mistyterrain")) {
+    } else if battle.field.is_terrain("mistyterrain") {
         new_type = ID::from("Fairy");
-    } else if battle.field.is_terrain(&ID::from("psychicterrain")) {
+    } else if battle.field.is_terrain("psychicterrain") {
         new_type = ID::from("Psychic");
     }
 

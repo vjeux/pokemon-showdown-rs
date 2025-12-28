@@ -35,7 +35,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (source_pokemon.status.clone(), source_pokemon.has_ability(&ID::from("comatose")))
+        (source_pokemon.status.clone(), source_pokemon.has_ability(&["comatose"]))
     };
 
     if status == Some(ID::from("slp")) || has_comatose {
@@ -77,7 +77,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_ability(&ID::from("insomnia"))
+        source_pokemon.has_ability(&["insomnia"])
     };
 
     if has_insomnia {
@@ -106,7 +106,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_ability(&ID::from("vitalspirit"))
+        source_pokemon.has_ability(&["vitalspirit"])
     };
 
     if has_vital_spirit {

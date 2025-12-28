@@ -41,7 +41,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_ability(&ID::from("megalauncher"))
+        source_pokemon.has_ability(&["megalauncher"])
     };
 
     if has_megalauncher {

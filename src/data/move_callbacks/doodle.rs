@@ -127,7 +127,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         }
 
         // this.attrLastMove('[still]');
-        battle.attr_last_move("[still]");
+        battle.attr_last_move(&["[still]"]);
 
         // return this.NOT_FAIL;
         return EventResult::Boolean(true);

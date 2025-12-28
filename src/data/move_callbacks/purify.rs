@@ -38,7 +38,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         battle.add("-fail", &[source_arg]);
 
         // this.attrLastMove('[still]');
-        battle.attr_last_move("[still]");
+        battle.attr_last_move(&["[still]"]);
 
         // return this.NOT_FAIL;
         return EventResult::NotFail;

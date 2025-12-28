@@ -42,8 +42,8 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
                 Some(p) => p,
                 None => continue,
             };
-            let has_ability = ally_pokemon.has_ability(&ID::from("plus")) ||
-                             ally_pokemon.has_ability(&ID::from("minus"));
+            let has_ability = ally_pokemon.has_ability(&["plus"]) ||
+                             ally_pokemon.has_ability(&["minus"]);
             let has_maxguard = ally_pokemon.volatiles.contains_key(&ID::from("maxguard"));
             (has_ability, has_maxguard)
         };

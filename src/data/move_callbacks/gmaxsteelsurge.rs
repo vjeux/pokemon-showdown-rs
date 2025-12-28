@@ -48,7 +48,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.has_item(&ID::from("heavydutyboots"))
+            pokemon_pokemon.has_item(&["heavydutyboots"])
         };
 
         if has_heavy_duty_boots {

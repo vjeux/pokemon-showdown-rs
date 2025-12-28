@@ -27,7 +27,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Number(5),
                 };
-                source_pokemon.has_item(&ID::from("terrainextender"))
+                source_pokemon.has_item(&["terrainextender"])
             };
 
             if has_terrain_extender {

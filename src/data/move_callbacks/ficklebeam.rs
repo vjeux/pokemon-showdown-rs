@@ -20,7 +20,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
     // if (this.randomChance(3, 10)) {
     if battle.random_chance(3, 10) {
         // this.attrLastMove('[anim] Fickle Beam All Out');
-        battle.attr_last_move("[anim] Fickle Beam All Out");
+        battle.attr_last_move(&["[anim] Fickle Beam All Out"]);
 
         // this.add('-activate', pokemon, 'move: Fickle Beam');
         let pokemon_arg = {

@@ -22,7 +22,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     if !can_switch {
         //     this.attrLastMove('[still]');
-        battle.attr_last_move("[still]");
+        battle.attr_last_move(&["[still]"]);
 
         //     this.add('-fail', source);
         let source_arg = crate::battle::Arg::Pos(source.0, source.1);

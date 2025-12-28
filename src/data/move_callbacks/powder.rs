@@ -79,7 +79,7 @@ pub mod condition {
             battle.damage(damage, pokemon, None, None);
 
             // this.attrLastMove('[still]');
-            battle.attr_last_move("[still]");
+            battle.attr_last_move(&["[still]"]);
 
             // return false;
             return EventResult::Boolean(false);

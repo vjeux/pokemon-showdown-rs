@@ -60,7 +60,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 
     if !got_hit {
         // this.attrLastMove('[still]');
-        battle.attr_last_move("[still]");
+        battle.attr_last_move(&["[still]"]);
 
         // this.add('cant', pokemon, 'Shell Trap', 'Shell Trap');
         let pokemon_arg = {

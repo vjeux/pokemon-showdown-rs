@@ -45,7 +45,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.has_item(&ID::from("abilityshield"))
+        target_pokemon.has_item(&["abilityshield"])
     };
 
     if has_ability_shield {
@@ -85,7 +85,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.has_item(&ID::from("abilityshield"))
+            pokemon_pokemon.has_item(&["abilityshield"])
         };
 
         if has_ability_shield {

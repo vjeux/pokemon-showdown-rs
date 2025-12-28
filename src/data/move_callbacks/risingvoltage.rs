@@ -24,7 +24,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     };
 
     // if (this.field.isTerrain('electricterrain') && target.isGrounded()) {
-    let is_electric_terrain = battle.is_terrain(&ID::from("electricterrain"));
+    let is_electric_terrain = battle.is_terrain("electricterrain");
     let target_is_grounded = battle.is_grounded(target);
 
     if is_electric_terrain && target_is_grounded {

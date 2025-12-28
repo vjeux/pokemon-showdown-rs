@@ -21,7 +21,7 @@ pub fn on_modify_priority(battle: &mut Battle, source_pos: Option<(usize, usize)
     };
 
     // if (this.field.isTerrain('grassyterrain') && source.isGrounded()) {
-    let is_grassy_terrain = battle.field.is_terrain(&ID::from("grassyterrain"));
+    let is_grassy_terrain = battle.field.is_terrain("grassyterrain");
 
     let is_grounded = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {

@@ -104,7 +104,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         battle.add("-fail", &[pokemon_arg, "Dynamax".into()]);
 
         //     this.attrLastMove('[still]');
-        battle.attr_last_move("[still]");
+        battle.attr_last_move(&["[still]"]);
 
         //     return null;
         return EventResult::Stop;

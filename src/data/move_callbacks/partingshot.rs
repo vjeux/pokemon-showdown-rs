@@ -36,7 +36,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.has_ability(&ID::from("mirrorarmor"))
+            target_pokemon.has_ability(&["mirrorarmor"])
         };
 
         if !has_mirrorarmor {

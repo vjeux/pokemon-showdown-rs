@@ -45,7 +45,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     // if (source.species.name === 'Hoopa') {
     if species_name == "Hoopa" {
         // this.attrLastMove('[still]');
-        battle.attr_last_move("[still]");
+        battle.attr_last_move(&["[still]"]);
 
         // this.add('-fail', source, 'move: Hyperspace Fury', '[forme]');
         let source_arg = crate::battle::Arg::Pos(source.0, source.1);
@@ -56,7 +56,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     }
 
     // this.attrLastMove('[still]');
-    battle.attr_last_move("[still]");
+    battle.attr_last_move(&["[still]"]);
 
     // this.add('-fail', source, 'move: Hyperspace Fury');
     let source_arg = crate::battle::Arg::Pos(source.0, source.1);

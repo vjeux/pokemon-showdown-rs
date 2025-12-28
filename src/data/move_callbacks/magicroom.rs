@@ -27,7 +27,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Number(5),
             };
-            source_pokemon.has_ability(&ID::from("persistent"))
+            source_pokemon.has_ability(&["persistent"])
         } else {
             false
         };
@@ -69,7 +69,7 @@ pub mod condition {
                 Some(p) => p,
                 None => false,
             };
-            source_pokemon.has_ability(&ID::from("persistent"))
+            source_pokemon.has_ability(&["persistent"])
         } else {
             false
         };

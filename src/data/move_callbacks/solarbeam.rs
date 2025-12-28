@@ -83,7 +83,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     let weather = battle.effective_weather(attacker);
     if weather == Some(ID::from("sunnyday")) || weather == Some(ID::from("desolateland")) {
         // this.attrLastMove('[still]');
-        battle.attr_last_move("[still]");
+        battle.attr_last_move(&["[still]"]);
 
         // this.addMove('-anim', attacker, move.name, defender);
         if let Some(def) = defender {
