@@ -396,7 +396,7 @@ Moves with callbacks: 373
 - [ ] teatime - Teatime (Status, Normal) - 1 callback: onHitField
 - [ ] technoblast - Techno Blast (Special, Normal) - 1 callback: onModifyType
 - [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry, condition::onStart, condition::onAccuracy, condition::onImmunity, condition::onUpdate, condition::onEnd
-- [ ] teleport - Teleport (Status, Psychic) - 1 callback: onTry
+- [x] teleport - Teleport (Status, Psychic) - 1 callback: onTry
 - [x] temperflare - Temper Flare (Physical, Fire) - 1 callback: basePowerCallback
 - [ ] terablast - Tera Blast (Special, Normal) - 4 callbacks: basePowerCallback, onPrepareHit, onModifyType, onModifyMove
 - [ ] terastarstorm - Tera Starstorm (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
@@ -405,10 +405,10 @@ Moves with callbacks: 373
 - [ ] thousandarrows - Thousand Arrows (Physical, Ground) - 1 callback: onEffectiveness
 - [x] thousandwaves - Thousand Waves (Physical, Ground) - 1 callback: onHit
 - [ ] throatchop - Throat Chop (Physical, Dark) - 5 callbacks: condition::onStart, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onEnd
-- [ ] thunder - Thunder (Special, Electric) - 1 callback: onModifyMove
-- [ ] thunderclap - Thunderclap (Special, Electric) - 1 callback: onTry
+- [x] thunder - Thunder (Special, Electric) - 1 callback: onModifyMove
+- [x] thunderclap - Thunderclap (Special, Electric) - 1 callback: onTry
 - [x] tidyup - Tidy Up (Status, Normal) - 1 callback: onHit
-- [ ] topsyturvy - Topsy-Turvy (Status, Dark) - 1 callback: onHit
+- [x] topsyturvy - Topsy-Turvy (Status, Dark) - 1 callback: onHit
 - [x] torment - Torment (Status, Dark) - 3 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove
 - [ ] toxicspikes - Toxic Spikes (Status, Poison) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
 - [ ] transform - Transform (Status, Normal) - 1 callback: onHit
@@ -421,20 +421,20 @@ Moves with callbacks: 373
 - [x] upperhand - Upper Hand (Physical, Fighting) - 1 callback: onTry
 - [ ] uproar - Uproar (Special, Normal) - 5 callbacks: onTryHit, condition::onStart, condition::onResidual, condition::onEnd, condition::onAnySetStatus
 - [x] veeveevolley - Veevee Volley (Physical, Normal) - 1 callback: basePowerCallback
-- [ ] venomdrench - Venom Drench (Status, Poison) - 1 callback: onHit
-- [ ] venoshock - Venoshock (Special, Poison) - 1 callback: onBasePower
-- [ ] wakeupslap - Wake-Up Slap (Physical, Fighting) - 2 callbacks: basePowerCallback, onHit
+- [x] venomdrench - Venom Drench (Status, Poison) - 1 callback: onHit
+- [x] venoshock - Venoshock (Special, Poison) - 1 callback: onBasePower
+- [x] wakeupslap - Wake-Up Slap (Physical, Fighting) - 2 callbacks: basePowerCallback, onHit
 - [ ] waterpledge - Water Pledge (Special, Water) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onSideEnd, condition::onModifyMove
-- [ ] watershuriken - Water Shuriken (Special, Water) - 1 callback: basePowerCallback
+- [x] watershuriken - Water Shuriken (Special, Water) - 1 callback: basePowerCallback
 - [x] watersport - Water Sport (Status, Water) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
-- [ ] waterspout - Water Spout (Special, Water) - 1 callback: basePowerCallback
+- [x] waterspout - Water Spout (Special, Water) - 1 callback: basePowerCallback
 - [x] weatherball - Weather Ball (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [ ] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
-- [ ] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
+- [x] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
 - [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
 - [x] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onModifyMove, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd (1/5 implemented)
 - [x] worryseed - Worry Seed (Status, Grass) - 3 callbacks: onTryImmunity, onTryHit, onHit
-- [ ] wringout - Wring Out (Special, Normal) - 1 callback: basePowerCallback
+- [x] wringout - Wring Out (Special, Normal) - 1 callback: basePowerCallback
 - [x] yawn - Yawn (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onEnd
 
 ## Statistics
