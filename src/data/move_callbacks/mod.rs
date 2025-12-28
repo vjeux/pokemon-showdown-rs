@@ -1106,7 +1106,7 @@ pub fn dispatch_on_use_move_message(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "magnitude" => magnitude::on_use_move_message(battle, pokemon_pos),
+        "magnitude" => magnitude::on_use_move_message(battle, pokemon_pos, None, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1134,20 +1134,20 @@ pub fn dispatch_condition_duration_callback(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "auroraveil" => auroraveil::condition::duration_callback(battle, source_pos),
-        "electricterrain" => electricterrain::condition::duration_callback(battle, source_pos),
-        "grassyterrain" => grassyterrain::condition::duration_callback(battle, source_pos),
-        "gravity" => gravity::condition::duration_callback(battle, source_pos),
-        "healblock" => healblock::condition::duration_callback(battle, source_pos),
-        "lightscreen" => lightscreen::condition::duration_callback(battle, source_pos),
-        "magicroom" => magicroom::condition::duration_callback(battle, source_pos),
-        "mistyterrain" => mistyterrain::condition::duration_callback(battle, source_pos),
-        "psychicterrain" => psychicterrain::condition::duration_callback(battle, source_pos),
-        "reflect" => reflect::condition::duration_callback(battle, source_pos),
-        "safeguard" => safeguard::condition::duration_callback(battle, source_pos),
-        "tailwind" => tailwind::condition::duration_callback(battle, source_pos),
-        "trickroom" => trickroom::condition::duration_callback(battle, source_pos),
-        "wonderroom" => wonderroom::condition::duration_callback(battle, source_pos),
+        "auroraveil" => auroraveil::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "electricterrain" => electricterrain::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "grassyterrain" => grassyterrain::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "gravity" => gravity::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "healblock" => healblock::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "lightscreen" => lightscreen::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "magicroom" => magicroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "mistyterrain" => mistyterrain::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "psychicterrain" => psychicterrain::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "reflect" => reflect::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "safeguard" => safeguard::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "tailwind" => tailwind::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "trickroom" => trickroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
+        "wonderroom" => wonderroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id)),
         _ => EventResult::Continue,
     }
 }
