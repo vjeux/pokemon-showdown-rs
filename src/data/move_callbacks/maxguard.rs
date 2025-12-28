@@ -87,7 +87,7 @@ pub mod condition {
 
         // const bypassesMaxGuard = [...]
         // if (bypassesMaxGuard.includes(move.id)) return;
-        let move_id = battle.active_move.as_ref().map(|m| m.as_str()).unwrap_or("");
+        let move_id = battle.active_move.as_ref().map(|m| m.id.as_str()).unwrap_or("");
         let bypasses_max_guard = matches!(move_id,
             "acupressure" | "afteryou" | "allyswitch" | "aromatherapy" | "aromaticmist" |
             "coaching" | "confide" | "copycat" | "curse" | "decorate" | "doomdesire" |
@@ -106,7 +106,6 @@ pub mod condition {
         //     this.add('-activate', target, 'move: Max Guard');
         // }
         let smart_target = battle.active_move.as_ref()
-            .and_then(|m| battle.dex.get_move_by_id(m))
             .and_then(|m| m.smart_target);
 
         if let Some(true) = smart_target {

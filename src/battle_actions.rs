@@ -134,6 +134,7 @@ pub struct ActiveMove {
     pub ignore_offensive: bool,
     pub ignore_negative_offensive: bool,
     pub ignore_positive_defensive: bool,
+    pub infiltrates: bool,
     pub will_crit: Option<bool>,
     pub force_stab: bool,
     pub crit_ratio: i32,
@@ -191,7 +192,7 @@ pub struct ActiveMove {
 }
 
 /// Move flags
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct MoveFlags {
     pub contact: bool,
     pub protect: bool,
@@ -207,16 +208,18 @@ pub struct MoveFlags {
     pub wind: bool,
     pub cant_use_twice: bool,
     pub future_move: bool,
+    pub reflectable: bool,
+    pub snatch: bool,
 }
 
 /// Max move data
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct MaxMoveData {
     pub base_power: i32,
 }
 
 /// Z-move data
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct ZMoveData {
     pub base_power: Option<i32>,
     pub boost: Option<BoostsTable>,
@@ -224,7 +227,7 @@ pub struct ZMoveData {
 }
 
 /// Secondary effect data
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct SecondaryEffect {
     pub chance: Option<i32>,
     pub boosts: Option<BoostsTable>,
@@ -234,7 +237,7 @@ pub struct SecondaryEffect {
 }
 
 /// Self effect data
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct SelfEffect {
     pub boosts: Option<BoostsTable>,
     pub chance: Option<i32>,
@@ -2819,12 +2822,10 @@ pub fn use_move_inner(
     //     move.priority = this.battle.activeMove.priority;
     //     if (!move.hasBounced) move.pranksterBoosted = this.battle.activeMove.pranksterBoosted;
     // }
-    if let Some(ref active_move_id) = battle.active_move {
-        if let Some(battle_active_move) = battle.dex.get_active_move(active_move_id.as_str()) {
-            active_move.priority = battle_active_move.priority;
-            if !active_move.has_bounced {
-                active_move.prankster_boosted = battle_active_move.prankster_boosted;
-            }
+    if let Some(ref battle_active_move) = battle.active_move {
+        active_move.priority = battle_active_move.priority;
+        if !active_move.has_bounced {
+            active_move.prankster_boosted = battle_active_move.prankster_boosted;
         }
     }
 

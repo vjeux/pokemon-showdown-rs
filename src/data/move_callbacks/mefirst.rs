@@ -35,14 +35,21 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     let action = action.unwrap();
 
     // const move = this.dex.getActiveMove(action.move.id);
-    let move_id = action.choice.move_id.clone();
+    let move_id = match &action {
+        crate::battle_queue::Action::Move(move_action) => move_action.move_id.clone(),
+        _ => return EventResult::Boolean(false),
+    };
     let move_data = match battle.dex.get_move_by_id(&move_id) {
         Some(m) => m,
         None => return EventResult::Boolean(false),
     };
 
     // if (action.zmove || move.isZ || move.isMax) return false;
-    if action.choice.zmove || move_data.is_z_or_max_powered {
+    let zmove = match &action {
+        crate::battle_queue::Action::Move(move_action) => move_action.zmove.is_some(),
+        _ => false,
+    };
+    if zmove || move_data.is_z_or_max_powered {
         return EventResult::Boolean(false);
     }
 

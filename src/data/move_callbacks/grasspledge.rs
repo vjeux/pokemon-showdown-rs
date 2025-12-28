@@ -61,14 +61,22 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     // for (const action of this.queue.list as MoveAction[]) {
     // We need to iterate through the queue to find ally pledge moves
     let mut ally_pledge_action_index = None;
+    let mut ally_pokemon_pos = None;
 
     for (i, action) in battle.queue.list.iter().enumerate() {
-        // if (!action.move || !action.pokemon?.isActive || action.pokemon.fainted || action.maxMove || action.zmove) { continue; }
-        if action.move_id.is_none() || action.pokemon.is_none() {
+        // Only process Move actions
+        let move_action = match action {
+            crate::battle_queue::Action::Move(ma) => ma,
+            _ => continue,
+        };
+
+        // Skip if maxMove or zmove
+        if move_action.max_move.is_some() || move_action.zmove.is_some() {
             continue;
         }
 
-        let action_pokemon = action.pokemon.unwrap();
+        // Get action pokemon position
+        let action_pokemon = (move_action.side_index, move_action.pokemon_index);
 
         // Check if pokemon is active
         let is_active = {
@@ -96,20 +104,14 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             continue;
         }
 
-        // Skip if maxMove or zmove
-        if action.max_move || action.zmove {
-            continue;
-        }
-
         // if (action.pokemon.isAlly(source) && ['waterpledge', 'firepledge'].includes(action.move.id)) {
         let is_ally = action_pokemon.0 == source.0;
 
         if is_ally {
-            if let Some(ref move_id) = action.move_id {
-                if move_id == &ID::from("waterpledge") || move_id == &ID::from("firepledge") {
-                    ally_pledge_action_index = Some(i);
-                    break;
-                }
+            if move_action.move_id == ID::from("waterpledge") || move_action.move_id == ID::from("firepledge") {
+                ally_pledge_action_index = Some(i);
+                ally_pokemon_pos = Some(action_pokemon);
+                break;
             }
         }
     }
@@ -120,7 +122,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 
         // this.add('-waiting', source, action.pokemon);
         let source_arg = crate::battle::Arg::Pos(source.0, source.1);
-        let ally_pos = battle.queue.list[action_index].pokemon.unwrap();
+        let ally_pos = ally_pokemon_pos.unwrap();
         let ally_arg = crate::battle::Arg::Pos(ally_pos.0, ally_pos.1);
         battle.add("-waiting", &[source_arg, ally_arg]);
 

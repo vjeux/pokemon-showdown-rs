@@ -83,21 +83,19 @@ pub mod condition {
 
         // if (!move.flags['protect']) {
         let has_protect_flag = battle.active_move.as_ref()
-            .and_then(|m| battle.dex.get_move_by_id(m))
             .map(|m| m.flags.protect)
             .unwrap_or(false);
 
         if !has_protect_flag {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
-            let move_id = battle.active_move.as_ref().map(|m| m.as_str()).unwrap_or("");
+            let move_id = battle.active_move.as_ref().map(|m| m.id.as_str()).unwrap_or("");
             if move_id == "gmaxoneblow" || move_id == "gmaxrapidflow" {
                 return EventResult::Continue;
             }
 
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             let is_z_or_max = battle.active_move.as_ref()
-                .and_then(|m| battle.dex.get_move_by_id(m))
-                .map(|m| m.is_z_or_max_powered)
+                .map(|m| m.is_z || m.is_max)
                 .unwrap_or(false);
 
             if is_z_or_max {

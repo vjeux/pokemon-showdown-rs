@@ -23,11 +23,11 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // }
     // return move.basePower;
     let active_move = match &battle.active_move {
-        Some(active_move) => &active_move.id,
+        Some(active_move) => active_move,
         None => return EventResult::Continue,
     };
 
-    if active_move.source_effect.as_ref().map(|se| se.id == ID::from("round")).unwrap_or(false) {
+    if active_move.source_effect.as_ref().map(|se| se == &ID::from("round")).unwrap_or(false) {
         battle.debug("BP doubled");
         return EventResult::Number(active_move.base_power * 2);
     }
@@ -64,23 +64,20 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     for (i, action) in queue_list.iter().enumerate() {
-        if action.pokemon.is_none() || action.choice.is_none() {
-            continue;
-        }
+        match action {
+            crate::battle_queue::Action::Move(move_action) => {
+                // Skip if maxMove or zmove
+                if move_action.max_move.is_some() || move_action.zmove.is_some() {
+                    continue;
+                }
 
-        if action.max_move || action.z_move {
-            continue;
-        }
-
-        if let Some(ref choice) = action.choice {
-            if choice == "move" {
-                if let Some(ref move_id) = action.move_id {
-                    if move_id == &ID::from("round") {
-                        battle.prioritize_action(i, &active_move_id);
-                        return EventResult::Continue;
-                    }
+                // Check if move is 'round'
+                if move_action.move_id == ID::from("round") {
+                    battle.prioritize_action(i, &active_move_id);
+                    return EventResult::Continue;
                 }
             }
+            _ => continue,
         }
     }
 

@@ -109,6 +109,7 @@ pub struct Pokemon {
     // Identity
     pub name: String,
     pub species_id: ID,
+    pub base_species: ID,
     pub level: u8,
     pub gender: Gender,
     pub happiness: u8,
@@ -128,6 +129,7 @@ pub struct Pokemon {
     pub maxhp: i32,
     pub base_maxhp: i32,
     pub hp: i32,
+    pub max_hp_undynamaxed: i32,
 
     // Ability
     pub base_ability: ID,

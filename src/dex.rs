@@ -177,6 +177,10 @@ pub struct MoveData {
     pub tracks_target: Option<bool>,
     #[serde(rename = "smartTarget", default)]
     pub smart_target: Option<bool>,
+    #[serde(rename = "baseMove", default)]
+    pub base_move: Option<ID>,
+    #[serde(rename = "isZOrMaxPowered", default)]
+    pub is_z_or_max_powered: bool,
 }
 
 fn default_crit_ratio() -> i32 {
@@ -482,6 +486,8 @@ pub struct AbilityData {
     pub rating: Option<f64>,
     #[serde(default)]
     pub flags: HashMap<String, i32>,
+    #[serde(default)]
+    pub effect_type: Option<String>,
 }
 
 /// Item data
@@ -494,8 +500,15 @@ pub struct ItemData {
     pub desc: Option<String>,
     #[serde(rename = "isChoice", default)]
     pub is_choice: bool,
+    #[serde(rename = "isBerry", default)]
+    pub is_berry: bool,
+    #[serde(rename = "isGem", default)]
+    pub is_gem: bool,
     #[serde(default)]
     pub fling: Option<FlingData>,
+    /// Natural Gift data (for berries)
+    #[serde(rename = "naturalGift", default)]
+    pub natural_gift: Option<serde_json::Value>,
     /// Type for Plate items (e.g., "Fire" for Flame Plate)
     #[serde(rename = "onPlate", default)]
     pub on_plate: Option<String>,

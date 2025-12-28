@@ -118,6 +118,16 @@ pub struct EffectState {
     pub side: Option<usize>,
     /// Target side index (for side conditions)
     pub target_side: Option<usize>,
+    /// Source effect that caused this effect
+    pub source_effect: Option<ID>,
+    /// Source slot (for slot conditions)
+    pub source_slot: Option<usize>,
+    /// Hit count (for multi-hit moves like Rollout)
+    pub hit_count: Option<i32>,
+    /// Contact hit count (for Rocky Helmet, etc.)
+    pub contact_hit_count: Option<i32>,
+    /// Prankster boosted flag (for priority moves affected by Prankster)
+    pub prankster_boosted: bool,
     /// Custom data storage (for effect-specific state)
     pub data: std::collections::HashMap<String, serde_json::Value>,
 }
