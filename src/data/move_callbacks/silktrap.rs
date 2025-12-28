@@ -219,7 +219,7 @@ pub mod condition {
             };
             active_move.id.clone()
         };
-        let makes_contact = battle.check_move_makes_contact(&move_id, source, target);
+        let makes_contact = battle.check_move_makes_contact(&move_id, source);
         if makes_contact {
             battle.boost(&[("spe", -1)], source, Some(target), Some("silktrap"));
         }
@@ -264,7 +264,7 @@ pub mod condition {
                 };
                 active_move.id.clone()
             };
-            let makes_contact = battle.check_move_makes_contact(&move_id, source, target);
+            let makes_contact = battle.check_move_makes_contact(&move_id, source);
             if makes_contact {
                 // this.boost({ spe: -1 }, source, target, this.dex.getActiveMove("Silk Trap"));
                 battle.boost(&[("spe", -1)], source, Some(target), Some("silktrap"));

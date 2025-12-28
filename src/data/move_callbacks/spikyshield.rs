@@ -206,7 +206,7 @@ pub mod condition {
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     this.damage(source.baseMaxhp / 8, source, target);
         // }
-        let makes_contact = battle.check_move_makes_contact(&move_id, source, target);
+        let makes_contact = battle.check_move_makes_contact(&move_id, source);
         if makes_contact {
             let base_max_hp = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -249,7 +249,7 @@ pub mod condition {
             (active_move.is_z_or_max_powered, active_move.id.clone())
         };
 
-        let makes_contact = battle.check_move_makes_contact(&move_id, source, target);
+        let makes_contact = battle.check_move_makes_contact(&move_id, source);
 
         if is_z_or_max_powered && makes_contact {
             // this.damage(source.baseMaxhp / 8, source, target);

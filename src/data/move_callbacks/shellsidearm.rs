@@ -152,7 +152,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         let hint_string = format!("{} Shell Side Arm", category);
-        battle.hint(&hint_string);
+        battle.hint(&hint_string, true, None);
     }
 
     EventResult::Continue
@@ -186,7 +186,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
         };
 
         let hint_string = format!("{} Shell Side Arm", category);
-        battle.hint(&hint_string);
+        battle.hint(&hint_string, true, None);
     }
 
     EventResult::Continue
