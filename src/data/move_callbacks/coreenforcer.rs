@@ -48,7 +48,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         target_pokemon.newly_switched
     };
 
-    let will_move = battle.queue.will_move(target);
+    let will_move = battle.queue.will_move(target.0, target.1);
 
     if newly_switched || will_move.is_some() {
         // return;
@@ -105,7 +105,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
         target_pokemon.newly_switched
     };
 
-    let will_move = battle.queue.will_move(target);
+    let will_move = battle.queue.will_move(target.0, target.1);
 
     if newly_switched || will_move.is_some() {
         // return;

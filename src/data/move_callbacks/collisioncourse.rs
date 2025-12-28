@@ -34,7 +34,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.run_effectiveness(&move_id, battle)
+        target_pokemon.run_effectiveness(&move_id)
     };
 
     if effectiveness > 0.0 {

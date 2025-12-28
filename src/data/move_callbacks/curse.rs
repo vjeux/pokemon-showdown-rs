@@ -29,7 +29,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_type(&ID::from("ghost"), battle)
+        source_pokemon.has_type(&ID::from("ghost"))
     };
 
     if !source_has_ghost {
@@ -78,7 +78,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_type(&ID::from("ghost"), battle)
+        source_pokemon.has_type(&ID::from("ghost"))
     };
 
     if !source_has_ghost {
@@ -126,7 +126,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         source_pokemon.maxhp / 2
     };
 
-    battle.direct_damage(damage, source, Some(source));
+    battle.direct_damage(damage, Some(source), Some(source), None);
 
     EventResult::Continue
 }
@@ -182,7 +182,7 @@ pub mod condition {
             pokemon_pokemon.base_maxhp / 4
         };
 
-        battle.damage(damage, pokemon);
+        battle.damage(damage, Some(pokemon), None, None, false);
 
         EventResult::Continue
     }
