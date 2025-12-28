@@ -27,7 +27,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     let source = source_pos;
 
     // if (this.field.getPseudoWeather('Gravity')) {
-    let has_gravity = battle.has_pseudo_weather(&ID::from("gravity"));
+    let has_gravity = battle.field.has_pseudo_weather(&ID::from("gravity"));
 
     if has_gravity {
         // this.add('cant', source, 'move: Gravity', move);
