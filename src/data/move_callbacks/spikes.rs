@@ -85,7 +85,13 @@ pub mod condition {
 
         // if (!pokemon.isGrounded() || pokemon.hasItem('heavydutyboots')) return;
         let is_grounded = battle.is_grounded(pokemon);
-        let has_heavy_duty_boots = battle.has_item(pokemon, "heavydutyboots");
+        let has_heavy_duty_boots = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.has_item(&["heavydutyboots"])
+        };
 
         if !is_grounded || has_heavy_duty_boots {
             return EventResult::Continue;

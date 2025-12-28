@@ -47,7 +47,13 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // if (pokemon.hasItem('heavydutyboots')) return;
-        let has_heavy_duty_boots = battle.has_item(pokemon, "heavydutyboots");
+        let has_heavy_duty_boots = {
+            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_pokemon.has_item(&["heavydutyboots"])
+        };
 
         if has_heavy_duty_boots {
             return EventResult::Continue;
