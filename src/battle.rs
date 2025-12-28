@@ -4540,13 +4540,9 @@ impl Battle {
                 let foe_side = if target_pos.0 == 0 { 1 } else { 0 };
                 let foe_has_substitute = if foe_side < self.sides.len() {
                     if let Some(side) = self.sides.get(foe_side) {
-                        if let Some(active_idx) = side.active.first() {
-                            if let Some(poke_idx) = active_idx {
-                                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                                    pokemon.volatiles.contains_key(&substitute_id)
-                                } else {
-                                    false
-                                }
+                        if let Some(&Some(poke_idx)) = side.active.first() {
+                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                pokemon.volatiles.contains_key(&substitute_id)
                             } else {
                                 false
                             }
@@ -5205,11 +5201,9 @@ impl Battle {
     // 	return num;
     // }
     //
-
     // =========================================================================
     // Priority and Speed Sorting Methods (ported from battle.ts)
     // =========================================================================
-
     /// Compare priority of two actions/handlers
     /// Equivalent to battle.ts comparePriority()
     /// Returns negative if a comes first, positive if b comes first, 0 if equal
