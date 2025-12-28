@@ -122,9 +122,21 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         battle.queue.prioritize_action(ally_pos.0, ally_pos.1);
 
         // this.add('-waiting', source, action.pokemon);
-        let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+        let source_arg = {
+            let pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon)
+        };
         let ally_pos = ally_pokemon_pos.unwrap();
-        let ally_arg = crate::battle::Arg::Pos(ally_pos.0, ally_pos.1);
+        let ally_arg = {
+            let pokemon = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon)
+        };
         battle.add("-waiting", &[source_arg, ally_arg]);
 
         // return null;

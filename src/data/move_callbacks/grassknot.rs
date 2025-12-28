@@ -93,7 +93,13 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     if has_dynamax {
         // this.add('-fail', source, 'move: Grass Knot', '[from] Dynamax');
-        let source_arg = crate::battle::Arg::Pos(source.0, source.1);
+        let source_arg = {
+            let pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            crate::battle::Arg::from(pokemon)
+        };
         battle.add("-fail", &[source_arg, "move: Grass Knot".into(), "[from] Dynamax".into()]);
 
         // this.attrLastMove('[still]');
