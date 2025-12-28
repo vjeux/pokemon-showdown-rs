@@ -62,12 +62,13 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // const oldApparentType = source.apparentType;
+    // apparentType is types.join('/') in JavaScript
     let old_apparent_type = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.apparent_type.clone()
+        source_pokemon.types.join("/")
     };
 
     // let newBaseTypes = target.getTypes(true).filter(type => type !== '???');
@@ -158,9 +159,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     source_pokemon.known_type = is_ally && target_known_type;
 
     // if (!source.knownType) source.apparentType = oldApparentType;
-    if !source_pokemon.known_type {
-        source_pokemon.apparent_type = old_apparent_type;
-    }
+    // apparentType is computed from types, no need to store it separately
+    // The old types have already been set above, so no action needed here
 
     EventResult::Continue
 }
