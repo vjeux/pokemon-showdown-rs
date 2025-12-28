@@ -1879,9 +1879,9 @@ pub fn dispatch_condition_on_side_start(
         "grasspledge" => grasspledge::condition::on_side_start(battle),
         "lightscreen" => lightscreen::condition::on_side_start(battle),
         "luckychant" => luckychant::condition::on_side_start(battle),
-        "matblock" => matblock::condition::on_side_start(battle),
+        "matblock" => matblock::condition::on_side_start(battle, None, Some(source_pos)),
         "mist" => mist::condition::on_side_start(battle),
-        "quickguard" => quickguard::condition::on_side_start(battle),
+        "quickguard" => quickguard::condition::on_side_start(battle, None, Some(source_pos)),
         "reflect" => reflect::condition::on_side_start(battle),
         "safeguard" => safeguard::condition::on_side_start(battle, Some(source_pos)),
         "spikes" => spikes::condition::on_side_start(battle),
@@ -1890,7 +1890,7 @@ pub fn dispatch_condition_on_side_start(
         "tailwind" => tailwind::condition::on_side_start(battle, Some(source_pos)),
         "toxicspikes" => toxicspikes::condition::on_side_start(battle),
         "waterpledge" => waterpledge::condition::on_side_start(battle),
-        "wideguard" => wideguard::condition::on_side_start(battle),
+        "wideguard" => wideguard::condition::on_side_start(battle, None, Some(source_pos)),
         _ => EventResult::Continue,
     }
 }
@@ -1902,7 +1902,7 @@ pub fn dispatch_condition_on_source_accuracy(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "lockon" => lockon::condition::on_source_accuracy(battle, source_pos),
+        "lockon" => lockon::condition::on_source_accuracy(battle, 0, None, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1914,7 +1914,7 @@ pub fn dispatch_condition_on_source_base_power(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "bounce" => bounce::condition::on_source_base_power(battle, source_pos),
+        "bounce" => bounce::condition::on_source_base_power(battle, 0, None, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1926,7 +1926,7 @@ pub fn dispatch_condition_on_source_invulnerability(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "lockon" => lockon::condition::on_source_invulnerability(battle, source_pos),
+        "lockon" => lockon::condition::on_source_invulnerability(battle, None, Some(source_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1939,11 +1939,11 @@ pub fn dispatch_condition_on_source_modify_damage(
     target_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "dig" => dig::condition::on_source_modify_damage(battle, source_pos, target_pos),
-        "dive" => dive::condition::on_source_modify_damage(battle, source_pos, target_pos),
-        "fly" => fly::condition::on_source_modify_damage(battle, source_pos, target_pos),
-        "glaiverush" => glaiverush::condition::on_source_modify_damage(battle, source_pos, target_pos),
-        "minimize" => minimize::condition::on_source_modify_damage(battle, source_pos, target_pos),
+        "dig" => dig::condition::on_source_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
+        "dive" => dive::condition::on_source_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
+        "fly" => fly::condition::on_source_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
+        "glaiverush" => glaiverush::condition::on_source_modify_damage(battle),
+        "minimize" => minimize::condition::on_source_modify_damage(battle, 0, Some(source_pos), Some(target_pos), move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1957,13 +1957,13 @@ pub fn dispatch_condition_on_start(
     match move_id {
         "allyswitch" => allyswitch::condition::on_start(battle, source_pos),
         "aquaring" => aquaring::condition::on_start(battle, source_pos),
-        "attract" => attract::condition::on_start(battle, source_pos),
+        "attract" => attract::condition::on_start(battle, source_pos, None, None),
         "banefulbunker" => banefulbunker::condition::on_start(battle, Some(source_pos)),
         "beakblast" => beakblast::condition::on_start(battle, source_pos),
         "bide" => bide::condition::on_start(battle, source_pos),
         "burningbulwark" => burningbulwark::condition::on_start(battle, Some(source_pos)),
-        "charge" => charge::condition::on_start(battle, source_pos),
-        "counter" => counter::condition::on_start(battle, source_pos),
+        "charge" => charge::condition::on_start(battle, source_pos, None, None),
+        "counter" => counter::condition::on_start(battle, None, Some(source_pos), move_id),
         "curse" => curse::condition::on_start(battle, source_pos),
         "destinybond" => destinybond::condition::on_start(battle, source_pos),
         "disable" => disable::condition::on_start(battle, source_pos),
