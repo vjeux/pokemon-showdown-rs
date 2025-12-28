@@ -55,7 +55,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     battle.hint("Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.", false, None);
 
     // return null;
-    EventResult::Fail
+    EventResult::Stop
 }
 
 /// onModifyType(move, pokemon) {
