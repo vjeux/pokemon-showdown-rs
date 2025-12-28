@@ -11,10 +11,37 @@ use crate::event::EventResult;
 ///     return target.hasType(source.getTypes());
 /// }
 pub fn on_try_immunity(
-    _battle: &mut Battle,
-    _target_pos: Option<(usize, usize)>,
-    _source_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // return target.hasType(source.getTypes());
+    let source_types = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.get_types(false)
+    };
+
+    let has_shared_type = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        source_types.iter().any(|type_name| target_pokemon.has_type(type_name))
+    };
+
+    EventResult::Boolean(has_shared_type)
 }
