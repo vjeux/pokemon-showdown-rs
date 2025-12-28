@@ -4,7 +4,23 @@
 
 **Current Status:** 116 TODO callbacks remaining (out of ~700+ original callbacks)
 
-**Recently Completed in Latest Session:** 4 callbacks using existing infrastructure
+**Recently Completed in This Session:** Checklist cleanup - marked 13 previously completed files
+- fly.rs: All callbacks (onTryMove, condition::onInvulnerability, condition::onSourceModifyDamage)
+- focuspunch.rs: All callbacks (priorityChargeCallback, beforeMoveCallback, condition::onStart, condition::onHit, condition::onTryAddVolatile)
+- foresight.rs: All callbacks (onTryHit, condition::onStart, condition::onNegateImmunity, condition::onModifyBoost)
+- freezeshock.rs: onTryMove callback
+- furycutter.rs: All callbacks (basePowerCallback, condition::onStart, condition::onRestart)
+- heatcrash.rs: All callbacks (basePowerCallback, onTryHit)
+- heavyslam.rs: All callbacks (basePowerCallback, onTryHit)
+- healingwish.rs: All callbacks (onTryHit, condition::onSwitchIn, condition::onSwap)
+- psychicterrain.rs: All callbacks (condition::durationCallback, condition::onTryHit, condition::onBasePower, condition::onFieldStart, condition::onFieldEnd)
+- quickguard.rs: All callbacks (onTry, onHitSide, condition::onSideStart, condition::onTryHit)
+- rage.rs: All callbacks (condition::onStart, condition::onHit, condition::onBeforeMove)
+- ragepowder.rs: All callbacks (onTry, condition::onStart, condition::onFoeRedirectTarget)
+- ragingbull.rs: All callbacks (onTryHit, onModifyType)
+- rapidspin.rs: All callbacks (onAfterHit, onAfterSubDamage)
+
+**Previously Completed:** 15 callbacks (4 from latest active implementation + 11 simple message callbacks)
 - throatchop.rs: condition::on_disable_move - Disables moves with sound flag
 - taunt.rs: condition::on_disable_move - Disables Status moves except Me First
 - healblock.rs: condition::on_disable_move - Disables moves with heal flag
