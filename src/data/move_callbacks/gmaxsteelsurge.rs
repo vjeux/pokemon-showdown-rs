@@ -70,9 +70,9 @@ pub mod condition {
             };
             // Run effectiveness for Steel-type Stealth Rock
             // The move is Stealth Rock but we need to treat it as Steel type
-            let effectiveness = pokemon_pokemon.run_effectiveness_for_type(&ID::from("steel"), battle);
+            let effectiveness = pokemon_pokemon.run_effectiveness("steel");
             // Clamp between -6 and 6
-            effectiveness.max(-6).min(6)
+            battle.clamp_int_range(effectiveness, Some(-6), Some(6))
         };
 
         // this.damage(pokemon.maxhp * (2 ** typeMod) / 8);

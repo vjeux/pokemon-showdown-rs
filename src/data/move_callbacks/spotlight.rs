@@ -80,7 +80,7 @@ pub mod condition {
         let move_data = battle.dex.get_move_by_id(&ID::from(move_id));
         let move_target = move_data.map(|m| m.target.clone()).unwrap_or_default();
 
-        let is_valid = battle.is_valid_target(effect_state_target, source, &move_target);
+        let is_valid = battle.valid_target(effect_state_target, source, &move_target);
 
         if is_valid {
             // this.debug("Spotlight redirected target of move");

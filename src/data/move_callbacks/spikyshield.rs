@@ -179,7 +179,9 @@ pub mod condition {
         //     this.add('-activate', target, 'move: Protect');
         // }
         if smart_target.unwrap_or(false) {
-            battle.set_active_move_smart_target(false);
+            if let Some(ref mut active_move) = battle.active_move {
+                active_move.smart_target = Some(false);
+            }
         } else {
             let target_arg = {
                 let target_pokemon = match battle.pokemon_at(target.0, target.1) {

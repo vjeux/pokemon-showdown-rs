@@ -60,7 +60,13 @@ pub mod condition {
         }
 
         // const typeMod = this.clampIntRange(pokemon.runEffectiveness(this.dex.getActiveMove('stealthrock')), -6, 6);
-        let effectiveness = battle.run_effectiveness(pokemon, &ID::from("stealthrock"));
+        let effectiveness = {
+            let pokemon_data = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_data.run_effectiveness("rock")
+        };
         let type_mod = battle.clamp_int_range(effectiveness, Some(-6), Some(6));
 
         // this.damage(pokemon.maxhp * (2 ** typeMod) / 8);
