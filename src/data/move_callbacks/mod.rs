@@ -1561,7 +1561,7 @@ pub fn dispatch_condition_on_foe_trap_pokemon(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "skydrop" => skydrop::condition::on_foe_trap_pokemon(battle, source_pos),
+        "skydrop" => skydrop::condition::on_foe_trap_pokemon(battle),
         _ => EventResult::Continue,
     }
 }
@@ -1595,10 +1595,10 @@ pub fn dispatch_condition_on_immunity(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "dig" => dig::condition::on_immunity(battle, source_pos),
-        "dive" => dive::condition::on_immunity(battle, source_pos),
-        "magnetrise" => magnetrise::condition::on_immunity(battle, source_pos),
-        "telekinesis" => telekinesis::condition::on_immunity(battle, source_pos),
+        "dig" => dig::condition::on_immunity(battle),
+        "dive" => dive::condition::on_immunity(battle),
+        "magnetrise" => magnetrise::condition::on_immunity(battle),
+        "telekinesis" => telekinesis::condition::on_immunity(battle),
         _ => EventResult::Continue,
     }
 }
@@ -1637,8 +1637,8 @@ pub fn dispatch_condition_on_modify_boost(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "foresight" => foresight::condition::on_modify_boost(battle, source_pos),
-        "miracleeye" => miracleeye::condition::on_modify_boost(battle, source_pos),
+        "foresight" => foresight::condition::on_modify_boost(battle),
+        "miracleeye" => miracleeye::condition::on_modify_boost(battle),
         _ => EventResult::Continue,
     }
 }
@@ -1780,7 +1780,7 @@ pub fn dispatch_condition_on_residual(
         "saltcure" => saltcure::condition::on_residual(battle, source_pos),
         "syrupbomb" => syrupbomb::condition::on_residual(battle, source_pos),
         "uproar" => uproar::condition::on_residual(battle, Some(source_pos)),
-        "wish" => wish::condition::on_residual(battle, source_pos),
+        "wish" => wish::condition::on_residual(battle),
         _ => EventResult::Continue,
     }
 }
@@ -1794,7 +1794,7 @@ pub fn dispatch_condition_on_restart(
     match move_id {
         "allyswitch" => allyswitch::condition::on_restart(battle, source_pos),
         "charge" => charge::condition::on_restart(battle, source_pos),
-        "furycutter" => furycutter::condition::on_restart(battle, source_pos),
+        "furycutter" => furycutter::condition::on_restart(battle),
         "gmaxchistrike" => gmaxchistrike::condition::on_restart(battle, source_pos),
         "healblock" => healblock::condition::on_restart(battle, source_pos),
         "helpinghand" => helpinghand::condition::on_restart(battle, source_pos),
@@ -1828,11 +1828,11 @@ pub fn dispatch_condition_on_side_end(
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "auroraveil" => auroraveil::condition::on_side_end(battle, source_pos),
-        "firepledge" => firepledge::condition::on_side_end(battle, source_pos),
-        "gmaxcannonade" => gmaxcannonade::condition::on_side_end(battle, source_pos),
-        "gmaxvinelash" => gmaxvinelash::condition::on_side_end(battle, source_pos),
-        "gmaxvolcalith" => gmaxvolcalith::condition::on_side_end(battle, source_pos),
+        "auroraveil" => auroraveil::condition::on_side_end(battle),
+        "firepledge" => firepledge::condition::on_side_end(battle),
+        "gmaxcannonade" => gmaxcannonade::condition::on_side_end(battle),
+        "gmaxvinelash" => gmaxvinelash::condition::on_side_end(battle),
+        "gmaxvolcalith" => gmaxvolcalith::condition::on_side_end(battle),
         "gmaxwildfire" => gmaxwildfire::condition::on_side_end(battle, source_pos),
         "grasspledge" => grasspledge::condition::on_side_end(battle, source_pos),
         "lightscreen" => lightscreen::condition::on_side_end(battle, source_pos),
