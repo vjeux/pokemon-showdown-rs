@@ -2,16 +2,21 @@
 
 ## Summary
 
-**Current Status:** 113 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 109 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Total Session Progress:**
-- **Callbacks implemented**: 3 total (1 this session + 2 previous session)
-  - This session: substitute.rs: condition::on_end
+- **Callbacks implemented**: 7 total (5 this session + 2 previous session)
+  - This session:
+    - substitute.rs: condition::on_end
+    - trick.rs: on_try_immunity
+    - switcheroo.rs: on_try_immunity
+    - throatchop.rs: condition::on_before_move, condition::on_modify_move
   - Previous session: swallow.rs: onTry, onHit
-- **Files marked complete**: 45 total (18 this session + 27 previous session)
+- **Files marked complete**: 46 total (1 additional + 18 earlier + 27 previous session)
+  - Now complete: throatchop
   - This session: takeheart, temperflare, upperhand, veeveevolley, teleport, thunder, thunderclap, topsyturvy, venomdrench, venoshock, wakeupslap, watershuriken, waterspout, wildboltstorm, wringout, tailwind, transform, trickortreat
   - Previous session: synthesis, synchronoise, + 25 others
-- **Partial implementations documented**: 13 moves now show partial completion status with ✓ markers
+- **Partial implementations documented**: 15 moves now show partial completion status with ✓ markers (added trick, switcheroo)
 
 **Previously Completed:** 15 callbacks (4 from latest active implementation + 11 simple message callbacks)
 - throatchop.rs: condition::on_disable_move - Disables moves with sound flag
@@ -389,7 +394,7 @@ Moves with callbacks: 373
 - [x] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail
 - [x] superfang - Super Fang (Physical, Normal) - 1 callback: damageCallback
 - [x] swallow - Swallow (Status, Normal) - 2 callbacks: onTry, onHit
-- [ ] switcheroo - Switcheroo (Status, Dark) - 2 callbacks: onTryImmunity, onHit
+- [ ] switcheroo - Switcheroo (Status, Dark) - 2 callbacks: onTryImmunity ✓, onHit (1/2 implemented)
 - [x] synchronoise - Synchronoise (Special, Psychic) - 1 callback: onTryImmunity
 - [x] synthesis - Synthesis (Status, Grass) - 1 callback: onHit
 - [ ] syrupbomb - Syrup Bomb (Special, Grass) - 4 callbacks: condition::onStart ✓, condition::onUpdate, condition::onResidual, condition::onEnd ✓ (2/4 implemented)
@@ -408,7 +413,7 @@ Moves with callbacks: 373
 - [ ] thief - Thief (Physical, Dark) - 1 callback: onAfterHit
 - [ ] thousandarrows - Thousand Arrows (Physical, Ground) - 1 callback: onEffectiveness
 - [x] thousandwaves - Thousand Waves (Physical, Ground) - 1 callback: onHit
-- [ ] throatchop - Throat Chop (Physical, Dark) - 5 callbacks: condition::onStart ✓, condition::onDisableMove ✓, condition::onBeforeMove, condition::onModifyMove, condition::onEnd ✓ (3/5 implemented)
+- [x] throatchop - Throat Chop (Physical, Dark) - 5 callbacks: condition::onStart, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onEnd
 - [x] thunder - Thunder (Special, Electric) - 1 callback: onModifyMove
 - [x] thunderclap - Thunderclap (Special, Electric) - 1 callback: onTry
 - [x] tidyup - Tidy Up (Status, Normal) - 1 callback: onHit
@@ -416,7 +421,7 @@ Moves with callbacks: 373
 - [x] torment - Torment (Status, Dark) - 3 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove
 - [ ] toxicspikes - Toxic Spikes (Status, Poison) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
 - [x] transform - Transform (Status, Normal) - 1 callback: onHit
-- [ ] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity, onHit
+- [ ] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity ✓, onHit (1/2 implemented)
 - [x] trickortreat - Trick-or-Treat (Status, Ghost) - 1 callback: onHit
 - [x] trickroom - Trick Room (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd (1/4 implemented)
 - [x] tripleaxel - Triple Axel (Physical, Ice) - 1 callback: basePowerCallback
