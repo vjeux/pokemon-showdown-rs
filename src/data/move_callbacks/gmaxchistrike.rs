@@ -17,7 +17,7 @@ pub mod condition {
     ///         this.add('-start', target, 'move: G-Max Chi Strike');
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // this.effectState.layers = 1;
         if let Some(effect_state) = &mut battle.current_effect_state {
             effect_state.data.insert("layers".to_string(), serde_json::Value::Number(1.into()));
@@ -53,7 +53,7 @@ pub mod condition {
     ///         this.add('-start', target, 'move: G-Max Chi Strike');
     ///     }
     /// }
-    pub fn on_restart(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_restart(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // if (this.effectState.layers >= 3) return false;
         let layers = battle.current_effect_state.as_ref()
             .and_then(|es| es.data.get("layers"))

@@ -4,14 +4,14 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
 /// onTry() {
 ///     return this.field.isWeather(['hail', 'snowscape']);
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // return this.field.isWeather(['hail', 'snowscape']);
     let weather_id = &battle.field.weather;
     let is_weather_valid = weather_id == &ID::from("hail") || weather_id == &ID::from("snowscape");
@@ -28,7 +28,7 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
         // if (source?.hasItem('lightclay')) {
         //     return 8;
         // }
@@ -60,7 +60,7 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_any_modify_damage(battle: &mut Battle, damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_modify_damage(battle: &mut Battle, _damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // Get target and source positions
         let target = match target_pos {
             Some(pos) => pos,
@@ -121,7 +121,7 @@ pub mod condition {
     /// onSideStart(side) {
     ///     this.add('-sidestart', side, 'move: Aurora Veil');
     /// }
-    pub fn on_side_start(battle: &mut Battle) -> EventResult {
+    pub fn on_side_start(_battle: &mut Battle) -> EventResult {
         // TODO: Side parameter missing from signature - should be (battle: &mut Battle, side_idx: usize)
         // For now, the event system should handle adding the side context
         // this.add('-sidestart', side, 'move: Aurora Veil');
@@ -132,7 +132,7 @@ pub mod condition {
     /// onSideEnd(side) {
     ///     this.add('-sideend', side, 'move: Aurora Veil');
     /// }
-    pub fn on_side_end(battle: &mut Battle) -> EventResult {
+    pub fn on_side_end(_battle: &mut Battle) -> EventResult {
         // TODO: Side parameter missing from signature - should be (battle: &mut Battle, side_idx: usize)
         // For now, the event system should handle adding the side context
         // this.add('-sideend', side, 'move: Aurora Veil');

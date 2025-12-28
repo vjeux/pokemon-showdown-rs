@@ -18,7 +18,7 @@ pub mod condition {
     ///         this.hint(`In Gen 8+, Wish will never resolve when used on the ${this.turn}th turn.`);
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -27,7 +27,7 @@ pub mod condition {
     ///     if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
     ///     target.side.removeSlotCondition(this.getAtSlot(this.effectState.sourceSlot), 'wish');
     /// }
-    pub fn on_residual(battle: &mut Battle) -> EventResult {
+    pub fn on_residual(_battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -40,7 +40,7 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_end(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

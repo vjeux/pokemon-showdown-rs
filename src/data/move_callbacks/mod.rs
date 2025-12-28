@@ -1473,7 +1473,7 @@ pub fn dispatch_condition_on_faint(
 pub fn dispatch_condition_on_field_end(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
         "electricterrain" => electricterrain::condition::on_field_end(battle),
@@ -1494,7 +1494,7 @@ pub fn dispatch_condition_on_field_end(
 pub fn dispatch_condition_on_field_restart(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
         "echoedvoice" => echoedvoice::condition::on_field_restart(battle),
@@ -1533,7 +1533,7 @@ pub fn dispatch_condition_on_field_start(
 pub fn dispatch_condition_on_foe_before_move(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
         "imprison" => imprison::condition::on_foe_before_move(battle, move_id),
@@ -1572,7 +1572,7 @@ pub fn dispatch_condition_on_foe_redirect_target(
 pub fn dispatch_condition_on_foe_trap_pokemon(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
         "skydrop" => skydrop::condition::on_foe_trap_pokemon(battle),
@@ -1648,7 +1648,7 @@ pub fn dispatch_condition_on_modify_accuracy(
 pub fn dispatch_condition_on_modify_boost(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
         "foresight" => foresight::condition::on_modify_boost(battle),
@@ -1706,7 +1706,7 @@ pub fn dispatch_condition_on_modify_spe(
 pub fn dispatch_condition_on_modify_type(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
         "electrify" => electrify::condition::on_modify_type(battle, move_id),
@@ -1839,7 +1839,7 @@ pub fn dispatch_condition_on_set_status(
 pub fn dispatch_condition_on_side_end(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
         "auroraveil" => auroraveil::condition::on_side_end(battle),
@@ -1864,7 +1864,7 @@ pub fn dispatch_condition_on_side_end(
 pub fn dispatch_condition_on_side_restart(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
         "spikes" => spikes::condition::on_side_restart(battle),

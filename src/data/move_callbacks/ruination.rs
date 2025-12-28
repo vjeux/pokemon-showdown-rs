@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// damageCallback(pokemon, target) {
 ///     return this.clampIntRange(Math.floor(target.getUndynamaxedHP() / 2), 1);
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,

@@ -12,8 +12,8 @@ use crate::event::EventResult;
 ///     if (!target.addType('Grass')) return false;
 ///     this.add('-start', target, 'typeadd', 'Grass', '[from] move: Forest\'s Curse');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     let target = match target_pos {
         Some(pos) => pos,

@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         delete move.flags['contact'];
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // onModifyMove(move, source) {
@@ -143,7 +143,7 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 /// onTry(source, target) {
 ///     return !target.fainted;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // onTry(source, target) {
     //     return !target.fainted;
     // }
@@ -370,7 +370,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 /// onHit(target, source) {
 ///     if (target.hp) this.add('-end', target, 'Sky Drop');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // onHit(target, source) {
     //     if (target.hp) this.add('-end', target, 'Sky Drop');
     // }
@@ -453,7 +453,7 @@ pub mod condition {
         // We need to get the defender from the current context
         // In this callback, the defender would be accessed through the event context
         // For now, we'll implement by setting trapped on the effect source
-        if let Some(source) = effect_source {
+        if let Some(_source) = effect_source {
             // battle.setTrapped(source, true);
             // TODO: Implement battle.set_trapped
         }
@@ -468,7 +468,7 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_foe_before_move(battle: &mut Battle, move_id: &str) -> EventResult {
+    pub fn on_foe_before_move(battle: &mut Battle, _move_id: &str) -> EventResult {
         // onFoeBeforeMove(attacker, defender, move) {
         //     if (attacker === this.effectState.source) {
         //         attacker.activeMoveActions--;
@@ -486,7 +486,7 @@ pub mod condition {
 
         // The attacker would be passed via event context
         // For this implementation, we check if the current actor is the effect source
-        if let Some(source) = effect_source {
+        if let Some(_source) = effect_source {
             // TODO: Implement battle.decrement_active_move_actions
             battle.debug("Sky drop nullifying.");
             return EventResult::Stop;
@@ -500,7 +500,7 @@ pub mod condition {
     ///     if (this.effectState.source.fainted) return;
     ///     return this.effectState.source;
     /// }
-    pub fn on_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_redirect_target(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
         // onRedirectTarget(target, source, source2) {
         //     if (source !== this.effectState.target) return;
         //     if (this.effectState.source.fainted) return;
@@ -626,7 +626,7 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_any_base_power(battle: &mut Battle, base_power: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         use crate::dex_data::ID;
 
         // onAnyBasePower(basePower, target, source, move) {

@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onModifyMove(move) {
 ///     if (this.field.isWeather(['hail', 'snowscape'])) move.accuracy = true;
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (this.field.isWeather(['hail', 'snowscape'])) move.accuracy = true;
     if battle.field.is_weather_any(&["hail", "snowscape"]) {
         // move.accuracy = true;

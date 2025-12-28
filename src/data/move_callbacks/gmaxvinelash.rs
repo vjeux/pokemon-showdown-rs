@@ -15,7 +15,7 @@ pub mod condition {
     ///     this.add('-sidestart', targetSide, 'G-Max Vine Lash');
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         // this.add('-sidestart', targetSide, 'G-Max Vine Lash');
         if let Some(effect_state) = &battle.current_effect_state {
@@ -34,7 +34,7 @@ pub mod condition {
     ///     if (!target.hasType('Grass')) this.damage(target.baseMaxhp / 6, target);
     /// }
     pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         let target = match target_pos {
             Some(pos) => pos,

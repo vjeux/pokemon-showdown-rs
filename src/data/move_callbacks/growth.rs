@@ -10,8 +10,8 @@ use crate::event::EventResult;
 /// onModifyMove(move, pokemon) {
 ///     if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather())) move.boosts = { atk: 2, spa: 2 };
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     let pokemon = pokemon_pos;
 

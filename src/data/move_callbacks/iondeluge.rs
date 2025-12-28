@@ -15,7 +15,7 @@ pub mod condition {
     ///     this.add('-fieldactivate', 'move: Ion Deluge');
     ///     this.hint(`Normal-type moves become Electric-type after using ${sourceEffect}.`);
     /// }
-    pub fn on_field_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
         // this.add('-fieldactivate', 'move: Ion Deluge');
         battle.add("-fieldactivate", &["move: Ion Deluge".into()]);
 
@@ -34,8 +34,8 @@ pub mod condition {
     ///         this.debug(move.name + "'s type changed to Electric");
     ///     }
     /// }
-    pub fn on_modify_type(battle: &mut Battle, move_id: &str) -> EventResult {
-        use crate::dex_data::ID;
+    pub fn on_modify_type(battle: &mut Battle, _move_id: &str) -> EventResult {
+        
 
         // if (move.type === 'Normal') {
         //     move.type = 'Electric';

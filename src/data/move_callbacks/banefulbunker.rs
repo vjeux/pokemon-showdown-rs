@@ -4,14 +4,14 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     let will_act = battle.queue.will_act();
     let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None, None);
@@ -25,7 +25,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // pokemon.addVolatile('stall');
     let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
@@ -180,7 +180,7 @@ pub mod condition {
     ///         source.trySetStatus('psn', target);
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
         // Get source from target_pos (in condition context, pokemon_pos is the protected pokemon, target is the attacker)
         let source = match target_pos {
             Some(pos) => pos,
@@ -194,7 +194,7 @@ pub mod condition {
         };
 
         // Get the move data
-        let move_data = match battle.dex.get_move_by_id(&move_id) {
+        let _move_data = match battle.dex.get_move_by_id(&move_id) {
             Some(m) => m,
             None => return EventResult::Continue,
         };

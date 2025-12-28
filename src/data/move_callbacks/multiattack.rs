@@ -11,8 +11,8 @@ use crate::event::EventResult;
 ///     if (pokemon.ignoringItem()) return;
 ///     move.type = this.runEvent('Memory', pokemon, null, move, 'Normal');
 /// }
-pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+    
 
     let pokemon = pokemon_pos;
 
@@ -43,7 +43,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
         // Check if Pokemon holds a Memory item
         let item_id = &pokemon_pokemon.item;
         if !item_id.is_empty() {
-            if let Some(item_data) = battle.dex.get_item_by_id(item_id) {
+            if let Some(_item_data) = battle.dex.get_item_by_id(item_id) {
                 // Memory items have onMemory handler that returns the type
                 // For now, just use default "Normal" type
                 // TODO: Implement proper item onMemory callback

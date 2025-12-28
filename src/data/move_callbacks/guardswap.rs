@@ -5,7 +5,6 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// onHit(target, source) {

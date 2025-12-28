@@ -18,8 +18,8 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-        use crate::dex_data::ID;
+    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+        
 
         // if (source?.hasAbility('persistent')) {
         let has_persistent = if let Some(source) = source_pos {
@@ -68,7 +68,7 @@ pub mod condition {
     ///         this.singleEvent('End', mon.getItem(), mon.itemState, mon);
     ///     }
     /// }
-    pub fn on_field_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
         use crate::dex_data::ID;
 
         // if (source?.hasAbility('persistent')) {
@@ -132,7 +132,7 @@ pub mod condition {
     /// onFieldRestart(target, source) {
     ///     this.field.removePseudoWeather('magicroom');
     /// }
-    pub fn on_field_restart(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_restart(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
         use crate::dex_data::ID;
 
         // this.field.removePseudoWeather('magicroom');

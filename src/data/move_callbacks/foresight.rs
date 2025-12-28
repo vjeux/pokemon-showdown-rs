@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTryHit(target) {
 ///     if (target.volatiles['miracleeye']) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -21,7 +21,7 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-start', pokemon, 'Foresight');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -29,7 +29,7 @@ pub mod condition {
     /// onNegateImmunity(pokemon, type) {
     ///     if (pokemon.hasType('Ghost') && ['Normal', 'Fighting'].includes(type)) return false;
     /// }
-    pub fn on_negate_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_negate_immunity(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -39,7 +39,7 @@ pub mod condition {
     ///         boosts.evasion = 0;
     ///     }
     /// }
-    pub fn on_modify_boost(battle: &mut Battle) -> EventResult {
+    pub fn on_modify_boost(_battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

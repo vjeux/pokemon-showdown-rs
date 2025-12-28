@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -25,7 +25,7 @@ pub mod condition {
     /// onSwitchIn(target) {
     ///     this.singleEvent('Swap', this.effect, this.effectState, target);
     /// }
-    pub fn on_switch_in(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_switch_in(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -38,7 +38,7 @@ pub mod condition {
     ///         target.side.removeSlotCondition(target, 'healingwish');
     ///     }
     /// }
-    pub fn on_swap(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_swap(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

@@ -14,7 +14,7 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-singlemove', pokemon, 'Rage');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -24,7 +24,7 @@ pub mod condition {
     ///         this.boost({ atk: 1 });
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -33,7 +33,7 @@ pub mod condition {
     ///     this.debug('removing Rage before attack');
     ///     pokemon.removeVolatile('rage');
     /// }
-    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_before_move(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

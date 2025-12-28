@@ -19,7 +19,7 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         use crate::dex_data::ID;
 
         // const boostedMoves = [
@@ -57,7 +57,7 @@ pub mod condition {
     ///     }
     ///     return accuracy;
     /// }
-    pub fn on_accuracy(battle: &mut Battle, accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_accuracy(_battle: &mut Battle, accuracy: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         use crate::dex_data::ID;
 
         // const boostedMoves = [

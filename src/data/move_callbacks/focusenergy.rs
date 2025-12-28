@@ -21,7 +21,7 @@ pub mod condition {
     ///         this.add('-start', target, 'move: Focus Energy');
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         use crate::dex_data::ID;
 
         let target = match target_pos {
@@ -75,7 +75,7 @@ pub mod condition {
     /// onModifyCritRatio(critRatio) {
     ///     return critRatio + 2;
     /// }
-    pub fn on_modify_crit_ratio(battle: &mut Battle, crit_ratio: i32) -> EventResult {
+    pub fn on_modify_crit_ratio(_battle: &mut Battle, crit_ratio: i32) -> EventResult {
         // return critRatio + 2;
         EventResult::Number(crit_ratio + 2)
     }

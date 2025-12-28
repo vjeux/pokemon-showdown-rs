@@ -6,7 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::{ID, Gender};
+use crate::dex_data::Gender;
 
 /// onTryImmunity(pokemon, source) {
 ///     return (pokemon.gender === 'M' && source.gender === 'F') || (pokemon.gender === 'F' && source.gender === 'M');

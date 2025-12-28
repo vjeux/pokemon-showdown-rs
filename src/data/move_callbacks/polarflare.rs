@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         move.willChangeForme = true;
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -42,7 +42,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 ///         pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -74,7 +74,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, us
     };
 
     // pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
-    let target_forme = format!("Ramnarok{}", forme);
+    let _target_forme = format!("Ramnarok{}", forme);
     // TODO: Implement forme_change method in Battle
     // battle.forme_change(...);
 

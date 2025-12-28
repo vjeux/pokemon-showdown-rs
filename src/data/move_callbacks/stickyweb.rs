@@ -14,7 +14,7 @@ pub mod condition {
     /// onSideStart(side) {
     ///     this.add('-sidestart', side, 'move: Sticky Web');
     /// }
-    pub fn on_side_start(battle: &mut Battle) -> EventResult {
+    pub fn on_side_start(_battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -24,7 +24,7 @@ pub mod condition {
     ///     this.add('-activate', pokemon, 'move: Sticky Web');
     ///     this.boost({ spe: -1 }, pokemon, pokemon.side.foe.active[0], this.dex.getActiveMove('stickyweb'));
     /// }
-    pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_switch_in(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

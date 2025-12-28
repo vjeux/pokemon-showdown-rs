@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTry(source) {
 ///     if (source.volatiles['stockpile'] && source.volatiles['stockpile'].layers >= 3) return false;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -28,7 +28,7 @@ pub mod condition {
     ///     if (curDef !== target.boosts.def) this.effectState.def--;
     ///     if (curSpD !== target.boosts.spd) this.effectState.spd--;
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -43,7 +43,7 @@ pub mod condition {
     ///     if (curDef !== target.boosts.def) this.effectState.def--;
     ///     if (curSpD !== target.boosts.spd) this.effectState.spd--;
     /// }
-    pub fn on_restart(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_restart(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -60,7 +60,7 @@ pub mod condition {
     ///         this.hint("In Gen 7, Stockpile keeps track of how many times it successfully altered each stat individually.");
     ///     }
     /// }
-    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_end(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

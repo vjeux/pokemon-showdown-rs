@@ -18,7 +18,7 @@ use crate::event::EventResult;
 ///     attacker.addVolatile('twoturnmove', defender);
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

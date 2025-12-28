@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // if (move.sourceEffect === 'round') {
@@ -47,7 +47,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 ///         }
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // for (const action of this.queue.list as MoveAction[]) {
@@ -58,7 +58,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     //     }
     // }
     let queue_list = battle.queue.list.clone();
-    let active_move_id = {
+    let _active_move_id = {
         let active_move = match &battle.active_move {
             Some(active_move) => &active_move.id,
             None => return EventResult::Continue,
@@ -66,7 +66,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         active_move.clone()
     };
 
-    for (i, action) in queue_list.iter().enumerate() {
+    for (_i, action) in queue_list.iter().enumerate() {
         match action {
             crate::battle_queue::Action::Move(move_action) => {
                 // Skip if maxMove or zmove

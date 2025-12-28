@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onMoveFail(target, source, move) {
 ///     this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('Jump Kick'));
 /// }
-pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_move_fail(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     use crate::dex_data::ID;
 
     let source = match source_pos {

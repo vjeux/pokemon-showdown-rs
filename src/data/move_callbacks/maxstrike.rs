@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
 use crate::pokemon::Pokemon;
 use crate::dex_data::ID;

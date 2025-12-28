@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (!source.status) return false;
 ///     move.status = source.status;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;

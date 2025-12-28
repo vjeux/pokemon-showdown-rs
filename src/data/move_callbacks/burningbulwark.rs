@@ -4,14 +4,14 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     let will_act = battle.queue.will_act();
     if !will_act {
@@ -26,7 +26,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // pokemon.addVolatile('stall');
     let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
@@ -181,13 +181,13 @@ pub mod condition {
     /// }
     pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
         // Get source and target
-        let (source_pos, target) = match target_pos {
+        let (_source_pos, _target) = match target_pos {
             Some(t) => (pokemon_pos, t),
             None => return EventResult::Continue,
         };
 
         // Get the active move
-        let move_id = match &battle.active_move {
+        let _move_id = match &battle.active_move {
             Some(active_move) => active_move.id.clone(),
             None => return EventResult::Continue,
         };

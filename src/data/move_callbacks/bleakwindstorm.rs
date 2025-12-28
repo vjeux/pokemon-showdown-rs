@@ -6,14 +6,13 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::ID;
 
 /// onModifyMove(move, pokemon, target) {
 ///     if (target && ['raindance', 'primordialsea'].includes(target.effectiveWeather())) {
 ///         move.accuracy = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // if (target && ['raindance', 'primordialsea'].includes(target.effectiveWeather())) {
     let target = match target_pos {
         Some(pos) => pos,

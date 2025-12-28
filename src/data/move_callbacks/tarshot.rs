@@ -15,7 +15,7 @@ pub mod condition {
     ///     if (pokemon.terastallized) return false;
     ///     this.add('-start', pokemon, 'Tar Shot');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -26,7 +26,7 @@ pub mod condition {
     ///     if (type !== target.getTypes()[0]) return;
     ///     return typeMod + 1;
     /// }
-    pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_effectiveness(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

@@ -21,7 +21,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     use crate::dex_data::ID;
-    use std::collections::HashMap;
+    
 
     let source = source_pos;
 

@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// basePowerCallback(pokemon, target, move) {
 ///     return 50 + 50 * pokemon.side.totalFainted;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     let pokemon = pokemon_pos;
 
     // return 50 + 50 * pokemon.side.totalFainted;

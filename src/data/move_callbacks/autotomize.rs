@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onTryHit(pokemon) {
@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     // Get the pokemon (target is the user for this move)
     let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
         Some(p) => p,

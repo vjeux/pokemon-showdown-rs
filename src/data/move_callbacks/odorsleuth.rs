@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTryHit(target) {
 ///     if (target.volatiles['miracleeye']) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     let target = target_pos;

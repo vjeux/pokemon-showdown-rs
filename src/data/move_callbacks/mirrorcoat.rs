@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (!pokemon.volatiles['mirrorcoat']) return 0;
 ///     return pokemon.volatiles['mirrorcoat'].damage || 1;
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -65,7 +65,7 @@ pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
 ///     if (!source.volatiles['mirrorcoat']) return false;
 ///     if (source.volatiles['mirrorcoat'].slot === null) return false;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -97,7 +97,7 @@ pub mod condition {
     ///     this.effectState.slot = null;
     ///     this.effectState.damage = 0;
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         // this.effectState.slot = null;
         if let Some(ref mut effect_state) = battle.current_effect_state {
             effect_state.data.insert("slot".to_string(), serde_json::Value::Null);
@@ -113,8 +113,8 @@ pub mod condition {
     ///     if (source !== this.effectState.target || !this.effectState.slot) return;
     ///     return this.getAtSlot(this.effectState.slot);
     /// }
-    pub fn on_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-        use crate::dex_data::ID;
+    pub fn on_redirect_target(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+        
 
         // if (move.id !== 'mirrorcoat') return;
         if move_id != "mirrorcoat" {
@@ -140,7 +140,7 @@ pub mod condition {
         if let Some(serde_json::Value::Number(slot_num)) = effect_slot {
             if let Some(slot_val) = slot_num.as_u64() {
                 let new_target = battle.get_at_slot(Some(&slot_val.to_string()));
-                if let Some(target) = new_target {
+                if let Some(_target) = new_target {
                     // TODO: Return the new target position
                     // This needs infrastructure to return position from this event
                 }

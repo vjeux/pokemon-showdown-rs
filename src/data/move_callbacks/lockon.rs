@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTryHit(target, source) {
 ///     if (source.volatiles['lockon']) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -97,7 +97,7 @@ pub mod condition {
     /// onSourceInvulnerability(target, source, move) {
     ///     if (move && source === this.effectState.target && target === this.effectState.source) return 0;
     /// }
-    pub fn on_source_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_source_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -124,7 +124,7 @@ pub mod condition {
     /// onSourceAccuracy(accuracy, target, source, move) {
     ///     if (move && source === this.effectState.target && target === this.effectState.source) return true;
     /// }
-    pub fn on_source_accuracy(battle: &mut Battle, accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_source_accuracy(battle: &mut Battle, _accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,

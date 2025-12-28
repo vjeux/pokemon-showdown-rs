@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // if (['waterpledge', 'firepledge'].includes(move.sourceEffect)) {
@@ -53,7 +53,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 ///         }
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let source = pokemon_pos;
@@ -116,7 +116,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         }
     }
 
-    if let Some(action_index) = ally_pledge_action_index {
+    if let Some(_action_index) = ally_pledge_action_index {
         // this.queue.prioritizeAction(action, move);
         let ally_pos = ally_pokemon_pos.unwrap();
         battle.queue.prioritize_action(ally_pos.0, ally_pos.1);
@@ -158,7 +158,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///         move.sideCondition = 'firepledge';
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // if (move.sourceEffect === 'waterpledge') {
@@ -232,7 +232,7 @@ pub mod condition {
     /// onModifySpe(spe, pokemon) {
     ///     return this.chainModify(0.25);
     /// }
-    pub fn on_modify_spe(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_modify_spe(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // return this.chainModify(0.25);
         EventResult::Number(battle.chain_modify(0.25 as f32))
     }

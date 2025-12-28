@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTryHit(target) {
 ///     if (!target.newlySwitched && !this.queue.willMove(target)) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -22,7 +22,7 @@ pub mod condition {
     ///     this.effectState.multiplier = 1.5;
     ///     this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -31,7 +31,7 @@ pub mod condition {
     ///     this.effectState.multiplier *= 1.5;
     ///     this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
     /// }
-    pub fn on_restart(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_restart(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -40,7 +40,7 @@ pub mod condition {
     ///     this.debug('Boosting from Helping Hand: ' + this.effectState.multiplier);
     ///     return this.chainModify(this.effectState.multiplier);
     /// }
-    pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_base_power(_battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

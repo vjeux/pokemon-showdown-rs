@@ -17,8 +17,8 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-        use crate::dex_data::ID;
+    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+        
 
         // if (source?.hasItem('lightclay')) {
         //     return 8;
@@ -50,7 +50,7 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_any_modify_damage(battle: &mut Battle, damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_modify_damage(battle: &mut Battle, _damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,

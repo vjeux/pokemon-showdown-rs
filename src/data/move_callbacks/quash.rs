@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///     action.order = 201;
 ///     this.add('-activate', target, 'move: Quash');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,

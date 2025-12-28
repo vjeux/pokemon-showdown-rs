@@ -4,9 +4,8 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::ID;
 
 /// onTry(source) {
 ///     if (source.species.baseSpecies === 'Morpeko') {
@@ -17,7 +16,7 @@ use crate::dex_data::ID;
 ///     this.hint("Only a Pokemon whose form is Morpeko or Morpeko-Hangry can use this move.");
 ///     return null;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the source pokemon
     let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
         Some(p) => p,
@@ -68,7 +67,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 ///         move.type = 'Electric';
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
     // Get the pokemon
     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,

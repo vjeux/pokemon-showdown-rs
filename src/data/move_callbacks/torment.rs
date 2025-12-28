@@ -19,7 +19,7 @@ pub mod condition {
     ///     if (effect?.id === 'gmaxmeltdown') this.effectState.duration = 3;
     ///     this.add('-start', pokemon, 'Torment');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -27,7 +27,7 @@ pub mod condition {
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Torment');
     /// }
-    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -35,7 +35,7 @@ pub mod condition {
     /// onDisableMove(pokemon) {
     ///     if (pokemon.lastMove && pokemon.lastMove.id !== 'struggle') pokemon.disableMove(pokemon.lastMove.id);
     /// }
-    pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_disable_move(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

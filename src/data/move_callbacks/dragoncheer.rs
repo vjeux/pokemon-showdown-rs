@@ -24,7 +24,7 @@ pub mod condition {
     ///     // https://www.smogon.com/forums/threads/scarlet-violet-battle-mechanics-research.3709545/post-9894139
     ///     this.effectState.hasDragonType = target.hasType("Dragon");
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         use crate::dex_data::ID;
 
         let target = match target_pos {
@@ -91,7 +91,7 @@ pub mod condition {
     /// onModifyCritRatio(critRatio, source) {
     ///     return critRatio + (this.effectState.hasDragonType ? 2 : 1);
     /// }
-    pub fn on_modify_crit_ratio(battle: &mut Battle, crit_ratio: i32, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_modify_crit_ratio(battle: &mut Battle, crit_ratio: i32, _source_pos: Option<(usize, usize)>) -> EventResult {
         // return critRatio + (this.effectState.hasDragonType ? 2 : 1);
         let has_dragon_type = if let Some(ref effect_state) = battle.current_effect_state {
             effect_state.data.get("hasDragonType")

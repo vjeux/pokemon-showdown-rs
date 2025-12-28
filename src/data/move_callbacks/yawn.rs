@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -23,7 +23,7 @@ pub mod condition {
     /// onStart(target, source) {
     ///     this.add('-start', target, 'move: Yawn', `[of] ${source}`);
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -32,7 +32,7 @@ pub mod condition {
     ///     this.add('-end', target, 'move: Yawn', '[silent]');
     ///     target.trySetStatus('slp', this.effectState.source);
     /// }
-    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_end(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

@@ -6,7 +6,6 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::ID;
 
 /// onHit(pokemon) {
 ///     let move: Move | ActiveMove | null = this.lastMove;
@@ -18,10 +17,10 @@ use crate::dex_data::ID;
 ///     }
 ///     this.actions.useMove(move.id, pokemon);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // let move: Move | ActiveMove | null = this.lastMove;
     // if (!move) return;
-    let mut move_id = match &battle.last_move {
+    let move_id = match &battle.last_move {
         Some(id) => id.clone(),
         None => {
             // return;

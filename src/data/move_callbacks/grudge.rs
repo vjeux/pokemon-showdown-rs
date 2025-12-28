@@ -44,7 +44,7 @@ pub mod condition {
     ///         }
     ///     }
     /// }
-    pub fn on_faint(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_faint(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         use crate::dex_data::ID;
 
         // if (!source || source.fainted || !effect) return;

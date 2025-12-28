@@ -37,7 +37,7 @@ use crate::event::EventResult;
 ///     }
 ///     source.addVolatile('fling');
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -54,7 +54,7 @@ pub mod condition {
     ///     this.runEvent('AfterUseItem', pokemon, null, null, item);
     ///     pokemon.removeVolatile('fling');
     /// }
-    pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

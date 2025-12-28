@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -32,7 +32,7 @@ pub mod condition {
     ///     if (target.volatiles['smackdown'] || target.volatiles['ingrain']) return false;
     ///     this.add('-start', target, 'Telekinesis');
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -40,7 +40,7 @@ pub mod condition {
     /// onAccuracy(accuracy, target, source, move) {
     ///     if (move && !move.ohko) return true;
     /// }
-    pub fn on_accuracy(battle: &mut Battle, accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_accuracy(_battle: &mut Battle, _accuracy: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -48,7 +48,7 @@ pub mod condition {
     /// onImmunity(type) {
     ///     if (type === 'Ground') return false;
     /// }
-    pub fn on_immunity(battle: &mut Battle) -> EventResult {
+    pub fn on_immunity(_battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -59,7 +59,7 @@ pub mod condition {
     ///         this.add('-end', pokemon, 'Telekinesis', '[silent]');
     ///     }
     /// }
-    pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -67,7 +67,7 @@ pub mod condition {
     /// onEnd(target) {
     ///     this.add('-end', target, 'Telekinesis');
     /// }
-    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_end(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

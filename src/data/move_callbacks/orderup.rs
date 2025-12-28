@@ -23,7 +23,7 @@ use crate::event::EventResult;
 ///         break;
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;

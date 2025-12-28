@@ -18,8 +18,8 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-        use crate::dex_data::ID;
+    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+        
 
         // if (source?.hasAbility('persistent')) {
         if let Some(source) = source_pos {
@@ -85,7 +85,7 @@ pub mod condition {
     ///         if (applies) this.add('-activate', pokemon, 'move: Gravity');
     ///     }
     /// }
-    pub fn on_field_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
         use crate::dex_data::ID;
 
         // if (source?.hasAbility('persistent')) {
@@ -258,7 +258,7 @@ pub mod condition {
     ///     if (typeof accuracy !== 'number') return;
     ///     return this.chainModify([6840, 4096]);
     /// }
-    pub fn on_modify_accuracy(battle: &mut Battle, accuracy: i32) -> EventResult {
+    pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32) -> EventResult {
         // if (typeof accuracy !== 'number') return;
         // Already guaranteed to be a number by the type system
 
@@ -274,7 +274,7 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         let pokemon = pokemon_pos;
 
@@ -314,7 +314,7 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         let pokemon = pokemon_pos;
 
         // if (move.flags['gravity'] && !move.isZ) {
@@ -354,7 +354,7 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
         let pokemon = pokemon_pos;
 
         // if (move.flags['gravity'] && !move.isZ) {

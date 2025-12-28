@@ -302,7 +302,7 @@ pub trait Effect {
     }
 
     /// Get event callback for a given event ID
-    fn get_event_callback(&self, event_id: &str) -> Option<EventCallback> {
+    fn get_event_callback(&self, _event_id: &str) -> Option<EventCallback> {
         None
     }
 }

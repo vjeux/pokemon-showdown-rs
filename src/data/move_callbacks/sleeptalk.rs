@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTry(source) {
 ///     return source.status === 'slp' || source.hasAbility('comatose');
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // onTry(source) {
@@ -52,8 +52,8 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 ///     }
 ///     this.actions.useMove(randomMove, pokemon);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     // onHit(pokemon) {
     //     const moves = [];
@@ -128,7 +128,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (!randomMove) {
     //     return false;
     // }
-    let random_move = match random_move {
+    let _random_move = match random_move {
         Some(m) => m,
         None => return EventResult::Boolean(false),
     };

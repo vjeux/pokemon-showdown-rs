@@ -11,7 +11,7 @@ use crate::dex_data::ID;
 /// onTry(source, target) {
 ///     return !!target.item;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Boolean(false),
@@ -32,7 +32,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 /// onTryHit(target, source, move) {
 ///     this.add('-activate', target, 'move: Poltergeist', this.dex.items.get(target.item).name);
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     let target = target_pos;
 
     // this.add('-activate', target, 'move: Poltergeist', this.dex.items.get(target.item).name);

@@ -13,7 +13,7 @@ use crate::dex_data::ID;
 ///     if (target.newlySwitched || this.queue.willMove(target)) return;
 ///     target.addVolatile('gastroacid');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the target
     let target = match target_pos {
         Some(pos) => pos,
@@ -70,7 +70,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 ///     if (target.newlySwitched || this.queue.willMove(target)) return;
 ///     target.addVolatile('gastroacid');
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the target
     let target = match target_pos {
         Some(pos) => pos,

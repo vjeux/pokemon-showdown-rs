@@ -146,7 +146,7 @@ impl RandomTeamGenerator {
         ];
 
         // Pick based on Pokemon's stats
-        let bst = species.base_stats.total();
+        let _bst = species.base_stats.total();
         let atk = species.base_stats.atk;
         let spa = species.base_stats.spa;
         let spe = species.base_stats.spe;
@@ -308,7 +308,7 @@ impl RandomTeamGenerator {
     fn generate_evs(&mut self, species: &SpeciesDef) -> EVSpread {
         let atk = species.base_stats.atk;
         let spa = species.base_stats.spa;
-        let spe = species.base_stats.spe;
+        let _spe = species.base_stats.spe;
 
         // Physical attacker spread
         if atk > spa && atk > 80 {

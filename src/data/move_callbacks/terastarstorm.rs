@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_type(_battle: &mut Battle, _move_id: &str, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -25,7 +25,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 ///         move.target = 'allAdjacentFoes';
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

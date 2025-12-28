@@ -4,9 +4,8 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::ID;
 
 /// onTryMove(pokemon, target, move) {
 ///     if (pokemon.hasType('Fire')) return;
@@ -14,7 +13,7 @@ use crate::dex_data::ID;
 ///     this.attrLastMove('[still]');
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (pokemon.hasType('Fire')) return;
     let has_fire = {
         let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {

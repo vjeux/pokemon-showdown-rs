@@ -23,7 +23,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_after_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_after_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon_pos = source_pos;
@@ -145,7 +145,7 @@ pub fn on_after_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos:
 ///         }
 ///     }
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
     on_after_hit(battle, target_pos, source_pos)
 }
 

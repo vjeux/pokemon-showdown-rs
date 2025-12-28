@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
@@ -130,7 +130,7 @@ pub mod condition {
     ///     }
     ///     this.add('-activate', pokemon, 'move: Bide');
     /// }
-    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         // Get the volatile state
         let bide_id = ID::from("bide");
         let (duration, total_damage, last_damage_source) = {
@@ -170,7 +170,7 @@ pub mod condition {
 
             // target = this.effectState.lastDamageSource;
             // if (!target || !this.effectState.totalDamage) {
-            let mut target = last_damage_source;
+            let target = last_damage_source;
             if target.is_none() || total_damage == 0 {
                 // this.attrLastMove('[still]');
                 battle.attr_last_move(&["[still]"]);

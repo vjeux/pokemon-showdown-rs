@@ -46,7 +46,7 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: (usize, usize), target_po
 ///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::{ID, StatID};
+    use crate::dex_data::StatID;
 
     // if (!target) return;
     let target_pos = match target_pos {
@@ -125,7 +125,7 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 /// onAfterSubDamage(damage, target, source, move) {
 ///     if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), source_pos: (usize, usize), _move_id: &str) -> EventResult {
     // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
     let is_ally = battle.is_ally(source_pos, target_pos);
 

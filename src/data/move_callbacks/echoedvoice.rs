@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${move.basePower}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // let bp = move.basePower;
@@ -48,7 +48,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 /// onTryMove() {
 ///     this.field.addPseudoWeather('echoedvoice');
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // this.field.addPseudoWeather('echoedvoice');

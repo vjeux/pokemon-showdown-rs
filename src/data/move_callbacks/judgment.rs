@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         move.type = item.onPlate;
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
     let pokemon = pokemon_pos;
 
     // if (pokemon.ignoringItem()) return;

@@ -24,7 +24,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -140,11 +140,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 ///     target.statusState.startTime = 3;
 ///     this.heal(target.maxhp); // Aesthetic only as the healing happens after you fall asleep in-game
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let target = pokemon_pos;
-    let source = pokemon_pos;
+    let _source = pokemon_pos;
 
     // const result = target.setStatus('slp', source, move);
     let result = {

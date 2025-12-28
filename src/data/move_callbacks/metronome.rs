@@ -20,7 +20,7 @@ use crate::event::EventResult;
 ///     if (!randomMove) return false;
 ///     this.actions.useMove(randomMove, pokemon);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -30,7 +30,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     //     move.flags['metronome']
     // ));
     let all_moves = battle.dex.all_moves();
-    let mut moves: Vec<ID> = all_moves
+    let moves: Vec<ID> = all_moves
         .iter()
         .filter(|&&move_data| {
             // TODO: Add is_nonstandard field to MoveData and check it here

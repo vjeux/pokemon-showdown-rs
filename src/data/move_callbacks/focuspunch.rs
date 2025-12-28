@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// priorityChargeCallback(pokemon) {
 ///     pokemon.addVolatile('focuspunch');
 /// }
-pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn priority_charge_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -21,7 +21,7 @@ pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)
 ///         return true;
 ///     }
 /// }
-pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn before_move_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -32,7 +32,7 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-singleturn', pokemon, 'move: Focus Punch');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -42,7 +42,7 @@ pub mod condition {
     ///         this.effectState.lostFocus = true;
     ///     }
     /// }
-    pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -50,7 +50,7 @@ pub mod condition {
     /// onTryAddVolatile(status, pokemon) {
     ///     if (status.id === 'flinch') return null;
     /// }
-    pub fn on_try_add_volatile(battle: &mut Battle, status: Option<&str>, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_try_add_volatile(_battle: &mut Battle, _status: Option<&str>, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

@@ -19,8 +19,8 @@ use crate::event::EventResult;
 ///         break;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     let target = match target_pos {
         Some(pos) => pos,

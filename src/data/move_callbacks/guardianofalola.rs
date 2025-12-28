@@ -18,7 +18,7 @@ use crate::event::EventResult;
 ///     }
 ///     return this.clampIntRange(hp75, 1);
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let target = match target_pos {

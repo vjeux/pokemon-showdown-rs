@@ -26,7 +26,7 @@ use crate::event::EventResult;
 ///     this.debug(`BP: ${bp}`);
 ///     return bp;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     let pokemon = pokemon_pos;
 
     // const ratio = Math.max(Math.floor(pokemon.hp * 48 / pokemon.maxhp), 1);

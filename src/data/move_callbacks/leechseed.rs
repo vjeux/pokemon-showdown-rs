@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     return !target.hasType('Grass');
 /// }
 pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+    
 
     let target = match target_pos {
         Some(pos) => pos,

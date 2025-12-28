@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 ///     return move.basePower;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -34,7 +34,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 ///         }
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -51,7 +51,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///         move.sideCondition = 'firepledge';
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -62,7 +62,7 @@ pub mod condition {
     /// onSideStart(targetSide) {
     ///     this.add('-sidestart', targetSide, 'Fire Pledge');
     /// }
-    pub fn on_side_start(battle: &mut Battle) -> EventResult {
+    pub fn on_side_start(_battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -70,7 +70,7 @@ pub mod condition {
     /// onResidual(pokemon) {
     ///     if (!pokemon.hasType('Fire')) this.damage(pokemon.baseMaxhp / 8, pokemon);
     /// }
-    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_residual(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -78,7 +78,7 @@ pub mod condition {
     /// onSideEnd(targetSide) {
     ///     this.add('-sideend', targetSide, 'Fire Pledge');
     /// }
-    pub fn on_side_end(battle: &mut Battle) -> EventResult {
+    pub fn on_side_end(_battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

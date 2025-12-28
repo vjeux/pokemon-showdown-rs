@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     let source = source_pos;
 
     // if (!this.canSwitch(source.side)) {

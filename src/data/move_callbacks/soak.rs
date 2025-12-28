@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///     this.add('-start', target, 'typechange', 'Water');
 /// }
 pub fn on_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+    
 
     let target_pos = match target_pos {
         Some(pos) => pos,

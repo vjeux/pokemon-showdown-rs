@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([5461, 4096]);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,

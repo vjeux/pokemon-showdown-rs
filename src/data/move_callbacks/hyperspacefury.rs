@@ -21,7 +21,7 @@ use crate::event::EventResult;
 ///     this.add('-fail', source, 'move: Hyperspace Fury');
 ///     return null;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     let source = source_pos;
 
     // if (source.species.name === 'Hoopa-Unbound') {

@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    use crate::dex_data::ID;
+    
 
     let pokemon = source_pos;
     let target = target_pos;

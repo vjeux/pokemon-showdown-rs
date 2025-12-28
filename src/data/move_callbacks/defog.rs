@@ -94,7 +94,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
             // this.add('-sideend', target.side, this.dex.conditions.get(targetCondition).name, '[from] move: Defog', `[of] ${source}`);
             let (target_side_arg, source_ident, condition_name) = {
-                let target_side = match battle.sides.get(target_side_index) {
+                let _target_side = match battle.sides.get(target_side_index) {
                     Some(s) => s,
                     None => continue,
                 };
@@ -141,7 +141,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         if removed {
             // this.add('-sideend', source.side, this.dex.conditions.get(sideCondition).name, '[from] move: Defog', `[of] ${source}`);
             let (source_side_arg, source_ident, condition_name) = {
-                let source_side = match battle.sides.get(source_side_index) {
+                let _source_side = match battle.sides.get(source_side_index) {
                     Some(s) => s,
                     None => continue,
                 };

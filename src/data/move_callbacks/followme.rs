@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTry(source) {
 ///     return this.activePerHalf > 1;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // return this.activePerHalf > 1;
     let active_per_half = battle.active_per_half;
 
@@ -27,7 +27,7 @@ pub mod condition {
     ///         this.add('-singleturn', target, 'move: Follow Me');
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -66,7 +66,7 @@ pub mod condition {
     ///         return this.effectState.target;
     ///     }
     /// }
-    pub fn on_foe_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_foe_redirect_target(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // if (!this.effectState.target.isSkyDropped() && this.validTarget(this.effectState.target, source, move.target)) {
         // Get the effect state target (the Pokemon with Follow Me active)
         let effect_state_target = match &battle.current_effect_state {

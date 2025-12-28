@@ -121,7 +121,7 @@ pub mod condition {
     /// onOverrideAction(pokemon, target, move) {
     ///     if (move.id !== this.effectState.move) return this.effectState.move;
     /// }
-    pub fn on_override_action(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_override_action(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         use crate::dex_data::ID;
 
         // if (move.id !== this.effectState.move) return this.effectState.move;

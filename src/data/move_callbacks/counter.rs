@@ -12,7 +12,7 @@ use crate::dex_data::ID;
 ///     if (!pokemon.volatiles['counter']) return 0;
 ///     return pokemon.volatiles['counter'].damage || 1;
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (!pokemon.volatiles['counter']) return 0;
     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
@@ -52,7 +52,7 @@ pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
 ///     if (!source.volatiles['counter']) return false;
 ///     if (source.volatiles['counter'].slot === null) return false;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (!source.volatiles['counter']) return false;
     let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
         Some(p) => p,
@@ -82,7 +82,7 @@ pub mod condition {
     ///     this.effectState.slot = null;
     ///     this.effectState.damage = 0;
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         // this.effectState.slot = null;
         // this.effectState.damage = 0;
         if let Some(ref mut effect_state) = battle.current_effect_state {
@@ -98,7 +98,7 @@ pub mod condition {
     ///     if (source !== this.effectState.target || !this.effectState.slot) return;
     ///     return this.getAtSlot(this.effectState.slot);
     /// }
-    pub fn on_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_redirect_target(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // if (move.id !== 'counter') return;
         if move_id != "counter" {
             return EventResult::Continue;

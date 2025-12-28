@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the target
     let target = match target_pos {
         Some(pos) => pos,

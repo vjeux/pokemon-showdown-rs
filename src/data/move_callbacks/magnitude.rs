@@ -32,7 +32,7 @@ use crate::event::EventResult;
 ///         move.basePower = 150;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // const i = this.random(100);
     let i = battle.random(100);
 
@@ -73,7 +73,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 /// onUseMoveMessage(pokemon, target, move) {
 ///     this.add('-activate', pokemon, 'move: Magnitude', move.magnitude);
 /// }
-pub fn on_use_move_message(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_use_move_message(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // Get magnitude from current effect state
     let magnitude = if let Some(ref effect_state) = battle.current_effect_state {
         if let Some(mag_value) = effect_state.data.get("magnitude") {

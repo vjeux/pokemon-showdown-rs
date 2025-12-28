@@ -15,7 +15,7 @@ pub mod condition {
     ///     this.add('-sidestart', side, 'move: Toxic Spikes');
     ///     this.effectState.layers = 1;
     /// }
-    pub fn on_side_start(battle: &mut Battle) -> EventResult {
+    pub fn on_side_start(_battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -25,7 +25,7 @@ pub mod condition {
     ///     this.add('-sidestart', side, 'move: Toxic Spikes');
     ///     this.effectState.layers++;
     /// }
-    pub fn on_side_restart(battle: &mut Battle) -> EventResult {
+    pub fn on_side_restart(_battle: &mut Battle) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -43,7 +43,7 @@ pub mod condition {
     ///         pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
     ///     }
     /// }
-    pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_switch_in(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

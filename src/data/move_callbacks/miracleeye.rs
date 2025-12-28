@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTryHit(target) {
 ///     if (target.volatiles['foresight']) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     let target = target_pos;
@@ -57,7 +57,7 @@ pub mod condition {
     /// onNegateImmunity(pokemon, type) {
     ///     if (pokemon.hasType('Dark') && type === 'Psychic') return false;
     /// }
-    pub fn on_negate_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_negate_immunity(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: This callback needs type parameter support in the function signature
         // The TypeScript version receives (pokemon, type) but we only have pokemon_pos
         // For now, implementing a placeholder that always returns Continue
@@ -70,7 +70,7 @@ pub mod condition {
     ///         boosts.evasion = 0;
     ///     }
     /// }
-    pub fn on_modify_boost(battle: &mut Battle) -> EventResult {
+    pub fn on_modify_boost(_battle: &mut Battle) -> EventResult {
         // TODO: This callback needs boosts parameter support in the function signature
         // The TypeScript version receives (boosts) and modifies it in-place
         // For now, implementing a placeholder that returns Continue

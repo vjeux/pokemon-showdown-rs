@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTry(source) {
 ///     return this.activePerHalf > 1;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -21,7 +21,7 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-singleturn', pokemon, 'move: Rage Powder');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -36,7 +36,7 @@ pub mod condition {
     ///         return ragePowderUser;
     ///     }
     /// }
-    pub fn on_foe_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_foe_redirect_target(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

@@ -6,7 +6,6 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::ID;
 
 /// onBasePower(basePower, source, target, move) {
 ///     if (target.runEffectiveness(move) > 0) {
@@ -15,7 +14,7 @@ use crate::dex_data::ID;
 ///         return this.chainModify([5461, 4096]);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the target
     let target = match target_pos {
         Some(pos) => pos,

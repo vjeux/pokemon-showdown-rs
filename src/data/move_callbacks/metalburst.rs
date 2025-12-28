@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 ///     return 0;
 /// }
-pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // const lastDamagedBy = pokemon.getLastDamagedBy(true);
     let last_damaged_by = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -39,7 +39,7 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
 ///     const lastDamagedBy = source.getLastDamagedBy(true);
 ///     if (!lastDamagedBy?.thisTurn) return false;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // const lastDamagedBy = source.getLastDamagedBy(true);
     let last_damaged_by = {
         let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
@@ -68,7 +68,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 ///         targetRelayVar.target = this.getAtSlot(lastDamagedBy.slot);
 ///     }
 /// }
-pub fn on_modify_target(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_modify_target(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // Get the source
     let source = match source_pos {
         Some(pos) => pos,

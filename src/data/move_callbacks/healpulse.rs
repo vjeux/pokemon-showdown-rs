@@ -24,7 +24,7 @@ use crate::event::EventResult;
 ///     return success;
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+    
 
     let source = pokemon_pos;
     let target = match target_pos {
@@ -61,7 +61,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            ((target_pokemon.base_maxhp as f64 * 0.5).ceil() as i32)
+            (target_pokemon.base_maxhp as f64 * 0.5).ceil() as i32
         };
         success = battle.heal(heal_amount, Some(target), Some(target), None).unwrap_or(0) > 0;
     }

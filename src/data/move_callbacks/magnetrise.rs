@@ -103,7 +103,7 @@ pub mod condition {
     /// onImmunity(type) {
     ///     if (type === 'Ground') return false;
     /// }
-    pub fn on_immunity(battle: &mut Battle) -> EventResult {
+    pub fn on_immunity(_battle: &mut Battle) -> EventResult {
         // TODO: This callback needs the type parameter to work correctly
         // The TypeScript version checks: if (type === 'Ground') return false;
         // Once the event system supports passing the type parameter, implement:

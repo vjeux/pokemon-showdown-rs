@@ -37,7 +37,7 @@ pub mod condition {
     ///     this.damage(pokemon.maxhp * (2 ** typeMod) / 8);
     /// }
     pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         // onSwitchIn(pokemon) {
         //     if (pokemon.hasItem('heavydutyboots')) return;

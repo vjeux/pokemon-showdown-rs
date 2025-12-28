@@ -4,9 +4,8 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::ID;
 
 /// onHit(target) {
 ///     let newType = 'Normal';
@@ -23,7 +22,7 @@ use crate::dex_data::ID;
 ///     if (target.getTypes().join() === newType || !target.setType(newType)) return false;
 ///     this.add('-start', target, 'typechange', newType);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the target
     let target = match target_pos {
         Some(pos) => pos,

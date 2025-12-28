@@ -1238,7 +1238,7 @@ impl Battle {
     pub fn get_all_active(&self, include_fainted: bool) -> Vec<(usize, usize)> {
         let mut result = Vec::new();
         for (side_idx, side) in self.sides.iter().enumerate() {
-            for (slot, opt_idx) in side.active.iter().enumerate() {
+            for (_slot, opt_idx) in side.active.iter().enumerate() {
                 if let Some(poke_idx) = opt_idx {
                     if let Some(pokemon) = side.pokemon.get(*poke_idx) {
                         if include_fainted || !pokemon.is_fainted() {
@@ -2298,7 +2298,7 @@ impl Battle {
                 let status = if layers >= 2 { "tox" } else { "psn" };
                 self.sides[side_idx].pokemon[poke_idx].set_status(ID::new(status));
 
-                let status_msg = if layers >= 2 { "badly poisoned" } else { "poisoned" };
+                let _status_msg = if layers >= 2 { "badly poisoned" } else { "poisoned" };
                 self.add_log("-status", &[&full_name, status, &format!("[from] Toxic Spikes")]);
             }
         }
@@ -3616,7 +3616,7 @@ impl Battle {
                     }
 
                     // Check if active move ignores abilities
-                    if let Some(ref move_id) = self.active_move {
+                    if self.active_move.is_some() {
                         // Mold Breaker, Teravolt, Turboblaze
                         let ability = pokemon.ability.as_str();
                         let ignores = ability == "moldbreaker" || ability == "teravolt" || ability == "turboblaze";
@@ -3729,7 +3729,7 @@ impl Battle {
 
         // Get allies from the same side (active team)
         if let Some(side) = self.sides.get(side_idx) {
-            for (i, active_slot) in side.active.iter().enumerate() {
+            for (_i, active_slot) in side.active.iter().enumerate() {
                 if let Some(ally_idx) = active_slot {
                     let ally_pos = (side_idx, *ally_idx);
                     // Skip if it's the same pokemon
@@ -3756,7 +3756,7 @@ impl Battle {
                 };
 
                 if let Some(ally_side) = self.sides.get(ally_side_idx) {
-                    for (i, active_slot) in ally_side.active.iter().enumerate() {
+                    for (_i, active_slot) in ally_side.active.iter().enumerate() {
                         if let Some(ally_idx) = active_slot {
                             let ally_pos = (ally_side_idx, *ally_idx);
                             if let Some(ally) = ally_side.pokemon.get(*ally_idx) {
@@ -4116,7 +4116,7 @@ impl Battle {
 
                         // Check if target2 is valid (exists, is not self, has HP)
                         if let Some((ally_side, ally_pos)) = target2 {
-                            let target2_is_self = (ally_side == user_pos.0 && ally_pos == user_pos.1);
+                            let target2_is_self = ally_side == user_pos.0 && ally_pos == user_pos.1;
                             let target2_has_hp = !self.is_pokemon_fainted((ally_side, ally_pos));
                             let target_has_hp = !self.is_pokemon_fainted((target_side, target_pos));
 
@@ -6194,7 +6194,7 @@ impl Battle {
                 // Get adjacent foes for this pokemon
                 let foes = self.adjacent_foes(side_idx, poke_idx);
 
-                for (foe_side_idx, foe_idx) in foes {
+                for (_foe_side_idx, _foe_idx) in foes {
                     // TODO: Full implementation requires:
                     // 1. Check species.abilities for all ability slots
                     // 2. Check ruleTable for +hackmons and obtainableabilities
@@ -7725,7 +7725,7 @@ impl Battle {
             return "Move";
         }
         // Check if it's a condition
-        if let Some(condition) = crate::data::conditions::get_condition(effect_id) {
+        if let Some(_condition) = crate::data::conditions::get_condition(effect_id) {
             // Conditions can be Status, Volatile, Weather, Terrain, etc.
             if crate::data::conditions::is_status_condition(effect_id) {
                 return "Status";
@@ -8059,7 +8059,7 @@ impl Battle {
 
         let source = self.current_event.as_ref().and_then(|e| e.source);
         let source_pos = source.unwrap_or((0, 0));
-        let target_pos = target.unwrap_or((0, 0));
+        let _target_pos = target.unwrap_or((0, 0));
 
         match event_id {
             "AfterHit" => {
@@ -8126,8 +8126,8 @@ impl Battle {
     fn check_volatile_try_hit(
         &mut self,
         target: (usize, usize),
-        source: (usize, usize),
-        move_id: &ID,
+        _source: (usize, usize),
+        _move_id: &ID,
     ) -> bool {
         let (target_side, target_idx) = target;
 
@@ -8235,7 +8235,7 @@ impl Battle {
     fn handle_side_condition_event(
         &mut self,
         event_id: &str,
-        side_idx: usize,
+        _side_idx: usize,
         condition_id: &ID,
     ) {
         match condition_id.as_str() {
@@ -8740,7 +8740,7 @@ impl Battle {
 
                 // Get all active Pokemon on target's side (allies and self)
                 if let Some(side) = self.sides.get(target_side) {
-                    for (slot_idx, opt_poke_idx) in side.active.iter().enumerate() {
+                    for (_slot_idx, opt_poke_idx) in side.active.iter().enumerate() {
                         if let Some(poke_idx) = opt_poke_idx {
                             let ally_pos = (target_side, *poke_idx);
                             // onAlly handlers
@@ -8765,7 +8765,7 @@ impl Battle {
                 // Get all active Pokemon on opposing side(s) (foes)
                 for (side_idx, side) in self.sides.iter().enumerate() {
                     if side_idx != target_side {
-                        for (slot_idx, opt_poke_idx) in side.active.iter().enumerate() {
+                        for (_slot_idx, opt_poke_idx) in side.active.iter().enumerate() {
                             if let Some(poke_idx) = opt_poke_idx {
                                 let foe_pos = (side_idx, *poke_idx);
                                 // onFoe handlers
@@ -11309,7 +11309,7 @@ impl Battle {
         }
 
         // Fixed damage moves
-        if let Some(ref heal_tuple) = move_data.heal {
+        if let Some(_heal_tuple) = move_data.heal {
             // Heal moves have (numerator, denominator) format
             // But damage field would be different - this is actually heal, not damage
             // For actual fixed damage, we'd check move.damage field
@@ -11511,7 +11511,7 @@ impl Battle {
         // For now, implement a simplified version that just calls spreadMoveHit
         // The full implementation would have the 7-step pipeline
 
-        let mut target_list: Vec<Option<(usize, usize)>> = targets.iter().map(|&t| Some(t)).collect();
+        let target_list: Vec<Option<(usize, usize)>> = targets.iter().map(|&t| Some(t)).collect();
 
         let (damages, final_targets) = self.spread_move_hit(&target_list, pokemon_pos, move_id, false, false);
 
@@ -11686,9 +11686,9 @@ impl Battle {
         _is_secondary: bool,
         _is_self: bool,
     ) -> Vec<Option<i32>> {
-        let mut result_damages = damages.to_vec();
+        let result_damages = damages.to_vec();
 
-        for (i, &target) in targets.iter().enumerate() {
+        for (_i, &target) in targets.iter().enumerate() {
             if target.is_none() {
                 continue;
             }

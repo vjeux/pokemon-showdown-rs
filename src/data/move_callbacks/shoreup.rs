@@ -19,8 +19,8 @@ use crate::event::EventResult;
 ///     }
 ///     return success;
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     // onHit(pokemon) {
     //     let factor = 0.5;

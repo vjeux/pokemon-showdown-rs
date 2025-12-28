@@ -18,8 +18,8 @@ pub mod condition {
     ///     }
     ///     return 5;
     /// }
-    pub fn duration_callback(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-        use crate::dex_data::ID;
+    pub fn duration_callback(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+        
 
         // if (source?.hasAbility('persistent')) {
         //     this.add('-activate', source, 'ability: Persistent', '[move] Safeguard');
@@ -68,7 +68,7 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_set_status(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_set_status(battle: &mut Battle, _status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         use crate::dex_data::ID;
 
         // if (!effect || !source) return;
@@ -241,7 +241,7 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_side_start(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         // onSideStart(side, source) {
         //     if (source?.hasAbility('persistent')) {

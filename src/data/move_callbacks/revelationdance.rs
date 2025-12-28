@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///     move.type = type;
 /// }
 pub fn on_modify_type(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    use crate::dex_data::ID;
+    
 
     // const types = pokemon.getTypes();
     // let type = types[0];

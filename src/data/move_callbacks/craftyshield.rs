@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTry() {
 ///     return !!this.queue.willAct();
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // return !!this.queue.willAct();
     let will_act = battle.queue.will_act();
     EventResult::Boolean(will_act)
@@ -22,7 +22,7 @@ pub mod condition {
     /// onSideStart(target, source) {
     ///     this.add('-singleturn', source, 'Crafty Shield');
     /// }
-    pub fn on_side_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_side_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
         // this.add('-singleturn', source, 'Crafty Shield');
         let source = match source_pos {
             Some(pos) => pos,
@@ -47,8 +47,8 @@ pub mod condition {
     ///     this.add('-activate', target, 'move: Crafty Shield');
     ///     return this.NOT_FAIL;
     /// }
-    pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-        use crate::dex_data::ID;
+    pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+        
 
         // if (['self', 'all'].includes(move.target) || move.category !== 'Status') return;
         // We need to get the current move being used

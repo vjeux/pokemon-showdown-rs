@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     let source = source_pos;
 
     // if (source.activeMoveActions > 1) {

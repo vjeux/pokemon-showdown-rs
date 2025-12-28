@@ -13,8 +13,8 @@ use crate::event::EventResult;
 ///     this.attrLastMove('[still]');
 ///     return null;
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     // if (pokemon.hasType('Electric')) return;
     let pokemon = source_pos;

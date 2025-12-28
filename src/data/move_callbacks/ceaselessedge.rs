@@ -15,7 +15,7 @@ use crate::dex_data::ID;
 ///         }
 ///     }
 /// }
-pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     // if (!move.hasSheerForce && source.hp) {
     let has_sheer_force = battle.active_move_has_sheer_force();
 
@@ -51,7 +51,7 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
 ///         }
 ///     }
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // Get the source
     let source = match source_pos {
         Some(pos) => pos,

@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     pokemon.side.removeSideCondition('lightscreen');
 ///     pokemon.side.removeSideCondition('auroraveil');
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon_pos = target_pos;

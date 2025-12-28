@@ -18,7 +18,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         None => return EventResult::Continue,
     };
 
-    let source = pokemon_pos;
+    let _source = pokemon_pos;
 
     // return target.addVolatile('trapped', source, move, 'trapper');
     let result = {

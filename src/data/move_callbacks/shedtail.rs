@@ -21,7 +21,7 @@ use crate::event::EventResult;
 ///         return this.NOT_FAIL;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;
@@ -115,7 +115,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 /// onHit(target) {
 ///     this.directDamage(Math.ceil(target.maxhp / 2));
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // onHit(target) {
     //     this.directDamage(Math.ceil(target.maxhp / 2));
     // }

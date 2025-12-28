@@ -24,7 +24,7 @@ use crate::event::EventResult;
 ///     return success;
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+    
 
     let source = pokemon_pos;
     let target = match target_pos {

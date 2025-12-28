@@ -65,7 +65,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     };
 
     if should_forme_change {
-        let forme = {
+        let _forme = {
             let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -121,7 +121,7 @@ pub mod condition {
     /// onImmunity(type, pokemon) {
     ///     if (type === 'sandstorm' || type === 'hail') return false;
     /// }
-    pub fn on_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_immunity(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // This callback needs additional parameters - the immunity type
         // The signature doesn't match the TypeScript version which takes (type, pokemon)
         // TODO: This needs to be called with the type parameter to work correctly
@@ -135,7 +135,7 @@ pub mod condition {
     ///     }
     ///     return false;
     /// }
-    pub fn on_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_invulnerability(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // if (['surf', 'whirlpool'].includes(move.id)) {
         //     return;
         // }
@@ -153,7 +153,7 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // if (move.id === 'surf' || move.id === 'whirlpool') {
         //     return this.chainModify(2);
         // }

@@ -10,8 +10,8 @@ use crate::event::EventResult;
 /// onModifyType(move, pokemon) {
 ///     move.type = pokemon.hpType || 'Dark';
 /// }
-pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+    
 
     let pokemon = pokemon_pos;
 

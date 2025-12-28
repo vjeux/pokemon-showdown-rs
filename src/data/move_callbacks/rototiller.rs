@@ -26,15 +26,15 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 1, spa: 1 }, pokemon, source);
 ///     }
 /// }
-pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     let source = source_pos;
 
     // const targets: Pokemon[] = [];
     // let anyAirborne = false;
     let mut targets: Vec<(usize, usize)> = Vec::new();
-    let mut any_airborne = false;
+    let any_airborne = false;
 
     // for (const pokemon of this.getAllActive()) {
     let all_active = battle.get_all_active(false);

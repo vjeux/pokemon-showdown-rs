@@ -26,7 +26,7 @@ use crate::event::EventResult;
 ///     if (!result) return false;
 ///     if (message) this.add('-fieldactivate', 'move: Perish Song');
 /// }
-pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     use crate::dex_data::ID;
 
     let source = source_pos;

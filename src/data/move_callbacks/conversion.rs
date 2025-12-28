@@ -4,16 +4,15 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::ID;
 
 /// onHit(target) {
 ///     const type = this.dex.moves.get(target.moveSlots[0].id).type;
 ///     if (target.hasType(type) || !target.setType(type)) return false;
 ///     this.add('-start', target, 'typechange', type);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the target
     let target = match target_pos {
         Some(pos) => pos,

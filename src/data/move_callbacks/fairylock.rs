@@ -14,7 +14,7 @@ pub mod condition {
     /// onFieldStart(target) {
     ///     this.add('-fieldactivate', 'move: Fairy Lock');
     /// }
-    pub fn on_field_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_field_start(battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // this.add('-fieldactivate', 'move: Fairy Lock');
         battle.add("-fieldactivate", &["move: Fairy Lock".into()]);
 

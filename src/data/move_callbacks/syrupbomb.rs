@@ -14,7 +14,7 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-start', pokemon, 'Syrup Bomb');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -24,7 +24,7 @@ pub mod condition {
     ///         pokemon.removeVolatile('syrupbomb');
     ///     }
     /// }
-    pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -32,7 +32,7 @@ pub mod condition {
     /// onResidual(pokemon) {
     ///     this.boost({ spe: -1 }, pokemon, this.effectState.source);
     /// }
-    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_residual(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -40,7 +40,7 @@ pub mod condition {
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Syrup Bomb', '[silent]');
     /// }
-    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

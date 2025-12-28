@@ -15,7 +15,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     let pokemon = pokemon_pos;
-    let source = target_pos;
+    let _source = target_pos;
 
     // const item = pokemon.getItem();
     let (is_berry_or_gem, item_name) = {

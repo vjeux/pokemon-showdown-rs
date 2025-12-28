@@ -14,7 +14,7 @@ use crate::dex_data::ID;
 ///     pokemon.side.removeSideCondition('lightscreen');
 ///     pokemon.side.removeSideCondition('auroraveil');
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     // will shatter screens through sub, before you hit
     // pokemon.side.removeSideCondition('reflect');
     // pokemon.side.removeSideCondition('lightscreen');

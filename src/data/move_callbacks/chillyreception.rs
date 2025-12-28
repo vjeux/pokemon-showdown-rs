@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
@@ -30,7 +30,7 @@ pub mod condition {
     ///     if (move.id !== 'chillyreception') return;
     ///     this.add('-prepare', source, 'Chilly Reception', '[premajor]');
     /// }
-    pub fn on_before_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_before_move(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // if (move.id !== 'chillyreception') return;
         if move_id != "chillyreception" {
             // return;

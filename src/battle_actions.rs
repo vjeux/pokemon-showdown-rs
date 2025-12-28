@@ -705,7 +705,7 @@ impl<'a> BattleActions<'a> {
         item_mega_stone: Option<&str>,
         base_moves: &[ID],
         item_is_z_move: bool,
-        gen: u8,
+        _gen: u8,
     ) -> Option<String> {
         // Check Mega Rayquaza (requires Dragon Ascent)
         if let Some(other_formes) = species_other_formes {
@@ -805,9 +805,9 @@ impl<'a> BattleActions<'a> {
     //
     pub fn hit_step_invulnerability_event(
         targets: &[(usize, usize)],
-        attacker_flying: bool,
-        move_flags_contact: bool,
-        move_target: &str,
+        _attacker_flying: bool,
+        _move_flags_contact: bool,
+        _move_target: &str,
     ) -> Vec<(usize, usize, bool)> {
         // Returns (side_idx, pokemon_idx, is_hit)
         targets.iter().map(|&(side_idx, pokemon_idx)| {
@@ -1495,7 +1495,7 @@ impl<'a> BattleActions<'a> {
     /// Equivalent to runMegaEvo in battle-actions.ts
     /// Returns the mega forme ID if successful
     pub fn run_mega_evo_check(
-        species_name: &str,
+        _species_name: &str,
         mega_forme: Option<&str>,
         already_mega: bool,
     ) -> Option<String> {
@@ -2119,7 +2119,7 @@ impl<'a> BattleActions<'a> {
         is_self: bool,
     ) -> (SpreadMoveDamage, SpreadMoveTargets) {
         let mut damage: SpreadMoveDamage = vec![SpreadMoveDamageValue::Success; target_indices.len()];
-        let mut targets: SpreadMoveTargets = target_indices.iter()
+        let targets: SpreadMoveTargets = target_indices.iter()
             .map(|&i| SpreadMoveTarget::Target(i))
             .collect();
 

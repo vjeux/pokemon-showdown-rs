@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     // if (!target.lastMove || target.lastMove.isZOrMaxPowered || target.lastMove.isMax || target.lastMove.id === 'struggle') {
     //     return false;
     // }
@@ -73,8 +73,8 @@ pub mod condition {
     ///     }
     ///     this.effectState.move = pokemon.lastMove.id;
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-        use crate::dex_data::ID;
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+        
 
         // // The target hasn't taken its turn, or Cursed Body activated and the move was not used through Dancer or Instruct
         // if (
@@ -124,7 +124,7 @@ pub mod condition {
         //         }
         //     }
         // }
-        let has_pp = {
+        let _has_pp = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,

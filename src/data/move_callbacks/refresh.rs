@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (['', 'slp', 'frz'].includes(pokemon.status)) return false;
 ///     pokemon.cureStatus();
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;

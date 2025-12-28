@@ -12,8 +12,8 @@ use crate::event::EventResult;
 ///         this.attrLastMove('[anim] Ivy Cudgel ' + move.type);
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_prepare_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     // if (move.type !== "Grass") {
     //     this.attrLastMove('[anim] Ivy Cudgel ' + move.type);
@@ -43,8 +43,8 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///         break;
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+    
 
     let pokemon = pokemon_pos;
 
@@ -54,7 +54,7 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.species_id.as_str().clone()
+        pokemon_pokemon.species_id.as_str()
     };
 
     // case 'Ogerpon-Wellspring': case 'Ogerpon-Wellspring-Tera':

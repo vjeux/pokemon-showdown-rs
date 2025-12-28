@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
@@ -86,7 +86,7 @@ pub mod condition {
     ///     }
     ///     return false;
     /// }
-    pub fn on_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_invulnerability(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // if (['gust', 'twister', 'skyuppercut', 'thunder', 'hurricane', 'smackdown', 'thousandarrows'].includes(move.id)) {
         //     return;
         // }
@@ -106,7 +106,7 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_source_base_power(battle: &mut Battle, base_power: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_source_base_power(battle: &mut Battle, _base_power: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // if (move.id === 'gust' || move.id === 'twister') {
         //     return this.chainModify(2);
         // }

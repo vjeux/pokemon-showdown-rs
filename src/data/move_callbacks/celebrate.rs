@@ -4,13 +4,13 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onTryHit(target, source) {
 ///     this.add('-activate', target, 'move: Celebrate');
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     // this.add('-activate', target, 'move: Celebrate');
     let target_ident = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

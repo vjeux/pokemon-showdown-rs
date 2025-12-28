@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTry(source) {
 ///     return source.status === 'slp' || source.hasAbility('comatose');
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // onTry(source) {

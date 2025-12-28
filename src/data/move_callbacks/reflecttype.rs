@@ -26,7 +26,7 @@ use crate::event::EventResult;
 ///     if (!source.knownType) source.apparentType = oldApparentType;
 /// }
 pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+    
 
     let target_pos = match target_pos {
         Some(pos) => pos,

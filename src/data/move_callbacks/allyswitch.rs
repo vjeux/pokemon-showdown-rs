@@ -4,14 +4,14 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::dex_data::{ID, GameType};
 
 /// onPrepareHit(pokemon) {
 ///     return pokemon.addVolatile('allyswitch');
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // return pokemon.addVolatile('allyswitch');
     let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
@@ -40,7 +40,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///     }
 ///     this.swapPosition(pokemon, newPosition, '[from] move: Ally Switch');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // let success = true;
     let mut success = true;
 

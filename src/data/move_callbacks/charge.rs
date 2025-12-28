@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
@@ -19,7 +19,7 @@ pub mod condition {
     ///         this.add('-start', pokemon, 'Charge');
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // if (effect && ['Electromorphosis', 'Wind Power'].includes(effect.name)) {
         let is_special_ability = if let Some(eid) = effect_id {
             eid == "Electromorphosis" || eid == "Wind Power"
@@ -59,7 +59,7 @@ pub mod condition {
     ///         this.add('-start', pokemon, 'Charge');
     ///     }
     /// }
-    pub fn on_restart(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_restart(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         // Same logic as onStart
         // if (effect && ['Electromorphosis', 'Wind Power'].includes(effect.name)) {
         let is_special_ability = if let Some(eid) = effect_id {
@@ -99,7 +99,7 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
         // Get the active move
         let move_id = match &battle.active_move {
             Some(active_move) => active_move.id.clone(),
@@ -129,7 +129,7 @@ pub mod condition {
     ///         pokemon.removeVolatile('charge');
     ///     }
     /// }
-    pub fn on_move_aborted(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_move_aborted(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         // Get the move data
         let move_data = match battle.dex.get_move_by_id(&ID::from(move_id)) {
             Some(m) => m,
@@ -154,7 +154,7 @@ pub mod condition {
     ///         pokemon.removeVolatile('charge');
     ///     }
     /// }
-    pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_after_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
         // Get the active move
         let move_id = match &battle.active_move {
             Some(active_move) => active_move.id.clone(),

@@ -12,8 +12,8 @@ use crate::event::EventResult;
 ///         return priority + 1;
 ///     }
 /// }
-pub fn on_modify_priority(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_modify_priority(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    
 
     let source = match source_pos {
         Some(pos) => pos,

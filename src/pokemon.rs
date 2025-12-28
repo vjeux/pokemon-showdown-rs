@@ -2707,7 +2707,7 @@ impl Pokemon {
     // 		return damagedBy[damagedBy.length - 1];
     // 	}
     //
-    pub fn get_last_damaged_by(&self, filter_out_same_side: bool) -> Option<Attacker> {
+    pub fn get_last_damaged_by(&self, _filter_out_same_side: bool) -> Option<Attacker> {
         // TODO: Implement proper attacked_by tracking
         // For now, return None to allow compilation
         // Full implementation needs:
@@ -3045,7 +3045,7 @@ impl Pokemon {
     // 		return false;
     // 	}
     //
-    pub fn eat_item(&mut self, is_forced: bool) -> Option<ID> {
+    pub fn eat_item(&mut self, _is_forced: bool) -> Option<ID> {
         if self.item.is_empty() {
             return None;
         }

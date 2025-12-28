@@ -17,7 +17,7 @@ pub mod condition {
     ///         this.effectState.pranksterBoosted = effect.pranksterBoosted;
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -107,7 +107,7 @@ pub mod condition {
         // const newMove = this.dex.getActiveMove(move.id);
         // newMove.hasBounced = true;
         // newMove.pranksterBoosted = this.effectState.pranksterBoosted;
-        let (move_id, prankster_boosted) = {
+        let (_move_id, _prankster_boosted) = {
             let move_id = match &battle.active_move {
                 Some(active_move) => active_move.id.clone(),
                 None => return EventResult::Continue,
@@ -138,7 +138,7 @@ pub mod condition {
     ///     move.hasBounced = true; // only bounce once in free-for-all battles
     ///     return null;
     /// }
-    pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -187,7 +187,7 @@ pub mod condition {
         // newMove.hasBounced = true;
         // newMove.pranksterBoosted = false;
         // this.actions.useMove(newMove, this.effectState.target, { target: source });
-        let effect_state_target = match &battle.current_effect_state {
+        let _effect_state_target = match &battle.current_effect_state {
             Some(es) => es.target,
             None => return EventResult::Continue,
         };

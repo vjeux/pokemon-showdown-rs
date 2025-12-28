@@ -48,7 +48,7 @@ pub mod condition {
     ///     this.actions.useMove(move.id, snatchUser);
     ///     return null;
     /// }
-    pub fn on_any_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_any_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         use crate::dex_data::ID;
 
         // onAnyPrepareHit(source, target, move) {
@@ -148,7 +148,7 @@ pub mod condition {
         }
 
         // this.actions.useMove(move.id, snatchUser);
-        let move_id = ID::from(move_id);
+        let _move_id = ID::from(move_id);
         // TODO: Implement use_move method in Battle
         // battle.use_move(&move_id, snatch_user);
 

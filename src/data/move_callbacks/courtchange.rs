@@ -63,7 +63,7 @@ use crate::dex_data::GameType;
 ///     this.add('-swapsideconditions');
 ///     this.add('-activate', source, 'move: Court Change');
 /// }
-pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit_field(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
     // Get source position
     let source = match source_pos {
         Some(pos) => pos,

@@ -42,7 +42,7 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
         let pokemon = source_pos;
 
         // if (move.type === 'Fire') {

@@ -461,7 +461,7 @@ impl TeamValidator {
         let has_item_clause = format.rulesets.contains(&"Item Clause");
         let has_nickname_clause = format.rulesets.contains(&"Nickname Clause");
 
-        for (i, pokemon) in team.iter().enumerate() {
+        for (_i, pokemon) in team.iter().enumerate() {
             // Validate individual Pokemon
             errors.extend(self.validate_pokemon(pokemon, format));
 
@@ -579,7 +579,7 @@ impl TeamValidator {
         }
 
         // Check ability
-        let ability_id = ID::new(&pokemon.ability);
+        let _ability_id = ID::new(&pokemon.ability);
         if self.dex.get_ability(&pokemon.ability).is_none() && !pokemon.ability.is_empty() {
             errors.push(ValidationError::InvalidAbility {
                 pokemon: pokemon_name.clone(),
@@ -595,7 +595,7 @@ impl TeamValidator {
 
         // Check item
         if let Some(ref item) = pokemon.item {
-            let item_id = ID::new(item);
+            let _item_id = ID::new(item);
             if self.dex.get_item(item).is_none() && !item.is_empty() {
                 errors.push(ValidationError::InvalidItem {
                     pokemon: pokemon_name.clone(),
@@ -1395,7 +1395,7 @@ impl TeamValidator {
     // 	}
     //
     pub fn check_can_learn(&self, pokemon: &ValidatorSet, move_name: &str) -> Option<String> {
-        let move_id = ID::new(move_name);
+        let _move_id = ID::new(move_name);
         let species_id = ID::new(&pokemon.species);
 
         // Check move exists
@@ -1464,7 +1464,7 @@ impl TeamValidator {
         let pokemon_name = pokemon.nickname.as_ref().unwrap_or(&pokemon.species).clone();
 
         if !pokemon.ability.is_empty() {
-            let ability_id = ID::new(&pokemon.ability);
+            let _ability_id = ID::new(&pokemon.ability);
             if self.dex.get_ability(&pokemon.ability).is_none() {
                 errors.push(ValidationError::InvalidAbility {
                     pokemon: pokemon_name.clone(),
@@ -1491,7 +1491,7 @@ impl TeamValidator {
 
         if let Some(ref item) = pokemon.item {
             if !item.is_empty() {
-                let item_id = ID::new(item);
+                let _item_id = ID::new(item);
                 if self.dex.get_item(item).is_none() {
                     errors.push(ValidationError::InvalidItem {
                         pokemon: pokemon_name.clone(),

@@ -28,8 +28,8 @@ pub mod condition {
 ///         return types.filter(type => type !== 'Flying');
 ///     },
 /// }
-pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     let target_pos = match target_pos {
         Some(pos) => pos,
@@ -88,7 +88,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_
 ///     return types.filter(type => type !== 'Flying');
 /// }
 pub fn on_type(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+    
 
     let target_pos = match target_pos {
         Some(pos) => pos,

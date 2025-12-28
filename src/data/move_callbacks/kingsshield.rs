@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     let pokemon = pokemon_pos;
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
@@ -26,7 +26,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 /// onHit(pokemon) {
 ///     pokemon.addVolatile('stall');
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
@@ -132,7 +132,7 @@ pub mod condition {
 
             //     if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             if is_z || is_max {
-                let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+                let _target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };

@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTryHit(target) {
 ///     if (this.activePerHalf === 1) return false;
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     // onTryHit(target) {
     //     if (this.activePerHalf === 1) return false;
     // }
@@ -60,7 +60,7 @@ pub mod condition {
     ///         return this.effectState.target;
     ///     }
     /// }
-    pub fn on_foe_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_foe_redirect_target(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
         use crate::dex_data::ID;
 
         // onFoeRedirectTarget(target, source, source2, move) {

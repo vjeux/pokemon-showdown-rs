@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     let pokemon = pokemon_pos;
 
     // if (this.randomChance(3, 10)) {

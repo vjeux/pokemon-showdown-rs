@@ -48,7 +48,7 @@ pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)
 ///         return null;
 ///     }
 /// }
-pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // onTryMove(pokemon) {
@@ -140,7 +140,7 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         // onHit(pokemon, source, move) {
         //     if (!pokemon.isAlly(source) && move.category === 'Physical') {

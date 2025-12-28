@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///         if (foeActive && foeActive.status === 'slp') foeActive.cureStatus();
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -27,7 +27,7 @@ pub mod condition {
     /// onStart(target) {
     ///     this.add('-start', target, 'Uproar');
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -43,7 +43,7 @@ pub mod condition {
     ///     }
     ///     this.add('-start', target, 'Uproar', '[upkeep]');
     /// }
-    pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_residual(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -51,7 +51,7 @@ pub mod condition {
     /// onEnd(target) {
     ///     this.add('-end', target, 'Uproar');
     /// }
-    pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_end(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -66,7 +66,7 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_any_set_status(battle: &mut Battle, status: Option<&str>, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_any_set_status(_battle: &mut Battle, _status: Option<&str>, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

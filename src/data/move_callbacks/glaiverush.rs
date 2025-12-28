@@ -33,7 +33,7 @@ pub mod condition {
     /// onAccuracy() {
     ///     return true;
     /// }
-    pub fn on_accuracy(battle: &mut Battle, accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    pub fn on_accuracy(_battle: &mut Battle, _accuracy: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
         // return true;
         EventResult::Boolean(true)
     }

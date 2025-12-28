@@ -18,7 +18,7 @@ pub mod condition {
     ///         this.add('-start', pokemon, 'move: Laser Focus');
     ///     }
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
         use crate::dex_data::ID;
 
         let pokemon = pokemon_pos;
@@ -80,7 +80,7 @@ pub mod condition {
     /// onModifyCritRatio(critRatio) {
     ///     return 5;
     /// }
-    pub fn on_modify_crit_ratio(battle: &mut Battle) -> EventResult {
+    pub fn on_modify_crit_ratio(_battle: &mut Battle) -> EventResult {
         // return 5;
         EventResult::Number(5)
     }

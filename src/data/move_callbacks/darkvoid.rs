@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///     this.hint("Only a Pokemon whose form is Darkrai can use this move.");
 ///     return null;
 /// }
-pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (source.species.name === 'Darkrai' || move.hasBounced) {
     //     return;
     // }

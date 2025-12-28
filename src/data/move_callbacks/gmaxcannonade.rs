@@ -15,7 +15,7 @@ pub mod condition {
     ///     this.add('-sidestart', targetSide, 'G-Max Cannonade');
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         // this.add('-sidestart', targetSide, 'G-Max Cannonade');
         // The side index should be in the current effect state
@@ -35,7 +35,7 @@ pub mod condition {
     ///     if (!target.hasType('Water')) this.damage(target.baseMaxhp / 6, target);
     /// }
     pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         let target = match target_pos {
             Some(pos) => pos,

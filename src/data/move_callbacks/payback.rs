@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///     this.debug('Payback damage boost');
 ///     return move.basePower * 2;
 /// }
-pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn base_power_callback(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,

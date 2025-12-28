@@ -16,8 +16,8 @@ use crate::event::EventResult;
 ///     if (!ppDeducted) return false;
 ///     this.add("-activate", target, 'move: Spite', move.name, ppDeducted);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+    
 
     // onHit(target) {
     //     let move: Move | ActiveMove | null = target.lastMove;

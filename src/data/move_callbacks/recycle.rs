@@ -14,11 +14,11 @@ use crate::event::EventResult;
 ///     this.add('-item', pokemon, this.dex.items.get(item), '[from] move: Recycle');
 ///     pokemon.setItem(item, source, move);
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
-    let source = pokemon_pos;
+    let _source = pokemon_pos;
 
     // if (pokemon.item || !pokemon.lastItem) return false;
     let (has_item, last_item) = {
