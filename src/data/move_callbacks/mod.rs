@@ -561,17 +561,17 @@ pub fn dispatch_on_after_sub_damage(
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "ceaselessedge" => ceaselessedge::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "coreenforcer" => coreenforcer::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "flameburst" => flameburst::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "ceaselessedge" => ceaselessedge::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id),
+        "coreenforcer" => coreenforcer::on_after_sub_damage(battle, damage, target_pos),
+        "flameburst" => flameburst::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id),
+        "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, damage, target_pos),
         "icespinner" => icespinner::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "mortalspin" => mortalspin::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "rapidspin" => rapidspin::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "shellsidearm" => shellsidearm::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "splinteredstormshards" => splinteredstormshards::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "steelroller" => steelroller::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
-        "stoneaxe" => stoneaxe::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
+        "mortalspin" => mortalspin::on_after_sub_damage(battle, damage, target_pos, pokemon_pos, move_id),
+        "rapidspin" => rapidspin::on_after_sub_damage(battle, damage, target_pos, pokemon_pos, move_id),
+        "shellsidearm" => shellsidearm::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id),
+        "splinteredstormshards" => splinteredstormshards::on_after_sub_damage(battle),
+        "steelroller" => steelroller::on_after_sub_damage(battle),
+        "stoneaxe" => stoneaxe::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id),
         _ => EventResult::Continue,
     }
 }

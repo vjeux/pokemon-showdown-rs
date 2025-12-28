@@ -207,8 +207,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // this.singleEvent('End', sourceAbility, source.abilityState, source);
     // this.singleEvent('End', targetAbility, target.abilityState, target);
-    battle.single_event("End", &source_ability_id, source);
-    battle.single_event("End", &target_ability_id, target);
+    battle.single_event("End", &source_ability_id, Some(source), None, None);
+    battle.single_event("End", &target_ability_id, Some(target), None, None);
 
     // source.ability = targetAbility.id;
     // target.ability = sourceAbility.id;
@@ -228,8 +228,8 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // this.singleEvent('Start', targetAbility, source.abilityState, source);
     // this.singleEvent('Start', sourceAbility, target.abilityState, target);
-    battle.single_event("Start", &target_ability_id, source);
-    battle.single_event("Start", &source_ability_id, target);
+    battle.single_event("Start", &target_ability_id, Some(source), None, None);
+    battle.single_event("Start", &source_ability_id, Some(target), None, None);
 
     EventResult::Continue
 }
