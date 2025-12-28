@@ -67,7 +67,7 @@ pub mod condition {
             pokemon_pokemon.base_maxhp / 4
         };
 
-        battle.damage(damage, pokemon, None, None, false);
+        battle.damage(damage, Some(pokemon), None, None, false);
 
         EventResult::Continue
     }

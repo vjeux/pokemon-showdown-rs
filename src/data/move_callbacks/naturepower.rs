@@ -50,7 +50,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     }
 
     // this.actions.useMove(move, pokemon, { target });
-    battle_actions::use_move(battle, move_id, pokemon, Some(target), None, None, None);
+    battle_actions::use_move(battle, &ID::from(move_id), pokemon, Some(target), None, None, None);
 
     // return null;
     EventResult::Stop
