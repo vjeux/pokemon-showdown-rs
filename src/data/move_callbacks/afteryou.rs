@@ -30,10 +30,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // const action = this.queue.willMove(target);
-    let action = battle.queue.will_move(target.0, target.1);
+    let has_action = battle.queue.will_move(target.0, target.1).is_some();
 
     // if (action) {
-    if action.is_some() {
+    if has_action {
         // this.queue.prioritizeAction(action);
         battle.queue.prioritize_action(target.0, target.1);
 
