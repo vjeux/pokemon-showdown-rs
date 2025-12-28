@@ -268,7 +268,13 @@ pub mod condition {
         };
 
         if last_move_is_struggle {
-            battle.remove_volatile(&ID::from("rollout"), target);
+            {
+                let pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon.remove_volatile(&ID::from("rollout"));
+            }
         }
 
         EventResult::Continue

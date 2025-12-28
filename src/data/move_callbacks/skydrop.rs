@@ -94,8 +94,20 @@ pub fn on_move_fail(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
     if has_twoturnmove_duration_1 {
         // source.removeVolatile('skydrop');
         // source.removeVolatile('twoturnmove');
-        battle.remove_volatile(&ID::from("skydrop"), source);
-        battle.remove_volatile(&ID::from("twoturnmove"), source);
+        {
+            let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.remove_volatile(&ID::from("skydrop"));
+        }
+        {
+            let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.remove_volatile(&ID::from("twoturnmove"));
+        }
 
         // if (target === this.effectState.target) {
         //     this.add('-end', target, 'Sky Drop', '[interrupt]');
@@ -210,7 +222,19 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     // if (source.removeVolatile(move.id)) {
-    let removed = battle.remove_volatile(&move_id, source);
+    let removed = {
+
+        let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+
+            Some(p) => p,
+
+            None => return EventResult::Continue,
+
+        };
+
+        pokemon.remove_volatile(&move_id)
+
+    };
 
     if removed {
         // if (target !== source.volatiles['twoturnmove'].source) return false;

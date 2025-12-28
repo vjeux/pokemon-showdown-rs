@@ -103,7 +103,13 @@ pub mod condition {
         }
 
         // snatchUser.removeVolatile('snatch');
-        battle.remove_volatile(&ID::from("snatch"), snatch_user);
+        {
+            let pokemon = match battle.pokemon_at_mut(snatch_user.0, snatch_user.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.remove_volatile(&ID::from("snatch"));
+        }
 
         // this.add('-activate', snatchUser, 'move: Snatch', `[of] ${source}`);
         let snatch_user_arg = {
