@@ -22,8 +22,22 @@ pub fn on_try(
 /// onHitSide(side, source) {
 ///     source.addVolatile('stall');
 /// }
-pub fn on_hit_side(_battle: &mut Battle, _source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
+    use crate::dex_data::ID;
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // source.addVolatile('stall');
+    let source_mut = match battle.pokemon_at_mut(source.0, source.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    source_mut.add_volatile(ID::from("stall"));
+
     EventResult::Continue
 }
 
