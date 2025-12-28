@@ -396,3 +396,64 @@ By callback type:
 - Gen 7: 22 items
 - Gen 8: 11 items
 - Gen 9: 56 items
+
+## Missing Infrastructure for J-L Items
+
+### Mega Evolution Stones (kangaskhanite, latiasite, latiosite, lopunnite, lucarionite, lucarionitez)
+- Missing Fields in ItemData: mega_evolves, mega_stone, item_user
+- onTakeItem needs to check if item.megaEvolves === source.baseSpecies.baseSpecies
+- Requires access to Pokemon base species and should return EventResult::False to prevent taking
+## Missing Infrastructure for T-V Items
+
+### Type-Modifier Berries (tangaberry, etc)
+- Missing Methods: Pokemon.getMoveHitData(move).typeMod
+- Need to check type effectiveness > 0
+- Need to check volatiles['substitute']
+- Need to check move.flags['bypasssub']
+- Need to check move.infiltrates
+- Need to access battle.gen
+- Need Pokemon.eatItem() method
+- Need battle.debug() method
+- Need battle.add() method for event messages
+- Pattern: All resist berries use same logic, just different types
+
+### Mega Evolution Stones (tatsugirinite, tyranitarite, venusaurite, victreebelite)
+- Missing Fields in ItemData: mega_evolves field
+- onTakeItem needs to check if item.megaEvolves === source.baseSpecies.baseSpecies
+- Some use megaEvolves.includes() for multiple forms (tatsugirinite)
+- Requires access to item data at runtime
+
+### Status/Effect Items (throatspray)
+- Missing: Move flags infrastructure (move.flags['sound'])
+- Missing: Pokemon.useItem() method (different from eatItem)
+- Need to trigger item effect when sound move is used
+
+### Status Orbs (toxicorb)
+- Missing: Pokemon.trySetStatus(status, source) method
+- Need to apply status at residual phase
+- Status IDs: 'tox' for toxic poison
+
+### Weather Items (utilityumbrella)
+- Missing: Pokemon.ignoringItem() method
+- Missing: field.effectiveWeather() method
+- Missing: battle.runEvent() for WeatherChange
+- Missing: effectState.inactive tracking
+- Need to track weather changes and update effects
+
+## Completed T-V Items
+- [x] stoneplate - Stone Plate (Gen 4) - 2/2 callbacks implemented
+- [x] thickclub - Thick Club (Gen 2) - 1/1 callback implemented
+- [x] toxicplate - Toxic Plate (Gen 4) - 2/2 callbacks implemented
+- [x] twistedspoon - Twisted Spoon (Gen 2) - 1/1 callback implemented
+- [x] vilevial - Vile Vial (Gen 8) - 2/2 callbacks implemented
+
+## Blocked T-V Items
+- [ ] tangaberry - Tanga Berry (Gen 4) - Needs type effectiveness infrastructure
+- [ ] tatsugirinite - Tatsugirinite (Gen 9) - Needs item data
+- [ ] throatspray - Throat Spray (Gen 8) - Needs move flags and useItem
+- [ ] toxicorb - Toxic Orb (Gen 4) - Needs trySetStatus
+- [ ] tyranitarite - Tyranitarite (Gen 6) - Needs item data
+- [ ] utilityumbrella - Utility Umbrella (Gen 8) - Needs weather infrastructure
+- [ ] venusaurite - Venusaurite (Gen 6) - Needs item data
+- [ ] victreebelite - Victreebelite (Gen 9) - Needs item data
+

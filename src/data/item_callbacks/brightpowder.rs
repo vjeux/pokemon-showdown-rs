@@ -13,6 +13,14 @@ use crate::event::EventResult;
 ///     return this.chainModify([3686, 4096]);
 /// }
 pub fn on_modify_accuracy(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // In Rust, the accuracy parameter would be in the event modifier
+    // The typeof check is implicit in the type system
+
+    // this.debug('brightpowder - decreasing accuracy');
+    battle.debug("brightpowder - decreasing accuracy");
+
+    // return this.chainModify([3686, 4096]);
+    battle.chain_modify_fraction(3686, 4096);
+
     EventResult::Continue
 }
