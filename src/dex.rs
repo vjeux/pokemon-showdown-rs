@@ -1359,33 +1359,18 @@ impl Dex {
                 // Paldea formes (Gen 9+): Tauros-Paldea, Wooper-Paldea, etc.
                 if forme.contains("Paldea") {
                     gen < 9
-                // Hisui formes (Gen 8+ Legends Arceus): Growlithe-Hisui, Zorua-Hisui, etc.
-                } else if forme.contains("Hisui") {
+                // Gen 8+ formes: Hisui, Galar, Gmax
+                } else if forme.contains("Hisui") || forme.contains("Galar") || forme.contains("Galarian") || forme.contains("Gmax") {
                     gen < 8
-                // Galar formes (Gen 8+): Ponyta-Galar, Mr. Mime-Galar, etc.
-                } else if forme.contains("Galar") || forme.contains("Galarian") {
-                    gen < 8
-                // Gmax/Gigantamax formes (Gen 8+)
-                } else if forme.contains("Gmax") {
-                    gen < 8
-                // Alola formes (Gen 7+): Vulpix-Alola, Rattata-Alola, etc.
-                } else if forme.contains("Alola") || forme.contains("Alolan") {
+                // Gen 7+ formes: Alola, Totem
+                } else if forme.contains("Alola") || forme.contains("Alolan") || forme.contains("Totem") {
                     gen < 7
-                // Totem formes (Gen 7+)
-                } else if forme.contains("Totem") {
-                    gen < 7
-                // Mega Evolution (Gen 6+)
-                } else if forme.contains("Mega") || forme.contains("Primal") {
-                    gen < 6
-                // Cap Pikachu formes (Gen 6-7 event Pokemon)
-                // Original, Hoenn, Sinnoh, Kalos, Unova (Gen 7), Alola (Gen 7), Partner (Gen 7), World (Gen 8)
-                } else if forme == "Original" || forme == "Hoenn" || forme == "Sinnoh" ||
+                // Gen 6+ formes: Mega Evolution, Cap Pikachu, Cosplay Pikachu
+                } else if forme.contains("Mega") || forme.contains("Primal") ||
+                          forme == "Original" || forme == "Hoenn" || forme == "Sinnoh" ||
                           forme == "Kalos" || forme == "Unova" || forme == "Partner" ||
-                          forme == "World" {
-                    gen < 6  // Conservative: assume all cap Pikachus are Gen 6+
-                // Cosplay Pikachu (Gen 6 ORAS)
-                } else if forme == "Rock-Star" || forme == "Belle" || forme == "Pop-Star" ||
-                          forme == "PhD" || forme == "Libre" || forme == "Cosplay" {
+                          forme == "World" || forme == "Rock-Star" || forme == "Belle" ||
+                          forme == "Pop-Star" || forme == "PhD" || forme == "Libre" || forme == "Cosplay" {
                     gen < 6
                 // Starter/Let's Go formes (Gen 7+)
                 } else if forme == "Starter" {

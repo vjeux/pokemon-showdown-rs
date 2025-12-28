@@ -61,11 +61,10 @@ pub fn unpack_name(name: &str) -> String {
     let chars: Vec<char> = name.chars().collect();
     for (i, c) in chars.iter().enumerate() {
         if i > 0 {
-            if c.is_uppercase() && chars[i - 1].is_lowercase() {
-                result.push(' ');
-            } else if c.is_numeric() && chars[i - 1].is_alphabetic() {
-                result.push(' ');
-            } else if c.is_alphabetic() && chars[i - 1].is_numeric() {
+            // Add space when transitioning between different character types
+            if (c.is_uppercase() && chars[i - 1].is_lowercase()) ||
+               (c.is_numeric() && chars[i - 1].is_alphabetic()) ||
+               (c.is_alphabetic() && chars[i - 1].is_numeric()) {
                 result.push(' ');
             }
         }
@@ -794,11 +793,7 @@ pub fn import_team(buffer: &str, aggressive: bool) -> Option<Vec<PokemonSet>> {
     for line in lines {
         let line = line.trim();
 
-        if line.is_empty() || line == "---" {
-            if let Some(set) = cur_set.take() {
-                sets.push(set);
-            }
-        } else if line.starts_with("===") {
+        if line.is_empty() || line == "---" || line.starts_with("===") {
             if let Some(set) = cur_set.take() {
                 sets.push(set);
             }
