@@ -23,7 +23,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     if let Some(move_type) = move_type {
         if move_type != ID::from("grass") {
             let anim_str = format!("[anim] Ivy Cudgel {}", move_type.as_str());
-            battle.attr_last_move(&anim_str);
+            battle.attr_last_move(&[&anim_str]);
         }
     }
 
@@ -67,15 +67,15 @@ pub fn on_modify_type(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
     //     move.type = 'Rock';
     //     break;
     let new_type = match species_name.as_str() {
-        "Ogerpon-Wellspring" | "Ogerpon-Wellspring-Tera" => Some(ID::from("water")),
-        "Ogerpon-Hearthflame" | "Ogerpon-Hearthflame-Tera" => Some(ID::from("fire")),
-        "Ogerpon-Cornerstone" | "Ogerpon-Cornerstone-Tera" => Some(ID::from("rock")),
+        "Ogerpon-Wellspring" | "Ogerpon-Wellspring-Tera" => Some("Water"),
+        "Ogerpon-Hearthflame" | "Ogerpon-Hearthflame-Tera" => Some("Fire"),
+        "Ogerpon-Cornerstone" | "Ogerpon-Cornerstone-Tera" => Some("Rock"),
         _ => None,
     };
 
-    if let Some(new_type) = new_type {
+    if let Some(new_type_str) = new_type {
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.move_type = new_type;
+            active_move.move_type = ID::from(new_type_str);
         }
     }
 
