@@ -34,7 +34,7 @@ pub mod condition {
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
         battle.add("-singleturn", &[target_arg, "move: Magic Coat".into()]);

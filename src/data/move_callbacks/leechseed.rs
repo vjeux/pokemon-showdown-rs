@@ -53,7 +53,7 @@ pub mod condition {
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
         battle.add("-start", &[target_arg, "move: Leech Seed".into()]);

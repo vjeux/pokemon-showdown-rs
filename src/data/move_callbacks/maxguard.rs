@@ -65,7 +65,7 @@ pub mod condition {
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
         battle.add("-singleturn", &[target_arg, "Max Guard".into()]);
@@ -144,7 +144,7 @@ pub mod condition {
 
                 };
 
-                crate::battle::Arg::from(pokemon)
+                pokemon.get_slot()
 
             };
             battle.add("-activate", &[target_arg, "move: Max Guard".into()]);

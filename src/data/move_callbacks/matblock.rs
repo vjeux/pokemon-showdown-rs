@@ -62,7 +62,7 @@ pub mod condition {
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
         battle.add("-singleturn", &[source_arg, "Mat Block".into()]);
@@ -157,7 +157,7 @@ pub mod condition {
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
         battle.add("-activate", &[target_arg, "move: Mat Block".into(), move_name.into()]);

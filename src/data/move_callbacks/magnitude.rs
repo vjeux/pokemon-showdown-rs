@@ -96,7 +96,7 @@ pub fn on_use_move_message(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
         };
 
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
 
     };
     battle.add("-activate", &[pokemon_arg, "move: Magnitude".into(), magnitude.to_string().into()]);

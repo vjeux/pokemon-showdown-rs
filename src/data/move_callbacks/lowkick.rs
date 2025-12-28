@@ -110,7 +110,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
         battle.add("-fail", &[pokemon_arg, "Dynamax".into()]);

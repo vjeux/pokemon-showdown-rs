@@ -45,7 +45,7 @@ pub mod condition {
 
                     };
 
-                    crate::battle::Arg::from(pokemon)
+                    pokemon.get_slot()
 
                 };
                 battle.add("-activate", &[source_arg, "ability: Persistent".into(), "[move] Magic Room".into()]);
@@ -97,7 +97,7 @@ pub mod condition {
 
                 };
 
-                crate::battle::Arg::from(pokemon)
+                pokemon.get_slot()
 
             };
             if has_persistent {
@@ -162,7 +162,7 @@ pub mod condition {
 
                 };
 
-                crate::battle::Arg::from(pokemon)
+                pokemon.get_slot()
 
             };
             battle.add("-fieldend", &["move: Magic Room".into(), format!("[of] {}", source_arg).into()]);

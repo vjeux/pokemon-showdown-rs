@@ -55,7 +55,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
         let move_id = match &battle.active_move {
@@ -92,7 +92,7 @@ pub mod condition {
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
         battle.add("-start", &[target_arg, "Magnet Rise".into()]);
@@ -131,7 +131,7 @@ pub mod condition {
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
         battle.add("-end", &[target_arg, "Magnet Rise".into()]);

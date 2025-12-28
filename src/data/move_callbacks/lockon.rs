@@ -70,7 +70,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
         };
 
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
 
     };
     let target_arg = {
@@ -83,7 +83,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
         };
 
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
 
     };
     battle.add("-activate", &[source_arg, "move: Lock-On".into(), format!("[of] {}", target_arg).into()]);

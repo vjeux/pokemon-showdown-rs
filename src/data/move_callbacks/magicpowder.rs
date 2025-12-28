@@ -51,7 +51,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
         };
 
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
 
     };
     battle.add("-start", &[target_arg, "typechange".into(), "Psychic".into()]);
