@@ -90,9 +90,9 @@ pub mod condition {
             let (is_active, hp, active_turns) = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
-                    None => (false, 0, 0),
+                    None => return EventResult::Continue,
                 };
-                (source_pokemon.is_active(), source_pokemon.hp, source_pokemon.active_turns)
+                (source_pokemon.active, source_pokemon.hp, source_pokemon.active_turns)
             };
 
             if !is_active || hp <= 0 || active_turns == 0 {

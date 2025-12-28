@@ -67,7 +67,7 @@ pub mod condition {
         let has_persistent = if let Some(source) = source_pos {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
-                None => false,
+                None => return EventResult::Continue,
             };
             source_pokemon.has_ability(&["persistent"])
         } else {
