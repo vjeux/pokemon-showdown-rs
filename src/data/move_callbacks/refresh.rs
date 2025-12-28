@@ -30,7 +30,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // pokemon.cureStatus();
-    battle.cure_status(pokemon, None, None);
+    battle.cure_status(pokemon);
 
     EventResult::Continue
 }

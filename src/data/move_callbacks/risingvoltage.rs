@@ -39,7 +39,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
                 };
                 active_move.name.clone()
             };
-            battle.hint(&format!("{}'s BP doubled on grounded target.", move_name));
+            battle.hint(&format!("{}'s BP doubled on grounded target.", move_name), true, None);
         }
 
         // return move.basePower * 2;

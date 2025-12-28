@@ -63,7 +63,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     battle.add("-prepare", &[attacker_arg, move_name.into()]);
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
-    let charge_result = battle.run_event("ChargeMove", attacker, defender, Some(&move_id));
+    let charge_result = battle.run_event("ChargeMove", attacker, defender, Some(&move_id), None);
 
     if charge_result == Some(0) {
         // return;

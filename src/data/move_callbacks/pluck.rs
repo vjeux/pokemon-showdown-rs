@@ -108,7 +108,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     if !matches!(eat_result, EventResult::Boolean(false)) {
         // this.runEvent('EatItem', source, source, move, item);
-        battle.run_event("EatItem", source, Some(source), Some(&item_id));
+        battle.run_event("EatItem", source, Some(source), Some(&item_id), None);
 
         // if (item.id === 'leppaberry') target.staleness = 'external';
         if item_id == ID::from("leppaberry") {

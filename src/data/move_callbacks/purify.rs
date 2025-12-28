@@ -23,7 +23,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     // if (!target.cureStatus()) {
-    let cured = battle.cure_status(target, None, None);
+    let cured = battle.cure_status(target);
 
     if !cured {
         // this.add('-fail', source);

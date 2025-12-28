@@ -41,7 +41,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 
     for pokemon_pos in all_active {
         // if (this.runEvent('Invulnerability', pokemon, source, move) === false) {
-        let invulnerability_result = battle.run_event("Invulnerability", pokemon_pos, source, Some(&ID::from(move_id)));
+        let invulnerability_result = battle.run_event("Invulnerability", pokemon_pos, source, Some(&ID::from(move_id)), None);
 
         if invulnerability_result == Some(0) {
             // this.add('-miss', source, pokemon);
@@ -69,7 +69,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
             result = true;
         // } else if (this.runEvent('TryHit', pokemon, source, move) === null) {
         } else {
-            let try_hit_result = battle.run_event("TryHit", pokemon_pos, source, Some(&ID::from(move_id)));
+            let try_hit_result = battle.run_event("TryHit", pokemon_pos, source, Some(&ID::from(move_id)), None);
 
             if try_hit_result.is_none() {
                 // result = true;
