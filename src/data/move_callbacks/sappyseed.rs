@@ -24,7 +24,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let has_grass = battle.has_type(target, "Grass");
 
     if has_grass {
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     // target.addVolatile('leechseed', source);

@@ -26,7 +26,7 @@ pub mod condition {
         let has_light_clay = if let Some(source) = source_pos {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
-                None => return EventResult::Int(5),
+                None => return EventResult::Number(5),
             };
             source_pokemon.has_item(&ID::from("lightclay"))
         } else {
@@ -34,11 +34,11 @@ pub mod condition {
         };
 
         if has_light_clay {
-            return EventResult::Int(8);
+            return EventResult::Number(8);
         }
 
         // return 5;
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onAnyModifyDamage(damage, source, target, move) {
@@ -120,9 +120,9 @@ pub mod condition {
         //         if (this.activePerHalf > 1) return this.chainModify([2732, 4096]);
         //         return this.chainModify(0.5);
         if battle.active_per_half > 1 {
-            EventResult::ChainModifyFraction(2732, 4096)
+            EventResult::Number(battle.chain_modify_fraction(2732, 4096))
         } else {
-            EventResult::ChainModify(0.5)
+            EventResult::Number(battle.chain_modify(0.5 as f32))
         }
     }
 

@@ -44,5 +44,5 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     battle.attr_last_move("[still]");
 
     // return null;
-    EventResult::Null
+    EventResult::Stop
 }

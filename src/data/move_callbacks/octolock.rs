@@ -22,7 +22,7 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
     if immune {
         EventResult::Continue
     } else {
-        EventResult::Bool(false)
+        EventResult::Boolean(false)
     }
 }
 

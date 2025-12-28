@@ -54,6 +54,6 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // }
 
     // return move.basePower;
-    EventResult::Int(move_data.base_power)
+    EventResult::Number(move_data.base_power)
 }
 

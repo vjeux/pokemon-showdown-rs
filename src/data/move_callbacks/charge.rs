@@ -124,7 +124,7 @@ pub mod condition {
 
             // return this.chainModify(2);
             let result = battle.chain_modify(2.0);
-            return EventResult::Int(result);
+            return EventResult::Number(result);
         }
 
         EventResult::Continue

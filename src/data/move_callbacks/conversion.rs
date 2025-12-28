@@ -28,7 +28,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         if target_pokemon.move_slots.is_empty() {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         let first_move_id = &target_pokemon.move_slots[0].id;
@@ -50,7 +50,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if has_type {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     let set_type_success = {
@@ -62,7 +62,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if !set_type_success {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.add('-start', target, 'typechange', type);

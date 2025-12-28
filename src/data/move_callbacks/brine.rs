@@ -30,7 +30,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
     // }
     if target_pokemon.hp * 2 <= target_pokemon.maxhp {
         let result = battle.chain_modify(2.0);
-        return EventResult::Int(result);
+        return EventResult::Number(result);
     }
 
     EventResult::Continue

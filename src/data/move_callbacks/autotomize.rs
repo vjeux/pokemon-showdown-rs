@@ -28,7 +28,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     // }
     let spe_boost = pokemon.boosts.spe;
     if (!has_contrary && spe_boost == 6) || (has_contrary && spe_boost == -6) {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

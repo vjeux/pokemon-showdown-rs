@@ -30,7 +30,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
         battle.debug("lashout buff");
 
         //     return this.chainModify(2);
-        return EventResult::ChainModify(2.0);
+        return EventResult::Number(battle.chain_modify(2.0 as f32));
     }
 
     EventResult::Continue

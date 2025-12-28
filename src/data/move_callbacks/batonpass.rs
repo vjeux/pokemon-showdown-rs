@@ -43,7 +43,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         battle.add("-fail", &[target_pokemon.into()]);
 
         // return this.NOT_FAIL;
-        return EventResult::NOT_FAIL;
+        return EventResult::NotFail;
     }
 
     EventResult::Continue

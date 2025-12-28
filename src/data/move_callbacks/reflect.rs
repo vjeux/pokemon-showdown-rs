@@ -34,11 +34,11 @@ pub mod condition {
             };
 
             if has_light_clay {
-                return EventResult::Int(8);
+                return EventResult::Number(8);
             }
         }
 
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onAnyModifyDamage(damage, source, target, move) {
@@ -101,10 +101,10 @@ pub mod condition {
                     battle.debug("Reflect weaken");
                     // if (this.activePerHalf > 1) return this.chainModify([2732, 4096]);
                     if battle.active_per_half > 1 {
-                        return EventResult::ChainModifyFraction(2732, 4096);
+                        return EventResult::Number(battle.chain_modify_fraction(2732, 4096));
                     }
                     // return this.chainModify(0.5);
-                    return EventResult::ChainModifyFraction(1, 2);
+                    return EventResult::Number(battle.chain_modify_fraction(1, 2));
                 }
             }
         }

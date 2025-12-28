@@ -140,6 +140,6 @@ pub mod condition {
         battle.use_move(&move_id, snatch_user);
 
         // return null;
-        EventResult::Null
+        EventResult::Stop
     }
 }

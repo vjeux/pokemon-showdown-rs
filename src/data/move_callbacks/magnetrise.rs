@@ -35,7 +35,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     if has_smackdown_or_ingrain {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // // Additional Gravity check for Z-move variant
@@ -51,7 +51,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             None => ID::from(""),
         };
         battle.add("cant", &[source_arg, "move: Gravity".into(), move_id.to_string().into()]);
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     EventResult::Continue
@@ -83,7 +83,7 @@ pub mod condition {
         // TODO: This callback needs the type parameter to work correctly
         // The TypeScript version checks: if (type === 'Ground') return false;
         // Once the event system supports passing the type parameter, implement:
-        // if type_id == "ground" { return EventResult::Bool(false); }
+        // if type_id == "ground" { return EventResult::Boolean(false); }
         EventResult::Continue
     }
 

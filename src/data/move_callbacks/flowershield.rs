@@ -90,6 +90,6 @@ pub fn on_hit_field(battle: &mut Battle, source_pos: Option<(usize, usize)>, mov
     }
 
     // return success;
-    EventResult::Bool(success)
+    EventResult::Boolean(success)
 }
 

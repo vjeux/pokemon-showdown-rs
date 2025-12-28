@@ -64,7 +64,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
 
     // if (!targets.length) return false;
     if targets.is_empty() {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // let didSomething = false;
@@ -82,6 +82,6 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>, move
     }
 
     // return didSomething;
-    EventResult::Bool(did_something)
+    EventResult::Boolean(did_something)
 }
 

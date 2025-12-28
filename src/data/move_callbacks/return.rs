@@ -24,6 +24,6 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     let base_power = ((happiness * 10) / 25).max(1);
 
-    EventResult::Int(base_power)
+    EventResult::Number(base_power)
 }
 

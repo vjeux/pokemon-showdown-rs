@@ -29,10 +29,10 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     if active_move.source_effect.as_ref().map(|se| se.id == ID::from("round")).unwrap_or(false) {
         battle.debug("BP doubled");
-        return EventResult::Int(active_move.base_power * 2);
+        return EventResult::Number(active_move.base_power * 2);
     }
 
-    EventResult::Int(active_move.base_power)
+    EventResult::Number(active_move.base_power)
 }
 
 /// onTry(source, target, move) {

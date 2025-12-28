@@ -53,7 +53,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         battle.add("-fail", &[target_arg]);
 
         // return null;
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     // this.add('-start', target, 'typechange', 'Water');

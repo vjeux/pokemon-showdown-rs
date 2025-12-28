@@ -35,7 +35,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     if should_fail {
         // return false;
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.directDamage(target.maxhp / 2);

@@ -19,7 +19,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     };
 
     let result = pokemon.add_volatile(ID::from("allyswitch"));
-    EventResult::Bool(result)
+    EventResult::Boolean(result)
 }
 
 /// onHit(pokemon) {
@@ -102,7 +102,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         battle.attr_last_move(&["[still]"]);
 
         // return this.NOT_FAIL;
-        return EventResult::NOT_FAIL;
+        return EventResult::NotFail;
     }
 
     // this.swapPosition(pokemon, newPosition, '[from] move: Ally Switch');
@@ -191,7 +191,7 @@ pub mod condition {
 
         if should_remove {
             pokemon.volatiles.remove(&allyswitch_id);
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // Update the counter and duration

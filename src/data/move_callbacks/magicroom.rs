@@ -25,7 +25,7 @@ pub mod condition {
         let has_persistent = if let Some(source) = source_pos {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
-                None => return EventResult::Int(5),
+                None => return EventResult::Number(5),
             };
             source_pokemon.has_ability(&ID::from("persistent"))
         } else {
@@ -39,11 +39,11 @@ pub mod condition {
                 battle.add("-activate", &[source_arg, "ability: Persistent".into(), "[move] Magic Room".into()]);
             }
             //     return 7;
-            return EventResult::Int(7);
+            return EventResult::Number(7);
         }
 
         // return 5;
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onFieldStart(target, source) {

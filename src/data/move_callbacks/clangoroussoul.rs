@@ -18,7 +18,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     if source.hp <= (source.maxhp * 33 / 100) || source.maxhp == 1 {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue
@@ -50,7 +50,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     if !boost_success {
         // return null;
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     // delete move.boosts;

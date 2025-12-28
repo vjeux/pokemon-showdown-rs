@@ -77,7 +77,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     attacker_pokemon.add_volatile(ID::from("twoturnmove"));
 
     // return null;
-    EventResult::Null
+    EventResult::Stop
 }
 
 pub mod condition {
@@ -110,7 +110,7 @@ pub mod condition {
         }
 
         // return false;
-        EventResult::Bool(false)
+        EventResult::Boolean(false)
     }
 
     /// onSourceModifyDamage(damage, source, target, move) {
@@ -124,7 +124,7 @@ pub mod condition {
         // }
         if move_id == "earthquake" || move_id == "magnitude" {
             // return this.chainModify(2);
-            return EventResult::ChainModify(2.0);
+            return EventResult::Number(battle.chain_modify(2.0 as f32));
         }
 
         EventResult::Continue

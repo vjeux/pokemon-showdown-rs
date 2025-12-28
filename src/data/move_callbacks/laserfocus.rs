@@ -70,7 +70,7 @@ pub mod condition {
     /// }
     pub fn on_modify_crit_ratio(battle: &mut Battle) -> EventResult {
         // return 5;
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onEnd(pokemon) {

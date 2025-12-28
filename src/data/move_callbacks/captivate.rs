@@ -38,5 +38,5 @@ pub fn on_try_immunity(battle: &mut Battle, pokemon_pos: (usize, usize), source_
     let result = (pokemon_gender == ID::from("M") && source_gender == ID::from("F")) ||
                  (pokemon_gender == ID::from("F") && source_gender == ID::from("M"));
 
-    EventResult::Bool(result)
+    EventResult::Boolean(result)
 }

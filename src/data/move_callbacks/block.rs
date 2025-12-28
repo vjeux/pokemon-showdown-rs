@@ -26,6 +26,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     let result = target_pokemon.add_volatile(ID::from("trapped"));
 
-    EventResult::Bool(result)
+    EventResult::Boolean(result)
 }
 

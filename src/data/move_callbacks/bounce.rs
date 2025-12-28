@@ -74,7 +74,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     attacker.add_volatile(ID::from("twoturnmove"));
 
     // return null;
-    EventResult::Null
+    EventResult::Stop
 }
 
 pub mod condition {
@@ -98,7 +98,7 @@ pub mod condition {
         }
 
         // return false;
-        EventResult::Bool(false)
+        EventResult::Boolean(false)
     }
 
     /// onSourceBasePower(basePower, target, source, move) {
@@ -112,7 +112,7 @@ pub mod condition {
         // }
         if move_id == "gust" || move_id == "twister" {
             let result = battle.chain_modify(2.0);
-            return EventResult::Int(result);
+            return EventResult::Number(result);
         }
 
         EventResult::Continue

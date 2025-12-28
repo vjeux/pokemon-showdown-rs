@@ -14,7 +14,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     // return this.activePerHalf > 1;
     let active_per_half = battle.active_per_half;
 
-    EventResult::Bool(active_per_half > 1)
+    EventResult::Boolean(active_per_half > 1)
 }
 
 pub mod condition {
@@ -109,7 +109,7 @@ pub mod condition {
             battle.debug("Follow Me redirected target of move");
 
             // return this.effectState.target;
-            return EventResult::Pos(effect_state_target);
+            return EventResult::Position(effect_state_target);
         }
 
         EventResult::Continue

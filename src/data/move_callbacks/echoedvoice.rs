@@ -47,7 +47,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     battle.debug(&format!("BP: {}", base_power));
 
     // return bp;
-    EventResult::Int(bp)
+    EventResult::Number(bp)
 }
 
 /// onTryMove() {

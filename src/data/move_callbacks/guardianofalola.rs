@@ -61,11 +61,11 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
 
         // return this.clampIntRange(Math.ceil(hp75 / 4 - 0.5), 1);
         let damage = ((hp75 as f64 / 4.0 - 0.5).ceil() as i32).max(1);
-        return EventResult::Int(damage);
+        return EventResult::Number(damage);
     }
 
     // return this.clampIntRange(hp75, 1);
     let damage = hp75.max(1);
-    EventResult::Int(damage)
+    EventResult::Number(damage)
 }
 

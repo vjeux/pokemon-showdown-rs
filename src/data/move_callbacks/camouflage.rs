@@ -65,7 +65,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let types_match = target_types.len() == 1 && target_types[0] == new_type;
 
     if types_match {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // target.setType(newType)
@@ -78,7 +78,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if !set_type_success {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.add('-start', target, 'typechange', newType);

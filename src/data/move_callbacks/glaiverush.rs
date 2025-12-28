@@ -35,7 +35,7 @@ pub mod condition {
     /// }
     pub fn on_accuracy(battle: &mut Battle) -> EventResult {
         // return true;
-        EventResult::Bool(true)
+        EventResult::Boolean(true)
     }
 
     /// onSourceModifyDamage() {
@@ -43,7 +43,7 @@ pub mod condition {
     /// }
     pub fn on_source_modify_damage(battle: &mut Battle) -> EventResult {
         // return this.chainModify(2);
-        EventResult::ChainModify(2.0)
+        EventResult::Number(battle.chain_modify(2.0 as f32))
     }
 
     /// onBeforeMove(pokemon) {

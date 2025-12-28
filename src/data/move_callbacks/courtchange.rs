@@ -165,7 +165,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 
     // if (!success) return false;
     if !success {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.add('-swapsideconditions');

@@ -49,11 +49,11 @@ pub mod condition {
                     "ability: Persistent".into(),
                     "[move] Safeguard".into(),
                 ]);
-                return EventResult::Int(7);
+                return EventResult::Number(7);
             }
         }
 
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onSetStatus(status, target, source, effect) {
@@ -139,7 +139,7 @@ pub mod condition {
             }
 
             // return null;
-            return EventResult::Null;
+            return EventResult::Stop;
         }
 
         EventResult::Continue
@@ -218,7 +218,7 @@ pub mod condition {
             }
 
             // return null;
-            return EventResult::Null;
+            return EventResult::Stop;
         }
 
         EventResult::Continue

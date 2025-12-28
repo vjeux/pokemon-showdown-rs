@@ -13,7 +13,7 @@ use crate::event::EventResult;
 pub fn on_effectiveness(battle: &mut Battle, type_mod: i32, target_type: &str) -> EventResult {
     // if (type === 'Water') return 1;
     if target_type == "water" {
-        return EventResult::Int(1);
+        return EventResult::Number(1);
     }
 
     EventResult::Continue

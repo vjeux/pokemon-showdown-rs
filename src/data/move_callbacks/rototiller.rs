@@ -73,7 +73,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
 
     // if (!targets.length && !anyAirborne) return false; // Fails when there are no grounded Grass types or airborne Pokemon
     if targets.is_empty() && !any_airborne {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // for (const pokemon of targets) {

@@ -29,7 +29,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if types_string == "Psychic" {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     let set_type_success = {
@@ -41,7 +41,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if !set_type_success {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.add('-start', target, 'typechange', 'Psychic');

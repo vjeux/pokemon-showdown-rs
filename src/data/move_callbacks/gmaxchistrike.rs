@@ -58,7 +58,7 @@ pub mod condition {
             .unwrap_or(1) as i32;
 
         if layers >= 3 {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // this.effectState.layers++;
@@ -97,6 +97,6 @@ pub mod condition {
             .and_then(|v| v.as_i64())
             .unwrap_or(1) as i32;
 
-        EventResult::Int(layers)
+        EventResult::Number(layers)
     }
 }

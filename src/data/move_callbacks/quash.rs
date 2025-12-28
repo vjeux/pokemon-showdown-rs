@@ -23,7 +23,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // if (this.activePerHalf === 1) return false; // fails in singles
     if battle.active_per_half == 1 {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // const action = this.queue.willMove(target);
@@ -31,7 +31,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let has_action = battle.queue_will_move(target);
 
     if !has_action {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // action.order = 201;

@@ -123,7 +123,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     battle.add_volatile(&ID::from("twoturnmove"), attacker, defender, None);
 
     // return null;
-    EventResult::Null
+    EventResult::Stop
 }
 
 /// onBasePower(basePower, pokemon, target) {
@@ -159,7 +159,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
         battle.debug("weakened by weather");
 
         // return this.chainModify(0.5);
-        return EventResult::ChainModifyFraction(1, 2);
+        return EventResult::Number(battle.chain_modify_fraction(1, 2));
     }
 
     EventResult::Continue

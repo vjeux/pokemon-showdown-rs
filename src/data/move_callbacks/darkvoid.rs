@@ -51,6 +51,6 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     battle.hint("Only a Pokemon whose form is Darkrai can use this move.");
 
     // return null;
-    EventResult::Null
+    EventResult::Stop
 }
 

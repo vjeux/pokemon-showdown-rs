@@ -25,7 +25,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     if has_foresight {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

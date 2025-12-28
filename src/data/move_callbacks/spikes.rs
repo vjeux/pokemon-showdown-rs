@@ -46,7 +46,7 @@ pub mod condition {
         // if (this.effectState.layers >= 3) return false;
         let layers = battle.get_effect_state_layers();
         if layers >= 3 {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // this.add('-sidestart', side, 'Spikes');

@@ -73,7 +73,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     battle.debug(&format!("BP: {}", bp));
 
     // return bp;
-    EventResult::Int(bp)
+    EventResult::Number(bp)
 }
 
 /// onTryHit(target, pokemon, move) {
@@ -107,7 +107,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         battle.attr_last_move("[still]");
 
         //     return null;
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     EventResult::Continue

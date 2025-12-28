@@ -23,7 +23,7 @@ pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), s
     };
 
     if damage >= target_hp {
-        return EventResult::Int(target_hp - 1);
+        return EventResult::Number(target_hp - 1);
     }
 
     EventResult::Continue

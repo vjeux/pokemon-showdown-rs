@@ -28,11 +28,11 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
     if let Some(damaged_by) = last_damaged_by {
         // return (lastDamagedBy.damage * 1.5) || 1;
         let damage = ((damaged_by.damage as f64 * 1.5) as i32).max(1);
-        return EventResult::Int(damage);
+        return EventResult::Number(damage);
     }
 
     // return 0;
-    EventResult::Int(0)
+    EventResult::Number(0)
 }
 
 /// onTry(source) {
@@ -57,7 +57,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         }
         _ => {
             // return false;
-            EventResult::Bool(false)
+            EventResult::Boolean(false)
         }
     }
 }

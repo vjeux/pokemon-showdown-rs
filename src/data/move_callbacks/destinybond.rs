@@ -25,7 +25,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     };
 
     // return !pokemon.removeVolatile('destinybond');
-    EventResult::Bool(!removed)
+    EventResult::Boolean(!removed)
 }
 
 pub mod condition {

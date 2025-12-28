@@ -13,7 +13,7 @@ use crate::event::EventResult;
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // return !!this.queue.willAct();
     let will_act = battle.queue.will_act();
-    EventResult::Bool(will_act)
+    EventResult::Boolean(will_act)
 }
 
 pub mod condition {
@@ -86,6 +86,6 @@ pub mod condition {
         // return this.NOT_FAIL;
         // In Rust, NOT_FAIL is typically represented as a specific EventResult variant
         // For now, we'll return a special value that indicates the move should not fail
-        EventResult::Bool(true)
+        EventResult::Boolean(true)
     }
 }

@@ -30,7 +30,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if has_grass_type {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (!target.addType('Grass')) return false;
@@ -43,7 +43,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if !add_type_result {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.add('-start', target, 'typeadd', 'Grass', '[from] move: Forest\'s Curse');

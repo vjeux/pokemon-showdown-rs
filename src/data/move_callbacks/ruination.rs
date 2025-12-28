@@ -27,6 +27,6 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
 
     let damage = (undynamaxed_hp / 2).max(1);
 
-    EventResult::Int(damage)
+    EventResult::Number(damage)
 }
 

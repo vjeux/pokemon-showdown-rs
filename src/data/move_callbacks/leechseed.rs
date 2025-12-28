@@ -27,7 +27,7 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
         target_pokemon.has_type(&ID::from("grass"), battle)
     };
 
-    EventResult::Bool(!has_grass_type)
+    EventResult::Boolean(!has_grass_type)
 }
 
 pub mod condition {

@@ -52,7 +52,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         ]);
 
         // return null;
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     EventResult::Continue

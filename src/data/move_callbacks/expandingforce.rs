@@ -35,7 +35,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
             battle.debug("terrain buff");
 
             // return this.chainModify(1.5);
-            return EventResult::ChainModify(1.5);
+            return EventResult::Number(battle.chain_modify(1.5 as f32));
         }
     }
 

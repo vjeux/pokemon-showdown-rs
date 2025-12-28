@@ -19,7 +19,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     let active_per_half = battle.active_per_half();
 
     if active_per_half == 1 {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

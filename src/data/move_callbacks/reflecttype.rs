@@ -42,7 +42,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if species_num == 493 || species_num == 773 {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (source.terastallized) return false;
@@ -55,7 +55,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if terastallized {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // const oldApparentType = source.apparentType;
@@ -94,7 +94,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         if target_added_type.is_some() {
             vec!["Normal".to_string()]
         } else {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
     } else {
         new_base_types

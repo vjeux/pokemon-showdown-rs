@@ -43,7 +43,7 @@ pub mod condition {
 
         if has_focus_energy {
             // return false;
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // if (effect && (['costar', 'imposter', 'psychup', 'transform'].includes(effect.id))) {
@@ -103,6 +103,6 @@ pub mod condition {
 
         let boost = if has_dragon_type { 2 } else { 1 };
 
-        EventResult::Int(crit_ratio + boost)
+        EventResult::Number(crit_ratio + boost)
     }
 }

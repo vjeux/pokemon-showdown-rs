@@ -50,12 +50,12 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(move_id) => {
                 let move_data = match battle.dex.get_move_by_id(move_id) {
                     Some(m) => m,
-                    None => return EventResult::Bool(false),
+                    None => return EventResult::Boolean(false),
                 };
                 move_data.move_type.clone()
             }
             None => {
-                return EventResult::Bool(false);
+                return EventResult::Boolean(false);
             }
         }
     };
@@ -94,7 +94,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     //     return false;
     // }
     if possible_types.is_empty() {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // const randomType = this.sample(possibleTypes);
@@ -110,7 +110,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if !set_type_success {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.add('-start', source, 'typechange', randomType);

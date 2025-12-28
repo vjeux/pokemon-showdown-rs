@@ -48,13 +48,13 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         battle.debug("Fishious Rend damage boost");
 
         // return move.basePower * 2;
-        return EventResult::Int(base_power * 2);
+        return EventResult::Number(base_power * 2);
     }
 
     // this.debug('Fishious Rend NOT boosted');
     battle.debug("Fishious Rend NOT boosted");
 
     // return move.basePower;
-    EventResult::Int(base_power)
+    EventResult::Number(base_power)
 }
 

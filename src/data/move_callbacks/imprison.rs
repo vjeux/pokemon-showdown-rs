@@ -129,7 +129,7 @@ pub mod condition {
             battle.add("cant", &[attacker_arg, "move: Imprison".into(), move_arg]);
 
             // return false;
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         EventResult::Continue

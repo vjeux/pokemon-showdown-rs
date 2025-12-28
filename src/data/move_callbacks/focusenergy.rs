@@ -39,7 +39,7 @@ pub mod condition {
         };
 
         if has_dragoncheer {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // if (effect?.id === 'zpower') {
@@ -77,6 +77,6 @@ pub mod condition {
     /// }
     pub fn on_modify_crit_ratio(battle: &mut Battle, crit_ratio: i32) -> EventResult {
         // return critRatio + 2;
-        EventResult::Int(crit_ratio + 2)
+        EventResult::Number(crit_ratio + 2)
     }
 }

@@ -82,7 +82,7 @@ pub mod condition {
             battle.attr_last_move("[still]");
 
             // return false;
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         EventResult::Continue

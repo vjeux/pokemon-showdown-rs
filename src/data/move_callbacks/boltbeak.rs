@@ -54,12 +54,12 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         // this.debug('Bolt Beak damage boost');
         battle.debug("Bolt Beak damage boost");
         // return move.basePower * 2;
-        return EventResult::Int(move_data.base_power * 2);
+        return EventResult::Number(move_data.base_power * 2);
     }
 
     // this.debug('Bolt Beak NOT boosted');
     battle.debug("Bolt Beak NOT boosted");
     // return move.basePower;
-    EventResult::Int(move_data.base_power)
+    EventResult::Number(move_data.base_power)
 }
 

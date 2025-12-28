@@ -31,6 +31,6 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         has_sleep || has_comatose
     };
 
-    EventResult::Bool(has_sleep_or_comatose)
+    EventResult::Boolean(has_sleep_or_comatose)
 }
 

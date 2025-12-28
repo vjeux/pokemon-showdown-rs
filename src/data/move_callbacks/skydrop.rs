@@ -148,7 +148,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         target_pokemon.fainted
     };
 
-    EventResult::Bool(!is_fainted)
+    EventResult::Boolean(!is_fainted)
 }
 
 /// onTryHit(target, source, move) {
@@ -227,7 +227,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         };
 
         if Some(target) != twoturnmove_source {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // if (target.hasType('Flying')) {
@@ -245,7 +245,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
             };
 
             battle.add("-immune", &[target_arg]);
-            return EventResult::Null;
+            return EventResult::Stop;
         }
     } else {
         // if (target.volatiles['substitute'] || target.isAlly(source)) {
@@ -262,7 +262,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         let is_ally = battle.is_ally(target, source);
 
         if has_substitute || is_ally {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // if (target.getWeight() >= 2000) {
@@ -284,7 +284,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
                 "move: Sky Drop".into(),
                 "[heavy]".into(),
             ]);
-            return EventResult::Null;
+            return EventResult::Stop;
         }
 
         // this.add('-prepare', source, move.name, target);
@@ -318,7 +318,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         battle.add_volatile(&ID::from("twoturnmove"), source, Some(target), None);
 
         // return null;
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     EventResult::Continue
@@ -383,7 +383,7 @@ pub mod condition {
         };
 
         if Some(pokemon) == effect_target || Some(pokemon) == effect_source {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         EventResult::Continue
@@ -445,7 +445,7 @@ pub mod condition {
         if let Some(source) = effect_source {
             battle.decrement_active_move_actions(source);
             battle.debug("Sky drop nullifying.");
-            return EventResult::Null;
+            return EventResult::Stop;
         }
 
         EventResult::Continue
@@ -567,7 +567,7 @@ pub mod condition {
         }
 
         // return false;
-        EventResult::Bool(false)
+        EventResult::Boolean(false)
     }
 
     /// onAnyBasePower(basePower, target, source, move) {
@@ -632,7 +632,7 @@ pub mod condition {
         let move_id = ID::from(move_id);
         if move_id == ID::from("gust") || move_id == ID::from("twister") {
             battle.debug("BP doubled on midair target");
-            return EventResult::ChainModify(2);
+            return EventResult::Number(battle.chain_modify(2 as f32));
         }
 
         EventResult::Continue

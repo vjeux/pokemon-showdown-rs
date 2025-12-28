@@ -31,7 +31,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     if source_pokemon.move_slots.len() < 2 {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // let hasLastResort = false; // User must actually have Last Resort for it to succeed
@@ -49,11 +49,11 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             continue;
         }
         if !move_slot.used {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
     }
 
     // return hasLastResort;
-    EventResult::Bool(has_last_resort)
+    EventResult::Boolean(has_last_resort)
 }
 

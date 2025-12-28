@@ -72,6 +72,6 @@ pub mod condition {
         battle.add("-activate", &[pokemon_arg, "move: Ingrain".into()]);
 
         // return null;
-        EventResult::Null
+        EventResult::Stop
     }
 }

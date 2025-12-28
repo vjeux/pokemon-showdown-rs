@@ -31,7 +31,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         has_sleep || has_comatose
     };
 
-    EventResult::Bool(has_sleep_or_comatose)
+    EventResult::Boolean(has_sleep_or_comatose)
 }
 
 /// onHit(pokemon) {
@@ -130,7 +130,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // }
     let random_move = match random_move {
         Some(m) => m,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     // this.actions.useMove(randomMove, pokemon);

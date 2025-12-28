@@ -17,7 +17,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None);
 
     let result = will_act && stall_move_result;
-    EventResult::Bool(result)
+    EventResult::Boolean(result)
 }
 
 /// onHit(pokemon) {
@@ -167,7 +167,7 @@ pub mod condition {
         }
 
         // return this.NOT_FAIL;
-        EventResult::NOT_FAIL
+        EventResult::NotFail
     }
 
     /// onHit(target, source, move) {

@@ -65,7 +65,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     let charge_result = battle.run_event("ChargeMove", attacker, defender, Some(&move_id));
 
-    if matches!(charge_result, EventResult::Bool(false)) {
+    if matches!(charge_result, EventResult::Boolean(false)) {
         // return;
         return EventResult::Continue;
     }
@@ -74,6 +74,6 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     battle.add_volatile(&ID::from("twoturnmove"), attacker, defender, None);
 
     // return null;
-    EventResult::Null
+    EventResult::Stop
 }
 

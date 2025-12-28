@@ -25,6 +25,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // return target.addVolatile('trapped', source, move, 'trapper');
     let result = battle.add_volatile(&ID::from("trapped"), target, Some(source), Some("trapper"));
 
-    EventResult::Bool(result)
+    EventResult::Boolean(result)
 }
 

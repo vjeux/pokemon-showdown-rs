@@ -48,11 +48,11 @@ pub mod condition {
 
         let move_id = match last_move_id {
             Some(id) => id,
-            None => return EventResult::Bool(false),
+            None => return EventResult::Boolean(false),
         };
 
         if has_dynamax {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // Encore only works on Max Moves if the base move is not itself a Max Move
@@ -84,7 +84,7 @@ pub mod condition {
 
         if move_has_fail_encore || !move_slot_valid {
             // it failed
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // this.effectState.move = move.id;

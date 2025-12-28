@@ -16,7 +16,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     let weather_id = &battle.field.weather;
     let is_weather_valid = weather_id == &ID::from("hail") || weather_id == &ID::from("snowscape");
 
-    EventResult::Bool(is_weather_valid)
+    EventResult::Boolean(is_weather_valid)
 }
 
 pub mod condition {
@@ -35,16 +35,16 @@ pub mod condition {
         if let Some(source) = source_pos {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
-                None => return EventResult::Int(5),
+                None => return EventResult::Number(5),
             };
 
             if source_pokemon.has_item(&["lightclay"]) {
-                return EventResult::Int(8);
+                return EventResult::Number(8);
             }
         }
 
         // return 5;
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onAnyModifyDamage(damage, source, target, move) {

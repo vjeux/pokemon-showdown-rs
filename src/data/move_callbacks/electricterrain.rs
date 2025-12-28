@@ -28,17 +28,17 @@ pub mod condition {
             let has_terrain_extender = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
-                    None => return EventResult::Int(5),
+                    None => return EventResult::Number(5),
                 };
                 source_pokemon.has_item(&ID::from("terrainextender"))
             };
 
             if has_terrain_extender {
-                return EventResult::Int(8);
+                return EventResult::Number(8);
             }
         }
 
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onSetStatus(status, target, source, effect) {
@@ -93,7 +93,7 @@ pub mod condition {
                 }
 
                 // return false;
-                return EventResult::Bool(false);
+                return EventResult::Boolean(false);
             }
         }
 
@@ -143,7 +143,7 @@ pub mod condition {
             battle.add("-activate", &[target_arg, "move: Electric Terrain".into()]);
 
             // return null;
-            return EventResult::Null;
+            return EventResult::Stop;
         }
 
         EventResult::Continue
@@ -186,7 +186,7 @@ pub mod condition {
                 battle.debug("electric terrain boost");
 
                 // return this.chainModify([5325, 4096]);
-                return EventResult::ChainModifyFraction(5325, 4096);
+                return EventResult::Number(battle.chain_modify_fraction(5325, 4096));
             }
         }
 

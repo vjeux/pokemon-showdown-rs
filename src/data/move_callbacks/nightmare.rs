@@ -26,7 +26,7 @@ pub mod condition {
         let (status, has_comatose) = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
-                None => return EventResult::Bool(false),
+                None => return EventResult::Boolean(false),
             };
             let status = pokemon_pokemon.status.clone();
             let has_comatose = pokemon_pokemon.has_ability(&ID::from("comatose"));
@@ -35,7 +35,7 @@ pub mod condition {
 
         if status != Some(ID::from("slp")) && !has_comatose {
             // return false;
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // this.add('-start', pokemon, 'Nightmare');

@@ -29,7 +29,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     // if (!action) return false;
     let action = battle.queue.will_move(target.0, target.1);
     if action.is_none() {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     let action = action.unwrap();
@@ -38,37 +38,37 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     let move_id = action.choice.move_id.clone();
     let move_data = match battle.dex.get_move_by_id(&move_id) {
         Some(m) => m,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     // if (action.zmove || move.isZ || move.isMax) return false;
     if action.choice.zmove || move_data.is_z_or_max_powered {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (target.volatiles['mustrecharge']) return false;
     let has_mustrecharge = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
-            None => return EventResult::Bool(false),
+            None => return EventResult::Boolean(false),
         };
         target_pokemon.volatiles.contains_key(&ID::from("mustrecharge"))
     };
 
     if has_mustrecharge {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (move.category === 'Status' || move.flags['failmefirst']) return false;
     if move_data.category == "Status" || move_data.flags.contains_key("failmefirst") {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // pokemon.addVolatile('mefirst');
     {
         let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
             Some(p) => p,
-            None => return EventResult::Bool(false),
+            None => return EventResult::Boolean(false),
         };
         pokemon_pokemon.add_volatile(&ID::from("mefirst"), battle);
     }
@@ -77,7 +77,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     crate::battle_actions::use_move(battle, &move_id, pokemon, Some(target), None);
 
     // return null;
-    EventResult::Null
+    EventResult::Stop
 }
 
 pub mod condition {
@@ -88,6 +88,6 @@ pub mod condition {
     /// }
     pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
         // return this.chainModify(1.5);
-        EventResult::ChainModifyFraction(3, 2) // 1.5 = 3/2
+        EventResult::Number(battle.chain_modify_fraction(3, 2)) // 1.5 = 3/2
     }
 }

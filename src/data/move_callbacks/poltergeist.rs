@@ -13,19 +13,19 @@ use crate::event::EventResult;
 pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     // return !!target.item;
     let has_item = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
-            None => return EventResult::Bool(false),
+            None => return EventResult::Boolean(false),
         };
         target_pokemon.item.is_some()
     };
 
-    EventResult::Bool(has_item)
+    EventResult::Boolean(has_item)
 }
 
 /// onTryHit(target, source, move) {

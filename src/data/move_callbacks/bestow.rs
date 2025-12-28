@@ -37,7 +37,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
 
         if !target_pokemon.item.is_empty() {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
     }
 
@@ -54,7 +54,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (!myItem) return false;
     let my_item = match my_item {
         Some(item) => item,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     // if (!this.singleEvent('TakeItem', myItem, source.itemState, target, source, move, myItem) || !target.setItem(myItem)) {
@@ -82,7 +82,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         source_pokemon.item = my_item;
 
         // return false;
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.add('-item', target, myItem.name, '[from] move: Bestow', `[of] ${source}`);

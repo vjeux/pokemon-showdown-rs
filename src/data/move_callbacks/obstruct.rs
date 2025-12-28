@@ -17,7 +17,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     let will_act = battle.queue_will_act();
 
     if !will_act {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.runEvent('StallMove', pokemon)

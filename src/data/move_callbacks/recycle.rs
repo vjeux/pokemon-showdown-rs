@@ -28,7 +28,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if has_item || last_item.is_none() {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // const item = pokemon.lastItem;

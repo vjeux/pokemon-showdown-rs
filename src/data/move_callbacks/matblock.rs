@@ -31,12 +31,12 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 
     if active_move_actions > 1 {
         battle.hint("Mat Block only works on your first turn out.");
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // return !!this.queue.willAct();
     let will_act = battle.queue.will_act();
-    EventResult::Bool(will_act)
+    EventResult::Boolean(will_act)
 }
 
 pub mod condition {

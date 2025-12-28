@@ -38,10 +38,10 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         // this.debug("BP doubled for no item");
         battle.debug("BP doubled for no item");
         // return move.basePower * 2;
-        return EventResult::Int(move_data.base_power * 2);
+        return EventResult::Number(move_data.base_power * 2);
     }
 
     // return move.basePower;
-    EventResult::Int(move_data.base_power)
+    EventResult::Number(move_data.base_power)
 }
 

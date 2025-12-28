@@ -25,7 +25,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     // if (target === source || target.volatiles['dynamax']) return false;
     if target == source {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     let has_dynamax = {
@@ -37,7 +37,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     if has_dynamax {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (
@@ -60,7 +60,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     if target_ability == source_ability {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     let target_ability_data = {
@@ -72,11 +72,11 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     if target_ability_data.flags.contains_key("cantsuppress") {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     if target_ability == ID::from("truant") {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     let source_ability_data = {
@@ -88,7 +88,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     if source_ability_data.flags.contains_key("noentrain") {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue
@@ -126,7 +126,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (!oldAbility) return oldAbility as false | null;
     if old_ability.is_none() {
         // oldAbility is None (null in JS), return null
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     // if (!target.isAlly(source)) target.volatileStaleness = 'external';

@@ -76,7 +76,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         EventResult::Continue
     } else {
         // return false;
-        EventResult::Bool(false)
+        EventResult::Boolean(false)
     }
 }
 

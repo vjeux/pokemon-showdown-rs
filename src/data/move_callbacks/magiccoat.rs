@@ -111,7 +111,7 @@ pub mod condition {
         battle.use_move_with_bounced(&move_id, target, Some(source), true, prankster_boosted);
 
         // return null;
-        EventResult::Null
+        EventResult::Stop
     }
 
     /// onAllyTryHitSide(target, source, move) {
@@ -190,6 +190,6 @@ pub mod condition {
         }
 
         // return null;
-        EventResult::Null
+        EventResult::Stop
     }
 }

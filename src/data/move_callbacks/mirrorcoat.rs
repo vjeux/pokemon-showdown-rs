@@ -20,7 +20,7 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
     let damage = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
-            None => return EventResult::Int(0),
+            None => return EventResult::Number(0),
         };
 
         match pokemon_pokemon.volatiles.get(&ID::from("mirrorcoat")) {
@@ -33,12 +33,12 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
             }
             None => {
                 // return 0;
-                return EventResult::Int(0);
+                return EventResult::Number(0);
             }
         }
     };
 
-    EventResult::Int(damage)
+    EventResult::Number(damage)
 }
 
 /// beforeTurnCallback(pokemon) {
@@ -73,18 +73,18 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     // if (!source.volatiles['mirrorcoat']) return false;
     let source_pokemon = match battle.pokemon_at(source.0, source.1) {
         Some(p) => p,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     let volatile = match source_pokemon.volatiles.get(&ID::from("mirrorcoat")) {
         Some(v) => v,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     // if (source.volatiles['mirrorcoat'].slot === null) return false;
     let slot = volatile.data.get("slot");
     if slot.is_none() || slot == Some(&serde_json::Value::Null) {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

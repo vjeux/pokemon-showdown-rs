@@ -28,7 +28,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     if has_noretreat {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (source.volatiles['trapped']) {

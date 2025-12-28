@@ -26,7 +26,7 @@ pub mod condition {
             let has_persistent = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
-                    None => return EventResult::Int(5),
+                    None => return EventResult::Number(5),
                 };
                 source_pokemon.has_ability(&ID::from("persistent"))
             };
@@ -37,12 +37,12 @@ pub mod condition {
                 battle.add("-activate", &[source_arg, "ability: Persistent".into(), "[move] Gravity".into()]);
 
                 // return 7;
-                return EventResult::Int(7);
+                return EventResult::Number(7);
             }
         }
 
         // return 5;
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onFieldStart(target, source) {
@@ -245,7 +245,7 @@ pub mod condition {
         // Already guaranteed to be a number by the type system
 
         // return this.chainModify([6840, 4096]);
-        EventResult::ChainModify(6840.0 / 4096.0)
+        EventResult::Number(battle.chain_modify(6840.0 / 4096.0 as f32))
     }
 
     /// onDisableMove(pokemon) {
@@ -319,7 +319,7 @@ pub mod condition {
             battle.add("cant", &[pokemon_arg, "move: Gravity".into(), move_arg]);
 
             // return false;
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         EventResult::Continue
@@ -356,7 +356,7 @@ pub mod condition {
             battle.add("cant", &[pokemon_arg, "move: Gravity".into(), move_arg]);
 
             // return false;
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         EventResult::Continue

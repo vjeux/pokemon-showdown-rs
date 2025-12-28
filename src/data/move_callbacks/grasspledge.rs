@@ -26,13 +26,13 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             battle.add("-combine", &[]);
 
             // return 150;
-            return EventResult::Int(150);
+            return EventResult::Number(150);
         }
     }
 
     // return move.basePower;
     if let Some(ref active_move) = battle.active_move {
-        return EventResult::Int(active_move.base_power);
+        return EventResult::Number(active_move.base_power);
     }
 
     EventResult::Continue
@@ -125,7 +125,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         battle.add("-waiting", &[source_arg, ally_arg]);
 
         // return null;
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     EventResult::Continue
@@ -215,6 +215,6 @@ pub mod condition {
     /// }
     pub fn on_modify_spe(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // return this.chainModify(0.25);
-        EventResult::ChainModify(0.25)
+        EventResult::Number(battle.chain_modify(0.25 as f32))
     }
 }

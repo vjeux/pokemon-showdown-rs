@@ -104,7 +104,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         if target_has_curse {
             // TODO: Check if move has volatileStatus
             // For now, we'll assume if target has curse, we should return false
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
     }
 

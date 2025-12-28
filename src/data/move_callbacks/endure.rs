@@ -17,12 +17,12 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     let will_act = battle.queue.will_act();
 
     if !will_act {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     let stall_result = battle.run_event("StallMove", pokemon, None, None);
 
-    EventResult::Bool(stall_result)
+    EventResult::Boolean(stall_result)
 }
 
 /// onHit(pokemon) {
@@ -111,7 +111,7 @@ pub mod condition {
                     battle.add("-activate", &[target_arg, "move: Endure".into()]);
 
                     // return target.hp - 1;
-                    return EventResult::Int(target_hp - 1);
+                    return EventResult::Number(target_hp - 1);
                 }
             }
         }

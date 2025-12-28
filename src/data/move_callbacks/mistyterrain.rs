@@ -25,19 +25,19 @@ pub mod condition {
             let has_terrain_extender = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
-                    None => return EventResult::Int(5),
+                    None => return EventResult::Number(5),
                 };
                 source_pokemon.has_item(&ID::from("terrainextender"))
             };
 
             if has_terrain_extender {
                 // return 8;
-                return EventResult::Int(8);
+                return EventResult::Number(8);
             }
         }
 
         // return 5;
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onSetStatus(status, target, source, effect) {
@@ -83,7 +83,7 @@ pub mod condition {
                 let target_arg = {
                     let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                         Some(p) => p,
-                        None => return EventResult::Bool(false),
+                        None => return EventResult::Boolean(false),
                     };
                     crate::battle::Arg::from(target_pokemon)
                 };
@@ -93,7 +93,7 @@ pub mod condition {
         }
 
         // return false;
-        EventResult::Bool(false)
+        EventResult::Boolean(false)
     }
 
     /// onTryAddVolatile(status, target, source, effect) {
@@ -137,7 +137,7 @@ pub mod condition {
                     let target_arg = {
                         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                             Some(p) => p,
-                            None => return EventResult::Null,
+                            None => return EventResult::Stop,
                         };
                         crate::battle::Arg::from(target_pokemon)
                     };
@@ -147,7 +147,7 @@ pub mod condition {
             }
 
             // return null;
-            return EventResult::Null;
+            return EventResult::Stop;
         }
 
         EventResult::Continue
@@ -195,7 +195,7 @@ pub mod condition {
             // (debug is typically not needed in Rust implementation)
 
             // return this.chainModify(0.5);
-            return EventResult::ChainModifyFraction(1, 2); // 0.5 = 1/2
+            return EventResult::Number(battle.chain_modify_fraction(1, 2)); // 0.5 = 1/2
         }
 
         EventResult::Continue

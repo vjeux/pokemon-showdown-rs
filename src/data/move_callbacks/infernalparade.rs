@@ -38,11 +38,11 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
     if has_status || has_comatose {
         let base_power = battle.active_move.as_ref().map(|m| m.base_power).unwrap_or(0);
-        return EventResult::Int(base_power * 2);
+        return EventResult::Number(base_power * 2);
     }
 
     // return move.basePower;
     let base_power = battle.active_move.as_ref().map(|m| m.base_power).unwrap_or(0);
-    EventResult::Int(base_power)
+    EventResult::Number(base_power)
 }
 

@@ -25,19 +25,19 @@ pub mod condition {
             let has_terrain_extender = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
-                    None => return EventResult::Int(5),
+                    None => return EventResult::Number(5),
                 };
                 source_pokemon.has_item(&ID::from("terrainextender"))
             };
 
             if has_terrain_extender {
                 // return 8;
-                return EventResult::Int(8);
+                return EventResult::Number(8);
             }
         }
 
         // return 5;
-        EventResult::Int(5)
+        EventResult::Number(5)
     }
 
     /// onBasePower(basePower, attacker, defender, move) {
@@ -93,7 +93,7 @@ pub mod condition {
                     battle.debug("move weakened by grassy terrain");
 
                     // return this.chainModify(0.5);
-                    return EventResult::ChainModify(0.5);
+                    return EventResult::Number(battle.chain_modify(0.5 as f32));
                 }
             }
         }
@@ -116,7 +116,7 @@ pub mod condition {
                     battle.debug("grassy terrain boost");
 
                     // return this.chainModify([5325, 4096]);
-                    return EventResult::ChainModify(5325.0 / 4096.0);
+                    return EventResult::Number(battle.chain_modify(5325.0 / 4096.0 as f32));
                 }
             }
         }

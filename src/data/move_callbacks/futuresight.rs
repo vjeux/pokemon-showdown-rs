@@ -57,7 +57,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     if !added {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // Object.assign(target.side.slotConditions[target.position]['futuremove'], {
@@ -119,6 +119,6 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     battle.add("-start", &[source_arg, "move: Future Sight".into()]);
 
     // return this.NOT_FAIL;
-    EventResult::Bool(true)
+    EventResult::Boolean(true)
 }
 

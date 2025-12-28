@@ -25,7 +25,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     if has_lockon {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue
@@ -79,7 +79,7 @@ pub mod condition {
         };
 
         if source == effect_target && target == effect_source {
-            return EventResult::Int(0);
+            return EventResult::Number(0);
         }
 
         EventResult::Continue
@@ -106,7 +106,7 @@ pub mod condition {
         };
 
         if source == effect_target && target == effect_source {
-            return EventResult::Bool(true);
+            return EventResult::Boolean(true);
         }
 
         EventResult::Continue

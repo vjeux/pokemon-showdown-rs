@@ -44,7 +44,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             };
             active_move.base_power
         };
-        return EventResult::Int(base_power);
+        return EventResult::Number(base_power);
     }
 
     // this.debug('Payback damage boost');
@@ -59,6 +59,6 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         active_move.base_power
     };
 
-    EventResult::Int(base_power * 2)
+    EventResult::Number(base_power * 2)
 }
 

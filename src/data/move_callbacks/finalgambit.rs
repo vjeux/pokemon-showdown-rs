@@ -33,6 +33,6 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
     pokemon_pokemon.faint();
 
     // return damage;
-    EventResult::Int(damage)
+    EventResult::Number(damage)
 }
 

@@ -23,6 +23,6 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     };
 
     let base_power = 50 + 50 * total_fainted as i32;
-    EventResult::Int(base_power)
+    EventResult::Number(base_power)
 }
 

@@ -36,7 +36,7 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
 
     let damage = target_hp - pokemon_hp;
 
-    EventResult::Int(damage)
+    EventResult::Number(damage)
 }
 
 /// onTryImmunity(target, pokemon) {
@@ -66,6 +66,6 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
         target_pokemon.hp
     };
 
-    EventResult::Bool(pokemon_hp < target_hp)
+    EventResult::Boolean(pokemon_hp < target_hp)
 }
 

@@ -26,6 +26,6 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
 
     let damage = (rand * level) / 100;
 
-    EventResult::Int(damage)
+    EventResult::Number(damage)
 }
 

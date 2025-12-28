@@ -20,7 +20,7 @@ use crate::event::EventResult;
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // if (this.activePerHalf === 1) return false; // fails in singles
     if battle.active_per_half == 1 {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // Get target position
@@ -47,7 +47,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         EventResult::Continue
     } else {
         // return false;
-        EventResult::Bool(false)
+        EventResult::Boolean(false)
     }
 }
 

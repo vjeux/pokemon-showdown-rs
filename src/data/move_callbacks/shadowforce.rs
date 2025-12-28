@@ -70,6 +70,6 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     battle.add_volatile(&ID::from("twoturnmove"), attacker, defender, None);
 
     // return null;
-    EventResult::Null
+    EventResult::Stop
 }
 

@@ -43,7 +43,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
 
         // return this.chainModify([5461, 4096]);
         let result = battle.chain_modify_fraction(5461, 4096);
-        return EventResult::Int(result);
+        return EventResult::Number(result);
     }
 
     EventResult::Continue

@@ -39,7 +39,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     if status == Some(ID::from("slp")) || has_comatose {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (source.hp === source.maxhp) {
@@ -64,7 +64,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         };
 
         battle.add("-fail", &[source_arg, "heal".into()]);
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     // insomnia and vital spirit checks are separate so that the message is accurate in multi-ability mods
@@ -94,7 +94,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             "[from] ability: Insomnia".into(),
             format!("[of] {}", source_arg).into(),
         ]);
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     // if (source.hasAbility('vitalspirit')) {
@@ -123,7 +123,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             "[from] ability: Vital Spirit".into(),
             format!("[of] {}", source_arg).into(),
         ]);
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     EventResult::Continue
@@ -154,7 +154,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let result = battle.set_status(&ID::from("slp"), target, Some(source), Some(&move_id));
 
     // if (!result) return result;
-    if matches!(result, EventResult::Bool(false)) {
+    if matches!(result, EventResult::Boolean(false)) {
         return result;
     }
 

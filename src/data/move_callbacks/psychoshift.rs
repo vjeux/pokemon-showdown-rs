@@ -24,7 +24,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     if source_status.is_none() {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // move.status = source.status;

@@ -42,7 +42,7 @@ pub mod condition {
         // if (boostedMoves.includes(move.id)) {
         if boosted_moves.contains(&current_move_id) {
             // return this.chainModify(2);
-            return EventResult::ChainModify(2);
+            return EventResult::Number(battle.chain_modify(2 as f32));
         }
 
         EventResult::Continue
@@ -80,10 +80,10 @@ pub mod condition {
         // if (boostedMoves.includes(move.id)) {
         if boosted_moves.contains(&current_move_id) {
             // return true;
-            return EventResult::Bool(true);
+            return EventResult::Boolean(true);
         }
 
         // return accuracy;
-        EventResult::Int(accuracy)
+        EventResult::Number(accuracy)
     }
 }

@@ -20,7 +20,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
 
     if has_gravity {
         // return this.chainModify(1.5);
-        return EventResult::ChainModify(1.5);
+        return EventResult::Number(battle.chain_modify(1.5 as f32));
     }
 
     EventResult::Continue

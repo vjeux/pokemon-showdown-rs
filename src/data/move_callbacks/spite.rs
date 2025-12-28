@@ -46,15 +46,15 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 let move_data = battle.dex.get_move_by_id(move_id);
                 match move_data {
                     Some(m) => (move_id.clone(), m.is_z, m.is_max, m.base_move.clone()),
-                    None => return EventResult::Bool(false),
+                    None => return EventResult::Boolean(false),
                 }
             }
-            None => return EventResult::Bool(false),
+            None => return EventResult::Boolean(false),
         }
     };
 
     if is_z {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
@@ -68,7 +68,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (!ppDeducted) return false;
     let pp_deducted = battle.deduct_pp(target, &move_id, 4);
     if pp_deducted == 0 {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.add("-activate", target, 'move: Spite', move.name, ppDeducted);

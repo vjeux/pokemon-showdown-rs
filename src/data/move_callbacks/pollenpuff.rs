@@ -89,7 +89,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         battle.add("cant", &[source_arg, "move: Heal Block".into(), move_name.into()]);
 
         // return false;
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

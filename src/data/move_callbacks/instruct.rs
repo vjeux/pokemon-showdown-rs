@@ -50,7 +50,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if !has_last_move || has_dynamax {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     let last_move_id = last_move_id.unwrap();
@@ -116,7 +116,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     if has_failinstruct || is_z || is_max || has_charge || has_recharge ||
        has_beakblast || has_focuspunch || has_shelltrap ||
        (move_slot_pp.is_some() && move_slot_pp.unwrap() <= 0) {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.add('-singleturn', target, 'move: Instruct', `[of] ${source}`);

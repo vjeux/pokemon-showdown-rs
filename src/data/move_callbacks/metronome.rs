@@ -61,7 +61,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     // if (!randomMove) return false;
     let move_id = match random_move {
         Some(id) => id,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     // this.actions.useMove(randomMove, pokemon);

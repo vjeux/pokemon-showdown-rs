@@ -52,7 +52,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         battle.add("-fail", &[source_arg, "move: Hyperspace Fury".into(), "[forme]".into()]);
 
         // return null;
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     // this.attrLastMove('[still]');
@@ -63,6 +63,6 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     battle.add("-fail", &[source_arg, "move: Hyperspace Fury".into()]);
 
     // return null;
-    EventResult::Null
+    EventResult::Stop
 }
 

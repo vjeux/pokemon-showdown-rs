@@ -78,10 +78,10 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             "heal".into(),
         ]);
 
-        return EventResult::Bool(false); // this.NOT_FAIL
+        return EventResult::Boolean(false); // this.NOT_FAIL
     }
 
     // return success;
-    EventResult::Bool(success)
+    EventResult::Boolean(success)
 }
 

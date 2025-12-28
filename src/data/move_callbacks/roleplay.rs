@@ -29,7 +29,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     if target_ability == source_ability {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (target.getAbility().flags['failroleplay'] || source.getAbility().flags['cantsuppress']) return false;
@@ -43,7 +43,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     };
 
     if target_ability_data.flags.fail_roleplay || source_ability_data.flags.cant_suppress {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue
@@ -72,7 +72,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     let old_ability = battle.set_ability(&target_ability, source, Some(target), None);
 
     // if (!oldAbility) return oldAbility as false | null;
-    if matches!(old_ability, EventResult::Bool(false) | EventResult::Null) {
+    if matches!(old_ability, EventResult::Boolean(false) | EventResult::Stop) {
         return old_ability;
     }
 

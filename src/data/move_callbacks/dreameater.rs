@@ -29,6 +29,6 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
         target_pokemon.status == Some(ID::from("slp")) || target_pokemon.has_ability(&ID::from("comatose"), battle)
     };
 
-    EventResult::Bool(is_immune)
+    EventResult::Boolean(is_immune)
 }
 

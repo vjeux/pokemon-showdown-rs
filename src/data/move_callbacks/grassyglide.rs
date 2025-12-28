@@ -33,7 +33,7 @@ pub fn on_modify_priority(battle: &mut Battle, source_pos: Option<(usize, usize)
 
     if is_grassy_terrain && is_grounded {
         // return priority + 1;
-        return EventResult::Int(1);
+        return EventResult::Number(1);
     }
 
     EventResult::Continue

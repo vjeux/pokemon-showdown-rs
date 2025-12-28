@@ -15,11 +15,11 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     let will_act = battle.queue.will_act();
     if !will_act {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None);
-    EventResult::Bool(stall_move_result)
+    EventResult::Boolean(stall_move_result)
 }
 
 /// onHit(pokemon) {
@@ -174,7 +174,7 @@ pub mod condition {
         }
 
         // return this.NOT_FAIL;
-        EventResult::NOT_FAIL
+        EventResult::NotFail
     }
 
     /// onHit(target, source, move) {

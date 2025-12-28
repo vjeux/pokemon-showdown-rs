@@ -21,7 +21,7 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
 
     let counter_id = ID::from("counter");
     if !pokemon.volatiles.contains_key(&counter_id) {
-        return EventResult::Int(0);
+        return EventResult::Number(0);
     }
 
     // return pokemon.volatiles['counter'].damage || 1;
@@ -30,7 +30,7 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
         .and_then(|d| d.as_i64())
         .unwrap_or(1) as i32;
 
-    EventResult::Int(damage)
+    EventResult::Number(damage)
 }
 
 /// beforeTurnCallback(pokemon) {
@@ -61,7 +61,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
 
     let counter_id = ID::from("counter");
     if !source.volatiles.contains_key(&counter_id) {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (source.volatiles['counter'].slot === null) return false;
@@ -70,7 +70,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         .cloned();
 
     match slot {
-        None | Some(serde_json::Value::Null) => EventResult::Bool(false),
+        None | Some(serde_json::Value::Null) => EventResult::Boolean(false),
         _ => EventResult::Continue,
     }
 }

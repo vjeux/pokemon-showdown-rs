@@ -29,6 +29,6 @@ pub fn damage_callback(battle: &mut Battle, pokemon_pos: (usize, usize), target_
         std::cmp::max(damage, 1)
     };
 
-    EventResult::Int(damage)
+    EventResult::Number(damage)
 }
 

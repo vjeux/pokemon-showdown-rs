@@ -24,6 +24,6 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         std::cmp::min(350, base_power)
     };
 
-    EventResult::Int(power)
+    EventResult::Number(power)
 }
 

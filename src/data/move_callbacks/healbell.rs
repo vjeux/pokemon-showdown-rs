@@ -111,6 +111,6 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // return success;
-    EventResult::Bool(success)
+    EventResult::Boolean(success)
 }
 

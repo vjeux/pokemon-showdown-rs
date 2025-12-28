@@ -84,38 +84,38 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     let ignoring_item = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
-            None => return EventResult::Bool(false),
+            None => return EventResult::Boolean(false),
         };
         pokemon_pokemon.ignoring_item()
     };
 
     if ignoring_item {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // const item = pokemon.getItem();
     let item_id = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
-            None => return EventResult::Bool(false),
+            None => return EventResult::Boolean(false),
         };
         pokemon_pokemon.item.clone()
     };
 
     let item_id = match item_id {
         Some(id) => id,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     let item_data = match battle.dex.get_item_by_id(&item_id) {
         Some(item) => item,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     // if (!item.naturalGift) return false;
     let natural_gift = match &item_data.natural_gift {
         Some(ng) => ng,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     // move.basePower = item.naturalGift.basePower;

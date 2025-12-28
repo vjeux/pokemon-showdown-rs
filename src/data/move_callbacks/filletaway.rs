@@ -23,7 +23,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
     };
 
     if hp <= max_hp / 2 || max_hp == 1 {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue
@@ -48,7 +48,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
     let boost_result = battle.boost(boosts, pokemon, Some(pokemon), None);
 
     if !boost_result {
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     // delete move.boosts;

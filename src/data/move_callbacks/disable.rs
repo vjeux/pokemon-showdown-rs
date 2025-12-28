@@ -28,13 +28,13 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         Some(id) => id.clone(),
         None => {
             // !target.lastMove
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
     };
 
     // target.lastMove.id === 'struggle'
     if last_move_id.as_str() == "struggle" {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // TODO: Check isZOrMaxPowered and isMax - these require additional move metadata
@@ -111,7 +111,7 @@ pub mod condition {
                 Some(id) => id.clone(),
                 None => {
                     battle.debug("Pokemon hasn't moved yet");
-                    return EventResult::Bool(false);
+                    return EventResult::Boolean(false);
                 }
             }
         };
@@ -135,7 +135,7 @@ pub mod condition {
                 if move_slot.id == last_move_id {
                     if move_slot.pp == 0 {
                         battle.debug("Move out of PP");
-                        return EventResult::Bool(false);
+                        return EventResult::Boolean(false);
                     }
                     found = true;
                     break;
@@ -227,7 +227,7 @@ pub mod condition {
                 // Note: This callback doesn't have access to attacker position in the signature
                 // We would need to get it from battle context
                 // For now, we'll just return false to indicate the move is blocked
-                return EventResult::Bool(false);
+                return EventResult::Boolean(false);
             }
         }
 

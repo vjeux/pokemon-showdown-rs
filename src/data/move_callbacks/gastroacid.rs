@@ -33,7 +33,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     // return false;
     if cant_suppress {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (target.hasItem('Ability Shield')) {
@@ -57,7 +57,7 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         battle.add("-block", &[target_arg, "item: Ability Shield".into()]);
 
         // return null;
-        return EventResult::Null;
+        return EventResult::Stop;
     }
 
     EventResult::Continue
@@ -86,7 +86,7 @@ pub mod condition {
         };
 
         if has_ability_shield {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // this.add('-endability', pokemon);

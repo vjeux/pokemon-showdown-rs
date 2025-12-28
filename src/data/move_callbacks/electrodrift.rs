@@ -40,7 +40,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
         battle.debug("electro drift super effective buff");
 
         // return this.chainModify([5461, 4096]);
-        return EventResult::ChainModifyFraction(5461, 4096);
+        return EventResult::Number(battle.chain_modify_fraction(5461, 4096));
     }
 
     EventResult::Continue

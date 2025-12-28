@@ -134,7 +134,7 @@ pub mod condition {
 
         // if (!applies) return false;
         if !applies {
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // this.add('-start', pokemon, 'Smack Down');

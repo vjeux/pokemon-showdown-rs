@@ -62,7 +62,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
         match &target_pokemon.last_move {
             Some(m) => m.clone(),
-            None => return EventResult::Bool(false),
+            None => return EventResult::Boolean(false),
         }
     };
 
@@ -78,18 +78,18 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if is_transformed || has_move {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // if (move.flags['nosketch'] || move.isZ || move.isMax) return false;
     let move_data = match battle.dex.get_move_by_id(&move_id) {
         Some(m) => m,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     let has_nosketch = move_data.flags.nosketch.unwrap_or(0) != 0;
     if has_nosketch || move_data.is_z || move_data.is_max {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // const sketchIndex = source.moves.indexOf('sketch');
@@ -104,7 +104,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     let sketch_index = match sketch_index {
         Some(idx) => idx,
-        None => return EventResult::Bool(false),
+        None => return EventResult::Boolean(false),
     };
 
     // const sketchedMove = {

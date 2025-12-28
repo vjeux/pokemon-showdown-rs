@@ -35,11 +35,11 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     };
 
     if layers == 0 {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // return pokemon.volatiles['stockpile'].layers * 100;
-    EventResult::Int(layers * 100)
+    EventResult::Number(layers * 100)
 }
 
 /// onTry(source) {
@@ -62,7 +62,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         source_pokemon.volatiles.contains_key(&ID::from("stockpile"))
     };
 
-    EventResult::Bool(has_stockpile)
+    EventResult::Boolean(has_stockpile)
 }
 
 /// onAfterMove(pokemon) {

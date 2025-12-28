@@ -96,6 +96,6 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
     // TODO: debug logging not yet implemented
 
     // return bp;
-    EventResult::Int(bp)
+    EventResult::Number(bp)
 }
 

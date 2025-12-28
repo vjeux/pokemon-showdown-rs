@@ -39,7 +39,7 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
         (target_pokemon.gender == Gender::Male && source_pokemon.gender == Gender::Female) ||
         (target_pokemon.gender == Gender::Female && source_pokemon.gender == Gender::Male);
 
-    EventResult::Bool(is_compatible)
+    EventResult::Boolean(is_compatible)
 }
 
 pub mod condition {
@@ -92,7 +92,7 @@ pub mod condition {
 
         if !is_compatible {
             battle.debug("incompatible gender");
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // if (!this.runEvent('Attract', pokemon, source)) {
@@ -102,7 +102,7 @@ pub mod condition {
         let event_result = battle.run_event("Attract", Some(pokemon_pos), Some(source), None);
         if !event_result {
             battle.debug("Attract event failed");
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // Get pokemon and source again for battle.add
@@ -258,7 +258,7 @@ pub mod condition {
             battle.add("cant", &[pokemon.into(), "Attract".into()]);
 
             // return false;
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         EventResult::Continue

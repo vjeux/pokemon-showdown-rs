@@ -128,14 +128,20 @@ pub enum EventResult {
     Continue,
     /// Stop event processing, event succeeded
     Stop,
-    /// Stop event processing, event failed (move blocked, etc.)
-    Fail,
+    /// Stop event processing, event didn't fail (passed failure checks)
+    NotFail,
     /// Return a number value
     Number(i32),
     /// Return a string value
     String(String),
     /// Return a boolean value
     Boolean(bool),
+    /// Return a position (side, slot)
+    Position((usize, usize)),
+    /// Return an ID
+    ID(ID),
+    /// Return a list of types
+    Types(Vec<String>),
 }
 
 impl Default for EventResult {
@@ -145,14 +151,14 @@ impl Default for EventResult {
 }
 
 impl EventResult {
-    /// Check if the result indicates failure/blocking
-    pub fn is_fail(&self) -> bool {
-        matches!(self, EventResult::Fail)
+    /// Check if the result indicates not failing
+    pub fn is_not_fail(&self) -> bool {
+        matches!(self, EventResult::NotFail)
     }
 
     /// Check if the result indicates stopping
     pub fn should_stop(&self) -> bool {
-        matches!(self, EventResult::Stop | EventResult::Fail)
+        matches!(self, EventResult::Stop | EventResult::NotFail)
     }
 
     /// Get the number value if present
@@ -175,6 +181,30 @@ impl EventResult {
     pub fn boolean(&self) -> Option<bool> {
         match self {
             EventResult::Boolean(b) => Some(*b),
+            _ => None,
+        }
+    }
+
+    /// Get the position value if present
+    pub fn position(&self) -> Option<(usize, usize)> {
+        match self {
+            EventResult::Position(pos) => Some(*pos),
+            _ => None,
+        }
+    }
+
+    /// Get the ID value if present
+    pub fn id(&self) -> Option<&ID> {
+        match self {
+            EventResult::ID(id) => Some(id),
+            _ => None,
+        }
+    }
+
+    /// Get the types value if present
+    pub fn types(&self) -> Option<&Vec<String>> {
+        match self {
+            EventResult::Types(types) => Some(types),
             _ => None,
         }
     }
@@ -465,7 +495,7 @@ mod tests {
     fn test_event_result() {
         let result = EventResult::Number(150);
         assert_eq!(result.number(), Some(150));
-        assert!(!result.is_fail());
+        assert!(!result.is_not_fail());
 
         let string_result = EventResult::String("test".to_string());
         assert_eq!(string_result.string(), Some("test"));
@@ -473,8 +503,8 @@ mod tests {
         let bool_result = EventResult::Boolean(true);
         assert_eq!(bool_result.boolean(), Some(true));
 
-        let fail = EventResult::Fail;
-        assert!(fail.is_fail());
-        assert!(fail.should_stop());
+        let not_fail = EventResult::NotFail;
+        assert!(not_fail.is_not_fail());
+        assert!(not_fail.should_stop());
     }
 }

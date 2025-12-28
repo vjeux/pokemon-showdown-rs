@@ -18,14 +18,14 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
     let will_act = battle.queue.will_act();
 
     if !will_act {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // this.runEvent('StallMove', pokemon)
     let stall_result = battle.run_event("StallMove", pokemon, None, None);
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
-    EventResult::Bool(will_act && stall_result)
+    EventResult::Boolean(will_act && stall_result)
 }
 
 /// onHit(pokemon) {

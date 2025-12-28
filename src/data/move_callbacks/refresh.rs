@@ -26,7 +26,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     };
 
     if status.is_none() || status == Some(ID::from("slp")) || status == Some(ID::from("frz")) {
-        return EventResult::Bool(false);
+        return EventResult::Boolean(false);
     }
 
     // pokemon.cureStatus();

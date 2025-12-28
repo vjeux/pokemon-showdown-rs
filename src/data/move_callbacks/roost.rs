@@ -46,7 +46,7 @@ pub mod condition {
             }
 
             // return false;
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // this.add('-singleturn', target, 'move: Roost');

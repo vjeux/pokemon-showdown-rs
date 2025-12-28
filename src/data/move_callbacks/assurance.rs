@@ -44,10 +44,10 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
         // this.debug('BP doubled on damaged target');
         battle.debug("BP doubled on damaged target");
         // return move.basePower * 2;
-        return EventResult::Int(move_data.base_power * 2);
+        return EventResult::Number(move_data.base_power * 2);
     }
 
     // return move.basePower;
-    EventResult::Int(move_data.base_power)
+    EventResult::Number(move_data.base_power)
 }
 

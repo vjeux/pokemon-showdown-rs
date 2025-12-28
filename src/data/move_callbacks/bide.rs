@@ -19,7 +19,7 @@ pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
     };
 
     if pokemon.volatiles.contains_key(&ID::from("bide")) {
-        return EventResult::Bool(true);
+        return EventResult::Boolean(true);
     }
 
     EventResult::Continue
@@ -174,7 +174,7 @@ pub mod condition {
                 battle.add("-fail", &[pokemon_arg]);
 
                 // return false;
-                return EventResult::Bool(false);
+                return EventResult::Boolean(false);
             }
 
             let target = target.unwrap();
@@ -194,7 +194,7 @@ pub mod condition {
                     battle.add("-miss", &[pokemon_arg]);
 
                     // return false;
-                    return EventResult::Bool(false);
+                    return EventResult::Boolean(false);
                 }
 
                 possible_target.unwrap()
@@ -216,7 +216,7 @@ pub mod condition {
             pokemon.remove_volatile(&bide_id);
 
             // return false;
-            return EventResult::Bool(false);
+            return EventResult::Boolean(false);
         }
 
         // this.add('-activate', pokemon, 'move: Bide');
