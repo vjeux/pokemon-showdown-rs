@@ -84,14 +84,14 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
 
     // const sourceCanBeSet = this.runEvent('SetAbility', source, source, this.effect, targetAbility);
     // if (!sourceCanBeSet) return sourceCanBeSet;
-    let source_can_be_set = battle.run_event_for_ability("SetAbility", source, Some(source), Some(&target_ability_id));
+    let source_can_be_set = battle.run_event_bool("SetAbility", Some(source), Some(source), Some(&target_ability_id));
     if !source_can_be_set {
         return EventResult::Boolean(false);
     }
 
     // const targetCanBeSet = this.runEvent('SetAbility', target, source, this.effect, sourceAbility);
     // if (!targetCanBeSet) return targetCanBeSet;
-    let target_can_be_set = battle.run_event_for_ability("SetAbility", target, Some(source), Some(&source_ability_id));
+    let target_can_be_set = battle.run_event_bool("SetAbility", Some(target), Some(source), Some(&source_ability_id));
     if !target_can_be_set {
         return EventResult::Boolean(false);
     }
