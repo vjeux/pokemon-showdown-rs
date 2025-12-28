@@ -11,6 +11,12 @@ use crate::event::EventResult;
 ///     pokemon.trySetStatus('brn', pokemon);
 /// }
 pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // pokemon.trySetStatus('brn', pokemon);
+    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+    pokemon_mut.try_set_status(crate::dex_data::ID::new("brn"), None);
+
     EventResult::Continue
 }
