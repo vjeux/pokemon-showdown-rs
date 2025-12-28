@@ -17,7 +17,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
     use crate::dex_data::ID;
 
     // if (this.field.isTerrain('electricterrain')) {
-    let is_electric_terrain = battle.field.terrain == Some(ID::from("electricterrain"));
+    let is_electric_terrain = battle.field.terrain == ID::from("electricterrain");
 
     if is_electric_terrain {
         // this.debug('psyblade electric terrain boost');

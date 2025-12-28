@@ -20,9 +20,9 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         return EventResult::Boolean(false);
     }
 
-    let stall_result = battle.run_event("StallMove", pokemon, None, None, None);
+    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, None);
 
-    if matches!(stall_result, EventResult::Boolean(false)) {
+    if stall_result == Some(0) {
         return EventResult::Boolean(false);
     }
 
@@ -156,10 +156,10 @@ pub mod condition {
             active_move.smart_target
         };
 
-        if smart_target {
+        if smart_target.unwrap_or(false) {
             // move.smartTarget = false;
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.smart_target = false;
+                active_move.smart_target = Some(false);
             }
         } else {
             // this.add('-activate', target, 'move: Protect');

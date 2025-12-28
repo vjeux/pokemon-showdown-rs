@@ -28,7 +28,7 @@ pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
         // move.heal = [1, 4];
         // move.infiltrates = true;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.heal = Some(vec![1, 4]);
+            active_move.heal = Some((1, 4));
             active_move.infiltrates = true;
         }
     } else if rand < 6 {
