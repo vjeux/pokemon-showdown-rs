@@ -3317,7 +3317,7 @@ impl Pokemon {
     pub fn clear_status(&mut self) -> bool {
         if !self.status.is_empty() {
             self.status = ID::empty();
-            self.status_state = crate::dex_data::EffectState::new(ID::empty());
+            self.status_state = crate::event_system::EffectState::new(ID::empty());
             true
         } else {
             false

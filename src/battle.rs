@@ -3566,7 +3566,7 @@ impl Battle {
     // 	}
     //
     pub fn set_active_move(&mut self, move_id: Option<ID>, pokemon: Option<(usize, usize)>, target: Option<(usize, usize)>) {
-        self.active_move = move_id;
+        self.active_move = move_id.and_then(|id| self.dex.get_active_move(&id.to_string()));
         self.active_pokemon = pokemon;
         self.active_target = target.or(pokemon);
     }
@@ -8098,7 +8098,7 @@ impl Battle {
             "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_id, source_pos),
             "Hit" => {
                 if let Some(target_pos) = target {
-                    move_callbacks::dispatch_on_hit(self, move_id, source_pos, target_pos)
+                    move_callbacks::dispatch_on_hit(self, move_id, source_pos, Some(target_pos))
                 } else {
                     EventResult::Continue
                 }
