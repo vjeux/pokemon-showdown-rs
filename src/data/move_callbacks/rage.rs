@@ -13,8 +13,23 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-singlemove', pokemon, 'Rage');
     /// }
-    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        let pokemon = pokemon_pos;
+
+        // this.add('-singlemove', pokemon, 'Rage');
+        let pokemon_arg = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.get_slot()
+        };
+
+        battle.add(
+            "-singlemove",
+            &[pokemon_arg.into(), "Rage".into()],
+        );
+
         EventResult::Continue
     }
 
@@ -24,11 +39,36 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_hit(
-        _battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
-        _target_pos: Option<(usize, usize)>,
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos; // "target" in JS - pokemon with Rage volatile
+        let source = match target_pos {
+            // "source" in JS - attacker
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (target !== source && move.category !== 'Status')
+        if pokemon != source {
+            // Get the active move
+            let move_id = match &battle.active_move {
+                Some(active_move) => active_move.id.clone(),
+                None => return EventResult::Continue,
+            };
+
+            let move_data = match battle.dex.get_move_by_id(&move_id) {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+
+            if move_data.category.as_str() != "Status" {
+                // this.boost({ atk: 1 });
+                battle.boost(&[("atk", 1)], pokemon, Some(pokemon), None);
+            }
+        }
+
         EventResult::Continue
     }
 
@@ -36,8 +76,21 @@ pub mod condition {
     ///     this.debug('removing Rage before attack');
     ///     pokemon.removeVolatile('rage');
     /// }
-    pub fn on_before_move(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // this.debug('removing Rage before attack');
+        // (debug call skipped)
+
+        // pokemon.removeVolatile('rage');
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.remove_volatile(&ID::from("rage"));
+
         EventResult::Continue
     }
 }
