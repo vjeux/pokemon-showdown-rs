@@ -58,7 +58,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_data.max_hp
+            pokemon_data.maxhp
         };
 
         let multiplier = 2_i32.pow(type_mod as u32);

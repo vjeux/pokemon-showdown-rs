@@ -148,6 +148,8 @@ pub struct MoveData {
     #[serde(default)]
     pub secondary: Option<MoveSecondary>,
     #[serde(default)]
+    pub secondaries: Option<Vec<MoveSecondary>>,
+    #[serde(default)]
     pub flags: HashMap<String, i32>,
     #[serde(default)]
     pub boosts: Option<HashMap<String, i32>>,

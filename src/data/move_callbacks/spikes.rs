@@ -90,7 +90,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_data.max_hp
+            pokemon_data.maxhp
         };
 
         let damage_amount = damage_amounts[layers as usize] * max_hp / 24;

@@ -74,7 +74,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.max_hp
+        pokemon_pokemon.maxhp
     };
 
     battle.direct_damage(max_hp / 2, pokemon, None, None);

@@ -32,7 +32,7 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        base_power * pokemon_pokemon.hp / pokemon_pokemon.max_hp
+        base_power * pokemon_pokemon.hp / pokemon_pokemon.maxhp
     };
 
     // this.debug(`BP: ${bp}`);

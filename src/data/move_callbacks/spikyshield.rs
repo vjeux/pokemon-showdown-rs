@@ -213,7 +213,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                source_pokemon.base_max_hp
+                source_pokemon.base_maxhp
             };
 
             battle.damage(base_max_hp / 8, source);
@@ -258,7 +258,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                source_pokemon.base_max_hp
+                source_pokemon.base_maxhp
             };
 
             battle.damage(base_max_hp / 8, source);

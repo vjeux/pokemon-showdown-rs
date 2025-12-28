@@ -73,7 +73,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.max_hp
+        pokemon_pokemon.maxhp
     };
 
     let heal_amount = (max_hp as f64 * factor).round() as i32;

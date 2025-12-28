@@ -37,7 +37,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => continue,
             };
-            ally_pokemon.base_max_hp
+            ally_pokemon.base_maxhp
         };
 
         let condition = battle.dex.get_condition(&ID::from("flameburst"));
@@ -81,7 +81,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
                 Some(p) => p,
                 None => continue,
             };
-            ally_pokemon.base_max_hp
+            ally_pokemon.base_maxhp
         };
 
         let condition = battle.dex.get_condition(&ID::from("flameburst"));
