@@ -3,7 +3,6 @@
 
 mod common;
 
-use pokemon_showdown::Battle;
 use std::sync::{Arc, Mutex};
 
 /// Test: Battle#onEvent - should allow the addition of one or more event handlers

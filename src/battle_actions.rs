@@ -1865,7 +1865,7 @@ impl<'a> BattleActions<'a> {
         if let Some(hit_type) = move_hit_type {
             match hit_type {
                 "parentalbond" => 2,
-                "triplekick" | "triplekick" => 3,
+                "triplekick" => 3,
                 _ => Self::get_multi_hit_count(multi_hit, random_value),
             }
         } else {
@@ -2886,7 +2886,7 @@ pub fn use_move_inner(
     }
 
     // let moveResult = false;
-    let mut move_result = false;
+    // Note: move_result will be initialized later based on move execution
 
     // this.battle.setActiveMove(move, pokemon, target);
     battle.set_active_move(Some(move_or_move_name.clone()), Some(pokemon_pos), target);
@@ -3149,15 +3149,15 @@ pub fn use_move_inner(
 
     // let damage: number | false | undefined | '' = false;
     // Execute move based on target type
-    if matches!(active_move.target.as_str(), "all" | "foeSide" | "allySide" | "allyTeam") {
+    let move_result = if matches!(active_move.target.as_str(), "all" | "foeSide" | "allySide" | "allyTeam") {
         // Field-wide moves - for now, treat like targeted moves with single target
         // Full implementation would use tryMoveHit instead of trySpreadMoveHit
-        move_result = battle.try_spread_move_hit(&[target_pos], pokemon_pos, move_or_move_name);
+        battle.try_spread_move_hit(&[target_pos], pokemon_pos, move_or_move_name)
     } else {
         // Targeted moves - use trySpreadMoveHit
         // For now, we're using a single target (proper implementation would get all targets)
-        move_result = battle.try_spread_move_hit(&[target_pos], pokemon_pos, move_or_move_name);
-    }
+        battle.try_spread_move_hit(&[target_pos], pokemon_pos, move_or_move_name)
+    };
 
     // if (move.selfBoost && moveResult) this.moveHit(pokemon, pokemon, move, move.selfBoost, false, true);
     // Self-boost is handled through move data and event system

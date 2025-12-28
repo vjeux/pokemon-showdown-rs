@@ -102,7 +102,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     // if (!source.setType(randomType)) return false;
     let random_type_str = match random_type {
-        Some(t) => t.clone(),
+        Some(t) => *t,
         None => return EventResult::Boolean(false),
     };
 
