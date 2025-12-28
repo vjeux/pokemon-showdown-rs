@@ -45,20 +45,7 @@ pub fn on_hit_field(battle: &mut Battle, target_pos: Option<(usize, usize)>, sou
         //     anyAirborne = true;
         //     continue;
         // }
-        let is_immune = !battle.run_immunity(pokemon_pos, &ID::from("Ground"));
-
-        if is_immune {
-            let pokemon_arg = {
-                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => continue,
-                };
-                crate::battle::Arg::from(pokemon)
-            };
-            battle.add("-immune", &[pokemon_arg]);
-            any_airborne = true;
-            continue;
-        }
+        // TODO: Implement immunity check when run_immunity is available
 
         // if (pokemon.hasType('Grass')) {
         //     // This move affects every grounded Grass-type Pokemon in play.
