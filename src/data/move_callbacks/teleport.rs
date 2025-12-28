@@ -11,10 +11,18 @@ use crate::event::EventResult;
 ///     return !!this.canSwitch(source.side);
 /// }
 pub fn on_try(
-    _battle: &mut Battle,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let source = source_pos;
+
+    // return !!this.canSwitch(source.side);
+    let can_switch = battle.can_switch(source.0);
+
+    if can_switch > 0 {
+        EventResult::Continue
+    } else {
+        EventResult::NotFail
+    }
 }
