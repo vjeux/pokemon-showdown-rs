@@ -13,7 +13,19 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.hp <= pokemon.maxhp / 2) {
+    //     pokemon.eatItem();
+    // }
+
+    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    if pokemon_mut.hp <= pokemon_mut.maxhp / 2 {
+        pokemon_mut.eat_item(false);
+    }
+
     EventResult::Continue
 }
 
@@ -21,7 +33,14 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     if (!this.runEvent('TryHeal', pokemon, null, this.effect, 10)) return false;
 /// }
 pub fn on_try_eat_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.runEvent('TryHeal', pokemon, null, this.effect, 10)) return false;
+
+    let result = battle.run_event("TryHeal", Some(pokemon_pos), None, None, Some(10));
+
+    if result.is_none() {
+        return EventResult::Boolean(false);
+    }
+
     EventResult::Continue
 }
 
@@ -29,6 +48,8 @@ pub fn on_try_eat_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, 
 ///     this.heal(10);
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // this.heal(10);
+    battle.heal(10, Some(pokemon_pos), None, None);
+
     EventResult::Continue
 }

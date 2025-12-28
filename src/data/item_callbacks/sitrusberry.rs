@@ -40,7 +40,22 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     if (!this.runEvent('TryHeal', pokemon, null, this.effect, pokemon.baseMaxhp / 4)) return false;
 /// }
 pub fn on_try_eat_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.runEvent('TryHeal', pokemon, null, this.effect, pokemon.baseMaxhp / 4)) return false;
+
+    let heal_amount = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.base_maxhp / 4
+    };
+
+    let result = battle.run_event("TryHeal", Some(pokemon_pos), None, None, Some(heal_amount));
+
+    if result.is_none() {
+        return EventResult::Boolean(false);
+    }
+
     EventResult::Continue
 }
 
@@ -48,6 +63,17 @@ pub fn on_try_eat_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, 
 ///     this.heal(pokemon.baseMaxhp / 4);
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // this.heal(pokemon.baseMaxhp / 4);
+
+    let heal_amount = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.base_maxhp / 4
+    };
+
+    battle.heal(heal_amount, Some(pokemon_pos), None, None);
+
     EventResult::Continue
 }
