@@ -12,6 +12,8 @@ use crate::event::EventResult;
 ///     move.status = source.status;
 /// }
 pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+    use crate::dex_data::ID;
+
     let source = source_pos;
 
     // if (!source.status) return false;
@@ -23,13 +25,13 @@ pub fn on_try_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos: (
         source_pokemon.status.clone()
     };
 
-    if source_status.is_none() {
+    if source_status == ID::from("") {
         return EventResult::Boolean(false);
     }
 
     // move.status = source.status;
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.status = source_status;
+        active_move.status = Some(source_status.to_string());
     }
 
     EventResult::Continue

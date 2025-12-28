@@ -28,13 +28,13 @@ pub fn base_power_callback(battle: &mut Battle, pokemon_pos: (usize, usize), tar
 
         // Count all positive boosts (atk, def, spa, spd, spe, accuracy, evasion)
         let mut count = 0i32;
-        if target_pokemon.boosts.atk > 0 { count += target_pokemon.boosts.atk; }
-        if target_pokemon.boosts.def > 0 { count += target_pokemon.boosts.def; }
-        if target_pokemon.boosts.spa > 0 { count += target_pokemon.boosts.spa; }
-        if target_pokemon.boosts.spd > 0 { count += target_pokemon.boosts.spd; }
-        if target_pokemon.boosts.spe > 0 { count += target_pokemon.boosts.spe; }
-        if target_pokemon.boosts.accuracy > 0 { count += target_pokemon.boosts.accuracy; }
-        if target_pokemon.boosts.evasion > 0 { count += target_pokemon.boosts.evasion; }
+        if target_pokemon.boosts.atk > 0 { count += target_pokemon.boosts.atk as i32; }
+        if target_pokemon.boosts.def > 0 { count += target_pokemon.boosts.def as i32; }
+        if target_pokemon.boosts.spa > 0 { count += target_pokemon.boosts.spa as i32; }
+        if target_pokemon.boosts.spd > 0 { count += target_pokemon.boosts.spd as i32; }
+        if target_pokemon.boosts.spe > 0 { count += target_pokemon.boosts.spe as i32; }
+        if target_pokemon.boosts.accuracy > 0 { count += target_pokemon.boosts.accuracy as i32; }
+        if target_pokemon.boosts.evasion > 0 { count += target_pokemon.boosts.evasion as i32; }
         count
     };
 
