@@ -183,7 +183,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
     if is_ally {
         battle.add("-activate", &[
-            source_arg.clone(),
+            source_arg,
             "move: Skill Swap".into(),
             "".into(),
             "".into(),
@@ -197,7 +197,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         let source_ability_name = source_ability_data.map(|a| a.name.clone()).unwrap_or_default();
 
         battle.add("-activate", &[
-            source_arg.clone(),
+            source_arg,
             "move: Skill Swap".into(),
             target_ability_name.into(),
             source_ability_name.into(),

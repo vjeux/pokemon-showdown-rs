@@ -154,14 +154,16 @@ pub mod condition {
         // if (this.effectState.duration === 1) {
         if duration == 1 {
             // this.add('-end', pokemon, 'move: Bide');
-            let pokemon_arg = {
-                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
+            {
+                let pokemon_arg = {
+                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    Arg::from(pokemon)
                 };
-                Arg::from(pokemon)
-            };
-            battle.add("-end", &[pokemon_arg.clone(), "move: Bide".into()]);
+                battle.add("-end", &[pokemon_arg, "move: Bide".into()]);
+            }
 
             // target = this.effectState.lastDamageSource;
             // if (!target || !this.effectState.totalDamage) {
@@ -171,6 +173,13 @@ pub mod condition {
                 battle.attr_last_move(&["[still]"]);
 
                 // this.add('-fail', pokemon);
+                let pokemon_arg = {
+                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    Arg::from(pokemon)
+                };
                 battle.add("-fail", &[pokemon_arg]);
 
                 // return false;

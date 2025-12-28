@@ -93,7 +93,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     };
 
     battle.add("-prepare", &[
-        attacker_arg.clone(),
+        attacker_arg,
         move_name.clone().into(),
     ]);
 

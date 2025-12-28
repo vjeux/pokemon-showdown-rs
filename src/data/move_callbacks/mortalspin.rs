@@ -70,7 +70,7 @@ pub fn on_after_hit(battle: &mut Battle, source_pos: (usize, usize), target_pos:
             };
 
             battle.add("-end", &[
-                pokemon_arg.clone(),
+                pokemon_arg,
                 "Leech Seed".into(),
                 "[from] move: Mortal Spin".into(),
                 format!("[of] {}", pokemon_arg).into(),
@@ -222,7 +222,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<
             };
 
             battle.add("-end", &[
-                pokemon_arg.clone(),
+                pokemon_arg,
                 "Leech Seed".into(),
                 "[from] move: Mortal Spin".into(),
                 format!("[of] {}", pokemon_arg).into(),

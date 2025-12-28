@@ -90,7 +90,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         };
 
         battle.add("-fail", &[
-            source_arg.clone(),
+            source_arg,
             "[from] ability: Insomnia".into(),
             format!("[of] {}", source_arg).into(),
         ]);
@@ -119,7 +119,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
         };
 
         battle.add("-fail", &[
-            source_arg.clone(),
+            source_arg,
             "[from] ability: Vital Spirit".into(),
             format!("[of] {}", source_arg).into(),
         ]);

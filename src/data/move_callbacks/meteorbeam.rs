@@ -48,7 +48,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
     }
 
     // this.add('-prepare', attacker, move.name);
-    let attacker_arg = {
+    let (attacker_arg, move_name) = {
         let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
             Some(p) => p,
             None => return EventResult::Continue,
@@ -59,7 +59,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
         (crate::battle::Arg::from(attacker_pokemon), move_name)
     };
 
-    battle.add("-prepare", &[attacker_arg.0.clone(), attacker_arg.1.clone().into()]);
+    battle.add("-prepare", &[attacker_arg, move_name.into()]);
 
     // this.boost({ spa: 1 }, attacker, attacker, move);
     battle.boost(&[("spa", 1)], attacker, Some(attacker), Some(&move_id.to_string()));
