@@ -500,3 +500,134 @@ By callback type:
 ### Flinch items (kingsrock)
 - Add secondary effect (flinch) to moves
 - Requires modifying move secondaries
+
+## Missing Infrastructure for Item Callbacks
+
+### Megastone Items (onTakeItem)
+**Issue:** ItemData structure in src/dex.rs is missing  and  fields that are present in data/items.json
+
+**Affects items:**
+- All megastone items (raichunitex, raichunitey, sablenite, salamencite, sceptilite, scizorite, scolipite, scovillainite, scraftinite, sharpedonite, skarmorite, slowbronite, staraptite, starminite, steelixite, and many others)
+
+**JS Code Pattern:**
+```javascript
+onTakeItem(item, source) {
+    if (item.megaEvolves === source.baseSpecies.baseSpecies) return false;
+    return true;
+}
+```
+
+**Required Fix:**
+Add to ItemData in src/dex.rs:
+```rust
+#[serde(rename = "megaEvolves", default)]
+pub mega_evolves: Option<String>,  // or Vec<String> for some items
+#[serde(rename = "megaStone", default)]
+pub mega_stone: Option<String>,
+```
+
+### onModifyCritRatio Callbacks
+**Issue:** Callback signatures are missing required parameters (critRatio value and user/pokemon position)
+
+**Affects items:**
+- razorclaw, scopelens, leek, luckypunch, stick
+
+**Current Signature:**
+```rust
+pub fn on_modify_crit_ratio(battle: &mut Battle) -> EventResult
+```
+
+**Required Signature:**
+```rust
+pub fn on_modify_crit_ratio(battle: &mut Battle, crit_ratio: i32, pokemon_pos: (usize, usize)) -> EventResult
+```
+
+**JS Code Pattern:**
+```javascript
+onModifyCritRatio(critRatio) {
+    return critRatio + 1;
+}
+```
+
+## A-B Items Implementation Progress
+
+### Implemented (8 items, 8 callbacks)
+- [x] abilityshield - on_set_ability
+- [x] absorbbulb - on_damaging_hit
+- [x] adamantorb - on_base_power
+- [x] blackbelt - on_base_power  
+- [x] blackglasses - on_base_power
+- [x] blacksludge - on_residual
+- [x] brightpowder - on_modify_accuracy
+- [x] buggem - on_source_try_primary_hit
+
+### Blocked by Missing Infrastructure (33 items, 49 callbacks remaining)
+
+#### Mega Stones (need ItemData.megaEvolves field)
+- abomasite, absolite, absolitez, aerodactylite, aggronite, alakazite
+- altarianite, ampharosite, audinite, banettite, barbaracite, baxcalibrite  
+- beedrillite, blastoisinite, blazikenite
+
+#### Memory/Drive Items (need onTakeItem for type-locked Pokemon)
+- bugmemory, burndrive
+
+#### Berries (need complex berry eating infrastructure)
+- aguavberry (onUpdate, onTryEatItem, onEat)
+- apicotberry (onUpdate, onEat) 
+- aspearberry (onUpdate, onEat)
+- berry (onResidual, onTryEatItem, onEat)
+- bitterberry (onUpdate, onEat)
+- burntberry (onUpdate, onEat)
+- babiriberry (onSourceModifyDamage, onEat)
+
+#### Items Needing Field/Pseudo-Weather
+- airballoon (needs field.getPseudoWeather for gravity check)
+
+#### Items Needing Special Infrastructure  
+- adamantcrystal (needs onTakeItem for Dialga Origin check)
+- adrenalineorb (needs boost event detection)
+- assaultvest (needs move category disabling)
+- berryjuice (needs HP threshold and healing)
+- berserkgene (needs stat boost and item consumption)
+- bigroot (needs heal amount modification)
+- blueorb (needs primal reversion check)
+- boosterenergy (needs paradox form detection)
+
+### Missing Infrastructure Summary for A-B Items
+
+1. **ItemData fields**
+   - `mega_evolves: Option<String>` - for mega stone compatibility
+
+2. **Field methods**
+   - `field.get_pseudo_weather(id)` - EXISTS but signature may differ
+   - Returns Option<&EffectState>
+
+3. **Battle methods**  
+   - `battle.clear_effect_state(state)` - for clearing item states
+   - `battle.run_event("AfterUseItem", ...)` - EXISTS but need to verify usage
+
+4. **Berry mechanics**
+   - HP threshold detection (1/4, 1/2, 1/3 maxhp, etc.)
+   - `pokemon.eat_item()` or similar consumption
+   - `onTryEatItem` callback pattern
+   - Nature-based confusion damage for berries
+
+5. **Boost detection**
+   - `onAfterBoost` event needs stat change info
+   - Detect if stats were lowered (for adrenalineorb)
+
+6. **Move category disabling**
+   - `onDisableMove` needs access to move category
+   - Prevent Status moves (for assaultvest)
+
+7. **Heal modification**
+   - Modify heal amounts (bigroot multiplies draining/healing by 1.3x)
+
+8. **Status application**
+   - `pokemon.try_set_status()` or similar
+   - For berserkgene confusion
+
+9. **Species form checks**
+   - Origin forme detection (adamantcrystal for Dialga)
+   - Primal forme detection (blueorb for Kyogre)
+   - Paradox forme detection (boosterenergy)
