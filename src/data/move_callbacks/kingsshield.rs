@@ -62,7 +62,7 @@ pub mod condition {
         };
 
         // this.add('-singleturn', target, 'Protect');
-        let target_arg = {
+        let target_ident = {
 
             let pokemon = match battle.pokemon_at(target.0, target.1) {
 
@@ -72,10 +72,10 @@ pub mod condition {
 
             };
 
-            crate::battle::Arg::from(pokemon)
+            pokemon.get_slot()
 
         };
-        battle.add("-singleturn", &[target_arg, "Protect".into()]);
+        battle.add("-singleturn", &[target_ident.as_str().into(), "Protect".into()]);
 
         EventResult::Continue
     }
@@ -163,7 +163,7 @@ pub mod condition {
                 active_move.smart_target = Some(false);
             }
         } else {
-            let target_arg = {
+            let target_ident = {
 
                 let pokemon = match battle.pokemon_at(target.0, target.1) {
 
@@ -173,10 +173,10 @@ pub mod condition {
 
                 };
 
-                crate::battle::Arg::from(pokemon)
+                pokemon.get_slot()
 
             };
-            battle.add("-activate", &[target_arg, "move: Protect".into()]);
+            battle.add("-activate", &[target_ident.as_str().into(), "move: Protect".into()]);
         }
 
         //     const lockedmove = source.getVolatile('lockedmove');

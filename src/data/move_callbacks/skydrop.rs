@@ -1,5 +1,3 @@
-Fixed in skydrop.rs: has_flying = battle.has_type(target, "Flying")
-Total changes in skydrop.rs: 1
 //! Sky Drop Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/

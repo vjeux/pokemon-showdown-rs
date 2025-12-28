@@ -18,14 +18,14 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.add('-start', pokemon, 'move: Ingrain');
-        let pokemon_arg = {
+        let pokemon_ident = {
             let poke = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(poke)
+            poke.get_slot()
         };
-        battle.add("-start", &[pokemon_arg, "move: Ingrain".into()]);
+        battle.add("-start", &[pokemon_ident.as_str().into(), "move: Ingrain".into()]);
 
         EventResult::Continue
     }
@@ -74,14 +74,14 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.add('-activate', pokemon, 'move: Ingrain');
-        let pokemon_arg = {
+        let pokemon_ident = {
             let poke = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(poke)
+            poke.get_slot()
         };
-        battle.add("-activate", &[pokemon_arg, "move: Ingrain".into()]);
+        battle.add("-activate", &[pokemon_ident.as_str().into(), "move: Ingrain".into()]);
 
         // return null;
         EventResult::Stop

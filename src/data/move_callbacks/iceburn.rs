@@ -57,14 +57,14 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
 
     // this.add('-prepare', attacker, move.name);
     let move_name = battle.active_move.as_ref().map(|m| m.name.clone()).unwrap_or_default();
-    let attacker_arg = {
+    let attacker_ident = {
         let pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
     };
-    battle.add("-prepare", &[attacker_arg, move_name.into()]);
+    battle.add("-prepare", &[attacker_ident.as_str().into(), move_name.into()]);
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;

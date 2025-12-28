@@ -1,5 +1,3 @@
-Fixed in sappyseed.rs: has_grass = battle.has_type(target, "Grass")
-Total changes in sappyseed.rs: 1
 //! Sappy Seed Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/

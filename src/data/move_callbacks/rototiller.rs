@@ -1,5 +1,3 @@
-Fixed in rototiller.rs: has_grass = battle.has_type(pokemon_pos, "Grass")
-Total changes in rototiller.rs: 1
 //! Rototiller Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/

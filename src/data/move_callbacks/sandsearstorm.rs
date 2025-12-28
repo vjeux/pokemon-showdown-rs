@@ -1,5 +1,3 @@
-Fixed in sandsearstorm.rs: effective_weather = battle.effective_weather(target)
-Total changes in sandsearstorm.rs: 1
 //! Sandsear Storm Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/

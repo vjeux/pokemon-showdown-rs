@@ -120,7 +120,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
     }
 
     // this.add('-singleturn', target, 'move: Instruct', `[of] ${source}`);
-    let target_arg = {
+    let target_ident = {
 
         let pokemon = match battle.pokemon_at(target.0, target.1) {
 
@@ -130,17 +130,17 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
 
         };
 
-        crate::battle::Arg::from(pokemon)
+        pokemon.get_slot()
 
     };
-    let source_str = format!("[of] p{}a: {}", source.0 + 1, {
+    let source_ident = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        &source_pokemon.name
-    });
-    battle.add("-singleturn", &[target_arg, "move: Instruct".into(), source_str.into()]);
+        source_pokemon.get_slot()
+    };
+    battle.add("-singleturn", &[target_ident.as_str().into(), "move: Instruct".into(), format!("[of] {}", source_ident).into()]);
 
     // this.queue.prioritizeAction(this.queue.resolveAction({
     //     choice: 'move',

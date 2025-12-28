@@ -44,14 +44,14 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
         };
         if took_item {
             // this.add('-enditem', pokemon, item.name, '[from] move: Incinerate');
-            let pokemon_arg = {
+            let pokemon_ident = {
                 let poke = match battle.pokemon_at(pokemon.0, pokemon.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                crate::battle::Arg::from(poke)
+                poke.get_slot()
             };
-            battle.add("-enditem", &[pokemon_arg, item_name.into(), "[from] move: Incinerate".into()]);
+            battle.add("-enditem", &[pokemon_ident.as_str().into(), item_name.into(), "[from] move: Incinerate".into()]);
         }
     }
 

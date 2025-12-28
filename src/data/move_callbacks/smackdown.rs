@@ -1,5 +1,3 @@
-Fixed in smackdown.rs: has_flying = battle.has_type(pokemon, "Flying")
-Total changes in smackdown.rs: 1
 //! Smack Down Move
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
