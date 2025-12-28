@@ -53,7 +53,7 @@ pub fn on_try_move(battle: &mut Battle, source_pos: (usize, usize), target_pos: 
             Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        active_move.clone()
+        active_move.id.clone()
     };
 
     let removed = {

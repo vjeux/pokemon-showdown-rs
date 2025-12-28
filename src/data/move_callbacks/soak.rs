@@ -34,39 +34,41 @@ pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usiz
         types.len() == 1 && types[0].as_str() == "Water"
     };
 
-    let set_type_result = {
+    // Try to set the type
+    {
         let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.set_type(&[ID::from("Water")])
-    };
+        target.set_type(vec![String::from("Water")]);
+    }
 
-    if types_are_water || !set_type_result {
-        let target_arg = {
+    // Check if it failed
+    if types_are_water {
+        let target_ident = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            crate::battle::Arg::from(target)
+            target.get_slot()
         };
-        battle.add("-fail", &[target_arg]);
-        return EventResult::Null;
+        battle.add("-fail", &[target_ident.into()]);
+        return EventResult::Stop;
     }
 
     // this.add('-start', target, 'typechange', 'Water');
-    let target_arg = {
+    let target_ident = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        crate::battle::Arg::from(target)
+        target.get_slot()
     };
 
     battle.add("-start", &[
-        target_arg,
-        crate::battle::Arg::from("typechange"),
-        crate::battle::Arg::from("Water"),
+        target_ident.into(),
+        "typechange".into(),
+        "Water".into(),
     ]);
 
     EventResult::Continue

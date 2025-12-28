@@ -30,10 +30,10 @@ pub fn on_modify_type(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
         pokemon.get_types(false)
     };
 
-    let mut move_type = types.get(0).cloned().unwrap_or(ID::from("Normal"));
+    let mut move_type = types.get(0).cloned().unwrap_or(String::from("Normal"));
 
     if move_type.as_str() == "Bird" {
-        move_type = ID::from("???");
+        move_type = String::from("???");
     }
 
     if move_type.as_str() == "???" {
