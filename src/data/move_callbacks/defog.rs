@@ -115,7 +115,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 target_side_arg,
                 condition_name.into(),
                 "[from] move: Defog".into(),
-                format!("[of] {}", source_arg.to_protocol_string()).into(),
+                format!("[of] {}", source_arg).into(),
             ]);
 
             // success = true;
@@ -162,7 +162,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 source_side_arg,
                 condition_name.into(),
                 "[from] move: Defog".into(),
-                format!("[of] {}", source_arg.to_protocol_string()).into(),
+                format!("[of] {}", source_arg).into(),
             ]);
 
             // success = true;
