@@ -68,7 +68,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            format!("p{}{}", target.0 + 1, pokemon.ident)
+            pokemon.get_slot()
         };
 
         // this.add('-start', pokemon, 'Autotomize');

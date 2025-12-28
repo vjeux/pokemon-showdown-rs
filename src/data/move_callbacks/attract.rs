@@ -117,7 +117,7 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            (format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident), source_pokemon.name.clone())
+            (pokemon.get_slot(), source_pokemon.name.clone())
         };
 
         // if (effect.name === 'Cute Charm') {
@@ -246,7 +246,7 @@ pub mod condition {
                     None => return EventResult::Continue,
                 };
 
-                (format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident), source_pokemon.name.clone())
+                (pokemon.get_slot(), source_pokemon.name.clone())
             };
 
             battle.add("-activate", &[
@@ -264,7 +264,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident)
+                pokemon.get_slot()
             };
             battle.add("cant", &[pokemon_ident.as_str().into(), "Attract".into()]);
 
@@ -285,7 +285,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident)
+            pokemon.get_slot()
         };
 
         battle.add("-end", &[pokemon_ident.as_str().into(), "Attract".into(), "[silent]".into()]);

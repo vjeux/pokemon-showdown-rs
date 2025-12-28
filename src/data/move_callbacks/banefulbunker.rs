@@ -56,7 +56,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            format!("p{}{}", target.0 + 1, target_pokemon.ident)
+            target_pokemon.get_slot()
         };
 
         // this.add('-singleturn', target, 'move: Protect');
@@ -120,7 +120,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            format!("p{}{}", target_pos.0 + 1, target_pokemon.ident)
+            target_pokemon.get_slot()
         };
 
         // if (move.smartTarget) {

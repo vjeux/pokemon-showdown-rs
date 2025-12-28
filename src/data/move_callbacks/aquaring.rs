@@ -21,9 +21,9 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            format!("p{}{}", pokemon_pos.0 + 1, pokemon.ident)
+            pokemon.get_slot()
         };
-        battle.add("-start", &[pokemon_ident.into(), "Aqua Ring".into()]);
+        battle.add("-start", &[pokemon_ident.as_str().into(), "Aqua Ring".into()]);
         EventResult::Continue
     }
 

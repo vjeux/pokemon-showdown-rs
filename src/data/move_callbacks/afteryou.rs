@@ -44,9 +44,9 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            format!("p{}{}",  target.0 + 1, target_pokemon.ident)
+            target_pokemon.get_slot()
         };
-        battle.add("-activate", &[target_ident.into(), "move: After You".into()]);
+        battle.add("-activate", &[target_ident.as_str().into(), "move: After You".into()]);
 
         EventResult::Continue
     } else {

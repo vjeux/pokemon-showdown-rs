@@ -97,9 +97,9 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Opti
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            format!("p{}{}", pokemon_side_idx + 1, pokemon.ident)
+            pokemon.get_slot()
         };
-        battle.add("-fail", &[pokemon_ident.into(), "move: Ally Switch".into()]);
+        battle.add("-fail", &[pokemon_ident.as_str().into(), "move: Ally Switch".into()]);
 
         // this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);

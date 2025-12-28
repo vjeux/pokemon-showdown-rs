@@ -48,7 +48,7 @@ pub fn on_try(battle: &mut Battle, source_pos: (usize, usize), target_pos: Optio
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        format!("p{}{}", source_pos.0 + 1, source.ident)
+        source.get_slot()
     };
 
     // this.add('-fail', source, 'move: Aura Wheel');
