@@ -13,6 +13,23 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_sp_d(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (pokemon.baseSpecies.name === 'Clamperl')
+    let is_clamperl = {
+        if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            if let Some(species) = battle.dex.get_species(pokemon.base_species.as_str()) {
+                species.name == "Clamperl"
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+    };
+
+    if is_clamperl {
+        // return this.chainModify(2);
+        battle.chain_modify(2.0);
+    }
+
     EventResult::Continue
 }
