@@ -457,3 +457,46 @@ By callback type:
 - [ ] venusaurite - Venusaurite (Gen 6) - Needs item data
 - [ ] victreebelite - Victreebelite (Gen 9) - Needs item data
 
+
+### Type-resist Berries (kasibberry, kebiaberry, etc.) 
+- Requires `getMoveHitData()` method on Pokemon  
+- Requires checking substitute volatiles
+- Requires `chainModify` for damage reduction
+- Requires `this.add()` for messages
+
+### Stat-boost on-eat Berries (keeberry, lansatberry, liechiberry)
+- Requires checking move properties (e.g. move.heal for present)
+- onEat needs to call `this.boost()`
+
+### Accuracy/Evasion Items (laxincense)
+- onModifyAccuracy signature doesn't pass accuracy parameter
+- Needs signature update to receive accuracy value
+
+### Move modification Items (loadeddice)
+- Needs ability to modify active move properties
+- Specifically needs to delete/modify multiaccuracy field
+
+### Species-specific Items needing base species (leek, luckypunch)
+- Currently can access pokemon.base_species (ID)
+- Need to look up species data and check baseSpecies field  
+- Works but is verbose - IMPLEMENTED for lightball
+
+### PP restoration (leppaberry)
+- Requires move PP manipulation  
+- Needs deduct PP, restore PP methods
+
+### Status cure berries (lumberry)
+- Requires status curing infrastructure
+- Needs `pokemon.cureStatus()` method
+
+### Orbs for specific Pokemon (lustrousglobe, lustrousorb)
+- Similar to lightball - check base species
+- Modify SpA for specific Pokemon (Palkia/Dialga)
+
+### Side effects items (luminousmoss)
+- Boost stats when hit by specific type
+- Similar pattern to other boost items
+
+### Flinch items (kingsrock)
+- Add secondary effect (flinch) to moves
+- Requires modifying move secondaries
