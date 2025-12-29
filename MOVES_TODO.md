@@ -2,17 +2,18 @@
 
 ## Summary
 
-**Current Status:** 93 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 91 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Latest Session Progress:**
-- **Callbacks implemented**: 6 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb)
+- **Callbacks implemented**: 8 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish)
   - healblock.rs: condition::on_start, condition::on_restart
   - taunt.rs: condition::on_start
   - substitute.rs: condition::on_start
-  - syrupbomb.rs: condition::on_update, condition::on_residual
+  - syrupbomb.rs: condition::on_update, condition::on_residual ✅ COMPLETE
+  - wish.rs: on_start, on_end
 
 **Previous Session Progress:**
-- **Callbacks implemented**: 6 implementations (3 healblock + 3 trickroom)
+- **Callbacks implemented**: 6 implementations (3 healblock + 3 trickroom ✅)
   - healblock.rs: condition::duration_callback, condition::on_before_move, condition::on_modify_move
   - trickroom.rs: condition::duration_callback, condition::on_field_start, condition::on_field_restart ✅ COMPLETE
 
@@ -455,7 +456,7 @@ Moves with callbacks: 373
 - [x] weatherball - Weather Ball (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [ ] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide ✓, condition::onSideStart ✓, condition::onTryHit (2/4 implemented)
 - [x] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
-- [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
+- [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart ✓, condition::onResidual, condition::onEnd ✓ (2/3 implemented)
 - [x] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onModifyMove, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd (1/5 implemented)
 - [x] worryseed - Worry Seed (Status, Grass) - 3 callbacks: onTryImmunity, onTryHit, onHit
 - [x] wringout - Wring Out (Special, Normal) - 1 callback: basePowerCallback
