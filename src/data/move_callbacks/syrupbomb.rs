@@ -41,16 +41,56 @@ pub mod condition {
     ///         pokemon.removeVolatile('syrupbomb');
     ///     }
     /// }
-    pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // if (this.effectState.source && !this.effectState.source.isActive)
+        let should_remove = if let Some(ref effect_state) = battle.current_effect_state {
+            if let Some(source_pos) = effect_state.source {
+                let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                !source_pokemon.is_active
+            } else {
+                false
+            }
+        } else {
+            false
+        };
+
+        if should_remove {
+            // pokemon.removeVolatile('syrupbomb');
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_mut.remove_volatile(&ID::from("syrupbomb"));
+        }
+
         EventResult::Continue
     }
 
     /// onResidual(pokemon) {
     ///     this.boost({ spe: -1 }, pokemon, this.effectState.source);
     /// }
-    pub fn on_residual(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        let pokemon = pokemon_pos;
+
+        // this.boost({ spe: -1 }, pokemon, this.effectState.source);
+        let source_pos = if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.source
+        } else {
+            None
+        };
+
+        // Boost spe by -1
+        let boosts = [("spe", -1i8)];
+
+        battle.boost(&boosts, pokemon, source_pos, None);
+
         EventResult::Continue
     }
 
