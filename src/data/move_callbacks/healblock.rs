@@ -352,14 +352,83 @@ pub mod condition {
     ///     return false;
     /// }
     pub fn on_try_heal(
-        _battle: &mut Battle,
-        _damage: i32,
-        _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        battle: &mut Battle,
+        damage: i32,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        use crate::dex_data::ID;
+
+        // if (effect && (effect.id === 'zpower' || (effect as Move).isZ)) return damage;
+        if let Some(eff_id) = effect_id {
+            // Check if effect is zpower
+            if eff_id == "zpower" {
+                return EventResult::Number(damage);
+            }
+
+            // Check if the active move is a Z-move
+            if let Some(ref active_move) = battle.active_move {
+                if active_move.is_z {
+                    return EventResult::Number(damage);
+                }
+            }
+        }
+
+        // if (source && target !== source && target.hp !== target.maxhp && effect.name === "Pollen Puff")
+        if let (Some(source), Some(target)) = (source_pos, target_pos) {
+            // target !== source
+            if target != source {
+                // target.hp !== target.maxhp
+                let (hp, maxhp) = {
+                    let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                        Some(p) => p,
+                        None => return EventResult::Boolean(false),
+                    };
+                    (target_pokemon.hp, target_pokemon.maxhp)
+                };
+
+                if hp != maxhp {
+                    // effect.name === "Pollen Puff"
+                    if let Some(eff_id) = effect_id {
+                        let effect_id_obj = ID::from(eff_id);
+                        if let Some(move_data) = battle.dex.get_move_by_id(&effect_id_obj) {
+                            if move_data.name == "Pollen Puff" {
+                                // this.attrLastMove('[still]');
+                                // NOTE: attrLastMove not implemented yet (see FIXME comment in TypeScript)
+
+                                // this.add('cant', source, 'move: Heal Block', effect);
+                                let source_slot = {
+                                    let source_pokemon = match battle.pokemon_at(source.0, source.1)
+                                    {
+                                        Some(p) => p,
+                                        None => return EventResult::Boolean(false),
+                                    };
+                                    source_pokemon.get_slot()
+                                };
+
+                                let effect_name = move_data.name.clone();
+
+                                battle.add(
+                                    "cant",
+                                    &[
+                                        crate::battle::Arg::from(source_slot),
+                                        crate::battle::Arg::from("move: Heal Block"),
+                                        crate::battle::Arg::from(effect_name),
+                                    ],
+                                );
+
+                                // return null;
+                                return EventResult::Null;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // return false;
+        EventResult::Boolean(false)
     }
 
     /// ```ignore
