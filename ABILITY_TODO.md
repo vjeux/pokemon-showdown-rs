@@ -120,3 +120,35 @@ This file tracks abilities that require infrastructure not yet implemented in Ru
   - Need runEffectiveness to calculate type matchup
   - Need runImmunity to check immunities
   - Only allows super-effective hits to damage
+
+### Contact-based abilities (Flame Body, Static, Poison Touch, Aftermath, Cute Charm, etc.)
+- **Missing**: checkMoveMakesContact, trySetStatus, damage functions
+- **JavaScript code**: `this.checkMoveMakesContact(move, source, target)`, `target.trySetStatus('brn', source)`
+- **Required**:
+  - Need checkMoveMakesContact to determine if move makes contact
+  - Need trySetStatus to attempt inflicting status
+  - Need damage() function to deal direct damage
+  - Many use randomChance for 30% probability
+
+### Boost-modifying abilities (Moxie, Simple, Clear Body, White Smoke, Keen Eye, etc.)
+- **Missing**: Boost system
+- **JavaScript code**: `this.boost({atk: 1}, source)`, `delete boost.atk`, `boosts['atk'] = 0`
+- **Required**:
+  - Need boost() to change stat stages
+  - Need way to modify boost parameter object
+  - Need onTryBoost, onChangeBoost, onAnyModifyBoost infrastructure
+
+### Move modification abilities (Infiltrator, Long Reach, Keen Eye, Unseen Fist, etc.)
+- **Missing**: Ability to modify move state during battle
+- **JavaScript code**: `move.infiltrates = true`, `delete move.flags['contact']`, `move.ignoreEvasion = true`
+- **Required**:
+  - Need mutable move state that can be modified by abilities
+  - Different abilities set different flags/properties
+
+### Item-based abilities (Frisk, Pickup, Unburden, etc.)
+- **Missing**: Item system
+- **JavaScript code**: `target.item`, `pokemon.setItem(item)`, `target.getItem()`, `pokemon.hasItem('utilityumbrella')`
+- **Required**:
+  - Need item field on Pokemon
+  - Need setItem, getItem, hasItem methods
+  - Need lastItem tracking
