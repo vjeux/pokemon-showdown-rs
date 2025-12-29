@@ -652,21 +652,27 @@ By callback type:
 
 ## Missing Infrastructure
 
-### Critical Infrastructure Needed for Remaining 10 Callbacks
+### ✅ All Previously Listed Callbacks Have Been Implemented!
 
-**Status:** All 10 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
+**Status:** All 10 previously documented TODO markers have been successfully implemented!
 
-**Breakdown by File:**
-- **firepledge.rs**: 1 TODO - on_prepare_hit (needs queue.willMove(), pokemon.isAlly(), queue.prioritizeAction())
-- **fling.rs**: 1 TODO - on_prepare_hit (needs move.basePower modification, singleEvent)
-- **substitute.rs**: 1 TODO - on_try_primary_hit (needs getDamage(), calcRecoilDamage(), HIT_SUBSTITUTE)
-- **tarshot.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
-- **taunt.rs**: 1 TODO - on_before_move (signature missing attacker parameter)
-- **telekinesis.rs**: 2 TODOs - on_accuracy, on_immunity (signature issues)
-- **thousandarrows.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
-- **waterpledge.rs**: 2 TODOs - on_prepare_hit, condition::on_modify_move (needs queue system, move.secondaries field)
+**Completed Files:**
+- ✅ **firepledge.rs**: on_prepare_hit - IMPLEMENTED
+- ✅ **fling.rs**: on_prepare_hit - IMPLEMENTED
+- ✅ **substitute.rs**: on_try_primary_hit - IMPLEMENTED
+- ✅ **tarshot.rs**: on_effectiveness - IMPLEMENTED (with type_mod, target_type parameters)
+- ✅ **taunt.rs**: on_before_move - IMPLEMENTED
+- ✅ **telekinesis.rs**: on_accuracy, on_immunity - IMPLEMENTED
+- ✅ **thousandarrows.rs**: on_effectiveness - IMPLEMENTED (with type_mod, target_type parameters)
+- ✅ **waterpledge.rs**: on_prepare_hit, condition::on_modify_move - BOTH IMPLEMENTED
 
-All remaining callbacks require one or more of the following infrastructure components that don't currently exist or need modifications to existing code.
+**Infrastructure that was added:**
+- Type effectiveness modification parameters (type_mod, target_type) in on_effectiveness callbacks
+- EventResult::HitSubstitute variant for substitute damage blocking
+- Queue prioritization for pledge moves
+- Move secondaries modification for pledge combinations
+
+All implementable infrastructure gaps have been resolved!
 
 ### 1. Active Move Access in Callbacks
 
