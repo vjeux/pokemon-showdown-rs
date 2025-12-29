@@ -129,6 +129,7 @@ pub mod gmaxsteelsurge;
 pub mod gmaxvinelash;
 pub mod gmaxvolcalith;
 pub mod gmaxwildfire;
+pub mod gmaxwindrage;
 pub mod genesissupernova;
 pub mod grassknot;
 pub mod grasspledge;
@@ -743,6 +744,7 @@ pub fn dispatch_on_hit(
         "freezyfrost" => freezyfrost::on_hit(battle, pokemon_pos, target_pos),
         "genesissupernova" => genesissupernova::on_hit(battle, pokemon_pos, target_pos),
         "gmaxsnooze" => gmaxsnooze::on_hit(battle, pokemon_pos, target_pos),
+        "gmaxwindrage" => gmaxwindrage::on_hit(battle, pokemon_pos, target_pos),
         "guardsplit" => guardsplit::on_hit(battle, pokemon_pos, target_pos),
         "guardswap" => guardswap::on_hit(battle, pokemon_pos, target_pos),
         "healbell" => healbell::on_hit(battle, pokemon_pos, target_pos),
