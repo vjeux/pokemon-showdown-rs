@@ -602,11 +602,15 @@ pub fn dispatch_on_eat(
 
 /// Dispatch onEffectiveness callbacks
 pub fn dispatch_on_effectiveness(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "ironball" => ironball::on_effectiveness(battle, Some(pokemon_pos)),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onEnd callbacks

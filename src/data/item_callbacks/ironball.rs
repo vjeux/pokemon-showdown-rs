@@ -12,8 +12,50 @@ use crate::event::EventResult;
 ///     if (target.volatiles['ingrain'] || target.volatiles['smackdown'] || this.field.getPseudoWeather('gravity')) return;
 ///     if (move.type === 'Ground' && target.hasType('Flying')) return 0;
 /// }
-pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    // if (!target) return;
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.volatiles['ingrain'] || target.volatiles['smackdown'] || this.field.getPseudoWeather('gravity')) return;
+    let has_grounding_effect = {
+        let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        use crate::dex_data::ID;
+        pokemon.volatiles.contains_key(&ID::from("ingrain"))
+            || pokemon.volatiles.contains_key(&ID::from("smackdown"))
+            || battle.field.get_pseudo_weather(&ID::from("gravity")).is_some()
+    };
+
+    if has_grounding_effect {
+        return EventResult::Continue;
+    }
+
+    // if (move.type === 'Ground' && target.hasType('Flying')) return 0;
+    let (move_type, target_has_flying) = {
+        let move_type = battle.active_move.as_ref().map(|m| m.move_type.clone()).unwrap_or_default();
+
+        let target_has_flying = {
+            let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.has_type("Flying")
+        };
+
+        (move_type, target_has_flying)
+    };
+
+    if move_type == "Ground" && target_has_flying {
+        // return 0;
+        return EventResult::Number(0);
+    }
+
     EventResult::Continue
 }
 
