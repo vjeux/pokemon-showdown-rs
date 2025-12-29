@@ -170,7 +170,7 @@ Items with callbacks: 326
 - [x] kangaskhanite - Kangaskhanite (Gen 6) - 1 callback: onTakeItem
 - [ ] kasibberry - Kasib Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [ ] kebiaberry - Kebia Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] keeberry - Kee Berry (Gen 6) - 2 callbacks: onAfterMoveSecondary, onEat
+- [x] keeberry - Kee Berry (Gen 6) - 2 callbacks: onAfterMoveSecondary, onEat
 - [ ] kingsrock - King's Rock (Gen 2) - 1 callback: onModifyMove
 - [x] lansatberry - Lansat Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] latiasite - Latiasite (Gen 6) - 1 callback: onTakeItem
@@ -198,7 +198,7 @@ Items with callbacks: 326
 - [x] mail - Mail (Gen 2) - 1 callback: onTakeItem
 - [x] malamarite - Malamarite (Gen 9) - 1 callback: onTakeItem
 - [x] manectite - Manectite (Gen 6) - 1 callback: onTakeItem
-- [ ] marangaberry - Maranga Berry (Gen 6) - 2 callbacks: onAfterMoveSecondary, onEat
+- [x] marangaberry - Maranga Berry (Gen 6) - 2 callbacks: onAfterMoveSecondary, onEat
 - [x] mawilite - Mawilite (Gen 6) - 1 callback: onTakeItem
 - [x] meadowplate - Meadow Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] medichamite - Medichamite (Gen 6) - 1 callback: onTakeItem
