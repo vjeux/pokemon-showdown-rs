@@ -237,6 +237,7 @@ pub mod maxrockfall;
 pub mod maxsteelspike;
 pub mod maxstarfall;
 pub mod maxstrike;
+pub mod maxwyrmwind;
 pub mod meanlook;
 pub mod mefirst;
 pub mod metalburst;
@@ -832,6 +833,7 @@ pub fn dispatch_on_hit(
         "maxsteelspike" => maxsteelspike::on_hit(battle, pokemon_pos, target_pos),
         "maxstarfall" => maxstarfall::on_hit(battle, pokemon_pos, target_pos),
         "maxstrike" => maxstrike::on_hit(battle, pokemon_pos, target_pos),
+        "maxwyrmwind" => maxwyrmwind::on_hit(battle, pokemon_pos, target_pos),
         "meanlook" => meanlook::on_hit(battle, pokemon_pos, target_pos),
         "metronome" => metronome::on_hit(battle, pokemon_pos, target_pos),
         "mimic" => mimic::on_hit(battle, pokemon_pos, target_pos),
