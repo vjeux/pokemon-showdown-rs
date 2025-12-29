@@ -42,7 +42,8 @@ pub fn base_power_callback(
         1
     };
 
-    // Note: JS has this.debug call which we don't have infrastructure for yet
     // this.debug(`BP for ${hp}/${maxHP} HP: ${bp}`);
+    battle.debug(&format!("BP for {}/{} HP: {}", hp, max_hp, bp));
+
     EventResult::Number(bp)
 }

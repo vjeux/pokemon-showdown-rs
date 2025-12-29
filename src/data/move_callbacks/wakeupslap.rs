@@ -38,9 +38,10 @@ pub fn base_power_callback(
 
     // if (target.status === 'slp' || target.hasAbility('comatose'))
     if target.status == ID::from("slp") || target.has_ability(&["comatose"]) {
-        // Note: JS has this.debug call which we don't have infrastructure for yet
+        let bp = active_move.base_power * 2;
         // this.debug('BP doubled on sleeping target');
-        return EventResult::Number(active_move.base_power * 2);
+        battle.debug("BP doubled on sleeping target");
+        return EventResult::Number(bp);
     }
 
     EventResult::Number(active_move.base_power)

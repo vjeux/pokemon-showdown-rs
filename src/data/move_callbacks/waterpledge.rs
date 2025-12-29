@@ -260,16 +260,24 @@ pub mod condition {
             pokemon.has_ability(&["serenegrace"])
         };
 
-        // Get the active move
-        let active_move = match &mut battle.active_move {
-            Some(m) => m,
-            None => return EventResult::Continue,
+        // Get the active move - first check if we need to double secondaries
+        let should_double_secondaries = {
+            if let Some(ref active_move) = battle.active_move {
+                !active_move.secondaries.is_empty() && active_move.id.as_str() != "secretpower"
+            } else {
+                false
+            }
         };
 
         // if (move.secondaries && move.id !== 'secretpower')
-        if !active_move.secondaries.is_empty() && active_move.id.as_str() != "secretpower" {
+        if should_double_secondaries {
             // this.debug('doubling secondary chance');
-            // Note: debug logging not implemented
+            battle.debug("doubling secondary chance");
+
+            let active_move = match &mut battle.active_move {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
 
             // for (const secondary of move.secondaries)
             for secondary in &mut active_move.secondaries {

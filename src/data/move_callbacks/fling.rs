@@ -97,7 +97,7 @@ pub fn on_prepare_hit(
     }
 
     // this.debug(`BP: ${move.basePower}`);
-    // Debug output would go here, but we don't have a debug method on Battle yet
+    battle.debug(&format!("BP: {}", fling.base_power));
 
     // TODO: The following logic requires dynamic callback assignment which is incompatible with Rust's type system:
     // - if (item.isBerry) { move.onHit = function (foe) { ... } }
