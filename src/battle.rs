@@ -12970,7 +12970,7 @@ impl Battle {
         if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
             let crit_chance = crit_mult[crit_ratio as usize];
             if crit_chance > 0 {
-                is_crit = self.random(crit_chance) == 0;
+                is_crit = self.random_chance(1, crit_chance);
             }
         }
 
@@ -13430,8 +13430,7 @@ impl Battle {
                     // Check if move hits based on accuracy
                     // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
                     if accuracy < 100 {
-                        let roll = self.random(100);
-                        if roll >= accuracy {
+                        if !self.random_chance(accuracy, 100) {
                             // Move missed
                             damages[i] = None;
                             final_targets[i] = None;
