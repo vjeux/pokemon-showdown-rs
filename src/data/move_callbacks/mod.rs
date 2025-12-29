@@ -1825,13 +1825,14 @@ pub fn dispatch_condition_on_hit(
 pub fn dispatch_condition_on_immunity(
     battle: &mut Battle,
     move_id: &str,
+    immunity_type: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
         "dig" => dig::condition::on_immunity(battle, source_pos),
         "dive" => dive::condition::on_immunity(battle, source_pos),
         "magnetrise" => magnetrise::condition::on_immunity(battle),
-        "telekinesis" => telekinesis::condition::on_immunity(battle),
+        "telekinesis" => telekinesis::condition::on_immunity(battle, immunity_type),
         _ => EventResult::Continue,
     }
 }

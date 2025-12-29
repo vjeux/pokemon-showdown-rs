@@ -159,8 +159,12 @@ pub mod condition {
     /// onImmunity(type) {
     ///     if (type === 'Ground') return false;
     /// }
-    pub fn on_immunity(_battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_immunity(_battle: &mut Battle, immunity_type: &str) -> EventResult {
+        // if (type === 'Ground') return false;
+        if immunity_type == "Ground" {
+            return EventResult::Boolean(false);
+        }
+
         EventResult::Continue
     }
 
