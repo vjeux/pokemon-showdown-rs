@@ -76,7 +76,7 @@ Items with callbacks: 326
 - [x] cobaberry - Coba Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] colburberry - Colbur Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] cornerstonemask - Cornerstone Mask (Gen 9) - 2 callbacks: onBasePower, onTakeItem
-- [ ] covertcloak - Covert Cloak (Gen 9) - 1 callback: onModifySecondaries
+- [x] covertcloak - Covert Cloak (Gen 9) - 1 callback: onModifySecondaries
 - [x] crabominite - Crabominite (Gen 9) - 1 callback: onTakeItem
 - [x] crucibellite - Crucibellite (Gen 6) - 1 callback: onTakeItem
 - [x] custapberry - Custap Berry (Gen 4) - 2 callbacks: onFractionalPriority, onEat
