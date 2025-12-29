@@ -96,3 +96,27 @@ This file tracks abilities that require infrastructure not yet implemented in Ru
   - Need hasAbility checking
   - Need battle log messages
   - Flash Fire condition boosts Fire moves by 1.5x
+
+### Weather-based speed abilities (Chlorophyll, Swift Swim, Sand Rush, Slush Rush)
+- **Missing**: pokemon.effectiveWeather() method
+- **JavaScript code**: `if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather()))`
+- **Required**:
+  - Need pokemon.effectiveWeather() that returns current weather ID
+  - Different abilities check different weather conditions
+  - All double speed in their respective weather
+
+### Priority modification abilities (Gale Wings, Prankster, Triage)
+- **Missing**: Ability to modify priority and set move state flags
+- **JavaScript code**: `move.pranksterBoosted = true; return priority + 1;`
+- **Required**:
+  - Need ability to return modified priority value
+  - Need ability to set flags on move state (pranksterBoosted, etc.)
+  - onModifyPriority needs to actually modify the priority
+
+### Wonder Guard (wonderguard.rs)
+- **Missing**: Type effectiveness and immunity checking
+- **JavaScript code**: `target.runEffectiveness(move)`, `target.runImmunity(move)`
+- **Required**:
+  - Need runEffectiveness to calculate type matchup
+  - Need runImmunity to check immunities
+  - Only allows super-effective hits to damage
