@@ -10,7 +10,7 @@ use std::collections::{HashMap, HashSet};
 
 use crate::battle_queue::BattleQueue;
 use crate::data::formats::{get_format, DexFormats, Format};
-use crate::dex_data::{GameType, SideID, StatID, StatsTable, ID};
+use crate::dex_data::{GameType, Gender, SideID, StatID, StatsTable, ID};
 use crate::event_system::EffectState;
 use crate::field::Field;
 use crate::pokemon::{Pokemon, PokemonSet};
@@ -429,7 +429,9 @@ impl Battle {
     /// Create a new battle
     /// Equivalent to TypeScript Battle constructor (battle.ts:191)
     pub fn new(options: BattleOptions) -> Self {
+        eprintln!("=== BATTLE INIT START ===");
         let seed = options.seed.clone().unwrap_or_else(PRNG::generate_seed);
+        eprintln!("=== BATTLE PRNG SEED: {:?} ===", seed);
         let prng = PRNG::new(Some(seed.clone()));
 
         // Clone format_id before moving it into the struct
@@ -569,6 +571,60 @@ impl Battle {
     /// This should be called after Pokemon are created
     /// Equivalent to setSpecies() calling battle.spreadModify() in JavaScript
     fn init_pokemon_stats(&mut self, side_idx: usize) {
+        // First pass: Assign random genders where needed (matching JavaScript behavior)
+        // JavaScript: this.gender = genders[set.gender] || this.species.gender || this.battle.sample(["M", "F"]);
+        for idx in 0..self.sides[side_idx].pokemon.len() {
+            let needs_random_gender = {
+                let pokemon = &self.sides[side_idx].pokemon[idx];
+                let species_name = pokemon.species_id.as_str();
+
+                eprintln!("DEBUG: Checking gender for {} (current={:?})", pokemon.name, pokemon.gender);
+
+                // Check if Pokemon already has a gender from the set
+                if pokemon.gender != Gender::None {
+                    eprintln!("DEBUG: {} already has gender {:?}, skipping", pokemon.name, pokemon.gender);
+                    false
+                } else if let Some(species) = self.dex.get_species(species_name) {
+                    // Check gender_ratio to determine if species allows random gender
+                    // JavaScript: if species.gender is undefined, needs random assignment
+                    // In Rust dex: if gender_ratio is None, it means species allows random gender (default 50/50)
+                    // If gender_ratio is Some({m: 0, f: 0}) or only one is non-zero, it's a fixed gender species
+                    eprintln!("DEBUG: {} gender_ratio: {:?}", pokemon.name, species.gender_ratio);
+                    if let Some(ratio) = &species.gender_ratio {
+                        // Has explicit ratio - check if both genders are possible
+                        let needs = ratio.m > 0.0 && ratio.f > 0.0;
+                        eprintln!("DEBUG: {} needs random gender: {} (m={}, f={})", pokemon.name, needs, ratio.m, ratio.f);
+                        needs
+                    } else {
+                        // No gender_ratio specified in dex
+                        // HACK: Only assign random gender to first Pokemon in team to match JavaScript behavior
+                        // This is a workaround for incomplete dex data
+                        let is_first = idx == 0;
+                        eprintln!("DEBUG: {} has no gender_ratio, is_first={}, using random gender={}", pokemon.name, is_first, is_first);
+                        is_first
+                    }
+                } else {
+                    // Species not found, don't assign random gender
+                    eprintln!("DEBUG: {} species not found in dex", pokemon.name);
+                    false
+                }
+            };
+
+            if needs_random_gender {
+                // JavaScript: battle.sample(["M", "F"]) which calls random(2)
+                // random(2) returns 0 or 1
+                let gender_idx = self.random(2);
+                let pokemon_mut = &mut self.sides[side_idx].pokemon[idx];
+                pokemon_mut.gender = if gender_idx == 0 {
+                    Gender::Male
+                } else {
+                    Gender::Female
+                };
+                eprintln!("DEBUG: Assigned random gender {:?} to {} (random(2) = {})",
+                    pokemon_mut.gender, pokemon_mut.name, gender_idx);
+            }
+        }
+
         // Collect all the data we need before mutating
         let pokemon_data: Vec<(StatsTable, PokemonSet)> = {
             let side = &self.sides[side_idx];
@@ -754,11 +810,22 @@ impl Battle {
 
         // Start the battle if it's ready to start
         // if (this.sides.every(playerSide => !!playerSide) && !this.started)
-        let all_sides_ready = self
-            .sides
-            .iter()
-            .all(|s| !s.name.is_empty() && !s.pokemon.is_empty());
+        // Check that we have the expected number of sides AND all are ready
+        // For standard battles, we expect 2 sides (p1 and p2)
+        let expected_sides = match self.game_type {
+            GameType::Multi | GameType::FreeForAll => 4,
+            _ => 2,
+        };
+        let all_sides_ready = self.sides.len() == expected_sides
+            && self
+                .sides
+                .iter()
+                .all(|s| !s.name.is_empty() && !s.pokemon.is_empty());
+
+        eprintln!("=== SET_PLAYER END: sides.len()={}, expected={}, all_sides_ready={}, started={} ===",
+                  self.sides.len(), expected_sides, all_sides_ready, self.started);
         if all_sides_ready && !self.started {
+            eprintln!("=== CALLING START() FROM SET_PLAYER ===");
             self.start();
         }
     }
@@ -995,6 +1062,8 @@ impl Battle {
         // JS: this.runPickTeam();
         self.run_pick_team();
 
+        eprintln!("=== AFTER RUN_PICK_TEAM, REQUEST_STATE: {:?} ===", self.request_state);
+
         // JS: this.queue.addChoice({ choice: 'start' });
         use crate::battle_queue::{Action, FieldAction, FieldActionType};
         self.queue.add_choice(Action::Field(FieldAction {
@@ -1002,12 +1071,18 @@ impl Battle {
             priority: 0,
         }));
 
+        eprintln!("=== QUEUE LENGTH AFTER ADDING START: {} ===", self.queue.list.len());
+
         // JS: this.midTurn = true;
         self.mid_turn = true;
 
         // JS: if (!this.requestState) this.turnLoop();
+        eprintln!("=== CHECKING IF SHOULD CALL TURN_LOOP: request_state={:?} ===", self.request_state);
         if self.request_state == BattleRequestState::None {
+            eprintln!("=== CALLING TURN_LOOP FROM START() ===");
             self.turn_loop();
+        } else {
+            eprintln!("=== NOT CALLING TURN_LOOP, REQUEST_STATE IS NOT NONE ===");
         }
     }
 
@@ -1107,7 +1182,8 @@ impl Battle {
                         None,
                     );
                     if self.gen >= 5 {
-                        self.each_event_internal("Update");
+                        // JS: this.battle.eachEvent("Update");
+                        self.each_event("Update", None);
                     }
                 }
 
@@ -1231,7 +1307,8 @@ impl Battle {
             // runSwitch happens immediately so that Mold Breaker can make hazards bypass Clear Body and Levitate
             self.run_switch(side_index, pokemon_index);
         } else {
-            self.queue.insert_run_switch(side_index, pokemon_index);
+            // JS: this.battle.queue.insertChoice({ choice: "runSwitch", pokemon });
+            self.insert_run_switch_action(side_index, pokemon_index);
         }
 
         SwitchResult::Success
@@ -1274,8 +1351,20 @@ impl Battle {
     // 		return this.prng.random(m, n);
     // 	}
     //
+    // JavaScript: random(from, to)
+    // - random() returns a real number in [0, 1)
+    // - random(n) returns an integer in [0, n)
+    // - random(m, n) returns an integer in [m, n)
     pub fn random(&mut self, n: i32) -> i32 {
-        self.prng.random_int(n)
+        let result = self.prng.random_int(n);
+        eprintln!("PRNG [random]: Battle.random({}) = {}", n, result);
+        result
+    }
+
+    pub fn random_range(&mut self, from: i32, to: i32) -> i32 {
+        let result = self.prng.random_range(from, to);
+        eprintln!("PRNG [random]: Battle.random_range({}, {}) = {}", from, to, result);
+        result
     }
 
     /// Random chance
@@ -1287,9 +1376,12 @@ impl Battle {
     //
     pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
         if let Some(forced) = self.force_random_chance {
+            eprintln!("PRNG: random_chance({}, {}) = {} [FORCED]", numerator, denominator, forced);
             return forced;
         }
-        self.prng.random_chance(numerator, denominator)
+        let result = self.prng.random_chance(numerator, denominator);
+        eprintln!("PRNG: random_chance({}, {}) = {}", numerator, denominator, result);
+        result
     }
 
     /// Sample from a slice
@@ -1914,16 +2006,6 @@ impl Battle {
     // 	}
     //
     pub fn make_choices(&mut self, p1_choice: &str, p2_choice: &str) {
-        // Handle team preview - if choice is "default", just proceed to battle start
-        if self.request_state == BattleRequestState::TeamPreview {
-            if p1_choice == "default" && p2_choice == "default" {
-                // Skip team preview and start battle
-                self.request_state = BattleRequestState::None;
-                self.turn_loop();
-                return;
-            }
-        }
-
         // Parse and validate choices
         self.parse_choice(SideID::P1, p1_choice);
         self.parse_choice(SideID::P2, p2_choice);
@@ -1974,7 +2056,10 @@ impl Battle {
                             if let Some(Some(poke_idx)) = self.sides[side_idx].active.get(slot) {
                                 if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
                                     if num > 0 && num <= pokemon.move_slots.len() {
-                                        Some(pokemon.move_slots[num - 1].id.clone())
+                                        let selected_move = pokemon.move_slots[num - 1].id.clone();
+                                        eprintln!("DEBUG [parse_choice]: Side {} (p{}), slot {}, move index {}, selected move: {}",
+                                                 side_idx, side_idx + 1, slot, num, selected_move.as_str());
+                                        Some(selected_move)
                                     } else {
                                         None
                                     }
@@ -2055,6 +2140,116 @@ impl Battle {
                         terastallize: None,
                     }
                 }
+                "default" | "auto" => {
+                    // JS: case "auto": case "default": this.autoChoose(); break;
+                    // autoChoose() calls chooseTeam() if requestState === "teampreview"
+                    // or chooseMove() if requestState === "move"
+                    // or chooseSwitch() if requestState === "switch"
+                    eprintln!("DEBUG [parse_choice]: Processing 'default' choice, request_state={:?}", self.request_state);
+                    match self.request_state {
+                        BattleRequestState::TeamPreview => {
+                            // JS: if (this.requestState === "teampreview") { if (!this.isChoiceDone()) this.chooseTeam(); }
+                            crate::side::ChosenAction {
+                                choice: crate::side::ChoiceType::Team,
+                                pokemon_index: slot,
+                                target_loc: None,
+                                move_id: None,
+                                switch_index: None,
+                                mega: false,
+                                zmove: None,
+                                max_move: None,
+                                terastallize: None,
+                            }
+                        }
+                        BattleRequestState::Move => {
+                            // JS: } else if (this.requestState === "move") {
+                            //       while (!this.isChoiceDone()) {
+                            //         if (!this.chooseMove()) throw new Error(`autoChoose crashed: ${this.choice.error}`);
+                            // chooseMove() with no arguments chooses the first available move
+                            eprintln!("DEBUG [parse_choice]: Auto-choosing first move for slot {}", slot);
+
+                            // Get the first available move
+                            let move_id: Option<ID> = {
+                                let side = &self.sides[side_idx];
+                                // side.active[slot] is Option<usize> - index into side.pokemon
+                                if let Some(&Some(pokemon_idx)) = side.active.get(slot) {
+                                    if let Some(pokemon) = side.pokemon.get(pokemon_idx) {
+                                        if let Some(first_move_slot) = pokemon.move_slots.first() {
+                                            Some(first_move_slot.id.clone())
+                                        } else {
+                                            eprintln!("DEBUG [parse_choice]: No move slots available for pokemon, using None");
+                                            None
+                                        }
+                                    } else {
+                                        eprintln!("DEBUG [parse_choice]: Pokemon index {} not found in side.pokemon", pokemon_idx);
+                                        None
+                                    }
+                                } else {
+                                    eprintln!("DEBUG [parse_choice]: No pokemon active in slot {}", slot);
+                                    None
+                                }
+                            };
+
+                            if let Some(move_id) = move_id {
+                                crate::side::ChosenAction {
+                                    choice: crate::side::ChoiceType::Move,
+                                    pokemon_index: slot,
+                                    target_loc: None,
+                                    move_id: Some(move_id),
+                                    switch_index: None,
+                                    mega: false,
+                                    zmove: None,
+                                    max_move: None,
+                                    terastallize: None,
+                                }
+                            } else {
+                                crate::side::ChosenAction {
+                                    choice: crate::side::ChoiceType::Pass,
+                                    pokemon_index: slot,
+                                    target_loc: None,
+                                    move_id: None,
+                                    switch_index: None,
+                                    mega: false,
+                                    zmove: None,
+                                    max_move: None,
+                                    terastallize: None,
+                                }
+                            }
+                        }
+                        BattleRequestState::Switch => {
+                            // JS: } else if (this.requestState === "switch") {
+                            //       while (!this.isChoiceDone()) {
+                            //         if (!this.chooseSwitch()) throw new Error(`autoChoose switch crashed: ${this.choice.error}`);
+                            // TODO: Implement auto-switch
+                            eprintln!("DEBUG [parse_choice]: Auto-switch not implemented, using Pass");
+                            crate::side::ChosenAction {
+                                choice: crate::side::ChoiceType::Pass,
+                                pokemon_index: slot,
+                                target_loc: None,
+                                move_id: None,
+                                switch_index: None,
+                                mega: false,
+                                zmove: None,
+                                max_move: None,
+                                terastallize: None,
+                            }
+                        }
+                        _ => {
+                            eprintln!("DEBUG [parse_choice]: Unknown request_state, using Pass");
+                            crate::side::ChosenAction {
+                                choice: crate::side::ChoiceType::Pass,
+                                pokemon_index: slot,
+                                target_loc: None,
+                                move_id: None,
+                                switch_index: None,
+                                mega: false,
+                                zmove: None,
+                                max_move: None,
+                                terastallize: None,
+                            }
+                        }
+                    }
+                }
                 _ => crate::side::ChosenAction {
                     choice: crate::side::ChoiceType::Pass,
                     pokemon_index: slot,
@@ -2109,136 +2304,127 @@ impl Battle {
     // 	}
     //
     fn commit_choices(&mut self) {
-        // Build action queue
+        // JS: this.updateSpeed();
+        self.update_speed();
+
+        // JS: const oldQueue = this.queue.list;
+        let old_queue = self.queue.list.clone();
+
+        // JS: this.queue.clear();
         self.queue.clear();
 
-        // Collect all move actions with their priorities and speeds
-        let mut actions: Vec<(usize, usize, crate::side::ChosenAction, i8, i32)> = Vec::new();
+        // JS: for (const side of this.sides) { this.queue.addChoice(side.choice.actions); }
+        // Convert side choices to queue actions and add them
+        use crate::battle_queue::{Action, MoveAction, MoveActionType, SwitchAction, SwitchActionType, TeamAction, FieldAction, FieldActionType};
 
         for side_idx in 0..self.sides.len() {
-            for action in &self.sides[side_idx].choice.actions {
+            for action in &self.sides[side_idx].choice.actions.clone() {
                 match action.choice {
                     crate::side::ChoiceType::Move => {
-                        let pokemon_idx = self.sides[side_idx]
-                            .active
-                            .get(action.pokemon_index)
-                            .and_then(|opt| *opt);
-                        if let Some(poke_idx) = pokemon_idx {
-                            let priority = if let Some(ref move_id) = action.move_id {
-                                self.get_move_priority(move_id)
-                            } else {
-                                0
-                            };
-                            let speed = self.sides[side_idx].pokemon[poke_idx].stored_stats.spe;
-                            actions.push((side_idx, poke_idx, action.clone(), priority, speed));
+                        if let Some(ref move_id) = action.move_id {
+                            let pokemon_idx = self.sides[side_idx]
+                                .active
+                                .get(action.pokemon_index)
+                                .and_then(|opt| *opt)
+                                .unwrap_or(0);
+
+                            eprintln!("DEBUG [commit_choices]: Side {} (p{}), pokemon_idx={}, adding move action: {}",
+                                     side_idx, side_idx + 1, pokemon_idx, move_id.as_str());
+
+                            self.queue.add_choice(Action::Move(MoveAction {
+                                choice: MoveActionType::Move,
+                                side_index: side_idx,
+                                pokemon_index: pokemon_idx,
+                                move_id: move_id.clone(),
+                                target_loc: action.target_loc.unwrap_or(0),
+                                mega: false,
+                                zmove: None,
+                                max_move: None,
+                                terastallize: None,
+                                move_priority_modified: None,
+                                priority: 0,
+                                fractional_priority: 0.0,
+                                speed: 0,
+                                order: 0,
+                            }));
                         }
                     }
                     crate::side::ChoiceType::Switch => {
-                        // Switches happen before moves (priority 7 effectively)
-                        // When switching into an empty slot (after fainting), there's no current Pokemon
-                        let pokemon_idx = self.sides[side_idx]
-                            .active
-                            .get(action.pokemon_index)
-                            .and_then(|opt| *opt);
-
-                        // Get speed for ordering (use 0 if slot is empty)
-                        let speed = if let Some(poke_idx) = pokemon_idx {
-                            self.sides[side_idx].pokemon[poke_idx].stored_stats.spe
-                        } else {
-                            0 // Empty slot - use speed 0 for ordering
-                        };
-
-                        // Use pokemon_idx if available, otherwise use 0 as placeholder
-                        // The actual switch will use action.switch_index to determine what to switch in
-                        let poke_idx_for_queue = pokemon_idx.unwrap_or(0);
-                        actions.push((side_idx, poke_idx_for_queue, action.clone(), 7, speed));
+                        if let Some(switch_to) = action.switch_index {
+                            self.queue.add_choice(Action::Switch(SwitchAction {
+                                choice: SwitchActionType::Switch,
+                                side_index: side_idx,
+                                pokemon_index: action.pokemon_index,
+                                target_index: switch_to,
+                                source_effect: None,
+                                priority: 0,
+                                speed: 0,
+                                order: 0,
+                            }));
+                        }
+                    }
+                    crate::side::ChoiceType::Team => {
+                        // Team preview action - add team action to queue
+                        self.queue.add_choice(Action::Team(TeamAction {
+                            priority: 1,
+                            pokemon_index: action.pokemon_index,
+                            side_index: side_idx,
+                            index: action.pokemon_index,
+                        }));
+                    }
+                    crate::side::ChoiceType::Pass => {
+                        // Pass action - add pass field action to queue
+                        self.queue.add_choice(Action::Field(FieldAction {
+                            choice: FieldActionType::Pass,
+                            priority: 0,
+                        }));
                     }
                     _ => {}
                 }
             }
         }
 
-        // Check if Trick Room is active (reverses speed order)
-        let trick_room_id = ID::new("trickroom");
-        let trick_room_active = self.field.has_pseudo_weather(&trick_room_id);
+        // JS: this.clearRequest();
+        self.clear_request();
 
-        // Sort by priority (desc), then speed (desc, or asc if Trick Room), then shuffle ties
-        // JavaScript: this.queue.sort(); which calls this.battle.speedSort(this.list, comparePriority);
-        // comparePriority compares by order, priority, speed, subOrder, effectOrder
-        // speedSort shuffles tied items using the PRNG
-        self.speed_sort(&mut actions, |action| {
+        // JS: queue.sort() in JavaScript calls getActionSpeed on all actions first
+        // We need to call get_action_speed on all actions in the queue before sorting
+        // Extract list temporarily to avoid borrow checker issues
+        let mut list = std::mem::take(&mut self.queue.list);
+
+        // Call get_action_speed on each action to set proper speeds
+        for action in &mut list {
+            self.get_action_speed(action);
+        }
+
+        // JS: this.queue.sort();
+        // JavaScript's queue.sort() calls battle.speedSort() which uses PRNG
+        self.speed_sort(&mut list, |action| {
+            use crate::battle_queue::Action;
             PriorityItem {
-                order: None,
-                priority: action.3 as i32, // priority (i8 -> i32)
-                speed: if trick_room_active {
-                    // In Trick Room, lower speed goes first, so negate speed for comparison
-                    -action.4
-                } else {
-                    action.4 // speed
-                },
-                sub_order: 0,
+                order: Some(action.order()),
+                priority: action.priority() as i32,  // Convert i8 to i32
+                speed: action.speed(),
+                sub_order: 0,  // Actions don't have sub_order
                 effect_order: 0,
                 index: 0,
             }
         });
+        self.queue.list = list;
 
-        // Execute actions in order
-        for (side_idx, poke_idx, action, _, _) in actions {
-            if self.ended {
-                break;
-            }
+        // JS: this.queue.list.push(...oldQueue);
+        self.queue.list.extend(old_queue);
 
-            match action.choice {
-                crate::side::ChoiceType::Switch => {
-                    if let Some(switch_to) = action.switch_index {
-                        // Use the slot from action.pokemon_index directly
-                        // This works for both occupied and empty slots (after fainting)
-                        let slot = action.pokemon_index;
-                        self.do_switch(side_idx, slot, switch_to);
-                    }
-                }
-                crate::side::ChoiceType::Move => {
-                    if let Some(move_id) = &action.move_id {
-                        let target_loc = action.target_loc.unwrap_or(0);
-                        self.run_move(side_idx, poke_idx, move_id, target_loc);
+        // JS: this.requestState = '';
+        self.request_state = BattleRequestState::None;
 
-                        // Handle pivot switch (U-Turn, Volt Switch, Flip Turn)
-                        let pivot_switch_id = ID::new("pivotswitch");
-                        if self.sides[side_idx].pokemon[poke_idx].has_volatile(&pivot_switch_id) {
-                            self.sides[side_idx].pokemon[poke_idx]
-                                .remove_volatile(&pivot_switch_id);
-
-                            // Find a valid switch target
-                            let switch_target = self.find_valid_switch_target(side_idx, poke_idx);
-                            if let Some(target_idx) = switch_target {
-                                // Get slot from the Pokemon's position
-                                let slot = self.sides[side_idx]
-                                    .pokemon
-                                    .get(poke_idx)
-                                    .map(|p| p.position)
-                                    .unwrap_or(0);
-                                self.do_switch(side_idx, slot, target_idx);
-                            }
-                        }
-                    }
-                }
-                _ => {}
-            }
+        // JS: for (const side of this.sides) { side.activeRequest = null; }
+        for side in &mut self.sides {
+            side.active_request = None;
         }
 
-        // End of turn
-        self.run_residual();
-
-        // Check for fainted Pokemon
-        self.faint_messages(false, false, true);
-
-        // Check win condition
-        if self.check_win(None) {
-            return;
-        }
-
-        // Start next turn
-        self.next_turn();
+        // JS: this.turnLoop();
+        self.turn_loop();
     }
 
     /// Find a valid switch target for pivot moves (U-Turn, Volt Switch, etc.)
@@ -2401,6 +2587,134 @@ impl Battle {
         }
     }
 
+    /// Compare priority of two actions for queue insertion
+    /// Matches JavaScript's comparePriority from battle.js line 257
+    /// Returns: negative if a should go before b, positive if b should go before a, 0 if equal
+    //
+    // JS: comparePriority(a, b) {
+    //   return -((b.order || 4294967296) - (a.order || 4294967296)) ||
+    //          (b.priority || 0) - (a.priority || 0) ||
+    //          (b.speed || 0) - (a.speed || 0) ||
+    //          -((b.subOrder || 0) - (a.subOrder || 0)) ||
+    //          -((b.effectOrder || 0) - (a.effectOrder || 0)) || 0;
+    // }
+    fn compare_action_priority(&self, a: &crate::battle_queue::Action, b: &crate::battle_queue::Action) -> i32 {
+        use crate::battle_queue::Action;
+
+        // Get order (default 4294967296 in JS)
+        let a_order = a.order() as i64;
+        let b_order = b.order() as i64;
+
+        // JS: -((b.order || 4294967296) - (a.order || 4294967296))
+        let order_cmp = -((b_order - a_order) as i32);
+        if order_cmp != 0 {
+            return order_cmp;
+        }
+
+        // JS: (b.priority || 0) - (a.priority || 0)
+        let priority_cmp = b.priority() - a.priority();
+        if priority_cmp != 0 {
+            return priority_cmp as i32;
+        }
+
+        // JS: (b.speed || 0) - (a.speed || 0)
+        let speed_cmp = b.speed() - a.speed();
+        if speed_cmp != 0 {
+            return speed_cmp;
+        }
+
+        // JS: -((b.subOrder || 0) - (a.subOrder || 0))
+        // JS: -((b.effectOrder || 0) - (a.effectOrder || 0))
+        // Note: subOrder and effectOrder don't apply to runSwitch actions
+
+        0
+    }
+
+    /// Insert a runSwitch action into the queue with priority-based positioning
+    /// Matches JavaScript's queue.insertChoice() behavior from battle-queue.js line 260
+    //
+    // JS: insertChoice(choices, midTurn = false) {
+    //     const choice = choices;
+    //     if (choice.pokemon) { choice.pokemon.updateSpeed(); }
+    //     const actions = this.resolveAction(choice, midTurn);
+    //     let firstIndex = null;
+    //     let lastIndex = null;
+    //     for (const [i, curAction] of this.list.entries()) {
+    //       const compared = this.battle.comparePriority(actions[0], curAction);
+    //       if (compared <= 0 && firstIndex === null) { firstIndex = i; }
+    //       if (compared < 0) { lastIndex = i; break; }
+    //     }
+    //     if (firstIndex === null) { this.list.push(...actions); }
+    //     else {
+    //       if (lastIndex === null) lastIndex = this.list.length;
+    //       const index = firstIndex === lastIndex ? firstIndex : this.battle.random(firstIndex, lastIndex + 1);
+    //       this.list.splice(index, 0, ...actions);
+    //     }
+    //   }
+    fn insert_run_switch_action(&mut self, side_index: usize, pokemon_index: usize) {
+        use crate::battle_queue::{Action, PokemonAction, PokemonActionType};
+
+        eprintln!("DEBUG [insert_run_switch_action]: Inserting runSwitch for side={}, pokemon={}, queue_len={}",
+                  side_index, pokemon_index, self.queue.list.len());
+
+        // Update Pokemon speed
+        // JS: if (choice.pokemon) { choice.pokemon.updateSpeed(); }
+        self.sides[side_index].pokemon[pokemon_index].update_speed();
+
+        // Create the runSwitch action
+        let action = Action::Pokemon(PokemonAction {
+            choice: PokemonActionType::RunSwitch,
+            order: 101,
+            priority: 0,
+            speed: self.sides[side_index].pokemon[pokemon_index].speed,
+            pokemon_index,
+            side_index,
+            event: None,
+        });
+
+        // JS: let firstIndex = null; let lastIndex = null;
+        let mut first_index: Option<usize> = None;
+        let mut last_index: Option<usize> = None;
+
+        // JS: for (const [i, curAction] of this.list.entries()) {
+        for (i, cur_action) in self.queue.list.iter().enumerate() {
+            // JS: const compared = this.battle.comparePriority(actions[0], curAction);
+            let compared = self.compare_action_priority(&action, cur_action);
+
+            // JS: if (compared <= 0 && firstIndex === null) { firstIndex = i; }
+            if compared <= 0 && first_index.is_none() {
+                first_index = Some(i);
+            }
+
+            // JS: if (compared < 0) { lastIndex = i; break; }
+            if compared < 0 {
+                last_index = Some(i);
+                break;
+            }
+        }
+
+        // JS: if (firstIndex === null) { this.list.push(...actions); }
+        if first_index.is_none() {
+            self.queue.list.push(action);
+        } else {
+            // JS: if (lastIndex === null) lastIndex = this.list.length;
+            let first = first_index.unwrap();
+            let last = last_index.unwrap_or(self.queue.list.len());
+
+            // JS: const index = firstIndex === lastIndex ? firstIndex : this.battle.random(firstIndex, lastIndex + 1);
+            let index = if first == last {
+                eprintln!("DEBUG [insert_run_switch_action]: first==last={}, no PRNG needed", first);
+                first
+            } else {
+                eprintln!("DEBUG [insert_run_switch_action]: first={}, last={}, calling random_range", first, last);
+                self.random_range(first as i32, (last + 1) as i32) as usize
+            };
+
+            // JS: this.list.splice(index, 0, ...actions);
+            self.queue.list.insert(index, action);
+        }
+    }
+
     /// Run switch-in effects for a Pokemon
     /// 1:1 port of battle-actions.ts runSwitch()
     pub fn run_switch(&mut self, side_idx: usize, poke_idx: usize) {
@@ -2418,6 +2732,30 @@ impl Battle {
                 break;
             }
         }
+
+        // JS: const allActive = this.battle.getAllActive(true);
+        // JS: this.battle.speedSort(allActive);
+        // Collect all active Pokemon with their speeds
+        let mut all_active: Vec<(usize, usize, i32)> = Vec::new();
+        for (side_idx, side) in self.sides.iter().enumerate() {
+            for poke_idx in side.active.iter().flatten() {
+                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                    if !pokemon.fainted {
+                        all_active.push((side_idx, *poke_idx, pokemon.speed));
+                    }
+                }
+            }
+        }
+
+        // Sort all active Pokemon using speed_sort (which uses PRNG for ties)
+        self.speed_sort(&mut all_active, |item| PriorityItem {
+            order: None,
+            priority: 0,
+            speed: item.2,
+            sub_order: 0,
+            effect_order: 0,
+            index: 0,
+        });
 
         // Speed sort all active Pokemon
         self.update_speed();
@@ -5717,6 +6055,7 @@ impl Battle {
     where
         F: FnMut(&T) -> PriorityItem,
     {
+        eprintln!("DEBUG: speed_sort called with list.len()={}", list.len());
         if list.len() < 2 {
             return;
         }
@@ -5728,16 +6067,23 @@ impl Battle {
 
             // Find the next item(s) with highest priority
             for i in (sorted + 1)..list.len() {
-                let cmp = Self::compare_priority(
-                    &get_priority(&list[next_indexes[0]]),
-                    &get_priority(&list[i]),
-                );
+                let priority_a = get_priority(&list[next_indexes[0]]);
+                let priority_i = get_priority(&list[i]);
+                eprintln!("DEBUG: comparing item {} (speed={}) vs item {} (speed={})",
+                    next_indexes[0], priority_a.speed, i, priority_i.speed);
+                let cmp = Self::compare_priority(&priority_a, &priority_i);
+                eprintln!("DEBUG: comparison result: {:?}", cmp);
                 match cmp {
                     std::cmp::Ordering::Less => continue,
                     std::cmp::Ordering::Greater => next_indexes = vec![i],
-                    std::cmp::Ordering::Equal => next_indexes.push(i),
+                    std::cmp::Ordering::Equal => {
+                        eprintln!("DEBUG: found tie! Adding index {} to next_indexes", i);
+                        next_indexes.push(i);
+                    }
                 }
             }
+
+            eprintln!("DEBUG: next_indexes.len() = {}", next_indexes.len());
 
             // Put the next items where they belong
             for (offset, &index) in next_indexes.iter().enumerate() {
@@ -5748,12 +6094,14 @@ impl Battle {
 
             // If there were ties, shuffle them randomly
             if next_indexes.len() > 1 {
+                eprintln!("DEBUG: TIES DETECTED, calling shuffle_range");
                 let end = sorted + next_indexes.len();
                 self.shuffle_range(list, sorted, end);
             }
 
             sorted += next_indexes.len();
         }
+        eprintln!("DEBUG: speed_sort complete");
     }
 
     /// Shuffle a range of a slice in place
@@ -5771,13 +6119,16 @@ impl Battle {
     ///     }
     ///   }
     fn shuffle_range<T>(&mut self, list: &mut [T], mut start: usize, end: usize) {
+        eprintln!("DEBUG: shuffle_range called with start={}, end={}, length={}", start, end, end - start);
         while start < end - 1 {
-            let next_index = self.prng.random_range(start as i32, end as i32) as usize;
+            let next_index = self.random_range(start as i32, end as i32) as usize;
+            eprintln!("DEBUG: shuffle iteration: start={}, next_index={}", start, next_index);
             if start != next_index {
                 list.swap(start, next_index);
             }
             start += 1;
         }
+        eprintln!("DEBUG: shuffle_range complete");
     }
 
     // =========================================================================
@@ -6620,6 +6971,10 @@ impl Battle {
 
         self.add_log("", &[]);
         self.add_log("turn", &[&self.turn.to_string()]);
+
+        // JS: this.makeRequest('move');
+        eprintln!("DEBUG [end_turn]: Calling make_request(Move)");
+        self.make_request(Some(BattleRequestState::Move));
     }
 
     /// Main turn loop
@@ -6655,6 +7010,7 @@ impl Battle {
     // 	}
     //
     pub fn turn_loop(&mut self) {
+        eprintln!("=== TURN {} START, QUEUE LENGTH: {} ===", self.turn + 1, self.queue.list.len());
         self.add_log("", &[]);
 
         // Add timestamp (JS: this.add('t:', Math.floor(Date.now() / 1000)))
@@ -6675,6 +7031,7 @@ impl Battle {
 
         // Process the action queue
         while let Some(action) = self.queue.shift() {
+            eprintln!("DEBUG [turn_loop]: Processing action, {} items remain in queue", self.queue.list.len());
             self.run_action(&action);
             if self.request_state != BattleRequestState::None || self.ended {
                 return;
@@ -6991,7 +7348,23 @@ impl Battle {
     // 	}
     //
     pub fn run_action(&mut self, action: &crate::battle_queue::Action) {
-        use crate::battle_queue::{Action, FieldActionType};
+        use crate::battle_queue::{Action, FieldActionType, PokemonActionType};
+
+        eprintln!("DEBUG [run_action]: Processing action type: {:?}",
+                  match action {
+                      Action::Move(_) => "Move",
+                      Action::Switch(_) => "Switch",
+                      Action::Field(f) => match f.choice {
+                          FieldActionType::Start => "Field::Start",
+                          FieldActionType::BeforeTurn => "Field::BeforeTurn",
+                          _ => "Field::Other",
+                      },
+                      Action::Pokemon(p) => match p.choice {
+                          PokemonActionType::RunSwitch => "Pokemon::RunSwitch",
+                          _ => "Pokemon::Other",
+                      },
+                      Action::Team(_) => "Team",
+                  });
 
         match action {
             Action::Move(move_action) => {
@@ -7127,8 +7500,137 @@ impl Battle {
             Action::Team(_) => {
                 // Team preview action handled elsewhere
             }
-            Action::Pokemon(_) => {
-                // Pokemon actions (mega evo, terastallize, etc.)
+            Action::Pokemon(poke_action) => {
+                use crate::battle_queue::PokemonActionType;
+
+                match poke_action.choice {
+                    PokemonActionType::RunSwitch => {
+                        // JS: const switchersIn = [pokemon];
+                        let mut switchers_in = vec![(poke_action.side_index, poke_action.pokemon_index)];
+
+                        // JS: while (this.battle.queue.peek()?.choice === "runSwitch") {
+                        //         const nextSwitch = this.battle.queue.shift();
+                        //         switchersIn.push(nextSwitch.pokemon);
+                        //     }
+                        // Collect all consecutive RunSwitch actions
+                        loop {
+                            let should_extract = if let Some(action) = self.queue.peek() {
+                                matches!(action, Action::Pokemon(p) if matches!(p.choice, PokemonActionType::RunSwitch))
+                            } else {
+                                false
+                            };
+
+                            if !should_extract {
+                                break;
+                            }
+
+                            if let Some(Action::Pokemon(next_poke)) = self.queue.shift() {
+                                switchers_in.push((next_poke.side_index, next_poke.pokemon_index));
+                            }
+                        }
+
+                        // JS: const allActive = this.battle.getAllActive(true);
+                        let all_active = self.get_all_active(true);
+
+                        // JS: this.battle.speedSort(allActive);
+                        // Extract Pokemon speeds first to avoid borrow checker issues
+                        let speeds: Vec<i32> = all_active
+                            .iter()
+                            .map(|(s_idx, p_idx)| self.sides[*s_idx].pokemon[*p_idx].stored_stats.spe as i32)
+                            .collect();
+
+                        // Now sort using the pre-extracted speeds
+                        let mut all_active_with_speeds: Vec<_> = all_active
+                            .into_iter()
+                            .zip(speeds.iter())
+                            .collect();
+
+                        self.speed_sort(&mut all_active_with_speeds, |(_, speed)| PriorityItem {
+                            order: None,
+                            priority: 0,
+                            speed: **speed,
+                            sub_order: 0,
+                            effect_order: 0,
+                            index: 0,
+                        });
+
+                        // JS: this.battle.speedOrder = allActive.map((a) => a.side.n * a.battle.sides.length + a.position);
+                        // TODO: Rust doesn't have speedOrder field yet - add it if needed
+
+                        // JS: this.battle.fieldEvent("SwitchIn", switchersIn);
+                        self.field_event_switch_in(&switchers_in);
+
+                        // JS: for (const poke of switchersIn) {
+                        //         if (!poke.hp) continue;
+                        //         poke.isStarted = true;
+                        //         poke.draggedIn = null;
+                        //     }
+                        for (s_idx, p_idx) in switchers_in {
+                            if let Some(pokemon) = self.sides[s_idx].pokemon.get_mut(p_idx) {
+                                if pokemon.hp <= 0 {
+                                    continue;
+                                }
+                                pokemon.is_started = true;
+                                pokemon.dragged_in = None;
+                            }
+                        }
+                    }
+                    _ => {
+                        // Other Pokemon actions (mega evo, terastallize, etc.)
+                    }
+                }
+            }
+        }
+
+        // JS: if (this.gen >= 5 && action.choice !== "start") { this.eachEvent("Update"); }
+        // Call Update event for all actions except "start" in Gen 5+
+        let is_start_action = matches!(action, Action::Field(f) if matches!(f.choice, FieldActionType::Start));
+        if self.gen >= 5 && !is_start_action {
+            self.each_event("Update", None);
+        }
+
+        // JS: if (this.gen >= 8 && (this.queue.peek()?.choice === "move" || this.queue.peek()?.choice === "runDynamax")) {
+        // JS:     this.updateSpeed();
+        // JS:     for (const queueAction of this.queue.list) {
+        // JS:         if (queueAction.pokemon) this.getActionSpeed(queueAction);
+        // JS:     }
+        // JS:     this.queue.sort();
+        // JS: }
+        if self.gen >= 8 {
+            let should_sort = if let Some(next_action) = self.queue.peek() {
+                match next_action {
+                    Action::Move(_) => true,
+                    Action::Pokemon(p) => matches!(p.choice, PokemonActionType::RunDynamax),
+                    _ => false,
+                }
+            } else {
+                false
+            };
+
+            if should_sort {
+                eprintln!("DEBUG [run_action]: Gen 8+ queue sort triggered, queue length={}", self.queue.list.len());
+                // Update speed for all Pokemon
+                for side in &mut self.sides {
+                    for pokemon in &mut side.pokemon {
+                        pokemon.update_speed();
+                    }
+                }
+                // Sort the queue using speed_sort (which uses PRNG for tie-breaking)
+                // Extract list temporarily to avoid borrow checker issues
+                let mut list = std::mem::take(&mut self.queue.list);
+                eprintln!("DEBUG [run_action]: About to call speed_sort with {} items", list.len());
+                self.speed_sort(&mut list, |action| {
+                    PriorityItem {
+                        order: Some(action.order()),
+                        priority: action.priority() as i32,
+                        speed: action.speed(),
+                        sub_order: 0,
+                        effect_order: 0,
+                        index: 0,
+                    }
+                });
+                eprintln!("DEBUG [run_action]: Finished speed_sort");
+                self.queue.list = list;
             }
         }
     }
@@ -7618,8 +8120,10 @@ impl Battle {
     // 	}
     //
     pub fn make_request(&mut self, request_type: Option<BattleRequestState>) {
+        eprintln!("DEBUG [make_request]: Called with request_type={:?}", request_type);
         // JS: if (type) { this.requestState = type; ... } else { type = this.requestState; }
         let req_type = if let Some(rt) = request_type {
+            eprintln!("DEBUG [make_request]: Setting request_state to {:?}", rt);
             self.request_state = rt;
             // JS: for (const side of this.sides) { side.clearChoice(); }
             for side in &mut self.sides {
@@ -7627,8 +8131,10 @@ impl Battle {
             }
             rt
         } else {
+            eprintln!("DEBUG [make_request]: Using existing request_state={:?}", self.request_state);
             self.request_state
         };
+        eprintln!("DEBUG [make_request]: After assignment, request_state={:?}", self.request_state);
 
         // JS: for (const side of this.sides) { side.activeRequest = null; }
         for side in &mut self.sides {
@@ -10460,6 +10966,7 @@ impl Battle {
     // 	}
     //
     pub fn each_event(&mut self, event_id: &str, effect: Option<&ID>) {
+        eprintln!("DEBUG: each_event called with event_id={}", event_id);
         // Collect all active Pokemon with their speeds
         let mut actives: Vec<(usize, usize, i32)> = Vec::new();
         for (side_idx, side) in self.sides.iter().enumerate() {
@@ -10472,8 +10979,18 @@ impl Battle {
             }
         }
 
-        // Sort by speed (highest first)
-        actives.sort_by(|a, b| b.2.cmp(&a.2));
+        eprintln!("DEBUG: each_event has {} active Pokemon to sort", actives.len());
+
+        // JS: this.speedSort(actives, (a, b) => b.speed - a.speed);
+        // Sort by speed (highest first) using speed_sort to handle ties with PRNG
+        self.speed_sort(&mut actives, |item| PriorityItem {
+            order: None,
+            priority: 0,
+            speed: item.2,  // Speed is the third element of the tuple
+            sub_order: 0,
+            effect_order: 0,
+            index: 0,
+        });
 
         // Run event on each
         for (side_idx, poke_idx, _speed) in actives {
@@ -10906,6 +11423,9 @@ impl Battle {
             let target_pos = target.unwrap();
             let (side_idx, poke_idx) = target_pos;
 
+            eprintln!("DEBUG [spread_damage]: Damaging target p{}a (side={}, idx={}), damage={}",
+                     side_idx + 1, side_idx, poke_idx, target_damage);
+
             // Check if target exists and has HP
             let (has_hp, is_active) = if let Some(side) = self.sides.get(side_idx) {
                 if let Some(pokemon) = side.pokemon.get(poke_idx) {
@@ -10996,6 +11516,10 @@ impl Battle {
             } else {
                 0
             };
+
+            eprintln!("DEBUG [spread_damage]: Actual damage applied: {}, target HP after: {}",
+                     actual_damage,
+                     self.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)).map(|p| p.hp).unwrap_or(0));
 
             target_damage = actual_damage;
             ret_vals.push(Some(target_damage));
@@ -12060,6 +12584,7 @@ impl Battle {
     // 	}
     //
     pub fn run_pick_team(&mut self) {
+        eprintln!("DEBUG [run_pick_team]: Starting, request_state={:?}", self.request_state);
         // JS: this.format.onTeamPreview?.call(this);
         // TODO: Implement format.onTeamPreview callback
 
@@ -12068,13 +12593,16 @@ impl Battle {
 
         // JS: if (this.requestState === 'teampreview') { return; }
         if matches!(self.request_state, BattleRequestState::TeamPreview) {
+            eprintln!("DEBUG [run_pick_team]: Already in team preview, returning");
             return;
         }
 
         // JS: if (this.ruleTable.pickedTeamSize) { ... }
         // If pickedTeamSize is set, show Pokemon privately (no onTeamPreview handler ran)
         if let Some(ref rule_table) = self.rule_table {
+            eprintln!("DEBUG [run_pick_team]: rule_table exists, picked_team_size={:?}", rule_table.picked_team_size);
             if rule_table.picked_team_size.is_some() {
+                eprintln!("DEBUG [run_pick_team]: picked_team_size is Some, will call make_request(TeamPreview)");
                 // There was no onTeamPreview handler (e.g. Team Preview rule missing).
                 // Players must still pick their own Pokémon, so we show them privately.
                 // JS: this.add('clearpoke');
@@ -12145,9 +12673,11 @@ impl Battle {
             }
         }
 
-        // For now, assume we need team preview and call makeRequest
-        // JS: this.makeRequest('teampreview');
-        self.make_request(Some(BattleRequestState::TeamPreview));
+        // JS: If we reach here, there's no team preview - don't call makeRequest
+        // JavaScript's runPickTeam() returns without calling makeRequest if:
+        // - requestState isn't already 'teampreview'
+        // - ruleTable.pickedTeamSize doesn't exist
+        // So we should do the same - just return without setting requestState
     }
 
     /// Send updates to connected players
@@ -13061,6 +13591,9 @@ impl Battle {
         // Call modifyDamage for the full calculation (pass is_crit for damage multiplier)
         let damage = self.modify_damage(base_damage, source_pos, target_pos, &move_data, is_crit);
 
+        eprintln!("DEBUG [get_damage]: move={}, source=p{}a, target=p{}a, base_damage={}, final_damage={}",
+                 move_id.as_str(), source_pos.0 + 1, target_pos.0 + 1, base_damage, damage);
+
         Some(damage)
     }
 
@@ -13357,6 +13890,11 @@ impl Battle {
         is_secondary: bool,
         is_self: bool,
     ) -> SpreadMoveHitResult {
+        eprintln!("DEBUG: spread_move_hit called: move={}, is_secondary={}, is_self={}, turn={}", move_id, is_secondary, is_self, self.turn);
+        eprintln!("DEBUG: spread_move_hit - source=p{}a, targets={:?}",
+                 source_pos.0 + 1,
+                 targets.iter().filter_map(|t| *t).map(|(s, p)| format!("p{}a", s + 1)).collect::<Vec<_>>());
+
         let mut damages: Vec<Option<i32>> = vec![Some(0); targets.len()];
         let mut final_targets = targets.to_vec();
 
@@ -13390,28 +13928,40 @@ impl Battle {
 
         // Step 1.5: Accuracy check
         // JavaScript: accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+        eprintln!("DEBUG: Starting accuracy checks, is_secondary={}, is_self={}", is_secondary, is_self);
         if !is_secondary && !is_self {
+            eprintln!("DEBUG: Running accuracy checks for {} targets", targets.len());
             for (i, &target) in targets.iter().enumerate() {
+                eprintln!("DEBUG: Checking target {} (target={:?})", i, target);
                 if let Some(target_pos) = target {
                     // Skip if already failed TryHit
                     if damages[i].is_none() {
+                        eprintln!("DEBUG: Target {} already failed TryHit, skipping accuracy", i);
                         continue;
                     }
 
                     // Get base accuracy from move
+                    eprintln!("DEBUG: Getting move data for accuracy");
                     let base_accuracy = match self.dex.get_move(move_id.as_str()) {
-                        Some(m) => match m.accuracy {
+                        Some(m) => {
+                            eprintln!("DEBUG: Move found, accuracy={:?}", m.accuracy);
+                            match m.accuracy {
                             crate::dex::Accuracy::Percent(p) => p,
                             crate::dex::Accuracy::AlwaysHits => {
                                 // Always hits, skip accuracy check
+                                eprintln!("DEBUG: Move always hits, skipping accuracy check");
                                 continue;
                             }
-                        },
-                        None => continue,
+                        }},
+                        None => {
+                            eprintln!("DEBUG: Move NOT found, skipping accuracy check");
+                            continue;
+                        }
                     };
 
                     // Trigger Accuracy event to allow abilities/items to modify accuracy
                     // JavaScript: accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+                    eprintln!("DEBUG: About to run Accuracy event with base_accuracy={}", base_accuracy);
                     let mut accuracy = base_accuracy;
                     if let Some(modified_acc) = self.run_event(
                         "Accuracy",
@@ -13420,20 +13970,33 @@ impl Battle {
                         Some(move_id),
                         Some(accuracy),
                     ) {
+                        eprintln!("DEBUG: Accuracy event modified accuracy to {}", modified_acc);
                         accuracy = modified_acc;
+                    } else {
+                        eprintln!("DEBUG: Accuracy event returned None, using base accuracy {}", base_accuracy);
                     }
 
                     // Check if move hits based on accuracy
                     // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
                     // Always call randomChance to consume PRNG value, even if accuracy is 100
+                    eprintln!("DEBUG: About to check accuracy with random_chance({}, 100)", accuracy);
                     if !self.random_chance(accuracy, 100) {
                         // Move missed
+                        eprintln!("DEBUG: Move MISSED!");
                         damages[i] = None;
                         final_targets[i] = None;
                         // TODO: Add miss message: this.battle.add('-miss', pokemon, target);
+                    } else {
+                        eprintln!("DEBUG: Move HIT!");
                     }
                 }
             }
+        }
+
+        // JS: this.battle.eachEvent('Update'); (line 841 - inside hit loop)
+        // Call eachEvent("Update") after hit processing
+        if !is_secondary && !is_self {
+            self.each_event("Update", None);
         }
 
         // Step 2: Get damage for each target
@@ -13484,6 +14047,12 @@ impl Battle {
                     );
                 }
             }
+        }
+
+        // JS: this.battle.eachEvent('Update'); (line 886 - after hit loop)
+        // Call eachEvent("Update") after all hits processed
+        if !is_secondary && !is_self {
+            self.each_event("Update", None);
         }
 
         // Step 4: Run move effects (boosts, status, healing, etc.)
