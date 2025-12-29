@@ -69,8 +69,43 @@ pub mod condition {
     ///         this.add('-end', pokemon, 'Telekinesis', '[silent]');
     ///     }
     /// }
-    pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // if (pokemon.baseSpecies.name === 'Gengar-Mega')
+        let (is_gengar_mega, pokemon_slot) = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            let base_species_name = pokemon_ref.get_base_species_name(&battle.dex);
+            let is_gengar_mega = base_species_name.as_deref() == Some("Gengar-Mega");
+
+            (is_gengar_mega, pokemon_ref.get_slot())
+        };
+
+        if is_gengar_mega {
+            // delete pokemon.volatiles['telekinesis'];
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_mut.remove_volatile(&ID::from("telekinesis"));
+
+            // this.add('-end', pokemon, 'Telekinesis', '[silent]');
+            battle.add(
+                "-end",
+                &[
+                    crate::battle::Arg::from(pokemon_slot),
+                    crate::battle::Arg::from("Telekinesis"),
+                    crate::battle::Arg::from("[silent]"),
+                ],
+            );
+        }
+
         EventResult::Continue
     }
 
