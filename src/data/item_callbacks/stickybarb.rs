@@ -35,6 +35,64 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 ///     }
 /// }
 pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (source && source !== target && !source.item && move && this.checkMoveMakesContact(move, source, target)) {
+    //     const barb = target.takeItem();
+    //     if (!barb) return;
+    //     source.setItem(barb);
+    // }
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source_pos = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // source !== target
+    if source_pos == target_pos {
+        return EventResult::Continue;
+    }
+
+    // Check if source has no item
+    let source_has_item = {
+        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        !source.item.is_empty()
+    };
+
+    if source_has_item {
+        return EventResult::Continue;
+    }
+
+    // Check if move makes contact
+    if !battle.check_move_makes_contact(&move_id.into(), source_pos) {
+        return EventResult::Continue;
+    }
+
+    // Take item from target
+    let barb = {
+        let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target.take_item()
+    };
+
+    // if (!barb) return;
+    let barb = match barb {
+        Some(item) => item,
+        None => return EventResult::Continue,
+    };
+
+    // Give item to source
+    if let Some(source) = battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+        source.set_item(barb);
+    }
+
     EventResult::Continue
 }
