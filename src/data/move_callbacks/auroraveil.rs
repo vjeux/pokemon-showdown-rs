@@ -138,22 +138,36 @@ pub mod condition {
     /// onSideStart(side) {
     ///     this.add('-sidestart', side, 'move: Aurora Veil');
     /// }
-    pub fn on_side_start(_battle: &mut Battle) -> EventResult {
-        // TODO: Side parameter missing from signature - should be (battle: &mut Battle, side_idx: usize)
-        // For now, the event system should handle adding the side context
+    pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', side, 'move: Aurora Veil');
-        // Note: Cannot implement without side parameter
+        // Following the pattern from gmaxcannonade.rs - access side via current_effect_state
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sidestart", &[side_arg, "move: Aurora Veil".into()]);
+            }
+        }
+
         EventResult::Continue
     }
 
     /// onSideEnd(side) {
     ///     this.add('-sideend', side, 'move: Aurora Veil');
     /// }
-    pub fn on_side_end(_battle: &mut Battle) -> EventResult {
-        // TODO: Side parameter missing from signature - should be (battle: &mut Battle, side_idx: usize)
-        // For now, the event system should handle adding the side context
+    pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', side, 'move: Aurora Veil');
-        // Note: Cannot implement without side parameter
+        // Following the pattern from gmaxcannonade.rs - access side via current_effect_state
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sideend", &[side_arg, "move: Aurora Veil".into()]);
+            }
+        }
+
         EventResult::Continue
     }
 }
