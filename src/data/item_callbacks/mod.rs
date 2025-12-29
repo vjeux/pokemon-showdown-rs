@@ -1104,11 +1104,16 @@ pub fn dispatch_on_try_heal_priority(
 
 /// Dispatch onTryHit callbacks
 pub fn dispatch_on_try_hit(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "safetygoggles" => safetygoggles::on_try_hit(battle, pokemon_pos, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onUpdate callbacks

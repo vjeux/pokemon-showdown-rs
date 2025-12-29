@@ -9154,7 +9154,13 @@ impl Battle {
             "TryHealPriority" => {
                 item_callbacks::dispatch_on_try_heal_priority(self, item_id.as_str(), pokemon_pos)
             }
-            "TryHit" => item_callbacks::dispatch_on_try_hit(self, item_id.as_str(), pokemon_pos),
+            "TryHit" => {
+                if let Some(source_pos) = source {
+                    item_callbacks::dispatch_on_try_hit(self, item_id.as_str(), pokemon_pos, source_pos)
+                } else {
+                    EventResult::Continue
+                }
+            }
             "Update" => item_callbacks::dispatch_on_update(self, item_id.as_str(), pokemon_pos),
             "Use" => item_callbacks::dispatch_on_use(self, item_id.as_str(), pokemon_pos),
             "UseItem" => item_callbacks::dispatch_on_use_item(self, item_id.as_str(), pokemon_pos),

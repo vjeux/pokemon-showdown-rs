@@ -25,6 +25,53 @@ pub fn on_immunity(_battle: &mut Battle, _pokemon_pos: (usize, usize), immunity_
 ///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (move.flags['powder'] && pokemon !== source && this.dex.getImmunity('powder', pokemon))
+
+    // Get active move
+    let (has_powder_flag, move_name) = {
+        if let Some(ref active_move) = battle.active_move {
+            (active_move.flags.powder, active_move.name.clone())
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    // pokemon !== source
+    if !has_powder_flag || target_pos == source_pos {
+        return EventResult::Continue;
+    }
+
+    // this.dex.getImmunity('powder', pokemon)
+    let has_immunity = {
+        let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        battle.dex.get_immunity("powder", &pokemon.types)
+    };
+
+    if has_immunity {
+        // this.add('-activate', pokemon, 'item: Safety Goggles', move.name);
+        let pokemon_slot = {
+            let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        battle.add(
+            "-activate",
+            &[
+                crate::battle::Arg::from(pokemon_slot),
+                crate::battle::Arg::from("item: Safety Goggles"),
+                crate::battle::Arg::from(move_name),
+            ],
+        );
+
+        // return null;
+        return EventResult::Stop;
+    }
+
     EventResult::Continue
 }
