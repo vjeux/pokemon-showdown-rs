@@ -60,7 +60,7 @@ Items with callbacks: 326
 - [x] charcoal - Charcoal (Gen 2) - 1 callback: onBasePower
 - [x] charizarditex - Charizardite X (Gen 6) - 1 callback: onTakeItem
 - [x] charizarditey - Charizardite Y (Gen 6) - 1 callback: onTakeItem
-- [ ] chartiberry - Charti Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] chartiberry - Charti Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] cheriberry - Cheri Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] chesnaughtite - Chesnaughtite (Gen 9) - 1 callback: onTakeItem
 - [x] chestoberry - Chesto Berry (Gen 3) - 2 callbacks: onUpdate, onEat
