@@ -97,4 +97,16 @@ pub mod condition {
         // return accuracy;
         EventResult::Number(accuracy)
     }
+
+    /// onRestart() {
+    ///     return null;
+    /// }
+    pub fn on_restart(
+        _battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+    ) -> EventResult {
+        // return null;
+        // Returning null prevents the volatile from being restarted
+        EventResult::Stop
+    }
 }

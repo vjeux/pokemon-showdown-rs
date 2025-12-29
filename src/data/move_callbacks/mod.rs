@@ -1969,6 +1969,7 @@ pub fn dispatch_condition_on_restart(
         "healblock" => healblock::condition::on_restart(battle, None, Some(source_pos), None),
         "helpinghand" => helpinghand::condition::on_restart(battle, None, Some(source_pos)),
         "laserfocus" => laserfocus::condition::on_restart(battle, source_pos),
+        "minimize" => minimize::condition::on_restart(battle, source_pos),
         "powershift" => powershift::condition::on_restart(battle, source_pos),
         "powertrick" => powertrick::condition::on_restart(battle, source_pos),
         "smackdown" => smackdown::condition::on_restart(battle, source_pos),
