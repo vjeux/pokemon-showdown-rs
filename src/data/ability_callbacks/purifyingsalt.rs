@@ -36,7 +36,12 @@ pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (us
 ///     }
 /// }
 pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        if move_data.move_type == "Ghost" {
+            let modified = battle.chain_modify(0.5);
+            return EventResult::Number(modified);
+        }
+    }
     EventResult::Continue
 }
 
@@ -47,7 +52,12 @@ pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
 ///     }
 /// }
 pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        if move_data.move_type == "Ghost" {
+            let modified = battle.chain_modify(0.5);
+            return EventResult::Number(modified);
+        }
+    }
     EventResult::Continue
 }
 
