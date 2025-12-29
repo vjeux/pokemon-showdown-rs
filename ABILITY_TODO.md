@@ -152,3 +152,40 @@ This file tracks abilities that require infrastructure not yet implemented in Ru
   - Need item field on Pokemon
   - Need setItem, getItem, hasItem methods
   - Need lastItem tracking
+
+### Weather/Terrain setting abilities (Sand Stream, Electric Surge, Grassy Surge, etc.)
+- **Missing**: field.setWeather() and field.setTerrain() functions
+- **JavaScript code**: `this.field.setWeather('sandstorm')`, `this.field.setTerrain('electricterrain')`
+- **Required**:
+  - Need field.setWeather(weather_id) to set weather
+  - Need field.setTerrain(terrain_id) to set terrain
+  - Examples: Sand Stream, Snow Warning, Electric Surge, Grassy Surge, Misty Surge, Psychic Surge
+
+### Healing abilities (Regenerator, Earth Eater, etc.)
+- **Missing**: heal() and damage() functions
+- **JavaScript code**: `pokemon.heal(pokemon.baseMaxhp / 3)`, `this.heal(target.baseMaxhp / 4)`
+- **Required**:
+  - Need pokemon.heal(amount) to restore HP
+  - Need this.heal(amount) that returns boolean (false if already at full HP)
+  - Need pokemon.baseMaxhp or maxhp field
+  - Examples: Regenerator (heals 1/3 on switch), Earth Eater (heals 1/4 when hit by Ground)
+
+### Priority blocking abilities (Queenly Majesty, Armor Tail, Dazzling)
+- **Missing**: Move priority checking and target checking
+- **JavaScript code**: `move.priority > 0.1`, `move.target === 'foeSide'`, `source.isAlly(holder)`
+- **Required**:
+  - Need access to move.priority field
+  - Need access to move.target field
+  - Need source.isAlly(target) checking
+  - Need this.attrLastMove('[still]')
+  - Examples: Queenly Majesty, Armor Tail, Dazzling
+
+### Trapping abilities (Arena Trap, Shadow Tag, Magnet Pull)
+- **Missing**: Trapping system
+- **JavaScript code**: `pokemon.tryTrap(true)`, `pokemon.maybeTrapped = true`, `pokemon.isGrounded()`, `pokemon.isAdjacent(target)`
+- **Required**:
+  - Need pokemon.tryTrap() to trap a pokemon
+  - Need pokemon.maybeTrapped field
+  - Need pokemon.isGrounded() to check if grounded
+  - Need pokemon.isAdjacent(target) to check adjacency
+  - Examples: Arena Trap, Shadow Tag, Magnet Pull
