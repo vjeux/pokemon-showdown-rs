@@ -32,7 +32,7 @@ Items with callbacks: 326
 - [x] aspearberry - Aspear Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] assaultvest - Assault Vest (Gen 6) - 2 callbacks: onModifySpD, onDisableMove
 - [x] audinite - Audinite (Gen 6) - 1 callback: onTakeItem
-- [ ] babiriberry - Babiri Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] babiriberry - Babiri Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] banettite - Banettite (Gen 6) - 1 callback: onTakeItem
 - [x] barbaracite - Barbaracite (Gen 9) - 1 callback: onTakeItem
 - [x] baxcalibrite - Baxcalibrite (Gen 9) - 1 callback: onTakeItem
