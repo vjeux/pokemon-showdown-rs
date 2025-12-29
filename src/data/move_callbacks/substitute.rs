@@ -269,13 +269,195 @@ pub mod condition {
     ///     return this.HIT_SUBSTITUTE;
     /// }
     pub fn on_try_primary_hit(
-        _battle: &mut Battle,
-        _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
         _move_id: &str,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        use crate::battle_actions::BattleActions;
+        use crate::dex_data::ID;
+
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (target === source || move.flags['bypasssub'] || move.infiltrates)
+        if target == source {
+            return EventResult::Continue;
+        }
+
+        let (bypasses_sub, infiltrates, is_ohko, move_id) = match &battle.active_move {
+            Some(m) => {
+                let bypasses = m.flags.bypasssub;
+                (
+                    bypasses,
+                    m.infiltrates,
+                    m.ohko.clone(),
+                    m.id.clone(),
+                )
+            }
+            None => return EventResult::Continue,
+        };
+
+        if bypasses_sub || infiltrates {
+            return EventResult::Continue;
+        }
+
+        // Get recoil and drain from move data
+        let (recoil, drain) = {
+            battle.dex.moves.get(&move_id)
+                .map(|m| (m.recoil, m.drain))
+                .unwrap_or((None, None))
+        };
+
+        // let damage = this.actions.getDamage(source, target, move);
+        let damage = match battle.get_damage(source, target, &move_id) {
+            Some(d) => d,
+            None => {
+                // if (!damage && damage !== 0)
+                // this.add('-fail', source);
+                let source_slot = {
+                    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    source_pokemon.get_slot()
+                };
+
+                battle.add("-fail", &[crate::battle::Arg::from(source_slot)]);
+
+                // this.attrLastMove('[still]');
+                battle.attr_last_move(&["[still]"]);
+
+                // return null;
+                return EventResult::Null;
+            }
+        };
+
+        // Get substitute HP from effect state
+        let sub_hp = {
+            if let Some(ref effect_state) = battle.current_effect_state {
+                effect_state
+                    .data
+                    .get("hp")
+                    .and_then(|v| v.as_i64())
+                    .map(|v| v as i32)
+                    .unwrap_or(0)
+            } else {
+                0
+            }
+        };
+
+        // if (damage > target.volatiles['substitute'].hp)
+        let actual_damage = if damage > sub_hp {
+            sub_hp
+        } else {
+            damage
+        };
+
+        // target.volatiles['substitute'].hp -= damage;
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            let new_hp = sub_hp - actual_damage;
+            effect_state
+                .data
+                .insert("hp".to_string(), serde_json::to_value(new_hp).unwrap());
+        }
+
+        // source.lastDamage = damage;
+        {
+            let source_mut = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_mut.last_damage = actual_damage;
+        }
+
+        // if (target.volatiles['substitute'].hp <= 0)
+        let new_sub_hp = {
+            if let Some(ref effect_state) = battle.current_effect_state {
+                effect_state
+                    .data
+                    .get("hp")
+                    .and_then(|v| v.as_i64())
+                    .map(|v| v as i32)
+                    .unwrap_or(0)
+            } else {
+                0
+            }
+        };
+
+        if new_sub_hp <= 0 {
+            // if (move.ohko) this.add('-ohko');
+            if is_ohko.is_some() {
+                battle.add("-ohko", &[]);
+            }
+
+            // target.removeVolatile('substitute');
+            let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_mut.remove_volatile(&ID::from("substitute"));
+        } else {
+            // this.add('-activate', target, 'move: Substitute', '[damage]');
+            let target_slot = {
+                let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target_pokemon.get_slot()
+            };
+
+            battle.add(
+                "-activate",
+                &[
+                    crate::battle::Arg::from(target_slot),
+                    crate::battle::Arg::from("move: Substitute"),
+                    crate::battle::Arg::from("[damage]"),
+                ],
+            );
+        }
+
+        // if (move.recoil || move.id === 'chloroblast')
+        if recoil.is_some() || move_id.as_str() == "chloroblast" {
+            // this.damage(this.actions.calcRecoilDamage(damage, move, source), source, target, 'recoil');
+            let source_max_hp = {
+                let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                source_pokemon.maxhp
+            };
+
+            let recoil_damage =
+                BattleActions::calc_recoil_damage(actual_damage, move_id.as_str(), recoil, source_max_hp);
+
+            let recoil_id = ID::from("recoil");
+            battle.damage(recoil_damage, Some(source), Some(target), Some(&recoil_id), false);
+        }
+
+        // if (move.drain)
+        if let Some((drain_num, drain_denom)) = drain {
+            // this.heal(Math.ceil(damage * move.drain[0] / move.drain[1]), source, target, 'drain');
+            let heal_amount = ((actual_damage * drain_num + drain_denom - 1) / drain_denom).max(1);
+            let drain_id = ID::from("drain");
+            battle.heal(heal_amount, Some(source), Some(target), Some(&drain_id));
+        }
+
+        // this.singleEvent('AfterSubDamage', move, null, target, source, move, damage);
+        battle.single_event("AfterSubDamage", &move_id, Some(target), Some(source), Some(&move_id));
+
+        // this.runEvent('AfterSubDamage', target, source, move, damage);
+        battle.run_event("AfterSubDamage", Some(target), Some(source), Some(&move_id), None);
+
+        // return this.HIT_SUBSTITUTE;
+        EventResult::HitSubstitute
     }
 
     /// onEnd(target) {

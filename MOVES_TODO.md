@@ -2,22 +2,26 @@
 
 ## Summary
 
-**Current Status:** 2 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 1 TODO callback remaining (out of ~700+ original callbacks)
 
-**SESSION COMPLETE** - All implementable callbacks with existing infrastructure have been successfully implemented!
+**SESSION UPDATE** - Added EventResult::HitSubstitute infrastructure and completed substitute.rs!
 
 **Current Session - Infrastructure Additions:**
 - **Added EventResult::Null variant** - Required for TypeScript 'return null' equivalence
+- **Added EventResult::HitSubstitute variant** - Required for substitute damage blocking (equivalent to TypeScript's HIT_SUBSTITUTE)
 - **Added ActiveMove.override_offensive_stat field** - Required for Wonder Room stat swapping
 - **Added Battle.run_event_string() method** - Required for Techno Blast 'Drive' event that returns type String
 - **Added SelfEffect.side_condition field** - Required for pledge moves (firepledge, waterpledge) to set side conditions via move.self
 - **Added type_mod and target_type parameters to on_effectiveness callbacks** - Infrastructure for type effectiveness modification
 - **Added immunity_type parameter to condition on_immunity callbacks** - Infrastructure for immunity type checking
-- **Used existing Battle.attr_last_move() method** - For terablast animation attributes
+- **Used existing Battle.attr_last_move() method** - For terablast animation attributes, substitute fail messages
 - **Used existing queue and pokemon infrastructure** - For pledge move queue prioritization
-- **Used existing ActiveMove.ohko field** - For telekinesis accuracy check
+- **Used existing ActiveMove.ohko field** - For telekinesis accuracy check, substitute OHKO detection
 - **Used existing Pokemon.run_immunity() and has_type() methods** - For thousandarrows Ground immunity check
-- **Newly implemented**: 21 callbacks using existing and new infrastructure!
+- **Used existing Battle.get_damage() method** - For substitute damage calculation
+- **Used existing BattleActions::calc_recoil_damage() method** - For substitute recoil damage
+- **Used existing MoveData.recoil and drain fields** - For substitute recoil/drain effects
+- **Newly implemented**: 22 callbacks using existing and new infrastructure!
   - telekinesis.rs: on_try ✓, condition::on_start ✓, condition::on_accuracy ✓, condition::on_immunity ✓ (COMPLETE FILE 6/6)
   - uproar.rs: condition::on_any_set_status ✓ (COMPLETE FILE 5/5)
   - healblock.rs: condition::on_try_heal ✓ (COMPLETE FILE 8/8)
@@ -30,9 +34,10 @@
   - tarshot.rs: condition::on_effectiveness ✓ (COMPLETE FILE 2/2)
   - thousandarrows.rs: on_effectiveness ✓ (COMPLETE FILE 1/1)
   - taunt.rs: condition::on_before_move ✓ (COMPLETE FILE 4/4)
-- **Files completed**: 12 new complete files (telekinesis, uproar, healblock, wonderroom, terablast, terastarstorm, technoblast, firepledge, waterpledge, tarshot, thousandarrows, taunt)
-- **TODO markers verified**: 2 actual "TODO: Implement 1-to-1 from JS" markers remaining
-- **Progress**: 23 → 2 remaining TODOs (implemented 21 callbacks this session - 91% reduction!)
+  - substitute.rs: condition::on_try_primary_hit ✓ (COMPLETE FILE 5/5)
+- **Files completed**: 13 new complete files (telekinesis, uproar, healblock, wonderroom, terablast, terastarstorm, technoblast, firepledge, waterpledge, tarshot, thousandarrows, taunt, substitute)
+- **TODO markers verified**: 1 actual "TODO: Implement 1-to-1 from JS" marker remaining
+- **Progress**: 23 → 1 remaining TODO (implemented 22 callbacks this session - 96% reduction!)
 
 **Previous Session - Verification Work:**
 - **Newly implemented**: 2 callbacks using infrastructure discovery
@@ -122,23 +127,26 @@ The Pokemon struct already has more methods than initially documented:
   - Available fields: `force_stab`, `source_effect`, `side_condition`, `ohko`, `recoil`, `infiltrates`, `flags`
   - Example: `if let Some(ref mut active_move) = battle.active_move { active_move.move_type = "Fire".to_string(); }`
 
-**Comprehensive Analysis of 2 Remaining TODO Markers:**
+**Comprehensive Analysis of 1 Remaining TODO Marker:**
 
-After exhaustive investigation and infrastructure additions, only 2 remaining TODO markers require additional infrastructure:
+After exhaustive investigation and infrastructure additions, only 1 remaining TODO marker requires additional infrastructure:
 
-1. **substitute.rs: condition::on_try_primary_hit**
-   - ✅ Infrastructure EXISTS: `battle.get_damage()`, `BattleActions::calc_recoil_damage()`, ActiveMove (flags, infiltrates, ohko, recoil, drain), effect_state.data
-   - ❌ BLOCKER: EventResult::HitSubstitute variant doesn't exist (would need to add new enum variant)
+1. **substitute.rs: condition::on_try_primary_hit** ✅ COMPLETE
+   - ✅ Infrastructure EXISTS: `battle.get_damage()`, `BattleActions::calc_recoil_damage()`, ActiveMove (flags, infiltrates, ohko), MoveData (recoil, drain), effect_state.data
+   - ✅ IMPLEMENTED: Added EventResult::HitSubstitute variant to match TypeScript's HIT_SUBSTITUTE
+   - ✅ Used battle.damage() and battle.heal() with correct signatures (instafaint param, &ID for effect)
+   - ✅ Used battle.attr_last_move(&["[still]"]) with slice parameter
+   - ✅ Used battle.run_event() and battle.single_event() with &ID parameters
 
 2. **fling.rs: on_prepare_hit**
    - ✅ Infrastructure EXISTS: `pokemon.ignoring_item()`, `pokemon.get_item()`, `battle.single_event()`, `item.fling.base_power`
    - ❌ BLOCKER: FlingData missing `effect`, `status`, `volatileStatus` fields
    - ❌ BLOCKER: Dynamic callback assignment (`move.onHit = function`) incompatible with Rust's type system
 
-**Status:** All implementable callbacks with existing and newly added infrastructure have been completed. The remaining 2 TODOs require adding new infrastructure (enum variants, struct fields, dynamic callbacks) which cannot be done without "inventing" per the implementation guidelines.
+**Status:** All implementable callbacks with existing infrastructure have been completed! substitute.rs was successfully implemented after adding the EventResult::HitSubstitute variant. Only fling.rs remains, which requires structural changes to FlingData and a Rust-compatible approach to dynamic callback assignment.
 
 **ITEMS:** ✅ 100% Complete (346/346) - No TODO markers remaining
-**MOVES:** 64/373 files complete - 2 TODO markers remain, both blocked by missing infrastructure that would require invention
+**MOVES:** 65/373 files complete - 1 TODO marker remains, blocked by missing FlingData fields and dynamic callback system
 
 **Blocking Issues:** All 13 remaining callbacks require missing infrastructure:
 - Volatile condition management with source tracking (add_volatile with source parameter)
@@ -480,7 +488,7 @@ Moves with callbacks: 373
 - [x] strengthsap - Strength Sap (Status, Grass) - 1 callback: onHit
 - [x] struggle - Struggle (Physical, Normal) - 1 callback: onModifyMove
 - [x] stuffcheeks - Stuff Cheeks (Status, Normal) - 3 callbacks: onDisableMove, onTry, onHit
-- [ ] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit ✓, onHit ✓, condition::onStart ✓, condition::onTryPrimaryHit, condition::onEnd ✓ (4/5 implemented)
+- [x] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit ✓, onHit ✓, condition::onStart ✓, condition::onTryPrimaryHit ✓, condition::onEnd ✓ (COMPLETE FILE 5/5)
 - [x] suckerpunch - Sucker Punch (Physical, Dark) - 1 callback: onTry
 - [x] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail
 - [x] superfang - Super Fang (Physical, Normal) - 1 callback: damageCallback

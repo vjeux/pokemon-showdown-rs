@@ -147,6 +147,8 @@ pub enum EventResult {
     ID(ID),
     /// Return a list of types
     Types(Vec<String>),
+    /// Hit substitute - indicates damage was blocked by substitute (equivalent to TypeScript's HIT_SUBSTITUTE)
+    HitSubstitute,
 }
 
 impl EventResult {
