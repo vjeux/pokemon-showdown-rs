@@ -8840,7 +8840,13 @@ impl Battle {
 
         match event_id {
             "AfterBoost" => {
-                item_callbacks::dispatch_on_after_boost(self, item_id.as_str(), pokemon_pos)
+                let boost = relay_var_boost.as_ref();
+                item_callbacks::dispatch_on_after_boost(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                    boost,
+                )
             }
             "AfterMoveSecondary" => item_callbacks::dispatch_on_after_move_secondary(
                 self,

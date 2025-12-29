@@ -20,7 +20,7 @@ Items with callbacks: 326
 - [x] absorbbulb - Absorb Bulb (Gen 5) - 1 callback: onDamagingHit
 - [x] adamantcrystal - Adamant Crystal (Gen 8) - 2 callbacks: onBasePower, onTakeItem
 - [x] adamantorb - Adamant Orb (Gen 4) - 1 callback: onBasePower
-- [ ] adrenalineorb - Adrenaline Orb (Gen 7) - 1 callback: onAfterBoost
+- [x] adrenalineorb - Adrenaline Orb (Gen 7) - 1 callback: onAfterBoost
 - [x] aerodactylite - Aerodactylite (Gen 6) - 1 callback: onTakeItem
 - [x] aggronite - Aggronite (Gen 6) - 1 callback: onTakeItem
 - [x] aguavberry - Aguav Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat

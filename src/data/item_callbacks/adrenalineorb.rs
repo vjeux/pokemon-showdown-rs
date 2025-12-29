@@ -19,7 +19,45 @@ use crate::event::EventResult;
 ///         target.useItem();
 ///     }
 /// }
-pub fn on_after_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_after_boost(
+    battle: &mut Battle,
+    target_pos: (usize, usize),
+    boost: &crate::dex_data::BoostsTable,
+) -> EventResult {
+    // if (target.boosts['spe'] === 6 || boost.atk === 0) {
+    //     return;
+    // }
+    let target_spe_boost = {
+        let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        // TODO: Access pokemon.boosts when that infrastructure exists
+        // For now, we can't check target.boosts['spe'] === 6
+        pokemon.boosts.spe
+    };
+
+    if target_spe_boost == 6 || boost.atk == 0 {
+        return EventResult::Continue;
+    }
+
+    // if (effect.name === 'Intimidate') {
+    //     target.useItem();
+    // }
+    let effect_name = battle.current_event.as_ref().and_then(|e| {
+        e.effect.as_ref().map(|id| id.as_str().to_string())
+    });
+
+    if let Some(name) = effect_name {
+        if name == "intimidate" {
+            // target.useItem();
+            let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_mut.use_item();
+        }
+    }
+
     EventResult::Continue
 }
