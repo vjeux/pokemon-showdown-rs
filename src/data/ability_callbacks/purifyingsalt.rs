@@ -25,7 +25,24 @@ pub fn on_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, u
 ///     }
 /// }
 pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if status_id == "yawn" {
+        let target_ident = {
+            let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Null,
+            };
+            target.get_slot()
+        };
+
+        battle.add(
+            "-immune",
+            &[
+                target_ident.as_str().into(),
+                "[from] ability: Purifying Salt".into(),
+            ],
+        );
+        return EventResult::Null;
+    }
     EventResult::Continue
 }
 
