@@ -2,7 +2,7 @@
 
 ## Summary
 
-**Current Status:** 88 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 87 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Latest Session Progress:**
 - **Callbacks implemented**: 11 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish + 1 fling + 1 teatime ✅ + 1 toxicspikes ✅)
@@ -31,9 +31,8 @@
     - throatchop.rs: condition::on_before_move, condition::on_modify_move
     - uproar.rs: on_try_hit, condition::on_residual
   - Previous session: swallow.rs: onTry, onHit
-- **Files marked complete**: 46 total (1 additional + 18 earlier + 27 previous session)
-  - Now complete: throatchop
-  - This session: takeheart, temperflare, upperhand, veeveevolley, teleport, thunder, thunderclap, topsyturvy, venomdrench, venoshock, wakeupslap, watershuriken, waterspout, wildboltstorm, wringout, tailwind, transform, trickortreat
+- **Files marked complete**: 47 total (1 wideguard + 46 previous)
+  - Now complete: wideguard  - Previous session: throatchop, takeheart, temperflare, upperhand, veeveevolley, teleport, thunder, thunderclap, topsyturvy, venomdrench, venoshock, wakeupslap, watershuriken, waterspout, wildboltstorm, wringout, tailwind, transform, trickortreat, syrupbomb, teatime, toxicspikes
   - Previous session: synthesis, synchronoise, + 25 others
 - **Partial implementations documented**: 18 moves now show partial completion status with ✓ markers (added healblock, trick, switcheroo, substitute, uproar)
 
@@ -457,7 +456,7 @@ Moves with callbacks: 373
 - [x] watersport - Water Sport (Status, Water) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
 - [x] waterspout - Water Spout (Special, Water) - 1 callback: basePowerCallback
 - [x] weatherball - Weather Ball (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
-- [ ] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide ✓, condition::onSideStart ✓, condition::onTryHit (2/4 implemented)
+- [x] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
 - [x] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
 - [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart ✓, condition::onResidual, condition::onEnd ✓ (2/3 implemented)
 - [x] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onModifyMove, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd (1/5 implemented)
