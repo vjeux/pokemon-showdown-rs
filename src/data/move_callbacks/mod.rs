@@ -127,6 +127,7 @@ pub mod gmaxcannonade;
 pub mod gmaxchistrike;
 pub mod gmaxsnooze;
 pub mod gmaxsteelsurge;
+pub mod gmaxsweetness;
 pub mod gmaxvinelash;
 pub mod gmaxvolcalith;
 pub mod gmaxwildfire;
@@ -747,6 +748,7 @@ pub fn dispatch_on_hit(
         "freezyfrost" => freezyfrost::on_hit(battle, pokemon_pos, target_pos),
         "genesissupernova" => genesissupernova::on_hit(battle, pokemon_pos, target_pos),
         "gmaxsnooze" => gmaxsnooze::on_hit(battle, pokemon_pos, target_pos),
+        "gmaxsweetness" => gmaxsweetness::on_hit(battle, pokemon_pos, target_pos),
         "gmaxwindrage" => gmaxwindrage::on_hit(battle, pokemon_pos, target_pos),
         "guardsplit" => guardsplit::on_hit(battle, pokemon_pos, target_pos),
         "guardswap" => guardswap::on_hit(battle, pokemon_pos, target_pos),

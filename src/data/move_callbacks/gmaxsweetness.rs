@@ -5,12 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
-use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
 
-/// onHit(...)
+/// onHit(source)
 ///
 /// ```text
 /// JS Source (data/moves.ts):
@@ -19,11 +16,29 @@ use super::{MoveHandlerResult, Status, Effect};
 /// 					ally.cureStatus();
 /// 				}
 /// 			},
-/// 
+///
 /// 		}
 /// ```
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
+pub fn on_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
+    // for (const ally of source.side.pokemon) {
+    //     ally.cureStatus();
+    // }
+    let source_side = source_pos.0;
+
+    // Get the number of pokemon on the source's side
+    let pokemon_count = battle.sides[source_side].pokemon.len();
+
+    // Iterate through all pokemon on the side and cure their status
+    for poke_idx in 0..pokemon_count {
+        if let Some(ally) = battle.pokemon_at_mut(source_side, poke_idx) {
+            ally.cure_status();
+        }
+    }
+
+    EventResult::Continue
 }
 
