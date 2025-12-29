@@ -178,7 +178,7 @@ Items with callbacks: 326
 - [x] laxincense - Lax Incense (Gen 3) - 1 callback: onModifyAccuracy
 - [ ] leek - Leek (Gen 8) - 1 callback: onModifyCritRatio
 - [x] leftovers - Leftovers (Gen 2) - 1 callback: onResidual
-- [ ] leppaberry - Leppa Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] leppaberry - Leppa Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] liechiberry - Liechi Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] lifeorb - Life Orb (Gen 4) - 2 callbacks: onModifyDamage, onAfterMoveSecondarySelf
 - [x] lightball - Light Ball (Gen 2) - 2 callbacks: onModifyAtk, onModifySpA
