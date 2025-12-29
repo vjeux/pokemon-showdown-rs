@@ -5,13 +5,9 @@ Items with callbacks: 326
 
 ## Current Status
 
-**Completed:** 344/346 items (99.4%)
+**Completed:** 346/346 items (100%)
 
-**Remaining:** 2 items
-- **blueorb** (onSwitchIn) - Blocked: needs `Battle.forme_change()` or `Pokemon.forme_change_with_effect()` method for Primal Reversion
-- **redorb** (onSwitchIn) - Blocked: needs `Battle.forme_change()` or `Pokemon.forme_change_with_effect()` method for Primal Reversion
-
-**Note:** Both blueorb and redorb have their onTakeItem callbacks fully implemented. Only onSwitchIn is missing.
+**All item callbacks have been successfully implemented!**
 
 ## Missing Infrastructure for Item Callbacks
 
@@ -57,7 +53,7 @@ Items with callbacks: 326
 - [x] blacksludge - Black Sludge (Gen 4) - 1 callback: onResidual
 - [x] blastoisinite - Blastoisinite (Gen 6) - 1 callback: onTakeItem
 - [x] blazikenite - Blazikenite (Gen 6) - 1 callback: onTakeItem
-- [ ] blueorb - Blue Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
+- [x] blueorb - Blue Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
 - [x] boosterenergy - Booster Energy (Gen 9) - 3 callbacks: onStart, onUpdate, onTakeItem
 - [x] brightpowder - Bright Powder (Gen 2) - 1 callback: onModifyAccuracy
 - [x] buggem - Bug Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
@@ -271,7 +267,7 @@ Items with callbacks: 326
 - [x] razorclaw - Razor Claw (Gen 4) - 1 callback: onModifyCritRatio
 - [x] razorfang - Razor Fang (Gen 4) - 1 callback: onModifyMove
 - [x] redcard - Red Card (Gen 5) - 1 callback: onAfterMoveSecondary
-- [ ] redorb - Red Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
+- [x] redorb - Red Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
 - [x] rindoberry - Rindo Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] rockgem - Rock Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] rockincense - Rock Incense (Gen 4) - 1 callback: onBasePower
