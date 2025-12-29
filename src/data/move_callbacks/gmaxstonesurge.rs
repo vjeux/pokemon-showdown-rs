@@ -21,16 +21,23 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
+    source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    use crate::dex_data::ID;
+
     // for (const side of source.side.foeSidesWithConditions()) {
     //     side.addSideCondition('stealthrock');
     // }
 
-    // TODO: Infrastructure needed - Battle::add_side_condition() method
-    // This move needs to add stealth rock as a side condition to foe sides
-    // For now, returning Continue as the infrastructure doesn't exist
+    let source_side_index = source_pos.0;
+
+    // Add stealth rock to all foe sides (sides that are not the source's side)
+    for (side_idx, side) in battle.sides.iter_mut().enumerate() {
+        if side_idx != source_side_index {
+            side.add_side_condition(ID::from("stealthrock"), None);
+        }
+    }
 
     EventResult::Continue
 }
