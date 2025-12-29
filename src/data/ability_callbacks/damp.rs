@@ -25,7 +25,11 @@ pub fn on_any_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 ///     }
 /// }
 pub fn on_any_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(effect) = effect_id {
+        if effect == "Aftermath" {
+            return EventResult::Boolean(false);
+        }
+    }
     EventResult::Continue
 }
 
