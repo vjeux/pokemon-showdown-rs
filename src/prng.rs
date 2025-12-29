@@ -428,9 +428,11 @@ impl PRNG {
     // 	}
     //
     pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
-        let roll = self.random_int(denominator);
+        // JS: return this.random(denominator) < numerator;
+        // Use self.random() instead of random_int() so it gets logged
+        let roll = self.random(Some(denominator), None) as i32;
         let result = roll < numerator;
-        eprintln!("PRNG [raw]: random({}) = {}, {} < {} = {}", denominator, roll, roll, numerator, result);
+        eprintln!("PRNG: random_chance({}, {}) = {}", numerator, denominator, result);
         result
     }
 

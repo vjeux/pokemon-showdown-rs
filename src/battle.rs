@@ -2407,6 +2407,38 @@ impl Battle {
         actions
     }
 
+    // BattleQueue.prototype.addChoice (lines 302-313 in battle-queue.ts)
+    // 	addChoice(choices: ActionChoice | ActionChoice[]) {
+    // 		if (!Array.isArray(choices)) choices = [choices];
+    // 		for (const choice of choices) {
+    // 			const resolvedChoices = this.resolveAction(choice);
+    // 			this.list.push(...resolvedChoices);
+    // 			for (const resolvedChoice of resolvedChoices) {
+    // 				if (resolvedChoice && resolvedChoice.choice === 'move' && resolvedChoice.move.id !== 'recharge') {
+    // 					resolvedChoice.pokemon.side.lastSelectedMove = resolvedChoice.move.id;
+    // 				}
+    // 			}
+    // 		}
+    // 	}
+    fn add_choice(&mut self, side_action: &crate::side::ChosenAction, side_idx: usize) {
+        // JS: const resolvedChoices = this.resolveAction(choice);
+        let resolved_actions = self.resolve_action(side_action, side_idx);
+
+        // JS: this.list.push(...resolvedChoices);
+        for action in resolved_actions {
+            self.queue.list.push(action.clone());
+
+            // JS: if (resolvedChoice && resolvedChoice.choice === 'move' && resolvedChoice.move.id !== 'recharge') {
+            // JS:     resolvedChoice.pokemon.side.lastSelectedMove = resolvedChoice.move.id;
+            // JS: }
+            if let crate::battle_queue::Action::Move(ref move_action) = action {
+                if move_action.move_id.as_str() != "recharge" {
+                    self.sides[side_idx].last_selected_move = move_action.move_id.clone();
+                }
+            }
+        }
+    }
+
     // commitChoices() {
     // 	this.updateSpeed();
     // 	const oldQueue = this.queue.list;
@@ -2455,16 +2487,10 @@ impl Battle {
         // JS: for (const side of this.sides) {
         // JS:     this.queue.addChoice(side.choice.actions);
         // JS: }
-        // In JavaScript, queue.addChoice calls resolveAction on each action
         for side_idx in 0..self.sides.len() {
             let side_actions = self.sides[side_idx].choice.actions.clone();
             for side_action in &side_actions {
-                // JS: const resolvedChoices = this.resolveAction(choice);
-                // JS: this.list.push(...resolvedChoices);
-                let resolved_actions = self.resolve_action(side_action, side_idx);
-                for action in resolved_actions {
-                    self.queue.add_choice(action);
-                }
+                self.add_choice(side_action, side_idx);
             }
         }
 
