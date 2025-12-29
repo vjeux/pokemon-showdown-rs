@@ -2186,6 +2186,7 @@ impl<'a> BattleActions<'a> {
     /// Processes each hit of a multi-hit move
     /// Equivalent to battle-actions.ts hitStepMoveHitLoop()
     pub fn hit_step_move_hit_loop_stub(
+        battle: &mut crate::battle::Battle,
         target_indices: &[usize],
         pokemon_index: usize,
         move_id: &ID,
@@ -2201,9 +2202,16 @@ impl<'a> BattleActions<'a> {
                 break;
             }
             *damage_val = SpreadMoveDamageValue::Damage(50);
+
+            // JS: this.battle.eachEvent('Update'); (line 841 - inside hit loop)
+            battle.each_event("Update", None);
         }
 
         let _ = (pokemon_index, move_id, gen);
+
+        // JS: this.battle.eachEvent('Update'); (line 886 - after hit loop)
+        battle.each_event("Update", None);
+
         damage
     }
 
@@ -2430,12 +2438,14 @@ impl<'a> BattleActions<'a> {
     /// Try move hit - wrapper for single/multi target moves
     /// Equivalent to battle-actions.ts tryMoveHit()
     pub fn try_move_hit_stub(
+        battle: &mut crate::battle::Battle,
         target_or_targets: &[usize],
         pokemon_index: usize,
         move_id: &ID,
     ) -> Option<i32> {
         // This calls hitStepMoveHitLoop and returns damage
         let damage = Self::hit_step_move_hit_loop_stub(
+            battle,
             target_or_targets,
             pokemon_index,
             move_id,

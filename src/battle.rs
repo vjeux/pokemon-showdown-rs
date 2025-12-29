@@ -2303,6 +2303,131 @@ impl Battle {
     // 		if (this.log.length - this.sentLogPos > 500) this.sendUpdates();
     // 	}
     //
+    // BattleQueue.prototype.resolveAction (lines 166-272 in battle-queue.ts)
+    // Converts a choice into one or more queue actions
+    fn resolve_action(&self, side_action: &crate::side::ChosenAction, side_idx: usize) -> Vec<crate::battle_queue::Action> {
+        use crate::battle_queue::{Action, MoveAction, MoveActionType, SwitchAction, SwitchActionType, TeamAction, FieldAction, FieldActionType};
+
+        let mut actions = Vec::new();
+
+        match side_action.choice {
+            crate::side::ChoiceType::Move => {
+                // JS: if (!action.order) { action.order = 200; }
+                if let Some(ref move_id) = side_action.move_id {
+                    let pokemon_idx = self.sides[side_idx]
+                        .active
+                        .get(side_action.pokemon_index)
+                        .and_then(|opt| *opt)
+                        .unwrap_or(0);
+
+                    // JS: action.order = orders[action.choice] || 200
+                    // For moves: default order is 200 (line 199 in battle-queue.ts)
+                    actions.push(Action::Move(MoveAction {
+                        choice: MoveActionType::Move,
+                        side_index: side_idx,
+                        pokemon_index: pokemon_idx,
+                        move_id: move_id.clone(),
+                        target_loc: side_action.target_loc.unwrap_or(0),
+                        mega: side_action.mega,
+                        zmove: side_action.zmove.clone(),
+                        max_move: side_action.max_move.clone(),
+                        terastallize: side_action.terastallize.clone(),
+                        move_priority_modified: None,
+                        priority: 0,
+                        fractional_priority: 0.0,
+                        speed: 0,
+                        order: 200,  // JS: default order for moves
+                    }));
+                }
+            }
+            crate::side::ChoiceType::Switch => {
+                // JS: action.order = 103 (line 194 in battle-queue.ts)
+                if let Some(switch_to) = side_action.switch_index {
+                    actions.push(Action::Switch(SwitchAction {
+                        choice: SwitchActionType::Switch,
+                        side_index: side_idx,
+                        pokemon_index: side_action.pokemon_index,
+                        target_index: switch_to,
+                        source_effect: None,
+                        priority: 0,
+                        speed: 0,
+                        order: 103,
+                    }));
+                }
+            }
+            crate::side::ChoiceType::Team => {
+                // JS: action.order = 1 (line 175 in battle-queue.ts)
+                actions.push(Action::Team(TeamAction {
+                    priority: 1,
+                    pokemon_index: side_action.pokemon_index,
+                    side_index: side_idx,
+                    index: side_action.pokemon_index,
+                }));
+            }
+            crate::side::ChoiceType::Pass => {
+                actions.push(Action::Field(FieldAction {
+                    choice: FieldActionType::Pass,
+                    priority: 0,
+                }));
+            }
+            crate::side::ChoiceType::InstaSwitch => {
+                if let Some(switch_to) = side_action.switch_index {
+                    actions.push(Action::Switch(SwitchAction {
+                        choice: SwitchActionType::InstaSwitch,
+                        side_index: side_idx,
+                        pokemon_index: side_action.pokemon_index,
+                        target_index: switch_to,
+                        source_effect: None,
+                        priority: 0,
+                        speed: 0,
+                        order: 3,  // JS: instaswitch order = 3
+                    }));
+                }
+            }
+            crate::side::ChoiceType::RevivalBlessing => {
+                if let Some(switch_to) = side_action.switch_index {
+                    actions.push(Action::Switch(SwitchAction {
+                        choice: SwitchActionType::RevivalBlessing,
+                        side_index: side_idx,
+                        pokemon_index: side_action.pokemon_index,
+                        target_index: switch_to,
+                        source_effect: None,
+                        priority: 0,
+                        speed: 0,
+                        order: 6,  // JS: revivalblessing order = 6
+                    }));
+                }
+            }
+            crate::side::ChoiceType::Shift => {
+                // JS: shift order = 200
+                // Shift is not implemented yet, skip
+            }
+        }
+
+        actions
+    }
+
+    // commitChoices() {
+    // 	this.updateSpeed();
+    // 	const oldQueue = this.queue.list;
+    // 	this.queue.clear();
+    // 	if (!this.allChoicesDone()) throw new Error("Not all choices done");
+    // 	for (const side of this.sides) {
+    // 		const choice = side.getChoice();
+    // 		if (choice) this.inputLog.push(`>${side.id} ${choice}`);
+    // 	}
+    // 	for (const side of this.sides) {
+    // 		this.queue.addChoice(side.choice.actions);
+    // 	}
+    // 	this.clearRequest();
+    // 	this.queue.sort();
+    // 	this.queue.list.push(...oldQueue);
+    // 	this.requestState = '';
+    // 	for (const side of this.sides) {
+    // 		side.activeRequest = null;
+    // 	}
+    // 	this.turnLoop();
+    // }
     fn commit_choices(&mut self) {
         // JS: this.updateSpeed();
         self.update_speed();
@@ -2313,73 +2438,32 @@ impl Battle {
         // JS: this.queue.clear();
         self.queue.clear();
 
-        // JS: for (const side of this.sides) { this.queue.addChoice(side.choice.actions); }
-        // Convert side choices to queue actions and add them
-        use crate::battle_queue::{Action, MoveAction, MoveActionType, SwitchAction, SwitchActionType, TeamAction, FieldAction, FieldActionType};
+        // JS: if (!this.allChoicesDone()) throw new Error("Not all choices done");
+        // Note: Skipping this check for now as allChoicesDone is not fully implemented
 
+        // JS: for (const side of this.sides) {
+        // JS:     const choice = side.getChoice();
+        // JS:     if (choice) this.inputLog.push(`>${side.id} ${choice}`);
+        // JS: }
+        for side in &self.sides {
+            let choice_str = side.get_choice();
+            if !choice_str.is_empty() {
+                self.input_log.push(format!(">{} {}", side.id_str(), choice_str));
+            }
+        }
+
+        // JS: for (const side of this.sides) {
+        // JS:     this.queue.addChoice(side.choice.actions);
+        // JS: }
+        // In JavaScript, queue.addChoice calls resolveAction on each action
         for side_idx in 0..self.sides.len() {
-            for action in &self.sides[side_idx].choice.actions.clone() {
-                match action.choice {
-                    crate::side::ChoiceType::Move => {
-                        if let Some(ref move_id) = action.move_id {
-                            let pokemon_idx = self.sides[side_idx]
-                                .active
-                                .get(action.pokemon_index)
-                                .and_then(|opt| *opt)
-                                .unwrap_or(0);
-
-                            eprintln!("DEBUG [commit_choices]: Side {} (p{}), pokemon_idx={}, adding move action: {}",
-                                     side_idx, side_idx + 1, pokemon_idx, move_id.as_str());
-
-                            self.queue.add_choice(Action::Move(MoveAction {
-                                choice: MoveActionType::Move,
-                                side_index: side_idx,
-                                pokemon_index: pokemon_idx,
-                                move_id: move_id.clone(),
-                                target_loc: action.target_loc.unwrap_or(0),
-                                mega: false,
-                                zmove: None,
-                                max_move: None,
-                                terastallize: None,
-                                move_priority_modified: None,
-                                priority: 0,
-                                fractional_priority: 0.0,
-                                speed: 0,
-                                order: 0,
-                            }));
-                        }
-                    }
-                    crate::side::ChoiceType::Switch => {
-                        if let Some(switch_to) = action.switch_index {
-                            self.queue.add_choice(Action::Switch(SwitchAction {
-                                choice: SwitchActionType::Switch,
-                                side_index: side_idx,
-                                pokemon_index: action.pokemon_index,
-                                target_index: switch_to,
-                                source_effect: None,
-                                priority: 0,
-                                speed: 0,
-                                order: 0,
-                            }));
-                        }
-                    }
-                    crate::side::ChoiceType::Team => {
-                        // Team preview action - add team action to queue
-                        self.queue.add_choice(Action::Team(TeamAction {
-                            priority: 1,
-                            pokemon_index: action.pokemon_index,
-                            side_index: side_idx,
-                            index: action.pokemon_index,
-                        }));
-                    }
-                    crate::side::ChoiceType::Pass => {
-                        // Pass action - add pass field action to queue
-                        self.queue.add_choice(Action::Field(FieldAction {
-                            choice: FieldActionType::Pass,
-                            priority: 0,
-                        }));
-                    }
-                    _ => {}
+            let side_actions = self.sides[side_idx].choice.actions.clone();
+            for side_action in &side_actions {
+                // JS: const resolvedChoices = this.resolveAction(choice);
+                // JS: this.list.push(...resolvedChoices);
+                let resolved_actions = self.resolve_action(side_action, side_idx);
+                for action in resolved_actions {
+                    self.queue.add_choice(action);
                 }
             }
         }
@@ -2387,25 +2471,22 @@ impl Battle {
         // JS: this.clearRequest();
         self.clear_request();
 
-        // JS: queue.sort() in JavaScript calls getActionSpeed on all actions first
-        // We need to call get_action_speed on all actions in the queue before sorting
-        // Extract list temporarily to avoid borrow checker issues
+        // JS: this.queue.sort();
+        // JavaScript's BattleQueue.sort() calls this.battle.speedSort(this.list)
+        // speedSort gets action speed first via getActionSpeed, then sorts
         let mut list = std::mem::take(&mut self.queue.list);
 
-        // Call get_action_speed on each action to set proper speeds
+        // getActionSpeed is called inside resolveAction (line 270 in battle-queue.ts)
         for action in &mut list {
             self.get_action_speed(action);
         }
 
-        // JS: this.queue.sort();
-        // JavaScript's queue.sort() calls battle.speedSort() which uses PRNG
         self.speed_sort(&mut list, |action| {
-            use crate::battle_queue::Action;
             PriorityItem {
                 order: Some(action.order()),
-                priority: action.priority() as i32,  // Convert i8 to i32
+                priority: action.priority() as i32,
                 speed: action.speed(),
-                sub_order: 0,  // Actions don't have sub_order
+                sub_order: 0,
                 effect_order: 0,
                 index: 0,
             }
@@ -2418,7 +2499,9 @@ impl Battle {
         // JS: this.requestState = '';
         self.request_state = BattleRequestState::None;
 
-        // JS: for (const side of this.sides) { side.activeRequest = null; }
+        // JS: for (const side of this.sides) {
+        // JS:     side.activeRequest = null;
+        // JS: }
         for side in &mut self.sides {
             side.active_request = None;
         }
@@ -6124,8 +6207,9 @@ impl Battle {
             for i in (sorted + 1)..list.len() {
                 let priority_a = get_priority(&list[next_indexes[0]]);
                 let priority_i = get_priority(&list[i]);
-                eprintln!("DEBUG: comparing item {} (speed={}) vs item {} (speed={})",
-                    next_indexes[0], priority_a.speed, i, priority_i.speed);
+                eprintln!("DEBUG: comparing item {} (order={:?}, priority={}, speed={}) vs item {} (order={:?}, priority={}, speed={})",
+                    next_indexes[0], priority_a.order, priority_a.priority, priority_a.speed,
+                    i, priority_i.order, priority_i.priority, priority_i.speed);
                 let cmp = Self::compare_priority(&priority_a, &priority_i);
                 eprintln!("DEBUG: comparison result: {:?}", cmp);
                 match cmp {
@@ -7669,6 +7753,20 @@ impl Battle {
         // JS:     this.queue.sort();
         // JS: }
         if self.gen >= 8 {
+            // Debug: Show what queue.peek() returns
+            if let Some(next_action) = self.queue.peek() {
+                let action_desc = match next_action {
+                    Action::Move(a) => format!("Move({})", a.move_id.as_str()),
+                    Action::Switch(a) => format!("Switch(side={}, to={})", a.side_index, a.target_index),
+                    Action::Team(a) => format!("Team(side={})", a.side_index),
+                    Action::Field(a) => format!("Field({:?})", a.choice),
+                    Action::Pokemon(a) => format!("Pokemon({:?})", a.choice),
+                };
+                eprintln!("DEBUG [run_action]: Gen 8+ check: queue.peek() = {}", action_desc);
+            } else {
+                eprintln!("DEBUG [run_action]: Gen 8+ check: queue.peek() = None (empty queue)");
+            }
+
             let should_sort = if let Some(next_action) = self.queue.peek() {
                 match next_action {
                     Action::Move(_) => true,
@@ -7681,6 +7779,18 @@ impl Battle {
 
             if should_sort {
                 eprintln!("DEBUG [run_action]: Gen 8+ queue sort triggered, queue length={}", self.queue.list.len());
+                // DEBUG: Print what actions are in the queue
+                for (idx, action) in self.queue.list.iter().enumerate() {
+                    use crate::battle_queue::Action;
+                    let action_desc = match action {
+                        Action::Move(a) => format!("Move({})", a.move_id.as_str()),
+                        Action::Switch(a) => format!("Switch(side={}, to={})", a.side_index, a.target_index),
+                        Action::Team(a) => format!("Team(side={})", a.side_index),
+                        Action::Field(a) => format!("Field({:?})", a.choice),
+                        Action::Pokemon(a) => format!("Pokemon({:?})", a.choice),
+                    };
+                    eprintln!("DEBUG [run_action]: Queue[{}] = {}, order={}", idx, action_desc, action.order());
+                }
                 // JS: this.updateSpeed();
                 // Update speed for all Pokemon
                 for side in &mut self.sides {
@@ -12751,38 +12861,6 @@ impl Battle {
                 self.make_request(Some(BattleRequestState::TeamPreview));
                 return;
             }
-        }
-
-        // JS: If we reach here, there's no team preview rule but teams exist
-        // For battles with pre-set teams, we should still do team preview
-        // even if picked_team_size isn't set (onTeamPreview callback would handle this in JS)
-        // Fallback: if any side has Pokemon, show team preview
-        let has_teams = self.sides.iter().any(|s| !s.pokemon.is_empty());
-        if has_teams {
-            eprintln!("DEBUG [run_pick_team]: Fallback - teams exist, calling make_request(TeamPreview)");
-            self.add_log("clearpoke", &[]);
-
-            // Show Pokemon to their respective sides
-            for side_idx in 0..self.sides.len() {
-                let pokemon_data: Vec<(String, usize)> = self.sides[side_idx]
-                    .pokemon
-                    .iter()
-                    .enumerate()
-                    .map(|(idx, pokemon)| (pokemon.details(), side_idx))
-                    .collect();
-
-                for (details, _) in pokemon_data {
-                    let side_id = self.sides[side_idx].id_str();
-                    self.add_split(
-                        side_id,
-                        &["poke", side_id, &details, ""],
-                        None,
-                    );
-                }
-            }
-
-            self.make_request(Some(BattleRequestState::TeamPreview));
-            return;
         }
 
         // JS: If we reach here, there's no team preview - don't call makeRequest

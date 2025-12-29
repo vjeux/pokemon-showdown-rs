@@ -428,7 +428,10 @@ impl PRNG {
     // 	}
     //
     pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
-        self.random_int(denominator) < numerator
+        let roll = self.random_int(denominator);
+        let result = roll < numerator;
+        eprintln!("PRNG [raw]: random({}) = {}, {} < {} = {}", denominator, roll, roll, numerator, result);
+        result
     }
 
     /// Return a random item from the given slice.
