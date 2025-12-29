@@ -274,7 +274,7 @@ Items with callbacks: 326
 - [x] rustedshield - Rusted Shield (Gen 8) - 1 callback: onTakeItem
 - [x] rustedsword - Rusted Sword (Gen 8) - 1 callback: onTakeItem
 - [x] sablenite - Sablenite (Gen 6) - 1 callback: onTakeItem
-- [ ] safetygoggles - Safety Goggles (Gen 6) - 2 callbacks: onImmunity, onTryHit
+- [x] safetygoggles - Safety Goggles (Gen 6) - 2 callbacks: onImmunity, onTryHit
 - [x] salacberry - Salac Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] salamencite - Salamencite (Gen 6) - 1 callback: onTakeItem
 - [x] sceptilite - Sceptilite (Gen 6) - 1 callback: onTakeItem
