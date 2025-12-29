@@ -63,11 +63,88 @@ pub fn base_power_callback(
 ///     }
 /// }
 pub fn on_prepare_hit(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let source = pokemon_pos;
+
+    // Find ally pledge move in queue
+    // Store the indices to avoid borrow checker issues
+    let ally_pledge_action: Option<(usize, usize)> = {
+        let mut result = None;
+        // for (const action of this.queue)
+        for action in &battle.queue.list {
+            // if (action.choice !== 'move') continue;
+            // Only process Move actions
+            let move_action = match action {
+                crate::battle_queue::Action::Move(ma) => ma,
+                _ => continue,
+            };
+
+            // if (!otherMove || !action.pokemon || !otherMoveUser.isActive || otherMoveUser.fainted || action.maxMove || action.zmove)
+            let (pokemon_is_active, pokemon_fainted) = {
+                let pokemon = match battle.pokemon_at(move_action.side_index, move_action.pokemon_index) {
+                    Some(p) => p,
+                    None => continue, // No pokemon, skip
+                };
+                (pokemon.is_active, pokemon.fainted)
+            };
+
+            // Check all the skip conditions
+            if !pokemon_is_active || pokemon_fainted || move_action.max_move.is_some() || move_action.zmove.is_some() {
+                continue;
+            }
+
+            // if (otherMoveUser.isAlly(source) && ['firepledge', 'grasspledge'].includes(otherMove.id))
+            let is_ally = {
+                let pokemon = match battle.pokemon_at(move_action.side_index, move_action.pokemon_index) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                pokemon.is_ally(source.0)
+            };
+
+            let move_id_str = move_action.move_id.as_str();
+            if is_ally && (move_id_str == "firepledge" || move_id_str == "grasspledge") {
+                // Found ally pledge move, store indices and break
+                result = Some((move_action.side_index, move_action.pokemon_index));
+                break;
+            }
+        }
+        result
+    };
+
+    // If we found an ally pledge action, prioritize it and add waiting message
+    if let Some((ally_side_index, ally_pokemon_index)) = ally_pledge_action {
+        // this.queue.prioritizeAction(action, move);
+        battle.queue.prioritize_action(ally_side_index, ally_pokemon_index);
+
+        // this.add('-waiting', source, otherMoveUser);
+        let (source_slot, action_pokemon_slot) = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            let action_pokemon = match battle.pokemon_at(ally_side_index, ally_pokemon_index) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            (source_pokemon.get_slot(), action_pokemon.get_slot())
+        };
+
+        battle.add(
+            "-waiting",
+            &[
+                crate::battle::Arg::from(source_slot),
+                crate::battle::Arg::from(action_pokemon_slot),
+            ],
+        );
+
+        // return null;
+        return EventResult::Null;
+    }
+
     EventResult::Continue
 }
 
@@ -170,11 +247,53 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_modify_move(
-        _battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // Check if pokemon has Serene Grace ability (before getting mutable reference)
+        let has_serene_grace = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.has_ability(&["serenegrace"])
+        };
+
+        // Get the active move
+        let active_move = match &mut battle.active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+
+        // if (move.secondaries && move.id !== 'secretpower')
+        if !active_move.secondaries.is_empty() && active_move.id.as_str() != "secretpower" {
+            // this.debug('doubling secondary chance');
+            // Note: debug logging not implemented
+
+            // for (const secondary of move.secondaries)
+            for secondary in &mut active_move.secondaries {
+                // if (pokemon.hasAbility('serenegrace') && secondary.volatileStatus === 'flinch') continue;
+                if has_serene_grace
+                    && secondary.volatile_status.as_deref() == Some("flinch")
+                {
+                    continue;
+                }
+
+                // if (secondary.chance) secondary.chance *= 2;
+                if let Some(ref mut chance) = secondary.chance {
+                    *chance *= 2;
+                }
+            }
+
+            // if (move.self?.chance) move.self.chance *= 2;
+            if let Some(ref mut self_effect) = active_move.self_effect {
+                if let Some(ref mut chance) = self_effect.chance {
+                    *chance *= 2;
+                }
+            }
+        }
+
         EventResult::Continue
     }
 }

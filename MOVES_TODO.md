@@ -2,7 +2,7 @@
 
 ## Summary
 
-**Current Status:** 10 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 7 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **SESSION COMPLETE** - All implementable callbacks with existing infrastructure have been successfully implemented!
 
@@ -12,7 +12,8 @@
 - **Added Battle.run_event_string() method** - Required for Techno Blast 'Drive' event that returns type String
 - **Added SelfEffect.side_condition field** - Required for pledge moves (firepledge, waterpledge) to set side conditions via move.self
 - **Used existing Battle.attr_last_move() method** - For terablast animation attributes
-- **Newly implemented**: 13 callbacks using existing and new infrastructure!
+- **Used existing queue and pokemon infrastructure** - For pledge move queue prioritization
+- **Newly implemented**: 16 callbacks using existing and new infrastructure!
   - telekinesis.rs: on_try ✓, condition::on_start ✓
   - uproar.rs: condition::on_any_set_status ✓ (COMPLETE FILE 5/5)
   - healblock.rs: condition::on_try_heal ✓ (COMPLETE FILE 8/8)
@@ -20,11 +21,11 @@
   - terablast.rs: on_modify_type ✓, on_modify_move ✓, on_prepare_hit ✓ (COMPLETE FILE 4/4)
   - terastarstorm.rs: on_modify_type ✓, on_modify_move ✓ (COMPLETE FILE 2/2)
   - technoblast.rs: on_modify_type ✓ (COMPLETE FILE 1/1)
-  - firepledge.rs: on_modify_move ✓ (1/2 implemented)
-  - waterpledge.rs: on_modify_move ✓ (1/3 implemented)
-- **Files completed**: 6 new complete files (uproar, healblock, wonderroom, terablast, terastarstorm, technoblast)
-- **TODO markers verified**: 10 actual "TODO: Implement 1-to-1 from JS" markers remaining
-- **Progress**: 23 → 10 remaining TODOs (implemented 13 callbacks this session - 57% reduction!)
+  - firepledge.rs: on_modify_move ✓, on_prepare_hit ✓ (COMPLETE FILE 6/6)
+  - waterpledge.rs: on_modify_move ✓, on_prepare_hit ✓, condition::on_modify_move ✓ (COMPLETE FILE 6/6)
+- **Files completed**: 8 new complete files (uproar, healblock, wonderroom, terablast, terastarstorm, technoblast, firepledge, waterpledge)
+- **TODO markers verified**: 7 actual "TODO: Implement 1-to-1 from JS" markers remaining
+- **Progress**: 23 → 7 remaining TODOs (implemented 16 callbacks this session - 70% reduction!)
 
 **Previous Session - Verification Work:**
 - **Newly implemented**: 2 callbacks using infrastructure discovery
@@ -65,7 +66,8 @@
     - throatchop.rs: condition::on_before_move, condition::on_modify_move
     - uproar.rs: on_try_hit, condition::on_residual
   - Previous session: swallow.rs: onTry, onHit
-- **Files marked complete**: 58 total (1 technoblast + 1 terablast + 1 terastarstorm + 1 wonderroom + 1 healblock + 1 terrainpulse + 1 wish + 4 verified + 47 previous)
+- **Files marked complete**: 59 total (1 waterpledge + 1 technoblast + 1 terablast + 1 terastarstorm + 1 wonderroom + 1 healblock + 1 terrainpulse + 1 wish + 4 verified + 47 previous)
+  - Current session: waterpledge (newly implemented condition::on_modify_move using existing secondaries infrastructure)
   - Current session: technoblast (newly implemented on_modify_type using Battle.run_event_string())
   - Current session: terablast (newly implemented on_prepare_hit using existing Battle.attr_last_move())
   - Current session: terastarstorm (newly implemented both callbacks using species_id, get_stat, move modification)
@@ -113,9 +115,9 @@ The Pokemon struct already has more methods than initially documented:
   - Available fields: `force_stab`, `source_effect`, `side_condition`, `ohko`, `recoil`, `infiltrates`, `flags`
   - Example: `if let Some(ref mut active_move) = battle.active_move { active_move.move_type = "Fire".to_string(); }`
 
-**Comprehensive Analysis of 10 Remaining TODO Markers:**
+**Comprehensive Analysis of 7 Remaining TODO Markers:**
 
-After exhaustive investigation, all 10 remaining TODO markers are genuinely blocked by missing infrastructure:
+After exhaustive investigation, all 7 remaining TODO markers are genuinely blocked by missing infrastructure:
 
 1. **Function Signature Mismatches** (blocks 5 callbacks):
    - tarshot.rs: `condition::on_effectiveness` - missing `typeMod: i32` and `type: String` parameters
@@ -124,16 +126,14 @@ After exhaustive investigation, all 10 remaining TODO markers are genuinely bloc
    - telekinesis.rs: `condition::on_immunity` - missing `type: String` parameter
    - telekinesis.rs: `condition::on_accuracy` - needs move.ohko check (ohko exists but as Option<String>, not bool)
 
-2. **Complex Infrastructure Missing** (blocks 5 callbacks):
+2. **Complex Infrastructure Missing** (blocks 2 callbacks):
    - substitute.rs: `condition::on_try_primary_hit` - needs `actions.getDamage()`, `HIT_SUBSTITUTE`, `calcRecoilDamage()`
    - fling.rs: `on_prepare_hit` - needs `singleEvent()`, dynamic `move.onHit` assignment, `item.fling` data structure
-   - firepledge.rs (1 TODO): needs `queue.willMove()`, `pokemon.isAlly()`, `queue.prioritizeAction()`
-   - waterpledge.rs (2 TODOs): needs `queue.willMove()`, `pokemon.isAlly()`, `move.secondaries` field
 
-**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 10 TODOs require infrastructure additions to the core battle engine.
+**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 7 TODOs require infrastructure additions to the core battle engine.
 
 **ITEMS:** ✅ 100% Complete (346/346) - No TODO markers remaining
-**MOVES:** 58/373 files complete - 10 TODO markers remain, all blocked by missing infrastructure
+**MOVES:** 60/373 files complete - 7 TODO markers remain, all blocked by missing infrastructure
 
 **Blocking Issues:** All 13 remaining callbacks require missing infrastructure:
 - Volatile condition management with source tracking (add_volatile with source parameter)
@@ -244,9 +244,9 @@ Moves with callbacks: 373
 - [x] falseswipe - False Swipe (Physical, Normal) - 1 callback: onDamage
 - [x] fellstinger - Fell Stinger (Physical, Bug) - 1 callback: onAfterMoveSecondarySelf
 - [x] ficklebeam - Fickle Beam (Special, Dragon) - 1 callback: onBasePower
-- [x] fillaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
+- [x] filletaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
 - [x] finalgambit - Final Gambit (Special, Fighting) - 1 callback: damageCallback
-- [ ] firepledge - Fire Pledge (Special, Fire) - 6 callbacks: basePowerCallback ✓, onPrepareHit, onModifyMove ✓, condition::onSideStart ✓, condition::onResidual ✓, condition::onSideEnd ✓ (5/6 implemented)
+- [x] firepledge - Fire Pledge (Special, Fire) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onResidual, condition::onSideEnd
 - [x] firstimpression - First Impression (Physical, Bug) - 1 callback: onTry
 - [x] fishiousrend - Fishious Rend (Physical, Water) - 1 callback: basePowerCallback
 - [x] flail - Flail (Physical, Normal) - 1 callback: basePowerCallback
@@ -519,7 +519,7 @@ Moves with callbacks: 373
 - [x] venomdrench - Venom Drench (Status, Poison) - 1 callback: onHit
 - [x] venoshock - Venoshock (Special, Poison) - 1 callback: onBasePower
 - [x] wakeupslap - Wake-Up Slap (Physical, Fighting) - 2 callbacks: basePowerCallback, onHit
-- [ ] waterpledge - Water Pledge (Special, Water) - 6 callbacks: basePowerCallback ✓, onPrepareHit, onModifyMove ✓, condition::onSideStart ✓, condition::onSideEnd ✓, condition::onModifyMove (5/6 implemented)
+- [x] waterpledge - Water Pledge (Special, Water) - 6 callbacks: basePowerCallback, onPrepareHit, onModifyMove, condition::onSideStart, condition::onSideEnd, condition::onModifyMove
 - [x] watershuriken - Water Shuriken (Special, Water) - 1 callback: basePowerCallback
 - [x] watersport - Water Sport (Status, Water) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
 - [x] waterspout - Water Spout (Special, Water) - 1 callback: basePowerCallback
