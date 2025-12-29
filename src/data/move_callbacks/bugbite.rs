@@ -117,7 +117,13 @@ pub fn on_hit(
                     battle.run_event("EatItem", Some(pokemon_pos), Some(pokemon_pos), None, None);
 
                     // if (item.id === 'leppaberry') target.staleness = 'external';
-                    // TODO: staleness not yet implemented
+                    if item_id.as_str() == "leppaberry" {
+                        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+                            Some(p) => p,
+                            None => return EventResult::Continue,
+                        };
+                        target_pokemon.staleness = Some("external".to_string());
+                    }
                 }
 
                 // if (item.onEat) source.ateBerry = true;
