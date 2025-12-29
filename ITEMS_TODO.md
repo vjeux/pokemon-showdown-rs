@@ -108,7 +108,7 @@ Items with callbacks: 326
 - [ ] enigmaberry - Enigma Berry (Gen 3) - 3 callbacks: onHit, onTryEatItem, onEat
 - [x] eviolite - Eviolite (Gen 5) - 2 callbacks: onModifyDef, onModifySpD
 - [x] excadrite - Excadrite (Gen 9) - 1 callback: onTakeItem
-- [ ] expertbelt - Expert Belt (Gen 4) - 1 callback: onModifyDamage
+- [x] expertbelt - Expert Belt (Gen 4) - 1 callback: onModifyDamage
 - [x] fairyfeather - Fairy Feather (Gen 9) - 1 callback: onBasePower
 - [x] fairygem - Fairy Gem (Gen 6) - 1 callback: onSourceTryPrimaryHit
 - [x] fairymemory - Fairy Memory (Gen 7) - 1 callback: onTakeItem
@@ -328,7 +328,7 @@ Items with callbacks: 326
 - [x] watergem - Water Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] watermemory - Water Memory (Gen 7) - 1 callback: onTakeItem
 - [x] waveincense - Wave Incense (Gen 4) - 1 callback: onBasePower
-- [ ] weaknesspolicy - Weakness Policy (Gen 6) - 1 callback: onDamagingHit
+- [x] weaknesspolicy - Weakness Policy (Gen 6) - 1 callback: onDamagingHit
 - [x] wellspringmask - Wellspring Mask (Gen 9) - 2 callbacks: onBasePower, onTakeItem
 - [ ] whiteherb - White Herb (Gen 3) - 6 callbacks: onStart, onAnySwitchIn, onAnyAfterMega, onAnyAfterMove, onResidual, onUse
 - [x] widelens - Wide Lens (Gen 4) - 1 callback: onSourceModifyAccuracy
