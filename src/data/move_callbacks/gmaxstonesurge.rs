@@ -5,12 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
-use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
 
-/// onHit(...)
+/// onHit(source)
 ///
 /// ```text
 /// JS Source (data/moves.ts):
@@ -19,11 +16,21 @@ use super::{MoveHandlerResult, Status, Effect};
 /// 					side.addSideCondition('stealthrock');
 /// 				}
 /// 			},
-/// 
+///
 /// 		}
 /// ```
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
-}
+pub fn on_hit(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
+    // for (const side of source.side.foeSidesWithConditions()) {
+    //     side.addSideCondition('stealthrock');
+    // }
 
+    // TODO: Infrastructure needed - Battle::add_side_condition() method
+    // This move needs to add stealth rock as a side condition to foe sides
+    // For now, returning Continue as the infrastructure doesn't exist
+
+    EventResult::Continue
+}
