@@ -189,3 +189,60 @@ This file tracks abilities that require infrastructure not yet implemented in Ru
   - Need pokemon.isGrounded() to check if grounded
   - Need pokemon.isAdjacent(target) to check adjacency
   - Examples: Arena Trap, Shadow Tag, Magnet Pull
+
+### effectState.target access (Soundproof, No Guard, many others)
+- **Missing**: effectState system to track ability state and get holder
+- **JavaScript code**: `this.effectState.target` to get the pokemon with the ability
+- **Required**:
+  - Need effectState.target to identify which pokemon has the ability in onAny* callbacks
+  - Examples: soundproof.rs on_ally_try_hit_side, noguard.rs on_any_invulnerability
+  - Pattern: `this.add('-immune', this.effectState.target, '[from] ability: Soundproof')`
+
+### getImmunity checking (Overcoat, etc.)
+- **Missing**: Type/effect immunity checking
+- **JavaScript code**: `this.dex.getImmunity('powder', target)`
+- **Required**:
+  - Need dex.getImmunity(type_or_effect, pokemon) to check immunities
+  - Returns true if pokemon can be affected by the type/effect
+  - Used in overcoat.rs on_try_hit: checks powder immunity before blocking
+
+### Move status field (Purifying Salt, etc.)
+- **Missing**: MoveData status field or effect status checking
+- **JavaScript code**: `(effect as Move)?.status` checks if effect is a status-inflicting move
+- **Required**:
+  - Need MoveData to expose status field (e.g., status: Option<String>)
+  - Or need way to check if an effect is a move with status property
+  - Used in purifyingsalt.rs on_set_status to show immunity when status is from a move
+
+### Pokemon HP tracking (Sturdy, Multiscale, etc.)
+- **Missing**: pokemon.hp and pokemon.maxhp fields
+- **JavaScript code**: `target.hp === target.maxhp`, `damage >= target.hp`, `target.hp - 1`
+- **Required**:
+  - Need pokemon.hp field to track current HP
+  - Need pokemon.maxhp or baseMaxhp field for maximum HP
+  - Used in sturdy.rs to survive OHKO at full HP
+  - Used in many abilities to check HP thresholds
+
+### Effect type checking (Sturdy, Disguise, etc.)
+- **Missing**: effect.effectType property
+- **JavaScript code**: `effect.effectType === 'Move'`
+- **Required**:
+  - Need way to check if effect is a Move vs Ability vs Item vs Status
+  - Used to distinguish between different damage sources
+  - Used in sturdy.rs on_damage, disguise.rs on_damage
+
+### Move OHKO field (Sturdy)
+- **Missing**: MoveData ohko field
+- **JavaScript code**: `move.ohko` checks if move is a one-hit-KO move
+- **Required**:
+  - Need MoveData to expose ohko: bool field
+  - OHKO moves: Fissure, Guillotine, Horn Drill, Sheer Cold
+  - Used in sturdy.rs on_try_hit to block OHKO moves
+
+### activeMove access (Rock Head, many others)
+- **Missing**: battle.activeMove to get currently executing move
+- **JavaScript code**: `this.activeMove`, `this.activeMove.id`
+- **Required**:
+  - Need battle.active_move or similar to access current move being executed
+  - Used to check move ID in context where move_id parameter isn't provided
+  - Used in rockhead.rs to check if recoil damage is from Struggle
