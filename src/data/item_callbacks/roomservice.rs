@@ -56,7 +56,32 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 ///     }
 /// }
 pub fn on_any_pseudo_weather_change(battle: &mut Battle) -> EventResult {
-    // TODO: Need effectState.target to get pokemon holding this item,
-    // battle.field.getPseudoWeather('trickroom'), and pokemon.useItem()
+    // const pokemon = this.effectState.target;
+    let pokemon_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    let pokemon_pos = match pokemon_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (this.field.getPseudoWeather('trickroom'))
+    use crate::dex_data::ID;
+    let has_trick_room = battle.field.has_pseudo_weather(&ID::from("trickroom"));
+
+    if has_trick_room {
+        // pokemon.useItem(pokemon);
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }

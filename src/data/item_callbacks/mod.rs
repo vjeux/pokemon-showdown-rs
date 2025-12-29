@@ -463,11 +463,15 @@ pub fn dispatch_on_any_after_terastallization(
 
 /// Dispatch onAnyPseudoWeatherChange callbacks
 pub fn dispatch_on_any_pseudo_weather_change(
-    _battle: &mut Battle,
-    _item_id: &str,
+    battle: &mut Battle,
+    item_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "roomservice" => roomservice::on_any_pseudo_weather_change(battle),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAnySwitchIn callbacks

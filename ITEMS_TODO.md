@@ -267,7 +267,7 @@ Items with callbacks: 326
 - [x] rockincense - Rock Incense (Gen 4) - 1 callback: onBasePower
 - [x] rockmemory - Rock Memory (Gen 7) - 1 callback: onTakeItem
 - [x] rockyhelmet - Rocky Helmet (Gen 5) - 1 callback: onDamagingHit
-- [ ] roomservice - Room Service (Gen 8) - 2 callbacks: onStart, onAnyPseudoWeatherChange
+- [x] roomservice - Room Service (Gen 8) - 2 callbacks: onStart, onAnyPseudoWeatherChange
 - [x] roseincense - Rose Incense (Gen 4) - 1 callback: onBasePower
 - [x] roseliberry - Roseli Berry (Gen 6) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] rowapberry - Rowap Berry (Gen 4) - 2 callbacks: onDamagingHit, onEat
