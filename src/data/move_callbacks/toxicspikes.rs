@@ -14,8 +14,23 @@ pub mod condition {
     ///     this.add('-sidestart', side, 'move: Toxic Spikes');
     ///     this.effectState.layers = 1;
     /// }
-    pub fn on_side_start(_battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_side_start(battle: &mut Battle) -> EventResult {
+        // this.add('-sidestart', side, 'move: Toxic Spikes');
+        let side_index = battle.current_effect_state.as_ref().and_then(|es| es.side);
+
+        if let Some(side_idx) = side_index {
+            let side_id = if side_idx == 0 { "p1" } else { "p2" };
+            let side_arg = crate::battle::Arg::Str(side_id);
+            battle.add("-sidestart", &[side_arg, "move: Toxic Spikes".into()]);
+        }
+
+        // this.effectState.layers = 1;
+        if let Some(effect_state) = &mut battle.current_effect_state {
+            effect_state
+                .data
+                .insert("layers".to_string(), serde_json::json!(1));
+        }
+
         EventResult::Continue
     }
 
@@ -24,8 +39,35 @@ pub mod condition {
     ///     this.add('-sidestart', side, 'move: Toxic Spikes');
     ///     this.effectState.layers++;
     /// }
-    pub fn on_side_restart(_battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_side_restart(battle: &mut Battle) -> EventResult {
+        // if (this.effectState.layers >= 2) return false;
+        let layers = battle
+            .current_effect_state
+            .as_ref()
+            .and_then(|es| es.data.get("layers"))
+            .and_then(|v| v.as_i64())
+            .unwrap_or(0) as i32;
+
+        if layers >= 2 {
+            return EventResult::Boolean(false);
+        }
+
+        // this.add('-sidestart', side, 'move: Toxic Spikes');
+        let side_index = battle.current_effect_state.as_ref().and_then(|es| es.side);
+
+        if let Some(side_idx) = side_index {
+            let side_id = if side_idx == 0 { "p1" } else { "p2" };
+            let side_arg = crate::battle::Arg::Str(side_id);
+            battle.add("-sidestart", &[side_arg, "move: Toxic Spikes".into()]);
+        }
+
+        // this.effectState.layers++;
+        if let Some(effect_state) = &mut battle.current_effect_state {
+            effect_state
+                .data
+                .insert("layers".to_string(), serde_json::json!(layers + 1));
+        }
+
         EventResult::Continue
     }
 
