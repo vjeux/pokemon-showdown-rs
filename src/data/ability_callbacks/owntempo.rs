@@ -22,7 +22,9 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     if (status.id === 'confusion') return null;
 /// }
 pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if status_id == "confusion" {
+        return EventResult::Null;
+    }
     EventResult::Continue
 }
 
@@ -32,7 +34,28 @@ pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (us
 ///     }
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        if let Some(ref volatile_status) = move_data.volatile_status {
+            if volatile_status.as_str() == "confusion" {
+                let target_ident = {
+                    let target = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    target.get_slot()
+                };
+
+                battle.add(
+                    "-immune",
+                    &[
+                        target_ident.as_str().into(),
+                        "confusion".into(),
+                        "[from] ability: Own Tempo".into(),
+                    ],
+                );
+            }
+        }
+    }
     EventResult::Continue
 }
 

@@ -41,7 +41,24 @@ pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usiz
 ///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if move_id == "attract" || move_id == "captivate" || move_id == "taunt" {
+        let target_ident = {
+            let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Null,
+            };
+            target.get_slot()
+        };
+
+        battle.add(
+            "-immune",
+            &[
+                target_ident.as_str().into(),
+                "[from] ability: Oblivious".into(),
+            ],
+        );
+        return EventResult::Null;
+    }
     EventResult::Continue
 }
 
