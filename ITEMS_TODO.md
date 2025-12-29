@@ -164,7 +164,7 @@ Items with callbacks: 326
 - [x] icememory - Ice Memory (Gen 7) - 1 callback: onTakeItem
 - [x] icicleplate - Icicle Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] insectplate - Insect Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
-- [ ] ironball - Iron Ball (Gen 4) - 2 callbacks: onEffectiveness, onModifySpe
+- [x] ironball - Iron Ball (Gen 4) - 2 callbacks: onEffectiveness, onModifySpe
 - [x] ironplate - Iron Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] jabocaberry - Jaboca Berry (Gen 4) - 2 callbacks: onDamagingHit, onEat
 - [x] kangaskhanite - Kangaskhanite (Gen 6) - 1 callback: onTakeItem
