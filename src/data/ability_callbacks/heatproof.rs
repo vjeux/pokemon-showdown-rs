@@ -14,7 +14,12 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        if move_data.move_type == "Fire" {
+            let modified = battle.chain_modify(0.5);
+            return EventResult::Number(modified);
+        }
+    }
     EventResult::Continue
 }
 
@@ -25,7 +30,12 @@ pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
 ///     }
 /// }
 pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        if move_data.move_type == "Fire" {
+            let modified = battle.chain_modify(0.5);
+            return EventResult::Number(modified);
+        }
+    }
     EventResult::Continue
 }
 
@@ -35,7 +45,11 @@ pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult 
 ///     }
 /// }
 pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(effect) = effect_id {
+        if effect == "brn" {
+            return EventResult::Number(damage / 2);
+        }
+    }
     EventResult::Continue
 }
 
