@@ -136,7 +136,6 @@ pub mod condition {
         // } else {
         //     this.add('-activate', target, 'move: Protect');
         // }
-        // TODO: smartTarget not yet implemented, always add activate
         let target_ident = {
             let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
@@ -145,10 +144,24 @@ pub mod condition {
             target_pokemon.get_slot()
         };
 
-        battle.add(
-            "-activate",
-            &[target_ident.as_str().into(), "move: Protect".into()],
-        );
+        let has_smart_target = {
+            if let Some(ref active_move) = battle.active_move {
+                active_move.smart_target == Some(true)
+            } else {
+                false
+            }
+        };
+
+        if has_smart_target {
+            if let Some(ref mut active_move) = battle.active_move {
+                active_move.smart_target = Some(false);
+            }
+        } else {
+            battle.add(
+                "-activate",
+                &[target_ident.as_str().into(), "move: Protect".into()],
+            );
+        }
 
         // const lockedmove = source.getVolatile('lockedmove');
         // if (lockedmove) {
