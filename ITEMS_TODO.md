@@ -122,7 +122,7 @@ Items with callbacks: 326
 - [x] fistplate - Fist Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] flameorb - Flame Orb (Gen 4) - 1 callback: onResidual
 - [x] flameplate - Flame Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
-- [ ] floatstone - Float Stone (Gen 5) - 1 callback: onModifyWeight - NEEDS onModifyWeight(weighthg) parameter
+- [x] floatstone - Float Stone (Gen 5) - 1 callback: onModifyWeight
 - [x] floettite - Floettite (Gen 9) - 1 callback: onTakeItem
 - [x] flyinggem - Flying Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] flyingmemory - Flying Memory (Gen 7) - 1 callback: onTakeItem
@@ -176,7 +176,7 @@ Items with callbacks: 326
 - [x] latiasite - Latiasite (Gen 6) - 1 callback: onTakeItem
 - [x] latiosite - Latiosite (Gen 6) - 1 callback: onTakeItem
 - [x] laxincense - Lax Incense (Gen 3) - 1 callback: onModifyAccuracy
-- [ ] leek - Leek (Gen 8) - 1 callback: onModifyCritRatio
+- [x] leek - Leek (Gen 8) - 1 callback: onModifyCritRatio
 - [x] leftovers - Leftovers (Gen 2) - 1 callback: onResidual
 - [x] leppaberry - Leppa Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] liechiberry - Liechi Berry (Gen 3) - 2 callbacks: onUpdate, onEat
@@ -186,7 +186,7 @@ Items with callbacks: 326
 - [x] lopunnite - Lopunnite (Gen 6) - 1 callback: onTakeItem
 - [x] lucarionite - Lucarionite (Gen 6) - 1 callback: onTakeItem
 - [x] lucarionitez - Lucarionite Z (Gen 9) - 1 callback: onTakeItem
-- [ ] luckypunch - Lucky Punch (Gen 2) - 1 callback: onModifyCritRatio
+- [x] luckypunch - Lucky Punch (Gen 2) - 1 callback: onModifyCritRatio
 - [x] lumberry - Lum Berry (Gen 3) - 3 callbacks: onAfterSetStatus, onUpdate, onEat
 - [x] luminousmoss - Luminous Moss (Gen 6) - 1 callback: onDamagingHit
 - [x] lustrousglobe - Lustrous Globe (Gen 8) - 2 callbacks: onBasePower, onTakeItem
@@ -258,7 +258,7 @@ Items with callbacks: 326
 - [x] raichunitex - Raichunite X (Gen 9) - 1 callback: onTakeItem
 - [x] raichunitey - Raichunite Y (Gen 9) - 1 callback: onTakeItem
 - [x] rawstberry - Rawst Berry (Gen 3) - 2 callbacks: onUpdate, onEat
-- [ ] razorclaw - Razor Claw (Gen 4) - 1 callback: onModifyCritRatio
+- [x] razorclaw - Razor Claw (Gen 4) - 1 callback: onModifyCritRatio
 - [x] razorfang - Razor Fang (Gen 4) - 1 callback: onModifyMove
 - [x] redcard - Red Card (Gen 5) - 1 callback: onAfterMoveSecondary
 - [ ] redorb - Red Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
@@ -280,7 +280,7 @@ Items with callbacks: 326
 - [x] sceptilite - Sceptilite (Gen 6) - 1 callback: onTakeItem
 - [x] scizorite - Scizorite (Gen 6) - 1 callback: onTakeItem
 - [x] scolipite - Scolipite (Gen 9) - 1 callback: onTakeItem
-- [ ] scopelens - Scope Lens (Gen 2) - 1 callback: onModifyCritRatio
+- [x] scopelens - Scope Lens (Gen 2) - 1 callback: onModifyCritRatio
 - [x] scovillainite - Scovillainite (Gen 9) - 1 callback: onTakeItem
 - [x] scraftinite - Scraftinite (Gen 9) - 1 callback: onTakeItem
 - [x] seaincense - Sea Incense (Gen 3) - 1 callback: onBasePower
@@ -308,7 +308,7 @@ Items with callbacks: 326
 - [x] steelgem - Steel Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] steelixite - Steelixite (Gen 6) - 1 callback: onTakeItem
 - [x] steelmemory - Steel Memory (Gen 7) - 1 callback: onTakeItem
-- [ ] stick - Stick (Gen 2) - 1 callback: onModifyCritRatio
+- [x] stick - Stick (Gen 2) - 1 callback: onModifyCritRatio
 - [x] stickybarb - Sticky Barb (Gen 4) - 2 callbacks: onResidual, onHit
 - [x] stoneplate - Stone Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] swampertite - Swampertite (Gen 6) - 1 callback: onTakeItem
