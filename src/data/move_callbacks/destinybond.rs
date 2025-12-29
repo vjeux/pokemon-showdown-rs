@@ -100,8 +100,7 @@ pub mod condition {
         }
 
         // if (effect.effectType === 'Move' && !effect.flags['futuremove']) {
-        // TODO: Check effect type and flags - requires access to effect data
-        // For now, we'll check if the effect ID looks like a move
+        // Check if effect is a move (get_move_by_id returns Some) and doesn't have futuremove flag
         let effect_data = battle.dex.get_move_by_id(&ID::from(_effect));
         if let Some(move_data) = effect_data {
             // Check if move has futuremove flag
