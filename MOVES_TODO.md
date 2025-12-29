@@ -575,9 +575,9 @@ By callback type:
 
 ## Missing Infrastructure
 
-### Critical Infrastructure Needed for Remaining 27 Callbacks
+### Critical Infrastructure Needed for Remaining 26 Callbacks
 
-**Status:** All 27 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
+**Status:** All 26 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
 
 **Breakdown by File:**
 - **firepledge.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs queue.willMove(), move modification)
@@ -594,7 +594,6 @@ By callback type:
 - **thousandarrows.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
 - **uproar.rs**: 1 TODO - on_any_set_status (needs EventResult::Null)
 - **waterpledge.rs**: 3 TODOs - on_prepare_hit, on_modify_move, condition::on_modify_move (needs queue.willMove(), move modification)
-- **wish.rs**: 1 TODO - on_residual (signature missing target parameter)
 - **wonderroom.rs**: 1 TODO - on_modify_move (needs move.overrideOffensiveStat modification)
 
 All remaining callbacks require one or more of the following infrastructure components that don't currently exist or need modifications to existing code.
