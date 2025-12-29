@@ -123,6 +123,7 @@ pub mod gastroacid;
 pub mod gearup;
 pub mod geomancy;
 pub mod glaiverush;
+pub mod gmaxbefuddle;
 pub mod gmaxcannonade;
 pub mod gmaxchistrike;
 pub mod gmaxfoamburst;
@@ -751,6 +752,7 @@ pub fn dispatch_on_hit(
         "forestscurse" => forestscurse::on_hit(battle, pokemon_pos, target_pos),
         "freezyfrost" => freezyfrost::on_hit(battle, pokemon_pos, target_pos),
         "genesissupernova" => genesissupernova::on_hit(battle, pokemon_pos, target_pos),
+        "gmaxbefuddle" => gmaxbefuddle::on_hit(battle, pokemon_pos, target_pos),
         "gmaxfoamburst" => gmaxfoamburst::on_hit(battle, pokemon_pos, target_pos),
         "gmaxgoldrush" => gmaxgoldrush::on_hit(battle, pokemon_pos, target_pos),
         "gmaxsnooze" => gmaxsnooze::on_hit(battle, pokemon_pos, target_pos),
