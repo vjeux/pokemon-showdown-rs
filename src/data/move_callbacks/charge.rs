@@ -144,7 +144,7 @@ pub mod condition {
         // if (move.type === 'Electric') {
         if move_data.move_type == "Electric" {
             // this.debug('charge boost');
-            // TODO: debug not yet implemented
+            battle.debug("charge boost");
 
             // return this.chainModify(2);
             let result = battle.chain_modify(2.0);

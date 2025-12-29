@@ -43,7 +43,7 @@ pub fn on_base_power(
 
     if effectiveness > 0.0 {
         // this.debug(`collision course super effective buff`);
-        // TODO: debug not yet implemented
+        battle.debug("collision course super effective buff");
 
         // return this.chainModify([5461, 4096]);
         let result = battle.chain_modify_fraction(5461, 4096);

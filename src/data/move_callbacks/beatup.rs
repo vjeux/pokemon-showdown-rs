@@ -101,7 +101,7 @@ pub fn base_power_callback(
     let bp = 5 + (species.base_stats.atk / 10);
 
     // this.debug(`BP for ${setSpecies.name} hit: ${bp}`);
-    // TODO: debug logging not yet implemented
+    battle.debug(&format!("BP for {} hit: {}", species.name, bp));
 
     // return bp;
     EventResult::Number(bp)
