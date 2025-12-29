@@ -541,6 +541,12 @@ pub struct ItemData {
 pub struct FlingData {
     #[serde(rename = "basePower", default)]
     pub base_power: i32,
+    #[serde(default)]
+    pub effect: Option<String>,
+    #[serde(default)]
+    pub status: Option<String>,
+    #[serde(rename = "volatileStatus", default)]
+    pub volatile_status: Option<String>,
 }
 
 /// Type effectiveness data
