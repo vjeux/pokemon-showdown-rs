@@ -309,7 +309,7 @@ Items with callbacks: 326
 - [x] steelixite - Steelixite (Gen 6) - 1 callback: onTakeItem
 - [x] steelmemory - Steel Memory (Gen 7) - 1 callback: onTakeItem
 - [ ] stick - Stick (Gen 2) - 1 callback: onModifyCritRatio
-- [ ] stickybarb - Sticky Barb (Gen 4) - 2 callbacks: onResidual, onHit
+- [x] stickybarb - Sticky Barb (Gen 4) - 2 callbacks: onResidual, onHit
 - [x] stoneplate - Stone Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] swampertite - Swampertite (Gen 6) - 1 callback: onTakeItem
 - [ ] tangaberry - Tanga Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
