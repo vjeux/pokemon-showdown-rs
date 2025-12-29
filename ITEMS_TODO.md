@@ -219,7 +219,7 @@ Items with callbacks: 326
 - [ ] mirrorherb - Mirror Herb (Gen 9) - 8 callbacks: onFoeAfterBoost, onAnySwitchIn, onAnyAfterMega, onAnyAfterTerastallization, onAnyAfterMove, onResidual, onUse, onEnd
 - [x] mistyseed - Misty Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
 - [x] muscleband - Muscle Band (Gen 4) - 1 callback: onBasePower
-- [ ] mysteryberry - Mystery Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [x] mysteryberry - Mystery Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [x] mysticwater - Mystic Water (Gen 2) - 1 callback: onBasePower
 - [x] nevermeltice - Never-Melt Ice (Gen 2) - 1 callback: onBasePower
 - [x] normalgem - Normal Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
