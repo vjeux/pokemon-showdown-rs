@@ -2,10 +2,17 @@
 
 ## Summary
 
-**Current Status:** 99 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 93 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Latest Session Progress:**
-- **Callbacks implemented**: 6 new implementations (3 healblock + 3 trickroom)
+- **Callbacks implemented**: 6 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb)
+  - healblock.rs: condition::on_start, condition::on_restart
+  - taunt.rs: condition::on_start
+  - substitute.rs: condition::on_start
+  - syrupbomb.rs: condition::on_update, condition::on_residual
+
+**Previous Session Progress:**
+- **Callbacks implemented**: 6 implementations (3 healblock + 3 trickroom)
   - healblock.rs: condition::duration_callback, condition::on_before_move, condition::on_modify_move
   - trickroom.rs: condition::duration_callback, condition::on_field_start, condition::on_field_restart ✅ COMPLETE
 
@@ -218,7 +225,7 @@ Moves with callbacks: 373
 - [x] hardpress - Hard Press (Physical, Steel) - 1 callback: basePowerCallback
 - [x] haze - Haze (Status, Ice) - 1 callback: onHitField
 - [x] healbell - Heal Bell (Status, Normal) - 1 callback: onHit
-- [ ] healblock - Heal Block (Status, Psychic) - 8 callbacks: condition::durationCallback ✓, condition::onStart, condition::onDisableMove ✓, condition::onBeforeMove ✓, condition::onModifyMove ✓, condition::onEnd ✓, condition::onTryHeal, condition::onRestart (5/8 implemented)
+- [ ] healblock - Heal Block (Status, Psychic) - 8 callbacks: condition::durationCallback ✓, condition::onStart ✓, condition::onDisableMove ✓, condition::onBeforeMove ✓, condition::onModifyMove ✓, condition::onEnd ✓, condition::onTryHeal, condition::onRestart ✓ (7/8 implemented)
 - [x] healingwish - Healing Wish (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
 - [x] healpulse - Heal Pulse (Status, Psychic) - 1 callback: onHit
 - [x] heartswap - Heart Swap (Status, Psychic) - 1 callback: onHit
@@ -397,7 +404,7 @@ Moves with callbacks: 373
 - [x] strengthsap - Strength Sap (Status, Grass) - 1 callback: onHit
 - [x] struggle - Struggle (Physical, Normal) - 1 callback: onModifyMove
 - [x] stuffcheeks - Stuff Cheeks (Status, Normal) - 3 callbacks: onDisableMove, onTry, onHit
-- [ ] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit ✓, onHit ✓, condition::onStart, condition::onTryPrimaryHit, condition::onEnd ✓ (3/5 implemented)
+- [ ] substitute - Substitute (Status, Normal) - 5 callbacks: onTryHit ✓, onHit ✓, condition::onStart ✓, condition::onTryPrimaryHit, condition::onEnd ✓ (4/5 implemented)
 - [x] suckerpunch - Sucker Punch (Physical, Dark) - 1 callback: onTry
 - [x] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail
 - [x] superfang - Super Fang (Physical, Normal) - 1 callback: damageCallback
@@ -405,11 +412,11 @@ Moves with callbacks: 373
 - [ ] switcheroo - Switcheroo (Status, Dark) - 2 callbacks: onTryImmunity ✓, onHit (1/2 implemented)
 - [x] synchronoise - Synchronoise (Special, Psychic) - 1 callback: onTryImmunity
 - [x] synthesis - Synthesis (Status, Grass) - 1 callback: onHit
-- [ ] syrupbomb - Syrup Bomb (Special, Grass) - 4 callbacks: condition::onStart ✓, condition::onUpdate, condition::onResidual, condition::onEnd ✓ (2/4 implemented)
+- [x] syrupbomb - Syrup Bomb (Special, Grass) - 4 callbacks: condition::onStart, condition::onUpdate, condition::onResidual, condition::onEnd
 - [x] tailwind - Tailwind (Status, Flying) - 4 callbacks: condition::durationCallback, condition::onSideStart, condition::onModifySpe, condition::onSideEnd
 - [x] takeheart - Take Heart (Status, Psychic) - 1 callback: onHit
 - [ ] tarshot - Tar Shot (Status, Rock) - 2 callbacks: condition::onStart ✓, condition::onEffectiveness (1/2 implemented)
-- [ ] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart, condition::onEnd ✓, condition::onDisableMove ✓, condition::onBeforeMove (2/4 implemented)
+- [ ] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart ✓, condition::onEnd ✓, condition::onDisableMove ✓, condition::onBeforeMove (3/4 implemented)
 - [ ] teatime - Teatime (Status, Normal) - 1 callback: onHitField
 - [ ] technoblast - Techno Blast (Special, Normal) - 1 callback: onModifyType
 - [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry, condition::onStart, condition::onAccuracy, condition::onImmunity, condition::onUpdate, condition::onEnd ✓ (1/6 implemented)
