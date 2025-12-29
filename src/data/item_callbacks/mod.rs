@@ -518,11 +518,23 @@ pub fn dispatch_on_base_power_priority(
 
 /// Dispatch onChargeMove callbacks
 pub fn dispatch_on_charge_move(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+
+    // Get move_id and target from active_move and current_event
+    let (move_id, target_pos) = {
+        let move_id = battle.active_move.as_ref().map(|m| m.id.clone()).unwrap_or_default();
+        let target_pos = battle.current_event.as_ref().and_then(|e| e.target);
+        (move_id, target_pos)
+    };
+
+    match ID::from(item_id).as_str() {
+        "powerherb" => powerherb::on_charge_move(battle, pokemon_pos, target_pos, move_id.as_str()),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onDamage callbacks

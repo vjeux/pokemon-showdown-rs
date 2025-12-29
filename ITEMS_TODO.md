@@ -243,7 +243,7 @@ Items with callbacks: 326
 - [x] powerband - Power Band (Gen 4) - 1 callback: onModifySpe
 - [x] powerbelt - Power Belt (Gen 4) - 1 callback: onModifySpe
 - [x] powerbracer - Power Bracer (Gen 4) - 1 callback: onModifySpe
-- [ ] powerherb - Power Herb (Gen 4) - 1 callback: onChargeMove
+- [x] powerherb - Power Herb (Gen 4) - 1 callback: onChargeMove
 - [x] powerlens - Power Lens (Gen 4) - 1 callback: onModifySpe
 - [x] powerweight - Power Weight (Gen 4) - 1 callback: onModifySpe
 - [x] przcureberry - PRZ Cure Berry (Gen 2) - 2 callbacks: onUpdate, onEat
