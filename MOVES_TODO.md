@@ -2,16 +2,15 @@
 
 ## Summary
 
-**Current Status:** 102 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 99 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Latest Session Progress:**
-- **Callbacks implemented**: 3 new implementations
-  - healblock.rs: condition::duration_callback (checks Persistent ability, Psychic Noise effect)
-  - healblock.rs: condition::on_before_move (checks heal flag, Z/Max moves)
-  - healblock.rs: condition::on_modify_move (checks heal flag, Z/Max moves)
+- **Callbacks implemented**: 6 new implementations (3 healblock + 3 trickroom)
+  - healblock.rs: condition::duration_callback, condition::on_before_move, condition::on_modify_move
+  - trickroom.rs: condition::duration_callback, condition::on_field_start, condition::on_field_restart ✅ COMPLETE
 
 **Total Session Progress:**
-- **Callbacks implemented**: 14 total (12 current + 2 previous session)
+- **Callbacks implemented**: 17 total (15 current + 2 previous session)
   - Current continuation:
     - healblock.rs: condition::duration_callback, condition::on_before_move, condition::on_modify_move
   - Earlier this session:
@@ -432,7 +431,7 @@ Moves with callbacks: 373
 - [x] transform - Transform (Status, Normal) - 1 callback: onHit
 - [ ] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity ✓, onHit (1/2 implemented)
 - [x] trickortreat - Trick-or-Treat (Status, Ghost) - 1 callback: onHit
-- [x] trickroom - Trick Room (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd (1/4 implemented)
+- [x] trickroom - Trick Room (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
 - [x] tripleaxel - Triple Axel (Physical, Ice) - 1 callback: basePowerCallback
 - [x] triplekick - Triple Kick (Physical, Fighting) - 1 callback: basePowerCallback
 - [x] trumpcard - Trump Card (Special, Normal) - 1 callback: basePowerCallback
