@@ -149,12 +149,67 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_before_move(
-        _battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        move_id: &str,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // Check if move has heal flag
+        let has_heal_flag = {
+            let move_id_obj = ID::from(move_id);
+            battle
+                .dex
+                .moves
+                .get(&move_id_obj)
+                .and_then(|move_data| move_data.flags.get("heal"))
+                .is_some()
+        };
+
+        // Check if move is Z or Max move
+        let (is_z, is_max) = if let Some(ref active_move) = battle.active_move {
+            (active_move.is_z, active_move.is_max)
+        } else {
+            (false, false)
+        };
+
+        // if (move.flags['heal'] && !move.isZ && !move.isMax)
+        if has_heal_flag && !is_z && !is_max {
+            // this.add('cant', pokemon, 'move: Heal Block', move);
+            let pokemon_slot = {
+                let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon_ref.get_slot()
+            };
+
+            // Get move name for display
+            let move_name = {
+                let move_id_obj = ID::from(move_id);
+                battle
+                    .dex
+                    .get_move_by_id(&move_id_obj)
+                    .map(|m| m.name.clone())
+                    .unwrap_or_else(|| move_id.to_string())
+            };
+
+            battle.add(
+                "cant",
+                &[
+                    crate::battle::Arg::from(pokemon_slot),
+                    crate::battle::Arg::from("move: Heal Block"),
+                    crate::battle::Arg::from(move_name),
+                ],
+            );
+
+            // return false;
+            return EventResult::Boolean(false);
+        }
+
         EventResult::Continue
     }
 
