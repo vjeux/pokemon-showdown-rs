@@ -199,26 +199,39 @@ pub mod condition {
     /// }
     pub fn on_hit(
         battle: &mut Battle,
-        pokemon_pos: (usize, usize),
+        _pokemon_pos: (usize, usize),
         target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // Get source and target
-        let (_source_pos, _target) = match target_pos {
-            Some(t) => (pokemon_pos, t),
+        use crate::dex_data::ID;
+
+        // Get source from target_pos (in condition context, pokemon_pos is the protected pokemon, target is the attacker)
+        let source = match target_pos {
+            Some(pos) => pos,
             None => return EventResult::Continue,
         };
 
         // Get the active move
-        let _move_id = match &battle.active_move {
+        let move_id = match &battle.active_move {
             Some(active_move) => active_move.id.clone(),
+            None => return EventResult::Continue,
+        };
+
+        // Get the move data
+        let move_data = match battle.dex.get_move_by_id(&move_id) {
+            Some(m) => m,
             None => return EventResult::Continue,
         };
 
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         //     source.trySetStatus('brn', target);
         // }
-        // TODO: isZOrMaxPowered not yet implemented
-        // For now, skip this callback
+        if move_data.is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source) {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.try_set_status(ID::from("brn"), None);
+        }
 
         EventResult::Continue
     }
