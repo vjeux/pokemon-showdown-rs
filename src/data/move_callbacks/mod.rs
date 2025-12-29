@@ -80,6 +80,7 @@ pub mod dragoncheer;
 pub mod dragonenergy;
 pub mod dreameater;
 pub mod echoedvoice;
+pub mod eeriespell;
 pub mod electricterrain;
 pub mod electrify;
 pub mod electroball;
@@ -764,6 +765,7 @@ pub fn dispatch_on_hit(
         "detect" => detect::on_hit(battle, pokemon_pos, target_pos),
         "direclaw" => direclaw::on_hit(battle, pokemon_pos, target_pos),
         "doodle" => doodle::on_hit(battle, pokemon_pos, target_pos),
+        "eeriespell" => eeriespell::on_hit(battle, pokemon_pos, target_pos),
         "endure" => endure::on_hit(battle, pokemon_pos, target_pos),
         "entrainment" => entrainment::on_hit(battle, pokemon_pos, target_pos),
         "filletaway" => filletaway::on_hit(battle, pokemon_pos, target_pos),
