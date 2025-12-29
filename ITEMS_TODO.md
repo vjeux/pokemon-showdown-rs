@@ -330,7 +330,7 @@ Items with callbacks: 326
 - [x] waveincense - Wave Incense (Gen 4) - 1 callback: onBasePower
 - [x] weaknesspolicy - Weakness Policy (Gen 6) - 1 callback: onDamagingHit
 - [x] wellspringmask - Wellspring Mask (Gen 9) - 2 callbacks: onBasePower, onTakeItem
-- [ ] whiteherb - White Herb (Gen 3) - 6 callbacks: onStart, onAnySwitchIn, onAnyAfterMega, onAnyAfterMove, onResidual, onUse
+- [x] whiteherb - White Herb (Gen 3) - 6 callbacks: onStart, onAnySwitchIn, onAnyAfterMega, onAnyAfterMove, onResidual, onUse
 - [x] widelens - Wide Lens (Gen 4) - 1 callback: onSourceModifyAccuracy
 - [x] wikiberry - Wiki Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] wiseglasses - Wise Glasses (Gen 4) - 1 callback: onBasePower

@@ -428,20 +428,28 @@ pub fn dispatch_on_after_sub_damage(
 
 /// Dispatch onAnyAfterMega callbacks
 pub fn dispatch_on_any_after_mega(
-    _battle: &mut Battle,
-    _item_id: &str,
+    battle: &mut Battle,
+    item_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "whiteherb" => whiteherb::on_any_after_mega(battle),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAnyAfterMove callbacks
 pub fn dispatch_on_any_after_move(
-    _battle: &mut Battle,
-    _item_id: &str,
+    battle: &mut Battle,
+    item_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "whiteherb" => whiteherb::on_any_after_move(battle),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAnyAfterTerastallization callbacks
@@ -464,11 +472,15 @@ pub fn dispatch_on_any_pseudo_weather_change(
 
 /// Dispatch onAnySwitchIn callbacks
 pub fn dispatch_on_any_switch_in(
-    _battle: &mut Battle,
-    _item_id: &str,
+    battle: &mut Battle,
+    item_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "whiteherb" => whiteherb::on_any_switch_in(battle),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAnySwitchInPriority callbacks
@@ -917,11 +929,15 @@ pub fn dispatch_on_plate(
 
 /// Dispatch onResidual callbacks
 pub fn dispatch_on_residual(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "whiteherb" => whiteherb::on_residual(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onResidualOrder callbacks
@@ -1140,11 +1156,15 @@ pub fn dispatch_on_update(
 
 /// Dispatch onUse callbacks
 pub fn dispatch_on_use(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "whiteherb" => whiteherb::on_use(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onUseItem callbacks
