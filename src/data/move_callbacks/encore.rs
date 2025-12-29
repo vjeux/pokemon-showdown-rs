@@ -61,32 +61,55 @@ pub mod condition {
 
         // Encore only works on Max Moves if the base move is not itself a Max Move
         // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
-        // For now, just use the move as-is since we don't have isMax/baseMove info readily available
+        let actual_move_id = {
+            let move_data = battle.dex.get_move_by_id(&move_id);
+            if let Some(m) = move_data {
+                if m.is_max.is_some() {
+                    if let Some(ref base_move) = m.base_move {
+                        base_move.clone()
+                    } else {
+                        move_id.clone()
+                    }
+                } else {
+                    move_id.clone()
+                }
+            } else {
+                move_id.clone()
+            }
+        };
 
         // const moveSlot = target.getMoveData(move.id);
         // if (move.isZ || move.isMax || move.flags['failencore'] || !moveSlot || moveSlot.pp <= 0) {
         //     return false;
         // }
-        let (move_slot_valid, move_has_fail_encore) = {
+        let (move_slot_valid, move_has_fail_encore, move_is_z_or_max) = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
 
-            // Check if move has failencore flag
-            let move_data = battle.dex.get_move_by_id(&move_id);
-            let has_fail_encore = move_data
-                .map(|m| m.flags.contains_key("failencore"))
-                .unwrap_or(false);
+            // Check if move has failencore flag and if it's Z or Max
+            let move_data = battle.dex.get_move_by_id(&actual_move_id);
+            let (has_fail_encore, is_z_or_max) = if let Some(m) = move_data {
+                (
+                    m.flags.contains_key("failencore"),
+                    m.is_z.is_some() || m.is_max.is_some(),
+                )
+            } else {
+                (false, false)
+            };
 
             // Find the move slot
-            let move_slot = target_pokemon.move_slots.iter().find(|s| s.id == move_id);
+            let move_slot = target_pokemon
+                .move_slots
+                .iter()
+                .find(|s| s.id == actual_move_id);
             let slot_valid = move_slot.map(|s| s.pp > 0).unwrap_or(false);
 
-            (slot_valid, has_fail_encore)
+            (slot_valid, has_fail_encore, is_z_or_max)
         };
 
-        if move_has_fail_encore || !move_slot_valid {
+        if move_has_fail_encore || !move_slot_valid || move_is_z_or_max {
             // it failed
             return EventResult::Boolean(false);
         }
@@ -95,7 +118,7 @@ pub mod condition {
         if let Some(ref mut effect_state) = battle.current_effect_state {
             effect_state.data.insert(
                 "move".to_string(),
-                serde_json::to_value(move_id.to_string()).unwrap(),
+                serde_json::to_value(actual_move_id.to_string()).unwrap(),
             );
         }
 
