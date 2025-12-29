@@ -1,0 +1,3057 @@
+{
+  "dispatch_condition_on_end": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_condition_on_modify_atk": {
+    "params": "atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_condition_on_modify_def": {
+    "params": "def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_condition_on_modify_sp_a": {
+    "params": "spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_condition_on_modify_sp_d": {
+    "params": "spd: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_condition_on_modify_spe": {
+    "params": "spe: i32, pokemon_pos: (usize, usize),",
+    "args": [
+      "0",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_condition_on_start": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_after_boost": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_boost_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_boost_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_boost_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_each_boost": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_each_boost_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_each_boost_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_each_boost_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_move_secondary": {
+    "params": "target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_after_move_secondary_order": {
+    "params": "target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_after_move_secondary_priority": {
+    "params": "target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_after_move_secondary_self": {
+    "params": "source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_after_move_secondary_self_order": {
+    "params": "source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_after_move_secondary_self_priority": {
+    "params": "source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_after_move_secondary_self_sub_order": {
+    "params": "source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_after_move_secondary_sub_order": {
+    "params": "target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_after_set_status": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_set_status_order": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_set_status_priority": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_set_status_sub_order": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_after_terastallization": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_after_terastallization_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_after_terastallization_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_after_terastallization_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_after_use_item": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_after_use_item_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_after_use_item_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_after_use_item_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_after_use_item": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_after_use_item_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_after_use_item_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_after_use_item_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_base_power": {
+    "params": "base_power: i32, move_id: &str,",
+    "args": [
+      "0",
+      "\"\""
+    ]
+  },
+  "dispatch_on_ally_base_power_order": {
+    "params": "base_power: i32, move_id: &str,",
+    "args": [
+      "0",
+      "\"\""
+    ]
+  },
+  "dispatch_on_ally_base_power_priority": {
+    "params": "base_power: i32, move_id: &str,",
+    "args": [
+      "0",
+      "\"\""
+    ]
+  },
+  "dispatch_on_ally_base_power_sub_order": {
+    "params": "base_power: i32, move_id: &str,",
+    "args": [
+      "0",
+      "\"\""
+    ]
+  },
+  "dispatch_on_ally_faint": {
+    "params": "target_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_ally_faint_order": {
+    "params": "target_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_ally_faint_priority": {
+    "params": "target_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_ally_faint_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_ally_modify_atk": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_modify_atk_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_modify_atk_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_modify_atk_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_modify_sp_d": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_modify_sp_d_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_modify_sp_d_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_modify_sp_d_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_ally_set_status": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_set_status_order": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_set_status_priority": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_set_status_sub_order": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_try_add_volatile": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_try_add_volatile_order": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_try_add_volatile_priority": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_try_add_volatile_sub_order": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_try_boost": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_try_boost_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_try_boost_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_try_boost_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_ally_try_hit_side": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_ally_try_hit_side_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_ally_try_hit_side_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_ally_try_hit_side_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_accuracy": {
+    "params": "accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_accuracy_order": {
+    "params": "accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_accuracy_priority": {
+    "params": "accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_accuracy_sub_order": {
+    "params": "accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_after_mega": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_mega_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_mega_priority": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_mega_sub_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_move": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_move_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_move_priority": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_move_sub_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_set_status": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_after_set_status_order": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_after_set_status_priority": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_after_set_status_sub_order": {
+    "params": "status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_after_terastallization": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_terastallization_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_terastallization_priority": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_after_terastallization_sub_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_base_power": {
+    "params": "base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_base_power_order": {
+    "params": "base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_base_power_priority": {
+    "params": "base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_base_power_sub_order": {
+    "params": "base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_before_move": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_before_move_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_before_move_priority": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_before_move_sub_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_damage": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_damage_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_damage_priority": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_damage_sub_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_faint": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_faint_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_faint_priority": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_faint_sub_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_invulnerability": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_invulnerability_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_invulnerability_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_invulnerability_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_accuracy": {
+    "params": "accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_any_modify_accuracy_order": {
+    "params": "accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_any_modify_accuracy_priority": {
+    "params": "accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_any_modify_accuracy_sub_order": {
+    "params": "accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_any_modify_atk": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_atk_order": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_atk_priority": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_atk_sub_order": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_boost": {
+    "params": "boosts: &str, pokemon_pos: (usize, usize),",
+    "args": [
+      "\"\"",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_any_modify_boost_order": {
+    "params": "boosts: &str, pokemon_pos: (usize, usize),",
+    "args": [
+      "\"\"",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_any_modify_boost_priority": {
+    "params": "boosts: &str, pokemon_pos: (usize, usize),",
+    "args": [
+      "\"\"",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_any_modify_boost_sub_order": {
+    "params": "boosts: &str, pokemon_pos: (usize, usize),",
+    "args": [
+      "\"\"",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_any_modify_damage": {
+    "params": "damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_damage_order": {
+    "params": "damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_damage_priority": {
+    "params": "damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_damage_sub_order": {
+    "params": "damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_def": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_def_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_def_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_def_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_sp_a": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_sp_a_order": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_sp_a_priority": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_sp_a_sub_order": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_sp_d": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_sp_d_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_sp_d_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_modify_sp_d_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_redirect_target": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_redirect_target_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_redirect_target_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_redirect_target_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_set_weather": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_any_set_weather_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_any_set_weather_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_any_set_weather_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_any_switch_in": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_switch_in_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_switch_in_priority": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_switch_in_sub_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_any_try_move": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_try_move_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_try_move_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_try_move_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_any_try_primary_hit": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_try_primary_hit_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_try_primary_hit_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_any_try_primary_hit_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_base_power": {
+    "params": "base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_base_power_order": {
+    "params": "base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_base_power_priority": {
+    "params": "base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_base_power_sub_order": {
+    "params": "base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_before_move": {
+    "params": "pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_before_move_order": {
+    "params": "pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_before_move_priority": {
+    "params": "pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_before_move_sub_order": {
+    "params": "pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_before_switch_in": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_before_switch_in_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_before_switch_in_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_before_switch_in_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_change_boost": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_change_boost_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_change_boost_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_change_boost_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_check_show": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_check_show_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_check_show_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_check_show_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_critical_hit": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_critical_hit_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_critical_hit_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_critical_hit_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_damage": {
+    "params": "damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_damage_order": {
+    "params": "damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_damage_priority": {
+    "params": "damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_damage_sub_order": {
+    "params": "damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_damaging_hit": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_damaging_hit_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_damaging_hit_priority": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_damaging_hit_sub_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_deduct_p_p": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_deduct_p_p_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_deduct_p_p_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_deduct_p_p_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None"
+    ]
+  },
+  "dispatch_on_disable_move": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_disable_move_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_disable_move_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_disable_move_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_drag_out": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_drag_out_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_drag_out_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_drag_out_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_eat_item": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_eat_item_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_eat_item_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_eat_item_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_effectiveness": {
+    "params": "damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "\"\"",
+      "\"\""
+    ]
+  },
+  "dispatch_on_effectiveness_order": {
+    "params": "damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "\"\"",
+      "\"\""
+    ]
+  },
+  "dispatch_on_effectiveness_priority": {
+    "params": "damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "\"\"",
+      "\"\""
+    ]
+  },
+  "dispatch_on_effectiveness_sub_order": {
+    "params": "damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "\"\"",
+      "\"\""
+    ]
+  },
+  "dispatch_on_emergency_exit": {
+    "params": "target_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_emergency_exit_order": {
+    "params": "target_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_emergency_exit_priority": {
+    "params": "target_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_emergency_exit_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>,",
+    "args": [
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_end": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_end_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_end_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_end_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_faint": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_faint_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_faint_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_faint_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_flinch": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_flinch_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_flinch_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_flinch_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_foe_after_boost": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_foe_after_boost_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_foe_after_boost_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_foe_after_boost_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_foe_maybe_trap_pokemon": {
+    "params": "pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_foe_maybe_trap_pokemon_order": {
+    "params": "pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_foe_maybe_trap_pokemon_priority": {
+    "params": "pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_foe_maybe_trap_pokemon_sub_order": {
+    "params": "pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_foe_trap_pokemon": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_foe_trap_pokemon_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_foe_trap_pokemon_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_foe_trap_pokemon_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_foe_try_eat_item": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_foe_try_eat_item_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_foe_try_eat_item_priority": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_foe_try_eat_item_sub_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_foe_try_move": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_foe_try_move_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_foe_try_move_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_foe_try_move_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_fractional_priority": {
+    "params": "pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_fractional_priority_order": {
+    "params": "pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_fractional_priority_priority": {
+    "params": "pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_fractional_priority_sub_order": {
+    "params": "pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_hit": {
+    "params": "pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_hit_order": {
+    "params": "pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_hit_priority": {
+    "params": "pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_hit_sub_order": {
+    "params": "pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_immunity": {
+    "params": "type_or_status: &str, pokemon_pos: (usize, usize),",
+    "args": [
+      "\"\"",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_immunity_order": {
+    "params": "type_or_status: &str, pokemon_pos: (usize, usize),",
+    "args": [
+      "\"\"",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_immunity_priority": {
+    "params": "type_or_status: &str, pokemon_pos: (usize, usize),",
+    "args": [
+      "\"\"",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_immunity_sub_order": {
+    "params": "type_or_status: &str, pokemon_pos: (usize, usize),",
+    "args": [
+      "\"\"",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_modify_accuracy": {
+    "params": "accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_accuracy_order": {
+    "params": "accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_accuracy_priority": {
+    "params": "accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_accuracy_sub_order": {
+    "params": "accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_atk": {
+    "params": "atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_atk_order": {
+    "params": "atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_atk_priority": {
+    "params": "atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_atk_sub_order": {
+    "params": "atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_crit_ratio": {
+    "params": "crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_modify_crit_ratio_order": {
+    "params": "crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_modify_crit_ratio_priority": {
+    "params": "crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_modify_crit_ratio_sub_order": {
+    "params": "crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_modify_damage": {
+    "params": "damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_damage_order": {
+    "params": "damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_damage_priority": {
+    "params": "damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_damage_sub_order": {
+    "params": "damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_def": {
+    "params": "def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_def_order": {
+    "params": "def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_def_priority": {
+    "params": "def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_def_sub_order": {
+    "params": "def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_move": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_move_order": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_move_priority": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_move_sub_order": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_priority": {
+    "params": "priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_priority_order": {
+    "params": "priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_priority_priority": {
+    "params": "priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_priority_sub_order": {
+    "params": "priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_s_t_a_b": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_s_t_a_b_order": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_s_t_a_b_priority": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_s_t_a_b_sub_order": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_secondaries": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_modify_secondaries_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_modify_secondaries_priority": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_modify_secondaries_sub_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_modify_sp_a": {
+    "params": "spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_sp_a_order": {
+    "params": "spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_sp_a_priority": {
+    "params": "spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_sp_a_sub_order": {
+    "params": "spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_modify_spe": {
+    "params": "spe: i32, pokemon_pos: (usize, usize),",
+    "args": [
+      "0",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_modify_spe_order": {
+    "params": "spe: i32, pokemon_pos: (usize, usize),",
+    "args": [
+      "0",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_modify_spe_priority": {
+    "params": "spe: i32, pokemon_pos: (usize, usize),",
+    "args": [
+      "0",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_modify_spe_sub_order": {
+    "params": "spe: i32, pokemon_pos: (usize, usize),",
+    "args": [
+      "0",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_modify_type": {
+    "params": "move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_modify_type_order": {
+    "params": "move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_modify_type_priority": {
+    "params": "move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_modify_type_sub_order": {
+    "params": "move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "Some(pokemon_pos)"
+    ]
+  },
+  "dispatch_on_modify_weight": {
+    "params": "weight: i32, pokemon_pos: (usize, usize),",
+    "args": [
+      "0",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_modify_weight_order": {
+    "params": "weight: i32, pokemon_pos: (usize, usize),",
+    "args": [
+      "0",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_modify_weight_priority": {
+    "params": "weight: i32, pokemon_pos: (usize, usize),",
+    "args": [
+      "0",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_modify_weight_sub_order": {
+    "params": "weight: i32, pokemon_pos: (usize, usize),",
+    "args": [
+      "0",
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_prepare_hit": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_prepare_hit_order": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_prepare_hit_priority": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_prepare_hit_sub_order": {
+    "params": "source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "None",
+      "Some(pokemon_pos)",
+      "\"\""
+    ]
+  },
+  "dispatch_on_residual": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_residual_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_residual_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_residual_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_set_status": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_set_status_order": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_set_status_priority": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_set_status_sub_order": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_side_condition_start": {
+    "params": "source_pos: Option<(usize, usize)>,",
+    "args": [
+      "None"
+    ]
+  },
+  "dispatch_on_side_condition_start_order": {
+    "params": "source_pos: Option<(usize, usize)>,",
+    "args": [
+      "None"
+    ]
+  },
+  "dispatch_on_side_condition_start_priority": {
+    "params": "source_pos: Option<(usize, usize)>,",
+    "args": [
+      "None"
+    ]
+  },
+  "dispatch_on_side_condition_start_sub_order": {
+    "params": "source_pos: Option<(usize, usize)>,",
+    "args": [
+      "None"
+    ]
+  },
+  "dispatch_on_source_after_faint": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_after_faint_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_after_faint_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_after_faint_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_base_power": {
+    "params": "base_power: i32, move_id: &str,",
+    "args": [
+      "0",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_base_power_order": {
+    "params": "base_power: i32, move_id: &str,",
+    "args": [
+      "0",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_base_power_priority": {
+    "params": "base_power: i32, move_id: &str,",
+    "args": [
+      "0",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_base_power_sub_order": {
+    "params": "base_power: i32, move_id: &str,",
+    "args": [
+      "0",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_damaging_hit": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_damaging_hit_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_damaging_hit_priority": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_damaging_hit_sub_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_accuracy": {
+    "params": "accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_accuracy_order": {
+    "params": "accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_accuracy_priority": {
+    "params": "accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_accuracy_sub_order": {
+    "params": "accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_atk": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_atk_order": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_atk_priority": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_atk_sub_order": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_damage": {
+    "params": "damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_damage_order": {
+    "params": "damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_damage_priority": {
+    "params": "damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_damage_sub_order": {
+    "params": "damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "0",
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_secondaries": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_secondaries_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_secondaries_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_secondaries_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_sp_a": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_sp_a_order": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_sp_a_priority": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_modify_sp_a_sub_order": {
+    "params": "move_id: &str,",
+    "args": [
+      "\"\""
+    ]
+  },
+  "dispatch_on_source_try_heal": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_try_heal_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_try_heal_priority": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_try_heal_sub_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_try_primary_hit": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_try_primary_hit_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_try_primary_hit_priority": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_source_try_primary_hit_sub_order": {
+    "params": "target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_start": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_start_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_start_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_start_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_switch_in": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_switch_in_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_switch_in_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_switch_in_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_switch_out": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_switch_out_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_switch_out_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_switch_out_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_take_item": {
+    "params": "pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_take_item_order": {
+    "params": "pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_take_item_priority": {
+    "params": "pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_take_item_sub_order": {
+    "params": "pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_terrain_change": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_terrain_change_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_terrain_change_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_terrain_change_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_try_add_volatile": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_add_volatile_order": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_add_volatile_priority": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_add_volatile_sub_order": {
+    "params": "status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_boost": {
+    "params": "boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_boost_order": {
+    "params": "boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_boost_priority": {
+    "params": "boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_boost_sub_order": {
+    "params": "boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_eat_item": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_try_eat_item_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_try_eat_item_priority": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_try_eat_item_sub_order": {
+    "params": "",
+    "args": []
+  },
+  "dispatch_on_try_heal": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_heal_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_heal_priority": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_heal_sub_order": {
+    "params": "damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,",
+    "args": [
+      "0",
+      "Some(pokemon_pos)",
+      "None",
+      "None"
+    ]
+  },
+  "dispatch_on_try_hit": {
+    "params": "target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_try_hit_order": {
+    "params": "target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_try_hit_priority": {
+    "params": "target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_try_hit_sub_order": {
+    "params": "target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,",
+    "args": [
+      "pokemon_pos",
+      "pokemon_pos",
+      "\"\""
+    ]
+  },
+  "dispatch_on_update": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_update_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_update_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_update_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_weather": {
+    "params": "weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_weather_change": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_weather_change_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_weather_change_priority": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_weather_change_sub_order": {
+    "params": "pokemon_pos: (usize, usize),",
+    "args": [
+      "pokemon_pos"
+    ]
+  },
+  "dispatch_on_weather_order": {
+    "params": "weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_weather_priority": {
+    "params": "weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None"
+    ]
+  },
+  "dispatch_on_weather_sub_order": {
+    "params": "weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,",
+    "args": [
+      "\"\"",
+      "pokemon_pos",
+      "None"
+    ]
+  }
+}

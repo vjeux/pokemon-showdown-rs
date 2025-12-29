@@ -566,17 +566,17 @@ pub fn dispatch_on_after_hit(
 pub fn dispatch_on_after_move(
     battle: &mut Battle,
     move_id: &str,
-    pokemon_pos: (usize, usize),
+    source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
-        "beakblast" => beakblast::on_after_move(battle, pokemon_pos, target_pos),
-        "iceball" => iceball::on_after_move(battle, pokemon_pos, target_pos),
-        "mindblown" => mindblown::on_after_move(battle, pokemon_pos, target_pos),
-        "rollout" => rollout::on_after_move(battle, pokemon_pos, target_pos),
-        "sparklingaria" => sparklingaria::on_after_move(battle, pokemon_pos, target_pos),
-        "spitup" => spitup::on_after_move(battle, pokemon_pos, target_pos),
-        "steelbeam" => steelbeam::on_after_move(battle, pokemon_pos, target_pos),
+        "beakblast" => beakblast::on_after_move(battle, source_pos, target_pos),
+        "iceball" => iceball::on_after_move(battle, source_pos, target_pos),
+        "mindblown" => mindblown::on_after_move(battle, source_pos, target_pos),
+        "rollout" => rollout::on_after_move(battle, source_pos, target_pos),
+        "sparklingaria" => sparklingaria::on_after_move(battle, source_pos, target_pos),
+        "spitup" => spitup::on_after_move(battle, source_pos, target_pos),
+        "steelbeam" => steelbeam::on_after_move(battle, source_pos, target_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1005,6 +1005,7 @@ pub fn dispatch_on_modify_type(
     battle: &mut Battle,
     move_id: &str,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match move_id {
         "aurawheel" => aurawheel::on_modify_type(battle, move_id, pokemon_pos),

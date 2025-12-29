@@ -393,6 +393,7 @@ pub fn dispatch_on_after_move_secondary_self(
     _item_id: &str,
     _source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     EventResult::Continue
 }
@@ -535,7 +536,10 @@ pub fn dispatch_on_attract_priority(
 pub fn dispatch_on_base_power(
     _battle: &mut Battle,
     _item_id: &str,
+    _base_power: i32,
     _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     EventResult::Continue
 }
@@ -592,7 +596,10 @@ pub fn dispatch_on_damage_priority(
 pub fn dispatch_on_damaging_hit(
     _battle: &mut Battle,
     _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    _damage: i32,
+    _target_pos: (usize, usize),
+    _source_pos: (usize, usize),
+    _move_id: &str,
 ) -> EventResult {
     EventResult::Continue
 }
@@ -822,7 +829,10 @@ pub fn dispatch_on_modify_crit_ratio(
 pub fn dispatch_on_modify_damage(
     _battle: &mut Battle,
     _item_id: &str,
+    _damage: i32,
     _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     EventResult::Continue
 }
@@ -849,6 +859,7 @@ pub fn dispatch_on_modify_def_priority(
 pub fn dispatch_on_modify_move(
     _battle: &mut Battle,
     _item_id: &str,
+    _move_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
     EventResult::Continue
@@ -1028,7 +1039,10 @@ pub fn dispatch_on_source_modify_accuracy_priority(
 pub fn dispatch_on_source_modify_damage(
     _battle: &mut Battle,
     _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    _damage: i32,
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
+    _move_id: &str,
 ) -> EventResult {
     EventResult::Continue
 }
@@ -1183,12 +1197,13 @@ pub fn dispatch_on_try_heal_priority(
 pub fn dispatch_on_try_hit(
     battle: &mut Battle,
     item_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: (usize, usize),
     source_pos: (usize, usize),
+    move_id: &str,
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
-        "safetygoggles" => safetygoggles::on_try_hit(battle, pokemon_pos, source_pos),
+        "safetygoggles" => safetygoggles::on_try_hit(battle, target_pos, source_pos),
         _ => EventResult::Continue,
     }
 }

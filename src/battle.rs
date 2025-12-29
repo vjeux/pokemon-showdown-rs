@@ -8918,6 +8918,7 @@ impl Battle {
                         item_id.as_str(),
                         source_pos,
                         target,
+                        "", // TODO: Wire through actual move_id
                     )
                 } else {
                     EventResult::Continue
@@ -8970,7 +8971,7 @@ impl Battle {
                 item_callbacks::dispatch_on_attract_priority(self, item_id.as_str(), pokemon_pos)
             }
             "BasePower" => {
-                item_callbacks::dispatch_on_base_power(self, item_id.as_str(), pokemon_pos)
+                item_callbacks::dispatch_on_base_power(self, item_id.as_str(), 0, pokemon_pos, None, "") // TODO: Wire through actual base_power, target_pos, move_id
             }
             "BasePowerPriority" => {
                 item_callbacks::dispatch_on_base_power_priority(self, item_id.as_str(), pokemon_pos)
@@ -8983,7 +8984,7 @@ impl Battle {
                 item_callbacks::dispatch_on_damage_priority(self, item_id.as_str(), pokemon_pos)
             }
             "DamagingHit" => {
-                item_callbacks::dispatch_on_damaging_hit(self, item_id.as_str(), pokemon_pos)
+                item_callbacks::dispatch_on_damaging_hit(self, item_id.as_str(), 0, pokemon_pos, pokemon_pos, "") // TODO: Wire through actual damage, target_pos, source_pos, move_id
             }
             "DamagingHitOrder" => {
                 item_callbacks::dispatch_on_damaging_hit_order(self, item_id.as_str(), pokemon_pos)
@@ -9065,7 +9066,7 @@ impl Battle {
                 )
             }
             "ModifyDamage" => {
-                item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), pokemon_pos)
+                item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), 0, pokemon_pos, None, "") // TODO: Wire through actual damage, target_pos, move_id
             }
             "ModifyDef" => {
                 item_callbacks::dispatch_on_modify_def(self, item_id.as_str(), pokemon_pos)
@@ -9074,7 +9075,7 @@ impl Battle {
                 item_callbacks::dispatch_on_modify_def_priority(self, item_id.as_str(), pokemon_pos)
             }
             "ModifyMove" => {
-                item_callbacks::dispatch_on_modify_move(self, item_id.as_str(), pokemon_pos)
+                item_callbacks::dispatch_on_modify_move(self, item_id.as_str(), "", pokemon_pos) // TODO: Wire through actual move_id
             }
             "ModifyMovePriority" => item_callbacks::dispatch_on_modify_move_priority(
                 self,
@@ -9152,7 +9153,7 @@ impl Battle {
             "SourceModifyDamage" => item_callbacks::dispatch_on_source_modify_damage(
                 self,
                 item_id.as_str(),
-                pokemon_pos,
+                0, pokemon_pos, pokemon_pos, "" // TODO: Wire through actual damage, source_pos, target_pos, move_id
             ),
             "SourceTryPrimaryHit" => item_callbacks::dispatch_on_source_try_primary_hit(
                 self,
@@ -9208,7 +9209,7 @@ impl Battle {
             }
             "TryHit" => {
                 if let Some(source_pos) = source {
-                    item_callbacks::dispatch_on_try_hit(self, item_id.as_str(), pokemon_pos, source_pos)
+                    item_callbacks::dispatch_on_try_hit(self, item_id.as_str(), pokemon_pos, source_pos, "") // TODO: Wire through actual move_id
                 } else {
                     EventResult::Continue
                 }
@@ -9287,7 +9288,7 @@ impl Battle {
                 move_callbacks::dispatch_on_modify_priority(self, move_id, source_pos)
             }
             "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, move_id, source_pos),
-            "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, source_pos),
+            "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, source_pos, None), // TODO: Wire through actual target_pos
             "MoveFail" => move_callbacks::dispatch_on_move_fail(self, move_id, source_pos),
             "PrepareHit" => {
                 move_callbacks::dispatch_on_prepare_hit(self, move_id, source_pos, target)
