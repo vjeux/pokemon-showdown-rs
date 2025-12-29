@@ -99,6 +99,14 @@ pub struct SpeciesData {
     pub gen: Option<u8>,
     #[serde(default)]
     pub tags: Vec<String>,
+    #[serde(rename = "eggGroups", default)]
+    pub egg_groups: Vec<String>,
+    #[serde(rename = "battleOnly", default)]
+    pub battle_only: StringOrVec,
+    #[serde(rename = "formeOrder", default)]
+    pub forme_order: Vec<String>,
+    #[serde(rename = "requiredItems", default)]
+    pub required_items: Vec<String>,
     // Format data fields
     #[serde(default)]
     pub tier: Option<String>,
@@ -153,6 +161,8 @@ pub struct MoveData {
     pub secondary: Option<MoveSecondary>,
     #[serde(default)]
     pub secondaries: Option<Vec<MoveSecondary>>,
+    #[serde(default, rename = "self")]
+    pub self_effect: Option<MoveSecondary>,
     #[serde(default)]
     pub flags: HashMap<String, i32>,
     #[serde(default)]
@@ -468,6 +478,105 @@ impl Serialize for Multihit {
     }
 }
 
+/// StringOrVec can be a single string or an array of strings
+#[derive(Debug, Clone, Default)]
+pub enum StringOrVec {
+    #[default]
+    Empty,
+    Single(String),
+    Multiple(Vec<String>),
+}
+
+impl PartialEq<&str> for StringOrVec {
+    fn eq(&self, other: &&str) -> bool {
+        match self {
+            StringOrVec::Empty => false,
+            StringOrVec::Single(s) => s == *other,
+            StringOrVec::Multiple(v) => v.iter().any(|s| s == *other),
+        }
+    }
+}
+
+impl PartialEq<String> for StringOrVec {
+    fn eq(&self, other: &String) -> bool {
+        match self {
+            StringOrVec::Empty => false,
+            StringOrVec::Single(s) => s == other,
+            StringOrVec::Multiple(v) => v.iter().any(|s| s == other),
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for StringOrVec {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        use serde::de::{self, SeqAccess, Visitor};
+
+        struct StringOrVecVisitor;
+
+        impl<'de> Visitor<'de> for StringOrVecVisitor {
+            type Value = StringOrVec;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("a string or array of strings")
+            }
+
+            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+            where
+                E: de::Error,
+            {
+                Ok(StringOrVec::Single(value.to_string()))
+            }
+
+            fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
+            where
+                A: SeqAccess<'de>,
+            {
+                let mut vec = Vec::new();
+                while let Some(value) = seq.next_element()? {
+                    vec.push(value);
+                }
+                Ok(StringOrVec::Multiple(vec))
+            }
+        }
+
+        deserializer.deserialize_any(StringOrVecVisitor)
+    }
+}
+
+impl Serialize for StringOrVec {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        match self {
+            StringOrVec::Empty => serializer.serialize_none(),
+            StringOrVec::Single(s) => serializer.serialize_str(s),
+            StringOrVec::Multiple(v) => v.serialize(serializer),
+        }
+    }
+}
+
+impl StringOrVec {
+    pub fn as_vec(&self) -> Vec<String> {
+        match self {
+            StringOrVec::Empty => Vec::new(),
+            StringOrVec::Single(s) => vec![s.clone()],
+            StringOrVec::Multiple(v) => v.clone(),
+        }
+    }
+
+    pub fn contains(&self, value: &str) -> bool {
+        match self {
+            StringOrVec::Empty => false,
+            StringOrVec::Single(s) => s == value,
+            StringOrVec::Multiple(v) => v.iter().any(|s| s == value),
+        }
+    }
+}
+
 impl Serialize for Accuracy {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -525,10 +634,10 @@ pub struct ItemData {
     pub z_move: Option<serde_json::Value>,
     /// Mega Evolution stone target (e.g., "Froslass-Mega")
     #[serde(rename = "megaStone", default)]
-    pub mega_stone: Option<String>,
+    pub mega_stone: Option<StringOrVec>,
     /// Pokemon species that can use this mega stone (e.g., "Froslass")
     #[serde(rename = "megaEvolves", default)]
-    pub mega_evolves: Option<String>,
+    pub mega_evolves: Option<StringOrVec>,
     /// Species that can use this item
     #[serde(rename = "itemUser", default)]
     pub item_user: Option<Vec<String>>,
@@ -784,6 +893,10 @@ impl Dex {
                         is_cosmetic_forme: true,
                         gen: base_species.gen,
                         tags: base_species.tags.clone(),
+                        egg_groups: base_species.egg_groups.clone(),
+                        battle_only: base_species.battle_only.clone(),
+                        forme_order: base_species.forme_order.clone(),
+                        required_items: base_species.required_items.clone(),
                         tier: base_species.tier.clone(),
                         doubles_tier: base_species.doubles_tier.clone(),
                         nat_dex_tier: base_species.nat_dex_tier.clone(),
