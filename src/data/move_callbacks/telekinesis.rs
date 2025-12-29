@@ -137,13 +137,22 @@ pub mod condition {
     ///     if (move && !move.ohko) return true;
     /// }
     pub fn on_accuracy(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _accuracy: i32,
         _target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
         _move_id: &str,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // if (move && !move.ohko) return true;
+        // Check if there's an active move and it's not an OHKO move
+        if let Some(ref active_move) = battle.active_move {
+            // In JS, !move.ohko is true when ohko is falsy (null, undefined, false, etc.)
+            // In Rust, ohko is Option<String>, so None means not an OHKO move
+            if active_move.ohko.is_none() {
+                return EventResult::Boolean(true);
+            }
+        }
+
         EventResult::Continue
     }
 
