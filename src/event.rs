@@ -133,6 +133,8 @@ pub enum EventResult {
     NotFail,
     /// Return a number value
     Number(i32),
+    /// Return a float value (for fractional priorities, etc.)
+    Float(f64),
     /// Return a string value
     String(String),
     /// Return a boolean value

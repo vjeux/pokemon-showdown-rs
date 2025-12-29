@@ -172,6 +172,8 @@ pub struct EventInfo {
     pub modifier: i32,
     /// Relay variable for events that modify numeric values (crit ratio, weight, etc.)
     pub relay_var: Option<i32>,
+    /// Relay variable for events that use float values (fractional priority, etc.)
+    pub relay_var_float: Option<f64>,
 }
 
 impl EventInfo {
@@ -183,6 +185,7 @@ impl EventInfo {
             effect: None,
             modifier: 4096,
             relay_var: None,
+            relay_var_float: None,
         }
     }
 }
@@ -196,6 +199,7 @@ impl Default for EventInfo {
             effect: None,
             modifier: 4096,
             relay_var: None,
+            relay_var_float: None,
         }
     }
 }
@@ -8090,6 +8094,7 @@ impl Battle {
             effect: Some(effect_id.clone()),
             modifier: 4096,
             relay_var: None,
+            relay_var_float: None,
         });
         self.current_effect = Some(effect_id.clone());
         self.event_depth += 1;
@@ -8824,6 +8829,7 @@ impl Battle {
 
         let source = self.current_event.as_ref().and_then(|e| e.source);
         let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var);
+        let relay_var_float = self.current_event.as_ref().and_then(|e| e.relay_var_float);
         let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
@@ -8932,7 +8938,12 @@ impl Battle {
                 item_callbacks::dispatch_on_foe_after_boost(self, item_id.as_str(), pokemon_pos)
             }
             "FractionalPriority" => {
-                item_callbacks::dispatch_on_fractional_priority(self, item_id.as_str(), pokemon_pos)
+                item_callbacks::dispatch_on_fractional_priority(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                    relay_var_float.unwrap_or(0.0),
+                )
             }
             "FractionalPriorityPriority" => {
                 item_callbacks::dispatch_on_fractional_priority_priority(
@@ -9741,6 +9752,7 @@ impl Battle {
             effect: source_effect.cloned(),
             modifier: 4096,
             relay_var,
+            relay_var_float: None,
         });
 
         let mut result = relay_var;
@@ -9780,6 +9792,76 @@ impl Battle {
             if event.modifier != 4096 {
                 *r = self.modify_internal(*r, event.modifier);
             }
+        }
+
+        // Restore parent context
+        self.event_depth -= 1;
+        self.current_event = parent_event;
+
+        result
+    }
+
+    /// Run event with float relay variable (for fractional priorities, etc.)
+    /// Similar to run_event but handles f64 values instead of i32
+    pub fn run_event_float(
+        &mut self,
+        event_id: &str,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
+        relay_var: Option<f64>,
+    ) -> Option<f64> {
+        use crate::event::EventResult;
+
+        // Check stack depth
+        if self.event_depth >= 8 {
+            self.add_log("message", &["STACK LIMIT EXCEEDED"]);
+            return None;
+        }
+
+        // Save parent event context
+        let parent_event = self.current_event.take();
+        self.event_depth += 1;
+
+        // Set up current event
+        self.current_event = Some(EventInfo {
+            id: event_id.to_string(),
+            target,
+            source,
+            effect: source_effect.cloned(),
+            modifier: 4096,
+            relay_var: None,
+            relay_var_float: relay_var,
+        });
+
+        let mut result = relay_var;
+
+        // Find and run all handlers for this event
+        let handlers = self.find_event_handlers(event_id, target, source);
+
+        for (effect_id, holder_target) in handlers {
+            let event_result =
+                self.dispatch_single_event(event_id, &effect_id, holder_target, source);
+
+            match event_result {
+                EventResult::Boolean(false) => {
+                    result = None;
+                    break;
+                }
+                EventResult::Stop => {
+                    break;
+                }
+                EventResult::Float(f) => {
+                    // For float events, replace the result with the returned value
+                    result = Some(f);
+                }
+                _ => {}
+            }
+        }
+
+        // Run custom event handlers (registered via onEvent in tests)
+        if let Some(custom_result) = self.run_custom_event_handlers(event_id) {
+            result = Some(custom_result as f64);
         }
 
         // Restore parent context

@@ -606,11 +606,17 @@ pub fn dispatch_on_foe_after_boost(
 
 /// Dispatch onFractionalPriority callbacks
 pub fn dispatch_on_fractional_priority(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    priority: f64,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "custapberry" => custapberry::on_fractional_priority(battle, pokemon_pos, priority),
+        "quickclaw" => quickclaw::on_fractional_priority(battle, pokemon_pos, priority),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onFractionalPriorityPriority callbacks
