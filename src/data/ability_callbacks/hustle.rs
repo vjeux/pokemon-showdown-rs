@@ -11,8 +11,8 @@ use crate::event::EventResult;
 ///     return this.modify(atk, 1.5);
 /// }
 pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let modified = battle.modify_f(atk, 1.5);
+    EventResult::Number(modified)
 }
 
 /// onSourceModifyAccuracy(accuracy, target, source, move) {
@@ -21,7 +21,12 @@ pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize)
 ///     }
 /// }
 pub fn on_source_modify_accuracy(battle: &mut Battle, accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        if move_data.category == "Physical" {
+            let modified = battle.chain_modify_fraction(3277, 4096);
+            return EventResult::Number(modified);
+        }
+    }
     EventResult::Continue
 }
 
