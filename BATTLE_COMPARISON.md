@@ -33,7 +33,7 @@ Create deterministic tests in both JavaScript and Rust that:
 
 **Seed**: `[12345, 67890, 11111, 22222]`
 
-### 🎉 Rust Implementation (Completed!)
+### 🎉 Rust Implementation (Major Progress!)
 
 **Location**: `tests/battle_state_comparison.rs`
 
@@ -48,19 +48,28 @@ Create deterministic tests in both JavaScript and Rust that:
 - **Compiles successfully** ✅
 - **Dex loads successfully** ✅
 - **Test runs for 100 turns** ✅
+- **Pokemon switch in correctly** ✅
+- **Random move choices generated** ✅
 
 **Status**:
-- Random choice logic is stubbed (returns "move 1")
-- Battle execution (`make_choices`) not yet fully implemented
-- Moves don't execute yet, so battles don't progress naturally
+- Team preview handled with "default" choice
+- Random choice logic fully implemented (random move selection)
+- Battle loop runs and processes turns
+- Moves are queued but don't execute damage/effects yet
+- Battles run for 100 turns with varied move choices
 
 **Seed**: `PRNGSeed::Gen5([12345, 23456, 11111, 22222])`
 
 **Recent Fixes**:
+- **Team Preview Handling**: Added support for "default" choice in team preview
+  - `make_choices("default", "default")` now properly skips team preview
+  - Calls `turn_loop()` to process the queued 'Start' action
+  - Pokemon are switched in correctly at battle start
 - Added missing "self" field to MoveData for self-effect boosts
 - Added missing array fields to SpeciesData (eggGroups, battleOnly, formeOrder, requiredItems)
 - Created StringOrVec type to handle fields that can be either string or array (battleOnly, megaStone, megaEvolves)
 - Fixed Dex JSON parsing errors
+- Implemented full random choice logic with PRNG integration
 
 ## Data Format
 

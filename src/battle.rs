@@ -1861,6 +1861,16 @@ impl Battle {
     // 	}
     //
     pub fn make_choices(&mut self, p1_choice: &str, p2_choice: &str) {
+        // Handle team preview - if choice is "default", just proceed to battle start
+        if self.request_state == BattleRequestState::TeamPreview {
+            if p1_choice == "default" && p2_choice == "default" {
+                // Skip team preview and start battle
+                self.request_state = BattleRequestState::None;
+                self.turn_loop();
+                return;
+            }
+        }
+
         // Parse and validate choices
         self.parse_choice(SideID::P1, p1_choice);
         self.parse_choice(SideID::P2, p2_choice);

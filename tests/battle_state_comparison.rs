@@ -121,10 +121,48 @@ fn extract_battle_state(battle: &Battle) -> BattleState {
 }
 
 /// Make a random choice for a player
-fn make_random_choice(_battle: &Battle, _player_id: &str, _prng: &mut PRNG) -> String {
-    // For now, just return a simple move 1 choice
-    // TODO: Implement proper random choice logic based on request
-    "move 1".to_string()
+fn make_random_choice(battle: &Battle, player_id: &str, prng: &mut PRNG) -> String {
+    // Find the side for this player
+    let side = battle
+        .sides
+        .iter()
+        .find(|s| s.id.to_str() == player_id);
+
+    let Some(side) = side else {
+        return "pass".to_string();
+    };
+
+    // Get the active Pokemon
+    if side.active.is_empty() {
+        return "pass".to_string();
+    }
+
+    let active_idx = side.active[0];
+    let Some(pokemon_idx) = active_idx else {
+        return "pass".to_string();
+    };
+
+    let pokemon = &side.pokemon[pokemon_idx];
+
+    // If fainted, we need to switch
+    if pokemon.fainted {
+        // Find a Pokemon to switch to
+        for (idx, p) in side.pokemon.iter().enumerate() {
+            if !p.fainted && !side.active.contains(&Some(idx)) {
+                return format!("switch {}", idx + 1);
+            }
+        }
+        return "pass".to_string();
+    }
+
+    // Otherwise, pick a random move (1-4)
+    if pokemon.move_slots.is_empty() {
+        return "pass".to_string();
+    }
+
+    let num_moves = pokemon.move_slots.len();
+    let move_idx = prng.random(Some(0), Some(num_moves as i32)) as usize;
+    format!("move {}", move_idx + 1)
 }
 
 /// Run a deterministic battle and record states
@@ -196,7 +234,7 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
         .collect();
 
     // Create battle with the seed
-    let battle = Battle::new(BattleOptions {
+    let mut battle = Battle::new(BattleOptions {
         format_id: pokemon_showdown::ID::new("gen9randombattle"),
         seed: Some(seed.clone()),
         p1: Some(PlayerOptions {
@@ -270,6 +308,9 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
         state: extract_battle_state(&battle),
     });
 
+    // Make initial team choices to skip team preview
+    battle.make_choices("default", "default");
+
     // Run the battle
     let mut turn = 0;
     while !battle.ended && turn < max_turns {
@@ -286,9 +327,8 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
             p2: p2_choice.clone(),
         });
 
-        // Execute choices (TODO: implement battle.make_choices)
-        // For now, we'll just increment turn to prevent infinite loop
-        // battle.make_choices(&p1_choice, &p2_choice);
+        // Execute choices
+        battle.make_choices(&p1_choice, &p2_choice);
 
         // Record state after turn
         log.states.push(StateRecord {
@@ -296,9 +336,8 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
             state: extract_battle_state(&battle),
         });
 
-        // Safety check
+        // Check if battle ended
         if turn >= max_turns {
-            eprintln!("Battle reached max turns");
             break;
         }
     }
