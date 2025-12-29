@@ -8913,12 +8913,17 @@ impl Battle {
             }
             "AfterMoveSecondarySelf" => {
                 if let Some(source_pos) = source {
+                    let move_id_str = if let Some(ref active_move) = self.active_move {
+                        active_move.id.to_string()
+                    } else {
+                        String::new()
+                    };
                     item_callbacks::dispatch_on_after_move_secondary_self(
                         self,
                         item_id.as_str(),
                         source_pos,
                         target,
-                        "", // TODO: Wire through actual move_id
+                        &move_id_str,
                     )
                 } else {
                     EventResult::Continue
@@ -8971,7 +8976,14 @@ impl Battle {
                 item_callbacks::dispatch_on_attract_priority(self, item_id.as_str(), pokemon_pos)
             }
             "BasePower" => {
-                item_callbacks::dispatch_on_base_power(self, item_id.as_str(), 0, pokemon_pos, None, "") // TODO: Wire through actual base_power, target_pos, move_id
+                // Extract move info from active_move (clone to avoid borrow issues)
+                let (base_power, move_id_str) = if let Some(ref active_move) = self.active_move {
+                    (active_move.base_power, active_move.id.to_string())
+                } else {
+                    (0, String::new())
+                };
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                item_callbacks::dispatch_on_base_power(self, item_id.as_str(), base_power, pokemon_pos, target_pos, &move_id_str)
             }
             "BasePowerPriority" => {
                 item_callbacks::dispatch_on_base_power_priority(self, item_id.as_str(), pokemon_pos)
@@ -8984,7 +8996,16 @@ impl Battle {
                 item_callbacks::dispatch_on_damage_priority(self, item_id.as_str(), pokemon_pos)
             }
             "DamagingHit" => {
-                item_callbacks::dispatch_on_damaging_hit(self, item_id.as_str(), 0, pokemon_pos, pokemon_pos, "") // TODO: Wire through actual damage, target_pos, source_pos, move_id
+                let damage = relay_var.unwrap_or(0);
+                let move_id_str = if let Some(ref active_move) = self.active_move {
+                    active_move.id.to_string()
+                } else {
+                    String::new()
+                };
+                // target is the pokemon being hit, source is the attacker
+                let target_pos = pokemon_pos;
+                let source_pos = source.unwrap_or(pokemon_pos);
+                item_callbacks::dispatch_on_damaging_hit(self, item_id.as_str(), damage, target_pos, source_pos, &move_id_str)
             }
             "DamagingHitOrder" => {
                 item_callbacks::dispatch_on_damaging_hit_order(self, item_id.as_str(), pokemon_pos)
@@ -9066,7 +9087,14 @@ impl Battle {
                 )
             }
             "ModifyDamage" => {
-                item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), 0, pokemon_pos, None, "") // TODO: Wire through actual damage, target_pos, move_id
+                let damage = relay_var.unwrap_or(0);
+                let move_id_str = if let Some(ref active_move) = self.active_move {
+                    active_move.id.to_string()
+                } else {
+                    String::new()
+                };
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), damage, pokemon_pos, target_pos, &move_id_str)
             }
             "ModifyDef" => {
                 item_callbacks::dispatch_on_modify_def(self, item_id.as_str(), pokemon_pos)
@@ -9075,7 +9103,12 @@ impl Battle {
                 item_callbacks::dispatch_on_modify_def_priority(self, item_id.as_str(), pokemon_pos)
             }
             "ModifyMove" => {
-                item_callbacks::dispatch_on_modify_move(self, item_id.as_str(), "", pokemon_pos) // TODO: Wire through actual move_id
+                let move_id_str = if let Some(ref active_move) = self.active_move {
+                    active_move.id.to_string()
+                } else {
+                    String::new()
+                };
+                item_callbacks::dispatch_on_modify_move(self, item_id.as_str(), &move_id_str, pokemon_pos)
             }
             "ModifyMovePriority" => item_callbacks::dispatch_on_modify_move_priority(
                 self,
@@ -9150,11 +9183,17 @@ impl Battle {
                     pokemon_pos,
                 )
             }
-            "SourceModifyDamage" => item_callbacks::dispatch_on_source_modify_damage(
-                self,
-                item_id.as_str(),
-                0, pokemon_pos, pokemon_pos, "" // TODO: Wire through actual damage, source_pos, target_pos, move_id
-            ),
+            "SourceModifyDamage" => {
+                let damage = relay_var.unwrap_or(0);
+                let move_id_str = if let Some(ref active_move) = self.active_move {
+                    active_move.id.to_string()
+                } else {
+                    String::new()
+                };
+                let source_pos = pokemon_pos;
+                let target_pos = target.unwrap_or(pokemon_pos);
+                item_callbacks::dispatch_on_source_modify_damage(self, item_id.as_str(), damage, source_pos, target_pos, &move_id_str)
+            },
             "SourceTryPrimaryHit" => item_callbacks::dispatch_on_source_try_primary_hit(
                 self,
                 item_id.as_str(),
@@ -9209,7 +9248,12 @@ impl Battle {
             }
             "TryHit" => {
                 if let Some(source_pos) = source {
-                    item_callbacks::dispatch_on_try_hit(self, item_id.as_str(), pokemon_pos, source_pos, "") // TODO: Wire through actual move_id
+                    let move_id_str = if let Some(ref active_move) = self.active_move {
+                        active_move.id.to_string()
+                    } else {
+                        String::new()
+                    };
+                    item_callbacks::dispatch_on_try_hit(self, item_id.as_str(), pokemon_pos, source_pos, &move_id_str)
                 } else {
                     EventResult::Continue
                 }
@@ -9288,7 +9332,7 @@ impl Battle {
                 move_callbacks::dispatch_on_modify_priority(self, move_id, source_pos)
             }
             "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, move_id, source_pos),
-            "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, source_pos, None), // TODO: Wire through actual target_pos
+            "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, source_pos, target),
             "MoveFail" => move_callbacks::dispatch_on_move_fail(self, move_id, source_pos),
             "PrepareHit" => {
                 move_callbacks::dispatch_on_prepare_hit(self, move_id, source_pos, target)
