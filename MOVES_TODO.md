@@ -2,16 +2,17 @@
 
 ## Summary
 
-**Current Status:** 90 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 89 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Latest Session Progress:**
-- **Callbacks implemented**: 9 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish + 1 fling)
+- **Callbacks implemented**: 10 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish + 1 fling + 1 teatime ✅)
   - healblock.rs: condition::on_start, condition::on_restart
   - taunt.rs: condition::on_start
   - substitute.rs: condition::on_start
   - syrupbomb.rs: condition::on_update, condition::on_residual ✅ COMPLETE
   - wish.rs: on_start, on_end
   - fling.rs: condition::on_update
+  - teatime.rs: on_hit_field ✅ COMPLETE
 
 **Previous Session Progress:**
 - **Callbacks implemented**: 6 implementations (3 healblock + 3 trickroom ✅)
@@ -419,7 +420,7 @@ Moves with callbacks: 373
 - [x] takeheart - Take Heart (Status, Psychic) - 1 callback: onHit
 - [ ] tarshot - Tar Shot (Status, Rock) - 2 callbacks: condition::onStart ✓, condition::onEffectiveness (1/2 implemented)
 - [ ] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart ✓, condition::onEnd ✓, condition::onDisableMove ✓, condition::onBeforeMove (3/4 implemented)
-- [ ] teatime - Teatime (Status, Normal) - 1 callback: onHitField
+- [x] teatime - Teatime (Status, Normal) - 1 callback: onHitField
 - [ ] technoblast - Techno Blast (Special, Normal) - 1 callback: onModifyType
 - [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry, condition::onStart, condition::onAccuracy, condition::onImmunity, condition::onUpdate, condition::onEnd ✓ (1/6 implemented)
 - [x] teleport - Teleport (Status, Psychic) - 1 callback: onTry
