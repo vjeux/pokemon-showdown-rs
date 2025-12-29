@@ -320,7 +320,7 @@ Items with callbacks: 326
 - [x] toxicplate - Toxic Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] twistedspoon - Twisted Spoon (Gen 2) - 1 callback: onBasePower
 - [x] tyranitarite - Tyranitarite (Gen 6) - 1 callback: onTakeItem
-- [ ] utilityumbrella - Utility Umbrella (Gen 8) - 3 callbacks: onStart, onUpdate, onEnd
+- [x] utilityumbrella - Utility Umbrella (Gen 8) - 3 callbacks: onStart, onUpdate, onEnd
 - [x] venusaurite - Venusaurite (Gen 6) - 1 callback: onTakeItem
 - [x] victreebelite - Victreebelite (Gen 9) - 1 callback: onTakeItem
 - [x] vilevial - Vile Vial (Gen 8) - 2 callbacks: onBasePower, onTakeItem
