@@ -135,12 +135,105 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_start(
-        _battle: &mut Battle,
-        _target_pos: Option<(usize, usize)>,
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        effect_id: Option<&str>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (effect?.id === 'shedtail')
+        let is_shedtail = effect_id.map(|id| id == "shedtail").unwrap_or(false);
+
+        let target_slot = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.get_slot()
+        };
+
+        if is_shedtail {
+            // this.add('-start', target, 'Substitute', '[from] move: Shed Tail');
+            battle.add(
+                "-start",
+                &[
+                    crate::battle::Arg::from(target_slot.clone()),
+                    crate::battle::Arg::from("Substitute"),
+                    crate::battle::Arg::from("[from] move: Shed Tail"),
+                ],
+            );
+        } else {
+            // this.add('-start', target, 'Substitute');
+            battle.add(
+                "-start",
+                &[
+                    crate::battle::Arg::from(target_slot.clone()),
+                    crate::battle::Arg::from("Substitute"),
+                ],
+            );
+        }
+
+        // this.effectState.hp = Math.floor(target.maxhp / 4);
+        let sub_hp = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.maxhp / 4
+        };
+
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .insert("hp".to_string(), serde_json::to_value(sub_hp).unwrap());
+        }
+
+        // if (target.volatiles['partiallytrapped'])
+        let partially_trapped_info = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon
+                .volatiles
+                .get(&ID::from("partiallytrapped"))
+                .map(|effect_state| {
+                    (
+                        effect_state.source_effect.clone(),
+                    )
+                })
+        };
+
+        if let Some((source_effect_opt,)) = partially_trapped_info {
+            // this.add('-end', target, target.volatiles['partiallytrapped'].sourceEffect, '[partiallytrapped]', '[silent]');
+            let source_effect_str = source_effect_opt
+                .map(|id| id.to_string())
+                .unwrap_or_else(|| "partially trapped".to_string());
+
+            battle.add(
+                "-end",
+                &[
+                    crate::battle::Arg::from(target_slot),
+                    crate::battle::Arg::from(source_effect_str),
+                    crate::battle::Arg::from("[partiallytrapped]"),
+                    crate::battle::Arg::from("[silent]"),
+                ],
+            );
+
+            // delete target.volatiles['partiallytrapped'];
+            let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.remove_volatile(&ID::from("partiallytrapped"));
+        }
+
         EventResult::Continue
     }
 
