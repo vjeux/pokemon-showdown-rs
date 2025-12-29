@@ -2,7 +2,7 @@
 
 ## Summary
 
-**Current Status:** 87 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 84 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Latest Session Progress:**
 - **Callbacks implemented**: 11 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish + 1 fling + 1 teatime ✅ + 1 toxicspikes ✅)
@@ -459,7 +459,7 @@ Moves with callbacks: 373
 - [x] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
 - [x] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
 - [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart ✓, condition::onResidual, condition::onEnd ✓ (2/3 implemented)
-- [x] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback, condition::onModifyMove, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd (1/5 implemented)
+- [ ] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback ✓, condition::onModifyMove, condition::onFieldStart ✓, condition::onFieldRestart ✓, condition::onFieldEnd ✓ (4/5 implemented)
 - [x] worryseed - Worry Seed (Status, Grass) - 3 callbacks: onTryImmunity, onTryHit, onHit
 - [x] wringout - Wring Out (Special, Normal) - 1 callback: basePowerCallback
 - [x] yawn - Yawn (Status, Normal) - 3 callbacks: onTryHit, condition::onStart, condition::onEnd
