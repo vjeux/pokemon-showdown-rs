@@ -33,9 +33,10 @@ pub fn base_power_callback(
 
     // if (pokemon.moveLastTurnResult === false)
     if pokemon.move_last_turn_result == Some(false) {
-        // Note: JS has this.debug call which we don't have infrastructure for yet
+        let bp = active_move.base_power * 2;
         // this.debug('doubling Temper Flare BP due to previous move failure');
-        return EventResult::Number(active_move.base_power * 2);
+        battle.debug("doubling Temper Flare BP due to previous move failure");
+        return EventResult::Number(bp);
     }
 
     EventResult::Number(active_move.base_power)

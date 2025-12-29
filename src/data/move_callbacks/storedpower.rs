@@ -32,7 +32,8 @@ pub fn base_power_callback(
     // const bp = move.basePower + 20 * pokemon.positiveBoosts();
     let bp = active_move.base_power + 20 * pokemon.positive_boosts();
 
-    // Note: JS has this.debug call which we don't have infrastructure for yet
     // this.debug(`BP: ${bp}`);
+    battle.debug(&format!("BP: {}", bp));
+
     EventResult::Number(bp)
 }

@@ -102,9 +102,7 @@ pub mod condition {
             if stat_and_boosts == "def" { "" } else { "Sp. " }
         );
 
-        // NOTE: battle.hint() method not yet implemented
-        // When implemented, this should be: battle.hint(&hint_message);
-        let _ = hint_message; // Suppress unused variable warning
+        battle.hint(&hint_message, true, None);
 
         EventResult::Continue
     }

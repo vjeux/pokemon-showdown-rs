@@ -38,9 +38,10 @@ pub fn base_power_callback(
     // You can't get here unless the pursuit succeeds
     // if (target.beingCalledBack || target.switchFlag)
     if target.being_called_back || target.switch_flag {
-        // Note: JS has this.debug call which we don't have infrastructure for yet
+        let bp = active_move.base_power * 2;
         // this.debug('Pursuit damage boost');
-        return EventResult::Number(active_move.base_power * 2);
+        battle.debug("Pursuit damage boost");
+        return EventResult::Number(bp);
     }
 
     EventResult::Number(active_move.base_power)

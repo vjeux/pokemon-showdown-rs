@@ -62,8 +62,9 @@ pub fn base_power_callback(
         40
     };
 
-    // Note: JS has this.debug call which we don't have infrastructure for yet
     // this.debug(`BP: ${bp}`);
+    battle.debug(&format!("BP: {}", bp));
+
     EventResult::Number(bp)
 }
 

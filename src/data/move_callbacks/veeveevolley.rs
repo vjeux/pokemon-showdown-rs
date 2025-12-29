@@ -26,7 +26,8 @@ pub fn base_power_callback(
     // const bp = Math.floor((pokemon.happiness * 10) / 25) || 1;
     let bp = ((pokemon.happiness as i32 * 10) / 25).max(1);
 
-    // Note: JS has this.debug call which we don't have infrastructure for yet
     // this.debug(`BP: ${bp}`);
+    battle.debug(&format!("BP: {}", bp));
+
     EventResult::Number(bp)
 }
