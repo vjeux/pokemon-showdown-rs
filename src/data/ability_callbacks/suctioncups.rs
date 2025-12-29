@@ -12,7 +12,21 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let pokemon_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Null,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add(
+        "-activate",
+        &[
+            pokemon_ident.as_str().into(),
+            "ability: Suction Cups".into(),
+        ],
+    );
+    EventResult::Null
 }
 
