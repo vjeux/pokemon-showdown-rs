@@ -80,8 +80,8 @@ pub mod condition {
     pub fn on_start(
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
     ) -> EventResult {
         // // The target hasn't taken its turn, or Cursed Body activated and the move was not used through Dancer or Instruct
         // if (
@@ -174,16 +174,70 @@ pub mod condition {
             (pokemon_pokemon.get_slot(), move_name)
         };
 
-        // TODO: Check effect.effectType === 'Ability'
-        // For now, just add the simple version
-        battle.add(
-            "-start",
-            &[
-                pokemon_ident.as_str().into(),
-                "Disable".into(),
-                last_move_name.into(),
-            ],
-        );
+        // Check if effect is an Ability
+        if let Some(eff_id) = effect_id {
+            use crate::dex_data::ID;
+            let effect_id_obj = ID::from(eff_id);
+            let is_ability = battle.get_effect_type(&effect_id_obj) == "Ability";
+
+            if is_ability {
+                // Get effect name and source
+                let effect_name = battle
+                    .dex
+                    .get_ability_by_id(&effect_id_obj)
+                    .map(|a| a.name.clone())
+                    .unwrap_or_else(|| eff_id.to_string());
+
+                if let Some(src_pos) = source_pos {
+                    let source_ident = {
+                        let source_pokemon = match battle.pokemon_at(src_pos.0, src_pos.1) {
+                            Some(p) => p,
+                            None => return EventResult::Continue,
+                        };
+                        source_pokemon.get_slot()
+                    };
+
+                    battle.add(
+                        "-start",
+                        &[
+                            pokemon_ident.as_str().into(),
+                            "Disable".into(),
+                            last_move_name.into(),
+                            format!("[from] ability: {}", effect_name).into(),
+                            format!("[of] {}", source_ident).into(),
+                        ],
+                    );
+                } else {
+                    battle.add(
+                        "-start",
+                        &[
+                            pokemon_ident.as_str().into(),
+                            "Disable".into(),
+                            last_move_name.into(),
+                            format!("[from] ability: {}", effect_name).into(),
+                        ],
+                    );
+                }
+            } else {
+                battle.add(
+                    "-start",
+                    &[
+                        pokemon_ident.as_str().into(),
+                        "Disable".into(),
+                        last_move_name.into(),
+                    ],
+                );
+            }
+        } else {
+            battle.add(
+                "-start",
+                &[
+                    pokemon_ident.as_str().into(),
+                    "Disable".into(),
+                    last_move_name.into(),
+                ],
+            );
+        }
 
         // this.effectState.move = pokemon.lastMove.id;
         if let Some(ref mut effect_state) = battle.current_effect_state {
