@@ -220,6 +220,7 @@ pub mod magnetrise;
 pub mod magnitude;
 pub mod matblock;
 pub mod maxguard;
+pub mod maxairstream;
 pub mod maxdarkness;
 pub mod maxflare;
 pub mod maxflutterby;
@@ -810,6 +811,7 @@ pub fn dispatch_on_hit(
         "lunarblessing" => lunarblessing::on_hit(battle, pokemon_pos, target_pos),
         "magicpowder" => magicpowder::on_hit(battle, pokemon_pos, target_pos),
         "maxguard" => maxguard::on_hit(battle, pokemon_pos, target_pos),
+        "maxairstream" => maxairstream::on_hit(battle, pokemon_pos, target_pos),
         "maxdarkness" => maxdarkness::on_hit(battle, pokemon_pos, target_pos),
         "maxflare" => maxflare::on_hit(battle, pokemon_pos, target_pos),
         "maxflutterby" => maxflutterby::on_hit(battle, pokemon_pos, target_pos),
