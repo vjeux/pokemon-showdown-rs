@@ -171,7 +171,7 @@ Items with callbacks: 326
 - [ ] kasibberry - Kasib Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [ ] kebiaberry - Kebia Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] keeberry - Kee Berry (Gen 6) - 2 callbacks: onAfterMoveSecondary, onEat
-- [ ] kingsrock - King's Rock (Gen 2) - 1 callback: onModifyMove
+- [x] kingsrock - King's Rock (Gen 2) - 1 callback: onModifyMove
 - [x] lansatberry - Lansat Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] latiasite - Latiasite (Gen 6) - 1 callback: onTakeItem
 - [x] latiosite - Latiosite (Gen 6) - 1 callback: onTakeItem
