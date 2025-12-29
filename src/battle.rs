@@ -170,6 +170,8 @@ pub struct EventInfo {
     pub effect: Option<ID>,
     /// Modifier accumulated during event processing (4096 = 1.0x)
     pub modifier: i32,
+    /// Relay variable for events that modify numeric values (crit ratio, weight, etc.)
+    pub relay_var: Option<i32>,
 }
 
 impl EventInfo {
@@ -180,6 +182,7 @@ impl EventInfo {
             source: None,
             effect: None,
             modifier: 4096,
+            relay_var: None,
         }
     }
 }
@@ -192,6 +195,7 @@ impl Default for EventInfo {
             source: None,
             effect: None,
             modifier: 4096,
+            relay_var: None,
         }
     }
 }
@@ -8085,6 +8089,7 @@ impl Battle {
             source,
             effect: Some(effect_id.clone()),
             modifier: 4096,
+            relay_var: None,
         });
         self.current_effect = Some(effect_id.clone());
         self.event_depth += 1;
@@ -8818,6 +8823,7 @@ impl Battle {
         use crate::event::EventResult;
 
         let source = self.current_event.as_ref().and_then(|e| e.source);
+        let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var);
         let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
@@ -8961,7 +8967,12 @@ impl Battle {
                 item_callbacks::dispatch_on_modify_atk_priority(self, item_id.as_str(), pokemon_pos)
             }
             "ModifyCritRatio" => {
-                item_callbacks::dispatch_on_modify_crit_ratio(self, item_id.as_str(), pokemon_pos)
+                item_callbacks::dispatch_on_modify_crit_ratio(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                    relay_var.unwrap_or(0),
+                )
             }
             "ModifyDamage" => {
                 item_callbacks::dispatch_on_modify_damage(self, item_id.as_str(), pokemon_pos)
@@ -9003,7 +9014,12 @@ impl Battle {
                 item_callbacks::dispatch_on_modify_spe(self, item_id.as_str(), pokemon_pos)
             }
             "ModifyWeight" => {
-                item_callbacks::dispatch_on_modify_weight(self, item_id.as_str(), pokemon_pos)
+                item_callbacks::dispatch_on_modify_weight(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                    relay_var.unwrap_or(0),
+                )
             }
             "NegateImmunity" => {
                 item_callbacks::dispatch_on_negate_immunity(self, item_id.as_str(), pokemon_pos)
@@ -9724,6 +9740,7 @@ impl Battle {
             source,
             effect: source_effect.cloned(),
             modifier: 4096,
+            relay_var,
         });
 
         let mut result = relay_var;

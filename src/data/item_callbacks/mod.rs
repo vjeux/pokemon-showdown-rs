@@ -705,11 +705,20 @@ pub fn dispatch_on_modify_atk_priority(
 
 /// Dispatch onModifyCritRatio callbacks
 pub fn dispatch_on_modify_crit_ratio(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    crit_ratio: i32,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "leek" => leek::on_modify_crit_ratio(battle, pokemon_pos, crit_ratio),
+        "luckypunch" => luckypunch::on_modify_crit_ratio(battle, crit_ratio),
+        "razorclaw" => razorclaw::on_modify_crit_ratio(battle, crit_ratio),
+        "scopelens" => scopelens::on_modify_crit_ratio(battle, crit_ratio),
+        "stick" => stick::on_modify_crit_ratio(battle, pokemon_pos, crit_ratio),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onModifyDamage callbacks
@@ -813,11 +822,16 @@ pub fn dispatch_on_modify_spe(
 
 /// Dispatch onModifyWeight callbacks
 pub fn dispatch_on_modify_weight(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    weighthg: i32,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "floatstone" => floatstone::on_modify_weight(battle, weighthg),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onNegateImmunity callbacks

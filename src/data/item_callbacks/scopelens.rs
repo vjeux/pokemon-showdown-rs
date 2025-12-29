@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onModifyCritRatio(critRatio) {
 ///     return critRatio + 1;
 /// }
-pub fn on_modify_crit_ratio(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_modify_crit_ratio(_battle: &mut Battle, crit_ratio: i32) -> EventResult {
+    // return critRatio + 1;
+    EventResult::Number(crit_ratio + 1)
 }
