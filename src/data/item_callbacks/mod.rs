@@ -615,11 +615,15 @@ pub fn dispatch_on_effectiveness(
 
 /// Dispatch onEnd callbacks
 pub fn dispatch_on_end(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "utilityumbrella" => utilityumbrella::on_end(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onFoeAfterBoost callbacks
@@ -992,6 +996,7 @@ pub fn dispatch_on_start(
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
         "roomservice" => roomservice::on_start(battle, Some(pokemon_pos)),
+        "utilityumbrella" => utilityumbrella::on_start(battle, Some(pokemon_pos)),
         _ => EventResult::Continue,
     }
 }
@@ -1122,11 +1127,15 @@ pub fn dispatch_on_try_hit(
 
 /// Dispatch onUpdate callbacks
 pub fn dispatch_on_update(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "utilityumbrella" => utilityumbrella::on_update(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onUse callbacks
