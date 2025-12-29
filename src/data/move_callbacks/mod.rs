@@ -1519,7 +1519,7 @@ pub fn dispatch_condition_on_before_move(
         "grudge" => grudge::condition::on_before_move(battle, source_pos),
         "healblock" => healblock::condition::on_before_move(battle, source_pos, None, move_id),
         "rage" => rage::condition::on_before_move(battle, source_pos),
-        "taunt" => taunt::condition::on_before_move(battle, move_id),
+        "taunt" => taunt::condition::on_before_move(battle, source_pos, move_id),
         "throatchop" => throatchop::condition::on_before_move(battle, source_pos, None, move_id),
         _ => EventResult::Continue,
     }

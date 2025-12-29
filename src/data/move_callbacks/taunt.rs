@@ -152,10 +152,48 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_before_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        // Blocked: Signature is missing attacker position parameter
-        // Cannot add the 'cant' message without knowing which pokemon is the attacker
+    pub fn on_before_move(
+        battle: &mut Battle,
+        attacker_pos: (usize, usize),
+        _move_id: &str,
+    ) -> EventResult {
+        // Get active move properties
+        let (is_z, is_z_or_max_powered, category, move_id, move_name) = match &battle.active_move {
+            Some(m) => {
+                let is_z_or_max = m.is_z || m.is_max;
+                let name = battle.dex.get_move_by_id(&m.id)
+                    .map(|md| md.name.clone())
+                    .unwrap_or_else(|| m.id.to_string());
+                (m.is_z, is_z_or_max, m.category.clone(), m.id.clone(), name)
+            }
+            None => return EventResult::Continue,
+        };
+
+        // if (!(move.isZ && move.isZOrMaxPowered) && move.category === 'Status' && move.id !== 'mefirst')
+        let is_z_and_powered = is_z && is_z_or_max_powered;
+        if !is_z_and_powered && category == "Status" && move_id.as_str() != "mefirst" {
+            // this.add('cant', attacker, 'move: Taunt', move);
+            let attacker_slot = {
+                let attacker_pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                attacker_pokemon.get_slot()
+            };
+
+            battle.add(
+                "cant",
+                &[
+                    crate::battle::Arg::from(attacker_slot),
+                    crate::battle::Arg::from("move: Taunt"),
+                    crate::battle::Arg::from(move_name),
+                ],
+            );
+
+            // return false;
+            return EventResult::Boolean(false);
+        }
+
         EventResult::Continue
     }
 }

@@ -2,7 +2,7 @@
 
 ## Summary
 
-**Current Status:** 3 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 2 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **SESSION COMPLETE** - All implementable callbacks with existing infrastructure have been successfully implemented!
 
@@ -17,7 +17,7 @@
 - **Used existing queue and pokemon infrastructure** - For pledge move queue prioritization
 - **Used existing ActiveMove.ohko field** - For telekinesis accuracy check
 - **Used existing Pokemon.run_immunity() and has_type() methods** - For thousandarrows Ground immunity check
-- **Newly implemented**: 20 callbacks using existing and new infrastructure!
+- **Newly implemented**: 21 callbacks using existing and new infrastructure!
   - telekinesis.rs: on_try ✓, condition::on_start ✓, condition::on_accuracy ✓, condition::on_immunity ✓ (COMPLETE FILE 6/6)
   - uproar.rs: condition::on_any_set_status ✓ (COMPLETE FILE 5/5)
   - healblock.rs: condition::on_try_heal ✓ (COMPLETE FILE 8/8)
@@ -29,9 +29,10 @@
   - waterpledge.rs: on_modify_move ✓, on_prepare_hit ✓, condition::on_modify_move ✓ (COMPLETE FILE 6/6)
   - tarshot.rs: condition::on_effectiveness ✓ (COMPLETE FILE 2/2)
   - thousandarrows.rs: on_effectiveness ✓ (COMPLETE FILE 1/1)
-- **Files completed**: 11 new complete files (telekinesis, uproar, healblock, wonderroom, terablast, terastarstorm, technoblast, firepledge, waterpledge, tarshot, thousandarrows)
-- **TODO markers verified**: 3 actual "TODO: Implement 1-to-1 from JS" markers remaining
-- **Progress**: 23 → 3 remaining TODOs (implemented 20 callbacks this session - 87% reduction!)
+  - taunt.rs: condition::on_before_move ✓ (COMPLETE FILE 4/4)
+- **Files completed**: 12 new complete files (telekinesis, uproar, healblock, wonderroom, terablast, terastarstorm, technoblast, firepledge, waterpledge, tarshot, thousandarrows, taunt)
+- **TODO markers verified**: 2 actual "TODO: Implement 1-to-1 from JS" markers remaining
+- **Progress**: 23 → 2 remaining TODOs (implemented 21 callbacks this session - 91% reduction!)
 
 **Previous Session - Verification Work:**
 - **Newly implemented**: 2 callbacks using infrastructure discovery
@@ -121,21 +122,18 @@ The Pokemon struct already has more methods than initially documented:
   - Available fields: `force_stab`, `source_effect`, `side_condition`, `ohko`, `recoil`, `infiltrates`, `flags`
   - Example: `if let Some(ref mut active_move) = battle.active_move { active_move.move_type = "Fire".to_string(); }`
 
-**Comprehensive Analysis of 3 Remaining TODO Markers:**
+**Comprehensive Analysis of 2 Remaining TODO Markers:**
 
-After exhaustive investigation and infrastructure additions, only 3 remaining TODO markers require additional infrastructure:
+After exhaustive investigation and infrastructure additions, only 2 remaining TODO markers require additional infrastructure:
 
-1. **Function Signature Mismatches** (blocks 1 callback):
-   - taunt.rs: `condition::on_before_move` - missing `attacker_pos: (usize, usize)` parameter
-
-2. **Complex Infrastructure Missing** (blocks 2 callbacks):
+1. **Complex Infrastructure Missing** (blocks 2 callbacks):
    - substitute.rs: `condition::on_try_primary_hit` - needs `actions.getDamage()`, `HIT_SUBSTITUTE`, `calcRecoilDamage()`
    - fling.rs: `on_prepare_hit` - needs `singleEvent()`, dynamic `move.onHit` assignment, `item.fling` data structure
 
-**Status:** All implementable callbacks with existing and newly added infrastructure have been completed. The remaining 3 TODOs require additional infrastructure additions to the core battle engine.
+**Status:** All implementable callbacks with existing and newly added infrastructure have been completed. The remaining 2 TODOs require additional infrastructure additions to the core battle engine.
 
 **ITEMS:** ✅ 100% Complete (346/346) - No TODO markers remaining
-**MOVES:** 63/373 files complete - 3 TODO markers remain, all blocked by missing infrastructure
+**MOVES:** 64/373 files complete - 2 TODO markers remain, all blocked by missing infrastructure
 
 **Blocking Issues:** All 13 remaining callbacks require missing infrastructure:
 - Volatile condition management with source tracking (add_volatile with source parameter)
@@ -489,7 +487,7 @@ Moves with callbacks: 373
 - [x] tailwind - Tailwind (Status, Flying) - 4 callbacks: condition::durationCallback, condition::onSideStart, condition::onModifySpe, condition::onSideEnd
 - [x] takeheart - Take Heart (Status, Psychic) - 1 callback: onHit
 - [x] tarshot - Tar Shot (Status, Rock) - 2 callbacks: condition::onStart, condition::onEffectiveness
-- [ ] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart ✓, condition::onEnd ✓, condition::onDisableMove ✓, condition::onBeforeMove (3/4 implemented)
+- [x] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove, condition::onBeforeMove
 - [x] teatime - Teatime (Status, Normal) - 1 callback: onHitField
 - [x] technoblast - Techno Blast (Special, Normal) - 1 callback: onModifyType
 - [x] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry, condition::onStart, condition::onAccuracy, condition::onImmunity, condition::onUpdate, condition::onEnd
