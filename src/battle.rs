@@ -178,6 +178,8 @@ pub struct EventInfo {
     pub relay_var_boost: Option<crate::dex_data::BoostsTable>,
     /// Relay variable for secondary effects (onModifySecondaries, etc.)
     pub relay_var_secondaries: Option<Vec<crate::battle_actions::SecondaryEffect>>,
+    /// Relay variable for type strings (onImmunity, etc.)
+    pub relay_var_type: Option<String>,
 }
 
 impl EventInfo {
@@ -192,6 +194,7 @@ impl EventInfo {
             relay_var_float: None,
             relay_var_boost: None,
             relay_var_secondaries: None,
+            relay_var_type: None,
         }
     }
 }
@@ -208,6 +211,7 @@ impl Default for EventInfo {
             relay_var_float: None,
             relay_var_boost: None,
             relay_var_secondaries: None,
+            relay_var_type: None,
         }
     }
 }
@@ -8105,6 +8109,7 @@ impl Battle {
             relay_var_float: None,
             relay_var_boost: None,
             relay_var_secondaries: None,
+            relay_var_type: None,
         });
         self.current_effect = Some(effect_id.clone());
         self.event_depth += 1;
@@ -8841,6 +8846,7 @@ impl Battle {
         let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var);
         let relay_var_float = self.current_event.as_ref().and_then(|e| e.relay_var_float);
         let relay_var_boost = self.current_event.as_ref().and_then(|e| e.relay_var_boost.clone());
+        let relay_var_type = self.current_event.as_ref().and_then(|e| e.relay_var_type.clone());
         let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
@@ -8970,7 +8976,12 @@ impl Battle {
                 )
             }
             "Hit" => item_callbacks::dispatch_on_hit(self, item_id.as_str(), pokemon_pos),
-            "Immunity" => item_callbacks::dispatch_on_immunity(self, item_id.as_str(), pokemon_pos),
+            "Immunity" => item_callbacks::dispatch_on_immunity(
+                self,
+                item_id.as_str(),
+                pokemon_pos,
+                relay_var_type.as_deref(),
+            ),
             "MaybeTrapPokemon" => {
                 item_callbacks::dispatch_on_maybe_trap_pokemon(self, item_id.as_str(), pokemon_pos)
             }
@@ -9796,6 +9807,7 @@ impl Battle {
             relay_var_float: None,
             relay_var_boost: None,
             relay_var_secondaries: None,
+            relay_var_type: None,
         });
 
         let mut result = relay_var;
@@ -9877,6 +9889,7 @@ impl Battle {
             relay_var_float: relay_var,
             relay_var_boost: None,
             relay_var_secondaries: None,
+            relay_var_type: None,
         });
 
         let mut result = relay_var;

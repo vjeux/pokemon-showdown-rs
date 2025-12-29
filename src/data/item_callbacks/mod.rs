@@ -662,11 +662,22 @@ pub fn dispatch_on_hit(
 
 /// Dispatch onImmunity callbacks
 pub fn dispatch_on_immunity(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    immunity_type: Option<&str>,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "safetygoggles" => {
+            if let Some(type_str) = immunity_type {
+                safetygoggles::on_immunity(battle, pokemon_pos, type_str)
+            } else {
+                EventResult::Continue
+            }
+        }
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onMaybeTrapPokemon callbacks
