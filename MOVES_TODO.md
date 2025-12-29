@@ -2,9 +2,11 @@
 
 ## Summary
 
-**Current Status:** 81 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 80 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Continuation Session - Verification Work:**
+- **Newly implemented**: 1 callback using current_effect_state discovery
+  - wish.rs: condition::on_residual ✅ COMPLETE FILE
 - **Verified complete files**: 4 files (wideguard, trick, switcheroo, thief)
   - wideguard.rs: All 4 callbacks fully implemented (on_try, on_hit_side, condition::on_side_start, condition::on_try_hit)
   - trick.rs: Both callbacks complete (on_try_immunity, on_hit) - note about singleEvent is not a blocker
@@ -42,8 +44,9 @@
     - throatchop.rs: condition::on_before_move, condition::on_modify_move
     - uproar.rs: on_try_hit, condition::on_residual
   - Previous session: swallow.rs: onTry, onHit
-- **Files marked complete**: 50 total (4 newly verified + 46 previous)
-  - Now complete: wideguard, trick, switcheroo, thief
+- **Files marked complete**: 51 total (1 wish + 4 verified + 46 previous)
+  - Now complete: wish (newly implemented on_residual)
+  - Verified complete: wideguard, trick, switcheroo, thief
   - Previous session: throatchop, takeheart, temperflare, upperhand, veeveevolley, teleport, thunder, thunderclap, topsyturvy, venomdrench, venoshock, wakeupslap, watershuriken, waterspout, wildboltstorm, wringout, tailwind, transform, trickortreat, syrupbomb, teatime, toxicspikes
   - Previous session: synthesis, synchronoise, + 25 others
 - **Partial implementations documented**: 18 moves now show partial completion status with ✓ markers (added healblock, trick, switcheroo, substitute, uproar)
@@ -470,7 +473,7 @@ Moves with callbacks: 373
 - [x] weatherball - Weather Ball (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [x] wideguard - Wide Guard (Status, Rock) - 4 callbacks: onTry, onHitSide, condition::onSideStart, condition::onTryHit
 - [x] wildboltstorm - Wildbolt Storm (Special, Electric) - 1 callback: onModifyMove
-- [ ] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart ✓, condition::onResidual, condition::onEnd ✓ (2/3 implemented)
+- [x] wish - Wish (Status, Normal) - 3 callbacks: condition::onStart, condition::onResidual, condition::onEnd
 - [ ] wonderroom - Wonder Room (Status, Psychic) - 5 callbacks: condition::durationCallback ✓, condition::onModifyMove, condition::onFieldStart ✓, condition::onFieldRestart ✓, condition::onFieldEnd ✓ (4/5 implemented)
 - [x] worryseed - Worry Seed (Status, Grass) - 3 callbacks: onTryImmunity, onTryHit, onHit
 - [x] wringout - Wring Out (Special, Normal) - 1 callback: basePowerCallback
