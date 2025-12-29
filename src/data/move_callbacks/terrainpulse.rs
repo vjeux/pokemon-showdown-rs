@@ -25,11 +25,47 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_type(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _move_id: &str,
-    _pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+
+    // if (!pokemon.isGrounded()) return;
+    let is_grounded = {
+        let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_ref.is_grounded()
+    };
+
+    if !is_grounded {
+        return EventResult::Continue;
+    }
+
+    // switch (this.field.terrain)
+    let terrain = &battle.field.terrain;
+
+    let new_type = if terrain == &ID::from("electricterrain") {
+        "Electric"
+    } else if terrain == &ID::from("grassyterrain") {
+        "Grass"
+    } else if terrain == &ID::from("mistyterrain") {
+        "Fairy"
+    } else if terrain == &ID::from("psychicterrain") {
+        "Psychic"
+    } else {
+        return EventResult::Continue;
+    };
+
+    // move.type = ...
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.move_type = new_type.to_string();
+    }
+
     EventResult::Continue
 }
 
@@ -40,10 +76,39 @@ pub fn on_modify_type(
 ///     }
 /// }
 pub fn on_modify_move(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    let pokemon = pokemon_pos;
+
+    // if (this.field.terrain && pokemon.isGrounded())
+    let terrain_active = !battle.field.terrain.is_empty();
+
+    if !terrain_active {
+        return EventResult::Continue;
+    }
+
+    let is_grounded = {
+        let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_ref.is_grounded()
+    };
+
+    if !is_grounded {
+        return EventResult::Continue;
+    }
+
+    // move.basePower *= 2;
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.base_power *= 2;
+        // this.debug('BP doubled in Terrain');
+        // Debug is typically not logged in production code
+    }
+
     EventResult::Continue
 }
