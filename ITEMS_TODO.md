@@ -23,7 +23,7 @@ Items with callbacks: 326
 - [ ] adrenalineorb - Adrenaline Orb (Gen 7) - 1 callback: onAfterBoost
 - [x] aerodactylite - Aerodactylite (Gen 6) - 1 callback: onTakeItem
 - [x] aggronite - Aggronite (Gen 6) - 1 callback: onTakeItem
-- [ ] aguavberry - Aguav Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [x] aguavberry - Aguav Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [ ] airballoon - Air Balloon (Gen 5) - 3 callbacks: onStart, onDamagingHit, onAfterSubDamage
 - [x] alakazite - Alakazite (Gen 6) - 1 callback: onTakeItem
 - [x] altarianite - Altarianite (Gen 6) - 1 callback: onTakeItem
@@ -116,7 +116,7 @@ Items with callbacks: 326
 - [x] feraligite - Feraligite (Gen 9) - 1 callback: onTakeItem
 - [x] fightinggem - Fighting Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] fightingmemory - Fighting Memory (Gen 7) - 1 callback: onTakeItem
-- [ ] figyberry - Figy Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [x] figyberry - Figy Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] firegem - Fire Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] firememory - Fire Memory (Gen 7) - 1 callback: onTakeItem
 - [x] fistplate - Fist Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
@@ -158,7 +158,7 @@ Items with callbacks: 326
 - [x] heatranite - Heatranite (Gen 9) - 1 callback: onTakeItem
 - [x] heracronite - Heracronite (Gen 6) - 1 callback: onTakeItem
 - [x] houndoominite - Houndoominite (Gen 6) - 1 callback: onTakeItem
-- [ ] iapapaberry - Iapapa Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [x] iapapaberry - Iapapa Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] iceberry - Ice Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [x] icegem - Ice Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] icememory - Ice Memory (Gen 7) - 1 callback: onTakeItem
@@ -194,7 +194,7 @@ Items with callbacks: 326
 - [x] machobrace - Macho Brace (Gen 3) - 1 callback: onModifySpe
 - [x] magearnite - Magearnite (Gen 9) - 1 callback: onTakeItem
 - [x] magnet - Magnet (Gen 2) - 1 callback: onBasePower
-- [ ] magoberry - Mago Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [x] magoberry - Mago Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] mail - Mail (Gen 2) - 1 callback: onTakeItem
 - [x] malamarite - Malamarite (Gen 9) - 1 callback: onTakeItem
 - [x] manectite - Manectite (Gen 6) - 1 callback: onTakeItem
@@ -332,7 +332,7 @@ Items with callbacks: 326
 - [x] wellspringmask - Wellspring Mask (Gen 9) - 2 callbacks: onBasePower, onTakeItem
 - [ ] whiteherb - White Herb (Gen 3) - 6 callbacks: onStart, onAnySwitchIn, onAnyAfterMega, onAnyAfterMove, onResidual, onUse
 - [x] widelens - Wide Lens (Gen 4) - 1 callback: onSourceModifyAccuracy
-- [ ] wikiberry - Wiki Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [x] wikiberry - Wiki Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] wiseglasses - Wise Glasses (Gen 4) - 1 callback: onBasePower
 - [ ] yacheberry - Yache Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] zapplate - Zap Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
