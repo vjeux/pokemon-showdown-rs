@@ -18,11 +18,14 @@ use super::{MoveHandlerResult, Status, Effect};
 /// 					this.field.setTerrain('psychicterrain');
 /// 				},
 /// 			},
-/// 
+///
 /// 		}
 /// ```
 pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
-    // TODO: Implement 1-to-1 from JS
+    // this.field.setTerrain('psychicterrain');
+    use crate::dex_data::ID;
+    battle.field.set_terrain(ID::from("psychicterrain"), None);
+
     MoveHandlerResult::Undefined
 }
 
