@@ -12,6 +12,7 @@ pub mod acupressure;
 pub mod afteryou;
 pub mod alluringvoice;
 pub mod allyswitch;
+pub mod anchorshot;
 pub mod aquaring;
 pub mod aromatherapy;
 pub mod assist;
@@ -736,6 +737,7 @@ pub fn dispatch_on_hit(
         "afteryou" => afteryou::on_hit(battle, pokemon_pos, target_pos),
         "alluringvoice" => alluringvoice::on_hit(battle, pokemon_pos, target_pos),
         "allyswitch" => allyswitch::on_hit(battle, pokemon_pos, target_pos),
+        "anchorshot" => anchorshot::on_hit(battle, pokemon_pos, target_pos),
         "aromatherapy" => aromatherapy::on_hit(battle, pokemon_pos, target_pos),
         "assist" => assist::on_hit(battle, pokemon_pos, target_pos),
         "autotomize" => autotomize::on_hit(battle, pokemon_pos, target_pos),
