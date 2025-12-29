@@ -5,10 +5,8 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
 
 /// onHit(...)
 ///
@@ -21,11 +19,11 @@ use super::{MoveHandlerResult, Status, Effect};
 ///
 /// 		}
 /// ```
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
+pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // this.field.setTerrain('psychicterrain');
-    use crate::dex_data::ID;
     battle.field.set_terrain(ID::from("psychicterrain"), None);
 
-    MoveHandlerResult::Undefined
+    EventResult::Continue
 }
+
 

@@ -129,6 +129,7 @@ pub mod gmaxsteelsurge;
 pub mod gmaxvinelash;
 pub mod gmaxvolcalith;
 pub mod gmaxwildfire;
+pub mod genesissupernova;
 pub mod grassknot;
 pub mod grasspledge;
 pub mod grassyglide;
@@ -194,6 +195,10 @@ pub mod magnetrise;
 pub mod magnitude;
 pub mod matblock;
 pub mod maxguard;
+pub mod maxlightning;
+pub mod maxmindstorm;
+pub mod maxovergrowth;
+pub mod maxstarfall;
 pub mod meanlook;
 pub mod mefirst;
 pub mod metalburst;
@@ -732,6 +737,7 @@ pub fn dispatch_on_hit(
         "floralhealing" => floralhealing::on_hit(battle, pokemon_pos, target_pos),
         "forestscurse" => forestscurse::on_hit(battle, pokemon_pos, target_pos),
         "freezyfrost" => freezyfrost::on_hit(battle, pokemon_pos, target_pos),
+        "genesissupernova" => genesissupernova::on_hit(battle, pokemon_pos, target_pos),
         "gmaxsnooze" => gmaxsnooze::on_hit(battle, pokemon_pos, target_pos),
         "guardsplit" => guardsplit::on_hit(battle, pokemon_pos, target_pos),
         "guardswap" => guardswap::on_hit(battle, pokemon_pos, target_pos),
@@ -747,6 +753,10 @@ pub fn dispatch_on_hit(
         "lunarblessing" => lunarblessing::on_hit(battle, pokemon_pos, target_pos),
         "magicpowder" => magicpowder::on_hit(battle, pokemon_pos, target_pos),
         "maxguard" => maxguard::on_hit(battle, pokemon_pos, target_pos),
+        "maxlightning" => maxlightning::on_hit(battle, pokemon_pos, target_pos),
+        "maxmindstorm" => maxmindstorm::on_hit(battle, pokemon_pos, target_pos),
+        "maxovergrowth" => maxovergrowth::on_hit(battle, pokemon_pos, target_pos),
+        "maxstarfall" => maxstarfall::on_hit(battle, pokemon_pos, target_pos),
         "meanlook" => meanlook::on_hit(battle, pokemon_pos, target_pos),
         "metronome" => metronome::on_hit(battle, pokemon_pos, target_pos),
         "mimic" => mimic::on_hit(battle, pokemon_pos, target_pos),
