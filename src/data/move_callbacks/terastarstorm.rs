@@ -16,11 +16,52 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_type(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _move_id: &str,
-    _pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::StatID;
+
+    let pokemon = pokemon_pos;
+
+    // if (pokemon.species_id.as_str() === 'Terapagos-Stellar')
+    let (is_terapagos_stellar, should_be_physical) = {
+        let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let is_terapagos = pokemon_ref.species_id.as_str() == "Terapagos-Stellar";
+
+        if is_terapagos {
+            // if (pokemon.terastallized && pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true))
+            let should_be_physical = if pokemon_ref.terastallized.is_some() {
+                let atk_stat = pokemon_ref.get_stat(StatID::Atk, true);
+                let spa_stat = pokemon_ref.get_stat(StatID::SpA, true);
+                atk_stat > spa_stat
+            } else {
+                false
+            };
+
+            (true, should_be_physical)
+        } else {
+            (false, false)
+        }
+    };
+
+    if is_terapagos_stellar {
+        if let Some(ref mut active_move) = battle.active_move {
+            // move.type = 'Stellar';
+            active_move.move_type = "Stellar".to_string();
+
+            // if (pokemon.terastallized && ...)
+            if should_be_physical {
+                // move.category = 'Physical';
+                active_move.category = "Physical".to_string();
+            }
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -30,10 +71,28 @@ pub fn on_modify_type(
 ///     }
 /// }
 pub fn on_modify_move(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let pokemon = pokemon_pos;
+
+    // if (pokemon.species_id.as_str() === 'Terapagos-Stellar')
+    let is_terapagos_stellar = {
+        let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        pokemon_ref.species_id.as_str() == "Terapagos-Stellar"
+    };
+
+    if is_terapagos_stellar {
+        if let Some(ref mut active_move) = battle.active_move {
+            // move.target = 'allAdjacentFoes';
+            active_move.target = "allAdjacentFoes".to_string();
+        }
+    }
+
     EventResult::Continue
 }
