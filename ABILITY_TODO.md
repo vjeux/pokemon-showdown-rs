@@ -206,15 +206,6 @@ This file tracks abilities that require infrastructure not yet implemented in Ru
   - Returns true if pokemon can be affected by the type/effect
   - Used in overcoat.rs on_try_hit: checks powder immunity before blocking
 
-### Pokemon HP tracking (Sturdy, Multiscale, etc.)
-- **Missing**: pokemon.hp and pokemon.maxhp fields
-- **JavaScript code**: `target.hp === target.maxhp`, `damage >= target.hp`, `target.hp - 1`
-- **Required**:
-  - Need pokemon.hp field to track current HP
-  - Need pokemon.maxhp or baseMaxhp field for maximum HP
-  - Used in sturdy.rs to survive OHKO at full HP
-  - Used in many abilities to check HP thresholds
-
 ### Effect type checking (Sturdy, Disguise, etc.)
 - **Missing**: effect.effectType property
 - **JavaScript code**: `effect.effectType === 'Move'`
