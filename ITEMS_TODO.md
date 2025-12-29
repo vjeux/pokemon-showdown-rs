@@ -172,14 +172,14 @@ Items with callbacks: 326
 - [ ] kebiaberry - Kebia Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [ ] keeberry - Kee Berry (Gen 6) - 2 callbacks: onAfterMoveSecondary, onEat
 - [ ] kingsrock - King's Rock (Gen 2) - 1 callback: onModifyMove
-- [ ] lansatberry - Lansat Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] lansatberry - Lansat Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] latiasite - Latiasite (Gen 6) - 1 callback: onTakeItem
 - [x] latiosite - Latiosite (Gen 6) - 1 callback: onTakeItem
 - [x] laxincense - Lax Incense (Gen 3) - 1 callback: onModifyAccuracy
 - [ ] leek - Leek (Gen 8) - 1 callback: onModifyCritRatio
 - [x] leftovers - Leftovers (Gen 2) - 1 callback: onResidual
 - [ ] leppaberry - Leppa Berry (Gen 3) - 2 callbacks: onUpdate, onEat
-- [ ] liechiberry - Liechi Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] liechiberry - Liechi Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] lifeorb - Life Orb (Gen 4) - 2 callbacks: onModifyDamage, onAfterMoveSecondarySelf
 - [x] lightball - Light Ball (Gen 2) - 2 callbacks: onModifyAtk, onModifySpA
 - [ ] loadeddice - Loaded Dice (Gen 9) - 1 callback: onModifyMove
@@ -275,7 +275,7 @@ Items with callbacks: 326
 - [x] rustedsword - Rusted Sword (Gen 8) - 1 callback: onTakeItem
 - [x] sablenite - Sablenite (Gen 6) - 1 callback: onTakeItem
 - [ ] safetygoggles - Safety Goggles (Gen 6) - 2 callbacks: onImmunity, onTryHit
-- [ ] salacberry - Salac Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] salacberry - Salac Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] salamencite - Salamencite (Gen 6) - 1 callback: onTakeItem
 - [x] sceptilite - Sceptilite (Gen 6) - 1 callback: onTakeItem
 - [x] scizorite - Scizorite (Gen 6) - 1 callback: onTakeItem
