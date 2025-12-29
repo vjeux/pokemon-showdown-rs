@@ -14,7 +14,26 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        if move_data.flags.contains_key("bullet") {
+            let target_ident = {
+                let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Null,
+                };
+                target.get_slot()
+            };
+
+            battle.add(
+                "-immune",
+                &[
+                    target_ident.as_str().into(),
+                    "[from] ability: Bulletproof".into(),
+                ],
+            );
+            return EventResult::Null;
+        }
+    }
     EventResult::Continue
 }
 

@@ -14,7 +14,25 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let (is_frozen, pokemon_ident) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (pokemon.status == "frz".into(), pokemon.get_slot())
+    };
+
+    if is_frozen {
+        battle.add(
+            "-activate",
+            &[
+                pokemon_ident.as_str().into(),
+                "ability: Magma Armor".into(),
+            ],
+        );
+        battle.cure_status(pokemon_pos);
+    }
+
     EventResult::Continue
 }
 
