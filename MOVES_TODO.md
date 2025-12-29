@@ -4,6 +4,17 @@
 
 **Current Status:** 81 TODO callbacks remaining (out of ~700+ original callbacks)
 
+**Continuation Session - Verification Work:**
+- **Verified complete files**: 4 files (wideguard, trick, switcheroo, thief)
+  - wideguard.rs: All 4 callbacks fully implemented (on_try, on_hit_side, condition::on_side_start, condition::on_try_hit)
+  - trick.rs: Both callbacks complete (on_try_immunity, on_hit) - note about singleEvent is not a blocker
+  - switcheroo.rs: Both callbacks complete (on_try_immunity, on_hit)
+  - thief.rs: on_after_hit fully implemented
+- **Corrected status**: wonderroom.rs is 4/5 implemented (not 1/5) - discovered 3 more complete callbacks
+- **TODO markers found**: 27 actual "TODO: Implement 1-to-1 from JS" markers in codebase
+- **Remaining blockers**: All 27 TODOs blocked by missing infrastructure (move modification, signatures, return null capability)
+- **Progress**: 88 → 81 remaining TODOs (verified 7 callbacks complete)
+
 **Latest Session Progress:**
 - **Callbacks implemented**: 11 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish + 1 fling + 1 teatime ✅ + 1 toxicspikes ✅)
   - healblock.rs: condition::on_start, condition::on_restart
