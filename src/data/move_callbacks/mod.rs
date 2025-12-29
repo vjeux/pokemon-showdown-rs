@@ -10,6 +10,7 @@ use crate::event::EventResult;
 pub mod acrobatics;
 pub mod acupressure;
 pub mod afteryou;
+pub mod alluringvoice;
 pub mod allyswitch;
 pub mod aquaring;
 pub mod aromatherapy;
@@ -733,6 +734,7 @@ pub fn dispatch_on_hit(
     match move_id {
         "acupressure" => acupressure::on_hit(battle, pokemon_pos, target_pos),
         "afteryou" => afteryou::on_hit(battle, pokemon_pos, target_pos),
+        "alluringvoice" => alluringvoice::on_hit(battle, pokemon_pos, target_pos),
         "allyswitch" => allyswitch::on_hit(battle, pokemon_pos, target_pos),
         "aromatherapy" => aromatherapy::on_hit(battle, pokemon_pos, target_pos),
         "assist" => assist::on_hit(battle, pokemon_pos, target_pos),

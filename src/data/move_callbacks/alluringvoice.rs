@@ -5,12 +5,10 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
 
-/// onHit(...)
+/// onHit(target, source, move)
 ///
 /// ```text
 /// JS Source (data/moves.ts):
@@ -19,11 +17,27 @@ use super::{MoveHandlerResult, Status, Effect};
 /// 					target.addVolatile('confusion', source, move);
 /// 				}
 /// 			},
-/// 
+///
 /// 		}
 /// ```
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
-}
+pub fn on_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
+    // if (target?.statsRaisedThisTurn) {
+    //     target.addVolatile('confusion', source, move);
+    // }
 
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // TODO: Infrastructure needed - Pokemon::stats_raised_this_turn field
+    // For now, returning Continue as the infrastructure doesn't exist
+    // When available, check if target.stats_raised_this_turn is true,
+    // then add confusion volatile
+
+    EventResult::Continue
+}
