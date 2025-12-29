@@ -216,7 +216,7 @@ Items with callbacks: 326
 - [x] mintberry - Mint Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [x] miracleberry - Miracle Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [x] miracleseed - Miracle Seed (Gen 2) - 1 callback: onBasePower
-- [ ] mirrorherb - Mirror Herb (Gen 9) - 8 callbacks: onFoeAfterBoost, onAnySwitchIn, onAnyAfterMega, onAnyAfterTerastallization, onAnyAfterMove, onResidual, onUse, onEnd
+- [x] mirrorherb - Mirror Herb (Gen 9) - 8 callbacks: onFoeAfterBoost, onAnySwitchIn, onAnyAfterMega, onAnyAfterTerastallization, onAnyAfterMove, onResidual, onUse, onEnd
 - [x] mistyseed - Misty Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
 - [x] muscleband - Muscle Band (Gen 4) - 1 callback: onBasePower
 - [x] mysteryberry - Mystery Berry (Gen 2) - 2 callbacks: onUpdate, onEat

@@ -8958,7 +8958,18 @@ impl Battle {
             }
             "End" => item_callbacks::dispatch_on_end(self, item_id.as_str(), pokemon_pos),
             "FoeAfterBoost" => {
-                item_callbacks::dispatch_on_foe_after_boost(self, item_id.as_str(), pokemon_pos)
+                let boost = relay_var_boost.as_ref();
+                let effect_id_clone = self.current_effect.clone();
+                let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
+                item_callbacks::dispatch_on_foe_after_boost(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                    target,
+                    source,
+                    effect_id_str,
+                    boost,
+                )
             }
             "FractionalPriority" => {
                 item_callbacks::dispatch_on_fractional_priority(

@@ -442,6 +442,7 @@ pub fn dispatch_on_any_after_mega(
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
         "ejectpack" => ejectpack::on_any_after_mega(battle),
+        "mirrorherb" => mirrorherb::on_any_after_mega(battle),
         "whiteherb" => whiteherb::on_any_after_mega(battle),
         _ => EventResult::Continue,
     }
@@ -456,6 +457,7 @@ pub fn dispatch_on_any_after_move(
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
         "ejectpack" => ejectpack::on_any_after_move(battle),
+        "mirrorherb" => mirrorherb::on_any_after_move(battle),
         "whiteherb" => whiteherb::on_any_after_move(battle),
         _ => EventResult::Continue,
     }
@@ -463,11 +465,15 @@ pub fn dispatch_on_any_after_move(
 
 /// Dispatch onAnyAfterTerastallization callbacks
 pub fn dispatch_on_any_after_terastallization(
-    _battle: &mut Battle,
-    _item_id: &str,
+    battle: &mut Battle,
+    item_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "mirrorherb" => mirrorherb::on_any_after_terastallization(battle),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAnyPseudoWeatherChange callbacks
@@ -492,6 +498,7 @@ pub fn dispatch_on_any_switch_in(
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
         "ejectpack" => ejectpack::on_any_switch_in(battle),
+        "mirrorherb" => mirrorherb::on_any_switch_in(battle),
         "whiteherb" => whiteherb::on_any_switch_in(battle),
         _ => EventResult::Continue,
     }
@@ -648,6 +655,7 @@ pub fn dispatch_on_end(
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
         "ejectpack" => ejectpack::on_end(battle, pokemon_pos),
+        "mirrorherb" => mirrorherb::on_end(battle, pokemon_pos),
         "utilityumbrella" => utilityumbrella::on_end(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
@@ -655,11 +663,25 @@ pub fn dispatch_on_end(
 
 /// Dispatch onFoeAfterBoost callbacks
 pub fn dispatch_on_foe_after_boost(
-    _battle: &mut Battle,
-    _item_id: &str,
+    battle: &mut Battle,
+    item_id: &str,
     _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
+    boost: Option<&crate::dex_data::BoostsTable>,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "mirrorherb" => {
+            if let Some(boost_table) = boost {
+                mirrorherb::on_foe_after_boost(battle, target_pos, source_pos, effect_id, boost_table)
+            } else {
+                EventResult::Continue
+            }
+        }
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onFractionalPriority callbacks
@@ -951,6 +973,7 @@ pub fn dispatch_on_residual(
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
         "ejectpack" => ejectpack::on_residual(battle, pokemon_pos),
+        "mirrorherb" => mirrorherb::on_residual(battle, pokemon_pos),
         "whiteherb" => whiteherb::on_residual(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
@@ -1179,6 +1202,7 @@ pub fn dispatch_on_use(
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
         "ejectpack" => ejectpack::on_use(battle, pokemon_pos),
+        "mirrorherb" => mirrorherb::on_use(battle, pokemon_pos),
         "whiteherb" => whiteherb::on_use(battle, pokemon_pos),
         _ => EventResult::Continue,
     }

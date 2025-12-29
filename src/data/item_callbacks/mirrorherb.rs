@@ -19,8 +19,68 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_foe_after_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_foe_after_boost(
+    battle: &mut Battle,
+    _target_pos: Option<(usize, usize)>,
+    _source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
+    boost: &crate::dex_data::BoostsTable,
+) -> EventResult {
+    // if (effect?.name === 'Opportunist' || effect?.name === 'Mirror Herb') return;
+    if let Some(eff_id) = effect_id {
+        if eff_id == "Opportunist" || eff_id == "Mirror Herb" {
+            return EventResult::Continue;
+        }
+    }
+
+    // Get current boosts from effectState or create empty HashMap
+    let mut boosts_map = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            if let Some(boosts_value) = effect_state.data.get("boosts") {
+                if let Some(obj) = boosts_value.as_object() {
+                    let mut map = std::collections::HashMap::new();
+                    for (key, value) in obj {
+                        if let Some(num) = value.as_i64() {
+                            map.insert(key.clone(), num as i8);
+                        }
+                    }
+                    map
+                } else {
+                    std::collections::HashMap::new()
+                }
+            } else {
+                std::collections::HashMap::new()
+            }
+        } else {
+            std::collections::HashMap::new()
+        }
+    };
+
+    // for (i in boost) { if (boost[i]! > 0) { boostPlus[i] = (boostPlus[i] || 0) + boost[i]!; this.effectState.ready = true; } }
+    use crate::dex_data::BoostID;
+    let mut ready = false;
+    for boost_id in BoostID::all() {
+        let boost_value = boost.get(*boost_id);
+        if boost_value > 0 {
+            let boost_name = format!("{:?}", boost_id).to_lowercase();
+            let current = boosts_map.get(&boost_name).copied().unwrap_or(0);
+            boosts_map.insert(boost_name, current + boost_value);
+            ready = true;
+        }
+    }
+
+    // Store updated boosts and ready in effectState
+    if let Some(ref mut effect_state) = battle.current_effect_state {
+        effect_state
+            .data
+            .insert("boosts".to_string(), serde_json::json!(boosts_map));
+        if ready {
+            effect_state
+                .data
+                .insert("ready".to_string(), serde_json::json!(true));
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -29,7 +89,40 @@ pub fn on_foe_after_boost(battle: &mut Battle, target_pos: Option<(usize, usize)
 ///     (this.effectState.target as Pokemon).useItem();
 /// }
 pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.effectState.ready) return;
+    let ready = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("ready")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    if !ready {
+        return EventResult::Continue;
+    }
+
+    // (this.effectState.target as Pokemon).useItem();
+    let target_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(pos) = target_pos {
+        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -38,7 +131,40 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
 ///     (this.effectState.target as Pokemon).useItem();
 /// }
 pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.effectState.ready) return;
+    let ready = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("ready")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    if !ready {
+        return EventResult::Continue;
+    }
+
+    // (this.effectState.target as Pokemon).useItem();
+    let target_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(pos) = target_pos {
+        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -47,7 +173,40 @@ pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
 ///     (this.effectState.target as Pokemon).useItem();
 /// }
 pub fn on_any_after_terastallization(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.effectState.ready) return;
+    let ready = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("ready")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    if !ready {
+        return EventResult::Continue;
+    }
+
+    // (this.effectState.target as Pokemon).useItem();
+    let target_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(pos) = target_pos {
+        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -56,7 +215,40 @@ pub fn on_any_after_terastallization(battle: &mut Battle) -> EventResult {
 ///     (this.effectState.target as Pokemon).useItem();
 /// }
 pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.effectState.ready) return;
+    let ready = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("ready")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    if !ready {
+        return EventResult::Continue;
+    }
+
+    // (this.effectState.target as Pokemon).useItem();
+    let target_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(pos) = target_pos {
+        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -64,8 +256,41 @@ pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
 ///     if (!this.effectState.ready) return;
 ///     (this.effectState.target as Pokemon).useItem();
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+    // if (!this.effectState.ready) return;
+    let ready = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("ready")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    if !ready {
+        return EventResult::Continue;
+    }
+
+    // (this.effectState.target as Pokemon).useItem();
+    let target_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(pos) = target_pos {
+        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -73,7 +298,39 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 ///     this.boost(this.effectState.boosts, pokemon);
 /// }
 pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // this.boost(this.effectState.boosts, pokemon);
+    let boosts_map = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            if let Some(boosts_value) = effect_state.data.get("boosts") {
+                if let Some(obj) = boosts_value.as_object() {
+                    let mut map = std::collections::HashMap::new();
+                    for (key, value) in obj {
+                        if let Some(num) = value.as_i64() {
+                            map.insert(key.clone(), num as i8);
+                        }
+                    }
+                    Some(map)
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    };
+
+    if let Some(boosts) = boosts_map {
+        // Convert HashMap to Vec of (&str, i8) tuples for battle.boost()
+        let boost_pairs: Vec<(&str, i8)> = boosts
+            .iter()
+            .map(|(k, v)| (k.as_str(), *v))
+            .collect();
+
+        battle.boost(&boost_pairs, pokemon_pos, None, None);
+    }
+
     EventResult::Continue
 }
 
@@ -81,7 +338,13 @@ pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 ///     delete this.effectState.boosts;
 ///     delete this.effectState.ready;
 /// }
-pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+    // delete this.effectState.boosts;
+    // delete this.effectState.ready;
+    if let Some(ref mut effect_state) = battle.current_effect_state {
+        effect_state.data.remove("boosts");
+        effect_state.data.remove("ready");
+    }
+
     EventResult::Continue
 }
