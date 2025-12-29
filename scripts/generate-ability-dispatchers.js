@@ -9,8 +9,9 @@ const fs = require('fs');
 const path = require('path');
 
 // Load the abilities from TypeScript file
-const workspaceRoot = process.env.WORKSPACE_ROOT || path.join(__dirname, '../..');
-const abilitiesPath = path.join(workspaceRoot, 'pokemon-showdown-ts', 'data', 'abilities.ts');
+const workspaceRoot = process.env.WORKSPACE_ROOT || path.join(__dirname, '..');
+const showdownDir = process.env.SHOWDOWN_DIR || 'pokemon-showdown';
+const abilitiesPath = path.join(path.dirname(workspaceRoot), showdownDir, 'data', 'abilities.ts');
 const abilitiesContent = fs.readFileSync(abilitiesPath, 'utf8');
 
 // Parse abilities - extract each ability definition

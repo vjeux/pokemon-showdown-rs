@@ -1,0 +1,33 @@
+//! Sap Sipper Ability
+//!
+//! Pokemon Showdown - http://pokemonshowdown.com/
+//!
+//! Generated from data/abilities.ts
+
+use crate::battle::Battle;
+use crate::event::EventResult;
+
+/// onTryHit(target, source, move) {
+///     if (target !== source && move.type === 'Grass') {
+///         if (!this.boost({ atk: 1 })) {
+///             this.add('-immune', target, '[from] ability: Sap Sipper');
+///         }
+///         return null;
+///     }
+/// }
+pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    // TODO: Implement 1-to-1 from JS
+    EventResult::Continue
+}
+
+/// onAllyTryHitSide(target, source, move) {
+///     if (source === this.effectState.target || !target.isAlly(source)) return;
+///     if (move.type === 'Grass') {
+///         this.boost({ atk: 1 }, this.effectState.target);
+///     }
+/// }
+pub fn on_ally_try_hit_side(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    // TODO: Implement 1-to-1 from JS
+    EventResult::Continue
+}
+
