@@ -2162,27 +2162,23 @@ impl Battle {
         let trick_room_id = ID::new("trickroom");
         let trick_room_active = self.field.has_pseudo_weather(&trick_room_id);
 
-        // Sort by priority (desc), then speed (desc, or asc if Trick Room), then random
-        let tie_breaker = self.random(2) == 0;
-        actions.sort_by(|a, b| {
-            let priority_cmp = b.3.cmp(&a.3); // Higher priority first
-            if priority_cmp != std::cmp::Ordering::Equal {
-                return priority_cmp;
-            }
-            // Speed comparison: normally higher speed first, but reversed in Trick Room
-            let speed_cmp = if trick_room_active {
-                a.4.cmp(&b.4) // Lower speed first in Trick Room
-            } else {
-                b.4.cmp(&a.4) // Higher speed first normally
-            };
-            if speed_cmp != std::cmp::Ordering::Equal {
-                return speed_cmp;
-            }
-            // Speed tie - use random tie breaker
-            if tie_breaker {
-                std::cmp::Ordering::Less
-            } else {
-                std::cmp::Ordering::Greater
+        // Sort by priority (desc), then speed (desc, or asc if Trick Room), then shuffle ties
+        // JavaScript: this.queue.sort(); which calls this.battle.speedSort(this.list, comparePriority);
+        // comparePriority compares by order, priority, speed, subOrder, effectOrder
+        // speedSort shuffles tied items using the PRNG
+        self.speed_sort(&mut actions, |action| {
+            PriorityItem {
+                order: None,
+                priority: action.3 as i32, // priority (i8 -> i32)
+                speed: if trick_room_active {
+                    // In Trick Room, lower speed goes first, so negate speed for comparison
+                    -action.4
+                } else {
+                    action.4 // speed
+                },
+                sub_order: 0,
+                effect_order: 0,
+                index: 0,
             }
         });
 
