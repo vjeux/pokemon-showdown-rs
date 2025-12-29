@@ -20,3 +20,19 @@ This file tracks abilities that require infrastructure not yet implemented in Ru
 - **Required**:
   - Need to understand Arg enum and how to construct pokemon identifier for add()
   - Otherwise implementation is straightforward (check weather, return false/null)
+
+### Filter / Solid Rock / Prism Armor (filter.rs, solidrock.rs, prismarmor.rs)
+- **Missing**: getMoveHitData to check type effectiveness
+- **JavaScript code**: `if (target.getMoveHitData(move).typeMod > 0)` - checks if super effective
+- **Required**:
+  - Need getMoveHitData(move) function that returns {typeMod, crit, ...}
+  - typeMod > 0 means super effective
+  - Then reduce damage with chainModify(0.75)
+
+### Sniper (sniper.rs)
+- **Missing**: getMoveHitData to check critical hits
+- **JavaScript code**: `if (target.getMoveHitData(move).crit)` - checks if move was a crit
+- **Required**:
+  - Need getMoveHitData(move) function that returns {crit, ...}
+  - crit is boolean indicating if the move critically hit
+  - Then boost damage with chainModify(1.5)

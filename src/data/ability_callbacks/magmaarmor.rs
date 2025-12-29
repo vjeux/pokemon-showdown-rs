@@ -22,7 +22,9 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     if (type === 'frz') return false;
 /// }
 pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if type_or_status == "frz" {
+        return EventResult::Boolean(false);
+    }
     EventResult::Continue
 }
 

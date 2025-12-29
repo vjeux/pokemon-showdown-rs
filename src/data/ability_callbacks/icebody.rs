@@ -21,7 +21,9 @@ pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, us
 ///     if (type === 'hail') return false;
 /// }
 pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if type_or_status == "hail" {
+        return EventResult::Boolean(false);
+    }
     EventResult::Continue
 }
 

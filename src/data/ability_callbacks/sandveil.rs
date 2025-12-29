@@ -11,7 +11,9 @@ use crate::event::EventResult;
 ///     if (type === 'sandstorm') return false;
 /// }
 pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if type_or_status == "sandstorm" {
+        return EventResult::Boolean(false);
+    }
     EventResult::Continue
 }
 
