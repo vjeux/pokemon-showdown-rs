@@ -87,11 +87,38 @@ pub mod condition {
     ///     source.moveThisTurnResult = true;
     /// }
     pub fn on_start(
-        _battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // this.add('-start', pokemon, 'move: Heal Block');
+        let pokemon_slot = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.get_slot()
+        };
+
+        battle.add(
+            "-start",
+            &[
+                crate::battle::Arg::from(pokemon_slot),
+                crate::battle::Arg::from("move: Heal Block"),
+            ],
+        );
+
+        // source.moveThisTurnResult = true;
+        if let Some(source) = source_pos {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.move_this_turn_result = Some(true);
+        }
+
         EventResult::Continue
     }
 
