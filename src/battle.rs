@@ -12753,6 +12753,38 @@ impl Battle {
             }
         }
 
+        // JS: If we reach here, there's no team preview rule but teams exist
+        // For battles with pre-set teams, we should still do team preview
+        // even if picked_team_size isn't set (onTeamPreview callback would handle this in JS)
+        // Fallback: if any side has Pokemon, show team preview
+        let has_teams = self.sides.iter().any(|s| !s.pokemon.is_empty());
+        if has_teams {
+            eprintln!("DEBUG [run_pick_team]: Fallback - teams exist, calling make_request(TeamPreview)");
+            self.add_log("clearpoke", &[]);
+
+            // Show Pokemon to their respective sides
+            for side_idx in 0..self.sides.len() {
+                let pokemon_data: Vec<(String, usize)> = self.sides[side_idx]
+                    .pokemon
+                    .iter()
+                    .enumerate()
+                    .map(|(idx, pokemon)| (pokemon.details(), side_idx))
+                    .collect();
+
+                for (details, _) in pokemon_data {
+                    let side_id = self.sides[side_idx].id_str();
+                    self.add_split(
+                        side_id,
+                        &["poke", side_id, &details, ""],
+                        None,
+                    );
+                }
+            }
+
+            self.make_request(Some(BattleRequestState::TeamPreview));
+            return;
+        }
+
         // JS: If we reach here, there's no team preview - don't call makeRequest
         // JavaScript's runPickTeam() returns without calling makeRequest if:
         // - requestState isn't already 'teampreview'
