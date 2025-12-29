@@ -74,17 +74,29 @@ pub fn on_after_hit(
     //     target.item = yourItem.id; // bypass setItem so we don't break choicelock or anything
     //     return;
     // }
-    // TODO: Implement singleEvent for TakeItem
-    // For now, we'll just try to set the item directly
-    let set_item_success = {
+
+    // Check if taking the item is allowed via singleEvent
+    let take_item_result = battle.single_event(
+        "TakeItem",
+        &your_item_id,
+        Some(source_pos),
+        Some(target_pos),
+        Some(&your_item_id),
+    );
+
+    let can_take_item = !matches!(take_item_result, EventResult::Boolean(false));
+
+    let set_item_success = if can_take_item {
         let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
         source_pokemon.set_item(your_item_id.clone())
+    } else {
+        false
     };
 
-    if !set_item_success {
+    if !can_take_item || !set_item_success {
         // target.item = yourItem.id; // bypass setItem so we don't break choicelock or anything
         let target_pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
