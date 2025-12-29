@@ -124,13 +124,21 @@ pub fn on_hit(
             }
 
             // if (ally.volatiles['substitute'] && !move.infiltrates) continue;
-            // Note: move.infiltrates not yet implemented, so we check substitute
             let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
                 Some(p) => p,
                 None => continue,
             };
-            if ally.volatiles.contains_key(&ID::from("substitute")) {
-                continue;
+            let has_substitute = ally.volatiles.contains_key(&ID::from("substitute"));
+
+            if has_substitute {
+                let infiltrates = battle
+                    .active_move
+                    .as_ref()
+                    .map(|m| m.infiltrates)
+                    .unwrap_or(false);
+                if !infiltrates {
+                    continue;
+                }
             }
         }
 

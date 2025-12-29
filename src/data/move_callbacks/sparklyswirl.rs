@@ -61,9 +61,16 @@ pub fn on_hit(
                 ally.volatiles.contains_key(&ID::from("substitute"))
             };
 
-            // move.infiltrates not implemented, so if has substitute, skip
+            // if (ally.volatiles['substitute'] && !move.infiltrates) continue;
             if has_substitute {
-                continue;
+                let infiltrates = battle
+                    .active_move
+                    .as_ref()
+                    .map(|m| m.infiltrates)
+                    .unwrap_or(false);
+                if !infiltrates {
+                    continue;
+                }
             }
         }
 
