@@ -102,21 +102,43 @@ pub fn on_prepare_hit(
     // TODO: The following logic requires dynamic callback assignment which is incompatible with Rust's type system:
     // - if (item.isBerry) { move.onHit = function (foe) { ... } }
     // - else if (item.fling.effect) { move.onHit = item.fling.effect; }
-    // - else { modify move.secondaries with status/volatileStatus }
     //
-    // This would require either:
+    // These would require either:
     // 1. Adding callback storage to ActiveMove (major architectural change)
     // 2. Handling berry eating/effect logic directly in fling's onHit callback
     // 3. Using a callback registry system
     //
-    // For now, we can at least handle the secondaries case by checking the fields we added:
+    // However, we CAN handle the secondaries case:
+
+    // Get item.isBerry to skip the secondaries logic for berries
+    let is_berry = {
+        battle.dex.get_item_by_id(&item_id)
+            .map(|item| item.is_berry)
+            .unwrap_or(false)
+    };
+
     if let Some(ref mut active_move) = battle.active_move {
-        // Skip berry and effect cases (require dynamic callbacks)
-        if fling.status.is_some() || fling.volatile_status.is_some() {
-            // TODO: Need to check if ActiveMove has a secondaries field to modify
-            // In TypeScript: if (!move.secondaries) move.secondaries = [];
-            // Then push { status: ... } or { volatileStatus: ... }
-            // This requires ActiveMove.secondaries field which may not exist yet
+        // if (item.isBerry) { ... } - Skip, requires dynamic callback
+        // else if (item.fling.effect) { ... } - Skip, requires dynamic callback
+        // else { ... } - We can implement this part!
+        if !is_berry && fling.effect.is_none() {
+            // if (!move.secondaries) move.secondaries = [];
+            // (secondaries already exists as Vec, so we just push to it)
+
+            // if (item.fling.status) { move.secondaries.push({ status: item.fling.status }); }
+            if let Some(status) = fling.status {
+                active_move.secondaries.push(crate::battle_actions::SecondaryEffect {
+                    status: Some(status),
+                    ..Default::default()
+                });
+            }
+            // else if (item.fling.volatileStatus) { move.secondaries.push({ volatileStatus: item.fling.volatileStatus }); }
+            else if let Some(volatile_status) = fling.volatile_status {
+                active_move.secondaries.push(crate::battle_actions::SecondaryEffect {
+                    volatile_status: Some(volatile_status),
+                    ..Default::default()
+                });
+            }
         }
     }
 
