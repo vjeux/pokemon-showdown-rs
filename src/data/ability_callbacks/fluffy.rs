@@ -14,7 +14,17 @@ use crate::event::EventResult;
 ///     return this.chainModify(mod);
 /// }
 pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        let mut mod_value = 1.0;
+        if move_data.move_type == "Fire" {
+            mod_value *= 2.0;
+        }
+        if move_data.flags.contains_key("contact") {
+            mod_value /= 2.0;
+        }
+        let modified = battle.chain_modify(mod_value);
+        return EventResult::Number(modified);
+    }
     EventResult::Continue
 }
 
