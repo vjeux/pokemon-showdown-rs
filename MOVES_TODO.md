@@ -2,7 +2,7 @@
 
 ## Summary
 
-**Current Status:** 12 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 10 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **SESSION COMPLETE** - All implementable callbacks with existing infrastructure have been successfully implemented!
 
@@ -10,8 +10,9 @@
 - **Added EventResult::Null variant** - Required for TypeScript 'return null' equivalence
 - **Added ActiveMove.override_offensive_stat field** - Required for Wonder Room stat swapping
 - **Added Battle.run_event_string() method** - Required for Techno Blast 'Drive' event that returns type String
+- **Added SelfEffect.side_condition field** - Required for pledge moves (firepledge, waterpledge) to set side conditions via move.self
 - **Used existing Battle.attr_last_move() method** - For terablast animation attributes
-- **Newly implemented**: 11 callbacks using existing and new infrastructure!
+- **Newly implemented**: 13 callbacks using existing and new infrastructure!
   - telekinesis.rs: on_try ✓, condition::on_start ✓
   - uproar.rs: condition::on_any_set_status ✓ (COMPLETE FILE 5/5)
   - healblock.rs: condition::on_try_heal ✓ (COMPLETE FILE 8/8)
@@ -19,9 +20,11 @@
   - terablast.rs: on_modify_type ✓, on_modify_move ✓, on_prepare_hit ✓ (COMPLETE FILE 4/4)
   - terastarstorm.rs: on_modify_type ✓, on_modify_move ✓ (COMPLETE FILE 2/2)
   - technoblast.rs: on_modify_type ✓ (COMPLETE FILE 1/1)
+  - firepledge.rs: on_modify_move ✓ (1/2 implemented)
+  - waterpledge.rs: on_modify_move ✓ (1/3 implemented)
 - **Files completed**: 6 new complete files (uproar, healblock, wonderroom, terablast, terastarstorm, technoblast)
-- **TODO markers verified**: 12 actual "TODO: Implement 1-to-1 from JS" markers remaining
-- **Progress**: 23 → 12 remaining TODOs (implemented 11 callbacks this session - 48% reduction!)
+- **TODO markers verified**: 10 actual "TODO: Implement 1-to-1 from JS" markers remaining
+- **Progress**: 23 → 10 remaining TODOs (implemented 13 callbacks this session - 57% reduction!)
 
 **Previous Session - Verification Work:**
 - **Newly implemented**: 2 callbacks using infrastructure discovery
@@ -110,9 +113,9 @@ The Pokemon struct already has more methods than initially documented:
   - Available fields: `force_stab`, `source_effect`, `side_condition`, `ohko`, `recoil`, `infiltrates`, `flags`
   - Example: `if let Some(ref mut active_move) = battle.active_move { active_move.move_type = "Fire".to_string(); }`
 
-**Comprehensive Analysis of 12 Remaining TODO Markers:**
+**Comprehensive Analysis of 10 Remaining TODO Markers:**
 
-After exhaustive investigation, all 12 remaining TODO markers are genuinely blocked by missing infrastructure:
+After exhaustive investigation, all 10 remaining TODO markers are genuinely blocked by missing infrastructure:
 
 1. **Function Signature Mismatches** (blocks 5 callbacks):
    - tarshot.rs: `condition::on_effectiveness` - missing `typeMod: i32` and `type: String` parameters
@@ -121,16 +124,16 @@ After exhaustive investigation, all 12 remaining TODO markers are genuinely bloc
    - telekinesis.rs: `condition::on_immunity` - missing `type: String` parameter
    - telekinesis.rs: `condition::on_accuracy` - needs move.ohko check (ohko exists but as Option<String>, not bool)
 
-2. **Complex Infrastructure Missing** (blocks 7 callbacks):
+2. **Complex Infrastructure Missing** (blocks 5 callbacks):
    - substitute.rs: `condition::on_try_primary_hit` - needs `actions.getDamage()`, `HIT_SUBSTITUTE`, `calcRecoilDamage()`
    - fling.rs: `on_prepare_hit` - needs `singleEvent()`, dynamic `move.onHit` assignment, `item.fling` data structure
-   - firepledge.rs (2 TODOs): needs `queue.willMove()`, complex `move.self` structure with nested sideCondition
-   - waterpledge.rs (3 TODOs): needs `queue.willMove()`, complex `move.self` structure with nested sideCondition
+   - firepledge.rs (1 TODO): needs `queue.willMove()`, `pokemon.isAlly()`, `queue.prioritizeAction()`
+   - waterpledge.rs (2 TODOs): needs `queue.willMove()`, `pokemon.isAlly()`, `move.secondaries` field
 
-**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 12 TODOs require infrastructure additions to the core battle engine.
+**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 10 TODOs require infrastructure additions to the core battle engine.
 
 **ITEMS:** ✅ 100% Complete (346/346) - No TODO markers remaining
-**MOVES:** 58/373 files complete - 12 TODO markers remain, all blocked by missing infrastructure
+**MOVES:** 58/373 files complete - 10 TODO markers remain, all blocked by missing infrastructure
 
 **Blocking Issues:** All 13 remaining callbacks require missing infrastructure:
 - Volatile condition management with source tracking (add_volatile with source parameter)
@@ -241,9 +244,9 @@ Moves with callbacks: 373
 - [x] falseswipe - False Swipe (Physical, Normal) - 1 callback: onDamage
 - [x] fellstinger - Fell Stinger (Physical, Bug) - 1 callback: onAfterMoveSecondarySelf
 - [x] ficklebeam - Fickle Beam (Special, Dragon) - 1 callback: onBasePower
-- [x] filletaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
+- [x] fillaway - Fillet Away (Status, Normal) - 3 callbacks: onTry, onTryHit, onHit
 - [x] finalgambit - Final Gambit (Special, Fighting) - 1 callback: damageCallback
-- [ ] firepledge - Fire Pledge (Special, Fire) - 6 callbacks: basePowerCallback ✓, onPrepareHit, onModifyMove, condition::onSideStart, condition::onResidual, condition::onSideEnd (1/6 implemented)
+- [ ] firepledge - Fire Pledge (Special, Fire) - 6 callbacks: basePowerCallback ✓, onPrepareHit, onModifyMove ✓, condition::onSideStart ✓, condition::onResidual ✓, condition::onSideEnd ✓ (5/6 implemented)
 - [x] firstimpression - First Impression (Physical, Bug) - 1 callback: onTry
 - [x] fishiousrend - Fishious Rend (Physical, Water) - 1 callback: basePowerCallback
 - [x] flail - Flail (Physical, Normal) - 1 callback: basePowerCallback
@@ -516,7 +519,7 @@ Moves with callbacks: 373
 - [x] venomdrench - Venom Drench (Status, Poison) - 1 callback: onHit
 - [x] venoshock - Venoshock (Special, Poison) - 1 callback: onBasePower
 - [x] wakeupslap - Wake-Up Slap (Physical, Fighting) - 2 callbacks: basePowerCallback, onHit
-- [ ] waterpledge - Water Pledge (Special, Water) - 6 callbacks: basePowerCallback ✓, onPrepareHit, onModifyMove, condition::onSideStart, condition::onSideEnd, condition::onModifyMove (1/6 implemented)
+- [ ] waterpledge - Water Pledge (Special, Water) - 6 callbacks: basePowerCallback ✓, onPrepareHit, onModifyMove ✓, condition::onSideStart ✓, condition::onSideEnd ✓, condition::onModifyMove (5/6 implemented)
 - [x] watershuriken - Water Shuriken (Special, Water) - 1 callback: basePowerCallback
 - [x] watersport - Water Sport (Status, Water) - 3 callbacks: condition::onFieldStart, condition::onBasePower, condition::onFieldEnd
 - [x] waterspout - Water Spout (Special, Water) - 1 callback: basePowerCallback
@@ -625,19 +628,19 @@ By callback type:
 
 ## Missing Infrastructure
 
-### Critical Infrastructure Needed for Remaining 12 Callbacks
+### Critical Infrastructure Needed for Remaining 10 Callbacks
 
-**Status:** All 12 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
+**Status:** All 10 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
 
 **Breakdown by File:**
-- **firepledge.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs queue.willMove(), move modification)
+- **firepledge.rs**: 1 TODO - on_prepare_hit (needs queue.willMove(), pokemon.isAlly(), queue.prioritizeAction())
 - **fling.rs**: 1 TODO - on_prepare_hit (needs move.basePower modification, singleEvent)
 - **substitute.rs**: 1 TODO - on_try_primary_hit (needs getDamage(), calcRecoilDamage(), HIT_SUBSTITUTE)
 - **tarshot.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
 - **taunt.rs**: 1 TODO - on_before_move (signature missing attacker parameter)
 - **telekinesis.rs**: 2 TODOs - on_accuracy, on_immunity (signature issues)
 - **thousandarrows.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
-- **waterpledge.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs queue.willMove(), move modification)
+- **waterpledge.rs**: 2 TODOs - on_prepare_hit, condition::on_modify_move (needs queue system, move.secondaries field)
 
 All remaining callbacks require one or more of the following infrastructure components that don't currently exist or need modifications to existing code.
 

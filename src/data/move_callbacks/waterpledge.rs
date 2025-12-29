@@ -84,11 +84,39 @@ pub fn on_prepare_hit(
 ///     }
 /// }
 pub fn on_modify_move(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // Get the active move
+    let active_move = match &mut battle.active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // if (move.sourceEffect === 'grasspledge')
+    if let Some(ref source_effect) = active_move.source_effect {
+        if source_effect.as_str() == "grasspledge" {
+            // move.type = 'Grass';
+            active_move.move_type = "Grass".to_string();
+            // move.forceSTAB = true;
+            active_move.force_stab = true;
+            // move.sideCondition = 'grasspledge';
+            active_move.side_condition = Some("grasspledge".to_string());
+        } else if source_effect.as_str() == "firepledge" {
+            // move.type = 'Water';
+            active_move.move_type = "Water".to_string();
+            // move.forceSTAB = true;
+            active_move.force_stab = true;
+            // move.self = { sideCondition: 'waterpledge' };
+            active_move.self_effect = Some(crate::battle_actions::SelfEffect {
+                boosts: None,
+                chance: None,
+                side_condition: Some("waterpledge".to_string()),
+            });
+        }
+    }
+
     EventResult::Continue
 }
 

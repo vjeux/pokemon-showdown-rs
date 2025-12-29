@@ -294,6 +294,7 @@ pub struct SecondaryEffect {
 pub struct SelfEffect {
     pub boosts: Option<BoostsTable>,
     pub chance: Option<i32>,
+    pub side_condition: Option<String>,
 }
 
 /// Z-Move request option
