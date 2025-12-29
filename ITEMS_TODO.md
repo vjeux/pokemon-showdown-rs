@@ -287,7 +287,7 @@ Items with callbacks: 326
 - [x] sharpbeak - Sharp Beak (Gen 2) - 1 callback: onBasePower
 - [x] sharpedonite - Sharpedonite (Gen 6) - 1 callback: onTakeItem
 - [x] shedshell - Shed Shell (Gen 4) - 2 callbacks: onTrapPokemon, onMaybeTrapPokemon
-- [ ] shellbell - Shell Bell (Gen 3) - 1 callback: onAfterMoveSecondarySelf
+- [x] shellbell - Shell Bell (Gen 3) - 1 callback: onAfterMoveSecondarySelf
 - [x] shockdrive - Shock Drive (Gen 5) - 1 callback: onTakeItem
 - [ ] shucaberry - Shuca Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] silkscarf - Silk Scarf (Gen 3) - 1 callback: onBasePower
