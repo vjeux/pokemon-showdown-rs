@@ -10435,7 +10435,7 @@ impl Battle {
         // JS: return tr(tr(baseDamage * (100 - this.random(16))) / 100);
         // Damage = baseDamage * (100 - random(16)) / 100
         // This gives range 85% to 100% damage
-        let roll = 100 - self.prng.random_int(16);
+        let roll = 100 - self.random(16);  // Use self.random() instead of self.prng.random_int()
         let inner = self.trunc(base_damage as f64 * roll as f64);
         self.trunc(inner as f64 / 100.0)
     }
@@ -13425,22 +13425,23 @@ impl Battle {
 
                     // Check if move hits based on accuracy
                     // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
-                    if accuracy < 100 {
-                        if !self.random_chance(accuracy, 100) {
-                            // Move missed
-                            damages[i] = None;
-                            final_targets[i] = None;
-                            // TODO: Add miss message: this.battle.add('-miss', pokemon, target);
-                        }
+                    // Always call randomChance to consume PRNG value, even if accuracy is 100
+                    if !self.random_chance(accuracy, 100) {
+                        // Move missed
+                        damages[i] = None;
+                        final_targets[i] = None;
+                        // TODO: Add miss message: this.battle.add('-miss', pokemon, target);
                     }
                 }
             }
         }
 
         // Step 2: Get damage for each target
+        // JavaScript: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
+        // IMPORTANT: Pass final_targets (which has None for misses), not targets
         damages = self.get_spread_damage(
             &damages,
-            targets,
+            &final_targets,
             source_pos,
             move_id,
             is_secondary,
