@@ -168,8 +168,8 @@ Items with callbacks: 326
 - [x] ironplate - Iron Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] jabocaberry - Jaboca Berry (Gen 4) - 2 callbacks: onDamagingHit, onEat
 - [x] kangaskhanite - Kangaskhanite (Gen 6) - 1 callback: onTakeItem
-- [ ] kasibberry - Kasib Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] kebiaberry - Kebia Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] kasibberry - Kasib Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] kebiaberry - Kebia Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] keeberry - Kee Berry (Gen 6) - 2 callbacks: onAfterMoveSecondary, onEat
 - [x] kingsrock - King's Rock (Gen 2) - 1 callback: onModifyMove
 - [x] lansatberry - Lansat Berry (Gen 3) - 2 callbacks: onUpdate, onEat
@@ -223,10 +223,10 @@ Items with callbacks: 326
 - [x] mysticwater - Mystic Water (Gen 2) - 1 callback: onBasePower
 - [x] nevermeltice - Never-Melt Ice (Gen 2) - 1 callback: onBasePower
 - [x] normalgem - Normal Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
-- [ ] occaberry - Occa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] occaberry - Occa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] oddincense - Odd Incense (Gen 4) - 1 callback: onBasePower
 - [x] oranberry - Oran Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
-- [ ] passhoberry - Passho Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] passhoberry - Passho Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [ ] payapaberry - Payapa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] pechaberry - Pecha Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] persimberry - Persim Berry (Gen 3) - 2 callbacks: onUpdate, onEat
