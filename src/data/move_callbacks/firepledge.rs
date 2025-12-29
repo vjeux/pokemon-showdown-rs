@@ -103,8 +103,23 @@ pub mod condition {
     /// onResidual(pokemon) {
     ///     if (!pokemon.hasType('Fire')) this.damage(pokemon.baseMaxhp / 8, pokemon);
     /// }
-    pub fn on_residual(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        // if (!pokemon.hasType('Fire'))
+        let (has_fire, base_maxhp) = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            (pokemon.has_type("Fire"), pokemon.base_maxhp)
+        };
+
+        if !has_fire {
+            // this.damage(pokemon.baseMaxhp / 8, pokemon);
+            let damage_amount = base_maxhp / 8;
+            use crate::dex_data::ID;
+            battle.damage(damage_amount, Some(pokemon_pos), None, Some(&ID::from("firepledge")), false);
+        }
+
         EventResult::Continue
     }
 
