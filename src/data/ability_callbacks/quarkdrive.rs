@@ -59,7 +59,7 @@ pub mod condition {
     ///     this.debug('Quark Drive atk boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+    pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -69,7 +69,7 @@ pub mod condition {
     ///     this.debug('Quark Drive def boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_def(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_modify_def(battle: &mut Battle, def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -79,7 +79,7 @@ pub mod condition {
     ///     this.debug('Quark Drive spa boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+    pub fn on_modify_sp_a(battle: &mut Battle, spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -89,7 +89,7 @@ pub mod condition {
     ///     this.debug('Quark Drive spd boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_sp_d(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_modify_sp_d(battle: &mut Battle, spd: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -99,7 +99,7 @@ pub mod condition {
     ///     this.debug('Quark Drive spe boost');
     ///     return this.chainModify(1.5);
     /// }
-    pub fn on_modify_spe(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_modify_spe(battle: &mut Battle, spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

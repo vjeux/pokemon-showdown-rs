@@ -32,7 +32,7 @@ pub fn on_before_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> 
 ///         this.singleEvent('End', this.dex.abilities.get('Illusion'), target.abilityState, target, source, move);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

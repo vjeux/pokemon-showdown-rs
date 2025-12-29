@@ -26,7 +26,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///         return 0;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -38,7 +38,7 @@ pub fn on_damage(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     if (!target.runImmunity(move)) return;
 ///     return false;
 /// }
-pub fn on_critical_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -53,7 +53,7 @@ pub fn on_critical_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_i
 ///     if (!target.runImmunity(move)) return;
 ///     return 0;
 /// }
-pub fn on_effectiveness(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_effectiveness(battle: &mut Battle, damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -78,7 +78,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///         pokemon.formeChange('Eiscue', this.effect, true);
 ///     }
 /// }
-pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

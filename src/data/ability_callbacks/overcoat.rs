@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onImmunity(type, pokemon) {
 ///     if (type === 'sandstorm' || type === 'hail' || type === 'powder') return false;
 /// }
-pub fn on_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -21,7 +21,7 @@ pub fn on_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -35,7 +35,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -45,7 +45,7 @@ pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id:
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_modify_spe(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_spe(battle: &mut Battle, spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

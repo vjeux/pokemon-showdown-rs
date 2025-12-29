@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         if (!this.queue.peek()) this.effectState.counter--;
 ///     }
 /// }
-pub fn on_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

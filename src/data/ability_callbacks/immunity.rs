@@ -25,7 +25,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     }
 ///     return false;
 /// }
-pub fn on_set_status(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

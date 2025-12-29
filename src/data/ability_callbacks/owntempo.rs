@@ -21,7 +21,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// onTryAddVolatile(status, pokemon) {
 ///     if (status.id === 'confusion') return null;
 /// }
-pub fn on_try_add_volatile(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -31,7 +31,7 @@ pub fn on_try_add_volatile(battle: &mut Battle, pokemon_pos: (usize, usize)) -> 
 ///         this.add('-immune', target, 'confusion', '[from] ability: Own Tempo');
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -42,7 +42,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) 
 ///         this.add('-fail', target, 'unboost', 'Attack', '[from] ability: Own Tempo', `[of] ${target}`);
 ///     }
 /// }
-pub fn on_try_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_boost(battle: &mut Battle, boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

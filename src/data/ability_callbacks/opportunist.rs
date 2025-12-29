@@ -18,7 +18,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_foe_after_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_foe_after_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -28,7 +28,7 @@ pub fn on_foe_after_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> E
 ///     this.boost(this.effectState.boosts, this.effectState.target);
 ///     delete this.effectState.boosts;
 /// }
-pub fn on_any_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -38,7 +38,7 @@ pub fn on_any_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Eve
 ///     this.boost(this.effectState.boosts, this.effectState.target);
 ///     delete this.effectState.boosts;
 /// }
-pub fn on_any_after_mega(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -48,7 +48,7 @@ pub fn on_any_after_mega(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
 ///     this.boost(this.effectState.boosts, this.effectState.target);
 ///     delete this.effectState.boosts;
 /// }
-pub fn on_any_after_terastallization(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_after_terastallization(battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -58,7 +58,7 @@ pub fn on_any_after_terastallization(battle: &mut Battle, pokemon_pos: (usize, u
 ///     this.boost(this.effectState.boosts, this.effectState.target);
 ///     delete this.effectState.boosts;
 /// }
-pub fn on_any_after_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -21,7 +21,7 @@ use crate::event::EventResult;
 ///         this.add("-fail", target, "unboost", "[from] ability: Full Metal Body", `[of] ${target}`);
 ///     }
 /// }
-pub fn on_try_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_boost(battle: &mut Battle, boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

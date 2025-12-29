@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onAnyBeforeMove() {
 ///     delete this.effectState.resisted;
 /// }
-pub fn on_any_before_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_before_move(battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -18,7 +18,7 @@ pub fn on_any_before_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> E
 /// onAnyAfterMove() {
 ///     delete this.effectState.resisted;
 /// }
-pub fn on_any_after_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

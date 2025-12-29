@@ -34,7 +34,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// onAnySwitchIn() {
 ///     ((this.effect as any).onStart as (p: Pokemon) => void).call(this, this.effectState.target);
 /// }
-pub fn on_any_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -46,7 +46,7 @@ pub fn on_any_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Eve
 ///     }
 ///     return false;
 /// }
-pub fn on_set_status(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -59,7 +59,7 @@ pub fn on_set_status(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
 ///     }
 ///     return false;
 /// }
-pub fn on_ally_set_status(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_ally_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

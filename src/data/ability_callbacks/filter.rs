@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.75);
 ///     }
 /// }
-pub fn on_source_modify_damage(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

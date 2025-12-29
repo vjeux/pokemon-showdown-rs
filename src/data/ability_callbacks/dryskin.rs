@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -25,7 +25,7 @@ pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &s
 ///         return this.chainModify(1.25);
 ///     }
 /// }
-pub fn on_source_base_power(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_source_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -38,7 +38,7 @@ pub fn on_source_base_power(battle: &mut Battle, pokemon_pos: (usize, usize), _m
 ///         this.damage(target.baseMaxhp / 8, target, target);
 ///     }
 /// }
-pub fn on_weather(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -23,7 +23,7 @@ pub fn on_base_power(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id:
 /// onImmunity(type, pokemon) {
 ///     if (type === 'sandstorm') return false;
 /// }
-pub fn on_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

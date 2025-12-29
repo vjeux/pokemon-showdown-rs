@@ -313,10 +313,10 @@ pub mod zerotohero;
 pub fn dispatch_on_after_boost(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "rattled" => rattled::on_after_boost(battle, pokemon_pos),
+        "rattled" => rattled::on_after_boost(battle, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -325,11 +325,11 @@ pub fn dispatch_on_after_boost(
 pub fn dispatch_on_after_each_boost(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "competitive" => competitive::on_after_each_boost(battle, pokemon_pos),
-        "defiant" => defiant::on_after_each_boost(battle, pokemon_pos),
+        "competitive" => competitive::on_after_each_boost(battle, target_pos, source_pos, effect_id),
+        "defiant" => defiant::on_after_each_boost(battle, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -338,14 +338,13 @@ pub fn dispatch_on_after_each_boost(
 pub fn dispatch_on_after_move_secondary(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "angershell" => angershell::on_after_move_secondary(battle, pokemon_pos, move_id),
-        "berserk" => berserk::on_after_move_secondary(battle, pokemon_pos, move_id),
-        "colorchange" => colorchange::on_after_move_secondary(battle, pokemon_pos, move_id),
-        "pickpocket" => pickpocket::on_after_move_secondary(battle, pokemon_pos, move_id),
+        "angershell" => angershell::on_after_move_secondary(battle, target_pos, source_pos, move_id),
+        "berserk" => berserk::on_after_move_secondary(battle, target_pos, source_pos, move_id),
+        "colorchange" => colorchange::on_after_move_secondary(battle, target_pos, source_pos, move_id),
+        "pickpocket" => pickpocket::on_after_move_secondary(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -354,11 +353,10 @@ pub fn dispatch_on_after_move_secondary(
 pub fn dispatch_on_after_move_secondary_self(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "magician" => magician::on_after_move_secondary_self(battle, pokemon_pos, move_id),
+        "magician" => magician::on_after_move_secondary_self(battle, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -367,10 +365,10 @@ pub fn dispatch_on_after_move_secondary_self(
 pub fn dispatch_on_after_set_status(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "synchronize" => synchronize::on_after_set_status(battle, pokemon_pos),
+        "synchronize" => synchronize::on_after_set_status(battle, status, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -415,13 +413,12 @@ pub fn dispatch_on_ally_after_use_item(
 pub fn dispatch_on_ally_base_power(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "battery" => battery::on_ally_base_power(battle, pokemon_pos, move_id),
-        "powerspot" => powerspot::on_ally_base_power(battle, pokemon_pos, move_id),
-        "steelyspirit" => steelyspirit::on_ally_base_power(battle, pokemon_pos, move_id),
+        "battery" => battery::on_ally_base_power(battle, base_power, move_id),
+        "powerspot" => powerspot::on_ally_base_power(battle, base_power, move_id),
+        "steelyspirit" => steelyspirit::on_ally_base_power(battle, base_power, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -430,11 +427,11 @@ pub fn dispatch_on_ally_base_power(
 pub fn dispatch_on_ally_faint(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "powerofalchemy" => powerofalchemy::on_ally_faint(battle, pokemon_pos),
-        "receiver" => receiver::on_ally_faint(battle, pokemon_pos),
+        "powerofalchemy" => powerofalchemy::on_ally_faint(battle, target_pos),
+        "receiver" => receiver::on_ally_faint(battle, target_pos),
         _ => EventResult::Continue,
     }
 }
@@ -467,12 +464,12 @@ pub fn dispatch_on_ally_modify_sp_d(
 pub fn dispatch_on_ally_set_status(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "flowerveil" => flowerveil::on_ally_set_status(battle, pokemon_pos),
-        "pastelveil" => pastelveil::on_ally_set_status(battle, pokemon_pos),
-        "sweetveil" => sweetveil::on_ally_set_status(battle, pokemon_pos),
+        "flowerveil" => flowerveil::on_ally_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "pastelveil" => pastelveil::on_ally_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "sweetveil" => sweetveil::on_ally_set_status(battle, status_id, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -481,12 +478,12 @@ pub fn dispatch_on_ally_set_status(
 pub fn dispatch_on_ally_try_add_volatile(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "aromaveil" => aromaveil::on_ally_try_add_volatile(battle, pokemon_pos),
-        "flowerveil" => flowerveil::on_ally_try_add_volatile(battle, pokemon_pos),
-        "sweetveil" => sweetveil::on_ally_try_add_volatile(battle, pokemon_pos),
+        "aromaveil" => aromaveil::on_ally_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
+        "flowerveil" => flowerveil::on_ally_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
+        "sweetveil" => sweetveil::on_ally_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -495,10 +492,10 @@ pub fn dispatch_on_ally_try_add_volatile(
 pub fn dispatch_on_ally_try_boost(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "flowerveil" => flowerveil::on_ally_try_boost(battle, pokemon_pos),
+        "flowerveil" => flowerveil::on_ally_try_boost(battle, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -507,14 +504,13 @@ pub fn dispatch_on_ally_try_boost(
 pub fn dispatch_on_ally_try_hit_side(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "magicbounce" => magicbounce::on_ally_try_hit_side(battle, pokemon_pos, move_id),
-        "rebound" => rebound::on_ally_try_hit_side(battle, pokemon_pos, move_id),
-        "sapsipper" => sapsipper::on_ally_try_hit_side(battle, pokemon_pos, move_id),
-        "soundproof" => soundproof::on_ally_try_hit_side(battle, pokemon_pos, move_id),
+        "magicbounce" => magicbounce::on_ally_try_hit_side(battle, target_pos, source_pos, move_id),
+        "rebound" => rebound::on_ally_try_hit_side(battle, target_pos, source_pos, move_id),
+        "sapsipper" => sapsipper::on_ally_try_hit_side(battle, target_pos, source_pos, move_id),
+        "soundproof" => soundproof::on_ally_try_hit_side(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -523,11 +519,10 @@ pub fn dispatch_on_ally_try_hit_side(
 pub fn dispatch_on_any_accuracy(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "noguard" => noguard::on_any_accuracy(battle, pokemon_pos, move_id),
+        "noguard" => noguard::on_any_accuracy(battle, accuracy, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -536,10 +531,9 @@ pub fn dispatch_on_any_accuracy(
 pub fn dispatch_on_any_after_mega(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "opportunist" => opportunist::on_any_after_mega(battle, pokemon_pos),
+        "opportunist" => opportunist::on_any_after_mega(battle),
         _ => EventResult::Continue,
     }
 }
@@ -548,11 +542,10 @@ pub fn dispatch_on_any_after_mega(
 pub fn dispatch_on_any_after_move(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "opportunist" => opportunist::on_any_after_move(battle, pokemon_pos),
-        "terashell" => terashell::on_any_after_move(battle, pokemon_pos),
+        "opportunist" => opportunist::on_any_after_move(battle),
+        "terashell" => terashell::on_any_after_move(battle),
         _ => EventResult::Continue,
     }
 }
@@ -561,10 +554,10 @@ pub fn dispatch_on_any_after_move(
 pub fn dispatch_on_any_after_set_status(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "poisonpuppeteer" => poisonpuppeteer::on_any_after_set_status(battle, pokemon_pos),
+        "poisonpuppeteer" => poisonpuppeteer::on_any_after_set_status(battle, status, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -573,10 +566,9 @@ pub fn dispatch_on_any_after_set_status(
 pub fn dispatch_on_any_after_terastallization(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "opportunist" => opportunist::on_any_after_terastallization(battle, pokemon_pos),
+        "opportunist" => opportunist::on_any_after_terastallization(battle),
         _ => EventResult::Continue,
     }
 }
@@ -585,12 +577,11 @@ pub fn dispatch_on_any_after_terastallization(
 pub fn dispatch_on_any_base_power(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "darkaura" => darkaura::on_any_base_power(battle, pokemon_pos, move_id),
-        "fairyaura" => fairyaura::on_any_base_power(battle, pokemon_pos, move_id),
+        "darkaura" => darkaura::on_any_base_power(battle, base_power, source_pos, target_pos, move_id),
+        "fairyaura" => fairyaura::on_any_base_power(battle, base_power, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -599,10 +590,9 @@ pub fn dispatch_on_any_base_power(
 pub fn dispatch_on_any_before_move(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "terashell" => terashell::on_any_before_move(battle, pokemon_pos),
+        "terashell" => terashell::on_any_before_move(battle),
         _ => EventResult::Continue,
     }
 }
@@ -611,10 +601,10 @@ pub fn dispatch_on_any_before_move(
 pub fn dispatch_on_any_damage(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "damp" => damp::on_any_damage(battle, pokemon_pos),
+        "damp" => damp::on_any_damage(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -623,10 +613,9 @@ pub fn dispatch_on_any_damage(
 pub fn dispatch_on_any_faint(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "soulheart" => soulheart::on_any_faint(battle, pokemon_pos),
+        "soulheart" => soulheart::on_any_faint(battle),
         _ => EventResult::Continue,
     }
 }
@@ -635,11 +624,10 @@ pub fn dispatch_on_any_faint(
 pub fn dispatch_on_any_invulnerability(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "noguard" => noguard::on_any_invulnerability(battle, pokemon_pos, move_id),
+        "noguard" => noguard::on_any_invulnerability(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -648,10 +636,10 @@ pub fn dispatch_on_any_invulnerability(
 pub fn dispatch_on_any_modify_accuracy(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "victorystar" => victorystar::on_any_modify_accuracy(battle, pokemon_pos),
+        "victorystar" => victorystar::on_any_modify_accuracy(battle, accuracy, target_pos, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -660,11 +648,10 @@ pub fn dispatch_on_any_modify_accuracy(
 pub fn dispatch_on_any_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "tabletsofruin" => tabletsofruin::on_any_modify_atk(battle, pokemon_pos, move_id),
+        "tabletsofruin" => tabletsofruin::on_any_modify_atk(battle, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -673,10 +660,10 @@ pub fn dispatch_on_any_modify_atk(
 pub fn dispatch_on_any_modify_boost(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    boosts: &str, pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "unaware" => unaware::on_any_modify_boost(battle, pokemon_pos),
+        "unaware" => unaware::on_any_modify_boost(battle, boosts, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -685,11 +672,10 @@ pub fn dispatch_on_any_modify_boost(
 pub fn dispatch_on_any_modify_damage(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "friendguard" => friendguard::on_any_modify_damage(battle, pokemon_pos, move_id),
+        "friendguard" => friendguard::on_any_modify_damage(battle, damage, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -698,11 +684,10 @@ pub fn dispatch_on_any_modify_damage(
 pub fn dispatch_on_any_modify_def(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "swordofruin" => swordofruin::on_any_modify_def(battle, pokemon_pos, move_id),
+        "swordofruin" => swordofruin::on_any_modify_def(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -711,11 +696,10 @@ pub fn dispatch_on_any_modify_def(
 pub fn dispatch_on_any_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "vesselofruin" => vesselofruin::on_any_modify_sp_a(battle, pokemon_pos, move_id),
+        "vesselofruin" => vesselofruin::on_any_modify_sp_a(battle, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -724,11 +708,10 @@ pub fn dispatch_on_any_modify_sp_a(
 pub fn dispatch_on_any_modify_sp_d(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "beadsofruin" => beadsofruin::on_any_modify_sp_d(battle, pokemon_pos, move_id),
+        "beadsofruin" => beadsofruin::on_any_modify_sp_d(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -737,12 +720,11 @@ pub fn dispatch_on_any_modify_sp_d(
 pub fn dispatch_on_any_redirect_target(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "lightningrod" => lightningrod::on_any_redirect_target(battle, pokemon_pos, move_id),
-        "stormdrain" => stormdrain::on_any_redirect_target(battle, pokemon_pos, move_id),
+        "lightningrod" => lightningrod::on_any_redirect_target(battle, target_pos, source_pos, move_id),
+        "stormdrain" => stormdrain::on_any_redirect_target(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -751,12 +733,12 @@ pub fn dispatch_on_any_redirect_target(
 pub fn dispatch_on_any_set_weather(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "deltastream" => deltastream::on_any_set_weather(battle, pokemon_pos),
-        "desolateland" => desolateland::on_any_set_weather(battle, pokemon_pos),
-        "primordialsea" => primordialsea::on_any_set_weather(battle, pokemon_pos),
+        "deltastream" => deltastream::on_any_set_weather(battle, target_pos, source_pos),
+        "desolateland" => desolateland::on_any_set_weather(battle, target_pos, source_pos),
+        "primordialsea" => primordialsea::on_any_set_weather(battle, target_pos, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -765,12 +747,11 @@ pub fn dispatch_on_any_set_weather(
 pub fn dispatch_on_any_switch_in(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "commander" => commander::on_any_switch_in(battle, pokemon_pos),
-        "opportunist" => opportunist::on_any_switch_in(battle, pokemon_pos),
-        "pastelveil" => pastelveil::on_any_switch_in(battle, pokemon_pos),
+        "commander" => commander::on_any_switch_in(battle),
+        "opportunist" => opportunist::on_any_switch_in(battle),
+        "pastelveil" => pastelveil::on_any_switch_in(battle),
         _ => EventResult::Continue,
     }
 }
@@ -779,10 +760,10 @@ pub fn dispatch_on_any_switch_in(
 pub fn dispatch_on_any_try_move(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "damp" => damp::on_any_try_move(battle, pokemon_pos),
+        "damp" => damp::on_any_try_move(battle, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -791,11 +772,10 @@ pub fn dispatch_on_any_try_move(
 pub fn dispatch_on_any_try_primary_hit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "aurabreak" => aurabreak::on_any_try_primary_hit(battle, pokemon_pos, move_id),
+        "aurabreak" => aurabreak::on_any_try_primary_hit(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -804,30 +784,29 @@ pub fn dispatch_on_any_try_primary_hit(
 pub fn dispatch_on_base_power(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "aerilate" => aerilate::on_base_power(battle, pokemon_pos, move_id),
-        "analytic" => analytic::on_base_power(battle, pokemon_pos, move_id),
-        "flareboost" => flareboost::on_base_power(battle, pokemon_pos, move_id),
-        "galvanize" => galvanize::on_base_power(battle, pokemon_pos, move_id),
-        "ironfist" => ironfist::on_base_power(battle, pokemon_pos, move_id),
-        "megalauncher" => megalauncher::on_base_power(battle, pokemon_pos, move_id),
-        "normalize" => normalize::on_base_power(battle, pokemon_pos, move_id),
-        "pixilate" => pixilate::on_base_power(battle, pokemon_pos, move_id),
-        "punkrock" => punkrock::on_base_power(battle, pokemon_pos, move_id),
-        "reckless" => reckless::on_base_power(battle, pokemon_pos, move_id),
-        "refrigerate" => refrigerate::on_base_power(battle, pokemon_pos, move_id),
-        "rivalry" => rivalry::on_base_power(battle, pokemon_pos, move_id),
-        "sandforce" => sandforce::on_base_power(battle, pokemon_pos, move_id),
-        "sharpness" => sharpness::on_base_power(battle, pokemon_pos, move_id),
-        "sheerforce" => sheerforce::on_base_power(battle, pokemon_pos, move_id),
-        "strongjaw" => strongjaw::on_base_power(battle, pokemon_pos, move_id),
-        "supremeoverlord" => supremeoverlord::on_base_power(battle, pokemon_pos, move_id),
-        "technician" => technician::on_base_power(battle, pokemon_pos, move_id),
-        "toughclaws" => toughclaws::on_base_power(battle, pokemon_pos, move_id),
-        "toxicboost" => toxicboost::on_base_power(battle, pokemon_pos, move_id),
+        "aerilate" => aerilate::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "analytic" => analytic::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "flareboost" => flareboost::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "galvanize" => galvanize::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "ironfist" => ironfist::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "megalauncher" => megalauncher::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "normalize" => normalize::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "pixilate" => pixilate::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "punkrock" => punkrock::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "reckless" => reckless::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "refrigerate" => refrigerate::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "rivalry" => rivalry::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "sandforce" => sandforce::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "sharpness" => sharpness::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "sheerforce" => sheerforce::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "strongjaw" => strongjaw::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "supremeoverlord" => supremeoverlord::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "technician" => technician::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "toughclaws" => toughclaws::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "toxicboost" => toxicboost::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -836,12 +815,11 @@ pub fn dispatch_on_base_power(
 pub fn dispatch_on_before_move(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "gorillatactics" => gorillatactics::on_before_move(battle, pokemon_pos, move_id),
-        "truant" => truant::on_before_move(battle, pokemon_pos, move_id),
+        "gorillatactics" => gorillatactics::on_before_move(battle, pokemon_pos, target_pos, move_id),
+        "truant" => truant::on_before_move(battle, pokemon_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -862,12 +840,12 @@ pub fn dispatch_on_before_switch_in(
 pub fn dispatch_on_change_boost(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "contrary" => contrary::on_change_boost(battle, pokemon_pos),
-        "ripen" => ripen::on_change_boost(battle, pokemon_pos),
-        "simple" => simple::on_change_boost(battle, pokemon_pos),
+        "contrary" => contrary::on_change_boost(battle, target_pos, source_pos, effect_id),
+        "ripen" => ripen::on_change_boost(battle, target_pos, source_pos, effect_id),
+        "simple" => simple::on_change_boost(battle, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -888,12 +866,11 @@ pub fn dispatch_on_check_show(
 pub fn dispatch_on_critical_hit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "disguise" => disguise::on_critical_hit(battle, pokemon_pos, move_id),
-        "iceface" => iceface::on_critical_hit(battle, pokemon_pos, move_id),
+        "disguise" => disguise::on_critical_hit(battle, target_pos, source_pos, move_id),
+        "iceface" => iceface::on_critical_hit(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -902,20 +879,20 @@ pub fn dispatch_on_critical_hit(
 pub fn dispatch_on_damage(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "angershell" => angershell::on_damage(battle, pokemon_pos),
-        "berserk" => berserk::on_damage(battle, pokemon_pos),
-        "disguise" => disguise::on_damage(battle, pokemon_pos),
-        "gluttony" => gluttony::on_damage(battle, pokemon_pos),
-        "heatproof" => heatproof::on_damage(battle, pokemon_pos),
-        "iceface" => iceface::on_damage(battle, pokemon_pos),
-        "magicguard" => magicguard::on_damage(battle, pokemon_pos),
-        "mountaineer" => mountaineer::on_damage(battle, pokemon_pos),
-        "poisonheal" => poisonheal::on_damage(battle, pokemon_pos),
-        "rockhead" => rockhead::on_damage(battle, pokemon_pos),
-        "sturdy" => sturdy::on_damage(battle, pokemon_pos),
+        "angershell" => angershell::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "berserk" => berserk::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "disguise" => disguise::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "gluttony" => gluttony::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "heatproof" => heatproof::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "iceface" => iceface::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "magicguard" => magicguard::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "mountaineer" => mountaineer::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "poisonheal" => poisonheal::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "rockhead" => rockhead::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "sturdy" => sturdy::on_damage(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -924,41 +901,40 @@ pub fn dispatch_on_damage(
 pub fn dispatch_on_damaging_hit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "aftermath" => aftermath::on_damaging_hit(battle, pokemon_pos, move_id),
-        "cottondown" => cottondown::on_damaging_hit(battle, pokemon_pos, move_id),
-        "cursedbody" => cursedbody::on_damaging_hit(battle, pokemon_pos, move_id),
-        "cutecharm" => cutecharm::on_damaging_hit(battle, pokemon_pos, move_id),
-        "effectspore" => effectspore::on_damaging_hit(battle, pokemon_pos, move_id),
-        "electromorphosis" => electromorphosis::on_damaging_hit(battle, pokemon_pos, move_id),
-        "flamebody" => flamebody::on_damaging_hit(battle, pokemon_pos, move_id),
-        "gooey" => gooey::on_damaging_hit(battle, pokemon_pos, move_id),
-        "gulpmissile" => gulpmissile::on_damaging_hit(battle, pokemon_pos, move_id),
-        "illusion" => illusion::on_damaging_hit(battle, pokemon_pos, move_id),
-        "innardsout" => innardsout::on_damaging_hit(battle, pokemon_pos, move_id),
-        "ironbarbs" => ironbarbs::on_damaging_hit(battle, pokemon_pos, move_id),
-        "justified" => justified::on_damaging_hit(battle, pokemon_pos, move_id),
-        "lingeringaroma" => lingeringaroma::on_damaging_hit(battle, pokemon_pos, move_id),
-        "mummy" => mummy::on_damaging_hit(battle, pokemon_pos, move_id),
-        "perishbody" => perishbody::on_damaging_hit(battle, pokemon_pos, move_id),
-        "poisonpoint" => poisonpoint::on_damaging_hit(battle, pokemon_pos, move_id),
-        "rattled" => rattled::on_damaging_hit(battle, pokemon_pos, move_id),
-        "roughskin" => roughskin::on_damaging_hit(battle, pokemon_pos, move_id),
-        "sandspit" => sandspit::on_damaging_hit(battle, pokemon_pos, move_id),
-        "seedsower" => seedsower::on_damaging_hit(battle, pokemon_pos, move_id),
-        "stamina" => stamina::on_damaging_hit(battle, pokemon_pos, move_id),
-        "static" => r#static::on_damaging_hit(battle, pokemon_pos, move_id),
-        "steamengine" => steamengine::on_damaging_hit(battle, pokemon_pos, move_id),
-        "tanglinghair" => tanglinghair::on_damaging_hit(battle, pokemon_pos, move_id),
-        "thermalexchange" => thermalexchange::on_damaging_hit(battle, pokemon_pos, move_id),
-        "toxicdebris" => toxicdebris::on_damaging_hit(battle, pokemon_pos, move_id),
-        "wanderingspirit" => wanderingspirit::on_damaging_hit(battle, pokemon_pos, move_id),
-        "watercompaction" => watercompaction::on_damaging_hit(battle, pokemon_pos, move_id),
-        "weakarmor" => weakarmor::on_damaging_hit(battle, pokemon_pos, move_id),
-        "windpower" => windpower::on_damaging_hit(battle, pokemon_pos, move_id),
+        "aftermath" => aftermath::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "cottondown" => cottondown::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "cursedbody" => cursedbody::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "cutecharm" => cutecharm::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "effectspore" => effectspore::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "electromorphosis" => electromorphosis::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "flamebody" => flamebody::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "gooey" => gooey::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "gulpmissile" => gulpmissile::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "illusion" => illusion::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "innardsout" => innardsout::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "ironbarbs" => ironbarbs::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "justified" => justified::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "lingeringaroma" => lingeringaroma::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "mummy" => mummy::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "perishbody" => perishbody::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "poisonpoint" => poisonpoint::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "rattled" => rattled::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "roughskin" => roughskin::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "sandspit" => sandspit::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "seedsower" => seedsower::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "stamina" => stamina::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "static" => r#static::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "steamengine" => steamengine::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "tanglinghair" => tanglinghair::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "thermalexchange" => thermalexchange::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "toxicdebris" => toxicdebris::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "wanderingspirit" => wanderingspirit::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "watercompaction" => watercompaction::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "weakarmor" => weakarmor::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "windpower" => windpower::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -967,10 +943,10 @@ pub fn dispatch_on_damaging_hit(
 pub fn dispatch_on_deduct_p_p(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "pressure" => pressure::on_deduct_p_p(battle, pokemon_pos),
+        "pressure" => pressure::on_deduct_p_p(battle, target_pos, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1018,12 +994,11 @@ pub fn dispatch_on_eat_item(
 pub fn dispatch_on_effectiveness(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "disguise" => disguise::on_effectiveness(battle, pokemon_pos, move_id),
-        "iceface" => iceface::on_effectiveness(battle, pokemon_pos, move_id),
+        "disguise" => disguise::on_effectiveness(battle, damage, target_pos, type_str, move_id),
+        "iceface" => iceface::on_effectiveness(battle, damage, target_pos, type_str, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1032,11 +1007,11 @@ pub fn dispatch_on_effectiveness(
 pub fn dispatch_on_emergency_exit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "emergencyexit" => emergencyexit::on_emergency_exit(battle, pokemon_pos),
-        "wimpout" => wimpout::on_emergency_exit(battle, pokemon_pos),
+        "emergencyexit" => emergencyexit::on_emergency_exit(battle, target_pos),
+        "wimpout" => wimpout::on_emergency_exit(battle, target_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1098,10 +1073,10 @@ pub fn dispatch_on_flinch(
 pub fn dispatch_on_foe_after_boost(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "opportunist" => opportunist::on_foe_after_boost(battle, pokemon_pos),
+        "opportunist" => opportunist::on_foe_after_boost(battle, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -1110,12 +1085,12 @@ pub fn dispatch_on_foe_after_boost(
 pub fn dispatch_on_foe_maybe_trap_pokemon(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "arenatrap" => arenatrap::on_foe_maybe_trap_pokemon(battle, pokemon_pos),
-        "magnetpull" => magnetpull::on_foe_maybe_trap_pokemon(battle, pokemon_pos),
-        "shadowtag" => shadowtag::on_foe_maybe_trap_pokemon(battle, pokemon_pos),
+        "arenatrap" => arenatrap::on_foe_maybe_trap_pokemon(battle, pokemon_pos, source_pos),
+        "magnetpull" => magnetpull::on_foe_maybe_trap_pokemon(battle, pokemon_pos, source_pos),
+        "shadowtag" => shadowtag::on_foe_maybe_trap_pokemon(battle, pokemon_pos, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1138,12 +1113,11 @@ pub fn dispatch_on_foe_trap_pokemon(
 pub fn dispatch_on_foe_try_eat_item(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "asoneglastrier" => asoneglastrier::on_foe_try_eat_item(battle, pokemon_pos),
-        "asonespectrier" => asonespectrier::on_foe_try_eat_item(battle, pokemon_pos),
-        "unnerve" => unnerve::on_foe_try_eat_item(battle, pokemon_pos),
+        "asoneglastrier" => asoneglastrier::on_foe_try_eat_item(battle),
+        "asonespectrier" => asonespectrier::on_foe_try_eat_item(battle),
+        "unnerve" => unnerve::on_foe_try_eat_item(battle),
         _ => EventResult::Continue,
     }
 }
@@ -1152,13 +1126,12 @@ pub fn dispatch_on_foe_try_eat_item(
 pub fn dispatch_on_foe_try_move(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "armortail" => armortail::on_foe_try_move(battle, pokemon_pos, move_id),
-        "dazzling" => dazzling::on_foe_try_move(battle, pokemon_pos, move_id),
-        "queenlymajesty" => queenlymajesty::on_foe_try_move(battle, pokemon_pos, move_id),
+        "armortail" => armortail::on_foe_try_move(battle, target_pos, source_pos, move_id),
+        "dazzling" => dazzling::on_foe_try_move(battle, target_pos, source_pos, move_id),
+        "queenlymajesty" => queenlymajesty::on_foe_try_move(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1167,12 +1140,11 @@ pub fn dispatch_on_foe_try_move(
 pub fn dispatch_on_fractional_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "myceliummight" => myceliummight::on_fractional_priority(battle, pokemon_pos, move_id),
-        "quickdraw" => quickdraw::on_fractional_priority(battle, pokemon_pos, move_id),
+        "myceliummight" => myceliummight::on_fractional_priority(battle, pokemon_pos, target_pos, move_id),
+        "quickdraw" => quickdraw::on_fractional_priority(battle, pokemon_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1181,12 +1153,11 @@ pub fn dispatch_on_fractional_priority(
 pub fn dispatch_on_hit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "angerpoint" => angerpoint::on_hit(battle, pokemon_pos, move_id),
-        "owntempo" => owntempo::on_hit(battle, pokemon_pos, move_id),
+        "angerpoint" => angerpoint::on_hit(battle, pokemon_pos, source_pos, move_id),
+        "owntempo" => owntempo::on_hit(battle, pokemon_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1195,17 +1166,17 @@ pub fn dispatch_on_hit(
 pub fn dispatch_on_immunity(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    type_or_status: &str, pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "icebody" => icebody::on_immunity(battle, pokemon_pos),
-        "magmaarmor" => magmaarmor::on_immunity(battle, pokemon_pos),
-        "oblivious" => oblivious::on_immunity(battle, pokemon_pos),
-        "overcoat" => overcoat::on_immunity(battle, pokemon_pos),
-        "sandforce" => sandforce::on_immunity(battle, pokemon_pos),
-        "sandrush" => sandrush::on_immunity(battle, pokemon_pos),
-        "sandveil" => sandveil::on_immunity(battle, pokemon_pos),
-        "snowcloak" => snowcloak::on_immunity(battle, pokemon_pos),
+        "icebody" => icebody::on_immunity(battle, type_or_status, pokemon_pos),
+        "magmaarmor" => magmaarmor::on_immunity(battle, type_or_status, pokemon_pos),
+        "oblivious" => oblivious::on_immunity(battle, type_or_status, pokemon_pos),
+        "overcoat" => overcoat::on_immunity(battle, type_or_status, pokemon_pos),
+        "sandforce" => sandforce::on_immunity(battle, type_or_status, pokemon_pos),
+        "sandrush" => sandrush::on_immunity(battle, type_or_status, pokemon_pos),
+        "sandveil" => sandveil::on_immunity(battle, type_or_status, pokemon_pos),
+        "snowcloak" => snowcloak::on_immunity(battle, type_or_status, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1214,14 +1185,13 @@ pub fn dispatch_on_immunity(
 pub fn dispatch_on_modify_accuracy(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "sandveil" => sandveil::on_modify_accuracy(battle, pokemon_pos, move_id),
-        "snowcloak" => snowcloak::on_modify_accuracy(battle, pokemon_pos, move_id),
-        "tangledfeet" => tangledfeet::on_modify_accuracy(battle, pokemon_pos, move_id),
-        "wonderskin" => wonderskin::on_modify_accuracy(battle, pokemon_pos, move_id),
+        "sandveil" => sandveil::on_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "snowcloak" => snowcloak::on_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "tangledfeet" => tangledfeet::on_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "wonderskin" => wonderskin::on_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1230,28 +1200,27 @@ pub fn dispatch_on_modify_accuracy(
 pub fn dispatch_on_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "blaze" => blaze::on_modify_atk(battle, pokemon_pos, move_id),
-        "defeatist" => defeatist::on_modify_atk(battle, pokemon_pos, move_id),
-        "dragonsmaw" => dragonsmaw::on_modify_atk(battle, pokemon_pos, move_id),
-        "gorillatactics" => gorillatactics::on_modify_atk(battle, pokemon_pos, move_id),
-        "guts" => guts::on_modify_atk(battle, pokemon_pos, move_id),
-        "hugepower" => hugepower::on_modify_atk(battle, pokemon_pos, move_id),
-        "hustle" => hustle::on_modify_atk(battle, pokemon_pos, move_id),
-        "orichalcumpulse" => orichalcumpulse::on_modify_atk(battle, pokemon_pos, move_id),
-        "overgrow" => overgrow::on_modify_atk(battle, pokemon_pos, move_id),
-        "purepower" => purepower::on_modify_atk(battle, pokemon_pos, move_id),
-        "rockypayload" => rockypayload::on_modify_atk(battle, pokemon_pos, move_id),
-        "slowstart" => slowstart::on_modify_atk(battle, pokemon_pos, move_id),
-        "stakeout" => stakeout::on_modify_atk(battle, pokemon_pos, move_id),
-        "steelworker" => steelworker::on_modify_atk(battle, pokemon_pos, move_id),
-        "swarm" => swarm::on_modify_atk(battle, pokemon_pos, move_id),
-        "torrent" => torrent::on_modify_atk(battle, pokemon_pos, move_id),
-        "transistor" => transistor::on_modify_atk(battle, pokemon_pos, move_id),
-        "waterbubble" => waterbubble::on_modify_atk(battle, pokemon_pos, move_id),
+        "blaze" => blaze::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "defeatist" => defeatist::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "dragonsmaw" => dragonsmaw::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "gorillatactics" => gorillatactics::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "guts" => guts::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "hugepower" => hugepower::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "hustle" => hustle::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "orichalcumpulse" => orichalcumpulse::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "overgrow" => overgrow::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "purepower" => purepower::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "rockypayload" => rockypayload::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "slowstart" => slowstart::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "stakeout" => stakeout::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "steelworker" => steelworker::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "swarm" => swarm::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "torrent" => torrent::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "transistor" => transistor::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "waterbubble" => waterbubble::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1260,11 +1229,11 @@ pub fn dispatch_on_modify_atk(
 pub fn dispatch_on_modify_crit_ratio(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "merciless" => merciless::on_modify_crit_ratio(battle, pokemon_pos),
-        "superluck" => superluck::on_modify_crit_ratio(battle, pokemon_pos),
+        "merciless" => merciless::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos),
+        "superluck" => superluck::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1273,13 +1242,12 @@ pub fn dispatch_on_modify_crit_ratio(
 pub fn dispatch_on_modify_damage(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "neuroforce" => neuroforce::on_modify_damage(battle, pokemon_pos, move_id),
-        "sniper" => sniper::on_modify_damage(battle, pokemon_pos, move_id),
-        "tintedlens" => tintedlens::on_modify_damage(battle, pokemon_pos, move_id),
+        "neuroforce" => neuroforce::on_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "sniper" => sniper::on_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "tintedlens" => tintedlens::on_modify_damage(battle, damage, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1288,12 +1256,12 @@ pub fn dispatch_on_modify_damage(
 pub fn dispatch_on_modify_def(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "furcoat" => furcoat::on_modify_def(battle, pokemon_pos),
-        "grasspelt" => grasspelt::on_modify_def(battle, pokemon_pos),
-        "marvelscale" => marvelscale::on_modify_def(battle, pokemon_pos),
+        "furcoat" => furcoat::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
+        "grasspelt" => grasspelt::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
+        "marvelscale" => marvelscale::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1302,30 +1270,29 @@ pub fn dispatch_on_modify_def(
 pub fn dispatch_on_modify_move(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "battlebond" => battlebond::on_modify_move(battle, pokemon_pos, move_id),
-        "gorillatactics" => gorillatactics::on_modify_move(battle, pokemon_pos, move_id),
-        "illuminate" => illuminate::on_modify_move(battle, pokemon_pos, move_id),
-        "infiltrator" => infiltrator::on_modify_move(battle, pokemon_pos, move_id),
-        "keeneye" => keeneye::on_modify_move(battle, pokemon_pos, move_id),
-        "longreach" => longreach::on_modify_move(battle, pokemon_pos, move_id),
-        "mindseye" => mindseye::on_modify_move(battle, pokemon_pos, move_id),
-        "moldbreaker" => moldbreaker::on_modify_move(battle, pokemon_pos, move_id),
-        "myceliummight" => myceliummight::on_modify_move(battle, pokemon_pos, move_id),
-        "propellertail" => propellertail::on_modify_move(battle, pokemon_pos, move_id),
-        "scrappy" => scrappy::on_modify_move(battle, pokemon_pos, move_id),
-        "serenegrace" => serenegrace::on_modify_move(battle, pokemon_pos, move_id),
-        "sheerforce" => sheerforce::on_modify_move(battle, pokemon_pos, move_id),
-        "skilllink" => skilllink::on_modify_move(battle, pokemon_pos, move_id),
-        "stalwart" => stalwart::on_modify_move(battle, pokemon_pos, move_id),
-        "stancechange" => stancechange::on_modify_move(battle, pokemon_pos, move_id),
-        "stench" => stench::on_modify_move(battle, pokemon_pos, move_id),
-        "teravolt" => teravolt::on_modify_move(battle, pokemon_pos, move_id),
-        "turboblaze" => turboblaze::on_modify_move(battle, pokemon_pos, move_id),
-        "unseenfist" => unseenfist::on_modify_move(battle, pokemon_pos, move_id),
+        "battlebond" => battlebond::on_modify_move(battle, move_id),
+        "gorillatactics" => gorillatactics::on_modify_move(battle, move_id),
+        "illuminate" => illuminate::on_modify_move(battle, move_id),
+        "infiltrator" => infiltrator::on_modify_move(battle, move_id),
+        "keeneye" => keeneye::on_modify_move(battle, move_id),
+        "longreach" => longreach::on_modify_move(battle, move_id),
+        "mindseye" => mindseye::on_modify_move(battle, move_id),
+        "moldbreaker" => moldbreaker::on_modify_move(battle, move_id),
+        "myceliummight" => myceliummight::on_modify_move(battle, move_id),
+        "propellertail" => propellertail::on_modify_move(battle, move_id),
+        "scrappy" => scrappy::on_modify_move(battle, move_id),
+        "serenegrace" => serenegrace::on_modify_move(battle, move_id),
+        "sheerforce" => sheerforce::on_modify_move(battle, move_id),
+        "skilllink" => skilllink::on_modify_move(battle, move_id),
+        "stalwart" => stalwart::on_modify_move(battle, move_id),
+        "stancechange" => stancechange::on_modify_move(battle, move_id),
+        "stench" => stench::on_modify_move(battle, move_id),
+        "teravolt" => teravolt::on_modify_move(battle, move_id),
+        "turboblaze" => turboblaze::on_modify_move(battle, move_id),
+        "unseenfist" => unseenfist::on_modify_move(battle, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1334,13 +1301,12 @@ pub fn dispatch_on_modify_move(
 pub fn dispatch_on_modify_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "galewings" => galewings::on_modify_priority(battle, pokemon_pos, move_id),
-        "prankster" => prankster::on_modify_priority(battle, pokemon_pos, move_id),
-        "triage" => triage::on_modify_priority(battle, pokemon_pos, move_id),
+        "galewings" => galewings::on_modify_priority(battle, priority, pokemon_pos, target_pos, move_id),
+        "prankster" => prankster::on_modify_priority(battle, priority, pokemon_pos, target_pos, move_id),
+        "triage" => triage::on_modify_priority(battle, priority, pokemon_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1349,11 +1315,10 @@ pub fn dispatch_on_modify_priority(
 pub fn dispatch_on_modify_s_t_a_b(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "adaptability" => adaptability::on_modify_s_t_a_b(battle, pokemon_pos, move_id),
+        "adaptability" => adaptability::on_modify_s_t_a_b(battle, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1362,10 +1327,9 @@ pub fn dispatch_on_modify_s_t_a_b(
 pub fn dispatch_on_modify_secondaries(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "shielddust" => shielddust::on_modify_secondaries(battle, pokemon_pos),
+        "shielddust" => shielddust::on_modify_secondaries(battle),
         _ => EventResult::Continue,
     }
 }
@@ -1374,25 +1338,24 @@ pub fn dispatch_on_modify_secondaries(
 pub fn dispatch_on_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "blaze" => blaze::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "defeatist" => defeatist::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "dragonsmaw" => dragonsmaw::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "hadronengine" => hadronengine::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "minus" => minus::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "overgrow" => overgrow::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "plus" => plus::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "rockypayload" => rockypayload::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "solarpower" => solarpower::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "stakeout" => stakeout::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "steelworker" => steelworker::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "swarm" => swarm::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "torrent" => torrent::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "transistor" => transistor::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "waterbubble" => waterbubble::on_modify_sp_a(battle, pokemon_pos, move_id),
+        "blaze" => blaze::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "defeatist" => defeatist::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "dragonsmaw" => dragonsmaw::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "hadronengine" => hadronengine::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "minus" => minus::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "overgrow" => overgrow::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "plus" => plus::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "rockypayload" => rockypayload::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "solarpower" => solarpower::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "stakeout" => stakeout::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "steelworker" => steelworker::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "swarm" => swarm::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "torrent" => torrent::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "transistor" => transistor::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "waterbubble" => waterbubble::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1401,16 +1364,16 @@ pub fn dispatch_on_modify_sp_a(
 pub fn dispatch_on_modify_spe(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spe: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "chlorophyll" => chlorophyll::on_modify_spe(battle, pokemon_pos),
-        "quickfeet" => quickfeet::on_modify_spe(battle, pokemon_pos),
-        "sandrush" => sandrush::on_modify_spe(battle, pokemon_pos),
-        "slowstart" => slowstart::on_modify_spe(battle, pokemon_pos),
-        "slushrush" => slushrush::on_modify_spe(battle, pokemon_pos),
-        "surgesurfer" => surgesurfer::on_modify_spe(battle, pokemon_pos),
-        "swiftswim" => swiftswim::on_modify_spe(battle, pokemon_pos),
+        "chlorophyll" => chlorophyll::on_modify_spe(battle, spe, pokemon_pos),
+        "quickfeet" => quickfeet::on_modify_spe(battle, spe, pokemon_pos),
+        "sandrush" => sandrush::on_modify_spe(battle, spe, pokemon_pos),
+        "slowstart" => slowstart::on_modify_spe(battle, spe, pokemon_pos),
+        "slushrush" => slushrush::on_modify_spe(battle, spe, pokemon_pos),
+        "surgesurfer" => surgesurfer::on_modify_spe(battle, spe, pokemon_pos),
+        "swiftswim" => swiftswim::on_modify_spe(battle, spe, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1419,16 +1382,15 @@ pub fn dispatch_on_modify_spe(
 pub fn dispatch_on_modify_type(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "aerilate" => aerilate::on_modify_type(battle, pokemon_pos, move_id),
-        "galvanize" => galvanize::on_modify_type(battle, pokemon_pos, move_id),
-        "liquidvoice" => liquidvoice::on_modify_type(battle, pokemon_pos, move_id),
-        "normalize" => normalize::on_modify_type(battle, pokemon_pos, move_id),
-        "pixilate" => pixilate::on_modify_type(battle, pokemon_pos, move_id),
-        "refrigerate" => refrigerate::on_modify_type(battle, pokemon_pos, move_id),
+        "aerilate" => aerilate::on_modify_type(battle, move_id, pokemon_pos, target_pos),
+        "galvanize" => galvanize::on_modify_type(battle, move_id, pokemon_pos, target_pos),
+        "liquidvoice" => liquidvoice::on_modify_type(battle, move_id, pokemon_pos, target_pos),
+        "normalize" => normalize::on_modify_type(battle, move_id, pokemon_pos, target_pos),
+        "pixilate" => pixilate::on_modify_type(battle, move_id, pokemon_pos, target_pos),
+        "refrigerate" => refrigerate::on_modify_type(battle, move_id, pokemon_pos, target_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1437,11 +1399,11 @@ pub fn dispatch_on_modify_type(
 pub fn dispatch_on_modify_weight(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    weight: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "heavymetal" => heavymetal::on_modify_weight(battle, pokemon_pos),
-        "lightmetal" => lightmetal::on_modify_weight(battle, pokemon_pos),
+        "heavymetal" => heavymetal::on_modify_weight(battle, weight, pokemon_pos),
+        "lightmetal" => lightmetal::on_modify_weight(battle, weight, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1450,13 +1412,12 @@ pub fn dispatch_on_modify_weight(
 pub fn dispatch_on_prepare_hit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "libero" => libero::on_prepare_hit(battle, pokemon_pos, move_id),
-        "parentalbond" => parentalbond::on_prepare_hit(battle, pokemon_pos, move_id),
-        "protean" => protean::on_prepare_hit(battle, pokemon_pos, move_id),
+        "libero" => libero::on_prepare_hit(battle, source_pos, target_pos, move_id),
+        "parentalbond" => parentalbond::on_prepare_hit(battle, source_pos, target_pos, move_id),
+        "protean" => protean::on_prepare_hit(battle, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1492,21 +1453,21 @@ pub fn dispatch_on_residual(
 pub fn dispatch_on_set_status(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "comatose" => comatose::on_set_status(battle, pokemon_pos),
-        "immunity" => immunity::on_set_status(battle, pokemon_pos),
-        "insomnia" => insomnia::on_set_status(battle, pokemon_pos),
-        "leafguard" => leafguard::on_set_status(battle, pokemon_pos),
-        "limber" => limber::on_set_status(battle, pokemon_pos),
-        "pastelveil" => pastelveil::on_set_status(battle, pokemon_pos),
-        "purifyingsalt" => purifyingsalt::on_set_status(battle, pokemon_pos),
-        "shieldsdown" => shieldsdown::on_set_status(battle, pokemon_pos),
-        "thermalexchange" => thermalexchange::on_set_status(battle, pokemon_pos),
-        "vitalspirit" => vitalspirit::on_set_status(battle, pokemon_pos),
-        "waterbubble" => waterbubble::on_set_status(battle, pokemon_pos),
-        "waterveil" => waterveil::on_set_status(battle, pokemon_pos),
+        "comatose" => comatose::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "immunity" => immunity::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "insomnia" => insomnia::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "leafguard" => leafguard::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "limber" => limber::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "pastelveil" => pastelveil::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "purifyingsalt" => purifyingsalt::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "shieldsdown" => shieldsdown::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "thermalexchange" => thermalexchange::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "vitalspirit" => vitalspirit::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "waterbubble" => waterbubble::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
+        "waterveil" => waterveil::on_set_status(battle, status_id, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -1515,11 +1476,11 @@ pub fn dispatch_on_set_status(
 pub fn dispatch_on_side_condition_start(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "windpower" => windpower::on_side_condition_start(battle, pokemon_pos),
-        "windrider" => windrider::on_side_condition_start(battle, pokemon_pos),
+        "windpower" => windpower::on_side_condition_start(battle, source_pos),
+        "windrider" => windrider::on_side_condition_start(battle, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1528,16 +1489,16 @@ pub fn dispatch_on_side_condition_start(
 pub fn dispatch_on_source_after_faint(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "asoneglastrier" => asoneglastrier::on_source_after_faint(battle, pokemon_pos),
-        "asonespectrier" => asonespectrier::on_source_after_faint(battle, pokemon_pos),
-        "battlebond" => battlebond::on_source_after_faint(battle, pokemon_pos),
-        "beastboost" => beastboost::on_source_after_faint(battle, pokemon_pos),
-        "chillingneigh" => chillingneigh::on_source_after_faint(battle, pokemon_pos),
-        "grimneigh" => grimneigh::on_source_after_faint(battle, pokemon_pos),
-        "moxie" => moxie::on_source_after_faint(battle, pokemon_pos),
+        "asoneglastrier" => asoneglastrier::on_source_after_faint(battle, target_pos, source_pos, effect_id),
+        "asonespectrier" => asonespectrier::on_source_after_faint(battle, target_pos, source_pos, effect_id),
+        "battlebond" => battlebond::on_source_after_faint(battle, target_pos, source_pos, effect_id),
+        "beastboost" => beastboost::on_source_after_faint(battle, target_pos, source_pos, effect_id),
+        "chillingneigh" => chillingneigh::on_source_after_faint(battle, target_pos, source_pos, effect_id),
+        "grimneigh" => grimneigh::on_source_after_faint(battle, target_pos, source_pos, effect_id),
+        "moxie" => moxie::on_source_after_faint(battle, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -1546,11 +1507,10 @@ pub fn dispatch_on_source_after_faint(
 pub fn dispatch_on_source_base_power(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "dryskin" => dryskin::on_source_base_power(battle, pokemon_pos, move_id),
+        "dryskin" => dryskin::on_source_base_power(battle, base_power, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1559,12 +1519,11 @@ pub fn dispatch_on_source_base_power(
 pub fn dispatch_on_source_damaging_hit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "poisontouch" => poisontouch::on_source_damaging_hit(battle, pokemon_pos, move_id),
-        "toxicchain" => toxicchain::on_source_damaging_hit(battle, pokemon_pos, move_id),
+        "poisontouch" => poisontouch::on_source_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "toxicchain" => toxicchain::on_source_damaging_hit(battle, damage, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1573,12 +1532,11 @@ pub fn dispatch_on_source_damaging_hit(
 pub fn dispatch_on_source_modify_accuracy(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "compoundeyes" => compoundeyes::on_source_modify_accuracy(battle, pokemon_pos, move_id),
-        "hustle" => hustle::on_source_modify_accuracy(battle, pokemon_pos, move_id),
+        "compoundeyes" => compoundeyes::on_source_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "hustle" => hustle::on_source_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1587,14 +1545,13 @@ pub fn dispatch_on_source_modify_accuracy(
 pub fn dispatch_on_source_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "heatproof" => heatproof::on_source_modify_atk(battle, pokemon_pos, move_id),
-        "purifyingsalt" => purifyingsalt::on_source_modify_atk(battle, pokemon_pos, move_id),
-        "thickfat" => thickfat::on_source_modify_atk(battle, pokemon_pos, move_id),
-        "waterbubble" => waterbubble::on_source_modify_atk(battle, pokemon_pos, move_id),
+        "heatproof" => heatproof::on_source_modify_atk(battle, move_id),
+        "purifyingsalt" => purifyingsalt::on_source_modify_atk(battle, move_id),
+        "thickfat" => thickfat::on_source_modify_atk(battle, move_id),
+        "waterbubble" => waterbubble::on_source_modify_atk(battle, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1603,19 +1560,18 @@ pub fn dispatch_on_source_modify_atk(
 pub fn dispatch_on_source_modify_damage(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "filter" => filter::on_source_modify_damage(battle, pokemon_pos, move_id),
-        "fluffy" => fluffy::on_source_modify_damage(battle, pokemon_pos, move_id),
-        "icescales" => icescales::on_source_modify_damage(battle, pokemon_pos, move_id),
-        "multiscale" => multiscale::on_source_modify_damage(battle, pokemon_pos, move_id),
-        "prismarmor" => prismarmor::on_source_modify_damage(battle, pokemon_pos, move_id),
-        "punkrock" => punkrock::on_source_modify_damage(battle, pokemon_pos, move_id),
-        "ripen" => ripen::on_source_modify_damage(battle, pokemon_pos, move_id),
-        "shadowshield" => shadowshield::on_source_modify_damage(battle, pokemon_pos, move_id),
-        "solidrock" => solidrock::on_source_modify_damage(battle, pokemon_pos, move_id),
+        "filter" => filter::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "fluffy" => fluffy::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "icescales" => icescales::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "multiscale" => multiscale::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "prismarmor" => prismarmor::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "punkrock" => punkrock::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "ripen" => ripen::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "shadowshield" => shadowshield::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "solidrock" => solidrock::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1624,11 +1580,10 @@ pub fn dispatch_on_source_modify_damage(
 pub fn dispatch_on_source_modify_secondaries(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "parentalbond" => parentalbond::on_source_modify_secondaries(battle, pokemon_pos, move_id),
+        "parentalbond" => parentalbond::on_source_modify_secondaries(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1637,14 +1592,13 @@ pub fn dispatch_on_source_modify_secondaries(
 pub fn dispatch_on_source_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "heatproof" => heatproof::on_source_modify_sp_a(battle, pokemon_pos, move_id),
-        "purifyingsalt" => purifyingsalt::on_source_modify_sp_a(battle, pokemon_pos, move_id),
-        "thickfat" => thickfat::on_source_modify_sp_a(battle, pokemon_pos, move_id),
-        "waterbubble" => waterbubble::on_source_modify_sp_a(battle, pokemon_pos, move_id),
+        "heatproof" => heatproof::on_source_modify_sp_a(battle, move_id),
+        "purifyingsalt" => purifyingsalt::on_source_modify_sp_a(battle, move_id),
+        "thickfat" => thickfat::on_source_modify_sp_a(battle, move_id),
+        "waterbubble" => waterbubble::on_source_modify_sp_a(battle, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1653,10 +1607,10 @@ pub fn dispatch_on_source_modify_sp_a(
 pub fn dispatch_on_source_try_heal(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "liquidooze" => liquidooze::on_source_try_heal(battle, pokemon_pos),
+        "liquidooze" => liquidooze::on_source_try_heal(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -1665,10 +1619,10 @@ pub fn dispatch_on_source_try_heal(
 pub fn dispatch_on_source_try_primary_hit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "gulpmissile" => gulpmissile::on_source_try_primary_hit(battle, pokemon_pos),
+        "gulpmissile" => gulpmissile::on_source_try_primary_hit(battle, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -1783,11 +1737,11 @@ pub fn dispatch_on_switch_out(
 pub fn dispatch_on_take_item(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "stickyhold" => stickyhold::on_take_item(battle, pokemon_pos),
-        "unburden" => unburden::on_take_item(battle, pokemon_pos),
+        "stickyhold" => stickyhold::on_take_item(battle, pokemon_pos, source_pos),
+        "unburden" => unburden::on_take_item(battle, pokemon_pos, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1809,16 +1763,16 @@ pub fn dispatch_on_terrain_change(
 pub fn dispatch_on_try_add_volatile(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "innerfocus" => innerfocus::on_try_add_volatile(battle, pokemon_pos),
-        "insomnia" => insomnia::on_try_add_volatile(battle, pokemon_pos),
-        "leafguard" => leafguard::on_try_add_volatile(battle, pokemon_pos),
-        "owntempo" => owntempo::on_try_add_volatile(battle, pokemon_pos),
-        "purifyingsalt" => purifyingsalt::on_try_add_volatile(battle, pokemon_pos),
-        "shieldsdown" => shieldsdown::on_try_add_volatile(battle, pokemon_pos),
-        "vitalspirit" => vitalspirit::on_try_add_volatile(battle, pokemon_pos),
+        "innerfocus" => innerfocus::on_try_add_volatile(battle, status_id, target_pos, source_pos, effect_id),
+        "insomnia" => insomnia::on_try_add_volatile(battle, status_id, target_pos, source_pos, effect_id),
+        "leafguard" => leafguard::on_try_add_volatile(battle, status_id, target_pos, source_pos, effect_id),
+        "owntempo" => owntempo::on_try_add_volatile(battle, status_id, target_pos, source_pos, effect_id),
+        "purifyingsalt" => purifyingsalt::on_try_add_volatile(battle, status_id, target_pos, source_pos, effect_id),
+        "shieldsdown" => shieldsdown::on_try_add_volatile(battle, status_id, target_pos, source_pos, effect_id),
+        "vitalspirit" => vitalspirit::on_try_add_volatile(battle, status_id, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -1827,23 +1781,23 @@ pub fn dispatch_on_try_add_volatile(
 pub fn dispatch_on_try_boost(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "bigpecks" => bigpecks::on_try_boost(battle, pokemon_pos),
-        "clearbody" => clearbody::on_try_boost(battle, pokemon_pos),
-        "fullmetalbody" => fullmetalbody::on_try_boost(battle, pokemon_pos),
-        "guarddog" => guarddog::on_try_boost(battle, pokemon_pos),
-        "hypercutter" => hypercutter::on_try_boost(battle, pokemon_pos),
-        "illuminate" => illuminate::on_try_boost(battle, pokemon_pos),
-        "innerfocus" => innerfocus::on_try_boost(battle, pokemon_pos),
-        "keeneye" => keeneye::on_try_boost(battle, pokemon_pos),
-        "mindseye" => mindseye::on_try_boost(battle, pokemon_pos),
-        "mirrorarmor" => mirrorarmor::on_try_boost(battle, pokemon_pos),
-        "oblivious" => oblivious::on_try_boost(battle, pokemon_pos),
-        "owntempo" => owntempo::on_try_boost(battle, pokemon_pos),
-        "scrappy" => scrappy::on_try_boost(battle, pokemon_pos),
-        "whitesmoke" => whitesmoke::on_try_boost(battle, pokemon_pos),
+        "bigpecks" => bigpecks::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "clearbody" => clearbody::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "fullmetalbody" => fullmetalbody::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "guarddog" => guarddog::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "hypercutter" => hypercutter::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "illuminate" => illuminate::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "innerfocus" => innerfocus::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "keeneye" => keeneye::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "mindseye" => mindseye::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "mirrorarmor" => mirrorarmor::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "oblivious" => oblivious::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "owntempo" => owntempo::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "scrappy" => scrappy::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "whitesmoke" => whitesmoke::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -1852,12 +1806,11 @@ pub fn dispatch_on_try_boost(
 pub fn dispatch_on_try_eat_item(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "angershell" => angershell::on_try_eat_item(battle, pokemon_pos),
-        "berserk" => berserk::on_try_eat_item(battle, pokemon_pos),
-        "ripen" => ripen::on_try_eat_item(battle, pokemon_pos),
+        "angershell" => angershell::on_try_eat_item(battle),
+        "berserk" => berserk::on_try_eat_item(battle),
+        "ripen" => ripen::on_try_eat_item(battle),
         _ => EventResult::Continue,
     }
 }
@@ -1866,10 +1819,10 @@ pub fn dispatch_on_try_eat_item(
 pub fn dispatch_on_try_heal(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "ripen" => ripen::on_try_heal(battle, pokemon_pos),
+        "ripen" => ripen::on_try_heal(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -1878,32 +1831,31 @@ pub fn dispatch_on_try_heal(
 pub fn dispatch_on_try_hit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "bulletproof" => bulletproof::on_try_hit(battle, pokemon_pos, move_id),
-        "dryskin" => dryskin::on_try_hit(battle, pokemon_pos, move_id),
-        "eartheater" => eartheater::on_try_hit(battle, pokemon_pos, move_id),
-        "flashfire" => flashfire::on_try_hit(battle, pokemon_pos, move_id),
-        "goodasgold" => goodasgold::on_try_hit(battle, pokemon_pos, move_id),
-        "lightningrod" => lightningrod::on_try_hit(battle, pokemon_pos, move_id),
-        "magicbounce" => magicbounce::on_try_hit(battle, pokemon_pos, move_id),
-        "motordrive" => motordrive::on_try_hit(battle, pokemon_pos, move_id),
-        "mountaineer" => mountaineer::on_try_hit(battle, pokemon_pos, move_id),
-        "oblivious" => oblivious::on_try_hit(battle, pokemon_pos, move_id),
-        "overcoat" => overcoat::on_try_hit(battle, pokemon_pos, move_id),
-        "rebound" => rebound::on_try_hit(battle, pokemon_pos, move_id),
-        "sapsipper" => sapsipper::on_try_hit(battle, pokemon_pos, move_id),
-        "soundproof" => soundproof::on_try_hit(battle, pokemon_pos, move_id),
-        "stormdrain" => stormdrain::on_try_hit(battle, pokemon_pos, move_id),
-        "sturdy" => sturdy::on_try_hit(battle, pokemon_pos, move_id),
-        "telepathy" => telepathy::on_try_hit(battle, pokemon_pos, move_id),
-        "voltabsorb" => voltabsorb::on_try_hit(battle, pokemon_pos, move_id),
-        "waterabsorb" => waterabsorb::on_try_hit(battle, pokemon_pos, move_id),
-        "wellbakedbody" => wellbakedbody::on_try_hit(battle, pokemon_pos, move_id),
-        "windrider" => windrider::on_try_hit(battle, pokemon_pos, move_id),
-        "wonderguard" => wonderguard::on_try_hit(battle, pokemon_pos, move_id),
+        "bulletproof" => bulletproof::on_try_hit(battle, target_pos, source_pos, move_id),
+        "dryskin" => dryskin::on_try_hit(battle, target_pos, source_pos, move_id),
+        "eartheater" => eartheater::on_try_hit(battle, target_pos, source_pos, move_id),
+        "flashfire" => flashfire::on_try_hit(battle, target_pos, source_pos, move_id),
+        "goodasgold" => goodasgold::on_try_hit(battle, target_pos, source_pos, move_id),
+        "lightningrod" => lightningrod::on_try_hit(battle, target_pos, source_pos, move_id),
+        "magicbounce" => magicbounce::on_try_hit(battle, target_pos, source_pos, move_id),
+        "motordrive" => motordrive::on_try_hit(battle, target_pos, source_pos, move_id),
+        "mountaineer" => mountaineer::on_try_hit(battle, target_pos, source_pos, move_id),
+        "oblivious" => oblivious::on_try_hit(battle, target_pos, source_pos, move_id),
+        "overcoat" => overcoat::on_try_hit(battle, target_pos, source_pos, move_id),
+        "rebound" => rebound::on_try_hit(battle, target_pos, source_pos, move_id),
+        "sapsipper" => sapsipper::on_try_hit(battle, target_pos, source_pos, move_id),
+        "soundproof" => soundproof::on_try_hit(battle, target_pos, source_pos, move_id),
+        "stormdrain" => stormdrain::on_try_hit(battle, target_pos, source_pos, move_id),
+        "sturdy" => sturdy::on_try_hit(battle, target_pos, source_pos, move_id),
+        "telepathy" => telepathy::on_try_hit(battle, target_pos, source_pos, move_id),
+        "voltabsorb" => voltabsorb::on_try_hit(battle, target_pos, source_pos, move_id),
+        "waterabsorb" => waterabsorb::on_try_hit(battle, target_pos, source_pos, move_id),
+        "wellbakedbody" => wellbakedbody::on_try_hit(battle, target_pos, source_pos, move_id),
+        "windrider" => windrider::on_try_hit(battle, target_pos, source_pos, move_id),
+        "wonderguard" => wonderguard::on_try_hit(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -1938,13 +1890,13 @@ pub fn dispatch_on_update(
 pub fn dispatch_on_weather(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "dryskin" => dryskin::on_weather(battle, pokemon_pos),
-        "icebody" => icebody::on_weather(battle, pokemon_pos),
-        "raindish" => raindish::on_weather(battle, pokemon_pos),
-        "solarpower" => solarpower::on_weather(battle, pokemon_pos),
+        "dryskin" => dryskin::on_weather(battle, weather_id, pokemon_pos, source_pos),
+        "icebody" => icebody::on_weather(battle, weather_id, pokemon_pos, source_pos),
+        "raindish" => raindish::on_weather(battle, weather_id, pokemon_pos, source_pos),
+        "solarpower" => solarpower::on_weather(battle, weather_id, pokemon_pos, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1969,141 +1921,135 @@ pub fn dispatch_on_weather_change(
 pub fn dispatch_on_after_boost_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAfterBoostOrder callbacks (alias for onAfterBoost)
 pub fn dispatch_on_after_boost_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAfterBoostSubOrder callbacks (alias for onAfterBoost)
 pub fn dispatch_on_after_boost_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAfterEachBoostPriority callbacks (alias for onAfterEachBoost)
 pub fn dispatch_on_after_each_boost_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_each_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_after_each_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAfterEachBoostOrder callbacks (alias for onAfterEachBoost)
 pub fn dispatch_on_after_each_boost_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_each_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_after_each_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAfterEachBoostSubOrder callbacks (alias for onAfterEachBoost)
 pub fn dispatch_on_after_each_boost_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_each_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_after_each_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAfterMoveSecondaryPriority callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_after_move_secondary(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAfterMoveSecondaryOrder callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_after_move_secondary(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAfterMoveSecondarySubOrder callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_after_move_secondary(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAfterMoveSecondarySelfPriority callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_after_move_secondary_self(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAfterMoveSecondarySelfOrder callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_after_move_secondary_self(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAfterMoveSecondarySelfSubOrder callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_after_move_secondary_self(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAfterSetStatusPriority callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAfterSetStatusOrder callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAfterSetStatusSubOrder callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAfterTerastallizationPriority callbacks (alias for onAfterTerastallization)
@@ -2191,57 +2137,54 @@ pub fn dispatch_on_ally_after_use_item_sub_order(
 pub fn dispatch_on_ally_base_power_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, move_id: &str,
 ) -> EventResult {
-    dispatch_on_ally_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_ally_base_power(battle, ability_id, base_power, move_id)
 }
 
 /// Dispatch onAllyBasePowerOrder callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, move_id: &str,
 ) -> EventResult {
-    dispatch_on_ally_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_ally_base_power(battle, ability_id, base_power, move_id)
 }
 
 /// Dispatch onAllyBasePowerSubOrder callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, move_id: &str,
 ) -> EventResult {
-    dispatch_on_ally_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_ally_base_power(battle, ability_id, base_power, move_id)
 }
 
 /// Dispatch onAllyFaintPriority callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_ally_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_faint(battle, ability_id, target_pos)
 }
 
 /// Dispatch onAllyFaintOrder callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_ally_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_faint(battle, ability_id, target_pos)
 }
 
 /// Dispatch onAllyFaintSubOrder callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_ally_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_faint(battle, ability_id, target_pos)
 }
 
 /// Dispatch onAllyModifyAtkPriority callbacks (alias for onAllyModifyAtk)
@@ -2302,795 +2245,738 @@ pub fn dispatch_on_ally_modify_sp_d_sub_order(
 pub fn dispatch_on_ally_set_status_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_ally_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAllySetStatusOrder callbacks (alias for onAllySetStatus)
 pub fn dispatch_on_ally_set_status_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_ally_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAllySetStatusSubOrder callbacks (alias for onAllySetStatus)
 pub fn dispatch_on_ally_set_status_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_ally_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAllyTryAddVolatilePriority callbacks (alias for onAllyTryAddVolatile)
 pub fn dispatch_on_ally_try_add_volatile_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_ally_try_add_volatile(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_try_add_volatile(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAllyTryAddVolatileOrder callbacks (alias for onAllyTryAddVolatile)
 pub fn dispatch_on_ally_try_add_volatile_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_ally_try_add_volatile(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_try_add_volatile(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAllyTryAddVolatileSubOrder callbacks (alias for onAllyTryAddVolatile)
 pub fn dispatch_on_ally_try_add_volatile_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_ally_try_add_volatile(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_try_add_volatile(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAllyTryBoostPriority callbacks (alias for onAllyTryBoost)
 pub fn dispatch_on_ally_try_boost_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_ally_try_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_try_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAllyTryBoostOrder callbacks (alias for onAllyTryBoost)
 pub fn dispatch_on_ally_try_boost_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_ally_try_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_try_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAllyTryBoostSubOrder callbacks (alias for onAllyTryBoost)
 pub fn dispatch_on_ally_try_boost_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_ally_try_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_try_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAllyTryHitSidePriority callbacks (alias for onAllyTryHitSide)
 pub fn dispatch_on_ally_try_hit_side_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_ally_try_hit_side(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAllyTryHitSideOrder callbacks (alias for onAllyTryHitSide)
 pub fn dispatch_on_ally_try_hit_side_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_ally_try_hit_side(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAllyTryHitSideSubOrder callbacks (alias for onAllyTryHitSide)
 pub fn dispatch_on_ally_try_hit_side_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_ally_try_hit_side(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyAccuracyPriority callbacks (alias for onAnyAccuracy)
 pub fn dispatch_on_any_accuracy_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_accuracy(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyAccuracyOrder callbacks (alias for onAnyAccuracy)
 pub fn dispatch_on_any_accuracy_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_accuracy(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyAccuracySubOrder callbacks (alias for onAnyAccuracy)
 pub fn dispatch_on_any_accuracy_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_accuracy(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyAfterMegaPriority callbacks (alias for onAnyAfterMega)
 pub fn dispatch_on_any_after_mega_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_after_mega(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_mega(battle, ability_id)
 }
 
 /// Dispatch onAnyAfterMegaOrder callbacks (alias for onAnyAfterMega)
 pub fn dispatch_on_any_after_mega_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_after_mega(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_mega(battle, ability_id)
 }
 
 /// Dispatch onAnyAfterMegaSubOrder callbacks (alias for onAnyAfterMega)
 pub fn dispatch_on_any_after_mega_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_after_mega(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_mega(battle, ability_id)
 }
 
 /// Dispatch onAnyAfterMovePriority callbacks (alias for onAnyAfterMove)
 pub fn dispatch_on_any_after_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_after_move(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_move(battle, ability_id)
 }
 
 /// Dispatch onAnyAfterMoveOrder callbacks (alias for onAnyAfterMove)
 pub fn dispatch_on_any_after_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_after_move(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_move(battle, ability_id)
 }
 
 /// Dispatch onAnyAfterMoveSubOrder callbacks (alias for onAnyAfterMove)
 pub fn dispatch_on_any_after_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_after_move(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_move(battle, ability_id)
 }
 
 /// Dispatch onAnyAfterSetStatusPriority callbacks (alias for onAnyAfterSetStatus)
 pub fn dispatch_on_any_after_set_status_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_any_after_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAnyAfterSetStatusOrder callbacks (alias for onAnyAfterSetStatus)
 pub fn dispatch_on_any_after_set_status_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_any_after_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAnyAfterSetStatusSubOrder callbacks (alias for onAnyAfterSetStatus)
 pub fn dispatch_on_any_after_set_status_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_any_after_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAnyAfterTerastallizationPriority callbacks (alias for onAnyAfterTerastallization)
 pub fn dispatch_on_any_after_terastallization_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_after_terastallization(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_terastallization(battle, ability_id)
 }
 
 /// Dispatch onAnyAfterTerastallizationOrder callbacks (alias for onAnyAfterTerastallization)
 pub fn dispatch_on_any_after_terastallization_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_after_terastallization(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_terastallization(battle, ability_id)
 }
 
 /// Dispatch onAnyAfterTerastallizationSubOrder callbacks (alias for onAnyAfterTerastallization)
 pub fn dispatch_on_any_after_terastallization_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_after_terastallization(battle, ability_id, pokemon_pos)
+    dispatch_on_any_after_terastallization(battle, ability_id)
 }
 
 /// Dispatch onAnyBasePowerPriority callbacks (alias for onAnyBasePower)
 pub fn dispatch_on_any_base_power_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyBasePowerOrder callbacks (alias for onAnyBasePower)
 pub fn dispatch_on_any_base_power_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyBasePowerSubOrder callbacks (alias for onAnyBasePower)
 pub fn dispatch_on_any_base_power_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyBeforeMovePriority callbacks (alias for onAnyBeforeMove)
 pub fn dispatch_on_any_before_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_before_move(battle, ability_id, pokemon_pos)
+    dispatch_on_any_before_move(battle, ability_id)
 }
 
 /// Dispatch onAnyBeforeMoveOrder callbacks (alias for onAnyBeforeMove)
 pub fn dispatch_on_any_before_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_before_move(battle, ability_id, pokemon_pos)
+    dispatch_on_any_before_move(battle, ability_id)
 }
 
 /// Dispatch onAnyBeforeMoveSubOrder callbacks (alias for onAnyBeforeMove)
 pub fn dispatch_on_any_before_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_before_move(battle, ability_id, pokemon_pos)
+    dispatch_on_any_before_move(battle, ability_id)
 }
 
 /// Dispatch onAnyDamagePriority callbacks (alias for onAnyDamage)
 pub fn dispatch_on_any_damage_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_any_damage(battle, ability_id, pokemon_pos)
+    dispatch_on_any_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAnyDamageOrder callbacks (alias for onAnyDamage)
 pub fn dispatch_on_any_damage_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_any_damage(battle, ability_id, pokemon_pos)
+    dispatch_on_any_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAnyDamageSubOrder callbacks (alias for onAnyDamage)
 pub fn dispatch_on_any_damage_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_any_damage(battle, ability_id, pokemon_pos)
+    dispatch_on_any_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAnyFaintPriority callbacks (alias for onAnyFaint)
 pub fn dispatch_on_any_faint_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_any_faint(battle, ability_id)
 }
 
 /// Dispatch onAnyFaintOrder callbacks (alias for onAnyFaint)
 pub fn dispatch_on_any_faint_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_any_faint(battle, ability_id)
 }
 
 /// Dispatch onAnyFaintSubOrder callbacks (alias for onAnyFaint)
 pub fn dispatch_on_any_faint_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_any_faint(battle, ability_id)
 }
 
 /// Dispatch onAnyInvulnerabilityPriority callbacks (alias for onAnyInvulnerability)
 pub fn dispatch_on_any_invulnerability_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_invulnerability(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyInvulnerabilityOrder callbacks (alias for onAnyInvulnerability)
 pub fn dispatch_on_any_invulnerability_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_invulnerability(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyInvulnerabilitySubOrder callbacks (alias for onAnyInvulnerability)
 pub fn dispatch_on_any_invulnerability_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_invulnerability(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyModifyAccuracyPriority callbacks (alias for onAnyModifyAccuracy)
 pub fn dispatch_on_any_modify_accuracy_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_any_modify_accuracy(battle, ability_id, pokemon_pos)
+    dispatch_on_any_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos)
 }
 
 /// Dispatch onAnyModifyAccuracyOrder callbacks (alias for onAnyModifyAccuracy)
 pub fn dispatch_on_any_modify_accuracy_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_any_modify_accuracy(battle, ability_id, pokemon_pos)
+    dispatch_on_any_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos)
 }
 
 /// Dispatch onAnyModifyAccuracySubOrder callbacks (alias for onAnyModifyAccuracy)
 pub fn dispatch_on_any_modify_accuracy_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_any_modify_accuracy(battle, ability_id, pokemon_pos)
+    dispatch_on_any_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos)
 }
 
 /// Dispatch onAnyModifyAtkPriority callbacks (alias for onAnyModifyAtk)
 pub fn dispatch_on_any_modify_atk_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_atk(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_atk(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyModifyAtkOrder callbacks (alias for onAnyModifyAtk)
 pub fn dispatch_on_any_modify_atk_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_atk(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_atk(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyModifyAtkSubOrder callbacks (alias for onAnyModifyAtk)
 pub fn dispatch_on_any_modify_atk_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_atk(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_atk(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyModifyBoostPriority callbacks (alias for onAnyModifyBoost)
 pub fn dispatch_on_any_modify_boost_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    boosts: &str, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_modify_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_any_modify_boost(battle, ability_id, boosts, pokemon_pos)
 }
 
 /// Dispatch onAnyModifyBoostOrder callbacks (alias for onAnyModifyBoost)
 pub fn dispatch_on_any_modify_boost_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    boosts: &str, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_modify_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_any_modify_boost(battle, ability_id, boosts, pokemon_pos)
 }
 
 /// Dispatch onAnyModifyBoostSubOrder callbacks (alias for onAnyModifyBoost)
 pub fn dispatch_on_any_modify_boost_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    boosts: &str, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_modify_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_any_modify_boost(battle, ability_id, boosts, pokemon_pos)
 }
 
 /// Dispatch onAnyModifyDamagePriority callbacks (alias for onAnyModifyDamage)
 pub fn dispatch_on_any_modify_damage_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_damage(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyModifyDamageOrder callbacks (alias for onAnyModifyDamage)
 pub fn dispatch_on_any_modify_damage_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_damage(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyModifyDamageSubOrder callbacks (alias for onAnyModifyDamage)
 pub fn dispatch_on_any_modify_damage_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_damage(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyModifyDefPriority callbacks (alias for onAnyModifyDef)
 pub fn dispatch_on_any_modify_def_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_def(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_def(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyModifyDefOrder callbacks (alias for onAnyModifyDef)
 pub fn dispatch_on_any_modify_def_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_def(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_def(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyModifyDefSubOrder callbacks (alias for onAnyModifyDef)
 pub fn dispatch_on_any_modify_def_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_def(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_def(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyModifySpAPriority callbacks (alias for onAnyModifySpA)
 pub fn dispatch_on_any_modify_sp_a_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_a(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_sp_a(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyModifySpAOrder callbacks (alias for onAnyModifySpA)
 pub fn dispatch_on_any_modify_sp_a_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_a(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_sp_a(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyModifySpASubOrder callbacks (alias for onAnyModifySpA)
 pub fn dispatch_on_any_modify_sp_a_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_a(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_sp_a(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onAnyModifySpDPriority callbacks (alias for onAnyModifySpD)
 pub fn dispatch_on_any_modify_sp_d_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_d(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_sp_d(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyModifySpDOrder callbacks (alias for onAnyModifySpD)
 pub fn dispatch_on_any_modify_sp_d_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_d(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_sp_d(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyModifySpDSubOrder callbacks (alias for onAnyModifySpD)
 pub fn dispatch_on_any_modify_sp_d_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_d(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_modify_sp_d(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyRedirectTargetPriority callbacks (alias for onAnyRedirectTarget)
 pub fn dispatch_on_any_redirect_target_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_redirect_target(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyRedirectTargetOrder callbacks (alias for onAnyRedirectTarget)
 pub fn dispatch_on_any_redirect_target_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_redirect_target(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyRedirectTargetSubOrder callbacks (alias for onAnyRedirectTarget)
 pub fn dispatch_on_any_redirect_target_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_redirect_target(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnySetWeatherPriority callbacks (alias for onAnySetWeather)
 pub fn dispatch_on_any_set_weather_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_any_set_weather(battle, ability_id, pokemon_pos)
+    dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos)
 }
 
 /// Dispatch onAnySetWeatherOrder callbacks (alias for onAnySetWeather)
 pub fn dispatch_on_any_set_weather_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_any_set_weather(battle, ability_id, pokemon_pos)
+    dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos)
 }
 
 /// Dispatch onAnySetWeatherSubOrder callbacks (alias for onAnySetWeather)
 pub fn dispatch_on_any_set_weather_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_any_set_weather(battle, ability_id, pokemon_pos)
+    dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos)
 }
 
 /// Dispatch onAnySwitchInPriority callbacks (alias for onAnySwitchIn)
 pub fn dispatch_on_any_switch_in_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_switch_in(battle, ability_id, pokemon_pos)
+    dispatch_on_any_switch_in(battle, ability_id)
 }
 
 /// Dispatch onAnySwitchInOrder callbacks (alias for onAnySwitchIn)
 pub fn dispatch_on_any_switch_in_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_switch_in(battle, ability_id, pokemon_pos)
+    dispatch_on_any_switch_in(battle, ability_id)
 }
 
 /// Dispatch onAnySwitchInSubOrder callbacks (alias for onAnySwitchIn)
 pub fn dispatch_on_any_switch_in_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_any_switch_in(battle, ability_id, pokemon_pos)
+    dispatch_on_any_switch_in(battle, ability_id)
 }
 
 /// Dispatch onAnyTryMovePriority callbacks (alias for onAnyTryMove)
 pub fn dispatch_on_any_try_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_any_try_move(battle, ability_id, pokemon_pos)
+    dispatch_on_any_try_move(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAnyTryMoveOrder callbacks (alias for onAnyTryMove)
 pub fn dispatch_on_any_try_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_any_try_move(battle, ability_id, pokemon_pos)
+    dispatch_on_any_try_move(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAnyTryMoveSubOrder callbacks (alias for onAnyTryMove)
 pub fn dispatch_on_any_try_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_any_try_move(battle, ability_id, pokemon_pos)
+    dispatch_on_any_try_move(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onAnyTryPrimaryHitPriority callbacks (alias for onAnyTryPrimaryHit)
 pub fn dispatch_on_any_try_primary_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_try_primary_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyTryPrimaryHitOrder callbacks (alias for onAnyTryPrimaryHit)
 pub fn dispatch_on_any_try_primary_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_try_primary_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onAnyTryPrimaryHitSubOrder callbacks (alias for onAnyTryPrimaryHit)
 pub fn dispatch_on_any_try_primary_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_try_primary_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onBasePowerPriority callbacks (alias for onBasePower)
 pub fn dispatch_on_base_power_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
 
 /// Dispatch onBasePowerOrder callbacks (alias for onBasePower)
 pub fn dispatch_on_base_power_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
 
 /// Dispatch onBasePowerSubOrder callbacks (alias for onBasePower)
 pub fn dispatch_on_base_power_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
 
 /// Dispatch onBeforeMovePriority callbacks (alias for onBeforeMove)
 pub fn dispatch_on_before_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_before_move(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
 
 /// Dispatch onBeforeMoveOrder callbacks (alias for onBeforeMove)
 pub fn dispatch_on_before_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_before_move(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
 
 /// Dispatch onBeforeMoveSubOrder callbacks (alias for onBeforeMove)
 pub fn dispatch_on_before_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_before_move(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
 
 /// Dispatch onBeforeSwitchInPriority callbacks (alias for onBeforeSwitchIn)
@@ -3124,27 +3010,27 @@ pub fn dispatch_on_before_switch_in_sub_order(
 pub fn dispatch_on_change_boost_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_change_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_change_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onChangeBoostOrder callbacks (alias for onChangeBoost)
 pub fn dispatch_on_change_boost_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_change_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_change_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onChangeBoostSubOrder callbacks (alias for onChangeBoost)
 pub fn dispatch_on_change_boost_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_change_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_change_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onCheckShowPriority callbacks (alias for onCheckShow)
@@ -3178,114 +3064,108 @@ pub fn dispatch_on_check_show_sub_order(
 pub fn dispatch_on_critical_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_critical_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onCriticalHitOrder callbacks (alias for onCriticalHit)
 pub fn dispatch_on_critical_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_critical_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onCriticalHitSubOrder callbacks (alias for onCriticalHit)
 pub fn dispatch_on_critical_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_critical_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onDamagePriority callbacks (alias for onDamage)
 pub fn dispatch_on_damage_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_damage(battle, ability_id, pokemon_pos)
+    dispatch_on_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onDamageOrder callbacks (alias for onDamage)
 pub fn dispatch_on_damage_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_damage(battle, ability_id, pokemon_pos)
+    dispatch_on_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onDamageSubOrder callbacks (alias for onDamage)
 pub fn dispatch_on_damage_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_damage(battle, ability_id, pokemon_pos)
+    dispatch_on_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onDamagingHitPriority callbacks (alias for onDamagingHit)
 pub fn dispatch_on_damaging_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_damaging_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onDamagingHitOrder callbacks (alias for onDamagingHit)
 pub fn dispatch_on_damaging_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_damaging_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onDamagingHitSubOrder callbacks (alias for onDamagingHit)
 pub fn dispatch_on_damaging_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_damaging_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onDeductPPPriority callbacks (alias for onDeductPP)
 pub fn dispatch_on_deduct_p_p_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_deduct_p_p(battle, ability_id, pokemon_pos)
+    dispatch_on_deduct_p_p(battle, ability_id, target_pos, source_pos)
 }
 
 /// Dispatch onDeductPPOrder callbacks (alias for onDeductPP)
 pub fn dispatch_on_deduct_p_p_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_deduct_p_p(battle, ability_id, pokemon_pos)
+    dispatch_on_deduct_p_p(battle, ability_id, target_pos, source_pos)
 }
 
 /// Dispatch onDeductPPSubOrder callbacks (alias for onDeductPP)
 pub fn dispatch_on_deduct_p_p_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_deduct_p_p(battle, ability_id, pokemon_pos)
+    dispatch_on_deduct_p_p(battle, ability_id, target_pos, source_pos)
 }
 
 /// Dispatch onDisableMovePriority callbacks (alias for onDisableMove)
@@ -3373,57 +3253,54 @@ pub fn dispatch_on_eat_item_sub_order(
 pub fn dispatch_on_effectiveness_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
 ) -> EventResult {
-    dispatch_on_effectiveness(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_effectiveness(battle, ability_id, damage, target_pos, type_str, move_id)
 }
 
 /// Dispatch onEffectivenessOrder callbacks (alias for onEffectiveness)
 pub fn dispatch_on_effectiveness_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
 ) -> EventResult {
-    dispatch_on_effectiveness(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_effectiveness(battle, ability_id, damage, target_pos, type_str, move_id)
 }
 
 /// Dispatch onEffectivenessSubOrder callbacks (alias for onEffectiveness)
 pub fn dispatch_on_effectiveness_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
 ) -> EventResult {
-    dispatch_on_effectiveness(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_effectiveness(battle, ability_id, damage, target_pos, type_str, move_id)
 }
 
 /// Dispatch onEmergencyExitPriority callbacks (alias for onEmergencyExit)
 pub fn dispatch_on_emergency_exit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_emergency_exit(battle, ability_id, pokemon_pos)
+    dispatch_on_emergency_exit(battle, ability_id, target_pos)
 }
 
 /// Dispatch onEmergencyExitOrder callbacks (alias for onEmergencyExit)
 pub fn dispatch_on_emergency_exit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_emergency_exit(battle, ability_id, pokemon_pos)
+    dispatch_on_emergency_exit(battle, ability_id, target_pos)
 }
 
 /// Dispatch onEmergencyExitSubOrder callbacks (alias for onEmergencyExit)
 pub fn dispatch_on_emergency_exit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_emergency_exit(battle, ability_id, pokemon_pos)
+    dispatch_on_emergency_exit(battle, ability_id, target_pos)
 }
 
 /// Dispatch onEndPriority callbacks (alias for onEnd)
@@ -3511,54 +3388,54 @@ pub fn dispatch_on_flinch_sub_order(
 pub fn dispatch_on_foe_after_boost_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_foe_after_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_foe_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onFoeAfterBoostOrder callbacks (alias for onFoeAfterBoost)
 pub fn dispatch_on_foe_after_boost_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_foe_after_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_foe_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onFoeAfterBoostSubOrder callbacks (alias for onFoeAfterBoost)
 pub fn dispatch_on_foe_after_boost_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_foe_after_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_foe_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onFoeMaybeTrapPokemonPriority callbacks (alias for onFoeMaybeTrapPokemon)
 pub fn dispatch_on_foe_maybe_trap_pokemon_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_foe_maybe_trap_pokemon(battle, ability_id, pokemon_pos)
+    dispatch_on_foe_maybe_trap_pokemon(battle, ability_id, pokemon_pos, source_pos)
 }
 
 /// Dispatch onFoeMaybeTrapPokemonOrder callbacks (alias for onFoeMaybeTrapPokemon)
 pub fn dispatch_on_foe_maybe_trap_pokemon_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_foe_maybe_trap_pokemon(battle, ability_id, pokemon_pos)
+    dispatch_on_foe_maybe_trap_pokemon(battle, ability_id, pokemon_pos, source_pos)
 }
 
 /// Dispatch onFoeMaybeTrapPokemonSubOrder callbacks (alias for onFoeMaybeTrapPokemon)
 pub fn dispatch_on_foe_maybe_trap_pokemon_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_foe_maybe_trap_pokemon(battle, ability_id, pokemon_pos)
+    dispatch_on_foe_maybe_trap_pokemon(battle, ability_id, pokemon_pos, source_pos)
 }
 
 /// Dispatch onFoeTrapPokemonPriority callbacks (alias for onFoeTrapPokemon)
@@ -3592,549 +3469,507 @@ pub fn dispatch_on_foe_trap_pokemon_sub_order(
 pub fn dispatch_on_foe_try_eat_item_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_foe_try_eat_item(battle, ability_id, pokemon_pos)
+    dispatch_on_foe_try_eat_item(battle, ability_id)
 }
 
 /// Dispatch onFoeTryEatItemOrder callbacks (alias for onFoeTryEatItem)
 pub fn dispatch_on_foe_try_eat_item_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_foe_try_eat_item(battle, ability_id, pokemon_pos)
+    dispatch_on_foe_try_eat_item(battle, ability_id)
 }
 
 /// Dispatch onFoeTryEatItemSubOrder callbacks (alias for onFoeTryEatItem)
 pub fn dispatch_on_foe_try_eat_item_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_foe_try_eat_item(battle, ability_id, pokemon_pos)
+    dispatch_on_foe_try_eat_item(battle, ability_id)
 }
 
 /// Dispatch onFoeTryMovePriority callbacks (alias for onFoeTryMove)
 pub fn dispatch_on_foe_try_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_foe_try_move(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onFoeTryMoveOrder callbacks (alias for onFoeTryMove)
 pub fn dispatch_on_foe_try_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_foe_try_move(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onFoeTryMoveSubOrder callbacks (alias for onFoeTryMove)
 pub fn dispatch_on_foe_try_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_foe_try_move(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onFractionalPriorityPriority callbacks (alias for onFractionalPriority)
 pub fn dispatch_on_fractional_priority_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
 
 /// Dispatch onFractionalPriorityOrder callbacks (alias for onFractionalPriority)
 pub fn dispatch_on_fractional_priority_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
 
 /// Dispatch onFractionalPrioritySubOrder callbacks (alias for onFractionalPriority)
 pub fn dispatch_on_fractional_priority_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
 
 /// Dispatch onHitPriority callbacks (alias for onHit)
 pub fn dispatch_on_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, move_id)
 }
 
 /// Dispatch onHitOrder callbacks (alias for onHit)
 pub fn dispatch_on_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, move_id)
 }
 
 /// Dispatch onHitSubOrder callbacks (alias for onHit)
 pub fn dispatch_on_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, move_id)
 }
 
 /// Dispatch onImmunityPriority callbacks (alias for onImmunity)
 pub fn dispatch_on_immunity_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    type_or_status: &str, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_immunity(battle, ability_id, pokemon_pos)
+    dispatch_on_immunity(battle, ability_id, type_or_status, pokemon_pos)
 }
 
 /// Dispatch onImmunityOrder callbacks (alias for onImmunity)
 pub fn dispatch_on_immunity_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    type_or_status: &str, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_immunity(battle, ability_id, pokemon_pos)
+    dispatch_on_immunity(battle, ability_id, type_or_status, pokemon_pos)
 }
 
 /// Dispatch onImmunitySubOrder callbacks (alias for onImmunity)
 pub fn dispatch_on_immunity_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    type_or_status: &str, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_immunity(battle, ability_id, pokemon_pos)
+    dispatch_on_immunity(battle, ability_id, type_or_status, pokemon_pos)
 }
 
 /// Dispatch onModifyAccuracyPriority callbacks (alias for onModifyAccuracy)
 pub fn dispatch_on_modify_accuracy_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_accuracy(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onModifyAccuracyOrder callbacks (alias for onModifyAccuracy)
 pub fn dispatch_on_modify_accuracy_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_accuracy(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onModifyAccuracySubOrder callbacks (alias for onModifyAccuracy)
 pub fn dispatch_on_modify_accuracy_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_accuracy(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onModifyAtkPriority callbacks (alias for onModifyAtk)
 pub fn dispatch_on_modify_atk_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_atk(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
 }
 
 /// Dispatch onModifyAtkOrder callbacks (alias for onModifyAtk)
 pub fn dispatch_on_modify_atk_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_atk(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
 }
 
 /// Dispatch onModifyAtkSubOrder callbacks (alias for onModifyAtk)
 pub fn dispatch_on_modify_atk_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_atk(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
 }
 
 /// Dispatch onModifyCritRatioPriority callbacks (alias for onModifyCritRatio)
 pub fn dispatch_on_modify_crit_ratio_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_crit_ratio(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos)
 }
 
 /// Dispatch onModifyCritRatioOrder callbacks (alias for onModifyCritRatio)
 pub fn dispatch_on_modify_crit_ratio_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_crit_ratio(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos)
 }
 
 /// Dispatch onModifyCritRatioSubOrder callbacks (alias for onModifyCritRatio)
 pub fn dispatch_on_modify_crit_ratio_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_crit_ratio(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos)
 }
 
 /// Dispatch onModifyDamagePriority callbacks (alias for onModifyDamage)
 pub fn dispatch_on_modify_damage_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_damage(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifyDamageOrder callbacks (alias for onModifyDamage)
 pub fn dispatch_on_modify_damage_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_damage(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifyDamageSubOrder callbacks (alias for onModifyDamage)
 pub fn dispatch_on_modify_damage_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_damage(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifyDefPriority callbacks (alias for onModifyDef)
 pub fn dispatch_on_modify_def_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_def(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, move_id)
 }
 
 /// Dispatch onModifyDefOrder callbacks (alias for onModifyDef)
 pub fn dispatch_on_modify_def_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_def(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, move_id)
 }
 
 /// Dispatch onModifyDefSubOrder callbacks (alias for onModifyDef)
 pub fn dispatch_on_modify_def_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_def(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, move_id)
 }
 
 /// Dispatch onModifyMovePriority callbacks (alias for onModifyMove)
 pub fn dispatch_on_modify_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_move(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_move(battle, ability_id, move_id)
 }
 
 /// Dispatch onModifyMoveOrder callbacks (alias for onModifyMove)
 pub fn dispatch_on_modify_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_move(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_move(battle, ability_id, move_id)
 }
 
 /// Dispatch onModifyMoveSubOrder callbacks (alias for onModifyMove)
 pub fn dispatch_on_modify_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_move(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_move(battle, ability_id, move_id)
 }
 
 /// Dispatch onModifyPriorityPriority callbacks (alias for onModifyPriority)
 pub fn dispatch_on_modify_priority_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_priority(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifyPriorityOrder callbacks (alias for onModifyPriority)
 pub fn dispatch_on_modify_priority_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_priority(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifyPrioritySubOrder callbacks (alias for onModifyPriority)
 pub fn dispatch_on_modify_priority_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_priority(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifySTABPriority callbacks (alias for onModifySTAB)
 pub fn dispatch_on_modify_s_t_a_b_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_s_t_a_b(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_s_t_a_b(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifySTABOrder callbacks (alias for onModifySTAB)
 pub fn dispatch_on_modify_s_t_a_b_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_s_t_a_b(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_s_t_a_b(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifySTABSubOrder callbacks (alias for onModifySTAB)
 pub fn dispatch_on_modify_s_t_a_b_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_s_t_a_b(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_s_t_a_b(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifySecondariesPriority callbacks (alias for onModifySecondaries)
 pub fn dispatch_on_modify_secondaries_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_modify_secondaries(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_secondaries(battle, ability_id)
 }
 
 /// Dispatch onModifySecondariesOrder callbacks (alias for onModifySecondaries)
 pub fn dispatch_on_modify_secondaries_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_modify_secondaries(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_secondaries(battle, ability_id)
 }
 
 /// Dispatch onModifySecondariesSubOrder callbacks (alias for onModifySecondaries)
 pub fn dispatch_on_modify_secondaries_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_modify_secondaries(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_secondaries(battle, ability_id)
 }
 
 /// Dispatch onModifySpAPriority callbacks (alias for onModifySpA)
 pub fn dispatch_on_modify_sp_a_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_sp_a(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
 }
 
 /// Dispatch onModifySpAOrder callbacks (alias for onModifySpA)
 pub fn dispatch_on_modify_sp_a_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_sp_a(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
 }
 
 /// Dispatch onModifySpASubOrder callbacks (alias for onModifySpA)
 pub fn dispatch_on_modify_sp_a_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_sp_a(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
 }
 
 /// Dispatch onModifySpePriority callbacks (alias for onModifySpe)
 pub fn dispatch_on_modify_spe_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spe: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_modify_spe(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_spe(battle, ability_id, spe, pokemon_pos)
 }
 
 /// Dispatch onModifySpeOrder callbacks (alias for onModifySpe)
 pub fn dispatch_on_modify_spe_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spe: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_modify_spe(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_spe(battle, ability_id, spe, pokemon_pos)
 }
 
 /// Dispatch onModifySpeSubOrder callbacks (alias for onModifySpe)
 pub fn dispatch_on_modify_spe_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spe: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_modify_spe(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_spe(battle, ability_id, spe, pokemon_pos)
 }
 
 /// Dispatch onModifyTypePriority callbacks (alias for onModifyType)
 pub fn dispatch_on_modify_type_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_type(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_type(battle, ability_id, move_id, pokemon_pos, target_pos)
 }
 
 /// Dispatch onModifyTypeOrder callbacks (alias for onModifyType)
 pub fn dispatch_on_modify_type_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_type(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_type(battle, ability_id, move_id, pokemon_pos, target_pos)
 }
 
 /// Dispatch onModifyTypeSubOrder callbacks (alias for onModifyType)
 pub fn dispatch_on_modify_type_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_type(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_modify_type(battle, ability_id, move_id, pokemon_pos, target_pos)
 }
 
 /// Dispatch onModifyWeightPriority callbacks (alias for onModifyWeight)
 pub fn dispatch_on_modify_weight_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    weight: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_modify_weight(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_weight(battle, ability_id, weight, pokemon_pos)
 }
 
 /// Dispatch onModifyWeightOrder callbacks (alias for onModifyWeight)
 pub fn dispatch_on_modify_weight_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    weight: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_modify_weight(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_weight(battle, ability_id, weight, pokemon_pos)
 }
 
 /// Dispatch onModifyWeightSubOrder callbacks (alias for onModifyWeight)
 pub fn dispatch_on_modify_weight_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    weight: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_modify_weight(battle, ability_id, pokemon_pos)
+    dispatch_on_modify_weight(battle, ability_id, weight, pokemon_pos)
 }
 
 /// Dispatch onPrepareHitPriority callbacks (alias for onPrepareHit)
 pub fn dispatch_on_prepare_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_prepare_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onPrepareHitOrder callbacks (alias for onPrepareHit)
 pub fn dispatch_on_prepare_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_prepare_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onPrepareHitSubOrder callbacks (alias for onPrepareHit)
 pub fn dispatch_on_prepare_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_prepare_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onResidualPriority callbacks (alias for onResidual)
@@ -4168,345 +4003,324 @@ pub fn dispatch_on_residual_sub_order(
 pub fn dispatch_on_set_status_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSetStatusOrder callbacks (alias for onSetStatus)
 pub fn dispatch_on_set_status_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSetStatusSubOrder callbacks (alias for onSetStatus)
 pub fn dispatch_on_set_status_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_set_status(battle, ability_id, pokemon_pos)
+    dispatch_on_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSideConditionStartPriority callbacks (alias for onSideConditionStart)
 pub fn dispatch_on_side_condition_start_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_side_condition_start(battle, ability_id, pokemon_pos)
+    dispatch_on_side_condition_start(battle, ability_id, source_pos)
 }
 
 /// Dispatch onSideConditionStartOrder callbacks (alias for onSideConditionStart)
 pub fn dispatch_on_side_condition_start_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_side_condition_start(battle, ability_id, pokemon_pos)
+    dispatch_on_side_condition_start(battle, ability_id, source_pos)
 }
 
 /// Dispatch onSideConditionStartSubOrder callbacks (alias for onSideConditionStart)
 pub fn dispatch_on_side_condition_start_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_side_condition_start(battle, ability_id, pokemon_pos)
+    dispatch_on_side_condition_start(battle, ability_id, source_pos)
 }
 
 /// Dispatch onSourceAfterFaintPriority callbacks (alias for onSourceAfterFaint)
 pub fn dispatch_on_source_after_faint_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_after_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_source_after_faint(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSourceAfterFaintOrder callbacks (alias for onSourceAfterFaint)
 pub fn dispatch_on_source_after_faint_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_after_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_source_after_faint(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSourceAfterFaintSubOrder callbacks (alias for onSourceAfterFaint)
 pub fn dispatch_on_source_after_faint_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_after_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_source_after_faint(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSourceBasePowerPriority callbacks (alias for onSourceBasePower)
 pub fn dispatch_on_source_base_power_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_base_power(battle, ability_id, base_power, move_id)
 }
 
 /// Dispatch onSourceBasePowerOrder callbacks (alias for onSourceBasePower)
 pub fn dispatch_on_source_base_power_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_base_power(battle, ability_id, base_power, move_id)
 }
 
 /// Dispatch onSourceBasePowerSubOrder callbacks (alias for onSourceBasePower)
 pub fn dispatch_on_source_base_power_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    base_power: i32, move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_base_power(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_base_power(battle, ability_id, base_power, move_id)
 }
 
 /// Dispatch onSourceDamagingHitPriority callbacks (alias for onSourceDamagingHit)
 pub fn dispatch_on_source_damaging_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_damaging_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onSourceDamagingHitOrder callbacks (alias for onSourceDamagingHit)
 pub fn dispatch_on_source_damaging_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_damaging_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onSourceDamagingHitSubOrder callbacks (alias for onSourceDamagingHit)
 pub fn dispatch_on_source_damaging_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_damaging_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onSourceModifyAccuracyPriority callbacks (alias for onSourceModifyAccuracy)
 pub fn dispatch_on_source_modify_accuracy_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_accuracy(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onSourceModifyAccuracyOrder callbacks (alias for onSourceModifyAccuracy)
 pub fn dispatch_on_source_modify_accuracy_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_accuracy(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onSourceModifyAccuracySubOrder callbacks (alias for onSourceModifyAccuracy)
 pub fn dispatch_on_source_modify_accuracy_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_accuracy(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onSourceModifyAtkPriority callbacks (alias for onSourceModifyAtk)
 pub fn dispatch_on_source_modify_atk_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_atk(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_atk(battle, ability_id, move_id)
 }
 
 /// Dispatch onSourceModifyAtkOrder callbacks (alias for onSourceModifyAtk)
 pub fn dispatch_on_source_modify_atk_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_atk(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_atk(battle, ability_id, move_id)
 }
 
 /// Dispatch onSourceModifyAtkSubOrder callbacks (alias for onSourceModifyAtk)
 pub fn dispatch_on_source_modify_atk_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_atk(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_atk(battle, ability_id, move_id)
 }
 
 /// Dispatch onSourceModifyDamagePriority callbacks (alias for onSourceModifyDamage)
 pub fn dispatch_on_source_modify_damage_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_damage(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onSourceModifyDamageOrder callbacks (alias for onSourceModifyDamage)
 pub fn dispatch_on_source_modify_damage_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_damage(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onSourceModifyDamageSubOrder callbacks (alias for onSourceModifyDamage)
 pub fn dispatch_on_source_modify_damage_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_damage(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onSourceModifySecondariesPriority callbacks (alias for onSourceModifySecondaries)
 pub fn dispatch_on_source_modify_secondaries_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_secondaries(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_secondaries(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onSourceModifySecondariesOrder callbacks (alias for onSourceModifySecondaries)
 pub fn dispatch_on_source_modify_secondaries_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_secondaries(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_secondaries(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onSourceModifySecondariesSubOrder callbacks (alias for onSourceModifySecondaries)
 pub fn dispatch_on_source_modify_secondaries_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_secondaries(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_secondaries(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onSourceModifySpAPriority callbacks (alias for onSourceModifySpA)
 pub fn dispatch_on_source_modify_sp_a_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_sp_a(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_sp_a(battle, ability_id, move_id)
 }
 
 /// Dispatch onSourceModifySpAOrder callbacks (alias for onSourceModifySpA)
 pub fn dispatch_on_source_modify_sp_a_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_sp_a(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_sp_a(battle, ability_id, move_id)
 }
 
 /// Dispatch onSourceModifySpASubOrder callbacks (alias for onSourceModifySpA)
 pub fn dispatch_on_source_modify_sp_a_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
     move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_sp_a(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_source_modify_sp_a(battle, ability_id, move_id)
 }
 
 /// Dispatch onSourceTryHealPriority callbacks (alias for onSourceTryHeal)
 pub fn dispatch_on_source_try_heal_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_try_heal(battle, ability_id, pokemon_pos)
+    dispatch_on_source_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSourceTryHealOrder callbacks (alias for onSourceTryHeal)
 pub fn dispatch_on_source_try_heal_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_try_heal(battle, ability_id, pokemon_pos)
+    dispatch_on_source_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSourceTryHealSubOrder callbacks (alias for onSourceTryHeal)
 pub fn dispatch_on_source_try_heal_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_try_heal(battle, ability_id, pokemon_pos)
+    dispatch_on_source_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSourceTryPrimaryHitPriority callbacks (alias for onSourceTryPrimaryHit)
 pub fn dispatch_on_source_try_primary_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_try_primary_hit(battle, ability_id, pokemon_pos)
+    dispatch_on_source_try_primary_hit(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSourceTryPrimaryHitOrder callbacks (alias for onSourceTryPrimaryHit)
 pub fn dispatch_on_source_try_primary_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_try_primary_hit(battle, ability_id, pokemon_pos)
+    dispatch_on_source_try_primary_hit(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onSourceTryPrimaryHitSubOrder callbacks (alias for onSourceTryPrimaryHit)
 pub fn dispatch_on_source_try_primary_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_try_primary_hit(battle, ability_id, pokemon_pos)
+    dispatch_on_source_try_primary_hit(battle, ability_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onStartPriority callbacks (alias for onStart)
@@ -4594,27 +4408,27 @@ pub fn dispatch_on_switch_out_sub_order(
 pub fn dispatch_on_take_item_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_take_item(battle, ability_id, pokemon_pos)
+    dispatch_on_take_item(battle, ability_id, pokemon_pos, source_pos)
 }
 
 /// Dispatch onTakeItemOrder callbacks (alias for onTakeItem)
 pub fn dispatch_on_take_item_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_take_item(battle, ability_id, pokemon_pos)
+    dispatch_on_take_item(battle, ability_id, pokemon_pos, source_pos)
 }
 
 /// Dispatch onTakeItemSubOrder callbacks (alias for onTakeItem)
 pub fn dispatch_on_take_item_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_take_item(battle, ability_id, pokemon_pos)
+    dispatch_on_take_item(battle, ability_id, pokemon_pos, source_pos)
 }
 
 /// Dispatch onTerrainChangePriority callbacks (alias for onTerrainChange)
@@ -4648,138 +4462,132 @@ pub fn dispatch_on_terrain_change_sub_order(
 pub fn dispatch_on_try_add_volatile_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_try_add_volatile(battle, ability_id, pokemon_pos)
+    dispatch_on_try_add_volatile(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onTryAddVolatileOrder callbacks (alias for onTryAddVolatile)
 pub fn dispatch_on_try_add_volatile_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_try_add_volatile(battle, ability_id, pokemon_pos)
+    dispatch_on_try_add_volatile(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onTryAddVolatileSubOrder callbacks (alias for onTryAddVolatile)
 pub fn dispatch_on_try_add_volatile_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_try_add_volatile(battle, ability_id, pokemon_pos)
+    dispatch_on_try_add_volatile(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onTryBoostPriority callbacks (alias for onTryBoost)
 pub fn dispatch_on_try_boost_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_try_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_try_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onTryBoostOrder callbacks (alias for onTryBoost)
 pub fn dispatch_on_try_boost_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_try_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_try_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onTryBoostSubOrder callbacks (alias for onTryBoost)
 pub fn dispatch_on_try_boost_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_try_boost(battle, ability_id, pokemon_pos)
+    dispatch_on_try_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onTryEatItemPriority callbacks (alias for onTryEatItem)
 pub fn dispatch_on_try_eat_item_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_try_eat_item(battle, ability_id, pokemon_pos)
+    dispatch_on_try_eat_item(battle, ability_id)
 }
 
 /// Dispatch onTryEatItemOrder callbacks (alias for onTryEatItem)
 pub fn dispatch_on_try_eat_item_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_try_eat_item(battle, ability_id, pokemon_pos)
+    dispatch_on_try_eat_item(battle, ability_id)
 }
 
 /// Dispatch onTryEatItemSubOrder callbacks (alias for onTryEatItem)
 pub fn dispatch_on_try_eat_item_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_try_eat_item(battle, ability_id, pokemon_pos)
+    dispatch_on_try_eat_item(battle, ability_id)
 }
 
 /// Dispatch onTryHealPriority callbacks (alias for onTryHeal)
 pub fn dispatch_on_try_heal_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_try_heal(battle, ability_id, pokemon_pos)
+    dispatch_on_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onTryHealOrder callbacks (alias for onTryHeal)
 pub fn dispatch_on_try_heal_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_try_heal(battle, ability_id, pokemon_pos)
+    dispatch_on_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onTryHealSubOrder callbacks (alias for onTryHeal)
 pub fn dispatch_on_try_heal_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_try_heal(battle, ability_id, pokemon_pos)
+    dispatch_on_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onTryHitPriority callbacks (alias for onTryHit)
 pub fn dispatch_on_try_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_try_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onTryHitOrder callbacks (alias for onTryHit)
 pub fn dispatch_on_try_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_try_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onTryHitSubOrder callbacks (alias for onTryHit)
 pub fn dispatch_on_try_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_try_hit(battle, ability_id, pokemon_pos, move_id)
+    dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
 
 /// Dispatch onUpdatePriority callbacks (alias for onUpdate)
@@ -4813,27 +4621,27 @@ pub fn dispatch_on_update_sub_order(
 pub fn dispatch_on_weather_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_weather(battle, ability_id, pokemon_pos)
+    dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos)
 }
 
 /// Dispatch onWeatherOrder callbacks (alias for onWeather)
 pub fn dispatch_on_weather_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_weather(battle, ability_id, pokemon_pos)
+    dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos)
 }
 
 /// Dispatch onWeatherSubOrder callbacks (alias for onWeather)
 pub fn dispatch_on_weather_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_weather(battle, ability_id, pokemon_pos)
+    dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos)
 }
 
 /// Dispatch onWeatherChangePriority callbacks (alias for onWeatherChange)
@@ -4883,13 +4691,12 @@ pub fn dispatch_condition_on_end(
 pub fn dispatch_condition_on_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "flashfire" => flashfire::condition::on_modify_atk(battle, pokemon_pos, move_id),
-        "protosynthesis" => protosynthesis::condition::on_modify_atk(battle, pokemon_pos, move_id),
-        "quarkdrive" => quarkdrive::condition::on_modify_atk(battle, pokemon_pos, move_id),
+        "flashfire" => flashfire::condition::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "protosynthesis" => protosynthesis::condition::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "quarkdrive" => quarkdrive::condition::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -4898,11 +4705,11 @@ pub fn dispatch_condition_on_modify_atk(
 pub fn dispatch_condition_on_modify_def(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "protosynthesis" => protosynthesis::condition::on_modify_def(battle, pokemon_pos),
-        "quarkdrive" => quarkdrive::condition::on_modify_def(battle, pokemon_pos),
+        "protosynthesis" => protosynthesis::condition::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
+        "quarkdrive" => quarkdrive::condition::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -4911,13 +4718,12 @@ pub fn dispatch_condition_on_modify_def(
 pub fn dispatch_condition_on_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
-    move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "flashfire" => flashfire::condition::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "protosynthesis" => protosynthesis::condition::on_modify_sp_a(battle, pokemon_pos, move_id),
-        "quarkdrive" => quarkdrive::condition::on_modify_sp_a(battle, pokemon_pos, move_id),
+        "flashfire" => flashfire::condition::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "protosynthesis" => protosynthesis::condition::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "quarkdrive" => quarkdrive::condition::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -4926,11 +4732,11 @@ pub fn dispatch_condition_on_modify_sp_a(
 pub fn dispatch_condition_on_modify_sp_d(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spd: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "protosynthesis" => protosynthesis::condition::on_modify_sp_d(battle, pokemon_pos),
-        "quarkdrive" => quarkdrive::condition::on_modify_sp_d(battle, pokemon_pos),
+        "protosynthesis" => protosynthesis::condition::on_modify_sp_d(battle, spd, defender_pos, attacker_pos, move_id),
+        "quarkdrive" => quarkdrive::condition::on_modify_sp_d(battle, spd, defender_pos, attacker_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -4939,12 +4745,12 @@ pub fn dispatch_condition_on_modify_sp_d(
 pub fn dispatch_condition_on_modify_spe(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spe: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "protosynthesis" => protosynthesis::condition::on_modify_spe(battle, pokemon_pos),
-        "quarkdrive" => quarkdrive::condition::on_modify_spe(battle, pokemon_pos),
-        "unburden" => unburden::condition::on_modify_spe(battle, pokemon_pos),
+        "protosynthesis" => protosynthesis::condition::on_modify_spe(battle, spe, pokemon_pos),
+        "quarkdrive" => quarkdrive::condition::on_modify_spe(battle, spe, pokemon_pos),
+        "unburden" => unburden::condition::on_modify_spe(battle, spe, pokemon_pos),
         _ => EventResult::Continue,
     }
 }

@@ -123,6 +123,120 @@ function generateParameters(callbackName, jsArgs) {
     return params.join(', ');
 }
 
+// Helper function to generate parameters based on callback name (standardized)
+function generateParameters(callbackName, jsArgs) {
+    // Always include battle
+    let params = ['battle: &mut Battle'];
+
+    // Standard signatures for each callback type
+    // This ensures all callbacks of the same type have the same signature
+    const standardSignatures = {
+        // Damage modification
+        'onSourceModifyDamage': ['damage: i32', 'source_pos: (usize, usize)', 'target_pos: (usize, usize)', 'move_id: &str'],
+        'onDamage': ['damage: i32', 'target_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
+        'onModifyDamage': ['damage: i32', 'source_pos: (usize, usize)', 'target_pos: (usize, usize)', 'move_id: &str'],
+
+        // Type/effectiveness modifications
+        'onEffectiveness': ['damage: i32', 'target_pos: (usize, usize)', 'type_str: &str', 'move_id: &str'],
+        'onModifyTypePriority': ['move_id: &str', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onModifyType': ['move_id: &str', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+
+        // Accuracy
+        'onSourceModifyAccuracyPriority': ['accuracy: i32', 'target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+        'onSourceModifyAccuracy': ['accuracy: i32', 'target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+        'onModifyAccuracy': ['accuracy: i32', 'target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+
+        // Stats
+        'onModifyAtk': ['atk: i32', 'attacker_pos: (usize, usize)', 'defender_pos: (usize, usize)', 'move_id: &str'],
+        'onModifyDef': ['def: i32', 'defender_pos: (usize, usize)', 'attacker_pos: (usize, usize)', 'move_id: &str'],
+        'onModifySpA': ['spa: i32', 'attacker_pos: (usize, usize)', 'defender_pos: (usize, usize)', 'move_id: &str'],
+        'onModifySpD': ['spd: i32', 'defender_pos: (usize, usize)', 'attacker_pos: (usize, usize)', 'move_id: &str'],
+        'onModifySpe': ['spe: i32', 'pokemon_pos: (usize, usize)'],
+        'onModifyWeight': ['weight: i32', 'pokemon_pos: (usize, usize)'],
+        'onModifyCritRatio': ['crit_ratio: i32', 'source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+
+        // Move priority
+        'onModifyPriority': ['priority: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+
+        // Hit events
+        'onTryHit': ['target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+        'onTryHitPriority': ['target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+        'onHit': ['pokemon_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+        'onAfterMoveSecondarySelf': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)', 'move_id: &str'],
+        'onAfterMoveSecondary': ['target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+
+        // Turn events
+        'onStart': ['pokemon_pos: (usize, usize)'],
+        'onEnd': ['pokemon_pos: (usize, usize)'],
+        'onBeforeTurn': ['pokemon_pos: (usize, usize)'],
+        'onAfterTurn': ['pokemon_pos: (usize, usize)'],
+        'onBeforeMove': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onAfterMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+
+        // Switch events
+        'onSwitchIn': ['pokemon_pos: (usize, usize)'],
+        'onSwitchOut': ['pokemon_pos: (usize, usize)'],
+
+        // Status
+        'onSetStatus': ['status_id: &str', 'target_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
+        'onTryAddVolatile': ['status_id: &str', 'target_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
+
+        // Immunity
+        'onTryBoost': ['boost: &str', 'target_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
+        'onImmunity': ['type_or_status: &str', 'pokemon_pos: (usize, usize)'],
+
+        // Weather/Terrain
+        'onWeather': ['weather_id: &str', 'pokemon_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>'],
+        'onWeatherModifyDamage': ['damage: i32', 'attacker_pos: (usize, usize)', 'defender_pos: (usize, usize)', 'move_id: &str'],
+        'onTerrainStart': ['terrain_id: &str', 'pokemon_pos: (usize, usize)'],
+
+        // Residual
+        'onResidual': ['pokemon_pos: (usize, usize)'],
+        'onResidualOrder': ['pokemon_pos: (usize, usize)'],
+        'onResidualSubOrder': ['pokemon_pos: (usize, usize)'],
+
+        // Misc
+        'onFaint': ['pokemon_pos: (usize, usize)'],
+        'onSourceFaint': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)', 'effect_id: Option<&str>'],
+        'onBasePower': ['base_power: i32', 'attacker_pos: (usize, usize)', 'defender_pos: (usize, usize)', 'move_id: &str'],
+        'onFoeTrapPokemon': ['pokemon_pos: (usize, usize)'],
+        'onFoeBeforeMove': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onAnyModifyBoost': ['boosts: &str', 'pokemon_pos: (usize, usize)'],
+        'onAllySetStatus': ['status_id: &str', 'target_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
+        'onUpdate': ['pokemon_pos: (usize, usize)'],
+    };
+
+    // Use standard signature if available, otherwise parse JS args
+    if (standardSignatures[callbackName]) {
+        params.push(...standardSignatures[callbackName]);
+    } else {
+        // Parse JS arguments to determine what Rust parameters we need
+        const args = jsArgs.split(',').map(a => a.trim()).filter(a => a);
+
+        // Map common JS parameter names to Rust types
+        const paramMap = {
+            'pokemon': 'pokemon_pos: (usize, usize)',
+            'target': 'target_pos: Option<(usize, usize)>',
+            'source': 'source_pos: Option<(usize, usize)>',
+            'move': 'move_id: &str',
+            'effect': 'effect_id: Option<&str>',
+            'damage': 'damage: i32',
+            'basePower': 'base_power: i32',
+            'accuracy': 'accuracy: i32',
+            'status': 'status: Option<&str>',
+        };
+
+        // Add parameters based on JS args
+        for (const arg of args) {
+            if (paramMap[arg]) {
+                params.push(paramMap[arg]);
+            }
+        }
+    }
+
+    return params.join(', ');
+}
+
 // Helper function to convert camelCase to snake_case
 function camelToSnake(str) {
     return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
@@ -372,13 +486,8 @@ use crate::event::EventResult;
 ${ability.callbacks.map(callback => {
     const rustFuncName = camelToSnake(callback.name);
 
-    // Determine parameters based on whether this callback TYPE needs move_id
-    let params = 'battle: &mut Battle, pokemon_pos: (usize, usize)';
-
-    // Use the global callbackNeedsMove map to check if this callback type needs move
-    if (callbackNeedsMove.get(callback.name)) {
-        params += ', _move_id: &str';
-    }
+    // Use generateParameters to get the proper standardized signature
+    const params = generateParameters(callback.name, callback.args);
 
     // Format JS source: replace all tabs with 4 spaces
     const formattedSource = callback.jsSource
@@ -400,13 +509,8 @@ ${ability.conditionCallbacks.length > 0 ? `pub mod condition {
 ${ability.conditionCallbacks.map(callback => {
     const rustFuncName = camelToSnake(callback.name);
 
-    // Determine parameters based on whether this callback TYPE needs move_id
-    let params = 'battle: &mut Battle, pokemon_pos: (usize, usize)';
-
-    // Use the global callbackNeedsMove map to check if this callback type needs move
-    if (callbackNeedsMove.get(callback.name)) {
-        params += ', _move_id: &str';
-    }
+    // Use generateParameters to get the proper standardized signature
+    const params = generateParameters(callback.name, callback.args);
 
     const formattedSource = callback.jsSource
         .split('\n')
@@ -430,6 +534,22 @@ ${ability.conditionCallbacks.map(callback => {
 }
 
 console.log(`Generated ${generatedCount} ability files`);
+
+// Build a map to store the first callback's args for each callback type
+// This will be used to generate consistent dispatcher signatures
+const callbackSignatureMap = new Map();
+abilitiesWithCallbacks.forEach(ability => {
+    ability.callbacks.forEach(callback => {
+        if (!callbackSignatureMap.has(callback.name)) {
+            callbackSignatureMap.set(callback.name, callback.args);
+        }
+    });
+    ability.conditionCallbacks.forEach(callback => {
+        if (!callbackSignatureMap.has(callback.name)) {
+            callbackSignatureMap.set(callback.name, callback.args);
+        }
+    });
+});
 
 // Build a map of callback -> abilities for dispatcher generation
 const callbackMap = new Map();
@@ -460,16 +580,30 @@ const dispatchers = sortedCallbacks.map(callback => {
     const funcName = `dispatch_${camelToSnake(callback)}`;
     const rustCallbackName = camelToSnake(callback);
     const abilityIds = callbackMap.get(callback);
-    const needsMove = callbackNeedsMove.get(callback);
 
-    // Dispatcher signature includes move_id if any callback needs it
-    let dispatcherParams = 'battle: &mut Battle,\n    ability_id: &str,\n    pokemon_pos: (usize, usize)';
-    let callParams = 'battle, pokemon_pos';
+    // Get the full parameter signature from generateParameters
+    const jsArgs = callbackSignatureMap.get(callback) || '';
+    const fullParams = generateParameters(callback, jsArgs);
 
-    if (needsMove) {
-        dispatcherParams += ',\n    move_id: &str';
-        callParams += ', move_id';
+    // Remove "battle: &mut Battle" from the start (with optional comma and whitespace)
+    const nonBattleParams = fullParams.replace(/^battle: &mut Battle(?:,\s*)?/, '');
+
+    // Extract parameter names using regex from nonBattleParams (handles tuples and complex types)
+    // Match patterns like "name: type" where type can include parentheses, angle brackets, etc.
+    const paramNameRegex = /(\w+):\s*[^,]+(?:\([^)]*\))?(?:<[^>]*>)?/g;
+    const paramNames = ['battle']; // Start with battle
+    let match;
+    while ((match = paramNameRegex.exec(nonBattleParams)) !== null) {
+        paramNames.push(match[1]);
     }
+
+    // Build dispatcher params: battle, ability_id, then the rest
+    const dispatcherParams = nonBattleParams
+        ? `battle: &mut Battle,\n    ability_id: &str,\n    ${nonBattleParams}`
+        : `battle: &mut Battle,\n    ability_id: &str`;
+
+    // Build call params: all param names
+    const callParams = paramNames.join(', ');
 
     const matchArms = abilityIds.map(abilityId => {
         return `        "${abilityId}" => ${rustModName(abilityId)}::${rustCallbackName}(${callParams}),`;
@@ -491,16 +625,29 @@ ${matchArms}
 const priorityVariantDispatchers = sortedCallbacks.flatMap(callback => {
     const variants = [];
     const baseFuncName = `dispatch_${camelToSnake(callback)}`;
-    const needsMove = callbackNeedsMove.get(callback);
 
-    // Build the signature to match the base dispatcher
-    let dispatcherParams = 'battle: &mut Battle,\n    ability_id: &str,\n    pokemon_pos: (usize, usize)';
-    let forwardParams = 'battle, ability_id, pokemon_pos';
+    // Get the full parameter signature from generateParameters
+    const jsArgs = callbackSignatureMap.get(callback) || '';
+    const fullParams = generateParameters(callback, jsArgs);
 
-    if (needsMove) {
-        dispatcherParams += ',\n    move_id: &str';
-        forwardParams += ', move_id';
+    // Remove "battle: &mut Battle" from the start (with optional comma and whitespace)
+    const nonBattleParams = fullParams.replace(/^battle: &mut Battle(?:,\s*)?/, '');
+
+    // Extract parameter names using regex from nonBattleParams
+    const paramNameRegex = /(\w+):\s*[^,]+(?:\([^)]*\))?(?:<[^>]*>)?/g;
+    const nonBattleParamNames = [];
+    let match;
+    while ((match = paramNameRegex.exec(nonBattleParams)) !== null) {
+        nonBattleParamNames.push(match[1]);
     }
+
+    // Build dispatcher params
+    const dispatcherParams = nonBattleParams
+        ? `battle: &mut Battle,\n    ability_id: &str,\n    ${nonBattleParams}`
+        : `battle: &mut Battle,\n    ability_id: &str`;
+
+    // Build forward params: battle, ability_id, then all non-battle params
+    const forwardParams = ['battle', 'ability_id', ...nonBattleParamNames].join(', ');
 
     // Always generate Priority, Order, and SubOrder variants
     // (even for callbacks that already end with these suffixes)
@@ -544,16 +691,29 @@ const conditionDispatchers = sortedConditionCallbacks.map(callback => {
     const funcName = `dispatch_condition_${camelToSnake(callback)}`;
     const rustCallbackName = camelToSnake(callback);
     const abilityIds = conditionCallbackMap.get(callback);
-    const needsMove = callbackNeedsMove.get(callback) || false;
 
-    // Build dispatcher signature and call parameters based on whether this callback needs move_id
-    let dispatcherParams = 'battle: &mut Battle,\n    ability_id: &str,\n    pokemon_pos: (usize, usize)';
-    let callParams = 'battle, pokemon_pos';
+    // Get the full parameter signature from generateParameters
+    const jsArgs = callbackSignatureMap.get(callback) || '';
+    const fullParams = generateParameters(callback, jsArgs);
 
-    if (needsMove) {
-        dispatcherParams += ',\n    move_id: &str';
-        callParams += ', move_id';
+    // Remove "battle: &mut Battle" from the start (with optional comma and whitespace)
+    const nonBattleParams = fullParams.replace(/^battle: &mut Battle(?:,\s*)?/, '');
+
+    // Extract parameter names using regex from nonBattleParams
+    const paramNameRegex = /(\w+):\s*[^,]+(?:\([^)]*\))?(?:<[^>]*>)?/g;
+    const paramNames = ['battle']; // Start with battle
+    let match;
+    while ((match = paramNameRegex.exec(nonBattleParams)) !== null) {
+        paramNames.push(match[1]);
     }
+
+    // Build dispatcher params
+    const dispatcherParams = nonBattleParams
+        ? `battle: &mut Battle,\n    ability_id: &str,\n    ${nonBattleParams}`
+        : `battle: &mut Battle,\n    ability_id: &str`;
+
+    // Build call params
+    const callParams = paramNames.join(', ');
 
     const matchArms = abilityIds.map(abilityId => {
         return `        "${abilityId}" => ${rustModName(abilityId)}::condition::${rustCallbackName}(${callParams}),`;

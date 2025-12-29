@@ -19,7 +19,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///     const strongWeathers = ['desolateland', 'primordialsea', 'deltastream'];
 ///     if (this.field.getWeather().id === 'desolateland' && !strongWeathers.includes(weather.id)) return false;
 /// }
-pub fn on_any_set_weather(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_set_weather(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

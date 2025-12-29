@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_sp_a(battle: &mut Battle, spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -23,7 +23,7 @@ pub fn on_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id
 ///         this.damage(target.baseMaxhp / 8, target, target);
 ///     }
 /// }
-pub fn on_weather(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -8237,29 +8237,36 @@ impl Battle {
 
         match event_id {
             "AfterBoost" => {
-                ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), Some(pokemon_pos), None, None)
             }
             "AfterEachBoost" => ability_callbacks::dispatch_on_after_each_boost(
                 self,
                 ability_id.as_str(),
-                pokemon_pos,
+                Some(pokemon_pos),
+                None,
+                None,
             ),
             "AfterMoveSecondary" => ability_callbacks::dispatch_on_after_move_secondary(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
-            "", // TODO: Wire through actual move_id
+                (0, 0), // TODO: Wire through actual source_pos
+                "", // TODO: Wire through actual move_id
             ),
             "AfterMoveSecondarySelf" => ability_callbacks::dispatch_on_after_move_secondary_self(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
-            "", // TODO: Wire through actual move_id
+                (0, 0), // TODO: Wire through actual target_pos
+                "", // TODO: Wire through actual move_id
             ),
             "AfterSetStatus" => ability_callbacks::dispatch_on_after_set_status(
                 self,
                 ability_id.as_str(),
-                pokemon_pos,
+                None, // TODO: Wire through actual status
+                Some(pokemon_pos),
+                None,
+                None,
             ),
             "AfterTerastallization" => ability_callbacks::dispatch_on_after_terastallization(
                 self,
@@ -8289,7 +8296,7 @@ impl Battle {
             "", // TODO: Wire through actual move_id
             ),
             "AllyFaint" => {
-                ability_callbacks::dispatch_on_ally_faint(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_ally_faint(self, ability_id.as_str(), Some(pokemon_pos))
             }
             "AllyModifyAtk" => ability_callbacks::dispatch_on_ally_modify_atk(
                 self,
@@ -8314,60 +8321,78 @@ impl Battle {
             "AllySetStatus" => ability_callbacks::dispatch_on_ally_set_status(
                 self,
                 ability_id.as_str(),
+                "", // TODO: Wire through actual status_id
                 pokemon_pos,
+                None,
+                None,
             ),
             "AllyTryAddVolatile" => ability_callbacks::dispatch_on_ally_try_add_volatile(
                 self,
                 ability_id.as_str(),
-                pokemon_pos,
+                None, // TODO: Wire through actual status
+                Some(pokemon_pos),
+                None,
+                None,
             ),
             "AllyTryBoost" => ability_callbacks::dispatch_on_ally_try_boost(
                 self,
                 ability_id.as_str(),
-                pokemon_pos,
+                Some(pokemon_pos),
+                None,
+                None,
             ),
             "AllyTryHitSide" => ability_callbacks::dispatch_on_ally_try_hit_side(
                 self,
                 ability_id.as_str(),
-                pokemon_pos,
-            "", // TODO: Wire through actual move_id
+                Some(pokemon_pos),
+                None,
+                "", // TODO: Wire through actual move_id
             ),
-            "AnyAccuracy" => {
-                ability_callbacks::dispatch_on_any_accuracy(self, ability_id.as_str(), pokemon_pos, "") // TODO: Wire through actual move_id
-            }
+            "AnyAccuracy" => ability_callbacks::dispatch_on_any_accuracy(
+                self,
+                ability_id.as_str(),
+                100, // TODO: Wire through actual accuracy
+                Some(pokemon_pos),
+                None,
+                "", // TODO: Wire through actual move_id
+            ),
             "AnyAfterMega" => ability_callbacks::dispatch_on_any_after_mega(
                 self,
                 ability_id.as_str(),
-                pokemon_pos,
             ),
             "AnyAfterMove" => ability_callbacks::dispatch_on_any_after_move(
                 self,
                 ability_id.as_str(),
-                pokemon_pos,
             ),
             "AnyAfterSetStatus" => ability_callbacks::dispatch_on_any_after_set_status(
                 self,
                 ability_id.as_str(),
-                pokemon_pos,
+                None, // TODO: Wire through actual status
+                Some(pokemon_pos),
+                None,
+                None,
             ),
             "AnyAfterTerastallization" => {
                 ability_callbacks::dispatch_on_any_after_terastallization(
                     self,
                     ability_id.as_str(),
-                    pokemon_pos,
                 )
             }
             "AnyBasePower" => ability_callbacks::dispatch_on_any_base_power(
                 self,
                 ability_id.as_str(),
+                0, // TODO: Wire through actual base_power
                 pokemon_pos,
-            "", // TODO: Wire through actual move_id
+                (0, 0), // TODO: Wire through actual defender_pos
+                "", // TODO: Wire through actual move_id
             ),
             "AnyBasePowerPriority" => ability_callbacks::dispatch_on_any_base_power_priority(
                 self,
                 ability_id.as_str(),
+                0, // TODO: Wire through actual base_power
                 pokemon_pos,
-            "", // TODO: Wire through actual move_id
+                (0, 0), // TODO: Wire through actual defender_pos
+                "", // TODO: Wire through actual move_id
             ),
             "AnyBeforeMove" => ability_callbacks::dispatch_on_any_before_move(
                 self,
@@ -8375,10 +8400,10 @@ impl Battle {
                 pokemon_pos,
             ),
             "AnyDamage" => {
-                ability_callbacks::dispatch_on_any_damage(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_any_damage(self, ability_id.as_str(), 0, Some(pokemon_pos), None, None)
             }
             "AnyFaint" => {
-                ability_callbacks::dispatch_on_any_faint(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_any_faint(self, ability_id.as_str(), Some(pokemon_pos))
             }
             "AnyFaintPriority" => ability_callbacks::dispatch_on_any_faint_priority(
                 self,
@@ -8458,7 +8483,7 @@ impl Battle {
                 pokemon_pos,
             ),
             "AnySwitchIn" => {
-                ability_callbacks::dispatch_on_any_switch_in(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_any_switch_in(self, ability_id.as_str())
             }
             "AnySwitchInPriority" => ability_callbacks::dispatch_on_any_switch_in_priority(
                 self,
@@ -8466,7 +8491,7 @@ impl Battle {
                 pokemon_pos,
             ),
             "AnyTryMove" => {
-                ability_callbacks::dispatch_on_any_try_move(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_any_try_move(self, ability_id.as_str())
             }
             "AnyTryPrimaryHit" => ability_callbacks::dispatch_on_any_try_primary_hit(
                 self,
@@ -8498,7 +8523,7 @@ impl Battle {
                 pokemon_pos,
             ),
             "ChangeBoost" => {
-                ability_callbacks::dispatch_on_change_boost(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_change_boost(self, ability_id.as_str(), "", Some(pokemon_pos), None, None)
             }
             "CheckShow" => {
                 ability_callbacks::dispatch_on_check_show(self, ability_id.as_str(), pokemon_pos)
@@ -8507,7 +8532,7 @@ impl Battle {
                 ability_callbacks::dispatch_on_critical_hit(self, ability_id.as_str(), pokemon_pos, "") // TODO: Wire through actual move_id
             }
             "Damage" => {
-                ability_callbacks::dispatch_on_damage(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_damage(self, ability_id.as_str(), 0, pokemon_pos, None, None)
             }
             "DamagePriority" => ability_callbacks::dispatch_on_damage_priority(
                 self,
@@ -8592,7 +8617,7 @@ impl Battle {
             }
             "Hit" => ability_callbacks::dispatch_on_hit(self, ability_id.as_str(), pokemon_pos, ""), // TODO: Wire through actual move_id
             "Immunity" => {
-                ability_callbacks::dispatch_on_immunity(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_immunity(self, ability_id.as_str(), "", pokemon_pos)
             }
             "ModifyAccuracy" => ability_callbacks::dispatch_on_modify_accuracy(
                 self,
@@ -8703,7 +8728,7 @@ impl Battle {
                 pokemon_pos,
             ),
             "SetStatus" => {
-                ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), "", pokemon_pos, None, None)
             }
             "SideConditionStart" => ability_callbacks::dispatch_on_side_condition_start(
                 self,

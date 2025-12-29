@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_ally_try_add_volatile(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

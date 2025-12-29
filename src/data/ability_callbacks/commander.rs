@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onAnySwitchIn() {
 ///     ((this.effect as any).onUpdate as (p: Pokemon) => void).call(this, this.effectState.target);
 /// }
-pub fn on_any_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

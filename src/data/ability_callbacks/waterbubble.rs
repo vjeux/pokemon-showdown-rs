@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -22,7 +22,7 @@ pub fn on_source_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize), _m
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -32,7 +32,7 @@ pub fn on_source_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize), _
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -42,7 +42,7 @@ pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id:
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_sp_a(battle: &mut Battle, spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -65,7 +65,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     }
 ///     return false;
 /// }
-pub fn on_set_status(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         this.damage(target.getUndynamaxedHP(damage), source, target);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onTryAddVolatile(status, pokemon) {
 ///     if (status.id === 'flinch') return null;
 /// }
-pub fn on_try_add_volatile(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -21,7 +21,7 @@ pub fn on_try_add_volatile(battle: &mut Battle, pokemon_pos: (usize, usize)) -> 
 ///         this.add('-fail', target, 'unboost', 'Attack', '[from] ability: Inner Focus', `[of] ${target}`);
 ///     }
 /// }
-pub fn on_try_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_boost(battle: &mut Battle, boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

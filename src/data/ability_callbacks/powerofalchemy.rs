@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     if (ability.flags['noreceiver'] || ability.id === 'noability') return;
 ///     this.effectState.target.setAbility(ability, target);
 /// }
-pub fn on_ally_faint(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_ally_faint(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

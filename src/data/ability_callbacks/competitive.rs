@@ -22,7 +22,7 @@ use crate::event::EventResult;
 ///         this.boost({ spa: 2 }, target, target, null, false, true);
 ///     }
 /// }
-pub fn on_after_each_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_after_each_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
