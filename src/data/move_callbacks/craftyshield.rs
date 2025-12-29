@@ -63,11 +63,6 @@ pub mod condition {
         _source_pos: (usize, usize),
         target_pos: (usize, usize),
     ) -> EventResult {
-        // if (['self', 'all'].includes(move.target) || move.category !== 'Status') return;
-        // We need to get the current move being used
-        // TODO: The move should be passed as a parameter, but for now we'll try to get it from context
-        // For now, we'll implement a simplified version that checks if there's a current move
-
         // Get move data from battle context
         let move_id = match &battle.active_move {
             Some(active_move) => active_move.id.clone(),
@@ -82,7 +77,6 @@ pub mod condition {
         // if (['self', 'all'].includes(move.target) || move.category !== 'Status') return;
         if move_data.target == "self" || move_data.target == "all" || move_data.category != "Status"
         {
-            // return;
             return EventResult::Continue;
         }
 
@@ -101,8 +95,6 @@ pub mod condition {
         );
 
         // return this.NOT_FAIL;
-        // In Rust, NOT_FAIL is typically represented as a specific EventResult variant
-        // For now, we'll return a special value that indicates the move should not fail
-        EventResult::Boolean(true)
+        EventResult::NotFail
     }
 }
