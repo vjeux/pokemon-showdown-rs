@@ -68,8 +68,46 @@ pub mod condition {
     ///     if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
     ///     target.side.removeSlotCondition(this.getAtSlot(this.effectState.sourceSlot), 'wish');
     /// }
-    pub fn on_residual(_battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_residual(battle: &mut Battle) -> EventResult {
+        use crate::dex_data::ID;
+
+        // if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
+        let (starting_turn, target_pos, source_slot) = {
+            let effect_state = match &battle.current_effect_state {
+                Some(es) => es,
+                None => return EventResult::Continue,
+            };
+
+            let starting_turn = effect_state
+                .data
+                .get("startingTurn")
+                .and_then(|v| v.as_i64())
+                .map(|v| v as i32)
+                .unwrap_or(0);
+
+            (starting_turn, effect_state.target, effect_state.source_slot)
+        };
+
+        let current_turn = battle.get_overflowed_turn_count();
+
+        if current_turn <= starting_turn {
+            return EventResult::Continue;
+        }
+
+        // target.side.removeSlotCondition(this.getAtSlot(this.effectState.sourceSlot), 'wish');
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let slot = match source_slot {
+            Some(s) => s,
+            None => return EventResult::Continue,
+        };
+
+        let side = &mut battle.sides[target.0];
+        side.remove_slot_condition(slot, &ID::from("wish"));
+
         EventResult::Continue
     }
 
