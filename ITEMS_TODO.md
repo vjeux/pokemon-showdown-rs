@@ -182,7 +182,7 @@ Items with callbacks: 326
 - [x] liechiberry - Liechi Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] lifeorb - Life Orb (Gen 4) - 2 callbacks: onModifyDamage, onAfterMoveSecondarySelf
 - [x] lightball - Light Ball (Gen 2) - 2 callbacks: onModifyAtk, onModifySpA
-- [ ] loadeddice - Loaded Dice (Gen 9) - 1 callback: onModifyMove
+- [x] loadeddice - Loaded Dice (Gen 9) - 1 callback: onModifyMove
 - [x] lopunnite - Lopunnite (Gen 6) - 1 callback: onTakeItem
 - [x] lucarionite - Lucarionite (Gen 6) - 1 callback: onTakeItem
 - [x] lucarionitez - Lucarionite Z (Gen 9) - 1 callback: onTakeItem
