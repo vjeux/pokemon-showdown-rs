@@ -79,7 +79,7 @@ Items with callbacks: 326
 - [ ] covertcloak - Covert Cloak (Gen 9) - 1 callback: onModifySecondaries
 - [x] crabominite - Crabominite (Gen 9) - 1 callback: onTakeItem
 - [x] crucibellite - Crucibellite (Gen 6) - 1 callback: onTakeItem
-- [ ] custapberry - Custap Berry (Gen 4) - 2 callbacks: onFractionalPriority, onEat
+- [x] custapberry - Custap Berry (Gen 4) - 2 callbacks: onFractionalPriority, onEat
 - [x] darkgem - Dark Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] darkmemory - Dark Memory (Gen 7) - 1 callback: onTakeItem
 - [x] darkranite - Darkranite (Gen 9) - 1 callback: onTakeItem
@@ -253,7 +253,7 @@ Items with callbacks: 326
 - [x] psychicseed - Psychic Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
 - [x] punchingglove - Punching Glove (Gen 9) - 2 callbacks: onBasePower, onModifyMove
 - [x] pyroarite - Pyroarite (Gen 9) - 1 callback: onTakeItem
-- [ ] quickclaw - Quick Claw (Gen 2) - 1 callback: onFractionalPriority
+- [x] quickclaw - Quick Claw (Gen 2) - 1 callback: onFractionalPriority
 - [x] quickpowder - Quick Powder (Gen 4) - 1 callback: onModifySpe
 - [x] raichunitex - Raichunite X (Gen 9) - 1 callback: onTakeItem
 - [x] raichunitey - Raichunite Y (Gen 9) - 1 callback: onTakeItem
