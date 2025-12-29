@@ -303,7 +303,7 @@ Items with callbacks: 326
 - [x] splashplate - Splash Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] spookyplate - Spooky Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] staraptite - Staraptite (Gen 9) - 1 callback: onTakeItem
-- [ ] starfberry - Starf Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] starfberry - Starf Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] starminite - Starminite (Gen 9) - 1 callback: onTakeItem
 - [x] steelgem - Steel Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] steelixite - Steelixite (Gen 6) - 1 callback: onTakeItem
