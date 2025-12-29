@@ -105,7 +105,7 @@ Items with callbacks: 326
 - [x] electricmemory - Electric Memory (Gen 7) - 1 callback: onTakeItem
 - [x] electricseed - Electric Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
 - [x] emboarite - Emboarite (Gen 9) - 1 callback: onTakeItem
-- [ ] enigmaberry - Enigma Berry (Gen 3) - 3 callbacks: onHit, onTryEatItem, onEat
+- [x] enigmaberry - Enigma Berry (Gen 3) - 3 callbacks: onHit, onTryEatItem, onEat
 - [x] eviolite - Eviolite (Gen 5) - 2 callbacks: onModifyDef, onModifySpD
 - [x] excadrite - Excadrite (Gen 9) - 1 callback: onTakeItem
 - [x] expertbelt - Expert Belt (Gen 4) - 1 callback: onModifyDamage
