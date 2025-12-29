@@ -41,8 +41,15 @@ pub fn on_try_hit(
         return EventResult::Boolean(false);
     }
 
-    // TODO: Check isZOrMaxPowered and isMax - these require additional move metadata
-    // For now, we'll just check the struggle case
+    // target.lastMove.isZOrMaxPowered || target.lastMove.isMax
+    let move_data = match battle.dex.get_move_by_id(&last_move_id) {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    if move_data.is_z_or_max_powered || move_data.is_max.is_some() {
+        return EventResult::Boolean(false);
+    }
 
     EventResult::Continue
 }
