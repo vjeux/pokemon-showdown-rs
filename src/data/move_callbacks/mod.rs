@@ -195,9 +195,13 @@ pub mod magnetrise;
 pub mod magnitude;
 pub mod matblock;
 pub mod maxguard;
+pub mod maxflare;
+pub mod maxgeyser;
+pub mod maxhailstorm;
 pub mod maxlightning;
 pub mod maxmindstorm;
 pub mod maxovergrowth;
+pub mod maxrockfall;
 pub mod maxstarfall;
 pub mod meanlook;
 pub mod mefirst;
@@ -753,9 +757,13 @@ pub fn dispatch_on_hit(
         "lunarblessing" => lunarblessing::on_hit(battle, pokemon_pos, target_pos),
         "magicpowder" => magicpowder::on_hit(battle, pokemon_pos, target_pos),
         "maxguard" => maxguard::on_hit(battle, pokemon_pos, target_pos),
+        "maxflare" => maxflare::on_hit(battle, pokemon_pos, target_pos),
+        "maxgeyser" => maxgeyser::on_hit(battle, pokemon_pos, target_pos),
+        "maxhailstorm" => maxhailstorm::on_hit(battle, pokemon_pos, target_pos),
         "maxlightning" => maxlightning::on_hit(battle, pokemon_pos, target_pos),
         "maxmindstorm" => maxmindstorm::on_hit(battle, pokemon_pos, target_pos),
         "maxovergrowth" => maxovergrowth::on_hit(battle, pokemon_pos, target_pos),
+        "maxrockfall" => maxrockfall::on_hit(battle, pokemon_pos, target_pos),
         "maxstarfall" => maxstarfall::on_hit(battle, pokemon_pos, target_pos),
         "meanlook" => meanlook::on_hit(battle, pokemon_pos, target_pos),
         "metronome" => metronome::on_hit(battle, pokemon_pos, target_pos),
