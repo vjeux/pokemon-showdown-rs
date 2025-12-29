@@ -457,15 +457,14 @@ By callback type:
 - [x] twistedspoon - Twisted Spoon (Gen 2) - 1/1 callback implemented
 - [x] vilevial - Vile Vial (Gen 8) - 2/2 callbacks implemented
 
-## Blocked T-V Items
-- [ ] tangaberry - Tanga Berry (Gen 4) - Needs type effectiveness infrastructure
-- [x] tatsugirinite - Tatsugirinite (Gen 9) - Needs item data
-- [ ] throatspray - Throat Spray (Gen 8) - Needs move flags and useItem
-- [x] toxicorb - Toxic Orb (Gen 4) - Needs trySetStatus
-- [x] tyranitarite - Tyranitarite (Gen 6) - Needs item data
-- [ ] utilityumbrella - Utility Umbrella (Gen 8) - Needs weather infrastructure
-- [x] venusaurite - Venusaurite (Gen 6) - Needs item data
-- [x] victreebelite - Victreebelite (Gen 9) - Needs item data
+## Completed T-V Items
+- [x] tangaberry - Tanga Berry (Gen 4) - COMPLETED
+- [x] tatsugirinite - Tatsugirinite (Gen 9) - COMPLETED
+- [x] throatspray - Throat Spray (Gen 8) - COMPLETED
+- [x] toxicorb - Toxic Orb (Gen 4) - COMPLETED
+- [x] tyranitarite - Tyranitarite (Gen 6) - COMPLETED
+- [x] venusaurite - Venusaurite (Gen 6) - COMPLETED
+- [x] victreebelite - Victreebelite (Gen 9) - COMPLETED
 
 
 ### Type-resist Berries (kasibberry, kebiaberry, etc.) 
