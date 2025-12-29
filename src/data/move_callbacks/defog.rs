@@ -56,9 +56,13 @@ pub fn on_hit(
             .contains_key(&ID::from("substitute"))
     };
 
-    // TODO: Check if move infiltrates - requires access to current move data
-    // For now, we'll check substitute status
-    if !has_substitute {
+    let infiltrates = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.infiltrates)
+        .unwrap_or(false);
+
+    if !has_substitute || infiltrates {
         // success = !!this.boost({ evasion: -1 });
         let boosts = [("evasion", -1)];
         let boost_result = battle.boost(&boosts, target, Some(pokemon_pos), None);
