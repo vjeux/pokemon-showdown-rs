@@ -5,29 +5,71 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
 
-/// onHit(...)
+/// onHit(pokemon, source, move)
 ///
 /// ```text
 /// JS Source (data/moves.ts):
 /// onHit(pokemon, source, move) {
-/// 				this.add('-activate', source, 'move: Aromatherapy');
-/// 				for (const ally of source.side.pokemon) {
-/// 					if (ally !== source && (ally.volatiles['substitute'] && !move.infiltrates)) {
-/// 						continue;
-/// 					}
-/// 					ally.cureStatus();
+/// 			this.add('-activate', source, 'move: Aromatherapy');
+/// 			for (const ally of source.side.pokemon) {
+/// 				if (ally !== source && (ally.volatiles['substitute'] && !move.infiltrates)) {
+/// 					continue;
 /// 				}
-/// 			},
-/// 
-/// 		}
+/// 				ally.cureStatus();
+/// 			}
+/// 		},
+///
+/// 	}
 /// ```
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
-}
+pub fn on_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+) -> EventResult {
+    // this.add('-activate', source, 'move: Aromatherapy');
+    let source_ident = {
+        let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.get_slot()
+    };
+    battle.add(
+        "-activate",
+        &[source_ident.as_str().into(), "move: Aromatherapy".into()],
+    );
 
+    // for (const ally of source.side.pokemon) {
+    let source_side_idx = source_pos.0;
+    let num_pokemon = battle.sides[source_side_idx].pokemon.len();
+
+    for ally_idx in 0..num_pokemon {
+        let ally_pos = (source_side_idx, ally_idx);
+
+        // if (ally !== source && (ally.volatiles['substitute'] && !move.infiltrates)) {
+        //     continue;
+        // }
+        if ally_pos != source_pos {
+            let has_substitute = {
+                let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                ally.volatiles.contains_key(&ID::from("substitute"))
+            };
+
+            // move.infiltrates not implemented, so if has substitute, skip
+            if has_substitute {
+                continue;
+            }
+        }
+
+        // ally.cureStatus();
+        battle.cure_status(ally_pos);
+    }
+
+    EventResult::Continue
+}
