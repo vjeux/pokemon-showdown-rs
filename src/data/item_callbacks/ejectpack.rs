@@ -17,8 +17,53 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_after_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_after_boost(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    boost: &crate::dex_data::BoostsTable,
+) -> EventResult {
+    // if (this.effectState.eject || this.activeMove?.id === 'partingshot') return;
+    let eject_already_set = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("eject")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    let active_move_is_parting_shot = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.id.as_str() == "partingshot")
+        .unwrap_or(false);
+
+    if eject_already_set || active_move_is_parting_shot {
+        return EventResult::Continue;
+    }
+
+    // for (i in boost) { if (boost[i]! < 0) { this.effectState.eject = true; break; } }
+    use crate::dex_data::BoostID;
+    let mut has_negative_boost = false;
+    for boost_id in BoostID::all() {
+        if boost.get(*boost_id) < 0 {
+            has_negative_boost = true;
+            break;
+        }
+    }
+
+    // this.effectState.eject = true;
+    if has_negative_boost {
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .insert("eject".to_string(), serde_json::json!(true));
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -27,7 +72,40 @@ pub fn on_after_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
 ///     (this.effectState.target as Pokemon).useItem();
 /// }
 pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.effectState.eject) return;
+    let eject_set = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("eject")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    if !eject_set {
+        return EventResult::Continue;
+    }
+
+    // (this.effectState.target as Pokemon).useItem();
+    let target_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(pos) = target_pos {
+        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -36,7 +114,40 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
 ///     (this.effectState.target as Pokemon).useItem();
 /// }
 pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.effectState.eject) return;
+    let eject_set = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("eject")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    if !eject_set {
+        return EventResult::Continue;
+    }
+
+    // (this.effectState.target as Pokemon).useItem();
+    let target_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(pos) = target_pos {
+        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -45,7 +156,40 @@ pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
 ///     (this.effectState.target as Pokemon).useItem();
 /// }
 pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (!this.effectState.eject) return;
+    let eject_set = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("eject")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    if !eject_set {
+        return EventResult::Continue;
+    }
+
+    // (this.effectState.target as Pokemon).useItem();
+    let target_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(pos) = target_pos {
+        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -53,8 +197,41 @@ pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
 ///     if (!this.effectState.eject) return;
 ///     (this.effectState.target as Pokemon).useItem();
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+    // if (!this.effectState.eject) return;
+    let eject_set = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state
+                .data
+                .get("eject")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            false
+        }
+    };
+
+    if !eject_set {
+        return EventResult::Continue;
+    }
+
+    // (this.effectState.target as Pokemon).useItem();
+    let target_pos = {
+        if let Some(ref effect_state) = battle.current_effect_state {
+            effect_state.target
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(pos) = target_pos {
+        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
@@ -66,23 +243,68 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 ///     }
 ///     return true;
 /// }
-pub fn on_use_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_use_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+    // if (!this.canSwitch(pokemon.side)) return false;
+    let side_idx = pokemon_pos.0;
+    let can_switch_count = battle.can_switch(side_idx);
+    if can_switch_count == 0 {
+        return EventResult::Boolean(false);
+    }
+
+    // if (pokemon.volatiles['commanding'] || pokemon.volatiles['commanded']) return false;
+    let has_commanding_volatiles = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Boolean(false),
+        };
+
+        use crate::dex_data::ID;
+        pokemon.volatiles.contains_key(&ID::from("commanding"))
+            || pokemon.volatiles.contains_key(&ID::from("commanded"))
+    };
+
+    if has_commanding_volatiles {
+        return EventResult::Boolean(false);
+    }
+
+    // for (const active of this.getAllActive()) { if (active.switchFlag === true) return false; }
+    let all_active_positions = battle.get_all_active(false);
+    for pos in all_active_positions {
+        let pokemon = match battle.pokemon_at(pos.0, pos.1) {
+            Some(p) => p,
+            None => continue,
+        };
+        if pokemon.switch_flag {
+            return EventResult::Boolean(false);
+        }
+    }
+
+    // return true;
+    EventResult::Boolean(true)
 }
 
 /// onUse(pokemon) {
 ///     pokemon.switchFlag = true;
 /// }
 pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // pokemon.switchFlag = true;
+    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+    pokemon_mut.switch_flag = true;
+
     EventResult::Continue
 }
 
 /// onEnd() {
 ///     delete this.effectState.eject;
 /// }
-pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+    // delete this.effectState.eject;
+    if let Some(ref mut effect_state) = battle.current_effect_state {
+        effect_state.data.remove("eject");
+    }
+
     EventResult::Continue
 }

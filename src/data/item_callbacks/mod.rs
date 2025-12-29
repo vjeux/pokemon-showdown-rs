@@ -358,6 +358,13 @@ pub fn dispatch_on_after_boost(
                 EventResult::Continue
             }
         }
+        "ejectpack" => {
+            if let Some(boost_table) = boost {
+                ejectpack::on_after_boost(battle, pokemon_pos, boost_table)
+            } else {
+                EventResult::Continue
+            }
+        }
         _ => EventResult::Continue,
     }
 }
@@ -434,6 +441,7 @@ pub fn dispatch_on_any_after_mega(
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
+        "ejectpack" => ejectpack::on_any_after_mega(battle),
         "whiteherb" => whiteherb::on_any_after_mega(battle),
         _ => EventResult::Continue,
     }
@@ -447,6 +455,7 @@ pub fn dispatch_on_any_after_move(
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
+        "ejectpack" => ejectpack::on_any_after_move(battle),
         "whiteherb" => whiteherb::on_any_after_move(battle),
         _ => EventResult::Continue,
     }
@@ -482,6 +491,7 @@ pub fn dispatch_on_any_switch_in(
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
+        "ejectpack" => ejectpack::on_any_switch_in(battle),
         "whiteherb" => whiteherb::on_any_switch_in(battle),
         _ => EventResult::Continue,
     }
@@ -637,6 +647,7 @@ pub fn dispatch_on_end(
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
+        "ejectpack" => ejectpack::on_end(battle, pokemon_pos),
         "utilityumbrella" => utilityumbrella::on_end(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
@@ -939,6 +950,7 @@ pub fn dispatch_on_residual(
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
+        "ejectpack" => ejectpack::on_residual(battle, pokemon_pos),
         "whiteherb" => whiteherb::on_residual(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
@@ -1166,6 +1178,7 @@ pub fn dispatch_on_use(
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
+        "ejectpack" => ejectpack::on_use(battle, pokemon_pos),
         "whiteherb" => whiteherb::on_use(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
@@ -1173,9 +1186,13 @@ pub fn dispatch_on_use(
 
 /// Dispatch onUseItem callbacks
 pub fn dispatch_on_use_item(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "ejectpack" => ejectpack::on_use_item(battle, item_id, pokemon_pos),
+        _ => EventResult::Continue,
+    }
 }
