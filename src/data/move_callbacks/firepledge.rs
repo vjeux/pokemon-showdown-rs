@@ -95,8 +95,18 @@ pub mod condition {
     /// onSideStart(targetSide) {
     ///     this.add('-sidestart', targetSide, 'Fire Pledge');
     /// }
-    pub fn on_side_start(_battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_side_start(battle: &mut Battle) -> EventResult {
+        // this.add('-sidestart', targetSide, 'Fire Pledge');
+        // Following the pattern from gmaxcannonade.rs - access side via current_effect_state
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sidestart", &[side_arg, "Fire Pledge".into()]);
+            }
+        }
+
         EventResult::Continue
     }
 
@@ -126,8 +136,18 @@ pub mod condition {
     /// onSideEnd(targetSide) {
     ///     this.add('-sideend', targetSide, 'Fire Pledge');
     /// }
-    pub fn on_side_end(_battle: &mut Battle) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_side_end(battle: &mut Battle) -> EventResult {
+        // this.add('-sideend', targetSide, 'Fire Pledge');
+        // Following the pattern from gmaxcannonade.rs - access side via current_effect_state
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sideend", &[side_arg, "Fire Pledge".into()]);
+            }
+        }
+
         EventResult::Continue
     }
 }
