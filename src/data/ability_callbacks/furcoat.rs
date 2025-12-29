@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     return this.chainModify(2);
 /// }
 pub fn on_modify_def(battle: &mut Battle, def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    let modified = battle.chain_modify(2.0);
+    EventResult::Number(modified)
 }
 
