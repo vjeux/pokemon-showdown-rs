@@ -28,7 +28,7 @@ Items with callbacks: 326
 - [x] alakazite - Alakazite (Gen 6) - 1 callback: onTakeItem
 - [x] altarianite - Altarianite (Gen 6) - 1 callback: onTakeItem
 - [x] ampharosite - Ampharosite (Gen 6) - 1 callback: onTakeItem
-- [ ] apicotberry - Apicot Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] apicotberry - Apicot Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] aspearberry - Aspear Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] assaultvest - Assault Vest (Gen 6) - 2 callbacks: onModifySpD, onDisableMove
 - [x] audinite - Audinite (Gen 6) - 1 callback: onTakeItem
