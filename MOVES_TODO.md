@@ -2,11 +2,12 @@
 
 ## Summary
 
-**Current Status:** 80 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 79 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Continuation Session - Verification Work:**
-- **Newly implemented**: 1 callback using current_effect_state discovery
+- **Newly implemented**: 2 callbacks using infrastructure discovery
   - wish.rs: condition::on_residual ✅ COMPLETE FILE
+  - telekinesis.rs: condition::on_update (now 2/6 implemented)
 - **Verified complete files**: 4 files (wideguard, trick, switcheroo, thief)
   - wideguard.rs: All 4 callbacks fully implemented (on_try, on_hit_side, condition::on_side_start, condition::on_try_hit)
   - trick.rs: Both callbacks complete (on_try_immunity, on_hit) - note about singleEvent is not a blocker
@@ -437,7 +438,7 @@ Moves with callbacks: 373
 - [ ] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart ✓, condition::onEnd ✓, condition::onDisableMove ✓, condition::onBeforeMove (3/4 implemented)
 - [x] teatime - Teatime (Status, Normal) - 1 callback: onHitField
 - [ ] technoblast - Techno Blast (Special, Normal) - 1 callback: onModifyType
-- [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry, condition::onStart, condition::onAccuracy, condition::onImmunity, condition::onUpdate, condition::onEnd ✓ (1/6 implemented)
+- [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry, condition::onStart, condition::onAccuracy, condition::onImmunity, condition::onUpdate ✓, condition::onEnd ✓ (2/6 implemented)
 - [x] teleport - Teleport (Status, Psychic) - 1 callback: onTry
 - [x] temperflare - Temper Flare (Physical, Fire) - 1 callback: basePowerCallback
 - [ ] terablast - Tera Blast (Special, Normal) - 4 callbacks: basePowerCallback ✓, onPrepareHit, onModifyType, onModifyMove (1/4 implemented)
@@ -575,9 +576,9 @@ By callback type:
 
 ## Missing Infrastructure
 
-### Critical Infrastructure Needed for Remaining 26 Callbacks
+### Critical Infrastructure Needed for Remaining 25 Callbacks
 
-**Status:** All 26 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
+**Status:** All 25 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
 
 **Breakdown by File:**
 - **firepledge.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs queue.willMove(), move modification)
@@ -587,7 +588,7 @@ By callback type:
 - **tarshot.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
 - **taunt.rs**: 1 TODO - on_before_move (signature missing attacker parameter)
 - **technoblast.rs**: 1 TODO - on_modify_type (needs move.type modification, runEvent('Drive'))
-- **telekinesis.rs**: 4 TODOs - on_try, on_start, on_accuracy, on_immunity, on_update (needs field.getPseudoWeather(), baseSpecies, EventResult::Null)
+- **telekinesis.rs**: 3 TODOs - on_try, on_start, on_accuracy, on_immunity (needs EventResult::Null, signature issues)
 - **terablast.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs move modification)
 - **terastarstorm.rs**: 2 TODOs - on_modify_type, on_modify_move (needs move modification)
 - **terrainpulse.rs**: 2 TODOs - on_modify_type, on_modify_move (needs move modification)
