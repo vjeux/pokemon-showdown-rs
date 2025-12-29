@@ -2,20 +2,21 @@
 
 ## Summary
 
-**Current Status:** 66 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 13 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Current Session - Infrastructure Additions:**
 - **Added EventResult::Null variant** - Required for TypeScript 'return null' equivalence
 - **Added ActiveMove.override_offensive_stat field** - Required for Wonder Room stat swapping
-- **Newly implemented**: 9 callbacks using existing infrastructure!
+- **Used existing Battle.attr_last_move() method** - For terablast animation attributes
+- **Newly implemented**: 10 callbacks using existing infrastructure!
   - telekinesis.rs: on_try ✓, condition::on_start ✓
   - uproar.rs: condition::on_any_set_status ✓ (COMPLETE FILE 5/5)
   - healblock.rs: condition::on_try_heal ✓ (COMPLETE FILE 8/8)
   - wonderroom.rs: condition::on_modify_move ✓ (COMPLETE FILE 5/5)
-  - terablast.rs: on_modify_type ✓, on_modify_move ✓ (3/4 implemented)
+  - terablast.rs: on_modify_type ✓, on_modify_move ✓, on_prepare_hit ✓ (COMPLETE FILE 4/4)
   - terastarstorm.rs: on_modify_type ✓, on_modify_move ✓ (COMPLETE FILE 2/2)
-- **TODO markers verified**: 14 actual "TODO: Implement 1-to-1 from JS" markers remaining
-- **Progress**: 75 → 66 remaining TODOs (implemented 9 callbacks)
+- **TODO markers verified**: 13 actual "TODO: Implement 1-to-1 from JS" markers remaining
+- **Progress**: 23 → 13 remaining TODOs (implemented 10 callbacks this session)
 
 **Previous Session - Verification Work:**
 - **Newly implemented**: 2 callbacks using infrastructure discovery
@@ -56,7 +57,8 @@
     - throatchop.rs: condition::on_before_move, condition::on_modify_move
     - uproar.rs: on_try_hit, condition::on_residual
   - Previous session: swallow.rs: onTry, onHit
-- **Files marked complete**: 56 total (1 terastarstorm + 1 wonderroom + 1 healblock + 1 terrainpulse + 1 wish + 4 verified + 47 previous)
+- **Files marked complete**: 57 total (1 terablast + 1 terastarstorm + 1 wonderroom + 1 healblock + 1 terrainpulse + 1 wish + 4 verified + 47 previous)
+  - Current session: terablast (newly implemented on_prepare_hit using existing Battle.attr_last_move())
   - Current session: terastarstorm (newly implemented both callbacks using species_id, get_stat, move modification)
   - Current session: wonderroom (newly implemented on_modify_move using ActiveMove.override_offensive_stat)
   - Current session: healblock (newly implemented on_try_heal using EventResult::Null)
@@ -102,9 +104,9 @@ The Pokemon struct already has more methods than initially documented:
   - Available fields: `force_stab`, `source_effect`, `side_condition`, `ohko`, `recoil`, `infiltrates`, `flags`
   - Example: `if let Some(ref mut active_move) = battle.active_move { active_move.move_type = "Fire".to_string(); }`
 
-**Comprehensive Analysis of 14 Remaining TODO Markers:**
+**Comprehensive Analysis of 13 Remaining TODO Markers:**
 
-After exhaustive investigation, all 14 remaining TODO markers are genuinely blocked by missing infrastructure:
+After exhaustive investigation, all 13 remaining TODO markers are genuinely blocked by missing infrastructure:
 
 1. **Function Signature Mismatches** (blocks 5 callbacks):
    - tarshot.rs: `condition::on_effectiveness` - missing `typeMod: i32` and `type: String` parameters
@@ -113,22 +115,21 @@ After exhaustive investigation, all 14 remaining TODO markers are genuinely bloc
    - telekinesis.rs: `condition::on_immunity` - missing `type: String` parameter
    - telekinesis.rs: `condition::on_accuracy` - needs move.ohko check (ohko exists but as Option<String>, not bool)
 
-2. **Missing Battle/Move Methods** (blocks 2 callbacks):
-   - terablast.rs: `on_prepare_hit` - needs `battle.attr_last_move()` method
+2. **Missing Battle/Move Methods** (blocks 1 callback):
    - technoblast.rs: `on_modify_type` - needs `battle.run_event('Drive', ...)` event system
 
-3. **Complex Infrastructure Missing** (blocks 6 callbacks):
+3. **Complex Infrastructure Missing** (blocks 7 callbacks):
    - substitute.rs: `condition::on_try_primary_hit` - needs `actions.getDamage()`, `HIT_SUBSTITUTE`, `calcRecoilDamage()`
    - fling.rs: `on_prepare_hit` - needs `singleEvent()`, dynamic `move.onHit` assignment, `item.fling` data structure
    - firepledge.rs (2 TODOs): needs `queue.willMove()`, complex `move.self` structure with nested sideCondition
-   - waterpledge.rs (2 TODOs): needs `queue.willMove()`, complex `move.self` structure with nested sideCondition
+   - waterpledge.rs (3 TODOs): needs `queue.willMove()`, complex `move.self` structure with nested sideCondition
 
-**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 14 TODOs require infrastructure additions to the core battle engine.
+**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 13 TODOs require infrastructure additions to the core battle engine.
 
 **ITEMS:** ✅ 100% Complete (346/346) - No TODO markers remaining
-**MOVES:** 56/373 files complete - 14 TODO markers remain, all blocked by missing infrastructure
+**MOVES:** 57/373 files complete - 13 TODO markers remain, all blocked by missing infrastructure
 
-**Blocking Issues:** All 14 remaining callbacks require missing infrastructure:
+**Blocking Issues:** All 13 remaining callbacks require missing infrastructure:
 - Volatile condition management with source tracking (add_volatile with source parameter)
 - Move property access (flags ✓, isZ, isMax, target type)
 - Pokemon methods (has_ability, get_types, cure_status ✓, etc.)
@@ -486,7 +487,7 @@ Moves with callbacks: 373
 - [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry ✓, condition::onStart ✓, condition::onAccuracy, condition::onImmunity, condition::onUpdate ✓, condition::onEnd ✓ (4/6 implemented)
 - [x] teleport - Teleport (Status, Psychic) - 1 callback: onTry
 - [x] temperflare - Temper Flare (Physical, Fire) - 1 callback: basePowerCallback
-- [ ] terablast - Tera Blast (Special, Normal) - 4 callbacks: basePowerCallback ✓, onPrepareHit, onModifyType ✓, onModifyMove ✓ (3/4 implemented)
+- [x] terablast - Tera Blast (Special, Normal) - 4 callbacks: basePowerCallback, onPrepareHit, onModifyType, onModifyMove
 - [x] terastarstorm - Tera Starstorm (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [x] terrainpulse - Terrain Pulse (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [x] thief - Thief (Physical, Dark) - 1 callback: onAfterHit

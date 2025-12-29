@@ -45,11 +45,32 @@ pub fn base_power_callback(
 ///     }
 /// }
 pub fn on_prepare_hit(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let source = pokemon_pos;
+
+    // if (source.terastallized)
+    let tera_type = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        if source_pokemon.terastallized.is_some() {
+            // this.attrLastMove('[anim] Tera Blast ' + source.teraType);
+            source_pokemon.tera_type.clone()
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
+    if let Some(tera_type_str) = tera_type {
+        let anim_attr = format!("[anim] Tera Blast {}", tera_type_str);
+        battle.attr_last_move(&[&anim_attr]);
+    }
+
     EventResult::Continue
 }
 
