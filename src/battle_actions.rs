@@ -183,6 +183,7 @@ pub struct ActiveMove {
     pub ignore_offensive: bool,
     pub ignore_negative_offensive: bool,
     pub ignore_positive_defensive: bool,
+    pub override_offensive_stat: Option<String>,
     pub infiltrates: bool,
     pub will_crit: Option<bool>,
     pub force_stab: bool,

@@ -912,6 +912,7 @@ impl Dex {
             ignore_offensive: false,
             ignore_negative_offensive: false,
             ignore_positive_defensive: false,
+            override_offensive_stat: None,
             will_crit: None,
             force_stab: false,
             crit_ratio: 0,

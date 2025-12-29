@@ -61,11 +61,51 @@ pub mod condition {
     ///     this.hint(`${move.name} uses ${statAndBoosts === 'def' ? '' : 'Sp. '}Def boosts when Wonder Room is active.`);
     /// }
     pub fn on_modify_move(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // if (!move.overrideOffensiveStat) return;
+        let stat_and_boosts = if let Some(ref mut active_move) = battle.active_move {
+            if let Some(ref stat) = active_move.override_offensive_stat {
+                stat.clone()
+            } else {
+                return EventResult::Continue;
+            }
+        } else {
+            return EventResult::Continue;
+        };
+
+        // if (!['def', 'spd'].includes(statAndBoosts)) return;
+        if stat_and_boosts != "def" && stat_and_boosts != "spd" {
+            return EventResult::Continue;
+        }
+
+        // move.overrideOffensiveStat = statAndBoosts === 'def' ? 'spd' : 'def';
+        let new_stat = if stat_and_boosts == "def" {
+            "spd".to_string()
+        } else {
+            "def".to_string()
+        };
+
+        let move_name = if let Some(ref mut active_move) = battle.active_move {
+            active_move.override_offensive_stat = Some(new_stat.clone());
+            active_move.name.clone()
+        } else {
+            return EventResult::Continue;
+        };
+
+        // this.hint(`${move.name} uses ${statAndBoosts === 'def' ? '' : 'Sp. '}Def boosts when Wonder Room is active.`);
+        let hint_message = format!(
+            "{} uses {}Def boosts when Wonder Room is active.",
+            move_name,
+            if stat_and_boosts == "def" { "" } else { "Sp. " }
+        );
+
+        // NOTE: battle.hint() method not yet implemented
+        // When implemented, this should be: battle.hint(&hint_message);
+        let _ = hint_message; // Suppress unused variable warning
+
         EventResult::Continue
     }
 
