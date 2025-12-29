@@ -2,7 +2,7 @@
 
 ## Summary
 
-**Current Status:** 84 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 81 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Latest Session Progress:**
 - **Callbacks implemented**: 11 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish + 1 fling + 1 teatime ✅ + 1 toxicspikes ✅)
@@ -31,8 +31,9 @@
     - throatchop.rs: condition::on_before_move, condition::on_modify_move
     - uproar.rs: on_try_hit, condition::on_residual
   - Previous session: swallow.rs: onTry, onHit
-- **Files marked complete**: 47 total (1 wideguard + 46 previous)
-  - Now complete: wideguard  - Previous session: throatchop, takeheart, temperflare, upperhand, veeveevolley, teleport, thunder, thunderclap, topsyturvy, venomdrench, venoshock, wakeupslap, watershuriken, waterspout, wildboltstorm, wringout, tailwind, transform, trickortreat, syrupbomb, teatime, toxicspikes
+- **Files marked complete**: 50 total (4 newly verified + 46 previous)
+  - Now complete: wideguard, trick, switcheroo, thief
+  - Previous session: throatchop, takeheart, temperflare, upperhand, veeveevolley, teleport, thunder, thunderclap, topsyturvy, venomdrench, venoshock, wakeupslap, watershuriken, waterspout, wildboltstorm, wringout, tailwind, transform, trickortreat, syrupbomb, teatime, toxicspikes
   - Previous session: synthesis, synchronoise, + 25 others
 - **Partial implementations documented**: 18 moves now show partial completion status with ✓ markers (added healblock, trick, switcheroo, substitute, uproar)
 
@@ -412,7 +413,7 @@ Moves with callbacks: 373
 - [x] supercellslam - Supercell Slam (Physical, Electric) - 1 callback: onMoveFail
 - [x] superfang - Super Fang (Physical, Normal) - 1 callback: damageCallback
 - [x] swallow - Swallow (Status, Normal) - 2 callbacks: onTry, onHit
-- [ ] switcheroo - Switcheroo (Status, Dark) - 2 callbacks: onTryImmunity ✓, onHit (1/2 implemented)
+- [x] switcheroo - Switcheroo (Status, Dark) - 2 callbacks: onTryImmunity, onHit
 - [x] synchronoise - Synchronoise (Special, Psychic) - 1 callback: onTryImmunity
 - [x] synthesis - Synthesis (Status, Grass) - 1 callback: onHit
 - [x] syrupbomb - Syrup Bomb (Special, Grass) - 4 callbacks: condition::onStart, condition::onUpdate, condition::onResidual, condition::onEnd
@@ -428,7 +429,7 @@ Moves with callbacks: 373
 - [ ] terablast - Tera Blast (Special, Normal) - 4 callbacks: basePowerCallback ✓, onPrepareHit, onModifyType, onModifyMove (1/4 implemented)
 - [ ] terastarstorm - Tera Starstorm (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [ ] terrainpulse - Terrain Pulse (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
-- [ ] thief - Thief (Physical, Dark) - 1 callback: onAfterHit
+- [x] thief - Thief (Physical, Dark) - 1 callback: onAfterHit
 - [ ] thousandarrows - Thousand Arrows (Physical, Ground) - 1 callback: onEffectiveness
 - [x] thousandwaves - Thousand Waves (Physical, Ground) - 1 callback: onHit
 - [x] throatchop - Throat Chop (Physical, Dark) - 5 callbacks: condition::onStart, condition::onDisableMove, condition::onBeforeMove, condition::onModifyMove, condition::onEnd
@@ -439,7 +440,7 @@ Moves with callbacks: 373
 - [x] torment - Torment (Status, Dark) - 3 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove
 - [x] toxicspikes - Toxic Spikes (Status, Poison) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
 - [x] transform - Transform (Status, Normal) - 1 callback: onHit
-- [ ] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity ✓, onHit (1/2 implemented)
+- [x] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity, onHit
 - [x] trickortreat - Trick-or-Treat (Status, Ghost) - 1 callback: onHit
 - [x] trickroom - Trick Room (Status, Psychic) - 4 callbacks: condition::durationCallback, condition::onFieldStart, condition::onFieldRestart, condition::onFieldEnd
 - [x] tripleaxel - Triple Axel (Physical, Ice) - 1 callback: basePowerCallback
