@@ -133,6 +133,7 @@ pub mod gmaxcannonade;
 pub mod gmaxcentiferno;
 pub mod gmaxchistrike;
 pub mod gmaxcuddle;
+pub mod gmaxdepletion;
 pub mod gmaxfinale;
 pub mod gmaxfoamburst;
 pub mod gmaxgoldrush;
@@ -777,6 +778,7 @@ pub fn dispatch_on_hit(
         "gmaxbefuddle" => gmaxbefuddle::on_hit(battle, pokemon_pos, target_pos),
         "gmaxcentiferno" => gmaxcentiferno::on_hit(battle, pokemon_pos, target_pos),
         "gmaxcuddle" => gmaxcuddle::on_hit(battle, pokemon_pos, target_pos),
+        "gmaxdepletion" => gmaxdepletion::on_hit(battle, pokemon_pos, target_pos),
         "gmaxfinale" => gmaxfinale::on_hit(battle, pokemon_pos, target_pos),
         "gmaxfoamburst" => gmaxfoamburst::on_hit(battle, pokemon_pos, target_pos),
         "gmaxgoldrush" => gmaxgoldrush::on_hit(battle, pokemon_pos, target_pos),
