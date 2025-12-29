@@ -1077,11 +1077,18 @@ pub fn dispatch_on_switch_in_priority(
 
 /// Dispatch onTakeItem callbacks
 pub fn dispatch_on_take_item(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "boosterenergy" => boosterenergy::on_take_item(battle, Some(pokemon_pos), pokemon_pos, source_pos),
+        "blueorb" => blueorb::on_take_item(battle, Some(pokemon_pos), pokemon_pos, source_pos),
+        "redorb" => redorb::on_take_item(battle, Some(pokemon_pos), pokemon_pos, source_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onTerrainChange callbacks

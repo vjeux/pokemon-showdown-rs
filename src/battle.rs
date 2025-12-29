@@ -9127,7 +9127,8 @@ impl Battle {
                 item_callbacks::dispatch_on_switch_in_priority(self, item_id.as_str(), pokemon_pos)
             }
             "TakeItem" => {
-                item_callbacks::dispatch_on_take_item(self, item_id.as_str(), pokemon_pos)
+                let source = self.current_event.as_ref().and_then(|e| e.source);
+                item_callbacks::dispatch_on_take_item(self, item_id.as_str(), pokemon_pos, source)
             }
             "TerrainChange" => {
                 item_callbacks::dispatch_on_terrain_change(self, item_id.as_str(), pokemon_pos)

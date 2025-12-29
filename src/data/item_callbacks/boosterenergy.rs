@@ -139,6 +139,19 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     return true;
 /// }
 pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // if (source.baseSpecies.tags.includes("Paradox")) return false;
+    if let Some(source) = source_pos {
+        if let Some(source_pokemon) = battle.pokemon_at(source.0, source.1) {
+            let source_species = battle.dex.get_species(source_pokemon.base_species.as_str());
+            if let Some(species_data) = source_species {
+                if species_data.tags.contains(&"Paradox".to_string()) {
+                    // return false;
+                    return EventResult::Boolean(false);
+                }
+            }
+        }
+    }
+
+    // return true;
+    EventResult::Boolean(true)
 }

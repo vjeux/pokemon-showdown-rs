@@ -97,6 +97,8 @@ pub struct SpeciesData {
     pub is_cosmetic_forme: bool,
     #[serde(default)]
     pub gen: Option<u8>,
+    #[serde(default)]
+    pub tags: Vec<String>,
     // Format data fields
     #[serde(default)]
     pub tier: Option<String>,
@@ -775,6 +777,7 @@ impl Dex {
                         cosmetic_formes: Vec::new(),
                         is_cosmetic_forme: true,
                         gen: base_species.gen,
+                        tags: base_species.tags.clone(),
                         tier: base_species.tier.clone(),
                         doubles_tier: base_species.doubles_tier.clone(),
                         nat_dex_tier: base_species.nat_dex_tier.clone(),

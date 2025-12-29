@@ -48,7 +48,7 @@ Items with callbacks: 326
 - [x] blastoisinite - Blastoisinite (Gen 6) - 1 callback: onTakeItem
 - [x] blazikenite - Blazikenite (Gen 6) - 1 callback: onTakeItem
 - [ ] blueorb - Blue Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
-- [ ] boosterenergy - Booster Energy (Gen 9) - 3 callbacks: onStart, onUpdate, onTakeItem
+- [x] boosterenergy - Booster Energy (Gen 9) - 3 callbacks: onStart, onUpdate, onTakeItem
 - [x] brightpowder - Bright Powder (Gen 2) - 1 callback: onModifyAccuracy
 - [x] buggem - Bug Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] bugmemory - Bug Memory (Gen 7) - 1 callback: onTakeItem
