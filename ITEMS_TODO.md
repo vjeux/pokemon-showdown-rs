@@ -227,7 +227,7 @@ Items with callbacks: 326
 - [x] oddincense - Odd Incense (Gen 4) - 1 callback: onBasePower
 - [x] oranberry - Oran Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] passhoberry - Passho Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] payapaberry - Payapa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] payapaberry - Payapa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] pechaberry - Pecha Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] persimberry - Persim Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] petayaberry - Petaya Berry (Gen 3) - 2 callbacks: onUpdate, onEat
@@ -262,14 +262,14 @@ Items with callbacks: 326
 - [x] razorfang - Razor Fang (Gen 4) - 1 callback: onModifyMove
 - [x] redcard - Red Card (Gen 5) - 1 callback: onAfterMoveSecondary
 - [ ] redorb - Red Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
-- [ ] rindoberry - Rindo Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] rindoberry - Rindo Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] rockgem - Rock Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] rockincense - Rock Incense (Gen 4) - 1 callback: onBasePower
 - [x] rockmemory - Rock Memory (Gen 7) - 1 callback: onTakeItem
 - [x] rockyhelmet - Rocky Helmet (Gen 5) - 1 callback: onDamagingHit
 - [ ] roomservice - Room Service (Gen 8) - 2 callbacks: onStart, onAnyPseudoWeatherChange
 - [x] roseincense - Rose Incense (Gen 4) - 1 callback: onBasePower
-- [ ] roseliberry - Roseli Berry (Gen 6) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] roseliberry - Roseli Berry (Gen 6) - 2 callbacks: onSourceModifyDamage, onEat
 - [ ] rowapberry - Rowap Berry (Gen 4) - 2 callbacks: onDamagingHit, onEat
 - [x] rustedshield - Rusted Shield (Gen 8) - 1 callback: onTakeItem
 - [x] rustedsword - Rusted Sword (Gen 8) - 1 callback: onTakeItem
@@ -289,7 +289,7 @@ Items with callbacks: 326
 - [x] shedshell - Shed Shell (Gen 4) - 2 callbacks: onTrapPokemon, onMaybeTrapPokemon
 - [x] shellbell - Shell Bell (Gen 3) - 1 callback: onAfterMoveSecondarySelf
 - [x] shockdrive - Shock Drive (Gen 5) - 1 callback: onTakeItem
-- [ ] shucaberry - Shuca Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] shucaberry - Shuca Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] silkscarf - Silk Scarf (Gen 3) - 1 callback: onBasePower
 - [x] silverpowder - Silver Powder (Gen 2) - 1 callback: onBasePower
 - [x] sitrusberry - Sitrus Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
@@ -312,7 +312,7 @@ Items with callbacks: 326
 - [x] stickybarb - Sticky Barb (Gen 4) - 2 callbacks: onResidual, onHit
 - [x] stoneplate - Stone Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] swampertite - Swampertite (Gen 6) - 1 callback: onTakeItem
-- [ ] tangaberry - Tanga Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] tangaberry - Tanga Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] tatsugirinite - Tatsugirinite (Gen 9) - 1 callback: onTakeItem
 - [x] thickclub - Thick Club (Gen 2) - 1 callback: onModifyAtk
 - [x] throatspray - Throat Spray (Gen 8) - 1 callback: onAfterMoveSecondarySelf
@@ -324,7 +324,7 @@ Items with callbacks: 326
 - [x] venusaurite - Venusaurite (Gen 6) - 1 callback: onTakeItem
 - [x] victreebelite - Victreebelite (Gen 9) - 1 callback: onTakeItem
 - [x] vilevial - Vile Vial (Gen 8) - 2 callbacks: onBasePower, onTakeItem
-- [ ] wacanberry - Wacan Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] wacanberry - Wacan Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] watergem - Water Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] watermemory - Water Memory (Gen 7) - 1 callback: onTakeItem
 - [x] waveincense - Wave Incense (Gen 4) - 1 callback: onBasePower
@@ -334,7 +334,7 @@ Items with callbacks: 326
 - [x] widelens - Wide Lens (Gen 4) - 1 callback: onSourceModifyAccuracy
 - [x] wikiberry - Wiki Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] wiseglasses - Wise Glasses (Gen 4) - 1 callback: onBasePower
-- [ ] yacheberry - Yache Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] yacheberry - Yache Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] zapplate - Zap Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] zeraorite - Zeraorite (Gen 9) - 1 callback: onTakeItem
 - [x] zoomlens - Zoom Lens (Gen 4) - 1 callback: onSourceModifyAccuracy
