@@ -84,8 +84,99 @@ pub mod condition {
     ///         pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
     ///     }
     /// }
-    pub fn on_switch_in(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // if (!pokemon.isGrounded()) return;
+        let is_grounded = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.is_grounded()
+        };
+
+        if !is_grounded {
+            return EventResult::Continue;
+        }
+
+        // if (pokemon.hasType('Poison'))
+        let has_poison_type = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.has_type("Poison")
+        };
+
+        if has_poison_type {
+            // this.add('-sideend', pokemon.side, 'move: Toxic Spikes', `[of] ${pokemon}`);
+            let (side_id, pokemon_slot) = {
+                let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                let side_id = if pokemon.0 == 0 { "p1" } else { "p2" };
+                (side_id, pokemon_ref.get_slot())
+            };
+
+            battle.add(
+                "-sideend",
+                &[
+                    crate::battle::Arg::from(side_id),
+                    crate::battle::Arg::from("move: Toxic Spikes"),
+                    crate::battle::Arg::from(format!("[of] {}", pokemon_slot)),
+                ],
+            );
+
+            // pokemon.side.removeSideCondition('toxicspikes');
+            let side = &mut battle.sides[pokemon.0];
+            side.remove_side_condition(&ID::from("toxicspikes"));
+        } else {
+            // else if (pokemon.hasType('Steel') || pokemon.hasItem('heavydutyboots'))
+            let (has_steel_type, has_heavy_duty_boots) = {
+                let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                (
+                    pokemon_ref.has_type("Steel"),
+                    pokemon_ref.has_item(&["heavydutyboots"]),
+                )
+            };
+
+            if has_steel_type || has_heavy_duty_boots {
+                // do nothing
+                return EventResult::Continue;
+            }
+
+            // else if (this.effectState.layers >= 2)
+            let layers = battle
+                .current_effect_state
+                .as_ref()
+                .and_then(|es| es.data.get("layers"))
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0) as i32;
+
+            if layers >= 2 {
+                // pokemon.trySetStatus('tox', pokemon.side.foe.active[0]);
+                let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon_mut.try_set_status(ID::from("tox"), Some("Toxic Spikes"));
+            } else {
+                // pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
+                let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon_mut.try_set_status(ID::from("psn"), Some("Toxic Spikes"));
+            }
+        }
+
         EventResult::Continue
     }
 }
