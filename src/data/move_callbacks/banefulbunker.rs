@@ -216,7 +216,7 @@ pub mod condition {
         };
 
         // Get the move data
-        let _move_data = match battle.dex.get_move_by_id(&move_id) {
+        let move_data = match battle.dex.get_move_by_id(&move_id) {
             Some(m) => m,
             None => return EventResult::Continue,
         };
@@ -224,9 +224,7 @@ pub mod condition {
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         //     source.trySetStatus('psn', target);
         // }
-        // TODO: isZOrMaxPowered not yet implemented
-        // For now, just check contact
-        if battle.check_move_makes_contact(&move_id, source) {
+        if move_data.is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source) {
             let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
