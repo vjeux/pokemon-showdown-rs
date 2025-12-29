@@ -14,7 +14,12 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        if move_data.flags.contains_key("punch") {
+            let modified = battle.chain_modify_fraction(4915, 4096);
+            return EventResult::Number(modified);
+        }
+    }
     EventResult::Continue
 }
 
