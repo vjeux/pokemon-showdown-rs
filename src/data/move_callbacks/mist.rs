@@ -42,22 +42,36 @@ pub mod condition {
     /// onSideStart(side) {
     ///     this.add('-sidestart', side, 'Mist');
     /// }
-    pub fn on_side_start(_battle: &mut Battle) -> EventResult {
-        // TODO: This callback needs side parameter support in the function signature
-        // The TypeScript version receives (side) to identify which side
-        // For now, implementing a placeholder that returns Continue
-        // This needs infrastructure changes to pass side information
+    pub fn on_side_start(battle: &mut Battle) -> EventResult {
+        // this.add('-sidestart', side, 'Mist');
+        // Following the pattern from gmaxcannonade.rs - access side via current_effect_state
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sidestart", &[side_arg, "Mist".into()]);
+            }
+        }
+
         EventResult::Continue
     }
 
     /// onSideEnd(side) {
     ///     this.add('-sideend', side, 'Mist');
     /// }
-    pub fn on_side_end(_battle: &mut Battle) -> EventResult {
-        // TODO: This callback needs side parameter support in the function signature
-        // The TypeScript version receives (side) to identify which side
-        // For now, implementing a placeholder that returns Continue
-        // This needs infrastructure changes to pass side information
+    pub fn on_side_end(battle: &mut Battle) -> EventResult {
+        // this.add('-sideend', side, 'Mist');
+        // Following the pattern from gmaxcannonade.rs - access side via current_effect_state
+        if let Some(effect_state) = &battle.current_effect_state {
+            if let Some(side_index) = effect_state.side {
+                let side_id = if side_index == 0 { "p1" } else { "p2" };
+
+                let side_arg = crate::battle::Arg::Str(side_id);
+                battle.add("-sideend", &[side_arg, "Mist".into()]);
+            }
+        }
+
         EventResult::Continue
     }
 }
