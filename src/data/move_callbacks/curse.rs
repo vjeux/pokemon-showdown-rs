@@ -98,6 +98,12 @@ pub fn on_try_hit(
         // else if (move.volatileStatus && target.volatiles['curse']) {
         //     return false;
         // }
+        // Check if move has volatileStatus
+        let move_has_volatile_status = battle.active_move
+            .as_ref()
+            .and_then(|m| m.volatile_status.as_ref())
+            .is_some();
+
         // Check if target already has curse volatile
         let target_has_curse = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
@@ -107,9 +113,7 @@ pub fn on_try_hit(
             target_pokemon.volatiles.contains_key(&ID::from("curse"))
         };
 
-        if target_has_curse {
-            // TODO: Check if move has volatileStatus
-            // For now, we'll assume if target has curse, we should return false
+        if move_has_volatile_status && target_has_curse {
             return EventResult::Boolean(false);
         }
     }
