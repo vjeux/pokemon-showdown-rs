@@ -589,53 +589,40 @@ All 117 remaining callbacks require one or more of the following infrastructure 
 
 ### 3. Pokemon Type and Ability Checking
 
-**Problem:** Need methods to check pokemon types and abilities
+**STATUS: ✅ METHODS EXIST**
 
 **Current State:**
-- Pokemon has `types: Vec<String>` field
-- Pokemon has `ability: ID` field
-- NO helper methods exist for checking
+- ✅ `pub fn has_type(&self, type_name: &str) -> bool` - EXISTS (pokemon.rs:1521)
+- ✅ `pub fn get_types(&self, exclude_added: bool) -> Vec<String>` - EXISTS (pokemon.rs:953)
+- ✅ `pub fn has_ability(&self, ability_name: &[&str]) -> bool` - EXISTS
+- ✅ `pub fn run_immunity(&self, move_type: &str) -> bool` - EXISTS (pokemon.rs:3251)
+- ✅ `pub fn is_grounded(&self) -> bool` - EXISTS (pokemon.rs:985)
+- ✅ `pub fn cure_status(&mut self) -> bool` - EXISTS (pokemon.rs:594)
 
-**Needed:**
-```rust
-impl Pokemon {
-    pub fn has_type(&self, type_name: &str) -> bool;
-    pub fn get_types(&self) -> &Vec<String>;
-    pub fn has_ability(&self, ability_name: &str) -> bool;
-    pub fn run_immunity(&self, type_name: &str) -> bool;
-}
-```
-
-**Blocks:**
-- trick.rs, trickroom.rs, wonderroom.rs, healblock.rs - need has_ability()
-- thousandarrows.rs - needs runImmunity(), hasType()
-- toxicspikes.rs - needs hasType()
-- telekinesis.rs - needs base_species checks
+**Note:** These methods exist but callbacks STILL can't be fully implemented because:
+- Function signatures don't provide necessary parameters (e.g., `type` parameter for onEffectiveness)
+- Side management infrastructure missing (pokemon.side.removeSideCondition, pokemon.side.foe)
+- Effect state custom fields missing (effectState.layers)
 
 ### 4. Item Management
 
-**Problem:** Need comprehensive item system methods
+**STATUS: ✅ BASIC METHODS EXIST**
 
 **Current State:**
-- Pokemon has `item: ID` field
-- NO methods for getting, taking, setting items
+- ✅ `pub fn get_item(&self) -> &ID` - EXISTS (pokemon.rs:1851)
+- ✅ `pub fn take_item(&mut self) -> Option<ID>` - EXISTS (pokemon.rs:1835)
+- ✅ `pub fn set_item(&mut self, item_id: ID) -> bool` - EXISTS (pokemon.rs:1803)
+- ✅ `pub fn has_item(&self, items: &[&str]) -> bool` - EXISTS (pokemon.rs:1088)
 
-**Needed:**
-```rust
-impl Pokemon {
-    pub fn get_item(&self) -> Option<&Item>;
-    pub fn take_item(&mut self, source: Option<&Pokemon>) -> Option<Item>;
-    pub fn set_item(&mut self, item: ID) -> bool;
-    pub fn has_item(&self, item_name: &str) -> bool;
-}
-```
+**Still Missing:**
+- ❌ Event system integration (singleEvent('TakeItem'), runEvent('AfterUseItem'))
+- ❌ Berry eating system (eatItem())
+- ❌ Item state tracking
 
 **Blocks:**
-- trick.rs: needs take_item(), set_item(), has_ability()
-- thief.rs: needs takeItem(), setItem(), singleEvent()
-- switcheroo.rs: needs item management
-- fling.rs: needs setItem(), getItem(), runEvent('AfterUseItem')
-- teatime.rs: needs getItem(), eatItem()
+- trick.rs, thief.rs, switcheroo.rs: need singleEvent('TakeItem') for validation
+- fling.rs: needs runEvent('AfterUseItem')
+- teatime.rs: needs eatItem() method
 
 ### 5. Event System
 
@@ -681,23 +668,20 @@ impl Battle {
 
 ### 7. Status Management
 
-**Problem:** Need methods to try setting status with immunity checks
+**STATUS: ✅ METHOD EXISTS**
 
 **Current State:**
-- Pokemon has `set_status()` but it's simplistic
-- NO try_set_status with proper checking
+- ✅ `pub fn try_set_status(&mut self, status_id: ID, _source_effect: Option<&str>) -> bool` - EXISTS (pokemon.rs:3037)
+- ✅ `pub fn set_status(&mut self, status: String)` - EXISTS
+- ✅ `pub fn cure_status(&mut self) -> bool` - EXISTS (pokemon.rs:594)
 
-**Needed:**
-```rust
-impl Pokemon {
-    pub fn try_set_status(&mut self, status: &str, source: Option<&Pokemon>) -> bool;
-}
-```
+**Still Missing:**
+- ❌ Source tracking (passing source pokemon, not just effect name)
+- ❌ Full status immunity checking integrated with abilities
 
 **Blocks:**
-- toxicspikes.rs: needs try_set_status()
-- direclaw.rs (MoveHandlerResult): needs trySetStatus()
-- All status-inflicting moves
+- toxicspikes.rs: Needs source pokemon parameter and side access (pokemon.side.foe.active[0])
+- Side management infrastructure still missing
 
 ### 8. Healing System with Source Tracking
 
