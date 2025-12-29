@@ -226,6 +226,7 @@ pub mod maxflare;
 pub mod maxflutterby;
 pub mod maxgeyser;
 pub mod maxhailstorm;
+pub mod maxknuckle;
 pub mod maxlightning;
 pub mod maxmindstorm;
 pub mod maxovergrowth;
@@ -817,6 +818,7 @@ pub fn dispatch_on_hit(
         "maxflutterby" => maxflutterby::on_hit(battle, pokemon_pos, target_pos),
         "maxgeyser" => maxgeyser::on_hit(battle, pokemon_pos, target_pos),
         "maxhailstorm" => maxhailstorm::on_hit(battle, pokemon_pos, target_pos),
+        "maxknuckle" => maxknuckle::on_hit(battle, pokemon_pos, target_pos),
         "maxlightning" => maxlightning::on_hit(battle, pokemon_pos, target_pos),
         "maxmindstorm" => maxmindstorm::on_hit(battle, pokemon_pos, target_pos),
         "maxovergrowth" => maxovergrowth::on_hit(battle, pokemon_pos, target_pos),
