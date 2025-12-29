@@ -16,8 +16,36 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
     // if (!pokemon.ignoringItem() && this.field.getPseudoWeather('trickroom')) {
     //     pokemon.useItem();
     // }
-    // TODO: Need pokemon.ignoringItem() and battle.field.getPseudoWeather('trickroom')
-    // to check if Trick Room is active, then pokemon.useItem() to consume
+
+    use crate::dex_data::ID;
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if pokemon is ignoring item
+    let ignoring_item = {
+        let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.ignoring_item()
+    };
+
+    // Check if trick room is active
+    let has_trick_room = battle.field.has_pseudo_weather(&ID::from("trickroom"));
+
+    // if (!pokemon.ignoringItem() && this.field.getPseudoWeather('trickroom'))
+    if !ignoring_item && has_trick_room {
+        // pokemon.useItem();
+        let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.use_item();
+    }
+
     EventResult::Continue
 }
 
