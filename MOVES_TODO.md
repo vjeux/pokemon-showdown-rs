@@ -572,9 +572,29 @@ By callback type:
 
 ## Missing Infrastructure
 
-### Critical Infrastructure Needed for Remaining 117 Callbacks
+### Critical Infrastructure Needed for Remaining 27 Callbacks
 
-All 117 remaining callbacks require one or more of the following infrastructure components that don't currently exist or need modifications to existing code.
+**Status:** All 27 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
+
+**Breakdown by File:**
+- **firepledge.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs queue.willMove(), move modification)
+- **fling.rs**: 1 TODO - on_prepare_hit (needs move.basePower modification, singleEvent)
+- **healblock.rs**: 1 TODO - on_try_heal (needs EventResult::Null)
+- **substitute.rs**: 1 TODO - on_try_primary_hit (needs getDamage(), calcRecoilDamage(), HIT_SUBSTITUTE)
+- **tarshot.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
+- **taunt.rs**: 1 TODO - on_before_move (signature missing attacker parameter)
+- **technoblast.rs**: 1 TODO - on_modify_type (needs move.type modification, runEvent('Drive'))
+- **telekinesis.rs**: 4 TODOs - on_try, on_start, on_accuracy, on_immunity, on_update (needs field.getPseudoWeather(), baseSpecies, EventResult::Null)
+- **terablast.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs move modification)
+- **terastarstorm.rs**: 2 TODOs - on_modify_type, on_modify_move (needs move modification)
+- **terrainpulse.rs**: 2 TODOs - on_modify_type, on_modify_move (needs move modification)
+- **thousandarrows.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
+- **uproar.rs**: 1 TODO - on_any_set_status (needs EventResult::Null)
+- **waterpledge.rs**: 3 TODOs - on_prepare_hit, on_modify_move, condition::on_modify_move (needs queue.willMove(), move modification)
+- **wish.rs**: 1 TODO - on_residual (signature missing target parameter)
+- **wonderroom.rs**: 1 TODO - on_modify_move (needs move.overrideOffensiveStat modification)
+
+All remaining callbacks require one or more of the following infrastructure components that don't currently exist or need modifications to existing code.
 
 ### 1. Active Move Access in Callbacks
 
