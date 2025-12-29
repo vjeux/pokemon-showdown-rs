@@ -26,7 +26,12 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///     }
 /// }
 pub fn on_source_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    if let Some(move_data) = battle.dex.get_move(move_id) {
+        if move_data.move_type == "Fire" {
+            let modified = battle.chain_modify(1.25);
+            return EventResult::Number(modified);
+        }
+    }
     EventResult::Continue
 }
 
