@@ -35,19 +35,35 @@ pub fn on_hit(
     };
 
     // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
-    // TODO: isMax and baseMove not yet implemented
-    // For now, we'll skip this check
+    let actual_move_id = {
+        let move_data = match battle.dex.get_move_by_id(&move_id) {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+
+        if move_data.is_max.is_some() {
+            if let Some(ref base_move) = move_data.base_move {
+                base_move.clone()
+            } else {
+                move_id.clone()
+            }
+        } else {
+            move_id.clone()
+        }
+    };
 
     // if (move.flags['failcopycat'] || move.isZ || move.isMax) {
     //     return false;
     // }
-    let move_data = match battle.dex.get_move_by_id(&move_id) {
+    let move_data = match battle.dex.get_move_by_id(&actual_move_id) {
         Some(m) => m,
         None => return EventResult::Continue,
     };
 
-    if move_data.flags.contains_key("failcopycat") {
-        // TODO: isZ, isMax not yet implemented
+    if move_data.flags.contains_key("failcopycat")
+        || move_data.is_z.is_some()
+        || move_data.is_max.is_some()
+    {
         return EventResult::Boolean(false);
     }
 
