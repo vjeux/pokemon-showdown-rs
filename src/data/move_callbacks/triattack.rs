@@ -5,30 +5,56 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
 
-/// onHit(...)
+/// onHit(target, source)
 ///
 /// ```text
 /// JS Source (data/moves.ts):
 /// onHit(target, source) {
-/// 				const result = this.random(3);
-/// 				if (result === 0) {
-/// 					target.trySetStatus('brn', source);
-/// 				} else if (result === 1) {
-/// 					target.trySetStatus('par', source);
-/// 				} else {
-/// 					target.trySetStatus('frz', source);
-/// 				}
-/// 			},
-/// 
-/// 		}
+/// 			const result = this.random(3);
+/// 			if (result === 0) {
+/// 				target.trySetStatus('brn', source);
+/// 			} else if (result === 1) {
+/// 				target.trySetStatus('par', source);
+/// 			} else {
+/// 				target.trySetStatus('frz', source);
+/// 			}
+/// 		},
+///
+/// 	}
 /// ```
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
-}
+pub fn on_hit(
+    battle: &mut Battle,
+    _source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
+    // const result = this.random(3);
+    // if (result === 0) {
+    //     target.trySetStatus('brn', source);
+    // } else if (result === 1) {
+    //     target.trySetStatus('par', source);
+    // } else {
+    //     target.trySetStatus('frz', source);
+    // }
 
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let result = battle.random(3);
+
+    if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+        if result == 0 {
+            target_pokemon.try_set_status(ID::from("brn"), None);
+        } else if result == 1 {
+            target_pokemon.try_set_status(ID::from("par"), None);
+        } else {
+            target_pokemon.try_set_status(ID::from("frz"), None);
+        }
+    }
+
+    EventResult::Continue
+}
