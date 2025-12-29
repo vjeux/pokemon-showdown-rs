@@ -29,7 +29,7 @@ Items with callbacks: 326
 - [x] altarianite - Altarianite (Gen 6) - 1 callback: onTakeItem
 - [x] ampharosite - Ampharosite (Gen 6) - 1 callback: onTakeItem
 - [ ] apicotberry - Apicot Berry (Gen 3) - 2 callbacks: onUpdate, onEat
-- [ ] aspearberry - Aspear Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] aspearberry - Aspear Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] assaultvest - Assault Vest (Gen 6) - 2 callbacks: onModifySpD, onDisableMove
 - [x] audinite - Audinite (Gen 6) - 1 callback: onTakeItem
 - [ ] babiriberry - Babiri Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
@@ -37,11 +37,11 @@ Items with callbacks: 326
 - [x] barbaracite - Barbaracite (Gen 9) - 1 callback: onTakeItem
 - [x] baxcalibrite - Baxcalibrite (Gen 9) - 1 callback: onTakeItem
 - [x] beedrillite - Beedrillite (Gen 6) - 1 callback: onTakeItem
-- [ ] berry - Berry (Gen 2) - 3 callbacks: onResidual, onTryEatItem, onEat
-- [ ] berryjuice - Berry Juice (Gen 2) - 1 callback: onUpdate
+- [x] berry - Berry (Gen 2) - 3 callbacks: onResidual, onTryEatItem, onEat
+- [x] berryjuice - Berry Juice (Gen 2) - 1 callback: onUpdate
 - [x] berserkgene - Berserk Gene (Gen 2) - 1 callback: onUpdate
 - [x] bigroot - Big Root (Gen 4) - 1 callback: onTryHeal
-- [ ] bitterberry - Bitter Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [x] bitterberry - Bitter Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [x] blackbelt - Black Belt (Gen 2) - 1 callback: onBasePower
 - [x] blackglasses - Black Glasses (Gen 2) - 1 callback: onBasePower
 - [x] blacksludge - Black Sludge (Gen 4) - 1 callback: onResidual
@@ -53,7 +53,7 @@ Items with callbacks: 326
 - [x] buggem - Bug Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] bugmemory - Bug Memory (Gen 7) - 1 callback: onTakeItem
 - [x] burndrive - Burn Drive (Gen 5) - 1 callback: onTakeItem
-- [ ] burntberry - Burnt Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [x] burntberry - Burnt Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [x] cameruptite - Cameruptite (Gen 6) - 1 callback: onTakeItem
 - [x] cellbattery - Cell Battery (Gen 5) - 1 callback: onDamagingHit
 - [x] chandelurite - Chandelurite (Gen 9) - 1 callback: onTakeItem
@@ -61,9 +61,9 @@ Items with callbacks: 326
 - [x] charizarditex - Charizardite X (Gen 6) - 1 callback: onTakeItem
 - [x] charizarditey - Charizardite Y (Gen 6) - 1 callback: onTakeItem
 - [ ] chartiberry - Charti Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] cheriberry - Cheri Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] cheriberry - Cheri Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] chesnaughtite - Chesnaughtite (Gen 9) - 1 callback: onTakeItem
-- [ ] chestoberry - Chesto Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] chestoberry - Chesto Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [ ] chilanberry - Chilan Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] chilldrive - Chill Drive (Gen 5) - 1 callback: onTakeItem
 - [x] chimechite - Chimechite (Gen 9) - 1 callback: onTakeItem
@@ -187,7 +187,7 @@ Items with callbacks: 326
 - [x] lucarionite - Lucarionite (Gen 6) - 1 callback: onTakeItem
 - [x] lucarionitez - Lucarionite Z (Gen 9) - 1 callback: onTakeItem
 - [ ] luckypunch - Lucky Punch (Gen 2) - 1 callback: onModifyCritRatio
-- [ ] lumberry - Lum Berry (Gen 3) - 3 callbacks: onAfterSetStatus, onUpdate, onEat
+- [x] lumberry - Lum Berry (Gen 3) - 3 callbacks: onAfterSetStatus, onUpdate, onEat
 - [x] luminousmoss - Luminous Moss (Gen 6) - 1 callback: onDamagingHit
 - [x] lustrousglobe - Lustrous Globe (Gen 8) - 2 callbacks: onBasePower, onTakeItem
 - [x] lustrousorb - Lustrous Orb (Gen 4) - 1 callback: onBasePower
@@ -213,8 +213,8 @@ Items with callbacks: 326
 - [x] mewtwonitey - Mewtwonite Y (Gen 6) - 1 callback: onTakeItem
 - [ ] micleberry - Micle Berry (Gen 4) - 2 callbacks: onResidual, onEat
 - [x] mindplate - Mind Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
-- [ ] mintberry - Mint Berry (Gen 2) - 2 callbacks: onUpdate, onEat
-- [ ] miracleberry - Miracle Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [x] mintberry - Mint Berry (Gen 2) - 2 callbacks: onUpdate, onEat
+- [x] miracleberry - Miracle Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [x] miracleseed - Miracle Seed (Gen 2) - 1 callback: onBasePower
 - [ ] mirrorherb - Mirror Herb (Gen 9) - 8 callbacks: onFoeAfterBoost, onAnySwitchIn, onAnyAfterMega, onAnyAfterTerastallization, onAnyAfterMove, onResidual, onUse, onEnd
 - [x] mistyseed - Misty Seed (Gen 7) - 2 callbacks: onStart, onTerrainChange
@@ -225,10 +225,10 @@ Items with callbacks: 326
 - [x] normalgem - Normal Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [ ] occaberry - Occa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] oddincense - Odd Incense (Gen 4) - 1 callback: onBasePower
-- [ ] oranberry - Oran Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [x] oranberry - Oran Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [ ] passhoberry - Passho Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [ ] payapaberry - Payapa Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] pechaberry - Pecha Berry (Gen 3) - 2 callbacks: onUpdate, onEat
+- [x] pechaberry - Pecha Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] persimberry - Persim Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] petayaberry - Petaya Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] pidgeotite - Pidgeotite (Gen 6) - 1 callback: onTakeItem
@@ -292,7 +292,7 @@ Items with callbacks: 326
 - [ ] shucaberry - Shuca Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] silkscarf - Silk Scarf (Gen 3) - 1 callback: onBasePower
 - [x] silverpowder - Silver Powder (Gen 2) - 1 callback: onBasePower
-- [ ] sitrusberry - Sitrus Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
+- [x] sitrusberry - Sitrus Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
 - [x] skarmorite - Skarmorite (Gen 9) - 1 callback: onTakeItem
 - [x] skyplate - Sky Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] slowbronite - Slowbronite (Gen 6) - 1 callback: onTakeItem
