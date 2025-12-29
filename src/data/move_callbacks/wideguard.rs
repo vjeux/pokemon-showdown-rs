@@ -99,11 +99,85 @@ pub mod condition {
     ///     return this.NOT_FAIL;
     /// }
     pub fn on_try_hit(
-        _battle: &mut Battle,
-        _source_pos: (usize, usize),
-        _target_pos: (usize, usize),
+        battle: &mut Battle,
+        source_pos: (usize, usize),
+        target_pos: (usize, usize),
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        use crate::dex_data::ID;
+
+        let source = source_pos;
+        let target = target_pos;
+
+        // Get the active move
+        let move_data = match &battle.active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+
+        // if (move?.target !== 'allAdjacent' && move.target !== 'allAdjacentFoes') {
+        //     return;
+        // }
+        if move_data.target != "allAdjacent" && move_data.target != "allAdjacentFoes" {
+            return EventResult::Continue;
+        }
+
+        // if (move.isZ || move.isMax) {
+        if move_data.is_z || move_data.is_max {
+            // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
+            if move_data.id == ID::from("gmaxoneblow") || move_data.id == ID::from("gmaxrapidflow") {
+                return EventResult::Continue;
+            }
+
+            // target.getMoveHitData(move).zBrokeProtect = true;
+            // TODO: getMoveHitData().zBrokeProtect not yet implemented
+            // return;
+            return EventResult::Continue;
+        }
+
+        // this.add('-activate', target, 'move: Wide Guard');
+        let target_ident = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.get_slot()
+        };
+
+        battle.add(
+            "-activate",
+            &[target_ident.as_str().into(), "move: Wide Guard".into()],
+        );
+
+        // const lockedmove = source.getVolatile('lockedmove');
+        // if (lockedmove) {
+        //     // Outrage counter is reset
+        //     if (source.volatiles['lockedmove'].duration === 2) {
+        //         delete source.volatiles['lockedmove'];
+        //     }
+        // }
+        let lockedmove_id = ID::from("lockedmove");
+        let should_remove_lockedmove = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            if let Some(volatile) = source_pokemon.volatiles.get(&lockedmove_id) {
+                volatile.duration == Some(2)
+            } else {
+                false
+            }
+        };
+
+        if should_remove_lockedmove {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.remove_volatile(&lockedmove_id);
+        }
+
+        // return this.NOT_FAIL;
+        EventResult::NotFail
     }
 }
