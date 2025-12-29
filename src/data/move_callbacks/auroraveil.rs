@@ -117,9 +117,17 @@ pub mod condition {
         }
 
         // if (!target.getMoveHitData(move).crit && !move.infiltrates) {
-        // Note: getMoveHitData and infiltrates checks not yet implemented
-        // For now, just apply the damage modification
-        // TODO: Add crit and infiltrates checks when available
+        let infiltrates = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.infiltrates)
+            .unwrap_or(false);
+
+        // TODO: Add crit check via getMoveHitData when available
+        // For now, check infiltrates only
+        if infiltrates {
+            return EventResult::Continue;
+        }
 
         // this.debug('Aurora Veil weaken');
         battle.debug("Aurora Veil weaken");
