@@ -18,13 +18,47 @@ pub mod condition {
     ///     return 5;
     /// }
     pub fn duration_callback(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
         _effect_id: Option<&str>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        // if (source?.hasAbility('persistent'))
+        if let Some(source) = source_pos {
+            let has_persistent = {
+                let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                    Some(p) => p,
+                    None => return EventResult::Number(5),
+                };
+                source_pokemon.has_ability(&["persistent"])
+            };
+
+            if has_persistent {
+                // this.add('-activate', source, 'ability: Persistent', '[move] Trick Room');
+                let source_slot = {
+                    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                        Some(p) => p,
+                        None => return EventResult::Number(5),
+                    };
+                    source_pokemon.get_slot()
+                };
+
+                battle.add(
+                    "-activate",
+                    &[
+                        crate::battle::Arg::from(source_slot),
+                        crate::battle::Arg::from("ability: Persistent"),
+                        crate::battle::Arg::from("[move] Trick Room"),
+                    ],
+                );
+
+                // return 7;
+                return EventResult::Number(7);
+            }
+        }
+
+        // return 5;
+        EventResult::Number(5)
     }
 
     /// onFieldStart(target, source) {
@@ -35,11 +69,49 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_field_start(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // if (source?.hasAbility('persistent'))
+        if let Some(source) = source_pos {
+            let (has_persistent, source_slot) = {
+                let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                    Some(p) => p,
+                    None => {
+                        // No source, just add basic message
+                        battle.add("-fieldstart", &[crate::battle::Arg::from("move: Trick Room")]);
+                        return EventResult::Continue;
+                    },
+                };
+                (source_pokemon.has_ability(&["persistent"]), source_pokemon.get_slot())
+            };
+
+            if has_persistent {
+                // this.add('-fieldstart', 'move: Trick Room', `[of] ${source}`, '[persistent]');
+                battle.add(
+                    "-fieldstart",
+                    &[
+                        crate::battle::Arg::from("move: Trick Room"),
+                        crate::battle::Arg::from(format!("[of] {}", source_slot)),
+                        crate::battle::Arg::from("[persistent]"),
+                    ],
+                );
+            } else {
+                // this.add('-fieldstart', 'move: Trick Room', `[of] ${source}`);
+                battle.add(
+                    "-fieldstart",
+                    &[
+                        crate::battle::Arg::from("move: Trick Room"),
+                        crate::battle::Arg::from(format!("[of] {}", source_slot)),
+                    ],
+                );
+            }
+        } else {
+            // No source, just add basic message
+            battle.add("-fieldstart", &[crate::battle::Arg::from("move: Trick Room")]);
+        }
+
         EventResult::Continue
     }
 
@@ -47,11 +119,14 @@ pub mod condition {
     ///     this.field.removePseudoWeather('trickroom');
     /// }
     pub fn on_field_restart(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // this.field.removePseudoWeather('trickroom');
+        use crate::dex_data::ID;
+        battle.field.remove_pseudo_weather(&ID::from("trickroom"));
+
         EventResult::Continue
     }
 
