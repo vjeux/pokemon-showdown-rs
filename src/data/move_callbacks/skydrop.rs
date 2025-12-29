@@ -318,8 +318,14 @@ pub fn on_try_hit(
         //     this.add('-fail', target, 'move: Sky Drop', '[heavy]');
         //     return null;
         // }
-        // TODO: Implement battle.get_weight
-        let weight = 1000; // Default weight, assuming most Pokemon are under 2000
+        let weight = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.get_weight()
+        };
+
         if weight >= 2000 {
             let target_arg = {
                 let target_pokemon = match battle.pokemon_at(target.0, target.1) {
