@@ -14,7 +14,34 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (move.category === 'Physical') {
+    //     if (move.id === 'present' && move.heal) return;
+    //     target.eatItem();
+    // }
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if move category is Physical
+    let is_physical = battle.active_move.as_ref()
+        .map(|m| m.category == "Physical")
+        .unwrap_or(false);
+
+    if !is_physical {
+        return EventResult::Continue;
+    }
+
+    // Special case: if move.id === 'present' && move.heal, don't eat
+    // Note: We don't have move.heal field, so we skip this check for now
+    // The item will be eaten for Present regardless
+
+    // target.eatItem();
+    if let Some(target) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+        target.eat_item(false);
+    }
+
     EventResult::Continue
 }
 
@@ -22,6 +49,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
 ///     this.boost({ def: 1 });
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // this.boost({ def: 1 });
+    battle.boost(&[("def", 1)], pokemon_pos, None, None);
     EventResult::Continue
 }

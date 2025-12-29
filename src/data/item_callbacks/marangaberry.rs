@@ -13,7 +13,29 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (move.category === 'Special') {
+    //     target.eatItem();
+    // }
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if move category is Special
+    let is_special = battle.active_move.as_ref()
+        .map(|m| m.category == "Special")
+        .unwrap_or(false);
+
+    if !is_special {
+        return EventResult::Continue;
+    }
+
+    // target.eatItem();
+    if let Some(target) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+        target.eat_item(false);
+    }
+
     EventResult::Continue
 }
 
@@ -21,6 +43,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
 ///     this.boost({ spd: 1 });
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // this.boost({ spd: 1 });
+    battle.boost(&[("spd", 1)], pokemon_pos, None, None);
     EventResult::Continue
 }
