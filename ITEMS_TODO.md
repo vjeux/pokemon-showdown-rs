@@ -64,7 +64,7 @@ Items with callbacks: 326
 - [x] cheriberry - Cheri Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [x] chesnaughtite - Chesnaughtite (Gen 9) - 1 callback: onTakeItem
 - [x] chestoberry - Chesto Berry (Gen 3) - 2 callbacks: onUpdate, onEat
-- [ ] chilanberry - Chilan Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] chilanberry - Chilan Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] chilldrive - Chill Drive (Gen 5) - 1 callback: onTakeItem
 - [x] chimechite - Chimechite (Gen 9) - 1 callback: onTakeItem
 - [x] choiceband - Choice Band (Gen 3) - 3 callbacks: onStart, onModifyMove, onModifyAtk
