@@ -2,11 +2,19 @@
 
 ## Summary
 
-**Current Status:** 105 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 102 TODO callbacks remaining (out of ~700+ original callbacks)
+
+**Latest Session Progress:**
+- **Callbacks implemented**: 3 new implementations
+  - healblock.rs: condition::duration_callback (checks Persistent ability, Psychic Noise effect)
+  - healblock.rs: condition::on_before_move (checks heal flag, Z/Max moves)
+  - healblock.rs: condition::on_modify_move (checks heal flag, Z/Max moves)
 
 **Total Session Progress:**
-- **Callbacks implemented**: 11 total (9 this session + 2 previous session)
-  - This session:
+- **Callbacks implemented**: 14 total (12 current + 2 previous session)
+  - Current continuation:
+    - healblock.rs: condition::duration_callback, condition::on_before_move, condition::on_modify_move
+  - Earlier this session:
     - substitute.rs: condition::on_end, on_try_hit, on_hit
     - trick.rs: on_try_immunity
     - switcheroo.rs: on_try_immunity
@@ -17,7 +25,7 @@
   - Now complete: throatchop
   - This session: takeheart, temperflare, upperhand, veeveevolley, teleport, thunder, thunderclap, topsyturvy, venomdrench, venoshock, wakeupslap, watershuriken, waterspout, wildboltstorm, wringout, tailwind, transform, trickortreat
   - Previous session: synthesis, synchronoise, + 25 others
-- **Partial implementations documented**: 17 moves now show partial completion status with ✓ markers (added trick, switcheroo, substitute, uproar)
+- **Partial implementations documented**: 18 moves now show partial completion status with ✓ markers (added healblock, trick, switcheroo, substitute, uproar)
 
 **Previously Completed:** 15 callbacks (4 from latest active implementation + 11 simple message callbacks)
 - throatchop.rs: condition::on_disable_move - Disables moves with sound flag
@@ -211,7 +219,7 @@ Moves with callbacks: 373
 - [x] hardpress - Hard Press (Physical, Steel) - 1 callback: basePowerCallback
 - [x] haze - Haze (Status, Ice) - 1 callback: onHitField
 - [x] healbell - Heal Bell (Status, Normal) - 1 callback: onHit
-- [ ] healblock - Heal Block (Status, Psychic) - 8 callbacks: condition::durationCallback, condition::onStart, condition::onDisableMove ✓, condition::onBeforeMove, condition::onModifyMove, condition::onEnd ✓, condition::onTryHeal, condition::onRestart (2/8 implemented)
+- [ ] healblock - Heal Block (Status, Psychic) - 8 callbacks: condition::durationCallback ✓, condition::onStart, condition::onDisableMove ✓, condition::onBeforeMove ✓, condition::onModifyMove ✓, condition::onEnd ✓, condition::onTryHeal, condition::onRestart (5/8 implemented)
 - [x] healingwish - Healing Wish (Status, Psychic) - 3 callbacks: onTryHit, condition::onSwitchIn, condition::onSwap
 - [x] healpulse - Heal Pulse (Status, Psychic) - 1 callback: onHit
 - [x] heartswap - Heart Swap (Status, Psychic) - 1 callback: onHit
