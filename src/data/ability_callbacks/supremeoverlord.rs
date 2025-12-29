@@ -35,7 +35,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 ///         return this.chainModify([powMod[this.effectState.fallen], 4096]);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

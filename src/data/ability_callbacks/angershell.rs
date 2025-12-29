@@ -47,7 +47,7 @@ pub fn on_try_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
 ///         this.boost({ atk: 1, spa: 1, spe: 1, def: -1, spd: -1 }, target, target);
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

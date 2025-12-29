@@ -38,7 +38,7 @@ pub fn on_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

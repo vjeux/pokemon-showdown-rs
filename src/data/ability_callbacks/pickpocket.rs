@@ -24,7 +24,7 @@ use crate::event::EventResult;
 ///         this.add('-item', target, yourItem, '[from] ability: Pickpocket', `[of] ${source}`);
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -38,7 +38,7 @@ pub fn on_damage(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     if (!target.runImmunity(move)) return;
 ///     return false;
 /// }
-pub fn on_critical_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_critical_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -53,7 +53,7 @@ pub fn on_critical_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
 ///     if (!target.runImmunity(move)) return;
 ///     return 0;
 /// }
-pub fn on_effectiveness(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_effectiveness(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

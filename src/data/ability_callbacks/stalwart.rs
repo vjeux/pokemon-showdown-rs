@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     // most of the implementation is in Battle#getTarget
 ///     move.tracksTarget = move.target !== 'scripted';
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

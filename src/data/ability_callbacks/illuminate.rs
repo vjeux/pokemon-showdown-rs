@@ -24,7 +24,7 @@ pub fn on_try_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 /// onModifyMove(move) {
 ///     move.ignoreEvasion = true;
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

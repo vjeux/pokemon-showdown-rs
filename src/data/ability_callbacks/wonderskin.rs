@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return 50;
 ///     }
 /// }
-pub fn on_modify_accuracy(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_accuracy(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

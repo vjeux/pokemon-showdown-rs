@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///     this.actions.useMove(newMove, target, { target: source });
 ///     return null;
 /// }
-pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -33,7 +33,7 @@ pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResu
 ///     move.hasBounced = true; // only bounce once in free-for-all battles
 ///     return null;
 /// }
-pub fn on_ally_try_hit_side(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_ally_try_hit_side(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -24,7 +24,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///     this.debug('Beads of Ruin SpD drop');
 ///     return this.chainModify(0.75);
 /// }
-pub fn on_any_modify_sp_d(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_modify_sp_d(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     move.multihit = 2;
 ///     move.multihitType = 'parentalbond';
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -24,7 +24,7 @@ pub fn on_prepare_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
 ///         return secondaries.filter(effect => effect.volatileStatus === 'flinch');
 ///     }
 /// }
-pub fn on_source_modify_secondaries(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_source_modify_secondaries(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

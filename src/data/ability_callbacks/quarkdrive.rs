@@ -59,7 +59,7 @@ pub mod condition {
     ///     this.debug('Quark Drive atk boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -79,7 +79,7 @@ pub mod condition {
     ///     this.debug('Quark Drive spa boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

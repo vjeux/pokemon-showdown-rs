@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///         move.typeChangerBoosted = this.effect;
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_type(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -25,7 +25,7 @@ pub fn on_modify_type(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
 /// onBasePower(basePower, pokemon, target, move) {
 ///     if (move.typeChangerBoosted === this.effect) return this.chainModify([4915, 4096]);
 /// }
-pub fn on_base_power(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

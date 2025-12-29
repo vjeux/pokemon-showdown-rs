@@ -329,6 +329,34 @@ if (!fs.existsSync(abilitiesDir)) {
     fs.mkdirSync(abilitiesDir, { recursive: true });
 }
 
+// Build a map to determine which callback types need move_id
+// This must be done BEFORE generating individual files
+const callbackNeedsMove = new Map();
+abilitiesWithCallbacks.forEach(ability => {
+    // Check regular callbacks
+    ability.callbacks.forEach(callback => {
+        if (!callbackNeedsMove.has(callback.name)) {
+            callbackNeedsMove.set(callback.name, false);
+        }
+        // If ANY instance of this callback has move parameter, mark it as needing move
+        const jsArgs = callback.args.toLowerCase();
+        if (jsArgs.includes('move')) {
+            callbackNeedsMove.set(callback.name, true);
+        }
+    });
+
+    // Check condition callbacks too
+    ability.conditionCallbacks.forEach(callback => {
+        if (!callbackNeedsMove.has(callback.name)) {
+            callbackNeedsMove.set(callback.name, false);
+        }
+        const jsArgs = callback.args.toLowerCase();
+        if (jsArgs.includes('move')) {
+            callbackNeedsMove.set(callback.name, true);
+        }
+    });
+});
+
 // Generate individual file for each ability with callbacks
 let generatedCount = 0;
 for (const ability of abilitiesWithCallbacks) {
@@ -343,8 +371,15 @@ use crate::event::EventResult;
 
 ${ability.callbacks.map(callback => {
     const rustFuncName = camelToSnake(callback.name);
-    // All ability callbacks use standard signature
-    const params = 'battle: &mut Battle, pokemon_pos: (usize, usize)';
+
+    // Determine parameters based on whether this callback TYPE needs move_id
+    let params = 'battle: &mut Battle, pokemon_pos: (usize, usize)';
+
+    // Use the global callbackNeedsMove map to check if this callback type needs move
+    if (callbackNeedsMove.get(callback.name)) {
+        params += ', _move_id: &str';
+    }
+
     // Format JS source: replace all tabs with 4 spaces
     const formattedSource = callback.jsSource
         .split('\n')
@@ -364,8 +399,15 @@ ${ability.conditionCallbacks.length > 0 ? `pub mod condition {
 
 ${ability.conditionCallbacks.map(callback => {
     const rustFuncName = camelToSnake(callback.name);
-    // All ability callbacks use standard signature
-    const params = 'battle: &mut Battle, pokemon_pos: (usize, usize)';
+
+    // Determine parameters based on whether this callback TYPE needs move_id
+    let params = 'battle: &mut Battle, pokemon_pos: (usize, usize)';
+
+    // Use the global callbackNeedsMove map to check if this callback type needs move
+    if (callbackNeedsMove.get(callback.name)) {
+        params += ', _move_id: &str';
+    }
+
     const formattedSource = callback.jsSource
         .split('\n')
         .map(line => line.replace(/\t/g, '    '))
@@ -391,6 +433,7 @@ console.log(`Generated ${generatedCount} ability files`);
 
 // Build a map of callback -> abilities for dispatcher generation
 const callbackMap = new Map();
+// callbackNeedsMove is already built earlier in the file
 abilitiesWithCallbacks.forEach(ability => {
     ability.callbacks.forEach(callback => {
         if (!callbackMap.has(callback.name)) {
@@ -417,17 +460,24 @@ const dispatchers = sortedCallbacks.map(callback => {
     const funcName = `dispatch_${camelToSnake(callback)}`;
     const rustCallbackName = camelToSnake(callback);
     const abilityIds = callbackMap.get(callback);
+    const needsMove = callbackNeedsMove.get(callback);
 
-    // All ability dispatchers use a standard signature
+    // Dispatcher signature includes move_id if any callback needs it
+    let dispatcherParams = 'battle: &mut Battle,\n    ability_id: &str,\n    pokemon_pos: (usize, usize)';
+    let callParams = 'battle, pokemon_pos';
+
+    if (needsMove) {
+        dispatcherParams += ',\n    move_id: &str';
+        callParams += ', move_id';
+    }
+
     const matchArms = abilityIds.map(abilityId => {
-        return `        "${abilityId}" => ${rustModName(abilityId)}::${rustCallbackName}(battle, pokemon_pos),`;
+        return `        "${abilityId}" => ${rustModName(abilityId)}::${rustCallbackName}(${callParams}),`;
     }).join('\n');
 
     return `/// Dispatch ${callback} callbacks
 pub fn ${funcName}(
-    battle: &mut Battle,
-    ability_id: &str,
-    pokemon_pos: (usize, usize),
+    ${dispatcherParams},
 ) -> EventResult {
     match ability_id {
 ${matchArms}
@@ -441,6 +491,16 @@ ${matchArms}
 const priorityVariantDispatchers = sortedCallbacks.flatMap(callback => {
     const variants = [];
     const baseFuncName = `dispatch_${camelToSnake(callback)}`;
+    const needsMove = callbackNeedsMove.get(callback);
+
+    // Build the signature to match the base dispatcher
+    let dispatcherParams = 'battle: &mut Battle,\n    ability_id: &str,\n    pokemon_pos: (usize, usize)';
+    let forwardParams = 'battle, ability_id, pokemon_pos';
+
+    if (needsMove) {
+        dispatcherParams += ',\n    move_id: &str';
+        forwardParams += ', move_id';
+    }
 
     // Always generate Priority, Order, and SubOrder variants
     // (even for callbacks that already end with these suffixes)
@@ -449,11 +509,9 @@ const priorityVariantDispatchers = sortedCallbacks.flatMap(callback => {
 
     variants.push(`/// Dispatch ${priorityCallback} callbacks (alias for ${callback})
 pub fn ${priorityFuncName}(
-    battle: &mut Battle,
-    ability_id: &str,
-    pokemon_pos: (usize, usize),
+    ${dispatcherParams},
 ) -> EventResult {
-    ${baseFuncName}(battle, ability_id, pokemon_pos)
+    ${baseFuncName}(${forwardParams})
 }`);
 
     // Also generate Order and SubOrder variants
@@ -462,11 +520,9 @@ pub fn ${priorityFuncName}(
 
     variants.push(`/// Dispatch ${orderCallback} callbacks (alias for ${callback})
 pub fn ${orderFuncName}(
-    battle: &mut Battle,
-    ability_id: &str,
-    pokemon_pos: (usize, usize),
+    ${dispatcherParams},
 ) -> EventResult {
-    ${baseFuncName}(battle, ability_id, pokemon_pos)
+    ${baseFuncName}(${forwardParams})
 }`);
 
     const subOrderCallback = callback + 'SubOrder';
@@ -474,11 +530,9 @@ pub fn ${orderFuncName}(
 
     variants.push(`/// Dispatch ${subOrderCallback} callbacks (alias for ${callback})
 pub fn ${subOrderFuncName}(
-    battle: &mut Battle,
-    ability_id: &str,
-    pokemon_pos: (usize, usize),
+    ${dispatcherParams},
 ) -> EventResult {
-    ${baseFuncName}(battle, ability_id, pokemon_pos)
+    ${baseFuncName}(${forwardParams})
 }`);
 
     return variants;
@@ -490,10 +544,16 @@ const conditionDispatchers = sortedConditionCallbacks.map(callback => {
     const funcName = `dispatch_condition_${camelToSnake(callback)}`;
     const rustCallbackName = camelToSnake(callback);
     const abilityIds = conditionCallbackMap.get(callback);
+    const needsMove = callbackNeedsMove.get(callback) || false;
 
-    // Determine parameters based on callback type
-    let params = ',\n    ability_id: &str,\n    pokemon_pos: (usize, usize)';
+    // Build dispatcher signature and call parameters based on whether this callback needs move_id
+    let dispatcherParams = 'battle: &mut Battle,\n    ability_id: &str,\n    pokemon_pos: (usize, usize)';
     let callParams = 'battle, pokemon_pos';
+
+    if (needsMove) {
+        dispatcherParams += ',\n    move_id: &str';
+        callParams += ', move_id';
+    }
 
     const matchArms = abilityIds.map(abilityId => {
         return `        "${abilityId}" => ${rustModName(abilityId)}::condition::${rustCallbackName}(${callParams}),`;
@@ -501,7 +561,7 @@ const conditionDispatchers = sortedConditionCallbacks.map(callback => {
 
     return `/// Dispatch condition ${callback} callbacks
 pub fn ${funcName}(
-    battle: &mut Battle${params},
+    ${dispatcherParams},
 ) -> EventResult {
     match ability_id {
 ${matchArms}

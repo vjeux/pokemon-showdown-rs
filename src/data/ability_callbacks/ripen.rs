@@ -38,7 +38,7 @@ pub fn on_change_boost(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_damage(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_source_modify_damage(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

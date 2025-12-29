@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -31,7 +31,7 @@ pub fn on_try_hit(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResu
 ///         return this.effectState.target;
 ///     }
 /// }
-pub fn on_any_redirect_target(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_redirect_target(battle: &mut Battle, pokemon_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
