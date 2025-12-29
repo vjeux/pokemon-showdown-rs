@@ -206,14 +206,6 @@ This file tracks abilities that require infrastructure not yet implemented in Ru
   - Returns true if pokemon can be affected by the type/effect
   - Used in overcoat.rs on_try_hit: checks powder immunity before blocking
 
-### Move status field (Purifying Salt, etc.)
-- **Missing**: MoveData status field or effect status checking
-- **JavaScript code**: `(effect as Move)?.status` checks if effect is a status-inflicting move
-- **Required**:
-  - Need MoveData to expose status field (e.g., status: Option<String>)
-  - Or need way to check if an effect is a move with status property
-  - Used in purifyingsalt.rs on_set_status to show immunity when status is from a move
-
 ### Pokemon HP tracking (Sturdy, Multiscale, etc.)
 - **Missing**: pokemon.hp and pokemon.maxhp fields
 - **JavaScript code**: `target.hp === target.maxhp`, `damage >= target.hp`, `target.hp - 1`
