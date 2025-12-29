@@ -34,10 +34,21 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
 
-    // TODO: Infrastructure needed - Pokemon::stats_raised_this_turn field
-    // For now, returning Continue as the infrastructure doesn't exist
-    // When available, check if target.stats_raised_this_turn is true,
-    // then try to set burn status
+    let stats_raised = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.stats_raised_this_turn
+    };
+
+    if stats_raised {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.try_set_status(ID::from("brn"), Some("move: Burning Jealousy"));
+    }
 
     EventResult::Continue
 }
