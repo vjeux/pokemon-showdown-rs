@@ -2,24 +2,26 @@
 
 ## Summary
 
-**Current Status:** 13 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 12 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **SESSION COMPLETE** - All implementable callbacks with existing infrastructure have been successfully implemented!
 
 **Current Session - Infrastructure Additions:**
 - **Added EventResult::Null variant** - Required for TypeScript 'return null' equivalence
 - **Added ActiveMove.override_offensive_stat field** - Required for Wonder Room stat swapping
+- **Added Battle.run_event_string() method** - Required for Techno Blast 'Drive' event that returns type String
 - **Used existing Battle.attr_last_move() method** - For terablast animation attributes
-- **Newly implemented**: 10 callbacks using existing and new infrastructure!
+- **Newly implemented**: 11 callbacks using existing and new infrastructure!
   - telekinesis.rs: on_try ✓, condition::on_start ✓
   - uproar.rs: condition::on_any_set_status ✓ (COMPLETE FILE 5/5)
   - healblock.rs: condition::on_try_heal ✓ (COMPLETE FILE 8/8)
   - wonderroom.rs: condition::on_modify_move ✓ (COMPLETE FILE 5/5)
   - terablast.rs: on_modify_type ✓, on_modify_move ✓, on_prepare_hit ✓ (COMPLETE FILE 4/4)
   - terastarstorm.rs: on_modify_type ✓, on_modify_move ✓ (COMPLETE FILE 2/2)
-- **Files completed**: 5 new complete files (uproar, healblock, wonderroom, terablast, terastarstorm)
-- **TODO markers verified**: 13 actual "TODO: Implement 1-to-1 from JS" markers remaining
-- **Progress**: 23 → 13 remaining TODOs (implemented 10 callbacks this session - 43% reduction!)
+  - technoblast.rs: on_modify_type ✓ (COMPLETE FILE 1/1)
+- **Files completed**: 6 new complete files (uproar, healblock, wonderroom, terablast, terastarstorm, technoblast)
+- **TODO markers verified**: 12 actual "TODO: Implement 1-to-1 from JS" markers remaining
+- **Progress**: 23 → 12 remaining TODOs (implemented 11 callbacks this session - 48% reduction!)
 
 **Previous Session - Verification Work:**
 - **Newly implemented**: 2 callbacks using infrastructure discovery
@@ -60,7 +62,8 @@
     - throatchop.rs: condition::on_before_move, condition::on_modify_move
     - uproar.rs: on_try_hit, condition::on_residual
   - Previous session: swallow.rs: onTry, onHit
-- **Files marked complete**: 57 total (1 terablast + 1 terastarstorm + 1 wonderroom + 1 healblock + 1 terrainpulse + 1 wish + 4 verified + 47 previous)
+- **Files marked complete**: 58 total (1 technoblast + 1 terablast + 1 terastarstorm + 1 wonderroom + 1 healblock + 1 terrainpulse + 1 wish + 4 verified + 47 previous)
+  - Current session: technoblast (newly implemented on_modify_type using Battle.run_event_string())
   - Current session: terablast (newly implemented on_prepare_hit using existing Battle.attr_last_move())
   - Current session: terastarstorm (newly implemented both callbacks using species_id, get_stat, move modification)
   - Current session: wonderroom (newly implemented on_modify_move using ActiveMove.override_offensive_stat)
@@ -107,9 +110,9 @@ The Pokemon struct already has more methods than initially documented:
   - Available fields: `force_stab`, `source_effect`, `side_condition`, `ohko`, `recoil`, `infiltrates`, `flags`
   - Example: `if let Some(ref mut active_move) = battle.active_move { active_move.move_type = "Fire".to_string(); }`
 
-**Comprehensive Analysis of 13 Remaining TODO Markers:**
+**Comprehensive Analysis of 12 Remaining TODO Markers:**
 
-After exhaustive investigation, all 13 remaining TODO markers are genuinely blocked by missing infrastructure:
+After exhaustive investigation, all 12 remaining TODO markers are genuinely blocked by missing infrastructure:
 
 1. **Function Signature Mismatches** (blocks 5 callbacks):
    - tarshot.rs: `condition::on_effectiveness` - missing `typeMod: i32` and `type: String` parameters
@@ -118,19 +121,16 @@ After exhaustive investigation, all 13 remaining TODO markers are genuinely bloc
    - telekinesis.rs: `condition::on_immunity` - missing `type: String` parameter
    - telekinesis.rs: `condition::on_accuracy` - needs move.ohko check (ohko exists but as Option<String>, not bool)
 
-2. **Missing Battle/Move Methods** (blocks 1 callback):
-   - technoblast.rs: `on_modify_type` - needs `battle.run_event('Drive', ...)` event system
-
-3. **Complex Infrastructure Missing** (blocks 7 callbacks):
+2. **Complex Infrastructure Missing** (blocks 7 callbacks):
    - substitute.rs: `condition::on_try_primary_hit` - needs `actions.getDamage()`, `HIT_SUBSTITUTE`, `calcRecoilDamage()`
    - fling.rs: `on_prepare_hit` - needs `singleEvent()`, dynamic `move.onHit` assignment, `item.fling` data structure
    - firepledge.rs (2 TODOs): needs `queue.willMove()`, complex `move.self` structure with nested sideCondition
    - waterpledge.rs (3 TODOs): needs `queue.willMove()`, complex `move.self` structure with nested sideCondition
 
-**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 13 TODOs require infrastructure additions to the core battle engine.
+**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 12 TODOs require infrastructure additions to the core battle engine.
 
 **ITEMS:** ✅ 100% Complete (346/346) - No TODO markers remaining
-**MOVES:** 57/373 files complete - 13 TODO markers remain, all blocked by missing infrastructure
+**MOVES:** 58/373 files complete - 12 TODO markers remain, all blocked by missing infrastructure
 
 **Blocking Issues:** All 13 remaining callbacks require missing infrastructure:
 - Volatile condition management with source tracking (add_volatile with source parameter)
@@ -486,7 +486,7 @@ Moves with callbacks: 373
 - [ ] tarshot - Tar Shot (Status, Rock) - 2 callbacks: condition::onStart ✓, condition::onEffectiveness (1/2 implemented)
 - [ ] taunt - Taunt (Status, Dark) - 4 callbacks: condition::onStart ✓, condition::onEnd ✓, condition::onDisableMove ✓, condition::onBeforeMove (3/4 implemented)
 - [x] teatime - Teatime (Status, Normal) - 1 callback: onHitField
-- [ ] technoblast - Techno Blast (Special, Normal) - 1 callback: onModifyType
+- [x] technoblast - Techno Blast (Special, Normal) - 1 callback: onModifyType
 - [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry ✓, condition::onStart ✓, condition::onAccuracy, condition::onImmunity, condition::onUpdate ✓, condition::onEnd ✓ (4/6 implemented)
 - [x] teleport - Teleport (Status, Psychic) - 1 callback: onTry
 - [x] temperflare - Temper Flare (Physical, Fire) - 1 callback: basePowerCallback
@@ -625,9 +625,9 @@ By callback type:
 
 ## Missing Infrastructure
 
-### Critical Infrastructure Needed for Remaining 16 Callbacks
+### Critical Infrastructure Needed for Remaining 12 Callbacks
 
-**Status:** All 16 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
+**Status:** All 12 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
 
 **Breakdown by File:**
 - **firepledge.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs queue.willMove(), move modification)
@@ -635,10 +635,7 @@ By callback type:
 - **substitute.rs**: 1 TODO - on_try_primary_hit (needs getDamage(), calcRecoilDamage(), HIT_SUBSTITUTE)
 - **tarshot.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
 - **taunt.rs**: 1 TODO - on_before_move (signature missing attacker parameter)
-- **technoblast.rs**: 1 TODO - on_modify_type (needs move.type modification, runEvent('Drive'))
 - **telekinesis.rs**: 2 TODOs - on_accuracy, on_immunity (signature issues)
-- **terablast.rs**: 1 TODO - on_prepare_hit (needs battle.attr_last_move() method)
-- **terastarstorm.rs**: 2 TODOs - on_modify_type, on_modify_move (need move type/category/target modification)
 - **thousandarrows.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
 - **waterpledge.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs queue.willMove(), move modification)
 
@@ -679,7 +676,6 @@ All remaining callbacks require one or more of the following infrastructure comp
 
 **Blocks:**
 - terablast.rs: on_modify_type, on_modify_move - modify move.type, move.category, move.self
-- technoblast.rs: on_modify_type - modify move.type
 - terrainpulse.rs: on_modify_type, on_modify_move - modify move.type, move.basePower
 - terastarstorm.rs: on_modify_type, on_modify_move - modify move.type, move.category, move.target
 - All pledge moves (firepledge, waterpledge): modify move.type, move.basePower, move.forceSTAB
@@ -741,7 +737,6 @@ impl Battle {
 - thief.rs: needs singleEvent('TakeItem')
 - fling.rs: needs runEvent('AfterUseItem')
 - teatime.rs: needs runEvent('Invulnerability'), runEvent('TryHit')
-- technoblast.rs: needs runEvent('Drive')
 
 ### 6. Queue and Action System
 
