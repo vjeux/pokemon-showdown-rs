@@ -41,6 +41,7 @@ pub mod brickbreak;
 pub mod brine;
 pub mod bugbite;
 pub mod burningbulwark;
+pub mod burningjealousy;
 pub mod burnup;
 pub mod camouflage;
 pub mod captivate;
@@ -748,6 +749,7 @@ pub fn dispatch_on_hit(
         "block" => block::on_hit(battle, pokemon_pos, target_pos),
         "bugbite" => bugbite::on_hit(battle, pokemon_pos, target_pos),
         "burningbulwark" => burningbulwark::on_hit(battle, pokemon_pos, target_pos),
+        "burningjealousy" => burningjealousy::on_hit(battle, pokemon_pos, target_pos),
         "camouflage" => camouflage::on_hit(battle, pokemon_pos, target_pos),
         "clangoroussoul" => clangoroussoul::on_hit(battle, pokemon_pos, target_pos),
         "clearsmog" => clearsmog::on_hit(battle, pokemon_pos, target_pos),
