@@ -60,10 +60,187 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
 ///     }
 /// }
 pub fn on_hit(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // const yourItem = target.takeItem(source);
+    let your_item = {
+        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.take_item()
+    };
+
+    // const myItem = source.takeItem();
+    let my_item = {
+        let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.take_item()
+    };
+
+    // if (target.item || source.item || (!yourItem && !myItem)) {
+    //     if (yourItem) target.item = yourItem.id;
+    //     if (myItem) source.item = myItem.id;
+    //     return false;
+    // }
+    let (target_has_item, source_has_item) = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (!target_pokemon.item.is_empty(), !source_pokemon.item.is_empty())
+    };
+
+    if target_has_item || source_has_item || (your_item.is_none() && my_item.is_none()) {
+        // Restore items
+        if let Some(item_id) = your_item {
+            if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+                target_pokemon.item = item_id;
+            }
+        }
+        if let Some(item_id) = my_item {
+            if let Some(source_pokemon) = battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+                source_pokemon.item = item_id;
+            }
+        }
+        return EventResult::Boolean(false);
+    }
+
+    // if (
+    //     (myItem && !this.singleEvent('TakeItem', myItem, source.itemState, target, source, move, myItem)) ||
+    //     (yourItem && !this.singleEvent('TakeItem', yourItem, target.itemState, source, target, move, yourItem))
+    // ) {
+    //     if (yourItem) target.item = yourItem.id;
+    //     if (myItem) source.item = myItem.id;
+    //     return false;
+    // }
+    // TODO: singleEvent('TakeItem') not implemented - skipping for now
+
+    // this.add('-activate', source, 'move: Trick', `[of] ${target}`);
+    // Note: JS code says 'move: Trick' even though this is switcheroo
+    let (source_ident, target_ident) = {
+        let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (source_pokemon.get_slot(), target_pokemon.get_slot())
+    };
+
+    battle.add(
+        "-activate",
+        &[
+            source_ident.as_str().into(),
+            "move: Trick".into(),
+            format!("[of] {}", target_ident).into(),
+        ],
+    );
+
+    // if (myItem) {
+    //     target.setItem(myItem);
+    //     this.add('-item', target, myItem, '[from] move: Switcheroo');
+    // } else {
+    //     this.add('-enditem', target, yourItem, '[silent]', '[from] move: Switcheroo');
+    // }
+    if let Some(my_item_id) = my_item.clone() {
+        if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+            target_pokemon.set_item(my_item_id.clone());
+        }
+
+        let my_item_name = {
+            let item_data = battle.dex.get_item_by_id(&my_item_id);
+            item_data
+                .map(|i| i.name.clone())
+                .unwrap_or_else(|| my_item_id.to_string())
+        };
+
+        battle.add(
+            "-item",
+            &[
+                target_ident.as_str().into(),
+                my_item_name.into(),
+                "[from] move: Switcheroo".into(),
+            ],
+        );
+    } else if let Some(your_item_id) = your_item.clone() {
+        let your_item_name = {
+            let item_data = battle.dex.get_item_by_id(&your_item_id);
+            item_data
+                .map(|i| i.name.clone())
+                .unwrap_or_else(|| your_item_id.to_string())
+        };
+
+        battle.add(
+            "-enditem",
+            &[
+                target_ident.as_str().into(),
+                your_item_name.into(),
+                "[silent]".into(),
+                "[from] move: Switcheroo".into(),
+            ],
+        );
+    }
+
+    // if (yourItem) {
+    //     source.setItem(yourItem);
+    //     this.add('-item', source, yourItem, '[from] move: Switcheroo');
+    // } else {
+    //     this.add('-enditem', source, myItem, '[silent]', '[from] move: Switcheroo');
+    // }
+    if let Some(your_item_id) = your_item {
+        if let Some(source_pokemon) = battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+            source_pokemon.set_item(your_item_id.clone());
+        }
+
+        let your_item_name = {
+            let item_data = battle.dex.get_item_by_id(&your_item_id);
+            item_data
+                .map(|i| i.name.clone())
+                .unwrap_or_else(|| your_item_id.to_string())
+        };
+
+        battle.add(
+            "-item",
+            &[
+                source_ident.as_str().into(),
+                your_item_name.into(),
+                "[from] move: Switcheroo".into(),
+            ],
+        );
+    } else if let Some(my_item_id) = my_item {
+        let my_item_name = {
+            let item_data = battle.dex.get_item_by_id(&my_item_id);
+            item_data
+                .map(|i| i.name.clone())
+                .unwrap_or_else(|| my_item_id.to_string())
+        };
+
+        battle.add(
+            "-enditem",
+            &[
+                source_ident.as_str().into(),
+                my_item_name.into(),
+                "[silent]".into(),
+                "[from] move: Switcheroo".into(),
+            ],
+        );
+    }
+
     EventResult::Continue
 }
