@@ -2,15 +2,16 @@
 
 ## Summary
 
-**Current Status:** 91 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 90 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Latest Session Progress:**
-- **Callbacks implemented**: 8 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish)
+- **Callbacks implemented**: 9 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish + 1 fling)
   - healblock.rs: condition::on_start, condition::on_restart
   - taunt.rs: condition::on_start
   - substitute.rs: condition::on_start
   - syrupbomb.rs: condition::on_update, condition::on_residual ✅ COMPLETE
   - wish.rs: on_start, on_end
+  - fling.rs: condition::on_update
 
 **Previous Session Progress:**
 - **Callbacks implemented**: 6 implementations (3 healblock + 3 trickroom ✅)
@@ -181,7 +182,7 @@ Moves with callbacks: 373
 - [x] fishiousrend - Fishious Rend (Physical, Water) - 1 callback: basePowerCallback
 - [x] flail - Flail (Physical, Normal) - 1 callback: basePowerCallback
 - [x] flameburst - Flame Burst (Special, Fire) - 2 callbacks: onHit, onAfterSubDamage
-- [ ] fling - Fling (Physical, Dark) - 2 callbacks: onPrepareHit, condition::onUpdate
+- [ ] fling - Fling (Physical, Dark) - 2 callbacks: onPrepareHit, condition::onUpdate ✓ (1/2 implemented)
 - [x] floralhealing - Floral Healing (Status, Fairy) - 1 callback: onHit
 - [x] flowershield - Flower Shield (Status, Fairy) - 1 callback: onHitField
 - [x] fly - Fly (Physical, Flying) - 3 callbacks: onTryMove, condition::onInvulnerability, condition::onSourceModifyDamage
