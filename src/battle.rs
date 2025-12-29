@@ -14073,12 +14073,6 @@ impl Battle {
             }
         }
 
-        // JS: this.battle.eachEvent('Update'); (line 841 - inside hit loop)
-        // Call eachEvent("Update") after hit processing
-        if !is_secondary && !is_self {
-            self.each_event("Update", None);
-        }
-
         // Step 2: Get damage for each target
         // JavaScript: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
         // IMPORTANT: Pass final_targets (which has None for misses), not targets
