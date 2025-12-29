@@ -260,7 +260,7 @@ Items with callbacks: 326
 - [x] rawstberry - Rawst Berry (Gen 3) - 2 callbacks: onUpdate, onEat
 - [ ] razorclaw - Razor Claw (Gen 4) - 1 callback: onModifyCritRatio
 - [x] razorfang - Razor Fang (Gen 4) - 1 callback: onModifyMove
-- [ ] redcard - Red Card (Gen 5) - 1 callback: onAfterMoveSecondary
+- [x] redcard - Red Card (Gen 5) - 1 callback: onAfterMoveSecondary
 - [ ] redorb - Red Orb (Gen 6) - 2 callbacks: onSwitchIn, onTakeItem
 - [ ] rindoberry - Rindo Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] rockgem - Rock Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
