@@ -70,6 +70,7 @@ pub mod defog;
 pub mod destinybond;
 pub mod detect;
 pub mod dig;
+pub mod direclaw;
 pub mod disable;
 pub mod dive;
 pub mod doodle;
@@ -761,6 +762,7 @@ pub fn dispatch_on_hit(
         "curse" => curse::on_hit(battle, pokemon_pos, target_pos),
         "defog" => defog::on_hit(battle, pokemon_pos, target_pos),
         "detect" => detect::on_hit(battle, pokemon_pos, target_pos),
+        "direclaw" => direclaw::on_hit(battle, pokemon_pos, target_pos),
         "doodle" => doodle::on_hit(battle, pokemon_pos, target_pos),
         "endure" => endure::on_hit(battle, pokemon_pos, target_pos),
         "entrainment" => entrainment::on_hit(battle, pokemon_pos, target_pos),
