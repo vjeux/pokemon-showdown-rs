@@ -33,9 +33,13 @@ pub fn on_try(
         source_pokemon.species_id.as_str() == "Darkrai"
     };
 
-    // TODO: Check move.hasBounced - this requires access to the current move state
-    // For now, we'll only check if the source is Darkrai
-    if is_darkrai {
+    let has_bounced = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.has_bounced)
+        .unwrap_or(false);
+
+    if is_darkrai || has_bounced {
         // return;
         return EventResult::Continue;
     }
