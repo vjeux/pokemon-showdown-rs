@@ -31,7 +31,77 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
     //         }
     //     }
     // }
-    // TODO: Need move.category, pokemon.isActive, battle.canSwitch(), pokemon.forceSwitchFlag
-    // pokemon.useItem(source), battle.runEvent('DragOut', ...) to force opponent switch
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source_pos = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // source !== target
+    if source_pos == target_pos {
+        return EventResult::Continue;
+    }
+
+    // Check if move.category !== 'Status'
+    let is_status_move = match &battle.active_move {
+        Some(active_move) => active_move.category == "Status",
+        None => return EventResult::Continue,
+    };
+
+    if is_status_move {
+        return EventResult::Continue;
+    }
+
+    // Extract data we need from source and target (immutable phase)
+    let (source_hp, source_is_active, source_force_switch_flag, source_side) = {
+        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (source.hp, source.is_active, source.force_switch_flag, source_pos.0)
+    };
+
+    let (target_hp, target_force_switch_flag) = {
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (target.hp, target.force_switch_flag)
+    };
+
+    // source.hp && target.hp
+    if source_hp == 0 || target_hp == 0 {
+        return EventResult::Continue;
+    }
+
+    // if (!source.isActive || !this.canSwitch(source.side) || source.forceSwitchFlag || target.forceSwitchFlag)
+    if !source_is_active || battle.can_switch(source_side) == 0 || source_force_switch_flag || target_force_switch_flag {
+        return EventResult::Continue;
+    }
+
+    // if (target.useItem(source))
+    let item_used = {
+        let target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_mut.use_item()
+    };
+
+    if item_used.is_some() {
+        // if (this.runEvent('DragOut', source, target, move))
+        if battle.run_event_bool("DragOut", Some(source_pos), Some(target_pos), None) {
+            // source.forceSwitchFlag = true;
+            if let Some(source_mut) = battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+                source_mut.force_switch_flag = true;
+            }
+        }
+    }
+
     EventResult::Continue
 }
