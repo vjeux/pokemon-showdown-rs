@@ -78,24 +78,36 @@ pub fn on_try_boost(
     //     this.add('-fail', target, 'unboost', '[from] item: Clear Amulet', `[of] ${target}`);
     // }
     if show_msg {
-        // TODO: Check effect.secondaries and effect.id when we have that infrastructure
-        let target_slot = {
-            let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            pokemon.get_slot()
-        };
+        // Check if effect.secondaries exists and is non-empty, or if effect.id is 'octolock'
+        let has_secondaries = battle.active_move.as_ref()
+            .map(|m| !m.secondaries.is_empty())
+            .unwrap_or(false);
 
-        battle.add(
-            "-fail",
-            &[
-                crate::battle::Arg::from(target_slot.clone()),
-                crate::battle::Arg::from("unboost"),
-                crate::battle::Arg::from("[from] item: Clear Amulet"),
-                crate::battle::Arg::from(format!("[of] {}", target_slot)),
-            ],
-        );
+        let is_octolock = battle.current_event.as_ref()
+            .and_then(|e| e.effect.as_ref())
+            .map(|id| id.as_str() == "octolock")
+            .unwrap_or(false);
+
+        // Only show message if no secondaries and not octolock
+        if !has_secondaries && !is_octolock {
+            let target_slot = {
+                let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon.get_slot()
+            };
+
+            battle.add(
+                "-fail",
+                &[
+                    crate::battle::Arg::from(target_slot.clone()),
+                    crate::battle::Arg::from("unboost"),
+                    crate::battle::Arg::from("[from] item: Clear Amulet"),
+                    crate::battle::Arg::from(format!("[of] {}", target_slot)),
+                ],
+            );
+        }
     }
 
     EventResult::Continue

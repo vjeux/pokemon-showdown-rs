@@ -32,8 +32,6 @@ pub fn on_after_boost(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        // TODO: Access pokemon.boosts when that infrastructure exists
-        // For now, we can't check target.boosts['spe'] === 6
         pokemon.boosts.spe
     };
 
