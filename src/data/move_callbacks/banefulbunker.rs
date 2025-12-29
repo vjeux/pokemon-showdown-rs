@@ -124,7 +124,9 @@ pub mod condition {
             }
 
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
-            // TODO: getMoveHitData not yet implemented
+            if move_data.is_z.is_some() || move_data.is_max.is_some() {
+                // TODO: getMoveHitData not yet implemented to set zBrokeProtect
+            }
             // return;
             return EventResult::Continue;
         }
