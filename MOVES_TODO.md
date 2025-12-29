@@ -126,14 +126,19 @@ The Pokemon struct already has more methods than initially documented:
 
 After exhaustive investigation and infrastructure additions, only 2 remaining TODO markers require additional infrastructure:
 
-1. **Complex Infrastructure Missing** (blocks 2 callbacks):
-   - substitute.rs: `condition::on_try_primary_hit` - needs `actions.getDamage()`, `HIT_SUBSTITUTE`, `calcRecoilDamage()`
-   - fling.rs: `on_prepare_hit` - needs `singleEvent()`, dynamic `move.onHit` assignment, `item.fling` data structure
+1. **substitute.rs: condition::on_try_primary_hit**
+   - ✅ Infrastructure EXISTS: `battle.get_damage()`, `BattleActions::calc_recoil_damage()`, ActiveMove (flags, infiltrates, ohko, recoil, drain), effect_state.data
+   - ❌ BLOCKER: EventResult::HitSubstitute variant doesn't exist (would need to add new enum variant)
 
-**Status:** All implementable callbacks with existing and newly added infrastructure have been completed. The remaining 2 TODOs require additional infrastructure additions to the core battle engine.
+2. **fling.rs: on_prepare_hit**
+   - ✅ Infrastructure EXISTS: `pokemon.ignoring_item()`, `pokemon.get_item()`, `battle.single_event()`, `item.fling.base_power`
+   - ❌ BLOCKER: FlingData missing `effect`, `status`, `volatileStatus` fields
+   - ❌ BLOCKER: Dynamic callback assignment (`move.onHit = function`) incompatible with Rust's type system
+
+**Status:** All implementable callbacks with existing and newly added infrastructure have been completed. The remaining 2 TODOs require adding new infrastructure (enum variants, struct fields, dynamic callbacks) which cannot be done without "inventing" per the implementation guidelines.
 
 **ITEMS:** ✅ 100% Complete (346/346) - No TODO markers remaining
-**MOVES:** 64/373 files complete - 2 TODO markers remain, all blocked by missing infrastructure
+**MOVES:** 64/373 files complete - 2 TODO markers remain, both blocked by missing infrastructure that would require invention
 
 **Blocking Issues:** All 13 remaining callbacks require missing infrastructure:
 - Volatile condition management with source tracking (add_volatile with source parameter)
