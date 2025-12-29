@@ -797,11 +797,22 @@ pub fn dispatch_on_modify_move_priority(
 
 /// Dispatch onModifySecondaries callbacks
 pub fn dispatch_on_modify_secondaries(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    secondaries: Option<&mut Vec<crate::battle_actions::SecondaryEffect>>,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "covertcloak" => {
+            if let Some(sec) = secondaries {
+                covertcloak::on_modify_secondaries(battle, pokemon_pos, sec)
+            } else {
+                EventResult::Continue
+            }
+        }
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onModifySpA callbacks

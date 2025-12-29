@@ -176,6 +176,8 @@ pub struct EventInfo {
     pub relay_var_float: Option<f64>,
     /// Relay variable for boost events (onTryBoost, onAfterBoost, etc.)
     pub relay_var_boost: Option<crate::dex_data::BoostsTable>,
+    /// Relay variable for secondary effects (onModifySecondaries, etc.)
+    pub relay_var_secondaries: Option<Vec<crate::battle_actions::SecondaryEffect>>,
 }
 
 impl EventInfo {
@@ -189,6 +191,7 @@ impl EventInfo {
             relay_var: None,
             relay_var_float: None,
             relay_var_boost: None,
+            relay_var_secondaries: None,
         }
     }
 }
@@ -204,6 +207,7 @@ impl Default for EventInfo {
             relay_var: None,
             relay_var_float: None,
             relay_var_boost: None,
+            relay_var_secondaries: None,
         }
     }
 }
@@ -8100,6 +8104,7 @@ impl Battle {
             relay_var: None,
             relay_var_float: None,
             relay_var_boost: None,
+            relay_var_secondaries: None,
         });
         self.current_effect = Some(effect_id.clone());
         self.event_depth += 1;
@@ -9015,7 +9020,19 @@ impl Battle {
                 pokemon_pos,
             ),
             "ModifySecondaries" => {
-                item_callbacks::dispatch_on_modify_secondaries(self, item_id.as_str(), pokemon_pos)
+                // Temporarily take secondaries out of current_event to get mutable access
+                let mut secondaries = self.current_event.as_mut().and_then(|e| e.relay_var_secondaries.take());
+                let result = item_callbacks::dispatch_on_modify_secondaries(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                    secondaries.as_mut(),
+                );
+                // Put secondaries back into current_event
+                if let Some(ref mut event) = self.current_event {
+                    event.relay_var_secondaries = secondaries;
+                }
+                result
             }
             "ModifySpA" => {
                 item_callbacks::dispatch_on_modify_sp_a(self, item_id.as_str(), pokemon_pos)
@@ -9778,6 +9795,7 @@ impl Battle {
             relay_var,
             relay_var_float: None,
             relay_var_boost: None,
+            relay_var_secondaries: None,
         });
 
         let mut result = relay_var;
@@ -9858,6 +9876,7 @@ impl Battle {
             relay_var: None,
             relay_var_float: relay_var,
             relay_var_boost: None,
+            relay_var_secondaries: None,
         });
 
         let mut result = relay_var;
