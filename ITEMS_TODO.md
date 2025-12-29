@@ -24,7 +24,7 @@ Items with callbacks: 326
 - [x] aerodactylite - Aerodactylite (Gen 6) - 1 callback: onTakeItem
 - [x] aggronite - Aggronite (Gen 6) - 1 callback: onTakeItem
 - [x] aguavberry - Aguav Berry (Gen 3) - 3 callbacks: onUpdate, onTryEatItem, onEat
-- [ ] airballoon - Air Balloon (Gen 5) - 3 callbacks: onStart, onDamagingHit, onAfterSubDamage
+- [x] airballoon - Air Balloon (Gen 5) - 3 callbacks: onStart, onDamagingHit, onAfterSubDamage
 - [x] alakazite - Alakazite (Gen 6) - 1 callback: onTakeItem
 - [x] altarianite - Altarianite (Gen 6) - 1 callback: onTakeItem
 - [x] ampharosite - Ampharosite (Gen 6) - 1 callback: onTakeItem
