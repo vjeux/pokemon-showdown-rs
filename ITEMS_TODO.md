@@ -3,6 +3,16 @@
 Total: 583 items
 Items with callbacks: 326
 
+## Current Status
+
+**Completed:** 344/346 items (99.4%)
+
+**Remaining:** 2 items
+- **blueorb** (onSwitchIn) - Blocked: needs `Battle.forme_change()` or `Pokemon.forme_change_with_effect()` method for Primal Reversion
+- **redorb** (onSwitchIn) - Blocked: needs `Battle.forme_change()` or `Pokemon.forme_change_with_effect()` method for Primal Reversion
+
+**Note:** Both blueorb and redorb have their onTakeItem callbacks fully implemented. Only onSwitchIn is missing.
+
 ## Missing Infrastructure for Item Callbacks
 
 ### ✅ COMPLETED: Mega Stones (onTakeItem)
