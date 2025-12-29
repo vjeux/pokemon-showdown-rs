@@ -5763,11 +5763,24 @@ impl Battle {
     /// Shuffle a range of a slice in place
     /// Rust helper method - JavaScript uses prng.shuffle(list, start, end) inline
     /// This method is called from speed_sort() to shuffle tied items
-    /// JavaScript: this.prng.shuffle(list, sorted, sorted + nextIndexes.length);
-    fn shuffle_range<T>(&mut self, list: &mut [T], start: usize, end: usize) {
-        for i in start..end {
-            let j = start + (self.random((end - start) as i32) as usize);
-            list.swap(i, j);
+    ///
+    /// JavaScript (prng.js:140-148):
+    ///   shuffle(items, start = 0, end = items.length) {
+    ///     while (start < end - 1) {
+    ///       const nextIndex = this.random(start, end);
+    ///       if (start !== nextIndex) {
+    ///         [items[start], items[nextIndex]] = [items[nextIndex], items[start]];
+    ///       }
+    ///       start++;
+    ///     }
+    ///   }
+    fn shuffle_range<T>(&mut self, list: &mut [T], mut start: usize, end: usize) {
+        while start < end - 1 {
+            let next_index = self.prng.random_range(start as i32, end as i32) as usize;
+            if start != next_index {
+                list.swap(start, next_index);
+            }
+            start += 1;
         }
     }
 
@@ -13041,8 +13054,13 @@ impl Battle {
         };
 
         // Base damage calculation
-        // JavaScript: int(int(int(2 * L / 5 + 2) * A * P / D) / 50)
-        let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense.max(1)) / 50;
+        // JavaScript: const baseDamage = tr(tr(tr(tr(2 * level / 5 + 2) * basePower * attack) / defense) / 50);
+        // Must truncate at each step to match JavaScript exactly
+        let step1 = self.trunc((2 * level / 5 + 2) as f64);
+        let step2 = self.trunc((step1 * base_power) as f64);
+        let step3 = self.trunc((step2 * attack) as f64);
+        let step4 = self.trunc(step3 as f64 / defense.max(1) as f64);
+        let base_damage = self.trunc(step4 as f64 / 50.0);
 
         // Call modifyDamage for the full calculation (pass is_crit for damage multiplier)
         let damage = self.modify_damage(base_damage, source_pos, target_pos, &move_data, is_crit);
@@ -13050,8 +13068,142 @@ impl Battle {
         Some(damage)
     }
 
+    /// Calculate type effectiveness modifier as an integer
+    /// Equivalent to runEffectiveness() in pokemon.js:1600 and getEffectiveness() in dex.js:219
+    ///
+    /// JavaScript (pokemon.js:1600-1621):
+    ///   runEffectiveness(move) {
+    ///     let totalTypeMod = 0;
+    ///     if (this.terastallized && move.type === "Stellar") {
+    ///       totalTypeMod = 1;
+    ///     } else {
+    ///       for (const type of this.getTypes()) {
+    ///         let typeMod = this.battle.dex.getEffectiveness(move, type);
+    ///         typeMod = this.battle.singleEvent("Effectiveness", move, null, this, type, move, typeMod);
+    ///         totalTypeMod += this.battle.runEvent("Effectiveness", this, type, move, typeMod);
+    ///       }
+    ///     }
+    ///     ...
+    ///     return totalTypeMod;
+    ///   }
+    ///
+    /// JavaScript (dex.js:219-242):
+    ///   getEffectiveness(source, target) {
+    ///     const sourceType = typeof source !== "string" ? source.type : source;
+    ///     const targetTyping = target.getTypes?.() || target.types || target;
+    ///     let totalTypeMod = 0;
+    ///     if (Array.isArray(targetTyping)) {
+    ///       for (const type of targetTyping) {
+    ///         totalTypeMod += this.getEffectiveness(sourceType, type);
+    ///       }
+    ///       return totalTypeMod;
+    ///     }
+    ///     const typeData = this.types.get(targetTyping);
+    ///     if (!typeData) return 0;
+    ///     switch (typeData.damageTaken[sourceType]) {
+    ///       case 1:
+    ///         return 1;  // super-effective
+    ///       case 2:
+    ///         return -1; // resist
+    ///       default:
+    ///         return 0;
+    ///     }
+    ///   }
+    fn get_type_effectiveness_mod(&self, attack_type: &str, defend_types: &[String]) -> i32 {
+        let mut total_type_mod = 0;
+        for defend_type in defend_types {
+            let effectiveness = crate::data::typechart::get_effectiveness(attack_type, defend_type);
+            // Convert float effectiveness to integer mod matching JavaScript:
+            // 2.0 or higher = +1 (super-effective)
+            // 0.5 or lower (but not 0) = -1 (not very effective)
+            // 0.0 = 0 (immune, but handled as modifier)
+            // 1.0 = 0 (neutral)
+            if effectiveness >= 2.0 {
+                total_type_mod += 1;
+            } else if effectiveness > 0.0 && effectiveness <= 0.5 {
+                total_type_mod -= 1;
+            }
+            // For immunity (0.0), we don't add anything (acts as 0)
+        }
+        total_type_mod
+    }
+
     /// Apply damage modifiers
-    /// Equivalent to modifyDamage() in battle-actions.ts:1722
+    /// Equivalent to modifyDamage() in battle-actions.js:1449
+    ///
+    /// JavaScript (battle-actions.js:1449-1520):
+    ///   modifyDamage(baseDamage, pokemon, target, move, suppressMessages = false) {
+    ///     const tr = this.battle.trunc;
+    ///     if (!move.type) move.type = "???";
+    ///     const type = move.type;
+    ///     baseDamage += 2;
+    ///     if (move.spreadHit) {
+    ///       const spreadModifier = this.battle.gameType === "freeforall" ? 0.5 : 0.75;
+    ///       this.battle.debug(`Spread modifier: ${spreadModifier}`);
+    ///       baseDamage = this.battle.modify(baseDamage, spreadModifier);
+    ///     } else if (move.multihitType === "parentalbond" && move.hit > 1) {
+    ///       const bondModifier = this.battle.gen > 6 ? 0.25 : 0.5;
+    ///       this.battle.debug(`Parental Bond modifier: ${bondModifier}`);
+    ///       baseDamage = this.battle.modify(baseDamage, bondModifier);
+    ///     }
+    ///     baseDamage = this.battle.runEvent("WeatherModifyDamage", pokemon, target, move, baseDamage);
+    ///     const isCrit = target.getMoveHitData(move).crit;
+    ///     if (isCrit) {
+    ///       baseDamage = tr(baseDamage * (move.critModifier || (this.battle.gen >= 6 ? 1.5 : 2)));
+    ///     }
+    ///     baseDamage = this.battle.randomizer(baseDamage);
+    ///     if (type !== "???") {
+    ///       let stab = 1;
+    ///       const isSTAB = move.forceSTAB || pokemon.hasType(type) || pokemon.getTypes(false, true).includes(type);
+    ///       if (isSTAB) {
+    ///         stab = 1.5;
+    ///       }
+    ///       if (pokemon.terastallized === "Stellar") {
+    ///         if (!pokemon.stellarBoostedTypes.includes(type) || move.stellarBoosted) {
+    ///           stab = isSTAB ? 2 : [4915, 4096];
+    ///           move.stellarBoosted = true;
+    ///           if (pokemon.species.name !== "Terapagos-Stellar") {
+    ///             pokemon.stellarBoostedTypes.push(type);
+    ///           }
+    ///         }
+    ///       } else {
+    ///         if (pokemon.terastallized === type && pokemon.getTypes(false, true).includes(type)) {
+    ///           stab = 2;
+    ///         }
+    ///         stab = this.battle.runEvent("ModifySTAB", pokemon, target, move, stab);
+    ///       }
+    ///       baseDamage = this.battle.modify(baseDamage, stab);
+    ///     }
+    ///     let typeMod = target.runEffectiveness(move);
+    ///     typeMod = this.battle.clampIntRange(typeMod, -6, 6);
+    ///     target.getMoveHitData(move).typeMod = typeMod;
+    ///     if (typeMod > 0) {
+    ///       if (!suppressMessages) this.battle.add("-supereffective", target);
+    ///       for (let i = 0; i < typeMod; i++) {
+    ///         baseDamage *= 2;
+    ///       }
+    ///     }
+    ///     if (typeMod < 0) {
+    ///       if (!suppressMessages) this.battle.add("-resisted", target);
+    ///       for (let i = 0; i > typeMod; i--) {
+    ///         baseDamage = tr(baseDamage / 2);
+    ///       }
+    ///     }
+    ///     if (isCrit && !suppressMessages) this.battle.add("-crit", target);
+    ///     if (pokemon.status === "brn" && move.category === "Physical" && !pokemon.hasAbility("guts")) {
+    ///       if (this.battle.gen < 6 || move.id !== "facade") {
+    ///         baseDamage = this.battle.modify(baseDamage, 0.5);
+    ///       }
+    ///     }
+    ///     if (this.battle.gen === 5 && !baseDamage) baseDamage = 1;
+    ///     baseDamage = this.battle.runEvent("ModifyDamage", pokemon, target, move, baseDamage);
+    ///     if (move.isZOrMaxPowered && target.getMoveHitData(move).zBrokeProtect) {
+    ///       baseDamage = this.battle.modify(baseDamage, 0.25);
+    ///       this.battle.add("-zbroken", target);
+    ///     }
+    ///     if (this.battle.gen !== 5 && !baseDamage) return 1;
+    ///     return tr(baseDamage, 16);
+    ///   }
     fn modify_damage(
         &mut self,
         mut base_damage: i32,
@@ -13060,17 +13212,21 @@ impl Battle {
         move_data: &crate::dex::MoveData,
         is_crit: bool,
     ) -> i32 {
-        // Add 2 to base damage
+        // baseDamage += 2;
         base_damage += 2;
 
-        // Apply critical hit multiplier
-        // JavaScript: if (isCrit) baseDamage = tr(baseDamage * (move.critModifier || (this.battle.gen >= 6 ? 1.5 : 2)));
+        // if (isCrit) {
+        //   baseDamage = tr(baseDamage * (move.critModifier || (this.battle.gen >= 6 ? 1.5 : 2)));
+        // }
         if is_crit {
             let crit_multiplier = if self.gen >= 6 { 1.5 } else { 2.0 };
-            base_damage = (base_damage as f64 * crit_multiplier) as i32;
+            base_damage = self.trunc(base_damage as f64 * crit_multiplier);
         }
 
-        // Get source and target data
+        // baseDamage = this.battle.randomizer(baseDamage);
+        base_damage = self.randomizer(base_damage);
+
+        // Get source and target data for STAB and type effectiveness
         let (source_types, target_types) = {
             let source_types = if let Some(side) = self.sides.get(source_pos.0) {
                 if let Some(pokemon) = side.pokemon.get(source_pos.1) {
@@ -13095,34 +13251,68 @@ impl Battle {
             (source_types, target_types)
         };
 
-        // Apply STAB (Same Type Attack Bonus)
-        let has_stab = source_types.iter().any(|t| t == &move_data.move_type);
-        if has_stab {
-            base_damage = (base_damage as f64 * 1.5) as i32;
+        // if (type !== "???") {
+        //   let stab = 1;
+        //   const isSTAB = move.forceSTAB || pokemon.hasType(type) || pokemon.getTypes(false, true).includes(type);
+        //   if (isSTAB) {
+        //     stab = 1.5;
+        //   }
+        //   ...
+        //   baseDamage = this.battle.modify(baseDamage, stab);
+        // }
+        if move_data.move_type != "???" {
+            let has_stab = source_types.iter().any(|t| t == &move_data.move_type);
+            if has_stab {
+                base_damage = self.modify(base_damage, 3, 2);
+            }
         }
 
-        // Apply type effectiveness
-        let effectiveness =
-            crate::data::typechart::get_effectiveness_multi(&move_data.move_type, &target_types);
-        base_damage = (base_damage as f64 * effectiveness) as i32;
+        // let typeMod = target.runEffectiveness(move);
+        // typeMod = this.battle.clampIntRange(typeMod, -6, 6);
+        // target.getMoveHitData(move).typeMod = typeMod;
+        // if (typeMod > 0) {
+        //   if (!suppressMessages) this.battle.add("-supereffective", target);
+        //   for (let i = 0; i < typeMod; i++) {
+        //     baseDamage *= 2;
+        //   }
+        // }
+        // if (typeMod < 0) {
+        //   if (!suppressMessages) this.battle.add("-resisted", target);
+        //   for (let i = 0; i > typeMod; i--) {
+        //     baseDamage = tr(baseDamage / 2);
+        //   }
+        // }
+        let type_mod = self.get_type_effectiveness_mod(&move_data.move_type, &target_types);
+        if type_mod > 0 {
+            for _ in 0..type_mod {
+                base_damage *= 2;
+            }
+        } else if type_mod < 0 {
+            for _ in type_mod..0 {
+                base_damage = self.trunc(base_damage as f64 / 2.0);
+            }
+        }
 
-        // Random factor (85-100%)
-        let random_factor = 85 + self.random(16);
-        base_damage = base_damage * random_factor / 100;
-
-        // Trigger ModifyDamage event to allow custom damage modification
-        // JavaScript: damage = this.battle.runEvent('ModifyDamage', pokemon, target, move, damage)
+        // baseDamage = this.battle.runEvent("ModifyDamage", pokemon, target, move, baseDamage);
         if let Some(modified) = self.run_event(
             "ModifyDamage",
-            Some(target_pos),
             Some(source_pos),
+            Some(target_pos),
             Some(&move_data.id),
             Some(base_damage),
         ) {
             base_damage = modified;
         }
 
-        base_damage.max(1)
+        // if (this.battle.gen !== 5 && !baseDamage) return 1;
+        // return tr(baseDamage, 16);
+        let final_damage = if self.gen != 5 && base_damage == 0 {
+            1
+        } else {
+            base_damage
+        };
+
+        self.trunc(final_damage as f64)
     }
 
     /// Try to hit targets with a spread move
