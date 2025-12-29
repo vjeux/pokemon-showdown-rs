@@ -57,11 +57,42 @@ pub mod condition {
     ///     return typeMod + 1;
     /// }
     pub fn on_effectiveness(
-        _battle: &mut Battle,
-        _target_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        battle: &mut Battle,
+        type_mod: i32,
+        target_type: &str,
+        target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        // if (move.type !== 'Fire') return;
+        let move_type = match &battle.active_move {
+            Some(m) => m.move_type.clone(),
+            None => return EventResult::Continue,
+        };
+
+        if move_type != "Fire" {
+            return EventResult::Continue;
+        }
+
+        // if (!target) return;
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (type !== target.getTypes()[0]) return;
+        let first_type = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            let types = target_pokemon.get_types(false);
+            types.get(0).cloned().unwrap_or_default()
+        };
+
+        if target_type != first_type {
+            return EventResult::Continue;
+        }
+
+        // return typeMod + 1;
+        EventResult::Number(type_mod + 1)
     }
 }

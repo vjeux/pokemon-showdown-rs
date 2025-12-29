@@ -16,10 +16,44 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_effectiveness(
-    _battle: &mut Battle,
-    _target_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    battle: &mut Battle,
+    _type_mod: i32,
+    _target_type: &str,
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (move.type !== 'Ground') return;
+    let move_type = match &battle.active_move {
+        Some(m) => m.move_type.clone(),
+        None => return EventResult::Continue,
+    };
+
+    if move_type != "Ground" {
+        return EventResult::Continue;
+    }
+
+    // if (!target) return;
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (!target.runImmunity('Ground'))
+    let (has_immunity, has_flying_type) = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let immunity = target_pokemon.run_immunity("Ground");
+        let has_flying = target_pokemon.has_type("Flying");
+        (immunity, has_flying)
+    };
+
+    if !has_immunity {
+        // if (target.hasType('Flying')) return 0;
+        if has_flying_type {
+            return EventResult::Number(0);
+        }
+    }
+
     EventResult::Continue
 }

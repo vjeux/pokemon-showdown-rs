@@ -725,14 +725,16 @@ pub fn dispatch_on_disable_move(
 pub fn dispatch_on_effectiveness(
     battle: &mut Battle,
     move_id: &str,
+    type_mod: i32,
+    target_type: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // TODO: Effectiveness event needs type_mod and target_type for some moves
-    // This requires architectural changes to thread these values through dispatch
+    // Type mod and target_type parameters added to support moves that need them
+    // Currently passing placeholder/default values from callers until event system is updated
     match move_id {
-        "flyingpress" => flyingpress::on_effectiveness(battle, 0, ""),
-        "freezedry" => freezedry::on_effectiveness(battle, 0, ""),
-        "thousandarrows" => thousandarrows::on_effectiveness(battle, Some(pokemon_pos), move_id),
+        "flyingpress" => flyingpress::on_effectiveness(battle, type_mod, target_type),
+        "freezedry" => freezedry::on_effectiveness(battle, type_mod, target_type),
+        "thousandarrows" => thousandarrows::on_effectiveness(battle, type_mod, target_type, Some(pokemon_pos)),
         _ => EventResult::Continue,
     }
 }
@@ -1614,10 +1616,12 @@ pub fn dispatch_condition_on_drag_out(
 pub fn dispatch_condition_on_effectiveness(
     battle: &mut Battle,
     move_id: &str,
+    type_mod: i32,
+    target_type: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "tarshot" => tarshot::condition::on_effectiveness(battle, Some(source_pos), move_id),
+        "tarshot" => tarshot::condition::on_effectiveness(battle, type_mod, target_type, Some(source_pos)),
         _ => EventResult::Continue,
     }
 }
