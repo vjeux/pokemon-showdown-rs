@@ -229,3 +229,103 @@ This file tracks abilities that require infrastructure not yet implemented in Ru
   - Need battle.active_move or similar to access current move being executed
   - Used to check move ID in context where move_id parameter isn't provided
   - Used in rockhead.rs to check if recoil damage is from Struggle
+
+## Specific Ability Needs
+
+### Anger Point (angerpoint.rs)
+- **Callback**: on_hit
+- **Missing**: getMoveHitData for crit checking, boost system, effect.effectType
+- **JavaScript code**:
+  ```javascript
+  onHit(target, source, move) {
+      if (!target.hp) return;
+      if (move?.effectType === 'Move' && target.getMoveHitData(move).crit) {
+          this.boost({ atk: 12 }, target, target);
+      }
+  }
+  ```
+- **Required**:
+  - target.hp checking (EXISTS - pokemon.hp)
+  - effect.effectType to check if Move
+  - target.getMoveHitData(move).crit to detect critical hit
+  - boost() function to set atk stat stage to 12
+
+### Adaptability (adaptability.rs)
+- **Callback**: on_modify_s_t_a_b
+- **Missing**: hasType() method, move.forceSTAB field, stab parameter value
+- **JavaScript code**:
+  ```javascript
+  onModifySTAB(stab, source, target, move) {
+      if (move.forceSTAB || source.hasType(move.type)) {
+          if (stab === 2) {
+              return 2.25;
+          }
+          return 2;
+      }
+  }
+  ```
+- **Required**:
+  - source.hasType(type) to check if pokemon has a type
+  - move.forceSTAB field on MoveData
+  - stab parameter value (current STAB multiplier)
+  - Return 2.25 if stab is 2, else return 2
+
+### Aftermath (aftermath.rs)
+- **Callback**: on_damaging_hit
+- **Missing**: checkMoveMakesContact, damage function
+- **JavaScript code**:
+  ```javascript
+  onDamagingHit(damage, target, source, move) {
+      if (!target.hp && this.checkMoveMakesContact(move, source, target, true)) {
+          this.damage(source.baseMaxhp / 4, source, target);
+      }
+  }
+  ```
+- **Required**:
+  - target.hp checking (EXISTS - pokemon.hp)
+  - checkMoveMakesContact(move, source, target, true) to check if move makes contact
+  - damage(amount, target, source) to deal damage
+  - source.baseMaxhp or maxhp (EXISTS - pokemon.maxhp)
+
+### Air Lock (airlock.rs)
+- **Callback**: on_switch_in, on_start, on_end
+- **Missing**: abilityState.ending, eachEvent system
+- **JavaScript code**:
+  ```javascript
+  onSwitchIn(pokemon) {
+      this.add('-ability', pokemon, 'Air Lock');
+      ((this.effect as any).onStart as (p: Pokemon) => void).call(this, pokemon);
+  }
+  onStart(pokemon) {
+      pokemon.abilityState.ending = false;
+      this.eachEvent('WeatherChange', this.effect);
+  }
+  onEnd(pokemon) {
+      pokemon.abilityState.ending = true;
+      this.eachEvent('WeatherChange', this.effect);
+  }
+  ```
+- **Required**:
+  - pokemon.abilityState.ending field
+  - eachEvent('WeatherChange', effect) to trigger weather change events
+  - Ability to call onStart from onSwitchIn
+  - Battle log already works: battle.add('-ability', pokemon_ident, 'Air Lock')
+
+### Anger Shell (angershell.rs)
+- **Callbacks**: on_damage, on_try_eat_item, on_after_move_secondary
+- **Missing**: effect.effectType, effect.multihit, effect.hasSheerForce, hasAbility(), effectState, item system, getLastAttackedBy(), move.totalDamage, boost system
+- **JavaScript code** (simplified):
+  ```javascript
+  onDamage: check if Move and not multihit, set effectState.checkedAngerShell
+  onTryEatItem: check if healing item, return effectState value
+  onAfterMoveSecondary: if HP drops below 50%, boost atk/spa/spe and lower def/spd
+  ```
+- **Required**:
+  - effect.effectType, effect.multihit, effect.hasSheerForce
+  - source.hasAbility('sheerforce')
+  - effectState.checkedAngerShell tracking
+  - Item system for on_try_eat_item
+  - target.getLastAttackedBy() to get damage info
+  - move.totalDamage for multihit moves
+  - boost({atk: 1, spa: 1, spe: 1, def: -1, spd: -1})
+  - HP threshold checking (EXISTS - pokemon.hp, pokemon.maxhp)
