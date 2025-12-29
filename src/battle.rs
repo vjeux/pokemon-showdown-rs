@@ -565,6 +565,56 @@ impl Battle {
         self.sides.get_mut(side_idx)?.pokemon.get_mut(poke_idx)
     }
 
+    /// Initialize Pokemon stats from base stats + EVs + IVs + level + nature
+    /// This should be called after Pokemon are created
+    /// Equivalent to setSpecies() calling battle.spreadModify() in JavaScript
+    fn init_pokemon_stats(&mut self, side_idx: usize) {
+        // Collect all the data we need before mutating
+        let pokemon_data: Vec<(StatsTable, PokemonSet)> = {
+            let side = &self.sides[side_idx];
+            side.pokemon
+                .iter()
+                .map(|pokemon| {
+                    // Get base stats from dex
+                    let species_name = pokemon.species_id.as_str();
+                    let base_stats = if let Some(species) = self.dex.get_species(species_name) {
+                        species.base_stats.clone().into()
+                    } else {
+                        // Fallback to default if species not found
+                        StatsTable::default()
+                    };
+
+                    // Get the Pokemon set from the side's team
+                    let set = side.team.get(pokemon.position).cloned().unwrap_or_default();
+
+                    (base_stats, set)
+                })
+                .collect()
+        };
+
+        // Now calculate and apply stats
+        for (idx, (base_stats, set)) in pokemon_data.iter().enumerate() {
+            // Calculate stats using spread_modify
+            let calculated_stats = self.spread_modify(base_stats, set);
+
+            // Apply to Pokemon
+            if let Some(pokemon) = self.sides[side_idx].pokemon.get_mut(idx) {
+                pokemon.stored_stats = StatsTable {
+                    hp: 0, // HP not stored in storedStats
+                    atk: calculated_stats.atk,
+                    def: calculated_stats.def,
+                    spa: calculated_stats.spa,
+                    spd: calculated_stats.spd,
+                    spe: calculated_stats.spe,
+                };
+                pokemon.base_stored_stats = pokemon.stored_stats;
+                pokemon.maxhp = calculated_stats.hp;
+                pokemon.base_maxhp = calculated_stats.hp;
+                pokemon.hp = calculated_stats.hp;
+            }
+        }
+    }
+
     /// Add or update a player in the battle
     ///
     // TypeScript source:
@@ -643,6 +693,9 @@ impl Battle {
                 side.avatar = avatar.clone();
             }
             self.sides[slot_num] = side;
+
+            // Initialize Pokemon stats after creating the side
+            self.init_pokemon_stats(slot_num);
         } else {
             // Edit player
             did_something = false;
