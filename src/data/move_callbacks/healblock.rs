@@ -373,12 +373,56 @@ pub mod condition {
     /// }
     /// ```
     pub fn on_restart(
-        _battle: &mut Battle,
-        _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // if (effect?.name === 'Psychic Noise') return;
+        if let Some(eff_id) = effect_id {
+            use crate::dex_data::ID;
+            let effect_id_obj = ID::from(eff_id);
+
+            if let Some(move_data) = battle.dex.get_move_by_id(&effect_id_obj) {
+                if move_data.name == "Psychic Noise" {
+                    return EventResult::Continue;
+                }
+            }
+        }
+
+        // this.add('-fail', target, 'move: Heal Block');
+        if let Some(target) = target_pos {
+            let target_slot = {
+                let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target_pokemon.get_slot()
+            };
+
+            battle.add(
+                "-fail",
+                &[
+                    crate::battle::Arg::from(target_slot),
+                    crate::battle::Arg::from("move: Heal Block"),
+                ],
+            );
+        }
+
+        // if (!source.moveThisTurnResult) {
+        //     source.moveThisTurnResult = false;
+        // }
+        if let Some(source) = source_pos {
+            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            if source_pokemon.move_this_turn_result.is_none() {
+                source_pokemon.move_this_turn_result = Some(false);
+            }
+        }
+
         EventResult::Continue
     }
 }
