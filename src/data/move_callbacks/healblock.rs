@@ -21,13 +21,65 @@ pub mod condition {
     ///     return 5;
     /// }
     pub fn duration_callback(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        source_pos: Option<(usize, usize)>,
+        effect_id: Option<&str>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        // if (effect?.name === "Psychic Noise") {
+        //     return 2;
+        // }
+        if let Some(eff_id) = effect_id {
+            use crate::dex_data::ID;
+            let effect_id_obj = ID::from(eff_id);
+
+            // Check if it's the Psychic Noise move
+            if let Some(move_data) = battle.dex.get_move_by_id(&effect_id_obj) {
+                if move_data.name == "Psychic Noise" {
+                    return EventResult::Number(2);
+                }
+            }
+        }
+
+        // if (source?.hasAbility('persistent')) {
+        //     this.add('-activate', source, 'ability: Persistent', '[move] Heal Block');
+        //     return 7;
+        // }
+        if let Some(source) = source_pos {
+            let has_persistent = {
+                let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                    Some(p) => p,
+                    None => return EventResult::Number(5),
+                };
+                source_pokemon.has_ability(&["persistent"])
+            };
+
+            if has_persistent {
+                // this.add('-activate', source, 'ability: Persistent', '[move] Heal Block');
+                let source_slot = {
+                    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                        Some(p) => p,
+                        None => return EventResult::Number(5),
+                    };
+                    source_pokemon.get_slot()
+                };
+
+                battle.add(
+                    "-activate",
+                    &[
+                        crate::battle::Arg::from(source_slot),
+                        crate::battle::Arg::from("ability: Persistent"),
+                        crate::battle::Arg::from("[move] Heal Block"),
+                    ],
+                );
+
+                // return 7;
+                return EventResult::Number(7);
+            }
+        }
+
+        // return 5;
+        EventResult::Number(5)
     }
 
     /// onStart(pokemon, source) {
