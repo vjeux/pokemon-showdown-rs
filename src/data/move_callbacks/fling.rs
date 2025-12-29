@@ -58,8 +58,75 @@ pub mod condition {
     ///     this.runEvent('AfterUseItem', pokemon, null, null, item);
     ///     pokemon.removeVolatile('fling');
     /// }
-    pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        use crate::dex_data::ID;
+
+        let pokemon = pokemon_pos;
+
+        // const item = pokemon.getItem();
+        let item_id = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.get_item().clone()
+        };
+
+        // If no item, nothing to do
+        if item_id.is_empty() {
+            return EventResult::Continue;
+        }
+
+        // Get item name for the battle log
+        let item_name = {
+            let item_data = battle.dex.get_item_by_id(&item_id);
+            item_data
+                .map(|i| i.name.clone())
+                .unwrap_or_else(|| item_id.to_string())
+        };
+
+        // Get pokemon slot for battle log
+        let pokemon_slot = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.get_slot()
+        };
+
+        // pokemon.setItem('');
+        // pokemon.lastItem = item.id;
+        // pokemon.usedItemThisTurn = true;
+        {
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_mut.set_item(ID::empty());
+            pokemon_mut.last_item = item_id.clone();
+            pokemon_mut.used_item_this_turn = true;
+        }
+
+        // this.add('-enditem', pokemon, item.name, '[from] move: Fling');
+        battle.add(
+            "-enditem",
+            &[
+                crate::battle::Arg::from(pokemon_slot),
+                crate::battle::Arg::from(item_name),
+                crate::battle::Arg::from("[from] move: Fling"),
+            ],
+        );
+
+        // this.runEvent('AfterUseItem', pokemon, null, null, item);
+        battle.run_event("AfterUseItem", Some(pokemon), None, Some(&item_id), None);
+
+        // pokemon.removeVolatile('fling');
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.remove_volatile(&ID::from("fling"));
+
         EventResult::Continue
     }
 }
