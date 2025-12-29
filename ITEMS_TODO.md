@@ -99,7 +99,7 @@ Items with callbacks: 326
 - [x] dreadplate - Dread Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] earthplate - Earth Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] eelektrossite - Eelektrossite (Gen 9) - 1 callback: onTakeItem
-- [ ] ejectbutton - Eject Button (Gen 5) - 1 callback: onAfterMoveSecondary
+- [x] ejectbutton - Eject Button (Gen 5) - 1 callback: onAfterMoveSecondary
 - [ ] ejectpack - Eject Pack (Gen 8) - 8 callbacks: onAfterBoost, onAnySwitchIn, onAnyAfterMega, onAnyAfterMove, onResidual, onUseItem, onUse, onEnd
 - [x] electricgem - Electric Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] electricmemory - Electric Memory (Gen 7) - 1 callback: onTakeItem
