@@ -16,11 +16,46 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try(
-    _battle: &mut Battle,
-    _source_pos: (usize, usize),
+    battle: &mut Battle,
+    source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    use crate::dex_data::ID;
+
+    // if (this.field.getPseudoWeather('Gravity'))
+    let has_gravity = battle
+        .field
+        .pseudo_weather
+        .contains_key(&ID::from("gravity"));
+
+    if has_gravity {
+        // this.add('cant', source, 'move: Gravity', move);
+        let source_slot = {
+            let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        let move_id = match &battle.active_move {
+            Some(active_move) => active_move.id.clone(),
+            None => ID::from(""),
+        };
+
+        battle.add(
+            "cant",
+            &[
+                crate::battle::Arg::from(source_slot),
+                crate::battle::Arg::from("move: Gravity"),
+                crate::battle::Arg::from(move_id.to_string()),
+            ],
+        );
+
+        // return null;
+        return EventResult::Null;
+    }
+
     EventResult::Continue
 }
 
@@ -36,8 +71,65 @@ pub mod condition {
     ///     if (target.volatiles['smackdown'] || target.volatiles['ingrain']) return false;
     ///     this.add('-start', target, 'Telekinesis');
     /// }
-    pub fn on_start(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+        use crate::dex_data::ID;
+
+        let target = match target_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (['Diglett', 'Dugtrio', 'Palossand', 'Sandygast'].includes(target.baseSpecies.baseSpecies) ||
+        //     target.baseSpecies.name === 'Gengar-Mega')
+        let (is_immune, target_slot) = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            let base_species_name = target_pokemon.get_base_species_name(&battle.dex);
+            let is_immune = matches!(
+                base_species_name.as_deref(),
+                Some("Diglett") | Some("Dugtrio") | Some("Palossand") | Some("Sandygast") | Some("Gengar-Mega")
+            );
+
+            (is_immune, target_pokemon.get_slot())
+        };
+
+        if is_immune {
+            // this.add('-immune', target);
+            battle.add(
+                "-immune",
+                &[crate::battle::Arg::from(target_slot)],
+            );
+
+            // return null;
+            return EventResult::Null;
+        }
+
+        // if (target.volatiles['smackdown'] || target.volatiles['ingrain']) return false;
+        let has_smackdown_or_ingrain = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.volatiles.contains_key(&ID::from("smackdown"))
+                || target_pokemon.volatiles.contains_key(&ID::from("ingrain"))
+        };
+
+        if has_smackdown_or_ingrain {
+            return EventResult::Boolean(false);
+        }
+
+        // this.add('-start', target, 'Telekinesis');
+        battle.add(
+            "-start",
+            &[
+                crate::battle::Arg::from(target_slot),
+                crate::battle::Arg::from("Telekinesis"),
+            ],
+        );
+
         EventResult::Continue
     }
 

@@ -131,6 +131,8 @@ pub enum EventResult {
     Stop,
     /// Stop event processing, event didn't fail (passed failure checks)
     NotFail,
+    /// Return null - prevents default behavior (equivalent to TypeScript's `return null`)
+    Null,
     /// Return a number value
     Number(i32),
     /// Return a float value (for fractional priorities, etc.)

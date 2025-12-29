@@ -223,11 +223,56 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_any_set_status(
-        _battle: &mut Battle,
-        _status: Option<&str>,
-        _pokemon_pos: (usize, usize),
+        battle: &mut Battle,
+        status: Option<&str>,
+        pokemon_pos: (usize, usize),
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let pokemon = pokemon_pos;
+
+        // if (status.id === 'slp')
+        if status == Some("slp") {
+            // Get effectState.target
+            let effect_target = battle
+                .current_effect_state
+                .as_ref()
+                .and_then(|es| es.target);
+
+            let pokemon_slot = {
+                let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon_ref.get_slot()
+            };
+
+            // if (pokemon === this.effectState.target)
+            if Some(pokemon) == effect_target {
+                // this.add('-fail', pokemon, 'slp', '[from] Uproar', '[msg]');
+                battle.add(
+                    "-fail",
+                    &[
+                        crate::battle::Arg::from(pokemon_slot),
+                        crate::battle::Arg::from("slp"),
+                        crate::battle::Arg::from("[from] Uproar"),
+                        crate::battle::Arg::from("[msg]"),
+                    ],
+                );
+            } else {
+                // this.add('-fail', pokemon, 'slp', '[from] Uproar');
+                battle.add(
+                    "-fail",
+                    &[
+                        crate::battle::Arg::from(pokemon_slot),
+                        crate::battle::Arg::from("slp"),
+                        crate::battle::Arg::from("[from] Uproar"),
+                    ],
+                );
+            }
+
+            // return null;
+            return EventResult::Null;
+        }
+
         EventResult::Continue
     }
 }
