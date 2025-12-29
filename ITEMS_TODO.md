@@ -211,7 +211,7 @@ Items with callbacks: 326
 - [x] metronome - Metronome (Gen 4) - 1 callback: onStart
 - [x] mewtwonitex - Mewtwonite X (Gen 6) - 1 callback: onTakeItem
 - [x] mewtwonitey - Mewtwonite Y (Gen 6) - 1 callback: onTakeItem
-- [ ] micleberry - Micle Berry (Gen 4) - 2 callbacks: onResidual, onEat
+- [x] micleberry - Micle Berry (Gen 4) - 2 callbacks: onResidual, onEat
 - [x] mindplate - Mind Plate (Gen 4) - 2 callbacks: onBasePower, onTakeItem
 - [x] mintberry - Mint Berry (Gen 2) - 2 callbacks: onUpdate, onEat
 - [x] miracleberry - Miracle Berry (Gen 2) - 2 callbacks: onUpdate, onEat
