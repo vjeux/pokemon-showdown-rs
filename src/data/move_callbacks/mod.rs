@@ -126,6 +126,7 @@ pub mod glaiverush;
 pub mod gmaxbefuddle;
 pub mod gmaxcannonade;
 pub mod gmaxchistrike;
+pub mod gmaxcuddle;
 pub mod gmaxfoamburst;
 pub mod gmaxgoldrush;
 pub mod gmaxsnooze;
@@ -753,6 +754,7 @@ pub fn dispatch_on_hit(
         "freezyfrost" => freezyfrost::on_hit(battle, pokemon_pos, target_pos),
         "genesissupernova" => genesissupernova::on_hit(battle, pokemon_pos, target_pos),
         "gmaxbefuddle" => gmaxbefuddle::on_hit(battle, pokemon_pos, target_pos),
+        "gmaxcuddle" => gmaxcuddle::on_hit(battle, pokemon_pos, target_pos),
         "gmaxfoamburst" => gmaxfoamburst::on_hit(battle, pokemon_pos, target_pos),
         "gmaxgoldrush" => gmaxgoldrush::on_hit(battle, pokemon_pos, target_pos),
         "gmaxsnooze" => gmaxsnooze::on_hit(battle, pokemon_pos, target_pos),
