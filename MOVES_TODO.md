@@ -2,19 +2,21 @@
 
 ## Summary
 
-**Current Status:** 70 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 68 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Current Session - Infrastructure Additions:**
 - **Added EventResult::Null variant** - Required for TypeScript 'return null' equivalence
 - **Added ActiveMove.override_offensive_stat field** - Required for Wonder Room stat swapping
-- **Newly implemented**: 5 callbacks previously blocked by missing infrastructure
+- **Newly implemented**: 7 callbacks using existing infrastructure (all fields already existed!)
   - telekinesis.rs: on_try ✓ (Gravity check)
   - telekinesis.rs: condition::on_start ✓ (immunity check)
   - uproar.rs: condition::on_any_set_status ✓ (COMPLETE FILE 5/5)
   - healblock.rs: condition::on_try_heal ✓ (COMPLETE FILE 8/8)
   - wonderroom.rs: condition::on_modify_move ✓ (COMPLETE FILE 5/5)
-- **TODO markers verified**: 18 actual "TODO: Implement 1-to-1 from JS" markers remaining
-- **Progress**: 75 → 70 remaining TODOs (implemented 5 callbacks)
+  - terablast.rs: on_modify_type ✓ (uses pokemon.tera_type, active_move.move_type)
+  - terablast.rs: on_modify_move ✓ (uses pokemon.get_stat(), active_move.category, self_boost)
+- **TODO markers verified**: 16 actual "TODO: Implement 1-to-1 from JS" markers remaining
+- **Progress**: 75 → 68 remaining TODOs (implemented 7 callbacks)
 
 **Previous Session - Verification Work:**
 - **Newly implemented**: 2 callbacks using infrastructure discovery
@@ -100,9 +102,9 @@ The Pokemon struct already has more methods than initially documented:
   - Available fields: `force_stab`, `source_effect`, `side_condition`, `ohko`, `recoil`, `infiltrates`, `flags`
   - Example: `if let Some(ref mut active_move) = battle.active_move { active_move.move_type = "Fire".to_string(); }`
 
-**Comprehensive Analysis of 18 Remaining TODO Markers:**
+**Comprehensive Analysis of 16 Remaining TODO Markers:**
 
-After exhaustive investigation, all 18 remaining TODO markers are genuinely blocked by missing infrastructure:
+After exhaustive investigation, all 16 remaining TODO markers are genuinely blocked by missing infrastructure:
 
 1. **Function Signature Mismatches** (blocks 5 callbacks):
    - tarshot.rs: `condition::on_effectiveness` - missing `typeMod: i32` and `type: String` parameters
@@ -111,9 +113,8 @@ After exhaustive investigation, all 18 remaining TODO markers are genuinely bloc
    - telekinesis.rs: `condition::on_immunity` - missing `type: String` parameter
    - telekinesis.rs: `condition::on_accuracy` - needs move.ohko check (ohko exists but as Option<String>, not bool)
 
-2. **Missing Pokemon Fields** (blocks 4 callbacks):
-   - terastarstorm.rs (2 TODOs): needs `species_id: ID`, `terastallized: String` (not Option), `get_stat()` method
-   - terablast.rs (2 TODOs): needs `tera_type: String`, `get_stat()` method
+2. **Missing Pokemon Fields** (blocks 2 callbacks):
+   - terastarstorm.rs (2 TODOs): needs `species_id: ID` (EXISTS!), `get_stat()` (EXISTS!), but needs move type/category modification
 
 3. **Missing Battle/Move Methods** (blocks 3 callbacks):
    - terablast.rs: `on_prepare_hit` - needs `battle.attr_last_move()` method
@@ -125,12 +126,12 @@ After exhaustive investigation, all 18 remaining TODO markers are genuinely bloc
    - firepledge.rs (2 TODOs): needs `queue.willMove()`, complex `move.self` structure with nested sideCondition
    - waterpledge.rs (2 TODOs): needs `queue.willMove()`, complex `move.self` structure with nested sideCondition
 
-**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 18 TODOs require infrastructure additions to the core battle engine.
+**Status:** All implementable callbacks with existing infrastructure have been completed. The remaining 16 TODOs require infrastructure additions to the core battle engine.
 
 **ITEMS:** ✅ 100% Complete (346/346) - No TODO markers remaining
-**MOVES:** 55/373 files complete - 18 TODO markers remain, all blocked by missing infrastructure
+**MOVES:** 55/373 files complete - 16 TODO markers remain, all blocked by missing infrastructure
 
-**Blocking Issues:** All 18 remaining callbacks require missing infrastructure:
+**Blocking Issues:** All 16 remaining callbacks require missing infrastructure:
 - Volatile condition management with source tracking (add_volatile with source parameter)
 - Move property access (flags ✓, isZ, isMax, target type)
 - Pokemon methods (has_ability, get_types, cure_status ✓, etc.)
@@ -488,7 +489,7 @@ Moves with callbacks: 373
 - [ ] telekinesis - Telekinesis (Status, Psychic) - 6 callbacks: onTry ✓, condition::onStart ✓, condition::onAccuracy, condition::onImmunity, condition::onUpdate ✓, condition::onEnd ✓ (4/6 implemented)
 - [x] teleport - Teleport (Status, Psychic) - 1 callback: onTry
 - [x] temperflare - Temper Flare (Physical, Fire) - 1 callback: basePowerCallback
-- [ ] terablast - Tera Blast (Special, Normal) - 4 callbacks: basePowerCallback ✓, onPrepareHit, onModifyType, onModifyMove (1/4 implemented)
+- [ ] terablast - Tera Blast (Special, Normal) - 4 callbacks: basePowerCallback ✓, onPrepareHit, onModifyType ✓, onModifyMove ✓ (3/4 implemented)
 - [ ] terastarstorm - Tera Starstorm (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [x] terrainpulse - Terrain Pulse (Special, Normal) - 2 callbacks: onModifyType, onModifyMove
 - [x] thief - Thief (Physical, Dark) - 1 callback: onAfterHit
@@ -623,9 +624,9 @@ By callback type:
 
 ## Missing Infrastructure
 
-### Critical Infrastructure Needed for Remaining 18 Callbacks
+### Critical Infrastructure Needed for Remaining 16 Callbacks
 
-**Status:** All 18 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
+**Status:** All 16 remaining TODO markers (verified 2025-12-29) require missing infrastructure that doesn't currently exist.
 
 **Breakdown by File:**
 - **firepledge.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs queue.willMove(), move modification)
@@ -635,8 +636,8 @@ By callback type:
 - **taunt.rs**: 1 TODO - on_before_move (signature missing attacker parameter)
 - **technoblast.rs**: 1 TODO - on_modify_type (needs move.type modification, runEvent('Drive'))
 - **telekinesis.rs**: 2 TODOs - on_accuracy, on_immunity (signature issues)
-- **terablast.rs**: 3 TODOs - on_prepare_hit, on_modify_type, on_modify_move (needs move modification)
-- **terastarstorm.rs**: 2 TODOs - on_modify_type, on_modify_move (needs move modification)
+- **terablast.rs**: 1 TODO - on_prepare_hit (needs battle.attr_last_move() method)
+- **terastarstorm.rs**: 2 TODOs - on_modify_type, on_modify_move (need move type/category/target modification)
 - **thousandarrows.rs**: 1 TODO - on_effectiveness (signature missing typeMod, type parameters)
 - **waterpledge.rs**: 2 TODOs - on_prepare_hit, on_modify_move (needs queue.willMove(), move modification)
 
