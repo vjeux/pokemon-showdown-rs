@@ -2,10 +2,10 @@
 
 ## Summary
 
-**Current Status:** 89 TODO callbacks remaining (out of ~700+ original callbacks)
+**Current Status:** 88 TODO callbacks remaining (out of ~700+ original callbacks)
 
 **Latest Session Progress:**
-- **Callbacks implemented**: 10 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish + 1 fling + 1 teatime ✅)
+- **Callbacks implemented**: 11 new implementations (2 healblock + 1 taunt + 1 substitute + 2 syrupbomb ✅ + 2 wish + 1 fling + 1 teatime ✅ + 1 toxicspikes ✅)
   - healblock.rs: condition::on_start, condition::on_restart
   - taunt.rs: condition::on_start
   - substitute.rs: condition::on_start
@@ -13,6 +13,7 @@
   - wish.rs: on_start, on_end
   - fling.rs: condition::on_update
   - teatime.rs: on_hit_field ✅ COMPLETE
+  - toxicspikes.rs: condition::on_switch_in ✅ COMPLETE
 
 **Previous Session Progress:**
 - **Callbacks implemented**: 6 implementations (3 healblock + 3 trickroom ✅)
@@ -437,7 +438,7 @@ Moves with callbacks: 373
 - [x] tidyup - Tidy Up (Status, Normal) - 1 callback: onHit
 - [x] topsyturvy - Topsy-Turvy (Status, Dark) - 1 callback: onHit
 - [x] torment - Torment (Status, Dark) - 3 callbacks: condition::onStart, condition::onEnd, condition::onDisableMove
-- [ ] toxicspikes - Toxic Spikes (Status, Poison) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
+- [x] toxicspikes - Toxic Spikes (Status, Poison) - 3 callbacks: condition::onSideStart, condition::onSideRestart, condition::onSwitchIn
 - [x] transform - Transform (Status, Normal) - 1 callback: onHit
 - [ ] trick - Trick (Status, Psychic) - 2 callbacks: onTryImmunity ✓, onHit (1/2 implemented)
 - [x] trickortreat - Trick-or-Treat (Status, Ghost) - 1 callback: onHit
