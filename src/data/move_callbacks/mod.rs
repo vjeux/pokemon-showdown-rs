@@ -348,6 +348,7 @@ pub mod soak;
 pub mod solarbeam;
 pub mod solarblade;
 pub mod sparklingaria;
+pub mod spiritshackle;
 pub mod speedswap;
 pub mod spiderweb;
 pub mod spikes;
@@ -871,6 +872,7 @@ pub fn dispatch_on_hit(
         "smellingsalts" => smellingsalts::on_hit(battle, pokemon_pos, target_pos),
         "soak" => soak::on_hit(battle, pokemon_pos, target_pos),
         "speedswap" => speedswap::on_hit(battle, pokemon_pos, target_pos),
+        "spiritshackle" => spiritshackle::on_hit(battle, pokemon_pos, target_pos),
         "spiderweb" => spiderweb::on_hit(battle, pokemon_pos, target_pos),
         "spikyshield" => spikyshield::on_hit(battle, pokemon_pos, target_pos),
         "spite" => spite::on_hit(battle, pokemon_pos, target_pos),

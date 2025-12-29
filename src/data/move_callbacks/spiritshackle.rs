@@ -5,23 +5,45 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
 use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
+use crate::event::EventResult;
 
-/// onHit(...)
+/// onHit(target, source, move)
 ///
 /// ```text
 /// JS Source (data/moves.ts):
 /// onHit(target, source, move) {
 /// 				if (source.isActive) target.addVolatile('trapped', source, move, 'trapper');
 /// 			},
-/// 
+///
 /// 		}
 /// ```
-pub fn on_hit(battle: &mut Battle, /* TODO: Add parameters */) -> MoveHandlerResult {
-    // TODO: Implement 1-to-1 from JS
-    MoveHandlerResult::Undefined
-}
+pub fn on_hit(
+    battle: &mut Battle,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
+    // if (source.isActive) target.addVolatile('trapped', source, move, 'trapper');
 
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if source is active
+    let source_is_active = {
+        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source.is_active
+    };
+
+    if source_is_active {
+        if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+            target_pokemon.add_volatile(ID::from("trapped"));
+        }
+    }
+
+    EventResult::Continue
+}
