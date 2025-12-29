@@ -482,8 +482,8 @@ pub fn dispatch_on_ally_try_add_volatile(
 ) -> EventResult {
     match ability_id {
         "aromaveil" => aromaveil::on_ally_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
-        "flowerveil" => flowerveil::on_ally_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
-        "sweetveil" => sweetveil::on_ally_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
+        "flowerveil" => flowerveil::on_ally_try_add_volatile(battle, status, target_pos),
+        "sweetveil" => sweetveil::on_ally_try_add_volatile(battle, status, target_pos),
         _ => EventResult::Continue,
     }
 }
@@ -870,7 +870,7 @@ pub fn dispatch_on_critical_hit(
 ) -> EventResult {
     match ability_id {
         "disguise" => disguise::on_critical_hit(battle, target_pos, source_pos, move_id),
-        "iceface" => iceface::on_critical_hit(battle, target_pos, source_pos, move_id),
+        "iceface" => iceface::on_critical_hit(battle, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -925,7 +925,7 @@ pub fn dispatch_on_damaging_hit(
         "roughskin" => roughskin::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
         "sandspit" => sandspit::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
         "seedsower" => seedsower::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "stamina" => stamina::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "stamina" => stamina::on_damaging_hit(battle, damage, target_pos, source_pos, Some(move_id)),
         "static" => r#static::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
         "steamengine" => steamengine::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
         "tanglinghair" => tanglinghair::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
@@ -984,7 +984,7 @@ pub fn dispatch_on_eat_item(
 ) -> EventResult {
     match ability_id {
         "cheekpouch" => cheekpouch::on_eat_item(battle, pokemon_pos),
-        "cudchew" => cudchew::on_eat_item(battle, pokemon_pos),
+        "cudchew" => cudchew::on_eat_item(battle, pokemon_pos, None, None),
         "ripen" => ripen::on_eat_item(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
@@ -1274,7 +1274,7 @@ pub fn dispatch_on_modify_move(
 ) -> EventResult {
     match ability_id {
         "battlebond" => battlebond::on_modify_move(battle, move_id),
-        "gorillatactics" => gorillatactics::on_modify_move(battle, move_id),
+        "gorillatactics" => gorillatactics::on_modify_move(battle, move_id, (0, 0)),
         "illuminate" => illuminate::on_modify_move(battle, move_id),
         "infiltrator" => infiltrator::on_modify_move(battle, move_id),
         "keeneye" => keeneye::on_modify_move(battle, move_id),
@@ -1285,7 +1285,7 @@ pub fn dispatch_on_modify_move(
         "propellertail" => propellertail::on_modify_move(battle, move_id),
         "scrappy" => scrappy::on_modify_move(battle, move_id),
         "serenegrace" => serenegrace::on_modify_move(battle, move_id),
-        "sheerforce" => sheerforce::on_modify_move(battle, move_id),
+        "sheerforce" => sheerforce::on_modify_move(battle, move_id, (0, 0)),
         "skilllink" => skilllink::on_modify_move(battle, move_id),
         "stalwart" => stalwart::on_modify_move(battle, move_id),
         "stancechange" => stancechange::on_modify_move(battle, move_id),
@@ -1741,7 +1741,7 @@ pub fn dispatch_on_take_item(
 ) -> EventResult {
     match ability_id {
         "stickyhold" => stickyhold::on_take_item(battle, pokemon_pos, source_pos),
-        "unburden" => unburden::on_take_item(battle, pokemon_pos, source_pos),
+        "unburden" => unburden::on_take_item(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1810,7 +1810,7 @@ pub fn dispatch_on_try_eat_item(
     match ability_id {
         "angershell" => angershell::on_try_eat_item(battle),
         "berserk" => berserk::on_try_eat_item(battle),
-        "ripen" => ripen::on_try_eat_item(battle),
+        "ripen" => ripen::on_try_eat_item(battle, (0, 0)),
         _ => EventResult::Continue,
     }
 }
@@ -1910,7 +1910,7 @@ pub fn dispatch_on_weather_change(
     match ability_id {
         "flowergift" => flowergift::on_weather_change(battle, pokemon_pos),
         "forecast" => forecast::on_weather_change(battle, pokemon_pos),
-        "iceface" => iceface::on_weather_change(battle, pokemon_pos),
+        "iceface" => iceface::on_weather_change(battle, pokemon_pos, None),
         "protosynthesis" => protosynthesis::on_weather_change(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
