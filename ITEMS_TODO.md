@@ -151,7 +151,7 @@ Items with callbacks: 326
 - [x] groundgem - Ground Gem (Gen 5) - 1 callback: onSourceTryPrimaryHit
 - [x] groundmemory - Ground Memory (Gen 7) - 1 callback: onTakeItem
 - [x] gyaradosite - Gyaradosite (Gen 6) - 1 callback: onTakeItem
-- [ ] habanberry - Haban Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
+- [x] habanberry - Haban Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] hardstone - Hard Stone (Gen 2) - 1 callback: onBasePower
 - [x] hawluchanite - Hawluchanite (Gen 9) - 1 callback: onTakeItem
 - [x] hearthflamemask - Hearthflame Mask (Gen 9) - 2 callbacks: onBasePower, onTakeItem
