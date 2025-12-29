@@ -7681,15 +7681,23 @@ impl Battle {
 
             if should_sort {
                 eprintln!("DEBUG [run_action]: Gen 8+ queue sort triggered, queue length={}", self.queue.list.len());
+                // JS: this.updateSpeed();
                 // Update speed for all Pokemon
                 for side in &mut self.sides {
                     for pokemon in &mut side.pokemon {
                         pokemon.update_speed();
                     }
                 }
-                // Sort the queue using speed_sort (which uses PRNG for tie-breaking)
-                // Extract list temporarily to avoid borrow checker issues
+
+                // JS: for (const queueAction of this.queue.list) { if (queueAction.pokemon) this.getActionSpeed(queueAction); }
+                // Call get_action_speed on all actions to update their speeds
                 let mut list = std::mem::take(&mut self.queue.list);
+                for action in &mut list {
+                    self.get_action_speed(action);
+                }
+
+                // JS: this.queue.sort();
+                // Sort the queue using speed_sort (which uses PRNG for tie-breaking)
                 eprintln!("DEBUG [run_action]: About to call speed_sort with {} items", list.len());
                 self.speed_sort(&mut list, |action| {
                     PriorityItem {
