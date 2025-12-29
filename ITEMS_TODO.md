@@ -71,7 +71,7 @@ Items with callbacks: 326
 - [x] choicescarf - Choice Scarf (Gen 4) - 3 callbacks: onStart, onModifyMove, onModifySpe
 - [x] choicespecs - Choice Specs (Gen 4) - 3 callbacks: onStart, onModifyMove, onModifySpA
 - [x] chopleberry - Chople Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] clearamulet - Clear Amulet (Gen 9) - 1 callback: onTryBoost
+- [x] clearamulet - Clear Amulet (Gen 9) - 1 callback: onTryBoost
 - [x] clefablite - Clefablite (Gen 9) - 1 callback: onTakeItem
 - [x] cobaberry - Coba Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat
 - [x] colburberry - Colbur Berry (Gen 4) - 2 callbacks: onSourceModifyDamage, onEat

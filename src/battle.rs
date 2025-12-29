@@ -174,6 +174,8 @@ pub struct EventInfo {
     pub relay_var: Option<i32>,
     /// Relay variable for events that use float values (fractional priority, etc.)
     pub relay_var_float: Option<f64>,
+    /// Relay variable for boost events (onTryBoost, onAfterBoost, etc.)
+    pub relay_var_boost: Option<crate::dex_data::BoostsTable>,
 }
 
 impl EventInfo {
@@ -186,6 +188,7 @@ impl EventInfo {
             modifier: 4096,
             relay_var: None,
             relay_var_float: None,
+            relay_var_boost: None,
         }
     }
 }
@@ -200,6 +203,7 @@ impl Default for EventInfo {
             modifier: 4096,
             relay_var: None,
             relay_var_float: None,
+            relay_var_boost: None,
         }
     }
 }
@@ -8095,6 +8099,7 @@ impl Battle {
             modifier: 4096,
             relay_var: None,
             relay_var_float: None,
+            relay_var_boost: None,
         });
         self.current_effect = Some(effect_id.clone());
         self.event_depth += 1;
@@ -8830,6 +8835,7 @@ impl Battle {
         let source = self.current_event.as_ref().and_then(|e| e.source);
         let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var);
         let relay_var_float = self.current_event.as_ref().and_then(|e| e.relay_var_float);
+        let relay_var_boost = self.current_event.as_ref().and_then(|e| e.relay_var_boost.clone());
         let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
@@ -9090,7 +9096,19 @@ impl Battle {
                 pokemon_pos,
             ),
             "TryBoost" => {
-                item_callbacks::dispatch_on_try_boost(self, item_id.as_str(), pokemon_pos)
+                // Temporarily take boost out of current_event to get mutable access
+                let mut boost = self.current_event.as_mut().and_then(|e| e.relay_var_boost.take());
+                let result = item_callbacks::dispatch_on_try_boost(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                    boost.as_mut(),
+                );
+                // Put boost back into current_event
+                if let Some(ref mut event) = self.current_event {
+                    event.relay_var_boost = boost;
+                }
+                result
             }
             "TryBoostPriority" => {
                 item_callbacks::dispatch_on_try_boost_priority(self, item_id.as_str(), pokemon_pos)
@@ -9753,6 +9771,7 @@ impl Battle {
             modifier: 4096,
             relay_var,
             relay_var_float: None,
+            relay_var_boost: None,
         });
 
         let mut result = relay_var;
@@ -9832,6 +9851,7 @@ impl Battle {
             modifier: 4096,
             relay_var: None,
             relay_var_float: relay_var,
+            relay_var_boost: None,
         });
 
         let mut result = relay_var;

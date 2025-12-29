@@ -21,7 +21,82 @@ use crate::event::EventResult;
 ///         this.add('-fail', target, 'unboost', '[from] item: Clear Amulet', `[of] ${target}`);
 ///     }
 /// }
-pub fn on_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_boost(
+    battle: &mut Battle,
+    target_pos: (usize, usize),
+    boost: &mut crate::dex_data::BoostsTable,
+) -> EventResult {
+    // Get source from current event
+    let source_pos = battle.current_event.as_ref().and_then(|e| e.source);
+
+    // if (source && target === source) return;
+    if let Some(src) = source_pos {
+        if src == target_pos {
+            return EventResult::Continue;
+        }
+    }
+
+    // let showMsg = false;
+    let mut show_msg = false;
+
+    // for (i in boost) {
+    //     if (boost[i]! < 0) {
+    //         delete boost[i];
+    //         showMsg = true;
+    //     }
+    // }
+    if boost.atk < 0 {
+        boost.atk = 0;
+        show_msg = true;
+    }
+    if boost.def < 0 {
+        boost.def = 0;
+        show_msg = true;
+    }
+    if boost.spa < 0 {
+        boost.spa = 0;
+        show_msg = true;
+    }
+    if boost.spd < 0 {
+        boost.spd = 0;
+        show_msg = true;
+    }
+    if boost.spe < 0 {
+        boost.spe = 0;
+        show_msg = true;
+    }
+    if boost.accuracy < 0 {
+        boost.accuracy = 0;
+        show_msg = true;
+    }
+    if boost.evasion < 0 {
+        boost.evasion = 0;
+        show_msg = true;
+    }
+
+    // if (showMsg && !(effect as ActiveMove).secondaries && effect.id !== 'octolock') {
+    //     this.add('-fail', target, 'unboost', '[from] item: Clear Amulet', `[of] ${target}`);
+    // }
+    if show_msg {
+        // TODO: Check effect.secondaries and effect.id when we have that infrastructure
+        let target_slot = {
+            let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        battle.add(
+            "-fail",
+            &[
+                crate::battle::Arg::from(target_slot.clone()),
+                crate::battle::Arg::from("unboost"),
+                crate::battle::Arg::from("[from] item: Clear Amulet"),
+                crate::battle::Arg::from(format!("[of] {}", target_slot)),
+            ],
+        );
+    }
+
     EventResult::Continue
 }

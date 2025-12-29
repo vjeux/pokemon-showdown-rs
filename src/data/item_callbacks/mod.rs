@@ -995,11 +995,22 @@ pub fn dispatch_on_trap_pokemon_priority(
 
 /// Dispatch onTryBoost callbacks
 pub fn dispatch_on_try_boost(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    boost: Option<&mut crate::dex_data::BoostsTable>,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "clearamulet" => {
+            if let Some(boost_table) = boost {
+                clearamulet::on_try_boost(battle, pokemon_pos, boost_table)
+            } else {
+                EventResult::Continue
+            }
+        }
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onTryBoostPriority callbacks
