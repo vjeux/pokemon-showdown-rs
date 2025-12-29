@@ -5,16 +5,21 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::data::moves::{MoveDef, MoveCategory, MoveTargetType};
-use crate::pokemon::Pokemon;
-use crate::dex_data::ID;
-use super::{MoveHandlerResult, Status, Effect};
-
-
+use crate::event::EventResult;
 
 // Condition handlers
 pub mod condition {
     use super::*;
 
-    // TODO: Implement condition handlers
+    /// onRestart() {
+    ///     return null;
+    /// }
+    pub fn on_restart(
+        _battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+    ) -> EventResult {
+        // return null;
+        // Returning null prevents the volatile from being restarted
+        EventResult::Stop
+    }
 }

@@ -62,6 +62,7 @@ pub mod craftyshield;
 pub mod crushgrip;
 pub mod curse;
 pub mod darkvoid;
+pub mod defensecurl;
 pub mod defog;
 pub mod destinybond;
 pub mod detect;
@@ -1960,6 +1961,7 @@ pub fn dispatch_condition_on_restart(
     match move_id {
         "allyswitch" => allyswitch::condition::on_restart(battle, source_pos),
         "charge" => charge::condition::on_restart(battle, source_pos, None, None),
+        "defensecurl" => defensecurl::condition::on_restart(battle, source_pos),
         "furycutter" => furycutter::condition::on_restart(battle),
         "gmaxchistrike" => {
             gmaxchistrike::condition::on_restart(battle, None, Some(source_pos), None)
