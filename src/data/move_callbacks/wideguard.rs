@@ -11,12 +11,13 @@ use crate::event::EventResult;
 ///     return !!this.queue.willAct();
 /// }
 pub fn on_try(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     _source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // return !!this.queue.willAct();
+    let will_act = battle.queue.will_act();
+    EventResult::Boolean(will_act)
 }
 
 /// onHitSide(side, source) {
