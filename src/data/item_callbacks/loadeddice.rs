@@ -13,6 +13,15 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+    // if (move.multiaccuracy) {
+    //     delete move.multiaccuracy;
+    // }
+
+    if let Some(active_move) = battle.active_move.as_mut() {
+        if active_move.multi_accuracy {
+            active_move.multi_accuracy = false;
+        }
+    }
+
     EventResult::Continue
 }
