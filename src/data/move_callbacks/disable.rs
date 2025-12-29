@@ -94,9 +94,14 @@ pub mod condition {
 
         let will_move = battle.queue.will_move(pokemon.0, pokemon.1);
 
-        // TODO: Check if pokemon === this.activePokemon && this.activeMove && !this.activeMove.isExternal
-        // For now, just check willMove
-        if will_move.is_some() {
+        // Check if pokemon === this.activePokemon && this.activeMove && !this.activeMove.isExternal
+        let is_active_pokemon_with_internal_move = if let Some(active_pos) = battle.active_pokemon {
+            active_pos == pokemon && battle.active_move.as_ref().map(|m| !m.is_external).unwrap_or(false)
+        } else {
+            false
+        };
+
+        if will_move.is_some() || is_active_pokemon_with_internal_move {
             // this.effectState.duration!--;
             if let Some(ref mut effect_state) = battle.current_effect_state {
                 if let Some(duration) = effect_state.duration {
