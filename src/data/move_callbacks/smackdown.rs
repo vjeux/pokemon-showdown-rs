@@ -121,7 +121,8 @@ pub mod condition {
 
         if removed_fly || removed_bounce {
             applies = true;
-            // TODO: Implement battle.cancel_move(pokemon);
+            // this.queue.cancelMove(pokemon);
+            battle.queue.cancel_move(pokemon.0, pokemon.1);
             {
                 let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                     Some(p) => p,
@@ -234,7 +235,7 @@ pub mod condition {
 
         if removed_fly || removed_bounce {
             // this.queue.cancelMove(pokemon);
-            // TODO: Implement battle.cancel_move(pokemon);
+            battle.queue.cancel_move(pokemon.0, pokemon.1);
 
             // pokemon.removeVolatile('twoturnmove');
             {
