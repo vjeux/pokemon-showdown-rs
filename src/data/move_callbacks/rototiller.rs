@@ -36,7 +36,7 @@ pub fn on_hit_field(
     // const targets: Pokemon[] = [];
     // let anyAirborne = false;
     let mut targets: Vec<(usize, usize)> = Vec::new();
-    let any_airborne = false;
+    let mut any_airborne = false;
 
     // for (const pokemon of this.getAllActive()) {
     let all_active = battle.get_all_active(false);
@@ -47,7 +47,26 @@ pub fn on_hit_field(
         //     anyAirborne = true;
         //     continue;
         // }
-        // TODO: Implement immunity check when run_immunity is available
+        let is_immune_to_ground = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => continue,
+            };
+            !pokemon.run_immunity("Ground")
+        };
+
+        if is_immune_to_ground {
+            let pokemon_slot = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                pokemon.get_slot()
+            };
+            battle.add("-immune", &[crate::battle::Arg::from(pokemon_slot)]);
+            any_airborne = true;
+            continue;
+        }
 
         // if (pokemon.hasType('Grass')) {
         //     // This move affects every grounded Grass-type Pokemon in play.
@@ -56,7 +75,7 @@ pub fn on_hit_field(
         let has_grass = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
-                None => return EventResult::Continue,
+                None => continue,
             };
             pokemon.has_type("Grass")
         };
