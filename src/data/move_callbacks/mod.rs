@@ -204,6 +204,7 @@ pub mod maxhailstorm;
 pub mod maxlightning;
 pub mod maxmindstorm;
 pub mod maxovergrowth;
+pub mod maxquake;
 pub mod maxrockfall;
 pub mod maxstarfall;
 pub mod meanlook;
@@ -768,6 +769,7 @@ pub fn dispatch_on_hit(
         "maxlightning" => maxlightning::on_hit(battle, pokemon_pos, target_pos),
         "maxmindstorm" => maxmindstorm::on_hit(battle, pokemon_pos, target_pos),
         "maxovergrowth" => maxovergrowth::on_hit(battle, pokemon_pos, target_pos),
+        "maxquake" => maxquake::on_hit(battle, pokemon_pos, target_pos),
         "maxrockfall" => maxrockfall::on_hit(battle, pokemon_pos, target_pos),
         "maxstarfall" => maxstarfall::on_hit(battle, pokemon_pos, target_pos),
         "meanlook" => meanlook::on_hit(battle, pokemon_pos, target_pos),
