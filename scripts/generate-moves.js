@@ -17,24 +17,33 @@ function generateParameters(callbackName, jsArgs) {
     // Standard signatures for each callback type
     // This ensures all callbacks of the same type have the same signature
     const standardSignatures = {
-        'basePowerCallback': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
-        'damageCallback': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'basePowerCallback': ['base_power: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'damageCallback': ['damage: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
         'beforeMoveCallback': ['pokemon_pos: (usize, usize)'],
         'beforeTurnCallback': ['pokemon_pos: (usize, usize)'],
         'priorityChargeCallback': ['pokemon_pos: (usize, usize)'],
         'durationCallback': ['target_pos: Option<(usize, usize)>', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
         // Standard onXxx callbacks
-        'onHit': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
-        'onTryHit': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)'],
-        'onAfterHit': ['source_pos: (usize, usize)', 'target_pos: (usize, usize)'],
-        'onBasePower': ['base_power: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
-        'onModifyMove': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onHit': ['target_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onTryHit': ['target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+        'onAfterHit': ['target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+        'onBasePower': ['base_power: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onModifyMove': ['move_id: &str', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
         'onTry': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
-        'onTryMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
-        'onPrepareHit': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
-        'onAfterMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onTryMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onPrepareHit': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onAfterMove': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onModifyType': ['move_id: &str', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onMoveFail': ['target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
         // onDamage callback - TypeScript: onDamage(damage, target, source, effect)
         'onDamage': ['damage: i32', 'target_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
+        // Status effect callbacks - often from moves
+        'onStart': ['target_pos: (usize, usize)', 'source_pos: Option<(usize, usize)>', 'effect_id: Option<&str>'],
+        'onEnd': ['pokemon_pos: (usize, usize)'],
+        'onRestart': ['pokemon_pos: (usize, usize)'],
+        'onResidual': ['pokemon_pos: (usize, usize)'],
+        'onUpdate': ['pokemon_pos: (usize, usize)'],
+        'onBeforeMove': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
     };
 
     // Use standard signature if available, otherwise parse JS args

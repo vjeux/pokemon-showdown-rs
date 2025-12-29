@@ -23,13 +23,14 @@ function generateParameters(callbackName, jsArgs) {
         'onEnd': ['pokemon_pos: (usize, usize)'],
         'onUpdate': ['pokemon_pos: (usize, usize)'],
         'onResidual': ['pokemon_pos: (usize, usize)'],
-        'onBasePower': ['base_power: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
-        'onModifyDamage': ['damage: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
-        'onSourceModifyDamage': ['damage: i32', 'source_pos: (usize, usize)', 'target_pos: (usize, usize)'],
-        'onTryHit': ['target_pos: (usize, usize)', 'source_pos: (usize, usize)'],
-        'onDamagingHit': ['damage: i32', 'target_pos: (usize, usize)', 'source_pos: (usize, usize)'],
-        'onAfterMoveSecondarySelf': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
-        'onModifyMove': ['pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>'],
+        'onBasePower': ['base_power: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onModifyDamage': ['damage: i32', 'pokemon_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onSourceModifyDamage': ['damage: i32', 'source_pos: (usize, usize)', 'target_pos: (usize, usize)', 'move_id: &str'],
+        'onTryHit': ['target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+        'onDamagingHit': ['damage: i32', 'target_pos: (usize, usize)', 'source_pos: (usize, usize)', 'move_id: &str'],
+        'onAfterMoveSecondarySelf': ['source_pos: (usize, usize)', 'target_pos: Option<(usize, usize)>', 'move_id: &str'],
+        'onModifyMove': ['move_id: &str', 'pokemon_pos: (usize, usize)'],
+        'onTryEatItem': ['item_id: &str', 'pokemon_pos: (usize, usize)'],
     };
 
     // Use standard signature if available, otherwise parse JS args
