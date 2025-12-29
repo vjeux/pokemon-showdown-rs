@@ -11,7 +11,6 @@ use crate::event::EventResult;
 ///     return this.trunc(weighthg / 2);
 /// }
 pub fn on_modify_weight(battle: &mut Battle, weight: i32, pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    EventResult::Number(weight / 2)
 }
 
