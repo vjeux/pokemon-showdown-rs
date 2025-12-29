@@ -1,14 +1,13 @@
 //! Battle State Comparison Test
 //!
-//! This test generates a random team in gen9 and runs a battle with random moves
-//! derived from a specific seed. It records the state at every step to enable
-//! comparison with the JavaScript implementation.
+//! This test loads pre-generated teams (from test-teams.json) and runs a battle
+//! with random moves derived from a specific seed. It records the state at every
+//! step to enable comparison with the JavaScript implementation.
 
 use pokemon_showdown::{
     Battle, BattleOptions, PRNGSeed, PlayerOptions, PRNG,
 };
 use pokemon_showdown::dex_data::StatsTable;
-use pokemon_showdown::random_teams::RandomTeamGenerator;
 use serde::{Deserialize, Serialize};
 use std::fs;
 
@@ -167,21 +166,52 @@ fn make_random_choice(battle: &Battle, player_id: &str, prng: &mut PRNG) -> Stri
 
 /// Run a deterministic battle and record states
 fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
-    // Generate teams using the same seed
-    let mut team_generator = RandomTeamGenerator::with_seed("gen9randombattle", seed.clone());
-    let team1_sets = team_generator.generate_team();
-    let team2_sets = team_generator.generate_team();
+    // Load pre-generated teams from JSON
+    let test_teams_path = "test-teams.json";
+    let test_teams_json = fs::read_to_string(test_teams_path)
+        .expect("Failed to read test-teams.json");
+
+    #[derive(Debug, Deserialize)]
+    struct TestTeams {
+        p1: Vec<TestPokemon>,
+        p2: Vec<TestPokemon>,
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct TestPokemon {
+        species: String,
+        level: u8,
+        ability: String,
+        item: String,
+        nature: String,
+        moves: Vec<String>,
+        evs: TestStats,
+        ivs: TestStats,
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct TestStats {
+        hp: i32,
+        atk: i32,
+        def: i32,
+        spa: i32,
+        spd: i32,
+        spe: i32,
+    }
+
+    let test_teams: TestTeams = serde_json::from_str(&test_teams_json)
+        .expect("Failed to parse test-teams.json");
 
     // Convert to PokemonSets for battle
-    let team1: Vec<_> = team1_sets
+    let team1: Vec<_> = test_teams.p1
         .iter()
         .map(|set| pokemon_showdown::PokemonSet {
             name: set.species.clone(),
             species: set.species.clone(),
             level: set.level,
             ability: set.ability.clone(),
-            item: set.item.clone().unwrap_or_default(),
-            nature: set.nature.clone().unwrap_or_else(|| "Hardy".to_string()),
+            item: set.item.clone(),
+            nature: set.nature.clone(),
             moves: set.moves.clone(),
             evs: StatsTable::new(
                 set.evs.hp,
@@ -203,15 +233,15 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
         })
         .collect();
 
-    let team2: Vec<_> = team2_sets
+    let team2: Vec<_> = test_teams.p2
         .iter()
         .map(|set| pokemon_showdown::PokemonSet {
             name: set.species.clone(),
             species: set.species.clone(),
             level: set.level,
             ability: set.ability.clone(),
-            item: set.item.clone().unwrap_or_default(),
-            nature: set.nature.clone().unwrap_or_else(|| "Hardy".to_string()),
+            item: set.item.clone(),
+            nature: set.nature.clone(),
             moves: set.moves.clone(),
             evs: StatsTable::new(
                 set.evs.hp,

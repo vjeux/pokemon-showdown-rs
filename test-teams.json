@@ -1,0 +1,360 @@
+{
+  "seed": [
+    12345,
+    23456,
+    11111,
+    22222
+  ],
+  "p1": [
+    {
+      "species": "Passimian",
+      "level": 83,
+      "ability": "Defiant",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "moves": [
+        "knockoff",
+        "bulkup",
+        "gunkshot",
+        "drainpunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Cryogonal",
+      "level": 89,
+      "ability": "Levitate",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "moves": [
+        "rapidspin",
+        "freezedry",
+        "haze",
+        "recover"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Great Tusk",
+      "level": 77,
+      "ability": "Protosynthesis",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "moves": [
+        "bulkup",
+        "closecombat",
+        "stoneedge",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Rotom-Fan",
+      "level": 86,
+      "ability": "Levitate",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "moves": [
+        "airslash",
+        "willowisp",
+        "thunderbolt",
+        "nastyplot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Mew",
+      "level": 82,
+      "ability": "Synchronize",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "moves": [
+        "psychicfangs",
+        "swordsdance",
+        "closecombat",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Ho-Oh",
+      "level": 71,
+      "ability": "Regenerator",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "moves": [
+        "bravebird",
+        "sacredfire",
+        "earthquake",
+        "recover"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "species": "Passimian",
+      "level": 83,
+      "ability": "Defiant",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "moves": [
+        "knockoff",
+        "bulkup",
+        "gunkshot",
+        "drainpunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Cryogonal",
+      "level": 89,
+      "ability": "Levitate",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "moves": [
+        "rapidspin",
+        "freezedry",
+        "haze",
+        "recover"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Great Tusk",
+      "level": 77,
+      "ability": "Protosynthesis",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "moves": [
+        "bulkup",
+        "closecombat",
+        "stoneedge",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Rotom-Fan",
+      "level": 86,
+      "ability": "Levitate",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "moves": [
+        "airslash",
+        "willowisp",
+        "thunderbolt",
+        "nastyplot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Mew",
+      "level": 82,
+      "ability": "Synchronize",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "moves": [
+        "psychicfangs",
+        "swordsdance",
+        "closecombat",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Ho-Oh",
+      "level": 71,
+      "ability": "Regenerator",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "moves": [
+        "bravebird",
+        "sacredfire",
+        "earthquake",
+        "recover"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}
