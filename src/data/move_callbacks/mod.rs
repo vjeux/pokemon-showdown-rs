@@ -200,6 +200,7 @@ pub mod matblock;
 pub mod maxguard;
 pub mod maxdarkness;
 pub mod maxflare;
+pub mod maxflutterby;
 pub mod maxgeyser;
 pub mod maxhailstorm;
 pub mod maxlightning;
@@ -766,6 +767,7 @@ pub fn dispatch_on_hit(
         "maxguard" => maxguard::on_hit(battle, pokemon_pos, target_pos),
         "maxdarkness" => maxdarkness::on_hit(battle, pokemon_pos, target_pos),
         "maxflare" => maxflare::on_hit(battle, pokemon_pos, target_pos),
+        "maxflutterby" => maxflutterby::on_hit(battle, pokemon_pos, target_pos),
         "maxgeyser" => maxgeyser::on_hit(battle, pokemon_pos, target_pos),
         "maxhailstorm" => maxhailstorm::on_hit(battle, pokemon_pos, target_pos),
         "maxlightning" => maxlightning::on_hit(battle, pokemon_pos, target_pos),
