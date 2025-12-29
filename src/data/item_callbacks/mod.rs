@@ -1050,6 +1050,7 @@ pub fn dispatch_on_start(
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
+        "boosterenergy" => boosterenergy::on_start(battle, Some(pokemon_pos)),
         "roomservice" => roomservice::on_start(battle, Some(pokemon_pos)),
         "utilityumbrella" => utilityumbrella::on_start(battle, Some(pokemon_pos)),
         _ => EventResult::Continue,
@@ -1188,6 +1189,7 @@ pub fn dispatch_on_update(
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
+        "boosterenergy" => boosterenergy::on_update(battle, pokemon_pos),
         "utilityumbrella" => utilityumbrella::on_update(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
