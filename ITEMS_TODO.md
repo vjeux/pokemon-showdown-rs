@@ -270,7 +270,7 @@ Items with callbacks: 326
 - [ ] roomservice - Room Service (Gen 8) - 2 callbacks: onStart, onAnyPseudoWeatherChange
 - [x] roseincense - Rose Incense (Gen 4) - 1 callback: onBasePower
 - [x] roseliberry - Roseli Berry (Gen 6) - 2 callbacks: onSourceModifyDamage, onEat
-- [ ] rowapberry - Rowap Berry (Gen 4) - 2 callbacks: onDamagingHit, onEat
+- [x] rowapberry - Rowap Berry (Gen 4) - 2 callbacks: onDamagingHit, onEat
 - [x] rustedshield - Rusted Shield (Gen 8) - 1 callback: onTakeItem
 - [x] rustedsword - Rusted Sword (Gen 8) - 1 callback: onTakeItem
 - [x] sablenite - Sablenite (Gen 6) - 1 callback: onTakeItem
