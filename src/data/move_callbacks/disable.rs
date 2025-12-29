@@ -237,8 +237,17 @@ pub mod condition {
         if let Some(disabled_id) = disabled_move_id {
             // move.id === this.effectState.move
             if move_id == disabled_id {
-                // TODO: Check !(move.isZ && move.isZOrMaxPowered)
-                // For now, we'll just check the move ID match
+                // Check !(move.isZ && move.isZOrMaxPowered)
+                let is_z_or_max_powered_z = battle
+                    .active_move
+                    .as_ref()
+                    .map(|m| m.is_z && m.is_z_or_max_powered)
+                    .unwrap_or(false);
+
+                // If it's a Z-move with max power, don't disable it
+                if is_z_or_max_powered_z {
+                    return EventResult::Continue;
+                }
 
                 // this.add('cant', attacker, 'Disable', move);
                 // Note: This callback doesn't have access to attacker position in the signature
