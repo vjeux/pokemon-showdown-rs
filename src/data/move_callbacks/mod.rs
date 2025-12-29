@@ -231,6 +231,7 @@ pub mod maxlightning;
 pub mod maxmindstorm;
 pub mod maxooze;
 pub mod maxovergrowth;
+pub mod maxphantasm;
 pub mod maxquake;
 pub mod maxrockfall;
 pub mod maxsteelspike;
@@ -824,6 +825,7 @@ pub fn dispatch_on_hit(
         "maxmindstorm" => maxmindstorm::on_hit(battle, pokemon_pos, target_pos),
         "maxooze" => maxooze::on_hit(battle, pokemon_pos, target_pos),
         "maxovergrowth" => maxovergrowth::on_hit(battle, pokemon_pos, target_pos),
+        "maxphantasm" => maxphantasm::on_hit(battle, pokemon_pos, target_pos),
         "maxquake" => maxquake::on_hit(battle, pokemon_pos, target_pos),
         "maxrockfall" => maxrockfall::on_hit(battle, pokemon_pos, target_pos),
         "maxsteelspike" => maxsteelspike::on_hit(battle, pokemon_pos, target_pos),
