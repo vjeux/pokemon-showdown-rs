@@ -1066,7 +1066,7 @@ impl Battle {
 
         // JS: this.queue.addChoice({ choice: 'start' });
         use crate::battle_queue::{Action, FieldAction, FieldActionType};
-        self.queue.add_choice(Action::Field(FieldAction {
+        self.queue.add_choice_raw(Action::Field(FieldAction {
             choice: FieldActionType::Start,
             priority: 0,
         }));
@@ -2305,7 +2305,7 @@ impl Battle {
     //
     // BattleQueue.prototype.resolveAction (lines 166-272 in battle-queue.ts)
     // Converts a choice into one or more queue actions
-    fn resolve_action(&self, side_action: &crate::side::ChosenAction, side_idx: usize) -> Vec<crate::battle_queue::Action> {
+    pub fn resolve_action(&self, side_action: &crate::side::ChosenAction, side_idx: usize) -> Vec<crate::battle_queue::Action> {
         use crate::battle_queue::{Action, MoveAction, MoveActionType, SwitchAction, SwitchActionType, TeamAction, FieldAction, FieldActionType};
 
         let mut actions = Vec::new();
@@ -2407,38 +2407,6 @@ impl Battle {
         actions
     }
 
-    // BattleQueue.prototype.addChoice (lines 302-313 in battle-queue.ts)
-    // 	addChoice(choices: ActionChoice | ActionChoice[]) {
-    // 		if (!Array.isArray(choices)) choices = [choices];
-    // 		for (const choice of choices) {
-    // 			const resolvedChoices = this.resolveAction(choice);
-    // 			this.list.push(...resolvedChoices);
-    // 			for (const resolvedChoice of resolvedChoices) {
-    // 				if (resolvedChoice && resolvedChoice.choice === 'move' && resolvedChoice.move.id !== 'recharge') {
-    // 					resolvedChoice.pokemon.side.lastSelectedMove = resolvedChoice.move.id;
-    // 				}
-    // 			}
-    // 		}
-    // 	}
-    fn add_choice(&mut self, side_action: &crate::side::ChosenAction, side_idx: usize) {
-        // JS: const resolvedChoices = this.resolveAction(choice);
-        let resolved_actions = self.resolve_action(side_action, side_idx);
-
-        // JS: this.list.push(...resolvedChoices);
-        for action in resolved_actions {
-            self.queue.list.push(action.clone());
-
-            // JS: if (resolvedChoice && resolvedChoice.choice === 'move' && resolvedChoice.move.id !== 'recharge') {
-            // JS:     resolvedChoice.pokemon.side.lastSelectedMove = resolvedChoice.move.id;
-            // JS: }
-            if let crate::battle_queue::Action::Move(ref move_action) = action {
-                if move_action.move_id.as_str() != "recharge" {
-                    self.sides[side_idx].last_selected_move = move_action.move_id.clone();
-                }
-            }
-        }
-    }
-
     // commitChoices() {
     // 	this.updateSpeed();
     // 	const oldQueue = this.queue.list;
@@ -2487,12 +2455,15 @@ impl Battle {
         // JS: for (const side of this.sides) {
         // JS:     this.queue.addChoice(side.choice.actions);
         // JS: }
+        // Temporarily take queue to avoid double mutable borrow
+        let mut queue = std::mem::take(&mut self.queue);
         for side_idx in 0..self.sides.len() {
             let side_actions = self.sides[side_idx].choice.actions.clone();
             for side_action in &side_actions {
-                self.add_choice(side_action, side_idx);
+                queue.add_choice(self, side_action, side_idx);
             }
         }
+        self.queue = queue;
 
         // JS: this.clearRequest();
         self.clear_request();
@@ -7206,7 +7177,7 @@ impl Battle {
                 choice: FieldActionType::Residual,
                 priority: 0,
             });
-            self.queue.add_choice(residual_action);
+            self.queue.add_choice_raw(residual_action);
 
             self.mid_turn = true;
         }
