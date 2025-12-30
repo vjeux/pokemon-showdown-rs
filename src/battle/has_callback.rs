@@ -251,6 +251,12 @@ impl Battle {
             return matches!(ability_id, "guarddog" | "suctioncups");
         }
 
+        // Check for onHit event (when move hits successfully)
+        if event_id == "onHit" {
+            // Abilities with onHit callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "angerpoint" | "owntempo");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
