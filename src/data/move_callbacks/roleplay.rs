@@ -41,11 +41,11 @@ pub fn on_try_hit(
     }
 
     // if (target.getAbility().flags['failroleplay'] || source.getAbility().flags['cantsuppress']) return false;
-    let target_ability_data = match battle.dex.get_ability_by_id(&target_ability) {
+    let target_ability_data = match battle.dex.abilities().get_by_id(&target_ability) {
         Some(a) => a,
         None => return EventResult::Continue,
     };
-    let source_ability_data = match battle.dex.get_ability_by_id(&source_ability) {
+    let source_ability_data = match battle.dex.abilities().get_by_id(&source_ability) {
         Some(a) => a,
         None => return EventResult::Continue,
     };

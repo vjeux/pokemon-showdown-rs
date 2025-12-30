@@ -18,7 +18,7 @@ impl Battle {
         let effect_str = effect_id.as_str();
 
         // Handle ability events
-        if self.dex.get_ability(effect_id.as_str()).is_some() {
+        if self.dex.abilities().get(effect_id.as_str()).is_some() {
             return self.handle_ability_event(event_id, effect_id, target);
         }
 

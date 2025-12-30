@@ -32,7 +32,7 @@ pub fn on_hit(
         };
 
         let ability_id = &target_pokemon.ability;
-        match battle.dex.get_ability(ability_id.as_str()) {
+        match battle.dex.abilities().get(ability_id.as_str()) {
             Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
             None => false,
         }
@@ -93,7 +93,7 @@ pub fn on_after_sub_damage(
         };
 
         let ability_id = &target_pokemon.ability;
-        match battle.dex.get_ability(ability_id.as_str()) {
+        match battle.dex.abilities().get(ability_id.as_str()) {
             Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
             None => false,
         }

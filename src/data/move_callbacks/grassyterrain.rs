@@ -148,7 +148,7 @@ pub mod condition {
         let is_ability_effect = if let Some(eid) = effect_id {
             if let Some(ability) = battle
                 .dex
-                .get_ability_by_id(&crate::dex_data::ID::from(eid))
+                .abilities().get_by_id(&crate::dex_data::ID::from(eid))
             {
                 ability.effect_type.as_deref() == Some("Ability")
             } else {
@@ -163,7 +163,7 @@ pub mod condition {
             if let (Some(eid), Some(source)) = (effect_id, source_pos) {
                 let ability = battle
                     .dex
-                    .get_ability_by_id(&crate::dex_data::ID::from(eid));
+                    .abilities().get_by_id(&crate::dex_data::ID::from(eid));
                 let ability_name = ability
                     .map(|a| a.name.clone())
                     .unwrap_or_else(|| eid.to_string());

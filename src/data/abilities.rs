@@ -5,7 +5,7 @@
 // 1. data/abilities.json - base ability data (name, desc, rating, etc.)
 // 2. src/data/ability_callbacks/ - custom event handlers per ability
 //
-// Access abilities via Battle.dex.get_ability(name) or Battle.dex.abilities
+// Access abilities via Battle.dex.abilities().get(name) or Battle.dex.abilities
 
 // Re-export ability data type from dex
 pub use crate::dex::AbilityData;

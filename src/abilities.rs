@@ -10,9 +10,9 @@
 pub use crate::dex::AbilityData;
 
 // The Dex loads all abilities from data/abilities.json at initialization.
-// Access ability data via Battle.dex.get_ability(ability_id)
+// Access ability data via Battle.dex.abilities().get(ability_id)
 //
 // Example:
-//   if let Some(ability_data) = battle.dex.get_ability(&ID::new("intimidate")) {
+//   if let Some(ability_data) = battle.dex.abilities().get(&ID::new("intimidate")) {
 //       println!("Ability: {} (rating: {})", ability_data.name, ability_data.rating.unwrap_or(0.0));
 //   }

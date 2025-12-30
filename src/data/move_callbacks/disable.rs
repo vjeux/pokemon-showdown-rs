@@ -191,7 +191,7 @@ pub mod condition {
                 // Get effect name and source
                 let effect_name = battle
                     .dex
-                    .get_ability_by_id(&effect_id_obj)
+                    .abilities().get_by_id(&effect_id_obj)
                     .map(|a| a.name.clone())
                     .unwrap_or_else(|| eff_id.to_string());
 

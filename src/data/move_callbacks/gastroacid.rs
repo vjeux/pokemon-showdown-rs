@@ -30,7 +30,7 @@ pub fn on_try_hit(
             None => return EventResult::Continue,
         };
         let ability_id = &target_pokemon.ability;
-        match battle.dex.get_ability(ability_id.as_str()) {
+        match battle.dex.abilities().get(ability_id.as_str()) {
             Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
             None => false,
         }
@@ -142,7 +142,7 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
             let ability_id = &pokemon_pokemon.ability;
-            match battle.dex.get_ability(ability_id.as_str()) {
+            match battle.dex.abilities().get(ability_id.as_str()) {
                 Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
                 None => false,
             }

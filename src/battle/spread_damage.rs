@@ -313,7 +313,7 @@ impl Battle {
                         // Try to get name from move/ability/item data
                         if let Some(move_data) = self.dex.get_move(id_str) {
                             move_data.name.clone()
-                        } else if let Some(ability_data) = self.dex.get_ability(id_str) {
+                        } else if let Some(ability_data) = self.dex.abilities().get(id_str) {
                             ability_data.name.clone()
                         } else if let Some(item_data) = self.dex.get_item(id_str) {
                             item_data.name.clone()

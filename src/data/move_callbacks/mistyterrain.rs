@@ -253,7 +253,7 @@ pub mod condition {
 
         // if (effect?.effectType === 'Ability') {
         if let Some(eff_id) = effect_id {
-            let ability_data = battle.dex.get_ability_by_id(&ID::from(eff_id));
+            let ability_data = battle.dex.abilities().get_by_id(&ID::from(eff_id));
 
             if let Some(ability) = ability_data {
                 // this.add('-fieldstart', 'move: Misty Terrain', '[from] ability: ' + effect.name, `[of] ${source}`);

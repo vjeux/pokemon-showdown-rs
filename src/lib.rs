@@ -12,6 +12,7 @@ pub mod battle_stream;
 pub mod choice;
 pub mod data;
 pub mod dex;
+pub mod dex_abilities;
 pub mod dex_data;
 pub mod event;
 pub mod event_system;

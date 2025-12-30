@@ -53,7 +53,7 @@ pub fn on_hit(
         target_pokemon.ability.clone()
     };
 
-    let target_ability = match battle.dex.get_ability(target_ability_id.as_str()) {
+    let target_ability = match battle.dex.abilities().get(target_ability_id.as_str()) {
         Some(a) => a,
         None => return EventResult::Continue,
     };
@@ -73,7 +73,7 @@ pub fn on_hit(
             };
 
             let cant_suppress = {
-                match battle.dex.get_ability(ally_ability_id.as_str()) {
+                match battle.dex.abilities().get(ally_ability_id.as_str()) {
                     Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
                     None => false,
                 }

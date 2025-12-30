@@ -8,7 +8,7 @@ impl Battle {
     /// Returns: "Ability", "Item", "Move", "Status", "Volatile", "Weather", "Terrain", or "Unknown"
     pub fn get_effect_type(&self, effect_id: &ID) -> &str {
         // Check if it's an ability
-        if self.dex.get_ability(effect_id.as_str()).is_some() {
+        if self.dex.abilities().get(effect_id.as_str()).is_some() {
             return "Ability";
         }
         // Check if it's an item

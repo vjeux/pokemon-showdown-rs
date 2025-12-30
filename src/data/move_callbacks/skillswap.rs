@@ -60,7 +60,7 @@ pub fn on_try_hit(
     //     return false;
     // }
     let source_fails = {
-        let source_ability = battle.dex.get_ability_by_id(&source_ability_id);
+        let source_ability = battle.dex.abilities().get_by_id(&source_ability_id);
         if let Some(ability) = source_ability {
             ability.flags.get("failskillswap").copied().unwrap_or(0) != 0
         } else {
@@ -69,7 +69,7 @@ pub fn on_try_hit(
     };
 
     let target_fails = {
-        let target_ability = battle.dex.get_ability_by_id(&target_ability_id);
+        let target_ability = battle.dex.abilities().get_by_id(&target_ability_id);
         if let Some(ability) = target_ability {
             ability.flags.get("failskillswap").copied().unwrap_or(0) != 0
         } else {
@@ -217,8 +217,8 @@ pub fn on_hit(
             ],
         );
     } else {
-        let target_ability_data = battle.dex.get_ability_by_id(&target_ability_id);
-        let source_ability_data = battle.dex.get_ability_by_id(&source_ability_id);
+        let target_ability_data = battle.dex.abilities().get_by_id(&target_ability_id);
+        let source_ability_data = battle.dex.abilities().get_by_id(&source_ability_id);
 
         let target_ability_name = target_ability_data
             .map(|a| a.name.clone())

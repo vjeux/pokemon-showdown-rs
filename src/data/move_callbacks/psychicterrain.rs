@@ -210,7 +210,7 @@ pub mod condition {
         // }
         if let Some(effect) = effect_id {
             // Check if effect is an ability
-            let is_ability = battle.dex.get_ability_by_id(&ID::from(effect)).is_some();
+            let is_ability = battle.dex.abilities().get_by_id(&ID::from(effect)).is_some();
 
             if is_ability {
                 if let Some(source) = source_pos {
@@ -221,7 +221,7 @@ pub mod condition {
                         };
                         let ability_name = battle
                             .dex
-                            .get_ability_by_id(&ID::from(effect))
+                            .abilities().get_by_id(&ID::from(effect))
                             .map(|a| a.name.clone())
                             .unwrap_or_else(|| effect.to_string());
                         (source_pokemon.get_slot(), ability_name)

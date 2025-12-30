@@ -62,7 +62,7 @@ pub fn on_try_hit(
         };
 
         let target_ability = target_pokemon.get_ability();
-        let ability_data = battle.dex.get_ability_by_id(&target_ability);
+        let ability_data = battle.dex.abilities().get_by_id(&target_ability);
 
         match ability_data {
             Some(ability_data) => ability_data.flags.contains_key("cantsuppress"),
