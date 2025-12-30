@@ -14,19 +14,20 @@ impl Battle {
     // 	}
     //
     pub fn compare_redirect_order(a: &PriorityItem, b: &PriorityItem) -> std::cmp::Ordering {
-        // Priority first
+        // Priority first (higher = earlier)
         let priority_cmp = b.priority.cmp(&a.priority);
         if priority_cmp != std::cmp::Ordering::Equal {
             return priority_cmp;
         }
 
-        // Speed second
+        // Speed second (higher = earlier)
         let speed_cmp = b.speed.cmp(&a.speed);
         if speed_cmp != std::cmp::Ordering::Equal {
             return speed_cmp;
         }
 
-        // Effect order (for abilities with same priority/speed)
-        b.effect_order.cmp(&a.effect_order)
+        // Effect order (lower = earlier)
+        // JS: -(b.effectOrder - a.effectOrder)
+        a.effect_order.cmp(&b.effect_order)
     }
 }
