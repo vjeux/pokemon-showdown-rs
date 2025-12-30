@@ -971,6 +971,23 @@ impl Battle {
             );
         }
 
+        // Check for onAfterHit event (after move hits successfully)
+        if event_id == "onAfterHit" {
+            // Moves with onAfterHit callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "beakblast" | "ceaselessedge" | "covet" | "iceball" | "icespinner"
+                | "knockoff" | "mindblown" | "mortalspin" | "rapidspin" | "rollout"
+                | "stoneaxe" | "thief"
+            );
+        }
+
+        // Check for onDisableMove event (move disabling)
+        if event_id == "onDisableMove" {
+            // Moves with onDisableMove callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(move_id, "belch" | "stuffcheeks");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         false
