@@ -394,6 +394,48 @@ impl Battle {
             return matches!(ability_id, "opportunist");
         }
 
+        // Check for onAllyTryBoost event (when ally's stats are being boosted)
+        if event_id == "onAllyTryBoost" {
+            // Abilities with onAllyTryBoost callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "flowerveil");
+        }
+
+        // Check for onAllySetStatus event (when ally's status is being set)
+        if event_id == "onAllySetStatus" {
+            // Abilities with onAllySetStatus callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "flowerveil" | "pastelveil" | "sweetveil");
+        }
+
+        // Check for onAllyTryAddVolatile event (when ally's volatile is being added)
+        if event_id == "onAllyTryAddVolatile" {
+            // Abilities with onAllyTryAddVolatile callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "aromaveil" | "flowerveil" | "sweetveil");
+        }
+
+        // Check for onAllyModifyAtk event (when ally's Attack is calculated)
+        if event_id == "onAllyModifyAtk" {
+            // Abilities with onAllyModifyAtk callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "flowergift");
+        }
+
+        // Check for onAllyModifySpD event (when ally's Sp. Def is calculated)
+        if event_id == "onAllyModifySpD" {
+            // Abilities with onAllyModifySpD callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "flowergift");
+        }
+
+        // Check for onAllyTryHitSide event (when move targets ally's side)
+        if event_id == "onAllyTryHitSide" {
+            // Abilities with onAllyTryHitSide callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "magicbounce" | "rebound" | "sapsipper" | "soundproof");
+        }
+
+        // Check for onAllyAfterUseItem event (when ally uses/consumes an item)
+        if event_id == "onAllyAfterUseItem" {
+            // Abilities with onAllyAfterUseItem callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "symbiosis");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
