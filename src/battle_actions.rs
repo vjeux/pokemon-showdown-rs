@@ -24,7 +24,6 @@ mod get_confusion_damage;
 mod target_type_choices;
 mod can_ultra_burst;
 mod can_terastallize;
-mod use_move_inner_stub;
 mod try_spread_move_hit_stub;
 mod hit_step_move_hit_loop_stub;
 mod spread_move_hit_stub;
