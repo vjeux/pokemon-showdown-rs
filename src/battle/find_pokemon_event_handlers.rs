@@ -84,7 +84,7 @@ impl Battle {
     //
     pub fn find_pokemon_event_handlers(
         &self,
-        _event_id: &str,
+        event_id: &str,  // Changed from _event_id to event_id (removed underscore)
         target: (usize, usize),
     ) -> Vec<(ID, Option<(usize, usize)>)> {
         let mut handlers = Vec::new();
@@ -93,38 +93,44 @@ impl Battle {
         if let Some(side) = self.sides.get(side_idx) {
             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                 // JS: const status = pokemon.getStatus();
-                // Add status handler
-                if !pokemon.status.is_empty() {
+                // Add status handler if it has callback for this event
+                if !pokemon.status.is_empty() && self.has_callback(&pokemon.status, event_id) {
                     handlers.push((pokemon.status.clone(), Some(target)));
                 }
 
                 // JS: for (const id in pokemon.volatiles)
-                // Add volatile handlers
+                // Add volatile handlers if they have callbacks for this event
                 for volatile_id in pokemon.volatiles.keys() {
-                    handlers.push((volatile_id.clone(), Some(target)));
+                    if self.has_callback(volatile_id, event_id) {
+                        handlers.push((volatile_id.clone(), Some(target)));
+                    }
                 }
 
                 // JS: const ability = pokemon.getAbility();
-                // Add ability handler
-                if !pokemon.ability.is_empty() {
+                // Add ability handler if it has callback for this event
+                if !pokemon.ability.is_empty() && self.has_callback(&pokemon.ability, event_id) {
                     handlers.push((pokemon.ability.clone(), Some(target)));
                 }
 
                 // JS: const item = pokemon.getItem();
-                // Add item handler
-                if !pokemon.item.is_empty() {
+                // Add item handler if it has callback for this event
+                if !pokemon.item.is_empty() && self.has_callback(&pokemon.item, event_id) {
                     handlers.push((pokemon.item.clone(), Some(target)));
                 }
 
                 // JS: const species = pokemon.baseSpecies;
-                // Add species handler (NEW! - was missing)
-                handlers.push((pokemon.species_id.clone(), Some(target)));
+                // Add species handler if it has callback for this event
+                if self.has_callback(&pokemon.species_id, event_id) {
+                    handlers.push((pokemon.species_id.clone(), Some(target)));
+                }
 
                 // JS: for (const conditionid in side.slotConditions[pokemon.position])
-                // Add slot condition handlers (NEW! - was missing)
+                // Add slot condition handlers if they have callbacks for this event
                 if let Some(slot_conds) = side.slot_conditions.get(pokemon.position) {
                     for slot_cond_id in slot_conds.keys() {
-                        handlers.push((slot_cond_id.clone(), Some(target)));
+                        if self.has_callback(slot_cond_id, event_id) {
+                            handlers.push((slot_cond_id.clone(), Some(target)));
+                        }
                     }
                 }
             }

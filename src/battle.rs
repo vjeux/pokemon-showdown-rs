@@ -145,6 +145,7 @@ mod clear_effect_state;
 mod debug_error;
 mod field_event;
 mod get_callback;
+mod has_callback;
 mod get_overflowed_turn_count;
 mod get_requests;
 mod resolve_priority;
