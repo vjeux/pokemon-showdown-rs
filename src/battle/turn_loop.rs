@@ -37,14 +37,14 @@ impl Battle {
     //
     pub fn turn_loop(&mut self) {
         eprintln!("=== TURN {} START, QUEUE LENGTH: {} ===", self.turn + 1, self.queue.list.len());
-        self.add_log("", &[]);
+        self.add("", &[]);
 
         // Add timestamp (JS: this.add('t:', Math.floor(Date.now() / 1000)))
         let timestamp = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap_or_default()
             .as_secs();
-        self.add_log("t:", &[&timestamp.to_string()]);
+        self.add("t:", &[timestamp.to_string().into()]);
 
         if self.request_state != BattleRequestState::None {
             self.request_state = BattleRequestState::None;

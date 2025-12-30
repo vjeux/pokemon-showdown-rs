@@ -30,7 +30,7 @@ impl Battle {
                 move_id.as_str().to_string(),
             )
         };
-        self.add_log("move", &[&attacker_name, &move_name]);
+        self.add("move", &[attacker_name.as_str().into(), move_name.as_str().into()]);
 
         // Deduct PP
         self.sides[side_idx].pokemon[poke_idx].deduct_pp(move_id, 1);

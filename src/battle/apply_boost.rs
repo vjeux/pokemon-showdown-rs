@@ -40,6 +40,6 @@ impl Battle {
 
         let side_id = self.sides[side_idx].id_str();
         let full_name = format!("{}: {}", side_id, name);
-        self.add_log("-boost", &[&full_name, stat, &actual_change.to_string()]);
+        self.add("-boost", &[full_name.into(), stat.into(), actual_change.to_string().into()]);
     }
 }

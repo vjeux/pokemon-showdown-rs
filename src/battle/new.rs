@@ -108,14 +108,14 @@ impl Battle {
             ">start {{\"formatid\":\"{}\",\"seed\":\"{}\"}}",
             format_id_str, seed
         ));
-        battle.add_log("gametype", &[&match game_type {
+        battle.add("gametype", &[(match game_type {
             GameType::Singles => "singles",
             GameType::Doubles => "doubles",
             GameType::Triples => "triples",
             GameType::Rotation => "rotation",
             GameType::Multi => "multi",
             GameType::FreeForAll => "freeforall",
-        }]);
+        }).into()]);
 
         // Add players if provided
         if let Some(p1) = options.p1 {

@@ -108,22 +108,22 @@ impl Battle {
 
         // JavaScript: if (this.eventDepth >= 8) throw Error
         if self.event_depth >= 8 {
-            self.add_log("message", &["STACK LIMIT EXCEEDED"]);
-            self.add_log("message", &["PLEASE REPORT IN BUG THREAD"]);
-            self.add_log("message", &[&format!("Event: {}", event_id)]);
+            self.add("message", &["STACK LIMIT EXCEEDED".into()]);
+            self.add("message", &["PLEASE REPORT IN BUG THREAD".into()]);
+            self.add("message", &[format!("Event: {}", event_id).into()]);
             if let Some(ref evt) = self.current_event {
-                self.add_log("message", &[&format!("Parent event: {}", evt.id)]);
+                self.add("message", &[format!("Parent event: {}", evt.id).into()]);
             }
             return EventResult::Boolean(false);
         }
 
         // JavaScript: if (this.log.length - this.sentLogPos > 1000) throw Error
         if self.log.len() - self.sent_log_pos > 1000 {
-            self.add_log("message", &["LINE LIMIT EXCEEDED"]);
-            self.add_log("message", &["PLEASE REPORT IN BUG THREAD"]);
-            self.add_log("message", &[&format!("Event: {}", event_id)]);
+            self.add("message", &["LINE LIMIT EXCEEDED".into()]);
+            self.add("message", &["PLEASE REPORT IN BUG THREAD".into()]);
+            self.add("message", &[format!("Event: {}", event_id).into()]);
             if let Some(ref evt) = self.current_event {
-                self.add_log("message", &[&format!("Parent event: {}", evt.id)]);
+                self.add("message", &[format!("Parent event: {}", evt.id).into()]);
             }
             return EventResult::Boolean(false);
         }

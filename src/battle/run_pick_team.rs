@@ -59,7 +59,7 @@ impl Battle {
                 // There was no onTeamPreview handler (e.g. Team Preview rule missing).
                 // Players must still pick their own Pokémon, so we show them privately.
                 // JS: this.add('clearpoke');
-                self.add_log("clearpoke", &[]);
+                self.add("clearpoke", &[]);
 
                 // JS: for (const pokemon of this.getAllPokemon()) { ... }
                 // Collect Pokemon data first to avoid borrow checker issues

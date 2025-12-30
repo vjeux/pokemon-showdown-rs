@@ -49,6 +49,6 @@ impl Battle {
     //
     pub fn show_open_team_sheets(&mut self, _side_idx: Option<usize>) {
         // In the full implementation, this would reveal team sheets
-        self.add_log("-message", &["Team sheets revealed"]);
+        self.add("-message", &["Team sheets revealed".into()]);
     }
 }

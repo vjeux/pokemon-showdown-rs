@@ -187,12 +187,12 @@ impl Battle {
                         // JS: Special effect handling (bellydrum, angerpoint, zpower, etc.)
                         // For now, simplified logging
                         if let Some(eff) = effect {
-                            self.add_log(
+                            self.add(
                                 msg,
-                                &[&pokemon_name, stat, &boost_str, &format!("[from] {}", eff)],
+                                &[pokemon_name.as_str().into(), (*stat).into(), boost_str.as_str().into(), format!("[from] {}", eff).into()],
                             );
                         } else {
-                            self.add_log(msg, &[&pokemon_name, stat, &boost_str]);
+                            self.add(msg, &[pokemon_name.as_str().into(), (*stat).into(), boost_str.as_str().into()]);
                         }
 
                         // JS: this.runEvent('AfterEachBoost', target, source, effect, currentBoost);

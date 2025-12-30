@@ -27,12 +27,12 @@ impl Battle {
             self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
 
             let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-            self.add_log(
+            self.add(
                 "-damage",
                 &[
-                    &full_name,
-                    &format!("{}/{}", hp, maxhp),
-                    "[from] Stealth Rock",
+                    full_name.as_str().into(),
+                    format!("{}/{}", hp, maxhp).into(),
+                    "[from] Stealth Rock".into(),
                 ],
             );
         }
@@ -46,9 +46,9 @@ impl Battle {
                 self.sides[side_idx].pokemon[poke_idx].take_damage(damage);
 
                 let hp = self.sides[side_idx].pokemon[poke_idx].hp;
-                self.add_log(
+                self.add(
                     "-damage",
-                    &[&full_name, &format!("{}/{}", hp, maxhp), "[from] Spikes"],
+                    &[full_name.as_str().into(), format!("{}/{}", hp, maxhp).into(), "[from] Spikes".into()],
                 );
             }
         }
@@ -63,9 +63,9 @@ impl Battle {
             if is_poison {
                 // Poison type absorbs Toxic Spikes
                 self.sides[side_idx].remove_side_condition(&tspikes_id);
-                self.add_log(
+                self.add(
                     "-sideend",
-                    &[side_id, "Toxic Spikes", "[from] ability: Poison Touch"],
+                    &[side_id.into(), "Toxic Spikes".into(), "[from] ability: Poison Touch".into()],
                 ); // Generic message
             } else if !self.sides[side_idx].pokemon[poke_idx].status.is_empty() {
                 // Already has a status - can't be poisoned
@@ -79,7 +79,7 @@ impl Battle {
                 } else {
                     "poisoned"
                 };
-                self.add_log("-status", &[&full_name, status, "[from] Toxic Spikes"]);
+                self.add("-status", &[full_name.as_str().into(), status.into(), "[from] Toxic Spikes".into()]);
             }
         }
 
@@ -89,7 +89,7 @@ impl Battle {
             let current_spe = self.sides[side_idx].pokemon[poke_idx].boosts.spe;
             if current_spe > -6 {
                 self.sides[side_idx].pokemon[poke_idx].boosts.spe = (current_spe - 1).max(-6);
-                self.add_log("-boost", &[&full_name, "spe", "-1", "[from] Sticky Web"]);
+                self.add("-boost", &[full_name.as_str().into(), "spe".into(), "-1".into(), "[from] Sticky Web".into()]);
             }
         }
     }

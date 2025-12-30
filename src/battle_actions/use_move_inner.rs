@@ -453,15 +453,15 @@ pub fn use_move_inner(
     // }
     // this.battle.addMove('move', pokemon, movename, `${target}${attrs}`);
     let move_name = active_move.name.clone();
-    battle.add_log(
+    battle.add(
         "move",
         &[
-            &format!(
+            format!(
                 "{}: {}",
                 battle.sides[side_idx].id_str(),
                 battle.sides[side_idx].pokemon[poke_idx].name
-            ),
-            &move_name,
+            ).into(),
+            move_name.into(),
         ],
     );
 
@@ -570,15 +570,15 @@ pub fn use_move_inner(
                             Some(pokemon_pos),
                             Some("zpower"),
                         );
-                        battle.add_log(
+                        battle.add(
                             "-clearnegativeboost",
                             &[
-                                &format!(
+                                format!(
                                     "{}: {}",
                                     battle.sides[side_idx].id_str(),
                                     battle.sides[side_idx].pokemon[poke_idx].name
-                                ),
-                                "[zeffect]",
+                                ).into(),
+                                "[zeffect]".into(),
                             ],
                         );
                     }
@@ -608,7 +608,7 @@ pub fn use_move_inner(
     let mut target_pos = match target {
         Some(t) => t,
         None => {
-            battle.add_log("-notarget", &[]);
+            battle.add("-notarget", &[]);
             return false;
         }
     };

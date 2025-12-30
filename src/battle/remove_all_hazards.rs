@@ -21,7 +21,7 @@ impl Battle {
                     "stickyweb" => "Sticky Web",
                     _ => hazard_name,
                 };
-                self.add_log("-sideend", &[side_id, display_name]);
+                self.add("-sideend", &[side_id.into(), display_name.into()]);
             }
         }
     }

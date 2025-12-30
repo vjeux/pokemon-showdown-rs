@@ -372,11 +372,11 @@ impl Battle {
                                 self.sides[side_idx].pokemon_left = team_size;
                             }
                             let side_id = format!("p{}", side_idx + 1);
-                            self.add_log("teamsize", &[&side_id, &team_size.to_string()]);
+                            self.add("teamsize", &[side_id.into(), team_size.to_string().into()]);
                         }
 
                         // JS: this.add('start');
-                        self.add_log("start", &[]);
+                        self.add("start", &[]);
 
                         // TODO: Zacian/Zamazenta forme changes (requires species transformation logic)
                         // JS: Change Zacian/Zamazenta into their Crowned formes

@@ -63,18 +63,18 @@ impl Battle {
         self.winner = winner_name.clone();
 
         // JavaScript: this.add('');
-        self.add_log("", &[]);
+        self.add("", &[]);
 
         // JavaScript: if (side?.allySide) { this.add('win', side.name + ' & ' + side.allySide.name); }
         if let (Some(ref name), Some(ref ally)) = (&winner_name, &ally_name) {
             let combined = format!("{} & {}", name, ally);
-            self.add_log("win", &[&combined]);
+            self.add("win", &[combined.into()]);
         } else if let Some(ref name) = winner_name {
             // JavaScript: else if (side) { this.add('win', side.name); }
-            self.add_log("win", &[name]);
+            self.add("win", &[name.as_str().into()]);
         } else {
             // JavaScript: else { this.add('tie'); }
-            self.add_log("tie", &[]);
+            self.add("tie", &[]);
         }
 
         // JavaScript: this.ended = true;

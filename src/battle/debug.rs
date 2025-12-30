@@ -17,7 +17,7 @@ impl Battle {
     //
     pub fn debug(&mut self, activity: &str) {
         if self.debug_mode {
-            self.add_log("debug", &[activity]);
+            self.add("debug", &[activity.into()]);
         }
     }
 }

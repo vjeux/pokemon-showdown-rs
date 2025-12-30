@@ -8,9 +8,9 @@ impl Battle {
     /// Equivalent to TypeScript runAction() case 'start' (battle.ts:2629-2700)
     /// Note: In TS this is part of runAction switch statement, extracted to separate method in Rust
     pub fn start_battle(&mut self) {
-        self.add_log("start", &[]);
+        self.add("start", &[]);
         self.turn = 1;
-        self.add_log("turn", &[&self.turn.to_string()]);
+        self.add("turn", &[self.turn.to_string().into()]);
 
         // Collect switch-in operations first to avoid borrow conflict
         let num_sides = self.sides.len();

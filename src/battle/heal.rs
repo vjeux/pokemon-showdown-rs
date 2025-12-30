@@ -162,25 +162,25 @@ impl Battle {
             // Special case handling
             match effect_id {
                 "leechseed" | "rest" => {
-                    self.add_log("-heal", &[&target_str, &health_str, "[silent]"]);
+                    self.add("-heal", &[target_str.as_str().into(), health_str.as_str().into(), "[silent]".into()]);
                 }
                 "drain" => {
                     if let Some(src) = source {
                         let src_str = format!("p{}a", src.0 + 1);
                         let of_str = format!("[of] {}", src_str);
-                        self.add_log(
+                        self.add(
                             "-heal",
-                            &[&target_str, &health_str, "[from] drain", &of_str],
+                            &[target_str.as_str().into(), health_str.as_str().into(), "[from] drain".into(), of_str.into()],
                         );
                     } else {
-                        self.add_log("-heal", &[&target_str, &health_str, "[from] drain"]);
+                        self.add("-heal", &[target_str.as_str().into(), health_str.as_str().into(), "[from] drain".into()]);
                     }
                 }
                 "wish" => {
                     // Don't add any log for wish
                 }
                 "zpower" => {
-                    self.add_log("-heal", &[&target_str, &health_str, "[zeffect]"]);
+                    self.add("-heal", &[target_str.as_str().into(), health_str.as_str().into(), "[zeffect]".into()]);
                 }
                 "" => {
                     // No effect - no log
@@ -192,17 +192,17 @@ impl Battle {
 
                     if is_move {
                         // Move effects: just show heal without [from] tag
-                        self.add_log("-heal", &[&target_str, &health_str]);
+                        self.add("-heal", &[target_str.as_str().into(), health_str.as_str().into()]);
                     } else if let Some(src) = source {
                         // Non-move effects with source: show [from] effect [of] source
                         let src_str = format!("p{}a", src.0 + 1);
                         let from_str = format!("[from] {}", effect_id);
                         let of_str = format!("[of] {}", src_str);
-                        self.add_log("-heal", &[&target_str, &health_str, &from_str, &of_str]);
+                        self.add("-heal", &[target_str.as_str().into(), health_str.as_str().into(), from_str.into(), of_str.into()]);
                     } else {
                         // Non-move effects without source: show [from] effect
                         let from_str = format!("[from] {}", effect_id);
-                        self.add_log("-heal", &[&target_str, &health_str, &from_str]);
+                        self.add("-heal", &[target_str.as_str().into(), health_str.as_str().into(), from_str.into()]);
                     }
                 }
             }

@@ -532,8 +532,8 @@ impl Battle {
             }
         }
 
-        self.add_log("", &[]);
-        self.add_log("turn", &[&self.turn.to_string()]);
+        self.add("", &[]);
+        self.add("turn", &[self.turn.to_string().into()]);
 
         // JS: this.makeRequest('move');
         eprintln!("DEBUG [end_turn]: Calling make_request(Move)");

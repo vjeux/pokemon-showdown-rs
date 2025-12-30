@@ -305,7 +305,7 @@ impl Battle {
 
         // Check stack depth
         if self.event_depth >= 8 {
-            self.add_log("message", &["STACK LIMIT EXCEEDED"]);
+            self.add("message", &["STACK LIMIT EXCEEDED".into()]);
             return None;
         }
 

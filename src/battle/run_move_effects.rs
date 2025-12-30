@@ -87,11 +87,11 @@ impl Battle {
 
                     // Log healing after releasing mutable borrow
                     if current_hp > 0 {
-                        self.add_log(
+                        self.add(
                             "-heal",
                             &[
-                                &format!("p{}a", target_pos.0 + 1),
-                                &format!("{}/{}", current_hp, max_hp),
+                                format!("p{}a", target_pos.0 + 1).into(),
+                                format!("{}/{}", current_hp, max_hp).into(),
                             ],
                         );
                     }
@@ -105,7 +105,7 @@ impl Battle {
                         // Simple status application (full version would check immunity)
                         if pokemon.status.is_empty() {
                             pokemon.status = crate::dex_data::ID::new(status);
-                            self.add_log("-status", &[&format!("p{}a", target_pos.0 + 1), status]);
+                            self.add("-status", &[format!("p{}a", target_pos.0 + 1).into(), status.as_str().into()]);
                         }
                     }
                 }

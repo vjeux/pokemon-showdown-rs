@@ -228,7 +228,7 @@ impl Battle {
                                 String::new()
                             };
                             if !foe_ident.is_empty() {
-                                self.add_log("-activate", &[&foe_ident, "Substitute", "[damage]"]);
+                                self.add("-activate", &[foe_ident.into(), "Substitute".into(), "[damage]".into()]);
                             }
                         }
                     }
@@ -291,13 +291,13 @@ impl Battle {
             // Special case handling
             match effect_id {
                 "strugglerecoil" => {
-                    self.add_log("-damage", &[&target_str, &health_str, "[from] recoil"]);
+                    self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), "[from] recoil".into()]);
                 }
                 "confusion" => {
-                    self.add_log("-damage", &[&target_str, &health_str, "[from] confusion"]);
+                    self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), "[from] confusion".into()]);
                 }
                 _ => {
-                    self.add_log("-damage", &[&target_str, &health_str]);
+                    self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into()]);
                 }
             }
         }

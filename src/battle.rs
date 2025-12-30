@@ -31,7 +31,6 @@ mod start;
 mod start_battle;
 mod switch_in;
 mod each_event_internal;
-mod add_log;
 mod random;
 mod random_range;
 mod random_chance;

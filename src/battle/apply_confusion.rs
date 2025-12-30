@@ -26,6 +26,6 @@ impl Battle {
             let pokemon = &self.sides[side_idx].pokemon[poke_idx];
             format!("{}: {}", side_id, pokemon.name)
         };
-        self.add_log("-start", &[&name, "confusion"]);
+        self.add("-start", &[name.into(), "confusion".into()]);
     }
 }

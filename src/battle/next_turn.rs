@@ -12,7 +12,7 @@ impl Battle {
         }
 
         self.turn += 1;
-        self.add_log("turn", &[&self.turn.to_string()]);
+        self.add("turn", &[self.turn.to_string().into()]);
 
         // Check if any side has fainted active Pokemon that need to be replaced
         let mut needs_switch = false;

@@ -153,18 +153,18 @@ impl Battle {
         }
 
         // JS: this.add('gen', this.gen);
-        self.add_log("gen", &[&self.gen.to_string()]);
+        self.add("gen", &[self.gen.to_string().into()]);
 
         // JS: this.add('tier', format.name);
         let format_name = self.format_name.clone();
-        self.add_log("tier", &[&format_name]);
+        self.add("tier", &[format_name.into()]);
 
         // JS: if (this.rated) { ... }
         if let Some(ref rated) = self.rated.clone() {
             // JS: if (this.rated === 'Rated battle') this.rated = true;
             let rated_str = if rated == "Rated battle" { "" } else { rated };
             // JS: this.add('rated', typeof this.rated === 'string' ? this.rated : '');
-            self.add_log("rated", &[rated_str]);
+            self.add("rated", &[rated_str.into()]);
         }
 
         // JS: format.onBegin?.call(this);
@@ -227,7 +227,7 @@ impl Battle {
                     let open = if custom_rules.len() <= 5 { " open" } else { "" };
                     // JS: this.add(`raw|<div class="infobox"><details class="readmore"${open}><summary><strong>${format.customRules.length} custom rule${plural}:</strong></summary> ${format.customRules.join(', ')}</details></div>`);
                     let rules_joined = custom_rules.join(", ");
-                    self.add_log("raw", &[&format!("<div class=\"infobox\"><details class=\"readmore\"{open}><summary><strong>{} custom rule{plural}:</strong></summary> {rules_joined}</details></div>", custom_rules.len())]);
+                    self.add("raw", &[format!("<div class=\"infobox\"><details class=\"readmore\"{open}><summary><strong>{} custom rule{plural}:</strong></summary> {rules_joined}</details></div>", custom_rules.len()).into()]);
                 }
             }
         }

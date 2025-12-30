@@ -164,7 +164,7 @@ impl Battle {
                     let pokemon = &self.sides[side_idx].pokemon[poke_idx];
                     format!("{}: {}", side_id, pokemon.name)
                 };
-                self.add_log("faint", &[&pokemon_name]);
+                self.add("faint", &[pokemon_name.into()]);
 
                 // JS: if (pokemon.side.pokemonLeft) pokemon.side.pokemonLeft--;
                 if self.sides[side_idx].pokemon_left > 0 {

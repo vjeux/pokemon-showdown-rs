@@ -60,6 +60,6 @@ impl Battle {
         let name = pokemon.name.clone();
         let side_id = self.sides[side_idx].id_str();
         let full_name = format!("{}: {}", side_id, name);
-        self.add_log("-status", &[&full_name, status]);
+        self.add("-status", &[full_name.into(), status.into()]);
     }
 }

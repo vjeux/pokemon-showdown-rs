@@ -116,9 +116,9 @@ impl Battle {
 
         // JS: if (this.turn >= 1000) { this.add('message', ...); this.tie(); return true; }
         if self.turn >= 1000 {
-            self.add_log(
+            self.add(
                 "message",
-                &["It is turn 1000. You have hit the turn limit!"],
+                &["It is turn 1000. You have hit the turn limit!".into()],
             );
             self.tie();
             return true;
@@ -136,12 +136,12 @@ impl Battle {
             } else {
                 format!("{} turns", turns_left)
             };
-            self.add_log(
+            self.add(
                 "bigerror",
-                &[&format!(
+                &[format!(
                     "You will auto-tie if the battle doesn't end in {} (on turn 1000).",
                     turns_text
-                )],
+                ).into()],
             );
         }
 

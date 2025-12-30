@@ -31,7 +31,7 @@ impl Battle {
         // JS: this.battle.add('-curestatus', this, this.status, silent ? '[silent]' : '[msg]');
         let side_id = self.sides[side_idx].id_str();
         let full_name = format!("{}: {}", side_id, name);
-        self.add_log("-curestatus", &[&full_name, &status, "[msg]"]);
+        self.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
 
         // JS: if (this.status === 'slp' && this.removeVolatile('nightmare')) { ... }
         if status == "slp" {
@@ -46,7 +46,7 @@ impl Battle {
             };
 
             if removed_nightmare {
-                self.add_log("-end", &[&full_name, "Nightmare", "[silent]"]);
+                self.add("-end", &[full_name.as_str().into(), "Nightmare".into(), "[silent]".into()]);
             }
         }
 

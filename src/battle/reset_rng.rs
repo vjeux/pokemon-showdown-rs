@@ -15,6 +15,6 @@ impl Battle {
         let new_seed = seed.unwrap_or_else(|| self.prng_seed.clone());
         self.prng = PRNG::new(Some(new_seed.clone()));
         self.prng_seed = new_seed;
-        self.add_log("message", &["The battle's RNG was reset."]);
+        self.add("message", &["The battle's RNG was reset.".into()]);
     }
 }

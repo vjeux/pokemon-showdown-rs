@@ -327,29 +327,29 @@ impl Battle {
                         };
 
                         let from_str = format!("[from] {}", source_effect_name);
-                        self.add_log(
+                        self.add(
                             "-damage",
-                            &[&target_str, &health_str, &from_str, "[partiallytrapped]"],
+                            &[target_str.as_str().into(), health_str.as_str().into(), from_str.into(), "[partiallytrapped]".into()],
                         );
                     }
                     "powder" => {
-                        self.add_log("-damage", &[&target_str, &health_str, "[silent]"]);
+                        self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), "[silent]".into()]);
                     }
                     "confused" => {
-                        self.add_log("-damage", &[&target_str, &health_str, "[from] confusion"]);
+                        self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), "[from] confusion".into()]);
                     }
                     _ => {
                         // Default damage log
                         if effect.is_none() {
-                            self.add_log("-damage", &[&target_str, &health_str]);
+                            self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into()]);
                         } else if let Some(src) = source {
                             let src_str = format!("p{}a", src.0 + 1);
                             let from_str = format!("[from] {}", effect_id);
                             let of_str = format!("[of] {}", src_str);
-                            self.add_log("-damage", &[&target_str, &health_str, &from_str, &of_str]);
+                            self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), from_str.into(), of_str.into()]);
                         } else {
                             let from_str = format!("[from] {}", effect_id);
-                            self.add_log("-damage", &[&target_str, &health_str, &from_str]);
+                            self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), from_str.into()]);
                         }
                     }
                 }

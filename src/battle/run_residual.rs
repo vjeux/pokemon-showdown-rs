@@ -6,7 +6,7 @@ impl Battle {
     /// Equivalent to battle.ts case 'residual' (battle.ts:2810-2817)
     pub fn run_residual(&mut self) {
         // this.add('');
-        self.add_log("", &[]);
+        self.add("", &[]);
 
         // this.clearActiveMove(true);
         self.clear_active_move(true);
@@ -23,7 +23,7 @@ impl Battle {
 
         // if (!this.ended) this.add('upkeep');
         if !self.ended {
-            self.add_log("upkeep", &[]);
+            self.add("upkeep", &[]);
         }
     }
 }
