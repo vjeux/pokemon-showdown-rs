@@ -935,6 +935,42 @@ impl Battle {
             );
         }
 
+        // Check for onDamage event
+        if event_id == "onDamage" {
+            return matches!(move_id, "falseswipe" | "holdback");
+        }
+
+        // Check for onEffectiveness event
+        if event_id == "onEffectiveness" {
+            return matches!(move_id, "flyingpress" | "freezedry" | "thousandarrows");
+        }
+
+        // Check for onModifyType event
+        if event_id == "onModifyType" {
+            return matches!(
+                move_id,
+                "aurawheel" | "hiddenpower" | "ivycudgel" | "judgment" | "multiattack"
+                | "naturalgift" | "ragingbull" | "revelationdance" | "technoblast"
+                | "terablast" | "terastarstorm" | "terrainpulse" | "weatherball"
+            );
+        }
+
+        // Check for onTryHit event
+        if event_id == "onTryHit" {
+            return matches!(
+                move_id,
+                "autotomize" | "brickbreak" | "celebrate" | "clangoroussoul" | "curse"
+                | "disable" | "electrify" | "entrainment" | "filletaway" | "foresight"
+                | "gastroacid" | "grassknot" | "happyhour" | "healingwish" | "heatcrash"
+                | "heavyslam" | "helpinghand" | "lockon" | "lowkick" | "lunardance"
+                | "mefirst" | "mindreader" | "miracleeye" | "mirrormove" | "naturepower"
+                | "odorsleuth" | "pollenpuff" | "poltergeist" | "psychicfangs" | "psychoshift"
+                | "pursuit" | "ragingbull" | "revivalblessing" | "roleplay" | "shedtail"
+                | "simplebeam" | "skillswap" | "skydrop" | "splash" | "spotlight"
+                | "substitute" | "uproar" | "worryseed" | "yawn"
+            );
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         false
