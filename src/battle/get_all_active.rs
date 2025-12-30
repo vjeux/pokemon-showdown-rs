@@ -23,7 +23,8 @@ impl Battle {
         for (side_idx, side) in self.sides.iter().enumerate() {
             for poke_idx in side.active.iter().flatten() {
                 if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                    if include_fainted || !pokemon.is_fainted() {
+                    // JS: if (pokemon && (includeFainted || !pokemon.fainted))
+                    if include_fainted || !pokemon.fainted {
                         result.push((side_idx, *poke_idx));
                     }
                 }
