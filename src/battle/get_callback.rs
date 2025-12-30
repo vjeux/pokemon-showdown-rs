@@ -22,9 +22,17 @@ impl Battle {
     // 		return callback;
     // 	}
     //
+    // TODO: STUB - Architectural difference
+    // TypeScript uses dynamic callback lookup: effect[callbackName]
+    // Rust uses static dispatch through dispatch_single_event() → handle_ability_event, handle_item_event, etc.
+    //
+    // IMPORTANT: The special logic for Gen 5+ must be implemented in handler functions:
+    // - For target=Pokemon, gen>=5, event='onSwitchIn', effect=Ability/Item:
+    //   Use 'onStart' callback instead of 'onSwitchIn' callback
+    // - This logic should be in handle_ability_event.rs and handle_item_event.rs
+    //
     pub fn get_callback(&self, _effect_id: &ID, _event_id: &str) -> Option<String> {
-        // In the full implementation, this would look up event handlers
-        // For now, return None
+        // Stub - callback lookup done through static dispatch in Rust
         None
     }
 }

@@ -30,6 +30,13 @@ impl Battle {
     // 		if (updated) side.emitRequest(side.activeRequest!, true);
     // 	}
     //
+    // TODO: INCOMPLETE IMPLEMENTATION - Missing Side methods
+    // This is a simplified placeholder. To match TypeScript exactly, need to implement:
+    // 1. Side.emitChoiceError() - emit error message to player
+    // 2. Side.updateRequestForPokemon() - update request for specific Pokemon
+    // 3. Side.updateDisabledRequest() - update disabled moves in request
+    // 4. Side.emitRequest() - send updated request to player
+    // The current implementation only checks cantUndo and clears choice.
     pub fn undo_choice(&mut self, side_id: SideID) -> bool {
         let side_idx = side_id.index();
 

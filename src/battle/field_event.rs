@@ -97,7 +97,25 @@ impl Battle {
     // 		}
     // 	}
     //
+    // TODO: EXTREMELY INCOMPLETE IMPLEMENTATION - ~5% of TypeScript logic
+    // Current implementation only runs events on weather/terrain/pseudo-weather
+    // Missing from TypeScript version (battle.ts:484-568, 85 lines):
+    // 1. Find handlers from field, sides, and Pokemon (findFieldEventHandlers, findSideEventHandlers, findPokemonEventHandlers, findBattleEventHandlers)
+    // 2. Handle targets parameter filtering
+    // 3. Handle SwitchIn special case (onAnySwitchIn)
+    // 4. Sort handlers by speed (speedSort)
+    // 5. Check fainted Pokemon (skip unless slot condition)
+    // 6. Handle Residual event duration decrements and end callbacks
+    // 7. Verify effect state still exists (handle removed effects like Toxic Spikes absorption)
+    // 8. Determine handler event ID (Field/Side/normal)
+    // 9. Call singleEvent with callback
+    // 10. Call faintMessages and check if battle ended
+    //
+    // Helper methods exist: find_field_event_handlers.rs, find_side_event_handlers.rs, etc.
+    // This needs FULL reimplementation to match TypeScript 1-to-1.
+    //
     pub fn field_event(&mut self, event_id: &str) {
+        // SIMPLIFIED VERSION - only handles weather/terrain/pseudo-weather
         // Run on weather
         if !self.field.weather.is_empty() {
             let weather_id = self.field.weather.clone();
