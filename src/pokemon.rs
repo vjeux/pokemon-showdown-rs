@@ -134,8 +134,6 @@ mod adjacent_foes_stub;
 mod clear_status;
 mod get_move_hit_data;
 mod get_move_targets_stub;
-mod create_test_set;
-pub use create_test_set::create_test_set;
 
 /// A Pokemon's move slot
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -408,7 +406,16 @@ mod tests {
 
     #[test]
     fn test_pokemon_creation() {
-        let set = create_test_set();
+        let set = PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            item: "Light Ball".to_string(),
+            ability: "Static".to_string(),
+            moves: vec!["Thunderbolt".to_string(), "Volt Tackle".to_string()],
+            level: 50,
+            gender: Gender::Male,
+            ..Default::default()
+        };
         let pokemon = Pokemon::new(&set, 0, 0);
 
         assert_eq!(pokemon.name, "Pikachu");
@@ -419,7 +426,11 @@ mod tests {
 
     #[test]
     fn test_damage_and_heal() {
-        let set = create_test_set();
+        let set = PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            ..Default::default()
+        };
         let mut pokemon = Pokemon::new(&set, 0, 0);
         pokemon.hp = 100;
         pokemon.maxhp = 100;
@@ -435,7 +446,11 @@ mod tests {
 
     #[test]
     fn test_status() {
-        let set = create_test_set();
+        let set = PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            ..Default::default()
+        };
         let mut pokemon = Pokemon::new(&set, 0, 0);
 
         assert!(pokemon.set_status(ID::new("par")));
@@ -448,7 +463,11 @@ mod tests {
 
     #[test]
     fn test_volatiles() {
-        let set = create_test_set();
+        let set = PokemonSet {
+            name: "Pikachu".to_string(),
+            species: "Pikachu".to_string(),
+            ..Default::default()
+        };
         let mut pokemon = Pokemon::new(&set, 0, 0);
 
         let confusion = ID::new("confusion");
