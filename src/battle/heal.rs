@@ -141,7 +141,72 @@ impl Battle {
         };
 
         // Add heal log message
-        self.add_heal_log(target_pos, source, effect);
+        // Inline logic from TypeScript battle.ts:2247-2270
+        {
+            let (side_idx, poke_idx) = target_pos;
+
+            // Get target health string
+            let health_str = if let Some(side) = self.sides.get(side_idx) {
+                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                    format!("{}/{}", pokemon.hp, pokemon.maxhp)
+                } else {
+                    return None;
+                }
+            } else {
+                return None;
+            };
+
+            let target_str = format!("p{}a", side_idx + 1);
+            let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+
+            // Special case handling
+            match effect_id {
+                "leechseed" | "rest" => {
+                    self.add_log("-heal", &[&target_str, &health_str, "[silent]"]);
+                }
+                "drain" => {
+                    if let Some(src) = source {
+                        let src_str = format!("p{}a", src.0 + 1);
+                        let of_str = format!("[of] {}", src_str);
+                        self.add_log(
+                            "-heal",
+                            &[&target_str, &health_str, "[from] drain", &of_str],
+                        );
+                    } else {
+                        self.add_log("-heal", &[&target_str, &health_str, "[from] drain"]);
+                    }
+                }
+                "wish" => {
+                    // Don't add any log for wish
+                }
+                "zpower" => {
+                    self.add_log("-heal", &[&target_str, &health_str, "[zeffect]"]);
+                }
+                "" => {
+                    // No effect - no log
+                }
+                _ => {
+                    // Default heal log
+                    // Check if effect type is Move
+                    let is_move = effect.is_some_and(|e| self.get_effect_type(e) == "Move");
+
+                    if is_move {
+                        // Move effects: just show heal without [from] tag
+                        self.add_log("-heal", &[&target_str, &health_str]);
+                    } else if let Some(src) = source {
+                        // Non-move effects with source: show [from] effect [of] source
+                        let src_str = format!("p{}a", src.0 + 1);
+                        let from_str = format!("[from] {}", effect_id);
+                        let of_str = format!("[of] {}", src_str);
+                        self.add_log("-heal", &[&target_str, &health_str, &from_str, &of_str]);
+                    } else {
+                        // Non-move effects without source: show [from] effect
+                        let from_str = format!("[from] {}", effect_id);
+                        self.add_log("-heal", &[&target_str, &health_str, &from_str]);
+                    }
+                }
+            }
+        }
 
         // Fire Heal event
         // JavaScript: this.runEvent('Heal', target, source, effect, finalDamage);

@@ -112,7 +112,6 @@ mod update_speed;
 mod damage;
 mod direct_damage;
 mod heal;
-mod add_heal_log;
 mod boost;
 mod boost_stats;
 mod faint;
