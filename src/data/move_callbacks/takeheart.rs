@@ -22,7 +22,29 @@ pub fn on_hit(
     let boost_success = battle.boost(&[("spa", 1), ("spd", 1)], pokemon, None, None);
 
     // return pokemon.cureStatus() || success;
-    let cure_success = battle.cure_status(pokemon);
+    let (pokemon_ident, pokemon_name) = {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (pokemon_pokemon.get_slot(), pokemon_pokemon.name.clone())
+    };
+
+    let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    let cure_status_result = pokemon_mut.cure_status();
+    let cure_success = cure_status_result.is_some();
+
+    if let Some((status, removed_nightmare)) = cure_status_result {
+        let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
+        battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
+        if removed_nightmare {
+            battle.add("-end", &[full_name.as_str().into(), "Nightmare".into(), "[silent]".into()]);
+        }
+    }
 
     if cure_success || boost_success {
         EventResult::Continue

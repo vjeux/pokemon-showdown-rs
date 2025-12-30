@@ -89,16 +89,27 @@ pub fn on_hit(
     };
 
     // if (target.status === 'par') target.cureStatus();
-    let has_paralysis = {
+    let (has_paralysis, target_ident, target_name) = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.status == ID::from("par")
+        (target_pokemon.status == ID::from("par"), target_pokemon.get_slot(), target_pokemon.name.clone())
     };
 
     if has_paralysis {
-        battle.cure_status(target);
+        let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        if let Some((status, removed_nightmare)) = target_mut.cure_status() {
+            let full_name = format!("{}: {}", target_ident, target_name);
+            battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
+            if removed_nightmare {
+                battle.add("-end", &[full_name.as_str().into(), "Nightmare".into(), "[silent]".into()]);
+            }
+        }
     }
 
     EventResult::Continue

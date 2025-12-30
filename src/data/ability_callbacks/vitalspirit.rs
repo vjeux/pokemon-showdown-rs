@@ -14,12 +14,12 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    let (is_asleep, pokemon_ident) = {
+    let (is_asleep, pokemon_ident, pokemon_name) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.status == "slp".into(), pokemon.get_slot())
+        (pokemon.status == "slp".into(), pokemon.get_slot(), pokemon.name.clone())
     };
 
     if is_asleep {
@@ -30,7 +30,20 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
                 "ability: Vital Spirit".into(),
             ],
         );
-        battle.cure_status(pokemon_pos);
+
+        // pokemon.cureStatus()
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        if let Some((status, removed_nightmare)) = pokemon_mut.cure_status() {
+            let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
+            battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
+            if removed_nightmare {
+                battle.add("-end", &[full_name.as_str().into(), "Nightmare".into(), "[silent]".into()]);
+            }
+        }
     }
 
     EventResult::Continue

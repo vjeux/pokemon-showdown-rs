@@ -97,12 +97,12 @@ pub fn on_after_move(
             continue;
         }
 
-        let (is_active, has_burn) = {
+        let (is_active, has_burn, pokemon_ident, pokemon_name) = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => continue,
             };
-            (pokemon.is_active, pokemon.status == ID::from("brn"))
+            (pokemon.is_active, pokemon.status == ID::from("brn"), pokemon.get_slot(), pokemon.name.clone())
         };
 
         if !is_active {
@@ -118,7 +118,18 @@ pub fn on_after_move(
         };
 
         if (removed_volatile || number_targets > 1) && has_burn {
-            battle.cure_status(pokemon_pos);
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => continue,
+            };
+
+            if let Some((status, removed_nightmare)) = pokemon_mut.cure_status() {
+                let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
+                battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
+                if removed_nightmare {
+                    battle.add("-end", &[full_name.as_str().into(), "Nightmare".into(), "[silent]".into()]);
+                }
+            }
         }
     }
 

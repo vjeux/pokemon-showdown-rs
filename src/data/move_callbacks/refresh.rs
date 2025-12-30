@@ -21,12 +21,12 @@ pub fn on_hit(
     let pokemon = pokemon_pos;
 
     // if (['', 'slp', 'frz'].includes(pokemon.status)) return false;
-    let status = {
+    let (status, pokemon_ident, pokemon_name) = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.status.clone()
+        (pokemon_pokemon.status.clone(), pokemon_pokemon.get_slot(), pokemon_pokemon.name.clone())
     };
 
     if status == ID::from("") || status == ID::from("slp") || status == ID::from("frz") {
@@ -34,7 +34,18 @@ pub fn on_hit(
     }
 
     // pokemon.cureStatus();
-    battle.cure_status(pokemon);
+    let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    if let Some((status, removed_nightmare)) = pokemon_mut.cure_status() {
+        let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
+        battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
+        if removed_nightmare {
+            battle.add("-end", &[full_name.as_str().into(), "Nightmare".into(), "[silent]".into()]);
+        }
+    }
 
     EventResult::Continue
 }

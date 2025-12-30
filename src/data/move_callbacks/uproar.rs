@@ -42,32 +42,54 @@ pub fn on_try_hit(
     // for (const [i, allyActive] of activeTeam.entries())
     for slot_index in active_team {
         // if (allyActive && allyActive.status === 'slp') allyActive.cureStatus();
-        let has_sleep = {
+        let (has_sleep, pokemon_ident, pokemon_name) = {
             let pokemon = match battle.pokemon_at(target_side_index, slot_index) {
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.status.as_str() == "slp"
+            (pokemon.status.as_str() == "slp", pokemon.get_slot(), pokemon.name.clone())
         };
 
         if has_sleep {
-            battle.cure_status((target_side_index, slot_index));
+            let pokemon_mut = match battle.pokemon_at_mut(target_side_index, slot_index) {
+                Some(p) => p,
+                None => continue,
+            };
+
+            if let Some((status, removed_nightmare)) = pokemon_mut.cure_status() {
+                let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
+                battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
+                if removed_nightmare {
+                    battle.add("-end", &[full_name.as_str().into(), "Nightmare".into(), "[silent]".into()]);
+                }
+            }
         }
     }
 
     // Iterate through foe active team
     for slot_index in foe_active_team {
         // if (foeActive && foeActive.status === 'slp') foeActive.cureStatus();
-        let has_sleep = {
+        let (has_sleep, pokemon_ident, pokemon_name) = {
             let pokemon = match battle.pokemon_at(foe_side_index, slot_index) {
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.status.as_str() == "slp"
+            (pokemon.status.as_str() == "slp", pokemon.get_slot(), pokemon.name.clone())
         };
 
         if has_sleep {
-            battle.cure_status((foe_side_index, slot_index));
+            let pokemon_mut = match battle.pokemon_at_mut(foe_side_index, slot_index) {
+                Some(p) => p,
+                None => continue,
+            };
+
+            if let Some((status, removed_nightmare)) = pokemon_mut.cure_status() {
+                let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
+                battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
+                if removed_nightmare {
+                    battle.add("-end", &[full_name.as_str().into(), "Nightmare".into(), "[silent]".into()]);
+                }
+            }
         }
     }
 

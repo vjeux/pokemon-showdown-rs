@@ -69,7 +69,6 @@ mod get_move_priority;
 mod get_multi_hit_count;
 mod get_move_accuracy;
 mod remove_all_hazards;
-mod cure_status;
 mod run_residual;
 mod faint_messages;
 mod next_turn;

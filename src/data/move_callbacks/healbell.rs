@@ -140,15 +140,25 @@ pub fn on_hit(
         }
 
         // if (ally.cureStatus()) success = true;
-        let cured = {
-            let ally = match battle.pokemon_at_mut(ally_pos.0, ally_pos.1) {
+        let (ally_ident, ally_name) = {
+            let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
                 Some(p) => p,
                 None => continue,
             };
-            ally.cure_status()
+            (ally.get_slot(), ally.name.clone())
         };
 
-        if cured {
+        let ally_mut = match battle.pokemon_at_mut(ally_pos.0, ally_pos.1) {
+            Some(p) => p,
+            None => continue,
+        };
+
+        if let Some((status, removed_nightmare)) = ally_mut.cure_status() {
+            let full_name = format!("{}: {}", ally_ident, ally_name);
+            battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
+            if removed_nightmare {
+                battle.add("-end", &[full_name.as_str().into(), "Nightmare".into(), "[silent]".into()]);
+            }
             success = true;
         }
     }
