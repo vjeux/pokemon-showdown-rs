@@ -1,5 +1,4 @@
 use crate::*;
-use crate::event_system::EffectState;
 
 impl Pokemon {
 
@@ -10,9 +9,7 @@ impl Pokemon {
     // 	}
     //
     pub fn clear_ability(&mut self) -> ID {
-        let old = self.ability.clone();
-        self.ability = ID::empty();
-        self.ability_state = EffectState::new(ID::empty());
-        old
+        // JS: return this.setAbility('');
+        self.set_ability(ID::empty())
     }
 }
