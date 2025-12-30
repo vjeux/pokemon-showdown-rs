@@ -46,7 +46,6 @@ mod entries_mut;
 mod find;
 mod remove_where;
 mod prioritize_action_ref;
-mod resolve_action;
 mod get_order_for_choice;
 mod splice;
 
