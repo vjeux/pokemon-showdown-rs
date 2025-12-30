@@ -204,6 +204,41 @@ impl Battle {
             );
         }
 
+        // Check for onAfterBoost event (after stat changes)
+        if event_id == "onAfterBoost" {
+            // Abilities with onAfterBoost callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "rattled");
+        }
+
+        // Check for onAfterEachBoost event (after each individual stat change)
+        if event_id == "onAfterEachBoost" {
+            // Abilities with onAfterEachBoost callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "competitive" | "defiant");
+        }
+
+        // Check for onTryBoost event (stat boost prevention)
+        if event_id == "onTryBoost" {
+            // Abilities with onTryBoost callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "bigpecks" | "clearbody" | "fullmetalbody" | "guarddog" | "hypercutter"
+                | "illuminate" | "innerfocus" | "keeneye" | "mindseye" | "mirrorarmor"
+                | "oblivious" | "owntempo" | "scrappy" | "whitesmoke"
+            );
+        }
+
+        // Check for onTryHeal event (healing prevention/modification)
+        if event_id == "onTryHeal" {
+            // Abilities with onTryHeal callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "ripen");
+        }
+
+        // Check for onDisableMove event (move disabling)
+        if event_id == "onDisableMove" {
+            // Abilities with onDisableMove callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "gorillatactics");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
@@ -239,6 +274,18 @@ impl Battle {
         if event_id == "onTryHit" {
             // Items with onTryHit callbacks (from item_callbacks/mod.rs dispatcher)
             return matches!(_item_id, "safetygoggles");
+        }
+
+        // Check for onAfterBoost event (after stat changes)
+        if event_id == "onAfterBoost" {
+            // Items with onAfterBoost callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "adrenalineorb" | "ejectpack");
+        }
+
+        // Check for onTryBoost event (stat boost prevention)
+        if event_id == "onTryBoost" {
+            // Items with onTryBoost callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "clearamulet");
         }
 
         // For other events, conservatively return false by default
