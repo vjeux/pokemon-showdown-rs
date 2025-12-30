@@ -1,0 +1,10 @@
+use crate::side::*;
+use crate::*;
+
+impl Side {
+
+    /// Check if a side condition is active
+    pub fn has_side_condition(&self, id: &ID) -> bool {
+        self.side_conditions.contains_key(id)
+    }
+}

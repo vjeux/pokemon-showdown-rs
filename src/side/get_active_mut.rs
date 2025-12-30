@@ -1,0 +1,14 @@
+use crate::side::*;
+use crate::*;
+
+impl Side {
+
+    /// Get a mutable reference to the active Pokemon in a slot
+    pub fn get_active_mut(&mut self, slot: usize) -> Option<&mut Pokemon> {
+        if let Some(Some(idx)) = self.active.get(slot) {
+            self.pokemon.get_mut(*idx)
+        } else {
+            None
+        }
+    }
+}
