@@ -291,12 +291,19 @@ impl Side {
     // 		return true;
     // 	}
     //
+    /// Note: This is a simplified stub. Full implementation requires Battle context.
+    /// TODO: Implement with battle.singleEvent, battle.runEvent, durationCallback
     pub fn add_side_condition(&mut self, id: ID, duration: Option<i32>) -> bool {
         if self.side_conditions.contains_key(&id) {
+            // TODO: Handle onSideRestart event
             return false;
         }
         let mut state = EffectState::new(id.clone());
         state.duration = duration;
+        // TODO: Call battle.init_effect_state()
+        // TODO: Call durationCallback if exists
+        // TODO: Fire SideStart event via battle.single_event()
+        // TODO: Fire SideConditionStart via battle.run_event()
         self.side_conditions.insert(id, state);
         true
     }
