@@ -44,12 +44,13 @@ impl Battle {
         // Examples: Intimidate, Trace, Download, etc.
         if event_id == "onAnySwitchIn" {
             // Only specific abilities have onAnySwitchIn
-            // For now, return false - this event is rare
             return matches!(ability_id, "intimidate" | "trace" | "download" | "frisk" | "forewarn" | "anticipation");
         }
 
-        // For other events, assume the ability handles it (will be filtered by actual handler)
-        true
+        // For other events, conservatively return false by default
+        // TODO: Implement proper callback checking by consulting ability data
+        // For now, this prevents collecting non-existent handlers
+        false
     }
 
     /// Check if an item has a callback for an event
@@ -59,19 +60,46 @@ impl Battle {
             return false;
         }
 
-        // For other events, assume items can handle it
-        true
+        // For other events, conservatively return false by default
+        // TODO: Implement proper callback checking by consulting item data
+        false
     }
 
     /// Check if a move has a callback for an event
-    fn move_has_callback(&self, _move_id: &str, event_id: &str) -> bool {
+    fn move_has_callback(&self, move_id: &str, event_id: &str) -> bool {
         // Moves don't have onAnySwitchIn
         if event_id == "onAnySwitchIn" {
             return false;
         }
 
-        // For other events, assume moves can handle it
-        true
+        // For BasePower event, check if move is in the dispatcher
+        if event_id == "BasePower" {
+            return matches!(
+                move_id,
+                "barbbarrage"
+                    | "brine"
+                    | "collisioncourse"
+                    | "electrodrift"
+                    | "expandingforce"
+                    | "facade"
+                    | "ficklebeam"
+                    | "fusionbolt"
+                    | "fusionflare"
+                    | "gravapple"
+                    | "knockoff"
+                    | "lashout"
+                    | "mistyexplosion"
+                    | "psyblade"
+                    | "retaliate"
+                    | "solarbeam"
+                    | "solarblade"
+                    | "venoshock"
+            );
+        }
+
+        // For other events, conservatively return false by default
+        // TODO: Implement proper callback checking for other events
+        false
     }
 
     /// Check if a condition has a callback for an event
@@ -81,8 +109,8 @@ impl Battle {
             return false;
         }
 
-        // For other events, assume conditions can handle it
-        true
+        // For other events, conservatively return false by default
+        false
     }
 
     /// Check if a species has a callback for an event
@@ -92,7 +120,7 @@ impl Battle {
             return false;
         }
 
-        // For other events, assume species can handle it
-        true
+        // For other events, conservatively return false by default
+        false
     }
 }

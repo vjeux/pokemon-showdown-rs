@@ -103,7 +103,7 @@ pub fn modify_damage(
     base_damage = battle.randomizer(base_damage);
 
     // Get source and target data for STAB and type effectiveness
-    let (source_types, target_types) = {
+    let (source_types, target_types, target_slot) = {
         let source_types = if let Some(side) = battle.sides.get(source_pos.0) {
             if let Some(pokemon) = side.pokemon.get(source_pos.1) {
                 pokemon.types.clone()
@@ -124,7 +124,17 @@ pub fn modify_damage(
             vec![]
         };
 
-        (source_types, target_types)
+        let target_slot = if let Some(side) = battle.sides.get(target_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                pokemon.get_slot()
+            } else {
+                String::new()
+            }
+        } else {
+            String::new()
+        };
+
+        (source_types, target_types, target_slot)
     };
 
     // if (type !== "???") {
@@ -160,10 +170,12 @@ pub fn modify_damage(
     // }
     let type_mod = battle.get_type_effectiveness_mod(&move_data.move_type, &target_types);
     if type_mod > 0 {
+        battle.add("-supereffective", &[Arg::String(target_slot.clone())]);
         for _ in 0..type_mod {
             base_damage *= 2;
         }
     } else if type_mod < 0 {
+        battle.add("-resisted", &[Arg::String(target_slot.clone())]);
         for _ in type_mod..0 {
             base_damage = battle.trunc(base_damage as f64 / 2.0, None) as i32;
         }
