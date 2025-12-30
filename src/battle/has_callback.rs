@@ -476,6 +476,97 @@ impl Battle {
             return matches!(ability_id, "symbiosis");
         }
 
+        // Check for onModifyAtk event (when Attack stat is calculated)
+        if event_id == "onModifyAtk" {
+            // Abilities with onModifyAtk callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "blaze" | "defeatist" | "dragonsmaw" | "gorillatactics" | "guts"
+                | "hugepower" | "hustle" | "orichalcumpulse" | "overgrow" | "purepower"
+                | "rockypayload" | "slowstart" | "stakeout" | "steelworker" | "swarm"
+                | "torrent" | "transistor" | "waterbubble"
+            );
+        }
+
+        // Check for onModifyDef event (when Defense stat is calculated)
+        if event_id == "onModifyDef" {
+            // Abilities with onModifyDef callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "furcoat" | "grasspelt" | "marvelscale");
+        }
+
+        // Check for onModifySpA event (when Sp. Atk stat is calculated)
+        if event_id == "onModifySpA" {
+            // Abilities with onModifySpA callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "blaze" | "defeatist" | "dragonsmaw" | "hadronengine" | "minus"
+                | "overgrow" | "plus" | "rockypayload" | "solarpower" | "stakeout"
+                | "steelworker" | "swarm" | "torrent" | "transistor" | "waterbubble"
+            );
+        }
+
+        // Check for onModifySpe event (when Speed stat is calculated)
+        if event_id == "onModifySpe" {
+            // Abilities with onModifySpe callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "chlorophyll" | "quickfeet" | "sandrush" | "slowstart" | "slushrush"
+                | "surgesurfer" | "swiftswim"
+            );
+        }
+
+        // Check for onModifyDamage event (when damage is being calculated)
+        if event_id == "onModifyDamage" {
+            // Abilities with onModifyDamage callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "neuroforce" | "sniper" | "tintedlens");
+        }
+
+        // Check for onModifyAccuracy event (when accuracy is being calculated)
+        if event_id == "onModifyAccuracy" {
+            // Abilities with onModifyAccuracy callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "sandveil" | "snowcloak" | "tangledfeet" | "wonderskin");
+        }
+
+        // Check for onEffectiveness event (when type effectiveness is calculated)
+        if event_id == "onEffectiveness" {
+            // Abilities with onEffectiveness callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "disguise" | "iceface");
+        }
+
+        // Check for onBeforeMove event (before a move is used)
+        if event_id == "onBeforeMove" {
+            // Abilities with onBeforeMove callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "gorillatactics" | "truant");
+        }
+
+        // Check for onPrepareHit event (when preparing to execute a move)
+        if event_id == "onPrepareHit" {
+            // Abilities with onPrepareHit callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "libero" | "parentalbond" | "protean");
+        }
+
+        // Check for onModifyType event (when move type is being modified)
+        if event_id == "onModifyType" {
+            // Abilities with onModifyType callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "aerilate" | "galvanize" | "liquidvoice" | "normalize" | "pixilate"
+                | "refrigerate"
+            );
+        }
+
+        // Check for onModifyWeight event (when weight is being calculated)
+        if event_id == "onModifyWeight" {
+            // Abilities with onModifyWeight callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "heavymetal" | "lightmetal");
+        }
+
+        // Check for onModifySTAB event (when STAB multiplier is calculated)
+        if event_id == "onModifySTAB" {
+            // Abilities with onModifySTAB callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "adaptability");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
