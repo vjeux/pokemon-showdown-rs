@@ -21,7 +21,6 @@ pub mod pokemon;
 pub mod prng;
 pub mod side;
 pub mod state;
-pub mod teams;
 
 // Re-export commonly used types for convenience
 pub use battle::{Arg, Battle, BattleOptions, PlayerOptions};
