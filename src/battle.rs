@@ -182,7 +182,6 @@ mod find_field_event_handlers;
 mod find_side_event_handlers;
 mod find_pokemon_event_handlers;
 mod get_type_effectiveness_mod;
-mod try_spread_move_hit;
 mod on_event;
 mod on_event_priority;
 mod run_custom_event_handlers;
