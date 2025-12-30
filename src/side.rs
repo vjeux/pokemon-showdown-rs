@@ -817,8 +817,50 @@ impl Side {
     // 		return index;
     // 	}
     //
-    pub fn get_choice_index(&self) -> usize {
-        self.choice.actions.len()
+    pub fn get_choice_index(&mut self, is_pass: bool) -> usize {
+        let mut index = self.choice.actions.len();
+
+        if !is_pass {
+            match self.request_state {
+                RequestState::Move => {
+                    // auto-pass for fainted Pokemon or those with 'commanding' volatile
+                    while index < self.active.len() {
+                        if let Some(Some(pokemon_idx)) = self.active.get(index) {
+                            if let Some(pokemon) = self.pokemon.get(*pokemon_idx) {
+                                use crate::dex_data::ID;
+                                let is_fainted = pokemon.is_fainted();
+                                let has_commanding = pokemon.volatiles.contains_key(&ID::from("commanding"));
+
+                                if is_fainted || has_commanding {
+                                    self.choose_pass();
+                                    index += 1;
+                                    continue;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+                RequestState::Switch => {
+                    // auto-pass for Pokemon without switchFlag
+                    while index < self.active.len() {
+                        if let Some(Some(pokemon_idx)) = self.active.get(index) {
+                            if let Some(pokemon) = self.pokemon.get(*pokemon_idx) {
+                                if !pokemon.switch_flag {
+                                    self.choose_pass();
+                                    index += 1;
+                                    continue;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        index
     }
 
     /// Choose pass action
@@ -853,7 +895,7 @@ impl Side {
     // 	}
     //
     pub fn choose_pass(&mut self) -> bool {
-        let index = self.get_choice_index();
+        let index = self.get_choice_index(true);
         if index >= self.active.len() {
             return false;
         }
@@ -999,7 +1041,7 @@ impl Side {
     // 	}
     //
     pub fn choose_switch(&mut self, slot: usize) -> Result<(), String> {
-        let index = self.get_choice_index();
+        let index = self.get_choice_index(false);
         if index >= self.active.len() {
             return Err("You sent more switches than needed".to_string());
         }
@@ -1339,7 +1381,7 @@ impl Side {
         max_move: Option<String>,
         terastallize: Option<String>,
     ) -> Result<(), String> {
-        let index = self.get_choice_index();
+        let index = self.get_choice_index(false);
         if index >= self.active.len() {
             return Err("You sent more choices than unfainted Pokemon".to_string());
         }
@@ -1506,7 +1548,7 @@ impl Side {
     // 	}
     //
     pub fn choose_shift(&mut self) -> Result<(), String> {
-        let index = self.get_choice_index();
+        let index = self.get_choice_index(false);
         if index >= self.active.len() {
             return Err(format!("No Pokemon in slot {}", index + 1));
         }
@@ -1587,7 +1629,7 @@ impl Side {
             RequestState::Move => {
                 let mut iterations = 0;
                 while !self.is_choice_done(None) && iterations < 10 {
-                    let index = self.get_choice_index();
+                    let index = self.get_choice_index(false);
                     if let Some(Some(pokemon_idx)) = self.active.get(index) {
                         let pokemon = &self.pokemon[*pokemon_idx];
                         if pokemon.is_fainted() {
@@ -2082,7 +2124,7 @@ impl Side {
                     return Err("Move requires target".to_string());
                 }
                 let move_idx: usize = parts[1].parse().map_err(|_| "Invalid move")?;
-                let index = self.get_choice_index();
+                let index = self.get_choice_index(false);
                 if let Some(Some(poke_idx)) = self.active.get(index) {
                     if let Some(slot) = self.pokemon[*poke_idx].move_slots.get(move_idx - 1) {
                         let move_id = slot.id.clone();
