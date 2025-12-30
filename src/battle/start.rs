@@ -235,8 +235,6 @@ impl Battle {
         // JS: this.runPickTeam();
         self.run_pick_team();
 
-        eprintln!("=== AFTER RUN_PICK_TEAM, REQUEST_STATE: {:?} ===", self.request_state);
-
         // JS: this.queue.addChoice({ choice: 'start' });
         use crate::battle_queue::{Action, FieldAction, FieldActionType};
         self.queue.add_choice_raw(Action::Field(FieldAction {
@@ -244,18 +242,12 @@ impl Battle {
             priority: 0,
         }));
 
-        eprintln!("=== QUEUE LENGTH AFTER ADDING START: {} ===", self.queue.list.len());
-
         // JS: this.midTurn = true;
         self.mid_turn = true;
 
         // JS: if (!this.requestState) this.turnLoop();
-        eprintln!("=== CHECKING IF SHOULD CALL TURN_LOOP: request_state={:?} ===", self.request_state);
         if self.request_state == BattleRequestState::None {
-            eprintln!("=== CALLING TURN_LOOP FROM START() ===");
             self.turn_loop();
-        } else {
-            eprintln!("=== NOT CALLING TURN_LOOP, REQUEST_STATE IS NOT NONE ===");
         }
     }
 }
