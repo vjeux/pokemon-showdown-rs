@@ -15,11 +15,6 @@ impl Battle {
         is_secondary: bool,
         is_self: bool,
     ) -> SpreadMoveHitResult {
-        eprintln!("DEBUG: spread_move_hit called: move={}, is_secondary={}, is_self={}, turn={}", move_id, is_secondary, is_self, self.turn);
-        eprintln!("DEBUG: spread_move_hit - source=p{}a, targets={:?}",
-                 source_pos.0 + 1,
-                 targets.iter().filter_map(|t| *t).map(|(s, _p)| format!("p{}a", s + 1)).collect::<Vec<_>>());
-
         let mut damages: Vec<Option<i32>> = vec![Some(0); targets.len()];
         let mut final_targets = targets.to_vec();
 
@@ -53,40 +48,31 @@ impl Battle {
 
         // Step 1.5: Accuracy check
         // JavaScript: accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
-        eprintln!("DEBUG: Starting accuracy checks, is_secondary={}, is_self={}", is_secondary, is_self);
         if !is_secondary && !is_self {
-            eprintln!("DEBUG: Running accuracy checks for {} targets", targets.len());
             for (i, &target) in targets.iter().enumerate() {
-                eprintln!("DEBUG: Checking target {} (target={:?})", i, target);
                 if let Some(target_pos) = target {
                     // Skip if already failed TryHit
                     if damages[i].is_none() {
-                        eprintln!("DEBUG: Target {} already failed TryHit, skipping accuracy", i);
                         continue;
                     }
 
                     // Get base accuracy from move
-                    eprintln!("DEBUG: Getting move data for accuracy");
                     let base_accuracy = match self.dex.get_move(move_id.as_str()) {
                         Some(m) => {
-                            eprintln!("DEBUG: Move found, accuracy={:?}", m.accuracy);
                             match m.accuracy {
                             crate::dex::Accuracy::Percent(p) => p,
                             crate::dex::Accuracy::AlwaysHits => {
                                 // Always hits, skip accuracy check
-                                eprintln!("DEBUG: Move always hits, skipping accuracy check");
                                 continue;
                             }
                         }},
                         None => {
-                            eprintln!("DEBUG: Move NOT found, skipping accuracy check");
                             continue;
                         }
                     };
 
                     // Trigger Accuracy event to allow abilities/items to modify accuracy
                     // JavaScript: accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
-                    eprintln!("DEBUG: About to run Accuracy event with base_accuracy={}", base_accuracy);
                     let mut accuracy = base_accuracy;
                     if let Some(modified_acc) = self.run_event(
                         "Accuracy",
@@ -95,24 +81,17 @@ impl Battle {
                         Some(move_id),
                         Some(accuracy),
                     ) {
-                        eprintln!("DEBUG: Accuracy event modified accuracy to {}", modified_acc);
                         accuracy = modified_acc;
-                    } else {
-                        eprintln!("DEBUG: Accuracy event returned None, using base accuracy {}", base_accuracy);
                     }
 
                     // Check if move hits based on accuracy
                     // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
                     // Always call randomChance to consume PRNG value, even if accuracy is 100
-                    eprintln!("DEBUG: About to check accuracy with random_chance({}, 100)", accuracy);
                     if !self.random_chance(accuracy, 100) {
                         // Move missed
-                        eprintln!("DEBUG: Move MISSED!");
                         damages[i] = None;
                         final_targets[i] = None;
                         // TODO: Add miss message: this.battle.add('-miss', pokemon, target);
-                    } else {
-                        eprintln!("DEBUG: Move HIT!");
                     }
                 }
             }
