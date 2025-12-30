@@ -44,11 +44,16 @@ impl Battle {
         }
 
         // Check each side to see if all their foes have no Pokemon left
-        for (i, side) in self.sides.iter().enumerate() {
-            // Check if this side's foes have no Pokemon left
-            let foe_pokemon_left = self.get_foe_pokemon_left(i);
-            if foe_pokemon_left == 0 {
-                // This side wins
+        // JS: for (const side of this.sides) {
+        // JS:     if (!side.foePokemonLeft()) {
+        // JS:         this.win(side);
+        // JS:         return true;
+        // JS:     }
+        // JS: }
+        for side in self.sides.iter() {
+            // JS: if (!side.foePokemonLeft())
+            if side.foe_pokemon_left() == 0 {
+                // JS: this.win(side);
                 self.win(Some(side.id));
                 return true;
             }
