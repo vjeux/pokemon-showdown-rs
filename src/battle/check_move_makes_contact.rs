@@ -20,7 +20,13 @@ impl Battle {
     // 		return !!move.flags['contact'];
     // 	}
     //
-    pub fn check_move_makes_contact(&self, move_id: &ID, attacker: (usize, usize)) -> bool {
+    pub fn check_move_makes_contact(
+        &mut self,
+        move_id: &ID,
+        attacker: (usize, usize),
+        defender: (usize, usize),
+        announce_pads: bool,
+    ) -> bool {
         // Check if move has contact flag
         if let Some(move_def) = self.dex.moves().get(move_id.as_str()) {
             if !move_def.flags.contains_key("contact") {
@@ -28,16 +34,48 @@ impl Battle {
             }
 
             // JS: if (move.flags['contact'] && attacker.hasItem('protectivepads'))
-            let (side_idx, poke_idx) = attacker;
-            if let Some(side) = self.sides.get(side_idx) {
-                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+            let (attacker_side_idx, attacker_poke_idx) = attacker;
+            if let Some(attacker_side) = self.sides.get(attacker_side_idx) {
+                if let Some(attacker_pokemon) = attacker_side.pokemon.get(attacker_poke_idx) {
                     // Protective Pads prevents contact
-                    if pokemon.item.as_str() == "protectivepads" {
+                    if attacker_pokemon.item.as_str() == "protectivepads" {
+                        // JS: if (announcePads)
+                        if announce_pads {
+                            // Get effect name for first message
+                            let effect_name = if let Some(ref current_effect) = self.current_effect {
+                                current_effect.to_string()
+                            } else {
+                                String::from("")
+                            };
+
+                            // Get identifiers for logging
+                            let defender_ident = {
+                                let (def_side_idx, def_poke_idx) = defender;
+                                if let Some(def_side) = self.sides.get(def_side_idx) {
+                                    if let Some(def_pokemon) = def_side.pokemon.get(def_poke_idx) {
+                                        def_pokemon.get_slot()
+                                    } else {
+                                        String::from("")
+                                    }
+                                } else {
+                                    String::from("")
+                                }
+                            };
+
+                            let attacker_ident = attacker_pokemon.get_slot();
+
+                            // JS: this.add('-activate', defender, this.effect.fullname);
+                            self.add("-activate", &[defender_ident.as_str().into(), effect_name.as_str().into()]);
+
+                            // JS: this.add('-activate', attacker, 'item: Protective Pads');
+                            self.add("-activate", &[attacker_ident.as_str().into(), "item: Protective Pads".into()]);
+                        }
                         return false;
                     }
                 }
             }
 
+            // JS: return !!move.flags['contact'];
             return true;
         }
         false

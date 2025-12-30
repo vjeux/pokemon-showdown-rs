@@ -229,9 +229,9 @@ pub mod condition {
         let move_id = battle
             .active_move
             .as_ref()
-            .map(|m| &m.id)
-            .unwrap_or(&empty_id);
-        if battle.check_move_makes_contact(move_id, source) {
+            .map(|m| m.id.clone())
+            .unwrap_or(empty_id);
+        if battle.check_move_makes_contact(&move_id, source, target, false) {
             // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
             battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"), false, false);
         }
@@ -272,9 +272,9 @@ pub mod condition {
             let move_id = battle
                 .active_move
                 .as_ref()
-                .map(|m| &m.id)
-                .unwrap_or(&empty_id);
-            if battle.check_move_makes_contact(move_id, source) {
+                .map(|m| m.id.clone())
+                .unwrap_or(empty_id);
+            if battle.check_move_makes_contact(&move_id, source, target, false) {
                 // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
                 battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"), false, false);
             }

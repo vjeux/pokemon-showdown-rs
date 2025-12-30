@@ -70,7 +70,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
     }
 
     // Check if move makes contact
-    if !battle.check_move_makes_contact(&move_id.into(), source_pos) {
+    if !battle.check_move_makes_contact(&move_id.into(), source_pos, target_pos, false) {
         return EventResult::Continue;
     }
 

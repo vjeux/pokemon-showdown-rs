@@ -224,9 +224,9 @@ pub mod condition {
         let move_id = battle
             .active_move
             .as_ref()
-            .map(|m| &m.id)
-            .unwrap_or(&empty_id);
-        let makes_contact = battle.check_move_makes_contact(move_id, source);
+            .map(|m| m.id.clone())
+            .unwrap_or(empty_id);
+        let makes_contact = battle.check_move_makes_contact(&move_id, source, target, false);
         if makes_contact {
             battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"), false, false);
         }
@@ -267,9 +267,9 @@ pub mod condition {
             let move_id = battle
                 .active_move
                 .as_ref()
-                .map(|m| &m.id)
-                .unwrap_or(&empty_id);
-            let makes_contact = battle.check_move_makes_contact(move_id, source);
+                .map(|m| m.id.clone())
+                .unwrap_or(empty_id);
+            let makes_contact = battle.check_move_makes_contact(&move_id, source, target, false);
             if makes_contact {
                 battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"), false, false);
             }

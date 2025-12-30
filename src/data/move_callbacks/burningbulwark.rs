@@ -195,7 +195,7 @@ pub mod condition {
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     source.trySetStatus('brn', target);
         // }
-        if battle.check_move_makes_contact(&move_id, source_pos) {
+        if battle.check_move_makes_contact(&move_id, source_pos, target_pos, false) {
             let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -214,7 +214,7 @@ pub mod condition {
     /// }
     pub fn on_hit(
         battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
+        pokemon_pos: (usize, usize),
         target_pos: Option<(usize, usize)>,
     ) -> EventResult {
         use crate::dex_data::ID;
@@ -240,7 +240,7 @@ pub mod condition {
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         //     source.trySetStatus('brn', target);
         // }
-        if move_data.is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source) {
+        if move_data.is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
             let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
