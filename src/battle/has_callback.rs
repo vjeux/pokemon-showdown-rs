@@ -672,6 +672,42 @@ impl Battle {
             return matches!(ability_id, "contrary" | "ripen" | "simple");
         }
 
+        // Check for onSourceTryPrimaryHit event (when source tries to hit with primary damage)
+        if event_id == "onSourceTryPrimaryHit" {
+            // Abilities with onSourceTryPrimaryHit callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "gulpmissile");
+        }
+
+        // Check for onDeductPP event (when PP is being deducted)
+        if event_id == "onDeductPP" {
+            // Abilities with onDeductPP callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "pressure");
+        }
+
+        // Check for onBeforeSwitchIn event (before Pokemon switches in)
+        if event_id == "onBeforeSwitchIn" {
+            // Abilities with onBeforeSwitchIn callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "illusion");
+        }
+
+        // Check for onAnyBeforeMove event (before ANY Pokemon uses a move)
+        if event_id == "onAnyBeforeMove" {
+            // Abilities with onAnyBeforeMove callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "terashell");
+        }
+
+        // Check for onAnyModifyBoost event (when ANY Pokemon's stat boosts are modified)
+        if event_id == "onAnyModifyBoost" {
+            // Abilities with onAnyModifyBoost callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "unaware");
+        }
+
+        // Check for onTakeItem event (when item is being taken)
+        if event_id == "onTakeItem" {
+            // Abilities with onTakeItem callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "stickyhold" | "unburden");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
