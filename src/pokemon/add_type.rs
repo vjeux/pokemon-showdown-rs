@@ -11,9 +11,14 @@ impl Pokemon {
     // 		return true;
     // 	}
     //
-    pub fn add_type(&mut self, new_type: String) {
-        if !self.types.contains(&new_type) {
-            self.added_type = Some(new_type);
+    pub fn add_type(&mut self, new_type: String) -> bool {
+        // JS: if (this.terastallized) return false;
+        if self.terastallized.is_some() {
+            return false;
         }
+        // JS: this.addedType = newType;
+        self.added_type = Some(new_type);
+        // JS: return true;
+        true
     }
 }
