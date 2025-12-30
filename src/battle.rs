@@ -71,7 +71,6 @@ mod get_move_accuracy;
 mod remove_all_hazards;
 mod run_residual;
 mod faint_messages;
-mod next_turn;
 mod debug;
 mod get_debug_log;
 mod add;
