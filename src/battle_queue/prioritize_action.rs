@@ -24,7 +24,14 @@ impl BattleQueue {
             action.side_index() == Some(side_index) && action.pokemon_index() == Some(pokemon_index)
         });
         if let Some(i) = pos {
-            let action = self.list.remove(i);
+            let mut action = self.list.remove(i);
+            // JS: action.order = 3;
+            match &mut action {
+                crate::battle_queue::Action::Move(m) => m.order = 3,
+                crate::battle_queue::Action::Switch(s) => s.order = 3,
+                crate::battle_queue::Action::Pokemon(p) => p.order = 3,
+                _ => {}
+            }
             self.list.insert(0, action);
             true
         } else {
