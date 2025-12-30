@@ -155,7 +155,8 @@ impl Battle {
         }
 
         // Step 4: Run move effects (boosts, status, healing, etc.)
-        damages = self.run_move_effects(
+        damages = crate::battle_actions::run_move_effects(
+            self,
             &damages,
             &final_targets,
             source_pos,
