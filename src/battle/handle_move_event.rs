@@ -15,8 +15,35 @@ impl Battle {
         use crate::data::move_callbacks;
         use crate::event::EventResult;
 
-        let source = self.current_event.as_ref().and_then(|e| e.source);
-        let source_pos = source.unwrap_or((0, 0));
+        // IMPORTANT: run_event and single_event have OPPOSITE parameter semantics!
+        //
+        // For events called via run_event (like BasePower):
+        //   - JavaScript calls: runEvent('BasePower', source, target, move, basePower)
+        //   - But runEvent signature is: runEvent(eventid, target, source, ...)
+        //   - So source (attacker) goes into "target" parameter
+        //   - And target (defender) goes into "source" parameter
+        //   - Therefore: current_event.target = attacker, current_event.source = defender
+        //
+        // For events called via single_event (like AfterHit):
+        //   - We call: single_event("AfterHit", move_id, target_pos, source_pos, ...)
+        //   - Parameters are: single_event(eventid, effect_id, target, source, ...)
+        //   - So target_pos goes into "target", source_pos goes into "source"
+        //   - Therefore: current_event.target = defender, current_event.source = attacker
+        //
+        // BasePower is called via run_event, so we need to extract from current_event.target
+        // Most other events are called via single_event, so we extract from current_event.source
+
+        let (source_pos, target_pos) = if event_id == "BasePower" {
+            // For BasePower (run_event): attacker is in current_event.target, defender is in current_event.source
+            let attacker = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+            let defender = self.current_event.as_ref().and_then(|e| e.source);
+            (attacker, defender)
+        } else {
+            // For other events (single_event): attacker is in current_event.source, defender is in target param
+            let attacker = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+            (attacker, target)
+        };
+
         let _target_pos = target.unwrap_or((0, 0));
 
         match event_id {
@@ -45,7 +72,7 @@ impl Battle {
                     .and_then(|e| e.relay_var)
                     .unwrap_or(0);
 
-                let result = move_callbacks::dispatch_on_base_power(self, move_id, base_power, source_pos, target);
+                let result = move_callbacks::dispatch_on_base_power(self, move_id, base_power, source_pos, target_pos);
                 result
             }
             "Damage" => {
