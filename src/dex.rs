@@ -21,7 +21,6 @@ mod convert_boosts_hash_to_table;
 mod convert_secondary;
 mod items_helper;
 mod get_type;
-mod get_nature;
 mod get_effectiveness;
 mod get_type_effectiveness;
 mod move_has_flag;
@@ -36,7 +35,7 @@ mod species_helper;
 mod moves_helper;
 mod abilities_helper;
 mod formats_helper;
-mod all_natures;
+mod natures_helper;
 mod all_type_names;
 mod get_base_species_name;
 mod is_alternate_forme;
@@ -768,12 +767,12 @@ mod tests {
     fn test_natures() {
         let dex = Dex::load_default().expect("Failed to load dex");
 
-        let adamant = dex.get_nature("Adamant").expect("Adamant not found");
+        let adamant = dex.natures().get("Adamant").expect("Adamant not found");
         assert_eq!(adamant.name, "Adamant");
         assert_eq!(adamant.plus.as_deref(), Some("atk"));
         assert_eq!(adamant.minus.as_deref(), Some("spa"));
 
-        let hardy = dex.get_nature("Hardy").expect("Hardy not found");
+        let hardy = dex.natures().get("Hardy").expect("Hardy not found");
         assert!(hardy.plus.is_none()); // Neutral nature
         assert!(hardy.minus.is_none());
     }

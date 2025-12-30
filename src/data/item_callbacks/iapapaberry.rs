@@ -97,7 +97,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     battle.heal(heal_amount, Some(pokemon_pos), None, None);
 
     // Phase 3: Check nature and add confusion if minus stat is 'def'
-    if let Some(nature_data) = battle.dex.get_nature(&nature_name) {
+    if let Some(nature_data) = battle.dex.natures().get(&nature_name) {
         if nature_data.minus.as_deref() == Some("def") {
             let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,

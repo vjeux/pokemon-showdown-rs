@@ -17,6 +17,7 @@ pub mod dex_data;
 pub mod dex_formats;
 pub mod dex_items;
 pub mod dex_moves;
+pub mod dex_natures;
 pub mod dex_species;
 pub mod event;
 pub mod event_system;

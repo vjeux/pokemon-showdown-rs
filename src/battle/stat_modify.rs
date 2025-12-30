@@ -82,7 +82,7 @@ impl Battle {
         //       stat = tr(tr(stat * 90, 16) / 100);
         //     }
         if !set.nature.is_empty() {
-            if let Some(nature_data) = self.dex.get_nature(&set.nature) {
+            if let Some(nature_data) = self.dex.natures().get(&set.nature) {
                 // Check if this stat is boosted by nature (+10%)
                 if let Some(ref plus) = nature_data.plus {
                     if plus == stat_name {
