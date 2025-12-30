@@ -7,13 +7,6 @@ impl Battle {
     pub fn insert_field_action(&mut self, action: crate::battle_queue::Action) {
         use crate::battle_queue::Action;
 
-        eprintln!("DEBUG [insert_field_action]: Inserting {:?}, queue_len={}",
-                  match &action {
-                      Action::Field(f) => format!("Field::{:?}", f.choice),
-                      _ => "Unknown".to_string(),
-                  },
-                  self.queue.list.len());
-
         // JS: let firstIndex = null; let lastIndex = null;
         let mut first_index: Option<usize> = None;
         let mut last_index: Option<usize> = None;
@@ -45,10 +38,8 @@ impl Battle {
 
             // JS: const index = firstIndex === lastIndex ? firstIndex : this.battle.random(firstIndex, lastIndex + 1);
             let index = if first == last {
-                eprintln!("DEBUG [insert_field_action]: first==last={}, no PRNG needed", first);
                 first
             } else {
-                eprintln!("DEBUG [insert_field_action]: first={}, last={}, calling random_with_range", first, last);
                 self.random_with_range(first as i32, (last + 1) as i32) as usize
             };
 

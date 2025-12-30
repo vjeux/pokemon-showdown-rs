@@ -37,10 +37,6 @@ impl Battle {
     // 	}
     //
     pub fn run_pick_team(&mut self) {
-        eprintln!("DEBUG run_pick_team: request_state={:?}, rule_table={:?}",
-            self.request_state,
-            self.rule_table.as_ref().map(|rt| rt.picked_team_size));
-
         // JS: this.format.onTeamPreview?.call(this);
         // TODO: Implement format.onTeamPreview callback
 

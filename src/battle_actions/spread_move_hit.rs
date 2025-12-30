@@ -17,8 +17,6 @@ pub fn spread_move_hit(
     is_secondary: bool,
     is_self: bool,
 ) -> SpreadMoveHitResult {
-    eprintln!("DEBUG spread_move_hit: TURN={}, move_id='{}', source={:?}, targets={:?}",
-        battle.turn, move_id, source_pos, targets);
 
     let mut damages: Vec<Option<i32>> = vec![Some(0); targets.len()];
     let mut final_targets = targets.to_vec();

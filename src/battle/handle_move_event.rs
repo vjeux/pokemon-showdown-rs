@@ -38,7 +38,6 @@ impl Battle {
                 move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos, 0, target)
             }
             "BasePower" => {
-                eprintln!("DEBUG handle_move_event: BasePower event for move_id='{}'", move_id);
                 // Get base_power from relay_var
                 let base_power = self
                     .current_event
@@ -46,9 +45,7 @@ impl Battle {
                     .and_then(|e| e.relay_var)
                     .unwrap_or(0);
 
-                eprintln!("DEBUG handle_move_event: base_power={}, source_pos={:?}, target={:?}", base_power, source_pos, target);
                 let result = move_callbacks::dispatch_on_base_power(self, move_id, base_power, source_pos, target);
-                eprintln!("DEBUG handle_move_event: dispatch result={:?}", result);
                 result
             }
             "Damage" => {

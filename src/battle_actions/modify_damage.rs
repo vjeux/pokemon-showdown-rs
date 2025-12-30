@@ -88,10 +88,8 @@ pub fn modify_damage(
     move_data: &crate::dex::MoveData,
     is_crit: bool,
 ) -> i32 {
-    eprintln!("DEBUG modify_damage: move_id={}, move_type={}", move_data.id, move_data.move_type);
     // baseDamage += 2;
     base_damage += 2;
-    eprintln!("DEBUG modify_damage: after +2, base_damage={}", base_damage);
 
     // if (isCrit) {
     //   baseDamage = tr(baseDamage * (move.critModifier || (this.battle.gen >= 6 ? 1.5 : 2)));
@@ -99,13 +97,10 @@ pub fn modify_damage(
     if is_crit {
         let crit_multiplier = if battle.gen >= 6 { 1.5 } else { 2.0 };
         base_damage = battle.trunc(base_damage as f64 * crit_multiplier, None) as i32;
-        eprintln!("DEBUG modify_damage: after crit, base_damage={}", base_damage);
     }
 
     // baseDamage = this.battle.randomizer(baseDamage);
-    eprintln!("DEBUG modify_damage: before randomizer, base_damage={}", base_damage);
     base_damage = battle.randomizer(base_damage);
-    eprintln!("DEBUG modify_damage: after randomizer, base_damage={}", base_damage);
 
     // Get source and target data for STAB and type effectiveness
     let (source_types, target_types) = {
@@ -164,7 +159,6 @@ pub fn modify_damage(
     //   }
     // }
     let type_mod = battle.get_type_effectiveness_mod(&move_data.move_type, &target_types);
-    eprintln!("DEBUG modify_damage: type_mod={}", type_mod);
     if type_mod > 0 {
         for _ in 0..type_mod {
             base_damage *= 2;
@@ -174,7 +168,6 @@ pub fn modify_damage(
             base_damage = battle.trunc(base_damage as f64 / 2.0, None) as i32;
         }
     }
-    eprintln!("DEBUG modify_damage: after type effectiveness, base_damage={}", base_damage);
 
     // baseDamage = this.battle.runEvent("ModifyDamage", pokemon, target, move, baseDamage);
     if let Some(modified) = battle.run_event(
@@ -184,10 +177,8 @@ pub fn modify_damage(
         Some(&move_data.id),
         Some(base_damage),
     ) {
-        eprintln!("DEBUG modify_damage: ModifyDamage event changed {} -> {}", base_damage, modified);
         base_damage = modified;
     }
-    eprintln!("DEBUG modify_damage: after ModifyDamage event, base_damage={}", base_damage);
 
     // if (this.battle.gen !== 5 && !baseDamage) return 1;
     // return tr(baseDamage, 16);

@@ -77,8 +77,6 @@ impl Battle {
             // If there were ties, shuffle them randomly
             if next_indexes.len() > 1 {
                 let end = sorted + next_indexes.len();
-                eprintln!("DEBUG speed_sort: Shuffling {} items from {} to {} (indexes: {:?})",
-                    next_indexes.len(), sorted, end, next_indexes);
                 self.shuffle_range(list, sorted, end);
             }
 

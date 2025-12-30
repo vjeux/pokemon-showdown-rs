@@ -26,9 +26,6 @@ impl Battle {
     pub fn insert_run_switch_action(&mut self, side_index: usize, pokemon_index: usize) {
         use crate::battle_queue::{Action, PokemonAction, PokemonActionType};
 
-        eprintln!("DEBUG [insert_run_switch_action]: Inserting runSwitch for side={}, pokemon={}, queue_len={}",
-                  side_index, pokemon_index, self.queue.list.len());
-
         // Update Pokemon speed
         // JS: if (choice.pokemon) { choice.pokemon.updateSpeed(); }
         let new_speed = self.sides[side_index].pokemon[pokemon_index].get_action_speed(self);
@@ -76,10 +73,8 @@ impl Battle {
 
             // JS: const index = firstIndex === lastIndex ? firstIndex : this.battle.random(firstIndex, lastIndex + 1);
             let index = if first == last {
-                eprintln!("DEBUG [insert_run_switch_action]: first==last={}, no PRNG needed", first);
                 first
             } else {
-                eprintln!("DEBUG [insert_run_switch_action]: first={}, last={}, calling random_with_range", first, last);
                 self.random_with_range(first as i32, (last + 1) as i32) as usize
             };
 

@@ -1261,8 +1261,6 @@ impl RuleTable {
     // 	}
     //
     pub fn resolve_numbers(&mut self, format: &FormatDef) {
-        eprintln!("DEBUG [resolve_numbers]: Starting, format game_type={:?}", format.game_type);
-        eprintln!("DEBUG [resolve_numbers]: value_rules={:?}", self.value_rules);
         let game_type_min_team_size = match format.game_type {
             GameType::Triples => 3,
             GameType::Doubles => 2,
@@ -1324,14 +1322,12 @@ impl RuleTable {
 
         // Handle auto values for picked team size
         if self.value_rules.get("pickedteamsize").map(|s| s.as_str()) == Some("Auto") {
-            eprintln!("DEBUG [resolve_numbers]: pickedteamsize is Auto, setting based on game type");
             self.picked_team_size = Some(match format.game_type {
                 GameType::Doubles => 4,
                 GameType::Triples => 6,
                 _ => 3,
             });
         }
-        eprintln!("DEBUG [resolve_numbers]: Final picked_team_size={:?}", self.picked_team_size);
 
         // Set default level if not specified
         if self.default_level == 0 {

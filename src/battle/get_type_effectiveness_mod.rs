@@ -45,10 +45,8 @@ impl Battle {
     ///   }
     pub fn get_type_effectiveness_mod(&self, attack_type: &str, defend_types: &[String]) -> i32 {
         let mut total_type_mod = 0;
-        eprintln!("DEBUG get_type_effectiveness_mod: attack_type={}, defend_types={:?}", attack_type, defend_types);
         for defend_type in defend_types {
             let effectiveness = crate::data::typechart::get_effectiveness(attack_type, defend_type);
-            eprintln!("DEBUG get_type_effectiveness_mod: {} vs {} = {}", attack_type, defend_type, effectiveness);
             // Convert float effectiveness to integer mod matching JavaScript:
             // 2.0 or higher = +1 (super-effective)
             // 0.5 or lower (but not 0) = -1 (not very effective)
@@ -61,7 +59,6 @@ impl Battle {
             }
             // For immunity (0.0), we don't add anything (acts as 0)
         }
-        eprintln!("DEBUG get_type_effectiveness_mod: total_type_mod={}", total_type_mod);
         total_type_mod
     }
 }
