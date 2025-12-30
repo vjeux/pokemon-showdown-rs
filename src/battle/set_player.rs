@@ -154,10 +154,7 @@ impl Battle {
                 .iter()
                 .all(|s| !s.name.is_empty() && !s.pokemon.is_empty());
 
-        eprintln!("=== SET_PLAYER END: sides.len()={}, expected={}, all_sides_ready={}, started={} ===",
-                  self.sides.len(), expected_sides, all_sides_ready, self.started);
         if all_sides_ready && !self.started {
-            eprintln!("=== CALLING START() FROM SET_PLAYER ===");
             self.start();
         }
     }
