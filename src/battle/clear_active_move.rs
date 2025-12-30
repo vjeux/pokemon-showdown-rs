@@ -20,10 +20,8 @@ impl Battle {
         if self.active_move.is_some() {
             if !failed {
                 self.last_move = self.active_move.as_ref().map(|m| m.id.clone());
-                self.active_move = None;
-            } else {
-                self.active_move = None;
             }
+            self.active_move = None;
             self.active_pokemon = None;
             self.active_target = None;
         }
