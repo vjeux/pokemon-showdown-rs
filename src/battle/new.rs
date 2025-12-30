@@ -9,9 +9,7 @@ impl Battle {
     /// Create a new battle
     /// Equivalent to TypeScript Battle constructor (battle.ts:191)
     pub fn new(options: BattleOptions) -> Self {
-        eprintln!("=== BATTLE INIT START ===");
         let seed = options.seed.clone().unwrap_or_else(PRNG::generate_seed);
-        eprintln!("=== BATTLE PRNG SEED: {:?} ===", seed);
         let prng = PRNG::new(Some(seed.clone()));
 
         // Clone format_id before moving it into the struct
@@ -98,6 +96,13 @@ impl Battle {
             faint_queue: Vec::new(),
         };
 
+        // JS: this.add('t:', Math.floor(Date.now() / 1000));
+        let timestamp = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
+        battle.add("t:", &[Arg::String(timestamp.to_string())]);
+
         // Initialize sides vector
         for _ in 0..player_count {
             // Placeholder - will be filled by set_player
@@ -116,6 +121,29 @@ impl Battle {
             GameType::Multi => "multi",
             GameType::FreeForAll => "freeforall",
         }).into()]);
+
+        // JS: for (const rule of this.ruleTable.keys()) { ... this.field.addPseudoWeather(rule); }
+        // timing is early enough to hook into ModifySpecies event
+        if let Some(ref rule_table) = battle.rule_table {
+            for rule in rule_table.keys() {
+                // Skip rules starting with +, *, -, !
+                if let Some(first_char) = rule.chars().next() {
+                    if ['+', '*', '-', '!'].contains(&first_char) {
+                        continue;
+                    }
+                }
+
+                // Get the format for this rule
+                if let Some(_format_def) = get_format(&ID::new(rule)) {
+                    // TODO: Check if format has event handlers (excluding specific ones)
+                    // In TypeScript, this checks if the format object has any onXxx properties
+                    // besides onBegin, onTeamPreview, onBattleStart, onValidateRule, etc.
+                    // The Rust FormatDef struct doesn't currently support dynamic event handlers.
+                    // For now, we skip adding pseudo-weather for rule-based formats.
+                    // This needs to be implemented when format event handlers are added.
+                }
+            }
+        }
 
         // Add players if provided
         if let Some(p1) = options.p1 {
