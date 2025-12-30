@@ -24,7 +24,6 @@ mod get_confusion_damage;
 mod target_type_choices;
 mod can_ultra_burst;
 mod can_terastallize;
-mod hit_step_break_protect;
 mod hit_step_steal_boosts;
 mod self_drops;
 mod get_secondaries;
