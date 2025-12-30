@@ -42,10 +42,8 @@ impl Battle {
     // 	}
     //
     pub fn make_request(&mut self, request_type: Option<BattleRequestState>) {
-        eprintln!("DEBUG [make_request]: Called with request_type={:?}", request_type);
         // JS: if (type) { this.requestState = type; ... } else { type = this.requestState; }
         let req_type = if let Some(rt) = request_type {
-            eprintln!("DEBUG [make_request]: Setting request_state to {:?}", rt);
             self.request_state = rt;
             // JS: for (const side of this.sides) { side.clearChoice(); }
             for side in &mut self.sides {
@@ -53,10 +51,8 @@ impl Battle {
             }
             rt
         } else {
-            eprintln!("DEBUG [make_request]: Using existing request_state={:?}", self.request_state);
             self.request_state
         };
-        eprintln!("DEBUG [make_request]: After assignment, request_state={:?}", self.request_state);
 
         // JS: for (const side of this.sides) { side.activeRequest = null; }
         for side in &mut self.sides {
@@ -70,17 +66,14 @@ impl Battle {
             if let Some(ref rule_table) = self.rule_table {
                 if let Some(picked_team_size) = rule_table.picked_team_size {
                     self.add(
-                        "-",
-                        &[
-                            Arg::Str("teampreview"),
-                            Arg::String(picked_team_size.to_string()),
-                        ],
+                        "teampreview",
+                        &[Arg::String(picked_team_size.to_string())],
                     );
                 } else {
-                    self.add("-", &[Arg::Str("teampreview")]);
+                    self.add("teampreview", &[]);
                 }
             } else {
-                self.add("-", &[Arg::Str("teampreview")]);
+                self.add("teampreview", &[]);
             }
         }
 
