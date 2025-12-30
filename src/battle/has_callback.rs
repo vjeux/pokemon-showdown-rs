@@ -832,6 +832,72 @@ impl Battle {
             return matches!(_item_id, "clearamulet");
         }
 
+        // Check for onModifyCritRatio event (when critical hit ratio is modified)
+        if event_id == "onModifyCritRatio" {
+            // Items with onModifyCritRatio callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "leek" | "luckypunch" | "razorclaw" | "scopelens" | "stick");
+        }
+
+        // Check for onEnd event (when effect ends)
+        if event_id == "onEnd" {
+            // Items with onEnd callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "ejectpack" | "mirrorherb" | "utilityumbrella");
+        }
+
+        // Check for onFractionalPriority event (fractional priority adjustments)
+        if event_id == "onFractionalPriority" {
+            // Items with onFractionalPriority callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "custapberry" | "quickclaw");
+        }
+
+        // Check for onModifySpe event (when Speed stat is modified)
+        if event_id == "onModifySpe" {
+            // Items with onModifySpe callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "ironball");
+        }
+
+        // Check for onModifyWeight event (when weight is modified)
+        if event_id == "onModifyWeight" {
+            // Items with onModifyWeight callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "floatstone");
+        }
+
+        // Check for onStart event (when effect starts)
+        if event_id == "onStart" {
+            // Items with onStart callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "boosterenergy" | "roomservice" | "utilityumbrella");
+        }
+
+        // Check for onTakeItem event (when item is taken)
+        if event_id == "onTakeItem" {
+            // Items with onTakeItem callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "blueorb" | "boosterenergy" | "redorb");
+        }
+
+        // Check for onAnyAfterMega event (after ANY Pokemon Mega Evolves)
+        if event_id == "onAnyAfterMega" {
+            // Items with onAnyAfterMega callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "ejectpack" | "mirrorherb" | "whiteherb");
+        }
+
+        // Check for onAnyAfterMove event (after ANY Pokemon uses a move)
+        if event_id == "onAnyAfterMove" {
+            // Items with onAnyAfterMove callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "ejectpack" | "mirrorherb" | "whiteherb");
+        }
+
+        // Check for onAnyAfterTerastallization event (after ANY Pokemon Terastallizes)
+        if event_id == "onAnyAfterTerastallization" {
+            // Items with onAnyAfterTerastallization callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "mirrorherb");
+        }
+
+        // Check for onAnyPseudoWeatherChange event (when pseudo-weather changes)
+        if event_id == "onAnyPseudoWeatherChange" {
+            // Items with onAnyPseudoWeatherChange callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "roomservice");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking by consulting item data
         false
