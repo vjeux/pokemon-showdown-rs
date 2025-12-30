@@ -17,7 +17,6 @@ pub mod event;
 pub mod event_system;
 pub mod field;
 pub mod items;
-pub mod move_types;
 pub mod pokemon;
 pub mod prng;
 pub mod random_teams;
