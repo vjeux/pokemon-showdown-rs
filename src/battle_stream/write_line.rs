@@ -31,7 +31,7 @@ impl BattleStream {
                         "p2" => ("", args),
                         _ => ("", ""),
                     };
-                    battle.make_choices(p1_choice, p2_choice);
+                    battle.make_choices(&[p1_choice, p2_choice]);
                 }
             }
             "forcewin" => {
