@@ -50,11 +50,43 @@ impl Battle {
         // JS:         return true;
         // JS:     }
         // JS: }
-        for side in self.sides.iter() {
+        //
+        // foePokemonLeft() logic from side.ts:
+        // 	foePokemonLeft() {
+        // 		if (this.battle.gameType === 'freeforall') {
+        // 			return this.battle.sides.filter(side => side !== this).map(side => side.pokemonLeft).reduce((a, b) => a + b);
+        // 		}
+        // 		if (this.foe.allySide) return this.foe.pokemonLeft + this.foe.allySide.pokemonLeft;
+        // 		return this.foe.pokemonLeft;
+        // 	}
+        for side_idx in 0..self.sides.len() {
+            // Calculate foe_pokemon_left inline since Side doesn't have access to Battle
+            let foe_pokemon_left = if self.game_type == GameType::FreeForAll {
+                // Sum all sides except this one
+                self.sides
+                    .iter()
+                    .enumerate()
+                    .filter(|(idx, _)| *idx != side_idx)
+                    .map(|(_, s)| s.pokemon_left)
+                    .sum::<usize>()
+            } else if let Some(foe_idx) = self.sides[side_idx].foe_index {
+                // Check if foe has ally
+                if let Some(ally_idx) = self.sides.get(foe_idx).and_then(|f| f.ally_index) {
+                    // Return foe.pokemonLeft + foe.allySide.pokemonLeft
+                    self.sides[foe_idx].pokemon_left + self.sides[ally_idx].pokemon_left
+                } else {
+                    // Return foe.pokemonLeft
+                    self.sides[foe_idx].pokemon_left
+                }
+            } else {
+                // No foe set up
+                continue;
+            };
+
             // JS: if (!side.foePokemonLeft())
-            if side.foe_pokemon_left() == 0 {
+            if foe_pokemon_left == 0 {
                 // JS: this.win(side);
-                self.win(Some(side.id));
+                self.win(Some(self.sides[side_idx].id));
                 return true;
             }
         }
