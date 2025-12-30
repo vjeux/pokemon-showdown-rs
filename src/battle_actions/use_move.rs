@@ -44,16 +44,14 @@ pub fn use_move(
     max_move: Option<&str>,
 ) -> bool {
     // pokemon.moveThisTurnResult = undefined;
-    // Note: moveThisTurnResult tracking would go here
+    let (side_idx, poke_idx) = pokemon_pos;
+    battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result = None;
 
     // const oldMoveResult: boolean | null | undefined = pokemon.moveThisTurnResult;
+    let old_move_result = battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result;
+
     // const moveResult = this.useMoveInner(move, pokemon, options);
-
-    // if (oldMoveResult === pokemon.moveThisTurnResult) pokemon.moveThisTurnResult = moveResult;
-    // Note: moveThisTurnResult syncing would go here
-
-    // return moveResult;
-    use_move_inner(
+    let move_result = use_move_inner(
         battle,
         move_id,
         pokemon_pos,
@@ -61,6 +59,14 @@ pub fn use_move(
         source_effect,
         z_move,
         max_move,
-    )
+    );
+
+    // if (oldMoveResult === pokemon.moveThisTurnResult) pokemon.moveThisTurnResult = moveResult;
+    if old_move_result == battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result {
+        battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result = Some(move_result);
+    }
+
+    // return moveResult;
+    move_result
 }
 
