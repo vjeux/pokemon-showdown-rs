@@ -164,6 +164,46 @@ impl Battle {
             return matches!(ability_id, "disguise" | "iceface");
         }
 
+        // Check for onTryHit event (move hit checking)
+        if event_id == "onTryHit" {
+            // Abilities with onTryHit callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "bulletproof" | "dryskin" | "eartheater" | "flashfire" | "goodasgold"
+                | "lightningrod" | "magicbounce" | "motordrive" | "mountaineer" | "oblivious"
+                | "overcoat" | "rebound" | "sapsipper" | "soundproof" | "stormdrain"
+                | "sturdy" | "telepathy" | "voltabsorb" | "waterabsorb" | "wellbakedbody"
+                | "windrider" | "wonderguard"
+            );
+        }
+
+        // Check for onDamagingHit event (contact move effects)
+        if event_id == "onDamagingHit" {
+            // Abilities with onDamagingHit callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "aftermath" | "cottondown" | "cursedbody" | "cutecharm" | "effectspore"
+                | "electromorphosis" | "flamebody" | "gooey" | "gulpmissile" | "illusion"
+                | "innardsout" | "ironbarbs" | "justified" | "lingeringaroma" | "mummy"
+                | "perishbody" | "poisonpoint" | "rattled" | "roughskin" | "sandspit"
+                | "seedsower" | "stamina" | "static" | "steamengine" | "tanglinghair"
+                | "thermalexchange" | "toxicdebris" | "wanderingspirit" | "watercompaction" | "weakarmor"
+                | "windpower"
+            );
+        }
+
+        // Check for onModifyMove event (move modification)
+        if event_id == "onModifyMove" {
+            // Abilities with onModifyMove callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "battlebond" | "gorillatactics" | "illuminate" | "infiltrator" | "keeneye"
+                | "longreach" | "mindseye" | "moldbreaker" | "myceliummight" | "propellertail"
+                | "scrappy" | "serenegrace" | "sheerforce" | "skilllink" | "stalwart"
+                | "stancechange" | "stench" | "teravolt" | "turboblaze" | "unseenfist"
+            );
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
@@ -193,6 +233,12 @@ impl Battle {
         if event_id == "onUpdate" {
             // Items with onUpdate callbacks (from item_callbacks/mod.rs dispatcher)
             return matches!(_item_id, "boosterenergy" | "utilityumbrella");
+        }
+
+        // Check for onTryHit event (move hit checking)
+        if event_id == "onTryHit" {
+            // Items with onTryHit callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "safetygoggles");
         }
 
         // For other events, conservatively return false by default
