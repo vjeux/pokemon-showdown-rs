@@ -281,6 +281,28 @@ impl Battle {
             return matches!(ability_id, "soulheart");
         }
 
+        // Check for onAllyFaint event (when an ally faints)
+        if event_id == "onAllyFaint" {
+            // Abilities with onAllyFaint callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "powerofalchemy" | "receiver");
+        }
+
+        // Check for onSourceAfterFaint event (when source defeats a Pokemon)
+        if event_id == "onSourceAfterFaint" {
+            // Abilities with onSourceAfterFaint callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "asoneglastrier" | "asonespectrier" | "battlebond" | "beastboost"
+                | "chillingneigh" | "grimneigh" | "moxie"
+            );
+        }
+
+        // Check for onSourceDamagingHit event (when source damages target with attack)
+        if event_id == "onSourceDamagingHit" {
+            // Abilities with onSourceDamagingHit callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "poisontouch" | "toxicchain");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
