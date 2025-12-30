@@ -898,6 +898,48 @@ impl Battle {
             return matches!(_item_id, "roomservice");
         }
 
+        // Check for onAnySwitchIn event (when ANY Pokemon switches in)
+        if event_id == "onAnySwitchIn" {
+            // Items with onAnySwitchIn callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "ejectpack");
+        }
+
+        // Check for onEffectiveness event (type effectiveness modification)
+        if event_id == "onEffectiveness" {
+            // Items with onEffectiveness callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "ironball");
+        }
+
+        // Check for onFoeAfterBoost event (when foe's stats are boosted)
+        if event_id == "onFoeAfterBoost" {
+            // Items with onFoeAfterBoost callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "mirrorherb");
+        }
+
+        // Check for onImmunity event (immunity to effects)
+        if event_id == "onImmunity" {
+            // Items with onImmunity callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "safetygoggles");
+        }
+
+        // Check for onModifySecondaries event (modify secondary effect chances)
+        if event_id == "onModifySecondaries" {
+            // Items with onModifySecondaries callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "covertcloak");
+        }
+
+        // Check for onUse event (when item is used/activated)
+        if event_id == "onUse" {
+            // Items with onUse callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "ejectpack" | "mirrorherb" | "whiteherb");
+        }
+
+        // Check for onUseItem event (when item is consumed)
+        if event_id == "onUseItem" {
+            // Items with onUseItem callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "ejectpack");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking by consulting item data
         false
