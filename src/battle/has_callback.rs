@@ -708,6 +708,30 @@ impl Battle {
             return matches!(ability_id, "stickyhold" | "unburden");
         }
 
+        // Check for onAfterTerastallization event (after Pokemon Terastallizes)
+        if event_id == "onAfterTerastallization" {
+            // Abilities with onAfterTerastallization callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "teraformzero");
+        }
+
+        // Check for onAnyAfterSetStatus event (after ANY Pokemon gets a status)
+        if event_id == "onAnyAfterSetStatus" {
+            // Abilities with onAnyAfterSetStatus callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "poisonpuppeteer");
+        }
+
+        // Check for onAnyTryPrimaryHit event (when ANY move tries primary hit)
+        if event_id == "onAnyTryPrimaryHit" {
+            // Abilities with onAnyTryPrimaryHit callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "aurabreak");
+        }
+
+        // Check for onWeather event (weather damage/effects at end of turn)
+        if event_id == "onWeather" {
+            // Abilities with onWeather callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "dryskin" | "icebody" | "raindish" | "solarpower");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
