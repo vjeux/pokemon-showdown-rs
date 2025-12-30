@@ -36,7 +36,6 @@ impl Battle {
     // 	}
     //
     pub fn turn_loop(&mut self) {
-        eprintln!("=== TURN {} START, QUEUE LENGTH: {} ===", self.turn + 1, self.queue.list.len());
         self.add("", &[]);
 
         // Add timestamp (JS: this.add('t:', Math.floor(Date.now() / 1000)))
@@ -74,7 +73,6 @@ impl Battle {
 
         // Process the action queue
         while let Some(action) = self.queue.shift() {
-            eprintln!("DEBUG [turn_loop]: Processing action, {} items remain in queue", self.queue.list.len());
             self.run_action(&action);
             if self.request_state != BattleRequestState::None || self.ended {
                 return;
