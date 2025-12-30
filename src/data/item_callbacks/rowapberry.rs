@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
     // if (move.category === 'Special' && source.hp && source.isActive && !source.hasAbility('magicguard'))
     let (is_special, source_alive_and_active, source_has_magic_guard) = {
         let is_special = match &battle.active_move {
@@ -76,7 +76,7 @@ pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usi
 ///     num: 212,
 ///     gen: 4,
 /// }
-pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_eat(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // onEat callback has no implementation - just metadata
     EventResult::Continue
 }

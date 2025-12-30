@@ -37,7 +37,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         conditions.iter().find(|&&cond| pokemon.has_volatile(&crate::dex_data::ID::new(cond))).copied()
     };
 
-    if let Some(first_condition) = first_condition_found {
+    if let Some(_first_condition) = first_condition_found {
         // if (!pokemon.useItem()) return;
         let used_item = {
             let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

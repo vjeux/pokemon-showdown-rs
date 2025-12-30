@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///         this.add('-start', source, 'typechange', type, '[from] ability: Protean');
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_prepare_hit(_battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

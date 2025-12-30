@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         target.eatItem();
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // if (move.category === 'Physical') {
     //     if (move.id === 'present' && move.heal) return;
     //     target.eatItem();

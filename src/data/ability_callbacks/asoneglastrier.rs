@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     this.add('-ability', pokemon, 'Unnerve');
 ///     this.effectState.unnerved = true;
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -21,7 +21,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 /// onEnd() {
 ///     this.effectState.unnerved = false;
 /// }
-pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -29,7 +29,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 /// onFoeTryEatItem() {
 ///     return !this.effectState.unnerved;
 /// }
-pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
+pub fn on_foe_try_eat_item(_battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -39,7 +39,7 @@ pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
 ///         this.boost({ atk: length }, source, source, this.dex.abilities.get('chillingneigh'));
 ///     }
 /// }
-pub fn on_source_after_faint(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_source_after_faint(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

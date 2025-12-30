@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
     // if (move.category === 'Physical' && source.hp && source.isActive && !source.hasAbility('magicguard'))
     let (move_is_physical, source_hp, source_is_active, source_has_magic_guard) = {
         let active_move = match &battle.active_move {
@@ -37,7 +37,7 @@ pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usi
 
     if move_is_physical && source_hp > 0 && source_is_active && !source_has_magic_guard {
         // if (target.eatItem())
-        let (ate_item, source_base_maxhp, target_has_ripen) = {
+        let (_ate_item, source_base_maxhp, target_has_ripen) = {
             let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -80,7 +80,7 @@ pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usi
 ///     num: 211,
 ///     gen: 4,
 /// }
-pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_eat(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // No implementation needed - just metadata
     EventResult::Continue
 }

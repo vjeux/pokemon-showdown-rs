@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return -0.1;
 ///     }
 /// }
-pub fn on_fractional_priority(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_fractional_priority(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -22,7 +22,7 @@ pub fn on_fractional_priority(battle: &mut Battle, pokemon_pos: (usize, usize), 
 ///         move.ignoreAbility = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> EventResult {
+pub fn on_modify_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

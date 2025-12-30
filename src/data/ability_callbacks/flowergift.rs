@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onStart(pokemon) {
 ///     this.singleEvent('WeatherChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -28,7 +28,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///         }
 ///     }
 /// }
-pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_weather_change(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -39,7 +39,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_ally_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_ally_modify_atk(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -50,7 +50,7 @@ pub fn on_ally_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize)) -> E
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_ally_modify_sp_d(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_ally_modify_sp_d(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

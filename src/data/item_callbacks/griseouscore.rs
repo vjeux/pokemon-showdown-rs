@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([4915, 4096]);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (user.baseSpecies.num === 487 && (move.type === 'Ghost' || move.type === 'Dragon'))
 
     // Check user.baseSpecies.num === 487
@@ -49,7 +49,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
 ///     }
 ///     return true;
 /// }
-pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // Check pokemon.baseSpecies.num === 487
     let pokemon_is_giratina = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

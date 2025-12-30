@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         return 0;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(_battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -30,7 +30,7 @@ pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), s
 ///     if (!target.runImmunity(move)) return;
 ///     return false;
 /// }
-pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_critical_hit(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -47,7 +47,7 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 ///     if (!target.runImmunity(move)) return;
 ///     return 0;
 /// }
-pub fn on_effectiveness(battle: &mut Battle, damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str) -> EventResult {
+pub fn on_effectiveness(_battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), _type_str: &str, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -59,7 +59,7 @@ pub fn on_effectiveness(battle: &mut Battle, damage: i32, target_pos: (usize, us
 ///         this.damage(pokemon.baseMaxhp / 8, pokemon, pokemon, this.dex.species.get(speciesid));
 ///     }
 /// }
-pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

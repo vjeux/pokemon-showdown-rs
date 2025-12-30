@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // if (move && target.getMoveHitData(move).typeMod > 0)
     let target_pos = match target_pos {
         Some(pos) => pos,
@@ -65,7 +65,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
 /// onTryEatItem(item, pokemon) {
 ///     if (!this.runEvent('TryHeal', pokemon, null, this.effect, pokemon.baseMaxhp / 4)) return false;
 /// }
-pub fn on_try_eat_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_eat_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.runEvent('TryHeal', pokemon, null, this.effect, pokemon.baseMaxhp / 4)) return false;
     let heal_amount = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -95,7 +95,7 @@ pub fn on_try_eat_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, 
 ///     num: 208,
 ///     gen: 3,
 /// }
-pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_eat(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // onEat callback has no implementation - just metadata
     EventResult::Continue
 }

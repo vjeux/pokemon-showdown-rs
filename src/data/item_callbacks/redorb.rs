@@ -64,7 +64,7 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 ///     if (source.baseSpecies.baseSpecies === 'Groudon') return false;
 ///     return true;
 /// }
-pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, _pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // if (source.baseSpecies.baseSpecies === 'Groudon') return false;
     if let Some(source) = source_pos {
         if let Some(source_pokemon) = battle.pokemon_at(source.0, source.1) {

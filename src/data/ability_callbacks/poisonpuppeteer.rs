@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         target.addVolatile('confusion');
 ///     }
 /// }
-pub fn on_any_after_set_status(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_any_after_set_status(_battle: &mut Battle, _status: Option<&str>, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

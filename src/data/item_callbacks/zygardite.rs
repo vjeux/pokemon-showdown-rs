@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (source.baseSpecies.baseSpecies === 'Zygarde') return false;
 ///     return true;
 /// }
-pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, _pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // if (source.baseSpecies.baseSpecies === 'Zygarde') return false;
     // return true;
 

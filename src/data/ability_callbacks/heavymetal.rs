@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onModifyWeight(weighthg) {
 ///     return weighthg * 2;
 /// }
-pub fn on_modify_weight(battle: &mut Battle, weight: i32, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_weight(_battle: &mut Battle, weight: i32, _pokemon_pos: (usize, usize)) -> EventResult {
     EventResult::Number(weight * 2)
 }
 

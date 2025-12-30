@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onStart(pokemon) {
 ///     this.singleEvent('WeatherChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -39,7 +39,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///         pokemon.formeChange(forme, this.effect, false, '0', '[msg]');
 ///     }
 /// }
-pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_weather_change(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

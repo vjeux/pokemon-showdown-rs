@@ -22,7 +22,7 @@ use crate::event::EventResult;
 ///         this.add('-block', target, 'ability: Flower Veil', `[of] ${effectHolder}`);
 ///     }
 /// }
-pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_ally_try_boost(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -37,7 +37,7 @@ pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>
 ///         return null;
 ///     }
 /// }
-pub fn on_ally_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_ally_set_status(_battle: &mut Battle, _status_id: &str, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -50,7 +50,7 @@ pub fn on_ally_set_status(battle: &mut Battle, status_id: &str, target_pos: (usi
 ///         return null;
 ///     }
 /// }
-pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_ally_try_add_volatile(_battle: &mut Battle, _status: Option<&str>, _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

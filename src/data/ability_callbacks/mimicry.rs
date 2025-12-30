@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onStart(pokemon) {
 ///     this.singleEvent('TerrainChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -43,7 +43,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///         this.add('-end', pokemon, 'typechange', '[silent]');
 ///     }
 /// }
-pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_terrain_change(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

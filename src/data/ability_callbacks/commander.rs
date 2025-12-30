@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onAnySwitchIn() {
 ///     ((this.effect as any).onUpdate as (p: Pokemon) => void).call(this, this.effectState.target);
 /// }
-pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
+pub fn on_any_switch_in(_battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -18,7 +18,7 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
 /// onStart(pokemon) {
 ///     ((this.effect as any).onUpdate as (p: Pokemon) => void).call(this, pokemon);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -51,7 +51,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///         pokemon.removeVolatile('commanding');
 ///     }
 /// }
-pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

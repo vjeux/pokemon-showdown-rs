@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     }
 ///     return true;
 /// }
-pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // if ((source && source.baseSpecies.num === 889) || pokemon.baseSpecies.num === 889) {
     //     return false;
     // }

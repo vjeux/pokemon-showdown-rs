@@ -25,7 +25,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_after_move_secondary_self(_battle: &mut Battle, _source_pos: (usize, usize), _target_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

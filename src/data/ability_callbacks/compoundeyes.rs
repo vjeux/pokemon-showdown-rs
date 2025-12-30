@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///     this.debug('compoundeyes - enhancing accuracy');
 ///     return this.chainModify([5325, 4096]);
 /// }
-pub fn on_source_modify_accuracy(battle: &mut Battle, accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_source_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
     let modified = battle.chain_modify_fraction(5325, 4096);
     EventResult::Number(modified)
 }

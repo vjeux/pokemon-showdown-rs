@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 ///     if ((effect as Item).isBerry) return this.chainModify(2);
 /// }
-pub fn on_try_heal(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_try_heal(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -27,7 +27,7 @@ pub fn on_try_heal(battle: &mut Battle, damage: i32, target_pos: Option<(usize, 
 ///         }
 ///     }
 /// }
-pub fn on_change_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_change_boost(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -38,7 +38,7 @@ pub fn on_change_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_source_modify_damage(_battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), _target_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -46,7 +46,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: (us
 /// onTryEatItem(item, pokemon) {
 ///     this.add('-activate', pokemon, 'ability: Ripen');
 /// }
-pub fn on_try_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_eat_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -58,7 +58,7 @@ pub fn on_try_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
 ///     // Record if the pokemon ate a berry to resist the attack
 ///     pokemon.abilityState.berryWeaken = weakenBerries.includes(item.name);
 /// }
-pub fn on_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_eat_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

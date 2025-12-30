@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         move.ignoreImmunity['Normal'] = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> EventResult {
+pub fn on_modify_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -25,7 +25,7 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> EventResult {
 ///         this.add('-fail', target, 'unboost', 'Attack', '[from] ability: Scrappy', `[of] ${target}`);
 ///     }
 /// }
-pub fn on_try_boost(battle: &mut Battle, boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_try_boost(_battle: &mut Battle, _boost: &str, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

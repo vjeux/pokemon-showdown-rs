@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onStart(pokemon) {
 ///     this.singleEvent('WeatherChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -23,7 +23,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///         pokemon.removeVolatile('protosynthesis');
 ///     }
 /// }
-pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_weather_change(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -32,7 +32,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
 ///     delete pokemon.volatiles['protosynthesis'];
 ///     this.add('-end', pokemon, 'Protosynthesis', '[silent]');
 /// }
-pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -50,7 +50,7 @@ pub mod condition {
     ///     this.effectState.bestStat = pokemon.getBestStat(false, true);
     ///     this.add('-start', pokemon, 'protosynthesis' + this.effectState.bestStat);
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -60,7 +60,7 @@ pub mod condition {
     ///     this.debug('Protosynthesis atk boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
+    pub fn on_modify_atk(_battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -70,7 +70,7 @@ pub mod condition {
     ///     this.debug('Protosynthesis def boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_def(battle: &mut Battle, def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str) -> EventResult {
+    pub fn on_modify_def(_battle: &mut Battle, _def: i32, _defender_pos: (usize, usize), _attacker_pos: (usize, usize), _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -80,7 +80,7 @@ pub mod condition {
     ///     this.debug('Protosynthesis spa boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_sp_a(battle: &mut Battle, spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
+    pub fn on_modify_sp_a(_battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -90,7 +90,7 @@ pub mod condition {
     ///     this.debug('Protosynthesis spd boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_sp_d(battle: &mut Battle, spd: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str) -> EventResult {
+    pub fn on_modify_sp_d(_battle: &mut Battle, _spd: i32, _defender_pos: (usize, usize), _attacker_pos: (usize, usize), _move_id: &str) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -100,7 +100,7 @@ pub mod condition {
     ///     this.debug('Protosynthesis spe boost');
     ///     return this.chainModify(1.5);
     /// }
-    pub fn on_modify_spe(battle: &mut Battle, spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_modify_spe(_battle: &mut Battle, _spe: i32, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }
@@ -108,7 +108,7 @@ pub mod condition {
     /// onEnd(pokemon) {
     ///     this.add('-end', pokemon, 'Protosynthesis');
     /// }
-    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

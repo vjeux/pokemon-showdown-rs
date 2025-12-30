@@ -947,7 +947,7 @@ pub fn dispatch_on_modify_spe(
 pub fn dispatch_on_modify_weight(
     battle: &mut Battle,
     item_id: &str,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
     weighthg: i32,
 ) -> EventResult {
     use crate::dex_data::ID;
@@ -1199,7 +1199,7 @@ pub fn dispatch_on_try_hit(
     item_id: &str,
     target_pos: (usize, usize),
     source_pos: (usize, usize),
-    move_id: &str,
+    _move_id: &str,
 ) -> EventResult {
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {

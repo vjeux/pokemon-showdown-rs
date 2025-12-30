@@ -22,7 +22,7 @@ use crate::event::EventResult;
 ///         boosts['accuracy'] = 0;
 ///     }
 /// }
-pub fn on_any_modify_boost(battle: &mut Battle, boosts: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_any_modify_boost(_battle: &mut Battle, _boosts: &str, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

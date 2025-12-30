@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([4915, 4096]);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move.type === 'Steel')
     let is_steel = battle.active_move.as_ref()
         .map(|m| m.move_type.as_str() == "Steel")
@@ -32,7 +32,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
 ///     }
 ///     return true;
 /// }
-pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // Check pokemon.baseSpecies.num === 493
     let pokemon_is_arceus = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

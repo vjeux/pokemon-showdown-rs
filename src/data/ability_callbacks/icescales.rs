@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), _target_pos: (usize, usize), move_id: &str) -> EventResult {
     if let Some(move_data) = battle.dex.get_move(move_id) {
         if move_data.category == "Special" {
             let modified = battle.chain_modify(0.5);

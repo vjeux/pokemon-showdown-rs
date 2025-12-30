@@ -36,7 +36,7 @@ pub fn on_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 ///         this.boost({ atk: 1 }, target, target, null, false, true);
 ///     }
 /// }
-pub fn on_try_boost(battle: &mut Battle, boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_try_boost(_battle: &mut Battle, _boost: &str, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

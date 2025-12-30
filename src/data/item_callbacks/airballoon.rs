@@ -58,7 +58,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 ///     this.clearEffectState(target.itemState);
 ///     this.runEvent('AfterUseItem', target, null, null, this.dex.items.get('airballoon'));
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: (usize, usize)) -> EventResult {
     // this.add('-enditem', target, 'Air Balloon');
     // target.item = '';
     // this.clearEffectState(target.itemState);
@@ -103,7 +103,7 @@ pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usi
 ///         this.runEvent('AfterUseItem', target, null, null, this.dex.items.get('airballoon'));
 ///     }
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // this.debug('effect: ' + effect.id);
     // if (effect.effectType === 'Move') {
     //     this.add('-enditem', target, 'Air Balloon');

@@ -44,7 +44,7 @@ pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult 
 ///         return damage / 2;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(_battle: &mut Battle, damage: i32, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     if let Some(effect) = effect_id {
         if effect == "brn" {
             return EventResult::Number(damage / 2);

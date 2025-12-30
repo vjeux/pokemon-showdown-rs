@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         target.useItem();
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: (usize, usize)) -> EventResult {
     // if (move.type === 'Ice')
     let is_ice = {
         if let Some(ref active_move) = battle.active_move {

@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onModifyDamage(damage, source, target, move) {
 ///     return this.chainModify([5324, 4096]);
 /// }
-pub fn on_modify_damage(battle: &mut Battle, damage: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_damage(battle: &mut Battle, _damage: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // return this.chainModify([5324, 4096]);
     battle.chain_modify_fraction(5324, 4096);
     EventResult::Continue

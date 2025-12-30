@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         this.damage(source.baseMaxhp / 6, source, target);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
     // if (this.checkMoveMakesContact(move, source, target)) {
     //     this.damage(source.baseMaxhp / 6, source, target);
     // }

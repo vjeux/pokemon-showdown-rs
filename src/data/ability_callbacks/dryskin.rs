@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_try_hit(_battle: &mut Battle, _target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -25,7 +25,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///         return this.chainModify(1.25);
 ///     }
 /// }
-pub fn on_source_base_power(battle: &mut Battle, base_power: i32, move_id: &str) -> EventResult {
+pub fn on_source_base_power(battle: &mut Battle, _base_power: i32, move_id: &str) -> EventResult {
     if let Some(move_data) = battle.dex.get_move(move_id) {
         if move_data.move_type == "Fire" {
             let modified = battle.chain_modify(1.25);
@@ -43,7 +43,7 @@ pub fn on_source_base_power(battle: &mut Battle, base_power: i32, move_id: &str)
 ///         this.damage(target.baseMaxhp / 8, target, target);
 ///     }
 /// }
-pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_weather(_battle: &mut Battle, _weather_id: &str, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -12,14 +12,14 @@ use crate::event::EventResult;
 ///         target.useItem();
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: (usize, usize), source_pos: (usize, usize)) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: (usize, usize)) -> EventResult {
     // if (!move.damage && !move.damageCallback && target.getMoveHitData(move).typeMod > 0) {
     //     target.useItem();
     // }
 
     // Check if move has fixed damage (move.damage or move.damageCallback)
     let has_fixed_damage = match &battle.active_move {
-        Some(active_move) => {
+        Some(_active_move) => {
             // move.damage is a fixed damage value, move.damageCallback means custom damage calculation
             // For now, we don't have these fields, so we assume no fixed damage
             // This is a simplification but maintains the logic structure

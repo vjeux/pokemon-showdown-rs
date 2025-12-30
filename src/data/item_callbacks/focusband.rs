@@ -14,7 +14,7 @@ use crate::battle::Arg;
 ///         return target.hp - 1;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // if (this.randomChance(1, 10) && damage >= target.hp && effect && effect.effectType === 'Move')
 
     // this.randomChance(1, 10)

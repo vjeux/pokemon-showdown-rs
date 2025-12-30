@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([5324, 4096]);
 ///     }
 /// }
-pub fn on_try_heal(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_try_heal(battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // const heals = ['drain', 'leechseed', 'ingrain', 'aquaring', 'strengthsap'];
     // if (heals.includes(effect.id)) {
     //     return this.chainModify([5324, 4096]);

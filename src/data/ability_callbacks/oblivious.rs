@@ -19,7 +19,7 @@ use crate::event::EventResult;
 ///         // Taunt's volatile already sends the -end message when removed
 ///     }
 /// }
-pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -27,7 +27,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// onImmunity(type, pokemon) {
 ///     if (type === 'attract') return false;
 /// }
-pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_immunity(_battle: &mut Battle, type_or_status: &str, _pokemon_pos: (usize, usize)) -> EventResult {
     if type_or_status == "attract" {
         return EventResult::Boolean(false);
     }
@@ -40,7 +40,7 @@ pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usiz
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), move_id: &str) -> EventResult {
     if move_id == "attract" || move_id == "captivate" || move_id == "taunt" {
         let target_ident = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
@@ -68,7 +68,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///         this.add('-fail', target, 'unboost', 'Attack', '[from] ability: Oblivious', `[of] ${target}`);
 ///     }
 /// }
-pub fn on_try_boost(battle: &mut Battle, boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_try_boost(_battle: &mut Battle, _boost: &str, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

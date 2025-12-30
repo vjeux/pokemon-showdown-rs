@@ -70,7 +70,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_check_show(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_check_show(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -89,7 +89,7 @@ pub fn on_check_show(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
 ///     // (once you know a Pokemon has Natural Cure, its cures are always known)
 ///     if (!pokemon.showCure) pokemon.showCure = undefined;
 /// }
-pub fn on_switch_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_switch_out(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

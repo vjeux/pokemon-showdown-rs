@@ -22,7 +22,7 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
+    _source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // if (target?.statsRaisedThisTurn) {

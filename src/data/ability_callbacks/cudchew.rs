@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         if (!this.queue.peek()) this.effectState.counter--;
 ///     }
 /// }
-pub fn on_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_eat_item(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -34,7 +34,7 @@ pub fn on_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos:
 ///         delete this.effectState.counter;
 ///     }
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_residual(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

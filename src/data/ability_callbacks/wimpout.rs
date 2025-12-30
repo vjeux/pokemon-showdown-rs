@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///     target.switchFlag = true;
 ///     this.add('-activate', target, 'ability: Wimp Out');
 /// }
-pub fn on_emergency_exit(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_emergency_exit(_battle: &mut Battle, _target_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

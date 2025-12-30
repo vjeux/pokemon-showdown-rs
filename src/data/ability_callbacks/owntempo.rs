@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         pokemon.removeVolatile('confusion');
 ///     }
 /// }
-pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -21,7 +21,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// onTryAddVolatile(status, pokemon) {
 ///     if (status.id === 'confusion') return null;
 /// }
-pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_try_add_volatile(_battle: &mut Battle, status_id: &str, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     if status_id == "confusion" {
         return EventResult::Null;
     }
@@ -33,7 +33,7 @@ pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (us
 ///         this.add('-immune', target, 'confusion', '[from] ability: Own Tempo');
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: (usize, usize), move_id: &str) -> EventResult {
     if let Some(move_data) = battle.dex.get_move(move_id) {
         if let Some(ref volatile_status) = move_data.volatile_status {
             if volatile_status.as_str() == "confusion" {
@@ -65,7 +65,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: (usi
 ///         this.add('-fail', target, 'unboost', 'Attack', '[from] ability: Own Tempo', `[of] ${target}`);
 ///     }
 /// }
-pub fn on_try_boost(battle: &mut Battle, boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_try_boost(_battle: &mut Battle, _boost: &str, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

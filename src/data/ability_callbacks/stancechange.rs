@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     const targetForme = (move.id === 'kingsshield' ? 'Aegislash' : 'Aegislash-Blade');
 ///     if (attacker.species.name !== targetForme) attacker.formeChange(targetForme);
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str) -> EventResult {
+pub fn on_modify_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

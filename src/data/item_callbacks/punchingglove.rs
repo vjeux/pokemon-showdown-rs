@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([4506, 4096]);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // Get the active move flags
     let is_punch = match &battle.active_move {
         Some(active_move) => active_move.flags.punch,
@@ -35,7 +35,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, pokemon_pos: (usize, 
 /// onModifyMove(move) {
 ///     if (move.flags['punch']) delete move.flags['contact'];
 /// }
-pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // Get mutable reference to active move
     if let Some(ref mut active_move) = battle.active_move {
         // if (move.flags['punch'])

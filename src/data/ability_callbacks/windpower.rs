@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         target.addVolatile('charge');
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_damaging_hit(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -23,7 +23,7 @@ pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: Option<(usi
 ///         pokemon.addVolatile('charge');
 ///     }
 /// }
-pub fn on_side_condition_start(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_side_condition_start(_battle: &mut Battle, _source_pos: Option<(usize, usize)>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

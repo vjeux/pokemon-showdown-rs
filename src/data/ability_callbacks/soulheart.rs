@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onAnyFaint() {
 ///     this.boost({ spa: 1 }, this.effectState.target);
 /// }
-pub fn on_any_faint(battle: &mut Battle) -> EventResult {
+pub fn on_any_faint(_battle: &mut Battle) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

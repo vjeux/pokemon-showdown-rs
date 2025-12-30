@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([4915, 4096]);
 ///     }
 /// }
-pub fn on_modify_damage(battle: &mut Battle, damage: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_damage(battle: &mut Battle, _damage: i32, _pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move && target.getMoveHitData(move).typeMod > 0) {
     //     return this.chainModify([4915, 4096]);
     // }

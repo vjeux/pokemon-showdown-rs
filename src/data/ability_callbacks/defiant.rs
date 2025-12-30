@@ -22,7 +22,7 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 2 }, target, target, null, false, true);
 ///     }
 /// }
-pub fn on_after_each_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_after_each_boost(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onStart(pokemon) {
 ///     pokemon.abilityState.choiceLock = "";
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -26,7 +26,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///         return false;
 ///     }
 /// }
-pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_before_move(_battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -35,7 +35,7 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), target_p
 ///     if (pokemon.abilityState.choiceLock || move.isZOrMaxPowered || move.id === 'struggle') return;
 ///     pokemon.abilityState.choiceLock = move.id;
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_move(_battle: &mut Battle, _move_id: &str, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -46,7 +46,7 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 ///     this.debug('Gorilla Tactics Atk Boost');
 ///     return this.chainModify(1.5);
 /// }
-pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_modify_atk(_battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -60,7 +60,7 @@ pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize)
 ///         }
 ///     }
 /// }
-pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_disable_move(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -68,7 +68,7 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
 /// onEnd(pokemon) {
 ///     pokemon.abilityState.choiceLock = "";
 /// }
-pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

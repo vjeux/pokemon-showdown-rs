@@ -39,7 +39,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// onImmunity(type, pokemon) {
 ///     if (type === 'frz') return false;
 /// }
-pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_immunity(_battle: &mut Battle, type_or_status: &str, _pokemon_pos: (usize, usize)) -> EventResult {
     if type_or_status == "frz" {
         return EventResult::Boolean(false);
     }

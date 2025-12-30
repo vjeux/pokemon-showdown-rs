@@ -19,7 +19,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
+pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
     // if (move.type === 'Flying' && target.getMoveHitData(move).typeMod > 0) {
     //     const hitSub = target.volatiles['substitute'] && !move.flags['bypasssub'] && !(move.infiltrates && this.gen >= 6);
     //     if (hitSub) return;
@@ -109,7 +109,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, damage: i32, source_pos: (us
 ///     num: 192,
 ///     gen: 4,
 /// }
-pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_eat(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // onEat callback has no implementation - just metadata
     EventResult::Continue
 }

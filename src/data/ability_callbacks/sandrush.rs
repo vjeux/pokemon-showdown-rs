@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_modify_spe(battle: &mut Battle, spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_spe(_battle: &mut Battle, _spe: i32, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -20,7 +20,7 @@ pub fn on_modify_spe(battle: &mut Battle, spe: i32, pokemon_pos: (usize, usize))
 /// onImmunity(type, pokemon) {
 ///     if (type === 'sandstorm') return false;
 /// }
-pub fn on_immunity(battle: &mut Battle, type_or_status: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_immunity(_battle: &mut Battle, type_or_status: &str, _pokemon_pos: (usize, usize)) -> EventResult {
     if type_or_status == "sandstorm" {
         return EventResult::Boolean(false);
     }

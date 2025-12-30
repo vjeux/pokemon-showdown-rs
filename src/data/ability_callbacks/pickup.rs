@@ -19,7 +19,7 @@ use crate::event::EventResult;
 ///     this.add('-item', pokemon, this.dex.items.get(item), '[from] ability: Pickup');
 ///     pokemon.setItem(item);
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_residual(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

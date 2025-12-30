@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_modify_spe(battle: &mut Battle, spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_spe(battle: &mut Battle, _spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
     if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
         if !pokemon.status.is_empty() {
             let modified = battle.chain_modify(1.5);

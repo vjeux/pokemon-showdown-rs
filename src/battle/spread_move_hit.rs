@@ -18,7 +18,7 @@ impl Battle {
         eprintln!("DEBUG: spread_move_hit called: move={}, is_secondary={}, is_self={}, turn={}", move_id, is_secondary, is_self, self.turn);
         eprintln!("DEBUG: spread_move_hit - source=p{}a, targets={:?}",
                  source_pos.0 + 1,
-                 targets.iter().filter_map(|t| *t).map(|(s, p)| format!("p{}a", s + 1)).collect::<Vec<_>>());
+                 targets.iter().filter_map(|t| *t).map(|(s, _p)| format!("p{}a", s + 1)).collect::<Vec<_>>());
 
         let mut damages: Vec<Option<i32>> = vec![Some(0); targets.len()];
         let mut final_targets = targets.to_vec();

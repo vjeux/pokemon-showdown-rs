@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (pokemon !== this.effectState.target) return;
 ///     pokemon.addVolatile('unburden');
 /// }
-pub fn on_after_use_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_after_use_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -19,7 +19,7 @@ pub fn on_after_use_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
 /// onTakeItem(item, pokemon) {
 ///     pokemon.addVolatile('unburden');
 /// }
-pub fn on_take_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_take_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -27,7 +27,7 @@ pub fn on_take_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 /// onEnd(pokemon) {
 ///     pokemon.removeVolatile('unburden');
 /// }
-pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -40,7 +40,7 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_modify_spe(battle: &mut Battle, spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_modify_spe(_battle: &mut Battle, _spe: i32, _pokemon_pos: (usize, usize)) -> EventResult {
         // TODO: Implement 1-to-1 from JS
         EventResult::Continue
     }

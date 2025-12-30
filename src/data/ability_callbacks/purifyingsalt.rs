@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     }
 ///     return false;
 /// }
-pub fn on_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // Check if effect is a move with status
     if let Some(eff_id) = effect_id {
         if let Some(move_data) = battle.dex.get_move(eff_id) {
@@ -46,7 +46,7 @@ pub fn on_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, u
 ///         return null;
 ///     }
 /// }
-pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     if status_id == "yawn" {
         let target_ident = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (this.suppressingAbility(pokemon)) return;
 ///     this.add('-ability', pokemon, 'Dark Aura');
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
@@ -22,7 +22,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///     if (move.auraBooster !== this.effectState.target) return;
 ///     return this.chainModify([move.hasAuraBreak ? 3072 : 5448, 4096]);
 /// }
-pub fn on_any_base_power(battle: &mut Battle, base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_any_base_power(_battle: &mut Battle, _base_power: i32, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

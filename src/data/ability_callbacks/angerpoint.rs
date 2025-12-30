@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 12 }, target, target);
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_hit(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onEatItem(item, pokemon) {
 ///     this.heal(pokemon.baseMaxhp / 3);
 /// }
-pub fn on_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_eat_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }

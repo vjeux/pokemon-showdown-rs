@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         return 2;
 ///     }
 /// }
-pub fn on_modify_s_t_a_b(battle: &mut Battle, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_modify_s_t_a_b(_battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // TODO: Implement 1-to-1 from JS
     EventResult::Continue
 }
