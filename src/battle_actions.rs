@@ -36,6 +36,7 @@ mod get_damage;
 mod get_spread_damage;
 mod modify_damage;
 mod run_move_effects;
+mod spread_move_hit;
 pub use get_max_move_name::get_max_move_name;
 pub use get_z_move_name::get_z_move_name;
 pub use use_move::use_move;
@@ -47,6 +48,7 @@ pub use get_damage::get_damage;
 pub use get_spread_damage::get_spread_damage;
 pub use modify_damage::modify_damage;
 pub use run_move_effects::run_move_effects;
+pub use spread_move_hit::spread_move_hit;
 
 pub static CHOOSABLE_TARGETS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
     let mut set = HashSet::new();

@@ -22,7 +22,7 @@ impl Battle {
         let target_list: Vec<Option<(usize, usize)>> = targets.iter().map(|&t| Some(t)).collect();
 
         let (damages, final_targets) =
-            self.spread_move_hit(&target_list, pokemon_pos, move_id, false, false);
+            crate::battle_actions::spread_move_hit(self, &target_list, pokemon_pos, move_id, false, false);
 
         // Check if any target was hit
         for (i, damage) in damages.iter().enumerate() {
