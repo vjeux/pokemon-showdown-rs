@@ -104,6 +104,8 @@ function generateCanDispatchMethod(eventMap, effectType, paramName) {
         return code;
     }
 
+    code += `        match event_id {\n`;
+
     for (const eventName of events) {
         const ids = eventMap.get(eventName);
 
@@ -112,9 +114,7 @@ function generateCanDispatchMethod(eventMap, effectType, paramName) {
             continue;
         }
 
-        code += `        // Check for ${eventName} event\n`;
-        code += `        if event_id == "${eventName}" {\n`;
-        code += `            return matches!(\n`;
+        code += `            "${eventName}" => matches!(\n`;
         code += `                ${paramName}_id,\n`;
 
         // Split into groups of 5 for readability
@@ -127,11 +127,11 @@ function generateCanDispatchMethod(eventMap, effectType, paramName) {
             }
         }
 
-        code += `\n            );\n`;
-        code += `        }\n\n`;
+        code += `\n            ),\n`;
     }
 
-    code += `        false\n`;
+    code += `            _ => false,\n`;
+    code += `        }\n`;
     code += `    }\n`;
 
     return code;
