@@ -58,11 +58,11 @@ pub fn on_hit(
         let mut target_boosts = HashMap::new();
         let mut source_boosts = HashMap::new();
 
-        target_boosts.insert("atk".to_string(), target_pokemon.boosts.atk);
-        target_boosts.insert("spa".to_string(), target_pokemon.boosts.spa);
+        target_boosts.insert(crate::dex_data::BoostID::Atk, target_pokemon.boosts.atk);
+        target_boosts.insert(crate::dex_data::BoostID::SpA, target_pokemon.boosts.spa);
 
-        source_boosts.insert("atk".to_string(), source_pokemon.boosts.atk);
-        source_boosts.insert("spa".to_string(), source_pokemon.boosts.spa);
+        source_boosts.insert(crate::dex_data::BoostID::Atk, source_pokemon.boosts.atk);
+        source_boosts.insert(crate::dex_data::BoostID::SpA, source_pokemon.boosts.spa);
 
         (target_boosts, source_boosts)
     };
@@ -73,19 +73,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        for (stat, value) in &target_boosts {
-            let boost_id = match stat.as_str() {
-                "atk" => crate::dex_data::BoostID::Atk,
-                "def" => crate::dex_data::BoostID::Def,
-                "spa" => crate::dex_data::BoostID::SpA,
-                "spd" => crate::dex_data::BoostID::SpD,
-                "spe" => crate::dex_data::BoostID::Spe,
-                "accuracy" => crate::dex_data::BoostID::Accuracy,
-                "evasion" => crate::dex_data::BoostID::Evasion,
-                _ => continue,
-            };
-            source_pokemon.set_boost(boost_id, *value);
-        }
+        source_pokemon.set_boost(target_boosts);
     }
 
     // target.setBoost(sourceBoosts);
@@ -94,19 +82,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        for (stat, value) in &source_boosts {
-            let boost_id = match stat.as_str() {
-                "atk" => crate::dex_data::BoostID::Atk,
-                "def" => crate::dex_data::BoostID::Def,
-                "spa" => crate::dex_data::BoostID::SpA,
-                "spd" => crate::dex_data::BoostID::SpD,
-                "spe" => crate::dex_data::BoostID::Spe,
-                "accuracy" => crate::dex_data::BoostID::Accuracy,
-                "evasion" => crate::dex_data::BoostID::Evasion,
-                _ => continue,
-            };
-            target_pokemon.set_boost(boost_id, *value);
-        }
+        target_pokemon.set_boost(source_boosts);
     }
 
     // this.add('-swapboost', source, target, 'atk, spa', '[from] move: Power Swap');

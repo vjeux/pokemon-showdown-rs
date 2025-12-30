@@ -169,6 +169,7 @@ pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         };
 
         use crate::dex_data::BoostID;
+        let mut boost_map = std::collections::HashMap::new();
         for (boost_name, boost_value) in boosts {
             let boost_id = match boost_name.to_lowercase().as_str() {
                 "atk" => BoostID::Atk,
@@ -180,8 +181,9 @@ pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
                 "evasion" => BoostID::Evasion,
                 _ => continue,
             };
-            pokemon_mut.set_boost(boost_id, boost_value);
+            boost_map.insert(boost_id, boost_value);
         }
+        pokemon_mut.set_boost(boost_map);
     }
 
     // this.add('-clearnegativeboost', pokemon, '[silent]');

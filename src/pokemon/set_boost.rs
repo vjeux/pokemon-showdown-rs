@@ -1,8 +1,9 @@
 use crate::*;
+use std::collections::HashMap;
 
 impl Pokemon {
 
-    /// Set a specific boost value
+    /// Set boost values
     //
     // 	setBoost(boosts: SparseBoostsTable) {
     // 		let boostName: BoostID;
@@ -11,8 +12,10 @@ impl Pokemon {
     // 		}
     // 	}
     //
-    pub fn set_boost(&mut self, stat: crate::dex_data::BoostID, value: i8) {
-        let clamped = value.clamp(-6, 6);
-        self.boosts.set(stat, clamped);
+    pub fn set_boost(&mut self, boosts: HashMap<crate::dex_data::BoostID, i8>) {
+        // JS: for (boostName in boosts) { this.boosts[boostName] = boosts[boostName]!; }
+        for (boost_name, value) in boosts {
+            self.boosts.set(boost_name, value);
+        }
     }
 }

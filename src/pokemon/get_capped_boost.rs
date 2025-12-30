@@ -1,4 +1,5 @@
 use crate::*;
+use std::collections::HashMap;
 
 impl Pokemon {
 
@@ -15,9 +16,17 @@ impl Pokemon {
     // 		return cappedBoost;
     // 	}
     //
-    pub fn get_capped_boost(&self, stat: crate::dex_data::BoostID, amount: i8) -> i8 {
-        let current = self.boosts.get(stat);
-        let new_value = (current + amount).clamp(-6, 6);
-        new_value - current
+    pub fn get_capped_boost(&self, boosts: HashMap<crate::dex_data::BoostID, i8>) -> HashMap<crate::dex_data::BoostID, i8> {
+        let mut capped_boost = HashMap::new();
+        // JS: for (boostName in boosts) { const boost = boosts[boostName]; if (!boost) continue; cappedBoost[boostName] = clampIntRange(this.boosts[boostName] + boost, -6, 6) - this.boosts[boostName]; }
+        for (boost_name, boost) in boosts {
+            if boost == 0 {
+                continue;
+            }
+            let current = self.boosts.get(boost_name);
+            let new_value = (current + boost).clamp(-6, 6);
+            capped_boost.insert(boost_name, new_value - current);
+        }
+        capped_boost
     }
 }
