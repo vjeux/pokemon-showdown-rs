@@ -24,7 +24,6 @@ mod get_confusion_damage;
 mod target_type_choices;
 mod combine_results;
 mod get_z_move;
-mod can_z_move;
 mod get_max_move;
 mod can_ultra_burst;
 mod can_terastallize;
