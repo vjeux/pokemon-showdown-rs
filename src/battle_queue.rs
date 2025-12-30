@@ -30,7 +30,6 @@ mod will_move_pokemon;
 mod will_switch;
 mod will_act;
 mod insert_run_switch;
-mod insert_choice;
 mod sort;
 mod prioritize_action;
 mod iter;
