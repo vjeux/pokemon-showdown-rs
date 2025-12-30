@@ -232,16 +232,8 @@ impl Battle {
         // JS:     this.speedSort(dynamaxEnding);
         // JS: }
         if dynamax_ending.len() > 1 {
-            // Update speed for all Pokemon ending Dynamax
-            for &(side_idx, poke_idx) in &dynamax_ending {
-                if let Some(pokemon) = self
-                    .sides
-                    .get_mut(side_idx)
-                    .and_then(|s| s.pokemon.get_mut(poke_idx))
-                {
-                    pokemon.update_speed();
-                }
-            }
+            // JS: this.updateSpeed() - updates ALL pokemon, not just dynamax ending ones
+            self.update_speed();
 
             // Speed sort the Pokemon ending Dynamax
             dynamax_ending.sort_by(|&(side_a, poke_a), &(side_b, poke_b)| {
@@ -460,8 +452,11 @@ impl Battle {
                 // JS: pokemon.maybeLocked = false;
                 pokemon.maybe_locked = false;
 
-                // JS: for (const moveSlot of pokemon.moveSlots) { moveSlot.disabled = false; }
-                // Reset all move slots to not disabled (this happens in Pokemon struct reset)
+                // JS: for (const moveSlot of pokemon.moveSlots) { moveSlot.disabled = false; moveSlot.disabledSource = ''; }
+                for move_slot in &mut pokemon.move_slots {
+                    move_slot.disabled = false;
+                    move_slot.disabled_source = None;
+                }
 
                 // Collect pokemon position for DisableMove event
                 let pokemon_pos = (pokemon.side_index, pokemon.position);
@@ -475,6 +470,9 @@ impl Battle {
                 // JS: pokemon.trapped = pokemon.maybeTrapped = false;
                 pokemon.trapped = false;
                 pokemon.maybe_trapped = false;
+
+                // JS: pokemon.activeTurns++;
+                pokemon.active_turns += 1;
             }
         }
 
@@ -538,11 +536,22 @@ impl Battle {
             }
         }
 
-        self.add("", &[]);
         self.add("turn", &[self.turn.to_string().into()]);
 
+        // JS: if (this.gameType === 'multi') { ... }
+        // Multi battles candynamax logic goes here (TODO: implement when needed)
+
+        // JS: if (this.gen === 2) this.quickClawRoll = this.randomChance(60, 256);
+        if self.gen == 2 {
+            self.quick_claw_roll = Some(self.random_chance(60, 256));
+        }
+
+        // JS: if (this.gen === 3) this.quickClawRoll = this.randomChance(1, 5);
+        if self.gen == 3 {
+            self.quick_claw_roll = Some(self.random_chance(1, 5));
+        }
+
         // JS: this.makeRequest('move');
-        eprintln!("DEBUG [end_turn]: Calling make_request(Move)");
         self.make_request(Some(BattleRequestState::Move));
     }
 }
