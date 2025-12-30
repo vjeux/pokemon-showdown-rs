@@ -24,7 +24,6 @@ mod get_confusion_damage;
 mod target_type_choices;
 mod can_ultra_burst;
 mod can_terastallize;
-mod get_z_power_effect;
 mod get_spread_damage_modifier;
 mod modify_damage;
 mod should_force_switch;
@@ -335,17 +334,6 @@ pub struct MoveEffects {
     pub heal: Option<(i32, i32)>,
     pub status: Option<String>,
     pub volatile_status: Option<String>,
-}
-
-/// Z-Power effects for status Z-moves
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ZPowerEffect {
-    Heal,
-    ClearNegativeBoost,
-    Crit2,
-    Redirect,
-    HealReplacement,
-    Curse,
 }
 
 /// Run move options for runMove
