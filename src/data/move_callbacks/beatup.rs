@@ -20,7 +20,14 @@ pub fn on_modify_move(
     // move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
     // Build list of allies that are not fainted and not statused
     let mut allies = Vec::new();
-    for pos in battle.allies_and_self(pokemon_pos.0, false) {
+    let allies_and_self = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.allies_and_self(battle, false)
+    };
+    for pos in allies_and_self {
         if let Some(pokemon) = battle.pokemon_at(pos.0, pos.1) {
             // ally === pokemon || !ally.fainted && !ally.status
             if pos == pokemon_pos || (!pokemon.fainted && pokemon.status == ID::from("")) {

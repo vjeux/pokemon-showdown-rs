@@ -39,8 +39,14 @@ impl Battle {
             // JS: return this.foe.allies(all);
             // Get foe side index
             let foe_side_idx = if side_idx == 0 { 1 } else { 0 };
-            // Return allies from foe side
-            result = self.allies_and_self(foe_side_idx, include_fainted);
+            // Return allies from foe side - get any pokemon from that side to call the method
+            if let Some(foe_side) = self.sides.get(foe_side_idx) {
+                if let Some(&foe_idx) = foe_side.active.iter().flatten().next() {
+                    if let Some(foe_pokemon) = foe_side.pokemon.get(foe_idx) {
+                        result = foe_pokemon.allies_and_self(self, include_fainted);
+                    }
+                }
+            }
         }
 
         result

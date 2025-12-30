@@ -38,10 +38,14 @@ pub fn on_hit_side(
     //     ally.hasAbility(['plus', 'minus']) &&
     //     (!ally.volatiles['maxguard'] || this.runEvent('TryHit', ally, source, move))
     // ));
-    let side_index = source.0;
     // Get all allies excluding self (source)
-    let allies: Vec<(usize, usize)> = battle
-        .allies_and_self(side_index, false)
+    let allies: Vec<(usize, usize)> = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.allies_and_self(battle, false)
+    }
         .into_iter()
         .filter(|&pos| pos != source)
         .collect();

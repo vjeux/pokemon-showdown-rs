@@ -104,7 +104,14 @@ impl Battle {
             "all" | "foeSide" | "allySide" | "allyTeam" => {
                 // JS: if (!move.target.startsWith('foe')) targets.push(...this.alliesAndSelf());
                 if !move_target.starts_with("foe") {
-                    targets.extend(self.allies_and_self(user_pos.0, true));
+                    let allies = if let Some(pokemon) = self.sides.get(user_pos.0)
+                        .and_then(|s| s.pokemon.get(user_pos.1))
+                    {
+                        pokemon.allies_and_self(self, true)
+                    } else {
+                        Vec::new()
+                    };
+                    targets.extend(allies);
                 }
                 // JS: if (!move.target.startsWith('ally')) targets.push(...this.foes(true));
                 if !move_target.starts_with("ally") {
@@ -160,7 +167,13 @@ impl Battle {
             }
             "allies" => {
                 // JS: targets = this.alliesAndSelf();
-                targets = self.allies_and_self(user_pos.0, false);
+                targets = if let Some(pokemon) = self.sides.get(user_pos.0)
+                    .and_then(|s| s.pokemon.get(user_pos.1))
+                {
+                    pokemon.allies_and_self(self, false)
+                } else {
+                    Vec::new()
+                };
             }
             _ => {
                 // Default case - single target moves
