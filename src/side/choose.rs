@@ -131,11 +131,30 @@ impl Side {
         }
 
         match parts[0] {
-            "pass" => {
+            "auto" | "default" => {
+                // JS: case 'auto':
+                // JS: case 'default':
+                // JS:     this.autoChoose();
+                // JS:     break;
+                self.auto_choose();
+                Ok(true)
+            }
+            "pass" | "skip" => {
+                // JS: case 'pass':
+                // JS: case 'skip':
+                // JS:     if (data) return this.emitChoiceError(`Unrecognized data after "pass": ${data}`);
+                // JS:     if (!this.choosePass()) return false;
+                // JS:     break;
+                if parts.len() > 1 {
+                    return Err(format!("Unrecognized data after 'pass': {}", parts[1..].join(" ")));
+                }
                 self.choose_pass();
                 Ok(true)
             }
             "switch" => {
+                // JS: case 'switch':
+                // JS:     this.chooseSwitch(data);
+                // JS:     break;
                 if parts.len() < 2 {
                     return Err("Switch requires target".to_string());
                 }
@@ -144,6 +163,10 @@ impl Side {
                 Ok(true)
             }
             "move" => {
+                // JS: case 'move':
+                // JS:     ...lots of parsing logic...
+                // JS:     if (!this.chooseMove(data, targetLoc, event)) return false;
+                // JS:     break;
                 if parts.len() < 2 {
                     return Err("Move requires target".to_string());
                 }
@@ -162,6 +185,9 @@ impl Side {
                 }
             }
             "team" => {
+                // JS: case 'team':
+                // JS:     if (!this.chooseTeam(data)) return false;
+                // JS:     break;
                 let positions: Result<Vec<usize>, _> = parts[1..]
                     .iter()
                     .map(|s| s.parse::<usize>().map(|n| n - 1))
@@ -174,7 +200,24 @@ impl Side {
                     Err(_) => Err("Invalid team positions".to_string()),
                 }
             }
-            _ => Err(format!("Unknown choice: {}", parts[0])),
+            "shift" => {
+                // JS: case 'shift':
+                // JS:     if (data) return this.emitChoiceError(`Unrecognized data after "shift": ${data}`);
+                // JS:     if (!this.chooseShift()) return false;
+                // JS:     break;
+                if parts.len() > 1 {
+                    return Err(format!("Unrecognized data after 'shift': {}", parts[1..].join(" ")));
+                }
+                self.choose_shift()?;
+                Ok(true)
+            }
+            _ => {
+                // JS: default:
+                // JS:     this.emitChoiceError(`Unrecognized choice: ${choiceString}`);
+                // JS:     break;
+                self.emit_choice_error(&format!("Unrecognized choice: {}", input));
+                Err(format!("Unknown choice: {}", parts[0]))
+            }
         }
     }
 }
