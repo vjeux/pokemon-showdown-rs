@@ -414,8 +414,21 @@ impl Battle {
         let mut pokemon_positions: Vec<(usize, usize)> = Vec::new();
         let mut disable_move_data: Vec<((usize, usize), ID)> = Vec::new();
 
+        // Collect type change messages to execute after the loop (to avoid borrow checker issues)
+        let mut type_change_messages: Vec<(String, String, Option<String>, (usize, usize))> = Vec::new(); // (target_slot, real_type, added_type, seen_pokemon_pos)
+
+        // Collect attackedBy updates to process after the loop (to avoid borrow checker issues)
+        let mut attacked_by_updates: Vec<(usize, usize)> = Vec::new(); // (side_idx, poke_idx)
+
+        // Track trapped and staleness status per side
+        let mut trapped_by_side: Vec<bool> = Vec::new();
+        let mut staleness_by_side: Vec<Option<String>> = Vec::new();
+
         // Reset Pokemon turn-specific fields
         for side in &mut self.sides {
+            let mut side_trapped = true;
+            let mut side_staleness: Option<String> = None;
+
             for pokemon in &mut side.pokemon {
                 if !pokemon.is_active {
                     continue;
@@ -467,12 +480,182 @@ impl Battle {
                     disable_move_data.push((pokemon_pos, move_slot.id.clone()));
                 }
 
+                // JS: if (pokemon.getLastAttackedBy() && this.gen >= 7) pokemon.knownType = true;
+                if self.gen >= 7 && pokemon.get_last_attacked_by().is_some() {
+                    pokemon.known_type = Some(pokemon.types.join("/"));
+                }
+
+                // JS: for (let i = pokemon.attackedBy.length - 1; i >= 0; i--) {
+                // JS:     const attack = pokemon.attackedBy[i];
+                // JS:     if (attack.source.isActive) {
+                // JS:         attack.thisTurn = false;
+                // JS:     } else {
+                // JS:         pokemon.attackedBy.splice(pokemon.attackedBy.indexOf(attack), 1);
+                // JS:     }
+                // JS: }
+                // Collect for processing after the loop (to avoid borrow checker issues)
+                if !pokemon.attacked_by.is_empty() {
+                    attacked_by_updates.push(pokemon_pos);
+                }
+
+                // JS: if (this.gen >= 7 && !pokemon.terastallized) {
+                // Gen 7+ type reveal logic
+                if self.gen >= 7 && pokemon.terastallized.is_none() {
+                    // JS: const seenPokemon = pokemon.illusion || pokemon;
+                    let seen_pokemon_pos = if let Some(illusion_idx) = pokemon.illusion {
+                        (pokemon_pos.0, illusion_idx)
+                    } else {
+                        pokemon_pos
+                    };
+
+                    // If seen pokemon is the current pokemon (no illusion), we can check directly
+                    if seen_pokemon_pos == pokemon_pos {
+                        // Get real type string from current pokemon
+                        let real_type_string = pokemon.types.join("/");
+                        let apparent_type_changed = pokemon.apparent_type.as_deref() != Some(&real_type_string);
+
+                        if apparent_type_changed && !real_type_string.is_empty() {
+                            // Collect for later to avoid borrow checker issues with self.add()
+                            let target_arg = pokemon.get_slot();
+                            let added_type_opt = pokemon.added_type.clone();
+                            type_change_messages.push((target_arg, real_type_string, added_type_opt, seen_pokemon_pos));
+                        }
+                    } else {
+                        // Different pokemon (illusion) - need to collect for later processing
+                        // We can't access the illusion target here without conflicting borrows
+                        // So we'll collect the data and process it after the loop
+                        let target_arg = pokemon.get_slot();
+                        let added_type_opt = pokemon.added_type.clone();
+                        // Mark with empty string to indicate we need to fetch real_type later
+                        type_change_messages.push((target_arg, String::new(), added_type_opt, seen_pokemon_pos));
+                    }
+                }
+
                 // JS: pokemon.trapped = pokemon.maybeTrapped = false;
                 pokemon.trapped = false;
                 pokemon.maybe_trapped = false;
 
                 // JS: pokemon.activeTurns++;
                 pokemon.active_turns += 1;
+
+                // JS: if (pokemon.fainted) continue;
+                if pokemon.fainted {
+                    continue;
+                }
+
+                // JS: sideTrapped = sideTrapped && pokemon.trapped;
+                side_trapped = side_trapped && pokemon.trapped;
+
+                // JS: const staleness = pokemon.volatileStaleness || pokemon.staleness;
+                // JS: if (staleness) sideStaleness = sideStaleness === 'external' ? sideStaleness : staleness;
+                let staleness = pokemon.volatile_staleness.clone().or(pokemon.staleness.clone());
+                if let Some(s) = staleness {
+                    side_staleness = if side_staleness.as_deref() == Some("external") {
+                        side_staleness
+                    } else {
+                        Some(s)
+                    };
+                }
+            }
+
+            // JS: trappedBySide.push(sideTrapped);
+            // JS: stalenessBySide.push(sideStaleness);
+            trapped_by_side.push(side_trapped);
+            staleness_by_side.push(side_staleness);
+
+            // JS: side.faintedLastTurn = side.faintedThisTurn;
+            // JS: side.faintedThisTurn = null;
+            side.fainted_last_turn = side.fainted_this_turn;
+            side.fainted_this_turn = None;
+        }
+
+        // Process attackedBy arrays (after the mutable borrow of sides ends)
+        for (side_idx, poke_idx) in attacked_by_updates {
+            // First pass: collect which indices should be removed vs marked (immutable borrows)
+            let mut indices_to_remove: Vec<usize> = Vec::new();
+            let mut indices_to_mark: Vec<usize> = Vec::new();
+
+            if let Some(pokemon) = self.sides.get(side_idx)
+                .and_then(|s| s.pokemon.get(poke_idx))
+            {
+                for (i, attack) in pokemon.attacked_by.iter().enumerate() {
+                    let source_pos = attack.source;
+
+                    // Check if source is still active
+                    let source_is_active = if let Some(source_pokemon) = self.sides.get(source_pos.0)
+                        .and_then(|s| s.pokemon.get(source_pos.1))
+                    {
+                        source_pokemon.is_active
+                    } else {
+                        false
+                    };
+
+                    if source_is_active {
+                        indices_to_mark.push(i);
+                    } else {
+                        indices_to_remove.push(i);
+                    }
+                }
+            }
+
+            // Second pass: apply the changes (mutable borrow)
+            if let Some(pokemon) = self.sides.get_mut(side_idx)
+                .and_then(|s| s.pokemon.get_mut(poke_idx))
+            {
+                // Mark as not this turn
+                for i in indices_to_mark {
+                    pokemon.attacked_by[i].this_turn = false;
+                }
+
+                // Remove inactive sources (in reverse order to maintain indices)
+                for i in indices_to_remove.iter().rev() {
+                    pokemon.attacked_by.remove(*i);
+                }
+            }
+        }
+
+        // Process collected type change messages (after the mutable borrow of sides ends)
+        for (target_slot, mut real_type, added_type_opt, seen_pokemon_pos) in type_change_messages {
+            // If real_type is empty, we need to fetch it from the seen_pokemon (illusion case)
+            if real_type.is_empty() {
+                if let Some(seen_pokemon) = self.sides.get(seen_pokemon_pos.0)
+                    .and_then(|s| s.pokemon.get(seen_pokemon_pos.1))
+                {
+                    real_type = seen_pokemon.types.join("/");
+
+                    // Check if type changed
+                    let apparent_type_changed = seen_pokemon.apparent_type.as_deref() != Some(&real_type);
+                    if !apparent_type_changed || real_type.is_empty() {
+                        continue; // Skip if no change or empty type
+                    }
+                } else {
+                    continue; // Skip if pokemon not found
+                }
+            }
+
+            // JS: this.add('-start', pokemon, 'typechange', realTypeString, '[silent]');
+            self.add("-start", &[
+                target_slot.as_str().into(),
+                "typechange".into(),
+                real_type.clone().into(),
+                "[silent]".into()
+            ]);
+
+            // JS: seenPokemon.apparentType = realTypeString;
+            if let Some(seen_pokemon_mut) = self.sides.get_mut(seen_pokemon_pos.0)
+                .and_then(|s| s.pokemon.get_mut(seen_pokemon_pos.1))
+            {
+                seen_pokemon_mut.apparent_type = Some(real_type);
+            }
+
+            // JS: if (pokemon.addedType) { this.add('-start', pokemon, 'typeadd', pokemon.addedType, '[silent]'); }
+            if let Some(added_type) = added_type_opt {
+                self.add("-start", &[
+                    target_slot.as_str().into(),
+                    "typeadd".into(),
+                    added_type.as_str().into(),
+                    "[silent]".into()
+                ]);
             }
         }
 
@@ -487,6 +670,37 @@ impl Battle {
         // JS: for (const moveSlot of pokemon.moveSlots) { this.singleEvent('DisableMove', activeMove, null, pokemon); }
         for (pokemon_pos, move_id) in disable_move_data {
             self.single_event("DisableMove", &move_id, Some(pokemon_pos), None, None);
+
+            // JS: if (activeMove.flags['cantusetwice'] && pokemon.lastMove?.id === moveSlot.id) {
+            // JS:     pokemon.disableMove(pokemon.lastMove.id);
+            // JS: }
+            // Check if move has cantusetwice flag and was last move used
+            if let Some(move_def) = self.dex.moves().get_by_id(&move_id) {
+                if move_def.flags.contains_key("cantusetwice") {
+                    // Check if this was the last move used
+                    if let Some(pokemon) = self.sides.get(pokemon_pos.0)
+                        .and_then(|s| s.pokemon.get(pokemon_pos.1))
+                    {
+                        if let Some(ref last_move) = pokemon.last_move {
+                            if last_move == &move_id {
+                                // Disable this move
+                                if let Some(pokemon_mut) = self.sides.get_mut(pokemon_pos.0)
+                                    .and_then(|s| s.pokemon.get_mut(pokemon_pos.1))
+                                {
+                                    // Find and disable the move slot
+                                    for slot in &mut pokemon_mut.move_slots {
+                                        if slot.id == move_id {
+                                            slot.disabled = true;
+                                            slot.disabled_source = Some("cantusetwice".to_string());
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // Call TrapPokemon and MaybeTrapPokemon events for each active pokemon
@@ -536,10 +750,79 @@ impl Battle {
             }
         }
 
+        // JS: if (this.maybeTriggerEndlessBattleClause(trappedBySide, stalenessBySide)) return;
+        if self.maybe_trigger_endless_battle_clause(&trapped_by_side, &staleness_by_side) {
+            return;
+        }
+
+        // JS: if (this.gameType === 'triples' && this.sides.every(side => side.pokemonLeft === 1)) {
+        // Triples center logic
+        if self.game_type == GameType::Triples && self.sides.iter().all(|s| s.pokemon_left == 1) {
+            // JS: const actives = this.getAllActive();
+            let actives = self.get_all_active(false);
+
+            // JS: if (actives.length > 1 && !actives[0].isAdjacent(actives[1])) {
+            if actives.len() > 1 {
+                let active0_pos = actives[0];
+                let active1_pos = actives[1];
+
+                // Get pokemon data for adjacency check
+                let (p0_position, p1_position, p1_fainted) = {
+                    let p0 = &self.sides[active0_pos.0].pokemon[active0_pos.1];
+                    let p1 = &self.sides[active1_pos.0].pokemon[active1_pos.1];
+                    (p0.position, p1.position, p1.fainted)
+                };
+
+                // Check if not adjacent
+                let is_adjacent = if let Some(p0) = self.sides.get(active0_pos.0)
+                    .and_then(|s| s.pokemon.get(active0_pos.1))
+                {
+                    p0.is_adjacent(p1_position, p1_fainted, self.active_per_half)
+                } else {
+                    true // If can't check, assume adjacent to skip swap
+                };
+
+                if !is_adjacent {
+                    // JS: this.swapPosition(actives[0], 1, '[silent]');
+                    // JS: this.swapPosition(actives[1], 1, '[silent]');
+                    // TODO: Implement swapPosition method
+                    // For now, this is a stub
+
+                    // JS: this.add('-center');
+                    self.add("-center", &[]);
+                }
+            }
+        }
+
         self.add("turn", &[self.turn.to_string().into()]);
 
-        // JS: if (this.gameType === 'multi') { ... }
-        // Multi battles candynamax logic goes here (TODO: implement when needed)
+        // JS: if (this.gameType === 'multi') {
+        // JS:     for (const side of this.sides) {
+        // JS:         if (side.canDynamaxNow()) {
+        // JS:             if (this.turn === 1) {
+        // JS:                 this.addSplit(side.id, ['-candynamax', side.id]);
+        // JS:             } else {
+        // JS:                 this.add('-candynamax', side.id);
+        // JS:             }
+        // JS:         }
+        // JS:     }
+        // JS: }
+        if self.game_type == GameType::Multi {
+            for side in &self.sides {
+                // Check if side can dynamax now (would need canDynamaxNow() method)
+                // For now, this is a stub as canDynamaxNow() is not yet implemented
+                // TODO: Implement canDynamaxNow() method on Side
+
+                // If we had the method:
+                // if side.can_dynamax_now() {
+                //     if self.turn == 1 {
+                //         self.add_split(&side.id, &["-candynamax".into(), side.id.to_str().into()]);
+                //     } else {
+                //         self.add("-candynamax", &[side.id.to_str().into()]);
+                //     }
+                // }
+            }
+        }
 
         // JS: if (this.gen === 2) this.quickClawRoll = this.randomChance(60, 256);
         if self.gen == 2 {

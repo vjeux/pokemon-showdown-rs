@@ -108,7 +108,11 @@ impl Battle {
     // 		return this.tie();
     // 	}
     //
-    pub fn maybe_trigger_endless_battle_clause(&mut self) -> bool {
+    pub fn maybe_trigger_endless_battle_clause(
+        &mut self,
+        trapped_by_side: &[bool],
+        staleness_by_side: &[Option<String>],
+    ) -> bool {
         // JS: if (this.turn <= 100) return;
         if self.turn <= 100 {
             return false;
