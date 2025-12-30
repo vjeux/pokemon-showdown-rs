@@ -57,7 +57,11 @@ impl Battle {
         let num_slots = self.active_per_half as i32;
 
         // JS: const sourceLoc = source.getLocOf(source);
-        let source_loc = self.get_loc_of(source, source);
+        let source_loc = if let Some(source_pokemon) = self.sides.get(source.0).and_then(|s| s.pokemon.get(source.1)) {
+            source_pokemon.get_loc_of(source.0, source.1, self.active_per_half) as i32
+        } else {
+            0
+        };
 
         // JS: if (Math.abs(targetLoc) > numSlots) return false;
         if target_loc.abs() > num_slots {

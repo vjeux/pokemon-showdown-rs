@@ -564,11 +564,7 @@ impl Battle {
             if should_sort {
                 // JS: this.updateSpeed();
                 // Update speed for all Pokemon
-                for side in &mut self.sides {
-                    for pokemon in &mut side.pokemon {
-                        pokemon.update_speed();
-                    }
-                }
+                self.update_speed();
 
                 // JS: for (const queueAction of this.queue.list) { if (queueAction.pokemon) this.getActionSpeed(queueAction); }
                 // Call get_action_speed on all actions to update their speeds

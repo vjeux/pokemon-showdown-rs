@@ -19,11 +19,20 @@ impl Battle {
         let indices: Vec<(usize, usize)> = self.get_all_active(false);
 
         // Update each active Pokemon's speed
-        for (side_idx, poke_idx) in indices {
-            if let Some(side) = self.sides.get_mut(side_idx) {
-                if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
-                    pokemon.update_speed();
-                }
+        // Two-phase approach: calculate speeds first, then update
+        let mut speeds: Vec<((usize, usize), i32)> = Vec::new();
+
+        for (side_idx, poke_idx) in &indices {
+            if let Some(pokemon) = self.sides.get(*side_idx).and_then(|s| s.pokemon.get(*poke_idx)) {
+                let new_speed = pokemon.get_action_speed(self);
+                speeds.push(((*side_idx, *poke_idx), new_speed));
+            }
+        }
+
+        // Apply the calculated speeds
+        for ((side_idx, poke_idx), new_speed) in speeds {
+            if let Some(pokemon) = self.sides.get_mut(side_idx).and_then(|s| s.pokemon.get_mut(poke_idx)) {
+                pokemon.speed = new_speed;
             }
         }
     }

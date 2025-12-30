@@ -171,7 +171,11 @@ pub fn on_modify_move(
 
     if has_source_effect {
         let target = target.unwrap();
-        let target_loc = battle.get_loc_of(pokemon, target);
+        let target_loc = if let Some(pokemon_pokemon) = battle.sides.get(pokemon.0).and_then(|s| s.pokemon.get(pokemon.1)) {
+            pokemon_pokemon.get_loc_of(target.0, target.1, battle.active_per_half) as i32
+        } else {
+            0
+        };
 
         let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
             Some(p) => p,

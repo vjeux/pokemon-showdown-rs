@@ -93,7 +93,6 @@ mod get_pokemon_mut;
 mod can_switch;
 mod get_random_switchable;
 mod possible_switches;
-mod get_loc_of;
 mod valid_target_loc;
 mod valid_target;
 mod get_at_slot;

@@ -122,7 +122,11 @@ impl Battle {
         // JS:     return move.flags['futuremove'] ? pokemon : null;
         // JS: }
         // Fails if the target is the user and the move can't target its own position
-        let self_loc = self.get_loc_of(user, user);
+        let self_loc = if let Some(user_pokemon) = self.sides.get(user.0).and_then(|s| s.pokemon.get(user.1)) {
+            user_pokemon.get_loc_of(user.0, user.1, self.active_per_half) as i32
+        } else {
+            0
+        };
         if (target_type == "AdjacentAlly" || target_type == "Any" || target_type == "Normal")
             && target_loc as i32 == self_loc
         {

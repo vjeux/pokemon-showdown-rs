@@ -31,7 +31,8 @@ impl Battle {
 
         // Update Pokemon speed
         // JS: if (choice.pokemon) { choice.pokemon.updateSpeed(); }
-        self.sides[side_index].pokemon[pokemon_index].update_speed();
+        let new_speed = self.sides[side_index].pokemon[pokemon_index].get_action_speed(self);
+        self.sides[side_index].pokemon[pokemon_index].speed = new_speed;
 
         // Create the runSwitch action
         let action = Action::Pokemon(PokemonAction {
