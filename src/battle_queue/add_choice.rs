@@ -83,6 +83,7 @@ impl BattleQueue {
                 let priority = -(side_action.switch_index.unwrap_or(0) as i8);
                 actions.push(Action::Team(TeamAction {
                     priority,
+                    speed: 1,  // Will be set by get_action_speed
                     pokemon_index: side_action.pokemon_index,
                     side_index: side_idx,
                     index: side_action.pokemon_index,

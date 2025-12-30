@@ -158,8 +158,15 @@ impl Battle {
                     .get_pokemon_action_speed(poke_action.side_index, poke_action.pokemon_index);
                 poke_action.speed = pokemon_speed;
             }
+            Action::Team(ref mut team_action) => {
+                // JS: if (!action.pokemon) { action.speed = 1; } else { action.speed = action.pokemon.getActionSpeed(); }
+                // Team actions have a pokemon, so they get the pokemon's speed
+                let pokemon_speed = self
+                    .get_pokemon_action_speed(team_action.side_index, team_action.pokemon_index);
+                team_action.speed = pokemon_speed;
+            }
             _ => {
-                // Field and Team actions don't have speed
+                // Only Field actions don't have speed
             }
         }
     }

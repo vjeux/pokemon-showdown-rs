@@ -110,5 +110,17 @@ fn main() {
         println!("RUST: P2 HP: {}/{}", p2_active.hp, p2_active.maxhp);
     }
 
+    // Make turn 2 choices
+    println!("RUST: Making turn 2 choices (move 1, move 1)...");
+    battle.make_choices(&["move 1", "move 1"]);
+
+    println!("RUST: After turn 2, turn: {}", battle.turn);
+    if let Some(p1_active) = battle.sides[0].get_active(0) {
+        println!("RUST: P1 HP: {}/{}", p1_active.hp, p1_active.maxhp);
+    }
+    if let Some(p2_active) = battle.sides[1].get_active(0) {
+        println!("RUST: P2 HP: {}/{}", p2_active.hp, p2_active.maxhp);
+    }
+
     println!("\nRUST LOG:\n{}", battle.get_log());
 }

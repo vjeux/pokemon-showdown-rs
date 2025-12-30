@@ -126,8 +126,10 @@ pub enum SwitchActionType {
 /// Team preview choice action
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TeamAction {
-    /// Priority (always 1 for team actions)
+    /// Priority (negative index for team actions)
     pub priority: i8,
+    /// Speed of pokemon (for tie-breaking)
+    pub speed: i32,
     /// Pokemon index
     pub pokemon_index: usize,
     /// Side index
@@ -248,7 +250,7 @@ impl Action {
         match self {
             Action::Move(a) => a.speed,
             Action::Switch(a) => a.speed,
-            Action::Team(_) => 1,
+            Action::Team(a) => a.speed,
             Action::Field(_) => 1,
             Action::Pokemon(a) => a.speed,
         }
