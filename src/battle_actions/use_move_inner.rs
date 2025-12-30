@@ -249,14 +249,9 @@ pub fn use_move_inner(
                     .is_some_and(|m| m.is_z)
             }))
     {
-        // Transform to Z-move
-        active_move = BattleActions::get_active_z_move(
-            &active_move.id.to_string(),
-            &active_move.move_type,
-            &active_move.category,
-            active_move.base_power,
-            None, // z_crystal_base_power would come from move's z_move data
-        );
+        // TODO: Transform to Z-move - requires proper dex.getActiveMove implementation
+        // TypeScript calls this.dex.getActiveMove() to get Z-move from dex
+        // active_move = BattleActions::get_active_z_move(...);
     }
 
     // if (maxMove && move.category !== 'Status') {
