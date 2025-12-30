@@ -15,17 +15,23 @@ impl Pokemon {
     // 	}
     //
     pub fn get_types(&self, exclude_added: bool) -> Vec<String> {
+        // JS: if (!preterastallized && this.terastallized && this.terastallized !== 'Stellar') return [this.terastallized];
+        if let Some(ref tera) = self.terastallized {
+            if tera != "Stellar" {
+                return vec![tera.clone()];
+            }
+        }
+
+        // JS: const types = this.battle.runEvent('Type', this, null, null, this.types);
         let mut types = self.types.clone();
+
+        // JS: if (!excludeAdded && this.addedType) return types.concat(this.addedType);
         if !exclude_added {
             if let Some(ref added) = self.added_type {
                 if !types.contains(added) {
                     types.push(added.clone());
                 }
             }
-        }
-        // Handle Terastallization
-        if let Some(ref tera) = self.terastallized {
-            return vec![tera.clone()];
         }
         types
     }
