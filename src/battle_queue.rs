@@ -308,6 +308,12 @@ impl Action {
             _ => None,
         }
     }
+
+    /// Check if this action has a pokemon (equivalent to JavaScript's `if (action.pokemon)`)
+    /// Field actions don't have a pokemon, all other actions do
+    pub fn has_pokemon(&self) -> bool {
+        !matches!(self, Action::Field(_))
+    }
 }
 
 /// The battle queue - manages the order of actions in a turn

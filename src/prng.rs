@@ -398,9 +398,6 @@ impl PRNG {
             (None, Some(_)) => (result as f64) / (2f64.powi(32)), // Invalid case, treat as random()
         };
 
-        // Log the call to match JavaScript logging
-        eprintln!("PRNG [random]: random({:?}, {:?}) = {}", from, to, value);
-
         value
     }
 

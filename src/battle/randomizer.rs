@@ -21,8 +21,14 @@ impl Battle {
         // This gives range 85% to 100% damage
         let roll = self.random(16);
         let multiplier = 100 - roll;
-        let inner = self.trunc(base_damage as f64 * multiplier as f64, None);
-        let result = self.trunc(inner as f64 / 100.0, None) as i32;
+        let product = base_damage as f64 * multiplier as f64;
+        let inner = self.trunc(product, None);
+        let division = inner as f64 / 100.0;
+        let result = self.trunc(division, None) as i32;
+
+        eprintln!("[RANDOMIZER] base_damage={}, roll={}, multiplier={}, product={}, inner={}, division={}, result={}",
+            base_damage, roll, multiplier, product, inner, division, result);
+
         result
     }
 }

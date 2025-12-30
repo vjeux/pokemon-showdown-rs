@@ -23,6 +23,7 @@ impl Battle {
     // 	}
     //
     pub fn make_choices(&mut self, inputs: &[&str]) {
+        eprintln!("[MAKE_CHOICES DEBUG] Called with inputs: {:?}", inputs);
         // JS: if (inputs.length) {
         if !inputs.is_empty() {
             // JS: for (const [i, input] of inputs.entries()) {
@@ -43,7 +44,9 @@ impl Battle {
         }
 
         // JS: this.commitChoices();
+        eprintln!("[MAKE_CHOICES DEBUG] About to call commit_choices");
         self.commit_choices();
+        eprintln!("[MAKE_CHOICES DEBUG] Done");
     }
 }
 

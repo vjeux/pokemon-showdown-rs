@@ -87,6 +87,7 @@ mod compare_priority;
 mod compare_redirect_order;
 mod compare_left_to_right_order;
 mod speed_sort;
+mod sort_action_queue;
 mod shuffle_range;
 mod get_pokemon;
 mod get_pokemon_mut;

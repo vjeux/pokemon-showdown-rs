@@ -557,40 +557,36 @@ impl Battle {
         // JS: }
         if self.gen >= 8 {
             let should_sort = if let Some(next_action) = self.queue.peek() {
-                match next_action {
+                let is_move_or_dynamax = match next_action {
                     Action::Move(_) => true,
                     Action::Pokemon(p) => matches!(p.choice, PokemonActionType::RunDynamax),
                     _ => false,
+                };
+                if is_move_or_dynamax {
+                    eprintln!("[RUN_ACTION GEN8] Next action is move/dynamax, will sort queue");
                 }
+                is_move_or_dynamax
             } else {
                 false
             };
 
             if should_sort {
                 // JS: this.updateSpeed();
-                // Update speed for all Pokemon
                 self.update_speed();
 
-                // JS: for (const queueAction of this.queue.list) { if (queueAction.pokemon) this.getActionSpeed(queueAction); }
-                // Call get_action_speed on all actions to update their speeds
+                // JS: for (const queueAction of this.queue.list) {
+                // JS:     if (queueAction.pokemon) this.getActionSpeed(queueAction);
+                // JS: }
                 let mut list = std::mem::take(&mut self.queue.list);
                 for action in &mut list {
-                    self.get_action_speed(action);
+                    if action.has_pokemon() {
+                        self.get_action_speed(action);
+                    }
                 }
+                self.queue.list = list;
 
                 // JS: this.queue.sort();
-                // Sort the queue using speed_sort (which uses PRNG for tie-breaking)
-                self.speed_sort(&mut list, |action| {
-                    PriorityItem {
-                        order: Some(action.order()),
-                        priority: action.priority() as i32,
-                        speed: action.speed(),
-                        sub_order: 0,
-                        effect_order: 0,
-                        index: 0,
-                    }
-                });
-                self.queue.list = list;
+                self.sort_action_queue();
             }
         }
     }

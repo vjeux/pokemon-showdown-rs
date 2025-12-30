@@ -44,7 +44,9 @@ impl Battle {
     where
         F: FnMut(&T) -> PriorityItem,
     {
+        eprintln!("[SPEED_SORT DEBUG] Sorting list of {} items", list.len());
         if list.len() < 2 {
+            eprintln!("[SPEED_SORT DEBUG] List too small, skipping");
             return;
         }
 
@@ -76,11 +78,13 @@ impl Battle {
 
             // If there were ties, shuffle them randomly
             if next_indexes.len() > 1 {
+                eprintln!("[SPEED_SORT DEBUG] Found {} tied items at position {}, shuffling...", next_indexes.len(), sorted);
                 let end = sorted + next_indexes.len();
                 self.shuffle_range(list, sorted, end);
             }
 
             sorted += next_indexes.len();
         }
+        eprintln!("[SPEED_SORT DEBUG] Done sorting");
     }
 }

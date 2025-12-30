@@ -17,6 +17,15 @@ impl Battle {
     ///     }
     ///   }
     pub fn shuffle_range<T>(&mut self, list: &mut [T], mut start: usize, end: usize) {
+        let bt = std::backtrace::Backtrace::force_capture();
+        let bt_str = format!("{}", bt);
+        let caller = bt_str.lines()
+            .filter(|line| line.contains("speed_sort") || line.contains("each_event") || line.contains("commit") || line.contains("run_"))
+            .take(3)
+            .collect::<Vec<_>>()
+            .join(" <- ");
+        eprintln!("[SHUFFLE_RANGE] range=[{}, {}), caller: {}", start, end, caller);
+
         while start < end - 1 {
             let next_index = self.random_with_range(start as i32, end as i32) as usize;
             if start != next_index {
