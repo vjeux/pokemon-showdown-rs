@@ -18,7 +18,6 @@ use crate::dex_data::{BoostsTable, ID};
 
 // Function modules
 mod new;
-mod calculate_damage;
 mod get_boost_modifier;
 mod calculate_stat_with_boost;
 mod calc_recoil_damage;
