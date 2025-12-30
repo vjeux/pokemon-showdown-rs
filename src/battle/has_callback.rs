@@ -567,6 +567,111 @@ impl Battle {
             return matches!(ability_id, "adaptability");
         }
 
+        // Check for onAfterMoveSecondary event (after secondary effects are processed)
+        if event_id == "onAfterMoveSecondary" {
+            // Abilities with onAfterMoveSecondary callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "angershell" | "berserk" | "colorchange" | "pickpocket"
+            );
+        }
+
+        // Check for onAfterMoveSecondarySelf event (after secondary effects on self)
+        if event_id == "onAfterMoveSecondarySelf" {
+            // Abilities with onAfterMoveSecondarySelf callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "magician");
+        }
+
+        // Check for onModifySecondaries event (when secondary effect chances are modified)
+        if event_id == "onModifySecondaries" {
+            // Abilities with onModifySecondaries callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "shielddust");
+        }
+
+        // Check for onSourceModifySecondaries event (when source's secondary effect chances are modified)
+        if event_id == "onSourceModifySecondaries" {
+            // Abilities with onSourceModifySecondaries callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "parentalbond");
+        }
+
+        // Check for onFlinch event (when Pokemon flinches)
+        if event_id == "onFlinch" {
+            // Abilities with onFlinch callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "steadfast");
+        }
+
+        // Check for onTryEatItem event (when trying to eat a berry/item)
+        if event_id == "onTryEatItem" {
+            // Abilities with onTryEatItem callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "angershell" | "berserk" | "ripen");
+        }
+
+        // Check for onAnyModifyAtk event (when ANY Pokemon's Attack is modified)
+        if event_id == "onAnyModifyAtk" {
+            // Abilities with onAnyModifyAtk callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "tabletsofruin");
+        }
+
+        // Check for onAnyModifyDef event (when ANY Pokemon's Defense is modified)
+        if event_id == "onAnyModifyDef" {
+            // Abilities with onAnyModifyDef callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "swordofruin");
+        }
+
+        // Check for onAnyModifySpA event (when ANY Pokemon's Sp. Atk is modified)
+        if event_id == "onAnyModifySpA" {
+            // Abilities with onAnyModifySpA callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "vesselofruin");
+        }
+
+        // Check for onAnyModifySpD event (when ANY Pokemon's Sp. Def is modified)
+        if event_id == "onAnyModifySpD" {
+            // Abilities with onAnyModifySpD callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "beadsofruin");
+        }
+
+        // Check for onAnyModifyDamage event (when ANY Pokemon's damage is modified)
+        if event_id == "onAnyModifyDamage" {
+            // Abilities with onAnyModifyDamage callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "friendguard");
+        }
+
+        // Check for onAnyAccuracy event (when ANY accuracy check is made)
+        if event_id == "onAnyAccuracy" {
+            // Abilities with onAnyAccuracy callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "noguard");
+        }
+
+        // Check for onAnyModifyAccuracy event (when ANY Pokemon's accuracy is modified)
+        if event_id == "onAnyModifyAccuracy" {
+            // Abilities with onAnyModifyAccuracy callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "victorystar");
+        }
+
+        // Check for onAnyTryMove event (when ANY Pokemon tries to use a move)
+        if event_id == "onAnyTryMove" {
+            // Abilities with onAnyTryMove callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "damp");
+        }
+
+        // Check for onAfterSetStatus event (after status condition is set)
+        if event_id == "onAfterSetStatus" {
+            // Abilities with onAfterSetStatus callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "synchronize");
+        }
+
+        // Check for onFractionalPriority event (for fractional priority adjustments)
+        if event_id == "onFractionalPriority" {
+            // Abilities with onFractionalPriority callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "myceliummight" | "quickdraw");
+        }
+
+        // Check for onChangeBoost event (when stat boost values are being changed)
+        if event_id == "onChangeBoost" {
+            // Abilities with onChangeBoost callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "contrary" | "ripen" | "simple");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
