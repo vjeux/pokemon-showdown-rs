@@ -57,6 +57,9 @@ impl Battle {
             return None;
         }
 
+        // JS: this.inputLog.push(`>tiebreak`);
+        self.input_log.push(">tiebreak".to_string());
+
         // Helper to convert usize to SideID
         let to_side_id = |idx: usize| -> SideID {
             match idx {
