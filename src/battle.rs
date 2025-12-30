@@ -53,7 +53,6 @@ mod parse_choice;
 mod commit_choices;
 mod find_valid_switch_target;
 mod do_switch;
-mod drag_in;
 mod do_switch_with_drag;
 mod compare_action_priority;
 mod insert_run_switch_action;
