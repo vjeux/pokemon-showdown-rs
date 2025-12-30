@@ -22,7 +22,6 @@ mod get_boost_modifier;
 mod calc_recoil_damage;
 mod get_confusion_damage;
 mod target_type_choices;
-mod combine_results;
 mod get_z_move;
 mod get_max_move;
 mod can_ultra_burst;
