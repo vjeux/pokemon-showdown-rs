@@ -146,7 +146,6 @@ mod dispatch_single_event;
 mod handle_ability_event;
 mod handle_item_event;
 mod handle_move_event;
-mod check_volatile_try_hit;
 mod handle_condition_event;
 mod handle_side_condition_event;
 mod run_event;
