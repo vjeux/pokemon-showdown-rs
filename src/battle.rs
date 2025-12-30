@@ -108,7 +108,6 @@ mod damage;
 mod direct_damage;
 mod heal;
 mod boost;
-mod boost_stats;
 mod faint;
 mod check_fainted;
 mod compare_priority;
