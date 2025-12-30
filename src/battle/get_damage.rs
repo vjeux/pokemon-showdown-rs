@@ -157,15 +157,13 @@ impl Battle {
                 if is_physical {
                     let boost = pokemon.boosts.atk;
                     let base_stat = pokemon.stored_stats.atk;
-                    crate::battle_actions::BattleActions::calculate_stat_with_boost(
-                        base_stat, boost,
-                    )
+                    let (num, denom) = BattleActions::get_boost_modifier(boost);
+                    (base_stat * num / denom).max(1)
                 } else {
                     let boost = pokemon.boosts.spa;
                     let base_stat = pokemon.stored_stats.spa;
-                    crate::battle_actions::BattleActions::calculate_stat_with_boost(
-                        base_stat, boost,
-                    )
+                    let (num, denom) = BattleActions::get_boost_modifier(boost);
+                    (base_stat * num / denom).max(1)
                 }
             } else {
                 return None;
@@ -180,15 +178,13 @@ impl Battle {
                 if is_physical {
                     let boost = pokemon.boosts.def;
                     let base_stat = pokemon.stored_stats.def;
-                    crate::battle_actions::BattleActions::calculate_stat_with_boost(
-                        base_stat, boost,
-                    )
+                    let (num, denom) = BattleActions::get_boost_modifier(boost);
+                    (base_stat * num / denom).max(1)
                 } else {
                     let boost = pokemon.boosts.spd;
                     let base_stat = pokemon.stored_stats.spd;
-                    crate::battle_actions::BattleActions::calculate_stat_with_boost(
-                        base_stat, boost,
-                    )
+                    let (num, denom) = BattleActions::get_boost_modifier(boost);
+                    (base_stat * num / denom).max(1)
                 }
             } else {
                 return None;

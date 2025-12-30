@@ -19,7 +19,6 @@ use crate::dex_data::{BoostsTable, ID};
 // Function modules
 mod new;
 mod get_boost_modifier;
-mod calculate_stat_with_boost;
 mod calc_recoil_damage;
 mod get_confusion_damage;
 mod target_type_choices;
@@ -499,16 +498,6 @@ mod tests {
         assert_eq!(BattleActions::get_boost_modifier(-1), (2, 3));
         assert_eq!(BattleActions::get_boost_modifier(6), (8, 2));
         assert_eq!(BattleActions::get_boost_modifier(-6), (2, 8));
-    }
-
-    #[test]
-    fn test_stat_with_boost() {
-        assert_eq!(BattleActions::calculate_stat_with_boost(100, 0), 100);
-        assert_eq!(BattleActions::calculate_stat_with_boost(100, 1), 150);
-        assert_eq!(BattleActions::calculate_stat_with_boost(100, 2), 200);
-        assert_eq!(BattleActions::calculate_stat_with_boost(100, -1), 66);
-        assert_eq!(BattleActions::calculate_stat_with_boost(100, 6), 400);
-        assert_eq!(BattleActions::calculate_stat_with_boost(100, -6), 25);
     }
 
     #[test]
