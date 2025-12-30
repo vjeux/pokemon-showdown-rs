@@ -413,7 +413,7 @@ impl Battle {
                             for i in 0..active_length {
                                 // Switch in the ith Pokemon from the team into the ith active position
                                 // JS: this.actions.switchIn(side.pokemon[i], i);
-                                self.switch_in(side_idx, i, i, None, false);
+                                crate::battle_actions::switch_in(self, side_idx, i, i, None, false);
                             }
                         }
 

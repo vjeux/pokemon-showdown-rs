@@ -32,7 +32,7 @@ impl Battle {
 
         // Call switchIn with is_drag = true
         matches!(
-            self.switch_in(side_idx, slot, switch_target, None, true),
+            crate::battle_actions::switch_in(self, side_idx, slot, switch_target, None, true),
             SwitchResult::Success
         )
     }

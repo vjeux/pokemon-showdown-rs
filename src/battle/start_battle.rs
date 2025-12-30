@@ -27,7 +27,7 @@ impl Battle {
         }
 
         for (side_idx, slot, pokemon_idx) in &switch_ops {
-            self.switch_in(*side_idx, *slot, *pokemon_idx, None, false);
+            crate::battle_actions::switch_in(self, *side_idx, *slot, *pokemon_idx, None, false);
         }
 
         // Trigger switch-in abilities after all Pokemon are on the field
