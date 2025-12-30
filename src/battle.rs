@@ -31,7 +31,6 @@ mod start_battle;
 mod random;
 mod random_chance;
 mod sample;
-mod shuffle;
 mod get_side;
 mod get_side_mut;
 mod p1;
