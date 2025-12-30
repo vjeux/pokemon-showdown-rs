@@ -73,6 +73,7 @@ impl Battle {
     // 	}
     //
     pub fn field_event(&mut self, event_id: &str) {
+        eprintln!("\nFIELD_EVENT: event_id={}", event_id);
         let callback_name = format!("on{}", event_id);
         let _get_key_is_duration = event_id == "Residual";
 
@@ -83,6 +84,7 @@ impl Battle {
         let field_event = format!("onField{}", event_id);
         let field_handlers = self.find_field_event_handlers(&field_event);
         for (effect_id, holder) in field_handlers {
+            eprintln!("  Adding FIELD handler: effect_id={}, holder={:?}", effect_id.as_str(), holder);
             handlers.push(FieldEventHandler {
                 effect_id,
                 holder,
@@ -102,6 +104,7 @@ impl Battle {
                 let side_event = format!("onSide{}", event_id);
                 let side_handlers = self.find_side_event_handlers(&side_event, side_idx);
                 for (effect_id, holder) in side_handlers {
+                    eprintln!("  Adding SIDE handler for side {}: effect_id={}, holder={:?}", side_idx, effect_id.as_str(), holder);
                     handlers.push(FieldEventHandler {
                         effect_id,
                         holder,
@@ -113,22 +116,18 @@ impl Battle {
             }
 
             // JS: for (const active of side.active) { ... }
-            let active_count = if let Some(side) = self.sides.get(side_idx) {
-                side.active.len()
+            // Iterate through actual active Pokemon, not all slots
+            eprintln!("  Side {} active slots: {:?}", side_idx, self.sides.get(side_idx).map(|s| &s.active));
+            let active_pokemon: Vec<usize> = if let Some(side) = self.sides.get(side_idx) {
+                side.active.iter().flatten().copied().collect()
             } else {
-                0
+                Vec::new()
             };
+            eprintln!("  Side {} active pokemon indices: {:?}", side_idx, active_pokemon);
 
-            for poke_idx in 0..active_count {
+            for poke_idx in active_pokemon {
+                eprintln!("    Checking pokemon {} on side {}", poke_idx, side_idx);
                 let target_pos = (side_idx, poke_idx);
-
-                // Check if Pokemon is active
-                let is_active = self.sides.get(side_idx)
-                    .and_then(|s| s.active.get(poke_idx))
-                    .is_some();
-                if !is_active {
-                    continue;
-                }
 
                 // JS: if (eventid === 'SwitchIn') {
                 //         handlers = handlers.concat(this.findPokemonEventHandlers(active, `onAny${eventid}`));
@@ -158,6 +157,7 @@ impl Battle {
                         .and_then(|s| s.pokemon.get(poke_idx))
                         .map(|p| p.speed)
                         .unwrap_or(0);
+                    eprintln!("      Adding POKEMON handler: effect_id={}, holder={:?}, speed={}", effect_id.as_str(), holder, speed);
                     handlers.push(FieldEventHandler {
                         effect_id,
                         holder,
@@ -175,6 +175,7 @@ impl Battle {
 
         // JS: this.speedSort(handlers);
         // Sort handlers by Pokemon speed
+        eprintln!("FIELD_EVENT: Sorting {} handlers", handlers.len());
         self.speed_sort(&mut handlers, |h| {
             PriorityItem {
                 order: None,
