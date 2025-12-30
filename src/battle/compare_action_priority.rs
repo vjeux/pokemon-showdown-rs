@@ -38,8 +38,12 @@ impl Battle {
         }
 
         // JS: -((b.subOrder || 0) - (a.subOrder || 0))
+        // Note: subOrder field not yet implemented in Rust action structs
+        // Defaults to 0 (matching TypeScript || 0 behavior)
+
         // JS: -((b.effectOrder || 0) - (a.effectOrder || 0))
-        // Note: subOrder and effectOrder don't apply to runSwitch actions
+        // Note: effectOrder field not yet implemented in Rust action structs
+        // Defaults to 0 (matching TypeScript || 0 behavior)
 
         0
     }
