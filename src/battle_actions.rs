@@ -33,6 +33,7 @@ mod switch_in;
 mod drag_in;
 mod run_switch;
 mod get_damage;
+mod get_spread_damage;
 pub use get_max_move_name::get_max_move_name;
 pub use get_z_move_name::get_z_move_name;
 pub use use_move::use_move;
@@ -41,6 +42,7 @@ pub use switch_in::switch_in;
 pub use drag_in::drag_in;
 pub use run_switch::run_switch;
 pub use get_damage::get_damage;
+pub use get_spread_damage::get_spread_damage;
 
 pub static CHOOSABLE_TARGETS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
     let mut set = HashSet::new();

@@ -185,7 +185,6 @@ mod get_type_effectiveness_mod;
 mod modify_damage;
 mod try_spread_move_hit;
 mod spread_move_hit;
-mod get_spread_damage;
 mod run_move_effects;
 mod on_event;
 mod on_event_priority;

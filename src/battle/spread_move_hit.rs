@@ -100,7 +100,8 @@ impl Battle {
         // Step 2: Get damage for each target
         // JavaScript: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
         // IMPORTANT: Pass final_targets (which has None for misses), not targets
-        damages = self.get_spread_damage(
+        damages = crate::battle_actions::get_spread_damage(
+            self,
             &damages,
             &final_targets,
             source_pos,
