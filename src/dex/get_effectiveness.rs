@@ -33,7 +33,7 @@ impl Dex {
     // 	}
     //
     pub fn get_effectiveness(&self, attack_type: &str, defend_type: &str) -> f64 {
-        if let Some(type_data) = self.get_type(defend_type) {
+        if let Some(type_data) = self.types().get(defend_type) {
             if let Some(&effectiveness) = type_data.damage_taken.get(attack_type) {
                 return match effectiveness {
                     0 => 1.0, // Neutral

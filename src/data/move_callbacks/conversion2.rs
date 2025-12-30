@@ -72,7 +72,8 @@ pub fn on_hit(
     // for (const typeName of this.dex.types.names()) {
     let type_names: Vec<String> = battle
         .dex
-        .all_type_names()
+        .types()
+        .names()
         .iter()
         .map(|s| s.to_string())
         .collect();
@@ -94,7 +95,13 @@ pub fn on_hit(
         // if (typeCheck === 2 || typeCheck === 3) {
         //     possibleTypes.push(typeName);
         // }
-        let type_check = battle.dex.get_type_damage_taken(&type_name, &attack_type);
+        let type_check = battle
+            .dex
+            .types()
+            .get(&type_name)
+            .and_then(|type_data| type_data.damage_taken.get(&attack_type))
+            .copied()
+            .unwrap_or(0);
         if type_check == 2 || type_check == 3 {
             possible_types.push(type_name);
         }
