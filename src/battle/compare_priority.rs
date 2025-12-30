@@ -3,22 +3,6 @@ use crate::battle::PriorityItem;
 
 impl Battle {
 
-    /// Clamp a value to an integer range
-    /// Equivalent to Utils.clampIntRange in battle.ts
-    /// JavaScript source from lib/utils.ts:
-    //
-    // /** Forces num to be an integer (between min and max). */
-    // export function clampIntRange(num: any, min?: number, max?: number): number {
-    // 	if (typeof num !== 'number') num = 0;
-    // 	num = Math.floor(num);
-    // 	if (min !== undefined && num < min) num = min;
-    // 	if (max !== undefined && num > max) num = max;
-    // 	return num;
-    // }
-    //
-    // =========================================================================
-    // Priority and Speed Sorting Methods (ported from battle.ts)
-    // =========================================================================
     /// Compare priority of two actions/handlers
     /// Equivalent to battle.ts comparePriority()
     /// Returns negative if a comes first, positive if b comes first, 0 if equal
