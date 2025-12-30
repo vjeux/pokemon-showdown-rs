@@ -41,7 +41,6 @@ mod is_alternate_forme;
 mod get_all_formes;
 mod get_evolutions;
 mod get_prevo;
-mod can_evolve;
 mod get_bst;
 mod is_status_move;
 mod is_special_move;
@@ -803,15 +802,6 @@ mod tests {
         let base = dex.get_base_species_name("Pikachu");
         assert!(base.is_some());
         assert_eq!(base.unwrap(), "Pikachu");
-
-        // Test can_evolve
-        if dex.species().get("Pikachu").is_some() {
-            // Only test if species exists in data
-            let evos = dex.get_evolutions("Pikachu");
-            if !evos.is_empty() {
-                assert!(dex.can_evolve("Pikachu"));
-            }
-        }
 
         // Test get_bst
         if let Some(bst) = dex.get_bst("Pikachu") {
