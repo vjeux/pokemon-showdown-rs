@@ -13,10 +13,43 @@ impl<'a> BattleActions<'a> {
             match hit_type {
                 "parentalbond" => 2,
                 "triplekick" => 3,
-                _ => Self::get_multi_hit_count(multi_hit, random_value),
+                _ => {
+                    // Inline logic from deleted get_multi_hit_count
+                    // TODO: This function itself likely needs deletion - will be evaluated when reached in sequence
+                    match multi_hit {
+                        None => 1,
+                        Some(n) if n <= 1 => 1,
+                        Some(2) => 2,
+                        Some(3) => 3,
+                        Some(5) => {
+                            match random_value % 100 {
+                                0..=34 => 2,
+                                35..=69 => 3,
+                                70..=84 => 4,
+                                _ => 5,
+                            }
+                        }
+                        Some(n) => n,
+                    }
+                }
             }
         } else {
-            Self::get_multi_hit_count(multi_hit, random_value)
+            // Inline logic from deleted get_multi_hit_count
+            match multi_hit {
+                None => 1,
+                Some(n) if n <= 1 => 1,
+                Some(2) => 2,
+                Some(3) => 3,
+                Some(5) => {
+                    match random_value % 100 {
+                        0..=34 => 2,
+                        35..=69 => 3,
+                        70..=84 => 4,
+                        _ => 5,
+                    }
+                }
+                Some(n) => n,
+            }
         }
     }
 }
