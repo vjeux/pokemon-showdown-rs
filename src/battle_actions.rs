@@ -24,7 +24,6 @@ mod get_confusion_damage;
 mod target_type_choices;
 mod can_ultra_burst;
 mod can_terastallize;
-mod hit_step_try_hit_event;
 mod try_move_hit_check;
 mod hit_step_move_hit_loop_count;
 mod spread_move_hit_modifier;
