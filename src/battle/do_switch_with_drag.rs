@@ -51,7 +51,7 @@ impl Battle {
 
         // In Gen 5+, run switch immediately for drags
         if is_drag && self.gen >= 5 {
-            self.run_switch(side_idx, switch_to);
+            crate::battle_actions::run_switch(self, side_idx, switch_to);
         }
     }
 }

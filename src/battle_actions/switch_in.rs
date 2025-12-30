@@ -192,7 +192,7 @@ pub fn switch_in(
     // Run switch or queue it
     if is_drag && battle.gen >= 5 {
         // runSwitch happens immediately so that Mold Breaker can make hazards bypass Clear Body and Levitate
-        battle.run_switch(side_index, pokemon_index);
+        crate::battle_actions::run_switch(battle, side_index, pokemon_index);
     } else {
         // JS: this.battle.queue.insertChoice({ choice: "runSwitch", pokemon });
         battle.insert_run_switch_action(side_index, pokemon_index);
