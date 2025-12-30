@@ -35,36 +35,32 @@ fn main() {
         },
     ];
 
-    // Create battle with seed [0,0,0,2]
-    let mut battle = Battle::new(BattleOptions {
-        format_id: ID::new("gen9randombattle"),
-        seed: Some(PRNGSeed::Gen5([0, 0, 0, 2])),
-        p1: Some(PlayerOptions {
-            name: "Player 1".to_string(),
-            team: p1_team,
-            avatar: None,
-            rating: None,
-        }),
-        p2: Some(PlayerOptions {
-            name: "Player 2".to_string(),
-            team: p2_team,
-            avatar: None,
-            rating: None,
-        }),
-        ..Default::default()
-    });
+    // Test seeds 1-100
+    for seed in 1..=100 {
+        let mut battle = Battle::new(BattleOptions {
+            format_id: ID::new("gen9randombattle"),
+            seed: Some(PRNGSeed::Gen5([0, 0, 0, seed])),
+            p1: Some(PlayerOptions {
+                name: "Player 1".to_string(),
+                team: p1_team.clone(),
+                avatar: None,
+                rating: None,
+            }),
+            p2: Some(PlayerOptions {
+                name: "Player 2".to_string(),
+                team: p2_team.clone(),
+                avatar: None,
+                rating: None,
+            }),
+            ..Default::default()
+        });
 
-    // Make default choices (both attack)
-    battle.make_choices(&["default", "default"]);
+        battle.make_choices(&["default", "default"]);
 
-    // Print final HP
-    if let Some(p1_idx) = battle.sides[0].active[0] {
-        let p1_active = &battle.sides[0].pokemon[p1_idx];
-        println!("\nP1: {} {} / {}", p1_active.name, p1_active.hp, p1_active.maxhp);
-    }
-
-    if let Some(p2_idx) = battle.sides[1].active[0] {
-        let p2_active = &battle.sides[1].pokemon[p2_idx];
-        println!("P2: {} {} / {}", p2_active.name, p2_active.hp, p2_active.maxhp);
+        if let (Some(p1_idx), Some(p2_idx)) = (battle.sides[0].active[0], battle.sides[1].active[0]) {
+            let p1_active = &battle.sides[0].pokemon[p1_idx];
+            let p2_active = &battle.sides[1].pokemon[p2_idx];
+            println!("{},{},{}", seed, p1_active.hp, p2_active.hp);
+        }
     }
 }
