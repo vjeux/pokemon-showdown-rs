@@ -40,6 +40,24 @@ impl Battle {
 
     /// Check if a an ability has a callback for an event
     fn ability_has_callback(&self, ability_id: &str, event_id: &str) -> bool {
+        // Gen 5+ special case: abilities use onStart during SwitchIn events
+        // This matches JavaScript getCallback() behavior
+        // JavaScript: if (callback === undefined && target instanceof Pokemon && this.gen >= 5 && callbackName === 'onSwitchIn' &&
+        //             !(effect as any).onAnySwitchIn && (['Ability', 'Item'].includes(effect.effectType) ...)) {
+        //             callback = (effect as any).onStart;
+        // }
+        if self.gen >= 5 && event_id == "onSwitchIn" {
+            // Check if ability has onAnySwitchIn - if yes, use normal SwitchIn logic
+            // This recursive call is safe because event_id != "onSwitchIn" so won't trigger special case
+            let has_any_switch_in = self.ability_has_callback(ability_id, "onAnySwitchIn");
+
+            // If ability doesn't have onAnySwitchIn, check for onStart instead
+            // This recursive call is safe because event_id != "onSwitchIn" so won't trigger special case
+            if !has_any_switch_in && self.ability_has_callback(ability_id, "onStart") {
+                return true;
+            }
+        }
+
         match event_id {
             "AllyBasePower" => matches!(
                 ability_id,
@@ -505,6 +523,16 @@ impl Battle {
 
     /// Check if a an item has a callback for an event
     fn item_has_callback(&self, item_id: &str, event_id: &str) -> bool {
+        // Gen 5+ special case: items use onStart during SwitchIn events
+        // This matches JavaScript getCallback() behavior (same logic as abilities)
+        // Items don't have onAnySwitchIn callbacks, so always check onStart if gen >= 5
+        if self.gen >= 5 && event_id == "onSwitchIn" {
+            // This recursive call is safe because event_id != "onSwitchIn" so won't trigger special case
+            if self.item_has_callback(item_id, "onStart") {
+                return true;
+            }
+        }
+
         match event_id {
             "onAfterBoost" => matches!(
                 item_id,
