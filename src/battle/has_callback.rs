@@ -257,6 +257,12 @@ impl Battle {
             return matches!(ability_id, "angerpoint" | "owntempo");
         }
 
+        // Check for onFaint event (when Pokemon faints)
+        if event_id == "onFaint" {
+            // Abilities with onFaint callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "illusion");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
