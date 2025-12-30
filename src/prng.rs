@@ -389,28 +389,29 @@ impl PRNG {
     pub fn random(&mut self, from: Option<i32>, to: Option<i32>) -> f64 {
         let result = self.next_raw();
 
-        match (from, to) {
+        let value = match (from, to) {
             (None, None) => (result as f64) / (2f64.powi(32)),
             (Some(n), None) => ((result as f64) * (n as f64) / (2f64.powi(32))).floor(),
             (Some(m), Some(n)) => {
                 ((result as f64) * ((n - m) as f64) / (2f64.powi(32))).floor() + (m as f64)
             }
             (None, Some(_)) => (result as f64) / (2f64.powi(32)), // Invalid case, treat as random()
-        }
+        };
+
+        // Log the call to match JavaScript logging
+        eprintln!("PRNG [random]: random({:?}, {:?}) = {}", from, to, value);
+
+        value
     }
 
     /// Get a random integer in [0, n)
     pub fn random_int(&mut self, n: i32) -> i32 {
-        let result = self.random(Some(n), None) as i32;
-        eprintln!("PRNG [random]: random({}, None) = {}", n, result);
-        result
+        self.random(Some(n), None) as i32
     }
 
     /// Get a random integer in [from, to)
     pub fn random_range(&mut self, from: i32, to: i32) -> i32 {
-        let result = self.random(Some(from), Some(to)) as i32;
-        eprintln!("PRNG [random]: random({}, {}) = {}", from, to, result);
-        result
+        self.random(Some(from), Some(to)) as i32
     }
 
     /// Flip a coin (two-sided die), returning true or false.
@@ -433,11 +434,8 @@ impl PRNG {
     //
     pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
         // JS: return this.random(denominator) < numerator;
-        // Use self.random() instead of random_int() so it gets logged
         let roll = self.random(Some(denominator), None) as i32;
-        let result = roll < numerator;
-        eprintln!("PRNG: random_chance({}, {}) = {}", numerator, denominator, result);
-        result
+        roll < numerator
     }
 
     /// Return a random item from the given slice.
