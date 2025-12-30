@@ -51,13 +51,15 @@ impl Pokemon {
     // 	}
     //
     pub fn get_stat(&self, stat: StatID, unboosted: bool) -> i32 {
-        let base = self.stored_stats.get(stat);
+        // JS: let stat = this.storedStats[statName];
+        let base_stat = self.stored_stats.get(stat);
         if unboosted {
-            return base;
+            return base_stat;
         }
 
+        // JS: let boost = boosts[statName];
         let boost = match stat {
-            StatID::HP => return base,
+            StatID::HP => return base_stat,
             StatID::Atk => self.boosts.atk,
             StatID::Def => self.boosts.def,
             StatID::SpA => self.boosts.spa,
@@ -65,12 +67,19 @@ impl Pokemon {
             StatID::Spe => self.boosts.spe,
         };
 
-        let (numerator, denominator) = if boost >= 0 {
-            (2 + boost as i32, 2)
+        // JS: const boostTable = [1, 1.5, 2, 2.5, 3, 3.5, 4];
+        let boost_table: [f64; 7] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
+
+        // JS: if (boost > 6) boost = 6; if (boost < -6) boost = -6;
+        let clamped_boost = boost.clamp(-6, 6);
+
+        // JS: if (boost >= 0) { stat = Math.floor(stat * boostTable[boost]); } else { stat = Math.floor(stat / boostTable[-boost]); }
+        let stat = if clamped_boost >= 0 {
+            ((base_stat as f64) * boost_table[clamped_boost as usize]).floor() as i32
         } else {
-            (2, 2 + (-boost) as i32)
+            ((base_stat as f64) / boost_table[(-clamped_boost) as usize]).floor() as i32
         };
 
-        base * numerator / denominator
+        stat
     }
 }
