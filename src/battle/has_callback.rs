@@ -364,6 +364,36 @@ impl Battle {
             );
         }
 
+        // Check for onFoeTryMove event (when foe attempts to use a move)
+        if event_id == "onFoeTryMove" {
+            // Abilities with onFoeTryMove callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "armortail" | "dazzling" | "queenlymajesty");
+        }
+
+        // Check for onFoeTrapPokemon event (when foe tries to switch out)
+        if event_id == "onFoeTrapPokemon" {
+            // Abilities with onFoeTrapPokemon callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "arenatrap" | "magnetpull" | "shadowtag");
+        }
+
+        // Check for onFoeMaybeTrapPokemon event (when foe might be trapped)
+        if event_id == "onFoeMaybeTrapPokemon" {
+            // Abilities with onFoeMaybeTrapPokemon callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "arenatrap" | "magnetpull" | "shadowtag");
+        }
+
+        // Check for onFoeTryEatItem event (when foe tries to eat berry/item)
+        if event_id == "onFoeTryEatItem" {
+            // Abilities with onFoeTryEatItem callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "asoneglastrier" | "asonespectrier" | "unnerve");
+        }
+
+        // Check for onFoeAfterBoost event (when foe's stats are boosted)
+        if event_id == "onFoeAfterBoost" {
+            // Abilities with onFoeAfterBoost callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "opportunist");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
