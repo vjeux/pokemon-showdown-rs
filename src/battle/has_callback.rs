@@ -239,6 +239,18 @@ impl Battle {
             return matches!(ability_id, "gorillatactics");
         }
 
+        // Check for onModifyPriority event (priority modification)
+        if event_id == "onModifyPriority" {
+            // Abilities with onModifyPriority callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "galewings" | "prankster" | "triage");
+        }
+
+        // Check for onDragOut event (forced switch prevention)
+        if event_id == "onDragOut" {
+            // Abilities with onDragOut callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "guarddog" | "suctioncups");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
