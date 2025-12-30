@@ -1,5 +1,4 @@
 use crate::*;
-use crate::dex_data::StatID;
 
 impl Pokemon {
 
@@ -10,6 +9,7 @@ impl Pokemon {
     // 	}
     //
     pub fn update_speed(&mut self) {
-        self.speed = self.get_stat(StatID::Spe, false);
+        // JS: this.speed = this.getActionSpeed();
+        self.speed = self.get_action_speed();
     }
 }
