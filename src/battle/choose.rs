@@ -47,9 +47,10 @@ impl Battle {
         }
 
         // JS: if (!side.isChoiceDone())
-        // Note: TypeScript isChoiceDone() takes no parameters, but Rust version requires Option<usize>
-        // This parameter mismatch should be fixed in Side::is_choice_done() to match TypeScript
-        if !self.sides[side_idx].is_choice_done(None) {
+        // Note: TypeScript isChoiceDone() accesses this.battle.ruleTable.pickedTeamSize internally
+        // Rust passes it as a parameter since Side doesn't have a reference to Battle
+        let picked_team_size = self.rule_table.as_ref().and_then(|rt| rt.picked_team_size);
+        if !self.sides[side_idx].is_choice_done(picked_team_size) {
             // JS: side.emitChoiceError(...)
             self.sides[side_idx].emit_choice_error(&format!(
                 "Incomplete choice: {} - missing other pokemon",
