@@ -124,6 +124,7 @@ pub fn get_damage(
 
     // Trigger BasePower event to allow abilities/items to modify base power
     // JavaScript: basePower = this.battle.runEvent('BasePower', source, target, move, basePower, true);
+    eprintln!("[GET_DAMAGE] basePower BEFORE BasePower event: {}", base_power);
     if let Some(modified_bp) = battle.run_event(
         "BasePower",
         Some(source_pos),
@@ -132,6 +133,9 @@ pub fn get_damage(
         Some(base_power),
     ) {
         base_power = modified_bp;
+        eprintln!("[GET_DAMAGE] basePower AFTER BasePower event: {}", base_power);
+    } else {
+        eprintln!("[GET_DAMAGE] No BasePower event modification");
     }
 
     // Get attacker level
@@ -198,6 +202,9 @@ pub fn get_damage(
     let step3 = battle.trunc((step2 * attack) as f64, None) as i32;
     let step4 = battle.trunc(step3 as f64 / defense.max(1) as f64, None) as i32;
     let base_damage = battle.trunc(step4 as f64 / 50.0, None) as i32;
+
+    eprintln!("[GET_DAMAGE] level={}, basePower={}, attack={}, defense={}", level, base_power, attack, defense);
+    eprintln!("[GET_DAMAGE] step1={}, step2={}, step3={}, step4={}, base_damage={}", step1, step2, step3, step4, base_damage);
 
     // Call modifyDamage for the full calculation (pass is_crit for damage multiplier)
     let damage = crate::battle_actions::modify_damage(battle, base_damage, source_pos, target_pos, &move_data, is_crit);

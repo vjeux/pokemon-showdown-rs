@@ -1,20 +1,39 @@
 //! Test PRNG synchronization with JavaScript
 
 use pokemon_showdown::{Battle, BattleOptions, PRNGSeed, PlayerOptions, PokemonSet, ID};
-use std::fs;
+use pokemon_showdown::dex_data::StatsTable;
 
 fn main() {
-    // Load test teams
-    let teams_json = fs::read_to_string("test-teams.json")
-        .expect("Failed to read test-teams.json");
-    let teams: serde_json::Value = serde_json::from_str(&teams_json)
-        .expect("Failed to parse test-teams.json");
+    // Manually create teams matching test-teams.json
+    let p1_team = vec![
+        PokemonSet {
+            name: "Passimian".to_string(),
+            species: "Passimian".to_string(),
+            level: 83,
+            ability: "Defiant".to_string(),
+            item: "Leftovers".to_string(),
+            nature: "Hardy".to_string(),
+            moves: vec!["knockoff".to_string(), "bulkup".to_string(), "gunkshot".to_string(), "drainpunch".to_string()],
+            evs: StatsTable::new(85, 85, 85, 85, 85, 85),
+            ivs: StatsTable::new(31, 31, 31, 31, 31, 31),
+            ..Default::default()
+        },
+    ];
 
-    // Extract teams
-    let p1_team: Vec<PokemonSet> = serde_json::from_value(teams["p1"].clone())
-        .expect("Failed to parse P1 team");
-    let p2_team: Vec<PokemonSet> = serde_json::from_value(teams["p2"].clone())
-        .expect("Failed to parse P2 team");
+    let p2_team = vec![
+        PokemonSet {
+            name: "Passimian".to_string(),
+            species: "Passimian".to_string(),
+            level: 83,
+            ability: "Defiant".to_string(),
+            item: "Leftovers".to_string(),
+            nature: "Hardy".to_string(),
+            moves: vec!["knockoff".to_string(), "bulkup".to_string(), "gunkshot".to_string(), "drainpunch".to_string()],
+            evs: StatsTable::new(85, 85, 85, 85, 85, 85),
+            ivs: StatsTable::new(31, 31, 31, 31, 31, 31),
+            ..Default::default()
+        },
+    ];
 
     // Create battle with seed [0,0,0,2]
     let mut battle = Battle::new(BattleOptions {
@@ -36,12 +55,16 @@ fn main() {
     });
 
     // Make default choices (both attack)
-    battle.make_choices("default", "default");
+    battle.make_choices(&["default", "default"]);
 
     // Print final HP
-    let p1_active = &battle.sides[0].pokemon[battle.sides[0].active[0]];
-    let p2_active = &battle.sides[1].pokemon[battle.sides[1].active[0]];
+    if let Some(p1_idx) = battle.sides[0].active[0] {
+        let p1_active = &battle.sides[0].pokemon[p1_idx];
+        println!("\nP1: {} {} / {}", p1_active.name, p1_active.hp, p1_active.maxhp);
+    }
 
-    println!("\nP1: {} {} / {}", p1_active.name, p1_active.hp, p1_active.max_hp);
-    println!("P2: {} {} / {}", p2_active.name, p2_active.hp, p2_active.max_hp);
+    if let Some(p2_idx) = battle.sides[1].active[0] {
+        let p2_active = &battle.sides[1].pokemon[p2_idx];
+        println!("P2: {} {} / {}", p2_active.name, p2_active.hp, p2_active.maxhp);
+    }
 }
