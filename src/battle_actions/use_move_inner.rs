@@ -620,8 +620,8 @@ pub fn use_move_inner(
     // Implement getMoveTargets for multi-target handling
     // getMoveTargets returns all targets hit by a move (based on target type)
     // and pressure targets (for PP deduction via Pressure ability)
-    let (targets, pressure_targets) =
-        battle.get_move_targets(pokemon_pos, move_or_move_name, Some(target_pos));
+    let result = Pokemon::get_move_targets(battle, pokemon_pos, move_or_move_name, Some(target_pos));
+    let (targets, pressure_targets) = (result.targets, result.pressure_targets);
     if !targets.is_empty() {
         // Update target in case of redirection
         target = Some(targets[targets.len() - 1]);

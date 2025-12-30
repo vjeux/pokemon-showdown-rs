@@ -73,7 +73,6 @@ mod clear_active_move;
 mod suppressing_ability;
 mod get_all_pokemon;
 mod is_adjacent;
-mod get_move_targets;
 mod is_ally;
 mod is_pokemon_fainted;
 mod get_random_target;
@@ -233,9 +232,6 @@ pub enum EffectType {
 
 /// Type alias for event callback functions
 pub type EventCallback = Box<dyn Fn(&EventContext) -> Option<i32> + Send + Sync>;
-
-/// Type alias for move targets result (targets, pressure_targets)
-pub type MoveTargetsResult = (Vec<(usize, usize)>, Vec<(usize, usize)>);
 
 /// Type alias for spread move hit result (damages, targets)
 pub type SpreadMoveHitResult = (Vec<Option<i32>>, Vec<Option<(usize, usize)>>);
