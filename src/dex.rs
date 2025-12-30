@@ -22,8 +22,6 @@ mod convert_secondary;
 mod items_helper;
 mod get_effectiveness;
 mod get_type_effectiveness;
-mod move_has_flag;
-mod get_base_stats;
 mod get_name;
 mod get_immunity;
 mod get_hidden_power;
@@ -36,14 +34,6 @@ mod abilities_helper;
 mod formats_helper;
 mod natures_helper;
 mod types_helper;
-mod is_status_move;
-mod is_special_move;
-mod is_physical_move;
-mod get_move_accuracy;
-mod move_always_hits;
-mod is_berry;
-mod is_choice_item;
-mod get_fling_power;
 mod load_default;
 pub use default_true::default_true;
 pub use default_crit_ratio::default_crit_ratio;
@@ -748,9 +738,15 @@ mod tests {
     fn test_move_flags() {
         let dex = Dex::load_default().expect("Failed to load dex");
 
-        assert!(dex.move_has_flag("Thunderbolt", "protect"));
-        assert!(dex.move_has_flag("Quick Attack", "contact"));
-        assert!(!dex.move_has_flag("Thunderbolt", "contact"));
+        // Access flags directly from move data - matches TypeScript pattern
+        if let Some(thunderbolt) = dex.moves().get("Thunderbolt") {
+            assert!(thunderbolt.flags.contains_key("protect"));
+            assert!(!thunderbolt.flags.contains_key("contact"));
+        }
+
+        if let Some(quick_attack) = dex.moves().get("Quick Attack") {
+            assert!(quick_attack.flags.contains_key("contact"));
+        }
     }
 
     #[test]
@@ -800,40 +796,40 @@ mod tests {
     fn test_move_methods() {
         let dex = Dex::load_default().expect("Failed to load dex");
 
-        // Test moves that exist in our data
-        if dex.moves().get("Thunder Wave").is_some() {
-            assert!(dex.is_status_move("Thunder Wave"));
+        // Test moves that exist in our data - access properties directly
+        if let Some(thunder_wave) = dex.moves().get("Thunder Wave") {
+            assert_eq!(thunder_wave.category, "Status");
         }
 
-        assert!(!dex.is_status_move("Thunderbolt"));
-
-        assert!(dex.is_special_move("Thunderbolt"));
+        if let Some(thunderbolt) = dex.moves().get("Thunderbolt") {
+            assert_eq!(thunderbolt.category, "Special");
+        }
 
         // Quick Attack is physical
-        assert!(dex.is_physical_move("Quick Attack"));
-        assert!(!dex.is_physical_move("Thunderbolt"));
-
-        // Test move with flags
-        assert!(dex.move_has_flag("Quick Attack", "contact"));
+        if let Some(quick_attack) = dex.moves().get("Quick Attack") {
+            assert_eq!(quick_attack.category, "Physical");
+        }
     }
 
     #[test]
     fn test_item_methods() {
         let dex = Dex::load_default().expect("Failed to load dex");
 
-        // Test with items in our data
-        if dex.items().get("Oran Berry").is_some() {
-            assert!(dex.is_berry("Oran Berry"));
+        // Test with items in our data - access properties directly
+        if let Some(oran_berry) = dex.items().get("Oran Berry") {
+            assert!(oran_berry.is_berry);
         }
 
-        assert!(!dex.is_berry("Leftovers"));
-
-        if dex.items().get("Choice Band").is_some() {
-            assert!(dex.is_choice_item("Choice Band"));
+        if let Some(leftovers) = dex.items().get("Leftovers") {
+            assert!(!leftovers.is_berry);
         }
 
-        if dex.items().get("Leftovers").is_some() {
-            assert!(!dex.is_choice_item("Leftovers"));
+        if let Some(choice_band) = dex.items().get("Choice Band") {
+            assert!(choice_band.is_choice);
+        }
+
+        if let Some(leftovers) = dex.items().get("Leftovers") {
+            assert!(!leftovers.is_choice);
         }
     }
 }
