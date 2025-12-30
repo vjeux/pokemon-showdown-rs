@@ -61,7 +61,7 @@ pub fn on_try_hit(
     }
 
     let item_name = {
-        let item_data = match battle.dex.get_item_by_id(&item_id) {
+        let item_data = match battle.dex.items().get_by_id(&item_id) {
             Some(item) => item,
             None => return EventResult::Continue,
         };

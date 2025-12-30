@@ -36,7 +36,7 @@ pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, _poke
 
     // Get item data
     let (mega_evolves, mega_stone) = {
-        let item_data = match battle.dex.get_item_by_id(&item_id) {
+        let item_data = match battle.dex.items().get_by_id(&item_id) {
             Some(item) => item,
             None => return EventResult::Boolean(true),
         };

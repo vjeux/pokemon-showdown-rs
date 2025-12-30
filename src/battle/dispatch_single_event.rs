@@ -23,7 +23,7 @@ impl Battle {
         }
 
         // Handle item events
-        if self.dex.get_item(effect_id.as_str()).is_some() {
+        if self.dex.items().get(effect_id.as_str()).is_some() {
             return self.handle_item_event(event_id, effect_id, target);
         }
 

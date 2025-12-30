@@ -315,7 +315,7 @@ impl Battle {
                             move_data.name.clone()
                         } else if let Some(ability_data) = self.dex.abilities().get(id_str) {
                             ability_data.name.clone()
-                        } else if let Some(item_data) = self.dex.get_item(id_str) {
+                        } else if let Some(item_data) = self.dex.items().get(id_str) {
                             item_data.name.clone()
                         } else {
                             // For conditions/status effects, use the ID as name

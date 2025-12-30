@@ -30,7 +30,7 @@ pub fn on_hit(
 
         let item_id = &pokemon_pokemon.item;
 
-        let item = battle.dex.get_item_by_id(item_id);
+        let item = battle.dex.items().get_by_id(item_id);
         match item {
             Some(i) => (i.is_berry || i.is_gem, i.name.clone()),
             None => return EventResult::Continue,

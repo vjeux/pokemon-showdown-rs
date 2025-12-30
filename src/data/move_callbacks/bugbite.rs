@@ -49,7 +49,7 @@ pub fn on_hit(
 
     if source_hp > 0 && !target_item.is_empty() {
         // Check if item is a berry
-        let is_berry = if let Some(item_data) = battle.dex.get_item_by_id(&target_item) {
+        let is_berry = if let Some(item_data) = battle.dex.items().get_by_id(&target_item) {
             // Check if item name ends with "berry" (simple heuristic)
             item_data.name.to_lowercase().ends_with("berry")
         } else {
@@ -77,7 +77,7 @@ pub fn on_hit(
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    let item_data = battle.dex.get_item_by_id(&item_id);
+                    let item_data = battle.dex.items().get_by_id(&item_id);
                     let item_name = item_data
                         .map(|i| i.name.clone())
                         .unwrap_or_else(|| item_id.to_string());

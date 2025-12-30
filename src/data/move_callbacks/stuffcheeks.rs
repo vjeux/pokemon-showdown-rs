@@ -21,7 +21,7 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
         };
 
         let item_id = pokemon_ref.get_item();
-        let item_data = battle.dex.get_item_by_id(&item_id);
+        let item_data = battle.dex.items().get_by_id(&item_id);
 
         match item_data {
             Some(i) => i.is_berry,
@@ -59,7 +59,7 @@ pub fn on_try(
         };
 
         let item_id = source_pokemon.get_item();
-        let item_data = battle.dex.get_item_by_id(&item_id);
+        let item_data = battle.dex.items().get_by_id(&item_id);
 
         match item_data {
             Some(i) => i.is_berry,

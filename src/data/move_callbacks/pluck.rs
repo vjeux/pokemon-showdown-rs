@@ -59,7 +59,7 @@ pub fn on_hit(
     }
 
     let is_berry = {
-        let item_data = match battle.dex.get_item_by_id(&item_id) {
+        let item_data = match battle.dex.items().get_by_id(&item_id) {
             Some(item) => item,
             None => return EventResult::Continue,
         };
@@ -90,7 +90,7 @@ pub fn on_hit(
         };
         let target_arg = target_pokemon.get_slot();
 
-        let item_data = match battle.dex.get_item_by_id(&item_id) {
+        let item_data = match battle.dex.items().get_by_id(&item_id) {
             Some(item) => item,
             None => return EventResult::Continue,
         };
@@ -143,7 +143,7 @@ pub fn on_hit(
     // In JavaScript, onEat is a callback function for berries
     // Check if the item is a berry instead
     let has_on_eat = {
-        let item_data = match battle.dex.get_item_by_id(&item_id) {
+        let item_data = match battle.dex.items().get_by_id(&item_id) {
             Some(item) => item,
             None => return EventResult::Continue,
         };

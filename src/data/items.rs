@@ -5,7 +5,7 @@
 // 1. data/items.json - base item data (name, desc, fling power, etc.)
 // 2. src/data/item_callbacks/ - custom event handlers per item
 //
-// Access items via Battle.dex.get_item(name) or Battle.dex.items
+// Access items via Battle.dex.items().get(name) or Battle.dex.items
 
 // Re-export item data type from dex
 pub use crate::dex::ItemData;

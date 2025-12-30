@@ -82,7 +82,7 @@ pub fn on_prepare_hit(
 
     // if (!item.fling) return false;
     let fling_data = {
-        battle.dex.get_item_by_id(&item_id)
+        battle.dex.items().get_by_id(&item_id)
             .and_then(|item| item.fling.clone())
     };
 
@@ -112,7 +112,7 @@ pub fn on_prepare_hit(
 
     // Get item.isBerry to skip the secondaries logic for berries
     let is_berry = {
-        battle.dex.get_item_by_id(&item_id)
+        battle.dex.items().get_by_id(&item_id)
             .map(|item| item.is_berry)
             .unwrap_or(false)
     };
@@ -187,7 +187,7 @@ pub mod condition {
 
         // Get item name for the battle log
         let item_name = {
-            let item_data = battle.dex.get_item_by_id(&item_id);
+            let item_data = battle.dex.items().get_by_id(&item_id);
             item_data
                 .map(|i| i.name.clone())
                 .unwrap_or_else(|| item_id.to_string())

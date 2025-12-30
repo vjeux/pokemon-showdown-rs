@@ -45,7 +45,7 @@ pub fn on_modify_type(
         // Check if Pokemon holds a Memory item
         let item_id = &pokemon_pokemon.item;
         if !item_id.is_empty() {
-            if let Some(_item_data) = battle.dex.get_item_by_id(item_id) {
+            if let Some(_item_data) = battle.dex.items().get_by_id(item_id) {
                 // Memory items have onMemory handler that returns the type
                 // For now, just use default "Normal" type
                 // TODO: Implement proper item onMemory callback

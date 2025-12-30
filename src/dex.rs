@@ -19,7 +19,7 @@ mod get_active_move;
 mod convert_move_flags;
 mod convert_boosts_hash_to_table;
 mod convert_secondary;
-mod get_item;
+mod items_helper;
 mod get_type;
 mod get_nature;
 mod get_effectiveness;
@@ -35,10 +35,8 @@ mod for_gen;
 mod species_helper;
 mod moves_helper;
 mod abilities_helper;
-mod all_items;
 mod all_natures;
 mod all_type_names;
-mod get_item_by_id;
 mod is_species_banned;
 mod get_base_species_name;
 mod is_alternate_forme;
@@ -719,7 +717,7 @@ mod tests {
         assert_eq!(static_ability.name, "Static");
 
         // Check items
-        let leftovers = dex.get_item("Leftovers").expect("Leftovers not found");
+        let leftovers = dex.items().get("Leftovers").expect("Leftovers not found");
         assert_eq!(leftovers.name, "Leftovers");
     }
 
@@ -853,17 +851,17 @@ mod tests {
         let dex = Dex::load_default().expect("Failed to load dex");
 
         // Test with items in our data
-        if dex.get_item("Oran Berry").is_some() {
+        if dex.items().get("Oran Berry").is_some() {
             assert!(dex.is_berry("Oran Berry"));
         }
 
         assert!(!dex.is_berry("Leftovers"));
 
-        if dex.get_item("Choice Band").is_some() {
+        if dex.items().get("Choice Band").is_some() {
             assert!(dex.is_choice_item("Choice Band"));
         }
 
-        if dex.get_item("Leftovers").is_some() {
+        if dex.items().get("Leftovers").is_some() {
             assert!(!dex.is_choice_item("Leftovers"));
         }
     }

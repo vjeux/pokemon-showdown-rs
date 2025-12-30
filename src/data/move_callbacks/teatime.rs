@@ -87,7 +87,7 @@ pub fn on_hit_field(
                     None => continue,
                 };
                 let item_id = pokemon_ref.get_item();
-                if let Some(item_data) = battle.dex.get_item_by_id(item_id) {
+                if let Some(item_data) = battle.dex.items().get_by_id(item_id) {
                     item_data.is_berry
                 } else {
                     false

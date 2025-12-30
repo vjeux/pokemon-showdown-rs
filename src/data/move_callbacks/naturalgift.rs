@@ -49,7 +49,7 @@ pub fn on_modify_type(
         return EventResult::Continue;
     }
 
-    let item_data = match battle.dex.get_item_by_id(&item_id) {
+    let item_data = match battle.dex.items().get_by_id(&item_id) {
         Some(item) => item,
         None => return EventResult::Continue,
     };
@@ -117,7 +117,7 @@ pub fn on_prepare_hit(
         return EventResult::Boolean(false);
     }
 
-    let item_data = match battle.dex.get_item_by_id(&item_id) {
+    let item_data = match battle.dex.items().get_by_id(&item_id) {
         Some(item) => item,
         None => return EventResult::Boolean(false),
     };

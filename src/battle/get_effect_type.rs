@@ -12,7 +12,7 @@ impl Battle {
             return "Ability";
         }
         // Check if it's an item
-        if self.dex.get_item(effect_id.as_str()).is_some() {
+        if self.dex.items().get(effect_id.as_str()).is_some() {
             return "Item";
         }
         // Check if it's a move

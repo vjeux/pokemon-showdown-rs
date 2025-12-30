@@ -163,7 +163,7 @@ pub fn on_hit(
         }
 
         let my_item_name = {
-            let item_data = battle.dex.get_item_by_id(&my_item_id);
+            let item_data = battle.dex.items().get_by_id(&my_item_id);
             item_data
                 .map(|i| i.name.clone())
                 .unwrap_or_else(|| my_item_id.to_string())
@@ -179,7 +179,7 @@ pub fn on_hit(
         );
     } else if let Some(your_item_id) = your_item.clone() {
         let your_item_name = {
-            let item_data = battle.dex.get_item_by_id(&your_item_id);
+            let item_data = battle.dex.items().get_by_id(&your_item_id);
             item_data
                 .map(|i| i.name.clone())
                 .unwrap_or_else(|| your_item_id.to_string())
@@ -208,7 +208,7 @@ pub fn on_hit(
         }
 
         let your_item_name = {
-            let item_data = battle.dex.get_item_by_id(&your_item_id);
+            let item_data = battle.dex.items().get_by_id(&your_item_id);
             item_data
                 .map(|i| i.name.clone())
                 .unwrap_or_else(|| your_item_id.to_string())
@@ -224,7 +224,7 @@ pub fn on_hit(
         );
     } else if let Some(my_item_id) = my_item {
         let my_item_name = {
-            let item_data = battle.dex.get_item_by_id(&my_item_id);
+            let item_data = battle.dex.items().get_by_id(&my_item_id);
             item_data
                 .map(|i| i.name.clone())
                 .unwrap_or_else(|| my_item_id.to_string())

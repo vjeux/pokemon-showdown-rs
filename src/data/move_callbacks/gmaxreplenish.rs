@@ -75,7 +75,7 @@ pub fn on_hit(
                 continue;
             }
 
-            let is_berry = battle.dex.get_item_by_id(&last_item)
+            let is_berry = battle.dex.items().get_by_id(&last_item)
                 .map(|item| item.is_berry)
                 .unwrap_or(false);
 
@@ -90,7 +90,7 @@ pub fn on_hit(
         //         pokemon.lastItem = '';
         //         this.add('-item', pokemon, this.dex.items.get(item), '[from] move: G-Max Replenish');
         //         pokemon.setItem(item);
-        let item_name = battle.dex.get_item_by_id(&last_item_id)
+        let item_name = battle.dex.items().get_by_id(&last_item_id)
             .map(|i| i.name.clone())
             .unwrap_or_else(|| last_item_id.to_string());
 

@@ -48,7 +48,7 @@ pub fn on_hit(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let item_data = battle.dex.get_item_by_id(&item_id);
+            let item_data = battle.dex.items().get_by_id(&item_id);
             let item_name = item_data
                 .map(|i| i.name.clone())
                 .unwrap_or_else(|| item_id.to_string());

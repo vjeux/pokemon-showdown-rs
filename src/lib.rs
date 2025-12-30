@@ -14,6 +14,7 @@ pub mod data;
 pub mod dex;
 pub mod dex_abilities;
 pub mod dex_data;
+pub mod dex_items;
 pub mod dex_moves;
 pub mod dex_species;
 pub mod event;

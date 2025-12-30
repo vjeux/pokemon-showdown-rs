@@ -97,7 +97,8 @@ pub fn on_after_hit(
     if let Some(item_id) = taken_item {
         let item_name = battle
             .dex
-            .get_item_by_id(&item_id)
+            .items()
+            .get_by_id(&item_id)
             .map(|i| i.name.clone())
             .unwrap_or_else(|| item_id.to_string());
 

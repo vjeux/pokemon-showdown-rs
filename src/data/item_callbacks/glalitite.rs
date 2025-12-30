@@ -35,7 +35,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
     };
 
     // Get item data
-    let item_data = battle.dex.get_item(item_id.as_str());
+    let item_data = battle.dex.items().get(item_id.as_str());
     let mega_evolves = item_data
         .and_then(|i| i.mega_evolves.clone())
         .unwrap_or_default();

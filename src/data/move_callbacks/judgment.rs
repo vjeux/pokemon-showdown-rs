@@ -46,7 +46,7 @@ pub fn on_modify_type(
 
         let item_id = &pokemon_pokemon.item;
 
-        let item = battle.dex.get_item_by_id(item_id);
+        let item = battle.dex.items().get_by_id(item_id);
         match item {
             Some(i) => {
                 if i.on_plate.is_some() && i.z_move.is_none() {

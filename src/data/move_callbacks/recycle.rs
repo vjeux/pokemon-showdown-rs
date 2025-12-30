@@ -58,7 +58,7 @@ pub fn on_hit(
         };
         let pokemon_arg = pokemon_pokemon.get_slot();
 
-        let item_data = match battle.dex.get_item_by_id(&item) {
+        let item_data = match battle.dex.items().get_by_id(&item) {
             Some(i) => i,
             None => return EventResult::Continue,
         };
