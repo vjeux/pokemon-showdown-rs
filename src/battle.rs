@@ -171,7 +171,6 @@ mod get_target;
 mod get_at_loc;
 mod undo_choice;
 mod spread_damage;
-mod add_damage_log;
 mod final_modify;
 mod modify_internal;
 mod add_split;
