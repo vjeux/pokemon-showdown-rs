@@ -24,7 +24,6 @@ mod get_confusion_damage;
 mod target_type_choices;
 mod can_ultra_burst;
 mod can_terastallize;
-mod modify_damage;
 mod should_force_switch;
 mod get_multi_hit_count;
 mod is_critical_hit;
