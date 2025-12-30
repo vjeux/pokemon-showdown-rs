@@ -4,6 +4,32 @@ use crate::battle_queue::BattleQueue;
 impl BattleQueue {
 
     /// Insert action maintaining sort order
+    /// This is the core insertion logic used by TypeScript's insertChoice()
+    /// TypeScript insertChoice() = resolveAction() + this insert logic
+    /// In Rust, we separate concerns: caller resolves action, this just inserts
+    ///
+    /// TypeScript source (insertChoice, lines 385-402 in battle-queue.ts):
+    /// ```
+    /// let firstIndex = null;
+    /// let lastIndex = null;
+    /// for (const [i, curAction] of this.list.entries()) {
+    ///     const compared = this.battle.comparePriority(actions[0], curAction);
+    ///     if (compared <= 0 && firstIndex === null) {
+    ///         firstIndex = i;
+    ///     }
+    ///     if (compared < 0) {
+    ///         lastIndex = i;
+    ///         break;
+    ///     }
+    /// }
+    /// if (firstIndex === null) {
+    ///     this.list.push(...actions);
+    /// } else {
+    ///     if (lastIndex === null) lastIndex = this.list.length;
+    ///     const index = firstIndex === lastIndex ? firstIndex : this.battle.random(firstIndex, lastIndex + 1);
+    ///     this.list.splice(index, 0, ...actions);
+    /// }
+    /// ```
     pub fn insert_in_order(&mut self, action: Action) {
         // Find the right position based on priority
         let mut insert_pos = self.list.len();

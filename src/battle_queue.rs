@@ -29,7 +29,6 @@ mod will_move;
 mod will_move_pokemon;
 mod will_switch;
 mod will_act;
-mod insert_run_switch;
 mod sort;
 mod prioritize_action;
 mod iter;
@@ -42,8 +41,6 @@ mod debug;
 mod entries;
 mod entries_mut;
 mod find;
-mod remove_where;
-mod get_order_for_choice;
 mod splice;
 
 /// Move action
