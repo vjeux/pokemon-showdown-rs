@@ -732,6 +732,57 @@ impl Battle {
             return matches!(ability_id, "dryskin" | "icebody" | "raindish" | "solarpower");
         }
 
+        // Check for onAnyAfterMega event (after ANY Pokemon Mega Evolves)
+        if event_id == "onAnyAfterMega" {
+            // Abilities with onAnyAfterMega callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "opportunist");
+        }
+
+        // Check for onAnyAfterMove event (after ANY Pokemon uses a move)
+        if event_id == "onAnyAfterMove" {
+            // Abilities with onAnyAfterMove callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "opportunist" | "terashell");
+        }
+
+        // Check for onAnyAfterTerastallization event (after ANY Pokemon Terastallizes)
+        if event_id == "onAnyAfterTerastallization" {
+            // Abilities with onAnyAfterTerastallization callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "opportunist");
+        }
+
+        // Check for onCheckShow event (when checking if ability should be shown)
+        if event_id == "onCheckShow" {
+            // Abilities with onCheckShow callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "naturalcure");
+        }
+
+        // Check for onEmergencyExit event (when Pokemon should emergency exit)
+        if event_id == "onEmergencyExit" {
+            // Abilities with onEmergencyExit callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "emergencyexit" | "wimpout");
+        }
+
+        // Check for onSideConditionStart event (when a side condition starts)
+        if event_id == "onSideConditionStart" {
+            // Abilities with onSideConditionStart callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "windpower" | "windrider");
+        }
+
+        // Check for onTerrainChange event (when terrain changes)
+        if event_id == "onTerrainChange" {
+            // Abilities with onTerrainChange callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "mimicry" | "quarkdrive");
+        }
+
+        // Check for onWeatherChange event (when weather changes)
+        if event_id == "onWeatherChange" {
+            // Abilities with onWeatherChange callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "flowergift" | "forecast" | "iceface" | "protosynthesis"
+            );
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
