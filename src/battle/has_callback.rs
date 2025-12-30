@@ -71,6 +71,18 @@ impl Battle {
             return matches!(ability_id, "battery" | "powerspot" | "steelyspirit");
         }
 
+        // Check for onResidual event (end-of-turn effects)
+        if event_id == "onResidual" {
+            // Abilities with onResidual callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "baddreams" | "cudchew" | "harvest" | "healer" | "hungerswitch"
+                | "hydration" | "moody" | "opportunist" | "pickup" | "powerconstruct"
+                | "schooling" | "shedskin" | "shieldsdown" | "slowstart"
+                | "speedboost" | "zenmode"
+            );
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
@@ -82,6 +94,12 @@ impl Battle {
         // Items don't have onAnySwitchIn
         if event_id == "onAnySwitchIn" {
             return false;
+        }
+
+        // Check for onResidual event
+        if event_id == "onResidual" {
+            // Items with onResidual callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "ejectpack" | "mirrorherb" | "whiteherb");
         }
 
         // For other events, conservatively return false by default
