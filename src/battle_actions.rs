@@ -24,7 +24,6 @@ mod get_confusion_damage;
 mod target_type_choices;
 mod can_ultra_burst;
 mod can_terastallize;
-mod max_move_power_table;
 mod get_z_power_effect;
 mod get_spread_damage_modifier;
 mod modify_damage;
