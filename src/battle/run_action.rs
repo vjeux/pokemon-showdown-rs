@@ -317,6 +317,11 @@ impl Battle {
                 let move_id = &move_action.move_id;
                 let target_loc = move_action.target_loc;
 
+                eprintln!("RUN_ACTION Move: p{}{} uses {}",
+                    side_idx + 1,
+                    if poke_idx == 0 { "a" } else { "b" },
+                    move_id);
+
                 // Check if Pokemon can still act
                 if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
