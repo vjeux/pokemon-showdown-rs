@@ -303,6 +303,46 @@ impl Battle {
             return matches!(ability_id, "poisontouch" | "toxicchain");
         }
 
+        // Check for onSourceModifyAtk event (when source's Attack is being modified)
+        if event_id == "onSourceModifyAtk" {
+            // Abilities with onSourceModifyAtk callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "heatproof" | "purifyingsalt" | "thickfat" | "waterbubble"
+            );
+        }
+
+        // Check for onSourceModifySpA event (when source's Sp. Atk is being modified)
+        if event_id == "onSourceModifySpA" {
+            // Abilities with onSourceModifySpA callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "heatproof" | "purifyingsalt" | "thickfat" | "waterbubble"
+            );
+        }
+
+        // Check for onSourceModifyDamage event (when source's damage is being modified)
+        if event_id == "onSourceModifyDamage" {
+            // Abilities with onSourceModifyDamage callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "filter" | "fluffy" | "icescales" | "multiscale" | "prismarmor"
+                | "punkrock" | "ripen" | "shadowshield" | "solidrock"
+            );
+        }
+
+        // Check for onSourceTryHeal event (when source is trying to heal)
+        if event_id == "onSourceTryHeal" {
+            // Abilities with onSourceTryHeal callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "liquidooze");
+        }
+
+        // Check for onSourceModifyAccuracy event (when source's accuracy is being modified)
+        if event_id == "onSourceModifyAccuracy" {
+            // Abilities with onSourceModifyAccuracy callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "compoundeyes" | "hustle");
+        }
+
         // Check for onAnyBasePower event (when ANY Pokemon uses a move)
         if event_id == "onAnyBasePower" {
             // Abilities with onAnyBasePower callbacks (from ability_callbacks/mod.rs dispatcher)
