@@ -157,9 +157,6 @@ impl Battle {
             let target_pos = target.unwrap();
             let (side_idx, poke_idx) = target_pos;
 
-            eprintln!("DEBUG [spread_damage]: Damaging target p{}a (side={}, idx={}), damage={}",
-                     side_idx + 1, side_idx, poke_idx, target_damage);
-
             // Check if target exists and has HP
             let (has_hp, is_active) = if let Some(side) = self.sides.get(side_idx) {
                 if let Some(pokemon) = side.pokemon.get(poke_idx) {
@@ -233,9 +230,20 @@ impl Battle {
             }
 
             // Gen 1: set lastDamage for certain effects
+            // JavaScript: if (this.gen <= 1) {
+            //     if (this.dex.currentMod === 'gen1stadium' ||
+            //         !['recoil', 'drain', 'leechseed'].includes(effect.id) && effect.effectType !== 'Status')
+            //         this.lastDamage = targetDamage;
+            // }
             if self.gen <= 1 {
-                // JavaScript: if (!['recoil', 'drain', 'leechseed'].includes(effect.id) && effect.effectType !== 'Status')
-                if effect_id != "recoil" && effect_id != "drain" && effect_id != "leechseed" {
+                // TODO: Add gen1stadium check when currentMod is implemented
+                // For now, we implement the second condition only
+                let effect_type = effect.map(|e| self.get_effect_type(e)).unwrap_or("");
+                if effect_id != "recoil"
+                    && effect_id != "drain"
+                    && effect_id != "leechseed"
+                    && effect_type != "Status"
+                {
                     self.last_damage = target_damage;
                 }
             }
@@ -250,10 +258,6 @@ impl Battle {
             } else {
                 0
             };
-
-            eprintln!("DEBUG [spread_damage]: Actual damage applied: {}, target HP after: {}",
-                     actual_damage,
-                     self.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)).map(|p| p.hp).unwrap_or(0));
 
             target_damage = actual_damage;
             ret_vals.push(Some(target_damage));
@@ -296,10 +300,37 @@ impl Battle {
                 };
 
                 let target_str = format!("p{}a", side_idx + 1);
-                let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+                let effect_id_str = effect.map(|e| e.as_str()).unwrap_or("");
 
-                // Special case handling
-                match effect_id {
+                // Get effect name for logging
+                // JavaScript: const name = effect.fullname === 'tox' ? 'psn' : effect.fullname;
+                let effect_name = if let Some(eff) = effect {
+                    let id_str = eff.as_str();
+                    // Handle special case: tox -> psn
+                    if id_str == "tox" {
+                        "psn".to_string()
+                    } else {
+                        // Try to get name from move/ability/item data
+                        if let Some(move_data) = self.dex.get_move(id_str) {
+                            move_data.name.clone()
+                        } else if let Some(ability_data) = self.dex.get_ability(id_str) {
+                            ability_data.name.clone()
+                        } else if let Some(item_data) = self.dex.get_item(id_str) {
+                            item_data.name.clone()
+                        } else {
+                            // For conditions/status effects, use the ID as name
+                            id_str.to_string()
+                        }
+                    }
+                } else {
+                    String::new()
+                };
+
+                // Get effect type for conditional logic
+                let effect_type = effect.map(|e| self.get_effect_type(e)).unwrap_or("");
+
+                // Special case handling (matches JavaScript switch statement)
+                match effect_id_str {
                     "partiallytrapped" => {
                         // Get source effect name from volatiles
                         // JS: '[from] ' + target.volatiles['partiallytrapped'].sourceEffect.fullname
@@ -340,15 +371,33 @@ impl Battle {
                     }
                     _ => {
                         // Default damage log
-                        if effect.is_none() {
+                        // JavaScript logic:
+                        // if (effect.effectType === 'Move' || !name) {
+                        //     this.add('-damage', target, target.getHealth);
+                        // } else if (source && (source !== target || effect.effectType === 'Ability')) {
+                        //     this.add('-damage', target, target.getHealth, `[from] ${name}`, `[of] ${source}`);
+                        // } else {
+                        //     this.add('-damage', target, target.getHealth, `[from] ${name}`);
+                        // }
+
+                        if effect_type == "Move" || effect_name.is_empty() {
+                            // Move damage or no effect name: log without [from]
                             self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into()]);
                         } else if let Some(src) = source {
-                            let src_str = format!("p{}a", src.0 + 1);
-                            let from_str = format!("[from] {}", effect_id);
-                            let of_str = format!("[of] {}", src_str);
-                            self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), from_str.into(), of_str.into()]);
+                            // Check if source != target OR effectType is Ability
+                            let source_is_different = src != target_pos;
+                            if source_is_different || effect_type == "Ability" {
+                                let src_str = format!("p{}a", src.0 + 1);
+                                let from_str = format!("[from] {}", effect_name);
+                                let of_str = format!("[of] {}", src_str);
+                                self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), from_str.into(), of_str.into()]);
+                            } else {
+                                let from_str = format!("[from] {}", effect_name);
+                                self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), from_str.into()]);
+                            }
                         } else {
-                            let from_str = format!("[from] {}", effect_id);
+                            // No source: log with [from] only
+                            let from_str = format!("[from] {}", effect_name);
                             self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), from_str.into()]);
                         }
                     }
