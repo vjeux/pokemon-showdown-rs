@@ -130,16 +130,12 @@ impl Battle {
         // JavaScript's runPickTeam() returns without calling makeRequest if:
         // - requestState isn't already 'teampreview'
         // - ruleTable.pickedTeamSize doesn't exist
+        // - format.onTeamPreview callback doesn't exist
         //
-        // HOWEVER: In practice, most formats (including gen9randombattle) have team preview
-        // via the onTeamPreview callback. Since we haven't implemented format callbacks yet,
-        // we need to ensure team preview still works. The safest approach is to default to
-        // team preview if the format hasn't explicitly disabled it.
+        // This allows turnLoop() to run immediately in start(), processing the 'start' action
+        // which switches in initial Pokemon before team preview.
         //
-        // For now, always enable team preview for standard formats
-        // TODO: Remove this once format.onTeamPreview is properly implemented
-        if self.request_state == BattleRequestState::None {
-            self.make_request(Some(BattleRequestState::TeamPreview));
-        }
+        // For formats without team preview (like gen9randombattle in our test),
+        // requestState remains None, turnLoop runs, and Pokemon are switched in during battle.start().
     }
 }
