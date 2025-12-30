@@ -303,6 +303,36 @@ impl Battle {
             return matches!(ability_id, "poisontouch" | "toxicchain");
         }
 
+        // Check for onAnyBasePower event (when ANY Pokemon uses a move)
+        if event_id == "onAnyBasePower" {
+            // Abilities with onAnyBasePower callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "darkaura" | "fairyaura");
+        }
+
+        // Check for onAnyDamage event (when ANY Pokemon takes damage)
+        if event_id == "onAnyDamage" {
+            // Abilities with onAnyDamage callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "damp");
+        }
+
+        // Check for onAnyInvulnerability event (when ANY Pokemon checks invulnerability)
+        if event_id == "onAnyInvulnerability" {
+            // Abilities with onAnyInvulnerability callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "noguard");
+        }
+
+        // Check for onAnyRedirectTarget event (when ANY move target is being determined)
+        if event_id == "onAnyRedirectTarget" {
+            // Abilities with onAnyRedirectTarget callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "lightningrod" | "stormdrain");
+        }
+
+        // Check for onAnySetWeather event (when ANY weather is being set)
+        if event_id == "onAnySetWeather" {
+            // Abilities with onAnySetWeather callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "deltastream" | "desolateland" | "primordialsea");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
