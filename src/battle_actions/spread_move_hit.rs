@@ -17,6 +17,9 @@ pub fn spread_move_hit(
     is_secondary: bool,
     is_self: bool,
 ) -> SpreadMoveHitResult {
+    eprintln!("DEBUG spread_move_hit: TURN={}, move_id='{}', source={:?}, targets={:?}",
+        battle.turn, move_id, source_pos, targets);
+
     let mut damages: Vec<Option<i32>> = vec![Some(0); targets.len()];
     let mut final_targets = targets.to_vec();
 
@@ -145,6 +148,57 @@ pub fn spread_move_hit(
                     Some(source_pos),
                     Some(move_id),
                     None,
+                );
+            }
+        }
+    }
+
+    // Step 3.6: Trigger DamagingHit and AfterHit events
+    // JavaScript (battle-actions.ts:1140-1149):
+    //   if (damagedDamage.length && !isSecondary && !isSelf) {
+    //       this.battle.runEvent('DamagingHit', damagedTargets, pokemon, move, damagedDamage);
+    //       if (moveData.onAfterHit) {
+    //           for (const t of damagedTargets) {
+    //               this.battle.singleEvent('AfterHit', moveData, {}, t, pokemon, move);
+    //           }
+    //       }
+    //   }
+    if !is_secondary && !is_self {
+        // Collect targets that actually took damage
+        let mut damaged_targets = Vec::new();
+        for (i, &target) in final_targets.iter().enumerate() {
+            if let Some(target_pos) = target {
+                // Check if damage was dealt (not None and not 0)
+                if let Some(dmg) = damages[i] {
+                    if dmg > 0 {
+                        damaged_targets.push(target_pos);
+                    }
+                }
+            }
+        }
+
+        if !damaged_targets.is_empty() {
+            // Trigger DamagingHit event for all damaged targets
+            // Note: JavaScript passes all damaged targets, but we'll trigger individually
+            for &target_pos in &damaged_targets {
+                battle.run_event(
+                    "DamagingHit",
+                    Some(target_pos),
+                    Some(source_pos),
+                    Some(move_id),
+                    None,
+                );
+            }
+
+            // Trigger AfterHit singleEvent for each damaged target
+            // JavaScript: this.battle.singleEvent('AfterHit', moveData, {}, t, pokemon, move);
+            for &target_pos in &damaged_targets {
+                battle.single_event(
+                    "AfterHit",
+                    move_id,
+                    Some(target_pos),
+                    Some(source_pos),
+                    Some(move_id),
                 );
             }
         }

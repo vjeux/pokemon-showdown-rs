@@ -27,6 +27,8 @@ impl Side {
     // 	}
     //
     pub fn auto_choose(&mut self) -> bool {
+        eprintln!("DEBUG auto_choose: request_state={:?}", self.request_state);
+
         match self.request_state {
             RequestState::TeamPreview => {
                 if !self.is_choice_done(None) {

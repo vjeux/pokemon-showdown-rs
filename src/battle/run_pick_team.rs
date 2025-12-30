@@ -37,6 +37,10 @@ impl Battle {
     // 	}
     //
     pub fn run_pick_team(&mut self) {
+        eprintln!("DEBUG run_pick_team: request_state={:?}, rule_table={:?}",
+            self.request_state,
+            self.rule_table.as_ref().map(|rt| rt.picked_team_size));
+
         // JS: this.format.onTeamPreview?.call(this);
         // TODO: Implement format.onTeamPreview callback
 
@@ -126,6 +130,16 @@ impl Battle {
         // JavaScript's runPickTeam() returns without calling makeRequest if:
         // - requestState isn't already 'teampreview'
         // - ruleTable.pickedTeamSize doesn't exist
-        // So we should do the same - just return without setting requestState
+        //
+        // HOWEVER: In practice, most formats (including gen9randombattle) have team preview
+        // via the onTeamPreview callback. Since we haven't implemented format callbacks yet,
+        // we need to ensure team preview still works. The safest approach is to default to
+        // team preview if the format hasn't explicitly disabled it.
+        //
+        // For now, always enable team preview for standard formats
+        // TODO: Remove this once format.onTeamPreview is properly implemented
+        if self.request_state == BattleRequestState::None {
+            self.make_request(Some(BattleRequestState::TeamPreview));
+        }
     }
 }

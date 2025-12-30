@@ -26,6 +26,9 @@ pub fn get_damage(
         None => return None,
     };
 
+    eprintln!("DEBUG get_damage: TURN={}, move_id='{}', move_data.id='{}', move_data.name='{}', source={:?}, target={:?}",
+        battle.turn, move_id, move_data.id, move_data.name, source_pos, target_pos);
+
     // Check immunity first
     // JavaScript: if (!target.runImmunity(move, !suppressMessages))
     // For now, we'll do a basic type check (full immunity checking would be more complex)

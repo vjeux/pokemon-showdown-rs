@@ -330,11 +330,25 @@ impl Battle {
         let mut result = relay_var;
 
         // Find and run all handlers for this event
-        let handlers = self.find_event_handlers(event_id, target, source);
+        let mut handlers = self.find_event_handlers(event_id, target, source);
+
+        // JavaScript: if (onEffect) { ... handlers.unshift(...) }
+        // If source_effect is provided, add it to the handlers list
+        // This allows moves/abilities/items to have event handlers
+        if let Some(source_effect_id) = source_effect {
+            eprintln!("DEBUG run_event: adding source_effect='{}' to handlers", source_effect_id);
+            // Add to front of list (unshift in JavaScript)
+            handlers.insert(0, (source_effect_id.clone(), target));
+        }
+
+        eprintln!("DEBUG run_event: event_id='{}', handlers.len()={}", event_id, handlers.len());
 
         for (effect_id, holder_target) in handlers {
+            eprintln!("DEBUG run_event: dispatching to effect_id='{}'", effect_id);
             let event_result =
                 self.dispatch_single_event(event_id, &effect_id, holder_target, source);
+
+            eprintln!("DEBUG run_event: result={:?}", event_result);
 
             match event_result {
                 EventResult::Boolean(false) => {

@@ -125,7 +125,10 @@ impl Dex {
 
         let moves = moves_raw
             .into_iter()
-            .map(|(k, v)| (ID::new(&k), v))
+            .map(|(k, mut v)| {
+                v.id = ID::new(&k);
+                (v.id.clone(), v)
+            })
             .collect();
         let abilities = abilities_raw
             .into_iter()
