@@ -1,4 +1,6 @@
 use crate::*;
+use crate::dex_data::StatsTable;
+use crate::pokemon::PokemonSet;
 
 impl Pokemon {
 
@@ -44,10 +46,98 @@ impl Pokemon {
     // 		return species;
     // 	}
     //
-    pub fn set_species(&mut self, species_id: ID, types: Vec<String>, weight_hg: i32) {
-        self.species_id = species_id;
+    pub fn set_species(
+        &mut self,
+        battle: &mut Battle,
+        species_id: &ID,
+        _source: Option<&ID>,
+        _is_transform: bool,
+    ) -> bool {
+        // JS: const species = this.battle.runEvent('ModifySpecies', this, null, source, rawSpecies);
+        // TODO: Implement ModifySpecies event
+        // For now, just use the species directly
+
+        // Get species data from dex
+        let (types, weightkg, base_stats) = {
+            if let Some(species_data) = battle.dex.species().get(species_id.as_str()) {
+                (
+                    species_data.types.clone(),
+                    species_data.weightkg,
+                    species_data.base_stats.clone(),
+                )
+            } else {
+                // Species not found, return false
+                return false;
+            }
+        };
+
+        // JS: this.species = species;
+        self.species_id = species_id.clone();
+
+        // JS: this.setType(species.types, true);
+        // JS: this.apparentType = rawSpecies.types.join('/');
+        // JS: this.addedType = species.addedType || '';
+        // JS: this.knownType = true;
         self.types = types.clone();
-        self.base_types = types;
-        self.weight_hg = weight_hg;
+        self.base_types = types.clone();
+        self.added_type = None; // TypeScript uses empty string, Rust uses None
+        // TODO: knownType field doesn't exist in Rust Pokemon struct
+
+        // JS: this.weighthg = species.weighthg;
+        self.weight_hg = (weightkg as f64 * 10.0) as i32;
+
+        // JS: const stats = this.battle.spreadModify(this.species.baseStats, this.set);
+        // Get the pokemon's set (we need position to find it in side.team)
+        let pokemon_set = {
+            // Find this pokemon's set from the side's team
+            if self.position < battle.sides[self.side_index].team.len() {
+                battle.sides[self.side_index].team[self.position].clone()
+            } else {
+                // No set found, use defaults
+                PokemonSet::default()
+            }
+        };
+
+        let stats = battle.spread_modify(&StatsTable::from(base_stats), &pokemon_set);
+
+        // JS: if (this.species.maxHP) stats.hp = this.species.maxHP;
+        // TODO: Handle species.maxHP override
+
+        // JS: if (!this.maxhp) { ... }
+        if self.maxhp == 0 {
+            self.base_maxhp = stats.hp;
+            self.maxhp = stats.hp;
+            self.hp = stats.hp;
+        }
+
+        // JS: if (!isTransform) this.baseStoredStats = stats;
+        // TODO: Handle isTransform parameter properly
+        // For now, always set baseStoredStats
+        self.base_stored_stats = StatsTable {
+            hp: 0, // HP not stored in storedStats
+            atk: stats.atk,
+            def: stats.def,
+            spa: stats.spa,
+            spd: stats.spd,
+            spe: stats.spe,
+        };
+
+        // JS: for (statName in this.storedStats) { this.storedStats[statName] = stats[statName]; ... }
+        self.stored_stats = StatsTable {
+            hp: 0, // HP not stored in storedStats
+            atk: stats.atk,
+            def: stats.def,
+            spa: stats.spa,
+            spd: stats.spd,
+            spe: stats.spe,
+        };
+
+        // JS: if (this.battle.gen <= 1) { ... }
+        // TODO: Handle Gen 1 burn/para stat drops
+
+        // JS: this.speed = this.storedStats.spe;
+        self.speed = self.stored_stats.spe as i32;
+
+        true
     }
 }

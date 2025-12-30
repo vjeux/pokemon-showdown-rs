@@ -83,7 +83,22 @@ impl Battle {
             self.sides[slot_num] = side;
 
             // Initialize Pokemon stats after creating the side
-            self.init_pokemon_stats(slot_num);
+            // In TypeScript, this happens in Pokemon constructor via clearVolatile() -> setSpecies()
+            // In Rust, we need to call clear_volatile_full which needs battle reference
+            // Due to borrow checker, we need to iterate through indices rather than holding references
+            let pokemon_count = self.sides[slot_num].pokemon.len();
+            for poke_idx in 0..pokemon_count {
+                // We need to use an unsafe split to avoid borrowchecker issues
+                // This is safe because we're only accessing one pokemon at a time
+                let (pokemon_ptr, battle_ptr) = unsafe {
+                    let pokemon = &mut self.sides[slot_num].pokemon[poke_idx] as *mut Pokemon;
+                    let battle = self as *mut Battle;
+                    (pokemon, battle)
+                };
+                unsafe {
+                    (*pokemon_ptr).clear_volatile_full(&mut *battle_ptr, true);
+                }
+            }
         } else {
             // Edit player
             did_something = false;

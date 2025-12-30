@@ -25,7 +25,6 @@ use crate::side::{Side};
 mod new;
 mod pokemon_at;
 mod pokemon_at_mut;
-mod init_pokemon_stats;
 mod set_player;
 mod start;
 mod start_battle;
