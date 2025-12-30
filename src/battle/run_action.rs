@@ -310,22 +310,6 @@ impl Battle {
     pub fn run_action(&mut self, action: &crate::battle_queue::Action) {
         use crate::battle_queue::{Action, FieldActionType, PokemonActionType};
 
-        eprintln!("DEBUG [run_action]: Processing action type: {:?}",
-                  match action {
-                      Action::Move(_) => "Move",
-                      Action::Switch(_) => "Switch",
-                      Action::Field(f) => match f.choice {
-                          FieldActionType::Start => "Field::Start",
-                          FieldActionType::BeforeTurn => "Field::BeforeTurn",
-                          _ => "Field::Other",
-                      },
-                      Action::Pokemon(p) => match p.choice {
-                          PokemonActionType::RunSwitch => "Pokemon::RunSwitch",
-                          _ => "Pokemon::Other",
-                      },
-                      Action::Team(_) => "Team",
-                  });
-
         match action {
             Action::Move(move_action) => {
                 let side_idx = move_action.side_index;
@@ -557,20 +541,6 @@ impl Battle {
         // JS:     this.queue.sort();
         // JS: }
         if self.gen >= 8 {
-            // Debug: Show what queue.peek() returns
-            if let Some(next_action) = self.queue.peek() {
-                let action_desc = match next_action {
-                    Action::Move(a) => format!("Move({})", a.move_id.as_str()),
-                    Action::Switch(a) => format!("Switch(side={}, to={})", a.side_index, a.target_index),
-                    Action::Team(a) => format!("Team(side={})", a.side_index),
-                    Action::Field(a) => format!("Field({:?})", a.choice),
-                    Action::Pokemon(a) => format!("Pokemon({:?})", a.choice),
-                };
-                eprintln!("DEBUG [run_action]: Gen 8+ check: queue.peek() = {}", action_desc);
-            } else {
-                eprintln!("DEBUG [run_action]: Gen 8+ check: queue.peek() = None (empty queue)");
-            }
-
             let should_sort = if let Some(next_action) = self.queue.peek() {
                 match next_action {
                     Action::Move(_) => true,
@@ -582,19 +552,6 @@ impl Battle {
             };
 
             if should_sort {
-                eprintln!("DEBUG [run_action]: Gen 8+ queue sort triggered, queue length={}", self.queue.list.len());
-                // DEBUG: Print what actions are in the queue
-                for (idx, action) in self.queue.list.iter().enumerate() {
-                    use crate::battle_queue::Action;
-                    let action_desc = match action {
-                        Action::Move(a) => format!("Move({})", a.move_id.as_str()),
-                        Action::Switch(a) => format!("Switch(side={}, to={})", a.side_index, a.target_index),
-                        Action::Team(a) => format!("Team(side={})", a.side_index),
-                        Action::Field(a) => format!("Field({:?})", a.choice),
-                        Action::Pokemon(a) => format!("Pokemon({:?})", a.choice),
-                    };
-                    eprintln!("DEBUG [run_action]: Queue[{}] = {}, order={}", idx, action_desc, action.order());
-                }
                 // JS: this.updateSpeed();
                 // Update speed for all Pokemon
                 for side in &mut self.sides {
@@ -612,7 +569,6 @@ impl Battle {
 
                 // JS: this.queue.sort();
                 // Sort the queue using speed_sort (which uses PRNG for tie-breaking)
-                eprintln!("DEBUG [run_action]: About to call speed_sort with {} items", list.len());
                 self.speed_sort(&mut list, |action| {
                     PriorityItem {
                         order: Some(action.order()),
@@ -623,7 +579,6 @@ impl Battle {
                         index: 0,
                     }
                 });
-                eprintln!("DEBUG [run_action]: Finished speed_sort");
                 self.queue.list = list;
             }
         }
