@@ -63,7 +63,6 @@ mod insert_field_action;
 mod run_switch;
 mod field_event_switch_in;
 mod trigger_switch_in_abilities;
-mod apply_hazards;
 mod run_move;
 mod get_move_target;
 mod get_move_priority;

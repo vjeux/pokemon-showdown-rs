@@ -57,8 +57,8 @@ impl Battle {
             ));
         }
 
-        // Apply entry hazard damage
-        self.apply_hazards(side_idx, slot, switch_to);
+        // TODO: Hazards should be applied via side condition onSwitchIn callbacks
+        // (triggered by field_event_switch_in in run_switch), not directly here.
 
         // Trigger switch-in abilities
         self.trigger_switch_in_abilities(side_idx, switch_to);
