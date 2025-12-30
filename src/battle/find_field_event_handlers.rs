@@ -5,6 +5,21 @@ impl Battle {
     /// Find field event handlers
     /// Equivalent to battle.ts findFieldEventHandlers()
     //
+    // TODO: INCOMPLETE IMPLEMENTATION - Returns simplified data structure
+    // Missing from TypeScript version (battle.ts:1182-1218, 37 lines):
+    // Return type: Should return EventListener[] with complete handler objects, not Vec<(ID, Option<(usize, usize)>)>
+    // For each handler (pseudoWeather, weather, terrain), should include:
+    // 1. Get callback via this.getCallback(field, effect, callbackName)
+    // 2. If callback exists or getKey is set, push complete handler with:
+    //    - effect: the condition (pseudoWeather/weather/terrain)
+    //    - callback: the callback function
+    //    - state: pseudoWeatherState/weatherState/terrainState
+    //    - end: removal function (removePseudoWeather/clearWeather/clearTerrain) or null if customHolder
+    //    - effectHolder: customHolder || field
+    // 3. Resolve priority via this.resolvePriority()
+    // Current implementation only returns IDs without callback/state/priority information
+    // This is similar to get_callback.rs architectural difference (static vs dynamic dispatch)
+    //
     // 	findFieldEventHandlers(field: Field, callbackName: string, getKey?: 'duration', customHolder?: Pokemon) {
     // 		const handlers: EventListener[] = [];
     //

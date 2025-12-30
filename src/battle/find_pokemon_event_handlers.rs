@@ -5,6 +5,21 @@ impl Battle {
     /// Find Pokemon event handlers
     /// Equivalent to battle.ts findPokemonEventHandlers() (battle.ts:1098-1157)
     ///
+    // TODO: INCOMPLETE IMPLEMENTATION - Returns simplified data structure
+    // Missing from TypeScript version (battle.ts:1098-1157, 60 lines):
+    // Return type: Should return EventListener[] with complete handler objects, not Vec<(ID, Option<(usize, usize)>)>
+    // For each effect type (status, volatiles, ability, item, species, slotConditions), should include:
+    // 1. Get callback via this.getCallback(pokemon, effect, callbackName)
+    // 2. If callback exists or getKey is set, push complete handler with:
+    //    - effect: the effect (status/volatile/ability/item/species/slotCondition)
+    //    - callback: the callback function
+    //    - state: corresponding state object (statusState/volatileState/abilityState/itemState/speciesState/slotConditionState)
+    //    - end: removal function (clearStatus/removeVolatile/clearAbility/clearItem/removeSlotCondition) or empty for species
+    //    - endCallArgs: [side, pokemon, slotCondition.id] for slot conditions
+    //    - effectHolder: pokemon
+    // 3. Resolve priority via this.resolvePriority()
+    // Current implementation only returns IDs without callback/state/priority/end information
+    // This is similar to get_callback.rs architectural difference (static vs dynamic dispatch)
     //
     // 	findPokemonEventHandlers(pokemon: Pokemon, callbackName: string, getKey?: 'duration') {
     // 		const handlers: EventListener[] = [];
