@@ -2,9 +2,9 @@ use crate::*;
 
 impl Dex {
 
-    /// Get type effectiveness multiplier
-    /// 0 = immune (0x), 1 = not very effective (0.5x), 2 = neutral (1x), 3 = super effective (2x)
-    /// Returns the numeric multiplier
+    /// Get type effectiveness modifier
+    /// Returns: 1 = super-effective, -1 = resist, 0 = neutral/immune
+    /// Note: This returns a modifier value, not the actual damage multiplier
     // TypeScript source:
     //
     //
@@ -32,18 +32,16 @@ impl Dex {
     // 		}
     // 	}
     //
-    pub fn get_effectiveness(&self, attack_type: &str, defend_type: &str) -> f64 {
+    pub fn get_effectiveness(&self, attack_type: &str, defend_type: &str) -> i32 {
         if let Some(type_data) = self.types().get(defend_type) {
             if let Some(&effectiveness) = type_data.damage_taken.get(attack_type) {
                 return match effectiveness {
-                    0 => 1.0, // Neutral
-                    1 => 2.0, // Super effective
-                    2 => 0.5, // Not very effective
-                    3 => 0.0, // Immune
-                    _ => 1.0,
+                    1 => 1,  // super-effective
+                    2 => -1, // resist
+                    _ => 0,  // default (neutral/immune)
                 };
             }
         }
-        1.0 // Default to neutral
+        0 // Default to 0
     }
 }

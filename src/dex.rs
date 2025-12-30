@@ -725,13 +725,15 @@ mod tests {
     fn test_multi_type_effectiveness() {
         let dex = Dex::load_default().expect("Failed to load dex");
 
-        // Electric vs Water/Flying = 4x
+        // Electric vs Water/Flying
+        // Water: super-effective (+1) + Flying: super-effective (+1) = +2
         let types = vec!["Water".to_string(), "Flying".to_string()];
-        assert_eq!(dex.get_type_effectiveness("Electric", &types), 4.0);
+        assert_eq!(dex.get_type_effectiveness("Electric", &types), 2);
 
-        // Ground vs Electric/Flying = 0x (Flying is immune to Ground)
+        // Ground vs Electric/Flying
+        // Electric: super-effective (+1) + Flying: immune (0) = +1
         let types = vec!["Electric".to_string(), "Flying".to_string()];
-        assert_eq!(dex.get_type_effectiveness("Ground", &types), 0.0);
+        assert_eq!(dex.get_type_effectiveness("Ground", &types), 1);
     }
 
     #[test]
@@ -767,20 +769,20 @@ mod tests {
     fn test_all_methods() {
         let dex = Dex::load_default().expect("Failed to load dex");
 
-        // Test all_species - should have at least some species
-        let all_species = dex.all_species();
+        // Test species().all() - should have at least some species
+        let all_species = dex.species().all();
         assert!(!all_species.is_empty());
 
-        // Test all_moves - should have at least some moves
+        // Test moves().all() - should have at least some moves
         let all_moves = dex.moves().all();
         assert!(!all_moves.is_empty());
 
-        // Test all_abilities - should have abilities
-        let all_abilities = dex.all_abilities();
+        // Test abilities().all() - should have abilities
+        let all_abilities = dex.abilities().all();
         assert!(!all_abilities.is_empty());
 
-        // Test all_items
-        let all_items = dex.all_items();
+        // Test items().all()
+        let all_items = dex.items().all();
         assert!(!all_items.is_empty());
     }
 

@@ -3,6 +3,7 @@ use crate::*;
 impl Dex {
 
     /// Check if source type is immune to target
+    /// Returns false if the target is immune; true otherwise.
     /// Equivalent to getImmunity() in dex.ts
     // TypeScript source:
     // /**
@@ -29,8 +30,13 @@ impl Dex {
     //
     pub fn get_immunity(&self, source_type: &str, target_types: &[String]) -> bool {
         for target_type in target_types {
-            if self.get_effectiveness(source_type, target_type) == 0.0 {
-                return false;
+            // Check damage_taken directly for immunity (value === 3)
+            if let Some(type_data) = self.types().get(target_type) {
+                if let Some(&damage_taken) = type_data.damage_taken.get(source_type) {
+                    if damage_taken == 3 {
+                        return false; // Immune
+                    }
+                }
             }
         }
         true
