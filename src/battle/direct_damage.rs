@@ -274,10 +274,10 @@ impl Battle {
         {
             let (side_idx, poke_idx) = target_pos;
 
-            // Get target health string
-            let health_str = if let Some(side) = self.sides.get(side_idx) {
+            // Get target identifier and health string
+            let (target_str, health_str) = if let Some(side) = self.sides.get(side_idx) {
                 if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                    format!("{}/{}", pokemon.hp, pokemon.maxhp)
+                    (pokemon.get_slot(), format!("{}/{}", pokemon.hp, pokemon.maxhp))
                 } else {
                     return actual_damage;
                 }
@@ -285,10 +285,10 @@ impl Battle {
                 return actual_damage;
             };
 
-            let target_str = format!("p{}a", side_idx + 1);
             let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
 
             // Special case handling
+            // JS: this.add('-damage', target, target.getHealth, '[from] recoil/confusion')
             match effect_id {
                 "strugglerecoil" => {
                     self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), "[from] recoil".into()]);
