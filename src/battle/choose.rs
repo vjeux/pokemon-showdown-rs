@@ -26,9 +26,6 @@ impl Battle {
     // 	}
     //
     pub fn choose(&mut self, side_id: SideID, input: &str) -> bool {
-        self.input_log
-            .push(format!(">{} {}", side_id.to_str(), input));
-
         let side_idx = side_id.index();
 
         // JS: if (!side.choose(input))
@@ -50,6 +47,8 @@ impl Battle {
         }
 
         // JS: if (!side.isChoiceDone())
+        // Note: TypeScript isChoiceDone() takes no parameters, but Rust version requires Option<usize>
+        // This parameter mismatch should be fixed in Side::is_choice_done() to match TypeScript
         if !self.sides[side_idx].is_choice_done(None) {
             // JS: side.emitChoiceError(...)
             self.sides[side_idx].emit_choice_error(&format!(
