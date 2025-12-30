@@ -25,3 +25,4 @@ pub fn get_z_move_name(move_type: &str) -> &'static str {
         _ => "Breakneck Blitz",
     }
 }
+

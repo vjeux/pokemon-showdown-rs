@@ -865,3 +865,4 @@ pub fn use_move_inner(
     // return true;
     true // Placeholder - will be set by actual move execution
 }
+
