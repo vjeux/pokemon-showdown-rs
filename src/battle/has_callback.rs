@@ -47,8 +47,32 @@ impl Battle {
             return matches!(ability_id, "intimidate" | "trace" | "download" | "frisk" | "forewarn" | "anticipation");
         }
 
+        // Check for BasePower event
+        if event_id == "BasePower" {
+            // Abilities with onBasePower callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "aerilate" | "analytic" | "flareboost" | "galvanize" | "ironfist"
+                | "megalauncher" | "normalize" | "pixilate" | "punkrock" | "reckless"
+                | "refrigerate" | "rivalry" | "sandforce" | "sharpness" | "sheerforce"
+                | "strongjaw" | "supremeoverlord" | "technician" | "toughclaws" | "toxicboost"
+            );
+        }
+
+        // Check for onSourceBasePower event (when this Pokemon is being hit)
+        if event_id == "onSourceBasePower" {
+            // Abilities with onSourceBasePower callbacks
+            return matches!(ability_id, "dryskin");
+        }
+
+        // Check for onAllyBasePower event (when an ally is attacking)
+        if event_id == "onAllyBasePower" {
+            // Abilities with onAllyBasePower callbacks
+            return matches!(ability_id, "battery" | "powerspot" | "steelyspirit");
+        }
+
         // For other events, conservatively return false by default
-        // TODO: Implement proper callback checking by consulting ability data
+        // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
         false
     }
