@@ -78,8 +78,8 @@ impl Battle {
                 eprintln!("DEBUG [insert_run_switch_action]: first==last={}, no PRNG needed", first);
                 first
             } else {
-                eprintln!("DEBUG [insert_run_switch_action]: first={}, last={}, calling random_range", first, last);
-                self.random_range(first as i32, (last + 1) as i32) as usize
+                eprintln!("DEBUG [insert_run_switch_action]: first={}, last={}, calling random_with_range", first, last);
+                self.random_with_range(first as i32, (last + 1) as i32) as usize
             };
 
             // JS: this.list.splice(index, 0, ...actions);

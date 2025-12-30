@@ -18,7 +18,7 @@ impl Battle {
     ///   }
     pub fn shuffle_range<T>(&mut self, list: &mut [T], mut start: usize, end: usize) {
         while start < end - 1 {
-            let next_index = self.random_range(start as i32, end as i32) as usize;
+            let next_index = self.random_with_range(start as i32, end as i32) as usize;
             if start != next_index {
                 list.swap(start, next_index);
             }

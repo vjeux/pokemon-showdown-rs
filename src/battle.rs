@@ -29,7 +29,6 @@ mod set_player;
 mod start;
 mod start_battle;
 mod random;
-mod random_range;
 mod random_chance;
 mod sample;
 mod shuffle;
