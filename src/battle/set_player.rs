@@ -82,11 +82,65 @@ impl Battle {
             }
             self.sides[slot_num] = side;
 
+            // Randomize gender for Pokemon without specified gender
+            // JavaScript: this.gender = genders[set.gender] || this.species.gender || this.battle.sample(['M', 'F']);
+            // where species.gender can be:
+            //   'M' = always male
+            //   'F' = always female
+            //   'N' = genderless
+            //   '' (empty) or undefined = randomize
+            let pokemon_count = self.sides[slot_num].pokemon.len();
+            for poke_idx in 0..pokemon_count {
+                if self.sides[slot_num].pokemon[poke_idx].gender == Gender::None {
+                    let species_id = self.sides[slot_num].pokemon[poke_idx].species_id.clone();
+
+                    // Look up species.gender from dex
+                    let species_data = self.dex.species.get(&species_id);
+
+                    let gender = if let Some(species) = species_data {
+                        // Check species.gender field
+                        if let Some(ref species_gender) = species.gender {
+                            match species_gender.as_str() {
+                                "M" => Gender::Male,
+                                "F" => Gender::Female,
+                                "N" => Gender::None,
+                                _ => {
+                                    // Empty or unknown, randomize
+                                    let rand = self.random(2);
+                                    if rand == 0 {
+                                        Gender::Male
+                                    } else {
+                                        Gender::Female
+                                    }
+                                }
+                            }
+                        } else {
+                            // No species.gender, randomize
+                            let rand = self.random(2);
+                            if rand == 0 {
+                                Gender::Male
+                            } else {
+                                Gender::Female
+                            }
+                        }
+                    } else {
+                        // No species found, default to random
+                        let rand = self.random(2);
+                        if rand == 0 {
+                            Gender::Male
+                        } else {
+                            Gender::Female
+                        }
+                    };
+
+                    self.sides[slot_num].pokemon[poke_idx].gender = gender;
+                }
+            }
+
             // Initialize Pokemon stats after creating the side
             // In TypeScript, this happens in Pokemon constructor via clearVolatile() -> setSpecies()
             // In Rust, we need to call clear_volatile_full which needs battle reference
             // Due to borrow checker, we need to iterate through indices rather than holding references
-            let pokemon_count = self.sides[slot_num].pokemon.len();
             for poke_idx in 0..pokemon_count {
                 // We need to use unsafe to avoid borrowchecker issues
                 // This is safe because we're only accessing one pokemon at a time

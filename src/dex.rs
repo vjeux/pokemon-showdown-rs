@@ -106,6 +106,8 @@ pub struct SpeciesData {
     #[serde(default)]
     pub weightkg: f64,
     #[serde(default)]
+    pub gender: Option<String>,
+    #[serde(default)]
     pub gender_ratio: Option<GenderRatio>,
     #[serde(default)]
     pub evos: Vec<String>,

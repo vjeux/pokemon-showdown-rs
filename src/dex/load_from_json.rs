@@ -95,6 +95,7 @@ impl Dex {
                         abilities: base_species.abilities.clone(),
                         heightm: base_species.heightm,
                         weightkg: base_species.weightkg,
+                        gender: base_species.gender.clone(),
                         gender_ratio: base_species.gender_ratio.clone(),
                         evos: base_species.evos.clone(),
                         prevo: base_species.prevo.clone(),

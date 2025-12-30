@@ -401,12 +401,16 @@ impl PRNG {
 
     /// Get a random integer in [0, n)
     pub fn random_int(&mut self, n: i32) -> i32 {
-        self.random(Some(n), None) as i32
+        let result = self.random(Some(n), None) as i32;
+        eprintln!("PRNG [random]: random({}, None) = {}", n, result);
+        result
     }
 
     /// Get a random integer in [from, to)
     pub fn random_range(&mut self, from: i32, to: i32) -> i32 {
-        self.random(Some(from), Some(to)) as i32
+        let result = self.random(Some(from), Some(to)) as i32;
+        eprintln!("PRNG [random]: random({}, {}) = {}", from, to, result);
+        result
     }
 
     /// Flip a coin (two-sided die), returning true or false.
@@ -495,6 +499,7 @@ impl PRNG {
 
     /// Shuffle a range of the slice
     pub fn shuffle_range<T>(&mut self, items: &mut [T], start: usize, end: usize) {
+        eprintln!("PRNG [shuffle]: shuffling array length={}, start={}, end={}", items.len(), start, end);
         let mut i = start;
         while i < end.saturating_sub(1) {
             let next_index = self.random_range(i as i32, end as i32) as usize;
