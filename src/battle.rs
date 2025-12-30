@@ -49,8 +49,6 @@ mod insert_run_switch_action;
 mod insert_field_action;
 mod field_event_switch_in;
 mod get_move_target;
-mod get_multi_hit_count;
-mod get_move_accuracy;
 mod run_residual;
 mod faint_messages;
 mod debug;
