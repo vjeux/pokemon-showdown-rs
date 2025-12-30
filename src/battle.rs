@@ -68,7 +68,6 @@ mod get_move_target;
 mod get_move_priority;
 mod get_multi_hit_count;
 mod get_move_accuracy;
-mod remove_all_hazards;
 mod run_residual;
 mod faint_messages;
 mod debug;
