@@ -14,9 +14,21 @@ impl Pokemon {
     // 	}
     //
     pub fn has_ability(&self, abilities: &[&str]) -> bool {
+        // JS: if (Array.isArray(ability)) {
+        // JS:     if (!ability.map(toID).includes(this.ability)) return false;
+        // JS: } else {
+        // JS:     if (toID(ability) !== this.ability) return false;
+        // JS: }
         let ability_id = self.ability.as_str();
-        abilities
+        let matches = abilities
             .iter()
-            .any(|&a| crate::dex_data::to_id(a) == ability_id)
+            .any(|&a| crate::dex_data::to_id(a) == ability_id);
+
+        if !matches {
+            return false;
+        }
+
+        // JS: return !this.ignoringAbility();
+        !self.ignoring_ability()
     }
 }
