@@ -11,7 +11,7 @@ impl Battle {
     // 	}
     //
     pub fn suppressing_ability(&self, target: Option<(usize, usize)>) -> bool {
-        // Check if there's an active Pokemon using a move that ignores abilities
+        // JS: this.activePokemon && this.activePokemon.isActive
         if let Some((active_side, active_idx)) = self.active_pokemon {
             if let Some(side) = self.sides.get(active_side) {
                 if let Some(pokemon) = side.pokemon.get(active_idx) {
@@ -19,24 +19,23 @@ impl Battle {
                         return false;
                     }
 
-                    // Check if active move ignores abilities
-                    if self.active_move.is_some() {
-                        // Mold Breaker, Teravolt, Turboblaze
-                        let ability = pokemon.ability.as_str();
-                        let ignores = ability == "moldbreaker"
-                            || ability == "teravolt"
-                            || ability == "turboblaze";
-
-                        // In Gen 8+, can't suppress your own ability
-                        if self.gen >= 8 {
-                            if let Some(t) = target {
-                                if t == (active_side, active_idx) {
-                                    return false;
-                                }
+                    // JS: (this.activePokemon !== target || this.gen < 8)
+                    // In Gen 8+, can't suppress your own ability
+                    if self.gen >= 8 {
+                        if let Some(t) = target {
+                            if t == (active_side, active_idx) {
+                                return false;
                             }
                         }
+                    }
 
-                        // Check if target has Ability Shield
+                    // JS: this.activeMove && this.activeMove.ignoreAbility
+                    if let Some(ref active_move) = self.active_move {
+                        if !active_move.ignore_ability {
+                            return false;
+                        }
+
+                        // JS: !target?.hasItem('Ability Shield')
                         if let Some((target_side, target_idx)) = target {
                             if let Some(tside) = self.sides.get(target_side) {
                                 if let Some(tpoke) = tside.pokemon.get(target_idx) {
@@ -47,7 +46,7 @@ impl Battle {
                             }
                         }
 
-                        return ignores;
+                        return true;
                     }
                 }
             }
