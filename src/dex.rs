@@ -36,12 +36,6 @@ mod abilities_helper;
 mod formats_helper;
 mod natures_helper;
 mod types_helper;
-mod get_base_species_name;
-mod is_alternate_forme;
-mod get_all_formes;
-mod get_evolutions;
-mod get_prevo;
-mod get_bst;
 mod is_status_move;
 mod is_special_move;
 mod is_physical_move;
@@ -798,15 +792,8 @@ mod tests {
     fn test_species_methods() {
         let dex = Dex::load_default().expect("Failed to load dex");
 
-        // Test get_base_species_name for Pikachu
-        let base = dex.get_base_species_name("Pikachu");
-        assert!(base.is_some());
-        assert_eq!(base.unwrap(), "Pikachu");
-
-        // Test get_bst
-        if let Some(bst) = dex.get_bst("Pikachu") {
-            assert!(bst > 0);
-        }
+        // Spec methods are directly accessed from species data
+        // No convenience wrappers - matches TypeScript pattern
     }
 
     #[test]
