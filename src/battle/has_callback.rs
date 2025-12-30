@@ -275,6 +275,12 @@ impl Battle {
             return matches!(ability_id, "cheekpouch" | "cudchew" | "ripen");
         }
 
+        // Check for onAnyFaint event (when ANY Pokemon faints)
+        if event_id == "onAnyFaint" {
+            // Abilities with onAnyFaint callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "soulheart");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
