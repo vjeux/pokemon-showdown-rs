@@ -111,10 +111,12 @@ impl Battle {
                 }
             }
 
-            // Swap positions
+            // Swap positions in active array
+            // Note: JavaScript swaps pokemon in the pokemon array to maintain index=position invariant.
+            // Rust uses an index-based architecture (borrow-checker workaround), so we don't swap
+            // the pokemon Vec, only update the active array and position fields.
             let new_position = pos;
             self.sides[side_index].pokemon[pokemon_index].position = new_position;
-            self.sides[side_index].pokemon.swap(pokemon_index, old_idx);
         }
 
         // Set up new active Pokemon
