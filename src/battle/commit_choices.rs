@@ -36,7 +36,9 @@ impl Battle {
         self.queue.clear();
 
         // JS: if (!this.allChoicesDone()) throw new Error("Not all choices done");
-        // Note: Skipping this check for now as allChoicesDone is not fully implemented
+        if !self.all_choices_done() {
+            panic!("Not all choices done");
+        }
 
         // JS: for (const side of this.sides) {
         // JS:     const choice = side.getChoice();
