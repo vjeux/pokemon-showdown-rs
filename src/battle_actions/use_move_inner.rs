@@ -769,6 +769,10 @@ pub fn use_move_inner(
         crate::battle_actions::try_spread_move_hit(battle, &[target_pos], pokemon_pos, move_or_move_name)
     };
 
+    // JS: this.battle.eachEvent('Update'); (line 969 - inside hit loop, after spreadMoveHit)
+    // This is called once per hit for multi-hit moves, or once for single-hit moves
+    battle.each_event("Update", None, None);
+
     // if (moveData.selfdestruct === 'ifHit' && damage[i] !== false) {
     //     this.battle.faint(source, source, move);
     // }
