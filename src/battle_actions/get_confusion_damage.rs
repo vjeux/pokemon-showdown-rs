@@ -25,6 +25,8 @@ impl<'a> BattleActions<'a> {
     // 		return Math.max(1, damage);
     // 	}
     //
+    /// Note: This is a static function that takes pre-calculated stats and a randomizer result
+    /// The actual Battle method would call this with values from pokemon.calculateStat() and battle.randomizer()
     pub fn get_confusion_damage(
         level: i32,
         attack: i32,
@@ -32,12 +34,27 @@ impl<'a> BattleActions<'a> {
         base_power: i32,
         random_factor: i32,
     ) -> i32 {
-        // int(int(int(2 * L / 5 + 2) * P * A / D) / 50) + 2
-        let base_damage = ((2 * level / 5 + 2) * base_power * attack / defense) / 50 + 2;
+        // JS: const baseDamage = tr(tr(tr(tr(2 * level / 5 + 2) * basePower * attack) / defense) / 50) + 2;
+        // We need to truncate at each step to match JavaScript
+        // Note: Using integer division in Rust already truncates, matching trunc() for positive integers
+        let step1 = (2 * level / 5 + 2) as u32; // tr(2 * level / 5 + 2)
+        let step2 = (step1 * base_power as u32) as u32; // tr(step1 * basePower)
+        let step3 = (step2 * attack as u32) as u32; // tr(step2 * attack)
+        let step4 = (step3 / defense.max(1) as u32) as u32; // tr(step3 / defense)
+        let base_damage = (step4 / 50) as u32 + 2; // tr(step4 / 50) + 2
 
-        // Apply random factor (0.85 to 1.0)
-        let damage = base_damage * random_factor / 100;
+        // JS: let damage = tr(baseDamage, 16);
+        // 16-bit truncation: (baseDamage >>> 0) % (2 ** 16) = baseDamage % 65536
+        let damage = crate::dex::Dex::trunc(base_damage as f64, 16);
 
-        damage.max(1)
+        // JS: damage = this.battle.randomizer(damage);
+        // randomizer applies (100 - random(16)) / 100, giving 0.85-1.0 multiplier
+        // Here we assume the caller already applied randomizer and passed the result as random_factor
+        // Actually, looking closer, random_factor is the final multiplied result already
+        // So we just use the damage with the random factor that was passed in
+        let final_damage = crate::dex::Dex::trunc(damage as f64 * random_factor as f64 / 100.0, 0);
+
+        // JS: return Math.max(1, damage);
+        final_damage.max(1) as i32
     }
 }
