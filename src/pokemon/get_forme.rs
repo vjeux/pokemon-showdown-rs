@@ -7,7 +7,7 @@ impl Pokemon {
     /// For "Pikachu", returns None
     /// Equivalent to pokemon.baseSpecies.forme or pokemon.species.forme in TypeScript
     pub fn get_forme(&self, dex: &crate::dex::Dex) -> Option<String> {
-        let species = dex.get_species(self.species_id.as_str())?;
+        let species = dex.species().get(self.species_id.as_str())?;
         species.forme.clone()
     }
 }

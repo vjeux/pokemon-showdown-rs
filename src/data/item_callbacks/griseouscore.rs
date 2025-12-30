@@ -21,7 +21,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        battle.dex.get_species(pokemon.base_species.as_str())
+        battle.dex.species().get(pokemon.base_species.as_str())
             .map(|s| s.num == 487)
             .unwrap_or(false)
     };
@@ -56,7 +56,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        battle.dex.get_species(pokemon.base_species.as_str())
+        battle.dex.species().get(pokemon.base_species.as_str())
             .map(|s| s.num == 487)
             .unwrap_or(false)
     };
@@ -67,7 +67,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        battle.dex.get_species(source.base_species.as_str())
+        battle.dex.species().get(source.base_species.as_str())
             .map(|s| s.num == 487)
             .unwrap_or(false)
     } else {

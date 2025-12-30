@@ -39,7 +39,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        battle.dex.get_species(pokemon.base_species.as_str())
+        battle.dex.species().get(pokemon.base_species.as_str())
             .map(|s| s.num == 493)
             .unwrap_or(false)
     };
@@ -50,7 +50,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        battle.dex.get_species(source.base_species.as_str())
+        battle.dex.species().get(source.base_species.as_str())
             .map(|s| s.num == 493)
             .unwrap_or(false)
     } else {

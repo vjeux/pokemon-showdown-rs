@@ -29,7 +29,7 @@ pub fn on_try(
 
     // Get the species data
     let species_id = &source.species_id;
-    let species_data = match battle.dex.get_species_by_id(species_id) {
+    let species_data = match battle.dex.species().get_by_id(species_id) {
         Some(s) => s,
         None => return EventResult::Continue,
     };
@@ -94,7 +94,7 @@ pub fn on_modify_type(
 
     // Get the species data
     let species_id = &pokemon.species_id;
-    let species_data = match battle.dex.get_species_by_id(species_id) {
+    let species_data = match battle.dex.species().get_by_id(species_id) {
         Some(s) => s,
         None => return EventResult::Continue,
     };

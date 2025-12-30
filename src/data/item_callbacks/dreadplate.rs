@@ -48,7 +48,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             None => return EventResult::Continue,
         };
         // Get species data to check num
-        match battle.dex.get_species_by_id(&pokemon.base_species) {
+        match battle.dex.species().get_by_id(&pokemon.base_species) {
             Some(species) => species.num,
             None => return EventResult::Continue,
         }
@@ -60,7 +60,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        match battle.dex.get_species_by_id(&source.base_species) {
+        match battle.dex.species().get_by_id(&source.base_species) {
             Some(species) => Some(species.num),
             None => None,
         }

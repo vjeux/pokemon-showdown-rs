@@ -20,7 +20,7 @@ pub fn on_modify_def(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
             None => return EventResult::Continue,
         };
 
-        battle.dex.get_species(pokemon.base_species.as_str())
+        battle.dex.species().get(pokemon.base_species.as_str())
             .map(|species| !species.evos.is_empty())
             .unwrap_or(false)
     };
@@ -46,7 +46,7 @@ pub fn on_modify_sp_d(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
             None => return EventResult::Continue,
         };
 
-        battle.dex.get_species(pokemon.base_species.as_str())
+        battle.dex.species().get(pokemon.base_species.as_str())
             .map(|species| !species.evos.is_empty())
             .unwrap_or(false)
     };

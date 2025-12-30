@@ -20,7 +20,7 @@ impl Battle {
                 if pokemon.gender != Gender::None {
                     eprintln!("DEBUG: {} already has gender {:?}, skipping", pokemon.name, pokemon.gender);
                     false
-                } else if let Some(species) = self.dex.get_species(species_name) {
+                } else if let Some(species) = self.dex.species().get(species_name) {
                     // Check gender_ratio to determine if species allows random gender
                     // JavaScript: if species.gender is undefined, needs random assignment
                     // In Rust dex: if gender_ratio is None, it means species allows random gender (default 50/50)
@@ -69,7 +69,7 @@ impl Battle {
                 .map(|pokemon| {
                     // Get base stats from dex
                     let species_name = pokemon.species_id.as_str();
-                    let base_stats = if let Some(species) = self.dex.get_species(species_name) {
+                    let base_stats = if let Some(species) = self.dex.species().get(species_name) {
                         species.base_stats.clone().into()
                     } else {
                         // Fallback to default if species not found

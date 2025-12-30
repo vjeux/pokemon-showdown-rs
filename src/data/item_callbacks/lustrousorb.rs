@@ -19,7 +19,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let species_num = battle.dex.get_species(pokemon.base_species.as_str())
+        let species_num = battle.dex.species().get(pokemon.base_species.as_str())
             .map(|s| s.num)
             .unwrap_or(0);
         let move_type = battle.active_move.as_ref()

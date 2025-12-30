@@ -30,7 +30,7 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
         // Get the Kyogre-Primal species data
         let (new_types, new_ability) = {
             use crate::dex_data::ID;
-            let primal_species = battle.dex.get_species("kyogreprimal");
+            let primal_species = battle.dex.species().get("kyogreprimal");
             match primal_species {
                 Some(species) => {
                     let types = species.types.clone();
@@ -68,7 +68,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, _pok
     // if (source.baseSpecies.baseSpecies === 'Kyogre') return false;
     if let Some(source) = source_pos {
         if let Some(source_pokemon) = battle.pokemon_at(source.0, source.1) {
-            let source_species = battle.dex.get_species(source_pokemon.base_species.as_str());
+            let source_species = battle.dex.species().get(source_pokemon.base_species.as_str());
             if let Some(species_data) = source_species {
                 let base_species_name = species_data.base_species
                     .as_ref()

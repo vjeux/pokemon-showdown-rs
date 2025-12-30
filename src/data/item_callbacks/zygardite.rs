@@ -28,7 +28,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, _pok
         };
 
         // Get the source's base species
-        let species = battle.dex.get_species(source_pokemon.base_species.as_str());
+        let species = battle.dex.species().get(source_pokemon.base_species.as_str());
         species
             .and_then(|s| s.base_species.clone())
             .unwrap_or_else(|| {

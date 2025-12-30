@@ -48,7 +48,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             None => return EventResult::Continue,
         };
 
-        battle.dex.get_species_by_id(&pokemon.base_species)
+        battle.dex.species().get_by_id(&pokemon.base_species)
             .map(|species| species.num == 493)
             .unwrap_or(false)
     };
@@ -60,7 +60,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             None => return EventResult::Continue,
         };
 
-        battle.dex.get_species_by_id(&source_pokemon.base_species)
+        battle.dex.species().get_by_id(&source_pokemon.base_species)
             .map(|species| species.num == 493)
             .unwrap_or(false)
     } else {

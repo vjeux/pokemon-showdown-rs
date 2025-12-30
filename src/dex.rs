@@ -15,7 +15,6 @@ mod deserialize_is_max;
 mod deserialize_ohko;
 mod new;
 mod load_from_json;
-mod get_species;
 mod get_move;
 mod get_active_move;
 mod convert_move_flags;
@@ -34,13 +33,12 @@ mod get_hidden_power;
 mod trunc;
 mod get_gen;
 mod for_gen;
-mod all_species;
+mod species_helper;
 mod all_moves;
 mod abilities_helper;
 mod all_items;
 mod all_natures;
 mod all_type_names;
-mod get_species_by_id;
 mod get_move_by_id;
 mod get_item_by_id;
 mod is_species_banned;
@@ -706,7 +704,7 @@ mod tests {
         let dex = Dex::load_default().expect("Failed to load dex");
 
         // Check species
-        let pikachu = dex.get_species("Pikachu").expect("Pikachu not found");
+        let pikachu = dex.species().get("Pikachu").expect("Pikachu not found");
         assert_eq!(pikachu.name, "Pikachu");
         assert_eq!(pikachu.types, vec!["Electric"]);
         assert_eq!(pikachu.base_stats.hp, 35);
@@ -817,7 +815,7 @@ mod tests {
         assert_eq!(base.unwrap(), "Pikachu");
 
         // Test can_evolve
-        if dex.get_species("Pikachu").is_some() {
+        if dex.species().get("Pikachu").is_some() {
             // Only test if species exists in data
             let evos = dex.get_evolutions("Pikachu");
             if !evos.is_empty() {

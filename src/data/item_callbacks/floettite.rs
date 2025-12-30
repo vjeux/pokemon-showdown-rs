@@ -48,7 +48,7 @@ pub fn on_take_item(battle: &mut Battle, item_pos: Option<(usize, usize)>, _poke
             None => return EventResult::Boolean(true),
         };
 
-        let species = battle.dex.get_species(source_pokemon.base_species.as_str());
+        let species = battle.dex.species().get(source_pokemon.base_species.as_str());
         species.map(|s| s.name.clone()).unwrap_or_default()
     };
 

@@ -142,7 +142,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, _pok
     // if (source.baseSpecies.tags.includes("Paradox")) return false;
     if let Some(source) = source_pos {
         if let Some(source_pokemon) = battle.pokemon_at(source.0, source.1) {
-            let source_species = battle.dex.get_species(source_pokemon.base_species.as_str());
+            let source_species = battle.dex.species().get(source_pokemon.base_species.as_str());
             if let Some(species_data) = source_species {
                 if species_data.tags.contains(&"Paradox".to_string()) {
                     // return false;

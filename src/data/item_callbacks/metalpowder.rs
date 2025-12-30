@@ -20,7 +20,7 @@ pub fn on_modify_def(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
             None => return EventResult::Continue,
         };
 
-        let species_name = battle.dex.get_species(pokemon.species_id.as_str())
+        let species_name = battle.dex.species().get(pokemon.species_id.as_str())
             .map(|s| s.name.clone())
             .unwrap_or_default();
 

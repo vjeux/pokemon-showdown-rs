@@ -16,7 +16,7 @@ pub fn on_modify_sp_a(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
     // if (pokemon.baseSpecies.name === 'Clamperl')
     let is_clamperl = {
         if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            if let Some(species) = battle.dex.get_species(pokemon.base_species.as_str()) {
+            if let Some(species) = battle.dex.species().get(pokemon.base_species.as_str()) {
                 species.name == "Clamperl"
             } else {
                 false

@@ -42,7 +42,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
     // Check source if present
     if let Some(source) = source_pos {
         if let Some(source_pokemon) = battle.pokemon_at(source.0, source.1) {
-            let source_species = battle.dex.get_species(source_pokemon.base_species.as_str());
+            let source_species = battle.dex.species().get(source_pokemon.base_species.as_str());
             if let Some(species_data) = source_species {
                 if species_data.num == 493 {
                     // return false;
@@ -54,7 +54,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
 
     // Check pokemon
     if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-        let pokemon_species = battle.dex.get_species(pokemon.base_species.as_str());
+        let pokemon_species = battle.dex.species().get(pokemon.base_species.as_str());
         if let Some(species_data) = pokemon_species {
             if species_data.num == 493 {
                 // return false;

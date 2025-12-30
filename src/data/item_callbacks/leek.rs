@@ -26,7 +26,7 @@ pub fn on_modify_crit_ratio(
         };
 
         // Get species data to access baseSpecies field
-        let species_data = match battle.dex.get_species_by_id(&pokemon.base_species) {
+        let species_data = match battle.dex.species().get_by_id(&pokemon.base_species) {
             Some(s) => s,
             None => return EventResult::Continue,
         };

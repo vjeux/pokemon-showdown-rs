@@ -22,7 +22,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
             None => return EventResult::Continue,
         };
 
-        battle.dex.get_species_by_id(&pokemon.base_species)
+        battle.dex.species().get_by_id(&pokemon.base_species)
             .map(|species| species.name.starts_with("Ogerpon-Wellspring"))
             .unwrap_or(false)
     };
@@ -52,7 +52,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             None => return EventResult::Continue,
         };
 
-        battle.dex.get_species_by_id(&source_pokemon.base_species)
+        battle.dex.species().get_by_id(&source_pokemon.base_species)
             .and_then(|species| species.base_species.as_ref())
             .map(|base_species| base_species == "Ogerpon")
             .unwrap_or(false)

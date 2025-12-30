@@ -64,7 +64,7 @@ pub fn on_after_move_secondary_self(
 
         // switch (tatsugiri.baseSpecies.forme)
         // Look up species data to get the forme
-        let species_data = battle.dex.get_species_by_id(&tatsugiri.base_species);
+        let species_data = battle.dex.species().get_by_id(&tatsugiri.base_species);
         species_data.and_then(|s| s.forme.clone())
     };
 

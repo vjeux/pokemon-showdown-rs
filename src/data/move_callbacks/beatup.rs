@@ -92,7 +92,7 @@ pub fn base_power_callback(
         return EventResult::Continue;
     };
 
-    let species = match battle.dex.get_species_by_id(&species_id) {
+    let species = match battle.dex.species().get_by_id(&species_id) {
         Some(s) => s,
         None => return EventResult::Continue,
     };

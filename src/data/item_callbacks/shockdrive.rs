@@ -21,7 +21,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
     // Check source if present
     if let Some(source) = source_pos {
         if let Some(source_pokemon) = battle.pokemon_at(source.0, source.1) {
-            if let Some(species) = battle.dex.get_species_by_id(&source_pokemon.base_species) {
+            if let Some(species) = battle.dex.species().get_by_id(&source_pokemon.base_species) {
                 if species.num == 649 {
                     return EventResult::Boolean(false);
                 }
@@ -31,7 +31,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
 
     // Check pokemon
     if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-        if let Some(species) = battle.dex.get_species_by_id(&pokemon.base_species) {
+        if let Some(species) = battle.dex.species().get_by_id(&pokemon.base_species) {
             if species.num == 649 {
                 return EventResult::Boolean(false);
             }

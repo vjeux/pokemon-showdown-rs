@@ -7,7 +7,7 @@ impl Pokemon {
     /// For base species like "Pikachu", returns "Pikachu"
     /// Equivalent to pokemon.baseSpecies.name in TypeScript
     pub fn get_base_species_name(&self, dex: &crate::dex::Dex) -> Option<String> {
-        let species = dex.get_species(self.species_id.as_str())?;
+        let species = dex.species().get(self.species_id.as_str())?;
         Some(
             species
                 .base_species

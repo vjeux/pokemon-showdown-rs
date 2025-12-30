@@ -23,7 +23,7 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
         };
 
         // Get the pokemon's base species
-        let species = battle.dex.get_species(pokemon.base_species.as_str());
+        let species = battle.dex.species().get(pokemon.base_species.as_str());
         let base_species_base_species = species
             .and_then(|s| s.base_species.clone())
             .unwrap_or_else(|| {
