@@ -26,7 +26,6 @@ mod combine_results;
 mod get_z_move;
 mod can_z_move;
 mod get_max_move;
-mod can_mega_evo;
 mod can_ultra_burst;
 mod can_terastallize;
 mod hit_step_invulnerability_event;
