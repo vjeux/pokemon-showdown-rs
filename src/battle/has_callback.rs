@@ -791,11 +791,6 @@ impl Battle {
 
     /// Check if an item has a callback for an event
     fn item_has_callback(&self, _item_id: &str, event_id: &str) -> bool {
-        // Items don't have onAnySwitchIn
-        if event_id == "onAnySwitchIn" {
-            return false;
-        }
-
         // Check for onResidual event
         if event_id == "onResidual" {
             // Items with onResidual callbacks (from item_callbacks/mod.rs dispatcher)
