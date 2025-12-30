@@ -115,7 +115,14 @@ impl Battle {
                 }
                 // JS: if (!move.target.startsWith('ally')) targets.push(...this.foes(true));
                 if !move_target.starts_with("ally") {
-                    targets.extend(self.foes(user_pos.0, true));
+                    let foes = if let Some(pokemon) = self.sides.get(user_pos.0)
+                        .and_then(|s| s.pokemon.get(user_pos.1))
+                    {
+                        pokemon.foes(self, true)
+                    } else {
+                        Vec::new()
+                    };
+                    targets.extend(foes);
                 }
                 // JS: if (targets.length && !targets.includes(target)) this.battle.retargetLastMove(targets[targets.length - 1]);
                 if !targets.is_empty() && !target.is_some_and(|t| targets.contains(&t)) {
@@ -304,7 +311,13 @@ impl Battle {
 
         // JS: if (move.flags['mustpressure']) pressureTargets = this.foes();
         if has_mustpressure {
-            pressure_targets = self.foes(user_pos.0, true);
+            pressure_targets = if let Some(pokemon) = self.sides.get(user_pos.0)
+                .and_then(|s| s.pokemon.get(user_pos.1))
+            {
+                pokemon.foes(self, true)
+            } else {
+                Vec::new()
+            };
         }
 
         (targets, pressure_targets)
