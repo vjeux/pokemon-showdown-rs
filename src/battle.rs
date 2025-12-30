@@ -73,7 +73,6 @@ mod apply_confusion;
 mod remove_all_hazards;
 mod apply_status;
 mod cure_status;
-mod apply_boost;
 mod run_residual;
 mod faint_messages;
 mod next_turn;
