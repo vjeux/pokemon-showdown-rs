@@ -119,7 +119,14 @@ impl Battle {
             }
             "allAdjacent" => {
                 // JS: targets.push(...this.adjacentAllies());
-                targets.extend(self.adjacent_allies(user_pos.0, user_pos.1));
+                let adjacent_allies = if let Some(pokemon) = self.sides.get(user_pos.0)
+                    .and_then(|s| s.pokemon.get(user_pos.1))
+                {
+                    pokemon.adjacent_allies(self)
+                } else {
+                    Vec::new()
+                };
+                targets.extend(adjacent_allies);
                 // falls through to allAdjacentFoes
                 targets.extend(self.adjacent_foes(user_pos.0, user_pos.1));
                 if !targets.is_empty() && !target.is_some_and(|t| targets.contains(&t)) {
@@ -200,7 +207,13 @@ impl Battle {
                     if let Some((target_side, target_pos)) = target {
                         // Get target's first adjacent ally
                         let target2 = {
-                            let adjacent_allies = self.adjacent_allies(target_side, target_pos);
+                            let adjacent_allies = if let Some(pokemon) = self.sides.get(target_side)
+                                .and_then(|s| s.pokemon.get(target_pos))
+                            {
+                                pokemon.adjacent_allies(self)
+                            } else {
+                                Vec::new()
+                            };
                             adjacent_allies.first().copied()
                         };
 

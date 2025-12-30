@@ -65,7 +65,13 @@ impl Battle {
             if self.game_type == GameType::Singles {
                 return None;
             }
-            let adjacent_allies = self.adjacent_allies(user_side, user_idx);
+            let adjacent_allies = if let Some(pokemon) = self.sides.get(user_side)
+                .and_then(|s| s.pokemon.get(user_idx))
+            {
+                pokemon.adjacent_allies(self)
+            } else {
+                Vec::new()
+            };
             if !adjacent_allies.is_empty() {
                 return self.sample(&adjacent_allies).copied();
             }
