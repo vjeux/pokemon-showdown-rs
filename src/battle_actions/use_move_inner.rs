@@ -288,14 +288,9 @@ pub fn use_move_inner(
                     .is_some_and(|m| m.is_max)
             }))
     {
-        // Transform to Max move
-        active_move = BattleActions::get_active_max_move(
-            &active_move.id.to_string(),
-            &active_move.move_type,
-            &active_move.category,
-            active_move.base_power,
-            None, // gmax_move would come from pokemon's gigantamax data
-        );
+        // TODO: Transform to Max move - requires proper dex.getActiveMove implementation
+        // TypeScript calls this.dex.getActiveMove() to get Max move from dex
+        // active_move = BattleActions::get_active_max_move(...);
     }
 
     // if (this.battle.activeMove) {
