@@ -45,10 +45,13 @@ impl Pokemon {
             base_stored_stats: StatsTable::default(),
             stored_stats: StatsTable::default(),
             boosts: BoostsTable::new(),
-            maxhp: 100,
-            base_maxhp: 100,
+            // JS Pokemon constructor doesn't set maxhp/hp directly
+            // They're calculated later in clearVolatile() -> setSpecies() -> spreadModify()
+            // Initialize to 0 so setSpecies() knows to calculate them
+            maxhp: 0,
+            base_maxhp: 0,
             max_hp_undynamaxed: 0,
-            hp: 100,
+            hp: 0,
 
             base_ability: ability_id.clone(),
             ability: ability_id,
