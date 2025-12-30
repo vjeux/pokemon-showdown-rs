@@ -56,7 +56,6 @@ mod try_spread_move_hit_check;
 mod move_hit_result;
 mod hit_step_try_immunity;
 mod hit_step_try_hit_event;
-mod after_move_secondary_event;
 mod try_move_hit_check;
 mod hit_step_move_hit_loop_count;
 mod spread_move_hit_modifier;
