@@ -988,6 +988,179 @@ impl Battle {
             return matches!(move_id, "belch" | "stuffcheeks");
         }
 
+        // Check for onAfterMove event (after move execution)
+        if event_id == "onAfterMove" {
+            // Moves with onAfterMove callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "beakblast" | "iceball" | "mindblown" | "rollout" | "sparklingaria"
+                | "spitup" | "steelbeam"
+            );
+        }
+
+        // Check for onAfterMoveSecondarySelf event (after secondary effects on self)
+        if event_id == "onAfterMoveSecondarySelf" {
+            // Moves with onAfterMoveSecondarySelf callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(move_id, "fellstinger" | "orderup" | "polarflare" | "relicsong");
+        }
+
+        // Check for onAfterSubDamage event (after substitute damage)
+        if event_id == "onAfterSubDamage" {
+            // Moves with onAfterSubDamage callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "ceaselessedge" | "coreenforcer" | "flameburst" | "gmaxsnooze" | "icespinner"
+                | "mortalspin" | "rapidspin" | "shellsidearm" | "splinteredstormshards"
+                | "steelroller" | "stoneaxe"
+            );
+        }
+
+        // Check for onHit event (when move hits)
+        if event_id == "onHit" {
+            // Moves with onHit callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "acupressure" | "afteryou" | "alluringvoice" | "allyswitch" | "anchorshot"
+                | "aromatherapy" | "assist" | "autotomize" | "banefulbunker" | "batonpass"
+                | "bellydrum" | "bestow" | "block" | "bugbite" | "burningbulwark"
+                | "burningjealousy" | "camouflage" | "clangoroussoul" | "clearsmog" | "conversion"
+                | "conversion2" | "copycat" | "coreenforcer" | "corrosivegas" | "curse"
+                | "defog" | "detect" | "direclaw" | "doodle" | "eeriespell"
+                | "endure" | "entrainment" | "filletaway" | "flameburst" | "floralhealing"
+                | "forestscurse" | "freezyfrost" | "genesissupernova" | "gmaxbefuddle" | "gmaxcentiferno"
+                | "gmaxcuddle" | "gmaxdepletion" | "gmaxfinale" | "gmaxfoamburst" | "gmaxgoldrush"
+                | "gmaxmalodor" | "gmaxmeltdown" | "gmaxreplenish" | "gmaxsandblast" | "gmaxsmite"
+                | "gmaxsnooze" | "gmaxstonesurge" | "gmaxstunshock" | "gmaxsweetness" | "gmaxtartness"
+                | "gmaxterror" | "gmaxvoltcrash" | "gmaxwindrage" | "guardsplit" | "guardswap"
+                | "healbell" | "healpulse" | "heartswap" | "incinerate" | "instruct"
+                | "jawlock" | "junglehealing" | "kingsshield" | "lockon" | "lunarblessing"
+                | "magicpowder" | "maxairstream" | "maxdarkness" | "maxflare" | "maxflutterby"
+                | "maxgeyser" | "maxguard" | "maxhailstorm" | "maxknuckle" | "maxlightning"
+                | "maxmindstorm" | "maxooze" | "maxovergrowth" | "maxphantasm" | "maxquake"
+                | "maxrockfall" | "maxstarfall" | "maxsteelspike" | "maxstrike" | "maxwyrmwind"
+                | "meanlook" | "metronome" | "mimic" | "mindreader" | "moonlight"
+                | "morningsun" | "obstruct" | "painsplit" | "partingshot" | "pluck"
+                | "polarflare" | "pollenpuff" | "powersplit" | "powerswap" | "protect"
+                | "psychup" | "purify" | "quash" | "recycle" | "reflecttype"
+                | "refresh" | "relicsong" | "rest" | "roleplay" | "sappyseed"
+                | "shedtail" | "shellsidearm" | "shoreup" | "silktrap" | "simplebeam"
+                | "sketch" | "skillswap" | "skydrop" | "sleeptalk" | "smellingsalts"
+                | "soak" | "speedswap" | "spiderweb" | "spikyshield" | "spiritshackle"
+                | "spite" | "splinteredstormshards" | "steelroller" | "strengthsap" | "stuffcheeks"
+                | "substitute" | "swallow" | "switcheroo" | "synthesis" | "takeheart"
+                | "thousandwaves" | "tidyup" | "topsyturvy" | "transform" | "trick"
+                | "trickortreat" | "venomdrench" | "wakeupslap" | "worryseed"
+            );
+        }
+
+        // Check for onHitField event (when move hits the field)
+        if event_id == "onHitField" {
+            // Moves with onHitField callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "courtchange" | "flowershield" | "haze" | "perishsong" | "rototiller"
+                | "teatime"
+            );
+        }
+
+        // Check for onHitSide event (when move hits a side)
+        if event_id == "onHitSide" {
+            // Moves with onHitSide callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(move_id, "gearup" | "magneticflux" | "quickguard" | "wideguard");
+        }
+
+        // Check for onModifyMove event (move modification)
+        if event_id == "onModifyMove" {
+            // Moves with onModifyMove callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "beatup" | "bleakwindstorm" | "blizzard" | "curse" | "expandingforce"
+                | "firepledge" | "grasspledge" | "growth" | "hurricane" | "iceball"
+                | "lightthatburnsthesky" | "magnitude" | "photongeyser" | "present" | "pursuit"
+                | "rollout" | "sandsearstorm" | "secretpower" | "shellsidearm" | "skydrop"
+                | "struggle" | "terablast" | "terastarstorm" | "terrainpulse" | "thunder"
+                | "waterpledge" | "weatherball" | "wildboltstorm"
+            );
+        }
+
+        // Check for onModifyPriority event (priority modification)
+        if event_id == "onModifyPriority" {
+            // Moves with onModifyPriority callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(move_id, "grassyglide");
+        }
+
+        // Check for onModifyTarget event (target modification)
+        if event_id == "onModifyTarget" {
+            // Moves with onModifyTarget callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(move_id, "comeuppance" | "metalburst");
+        }
+
+        // Check for onMoveFail event (when move fails)
+        if event_id == "onMoveFail" {
+            // Moves with onMoveFail callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "axekick" | "highjumpkick" | "jumpkick" | "skydrop" | "supercellslam"
+            );
+        }
+
+        // Check for onPrepareHit event (preparing to hit)
+        if event_id == "onPrepareHit" {
+            // Moves with onPrepareHit callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "allyswitch" | "banefulbunker" | "burningbulwark" | "destinybond" | "detect"
+                | "endure" | "firepledge" | "fling" | "grasspledge" | "ivycudgel"
+                | "kingsshield" | "maxguard" | "naturalgift" | "obstruct" | "protect"
+                | "shellsidearm" | "silktrap" | "spikyshield" | "terablast" | "waterpledge"
+            );
+        }
+
+        // Check for onTry event (move attempt)
+        if event_id == "onTry" {
+            // Moves with onTry callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "aurawheel" | "auroraveil" | "clangoroussoul" | "comeuppance" | "counter"
+                | "craftyshield" | "darkvoid" | "doomdesire" | "fakeout" | "filletaway"
+                | "firstimpression" | "followme" | "futuresight" | "hyperspacefury" | "lastresort"
+                | "magnetrise" | "matblock" | "metalburst" | "mirrorcoat" | "noretreat"
+                | "poltergeist" | "quickguard" | "ragepowder" | "rest" | "round"
+                | "skydrop" | "sleeptalk" | "snore" | "spitup" | "splash"
+                | "steelroller" | "stockpile" | "stuffcheeks" | "suckerpunch" | "swallow"
+                | "telekinesis" | "teleport" | "thunderclap" | "upperhand" | "wideguard"
+            );
+        }
+
+        // Check for onTryImmunity event (immunity checking)
+        if event_id == "onTryImmunity" {
+            // Moves with onTryImmunity callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "attract" | "captivate" | "dreameater" | "endeavor" | "leechseed"
+                | "octolock" | "switcheroo" | "synchronoise" | "trick" | "worryseed"
+            );
+        }
+
+        // Check for onTryMove event (move execution attempt)
+        if event_id == "onTryMove" {
+            // Moves with onTryMove callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(
+                move_id,
+                "bounce" | "burnup" | "dig" | "dive" | "doubleshock"
+                | "echoedvoice" | "electroshot" | "fly" | "freezeshock" | "geomancy"
+                | "iceburn" | "meteorbeam" | "phantomforce" | "pollenpuff" | "razorwind"
+                | "shadowforce" | "shelltrap" | "skullbash" | "skyattack" | "solarbeam"
+                | "solarblade"
+            );
+        }
+
+        // Check for onUseMoveMessage event (move usage message)
+        if event_id == "onUseMoveMessage" {
+            // Moves with onUseMoveMessage callbacks (from move_callbacks/mod.rs dispatcher)
+            return matches!(move_id, "magnitude");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         false
