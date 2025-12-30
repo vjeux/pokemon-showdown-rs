@@ -19,6 +19,8 @@ impl Battle {
     /// Runs an event with no source on each effect on the field, in Speed order.
     /// Unlike `eachEvent`, this contains a lot of other handling and is only intended for
     /// the 'Residual' and 'SwitchIn' events.
+    ///
+    /// targets: Optional list of Pokemon positions to filter handler collection
     //
     // 	fieldEvent(eventid: string, targets?: Pokemon[]) {
     // 		const callbackName = `on${eventid}`;
@@ -72,8 +74,8 @@ impl Battle {
     // 		}
     // 	}
     //
-    pub fn field_event(&mut self, event_id: &str) {
-        eprintln!("\nFIELD_EVENT: event_id={}", event_id);
+    pub fn field_event(&mut self, event_id: &str, targets: Option<&[(usize, usize)]>) {
+        eprintln!("\nFIELD_EVENT: event_id={}, targets={:?}", event_id, targets);
         let callback_name = format!("on{}", event_id);
         let _get_key_is_duration = event_id == "Residual";
 
@@ -140,6 +142,7 @@ impl Battle {
                             .and_then(|s| s.pokemon.get(poke_idx))
                             .map(|p| p.speed)
                             .unwrap_or(0);
+                        eprintln!("      Adding onAnySwitchIn handler: effect_id={}, holder={:?}, speed={}", effect_id.as_str(), holder, speed);
                         handlers.push(FieldEventHandler {
                             effect_id,
                             holder,
@@ -147,6 +150,15 @@ impl Battle {
                             is_side: false,
                             speed,
                         });
+                    }
+                }
+
+                // JS: if (targets && !targets.includes(active)) continue;
+                // If targets is provided and this Pokemon is not in the targets list, skip remaining handlers
+                if let Some(target_list) = targets {
+                    if !target_list.contains(&target_pos) {
+                        eprintln!("      Skipping non-target Pokemon ({}, {})", side_idx, poke_idx);
+                        continue;
                     }
                 }
 

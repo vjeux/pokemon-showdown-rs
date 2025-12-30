@@ -3,11 +3,12 @@ use crate::*;
 impl Battle {
 
     /// Run field event for switch-in (Intimidate, etc.)
+    /// JavaScript: this.battle.fieldEvent('SwitchIn', switchersIn);
+    /// This calls the main fieldEvent with 'SwitchIn' event and the switchers as targets
     pub fn field_event_switch_in(&mut self, switchers: &[(usize, usize)]) {
-        // Run SwitchIn event for each switcher
-        for (s_idx, p_idx) in switchers {
-            let effect_id = ID::new("switchin");
-            self.single_event("SwitchIn", &effect_id, Some((*s_idx, *p_idx)), None, None);
-        }
+        // JS: this.battle.fieldEvent('SwitchIn', switchersIn);
+        // This collects handlers from all active Pokemon (for onAnySwitchIn) and
+        // from switchers only (for other handlers), then sorts by speed and executes
+        self.field_event("SwitchIn", Some(switchers));
     }
 }

@@ -19,7 +19,7 @@ impl Battle {
         // This will be needed when implementing EmergencyExit abilities
 
         // this.fieldEvent('Residual');
-        self.field_event("Residual");
+        self.field_event("Residual", None);
 
         // if (!this.ended) this.add('upkeep');
         if !self.ended {
