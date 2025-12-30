@@ -15,8 +15,14 @@ impl Battle {
         if self.ended {
             return false;
         }
-        // Log to inputLog (if we had inputLog field, would log here)
         // JavaScript: this.inputLog.push(side ? `>forcewin ${side}` : `>forcetie`);
+        let log_entry = if let Some(side_id) = side {
+            format!(">forcewin {}", side_id.to_str())
+        } else {
+            ">forcetie".to_string()
+        };
+        self.input_log.push(log_entry);
+
         self.win(side)
     }
 }
