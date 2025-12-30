@@ -92,29 +92,6 @@ impl Battle {
             return false;
         }
 
-        // For compatibility: Add any Pokemon with HP=0 to faint_queue if they're not already there
-        // This handles cases where damage was applied without calling Battle.faint()
-        for side_idx in 0..self.sides.len() {
-            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
-                if self.sides[side_idx].pokemon[poke_idx].hp == 0
-                    && !self.sides[side_idx].pokemon[poke_idx].fainted
-                {
-                    // Check if already in queue
-                    let already_queued = self
-                        .faint_queue
-                        .iter()
-                        .any(|fd| fd.target == (side_idx, poke_idx));
-                    if !already_queued {
-                        self.faint_queue.push(FaintData {
-                            target: (side_idx, poke_idx),
-                            source: None,
-                            effect: None,
-                        });
-                    }
-                }
-            }
-        }
-
         // JS: const length = this.faintQueue.length;
         let length = self.faint_queue.len();
 
@@ -159,12 +136,12 @@ impl Battle {
                 }
 
                 // JS: this.add('faint', pokemon);
-                let pokemon_name = {
-                    let side_id = self.sides[side_idx].id_str();
+                // Extract pokemon identification before mutable borrow
+                let pokemon_ident = {
                     let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                    format!("{}: {}", side_id, pokemon.name)
+                    format!("{}", pokemon)
                 };
-                self.add("faint", &[pokemon_name.into()]);
+                self.add("faint", &[pokemon_ident.into()]);
 
                 // JS: if (pokemon.side.pokemonLeft) pokemon.side.pokemonLeft--;
                 if self.sides[side_idx].pokemon_left > 0 {
@@ -200,6 +177,14 @@ impl Battle {
                 if !item_id.is_empty() {
                     self.single_event("End", &item_id, Some((side_idx, poke_idx)), None, None);
                 }
+
+                // JS: if (pokemon.formeRegression && !pokemon.transformed) {
+                // JS:     // before clearing volatiles
+                // JS:     pokemon.baseSpecies = this.dex.species.get(pokemon.set.species || pokemon.set.name);
+                // JS:     pokemon.baseAbility = toID(pokemon.set.ability);
+                // JS: }
+                // TODO: formeRegression not yet implemented in Pokemon struct
+                // This handles forme changes like Zen Mode Darmanitan, Mega Evolution, etc.
 
                 // JS: pokemon.clearVolatile(false);
                 // Use unsafe pointer split to allow pokemon to access battle for set_species call
@@ -240,6 +225,18 @@ impl Battle {
 
                 // JS: delete pokemon.terastallized;
                 self.sides[side_idx].pokemon[poke_idx].terastallized = None;
+
+                // JS: if (pokemon.formeRegression) {
+                // JS:     // after clearing volatiles
+                // JS:     pokemon.details = pokemon.getUpdatedDetails();
+                // JS:     this.add('detailschange', pokemon, pokemon.details, '[silent]');
+                // JS:     pokemon.updateMaxHp();
+                // JS:     pokemon.formeRegression = false;
+                // JS: }
+                // TODO: formeRegression not yet implemented in Pokemon struct
+
+                // JS: pokemon.side.faintedThisTurn = pokemon;
+                self.sides[side_idx].fainted_this_turn = Some(poke_idx);
 
                 // JS: if (this.faintQueue.length >= faintQueueLeft) checkWin = true;
                 if self.faint_queue.len() >= faint_queue_left {
