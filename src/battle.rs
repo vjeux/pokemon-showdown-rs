@@ -69,7 +69,6 @@ mod get_move_target;
 mod get_move_priority;
 mod get_multi_hit_count;
 mod get_move_accuracy;
-mod apply_confusion;
 mod remove_all_hazards;
 mod apply_status;
 mod cure_status;
