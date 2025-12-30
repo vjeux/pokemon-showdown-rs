@@ -42,7 +42,7 @@ pub fn on_try_hit(
     }
 
     // target.lastMove.isZOrMaxPowered || target.lastMove.isMax
-    let move_data = match battle.dex.get_move_by_id(&last_move_id) {
+    let move_data = match battle.dex.moves().get_by_id(&last_move_id) {
         Some(m) => m,
         None => return EventResult::Continue,
     };
@@ -173,7 +173,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let move_data = battle.dex.get_move_by_id(&last_move_id);
+            let move_data = battle.dex.moves().get_by_id(&last_move_id);
             let move_name = move_data
                 .map(|m| m.name.clone())
                 .unwrap_or_else(|| last_move_id.to_string());

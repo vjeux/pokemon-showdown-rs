@@ -104,7 +104,7 @@ pub mod condition {
         // }
         if let Some(effect) = effect_id {
             // Check if effect is a Move
-            let is_move = battle.dex.get_move_by_id(&ID::from(effect)).is_some();
+            let is_move = battle.dex.moves().get_by_id(&ID::from(effect)).is_some();
 
             if is_move {
                 let target_hp = {

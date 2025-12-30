@@ -35,7 +35,7 @@ pub fn on_hit(
         }
 
         let first_move_id = &target_pokemon.move_slots[0].id;
-        let move_data = match battle.dex.get_move_by_id(first_move_id) {
+        let move_data = match battle.dex.moves().get_by_id(first_move_id) {
             Some(m) => m,
             None => return EventResult::Continue,
         };

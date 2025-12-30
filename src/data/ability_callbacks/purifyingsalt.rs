@@ -16,7 +16,7 @@ use crate::event::EventResult;
 pub fn on_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // Check if effect is a move with status
     if let Some(eff_id) = effect_id {
-        if let Some(move_data) = battle.dex.get_move(eff_id) {
+        if let Some(move_data) = battle.dex.moves().get(eff_id) {
             if move_data.status.is_some() {
                 let target_ident = {
                     let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
@@ -75,7 +75,7 @@ pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (us
 ///     }
 /// }
 pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Ghost" {
             let modified = battle.chain_modify(0.5);
             return EventResult::Number(modified);
@@ -91,7 +91,7 @@ pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
 ///     }
 /// }
 pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Ghost" {
             let modified = battle.chain_modify(0.5);
             return EventResult::Number(modified);

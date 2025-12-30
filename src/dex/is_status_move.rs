@@ -8,7 +8,7 @@ impl Dex {
 
     /// Check if a move is a status move
     pub fn is_status_move(&self, move_name: &str) -> bool {
-        self.get_move(move_name)
+        self.moves().get(move_name)
             .map(|m| m.category == "Status")
             .unwrap_or(false)
     }

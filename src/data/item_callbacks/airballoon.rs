@@ -131,7 +131,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option
 
     // if (effect.effectType === 'Move')
     // Check if the effect_id corresponds to a move
-    let is_move = battle.dex.get_move_by_id(&ID::from(effect_id)).is_some();
+    let is_move = battle.dex.moves().get_by_id(&ID::from(effect_id)).is_some();
 
     if is_move {
         // this.add('-enditem', target, 'Air Balloon');

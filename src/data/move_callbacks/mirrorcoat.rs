@@ -207,7 +207,7 @@ pub mod condition {
             return EventResult::Continue;
         }
 
-        let move_data = battle.dex.get_move_by_id(&ID::from(move_id));
+        let move_data = battle.dex.moves().get_by_id(&ID::from(move_id));
         let is_special = move_data.map(|m| m.category == "Special").unwrap_or(false);
 
         if !is_special {

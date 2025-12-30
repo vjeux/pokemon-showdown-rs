@@ -43,7 +43,7 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
 
     // Check each move and disable if it's a Status move (except Me First)
     for move_id in move_ids {
-        if let Some(move_data) = battle.dex.get_move_by_id(&move_id) {
+        if let Some(move_data) = battle.dex.moves().get_by_id(&move_id) {
             // if (move.category === 'Status' && move.id !== 'mefirst')
             if move_data.category == "Status" && move_id.as_str() != "mefirst" {
                 // pokemon.disableMove(moveSlot.id);

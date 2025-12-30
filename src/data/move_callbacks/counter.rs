@@ -187,7 +187,7 @@ pub mod condition {
         // if (!source.isAlly(target) && this.getCategory(move) === 'Physical') {
         let is_ally = battle.is_ally(source, target);
 
-        let move_data = match battle.dex.get_move_by_id(&ID::from(move_id)) {
+        let move_data = match battle.dex.moves().get_by_id(&ID::from(move_id)) {
             Some(m) => m,
             None => return EventResult::Continue,
         };

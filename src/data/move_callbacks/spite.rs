@@ -47,7 +47,7 @@ pub fn on_hit(
 
         match &target_pokemon.last_move {
             Some(move_id) => {
-                let move_data = battle.dex.get_move_by_id(move_id);
+                let move_data = battle.dex.moves().get_by_id(move_id);
                 match move_data {
                     Some(m) => (
                         move_id.clone(),
@@ -93,7 +93,7 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
 
-        let move_data = battle.dex.get_move_by_id(&move_id);
+        let move_data = battle.dex.moves().get_by_id(&move_id);
         let move_name = move_data.map(|m| m.name.clone()).unwrap_or_default();
 
         (target_pokemon.get_slot(), move_name)

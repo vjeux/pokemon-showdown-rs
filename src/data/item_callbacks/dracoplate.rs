@@ -17,7 +17,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
     let move_type = match &battle.active_move {
         Some(active_move) => {
             // Get the move data to check its type
-            match battle.dex.get_move_by_id(&active_move.id) {
+            match battle.dex.moves().get_by_id(&active_move.id) {
                 Some(move_data) => &move_data.move_type,
                 None => return EventResult::Continue,
             }

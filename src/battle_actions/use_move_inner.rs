@@ -229,7 +229,7 @@ pub fn use_move_inner(
             Some(move_or_move_name),
         );
         // After ModifyType event, check if move type changed from Normal
-        if let Some(updated_move) = battle.dex.get_move(move_or_move_name.as_str()) {
+        if let Some(updated_move) = battle.dex.moves().get(move_or_move_name.as_str()) {
             if updated_move.move_type != "Normal" {
                 source_effect = Some(move_or_move_name.clone());
             }
@@ -389,7 +389,7 @@ pub fn use_move_inner(
     // If the move's target type changed in ModifyMove, need to get new target
     let current_target = battle
         .dex
-        .get_move(move_or_move_name.as_str())
+        .moves().get(move_or_move_name.as_str())
         .unwrap()
         .target
         .clone();
@@ -421,7 +421,7 @@ pub fn use_move_inner(
     // If the move's target type changed after runEvent('ModifyMove'), adjust target again
     let current_target = battle
         .dex
-        .get_move(move_or_move_name.as_str())
+        .moves().get(move_or_move_name.as_str())
         .unwrap()
         .target
         .clone();

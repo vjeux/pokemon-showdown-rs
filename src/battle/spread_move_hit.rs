@@ -19,7 +19,7 @@ impl Battle {
         let mut final_targets = targets.to_vec();
 
         // Get move data
-        let move_data = match self.dex.get_move(move_id.as_str()) {
+        let move_data = match self.dex.moves().get(move_id.as_str()) {
             Some(m) => m.clone(),
             None => return (damages, final_targets),
         };
@@ -57,7 +57,7 @@ impl Battle {
                     }
 
                     // Get base accuracy from move
-                    let base_accuracy = match self.dex.get_move(move_id.as_str()) {
+                    let base_accuracy = match self.dex.moves().get(move_id.as_str()) {
                         Some(m) => {
                             match m.accuracy {
                             crate::dex::Accuracy::Percent(p) => p,

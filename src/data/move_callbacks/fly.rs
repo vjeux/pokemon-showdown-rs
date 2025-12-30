@@ -54,7 +54,7 @@ pub fn on_try_move(
             None => return EventResult::Continue,
         };
 
-        let move_data = battle.dex.get_move_by_id(&move_id);
+        let move_data = battle.dex.moves().get_by_id(&move_id);
         let move_name = move_data
             .map(|m| m.name.clone())
             .unwrap_or_else(|| move_id.to_string());

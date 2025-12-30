@@ -317,7 +317,7 @@ pub mod condition {
 
         for move_slot in move_slots {
             // if (this.dex.moves.get(moveSlot.id).flags['gravity']) {
-            let has_gravity_flag = if let Some(move_data) = battle.dex.get_move_by_id(&move_slot.id)
+            let has_gravity_flag = if let Some(move_data) = battle.dex.moves().get_by_id(&move_slot.id)
             {
                 move_data.flags.contains_key("gravity")
             } else {

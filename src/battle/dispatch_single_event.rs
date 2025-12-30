@@ -28,7 +28,7 @@ impl Battle {
         }
 
         // Handle move events
-        if let Some(_move_def) = self.dex.get_move(effect_id.as_str()) {
+        if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
             return self.handle_move_event(event_id, effect_str, target);
         }
 

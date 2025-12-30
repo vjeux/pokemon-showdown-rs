@@ -103,7 +103,7 @@ pub fn on_hit(
         }
 
         // const move = this.dex.moves.get(moveid);
-        let move_data = battle.dex.get_move_by_id(moveid);
+        let move_data = battle.dex.moves().get_by_id(moveid);
         let move_data = match move_data {
             Some(m) => m,
             None => continue,

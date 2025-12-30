@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.flags.contains_key("bullet") {
             let target_ident = {
                 let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

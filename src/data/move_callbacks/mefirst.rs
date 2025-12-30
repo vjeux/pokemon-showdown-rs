@@ -42,7 +42,7 @@ pub fn on_try_hit(
 
     // const move = this.dex.getActiveMove(action.move.id);
     let move_id = action.move_id.clone();
-    let move_data = match battle.dex.get_move_by_id(&move_id) {
+    let move_data = match battle.dex.moves().get_by_id(&move_id) {
         Some(m) => m,
         None => return EventResult::Boolean(false),
     };

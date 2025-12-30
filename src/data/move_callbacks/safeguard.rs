@@ -133,7 +133,7 @@ pub mod condition {
                 // Check if effect is Synchronize ability or a move without secondaries
                 if effect_id == "synchronize" {
                     true
-                } else if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id)) {
+                } else if let Some(move_data) = battle.dex.moves().get_by_id(&ID::from(effect_id)) {
                     move_data.secondaries.is_none()
                         || move_data
                             .secondaries
@@ -223,7 +223,7 @@ pub mod condition {
             // if (effect.effectType === 'Move' && !effect.secondaries) this.add('-activate', target, 'move: Safeguard');
             // Check if should activate - if it's a move without secondaries
             let should_activate = {
-                if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id)) {
+                if let Some(move_data) = battle.dex.moves().get_by_id(&ID::from(effect_id)) {
                     move_data.secondaries.is_none()
                         || move_data
                             .secondaries

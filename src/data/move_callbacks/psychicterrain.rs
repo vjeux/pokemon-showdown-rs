@@ -113,7 +113,7 @@ pub mod condition {
             // if (baseMove.priority > 0) {
             //     this.hint("Psychic Terrain doesn't affect Pokémon immune to Ground.");
             // }
-            let base_move = match battle.dex.get_move_by_id(&move_id) {
+            let base_move = match battle.dex.moves().get_by_id(&move_id) {
                 Some(m) => m,
                 None => return EventResult::Continue,
             };

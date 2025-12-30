@@ -36,7 +36,7 @@ pub fn on_hit(
 
     // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
     let actual_move_id = {
-        let move_data = match battle.dex.get_move_by_id(&move_id) {
+        let move_data = match battle.dex.moves().get_by_id(&move_id) {
             Some(m) => m,
             None => return EventResult::Continue,
         };
@@ -55,7 +55,7 @@ pub fn on_hit(
     // if (move.flags['failcopycat'] || move.isZ || move.isMax) {
     //     return false;
     // }
-    let move_data = match battle.dex.get_move_by_id(&actual_move_id) {
+    let move_data = match battle.dex.moves().get_by_id(&actual_move_id) {
         Some(m) => m,
         None => return EventResult::Continue,
     };

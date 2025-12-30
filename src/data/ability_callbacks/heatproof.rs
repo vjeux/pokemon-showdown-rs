@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Fire" {
             let modified = battle.chain_modify(0.5);
             return EventResult::Number(modified);
@@ -30,7 +30,7 @@ pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
 ///     }
 /// }
 pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Fire" {
             let modified = battle.chain_modify(0.5);
             return EventResult::Number(modified);

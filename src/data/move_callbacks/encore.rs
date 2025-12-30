@@ -62,7 +62,7 @@ pub mod condition {
         // Encore only works on Max Moves if the base move is not itself a Max Move
         // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
         let actual_move_id = {
-            let move_data = battle.dex.get_move_by_id(&move_id);
+            let move_data = battle.dex.moves().get_by_id(&move_id);
             if let Some(m) = move_data {
                 if m.is_max.is_some() {
                     if let Some(ref base_move) = m.base_move {
@@ -89,7 +89,7 @@ pub mod condition {
             };
 
             // Check if move has failencore flag and if it's Z or Max
-            let move_data = battle.dex.get_move_by_id(&actual_move_id);
+            let move_data = battle.dex.moves().get_by_id(&actual_move_id);
             let (has_fail_encore, is_z_or_max) = if let Some(m) = move_data {
                 (
                     m.flags.contains_key("failencore"),

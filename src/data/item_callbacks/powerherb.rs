@@ -40,7 +40,7 @@ pub fn on_charge_move(
         // this.addMove('-anim', pokemon, move.name, target);
         let move_name = battle
             .dex
-            .get_move(move_id)
+            .moves().get(move_id)
             .map(|m| m.name.clone())
             .unwrap_or_else(|| move_id.to_string());
 

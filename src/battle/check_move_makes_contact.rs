@@ -22,7 +22,7 @@ impl Battle {
     //
     pub fn check_move_makes_contact(&self, move_id: &ID, attacker: (usize, usize)) -> bool {
         // Check if move has contact flag
-        if let Some(move_def) = self.dex.get_move(move_id.as_str()) {
+        if let Some(move_def) = self.dex.moves().get(move_id.as_str()) {
             if !move_def.flags.contains_key("contact") {
                 return false;
             }

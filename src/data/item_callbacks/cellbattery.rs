@@ -17,7 +17,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     let move_type = match &battle.active_move {
         Some(active_move) => {
             // Get the move data to check its type
-            match battle.dex.get_move_by_id(&active_move.id) {
+            match battle.dex.moves().get_by_id(&active_move.id) {
                 Some(move_data) => move_data.move_type.clone(),
                 None => return EventResult::Continue,
             }

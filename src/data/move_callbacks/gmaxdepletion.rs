@@ -59,7 +59,7 @@ pub fn on_hit(
         };
 
         // Get move data to check if it's a Z-move or Max move
-        let move_data = match battle.dex.get_move_by_id(&move_id) {
+        let move_data = match battle.dex.moves().get_by_id(&move_id) {
             Some(m) => m,
             None => continue,
         };
@@ -92,7 +92,7 @@ pub fn on_hit(
         //     if (ppDeducted) {
         //         this.add("-activate", pokemon, 'move: G-Max Depletion', move.name, ppDeducted);
         if pp_deducted {
-            let move_name = battle.dex.get_move_by_id(&actual_move_id)
+            let move_name = battle.dex.moves().get_by_id(&actual_move_id)
                 .map(|m| m.name.clone())
                 .unwrap_or_else(|| actual_move_id.to_string());
 

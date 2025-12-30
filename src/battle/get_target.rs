@@ -67,7 +67,7 @@ impl Battle {
         original_target: Option<(usize, usize)>,
     ) -> Option<(usize, usize)> {
         // JS: move = this.dex.moves.get(move);
-        let move_def = self.dex.get_move(move_id.as_str())?;
+        let move_def = self.dex.moves().get(move_id.as_str())?;
         let target_type = format!("{:?}", move_def.target);
 
         // JS: let tracksTarget = move.tracksTarget;

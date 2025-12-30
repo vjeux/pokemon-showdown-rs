@@ -15,7 +15,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
     if target_pos != source_pos {
-        if let Some(move_data) = battle.dex.get_move(move_id) {
+        if let Some(move_data) = battle.dex.moves().get(move_id) {
             if move_data.category == "Status" {
                 let target_ident = {
                     let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

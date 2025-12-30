@@ -155,7 +155,7 @@ pub mod condition {
         let move_data = battle
             .active_move
             .as_ref()
-            .and_then(|m| battle.dex.get_move_by_id(&m.id));
+            .and_then(|m| battle.dex.moves().get_by_id(&m.id));
 
         if let Some(m) = move_data {
             if m.target == "self" || m.category == "Status" {

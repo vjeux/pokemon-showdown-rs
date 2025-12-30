@@ -62,7 +62,7 @@ pub fn on_hit(
     // const lastMove = target.lastMove;
     // const moveSlot = target.getMoveData(lastMove.id);
     let (has_failinstruct, is_z, is_max, has_charge, has_recharge, move_slot_pp) = {
-        let last_move = battle.dex.get_move_by_id(&last_move_id);
+        let last_move = battle.dex.moves().get_by_id(&last_move_id);
         let (has_failinstruct, is_z, is_max, has_charge, has_recharge) = match last_move {
             Some(m) => (
                 m.flags.get("failinstruct").copied().unwrap_or(0) != 0,

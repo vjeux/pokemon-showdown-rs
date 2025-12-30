@@ -5,7 +5,7 @@ impl Battle {
     /// Get number of hits for multi-hit moves
     pub fn get_multi_hit_count(&mut self, move_id: &ID) -> i32 {
         // Extract multihit data before calling mutable method
-        let multihit_data = if let Some(move_def) = self.dex.get_move(move_id.as_str()) {
+        let multihit_data = if let Some(move_def) = self.dex.moves().get(move_id.as_str()) {
             move_def.multihit.clone()
         } else {
             None

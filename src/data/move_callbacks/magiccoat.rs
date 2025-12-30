@@ -48,7 +48,7 @@ pub mod condition {
         if let Some(eff_id) = effect_id {
             let effect = battle
                 .dex
-                .get_move_by_id(&crate::dex_data::ID::from(eff_id));
+                .moves().get_by_id(&crate::dex_data::ID::from(eff_id));
             if effect.is_some() {
                 // It's a move
                 if let Some(ref move_data) = battle.active_move {

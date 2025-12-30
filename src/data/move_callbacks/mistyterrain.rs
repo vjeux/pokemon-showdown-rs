@@ -85,7 +85,7 @@ pub mod condition {
                 true
             } else {
                 // Check if effect is a move with status
-                let move_data = battle.dex.get_move_by_id(&ID::from(eff_id));
+                let move_data = battle.dex.moves().get_by_id(&ID::from(eff_id));
                 move_data.map(|m| m.status.is_some()).unwrap_or(false)
             };
 
@@ -151,7 +151,7 @@ pub mod condition {
         if status == Some("confusion") {
             // if (effect.effectType === 'Move' && !effect.secondaries) this.add('-activate', target, 'move: Misty Terrain');
             if let Some(eff_id) = effect_id {
-                let move_data = battle.dex.get_move_by_id(&ID::from(eff_id));
+                let move_data = battle.dex.moves().get_by_id(&ID::from(eff_id));
                 let is_move_without_secondaries = move_data
                     .map(|m| {
                         m.secondaries.is_none()
@@ -205,7 +205,7 @@ pub mod condition {
                 Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
-            let move_data = battle.dex.get_move_by_id(active_move);
+            let move_data = battle.dex.moves().get_by_id(active_move);
             move_data.map(|m| m.move_type.clone())
         };
 

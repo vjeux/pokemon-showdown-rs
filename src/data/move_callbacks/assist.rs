@@ -66,7 +66,7 @@ pub fn on_hit(
             let moveid = &move_slot.id;
 
             // const move = this.dex.moves.get(moveid);
-            let move_data = battle.dex.get_move_by_id(moveid).unwrap();
+            let move_data = battle.dex.moves().get_by_id(moveid).unwrap();
 
             // if (move.flags['noassist'] || move.isZ || move.isMax) {
             //     continue;

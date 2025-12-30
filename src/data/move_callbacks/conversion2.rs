@@ -53,7 +53,7 @@ pub fn on_hit(
 
         match &target_pokemon.last_move_used {
             Some(move_id) => {
-                let move_data = match battle.dex.get_move_by_id(move_id) {
+                let move_data = match battle.dex.moves().get_by_id(move_id) {
                     Some(m) => m,
                     None => return EventResult::Boolean(false),
                 };

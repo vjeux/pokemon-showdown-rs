@@ -88,7 +88,7 @@ impl MoveAction {
     /// Equivalent to accessing action.move in TypeScript
     /// Returns MoveData for this action's move
     pub fn get_move<'a>(&self, dex: &'a crate::dex::Dex) -> Option<&'a crate::dex::MoveData> {
-        dex.get_move(self.move_id.as_str())
+        dex.moves().get(self.move_id.as_str())
     }
 }
 

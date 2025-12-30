@@ -11,7 +11,7 @@ impl Battle {
     // 	}
     //
     pub fn get_category(&self, move_id: &ID) -> String {
-        if let Some(move_def) = self.dex.get_move(move_id.as_str()) {
+        if let Some(move_def) = self.dex.moves().get(move_id.as_str()) {
             return move_def.category.clone();
         }
         "Physical".to_string()

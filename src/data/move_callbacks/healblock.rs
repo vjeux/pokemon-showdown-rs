@@ -34,7 +34,7 @@ pub mod condition {
             let effect_id_obj = ID::from(eff_id);
 
             // Check if it's the Psychic Noise move
-            if let Some(move_data) = battle.dex.get_move_by_id(&effect_id_obj) {
+            if let Some(move_data) = battle.dex.moves().get_by_id(&effect_id_obj) {
                 if move_data.name == "Psychic Noise" {
                     return EventResult::Number(2);
                 }
@@ -219,7 +219,7 @@ pub mod condition {
                 let move_id_obj = ID::from(move_id);
                 battle
                     .dex
-                    .get_move_by_id(&move_id_obj)
+                    .moves().get_by_id(&move_id_obj)
                     .map(|m| m.name.clone())
                     .unwrap_or_else(|| move_id.to_string())
             };
@@ -293,7 +293,7 @@ pub mod condition {
             let move_name = {
                 battle
                     .dex
-                    .get_move_by_id(&move_id)
+                    .moves().get_by_id(&move_id)
                     .map(|m| m.name.clone())
                     .unwrap_or_else(|| move_id.to_string())
             };
@@ -391,7 +391,7 @@ pub mod condition {
                     // effect.name === "Pollen Puff"
                     if let Some(eff_id) = effect_id {
                         let effect_id_obj = ID::from(eff_id);
-                        if let Some(move_data) = battle.dex.get_move_by_id(&effect_id_obj) {
+                        if let Some(move_data) = battle.dex.moves().get_by_id(&effect_id_obj) {
                             if move_data.name == "Pollen Puff" {
                                 // this.attrLastMove('[still]');
                                 // NOTE: attrLastMove not implemented yet (see FIXME comment in TypeScript)
@@ -451,7 +451,7 @@ pub mod condition {
             use crate::dex_data::ID;
             let effect_id_obj = ID::from(eff_id);
 
-            if let Some(move_data) = battle.dex.get_move_by_id(&effect_id_obj) {
+            if let Some(move_data) = battle.dex.moves().get_by_id(&effect_id_obj) {
                 if move_data.name == "Psychic Noise" {
                     return EventResult::Continue;
                 }

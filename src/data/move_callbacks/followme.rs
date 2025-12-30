@@ -125,7 +125,7 @@ pub mod condition {
         // Get move target type
         let move_target = match battle
             .dex
-            .get_move_by_id(&crate::dex_data::ID::from(move_id))
+            .moves().get_by_id(&crate::dex_data::ID::from(move_id))
         {
             Some(move_data) => move_data.target.clone(),
             None => return EventResult::Continue,

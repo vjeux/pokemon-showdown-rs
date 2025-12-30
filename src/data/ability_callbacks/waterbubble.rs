@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Fire" {
             let modified = battle.chain_modify(0.5);
             return EventResult::Number(modified);
@@ -28,7 +28,7 @@ pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
 ///     }
 /// }
 pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Fire" {
             let modified = battle.chain_modify(0.5);
             return EventResult::Number(modified);
@@ -43,7 +43,7 @@ pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult 
 ///     }
 /// }
 pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Water" {
             let modified = battle.chain_modify(2.0);
             return EventResult::Number(modified);
@@ -58,7 +58,7 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usiz
 ///     }
 /// }
 pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Water" {
             let modified = battle.chain_modify(2.0);
             return EventResult::Number(modified);

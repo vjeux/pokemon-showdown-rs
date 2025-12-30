@@ -89,7 +89,7 @@ impl Battle {
 
         // Get move data to access target and flags
         let (move_target, has_mustpressure, has_futuremove, has_smart_target) =
-            match self.dex.get_move(move_id.as_str()) {
+            match self.dex.moves().get(move_id.as_str()) {
                 Some(m) => (
                     m.target.clone(),
                     m.flags.contains_key("mustpressure"),
@@ -163,7 +163,7 @@ impl Battle {
                 //     }
                 if self.active_per_half > 1 {
                     // Get move data to check tracksTarget
-                    if let Some(move_data) = self.dex.get_move(move_id.as_str()) {
+                    if let Some(move_data) = self.dex.moves().get(move_id.as_str()) {
                         if !move_data.tracks_target.unwrap_or(false) {
                             // Encode current target position for relay variable
                             // Format: side_idx * 10 + pokemon_idx

@@ -24,7 +24,7 @@ impl Battle {
         move_id: &ID,
     ) -> Option<i32> {
         // Get move data
-        let move_data = match self.dex.get_move(move_id.as_str()) {
+        let move_data = match self.dex.moves().get(move_id.as_str()) {
             Some(m) => m.clone(),
             None => return None,
         };

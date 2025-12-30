@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_ally_base_power(battle: &mut Battle, _base_power: i32, move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Steel" {
             let modified = battle.chain_modify(1.5);
             return EventResult::Number(modified);

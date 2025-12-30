@@ -95,7 +95,7 @@ impl Battle {
 
                 // JS: let priority = this.dex.moves.get(move.id).priority;
                 // Get base priority from move data in Dex (from potentially transformed move)
-                let mut priority = if let Some(move_data) = self.dex.get_move_by_id(&move_id) {
+                let mut priority = if let Some(move_data) = self.dex.moves().get_by_id(&move_id) {
                     move_data.priority
                 } else {
                     // Fallback to action priority if move not found in Dex

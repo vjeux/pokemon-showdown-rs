@@ -16,7 +16,7 @@ impl Battle {
             return "Item";
         }
         // Check if it's a move
-        if self.dex.get_move(effect_id.as_str()).is_some() {
+        if self.dex.moves().get(effect_id.as_str()).is_some() {
             return "Move";
         }
         // Check if it's a condition

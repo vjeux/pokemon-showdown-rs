@@ -311,7 +311,7 @@ impl Battle {
                         "psn".to_string()
                     } else {
                         // Try to get name from move/ability/item data
-                        if let Some(move_data) = self.dex.get_move(id_str) {
+                        if let Some(move_data) = self.dex.moves().get(id_str) {
                             move_data.name.clone()
                         } else if let Some(ability_data) = self.dex.abilities().get(id_str) {
                             ability_data.name.clone()
@@ -438,7 +438,7 @@ impl Battle {
             if target_damage > 0 && effect.is_some_and(|e| self.get_effect_type(e) == "Move") {
                 // Get move data to check for recoil and drain (extract data first to avoid borrow issues)
                 let (recoil_data, drain_data) = if let Some(eff) = effect {
-                    if let Some(move_data) = self.dex.get_move(eff.as_str()) {
+                    if let Some(move_data) = self.dex.moves().get(eff.as_str()) {
                         (move_data.recoil, move_data.drain)
                     } else {
                         (None, None)

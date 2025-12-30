@@ -46,7 +46,7 @@ pub fn on_try_hit(
 
     // Extract boosts before mutable borrow
     let boost_vec: Vec<(String, i8)> = {
-        let move_data = match battle.dex.get_move_by_id(&move_id) {
+        let move_data = match battle.dex.moves().get_by_id(&move_id) {
             Some(m) => m,
             None => return EventResult::Continue,
         };

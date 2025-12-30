@@ -33,7 +33,7 @@ pub fn on_hit(
     //     (!move.isNonstandard || move.isNonstandard === 'Unobtainable') &&
     //     move.flags['metronome']
     // ));
-    let all_moves = battle.dex.all_moves();
+    let all_moves = battle.dex.moves().all();
     let moves: Vec<ID> = all_moves
         .iter()
         .filter(|&&move_data| {

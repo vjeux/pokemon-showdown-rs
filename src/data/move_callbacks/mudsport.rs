@@ -60,7 +60,7 @@ pub mod condition {
                 Some(active_move) => &active_move.id,
                 None => return EventResult::Continue,
             };
-            let move_data = battle.dex.get_move_by_id(active_move);
+            let move_data = battle.dex.moves().get_by_id(active_move);
             move_data.map(|m| m.move_type.clone())
         };
 

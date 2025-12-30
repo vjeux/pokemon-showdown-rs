@@ -34,7 +34,7 @@ pub fn on_try_add_volatile(_battle: &mut Battle, status_id: &str, _target_pos: (
 ///     }
 /// }
 pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: (usize, usize), move_id: &str) -> EventResult {
-    if let Some(move_data) = battle.dex.get_move(move_id) {
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
         if let Some(ref volatile_status) = move_data.volatile_status {
             if volatile_status.as_str() == "confusion" {
                 let target_ident = {

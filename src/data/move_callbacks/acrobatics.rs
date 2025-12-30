@@ -32,7 +32,7 @@ pub fn base_power_callback(
     };
 
     // Get the move data and extract base_power before mutable borrow
-    let base_power = match battle.dex.get_move_by_id(move_id) {
+    let base_power = match battle.dex.moves().get_by_id(move_id) {
         Some(m) => m.base_power,
         None => return EventResult::Continue,
     };

@@ -82,7 +82,7 @@ pub mod condition {
 
         // if (effect.effectType === 'Move' && !effect.flags['futuremove'] && source.lastMove) {
         let is_move_effect =
-            if let Some(move_data) = battle.dex.get_move_by_id(&ID::from(effect_id_str)) {
+            if let Some(move_data) = battle.dex.moves().get_by_id(&ID::from(effect_id_str)) {
                 !move_data.flags.contains_key("futuremove")
             } else {
                 false
@@ -100,7 +100,7 @@ pub mod condition {
             // let move: Move = source.lastMove;
 
             // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
-            let move_data = battle.dex.get_move_by_id(&move_id);
+            let move_data = battle.dex.moves().get_by_id(&move_id);
             if let Some(move_data) = move_data {
                 if move_data.is_max.is_some() && move_data.base_move.is_some() {
                     move_id = move_data.base_move.clone().unwrap();
@@ -133,7 +133,7 @@ pub mod condition {
                     // this.add('-activate', source, 'move: Grudge', move.name);
                     let move_name = battle
                         .dex
-                        .get_move_by_id(&move_id)
+                        .moves().get_by_id(&move_id)
                         .map(|m| m.name.clone())
                         .unwrap_or_else(|| move_id.to_string());
                     let source_ident = {

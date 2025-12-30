@@ -20,7 +20,7 @@ impl Dex {
     ///
     /// Creates a mutable copy of move data suitable for use in battle
     pub fn get_active_move(&self, name: &str) -> Option<ActiveMove> {
-        let move_data = self.get_move(name)?;
+        let move_data = self.moves().get(name)?;
 
         // Convert MoveData to ActiveMove
         let active_move = ActiveMove {

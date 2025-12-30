@@ -87,7 +87,7 @@ pub mod condition {
                         // Check if effect is a Move without secondaries
                         battle
                             .dex
-                            .get_move_by_id(&crate::dex_data::ID::from(effect))
+                            .moves().get_by_id(&crate::dex_data::ID::from(effect))
                             .map(|move_data| {
                                 move_data.secondaries.is_none()
                                     || move_data

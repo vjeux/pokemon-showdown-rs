@@ -92,7 +92,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let move_data = battle.dex.get_move_by_id(&ID::from(move_id));
+        let move_data = battle.dex.moves().get_by_id(&ID::from(move_id));
         let move_target = move_data.map(|m| m.target.clone()).unwrap_or_default();
 
         let is_valid = battle.valid_target(effect_state_target, source, &move_target);

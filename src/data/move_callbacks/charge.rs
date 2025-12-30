@@ -136,7 +136,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let move_data = match battle.dex.get_move_by_id(&move_id) {
+        let move_data = match battle.dex.moves().get_by_id(&move_id) {
             Some(m) => m,
             None => return EventResult::Continue,
         };
@@ -166,7 +166,7 @@ pub mod condition {
         move_id: &str,
     ) -> EventResult {
         // Get the move data
-        let move_data = match battle.dex.get_move_by_id(&ID::from(move_id)) {
+        let move_data = match battle.dex.moves().get_by_id(&ID::from(move_id)) {
             Some(m) => m,
             None => return EventResult::Continue,
         };
@@ -200,7 +200,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let move_data = match battle.dex.get_move_by_id(&move_id) {
+        let move_data = match battle.dex.moves().get_by_id(&move_id) {
             Some(m) => m,
             None => return EventResult::Continue,
         };

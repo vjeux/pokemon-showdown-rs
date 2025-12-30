@@ -86,7 +86,7 @@ pub mod condition {
             let has_ally = battle.is_ally(effect_target, target);
 
             let category = {
-                let move_data = match battle.dex.get_move_by_id(&ID::from(move_id)) {
+                let move_data = match battle.dex.moves().get_by_id(&ID::from(move_id)) {
                     Some(m) => m,
                     None => return EventResult::Continue,
                 };

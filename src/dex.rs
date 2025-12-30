@@ -15,7 +15,6 @@ mod deserialize_is_max;
 mod deserialize_ohko;
 mod new;
 mod load_from_json;
-mod get_move;
 mod get_active_move;
 mod convert_move_flags;
 mod convert_boosts_hash_to_table;
@@ -34,12 +33,11 @@ mod trunc;
 mod get_gen;
 mod for_gen;
 mod species_helper;
-mod all_moves;
+mod moves_helper;
 mod abilities_helper;
 mod all_items;
 mod all_natures;
 mod all_type_names;
-mod get_move_by_id;
 mod get_item_by_id;
 mod is_species_banned;
 mod get_base_species_name;
@@ -711,7 +709,7 @@ mod tests {
         assert_eq!(pikachu.base_stats.spe, 90);
 
         // Check moves
-        let thunderbolt = dex.get_move("Thunderbolt").expect("Thunderbolt not found");
+        let thunderbolt = dex.moves().get("Thunderbolt").expect("Thunderbolt not found");
         assert_eq!(thunderbolt.name, "Thunderbolt");
         assert_eq!(thunderbolt.move_type, "Electric");
         assert_eq!(thunderbolt.base_power, 90);
@@ -793,7 +791,7 @@ mod tests {
         assert!(!all_species.is_empty());
 
         // Test all_moves - should have at least some moves
-        let all_moves = dex.all_moves();
+        let all_moves = dex.moves().all();
         assert!(!all_moves.is_empty());
 
         // Test all_abilities - should have abilities
@@ -834,7 +832,7 @@ mod tests {
         let dex = Dex::load_default().expect("Failed to load dex");
 
         // Test moves that exist in our data
-        if dex.get_move("Thunder Wave").is_some() {
+        if dex.moves().get("Thunder Wave").is_some() {
             assert!(dex.is_status_move("Thunder Wave"));
         }
 
