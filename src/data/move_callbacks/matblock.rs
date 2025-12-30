@@ -39,7 +39,7 @@ pub fn on_try(
     }
 
     // return !!this.queue.willAct();
-    let will_act = battle.queue.will_act();
+    let will_act = battle.queue.will_act().is_some();
     EventResult::Boolean(will_act)
 }
 

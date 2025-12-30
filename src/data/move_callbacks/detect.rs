@@ -19,7 +19,7 @@ pub fn on_prepare_hit(
     let pokemon = pokemon_pos;
 
     // !!this.queue.willAct()
-    let will_act = battle.queue.will_act();
+    let will_act = battle.queue.will_act().is_some();
 
     if !will_act {
         return EventResult::Boolean(false);

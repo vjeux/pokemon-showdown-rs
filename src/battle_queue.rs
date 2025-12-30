@@ -34,7 +34,6 @@ mod sort;
 mod prioritize_action;
 mod iter;
 mod iter_mut;
-mod will_act_full;
 mod change_action;
 mod insert_in_order;
 mod add_choice;

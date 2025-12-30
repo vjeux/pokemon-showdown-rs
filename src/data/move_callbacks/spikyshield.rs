@@ -21,7 +21,7 @@ pub fn on_prepare_hit(
     let pokemon = pokemon_pos;
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
-    let will_act = battle.queue.will_act();
+    let will_act = battle.queue.will_act().is_some();
     if !will_act {
         return EventResult::Boolean(false);
     }

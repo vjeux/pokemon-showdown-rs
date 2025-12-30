@@ -16,7 +16,7 @@ pub fn on_try(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // return !!this.queue.willAct();
-    let will_act = battle.queue.will_act();
+    let will_act = battle.queue.will_act().is_some();
     EventResult::Boolean(will_act)
 }
 
