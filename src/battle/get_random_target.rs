@@ -100,7 +100,13 @@ impl Battle {
             {
                 // JS: const adjacentFoes = pokemon.adjacentFoes();
                 // JS: if (adjacentFoes.length) return this.sample(adjacentFoes);
-                let adjacent_foes = self.adjacent_foes(user_side, user_idx);
+                let adjacent_foes = if let Some(pokemon) = self.sides.get(user_side)
+                    .and_then(|s| s.pokemon.get(user_idx))
+                {
+                    pokemon.adjacent_foes(self)
+                } else {
+                    Vec::new()
+                };
                 if !adjacent_foes.is_empty() {
                     return self.sample(&adjacent_foes).copied();
                 }

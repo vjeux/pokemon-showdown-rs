@@ -516,7 +516,13 @@ impl Battle {
         if self.gen >= 3 {
             for &(side_idx, poke_idx) in &pokemon_positions {
                 // Get adjacent foes for this pokemon
-                let foes = self.adjacent_foes(side_idx, poke_idx);
+                let foes = if let Some(pokemon) = self.sides.get(side_idx)
+                    .and_then(|s| s.pokemon.get(poke_idx))
+                {
+                    pokemon.adjacent_foes(self)
+                } else {
+                    Vec::new()
+                };
 
                 for (_foe_side_idx, _foe_idx) in foes {
                     // TODO: Full implementation requires:

@@ -73,7 +73,6 @@ mod clear_active_move;
 mod suppressing_ability;
 mod get_all_pokemon;
 mod is_adjacent;
-mod adjacent_foes;
 mod allies_and_self;
 mod foes;
 mod get_move_targets;

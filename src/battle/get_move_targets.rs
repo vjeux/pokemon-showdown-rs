@@ -128,7 +128,14 @@ impl Battle {
                 };
                 targets.extend(adjacent_allies);
                 // falls through to allAdjacentFoes
-                targets.extend(self.adjacent_foes(user_pos.0, user_pos.1));
+                let adjacent_foes = if let Some(pokemon) = self.sides.get(user_pos.0)
+                    .and_then(|s| s.pokemon.get(user_pos.1))
+                {
+                    pokemon.adjacent_foes(self)
+                } else {
+                    Vec::new()
+                };
+                targets.extend(adjacent_foes);
                 if !targets.is_empty() && !target.is_some_and(|t| targets.contains(&t)) {
                     if let Some(&last_target) = targets.last() {
                         self.retarget_last_move(last_target);
@@ -137,7 +144,14 @@ impl Battle {
             }
             "allAdjacentFoes" => {
                 // JS: targets.push(...this.adjacentFoes());
-                targets.extend(self.adjacent_foes(user_pos.0, user_pos.1));
+                let adjacent_foes = if let Some(pokemon) = self.sides.get(user_pos.0)
+                    .and_then(|s| s.pokemon.get(user_pos.1))
+                {
+                    pokemon.adjacent_foes(self)
+                } else {
+                    Vec::new()
+                };
+                targets.extend(adjacent_foes);
                 if !targets.is_empty() && !target.is_some_and(|t| targets.contains(&t)) {
                     if let Some(&last_target) = targets.last() {
                         self.retarget_last_move(last_target);
