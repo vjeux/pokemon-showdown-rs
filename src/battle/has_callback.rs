@@ -141,6 +141,29 @@ impl Battle {
             );
         }
 
+        // Check for onUpdate event (turn-based updates)
+        if event_id == "onUpdate" {
+            // Abilities with onUpdate callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "commander" | "disguise" | "iceface" | "immunity" | "insomnia"
+                | "limber" | "magmaarmor" | "oblivious" | "owntempo" | "pastelveil"
+                | "thermalexchange" | "trace" | "vitalspirit" | "waterbubble" | "waterveil"
+            );
+        }
+
+        // Check for onModifyCritRatio event (critical hit ratio modification)
+        if event_id == "onModifyCritRatio" {
+            // Abilities with onModifyCritRatio callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "merciless" | "superluck");
+        }
+
+        // Check for onCriticalHit event (critical hit processing)
+        if event_id == "onCriticalHit" {
+            // Abilities with onCriticalHit callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "disguise" | "iceface");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
@@ -164,6 +187,12 @@ impl Battle {
         if event_id == "onSwitchIn" {
             // Items with onSwitchIn callbacks (from item_callbacks/mod.rs dispatcher)
             return matches!(_item_id, "blueorb" | "redorb");
+        }
+
+        // Check for onUpdate event (turn-based updates)
+        if event_id == "onUpdate" {
+            // Items with onUpdate callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "boosterenergy" | "utilityumbrella");
         }
 
         // For other events, conservatively return false by default
