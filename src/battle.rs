@@ -42,7 +42,6 @@ mod init_effect_state;
 mod choose;
 mod get_log;
 mod make_choices;
-mod parse_choice;
 mod commit_choices;
 mod find_valid_switch_target;
 mod do_switch;
