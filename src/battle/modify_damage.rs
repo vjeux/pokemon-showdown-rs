@@ -94,7 +94,7 @@ impl Battle {
         // }
         if is_crit {
             let crit_multiplier = if self.gen >= 6 { 1.5 } else { 2.0 };
-            base_damage = self.trunc(base_damage as f64 * crit_multiplier);
+            base_damage = self.trunc(base_damage as f64 * crit_multiplier, None) as i32;
         }
 
         // baseDamage = this.battle.randomizer(baseDamage);
@@ -163,7 +163,7 @@ impl Battle {
             }
         } else if type_mod < 0 {
             for _ in type_mod..0 {
-                base_damage = self.trunc(base_damage as f64 / 2.0);
+                base_damage = self.trunc(base_damage as f64 / 2.0, None) as i32;
             }
         }
 
@@ -186,6 +186,6 @@ impl Battle {
             base_damage
         };
 
-        self.trunc(final_damage as f64)
+        self.trunc(final_damage as f64, None) as i32
     }
 }

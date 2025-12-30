@@ -196,17 +196,14 @@ impl Battle {
         // Base damage calculation
         // JavaScript: const baseDamage = tr(tr(tr(tr(2 * level / 5 + 2) * basePower * attack) / defense) / 50);
         // Must truncate at each step to match JavaScript exactly
-        let step1 = self.trunc((2 * level / 5 + 2) as f64);
-        let step2 = self.trunc((step1 * base_power) as f64);
-        let step3 = self.trunc((step2 * attack) as f64);
-        let step4 = self.trunc(step3 as f64 / defense.max(1) as f64);
-        let base_damage = self.trunc(step4 as f64 / 50.0);
+        let step1 = self.trunc((2 * level / 5 + 2) as f64, None) as i32;
+        let step2 = self.trunc((step1 * base_power) as f64, None) as i32;
+        let step3 = self.trunc((step2 * attack) as f64, None) as i32;
+        let step4 = self.trunc(step3 as f64 / defense.max(1) as f64, None) as i32;
+        let base_damage = self.trunc(step4 as f64 / 50.0, None) as i32;
 
         // Call modifyDamage for the full calculation (pass is_crit for damage multiplier)
         let damage = self.modify_damage(base_damage, source_pos, target_pos, &move_data, is_crit);
-
-        eprintln!("DEBUG [get_damage]: move={}, source=p{}a, target=p{}a, base_damage={}, final_damage={}",
-                 move_id.as_str(), source_pos.0 + 1, target_pos.0 + 1, base_damage, damage);
 
         Some(damage)
     }

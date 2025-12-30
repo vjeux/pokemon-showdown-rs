@@ -2,8 +2,8 @@ use crate::*;
 
 impl Dex {
 
-    /// Truncate a number (floor towards zero)
-    /// Equivalent to trunc() in dex.ts
+    /// Truncate a number into an unsigned 32-bit integer
+    /// 1:1 port of trunc() from dex.ts
     // TypeScript source:
     // /**
     // 	 * Truncate a number into an unsigned 32-bit integer, for
@@ -14,16 +14,14 @@ impl Dex {
     // 		return num >>> 0;
     // 	}
     //
-    pub fn trunc(num: f64, bits: i32) -> i32 {
-        if bits == 0 {
-            if num > 0.0 {
-                num.floor() as i32
-            } else {
-                num.ceil() as i32
-            }
+    /// JavaScript's >>> 0 converts to unsigned 32-bit integer
+    /// Rust: num as u32 is equivalent to >>> 0
+    pub fn trunc(num: f64, bits: usize) -> u32 {
+        let truncated = num as u32;  // Equivalent to >>> 0
+        if bits > 0 {
+            truncated % (1u32 << bits)  // Equivalent to % (2 ** bits)
         } else {
-            let mult = 1 << bits;
-            ((num * mult as f64) as i32) / mult
+            truncated
         }
     }
 }

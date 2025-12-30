@@ -24,9 +24,9 @@ impl Battle {
     //
     pub fn chain(&self, previous_mod: (i32, i32), next_mod: (i32, i32)) -> f64 {
         // JS: previousMod = this.trunc(previousMod[0] * 4096 / previousMod[1]);
-        let prev = self.trunc((previous_mod.0 * 4096) as f64 / previous_mod.1 as f64);
+        let prev = self.trunc((previous_mod.0 * 4096) as f64 / previous_mod.1 as f64, None) as i32;
         // JS: nextMod = this.trunc(nextMod[0] * 4096 / nextMod[1]);
-        let next = self.trunc((next_mod.0 * 4096) as f64 / next_mod.1 as f64);
+        let next = self.trunc((next_mod.0 * 4096) as f64 / next_mod.1 as f64, None) as i32;
         // JS: return ((previousMod * nextMod + 2048) >> 12) / 4096;
         let result = ((prev * next) + 2048) >> 12;
         result as f64 / 4096.0

@@ -21,9 +21,9 @@ impl Battle {
     //
     pub fn modify(&self, value: i32, numerator: i32, denominator: i32) -> i32 {
         // JS: const modifier = tr(numerator * 4096 / denominator);
-        let modifier = self.trunc((numerator * 4096) as f64 / denominator as f64);
+        let modifier = self.trunc((numerator * 4096) as f64 / denominator as f64, None);
         // JS: return tr((tr(value * modifier) + 2048 - 1) / 4096);
-        let inner = self.trunc((value * modifier) as f64);
-        self.trunc((inner + 2048 - 1) as f64 / 4096.0)
+        let inner = self.trunc((value * modifier as i32) as f64, None);
+        self.trunc((inner as i32 + 2048 - 1) as f64 / 4096.0, None) as i32
     }
 }

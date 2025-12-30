@@ -60,16 +60,16 @@ impl Battle {
 
         if stat_name == "hp" {
             // JS: return tr(tr(2 * stat + set.ivs[statName] + tr(set.evs[statName] / 4) + 100) * set.level / 100 + 10);
-            let ev_contrib = self.trunc(ev as f64 / 4.0);
-            let inner = self.trunc((2 * base_stat + iv + ev_contrib + 100) as f64);
-            return self.trunc(inner as f64 * set.level as f64 / 100.0 + 10.0);
+            let ev_contrib = self.trunc(ev as f64 / 4.0, None) as i32;
+            let inner = self.trunc((2 * base_stat + iv + ev_contrib + 100) as f64, None) as i32;
+            return self.trunc(inner as f64 * set.level as f64 / 100.0 + 10.0, None) as i32;
         }
 
         // Non-HP stats
         // JS: stat = tr(tr(2 * stat + set.ivs[statName] + tr(set.evs[statName] / 4)) * set.level / 100 + 5);
-        let ev_contrib = self.trunc(ev as f64 / 4.0);
-        let inner = self.trunc((2 * base_stat + iv + ev_contrib) as f64);
-        let mut stat = self.trunc(inner as f64 * set.level as f64 / 100.0 + 5.0);
+        let ev_contrib = self.trunc(ev as f64 / 4.0, None) as i32;
+        let inner = self.trunc((2 * base_stat + iv + ev_contrib) as f64, None) as i32;
+        let mut stat = self.trunc(inner as f64 * set.level as f64 / 100.0 + 5.0, None) as i32;
 
         // Apply nature
         // JS: const nature = this.dex.natures.get(set.nature);
@@ -98,7 +98,7 @@ impl Battle {
                         stat = crate::dex::Dex::trunc(
                             crate::dex::Dex::trunc(stat as f64 * 110.0, 16) as f64 / 100.0,
                             0,
-                        );
+                        ) as i32;
                     }
                 }
 
@@ -115,7 +115,7 @@ impl Battle {
                         stat = crate::dex::Dex::trunc(
                             crate::dex::Dex::trunc(stat as f64 * 90.0, 16) as f64 / 100.0,
                             0,
-                        );
+                        ) as i32;
                     }
                 }
             }
