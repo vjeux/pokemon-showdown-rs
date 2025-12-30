@@ -263,6 +263,18 @@ impl Battle {
             return matches!(ability_id, "illusion");
         }
 
+        // Check for onAfterUseItem event (after using/consuming an item)
+        if event_id == "onAfterUseItem" {
+            // Abilities with onAfterUseItem callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "unburden");
+        }
+
+        // Check for onEatItem event (when Pokemon eats a berry/item)
+        if event_id == "onEatItem" {
+            // Abilities with onEatItem callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "cheekpouch" | "cudchew" | "ripen");
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
