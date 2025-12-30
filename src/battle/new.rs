@@ -82,6 +82,8 @@ impl Battle {
             current_effect_state: None,
             current_effect_data: None,
             sent_log_pos: 0,
+            sent_end: false,
+            send: None,
             debug_mode: options.debug,
             rated: options.rated,
             strict_choices: options.strict_choices,

@@ -464,7 +464,7 @@ pub enum BattleRequestState {
 }
 
 /// The main Battle struct
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct Battle {
     /// Format ID
     pub format_id: ID,
@@ -550,6 +550,14 @@ pub struct Battle {
     pub current_effect_data: Option<crate::event_system::EffectData>,
     /// Log position for line limit checking
     pub sent_log_pos: usize,
+    /// Whether end message has been sent
+    /// JavaScript: sentEnd
+    pub sent_end: bool,
+
+    /// Output callback for sending updates to clients
+    /// JavaScript: send?: (type: string, data: string | string[]) => void
+    #[serde(skip)]
+    pub send: Option<Box<dyn Fn(&str, &str) + Send + Sync>>,
 
     /// Debug mode
     pub debug_mode: bool,
@@ -592,6 +600,26 @@ pub struct PriorityItem {
 }
 
 impl Battle {
+}
+
+// =========================================================================
+// Debug trait (manual implementation since send callback can't derive Debug)
+// =========================================================================
+
+impl std::fmt::Debug for Battle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Battle")
+            .field("format_id", &self.format_id)
+            .field("format_name", &self.format_name)
+            .field("game_type", &self.game_type)
+            .field("gen", &self.gen)
+            .field("turn", &self.turn)
+            .field("started", &self.started)
+            .field("ended", &self.ended)
+            .field("winner", &self.winner)
+            .field("send", &"<callback>")
+            .finish_non_exhaustive()
+    }
 }
 
 // =========================================================================
