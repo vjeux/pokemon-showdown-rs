@@ -1,5 +1,3 @@
-use crate::*;
-
 
 /// Max Move names by type
 pub fn get_max_move_name(move_type: &str) -> &'static str {

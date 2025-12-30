@@ -32,7 +32,6 @@ pub fn on_hit_field(
     source_pos: Option<(usize, usize)>,
     _move_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
 
     let source = source_pos;
 

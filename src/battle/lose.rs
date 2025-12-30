@@ -1,5 +1,4 @@
 use crate::*;
-use crate::choice::Choice;
 use crate::side::RequestState;
 
 impl Battle {

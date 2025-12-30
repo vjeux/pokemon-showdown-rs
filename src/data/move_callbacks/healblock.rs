@@ -251,7 +251,6 @@ pub mod condition {
         pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        use crate::dex_data::ID;
 
         let pokemon = pokemon_pos;
 

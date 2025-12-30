@@ -1,5 +1,3 @@
-use crate::*;
-
 
 /// Z-Move names by type
 pub fn get_z_move_name(move_type: &str) -> &'static str {
@@ -25,4 +23,3 @@ pub fn get_z_move_name(move_type: &str) -> &'static str {
         _ => "Breakneck Blitz",
     }
 }
-

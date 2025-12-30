@@ -5,7 +5,7 @@
 //! This module handles the battle protocol stream, parsing and generating
 //! protocol messages for communication between the battle engine and clients.
 
-use crate::battle::{Battle, BattleOptions};
+use crate::battle::{Battle};
 use std::collections::VecDeque;
 
 // Function modules

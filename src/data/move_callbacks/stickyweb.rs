@@ -32,7 +32,6 @@ pub mod condition {
     ///     this.boost({ spe: -1 }, pokemon, pokemon.side.foe.active[0], this.dex.getActiveMove('stickyweb'));
     /// }
     pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        use crate::dex_data::ID;
 
         let pokemon = pokemon_pos;
 

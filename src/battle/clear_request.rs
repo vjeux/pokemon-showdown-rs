@@ -1,6 +1,5 @@
 use crate::*;
 use crate::battle::BattleRequestState;
-use crate::choice::Choice;
 use crate::side::RequestState;
 
 impl Battle {

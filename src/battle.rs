@@ -6,16 +6,15 @@
 //! The most important part of the simulation is the event system.
 
 use serde::{Deserialize, Serialize};
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashSet};
 
 use crate::battle_queue::BattleQueue;
-use crate::data::formats::{get_format, DexFormats, Format};
-use crate::dex_data::{GameType, Gender, SideID, StatID, StatsTable, ID};
+use crate::dex_data::{GameType, SideID, ID};
 use crate::event_system::EffectState;
 use crate::field::Field;
 use crate::pokemon::{Pokemon, PokemonSet};
 use crate::prng::{PRNGSeed, PRNG};
-use crate::side::{Choice, RequestState, Side};
+use crate::side::{Side};
 
 /// Split message for side-specific content
 /// JavaScript equivalent: { side: SideID, secret: string, shared: string }
@@ -211,7 +210,6 @@ mod run_move_effects;
 mod on_event;
 mod on_event_priority;
 mod run_custom_event_handlers;
-
 
 pub struct SplitMessage {
     pub side: SideID,

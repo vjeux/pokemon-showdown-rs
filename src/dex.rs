@@ -5,7 +5,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-use crate::battle_actions::ActiveMove;
 use crate::dex_data::{StatsTable, ID};
 
 // Function modules

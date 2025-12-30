@@ -80,7 +80,6 @@ pub fn on_modify_move(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
 

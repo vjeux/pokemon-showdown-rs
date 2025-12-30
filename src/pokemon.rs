@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
 
-use crate::dex_data::{BoostsTable, Gender, StatID, StatsTable, ID};
+use crate::dex_data::{BoostsTable, Gender, StatsTable, ID};
 use crate::event_system::EffectState;
 
 // Function modules

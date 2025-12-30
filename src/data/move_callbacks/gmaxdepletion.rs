@@ -33,7 +33,6 @@ pub fn on_hit(
     source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
 
     // for (const pokemon of source.foes()) {
     let all_active = battle.get_all_active(false);

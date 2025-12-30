@@ -9,10 +9,8 @@ use std::collections::HashSet;
 
 use once_cell::sync::Lazy;
 
-use crate::data::typechart::get_effectiveness_multi;
-use crate::dex::{Dex, MoveData};
+use crate::dex::{Dex};
 use crate::dex_data::{BoostsTable, ID};
-use crate::pokemon::Pokemon;
 
 /// Choosable target types for moves
 

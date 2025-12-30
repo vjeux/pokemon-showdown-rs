@@ -29,7 +29,6 @@ pub fn on_hit(
     _source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
 
     // if (!target.hp) return;
     let target = match target_pos {

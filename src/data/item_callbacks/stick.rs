@@ -17,7 +17,6 @@ pub fn on_modify_crit_ratio(
     pokemon_pos: (usize, usize),
     crit_ratio: i32,
 ) -> EventResult {
-    use crate::dex_data::ID;
 
     // if (this.toID(user.baseSpecies.baseSpecies) === 'farfetchd')
     let is_farfetchd = {

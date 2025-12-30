@@ -14,7 +14,6 @@ impl Battle {
     //          -((b.effectOrder || 0) - (a.effectOrder || 0)) || 0;
     // }
     pub fn compare_action_priority(&self, a: &crate::battle_queue::Action, b: &crate::battle_queue::Action) -> i32 {
-        use crate::battle_queue::Action;
 
         // Get order (default 4294967296 in JS)
         let a_order = a.order() as i64;
