@@ -19,7 +19,6 @@ pub mod field;
 pub mod items;
 pub mod pokemon;
 pub mod prng;
-pub mod random_teams;
 pub mod side;
 pub mod state;
 pub mod team_validator;
