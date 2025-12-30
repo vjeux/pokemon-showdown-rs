@@ -188,13 +188,10 @@ impl Battle {
 
                 // JS: pokemon.clearVolatile(false);
                 // Use unsafe pointer split to allow pokemon to access battle for set_species call
-                let (pokemon_ptr, battle_ptr) = unsafe {
+                unsafe {
                     let pokemon = &mut self.sides[side_idx].pokemon[poke_idx] as *mut Pokemon;
                     let battle = self as *mut Battle;
-                    (pokemon, battle)
-                };
-                unsafe {
-                    (*pokemon_ptr).clear_volatile_full(&mut *battle_ptr, false);
+                    (*pokemon).clear_volatile_full(&mut *battle, false);
                 }
 
                 // JS: pokemon.fainted = true;

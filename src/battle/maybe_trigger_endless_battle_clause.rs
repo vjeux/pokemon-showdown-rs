@@ -110,8 +110,8 @@ impl Battle {
     //
     pub fn maybe_trigger_endless_battle_clause(
         &mut self,
-        trapped_by_side: &[bool],
-        staleness_by_side: &[Option<String>],
+        _trapped_by_side: &[bool],
+        _staleness_by_side: &[Option<String>],
     ) -> bool {
         // JS: if (this.turn <= 100) return;
         if self.turn <= 100 {

@@ -339,7 +339,7 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
     });
 
     // Make initial team choices to skip team preview
-    battle.make_choices("default", "default");
+    battle.make_choices(&["default", "default"]);
 
     // Run the battle
     let mut turn = 0;
@@ -358,7 +358,7 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
         });
 
         // Execute choices
-        battle.make_choices(&p1_choice, &p2_choice);
+        battle.make_choices(&[&p1_choice, &p2_choice]);
 
         // Record state after turn
         log.states.push(StateRecord {

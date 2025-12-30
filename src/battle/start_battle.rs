@@ -64,12 +64,11 @@ impl Battle {
             // JS: if (!species) continue;
             let success = {
                 let pokemon = &mut self.sides[side_idx].pokemon[poke_idx];
-                let (pokemon_ptr, battle_ptr) = unsafe {
+                unsafe {
                     let p = pokemon as *mut Pokemon;
                     let b = self as *mut Battle;
-                    (p, b)
-                };
-                unsafe { (*pokemon_ptr).set_species(&mut *battle_ptr, &new_species, None, false) }
+                    (*p).set_species(&mut *b, &new_species, None, false)
+                }
             };
 
             if !success {

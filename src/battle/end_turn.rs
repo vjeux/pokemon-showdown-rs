@@ -767,7 +767,7 @@ impl Battle {
                 let active1_pos = actives[1];
 
                 // Get pokemon data for adjacency check
-                let (p0_position, p1_position, p1_fainted) = {
+                let (_p0_position, p1_position, p1_fainted) = {
                     let p0 = &self.sides[active0_pos.0].pokemon[active0_pos.1];
                     let p1 = &self.sides[active1_pos.0].pokemon[active1_pos.1];
                     (p0.position, p1.position, p1.fainted)
@@ -808,7 +808,7 @@ impl Battle {
         // JS:     }
         // JS: }
         if self.game_type == GameType::Multi {
-            for side in &self.sides {
+            for _side in &self.sides {
                 // Check if side can dynamax now (would need canDynamaxNow() method)
                 // For now, this is a stub as canDynamaxNow() is not yet implemented
                 // TODO: Implement canDynamaxNow() method on Side

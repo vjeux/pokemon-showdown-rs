@@ -1,5 +1,4 @@
 use crate::side::*;
-use crate::*;
 
 impl Side {
     /// Create a new side
