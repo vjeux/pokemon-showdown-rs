@@ -182,7 +182,6 @@ mod find_field_event_handlers;
 mod find_side_event_handlers;
 mod find_pokemon_event_handlers;
 mod get_type_effectiveness_mod;
-mod modify_damage;
 mod try_spread_move_hit;
 mod spread_move_hit;
 mod run_move_effects;

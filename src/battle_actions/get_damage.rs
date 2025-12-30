@@ -200,7 +200,7 @@ pub fn get_damage(
     let base_damage = battle.trunc(step4 as f64 / 50.0, None) as i32;
 
     // Call modifyDamage for the full calculation (pass is_crit for damage multiplier)
-    let damage = battle.modify_damage(base_damage, source_pos, target_pos, &move_data, is_crit);
+    let damage = crate::battle_actions::modify_damage(battle, base_damage, source_pos, target_pos, &move_data, is_crit);
 
     Some(damage)
 }
