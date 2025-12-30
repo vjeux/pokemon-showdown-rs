@@ -270,7 +270,37 @@ impl Battle {
         };
 
         // Add damage log message based on effect
-        self.add_direct_damage_log(target_pos, effect);
+        // Inline logic from TypeScript battle.ts:2216-2226
+        {
+            let (side_idx, poke_idx) = target_pos;
+
+            // Get target health string
+            let health_str = if let Some(side) = self.sides.get(side_idx) {
+                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                    format!("{}/{}", pokemon.hp, pokemon.maxhp)
+                } else {
+                    return actual_damage;
+                }
+            } else {
+                return actual_damage;
+            };
+
+            let target_str = format!("p{}a", side_idx + 1);
+            let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+
+            // Special case handling
+            match effect_id {
+                "strugglerecoil" => {
+                    self.add_log("-damage", &[&target_str, &health_str, "[from] recoil"]);
+                }
+                "confusion" => {
+                    self.add_log("-damage", &[&target_str, &health_str, "[from] confusion"]);
+                }
+                _ => {
+                    self.add_log("-damage", &[&target_str, &health_str]);
+                }
+            }
+        }
 
         // Check if target fainted
         if let Some(side) = self.sides.get(target_pos.0) {

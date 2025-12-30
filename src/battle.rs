@@ -111,7 +111,6 @@ mod get_random_target;
 mod update_speed;
 mod damage;
 mod direct_damage;
-mod add_direct_damage_log;
 mod heal;
 mod add_heal_log;
 mod boost;
