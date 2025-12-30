@@ -17,15 +17,12 @@ impl Battle {
     ///     }
     ///   }
     pub fn shuffle_range<T>(&mut self, list: &mut [T], mut start: usize, end: usize) {
-        eprintln!("DEBUG: shuffle_range called with start={}, end={}, length={}", start, end, end - start);
         while start < end - 1 {
             let next_index = self.random_range(start as i32, end as i32) as usize;
-            eprintln!("DEBUG: shuffle iteration: start={}, next_index={}", start, next_index);
             if start != next_index {
                 list.swap(start, next_index);
             }
             start += 1;
         }
-        eprintln!("DEBUG: shuffle_range complete");
     }
 }
