@@ -356,7 +356,7 @@ impl Battle {
                     }
                     FieldActionType::BeforeTurn => {
                         // JS: this.eachEvent('BeforeTurn');
-                        self.each_event("BeforeTurn", None);
+                        self.each_event("BeforeTurn", None, None);
                     }
                     FieldActionType::Start => {
                         // JS: for (const side of this.sides) { if (side.pokemonLeft) side.pokemonLeft = side.pokemon.length; this.add('teamsize', side.id, side.pokemon.length); }
@@ -540,7 +540,7 @@ impl Battle {
         // Call Update event for all actions except "start" in Gen 5+
         let is_start_action = matches!(action, Action::Field(f) if matches!(f.choice, FieldActionType::Start));
         if self.gen >= 5 && !is_start_action {
-            self.each_event("Update", None);
+            self.each_event("Update", None, None);
         }
 
         // JS: if (this.gen >= 8 && (this.queue.peek()?.choice === "move" || this.queue.peek()?.choice === "runDynamax")) {

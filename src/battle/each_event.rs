@@ -22,8 +22,8 @@ impl Battle {
     // 		}
     // 	}
     //
-    pub fn each_event(&mut self, event_id: &str, effect: Option<&ID>) {
-        eprintln!("DEBUG: each_event called with event_id={}", event_id);
+    pub fn each_event(&mut self, event_id: &str, effect: Option<&ID>, _relay_var: Option<bool>) {
+        // JS: const actives = this.getAllActive();
         // Collect all active Pokemon with their speeds
         let mut actives: Vec<(usize, usize, i32)> = Vec::new();
         for (side_idx, side) in self.sides.iter().enumerate() {
@@ -36,7 +36,9 @@ impl Battle {
             }
         }
 
-        eprintln!("DEBUG: each_event has {} active Pokemon to sort", actives.len());
+        // JS: if (!effect && this.effect) effect = this.effect;
+        // Note: In Rust, we handle this by passing the current_effect when calling each_event
+        // The caller is responsible for passing self.current_effect if effect is None
 
         // JS: this.speedSort(actives, (a, b) => b.speed - a.speed);
         // Sort by speed (highest first) using speed_sort to handle ties with PRNG
@@ -49,14 +51,20 @@ impl Battle {
             index: 0,
         });
 
-        // Run event on each
+        // JS: for (const pokemon of actives) {
+        // JS:     this.runEvent(eventid, pokemon, null, effect, relayVar);
+        // JS: }
+        // Note: TypeScript relayVar is rarely used in eachEvent calls, so we pass None
         for (side_idx, poke_idx, _speed) in actives {
             self.run_event(event_id, Some((side_idx, poke_idx)), None, effect, None);
         }
 
-        // Weather update triggers Update event in Gen 7+
+        // JS: if (eventid === 'Weather' && this.gen >= 7) {
+        // JS:     // TODO: further research when updates happen
+        // JS:     this.eachEvent('Update');
+        // JS: }
         if event_id == "Weather" && self.gen >= 7 {
-            self.each_event("Update", None);
+            self.each_event("Update", None, None);
         }
     }
 }

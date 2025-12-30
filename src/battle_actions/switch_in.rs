@@ -66,7 +66,7 @@ pub fn switch_in(
                 );
                 if battle.gen >= 5 {
                     // JS: this.battle.eachEvent("Update");
-                    battle.each_event("Update", None);
+                    battle.each_event("Update", None, None);
                 }
             }
 

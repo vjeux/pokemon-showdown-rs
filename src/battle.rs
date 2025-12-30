@@ -28,7 +28,6 @@ mod pokemon_at_mut;
 mod set_player;
 mod start;
 mod start_battle;
-mod each_event_internal;
 mod random;
 mod random_range;
 mod random_chance;

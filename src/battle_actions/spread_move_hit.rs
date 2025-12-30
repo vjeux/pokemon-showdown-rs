@@ -153,7 +153,7 @@ pub fn spread_move_hit(
     // JS: this.battle.eachEvent('Update'); (line 886 - after hit loop)
     // Call eachEvent("Update") after all hits processed
     if !is_secondary && !is_self {
-        battle.each_event("Update", None);
+        battle.each_event("Update", None, None);
     }
 
     // Step 4: Run move effects (boosts, status, healing, etc.)
