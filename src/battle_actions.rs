@@ -24,7 +24,6 @@ mod get_confusion_damage;
 mod target_type_choices;
 mod can_ultra_burst;
 mod can_terastallize;
-mod hit_step_accuracy;
 mod get_accuracy_modifier;
 mod hit_step_break_protect;
 mod hit_step_steal_boosts;
@@ -110,18 +109,6 @@ pub struct CanZMoveParams<'a> {
     pub item_z_move: bool,
     pub item_user: Option<&'a [String]>,
     pub species_name: &'a str,
-}
-
-/// Parameters for hit_step_accuracy function
-pub struct AccuracyCheckParams {
-    pub move_accuracy: i32,
-    pub move_always_hit: bool,
-    pub move_ohko: bool,
-    pub attacker_accuracy_boost: i8,
-    pub defender_evasion_boost: i8,
-    pub ignore_accuracy: bool,
-    pub ignore_evasion: bool,
-    pub random_value: i32,
 }
 
 /// Parameters for get_damage function
