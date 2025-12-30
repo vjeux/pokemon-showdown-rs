@@ -46,8 +46,8 @@ impl Battle {
         // TODO: Hazards should be applied via side condition onSwitchIn callbacks
         // (triggered by field_event_switch_in in run_switch), not directly here.
 
-        // Trigger switch-in abilities
-        self.trigger_switch_in_abilities(side_idx, switch_to);
+        // Trigger switch-in abilities (JavaScript: this.runEvent('SwitchIn', pokemon))
+        self.run_event("SwitchIn", Some((side_idx, switch_to)), None, None, None);
 
         // In Gen 5+, run switch immediately for drags
         if is_drag && self.gen >= 5 {

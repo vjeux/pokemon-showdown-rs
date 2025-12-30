@@ -31,8 +31,9 @@ impl Battle {
         }
 
         // Trigger switch-in abilities after all Pokemon are on the field
+        // (JavaScript: this.runEvent('SwitchIn', pokemon))
         for (side_idx, _slot, pokemon_idx) in switch_ops {
-            self.trigger_switch_in_abilities(side_idx, pokemon_idx);
+            self.run_event("SwitchIn", Some((side_idx, pokemon_idx)), None, None, None);
         }
 
         self.request_state = BattleRequestState::Move;

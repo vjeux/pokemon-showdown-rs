@@ -105,6 +105,10 @@ impl Battle {
         // JS: side.pokemon[newPosition] = pokemon;
         // JS: side.active[pokemon.position] = side.pokemon[pokemon.position];
         // JS: side.active[newPosition] = side.pokemon[newPosition];
+        //
+        // Note: JavaScript swaps pokemon in the pokemon array because array index = position.
+        // Rust uses indices in the active array (borrow-checker adaptation), so we swap
+        // the active array and update position fields instead.
         if let Some(side) = self.sides.get_mut(side_idx) {
             // Swap in active array
             side.active.swap(current_pos, new_position);
