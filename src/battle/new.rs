@@ -72,6 +72,7 @@ impl Battle {
             last_successful_move_this_turn: None,
             last_move_line: -1,
             last_damage: 0,
+            quick_claw_roll: None,
             active_move: None,
             active_pokemon: None,
             active_target: None,

@@ -1,4 +1,5 @@
 use crate::*;
+use crate::pokemon::Attacker;
 
 impl Pokemon {
 
@@ -21,12 +22,19 @@ impl Pokemon {
         &mut self,
         move_id: ID,
         damage: i32,
-        _source_side: usize,
-        _source_pos: usize,
+        source_side: usize,
+        source_pos: usize,
     ) {
         self.last_damage = damage;
         self.times_attacked += 1;
-        // Would store in attackedBy array in full implementation
-        let _ = move_id; // Use to avoid warning
+
+        // JS: this.attackedBy.push({ source, damage, move: move.id, thisTurn: true, ... })
+        self.attacked_by.push(Attacker {
+            source: (source_side, source_pos),
+            damage,
+            this_turn: true,
+            move_id: Some(move_id),
+            slot: (source_side, source_pos), // Same as source for tracking
+        });
     }
 }

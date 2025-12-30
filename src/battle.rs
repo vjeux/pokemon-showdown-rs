@@ -519,6 +519,8 @@ pub struct Battle {
     pub last_move_line: i32,
     /// Last damage dealt (for Counter in Gen 1)
     pub last_damage: i32,
+    /// Quick Claw roll result for this turn (Gen 2-3)
+    pub quick_claw_roll: Option<bool>,
 
     /// Currently active move being executed
     pub active_move: Option<crate::battle_actions::ActiveMove>,

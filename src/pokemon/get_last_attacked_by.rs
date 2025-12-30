@@ -1,4 +1,5 @@
 use crate::*;
+use crate::pokemon::Attacker;
 
 impl Pokemon {
 
@@ -10,8 +11,9 @@ impl Pokemon {
     // 		return this.attackedBy[this.attackedBy.length - 1];
     // 	}
     //
-    pub fn get_last_attacked_by(&self) -> Option<(ID, i32)> {
-        // Would need attacked_by tracking for full implementation
-        None
+    pub fn get_last_attacked_by(&self) -> Option<&Attacker> {
+        // JS: if (this.attackedBy.length === 0) return undefined;
+        // JS: return this.attackedBy[this.attackedBy.length - 1];
+        self.attacked_by.last()
     }
 }

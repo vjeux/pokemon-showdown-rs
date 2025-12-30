@@ -277,6 +277,7 @@ pub struct Pokemon {
     pub added_type: Option<String>,
     pub base_types: Vec<String>,
     pub known_type: Option<String>, // Known type for illusion/disguise mechanics
+    pub apparent_type: Option<String>, // Type string shown to players (for type reveal mechanic)
 
     // Tera
     pub tera_type: Option<String>,
@@ -336,6 +337,9 @@ pub struct Pokemon {
     pub previously_switched_in: i32,
     pub is_started: bool,
     pub during_move: bool,
+
+    // Attack tracking for revenge/payback/etc mechanics
+    pub attacked_by: Vec<Attacker>,
 
     // Calculated values
     pub weight_hg: i32,

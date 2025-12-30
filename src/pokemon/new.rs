@@ -67,6 +67,7 @@ impl Pokemon {
             added_type: None,
             base_types: Vec::new(),
             known_type: None, // Initially null, set when type becomes known (e.g., Illusion breaks)
+            apparent_type: None, // Initially null, set when type is revealed to players
 
             tera_type: set.tera_type.clone(),
             terastallized: None,
@@ -117,6 +118,8 @@ impl Pokemon {
             previously_switched_in: 0,
             is_started: false,
             during_move: false,
+
+            attacked_by: Vec::new(),
 
             weight_hg: 0,
             speed: 0,
