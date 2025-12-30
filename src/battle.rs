@@ -37,7 +37,6 @@ mod p1;
 mod p2;
 mod get_all_active;
 mod check_win;
-mod end;
 mod next_effect_order;
 mod init_effect_state;
 mod choose;
