@@ -38,8 +38,6 @@ impl Battle {
                                 if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
                                     if num > 0 && num <= pokemon.move_slots.len() {
                                         let selected_move = pokemon.move_slots[num - 1].id.clone();
-                                        eprintln!("DEBUG [parse_choice]: Side {} (p{}), slot {}, move index {}, selected move: {}",
-                                                 side_idx, side_idx + 1, slot, num, selected_move.as_str());
                                         Some(selected_move)
                                     } else {
                                         None
@@ -126,7 +124,6 @@ impl Battle {
                     // autoChoose() calls chooseTeam() if requestState === "teampreview"
                     // or chooseMove() if requestState === "move"
                     // or chooseSwitch() if requestState === "switch"
-                    eprintln!("DEBUG [parse_choice]: Processing 'default' choice, request_state={:?}", self.request_state);
                     match self.request_state {
                         BattleRequestState::TeamPreview => {
                             // JS: if (this.requestState === "teampreview") { if (!this.isChoiceDone()) this.chooseTeam(); }
@@ -147,7 +144,6 @@ impl Battle {
                             //       while (!this.isChoiceDone()) {
                             //         if (!this.chooseMove()) throw new Error(`autoChoose crashed: ${this.choice.error}`);
                             // chooseMove() with no arguments chooses the first available move
-                            eprintln!("DEBUG [parse_choice]: Auto-choosing first move for slot {}", slot);
 
                             // Get the first available move
                             let move_id: Option<ID> = {
@@ -158,15 +154,12 @@ impl Battle {
                                         if let Some(first_move_slot) = pokemon.move_slots.first() {
                                             Some(first_move_slot.id.clone())
                                         } else {
-                                            eprintln!("DEBUG [parse_choice]: No move slots available for pokemon, using None");
                                             None
                                         }
                                     } else {
-                                        eprintln!("DEBUG [parse_choice]: Pokemon index {} not found in side.pokemon", pokemon_idx);
                                         None
                                     }
                                 } else {
-                                    eprintln!("DEBUG [parse_choice]: No pokemon active in slot {}", slot);
                                     None
                                 }
                             };
@@ -202,7 +195,6 @@ impl Battle {
                             //       while (!this.isChoiceDone()) {
                             //         if (!this.chooseSwitch()) throw new Error(`autoChoose switch crashed: ${this.choice.error}`);
                             // TODO: Implement auto-switch
-                            eprintln!("DEBUG [parse_choice]: Auto-switch not implemented, using Pass");
                             crate::side::ChosenAction {
                                 choice: crate::side::ChoiceType::Pass,
                                 pokemon_index: slot,
@@ -216,7 +208,6 @@ impl Battle {
                             }
                         }
                         _ => {
-                            eprintln!("DEBUG [parse_choice]: Unknown request_state, using Pass");
                             crate::side::ChosenAction {
                                 choice: crate::side::ChoiceType::Pass,
                                 pokemon_index: slot,
