@@ -18,12 +18,12 @@ impl Pokemon {
     // 	}
     //
     pub fn clear_status(&mut self) -> bool {
-        if !self.status.is_empty() {
-            self.status = ID::empty();
-            self.status_state = crate::event_system::EffectState::new(ID::empty());
-            true
-        } else {
-            false
+        // Simplified stub - full logic with nightmare handling in Battle
+        if self.status.is_empty() {
+            return false;
         }
+        // JS: this.setStatus('');
+        self.set_status(ID::empty());
+        true
     }
 }
