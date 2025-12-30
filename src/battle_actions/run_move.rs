@@ -1,0 +1,162 @@
+//! BattleActions::runMove - Execute a move with full pipeline
+//!
+//! 1:1 port of runMove from battle-actions.ts
+//!
+//! NOTE: runMove is used by Instruct, Pursuit, and Dancer.
+//! Most other effects use useMove instead.
+
+use crate::*;
+
+/// Execute a move with full pipeline
+/// Equivalent to BattleActions.runMove() in battle-actions.ts
+///
+/// TypeScript signature:
+/// runMove(moveOrMoveName: Move | string, pokemon: Pokemon, targetLoc: number, options?: {
+///     sourceEffect?: Effect | null, zMove?: string, externalMove?: boolean,
+///     maxMove?: string, originalTarget?: Pokemon,
+/// })
+pub fn run_move(
+    battle: &mut Battle,
+    move_id: &ID,
+    pokemon_pos: (usize, usize),
+    target_loc: i8,
+    source_effect: Option<&ID>,
+    z_move: Option<String>,
+    external_move: bool,
+    max_move: Option<String>,
+    _original_target: Option<(usize, usize)>,
+) {
+    // pokemon.activeMoveActions++;
+    // TODO: Implement activeMoveActions tracking
+
+    // Get target
+    // let target = this.battle.getTarget(pokemon, maxMove || zMove || moveOrMoveName, targetLoc, originalTarget);
+    let target_pos = battle.get_move_target(pokemon_pos.0, target_loc);
+
+    // Get base move
+    // let baseMove = this.dex.getActiveMove(moveOrMoveName);
+    let base_move = match battle.dex.moves().get(move_id.as_str()) {
+        Some(m) => m.clone(),
+        None => return,
+    };
+
+    // Store original priority
+    let _priority = base_move.priority;
+    let _prankster_boosted = false; // TODO: Implement pranksterBoosted
+
+    // Check for OverrideAction event
+    // if (baseMove.id !== 'struggle' && !zMove && !maxMove && !externalMove)
+    if move_id.as_str() != "struggle" && z_move.is_none() && max_move.is_none() && !external_move {
+        // const changedMove = this.battle.runEvent('OverrideAction', pokemon, target, baseMove);
+        // TODO: Implement OverrideAction event
+    }
+
+    // Set active move
+    // this.battle.setActiveMove(move, pokemon, target);
+    battle.set_active_move(Some(move_id.clone()), Some(pokemon_pos), Some(target_pos));
+
+    // Run BeforeMove event
+    // const willTryMove = this.battle.runEvent('BeforeMove', pokemon, target, move);
+    let will_try_move = battle.run_event_bool(
+        "BeforeMove",
+        Some(pokemon_pos),
+        Some(target_pos),
+        Some(move_id),
+    );
+
+    if !will_try_move {
+        // this.battle.runEvent('MoveAborted', pokemon, target, move);
+        battle.run_event("MoveAborted", Some(pokemon_pos), Some(target_pos), Some(move_id), None);
+
+        // this.battle.clearActiveMove(true);
+        battle.clear_active_move(true);
+
+        // pokemon.moveThisTurnResult = willTryMove;
+        // TODO: Implement moveThisTurnResult tracking
+        return;
+    }
+
+    // Check for 'cantusetwice' flag
+    // if (move.flags['cantusetwice'] && pokemon.lastMove?.id === move.id)
+    // TODO: Implement cantusetwice handling
+
+    // Call beforeMoveCallback
+    // if (move.beforeMoveCallback)
+    // TODO: Implement beforeMoveCallback
+
+    // Reset lastDamage
+    // pokemon.lastDamage = 0;
+    {
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.last_damage = 0;
+        }
+    }
+
+    // Handle locked moves and PP deduction
+    // if (!externalMove)
+    if !external_move {
+        // Check for locked move
+        // lockedMove = this.battle.runEvent('LockMove', pokemon);
+        // TODO: Implement LockMove event
+
+        // Deduct PP
+        // if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle'))
+        // TODO: Implement PP deduction (already done in run_action?)
+
+        // pokemon.moveUsed(move, targetLoc);
+        // TODO: Implement moveUsed tracking
+    }
+
+    // Handle Z-Move
+    if z_move.is_some() {
+        // if (pokemon.illusion) {
+        //     this.battle.singleEvent('End', this.dex.abilities.get('Illusion'), pokemon.abilityState, pokemon);
+        // }
+        // this.battle.add('-zpower', pokemon);
+        // pokemon.side.zMoveUsed = true;
+        // TODO: Implement Z-Move handling
+    }
+
+    // Call useMove
+    // const moveDidSomething = this.useMove(baseMove, pokemon, { target, sourceEffect, zMove, maxMove });
+    let _move_did_something = crate::battle_actions::use_move(
+        battle,
+        move_id,
+        pokemon_pos,
+        Some(target_pos),
+        source_effect,
+        z_move.as_deref(),
+        max_move.as_deref(),
+    );
+
+    // this.battle.lastSuccessfulMoveThisTurn = moveDidSomething ? this.battle.activeMove && this.battle.activeMove.id : null;
+    // TODO: Implement lastSuccessfulMoveThisTurn
+
+    // AfterMove events
+    // this.battle.singleEvent('AfterMove', move, null, pokemon, target, move);
+    battle.single_event("AfterMove", move_id, Some(pokemon_pos), Some(target_pos), Some(move_id));
+
+    // this.battle.runEvent('AfterMove', pokemon, target, move);
+    battle.run_event("AfterMove", Some(pokemon_pos), Some(target_pos), Some(move_id), None);
+
+    // Handle 'cantusetwice' hint
+    // if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id))
+    // TODO: Implement cantusetwice hint
+
+    // Handle Dancer ability
+    // if (move.flags['dance'] && moveDidSomething && !move.isExternal)
+    // TODO: Implement Dancer ability activation
+
+    // Faint messages and check win
+    // this.battle.faintMessages();
+    battle.faint_messages(false, false, false);
+
+    // this.battle.checkWin();
+    battle.check_win(None);
+
+    // Gen 4 compatibility
+    // if (this.battle.gen <= 4) {
+    //     this.battle.activeMove = oldActiveMove;
+    // }
+    // TODO: Implement gen 4 active move restoration
+}

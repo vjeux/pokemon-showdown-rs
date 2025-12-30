@@ -330,7 +330,17 @@ impl Battle {
                     return;
                 }
 
-                self.run_move(side_idx, poke_idx, move_id, target_loc);
+                crate::battle_actions::run_move(
+                    self,
+                    move_id,
+                    (side_idx, poke_idx),
+                    target_loc,
+                    None, // source_effect
+                    None, // z_move
+                    false, // external_move
+                    None, // max_move
+                    None, // original_target
+                );
             }
             Action::Switch(switch_action) => {
                 let side_idx = switch_action.side_index;

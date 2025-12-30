@@ -58,7 +58,6 @@ mod compare_action_priority;
 mod insert_run_switch_action;
 mod insert_field_action;
 mod field_event_switch_in;
-mod run_move;
 mod get_move_target;
 mod get_move_priority;
 mod get_multi_hit_count;
