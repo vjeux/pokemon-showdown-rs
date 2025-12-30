@@ -317,7 +317,7 @@ pub mod condition {
         };
 
         // let damage = this.actions.getDamage(source, target, move);
-        let damage = match battle.get_damage(source, target, &move_id) {
+        let damage = match crate::battle_actions::get_damage(battle, source, target, &move_id) {
             Some(d) => d,
             None => {
                 // if (!damage && damage !== 0)

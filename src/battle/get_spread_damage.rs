@@ -18,7 +18,7 @@ impl Battle {
         for (i, &target) in targets.iter().enumerate() {
             if let Some(target_pos) = target {
                 // Calculate damage using getDamage
-                let cur_damage = self.get_damage(source_pos, target_pos, move_id);
+                let cur_damage = crate::battle_actions::get_damage(self, source_pos, target_pos, move_id);
                 result_damages[i] = cur_damage;
             } else {
                 result_damages[i] = None;
