@@ -37,7 +37,6 @@ impl Battle {
     // 	}
     //
     pub fn run_pick_team(&mut self) {
-        eprintln!("DEBUG [run_pick_team]: Starting, request_state={:?}", self.request_state);
         // JS: this.format.onTeamPreview?.call(this);
         // TODO: Implement format.onTeamPreview callback
 
@@ -46,16 +45,13 @@ impl Battle {
 
         // JS: if (this.requestState === 'teampreview') { return; }
         if matches!(self.request_state, BattleRequestState::TeamPreview) {
-            eprintln!("DEBUG [run_pick_team]: Already in team preview, returning");
             return;
         }
 
         // JS: if (this.ruleTable.pickedTeamSize) { ... }
         // If pickedTeamSize is set, show Pokemon privately (no onTeamPreview handler ran)
         if let Some(ref rule_table) = self.rule_table {
-            eprintln!("DEBUG [run_pick_team]: rule_table exists, picked_team_size={:?}", rule_table.picked_team_size);
             if rule_table.picked_team_size.is_some() {
-                eprintln!("DEBUG [run_pick_team]: picked_team_size is Some, will call make_request(TeamPreview)");
                 // There was no onTeamPreview handler (e.g. Team Preview rule missing).
                 // Players must still pick their own Pokémon, so we show them privately.
                 // JS: this.add('clearpoke');
