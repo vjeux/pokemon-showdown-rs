@@ -83,6 +83,64 @@ impl Battle {
             );
         }
 
+        // Check for onSwitchIn event (when Pokemon switches in)
+        if event_id == "onSwitchIn" {
+            // Abilities with onSwitchIn callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "airlock" | "cloudnine" | "imposter" | "neutralizinggas" | "terashift" | "zerotohero"
+            );
+        }
+
+        // Check for onSwitchOut event (when Pokemon switches out)
+        if event_id == "onSwitchOut" {
+            // Abilities with onSwitchOut callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(ability_id, "naturalcure" | "regenerator" | "zerotohero");
+        }
+
+        // Check for onDamage event (damage calculation effects)
+        if event_id == "onDamage" {
+            // Abilities with onDamage callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "angershell" | "berserk" | "disguise" | "gluttony" | "heatproof"
+                | "iceface" | "magicguard" | "mountaineer" | "poisonheal" | "rockhead" | "sturdy"
+            );
+        }
+
+        // Check for onStart event (ability/effect activation)
+        if event_id == "onStart" {
+            // Abilities with onStart callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "airlock" | "anticipation" | "asoneglastrier" | "asonespectrier" | "aurabreak"
+                | "beadsofruin" | "cloudnine" | "comatose" | "commander" | "costar"
+                | "curiousmedicine" | "darkaura" | "dauntlessshield" | "deltastream" | "desolateland"
+                | "download" | "drizzle" | "drought" | "electricsurge" | "embodyaspectcornerstone"
+                | "embodyaspecthearthflame" | "embodyaspectteal" | "embodyaspectwellspring" | "fairyaura"
+                | "flowergift" | "forecast" | "forewarn" | "frisk" | "gluttony"
+                | "gorillatactics" | "grassysurge" | "hadronengine" | "hospitality" | "iceface"
+                | "intimidate" | "intrepidsword" | "klutz" | "mimicry" | "mistysurge"
+                | "moldbreaker" | "orichalcumpulse" | "pastelveil" | "pressure" | "primordialsea"
+                | "protosynthesis" | "psychicsurge" | "quarkdrive" | "sandstream" | "schooling"
+                | "screencleaner" | "shieldsdown" | "slowstart" | "snowwarning" | "supersweetsyrup"
+                | "supremeoverlord" | "swordofruin" | "tabletsofruin" | "teravolt" | "trace"
+                | "truant" | "turboblaze" | "unnerve" | "vesselofruin" | "windrider"
+            );
+        }
+
+        // Check for onEnd event (ability/effect deactivation)
+        if event_id == "onEnd" {
+            // Abilities with onEnd callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "airlock" | "asoneglastrier" | "asonespectrier" | "cloudnine" | "deltastream"
+                | "desolateland" | "flashfire" | "gorillatactics" | "illusion" | "neutralizinggas"
+                | "opportunist" | "primordialsea" | "protosynthesis" | "quarkdrive" | "supremeoverlord"
+                | "unburden" | "unnerve" | "zenmode"
+            );
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
@@ -100,6 +158,12 @@ impl Battle {
         if event_id == "onResidual" {
             // Items with onResidual callbacks (from item_callbacks/mod.rs dispatcher)
             return matches!(_item_id, "ejectpack" | "mirrorherb" | "whiteherb");
+        }
+
+        // Check for onSwitchIn event (when Pokemon switches in)
+        if event_id == "onSwitchIn" {
+            // Items with onSwitchIn callbacks (from item_callbacks/mod.rs dispatcher)
+            return matches!(_item_id, "blueorb" | "redorb");
         }
 
         // For other events, conservatively return false by default
