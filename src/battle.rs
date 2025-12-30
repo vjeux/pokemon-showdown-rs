@@ -153,7 +153,6 @@ mod field_event;
 mod get_callback;
 mod get_overflowed_turn_count;
 mod get_requests;
-mod get_team;
 mod resolve_priority;
 mod retarget_last_move;
 mod run_pick_team;
