@@ -509,13 +509,9 @@ pub fn deserialize_with_refs(
 // 	}
 //
 pub fn normalize(state: &mut BattleState) {
-    // Normalize log entries (trim whitespace, etc.)
-    state.log = state
-        .log
-        .iter()
-        .map(|l| l.trim().to_string())
-        .filter(|l| !l.is_empty())
-        .collect();
+    // Normalize log entries (replace timestamps with |t:|)
+    state.log = normalize_log(&state.log);
+    // Normalize input log (trim whitespace, filter empty)
     state.input_log = state
         .input_log
         .iter()
@@ -536,8 +532,13 @@ pub fn normalize(state: &mut BattleState) {
 //
 pub fn normalize_log(log: &[String]) -> Vec<String> {
     log.iter()
-        .map(|l| l.trim().to_string())
-        .filter(|l| !l.is_empty())
+        .map(|line| {
+            if line.starts_with("|t:|") {
+                "|t:|".to_string()
+            } else {
+                line.clone()
+            }
+        })
         .collect()
 }
 
@@ -552,7 +553,7 @@ pub fn normalize_log(log: &[String]) -> Vec<String> {
 // 	}
 //
 pub fn is_active_move(value: &serde_json::Value) -> bool {
-    value.get("id").is_some() && value.get("target").is_some()
+    value.get("hit").is_some() && (value.get("id").is_some() || value.get("move").is_some())
 }
 
 // =========================================================================
