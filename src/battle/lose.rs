@@ -70,17 +70,18 @@ impl Battle {
 
         // JavaScript: if (!this.ended && side.requestState) { ... }
         if !self.ended {
-            if let Some(side) = self.sides.get_mut(side_id.index()) {
-                if side.request_state != RequestState::None {
-                    // JavaScript: side.emitRequest({ wait: true, side: side.getRequestData() });
-                    // (We don't have emitRequest in Rust, skip for now)
+            let side_idx = side_id.index();
+            if self.sides[side_idx].request_state != RequestState::None {
+                // JavaScript: side.emitRequest({ wait: true, side: side.getRequestData() });
+                // TODO: Implement emitRequest
 
-                    // JavaScript: side.clearChoice();
-                    side.choice = crate::side::Choice::new();
+                // JavaScript: side.clearChoice();
+                self.sides[side_idx].choice = crate::side::Choice::new();
+            }
 
-                    // JavaScript: if (this.allChoicesDone()) this.commitChoices();
-                    // (Would need to implement allChoicesDone and commitChoices)
-                }
+            // JavaScript: if (this.allChoicesDone()) this.commitChoices();
+            if self.all_choices_done() {
+                self.commit_choices();
             }
         }
     }
