@@ -21,7 +21,11 @@ pub fn on_after_hit(
     _target_pos: (usize, usize),
 ) -> EventResult {
     // if (!move.hasSheerForce && source.hp) {
-    let has_sheer_force = battle.active_move_has_sheer_force();
+    let has_sheer_force = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.has_sheer_force)
+        .unwrap_or(false);
 
     let source_hp = {
         let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
@@ -69,7 +73,11 @@ pub fn on_after_sub_damage(
     };
 
     // if (!move.hasSheerForce && source.hp) {
-    let has_sheer_force = battle.active_move_has_sheer_force();
+    let has_sheer_force = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.has_sheer_force)
+        .unwrap_or(false);
 
     let source_hp = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {

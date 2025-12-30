@@ -178,7 +178,6 @@ mod add_split;
 mod attr_last_move;
 mod chain_modify;
 mod chain_modify_fraction;
-mod active_move_has_sheer_force;
 mod check_ev_balance;
 mod clear_effect_state;
 mod debug_error;
