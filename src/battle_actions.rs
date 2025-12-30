@@ -24,7 +24,6 @@ mod get_confusion_damage;
 mod target_type_choices;
 mod can_ultra_burst;
 mod can_terastallize;
-mod run_mega_evo_check;
 mod terastallize_check;
 mod get_damage;
 mod try_spread_move_hit_check;
