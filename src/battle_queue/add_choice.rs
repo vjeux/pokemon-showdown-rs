@@ -78,8 +78,11 @@ impl BattleQueue {
                 }
             }
             crate::side::ChoiceType::Team => {
+                // JavaScript: priority: -index (line 1027 in side.ts)
+                // The index is stored in switch_index by choose_team
+                let priority = -(side_action.switch_index.unwrap_or(0) as i8);
                 actions.push(Action::Team(TeamAction {
-                    priority: 1,
+                    priority,
                     pokemon_index: side_action.pokemon_index,
                     side_index: side_idx,
                     index: side_action.pokemon_index,

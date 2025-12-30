@@ -77,6 +77,13 @@ impl Battle {
             self.get_action_speed(action);
         }
 
+        // DEBUG: Log all actions before sorting
+        eprintln!("DEBUG commit_choices: About to sort {} actions", list.len());
+        for (i, action) in list.iter().enumerate() {
+            eprintln!("  Action {}: priority={}, speed={}, order={:?}",
+                i, action.priority(), action.speed(), action.order());
+        }
+
         self.speed_sort(&mut list, |action| {
             PriorityItem {
                 order: Some(action.order()),
