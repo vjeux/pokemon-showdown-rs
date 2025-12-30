@@ -52,7 +52,7 @@ pub fn on_hit(
         .collect();
 
     for foe_pos in foe_positions {
-        battle.boost(&[("def", -1)], foe_pos, Some(source_pos), None);
+        battle.boost(&[("def", -1)], foe_pos, Some(source_pos), None, false, false);
     }
 
     EventResult::Continue

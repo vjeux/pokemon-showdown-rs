@@ -151,6 +151,8 @@ pub mod condition {
                 pokemon,
                 Some(source),
                 Some("octolock"),
+                false,
+                false,
             );
         }
 

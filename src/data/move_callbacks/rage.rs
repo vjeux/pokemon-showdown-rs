@@ -65,7 +65,7 @@ pub mod condition {
 
             if move_data.category.as_str() != "Status" {
                 // this.boost({ atk: 1 });
-                battle.boost(&[("atk", 1)], pokemon, Some(pokemon), None);
+                battle.boost(&[("atk", 1)], pokemon, Some(pokemon), None, false, false);
             }
         }
 

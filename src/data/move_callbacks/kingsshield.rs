@@ -228,7 +228,7 @@ pub mod condition {
             .unwrap_or(&empty_id);
         let makes_contact = battle.check_move_makes_contact(move_id, source);
         if makes_contact {
-            battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"));
+            battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"), false, false);
         }
 
         //     return this.NOT_FAIL;
@@ -271,7 +271,7 @@ pub mod condition {
                 .unwrap_or(&empty_id);
             let makes_contact = battle.check_move_makes_contact(move_id, source);
             if makes_contact {
-                battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"));
+                battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"), false, false);
             }
         }
 

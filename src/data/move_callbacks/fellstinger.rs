@@ -31,7 +31,7 @@ pub fn on_after_move_secondary_self(
 
     if should_boost {
         // this.boost({ atk: 3 }, pokemon, pokemon, move);
-        battle.boost(&[("atk", 3)], pokemon, Some(pokemon), Some(move_id));
+        battle.boost(&[("atk", 3)], pokemon, Some(pokemon), Some(move_id), false, false);
     }
 
     EventResult::Continue

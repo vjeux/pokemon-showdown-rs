@@ -49,7 +49,7 @@ pub fn on_hit(
     };
 
     // const success = this.boost({ atk: -1 }, target, source, null, false, true);
-    let success = battle.boost(&[("atk", -1)], target, Some(source), None);
+    let success = battle.boost(&[("atk", -1)], target, Some(source), None, false, false);
 
     // return !!(this.heal(atk, source, target) || success);
     let heal_result = battle.heal(atk, Some(source), None, None);

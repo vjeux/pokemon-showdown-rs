@@ -94,7 +94,7 @@ pub fn on_hit_field(
     //     this.boost({ atk: 1, spa: 1 }, pokemon, source);
     // }
     for pokemon_pos in targets {
-        battle.boost(&[("atk", 1), ("spa", 1)], pokemon_pos, source, None);
+        battle.boost(&[("atk", 1), ("spa", 1)], pokemon_pos, source, None, false, false);
     }
 
     EventResult::Continue

@@ -52,7 +52,7 @@ pub fn on_hit(
         .collect();
 
     for ally_pos in ally_positions {
-        battle.boost(&[("spd", 1)], ally_pos, Some(source_pos), None);
+        battle.boost(&[("spd", 1)], ally_pos, Some(source_pos), None, false, false);
     }
 
     EventResult::Continue

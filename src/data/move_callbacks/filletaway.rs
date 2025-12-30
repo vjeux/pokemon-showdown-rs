@@ -51,6 +51,8 @@ pub fn on_try_hit(
         pokemon,
         Some(pokemon),
         None,
+        false,
+        false,
     );
 
     if !boost_result {

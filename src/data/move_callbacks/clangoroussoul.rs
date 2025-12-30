@@ -61,7 +61,7 @@ pub fn on_try_hit(
 
     // Apply boosts to the pokemon
     let boost_vec_refs: Vec<(&str, i8)> = boost_vec.iter().map(|(k, v)| (k.as_str(), *v)).collect();
-    let boost_success = battle.boost(&boost_vec_refs, source_pos, None, None);
+    let boost_success = battle.boost(&boost_vec_refs, source_pos, None, None, false, false);
 
     if !boost_success {
         // return null;

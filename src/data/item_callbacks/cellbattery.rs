@@ -42,7 +42,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
 
         // Phase 2: Apply the item's boosts (Cell Battery gives +1 Attack)
         // In JavaScript, this is done automatically by useItem, but in Rust we do it manually
-        battle.boost(&[("atk", 1)], target_pos, None, Some(item_id.as_str()));
+        battle.boost(&[("atk", 1)], target_pos, None, Some(item_id.as_str()), false, false);
     }
 
     EventResult::Continue

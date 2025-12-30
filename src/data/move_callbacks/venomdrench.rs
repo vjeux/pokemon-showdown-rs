@@ -37,7 +37,7 @@ pub fn on_hit(
 
     if status == ID::from("psn") || status == ID::from("tox") {
         // return !!this.boost({ atk: -1, spa: -1, spe: -1 }, target, source, move);
-        let success = battle.boost(&[("atk", -1), ("spa", -1), ("spe", -1)], target, Some(source), None);
+        let success = battle.boost(&[("atk", -1), ("spa", -1), ("spe", -1)], target, Some(source), None, false, false);
 
         if success {
             return EventResult::Continue;

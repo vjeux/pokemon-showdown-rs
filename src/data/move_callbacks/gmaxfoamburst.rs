@@ -37,7 +37,7 @@ pub fn on_hit(
         .collect();
 
     for foe_pos in foe_positions {
-        battle.boost(&[("spe", -2)], foe_pos, Some(source_pos), None);
+        battle.boost(&[("spe", -2)], foe_pos, Some(source_pos), None, false, false);
     }
 
     EventResult::Continue

@@ -73,6 +73,8 @@ pub fn on_try_move(
         attacker,
         Some(attacker),
         Some(&move_id.to_string()),
+        false,
+        false,
     );
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {

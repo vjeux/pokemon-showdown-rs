@@ -46,7 +46,7 @@ pub fn on_hit(
     battle.direct_damage(maxhp / 2, Some(target), None, None);
 
     // this.boost({ atk: 12 }, target);
-    battle.boost(&[("atk", 12)], target, None, None);
+    battle.boost(&[("atk", 12)], target, None, None, false, false);
 
     EventResult::Continue
 }

@@ -73,17 +73,17 @@ pub fn on_after_move_secondary_self(
         // case 'Droopy':
         Some("Droopy") => {
             // this.boost({ def: 1 }, pokemon, pokemon);
-            battle.boost(&[("def", 1)], pokemon, Some(pokemon), None);
+            battle.boost(&[("def", 1)], pokemon, Some(pokemon), None, false, false);
         }
         // case 'Stretchy':
         Some("Stretchy") => {
             // this.boost({ spe: 1 }, pokemon, pokemon);
-            battle.boost(&[("spe", 1)], pokemon, Some(pokemon), None);
+            battle.boost(&[("spe", 1)], pokemon, Some(pokemon), None, false, false);
         }
         // default:
         _ => {
             // this.boost({ atk: 1 }, pokemon, pokemon);
-            battle.boost(&[("atk", 1)], pokemon, Some(pokemon), None);
+            battle.boost(&[("atk", 1)], pokemon, Some(pokemon), None, false, false);
         }
     }
 

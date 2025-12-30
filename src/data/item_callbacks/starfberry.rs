@@ -105,7 +105,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
     if !boostable_stats.is_empty() {
         if let Some(&random_stat) = battle.sample(&boostable_stats) {
-            battle.boost(&[(random_stat, 2)], pokemon_pos, None, None);
+            battle.boost(&[(random_stat, 2)], pokemon_pos, None, None, false, false);
         }
     }
 

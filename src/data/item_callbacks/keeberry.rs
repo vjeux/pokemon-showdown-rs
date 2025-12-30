@@ -50,6 +50,6 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // this.boost({ def: 1 });
-    battle.boost(&[("def", 1)], pokemon_pos, None, None);
+    battle.boost(&[("def", 1)], pokemon_pos, None, None, false, false);
     EventResult::Continue
 }

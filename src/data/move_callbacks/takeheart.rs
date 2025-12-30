@@ -19,7 +19,7 @@ pub fn on_hit(
     let pokemon = pokemon_pos;
 
     // const success = !!this.boost({ spa: 1, spd: 1 });
-    let boost_success = battle.boost(&[("spa", 1), ("spd", 1)], pokemon, None, None);
+    let boost_success = battle.boost(&[("spa", 1), ("spd", 1)], pokemon, None, None, false, false);
 
     // return pokemon.cureStatus() || success;
     let (pokemon_ident, pokemon_name) = {

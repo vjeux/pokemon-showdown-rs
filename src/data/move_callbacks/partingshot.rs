@@ -25,7 +25,7 @@ pub fn on_hit(
     };
 
     // const success = this.boost({ atk: -1, spa: -1 }, target, source);
-    let success = battle.boost(&[("atk", -1), ("spa", -1)], target, Some(source), None);
+    let success = battle.boost(&[("atk", -1), ("spa", -1)], target, Some(source), None, false, false);
 
     // if (!success && !target.hasAbility('mirrorarmor')) {
     if !success {

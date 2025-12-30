@@ -75,7 +75,7 @@ pub fn on_hit(
             BoostID::Accuracy => "accuracy",
             BoostID::Evasion => "evasion",
         };
-        battle.boost(&[(boost_name, 2)], target, Some(pokemon_pos), None);
+        battle.boost(&[(boost_name, 2)], target, Some(pokemon_pos), None, false, false);
 
         EventResult::Continue
     } else {

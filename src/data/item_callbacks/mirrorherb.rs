@@ -328,7 +328,7 @@ pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             .map(|(k, v)| (k.as_str(), *v))
             .collect();
 
-        battle.boost(&boost_pairs, pokemon_pos, None, None);
+        battle.boost(&boost_pairs, pokemon_pos, None, None, false, false);
     }
 
     EventResult::Continue

@@ -124,7 +124,7 @@ pub fn on_hit(
     }
 
     // return !!this.boost({ atk: 1, spe: 1 }, pokemon, pokemon, null, false, true) || success;
-    let boost_success = battle.boost(&[("atk", 1), ("spe", 1)], pokemon, Some(pokemon), None);
+    let boost_success = battle.boost(&[("atk", 1), ("spe", 1)], pokemon, Some(pokemon), None, false, false);
 
     if boost_success || success {
         return EventResult::Continue;

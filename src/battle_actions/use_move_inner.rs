@@ -515,7 +515,7 @@ pub fn use_move_inner(
                         boost_array.push(("evasion", boosts.evasion));
                     }
 
-                    battle.boost(&boost_array, pokemon_pos, Some(pokemon_pos), Some("zpower"));
+                    battle.boost(&boost_array, pokemon_pos, Some(pokemon_pos), Some("zpower"), false, false);
                 }
                 ZPowerResult::Heal => {
                     // JS: this.battle.heal(pokemon.maxhp, pokemon, pokemon, zPower);
@@ -569,6 +569,8 @@ pub fn use_move_inner(
                             pokemon_pos,
                             Some(pokemon_pos),
                             Some("zpower"),
+                            false,
+                            false,
                         );
                         battle.add(
                             "-clearnegativeboost",

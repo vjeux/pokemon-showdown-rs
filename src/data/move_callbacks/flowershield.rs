@@ -90,7 +90,7 @@ pub fn on_hit_field(
     // }
     let mut success = false;
     for target in targets {
-        let boost_result = battle.boost(&[("def", 1)], target, source, Some(move_id));
+        let boost_result = battle.boost(&[("def", 1)], target, source, Some(move_id), false, false);
         success = boost_result || success;
     }
 

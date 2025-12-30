@@ -66,7 +66,7 @@ pub mod condition {
         );
 
         // this.boost({ spe: -1 }, pokemon, pokemon.side.foe.active[0], this.dex.getActiveMove('stickyweb'));
-        battle.boost(&[("spe", -1)], pokemon, None, Some("stickyweb"));
+        battle.boost(&[("spe", -1)], pokemon, None, Some("stickyweb"), false, false);
 
         EventResult::Continue
     }

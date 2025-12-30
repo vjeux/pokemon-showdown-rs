@@ -108,7 +108,7 @@ pub mod condition {
         };
 
         // this.boost({ def: 1, spd: 1 }, target, target);
-        battle.boost(&[("def", 1), ("spd", 1)], target, Some(target), None);
+        battle.boost(&[("def", 1), ("spd", 1)], target, Some(target), None, false, false);
 
         // if (curDef !== target.boosts.def) this.effectState.def--;
         // if (curSpD !== target.boosts.spd) this.effectState.spd--;
@@ -214,7 +214,7 @@ pub mod condition {
         };
 
         // this.boost({ def: 1, spd: 1 }, target, target);
-        battle.boost(&[("def", 1), ("spd", 1)], target, Some(target), None);
+        battle.boost(&[("def", 1), ("spd", 1)], target, Some(target), None, false, false);
 
         // if (curDef !== target.boosts.def) this.effectState.def--;
         // if (curSpD !== target.boosts.spd) this.effectState.spd--;
@@ -309,7 +309,7 @@ pub mod condition {
             if spd_value != 0 {
                 boosts.push(("spd", spd_value as i8));
             }
-            battle.boost(&boosts, target, Some(target), None);
+            battle.boost(&boosts, target, Some(target), None, false, false);
         }
 
         // this.add('-end', target, 'Stockpile');

@@ -97,7 +97,7 @@ pub fn on_hit_side(
     // }
     let mut did_something = false;
     for target in targets {
-        let boost_result = battle.boost(&[("atk", 1), ("spa", 1)], target, source, Some(move_id));
+        let boost_result = battle.boost(&[("atk", 1), ("spa", 1)], target, source, Some(move_id), false, false);
         did_something = boost_result || did_something;
     }
 

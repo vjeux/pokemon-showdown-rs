@@ -233,7 +233,7 @@ pub mod condition {
             .unwrap_or(&empty_id);
         if battle.check_move_makes_contact(move_id, source) {
             // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
-            battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"));
+            battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"), false, false);
         }
 
         // return this.NOT_FAIL;
@@ -276,7 +276,7 @@ pub mod condition {
                 .unwrap_or(&empty_id);
             if battle.check_move_makes_contact(move_id, source) {
                 // this.boost({ def: -2 }, source, target, this.dex.getActiveMove("Obstruct"));
-                battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"));
+                battle.boost(&[("def", -2)], source, Some(target), Some("obstruct"), false, false);
             }
         }
 

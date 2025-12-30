@@ -65,7 +65,7 @@ pub fn on_hit(
     if !has_substitute || infiltrates {
         // success = !!this.boost({ evasion: -1 });
         let boosts = [("evasion", -1)];
-        let boost_result = battle.boost(&boosts, target, Some(pokemon_pos), None);
+        let boost_result = battle.boost(&boosts, target, Some(pokemon_pos), None, false, false);
         success = boost_result;
     }
 

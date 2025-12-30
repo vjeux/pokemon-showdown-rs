@@ -77,7 +77,7 @@ pub fn on_try_move(
 
     // this.boost({ spa: 1 }, attacker, attacker, move);
     let boosts = [("spa", 1)];
-    battle.boost(&boosts, attacker, Some(attacker), None);
+    battle.boost(&boosts, attacker, Some(attacker), None, false, false);
 
     // if (['raindance', 'primordialsea'].includes(attacker.effectiveWeather())) {
     //     this.attrLastMove('[still]');

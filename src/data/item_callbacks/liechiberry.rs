@@ -54,6 +54,6 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // this.boost({ atk: 1 });
-    battle.boost(&[("atk", 1)], pokemon_pos, None, None);
+    battle.boost(&[("atk", 1)], pokemon_pos, None, None, false, false);
     EventResult::Continue
 }

@@ -86,7 +86,7 @@ pub fn on_hit(
     let pokemon = pokemon_pos;
 
     // if (!this.boost({ def: 2 })) return null;
-    let boost_result = battle.boost(&[("def", 2)], pokemon, Some(pokemon), None);
+    let boost_result = battle.boost(&[("def", 2)], pokemon, Some(pokemon), None, false, false);
 
     if !boost_result {
         return EventResult::Stop; // return null

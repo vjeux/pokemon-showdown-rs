@@ -89,7 +89,7 @@ pub mod condition {
         // Boost spe by -1
         let boosts = [("spe", -1i8)];
 
-        battle.boost(&boosts, pokemon, source_pos, None);
+        battle.boost(&boosts, pokemon, source_pos, None, false, false);
 
         EventResult::Continue
     }

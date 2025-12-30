@@ -85,6 +85,8 @@ impl Battle {
         target: (usize, usize),
         source: Option<(usize, usize)>,
         effect: Option<&str>,
+        is_secondary: bool,
+        is_self: bool,
     ) -> bool {
         let (target_side, target_idx) = target;
 
@@ -140,6 +142,7 @@ impl Battle {
         let mut success = false;
         let mut stats_raised = false;
         let mut stats_lowered = false;
+        let mut boosted = is_secondary; // JS: let boosted = isSecondary;
 
         // Get Pokemon name for logging
         let pokemon_name = if let Some(side) = self.sides.get(target_side) {
@@ -181,22 +184,135 @@ impl Battle {
                             stats_lowered = true;
                         }
 
-                        let msg = if actual > 0 { "-boost" } else { "-unboost" };
-                        let boost_str = actual.abs().to_string();
+                        let mut msg = if actual > 0 { "-boost" } else { "-unboost" };
+                        let boost_by = if actual < 0 || *current == -6 {
+                            msg = "-unboost";
+                            actual.abs()
+                        } else {
+                            actual
+                        };
+                        let boost_str = boost_by.abs().to_string();
+                        let current_value_str = current.to_string(); // Extract value before calling self.add()
 
                         // JS: Special effect handling (bellydrum, angerpoint, zpower, etc.)
-                        // For now, simplified logging
                         if let Some(eff) = effect {
-                            self.add(
-                                msg,
-                                &[pokemon_name.as_str().into(), (*stat).into(), boost_str.as_str().into(), format!("[from] {}", eff).into()],
-                            );
+                            match eff {
+                                // JS: case 'bellydrum': case 'angerpoint':
+                                "bellydrum" | "angerpoint" => {
+                                    if *stat == "atk" {
+                                        self.add("-setboost", &[
+                                            pokemon_name.as_str().into(),
+                                            "atk".into(),
+                                            current_value_str.as_str().into(),
+                                            format!("[from] {}", eff).into(),
+                                        ]);
+                                    }
+                                }
+                                // JS: case 'bellydrum2':
+                                "bellydrum2" => {
+                                    self.add(msg, &[
+                                        pokemon_name.as_str().into(),
+                                        (*stat).into(),
+                                        boost_str.as_str().into(),
+                                        "[silent]".into(),
+                                    ]);
+                                    self.hint("In Gen 2, Belly Drum boosts by 2 when it fails.", false, None);
+                                }
+                                // JS: case 'zpower':
+                                "zpower" => {
+                                    self.add(msg, &[
+                                        pokemon_name.as_str().into(),
+                                        (*stat).into(),
+                                        boost_str.as_str().into(),
+                                        "[zeffect]".into(),
+                                    ]);
+                                }
+                                // JS: default:
+                                _ => {
+                                    // Get effect type from dex
+                                    let effect_type = self.get_effect_type(&ID::new(eff));
+
+                                    match effect_type {
+                                        // JS: if (effect.effectType === 'Move')
+                                        "Move" => {
+                                            self.add(msg, &[
+                                                pokemon_name.as_str().into(),
+                                                (*stat).into(),
+                                                boost_str.as_str().into(),
+                                            ]);
+                                        }
+                                        // JS: else if (effect.effectType === 'Item')
+                                        "Item" => {
+                                            self.add(msg, &[
+                                                pokemon_name.as_str().into(),
+                                                (*stat).into(),
+                                                boost_str.as_str().into(),
+                                                format!("[from] item: {}", eff).into(),
+                                            ]);
+                                        }
+                                        // JS: else (including Ability)
+                                        _ => {
+                                            // JS: if (effect.effectType === 'Ability' && !boosted) {
+                                            //       this.add('-ability', target, effect.name, 'boost');
+                                            //       boosted = true;
+                                            //     }
+                                            //     this.add(msg, target, boostName, boostBy);
+                                            if effect_type == "Ability" && !boosted {
+                                                self.add("-ability", &[
+                                                    pokemon_name.as_str().into(),
+                                                    eff.into(),
+                                                    "boost".into(),
+                                                ]);
+                                                boosted = true;
+                                            }
+                                            self.add(msg, &[
+                                                pokemon_name.as_str().into(),
+                                                (*stat).into(),
+                                                boost_str.as_str().into(),
+                                            ]);
+                                        }
+                                    }
+                                }
+                            }
                         } else {
                             self.add(msg, &[pokemon_name.as_str().into(), (*stat).into(), boost_str.as_str().into()]);
                         }
 
                         // JS: this.runEvent('AfterEachBoost', target, source, effect, currentBoost);
                         self.run_event("AfterEachBoost", Some(target), source, None, None);
+                    } else {
+                        // JS: } else if (effect?.effectType === 'Ability') {
+                        //       if (isSecondary || isSelf) this.add(msg, target, boostName, boostBy);
+                        //     } else if (!isSecondary && !isSelf) {
+                        //       this.add(msg, target, boostName, boostBy);
+                        //     }
+                        let msg = "-boost"; // When boost is 0, always use "-boost"
+                        let boost_str = "0";
+
+                        if let Some(eff) = effect {
+                            let effect_type = self.get_effect_type(&ID::new(eff));
+                            if effect_type == "Ability" {
+                                if is_secondary || is_self {
+                                    self.add(msg, &[
+                                        pokemon_name.as_str().into(),
+                                        (*stat).into(),
+                                        boost_str.into(),
+                                    ]);
+                                }
+                            } else if !is_secondary && !is_self {
+                                self.add(msg, &[
+                                    pokemon_name.as_str().into(),
+                                    (*stat).into(),
+                                    boost_str.into(),
+                                ]);
+                            }
+                        } else if !is_secondary && !is_self {
+                            self.add(msg, &[
+                                pokemon_name.as_str().into(),
+                                (*stat).into(),
+                                boost_str.into(),
+                            ]);
+                        }
                     }
                 }
             }
