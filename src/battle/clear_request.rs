@@ -1,6 +1,5 @@
 use crate::*;
 use crate::battle::BattleRequestState;
-use crate::side::RequestState;
 
 impl Battle {
 
@@ -21,8 +20,8 @@ impl Battle {
 
         // JavaScript: for (const side of this.sides) { side.activeRequest = null; side.clearChoice(); }
         for side in &mut self.sides {
-            side.request_state = RequestState::None;
-            side.choice = crate::side::Choice::new(); // clearChoice()
+            side.request_state = crate::side::RequestState::None;
+            side.clear_choice(self.request_state);
         }
     }
 }
