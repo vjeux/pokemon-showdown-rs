@@ -77,16 +77,18 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     battle.add("-enditem", &[target_ident.as_str().into(), "Air Balloon".into()]);
 
     // target.item = '';
+    // this.clearEffectState(target.itemState);
     {
         let target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
         target_mut.item = ID::empty();
+        // Clear item state inline (equivalent to battle.clearEffectState(target.itemState))
+        target_mut.item_state.id = ID::empty();
+        target_mut.item_state.effect_order = 0;
+        target_mut.item_state.data.clear();
     }
-
-    // this.clearEffectState(target.itemState);
-    battle.clear_effect_state(target_pos, &ID::from("airballoon"));
 
     // this.runEvent('AfterUseItem', target, null, null, this.dex.items.get('airballoon'));
     battle.run_event("AfterUseItem", Some(target_pos), None, Some(&ID::from("airballoon")), None);
@@ -143,16 +145,18 @@ pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option
         battle.add("-enditem", &[target_ident.as_str().into(), "Air Balloon".into()]);
 
         // target.item = '';
+        // this.clearEffectState(target.itemState);
         {
             let target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
             target_mut.item = ID::empty();
+            // Clear item state inline (equivalent to battle.clearEffectState(target.itemState))
+            target_mut.item_state.id = ID::empty();
+            target_mut.item_state.effect_order = 0;
+            target_mut.item_state.data.clear();
         }
-
-        // this.clearEffectState(target.itemState);
-        battle.clear_effect_state(target_pos, &ID::from("airballoon"));
 
         // this.runEvent('AfterUseItem', target, null, null, this.dex.items.get('airballoon'));
         battle.run_event("AfterUseItem", Some(target_pos), None, Some(&ID::from("airballoon")), None);
