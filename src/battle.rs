@@ -40,7 +40,6 @@ mod check_win;
 mod next_effect_order;
 mod init_effect_state;
 mod choose;
-mod validate_single_choice;
 mod get_log;
 mod make_choices;
 mod parse_choice;
