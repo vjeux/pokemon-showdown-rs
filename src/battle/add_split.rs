@@ -26,15 +26,17 @@ impl Battle {
 
         // JS: this.add(...secret);
         if !secret.is_empty() {
-            let entry = format!("|{}", secret.join("|"));
-            self.log.push(entry);
+            let event = secret[0];
+            let args: Vec<Arg> = secret[1..].iter().map(|s| (*s).into()).collect();
+            self.add(event, &args);
         }
 
         // JS: if (shared) { this.add(...shared); } else { this.log.push(''); }
         if let Some(shared_parts) = shared {
             if !shared_parts.is_empty() {
-                let entry = format!("|{}", shared_parts.join("|"));
-                self.log.push(entry);
+                let event = shared_parts[0];
+                let args: Vec<Arg> = shared_parts[1..].iter().map(|s| (*s).into()).collect();
+                self.add(event, &args);
             }
         } else {
             self.log.push(String::new());
