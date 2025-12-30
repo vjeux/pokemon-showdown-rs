@@ -5,6 +5,25 @@ impl Battle {
     /// Show open team sheets to players
     /// Equivalent to battle.ts showOpenTeamSheets()
     //
+    // TODO: EXTREMELY INCOMPLETE IMPLEMENTATION - ~2% of TypeScript logic
+    // Missing from TypeScript version (battle.ts:3183-3221, 39 lines):
+    // 1. Check turn === 0 (only show at start)
+    // 2. For each side, create modified PokemonSet array with:
+    //    - Empty name and nature (hidden)
+    //    - Null EVs/IVs (hidden)
+    //    - Revealed: species, item, ability, moves, gender, level
+    // 3. Gen 8: add gigantamax property
+    // 4. Gen 9: add teraType property
+    // 5. Hidden Power: add hpType only if Pokemon has Hidden Power move
+    // 6. Zacian/Zamazenta special handling:
+    //    - If has Rusted Sword/Shield, change species to Crowned forme
+    //    - Replace Iron Head with Behemoth Blade/Bash in move list
+    // 7. Pack team using Teams.pack()
+    // 8. Send via this.add('showteam', side.id, Teams.pack(team))
+    // Current implementation just shows a generic message, doesn't reveal actual teams
+    //
+    // Also: TypeScript takes no parameters, Rust has unused _side_idx parameter (signature mismatch)
+    //
     // 	showOpenTeamSheets() {
     // 		if (this.turn !== 0) return;
     // 		for (const side of this.sides) {
@@ -48,7 +67,7 @@ impl Battle {
     // 	}
     //
     pub fn show_open_team_sheets(&mut self, _side_idx: Option<usize>) {
-        // In the full implementation, this would reveal team sheets
+        // STUB - just shows generic message instead of actual team data
         self.add("-message", &["Team sheets revealed".into()]);
     }
 }

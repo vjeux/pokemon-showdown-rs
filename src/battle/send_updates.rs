@@ -5,6 +5,19 @@ impl Battle {
     /// Send updates to connected players
     /// Equivalent to battle.ts sendUpdates()
     //
+    // TODO: EXTREMELY INCOMPLETE IMPLEMENTATION - ~5% of TypeScript logic
+    // Missing from TypeScript version (battle.ts:3266-3296, 31 lines):
+    // 1. Check if new log entries exist (sentLogPos < log.length)
+    // 2. Send log slice via this.send('update', this.log.slice(this.sentLogPos))
+    // 3. Send requests to sides via side.emitRequest() if not sent yet
+    // 4. Send end message with battle results when battle ended:
+    //    - winner, seed, turns
+    //    - player names (p1, p2, p3?, p4?)
+    //    - teams (p1team, p2team, p3team?, p4team?)
+    //    - score array [pokemonLeft for each side]
+    //    - inputLog
+    // Current implementation only updates sent_log_pos, doesn't send anything
+    //
     // 	sendUpdates() {
     // 		if (this.sentLogPos >= this.log.length) return;
     // 		this.send('update', this.log.slice(this.sentLogPos));
@@ -48,8 +61,7 @@ impl Battle {
     // 	}
     //
     pub fn send_updates(&mut self) {
-        // In the full implementation, this would send log entries to players
-        // For now, update sent position
+        // STUB - only updates sent_log_pos
         self.sent_log_pos = self.log.len();
     }
 }
