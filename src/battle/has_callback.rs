@@ -333,6 +333,37 @@ impl Battle {
             return matches!(ability_id, "deltastream" | "desolateland" | "primordialsea");
         }
 
+        // Check for onImmunity event (immunity to effects/weather)
+        if event_id == "onImmunity" {
+            // Abilities with onImmunity callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "icebody" | "magmaarmor" | "oblivious" | "overcoat" | "sandforce"
+                | "sandrush" | "sandveil" | "snowcloak"
+            );
+        }
+
+        // Check for onSetStatus event (when status condition is set)
+        if event_id == "onSetStatus" {
+            // Abilities with onSetStatus callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "comatose" | "immunity" | "insomnia" | "leafguard" | "limber"
+                | "pastelveil" | "purifyingsalt" | "shieldsdown" | "thermalexchange"
+                | "vitalspirit" | "waterbubble" | "waterveil"
+            );
+        }
+
+        // Check for onTryAddVolatile event (when volatile condition is added)
+        if event_id == "onTryAddVolatile" {
+            // Abilities with onTryAddVolatile callbacks (from ability_callbacks/mod.rs dispatcher)
+            return matches!(
+                ability_id,
+                "innerfocus" | "insomnia" | "leafguard" | "owntempo"
+                | "purifyingsalt" | "shieldsdown" | "vitalspirit"
+            );
+        }
+
         // For other events, conservatively return false by default
         // TODO: Implement proper callback checking for other events
         // For now, this prevents collecting non-existent handlers
