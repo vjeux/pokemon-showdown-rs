@@ -22,7 +22,7 @@ impl Battle {
     // 		}
     // 	}
     //
-    pub fn each_event(&mut self, event_id: &str, effect: Option<&ID>, _relay_var: Option<bool>) {
+    pub fn each_event(&mut self, event_id: &str, effect: Option<&ID>, relay_var: Option<bool>) {
         // JS: const actives = this.getAllActive();
         // Collect all active Pokemon with their speeds
         let mut actives: Vec<(usize, usize, i32)> = Vec::new();
@@ -37,8 +37,14 @@ impl Battle {
         }
 
         // JS: if (!effect && this.effect) effect = this.effect;
-        // Note: In Rust, we handle this by passing the current_effect when calling each_event
-        // The caller is responsible for passing self.current_effect if effect is None
+        // Extract current_effect before mutable operations
+        let effect_owned: Option<ID>;
+        let effect = if effect.is_none() {
+            effect_owned = self.current_effect.clone();
+            effect_owned.as_ref()
+        } else {
+            effect
+        };
 
         // JS: this.speedSort(actives, (a, b) => b.speed - a.speed);
         // Sort by speed (highest first) using speed_sort to handle ties with PRNG
@@ -54,9 +60,10 @@ impl Battle {
         // JS: for (const pokemon of actives) {
         // JS:     this.runEvent(eventid, pokemon, null, effect, relayVar);
         // JS: }
-        // Note: TypeScript relayVar is rarely used in eachEvent calls, so we pass None
+        // Convert boolean relay_var to i32 for run_event (TypeScript uses 'any', Rust uses i32)
+        let relay_var_i32 = relay_var.map(|b| if b { 1 } else { 0 });
         for (side_idx, poke_idx, _speed) in actives {
-            self.run_event(event_id, Some((side_idx, poke_idx)), None, effect, None);
+            self.run_event(event_id, Some((side_idx, poke_idx)), None, effect, relay_var_i32);
         }
 
         // JS: if (eventid === 'Weather' && this.gen >= 7) {
