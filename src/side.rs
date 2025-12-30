@@ -523,41 +523,6 @@ impl Side {
             .join(", ")
     }
 
-    /// Add an entry hazard with layer support
-    /// Spikes and Toxic Spikes can have multiple layers
-    pub fn add_hazard(&mut self, hazard_id: &ID) -> bool {
-        let hazard_name = hazard_id.as_str();
-        let max_layers = match hazard_name {
-            "spikes" => 3,
-            "toxicspikes" => 2,
-            "stealthrock" | "stickyweb" => 1,
-            _ => 1,
-        };
-
-        if let Some(state) = self.side_conditions.get_mut(hazard_id) {
-            // Already have this hazard - try to add another layer
-            let current_layers = state.layers.unwrap_or(1);
-            if current_layers >= max_layers {
-                return false; // Already at max layers
-            }
-            state.layers = Some(current_layers + 1);
-            true
-        } else {
-            // Add new hazard with 1 layer
-            let mut state = EffectState::new(hazard_id.clone());
-            state.layers = Some(1);
-            self.side_conditions.insert(hazard_id.clone(), state);
-            true
-        }
-    }
-
-    /// Get the number of layers of a hazard
-    pub fn get_hazard_layers(&self, hazard_id: &ID) -> i32 {
-        self.side_conditions
-            .get(hazard_id)
-            .and_then(|state| state.layers)
-            .unwrap_or(0)
-    }
 
     /// Check if choice for this turn is complete
     /// Equivalent to side.ts isChoiceDone()
@@ -673,36 +638,6 @@ impl Side {
             dynamax: false,
             terastallize: false,
         };
-    }
-
-    /// Calculate Stealth Rock damage based on type effectiveness
-    pub fn calc_stealth_rock_damage(defender_types: &[String], max_hp: i32) -> i32 {
-        // Stealth Rock does 12.5% base, modified by Rock type effectiveness
-        let mut effectiveness = 1.0;
-        for def_type in defender_types {
-            effectiveness *= match def_type.to_lowercase().as_str() {
-                // Rock is super effective against
-                "fire" | "ice" | "flying" | "bug" => 2.0,
-                // Rock is resisted by
-                "fighting" | "ground" | "steel" => 0.5,
-                _ => 1.0,
-            };
-        }
-
-        // Base 1/8 (12.5%) * effectiveness
-        let damage_frac = 0.125 * effectiveness;
-        ((max_hp as f64 * damage_frac) as i32).max(1)
-    }
-
-    /// Calculate Spikes damage based on number of layers
-    pub fn calc_spikes_damage(layers: i32, max_hp: i32) -> i32 {
-        // Spikes: 1 layer = 1/8, 2 layers = 1/6, 3 layers = 1/4
-        let damage_frac = match layers {
-            1 => 1.0 / 8.0,
-            2 => 1.0 / 6.0,
-            _ => 1.0 / 4.0,
-        };
-        ((max_hp as f64 * damage_frac) as i32).max(1)
     }
 
     // ==========================================
