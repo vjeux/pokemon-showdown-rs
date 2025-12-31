@@ -412,7 +412,11 @@ impl PRNG {
 
         let value = match (from, to) {
             (None, None) => (result as f64) / (2f64.powi(32)),
-            (Some(n), None) => ((result as f64) * (n as f64) / (2f64.powi(32))).floor(),
+            (Some(n), None) => {
+                let val = ((result as f64) * (n as f64) / (2f64.powi(32))).floor();
+                eprintln!("[PRNG.random] raw_value={}, n={}, result={}", result, n, val);
+                val
+            }
             (Some(m), Some(n)) => {
                 ((result as f64) * ((n - m) as f64) / (2f64.powi(32))).floor() + (m as f64)
             }
@@ -453,7 +457,9 @@ impl PRNG {
     pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
         // JS: return this.random(denominator) < numerator;
         let roll = self.random(Some(denominator), None) as i32;
-        roll < numerator
+        let result = roll < numerator;
+        eprintln!("[RANDOM_CHANCE] numerator={}, denominator={}, roll={}, result={}", numerator, denominator, roll, result);
+        result
     }
 
     /// Return a random item from the given slice.

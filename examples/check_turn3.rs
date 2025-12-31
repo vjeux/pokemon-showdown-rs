@@ -1,18 +1,15 @@
-/// Run battle comparison with seed 1 - PRNG Tracing
+/// Debug turn 3 for seed 2
 
 use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, PRNGSeed, ID};
 use pokemon_showdown::dex_data::{StatsTable, Gender};
 use std::fs;
 
 fn main() {
-    // Enable PRNG logging
-    std::env::set_var("RUST_LOG_PRNG", "1");
-
-    // Get seed from command line, default to 1
+    // Get seed from command line, default to 2
     let seed_value: u16 = std::env::args()
         .nth(1)
         .and_then(|s| s.parse().ok())
-        .unwrap_or(1);
+        .unwrap_or(2);
 
     // Load the teams we generated
     let teams_file = if seed_value == 1 {
@@ -86,7 +83,7 @@ fn main() {
         },
         moves: set.moves.clone(),
         evs: StatsTable::new(set.evs.hp, set.evs.atk, set.evs.def, set.evs.spa, set.evs.spd, set.evs.spe),
-        ivs: StatsTable::new(set.ivs.hp, set.ivs.atk, set.ivs.def, set.ivs.spa, set.ivs.spd, set.ivs.spe),
+        ivs: StatsTable::new(set.ivs.hp, set.ivs.atk, set.ivs.def, set.ivs.spa, set.ivs.spd, set.evs.spe),
         ..Default::default()
     }).collect();
 
@@ -108,41 +105,30 @@ fn main() {
         ..Default::default()
     });
 
-    println!("RUST: Battle created, turn: {}", battle.turn);
-
-    if let Some(p1_active) = battle.sides[0].get_active(0) {
-        println!("RUST: P1 active: {} {}/{}", p1_active.name, p1_active.hp, p1_active.maxhp);
-    }
-    if let Some(p2_active) = battle.sides[1].get_active(0) {
-        println!("RUST: P2 active: {} {}/{}", p2_active.name, p2_active.hp, p2_active.maxhp);
-    }
-
-    // Run only up to turn 3
-    for turn_num in 1..=3 {
-        println!("\n=== RUST: Making turn {} choices ===", turn_num);
-        let prng_before = battle.prng.call_count;
-
+    // Run turns 1 and 2
+    for turn_num in 1..=2 {
         battle.make_choices(&["default", "default"]);
-
-        let prng_after = battle.prng.call_count;
-        println!("RUST: Turn {} used {} PRNG calls (total: {})", turn_num, prng_after - prng_before, prng_after);
-        println!("RUST: After turn {}, battle.turn: {}", turn_num, battle.turn);
-
-        if let Some(p1_active) = battle.sides[0].get_active(0) {
-            if p1_active.hp > 0 {
-                println!("RUST: P1 HP: {}/{}", p1_active.hp, p1_active.maxhp);
-            } else {
-                println!("RUST: P1 fainted");
-            }
-        }
-        if let Some(p2_active) = battle.sides[1].get_active(0) {
-            if p2_active.hp > 0 {
-                println!("RUST: P2 HP: {}/{}", p2_active.hp, p2_active.maxhp);
-            } else {
-                println!("RUST: P2 fainted");
-            }
-        }
     }
 
-    println!("\nTotal PRNG calls: {}", battle.prng.call_count);
+    // Now show detailed log for turn 3
+    println!("\n=== Before Turn 3 ===");
+    println!("Battle turn: {}", battle.turn);
+    println!("PRNG calls so far: {}", battle.prng.call_count);
+
+    let log_before = battle.get_log();
+
+    // Make turn 3
+    println!("\n=== Making Turn 3 choices ===");
+    battle.make_choices(&["default", "default"]);
+
+    println!("\n=== After Turn 3 ===");
+    println!("Battle turn: {}", battle.turn);
+    println!("PRNG calls total: {}", battle.prng.call_count);
+
+    // Get only the new log entries for turn 3
+    let log_after = battle.get_log();
+    let turn3_log = log_after[log_before.len()..].to_string();
+
+    println!("\n=== Turn 3 Log ===");
+    println!("{}", turn3_log);
 }

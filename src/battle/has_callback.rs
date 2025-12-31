@@ -837,6 +837,10 @@ impl Battle {
                 "iceball" | "ingrain" | "leechseed" | "nightmare" | "octolock" |
                 "perishsong" | "rollout" | "saltcure" | "syrupbomb" | "uproar" | "wish"
             ),
+            "StallMove" => matches!(
+                condition_id,
+                "stall"  // Protect/King's Shield failure mechanic
+            ),
             "TryPrimaryHit" => matches!(
                 condition_id,
                 "substitute"  // Has onTryPrimaryHit

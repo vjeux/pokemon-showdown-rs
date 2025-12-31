@@ -364,10 +364,67 @@ pub fn dispatch_on_residual_priority(
 
 /// Dispatch onRestart callbacks
 pub fn dispatch_on_restart(
-    _battle: &mut Battle,
-    _condition_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
+    // JavaScript source from conditions.js:
+    // onRestart() {
+    //   if (this.effectState.counter < (this.effect as Condition).counterMax!) {
+    //     this.effectState.counter *= 3;
+    //   }
+    //   this.effectState.duration = 2;
+    // }
+
+    if condition_id != "stall" {
+        return EventResult::Continue;
+    }
+
+    eprintln!("[STALL_RESTART] Called for {:?}", pokemon_pos);
+
+    // Get current counter value
+    let current_counter = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let stall_volatile = match pokemon.volatiles.get(&ID::from("stall")) {
+            Some(v) => v,
+            None => return EventResult::Continue,
+        };
+
+        stall_volatile.data.get("counter")
+            .and_then(|v| v.as_i64())
+            .map(|v| v as i32)
+            .unwrap_or(1)
+    };
+
+    eprintln!("[STALL_RESTART] Current counter: {}", current_counter);
+
+    // Update counter and duration
+    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    if let Some(stall_volatile) = pokemon_mut.volatiles.get_mut(&ID::from("stall")) {
+        // if (this.effectState.counter < (this.effect as Condition).counterMax!) {
+        //     this.effectState.counter *= 3;
+        // }
+        let counter_max = 729; // From JavaScript: counterMax: 729
+        let new_counter = if current_counter < counter_max {
+            current_counter * 3
+        } else {
+            current_counter
+        };
+
+        stall_volatile.data.insert("counter".to_string(), serde_json::Value::from(new_counter));
+        stall_volatile.duration = Some(2);
+
+        eprintln!("[STALL_RESTART] Updated counter to {}, duration to 2", new_counter);
+    }
+
     EventResult::Continue
 }
 
@@ -382,11 +439,61 @@ pub fn dispatch_on_source_modify_damage(
 
 /// Dispatch onStallMove callbacks
 pub fn dispatch_on_stall_move(
-    _battle: &mut Battle,
-    _condition_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    // JavaScript source from conditions.js:
+    // onStallMove(pokemon) {
+    //   const counter = this.effectState.counter || 1;
+    //   this.debug(`Success chance: ${Math.round(100 / counter)}%`);
+    //   const success = this.randomChance(1, counter);
+    //   if (!success) delete pokemon.volatiles["stall"];
+    //   return success;
+    // }
+
+    if condition_id != "stall" {
+        return EventResult::Continue;
+    }
+
+    // Phase 1: Get counter from the volatile's effectState
+    let counter = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        // Get the stall volatile
+        let stall_volatile = match pokemon.volatiles.get(&ID::from("stall")) {
+            Some(v) => v,
+            None => return EventResult::Continue,
+        };
+
+        // Get counter from data, default to 1
+        stall_volatile.data.get("counter")
+            .and_then(|v| v.as_i64())
+            .map(|v| v as i32)
+            .unwrap_or(1)
+    };
+
+    eprintln!("[STALL] Success chance: {}%", 100 / counter);
+
+    // Call randomChance(1, counter)
+    let success = battle.random_chance(1, counter);
+
+    eprintln!("[STALL] randomChance(1, {}) = {}", counter, success);
+
+    // If unsuccessful, remove the stall volatile
+    if !success {
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon_mut.volatiles.remove(&ID::from("stall"));
+        eprintln!("[STALL] Removed stall volatile (failed)");
+    }
+
+    EventResult::Boolean(success)
 }
 
 /// Dispatch onStart callbacks

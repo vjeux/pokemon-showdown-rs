@@ -37,17 +37,67 @@ pub fn on_hit(
 ) -> EventResult {
     use crate::dex_data::ID;
 
+    eprintln!("[KINGSSHIELD::ON_HIT] Called with pokemon_pos={:?}", pokemon_pos);
+
     let pokemon = pokemon_pos;
+    let stall_id = ID::from("stall");
 
-    // pokemon.addVolatile('stall');
-    {
-        let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+    // JavaScript: pokemon.addVolatile('stall');
+    // In JS, if volatile exists, it calls onRestart event
+    // if (this.volatiles[status.id]) {
+    //     if (!status.onRestart) return false;
+    //     return this.battle.singleEvent('Restart', status, this.volatiles[status.id], this, source, sourceEffect);
+    // }
+    let stall_exists = {
+        let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
-
-            None => return EventResult::Continue,
+            None => {
+                eprintln!("[KINGSSHIELD::ON_HIT] Pokemon not found!");
+                return EventResult::Continue;
+            }
         };
+        pokemon.volatiles.contains_key(&stall_id)
+    };
 
-        pokemon.add_volatile(ID::from("stall"));
+    if stall_exists {
+        eprintln!("[KINGSSHIELD::ON_HIT] Stall volatile already exists, calling Restart event");
+        // Call Restart event on the stall condition
+        battle.handle_condition_event("Restart", "stall", Some(pokemon));
+    } else {
+        eprintln!("[KINGSSHIELD::ON_HIT] Adding new 'stall' volatile");
+        // pokemon.addVolatile('stall');
+        {
+            let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => {
+                    eprintln!("[KINGSSHIELD::ON_HIT] Pokemon not found!");
+                    return EventResult::Continue;
+                }
+            };
+
+            pokemon.add_volatile(stall_id.clone());
+            eprintln!("[KINGSSHIELD::ON_HIT] Added 'stall' volatile. Total volatiles: {}", pokemon.volatiles.len());
+        }
+
+        // Initialize duration and counter for new stall volatile
+        // JavaScript: if (status.duration) this.volatiles[status.id].duration = status.duration;
+        // onStart() { this.effectState.counter = 3; }
+        {
+            let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+
+            if let Some(volatile) = pokemon.volatiles.get_mut(&stall_id) {
+                volatile.duration = Some(2); // stall condition has duration: 2
+                volatile.data.insert("counter".to_string(), serde_json::Value::from(3)); // onStart sets counter to 3
+                eprintln!("[KINGSSHIELD::ON_HIT] Initialized stall: duration=2, counter=3");
+            }
+        }
+
+        // Call Start event
+        // JavaScript: this.battle.singleEvent('Start', status, this.volatiles[status.id], this, source, sourceEffect);
+        battle.handle_condition_event("Start", "stall", Some(pokemon));
     }
 
     EventResult::Continue

@@ -120,19 +120,36 @@ pub fn spread_move_hit(
         }
     }
 
-    // Step 3.5: Trigger Hit events for successful hits
-    // JavaScript: this.battle.runEvent('Hit', target, pokemon, move)
+    // Step 3.5: Trigger move's onHit callback and Hit events for successful hits
+    // JavaScript: if (moveData.onHit) { hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move); }
+    //             this.battle.runEvent('Hit', target, pokemon, move)
     for (i, &target) in final_targets.iter().enumerate() {
         if let Some(target_pos) = target {
             // Only trigger Hit if we actually dealt damage or the move succeeded
             if damages[i].is_some() {
-                battle.run_event(
-                    "Hit",
-                    Some(target_pos),
-                    Some(source_pos),
-                    Some(move_id),
-                    None,
-                );
+                // First trigger the move's onHit callback (if it has one)
+                // JavaScript: if (moveData.onHit) { this.battle.singleEvent('Hit', moveData, {}, target, source, move); }
+                if !is_self && !is_secondary {
+                    battle.single_event(
+                        "Hit",
+                        move_id,
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(move_id),
+                    );
+                }
+
+                // Then trigger the general Hit event
+                // JavaScript: if (!isSelf && !isSecondary) { this.battle.runEvent('Hit', target, source, move); }
+                if !is_self && !is_secondary {
+                    battle.run_event(
+                        "Hit",
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(move_id),
+                        None,
+                    );
+                }
             }
         }
     }

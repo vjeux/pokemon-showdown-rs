@@ -327,7 +327,9 @@ impl Battle {
             relay_var_type: None,
         });
 
-        let mut result = relay_var;
+        // JavaScript: if (relayVar === undefined || relayVar === null) { relayVar = true; hasRelayVar = 0; }
+        // If no relay_var is provided, default to Some(1) (truthy value, like JavaScript's true)
+        let mut result = relay_var.or(Some(1));
 
         // Find and run all handlers for this event
         let mut handlers = self.find_event_handlers(event_id, target, source);
@@ -348,8 +350,15 @@ impl Battle {
 
             match event_result {
                 EventResult::Boolean(false) => {
-                    result = None;
+                    // JavaScript: if (!relayVar) break;
+                    // False is falsy, so set result to 0 and break
+                    result = Some(0);
                     break;
+                }
+                EventResult::Boolean(true) => {
+                    // JavaScript: relayVar = returnVal;
+                    // True is truthy, so set result to 1 and continue
+                    result = Some(1);
                 }
                 EventResult::Stop => {
                     break;
