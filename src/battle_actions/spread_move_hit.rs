@@ -258,6 +258,66 @@ pub fn spread_move_hit(
         }
     }
 
+    // Step 4.75: Apply move secondaries (boosts, status effects with chance)
+    // JavaScript (battle-actions.ts:1120):
+    //   if (moveData.secondaries) this.secondaries(targets, pokemon, move, moveData, isSelf);
+    //
+    // secondaries function (battle-actions.ts:1363-1376):
+    //   secondaries(targets, source, move, moveData, isSelf) {
+    //     if (!moveData.secondaries) return;
+    //     for (const target of targets) {
+    //       if (target === false) continue;
+    //       const secondaries = this.battle.runEvent("ModifySecondaries", target, source, moveData, moveData.secondaries.slice());
+    //       for (const secondary of secondaries) {
+    //         const secondaryRoll = this.battle.random(100);
+    //         const secondaryOverflow = (secondary.boosts || secondary.self) && this.battle.gen <= 8;
+    //         if (typeof secondary.chance === "undefined" || secondaryRoll < (secondaryOverflow ? secondary.chance % 256 : secondary.chance)) {
+    //           this.moveHit(target, source, move, secondary, true, isSelf);
+    //         }
+    //       }
+    //     }
+    //   }
+    if let Some(ref secondary_effect) = move_data.secondary {
+        // JS: for (const target of targets) { if (target === false) continue; ... }
+        for &target_opt in &final_targets {
+            if target_opt.is_none() {
+                continue;
+            }
+            let target_pos = target_opt.unwrap();
+
+            // JS: const secondaryRoll = this.battle.random(100);
+            let secondary_roll = battle.random(100) as i32;
+
+            // JS: const secondaryOverflow = (secondary.boosts || secondary.self) && this.battle.gen <= 8;
+            // For now, skip the overflow logic (gen 8 and below edge case)
+            // JS: if (typeof secondary.chance === "undefined" || secondaryRoll < secondary.chance)
+            let should_apply = secondary_effect.chance.map_or(true, |chance| secondary_roll < chance);
+
+            if should_apply {
+                // JS: this.moveHit(target, source, move, secondary, true, isSelf);
+                // Apply boosts from secondary effect
+                if let Some(ref boosts) = secondary_effect.boosts {
+                    let boost_array: Vec<(&str, i8)> = boosts
+                        .iter()
+                        .map(|(stat, &value)| (stat.as_str(), value as i8))
+                        .collect();
+
+                    battle.boost(
+                        &boost_array,
+                        target_pos,          // target
+                        Some(source_pos),    // source
+                        Some(move_id.as_str()), // effect = move
+                        true,                // is_secondary = true
+                        is_self,             // is_self
+                    );
+                }
+
+                // TODO: Handle secondary.status, secondary.volatileStatus, etc.
+                // For now, only boosts are implemented
+            }
+        }
+    }
+
     // Step 5: Trigger DamagingHit event for abilities that activate on dealing damage
     // JavaScript (battle-actions.ts:961-971):
     //   const damagedTargets = [];
