@@ -278,7 +278,21 @@ impl Battle {
                 "", // TODO: Wire through actual move_id
             ),
             "BasePower" => {
-                ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), "") // TODO: Wire through actual move_id
+                // BasePower is called via run_event, so attacker is in current_event.target, defender is in current_event.source
+                let attacker_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+                let defender_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+
+                // Get base_power from relay_var
+                let base_power = self.current_event.as_ref().and_then(|e| e.relay_var).unwrap_or(0);
+
+                // Get move_id from active_move (extract to owned String to avoid borrow issues)
+                let move_id_owned = self.active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
+                let move_id = move_id_owned.as_str();
+
+                eprintln!("[BASEPOWER DEBUG] Ability {} on BasePower event: base_power={}, attacker={:?}, defender={:?}, move_id={}",
+                    ability_id.as_str(), base_power, attacker_pos, defender_pos, move_id);
+
+                ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), base_power, attacker_pos, defender_pos, move_id)
             }
             "BasePowerPriority" => ability_callbacks::dispatch_on_base_power_priority(
                 self,

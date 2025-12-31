@@ -596,7 +596,7 @@ impl Battle {
             ),
             "onResidual" => matches!(
                 item_id,
-                "ejectpack" | "leftovers" | "mirrorherb" | "whiteherb"
+                "ejectpack" | "leftovers" | "mirrorherb" | "toxicorb" | "whiteherb"
             ),
             "onStart" => matches!(
                 item_id,
