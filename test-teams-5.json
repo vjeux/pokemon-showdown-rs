@@ -1,0 +1,468 @@
+{
+  "seed": [
+    0,
+    0,
+    0,
+    5
+  ],
+  "p1": [
+    {
+      "name": "Mudsdale",
+      "species": "Mudsdale",
+      "level": 83,
+      "ability": "Stamina",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "stealthrock",
+        "heavyslam",
+        "earthquake",
+        "stoneedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    },
+    {
+      "name": "Arceus",
+      "species": "Arceus-Dark",
+      "level": 71,
+      "ability": "Multitype",
+      "item": "Dread Plate",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "recover",
+        "judgment",
+        "sludgebomb",
+        "calmmind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    },
+    {
+      "name": "Farigiraf",
+      "species": "Farigiraf",
+      "level": 91,
+      "ability": "Sap Sipper",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "bodyslam",
+        "psychicnoise",
+        "wish",
+        "protect"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fairy"
+    },
+    {
+      "name": "Ambipom",
+      "species": "Ambipom",
+      "level": 84,
+      "ability": "Technician",
+      "item": "Silk Scarf",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "fakeout",
+        "lowkick",
+        "doubleedge",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Normal"
+    },
+    {
+      "name": "Azelf",
+      "species": "Azelf",
+      "level": 82,
+      "ability": "Levitate",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "encore",
+        "uturn",
+        "fireblast",
+        "psychic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fire"
+    },
+    {
+      "name": "Swalot",
+      "species": "Swalot",
+      "level": 90,
+      "ability": "Liquid Ooze",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "knockoff",
+        "clearsmog",
+        "earthquake",
+        "sludgebomb"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Dark"
+    }
+  ],
+  "p2": [
+    {
+      "name": "Dialga",
+      "species": "Dialga",
+      "level": 73,
+      "ability": "Pressure",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "dracometeor",
+        "dragontail",
+        "fireblast",
+        "heavyslam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Dragon"
+    },
+    {
+      "name": "Abomasnow",
+      "species": "Abomasnow",
+      "level": 84,
+      "ability": "Snow Warning",
+      "item": "Light Clay",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "earthquake",
+        "auroraveil",
+        "woodhammer",
+        "blizzard"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Water"
+    },
+    {
+      "name": "Iron Treads",
+      "species": "Iron Treads",
+      "level": 77,
+      "ability": "Quark Drive",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "earthquake",
+        "rapidspin",
+        "voltswitch",
+        "ironhead"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Water"
+    },
+    {
+      "name": "Primarina",
+      "species": "Primarina",
+      "level": 83,
+      "ability": "Liquid Voice",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "psychicnoise",
+        "calmmind",
+        "drainingkiss",
+        "moonblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    },
+    {
+      "name": "Conkeldurr",
+      "species": "Conkeldurr",
+      "level": 80,
+      "ability": "Guts",
+      "item": "Flame Orb",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "knockoff",
+        "closecombat",
+        "facade",
+        "machpunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Normal"
+    },
+    {
+      "name": "Poliwrath",
+      "species": "Poliwrath",
+      "level": 88,
+      "ability": "Water Absorb",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "closecombat",
+        "circlethrow",
+        "liquidation",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Dark"
+    }
+  ]
+}

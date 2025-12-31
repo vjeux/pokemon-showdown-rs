@@ -14,8 +14,37 @@ use crate::event::EventResult;
 ///         this.add('-activate', pokemon, 'ability: Orichalcum Pulse');
 ///     }
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::ID;
+
+    // Get pokemon ident for logging
+    let pokemon_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    let current_weather = battle.field.weather.clone();
+
+    // Try to set weather to sunny day
+    if battle.field.set_weather(ID::new("sunnyday"), None) {
+        battle.add(
+            "-weather",
+            &["SunnyDay".into(), "[from] ability: Orichalcum Pulse".into(), format!("[of] {}", pokemon_ident).into()]
+        );
+        battle.add(
+            "-activate",
+            &[pokemon_ident.as_str().into(), "Orichalcum Pulse".into(), "[source]".into()]
+        );
+    } else if current_weather.as_str() == "sunnyday" {
+        battle.add(
+            "-activate",
+            &[pokemon_ident.as_str().into(), "ability: Orichalcum Pulse".into()]
+        );
+    }
+
     EventResult::Continue
 }
 
@@ -25,8 +54,23 @@ pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResu
 ///         return this.chainModify([5461, 4096]);
 ///     }
 /// }
-pub fn on_modify_atk(_battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+    // Check if the attacker is in sunny day or desolate land weather
+    let effective_weather = {
+        let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let field_weather = battle.field.weather.as_str();
+        pokemon.effective_weather(field_weather)
+    };
+
+    if effective_weather == "sunnyday" || effective_weather == "desolateland" {
+        battle.debug("Orichalcum boost");
+        let modified = battle.chain_modify_fraction(5461, 4096);
+        return EventResult::Number(modified);
+    }
+
     EventResult::Continue
 }
 

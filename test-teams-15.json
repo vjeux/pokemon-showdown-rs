@@ -1,0 +1,468 @@
+{
+  "seed": [
+    0,
+    0,
+    0,
+    15
+  ],
+  "p1": [
+    {
+      "name": "Lanturn",
+      "species": "Lanturn",
+      "level": 89,
+      "ability": "Volt Absorb",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "thunderwave",
+        "voltswitch",
+        "thunderbolt",
+        "scald"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Flying"
+    },
+    {
+      "name": "Umbreon",
+      "species": "Umbreon",
+      "level": 84,
+      "ability": "Synchronize",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "protect",
+        "foulplay",
+        "wish",
+        "toxic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    },
+    {
+      "name": "Medicham",
+      "species": "Medicham",
+      "level": 86,
+      "ability": "Pure Power",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "zenheadbutt",
+        "closecombat",
+        "poisonjab",
+        "icepunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fighting"
+    },
+    {
+      "name": "Cyclizar",
+      "species": "Cyclizar",
+      "level": 83,
+      "ability": "Regenerator",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "rapidspin",
+        "knockoff",
+        "shedtail",
+        "dracometeor"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ghost"
+    },
+    {
+      "name": "Zamazenta",
+      "species": "Zamazenta",
+      "level": 68,
+      "ability": "Dauntless Shield",
+      "item": "Rusted Shield",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "bodypress",
+        "stoneedge",
+        "irondefense",
+        "heavyslam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ghost"
+    },
+    {
+      "name": "Sinistcha",
+      "species": "Sinistcha-Masterpiece",
+      "level": 83,
+      "ability": "Heatproof",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "calmmind",
+        "strengthsap",
+        "shadowball",
+        "matchagotcha"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    }
+  ],
+  "p2": [
+    {
+      "name": "Arboliva",
+      "species": "Arboliva",
+      "level": 91,
+      "ability": "Harvest",
+      "item": "Sitrus Berry",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "leechseed",
+        "hypervoice",
+        "substitute",
+        "protect"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Water"
+    },
+    {
+      "name": "Swalot",
+      "species": "Swalot",
+      "level": 90,
+      "ability": "Liquid Ooze",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "toxicspikes",
+        "knockoff",
+        "painsplit",
+        "sludgebomb"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Dark"
+    },
+    {
+      "name": "Primarina",
+      "species": "Primarina",
+      "level": 83,
+      "ability": "Liquid Voice",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "calmmind",
+        "drainingkiss",
+        "moonblast",
+        "psychicnoise"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    },
+    {
+      "name": "Electrode",
+      "species": "Electrode",
+      "level": 92,
+      "ability": "Soundproof",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "thunderbolt",
+        "foulplay",
+        "taunt",
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Electric"
+    },
+    {
+      "name": "Slaking",
+      "species": "Slaking",
+      "level": 84,
+      "ability": "Truant",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "gigaimpact",
+        "doubleedge",
+        "earthquake",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Normal"
+    },
+    {
+      "name": "Urshifu",
+      "species": "Urshifu",
+      "level": 74,
+      "ability": "Unseen Fist",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "wickedblow",
+        "poisonjab",
+        "uturn",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fighting"
+    }
+  ]
+}

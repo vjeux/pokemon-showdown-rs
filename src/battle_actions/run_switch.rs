@@ -6,8 +6,24 @@ use crate::*;
 use crate::battle::PriorityItem;
 
 /// Run switch-in effects for a Pokemon
-/// Equivalent to battle-actions.ts runSwitch()
-/// 1:1 port of battle-actions.ts runSwitch()
+/// runSwitch(pokemon: Pokemon) {
+///     const switchersIn = [pokemon];
+///     while (this.battle.queue.peek()?.choice === 'runSwitch') {
+///         const nextSwitch = this.battle.queue.shift();
+///         switchersIn.push(nextSwitch!.pokemon!);
+///     }
+///     const allActive = this.battle.getAllActive(true);
+///     this.battle.speedSort(allActive);
+///     this.battle.speedOrder = allActive.map(a => a.side.n * a.battle.sides.length + a.position);
+///     this.battle.fieldEvent('SwitchIn', switchersIn);
+///
+///     for (const poke of switchersIn) {
+///         if (!poke.hp) continue;
+///         poke.isStarted = true;
+///         poke.draggedIn = null;
+///     }
+///     return true;
+/// }
 pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
     eprintln!("[RUN_SWITCH DEBUG] Called for side {} pokemon {}", side_idx, poke_idx);
     // Collect all switchers - consume all consecutive runSwitch actions
@@ -54,10 +70,13 @@ pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
     });
     eprintln!("[RUN_SWITCH DEBUG] speed_sort done");
 
-    // Speed sort all active Pokemon
-    battle.update_speed();
+    // JS: this.battle.speedOrder = allActive.map(a => a.side.n * a.battle.sides.length + a.position);
+    battle.speed_order = all_active.iter().map(|(side_idx, poke_idx, _speed)| {
+        let pokemon = &battle.sides[*side_idx].pokemon[*poke_idx];
+        side_idx * battle.sides.len() + pokemon.position
+    }).collect();
 
-    // Run SwitchIn field event for all switchers
+    // JS: this.battle.fieldEvent('SwitchIn', switchersIn);
     battle.field_event_switch_in(&switchers_in);
 
     // Mark all switchers as started and clear draggedIn

@@ -984,6 +984,7 @@ pub fn dispatch_on_residual(
     use crate::dex_data::ID;
     match ID::from(item_id).as_str() {
         "ejectpack" => ejectpack::on_residual(battle, pokemon_pos),
+        "leftovers" => leftovers::on_residual(battle, pokemon_pos),
         "mirrorherb" => mirrorherb::on_residual(battle, pokemon_pos),
         "whiteherb" => whiteherb::on_residual(battle, pokemon_pos),
         _ => EventResult::Continue,

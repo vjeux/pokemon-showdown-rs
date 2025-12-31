@@ -1,10 +1,24 @@
 use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, PRNGSeed, ID};
 use pokemon_showdown::dex_data::StatsTable;
 use std::fs;
+use std::env;
 
 fn main() {
+    // Get test file number from command line args (default to 1)
+    let args: Vec<String> = env::args().collect();
+    let test_num = if args.len() > 1 {
+        args[1].parse::<usize>().unwrap_or(1)
+    } else {
+        1
+    };
+
+    let test_file = format!("test-teams-{}.json", test_num);
+
     // Load test teams
-    let test_teams_json = fs::read_to_string("test-teams.json").unwrap();
+    let test_teams_json = fs::read_to_string(&test_file).unwrap_or_else(|_| {
+        eprintln!("Could not read {}, using test-teams.json", test_file);
+        fs::read_to_string("test-teams.json").unwrap()
+    });
 
     #[derive(serde::Deserialize)]
     struct TestTeams {
@@ -106,7 +120,7 @@ fn main() {
     );
 
     // Run 3 turns
-    for _ in 0..3 {
+    for turn_num in 1..=5 {
         if battle.ended {
             break;
         }
@@ -115,6 +129,16 @@ fn main() {
 
         let p1_active = battle.sides[0].get_active(0);
         let p2_active = battle.sides[1].get_active(0);
+
+        println!("Turn {}: {}({}/{}) vs {}({}/{})",
+            battle.turn,
+            p1_active.map(|p| p.name.as_str()).unwrap_or("none"),
+            p1_active.map(|p| p.hp).unwrap_or(0),
+            p1_active.map(|p| p.maxhp).unwrap_or(0),
+            p2_active.map(|p| p.name.as_str()).unwrap_or("none"),
+            p2_active.map(|p| p.hp).unwrap_or(0),
+            p2_active.map(|p| p.maxhp).unwrap_or(0)
+        );
 
         println!("RESULT:{{\"turn\":{},\"p1_name\":\"{}\",\"p1_hp\":{},\"p1_maxhp\":{},\"p2_name\":\"{}\",\"p2_hp\":{},\"p2_maxhp\":{},\"ended\":{}}}",
             battle.turn,

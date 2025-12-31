@@ -334,6 +334,15 @@ impl Battle {
             ),
             "Start" => item_callbacks::dispatch_on_start(self, item_id.as_str(), pokemon_pos),
             "SwitchIn" => {
+                // JavaScript getCallback() special logic:
+                // In gen >= 5, items use onStart callback during SwitchIn event
+                // instead of onSwitchIn callback
+                if self.gen >= 5 {
+                    let result = item_callbacks::dispatch_on_start(self, item_id.as_str(), pokemon_pos);
+                    if !matches!(result, EventResult::Continue) {
+                        return result;
+                    }
+                }
                 item_callbacks::dispatch_on_switch_in(self, item_id.as_str(), pokemon_pos)
             }
             "SwitchInPriority" => {

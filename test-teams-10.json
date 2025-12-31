@@ -1,0 +1,468 @@
+{
+  "seed": [
+    0,
+    0,
+    0,
+    10
+  ],
+  "p1": [
+    {
+      "name": "Farigiraf",
+      "species": "Farigiraf",
+      "level": 91,
+      "ability": "Sap Sipper",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "protect",
+        "bodyslam",
+        "psychicnoise",
+        "wish"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ground"
+    },
+    {
+      "name": "Passimian",
+      "species": "Passimian",
+      "level": 83,
+      "ability": "Defiant",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "knockoff",
+        "closecombat",
+        "earthquake",
+        "gunkshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    },
+    {
+      "name": "Talonflame",
+      "species": "Talonflame",
+      "level": 83,
+      "ability": "Flame Body",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "overheat",
+        "bravebird",
+        "roost",
+        "uturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ground"
+    },
+    {
+      "name": "Gengar",
+      "species": "Gengar",
+      "level": 81,
+      "ability": "Cursed Body",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "focusblast",
+        "sludgewave",
+        "encore",
+        "shadowball"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fighting"
+    },
+    {
+      "name": "Arboliva",
+      "species": "Arboliva",
+      "level": 91,
+      "ability": "Harvest",
+      "item": "Sitrus Berry",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "leechseed",
+        "hypervoice",
+        "substitute",
+        "protect"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Water"
+    },
+    {
+      "name": "Eelektross",
+      "species": "Eelektross",
+      "level": 87,
+      "ability": "Levitate",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "discharge",
+        "dragontail",
+        "uturn",
+        "flamethrower"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    }
+  ],
+  "p2": [
+    {
+      "name": "Salamence",
+      "species": "Salamence",
+      "level": 77,
+      "ability": "Moxie",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "dragondance",
+        "earthquake",
+        "dualwingbeat",
+        "outrage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ground"
+    },
+    {
+      "name": "Hatterene",
+      "species": "Hatterene",
+      "level": 85,
+      "ability": "Magic Bounce",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "mysticalfire",
+        "drainingkiss",
+        "calmmind",
+        "psychic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    },
+    {
+      "name": "Abomasnow",
+      "species": "Abomasnow",
+      "level": 84,
+      "ability": "Snow Warning",
+      "item": "Light Clay",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "blizzard",
+        "earthquake",
+        "auroraveil",
+        "woodhammer"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ice"
+    },
+    {
+      "name": "Palossand",
+      "species": "Palossand",
+      "level": 89,
+      "ability": "Water Compaction",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "earthpower",
+        "shadowball",
+        "sludgebomb",
+        "shoreup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Water"
+    },
+    {
+      "name": "Floatzel",
+      "species": "Floatzel",
+      "level": 86,
+      "ability": "Water Veil",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "wavecrash",
+        "crunch",
+        "icespinner",
+        "flipturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Water"
+    },
+    {
+      "name": "Sandy Shocks",
+      "species": "Sandy Shocks",
+      "level": 80,
+      "ability": "Protosynthesis",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "stealthrock",
+        "earthpower",
+        "thunderwave",
+        "thunderbolt"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ground"
+    }
+  ]
+}

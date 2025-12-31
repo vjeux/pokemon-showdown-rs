@@ -1,0 +1,468 @@
+{
+  "seed": [
+    0,
+    0,
+    0,
+    7
+  ],
+  "p1": [
+    {
+      "name": "Terrakion",
+      "species": "Terrakion",
+      "level": 79,
+      "ability": "Justified",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "closecombat",
+        "earthquake",
+        "quickattack",
+        "stoneedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ground"
+    },
+    {
+      "name": "Iron Moth",
+      "species": "Iron Moth",
+      "level": 78,
+      "ability": "Quark Drive",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "sludgewave",
+        "toxicspikes",
+        "uturn",
+        "fireblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fire"
+    },
+    {
+      "name": "Chimecho",
+      "species": "Chimecho",
+      "level": 93,
+      "ability": "Levitate",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "storedpower",
+        "recover",
+        "cosmicpower",
+        "dazzlinggleam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    },
+    {
+      "name": "Piloswine",
+      "species": "Piloswine",
+      "level": 85,
+      "ability": "Thick Fat",
+      "item": "Eviolite",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "iciclecrash",
+        "earthquake",
+        "iceshard",
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Dragon"
+    },
+    {
+      "name": "Clefable",
+      "species": "Clefable",
+      "level": 83,
+      "ability": "Unaware",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "knockoff",
+        "moonblast",
+        "moonlight",
+        "fireblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    },
+    {
+      "name": "Iron Leaves",
+      "species": "Iron Leaves",
+      "level": 80,
+      "ability": "Quark Drive",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "closecombat",
+        "psyblade",
+        "swordsdance",
+        "leafblade"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fighting"
+    }
+  ],
+  "p2": [
+    {
+      "name": "Tsareena",
+      "species": "Tsareena",
+      "level": 87,
+      "ability": "Queenly Majesty",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "highjumpkick",
+        "tripleaxel",
+        "synthesis",
+        "powerwhip"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fighting"
+    },
+    {
+      "name": "Hydrapple",
+      "species": "Hydrapple",
+      "level": 83,
+      "ability": "Regenerator",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "ficklebeam",
+        "gigadrain",
+        "earthpower",
+        "dragontail"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    },
+    {
+      "name": "Empoleon",
+      "species": "Empoleon",
+      "level": 84,
+      "ability": "Competitive",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "surf",
+        "icebeam",
+        "roost",
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Flying"
+    },
+    {
+      "name": "Coalossal",
+      "species": "Coalossal",
+      "level": 89,
+      "ability": "Flame Body",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "stoneedge",
+        "flamethrower",
+        "willowisp",
+        "rapidspin"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Grass"
+    },
+    {
+      "name": "Floatzel",
+      "species": "Floatzel",
+      "level": 86,
+      "ability": "Water Veil",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "icespinner",
+        "wavecrash",
+        "crunch",
+        "flipturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Water"
+    },
+    {
+      "name": "Glaceon",
+      "species": "Glaceon",
+      "level": 94,
+      "ability": "Ice Body",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "protect",
+        "freezedry",
+        "wish",
+        "mudshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ground"
+    }
+  ]
+}

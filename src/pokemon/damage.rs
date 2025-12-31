@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle::FaintData;
 
 impl Pokemon {
 
@@ -17,15 +18,44 @@ impl Pokemon {
     // 		return d;
     // 	}
     //
-    pub fn damage(&mut self, amount: i32) -> i32 {
-        if self.hp == 0 || amount == 0 {
+    pub fn damage(
+        &mut self,
+        mut amount: i32,
+        pokemon_pos: (usize, usize),
+        source: Option<(usize, usize)>,
+        effect: Option<&ID>,
+        faint_queue: &mut Vec<FaintData>,
+    ) -> i32 {
+        // JS: if (!this.hp || isNaN(d) || d <= 0) return 0;
+        if self.hp == 0 || amount <= 0 {
             return 0;
         }
-        let actual = amount.min(self.hp);
-        self.hp = self.hp.saturating_sub(amount);
-        if self.hp == 0 {
-            self.faint_queued = true;
+
+        // JS: if (d < 1 && d > 0) d = 1;
+        if amount > 0 && amount < 1 {
+            amount = 1;
         }
-        actual
+
+        // JS: this.hp -= d;
+        self.hp -= amount;
+
+        // JS: if (this.hp <= 0) {
+        //         d += this.hp;  // Adjust damage down if HP went negative
+        //         this.faint(source, effect);
+        //     }
+        if self.hp <= 0 {
+            amount += self.hp; // self.hp is negative, so this subtracts from amount
+            self.hp = 0;
+
+            // JS equivalent: this.faint(source, effect) -> adds to faintQueue
+            faint_queue.push(FaintData {
+                target: pokemon_pos,
+                source,
+                effect: effect.cloned(),
+            });
+        }
+
+        // JS: return d;
+        amount
     }
 }

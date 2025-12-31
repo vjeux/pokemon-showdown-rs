@@ -482,6 +482,9 @@ pub struct Battle {
     pub sides: Vec<Side>,
     /// The action queue
     pub queue: BattleQueue,
+    /// Speed order for active Pokemon (JS: speedOrder)
+    /// Maps active pokemon to their position: side.n * sides.length + position
+    pub speed_order: Vec<usize>,
 
     /// Random number generator
     #[serde(skip)]

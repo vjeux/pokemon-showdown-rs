@@ -56,6 +56,7 @@ impl Battle {
             field: Field::new(),
             sides,
             queue: BattleQueue::new(),
+            speed_order: Vec::new(),
             prng,
             prng_seed: seed.clone(),
             log: Vec::new(),

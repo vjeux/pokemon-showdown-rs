@@ -1,0 +1,468 @@
+{
+  "seed": [
+    0,
+    0,
+    0,
+    9
+  ],
+  "p1": [
+    {
+      "name": "Regigigas",
+      "species": "Regigigas",
+      "level": 84,
+      "ability": "Slow Start",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "substitute",
+        "bodyslam",
+        "knockoff",
+        "protect"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    },
+    {
+      "name": "Tauros",
+      "species": "Tauros",
+      "level": 82,
+      "ability": "Sheer Force",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "closecombat",
+        "earthquake",
+        "bodyslam",
+        "throatchop"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Normal"
+    },
+    {
+      "name": "Raging Bolt",
+      "species": "Raging Bolt",
+      "level": 78,
+      "ability": "Protosynthesis",
+      "item": "Booster Energy",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "thunderclap",
+        "calmmind",
+        "dragonpulse",
+        "thunderbolt"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fairy"
+    },
+    {
+      "name": "Muk",
+      "species": "Muk",
+      "level": 86,
+      "ability": "Poison Touch",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "shadowsneak",
+        "poisonjab",
+        "icepunch",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Dark"
+    },
+    {
+      "name": "Arbok",
+      "species": "Arbok",
+      "level": 87,
+      "ability": "Intimidate",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "trailblaze",
+        "earthquake",
+        "coil",
+        "gunkshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ground"
+    },
+    {
+      "name": "Wo-Chien",
+      "species": "Wo-Chien",
+      "level": 83,
+      "ability": "Tablets of Ruin",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "knockoff",
+        "protect",
+        "leechseed",
+        "gigadrain"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sylveon",
+      "species": "Sylveon",
+      "level": 85,
+      "ability": "Pixilate",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "hypervoice",
+        "protect",
+        "calmmind",
+        "wish"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    },
+    {
+      "name": "Jirachi",
+      "species": "Jirachi",
+      "level": 80,
+      "ability": "Serene Grace",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "psychic",
+        "protect",
+        "wish",
+        "ironhead"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Water"
+    },
+    {
+      "name": "Meowstic",
+      "species": "Meowstic",
+      "level": 89,
+      "ability": "Prankster",
+      "item": "Light Clay",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "reflect",
+        "psychicnoise",
+        "lightscreen",
+        "yawn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fairy"
+    },
+    {
+      "name": "Ursaluna",
+      "species": "Ursaluna",
+      "level": 79,
+      "ability": "Guts",
+      "item": "Flame Orb",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "crunch",
+        "trailblaze",
+        "headlongrush",
+        "facade"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Normal"
+    },
+    {
+      "name": "Electivire",
+      "species": "Electivire",
+      "level": 84,
+      "ability": "Motor Drive",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "knockoff",
+        "earthquake",
+        "supercellslam",
+        "icepunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Dark"
+    },
+    {
+      "name": "Froslass",
+      "species": "Froslass",
+      "level": 87,
+      "ability": "Cursed Body",
+      "item": "Wide Lens",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "taunt",
+        "tripleaxel",
+        "spikes",
+        "poltergeist"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Ice"
+    }
+  ]
+}

@@ -1,0 +1,468 @@
+{
+  "seed": [
+    0,
+    0,
+    0,
+    16
+  ],
+  "p1": [
+    {
+      "name": "Landorus",
+      "species": "Landorus",
+      "level": 75,
+      "ability": "Sheer Force",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "rockslide",
+        "earthpower",
+        "sludgewave",
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    },
+    {
+      "name": "Crawdaunt",
+      "species": "Crawdaunt",
+      "level": 84,
+      "ability": "Adaptability",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "closecombat",
+        "aquajet",
+        "crabhammer",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fighting"
+    },
+    {
+      "name": "Leafeon",
+      "species": "Leafeon",
+      "level": 88,
+      "ability": "Chlorophyll",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "doubleedge",
+        "swordsdance",
+        "leafblade",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Normal"
+    },
+    {
+      "name": "Delphox",
+      "species": "Delphox",
+      "level": 84,
+      "ability": "Blaze",
+      "item": "Choice Specs",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "psyshock",
+        "grassknot",
+        "fireblast",
+        "focusblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Grass"
+    },
+    {
+      "name": "Dewgong",
+      "species": "Dewgong",
+      "level": 94,
+      "ability": "Thick Fat",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "flipturn",
+        "icebeam",
+        "knockoff",
+        "surf"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    },
+    {
+      "name": "Entei",
+      "species": "Entei",
+      "level": 78,
+      "ability": "Inner Focus",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "extremespeed",
+        "flareblitz",
+        "stoneedge",
+        "sacredfire"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Normal"
+    }
+  ],
+  "p2": [
+    {
+      "name": "Volbeat",
+      "species": "Volbeat",
+      "level": 90,
+      "ability": "Prankster",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "encore",
+        "uturn",
+        "roost",
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    },
+    {
+      "name": "Pawmot",
+      "species": "Pawmot",
+      "level": 80,
+      "ability": "Iron Fist",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "closecombat",
+        "icepunch",
+        "revivalblessing",
+        "doubleshock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Electric"
+    },
+    {
+      "name": "Shaymin",
+      "species": "Shaymin",
+      "level": 82,
+      "ability": "Natural Cure",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "airslash",
+        "seedflare",
+        "substitute",
+        "leechseed"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Steel"
+    },
+    {
+      "name": "Ninetales",
+      "species": "Ninetales",
+      "level": 85,
+      "ability": "Drought",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "Male",
+      "moves": [
+        "nastyplot",
+        "fireblast",
+        "scorchingsands",
+        "solarbeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Grass"
+    },
+    {
+      "name": "Darkrai",
+      "species": "Darkrai",
+      "level": 77,
+      "ability": "Bad Dreams",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "None",
+      "moves": [
+        "sludgebomb",
+        "darkpulse",
+        "focusblast",
+        "nastyplot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Poison"
+    },
+    {
+      "name": "Shiftry",
+      "species": "Shiftry",
+      "level": 89,
+      "ability": "Wind Rider",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "Female",
+      "moves": [
+        "leafblade",
+        "knockoff",
+        "tailwind",
+        "lowkick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      },
+      "shiny": false,
+      "happiness": 255,
+      "pokeball": "",
+      "hptype": null,
+      "dynamax_level": 10,
+      "gigantamax": false,
+      "tera_type": "Fighting"
+    }
+  ]
+}

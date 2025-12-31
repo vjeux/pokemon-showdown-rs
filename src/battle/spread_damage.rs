@@ -249,14 +249,17 @@ impl Battle {
             }
 
             // Apply damage using Pokemon's damage method
-            let actual_damage = if let Some(side) = self.sides.get_mut(side_idx) {
-                if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
-                    pokemon.damage(target_damage)
+            let actual_damage = {
+                let faint_queue = &mut self.faint_queue;
+                if let Some(side) = self.sides.get_mut(side_idx) {
+                    if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
+                        pokemon.damage(target_damage, target_pos, source, effect, faint_queue)
+                    } else {
+                        0
+                    }
                 } else {
                     0
                 }
-            } else {
-                0
             };
 
             target_damage = actual_damage;
@@ -400,17 +403,6 @@ impl Battle {
                             let from_str = format!("[from] {}", effect_name);
                             self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into(), from_str.into()]);
                         }
-                    }
-                }
-            }
-
-            // Check if Pokemon fainted and add to faint queue
-            // JavaScript: if (pokemon.hp <= 0) pokemon.faint(source, effect);
-            if let Some(side) = self.sides.get(target_pos.0) {
-                if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-                    if pokemon.hp == 0 {
-                        let effect_str = effect.map(|e| e.as_str());
-                        self.faint(target_pos, source, effect_str);
                     }
                 }
             }
