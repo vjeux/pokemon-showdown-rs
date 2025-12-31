@@ -74,9 +74,6 @@ pub fn get_damage(
     }
 
     let mut base_power = move_data.base_power;
-    if base_power == 0 {
-        return Some(0); // undefined in JS - no damage dealt, move continues
-    }
 
     // Calculate critical hit
     // JavaScript: let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
@@ -153,6 +150,12 @@ pub fn get_damage(
         eprintln!("[GET_DAMAGE] basePower AFTER BasePower event: {}", base_power);
     } else {
         eprintln!("[GET_DAMAGE] No BasePower event modification");
+    }
+
+    // Check if base power is still 0 after BasePower event
+    // For moves like Punishment, the BasePower event sets the power from 0 to the actual value
+    if base_power == 0 {
+        return Some(0); // No damage dealt, move continues
     }
 
     // Get attacker level
