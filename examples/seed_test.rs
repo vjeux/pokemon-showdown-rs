@@ -133,9 +133,27 @@ fn main() {
         };
 
         if needs_switch {
-            // Provide switch choices - switch to next available Pokemon
-            // For simplicity, just use "pass" for each side (will auto-switch if needed)
-            battle.make_choices(&["pass", "pass"]);
+            // Find first alive Pokemon for each side to switch to
+            let mut p1_choice = "pass".to_string();
+            let mut p2_choice = "pass".to_string();
+
+            // Check P1 for alive Pokemon
+            for (i, pokemon) in battle.sides[0].pokemon.iter().enumerate() {
+                if i > 0 && pokemon.hp > 0 {
+                    p1_choice = format!("switch {}", i + 1);
+                    break;
+                }
+            }
+
+            // Check P2 for alive Pokemon
+            for (i, pokemon) in battle.sides[1].pokemon.iter().enumerate() {
+                if i > 0 && pokemon.hp > 0 {
+                    p2_choice = format!("switch {}", i + 1);
+                    break;
+                }
+            }
+
+            battle.make_choices(&[p1_choice.as_str(), p2_choice.as_str()]);
         } else {
             battle.make_choices(&["move 1", "move 1"]);
         }
