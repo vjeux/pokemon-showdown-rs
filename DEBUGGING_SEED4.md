@@ -46,20 +46,20 @@ The battle appears to be choosing the same moves repeatedly. The 4 PRNG calls in
 
 JavaScript's turn 20 extra calls (95-98) are also for executing a move, suggesting JavaScript executes an additional action that Rust doesn't.
 
-## ROOT CAUSE FOUND
+## ROOT CAUSE FOUND AND FIXED ✓
 
-The divergence is caused by **Flame Body ability not being called properly** in Rust.
+The divergence was caused by **TWO bugs**:
 
-### The Bug
+### Bug 1: Flame Body not receiving move_id parameter
 
 1. Coalossal (p2a) has the **Flame Body** ability
-2. Great Tusk (p1b) uses **Rapid Spin** (contact move) on Coalossal
+2. Tinkaton (p1a) uses **Play Rough** (contact move) on Coalossal in turns 1-6
 3. Flame Body should trigger `onDamagingHit` callback with 30% chance to burn the attacker
 4. This makes a `randomChance(3, 10)` PRNG call
 
-### Rust Implementation Issue
+**Rust Implementation Issue:**
 
-The Flame Body callback IS being called, but the `move_id` parameter is an **EMPTY STRING**!
+The Flame Body callback WAS being called, but the `move_id` parameter was an **EMPTY STRING**!
 
 Location: `src/battle/handle_ability_event.rs:336`
 ```rust
@@ -68,27 +68,38 @@ Location: `src/battle/handle_ability_event.rs:336`
 }
 ```
 
-The TODO comment confirms: "Wire through actual move_id"
-
 Without the move_id, Flame Body cannot:
 - Look up the move in the dex
 - Check if the move has the "contact" flag
 - Therefore cannot make the PRNG call
 
-### The Fix Needed
+**Fix:** Modified `handle_ability_event.rs` to extract `move_id` and `source` from `current_event` context.
 
-The `run_event` function needs to pass the `move_id` (or `effect_id`) through to the ability event handler so that it can be forwarded to the callback.
+### Bug 2: Duplicate DamagingHit event call
 
-This is an infrastructure issue that affects ALL onDamagingHit ability callbacks, not just Flame Body.
+After fixing Bug 1, Rust made 109 PRNG calls instead of 98, because the DamagingHit event was being called **TWICE** per hit.
 
-### Impact
+**Root Cause:** `src/battle_actions/spread_move_hit.rs` had TWO places calling `run_event("DamagingHit")`:
+- Line 168 (correct)
+- Line 519 (duplicate - removed)
 
-JavaScript makes 4 extra PRNG calls in seed 4 because:
-- Each Rapid Spin hit triggers Flame Body check
-- Some of these checks pass the 30% probability
-- Each successful check makes a randomChance call
+JavaScript only calls `runEvent('DamagingHit')` ONCE per hit (line 1140 of battle-actions.ts).
 
-Total difference: 98 PRNG calls (JS) vs 94 (Rust) = 4 missing calls
+**Fix:** Removed the duplicate DamagingHit call at line 519.
+
+### Battle Flow (Seed 4)
+
+- Turns 1-6: Tinkaton (Mold Breaker) uses Play Rough on Coalossal (Flame Body)
+  - Flame Body triggers randomChance(3, 10) each turn
+  - Turn 4: Flame Body succeeds, Tinkaton gets burned
+- Turn 7: Tinkaton faints
+- Turns 8-20: Great Tusk vs Coalossal
+  - Coalossal uses Rapid Spin (not being hit by it)
+  - Flame Body does NOT trigger (Coalossal is attacker, not defender)
+
+### Final Result
+
+✓ **All 98 PRNG values match perfectly between JavaScript and Rust!**
 
 ## Current Understanding
 

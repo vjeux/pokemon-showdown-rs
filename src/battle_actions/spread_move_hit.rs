@@ -493,38 +493,7 @@ pub fn spread_move_hit(
     //     this.battle.runEvent("DamagingHit", damagedTargets, pokemon, move, damagedDamage);
     //     ...
     //   }
-    if !is_secondary && !is_self {
-        // Collect targets that received damage
-        let mut damaged_targets: Vec<(usize, usize)> = Vec::new();
-
-        for (i, &target_opt) in final_targets.iter().enumerate() {
-            if let Some(target_pos) = target_opt {
-                if let Some(damage_opt) = damages.get(i) {
-                    if let Some(damage_val) = damage_opt {
-                        if *damage_val != 0 {
-                            damaged_targets.push(target_pos);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Trigger DamagingHit event if any targets took damage
-        // JavaScript: this.battle.runEvent("DamagingHit", damagedTargets, pokemon, move, damagedDamage);
-        // In JavaScript, runEvent with an array of targets calls the event for each target
-        if !damaged_targets.is_empty() {
-            for &target_pos in &damaged_targets {
-                // The event handler may use random() for abilities like Effect Spore
-                battle.run_event(
-                    "DamagingHit",
-                    Some(target_pos),
-                    Some(source_pos),
-                    Some(move_id),
-                    None,
-                );
-            }
-        }
-    }
+    // Note: DamagingHit event is already called earlier (lines 163-174), no need to call again here
 
     (damages, final_targets)
 }
