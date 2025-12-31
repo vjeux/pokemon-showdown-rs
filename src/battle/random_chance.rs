@@ -10,6 +10,7 @@ impl Battle {
     // 	}
     //
     pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
+        eprintln!("[RANDOM_CHANCE] Called with {}/{}", numerator, denominator);
         if let Some(forced) = self.force_random_chance {
             return forced;
         }

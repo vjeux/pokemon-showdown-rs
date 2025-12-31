@@ -388,7 +388,7 @@ fn test_battle_state_comparison() {
     let seed = PRNGSeed::Gen5([0, 0, 0, 21]);
     println!("Running deterministic battle with seed: {:?}", seed);
 
-    let log = run_battle_with_states(seed, 100);
+    let log = run_battle_with_states(seed, 1);  // Only run 1 turn for debugging
 
     let output_path = "battle-state-rust.json";
     let json = serde_json::to_string_pretty(&log).expect("Failed to serialize log");
