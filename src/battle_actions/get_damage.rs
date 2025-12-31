@@ -75,15 +75,30 @@ pub fn get_damage(
 
     let mut base_power = move_data.base_power;
 
+    // JavaScript: if (move.basePowerCallback) { basePower = move.basePowerCallback.call(this.battle, source, target, move); }
+    // Call basePowerCallback FIRST, before any checks
+    // This is for moves like Punishment that calculate their own base power
+    if base_power == 0 {
+        use crate::data::move_callbacks;
+        if let crate::event::EventResult::Number(bp) = move_callbacks::dispatch_base_power_callback(
+            battle,
+            move_data.id.as_str(),
+            source_pos,
+            Some(target_pos),
+        ) {
+            base_power = bp;
+            eprintln!("[GET_DAMAGE] basePowerCallback set basePower to {}", base_power);
+        }
+    }
+
     // JavaScript: if (!basePower) return basePower === 0 ? void 0 : basePower;
     // CRITICAL: This check must happen BEFORE the crit check!
     // If basePower is 0, return early (undefined for success, or the value for failure)
     if base_power == 0 {
-        // For moves like Punishment, BasePower event will set power from 0
-        // But we need to check this BEFORE critical hit calculation
-        // JavaScript returns `void 0` (undefined) for basePower === 0, meaning "success with no damage"
-        // We'll continue to the BasePower event to see if it gets set to non-zero
-        // But we skip the crit check for now
+        // For moves like Punishment, basePowerCallback would have set power from 0
+        // If it's still 0 after the callback, the move deals no damage
+        eprintln!("[GET_DAMAGE] basePower is still 0 after basePowerCallback, returning Some(0)");
+        return Some(0); // No damage dealt, move continues
     }
 
     // Calculate critical hit only if we might deal damage

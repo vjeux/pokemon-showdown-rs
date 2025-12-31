@@ -72,6 +72,8 @@ impl Battle {
                     .and_then(|e| e.relay_var)
                     .unwrap_or(0);
 
+                // BasePower event is for abilities/items to modify base power
+                // Note: basePowerCallback is handled in getDamage, not here
                 let result = move_callbacks::dispatch_on_base_power(self, move_id, base_power, source_pos, target_pos);
                 result
             }

@@ -355,11 +355,9 @@ impl Battle {
                     break;
                 }
                 EventResult::Number(n) => {
-                    // Numbers are in 4096 basis points (e.g., 4096 = 1.0x, 6144 = 1.5x, 2048 = 0.5x)
-                    // Use modify_internal for correct rounding (adds 2047 before dividing)
-                    if let Some(ref mut r) = result {
-                        *r = self.modify_internal(*r, n);
-                    }
+                    // JavaScript: if (returnVal !== void 0) { relayVar = returnVal; }
+                    // When a handler returns a number, it REPLACES the relayVar, not modifies it
+                    result = Some(n);
                 }
                 EventResult::HitSubstitute => {
                     // JavaScript: this.HIT_SUBSTITUTE = 0

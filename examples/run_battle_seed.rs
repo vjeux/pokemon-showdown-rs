@@ -114,10 +114,8 @@ fn main() {
         battle.make_choices(&["default", "default"]);
         let prng_after = battle.prng.call_count;
 
-        if turn_num <= 3 || turn_num == 20 {
-            println!("RUST: Seed {} Turn {} - PRNG calls: {} (total: {})",
-                seed_value, turn_num, prng_after - prng_before, prng_after);
-        }
+        println!("RUST: Seed {} Turn {} - PRNG calls: {} (total: {})",
+            seed_value, turn_num, prng_after - prng_before, prng_after);
     }
 
     println!("RUST: Seed {} - Total PRNG calls after 20 turns: {}", seed_value, battle.prng.call_count);

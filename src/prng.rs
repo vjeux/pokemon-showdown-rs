@@ -366,7 +366,7 @@ impl PRNG {
         };
 
         // Log PRNG calls (can be enabled for debugging)
-        if std::env::var("RUST_LOG_PRNG").is_ok() && self.call_count <= 50 {
+        if std::env::var("RUST_LOG_PRNG").is_ok() && self.call_count <= 100 {
             let bt = std::backtrace::Backtrace::force_capture();
             let bt_str = format!("{}", bt);
             let caller = bt_str.lines()
