@@ -811,11 +811,15 @@ impl Battle {
             return false;
         }
 
-        // Check status conditions
+        // Check status conditions and volatile conditions
         match event_id {
-            "onResidual" => matches!(
+            "onResidual" | "onResidual" => matches!(
                 condition_id,
                 "brn" | "psn" | "tox" | "leechseed"
+            ),
+            "TryPrimaryHit" | "onTryPrimaryHit" => matches!(
+                condition_id,
+                "substitute"
             ),
             _ => false,
         }

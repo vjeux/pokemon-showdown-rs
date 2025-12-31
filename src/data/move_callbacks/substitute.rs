@@ -295,6 +295,8 @@ pub mod condition {
         let (bypasses_sub, infiltrates, is_ohko, move_id) = match &battle.active_move {
             Some(m) => {
                 let bypasses = m.flags.bypasssub;
+                eprintln!("[SUBSTITUTE onTryPrimaryHit] move={}, bypasssub={}, sound={}, infiltrates={}",
+                    m.name, m.flags.bypasssub, m.flags.sound, m.infiltrates);
                 (
                     bypasses,
                     m.infiltrates,
