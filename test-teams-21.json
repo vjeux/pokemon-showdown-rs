@@ -1,0 +1,360 @@
+{
+  "seed": [
+    0,
+    0,
+    0,
+    21
+  ],
+  "p1": [
+    {
+      "species": "Tauros",
+      "level": 82,
+      "ability": "Sheer Force",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "moves": [
+        "throatchop",
+        "zenheadbutt",
+        "closecombat",
+        "bodyslam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Armarouge",
+      "level": 80,
+      "ability": "Weak Armor",
+      "item": "Choice Specs",
+      "nature": "Hardy",
+      "moves": [
+        "psyshock",
+        "aurasphere",
+        "energyball",
+        "armorcannon"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Swampert",
+      "level": 83,
+      "ability": "Torrent",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "moves": [
+        "earthquake",
+        "roar",
+        "flipturn",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Zacian",
+      "level": 69,
+      "ability": "Intrepid Sword",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "moves": [
+        "swordsdance",
+        "playrough",
+        "closecombat",
+        "wildcharge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Camerupt",
+      "level": 91,
+      "ability": "Solid Rock",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "moves": [
+        "stealthrock",
+        "roar",
+        "overheat",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Zangoose",
+      "level": 85,
+      "ability": "Toxic Boost",
+      "item": "Toxic Orb",
+      "nature": "Hardy",
+      "moves": [
+        "knockoff",
+        "quickattack",
+        "facade",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "species": "Sandaconda",
+      "level": 84,
+      "ability": "Shed Skin",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "moves": [
+        "stoneedge",
+        "coil",
+        "glare",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Bruxish",
+      "level": 85,
+      "ability": "Strong Jaw",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "moves": [
+        "crunch",
+        "psychicfangs",
+        "aquajet",
+        "wavecrash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Magmortar",
+      "level": 88,
+      "ability": "Flame Body",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "moves": [
+        "focusblast",
+        "willowisp",
+        "thunderbolt",
+        "fireblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Iron Moth",
+      "level": 78,
+      "ability": "Quark Drive",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "moves": [
+        "morningsun",
+        "sludgewave",
+        "fierydance",
+        "energyball"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Hitmonlee",
+      "level": 85,
+      "ability": "Unburden",
+      "item": "White Herb",
+      "nature": "Hardy",
+      "moves": [
+        "knockoff",
+        "poisonjab",
+        "closecombat",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Malamar",
+      "level": 82,
+      "ability": "Contrary",
+      "item": "Chesto Berry",
+      "nature": "Hardy",
+      "moves": [
+        "superpower",
+        "psychocut",
+        "rest",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

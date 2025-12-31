@@ -384,7 +384,7 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
 
 #[test]
 fn test_battle_state_comparison() {
-    let seed = PRNGSeed::Gen5([12345, 23456, 11111, 22222]);
+    let seed = PRNGSeed::Gen5([0, 0, 0, 21]);
     println!("Running deterministic battle with seed: {:?}", seed);
 
     let log = run_battle_with_states(seed, 100);
@@ -396,6 +396,14 @@ fn test_battle_state_comparison() {
     println!("Battle completed in {} turns", log.summary.turns);
     println!("Winner: {:?}", log.summary.winner);
     println!("Output saved to: {}", output_path);
+
+    // Print turn 1 results for comparison
+    if log.states.len() > 1 {
+        let turn1 = &log.states[1];
+        let p1_hp = turn1.state.sides[0].pokemon[0].hp;
+        let p2_hp = turn1.state.sides[1].pokemon[0].hp;
+        println!("After turn 1: P1 HP={}, P2 HP={}", p1_hp, p2_hp);
+    }
 }
 
 #[cfg(test)]
