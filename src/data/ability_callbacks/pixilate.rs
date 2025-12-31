@@ -2,10 +2,11 @@
 //!
 //! Pokemon Showdown - http://pokemonshowdown.com/
 //!
-//! Generated from data/abilities.ts
+//! Converts Normal-type moves to Fairy-type and boosts their power by 1.2x (Gen 8+)
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::ID;
 
 /// onModifyType(move, pokemon) {
 ///     const noModifyType = [
@@ -17,16 +18,93 @@ use crate::event::EventResult;
 ///         move.typeChangerBoosted = this.effect;
 ///     }
 /// }
-pub fn on_modify_type(_battle: &mut Battle, _move_id: &str, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    // Get active move
+    let active_move = match &battle.active_move {
+        Some(m) => m.clone(),
+        None => return EventResult::Continue,
+    };
+
+    // Check if move type is Normal
+    if active_move.move_type != "Normal" {
+        return EventResult::Continue;
+    }
+
+    // List of moves that can't be converted (unless Max move)
+    let no_modify_type = [
+        "judgment", "multiattack", "naturalgift", "revelationdance",
+        "technoblast", "terrainpulse", "weatherball"
+    ];
+
+    // Check exclusions
+    if no_modify_type.contains(&active_move.id.as_str()) && !active_move.is_max {
+        return EventResult::Continue;
+    }
+
+    // Don't change Z-moves (except Status category)
+    if active_move.is_z && active_move.category != "Status" {
+        return EventResult::Continue;
+    }
+
+    // Don't change Tera Blast if Pokemon is terastallized
+    if active_move.name == "Tera Blast" {
+        // Check if Pokemon is terastallized (terastallized field is Option<String>)
+        let is_terastallized = if let Some(side) = battle.sides.get(pokemon_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(pokemon_pos.1) {
+                pokemon.terastallized.is_some()
+            } else {
+                false
+            }
+        } else {
+            false
+        };
+
+        if is_terastallized {
+            return EventResult::Continue;
+        }
+    }
+
+    // Convert to Fairy type and mark as boosted
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.move_type = "Fairy".to_string();
+        active_move.type_changer_boosted = Some(ID::new("pixilate"));
+        eprintln!("[PIXILATE] Changed {} from Normal to Fairy", active_move.name);
+    }
+
     EventResult::Continue
 }
 
 /// onBasePower(basePower, pokemon, target, move) {
 ///     if (move.typeChangerBoosted === this.effect) return this.chainModify([4915, 4096]);
 /// }
-pub fn on_base_power(_battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
-}
+pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+    eprintln!("[PIXILATE on_base_power] CALLED! base_power={}", base_power);
 
+    // Check if this move was boosted by Pixilate
+    let should_boost = if let Some(ref active_move) = battle.active_move {
+        eprintln!("[PIXILATE on_base_power] active_move type_changer_boosted={:?}", active_move.type_changer_boosted);
+        if let Some(ref booster) = active_move.type_changer_boosted {
+            eprintln!("[PIXILATE on_base_power] booster={}, checking if pixilate", booster.as_str());
+            booster.as_str() == "pixilate"
+        } else {
+            eprintln!("[PIXILATE on_base_power] No type_changer_boosted set");
+            false
+        }
+    } else {
+        eprintln!("[PIXILATE on_base_power] No active_move!");
+        false
+    };
+
+    eprintln!("[PIXILATE on_base_power] should_boost={}", should_boost);
+
+    if !should_boost {
+        return EventResult::Continue;
+    }
+
+    // Return the modifier 4915/4096 (approximately 1.2x, used in Gen 8+)
+    // JavaScript: this.chainModify([4915, 4096])
+    // The event system will multiply: base_power * (4915 / 4096) = 90 * 1.1999... = 107.95
+    eprintln!("[PIXILATE] Applying power boost modifier 4915/4096 (≈1.2x)");
+
+    EventResult::Number(4915)
+}

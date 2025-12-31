@@ -121,8 +121,13 @@ impl Battle {
                 // JS: const ability = pokemon.getAbility();
                 // Add ability handler if it has callback for this event
                 // IMPORTANT: Must use ability_has_callback, not has_callback
-                if !pokemon.ability.is_empty() && self.ability_has_callback(pokemon.ability.as_str(), event_id) {
-                    handlers.push((pokemon.ability.clone(), Some(target)));
+                if !pokemon.ability.is_empty() {
+                    let has_cb = self.ability_has_callback(pokemon.ability.as_str(), event_id);
+                    eprintln!("[FIND_POKEMON_HANDLERS] Ability {} ability_has_callback({})={}", pokemon.ability, event_id, has_cb);
+                    if has_cb {
+                        eprintln!("[FIND_POKEMON_HANDLERS] Adding ability handler: {}", pokemon.ability);
+                        handlers.push((pokemon.ability.clone(), Some(target)));
+                    }
                 }
 
                 // JS: const item = pokemon.getItem();

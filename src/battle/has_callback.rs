@@ -59,22 +59,22 @@ impl Battle {
         }
 
         match event_id {
-            "AllyBasePower" => matches!(
+            "AllyBasePower" | "onAllyBasePower" => matches!(
                 ability_id,
                 "battery" | "powerspot" | "steelyspirit"
             ),
-            "AnyBasePower" => matches!(
+            "AnyBasePower" | "onAnyBasePower" => matches!(
                 ability_id,
                 "darkaura" | "fairyaura"
             ),
-            "BasePower" => matches!(
+            "BasePower" | "onBasePower" => matches!(
                 ability_id,
                 "aerilate" | "analytic" | "flareboost" | "galvanize" | "ironfist" |
                 "megalauncher" | "normalize" | "pixilate" | "punkrock" | "reckless" |
                 "refrigerate" | "rivalry" | "sandforce" | "sharpness" | "sheerforce" |
                 "strongjaw" | "supremeoverlord" | "technician" | "toughclaws" | "toxicboost"
             ),
-            "SourceBasePower" => matches!(
+            "SourceBasePower" | "onSourceBasePower" => matches!(
                 ability_id,
                 "dryskin"
             ),
@@ -375,7 +375,7 @@ impl Battle {
                 "chlorophyll" | "quickfeet" | "sandrush" | "slowstart" | "slushrush" |
                 "surgesurfer" | "swiftswim"
             ),
-            "onModifyType" => matches!(
+            "ModifyType" | "onModifyType" => matches!(
                 ability_id,
                 "aerilate" | "galvanize" | "liquidvoice" | "normalize" | "pixilate" |
                 "refrigerate"
