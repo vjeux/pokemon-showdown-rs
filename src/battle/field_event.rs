@@ -304,9 +304,65 @@ impl Battle {
                 }
             }
 
-            // TODO: Handle Residual event duration decrements
-            // This requires accessing handler.state.duration which is not available
-            // in the simplified handler structure
+            // JS: if (eventid === 'Residual' && handler.end && handler.state?.duration) {
+            //         handler.state.duration--;
+            //         if (!handler.state.duration) {
+            //             const endCallArgs = handler.endCallArgs || [handler.effectHolder, effect.id];
+            //             handler.end.call(...endCallArgs as [any, ...any[]]);
+            //             if (this.ended) return;
+            //             continue;
+            //         }
+            //     }
+            if event_id == "Residual" {
+                // Handle volatile/status duration decrements
+                if let Some((side_idx, poke_idx)) = handler.holder {
+                    let should_remove = {
+                        if let Some(pokemon) = self.sides.get_mut(side_idx)
+                            .and_then(|s| s.pokemon.get_mut(poke_idx)) {
+
+                            // Check if this is a volatile with duration
+                            if let Some(volatile_state) = pokemon.volatiles.get_mut(&handler.effect_id) {
+                                if let Some(duration) = volatile_state.duration.as_mut() {
+                                    eprintln!("[FIELD_EVENT] Decrementing duration for volatile '{}' on {} from {}",
+                                        handler.effect_id, pokemon.name, *duration);
+                                    *duration -= 1;
+                                    if *duration == 0 {
+                                        eprintln!("[FIELD_EVENT] Volatile '{}' on {} expired, removing",
+                                            handler.effect_id, pokemon.name);
+                                        true
+                                    } else {
+                                        eprintln!("[FIELD_EVENT] Volatile '{}' on {} duration now {}",
+                                            handler.effect_id, pokemon.name, *duration);
+                                        false
+                                    }
+                                } else {
+                                    false
+                                }
+                            } else {
+                                // Might be status, ability, or item state - not yet implemented
+                                false
+                            }
+                        } else {
+                            false
+                        }
+                    };
+
+                    // Remove expired volatile
+                    if should_remove {
+                        if let Some(pokemon) = self.sides.get_mut(side_idx)
+                            .and_then(|s| s.pokemon.get_mut(poke_idx)) {
+                            pokemon.volatiles.remove(&handler.effect_id);
+                            eprintln!("[FIELD_EVENT] Removed expired volatile '{}', remaining volatiles: {}",
+                                handler.effect_id, pokemon.volatiles.len());
+                        }
+                        // Skip calling the event handler for expired effects
+                        if self.ended {
+                            return;
+                        }
+                        continue;
+                    }
+                }
+            }
 
             // JS: let handlerEventid = eventid;
             //     if ((handler.effectHolder as Side).sideConditions) handlerEventid = `Side${eventid}`;
