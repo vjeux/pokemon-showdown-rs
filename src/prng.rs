@@ -367,7 +367,14 @@ impl PRNG {
 
         // Log PRNG calls (can be enabled for debugging)
         if std::env::var("RUST_LOG_PRNG").is_ok() && self.call_count <= 50 {
-            eprintln!("[PRNG #{}] value={}", self.call_count, value);
+            let bt = std::backtrace::Backtrace::force_capture();
+            let bt_str = format!("{}", bt);
+            let caller = bt_str.lines()
+                .filter(|line| !line.contains("prng.rs") && !line.contains("std::") && !line.contains("core::"))
+                .take(5)
+                .collect::<Vec<_>>()
+                .join("\n    ");
+            eprintln!("[PRNG #{}] value={}\n    {}", self.call_count, value, caller);
         }
 
         value

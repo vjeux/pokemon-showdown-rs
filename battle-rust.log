@@ -1,21 +1,21 @@
-|t:|1767192503
+|t:|1767199520
 |gametype|singles
 |player|p1|Player 1||
 |player|p2|Player 2||
 |gen|9
 |tier|gen9randombattle
 |
-|t:|1767192503
+|t:|1767199520
 |teamsize|p1|6
 |teamsize|p2|6
 |start
 |switch|p1: Grubbin|grubbin, L95, M|240/240
-|switch|p2: Slowbro-Mega|slowbromega, L93, M|324/324
+|switch|p2: Slowbro-Mega|slowbromega, L93, F|324/324
 |-start|p1a|typechange|Bug|[silent]
 |-start|p2a|typechange|Water/Psychic|[silent]
 |turn|1
 |
-|t:|1767192503
+|t:|1767199520
 |move|p1: Grubbin|Knock Off
 |-supereffective|p2a
 |-damage|p2a|260/324
@@ -26,10 +26,10 @@
 |upkeep
 |turn|2
 |
-|t:|1767192503
+|t:|1767199520
 |move|p1: Grubbin|Knock Off
 |-supereffective|p2a
-|-damage|p2a|218/324
+|-damage|p2a|216/324
 |move|p2: Slowbro-Mega|Snowscape
 |-damage|p1a|240/240
 |

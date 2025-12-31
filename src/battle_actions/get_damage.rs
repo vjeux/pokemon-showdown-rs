@@ -75,43 +75,66 @@ pub fn get_damage(
 
     let mut base_power = move_data.base_power;
 
-    // Calculate critical hit
-    // JavaScript: let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
-    let mut crit_ratio = move_data.crit_ratio;
-
-    // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
-    if let Some(modified_crit) = battle.run_event(
-        "ModifyCritRatio",
-        Some(source_pos),
-        Some(target_pos),
-        Some(&move_data.id),
-        Some(crit_ratio),
-    ) {
-        crit_ratio = modified_crit;
+    // JavaScript: if (!basePower) return basePower === 0 ? void 0 : basePower;
+    // CRITICAL: This check must happen BEFORE the crit check!
+    // If basePower is 0, return early (undefined for success, or the value for failure)
+    if base_power == 0 {
+        // For moves like Punishment, BasePower event will set power from 0
+        // But we need to check this BEFORE critical hit calculation
+        // JavaScript returns `void 0` (undefined) for basePower === 0, meaning "success with no damage"
+        // We'll continue to the BasePower event to see if it gets set to non-zero
+        // But we skip the crit check for now
     }
 
-    // Clamp crit ratio based on generation
-    let crit_mult = if battle.gen <= 5 {
-        crit_ratio = crit_ratio.clamp(0, 5);
-        [0, 16, 8, 4, 3, 2]
-    } else if battle.gen == 6 {
-        crit_ratio = crit_ratio.clamp(0, 4);
-        [0, 16, 8, 2, 1, 0] // Padded to size 6, last element never accessed
-    } else {
-        crit_ratio = crit_ratio.clamp(0, 4);
-        [0, 24, 8, 2, 1, 0] // Padded to size 6, last element never accessed
-    };
-
-    // Determine if this is a critical hit
-    // JavaScript: moveHit.crit = move.willCrit || false; if (move.willCrit === undefined && critRatio) moveHit.crit = this.battle.randomChance(1, critMult[critRatio]);
+    // Calculate critical hit only if we might deal damage
+    // JavaScript: let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
+    let mut crit_ratio = move_data.crit_ratio;
     let mut is_crit = false;
 
-    // Check if will_crit is explicitly set in active_move
-    if let Some(ref active_move) = battle.active_move {
-        if let Some(will_crit) = active_move.will_crit {
-            is_crit = will_crit;
+    // Only calculate crit if basePower is non-zero
+    // This prevents PRNG calls for non-damaging moves
+    if base_power > 0 {
+        // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
+        if let Some(modified_crit) = battle.run_event(
+            "ModifyCritRatio",
+            Some(source_pos),
+            Some(target_pos),
+            Some(&move_data.id),
+            Some(crit_ratio),
+        ) {
+            crit_ratio = modified_crit;
+        }
+
+        // Clamp crit ratio based on generation
+        let crit_mult = if battle.gen <= 5 {
+            crit_ratio = crit_ratio.clamp(0, 5);
+            [0, 16, 8, 4, 3, 2]
+        } else if battle.gen == 6 {
+            crit_ratio = crit_ratio.clamp(0, 4);
+            [0, 16, 8, 2, 1, 0] // Padded to size 6, last element never accessed
         } else {
-            // will_crit is None (undefined), so roll for crit
+            crit_ratio = crit_ratio.clamp(0, 4);
+            [0, 24, 8, 2, 1, 0] // Padded to size 6, last element never accessed
+        };
+
+        // Determine if this is a critical hit
+        // JavaScript: moveHit.crit = move.willCrit || false; if (move.willCrit === undefined && critRatio) moveHit.crit = this.battle.randomChance(1, critMult[critRatio]);
+
+        // Check if will_crit is explicitly set in active_move
+        if let Some(ref active_move) = battle.active_move {
+            if let Some(will_crit) = active_move.will_crit {
+                is_crit = will_crit;
+            } else {
+                // will_crit is None (undefined), so roll for crit
+                if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
+                    let crit_chance = crit_mult[crit_ratio as usize];
+                    if crit_chance > 0 {
+                        is_crit = battle.random_chance(1, crit_chance);
+                    }
+                }
+            }
+        } else {
+            // No active_move, roll normally if crit_ratio > 0
             if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
                 let crit_chance = crit_mult[crit_ratio as usize];
                 if crit_chance > 0 {
@@ -119,21 +142,13 @@ pub fn get_damage(
                 }
             }
         }
-    } else {
-        // No active_move, roll normally if crit_ratio > 0
-        if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
-            let crit_chance = crit_mult[crit_ratio as usize];
-            if crit_chance > 0 {
-                is_crit = battle.random_chance(1, crit_chance);
-            }
-        }
-    }
 
-    // Trigger CriticalHit event to allow abilities to prevent/modify crit
-    // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
-    if is_crit {
-        is_crit =
-            battle.run_event_bool("CriticalHit", Some(target_pos), None, Some(&move_data.id));
+        // Trigger CriticalHit event to allow abilities to prevent/modify crit
+        // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
+        if is_crit {
+            is_crit =
+                battle.run_event_bool("CriticalHit", Some(target_pos), None, Some(&move_data.id));
+        }
     }
 
     // Trigger BasePower event to allow abilities/items to modify base power
