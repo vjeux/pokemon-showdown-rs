@@ -26,21 +26,8 @@ pub fn base_power_callback(
     };
 
     // let power = Math.floor(25 * target.getStat('spe') / pokemon.getStat('spe')) + 1;
-    let target_spe = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.get_stat(crate::dex_data::StatID::Spe, false)
-    };
-
-    let pokemon_spe = {
-        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon_pokemon.get_stat(crate::dex_data::StatID::Spe, false)
-    };
+    let target_spe = battle.get_pokemon_stat(target, crate::dex_data::StatID::Spe, false, false);
+    let pokemon_spe = battle.get_pokemon_stat(pokemon, crate::dex_data::StatID::Spe, false, false);
 
     let mut power = if pokemon_spe == 0 {
         1

@@ -40,13 +40,7 @@ pub fn on_hit(
     }
 
     // const atk = target.getStat('atk', false, true);
-    let atk = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.get_stat(StatID::Atk, false)
-    };
+    let atk = battle.get_pokemon_stat(target, StatID::Atk, false, true);
 
     // const success = this.boost({ atk: -1 }, target, source, null, false, true);
     let success = battle.boost(&[("atk", -1)], target, Some(source), None, false, false);

@@ -104,6 +104,7 @@ mod all_choices_done;
 mod check_move_makes_contact;
 mod get_action_speed;
 mod get_pokemon_action_speed;
+mod get_pokemon_stat;
 mod swap_position;
 mod get_category;
 mod clear_request;

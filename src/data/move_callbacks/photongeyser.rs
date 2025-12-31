@@ -18,15 +18,10 @@ pub fn on_modify_move(
     let pokemon = pokemon_pos;
 
     // if (pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)) move.category = 'Physical';
-    let (atk_stat, spa_stat) = {
-        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        let atk = pokemon_pokemon.get_stat(crate::dex_data::StatID::Atk, false);
-        let spa = pokemon_pokemon.get_stat(crate::dex_data::StatID::SpA, false);
-        (atk, spa)
-    };
+    let (atk_stat, spa_stat) = (
+        battle.get_pokemon_stat(pokemon, crate::dex_data::StatID::Atk, false, true),
+        battle.get_pokemon_stat(pokemon, crate::dex_data::StatID::SpA, false, true),
+    );
 
     if atk_stat > spa_stat {
         // move.category = 'Physical';

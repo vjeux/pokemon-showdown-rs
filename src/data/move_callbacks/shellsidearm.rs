@@ -70,28 +70,18 @@ pub fn on_modify_move(
     // const spa = pokemon.getStat('spa', false, true);
     // const def = target.getStat('def', false, true);
     // const spd = target.getStat('spd', false, true);
-    let (atk, spa, level) = {
+    let level = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (
-            pokemon.get_stat(StatID::Atk, false),
-            pokemon.get_stat(StatID::SpA, false),
-            pokemon.level,
-        )
+        pokemon.level
     };
 
-    let (def, spd) = {
-        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        (
-            target.get_stat(StatID::Def, false),
-            target.get_stat(StatID::SpD, false),
-        )
-    };
+    let atk = battle.get_pokemon_stat(pokemon_pos, StatID::Atk, false, true);
+    let spa = battle.get_pokemon_stat(pokemon_pos, StatID::SpA, false, true);
+    let def = battle.get_pokemon_stat(target_pos, StatID::Def, false, true);
+    let spd = battle.get_pokemon_stat(target_pos, StatID::SpD, false, true);
 
     // const physical = Math.floor(Math.floor(Math.floor(Math.floor(2 * pokemon.level / 5 + 2) * 90 * atk) / def) / 50);
     // const special = Math.floor(Math.floor(Math.floor(Math.floor(2 * pokemon.level / 5 + 2) * 90 * spa) / spd) / 50);

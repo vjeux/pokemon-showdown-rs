@@ -36,8 +36,8 @@ pub fn on_modify_type(
         if is_terapagos {
             // if (pokemon.terastallized && pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true))
             let should_be_physical = if pokemon_ref.terastallized.is_some() {
-                let atk_stat = pokemon_ref.get_stat(StatID::Atk, true);
-                let spa_stat = pokemon_ref.get_stat(StatID::SpA, true);
+                let atk_stat = battle.get_pokemon_stat(pokemon, StatID::Atk, false, true);
+                let spa_stat = battle.get_pokemon_stat(pokemon, StatID::SpA, false, true);
                 atk_stat > spa_stat
             } else {
                 false

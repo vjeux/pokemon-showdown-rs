@@ -24,7 +24,7 @@ impl Pokemon {
     // 		return statName;
     // 	}
     //
-    pub fn get_best_stat(&self, unboosted: bool) -> StatID {
+    pub fn get_best_stat(&self, battle: &mut Battle, unboosted: bool, unmodified: bool) -> StatID {
         let stats = [
             StatID::Atk,
             StatID::Def,
@@ -35,8 +35,10 @@ impl Pokemon {
         let mut best_stat = StatID::Atk;
         let mut best_value = 0;
 
+        let pokemon_pos = (self.side_index, self.position);
+
         for stat in stats {
-            let value = self.get_stat(stat, unboosted);
+            let value = battle.get_pokemon_stat(pokemon_pos, stat, unboosted, unmodified);
             if value > best_value {
                 best_value = value;
                 best_stat = stat;

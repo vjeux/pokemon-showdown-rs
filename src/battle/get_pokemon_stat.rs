@@ -1,10 +1,12 @@
 use crate::*;
 use crate::dex_data::StatID;
 
-impl Pokemon {
+impl Battle {
 
-    /// Get a stat value with boosts applied
-    //
+    /// Get a Pokemon's stat value with boosts applied
+    /// Equivalent to pokemon.ts getStat() (pokemon.ts:20-63)
+    ///
+    /// JavaScript source:
     // 	getStat(statName: StatIDExceptHP, unboosted?: boolean, unmodified?: boolean) {
     // 		statName = toID(statName) as StatIDExceptHP;
     // 		// @ts-expect-error type checking prevents 'hp' from being passed, but we're paranoid
@@ -50,21 +52,31 @@ impl Pokemon {
     // 		return stat;
     // 	}
     //
-    pub fn get_stat(&self, battle: &mut Battle, stat: StatID, unboosted: bool, unmodified: bool) -> i32 {
+    pub fn get_pokemon_stat(&mut self, pokemon_pos: (usize, usize), stat: StatID, unboosted: bool, unmodified: bool) -> i32 {
         // JS: let stat = this.storedStats[statName];
-        let base_stat = self.stored_stats.get(stat);
-        if unboosted {
-            return base_stat;
-        }
+        // Get pokemon data we need
+        let (base_stat, boost) = {
+            let pokemon = match self.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return 0,
+            };
 
-        // JS: let boost = boosts[statName];
-        let boost = match stat {
-            StatID::HP => return base_stat,
-            StatID::Atk => self.boosts.atk,
-            StatID::Def => self.boosts.def,
-            StatID::SpA => self.boosts.spa,
-            StatID::SpD => self.boosts.spd,
-            StatID::Spe => self.boosts.spe,
+            let base_stat = pokemon.stored_stats.get(stat);
+            if unboosted {
+                return base_stat;
+            }
+
+            // JS: let boost = boosts[statName];
+            let boost = match stat {
+                StatID::HP => return base_stat,
+                StatID::Atk => pokemon.boosts.atk,
+                StatID::Def => pokemon.boosts.def,
+                StatID::SpA => pokemon.boosts.spa,
+                StatID::SpD => pokemon.boosts.spd,
+                StatID::Spe => pokemon.boosts.spe,
+            };
+
+            (base_stat, boost)
         };
 
         // JS: const boostTable = [1, 1.5, 2, 2.5, 3, 3.5, 4];
@@ -94,11 +106,8 @@ impl Pokemon {
                 StatID::HP => return stat_value, // HP never has Modify event
             };
 
-            // Get pokemon position for event
-            let pokemon_pos = (self.side_index, self.position);
-
             // Run the Modify* event (e.g., ModifySpe for Slow Start)
-            if let Some(modified_stat) = battle.run_event(event_name, Some(pokemon_pos), None, None, Some(stat_value)) {
+            if let Some(modified_stat) = self.run_event(event_name, Some(pokemon_pos), None, None, Some(stat_value)) {
                 stat_value = modified_stat;
             }
         }

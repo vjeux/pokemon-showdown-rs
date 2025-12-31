@@ -140,9 +140,9 @@ pub fn on_modify_move(
 
         if terastallized.is_some() {
             // pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true)
-            // Third parameter "true" means unboosted
-            let atk_stat = pokemon_ref.get_stat(StatID::Atk, true);
-            let spa_stat = pokemon_ref.get_stat(StatID::SpA, true);
+            // Second parameter false = apply boosts, third parameter true = don't run Modify events
+            let atk_stat = battle.get_pokemon_stat(pokemon, StatID::Atk, false, true);
+            let spa_stat = battle.get_pokemon_stat(pokemon, StatID::SpA, false, true);
             (terastallized, atk_stat > spa_stat)
         } else {
             (None, false)

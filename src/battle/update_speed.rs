@@ -23,8 +23,8 @@ impl Battle {
         let mut speeds: Vec<((usize, usize), i32)> = Vec::new();
 
         for (side_idx, poke_idx) in &indices {
-            if let Some(pokemon) = self.sides.get(*side_idx).and_then(|s| s.pokemon.get(*poke_idx)) {
-                let new_speed = pokemon.get_action_speed(self);
+            if let Some(_pokemon) = self.sides.get(*side_idx).and_then(|s| s.pokemon.get(*poke_idx)) {
+                let new_speed = self.get_pokemon_action_speed(*side_idx, *poke_idx);
                 speeds.push(((*side_idx, *poke_idx), new_speed));
             }
         }

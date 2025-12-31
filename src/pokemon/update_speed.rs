@@ -9,7 +9,7 @@ impl Pokemon {
     // 		this.speed = this.getActionSpeed();
     // 	}
     //
-    pub fn update_speed(&mut self, battle: &Battle) {
+    pub fn update_speed(&mut self, battle: &mut Battle) {
         // JS: this.speed = this.getActionSpeed();
         self.speed = self.get_action_speed(battle);
     }

@@ -16,9 +16,10 @@ impl Pokemon {
     // 		return this.battle.trunc(speed, 13);
     // 	}
     //
-    pub fn get_action_speed(&self, battle: &Battle) -> i32 {
+    pub fn get_action_speed(&self, battle: &mut Battle) -> i32 {
         // JS: let speed = this.getStat('spe', false, false);
-        let mut speed = self.get_stat(StatID::Spe, false);
+        let pokemon_pos = (self.side_index, self.position);
+        let mut speed = battle.get_pokemon_stat(pokemon_pos, StatID::Spe, false, false);
 
         // JS: const trickRoomCheck = this.battle.ruleTable.has('twisteddimensionmod') ?
         // JS:     !this.battle.field.getPseudoWeather('trickroom') : this.battle.field.getPseudoWeather('trickroom');

@@ -178,20 +178,23 @@ impl Battle {
 
         // JS: if (handler.effectHolder && (handler.effectHolder as Pokemon).getStat)
         if let Some(effect_holder) = handler.effect_holder {
+            // Check if we need special handling for Magic Bounce
+            let needs_magic_bounce_speed = handler.effect_type == EffectType::Ability
+                && handler.effect_id.as_str() == "magicbounce"
+                && callback_name == "onAllyTryHitSide";
+
             // Get Pokemon speed
             if let Some(side) = self.sides.get(effect_holder.0) {
                 if let Some(pokemon) = side.pokemon.get(effect_holder.1) {
                     handler.speed = Some(pokemon.stored_stats.spe);
 
                     // JS: if (handler.effect.effectType === 'Ability' && handler.effect.name === 'Magic Bounce' && callbackName === 'onAllyTryHitSide')
-                    if handler.effect_type == EffectType::Ability
-                        && handler.effect_id.as_str() == "magicbounce"
-                        && callback_name == "onAllyTryHitSide"
-                    {
+                    if needs_magic_bounce_speed {
                         // JS: handler.speed = pokemon.getStat('spe', true, true);
                         // Get unmodified speed stat (unboosted=true, unmodified=true)
-                        // When both flags are true, getStat returns storedStats without any modifications
-                        handler.speed = Some(pokemon.get_stat(StatID::Spe, true));
+                        // Need to call get_pokemon_stat
+                        let speed_stat = self.get_pokemon_stat(effect_holder, StatID::Spe, true, true);
+                        handler.speed = Some(speed_stat);
                     }
 
                     // JS: if (callbackName.endsWith('SwitchIn'))
