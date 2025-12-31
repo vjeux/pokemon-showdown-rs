@@ -26,6 +26,16 @@ pub fn try_spread_move_hit(
     // Step 0-3: Invulnerability, TryHit, Type Immunity, Move-specific Immunity
     // TODO: Implement these steps when needed
 
+    // PrepareHit event - must be called BEFORE accuracy check
+    // JavaScript (battle-actions.ts:587): this.battle.runEvent('PrepareHit', pokemon, targets[0], move);
+    battle.run_event(
+        "PrepareHit",
+        Some(pokemon_pos),
+        Some(targets[0]),
+        Some(move_id),
+        None,
+    );
+
     // Step 4: Check accuracy - THIS WAS THE MISSING STEP!
     let hit_results = crate::battle_actions::hit_step_accuracy(battle, targets, pokemon_pos, move_id);
 

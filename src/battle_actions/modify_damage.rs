@@ -101,6 +101,7 @@ pub fn modify_damage(
 
     // baseDamage = this.battle.randomizer(baseDamage);
     base_damage = battle.randomizer(base_damage);
+    eprintln!("[MODIFY_DAMAGE] After randomizer: base_damage={}", base_damage);
 
     // Get source and target data for STAB and type effectiveness
     let (source_types, target_types, target_slot) = {
@@ -150,6 +151,7 @@ pub fn modify_damage(
         let has_stab = source_types.iter().any(|t| t == &move_data.move_type);
         if has_stab {
             base_damage = battle.modify(base_damage, 3, 2);
+            eprintln!("[MODIFY_DAMAGE] After STAB: base_damage={}", base_damage);
         }
     }
 
@@ -169,19 +171,24 @@ pub fn modify_damage(
     //   }
     // }
     let type_mod = battle.get_type_effectiveness_mod(&move_data.move_type, &target_types);
+    eprintln!("[MODIFY_DAMAGE] Type effectiveness: move_type={}, target_types={:?}, type_mod={}",
+        move_data.move_type, target_types, type_mod);
     if type_mod > 0 {
         battle.add("-supereffective", &[Arg::String(target_slot.clone())]);
         for _ in 0..type_mod {
             base_damage *= 2;
         }
+        eprintln!("[MODIFY_DAMAGE] After super effective: base_damage={}", base_damage);
     } else if type_mod < 0 {
         battle.add("-resisted", &[Arg::String(target_slot.clone())]);
         for _ in type_mod..0 {
             base_damage = battle.trunc(base_damage as f64 / 2.0, None) as i32;
         }
+        eprintln!("[MODIFY_DAMAGE] After resisted: base_damage={}", base_damage);
     }
 
     // baseDamage = this.battle.runEvent("ModifyDamage", pokemon, target, move, baseDamage);
+    eprintln!("[MODIFY_DAMAGE] Before ModifyDamage event: base_damage={}", base_damage);
     if let Some(modified) = battle.run_event(
         "ModifyDamage",
         Some(source_pos),
@@ -190,6 +197,7 @@ pub fn modify_damage(
         Some(base_damage),
     ) {
         base_damage = modified;
+        eprintln!("[MODIFY_DAMAGE] After ModifyDamage event: base_damage={}", base_damage);
     }
 
     // if (this.battle.gen !== 5 && !baseDamage) return 1;
@@ -200,5 +208,7 @@ pub fn modify_damage(
         base_damage
     };
 
-    battle.trunc(final_damage as f64, None) as i32
+    let result = battle.trunc(final_damage as f64, None) as i32;
+    eprintln!("[MODIFY_DAMAGE] FINAL: result={}", result);
+    result
 }

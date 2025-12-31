@@ -1,4 +1,4 @@
-use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, PRNGSeed, ID};
+use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, PRNGSeed, ID, Gender};
 use pokemon_showdown::dex_data::StatsTable;
 use std::fs;
 use std::env;
@@ -34,6 +34,7 @@ fn main() {
         ability: String,
         item: String,
         nature: String,
+        gender: String,
         moves: Vec<String>,
         evs: TestStats,
         ivs: TestStats,
@@ -51,30 +52,48 @@ fn main() {
 
     let test_teams: TestTeams = serde_json::from_str(&test_teams_json).unwrap();
 
-    let team1: Vec<_> = test_teams.p1.iter().map(|set| PokemonSet {
-        name: set.species.clone(),
-        species: set.species.clone(),
-        level: set.level,
-        ability: set.ability.clone(),
-        item: set.item.clone(),
-        nature: set.nature.clone(),
-        moves: set.moves.clone(),
-        evs: StatsTable::new(set.evs.hp, set.evs.atk, set.evs.def, set.evs.spa, set.evs.spd, set.evs.spe),
-        ivs: StatsTable::new(set.ivs.hp, set.ivs.atk, set.ivs.def, set.ivs.spa, set.ivs.spd, set.ivs.spe),
-        ..Default::default()
+    let team1: Vec<_> = test_teams.p1.iter().map(|set| {
+        let gender = match set.gender.as_str() {
+            "M" => Gender::Male,
+            "F" => Gender::Female,
+            "N" => Gender::None,
+            _ => Gender::None,
+        };
+        PokemonSet {
+            name: set.species.clone(),
+            species: set.species.clone(),
+            level: set.level,
+            ability: set.ability.clone(),
+            item: set.item.clone(),
+            nature: set.nature.clone(),
+            gender,
+            moves: set.moves.clone(),
+            evs: StatsTable::new(set.evs.hp, set.evs.atk, set.evs.def, set.evs.spa, set.evs.spd, set.evs.spe),
+            ivs: StatsTable::new(set.ivs.hp, set.ivs.atk, set.ivs.def, set.ivs.spa, set.ivs.spd, set.ivs.spe),
+            ..Default::default()
+        }
     }).collect();
 
-    let team2: Vec<_> = test_teams.p2.iter().map(|set| PokemonSet {
-        name: set.species.clone(),
-        species: set.species.clone(),
-        level: set.level,
-        ability: set.ability.clone(),
-        item: set.item.clone(),
-        nature: set.nature.clone(),
-        moves: set.moves.clone(),
-        evs: StatsTable::new(set.evs.hp, set.evs.atk, set.evs.def, set.evs.spa, set.evs.spd, set.evs.spe),
-        ivs: StatsTable::new(set.ivs.hp, set.ivs.atk, set.ivs.def, set.ivs.spa, set.ivs.spd, set.ivs.spe),
-        ..Default::default()
+    let team2: Vec<_> = test_teams.p2.iter().map(|set| {
+        let gender = match set.gender.as_str() {
+            "M" => Gender::Male,
+            "F" => Gender::Female,
+            "N" => Gender::None,
+            _ => Gender::None,
+        };
+        PokemonSet {
+            name: set.species.clone(),
+            species: set.species.clone(),
+            level: set.level,
+            ability: set.ability.clone(),
+            item: set.item.clone(),
+            nature: set.nature.clone(),
+            gender,
+            moves: set.moves.clone(),
+            evs: StatsTable::new(set.evs.hp, set.evs.atk, set.evs.def, set.evs.spa, set.evs.spd, set.evs.spe),
+            ivs: StatsTable::new(set.ivs.hp, set.ivs.atk, set.ivs.def, set.ivs.spa, set.ivs.spd, set.ivs.spe),
+            ..Default::default()
+        }
     }).collect();
 
     let seed = PRNGSeed::Gen5([

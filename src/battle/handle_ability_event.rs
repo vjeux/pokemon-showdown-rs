@@ -519,7 +519,14 @@ impl Battle {
             }
             "ModifyWeightPriority" => ability_callbacks::dispatch_on_modify_weight_priority(self, ability_id.as_str(), 0, pokemon_pos),
             "PrepareHit" => {
-                ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), None, Some(pokemon_pos), "") // TODO: Wire through actual move_id
+                // Get move_id from active_move context (extract to avoid borrow issues)
+                let move_id_string = if let Some(ref active_move) = self.active_move {
+                    active_move.id.to_string()
+                } else {
+                    String::new()
+                };
+                // For PrepareHit, pokemon_pos is the source (Pokemon using the move)
+                ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), Some(pokemon_pos), None, &move_id_string)
             }
             "Residual" => {
                 ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos)

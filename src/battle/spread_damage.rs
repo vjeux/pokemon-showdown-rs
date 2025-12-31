@@ -206,6 +206,7 @@ impl Battle {
 
                 // Fire Damage event
                 // JavaScript: targetDamage = this.runEvent('Damage', target, source, effect, targetDamage, true);
+                eprintln!("[SPREAD_DAMAGE] Before Damage event: target_damage={}", target_damage);
                 let event_result = self.run_event(
                     "Damage",
                     Some(target_pos),
@@ -215,6 +216,7 @@ impl Battle {
                 );
 
                 if let Some(modified_damage) = event_result {
+                    eprintln!("[SPREAD_DAMAGE] After Damage event: modified_damage={}", modified_damage);
                     target_damage = modified_damage;
                 } else {
                     // Event failed
