@@ -309,5 +309,53 @@ pub fn spread_move_hit(
         }
     }
 
+    // Step 5: Trigger DamagingHit event for abilities that activate on dealing damage
+    // JavaScript (battle-actions.ts:961-971):
+    //   const damagedTargets = [];
+    //   const damagedDamage = [];
+    //   for (const [i, t] of targets.entries()) {
+    //     if (typeof damage[i] === "number" && t) {
+    //       damagedTargets.push(t);
+    //       damagedDamage.push(damage[i]);
+    //     }
+    //   }
+    //   const pokemonOriginalHP = pokemon.hp;
+    //   if (damagedDamage.length && !isSecondary && !isSelf) {
+    //     this.battle.runEvent("DamagingHit", damagedTargets, pokemon, move, damagedDamage);
+    //     ...
+    //   }
+    if !is_secondary && !is_self {
+        // Collect targets that received damage
+        let mut damaged_targets: Vec<(usize, usize)> = Vec::new();
+
+        for (i, &target_opt) in final_targets.iter().enumerate() {
+            if let Some(target_pos) = target_opt {
+                if let Some(damage_opt) = damages.get(i) {
+                    if let Some(damage_val) = damage_opt {
+                        if *damage_val != 0 {
+                            damaged_targets.push(target_pos);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Trigger DamagingHit event if any targets took damage
+        // JavaScript: this.battle.runEvent("DamagingHit", damagedTargets, pokemon, move, damagedDamage);
+        // In JavaScript, runEvent with an array of targets calls the event for each target
+        if !damaged_targets.is_empty() {
+            for &target_pos in &damaged_targets {
+                // The event handler may use random() for abilities like Effect Spore
+                battle.run_event(
+                    "DamagingHit",
+                    Some(target_pos),
+                    Some(source_pos),
+                    Some(move_id),
+                    None,
+                );
+            }
+        }
+    }
+
     (damages, final_targets)
 }
