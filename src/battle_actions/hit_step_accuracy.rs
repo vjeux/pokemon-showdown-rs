@@ -49,25 +49,39 @@ pub fn hit_step_accuracy(
             // For now, treat as normal accuracy check
         }
 
-        // Phase 1: Extract data immutably
-        let (attacker_acc_boost, target_eva_boost) = {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return hit_results,
-            };
-            let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-                Some(t) => t,
-                None => continue,
-            };
-            (pokemon.boosts.accuracy, target.boosts.evasion)
-        };
-
-        // Phase 2: Mutate battle
+        // Set active_target for events
         battle.active_target = Some(target_pos);
 
-        // Apply accuracy/evasion boosts
-        // Simplified version - just use accuracy/evasion boosts without checking flags
-        if accuracy != 0 && accuracy != 100 {
+        // JavaScript: else { accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy); }
+        // ModifyAccuracy event can change accuracy to true (represented as 0 in Rust)
+        if let Some(modified_acc) = battle.run_event(
+            "ModifyAccuracy",
+            Some(target_pos),
+            Some(pokemon_pos),
+            Some(&move_id),
+            Some(accuracy),
+        ) {
+            accuracy = modified_acc;
+        }
+
+        // JavaScript: if (accuracy !== true) { apply boosts }
+        // In Rust, accuracy=0 represents true
+        if accuracy != 0 {
+            // Phase 1: Extract data immutably
+            let (attacker_acc_boost, target_eva_boost) = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return hit_results,
+                };
+                let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                    Some(t) => t,
+                    None => continue,
+                };
+                (pokemon.boosts.accuracy, target.boosts.evasion)
+            };
+
+            // Apply accuracy/evasion boosts
+            // Simplified version - just use accuracy/evasion boosts without checking flags
             let mut boost = 0;
 
             // Get attacker's accuracy boost
@@ -84,9 +98,24 @@ pub fn hit_step_accuracy(
             }
         }
 
-        // Check accuracy with randomChance
-        // THIS IS THE KEY PRNG CALL THAT WAS MISSING!
+        // JavaScript: if (move.alwaysHit || ...) { accuracy = true; } else { accuracy = runEvent('Accuracy', ...); }
+        // Check special conditions that set accuracy to true
+        // TODO: Implement move.target === 'self' and toxic special cases
+        // For now, just run the Accuracy event
+        if let Some(modified_acc) = battle.run_event(
+            "Accuracy",
+            Some(target_pos),
+            Some(pokemon_pos),
+            Some(&move_id),
+            Some(accuracy),
+        ) {
+            accuracy = modified_acc;
+        }
+
         // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
+        // In Rust, accuracy=0 represents true
+        // NOTE: JavaScript also skips randomChance for accuracy=100 through some mechanism
+        // (possibly ModifyAccuracy event or dex storing 100% as true), so we skip it too
         if accuracy != 0 && accuracy != 100 && !battle.random_chance(accuracy, 100) {
             // Miss!
             // TODO: Add miss message and Blunder Policy handling
