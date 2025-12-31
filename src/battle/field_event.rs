@@ -191,6 +191,11 @@ impl Battle {
 
         // JS: this.speedSort(handlers);
         // Sort handlers by Pokemon speed
+        eprintln!("[FIELD_EVENT] Sorting {} handlers before processing", handlers.len());
+        for (i, h) in handlers.iter().enumerate() {
+            eprintln!("[FIELD_EVENT] Handler {}: effect={}, speed={}, is_field={}, is_side={}",
+                i, h.effect_id.as_str(), h.speed, h.is_field, h.is_side);
+        }
         self.speed_sort(&mut handlers, |h| {
             PriorityItem {
                 order: None,

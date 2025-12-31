@@ -807,12 +807,12 @@ impl Battle {
     /// Check if a condition has a callback for an event
     ///
     /// In JavaScript, this is done by checking if effect[callbackName] exists.
-    /// In Rust, we can't do dynamic property lookup, so we delegate to the dispatcher.
-    /// The dispatcher will return EventResult::Continue if the callback isn't implemented.
+    /// In Rust, we check against the dispatcher implementations to see which
+    /// conditions actually have which callbacks.
     ///
-    /// This matches JavaScript's behavior where getCallback() returns undefined for
-    /// non-existent callbacks, and the event system handles undefined gracefully.
-    pub fn condition_has_callback(&self, _condition_id: &str, event_id: &str) -> bool {
+    /// This prevents false positives where we'd add handlers for callbacks
+    /// that don't exist, which would cause incorrect speed_sort shuffling.
+    pub fn condition_has_callback(&self, condition_id: &str, event_id: &str) -> bool {
         // Normalize event name by removing "on" prefix if present for comparison
         let normalized = if event_id.starts_with("on") {
             &event_id[2..]
@@ -825,10 +825,28 @@ impl Battle {
             return false;
         }
 
-        // Return true for all other events - let the dispatcher decide if implemented
-        // This matches JavaScript's approach where we check effect[callbackName] and
-        // get undefined if it doesn't exist, rather than pre-filtering
-        true
+        // Check dispatchers to see which conditions have which callbacks
+        match normalized {
+            "Residual" => matches!(
+                condition_id,
+                // Status conditions (from condition_callbacks.rs)
+                "brn" | "psn" | "tox" |
+                // Volatile conditions (from move_callbacks/mod.rs dispatch_condition_on_residual)
+                "aquaring" | "curse" | "encore" | "firepledge" | "gmaxcannonade" |
+                "gmaxvinelash" | "gmaxvolcalith" | "gmaxwildfire" | "grassyterrain" |
+                "iceball" | "ingrain" | "leechseed" | "nightmare" | "octolock" |
+                "perishsong" | "rollout" | "saltcure" | "syrupbomb" | "uproar" | "wish"
+            ),
+            "TryPrimaryHit" => matches!(
+                condition_id,
+                "substitute"  // Has onTryPrimaryHit
+            ),
+            _ => {
+                // For other events, conservatively return false
+                // This can be expanded as more condition callbacks are implemented
+                false
+            }
+        }
     }
 
     /// Check if a species has a callback for an event

@@ -6,80 +6,6 @@
     9
   ],
   "teams": {
-    "p1": [
-      {
-        "species": "Regigigas",
-        "moves": [
-          "substitute",
-          "bodyslam",
-          "knockoff",
-          "protect"
-        ],
-        "ability": "Slow Start",
-        "item": "Leftovers",
-        "level": 84
-      },
-      {
-        "species": "Tauros",
-        "moves": [
-          "closecombat",
-          "earthquake",
-          "bodyslam",
-          "throatchop"
-        ],
-        "ability": "Sheer Force",
-        "item": "Life Orb",
-        "level": 82
-      },
-      {
-        "species": "Raging Bolt",
-        "moves": [
-          "thunderclap",
-          "calmmind",
-          "dragonpulse",
-          "thunderbolt"
-        ],
-        "ability": "Protosynthesis",
-        "item": "Booster Energy",
-        "level": 78
-      },
-      {
-        "species": "Muk",
-        "moves": [
-          "shadowsneak",
-          "poisonjab",
-          "icepunch",
-          "knockoff"
-        ],
-        "ability": "Poison Touch",
-        "item": "Assault Vest",
-        "level": 86
-      },
-      {
-        "species": "Arbok",
-        "moves": [
-          "trailblaze",
-          "earthquake",
-          "coil",
-          "gunkshot"
-        ],
-        "ability": "Intimidate",
-        "item": "Leftovers",
-        "level": 87
-      },
-      {
-        "species": "Wo-Chien",
-        "moves": [
-          "knockoff",
-          "protect",
-          "leechseed",
-          "gigadrain"
-        ],
-        "ability": "Tablets of Ruin",
-        "item": "Leftovers",
-        "level": 83
-      }
-    ],
     "p2": [
       {
         "species": "Sylveon",
@@ -152,6 +78,80 @@
         "ability": "Cursed Body",
         "item": "Wide Lens",
         "level": 87
+      }
+    ],
+    "p1": [
+      {
+        "species": "Regigigas",
+        "moves": [
+          "substitute",
+          "bodyslam",
+          "knockoff",
+          "protect"
+        ],
+        "ability": "Slow Start",
+        "item": "Leftovers",
+        "level": 84
+      },
+      {
+        "species": "Tauros",
+        "moves": [
+          "closecombat",
+          "earthquake",
+          "bodyslam",
+          "throatchop"
+        ],
+        "ability": "Sheer Force",
+        "item": "Life Orb",
+        "level": 82
+      },
+      {
+        "species": "Raging Bolt",
+        "moves": [
+          "thunderclap",
+          "calmmind",
+          "dragonpulse",
+          "thunderbolt"
+        ],
+        "ability": "Protosynthesis",
+        "item": "Booster Energy",
+        "level": 78
+      },
+      {
+        "species": "Muk",
+        "moves": [
+          "shadowsneak",
+          "poisonjab",
+          "icepunch",
+          "knockoff"
+        ],
+        "ability": "Poison Touch",
+        "item": "Assault Vest",
+        "level": 86
+      },
+      {
+        "species": "Arbok",
+        "moves": [
+          "trailblaze",
+          "earthquake",
+          "coil",
+          "gunkshot"
+        ],
+        "ability": "Intimidate",
+        "item": "Leftovers",
+        "level": 87
+      },
+      {
+        "species": "Wo-Chien",
+        "moves": [
+          "knockoff",
+          "protect",
+          "leechseed",
+          "gigadrain"
+        ],
+        "ability": "Tablets of Ruin",
+        "item": "Leftovers",
+        "level": 83
       }
     ]
   },
