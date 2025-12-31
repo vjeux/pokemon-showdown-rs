@@ -39,7 +39,7 @@ impl Battle {
     }
 
     /// Check if a an ability has a callback for an event
-    fn ability_has_callback(&self, ability_id: &str, event_id: &str) -> bool {
+    pub fn ability_has_callback(&self, ability_id: &str, event_id: &str) -> bool {
         // Gen 5+ special case: abilities use onStart during SwitchIn events
         // This matches JavaScript getCallback() behavior
         // JavaScript: if (callback === undefined && target instanceof Pokemon && this.gen >= 5 && callbackName === 'onSwitchIn' &&
@@ -522,7 +522,7 @@ impl Battle {
     }
 
     /// Check if a an item has a callback for an event
-    fn item_has_callback(&self, item_id: &str, event_id: &str) -> bool {
+    pub fn item_has_callback(&self, item_id: &str, event_id: &str) -> bool {
         // Gen 5+ special case: items use onStart during SwitchIn events
         // This matches JavaScript getCallback() behavior (same logic as abilities)
         // Items don't have onAnySwitchIn callbacks, so always check onStart if gen >= 5
@@ -647,7 +647,7 @@ impl Battle {
     }
 
     /// Check if a a move has a callback for an event
-    fn move_has_callback(&self, move_id: &str, event_id: &str) -> bool {
+    pub fn move_has_callback(&self, move_id: &str, event_id: &str) -> bool {
         match event_id {
             "BasePower" => matches!(
                 move_id,
@@ -805,7 +805,7 @@ impl Battle {
     }
 
     /// Check if a condition has a callback for an event
-    fn condition_has_callback(&self, condition_id: &str, event_id: &str) -> bool {
+    pub fn condition_has_callback(&self, condition_id: &str, event_id: &str) -> bool {
         // Conditions don't have onAnySwitchIn
         if event_id == "onAnySwitchIn" {
             return false;
@@ -822,7 +822,7 @@ impl Battle {
     }
 
     /// Check if a species has a callback for an event
-    fn species_has_callback(&self, _species_id: &str, event_id: &str) -> bool {
+    pub fn species_has_callback(&self, _species_id: &str, event_id: &str) -> bool {
         // Species don't have onAnySwitchIn
         if event_id == "onAnySwitchIn" {
             return false;

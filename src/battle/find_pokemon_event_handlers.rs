@@ -98,16 +98,21 @@ impl Battle {
 
                 // JS: const status = pokemon.getStatus();
                 // Add status handler if it has callback for this event
-                if !pokemon.status.is_empty() && self.has_callback(&pokemon.status, event_id) {
+                // IMPORTANT: Must use condition_has_callback, not has_callback, to avoid checking other effect types
+                if !pokemon.status.is_empty() && self.condition_has_callback(pokemon.status.as_str(), event_id) {
                     handlers.push((pokemon.status.clone(), Some(target)));
                 }
 
                 // JS: for (const id in pokemon.volatiles)
                 // Add volatile handlers if they have callbacks for this event
+                // IMPORTANT: Must use condition_has_callback, not has_callback
+                // Bug fix: Previously used has_callback which checked ALL effect types (abilities, items, MOVES, conditions)
+                // This caused "substitute" volatile to match "substitute" MOVE's onHit callback, dealing double damage
                 eprintln!("[FIND_POKEMON_HANDLERS] Checking {} volatiles for {}", pokemon.volatiles.len(), pokemon.name);
                 for volatile_id in pokemon.volatiles.keys() {
-                    eprintln!("[FIND_POKEMON_HANDLERS] Volatile '{}' has_callback({})={}", volatile_id, event_id, self.has_callback(volatile_id, event_id));
-                    if self.has_callback(volatile_id, event_id) {
+                    let has_cb = self.condition_has_callback(volatile_id.as_str(), event_id);
+                    eprintln!("[FIND_POKEMON_HANDLERS] Volatile '{}' condition_has_callback({})={}", volatile_id, event_id, has_cb);
+                    if has_cb {
                         eprintln!("[FIND_POKEMON_HANDLERS] Adding volatile handler: {}", volatile_id);
                         handlers.push((volatile_id.clone(), Some(target)));
                     }
@@ -115,15 +120,17 @@ impl Battle {
 
                 // JS: const ability = pokemon.getAbility();
                 // Add ability handler if it has callback for this event
-                if !pokemon.ability.is_empty() && self.has_callback(&pokemon.ability, event_id) {
+                // IMPORTANT: Must use ability_has_callback, not has_callback
+                if !pokemon.ability.is_empty() && self.ability_has_callback(pokemon.ability.as_str(), event_id) {
                     handlers.push((pokemon.ability.clone(), Some(target)));
                 }
 
                 // JS: const item = pokemon.getItem();
                 // Add item handler if it has callback for this event
+                // IMPORTANT: Must use item_has_callback, not has_callback
                 if !pokemon.item.is_empty() {
-                    let has_cb = self.has_callback(&pokemon.item, event_id);
-                    eprintln!("[FIND_POKEMON_HANDLERS] Item {} has_callback({})={}", pokemon.item, event_id, has_cb);
+                    let has_cb = self.item_has_callback(pokemon.item.as_str(), event_id);
+                    eprintln!("[FIND_POKEMON_HANDLERS] Item {} item_has_callback({})={}", pokemon.item, event_id, has_cb);
                     if has_cb {
                         eprintln!("[FIND_POKEMON_HANDLERS] Adding item handler: {}", pokemon.item);
                         handlers.push((pokemon.item.clone(), Some(target)));
@@ -132,15 +139,17 @@ impl Battle {
 
                 // JS: const species = pokemon.baseSpecies;
                 // Add species handler if it has callback for this event
-                if self.has_callback(&pokemon.species_id, event_id) {
+                // IMPORTANT: Must use species_has_callback, not has_callback
+                if self.species_has_callback(pokemon.species_id.as_str(), event_id) {
                     handlers.push((pokemon.species_id.clone(), Some(target)));
                 }
 
                 // JS: for (const conditionid in side.slotConditions[pokemon.position])
                 // Add slot condition handlers if they have callbacks for this event
+                // IMPORTANT: Must use condition_has_callback, not has_callback (slot conditions are conditions)
                 if let Some(slot_conds) = side.slot_conditions.get(pokemon.position) {
                     for slot_cond_id in slot_conds.keys() {
-                        if self.has_callback(slot_cond_id, event_id) {
+                        if self.condition_has_callback(slot_cond_id.as_str(), event_id) {
                             handlers.push((slot_cond_id.clone(), Some(target)));
                         }
                     }
