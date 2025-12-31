@@ -25,9 +25,11 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
             mod_value /= 2.0;
             eprintln!("[FLUFFY] Move has contact flag, mod_value={}", mod_value);
         }
-        let modified = battle.chain_modify(mod_value);
-        eprintln!("[FLUFFY] chain_modify({}) returned {}", mod_value, modified);
-        return EventResult::Number(modified);
+        // JavaScript chainModify returns undefined, so we should return Continue
+        // The modifier is stored in event.modifier, not returned to the caller
+        battle.chain_modify(mod_value);
+        eprintln!("[FLUFFY] chain_modify({}) called, event.modifier updated", mod_value);
+        return EventResult::Continue;
     }
     EventResult::Continue
 }
