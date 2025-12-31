@@ -104,26 +104,35 @@ fn main() {
 
     // Team preview
     battle.make_choices(&["default", "default"]);
-
-    // Output initial state
-    let p1_active = battle.sides[0].get_active(0);
-    let p2_active = battle.sides[1].get_active(0);
-
-    println!("RESULT:{{\"turn\":{},\"p1_name\":\"{}\",\"p1_hp\":{},\"p1_maxhp\":{},\"p2_name\":\"{}\",\"p2_hp\":{},\"p2_maxhp\":{}}}",
-        battle.turn,
-        p1_active.map(|p| p.name.as_str()).unwrap_or(""),
-        p1_active.map(|p| p.hp).unwrap_or(0),
-        p1_active.map(|p| p.maxhp).unwrap_or(0),
-        p2_active.map(|p| p.name.as_str()).unwrap_or(""),
-        p2_active.map(|p| p.hp).unwrap_or(0),
-        p2_active.map(|p| p.maxhp).unwrap_or(0)
-    );
+    eprintln!("[DEBUG] After team preview:");
+    if let Some(p1_active) = battle.sides[0].get_active(0) {
+        eprintln!("  P1 active[0]: {} ({}/{})", p1_active.name, p1_active.hp, p1_active.maxhp);
+    }
+    eprintln!("  P1 pokemon[0]: {} ({}/{})",
+        battle.sides[0].pokemon[0].name,
+        battle.sides[0].pokemon[0].hp,
+        battle.sides[0].pokemon[0].maxhp);
+    if let Some(p2_active) = battle.sides[1].get_active(0) {
+        eprintln!("  P2 active[0]: {} ({}/{})", p2_active.name, p2_active.hp, p2_active.maxhp);
+    }
+    eprintln!("  P2 pokemon[0]: {} ({}/{})",
+        battle.sides[1].pokemon[0].name,
+        battle.sides[1].pokemon[0].hp,
+        battle.sides[1].pokemon[0].maxhp);
 
     // Run 3 turns (matching JavaScript test)
-    for _turn_num in 1..=3 {
+    for turn_num in 1..=3 {
         if battle.ended {
             break;
         }
+
+        eprintln!("[DEBUG] BEFORE turn {} make_choices: battle.turn={}, P1 active HP={}/{}, P1 pokemon[0] HP={}/{}",
+            turn_num,
+            battle.turn,
+            battle.sides[0].get_active(0).map(|p| p.hp).unwrap_or(0),
+            battle.sides[0].get_active(0).map(|p| p.maxhp).unwrap_or(0),
+            battle.sides[0].pokemon.get(0).map(|p| p.hp).unwrap_or(0),
+            battle.sides[0].pokemon.get(0).map(|p| p.maxhp).unwrap_or(0));
 
         // Check if battle is waiting for switch choices
         use pokemon_showdown::battle::BattleRequestState;
@@ -154,15 +163,24 @@ fn main() {
             }
 
             battle.make_choices(&[p1_choice.as_str(), p2_choice.as_str()]);
-        } else {
-            battle.make_choices(&["move 1", "move 1"]);
         }
+
+        // Always make move choices after handling switches (matches JavaScript)
+        battle.make_choices(&["move 1", "move 1"]);
+
+        eprintln!("[DEBUG] AFTER turn {} make_choices: battle.turn={}, P1 active HP={}/{}, P1 pokemon[0] HP={}/{}",
+            turn_num,
+            battle.turn,
+            battle.sides[0].get_active(0).map(|p| p.hp).unwrap_or(0),
+            battle.sides[0].get_active(0).map(|p| p.maxhp).unwrap_or(0),
+            battle.sides[0].pokemon.get(0).map(|p| p.hp).unwrap_or(0),
+            battle.sides[0].pokemon.get(0).map(|p| p.maxhp).unwrap_or(0));
 
         let p1_active = battle.sides[0].get_active(0);
         let p2_active = battle.sides[1].get_active(0);
 
         println!("Turn {}: {}({}/{}) vs {}({}/{})",
-            battle.turn,
+            turn_num,
             p1_active.map(|p| p.name.as_str()).unwrap_or("none"),
             p1_active.map(|p| p.hp).unwrap_or(0),
             p1_active.map(|p| p.maxhp).unwrap_or(0),
@@ -172,7 +190,7 @@ fn main() {
         );
 
         println!("RESULT:{{\"turn\":{},\"p1_name\":\"{}\",\"p1_hp\":{},\"p1_maxhp\":{},\"p2_name\":\"{}\",\"p2_hp\":{},\"p2_maxhp\":{},\"ended\":{}}}",
-            battle.turn,
+            turn_num,
             p1_active.map(|p| p.name.as_str()).unwrap_or(""),
             p1_active.map(|p| p.hp).unwrap_or(0),
             p1_active.map(|p| p.maxhp).unwrap_or(0),
