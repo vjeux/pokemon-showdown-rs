@@ -596,7 +596,6 @@ impl Battle {
         // In gen 3 or earlier, switching in fainted pokemon is done after every move
         let should_check_fainted = self.queue.peek().is_none() || self.gen <= 3;
         if should_check_fainted {
-            eprintln!("[RUN_ACTION] Calling check_fainted()");
             self.check_fainted();
         }
 
@@ -612,8 +611,6 @@ impl Battle {
                 false
             })
         }).collect();
-
-        eprintln!("[RUN_ACTION] Switches array: {:?}", switches);
 
         // JS: for (let i = 0; i < this.sides.length; i++) {
         for i in 0..self.sides.len() {
@@ -686,7 +683,6 @@ impl Battle {
         //     }
         for player_switch in switches {
             if player_switch {
-                eprintln!("[RUN_ACTION] Making switch request!");
                 self.make_request(Some(BattleRequestState::Switch));
                 return;
             }

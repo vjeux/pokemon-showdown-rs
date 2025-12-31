@@ -32,9 +32,6 @@ impl Battle {
                 if let Some(pokemon) = self.sides[side_idx].pokemon.get_mut(poke_idx) {
                     // JS: if (pokemon.fainted) {
                     if pokemon.fainted {
-                        eprintln!("[CHECK_FAINTED] Setting switch_flag for p{}{}",
-                            side_idx + 1,
-                            if poke_idx == 0 { "a" } else { "b" });
                         // JS: pokemon.status = 'fnt' as ID;
                         pokemon.status = ID::new("fnt");
                         // JS: pokemon.switchFlag = true;

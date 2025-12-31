@@ -219,5 +219,99 @@ pub fn spread_move_hit(
         is_self,
     );
 
+    // Step 4.5: Apply self stat changes (move.self boosts)
+    // JavaScript (battle-actions.ts:1116):
+    //   if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
+    //
+    // selfDrops function (battle-actions.ts:1332-1348):
+    //   for (const target of targets) {
+    //       if (target === false) continue;
+    //       if (moveData.self && !move.selfDropped) {
+    //           if (!isSecondary && moveData.self.boosts) {
+    //               const secondaryRoll = this.battle.random(100);
+    //               if (typeof moveData.self.chance === 'undefined' || secondaryRoll < moveData.self.chance) {
+    //                   this.moveHit(source, source, move, moveData.self, isSecondary, true);
+    //               }
+    //               if (!move.multihit) move.selfDropped = true;
+    //           } else {
+    //               this.moveHit(source, source, move, moveData.self, isSecondary, true);
+    //           }
+    //       }
+    //   }
+    if let Some(ref self_effect) = move_data.self_effect {
+        // JS: for (const target of targets) { if (target === false) continue; ... }
+        // We need to loop through targets to match JavaScript behavior
+        // (even though we're applying to source, not target)
+        for &target in &final_targets {
+            // JS: if (target === false) continue;
+            if target.is_none() {
+                continue;
+            }
+
+            // JS: if (!isSecondary && moveData.self.boosts)
+            if !is_secondary {
+                if let Some(ref boosts) = self_effect.boosts {
+                    // JS: const secondaryRoll = this.battle.random(100);
+                    let secondary_roll = battle.random(100) as i32;
+
+                    // JS: if (typeof moveData.self.chance === 'undefined' || secondaryRoll < moveData.self.chance)
+                    let should_apply = self_effect.chance.map_or(true, |chance| secondary_roll < chance);
+
+                    if should_apply {
+                        // JS: this.moveHit(source, source, move, moveData.self, isSecondary, true);
+                        // In JavaScript, moveHit applies the boosts to the target
+                        // Here, we apply boosts directly using battle.boost()
+
+                        eprintln!("[SELF_DROPS] Applying self boosts for move {}: {:?}", move_id.as_str(), boosts);
+
+                        // Convert HashMap<String, i32> to Vec<(&str, i8)>
+                        let boost_array: Vec<(&str, i8)> = boosts
+                            .iter()
+                            .map(|(stat, &value)| (stat.as_str(), value as i8))
+                            .collect();
+
+                        battle.boost(
+                            &boost_array,
+                            source_pos,           // target = source (apply to self)
+                            Some(source_pos),     // source
+                            Some(move_id.as_str()), // effect = move
+                            false,                // is_secondary = false (as per JavaScript call)
+                            true,                 // is_self = true (as per JavaScript call)
+                        );
+
+                        eprintln!("[SELF_DROPS] Boost applied successfully");
+                    }
+
+                    // JS: if (!move.multihit) move.selfDropped = true;
+                    // TODO: Set move.selfDropped = true for non-multihit moves
+                    // This requires tracking state in ActiveMove, which we don't have yet
+                }
+            } else {
+                // JS: this.moveHit(source, source, move, moveData.self, isSecondary, true);
+                // When isSecondary is true, always apply the self effect
+                if let Some(ref boosts) = self_effect.boosts {
+                    let boost_array: Vec<(&str, i8)> = boosts
+                        .iter()
+                        .map(|(stat, &value)| (stat.as_str(), value as i8))
+                        .collect();
+
+                    battle.boost(
+                        &boost_array,
+                        source_pos,
+                        Some(source_pos),
+                        Some(move_id.as_str()),
+                        is_secondary,
+                        true,
+                    );
+                }
+            }
+
+            // JS: Only process once per move (not once per target)
+            // The JavaScript loop continues through all targets, but the self effect
+            // should only apply once. Break after first valid target.
+            break;
+        }
+    }
+
     (damages, final_targets)
 }
