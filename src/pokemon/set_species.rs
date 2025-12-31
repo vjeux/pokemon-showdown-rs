@@ -60,11 +60,30 @@ impl Pokemon {
         // Get species data from dex
         let (types, weightkg, base_stats) = {
             if let Some(species_data) = battle.dex.species().get(species_id.as_str()) {
-                (
-                    species_data.types.clone(),
-                    species_data.weightkg,
-                    species_data.base_stats.clone(),
-                )
+                let mut stats = species_data.base_stats.clone();
+                let mut types = species_data.types.clone();
+                let mut weightkg = species_data.weightkg;
+
+                // If this is a cosmetic forme with no base stats, fall back to base species
+                // JS: Cosmetic formes like Gastrodon-East don't have their own baseStats
+                // Instead they reference baseSpecies which has the actual stats
+                if stats.hp == 0 && stats.atk == 0 && stats.def == 0 &&
+                   stats.spa == 0 && stats.spd == 0 && stats.spe == 0 {
+                    if let Some(ref base_species_name) = species_data.base_species {
+                        if let Some(base_species) = battle.dex.species().get(base_species_name) {
+                            stats = base_species.base_stats.clone();
+                            // Also use base species types and weight if forme doesn't specify them
+                            if types.is_empty() {
+                                types = base_species.types.clone();
+                            }
+                            if weightkg == 0.0 {
+                                weightkg = base_species.weightkg;
+                            }
+                        }
+                    }
+                }
+
+                (types, weightkg, stats)
             } else {
                 // Species not found, return false
                 return false;
