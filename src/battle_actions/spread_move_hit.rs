@@ -262,8 +262,6 @@ pub fn spread_move_hit(
                         // In JavaScript, moveHit applies the boosts to the target
                         // Here, we apply boosts directly using battle.boost()
 
-                        eprintln!("[SELF_DROPS] Applying self boosts for move {}: {:?}", move_id.as_str(), boosts);
-
                         // Convert HashMap<String, i32> to Vec<(&str, i8)>
                         let boost_array: Vec<(&str, i8)> = boosts
                             .iter()
@@ -278,8 +276,6 @@ pub fn spread_move_hit(
                             false,                // is_secondary = false (as per JavaScript call)
                             true,                 // is_self = true (as per JavaScript call)
                         );
-
-                        eprintln!("[SELF_DROPS] Boost applied successfully");
                     }
 
                     // JS: if (!move.multihit) move.selfDropped = true;
