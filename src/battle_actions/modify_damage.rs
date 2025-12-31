@@ -91,6 +91,19 @@ pub fn modify_damage(
     // baseDamage += 2;
     base_damage += 2;
 
+    // baseDamage = this.battle.runEvent("WeatherModifyDamage", pokemon, target, move, baseDamage);
+    eprintln!("[MODIFY_DAMAGE] Before WeatherModifyDamage event: base_damage={}", base_damage);
+    if let Some(modified) = battle.run_event(
+        "WeatherModifyDamage",
+        Some(source_pos),
+        Some(target_pos),
+        Some(&move_data.id),
+        Some(base_damage),
+    ) {
+        base_damage = modified;
+        eprintln!("[MODIFY_DAMAGE] After WeatherModifyDamage event: base_damage={}", base_damage);
+    }
+
     // if (isCrit) {
     //   baseDamage = tr(baseDamage * (move.critModifier || (this.battle.gen >= 6 ? 1.5 : 2)));
     // }

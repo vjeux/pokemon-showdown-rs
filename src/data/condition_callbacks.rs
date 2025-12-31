@@ -492,9 +492,52 @@ pub fn dispatch_on_weather(
 
 /// Dispatch onWeatherModifyDamage callbacks
 pub fn dispatch_on_weather_modify_damage(
-    _battle: &mut Battle,
-    _condition_id: &str,
+    battle: &mut Battle,
+    condition_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
+    eprintln!("[WEATHER_MODIFY_DAMAGE] Called for condition: {}", condition_id);
+
+    // Get the current move type from active_move or current_event
+    let move_type = if let Some(ref active_move) = battle.active_move {
+        active_move.move_type.clone()
+    } else if let Some(ref event) = battle.current_event {
+        // Try to get move type from event effect
+        if let Some(ref effect_id) = event.effect {
+            if let Some(move_data) = battle.dex.moves().get(effect_id.as_str()) {
+                move_data.move_type.clone()
+            } else {
+                return EventResult::Continue;
+            }
+        } else {
+            return EventResult::Continue;
+        }
+    } else {
+        return EventResult::Continue;
+    };
+
+    eprintln!("[WEATHER_MODIFY_DAMAGE] move_type={}", move_type);
+
+    // Get the condition definition to check type_boost and type_weaken
+    if let Some(condition) = crate::data::conditions::get_condition(&ID::new(condition_id)) {
+        // Check for type boost (e.g., Fire in Sunny Day)
+        if let Some((boost_type, boost_mult)) = &condition.type_boost {
+            if &move_type == boost_type {
+                eprintln!("[WEATHER_MODIFY_DAMAGE] Applying type boost: {}x for type {}", boost_mult, boost_type);
+                let result = battle.chain_modify(*boost_mult as f32);
+                return EventResult::Number(result);
+            }
+        }
+
+        // Check for type weaken (e.g., Water in Sunny Day)
+        if let Some((weaken_type, weaken_mult)) = &condition.type_weaken {
+            if &move_type == weaken_type {
+                eprintln!("[WEATHER_MODIFY_DAMAGE] Applying type weaken: {}x for type {}", weaken_mult, weaken_type);
+                let result = battle.chain_modify(*weaken_mult as f32);
+                return EventResult::Number(result);
+            }
+        }
+    }
+
     EventResult::Continue
 }

@@ -50,6 +50,18 @@ impl Battle {
             return self.handle_item_event(event_id, effect_id, target);
         }
 
+        // IMPORTANT: Check field weather/terrain BEFORE moves
+        // "sunnyday", "raindance", etc. exist both as moves AND as weather conditions
+        // When weather is active, handlers should route to the condition, not the move
+        if !self.field.weather.is_empty() && self.field.weather.as_str() == effect_str {
+            eprintln!("[DISPATCH_SINGLE_EVENT] Effect is active weather, calling handle_condition_event");
+            return self.handle_condition_event(event_id, effect_str, target);
+        }
+        if !self.field.terrain.is_empty() && self.field.terrain.as_str() == effect_str {
+            eprintln!("[DISPATCH_SINGLE_EVENT] Effect is active terrain, calling handle_condition_event");
+            return self.handle_condition_event(event_id, effect_str, target);
+        }
+
         // Handle move events
         if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
             eprintln!("[DISPATCH_SINGLE_EVENT] Calling handle_move_event");
