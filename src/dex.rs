@@ -692,7 +692,7 @@ mod tests {
         assert_eq!(thunderbolt.base_power, 90);
 
         // Check abilities
-        let static_ability = dex.get_ability("Static").expect("Static not found");
+        let static_ability = dex.abilities().get("Static").expect("Static not found");
         assert_eq!(static_ability.name, "Static");
 
         // Check items
