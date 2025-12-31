@@ -17,8 +17,10 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize
         if move_data.category == "Physical" {
             if let Some(attacker) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                 if attacker.status == "psn".into() || attacker.status == "tox".into() {
-                    let modified = battle.chain_modify(1.5);
-                    return EventResult::Number(modified);
+                    // Call chain_modify to set the modifier, then return Continue
+                    // The event system will apply the modifier automatically
+                    battle.chain_modify(1.5);
+                    return EventResult::Continue;
                 }
             }
         }
