@@ -455,7 +455,7 @@ mod tests {
         assert!(pokemon.has_status("par"));
         assert!(!pokemon.set_status(ID::new("brn"))); // Already has status
 
-        assert!(pokemon.cure_status());
+        assert!(pokemon.cure_status().is_some());
         assert!(!pokemon.has_status("par"));
     }
 

@@ -98,7 +98,8 @@ impl Battle {
         // Rust: We only handle Pokemon targets currently
         if let Some(target_pos) = target {
             // JavaScript: handlers = this.findPokemonEventHandlers(target, `on${eventName}`);
-            let mut pokemon_handlers = self.find_pokemon_event_handlers(event_id, target_pos);
+            let prefixed_event = format!("on{}", event_name);
+            let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos);
             handlers.append(&mut pokemon_handlers);
 
             if prefixed_handlers {
@@ -170,11 +171,12 @@ impl Battle {
         }
 
         // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
-        let mut field_handlers = self.find_field_event_handlers(event_id);
+        let prefixed_event = format!("on{}", event_name);
+        let mut field_handlers = self.find_field_event_handlers(&prefixed_event);
         handlers.append(&mut field_handlers);
 
         // JavaScript: handlers.push(...this.findBattleEventHandlers(`on${eventName}`));
-        let battle_handler_ids = self.find_battle_event_handlers(event_id);
+        let battle_handler_ids = self.find_battle_event_handlers(&prefixed_event);
         for id in battle_handler_ids {
             handlers.push((id, None));
         }

@@ -153,7 +153,7 @@ pub fn get_damage(
     let is_physical = move_data.category == "Physical";
 
     // Get attack stat with boosts
-    let attack = if let Some(side) = battle.sides.get(source_pos.0) {
+    let mut attack = if let Some(side) = battle.sides.get(source_pos.0) {
         if let Some(pokemon) = side.pokemon.get(source_pos.1) {
             if is_physical {
                 let boost = pokemon.boosts.atk;
@@ -174,7 +174,7 @@ pub fn get_damage(
     };
 
     // Get defense stat with boosts
-    let defense = if let Some(side) = battle.sides.get(target_pos.0) {
+    let mut defense = if let Some(side) = battle.sides.get(target_pos.0) {
         if let Some(pokemon) = side.pokemon.get(target_pos.1) {
             if is_physical {
                 let boost = pokemon.boosts.def;
@@ -193,6 +193,24 @@ pub fn get_damage(
     } else {
         return None;
     };
+
+    // JavaScript: attack = this.battle.runEvent('ModifyAtk', source, target, move, attack);
+    // JavaScript: defense = this.battle.runEvent('ModifyDef', target, source, move, defense);
+    // Apply stat modifier events
+    if is_physical {
+        // Debug: log pokemon info
+        if let Some(pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
+            eprintln!("[GET_DAMAGE] ModifyAtk for Pokemon: {}, Ability: {}, attack={}",
+                pokemon.name, pokemon.ability, attack);
+        }
+        eprintln!("[GET_DAMAGE] BEFORE ModifyAtk: attack={}", attack);
+        attack = battle.run_event("ModifyAtk", Some(source_pos), Some(target_pos), Some(&move_id), Some(attack)).unwrap_or(attack);
+        eprintln!("[GET_DAMAGE] AFTER ModifyAtk: attack={}", attack);
+        defense = battle.run_event("ModifyDef", Some(target_pos), Some(source_pos), Some(&move_id), Some(defense)).unwrap_or(defense);
+    } else {
+        attack = battle.run_event("ModifySpA", Some(source_pos), Some(target_pos), Some(&move_id), Some(attack)).unwrap_or(attack);
+        defense = battle.run_event("ModifySpD", Some(target_pos), Some(source_pos), Some(&move_id), Some(defense)).unwrap_or(defense);
+    }
 
     // Base damage calculation
     // JavaScript: const baseDamage = tr(tr(tr(tr(2 * level / 5 + 2) * basePower * attack) / defense) / 50);

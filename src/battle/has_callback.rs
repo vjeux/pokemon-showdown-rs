@@ -582,6 +582,10 @@ impl Battle {
                 item_id,
                 "leek" | "luckypunch" | "razorclaw" | "scopelens" | "stick"
             ),
+            "onModifyAtk" => matches!(
+                item_id,
+                "choiceband"
+            ),
             "onModifySecondaries" => matches!(
                 item_id,
                 "covertcloak"

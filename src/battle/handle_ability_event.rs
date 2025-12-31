@@ -427,7 +427,18 @@ impl Battle {
             "", // TODO: Wire through actual move_id
             ),
             "ModifyAtk" => {
-                ability_callbacks::dispatch_on_modify_atk(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), "") // TODO: Wire through actual move_id
+                eprintln!("[HANDLE_ABILITY_EVENT] ModifyAtk for ability={}", ability_id.as_str());
+                let (atk, defender_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                    (
+                        event.relay_var.unwrap_or(0),
+                        event.target.unwrap_or((0, 0)),
+                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                    )
+                } else {
+                    (0, (0, 0), String::new())
+                };
+                eprintln!("[HANDLE_ABILITY_EVENT] Calling dispatch with atk={}, move_id={}", atk, move_id_str);
+                ability_callbacks::dispatch_on_modify_atk(self, ability_id.as_str(), atk, pokemon_pos, defender_pos, &move_id_str)
             }
             "ModifyAtkPriority" => ability_callbacks::dispatch_on_modify_atk_priority(
                 self,
@@ -440,7 +451,16 @@ impl Battle {
                 ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), "") // TODO: Wire through actual move_id
             }
             "ModifyDef" => {
-                ability_callbacks::dispatch_on_modify_def(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), "")
+                let (def, attacker_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                    (
+                        event.relay_var.unwrap_or(0),
+                        event.source.unwrap_or((0, 0)),
+                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                    )
+                } else {
+                    (0, (0, 0), String::new())
+                };
+                ability_callbacks::dispatch_on_modify_def(self, ability_id.as_str(), def, pokemon_pos, attacker_pos, &move_id_str)
             }
             "ModifyDefPriority" => ability_callbacks::dispatch_on_modify_def_priority(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), ""),
             "ModifyMove" => {
@@ -465,7 +485,16 @@ impl Battle {
             ),
             "ModifySecondaries" => ability_callbacks::dispatch_on_modify_secondaries(self, ability_id.as_str()),
             "ModifySpA" => {
-                ability_callbacks::dispatch_on_modify_sp_a(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), "") // TODO: Wire through actual move_id
+                let (spa, defender_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                    (
+                        event.relay_var.unwrap_or(0),
+                        event.target.unwrap_or((0, 0)),
+                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                    )
+                } else {
+                    (0, (0, 0), String::new())
+                };
+                ability_callbacks::dispatch_on_modify_sp_a(self, ability_id.as_str(), spa, pokemon_pos, defender_pos, &move_id_str)
             }
             "ModifySpAPriority" => ability_callbacks::dispatch_on_modify_sp_a_priority(
                 self,

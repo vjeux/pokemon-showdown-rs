@@ -14,6 +14,21 @@ pub struct DexSpecies<'a> {
 impl<'a> DexSpecies<'a> {
     /// Get species data by name or ID
     /// Equivalent to DexSpecies.get() in dex-species.ts
+    // get(name?: string | Species): Species {
+    //     if (name && typeof name !== 'string') return name;
+    //
+    //     let id = '' as ID;
+    //     if (name) {
+    //         name = name.trim();
+    //         id = toID(name);
+    //         if (id === 'nidoran' && name.endsWith('♀')) {
+    //             id = 'nidoranf' as ID;
+    //         } else if (id === 'nidoran' && name.endsWith('♂')) {
+    //             id = 'nidoranm' as ID;
+    //         }
+    //     }
+    //     return this.getByID(id);
+    // }
     pub fn get(&self, name: &str) -> Option<&'a SpeciesData> {
         let id = ID::new(name);
 
@@ -238,13 +253,21 @@ impl<'a> DexSpecies<'a> {
     //     if (species.exists) this.speciesCache.set(id, this.dex.deepFreeze(species));
     //     return species;
     // }
-
     pub fn get_by_id(&self, id: &ID) -> Option<&'a SpeciesData> {
         self.dex.species.get(id)
     }
 
     /// Get all species data
     /// Equivalent to DexSpecies.all() in dex-species.ts
+    // all(): readonly Species[] {
+    //     if (this.allCache) return this.allCache;
+    //     const species = [];
+    //     for (const id in this.dex.data.Pokedex) {
+    //         species.push(this.getByID(id as ID));
+    //     }
+    //     this.allCache = Object.freeze(species);
+    //     return this.allCache;
+    // }
     pub fn all(&self) -> Vec<&'a SpeciesData> {
         self.dex.species.values().collect()
     }

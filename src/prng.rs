@@ -189,7 +189,9 @@ impl RNG for Gen5RNG {
     fn next(&mut self) -> u32 {
         self.next_frame();
         // Use the upper 32 bits
-        ((self.seed[0] as u32) << 16) | (self.seed[1] as u32)
+        let result = ((self.seed[0] as u32) << 16) | (self.seed[1] as u32);
+        eprintln!("[RS PRNG] next() -> {} (seed: {},{},{},{})", result, self.seed[0], self.seed[1], self.seed[2], self.seed[3]);
+        result
     }
 }
 
