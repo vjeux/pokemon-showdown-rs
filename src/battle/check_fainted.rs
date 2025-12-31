@@ -18,11 +18,28 @@ impl Battle {
     // 	}
     //
     pub fn check_fainted(&mut self) {
-        for side in &mut self.sides {
-            for pokemon in &mut side.pokemon {
-                if pokemon.is_active && pokemon.fainted {
-                    pokemon.status = ID::new("fnt");
-                    pokemon.switch_flag = true;
+        // JS: for (const side of this.sides) {
+        for side_idx in 0..self.sides.len() {
+            // JS: for (const pokemon of side.active) {
+            // Collect active Pokemon indices first to avoid borrow issues
+            let active_indices: Vec<usize> = self.sides[side_idx]
+                .active
+                .iter()
+                .filter_map(|&opt_idx| opt_idx)
+                .collect();
+
+            for poke_idx in active_indices {
+                if let Some(pokemon) = self.sides[side_idx].pokemon.get_mut(poke_idx) {
+                    // JS: if (pokemon.fainted) {
+                    if pokemon.fainted {
+                        eprintln!("[CHECK_FAINTED] Setting switch_flag for p{}{}",
+                            side_idx + 1,
+                            if poke_idx == 0 { "a" } else { "b" });
+                        // JS: pokemon.status = 'fnt' as ID;
+                        pokemon.status = ID::new("fnt");
+                        // JS: pokemon.switchFlag = true;
+                        pokemon.switch_flag = true;
+                    }
                 }
             }
         }

@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::PriorityItem;
+use crate::battle::{PriorityItem, BattleRequestState};
 
 impl Battle {
 
@@ -587,6 +587,108 @@ impl Battle {
 
                 // JS: this.queue.sort();
                 self.sort_action_queue();
+            }
+        }
+
+        // JS: if (!this.queue.peek() || (this.gen <= 3 && ['move', 'residual'].includes(this.queue.peek()!.choice))) {
+        //         this.checkFainted();
+        //     }
+        // In gen 3 or earlier, switching in fainted pokemon is done after every move
+        let should_check_fainted = self.queue.peek().is_none() || self.gen <= 3;
+        if should_check_fainted {
+            eprintln!("[RUN_ACTION] Calling check_fainted()");
+            self.check_fainted();
+        }
+
+        // JS: const switches = this.sides.map(side => side.active.some(pokemon => pokemon && !!pokemon.switchFlag));
+        // Build switches array - check if each side has any Pokemon with switchFlag set
+        let mut switches: Vec<bool> = self.sides.iter().map(|side| {
+            side.active.iter().any(|&opt_idx| {
+                if let Some(poke_idx) = opt_idx {
+                    if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                        return pokemon.switch_flag;
+                    }
+                }
+                false
+            })
+        }).collect();
+
+        eprintln!("[RUN_ACTION] Switches array: {:?}", switches);
+
+        // JS: for (let i = 0; i < this.sides.length; i++) {
+        for i in 0..self.sides.len() {
+            // JS: if (switches[i] && !this.canSwitch(this.sides[i])) {
+            // Note: canSwitch returns number of possible switches, 0 is falsy in JS
+            if switches[i] && self.can_switch(i) == 0 {
+                // JS: for (const pokemon of this.sides[i].active) { pokemon.switchFlag = false; }
+                for poke_idx in self.sides[i].pokemon.iter_mut() {
+                    poke_idx.switch_flag = false;
+                }
+                // JS: if (!reviveSwitch) switches[i] = false;
+                switches[i] = false;
+            } else if switches[i] {
+                // JS: for (const pokemon of this.sides[i].active) {
+                //         if (pokemon.hp && pokemon.switchFlag && ... && !pokemon.skipBeforeSwitchOutEventFlag) {
+                //             this.runEvent('BeforeSwitchOut', pokemon);
+                //             pokemon.skipBeforeSwitchOutEventFlag = true;
+                //             this.faintMessages();
+                //             if (this.ended) return true;
+                //             if (pokemon.fainted) {
+                //                 switches[i] = this.sides[i].active.some(sidePokemon => sidePokemon && !!sidePokemon.switchFlag);
+                //             }
+                //         }
+                //     }
+                let active_positions: Vec<usize> = self.sides[i].active.iter()
+                    .filter_map(|&opt_idx| opt_idx)
+                    .collect();
+
+                for poke_idx in active_positions {
+                    let should_run_event = {
+                        let pokemon = &self.sides[i].pokemon[poke_idx];
+                        pokemon.hp > 0 && pokemon.switch_flag && !pokemon.skip_before_switch_out_event_flag
+                    };
+
+                    if should_run_event {
+                        // Set the flag first
+                        self.sides[i].pokemon[poke_idx].skip_before_switch_out_event_flag = true;
+
+                        // Run BeforeSwitchOut event
+                        self.run_event("BeforeSwitchOut", Some((i, poke_idx)), None, None, None);
+
+                        // Check faint messages
+                        self.faint_messages(false, false, true);
+
+                        if self.ended {
+                            return;
+                        }
+
+                        // Check if fainted and update switches
+                        if self.sides[i].pokemon[poke_idx].fainted {
+                            switches[i] = self.sides[i].active.iter().any(|&opt_idx| {
+                                if let Some(idx) = opt_idx {
+                                    if let Some(p) = self.sides[i].pokemon.get(idx) {
+                                        return p.switch_flag;
+                                    }
+                                }
+                                false
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        // JS: for (const playerSwitch of switches) {
+        //         if (playerSwitch) {
+        //             this.makeRequest('switch');
+        //             return true;
+        //         }
+        //     }
+        for player_switch in switches {
+            if player_switch {
+                eprintln!("[RUN_ACTION] Making switch request!");
+                self.make_request(Some(BattleRequestState::Switch));
+                return;
             }
         }
     }

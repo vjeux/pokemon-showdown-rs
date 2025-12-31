@@ -41,17 +41,43 @@ impl Side {
 
         match self.request_state {
             RequestState::Switch => {
-                if self.choice.forced_passes_left == 0 {
-                    return false;
+                // JS: if (pokemon.switchFlag) { // This condition will always happen if called by Battle#choose()
+                // Check if the Pokemon at this index has switchFlag set
+                let has_switch_flag = if let Some(Some(pokemon_idx)) = self.active.get(index) {
+                    if let Some(pokemon) = self.pokemon.get(*pokemon_idx) {
+                        pokemon.switch_flag
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                };
+
+                if has_switch_flag {
+                    // JS: if (!this.choice.forcedPassesLeft) {
+                    // JS:     return this.emitChoiceError(...);
+                    // JS: }
+                    if self.choice.forced_passes_left == 0 {
+                        return false;
+                    }
+                    // JS: this.choice.forcedPassesLeft--;
+                    self.choice.forced_passes_left -= 1;
                 }
-                self.choice.forced_passes_left -= 1;
+                // If !has_switch_flag, we just fall through and add the pass action
             }
             RequestState::Move => {
-                // Check if the Pokemon is fainted
+                // JS: if (!pokemon.fainted && !pokemon.volatiles['commanding']) {
+                // JS:     return this.emitChoiceError(...);
+                // JS: }
+                // Check if the Pokemon is fainted or has commanding volatile
                 if let Some(Some(pokemon_idx)) = self.active.get(index) {
                     if let Some(pokemon) = self.pokemon.get(*pokemon_idx) {
-                        if !pokemon.is_fainted() {
-                            return false; // Can't pass if not fainted
+                        use crate::dex_data::ID;
+                        let is_fainted = pokemon.is_fainted();
+                        let has_commanding = pokemon.volatiles.contains_key(&ID::from("commanding"));
+
+                        if !is_fainted && !has_commanding {
+                            return false; // Can't pass if not fainted and no commanding
                         }
                     }
                 }
@@ -59,6 +85,8 @@ impl Side {
             _ => return false,
         }
 
+        // JS: this.choice.actions.push({ choice: 'pass' } as ChosenAction);
+        // JS: return true;
         self.choice.actions.push(ChosenAction {
             choice: ChoiceType::Pass,
             pokemon_index: index,

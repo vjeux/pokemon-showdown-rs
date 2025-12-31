@@ -119,13 +119,26 @@ fn main() {
         p2_active.map(|p| p.maxhp).unwrap_or(0)
     );
 
-    // Run 3 turns
-    for turn_num in 1..=5 {
+    // Run 5 turns
+    for _turn_num in 1..=5 {
         if battle.ended {
             break;
         }
 
-        battle.make_choices(&["move 1", "move 1"]);
+        // Check if battle is waiting for switch choices
+        use pokemon_showdown::battle::BattleRequestState;
+        let needs_switch = match battle.request_state {
+            BattleRequestState::Switch => true,
+            _ => false,
+        };
+
+        if needs_switch {
+            // Provide switch choices - switch to next available Pokemon
+            // For simplicity, just use "pass" for each side (will auto-switch if needed)
+            battle.make_choices(&["pass", "pass"]);
+        } else {
+            battle.make_choices(&["move 1", "move 1"]);
+        }
 
         let p1_active = battle.sides[0].get_active(0);
         let p2_active = battle.sides[1].get_active(0);

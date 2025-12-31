@@ -72,21 +72,15 @@ impl Battle {
         }
 
         // Process the action queue
+        // JS: while ((action = this.queue.shift())) {
+        // JS:     this.runAction(action);
+        // JS:     if (this.requestState || this.ended) return;
+        // JS: }
         while let Some(action) = self.queue.shift() {
             self.run_action(&action);
 
             if self.ended {
                 return;
-            }
-
-            // JS: switching (fainted pokemon, U-turn, Baton Pass, etc)
-            // JS: if (!this.queue.peek() || (this.gen <= 3 && ['move', 'residual'].includes(this.queue.peek()!.choice)))
-            // In gen 3 or earlier, switching in fainted pokemon is done after every move
-            // For now, simplify to: check fainted when queue is empty or in gen <= 3
-            let should_check_fainted = self.queue.peek().is_none() || self.gen <= 3;
-
-            if should_check_fainted {
-                self.check_fainted();
             }
 
             if self.request_state != BattleRequestState::None {
