@@ -361,6 +361,11 @@ impl Battle {
                         *r = self.modify_internal(*r, n);
                     }
                 }
+                EventResult::HitSubstitute => {
+                    // JavaScript: this.HIT_SUBSTITUTE = 0
+                    // When Substitute blocks damage, return 0
+                    result = Some(0);
+                }
                 _ => {}
             }
         }

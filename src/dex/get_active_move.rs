@@ -69,6 +69,7 @@ impl Dex {
             self_dropped: false,
             smart_target: move_data.smart_target,
             stellar_boosted: false,
+            type_changer_boosted: None,
             multi_hit: None,
             multi_hit_type: None,
             multi_accuracy: false,

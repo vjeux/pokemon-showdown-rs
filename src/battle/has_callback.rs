@@ -813,7 +813,7 @@ impl Battle {
 
         // Check status conditions and volatile conditions
         match event_id {
-            "onResidual" | "onResidual" => matches!(
+            "Residual" | "onResidual" => matches!(
                 condition_id,
                 "brn" | "psn" | "tox" | "leechseed"
             ),

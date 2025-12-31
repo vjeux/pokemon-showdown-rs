@@ -3,155 +3,155 @@
     0,
     0,
     0,
-    24
+    9
   ],
   "teams": {
     "p1": [
       {
-        "species": "Jumpluff",
+        "species": "Regigigas",
         "moves": [
-          "leechseed",
           "substitute",
-          "strengthsap",
-          "acrobatics"
+          "bodyslam",
+          "knockoff",
+          "protect"
         ],
-        "ability": "Infiltrator",
-        "item": "",
+        "ability": "Slow Start",
+        "item": "Leftovers",
+        "level": 84
+      },
+      {
+        "species": "Tauros",
+        "moves": [
+          "closecombat",
+          "earthquake",
+          "bodyslam",
+          "throatchop"
+        ],
+        "ability": "Sheer Force",
+        "item": "Life Orb",
+        "level": 82
+      },
+      {
+        "species": "Raging Bolt",
+        "moves": [
+          "thunderclap",
+          "calmmind",
+          "dragonpulse",
+          "thunderbolt"
+        ],
+        "ability": "Protosynthesis",
+        "item": "Booster Energy",
+        "level": 78
+      },
+      {
+        "species": "Muk",
+        "moves": [
+          "shadowsneak",
+          "poisonjab",
+          "icepunch",
+          "knockoff"
+        ],
+        "ability": "Poison Touch",
+        "item": "Assault Vest",
+        "level": 86
+      },
+      {
+        "species": "Arbok",
+        "moves": [
+          "trailblaze",
+          "earthquake",
+          "coil",
+          "gunkshot"
+        ],
+        "ability": "Intimidate",
+        "item": "Leftovers",
         "level": 87
       },
       {
-        "species": "Florges-Orange",
+        "species": "Wo-Chien",
         "moves": [
-          "wish",
-          "calmmind",
+          "knockoff",
           "protect",
-          "moonblast"
+          "leechseed",
+          "gigadrain"
         ],
-        "ability": "Flower Veil",
+        "ability": "Tablets of Ruin",
         "item": "Leftovers",
-        "level": 85
-      },
-      {
-        "species": "Kilowattrel",
-        "moves": [
-          "roost",
-          "discharge",
-          "uturn",
-          "hurricane"
-        ],
-        "ability": "Volt Absorb",
-        "item": "Heavy-Duty Boots",
-        "level": 83
-      },
-      {
-        "species": "Basculegion-F",
-        "moves": [
-          "hydropump",
-          "flipturn",
-          "shadowball",
-          "icebeam"
-        ],
-        "ability": "Adaptability",
-        "item": "Choice Specs",
-        "level": 83
-      },
-      {
-        "species": "Great Tusk",
-        "moves": [
-          "bulkup",
-          "closecombat",
-          "rapidspin",
-          "earthquake"
-        ],
-        "ability": "Protosynthesis",
-        "item": "Leftovers",
-        "level": 77
-      },
-      {
-        "species": "Chandelure",
-        "moves": [
-          "shadowball",
-          "trick",
-          "fireblast",
-          "energyball"
-        ],
-        "ability": "Flash Fire",
-        "item": "Choice Scarf",
         "level": 83
       }
     ],
     "p2": [
       {
-        "species": "Lucario",
+        "species": "Sylveon",
         "moves": [
-          "vacuumwave",
-          "focusblast",
-          "nastyplot",
-          "flashcannon"
-        ],
-        "ability": "Inner Focus",
-        "item": "Life Orb",
-        "level": 84
-      },
-      {
-        "species": "Mew",
-        "moves": [
-          "psychicfangs",
-          "knockoff",
-          "closecombat",
-          "swordsdance"
-        ],
-        "ability": "Synchronize",
-        "item": "Life Orb",
-        "level": 82
-      },
-      {
-        "species": "Arceus-Ice",
-        "moves": [
+          "hypervoice",
+          "protect",
           "calmmind",
-          "judgment",
-          "thunderbolt",
-          "recover"
+          "wish"
         ],
-        "ability": "Multitype",
-        "item": "Icicle Plate",
-        "level": 72
-      },
-      {
-        "species": "Squawkabilly-Yellow",
-        "moves": [
-          "doubleedge",
-          "bravebird",
-          "quickattack",
-          "foulplay"
-        ],
-        "ability": "Hustle",
-        "item": "Choice Band",
-        "level": 89
-      },
-      {
-        "species": "Dodrio",
-        "moves": [
-          "drillrun",
-          "knockoff",
-          "bravebird",
-          "swordsdance"
-        ],
-        "ability": "Early Bird",
-        "item": "Heavy-Duty Boots",
+        "ability": "Pixilate",
+        "item": "Leftovers",
         "level": 85
       },
       {
-        "species": "Dondozo",
+        "species": "Jirachi",
         "moves": [
-          "sleeptalk",
-          "wavecrash",
-          "rest",
-          "curse"
+          "psychic",
+          "protect",
+          "wish",
+          "ironhead"
         ],
-        "ability": "Unaware",
+        "ability": "Serene Grace",
         "item": "Leftovers",
-        "level": 78
+        "level": 80
+      },
+      {
+        "species": "Meowstic",
+        "moves": [
+          "reflect",
+          "psychicnoise",
+          "lightscreen",
+          "yawn"
+        ],
+        "ability": "Prankster",
+        "item": "Light Clay",
+        "level": 89
+      },
+      {
+        "species": "Ursaluna",
+        "moves": [
+          "crunch",
+          "trailblaze",
+          "headlongrush",
+          "facade"
+        ],
+        "ability": "Guts",
+        "item": "Flame Orb",
+        "level": 79
+      },
+      {
+        "species": "Electivire",
+        "moves": [
+          "knockoff",
+          "earthquake",
+          "supercellslam",
+          "icepunch"
+        ],
+        "ability": "Motor Drive",
+        "item": "Choice Band",
+        "level": 84
+      },
+      {
+        "species": "Froslass",
+        "moves": [
+          "taunt",
+          "tripleaxel",
+          "spikes",
+          "poltergeist"
+        ],
+        "ability": "Cursed Body",
+        "item": "Wide Lens",
+        "level": 87
       }
     ]
   },
@@ -168,134 +168,131 @@
             "id": "p1",
             "pokemon": [
               {
-                "name": "Jumpluff",
-                "species": "jumpluff",
-                "hp": 271,
-                "maxhp": 271,
+                "name": "Regigigas",
+                "species": "regigigas",
+                "hp": 322,
+                "maxhp": 322,
                 "status": "",
                 "fainted": false,
-                "level": 87,
-                "ability": "infiltrator",
-                "item": "",
-                "moves": [
-                  "leechseed",
-                  "substitute",
-                  "strengthsap",
-                  "acrobatics"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Florges-Orange",
-                "species": "florgesorange",
-                "hp": 271,
-                "maxhp": 271,
-                "status": "",
-                "fainted": false,
-                "level": 85,
-                "ability": "flowerveil",
+                "level": 84,
+                "ability": "slowstart",
                 "item": "leftovers",
                 "moves": [
-                  "wish",
-                  "calmmind",
-                  "protect",
-                  "moonblast"
+                  "substitute",
+                  "bodyslam",
+                  "knockoff",
+                  "protect"
                 ],
                 "boosts": {},
                 "types": [
-                  "Fairy"
+                  "Normal"
                 ]
               },
               {
-                "name": "Kilowattrel",
-                "species": "kilowattrel",
-                "hp": 252,
-                "maxhp": 252,
+                "name": "Tauros",
+                "species": "tauros",
+                "hp": 257,
+                "maxhp": 257,
                 "status": "",
                 "fainted": false,
-                "level": 83,
-                "ability": "voltabsorb",
-                "item": "heavydutyboots",
+                "level": 82,
+                "ability": "sheerforce",
+                "item": "lifeorb",
                 "moves": [
-                  "roost",
-                  "discharge",
-                  "uturn",
-                  "hurricane"
+                  "closecombat",
+                  "earthquake",
+                  "bodyslam",
+                  "throatchop"
+                ],
+                "boosts": {},
+                "types": [
+                  "Normal"
+                ]
+              },
+              {
+                "name": "Raging Bolt",
+                "species": "ragingbolt",
+                "hp": 323,
+                "maxhp": 323,
+                "status": "",
+                "fainted": false,
+                "level": 78,
+                "ability": "protosynthesis",
+                "item": "boosterenergy",
+                "moves": [
+                  "thunderclap",
+                  "calmmind",
+                  "dragonpulse",
+                  "thunderbolt"
                 ],
                 "boosts": {},
                 "types": [
                   "Electric",
-                  "Flying"
+                  "Dragon"
                 ]
               },
               {
-                "name": "Basculegion-F",
-                "species": "basculegionf",
-                "hp": 335,
-                "maxhp": 335,
+                "name": "Muk",
+                "species": "muk",
+                "hp": 321,
+                "maxhp": 321,
                 "status": "",
                 "fainted": false,
-                "level": 83,
-                "ability": "adaptability",
-                "item": "choicespecs",
+                "level": 86,
+                "ability": "poisontouch",
+                "item": "assaultvest",
                 "moves": [
-                  "hydropump",
-                  "flipturn",
-                  "shadowball",
-                  "icebeam"
+                  "shadowsneak",
+                  "poisonjab",
+                  "icepunch",
+                  "knockoff"
                 ],
                 "boosts": {},
                 "types": [
-                  "Water",
-                  "Ghost"
+                  "Poison"
                 ]
               },
               {
-                "name": "Great Tusk",
-                "species": "greattusk",
-                "hp": 304,
-                "maxhp": 304,
+                "name": "Arbok",
+                "species": "arbok",
+                "hp": 246,
+                "maxhp": 246,
                 "status": "",
                 "fainted": false,
-                "level": 77,
-                "ability": "protosynthesis",
+                "level": 87,
+                "ability": "intimidate",
                 "item": "leftovers",
                 "moves": [
-                  "bulkup",
-                  "closecombat",
-                  "rapidspin",
-                  "earthquake"
+                  "trailblaze",
+                  "earthquake",
+                  "coil",
+                  "gunkshot"
                 ],
                 "boosts": {},
                 "types": [
-                  "Ground",
-                  "Fighting"
+                  "Poison"
                 ]
               },
               {
-                "name": "Chandelure",
-                "species": "chandelure",
-                "hp": 235,
-                "maxhp": 235,
+                "name": "Wo-Chien",
+                "species": "wochien",
+                "hp": 277,
+                "maxhp": 277,
                 "status": "",
                 "fainted": false,
                 "level": 83,
-                "ability": "flashfire",
-                "item": "choicescarf",
+                "ability": "tabletsofruin",
+                "item": "leftovers",
                 "moves": [
-                  "shadowball",
-                  "trick",
-                  "fireblast",
-                  "energyball"
+                  "knockoff",
+                  "protect",
+                  "leechseed",
+                  "gigadrain"
                 ],
                 "boosts": {},
                 "types": [
-                  "Ghost",
-                  "Fire"
+                  "Dark",
+                  "Grass"
                 ]
               }
             ]
@@ -305,42 +302,63 @@
             "id": "p2",
             "pokemon": [
               {
-                "name": "Lucario",
-                "species": "lucario",
-                "hp": 255,
-                "maxhp": 255,
+                "name": "Sylveon",
+                "species": "sylveon",
+                "hp": 300,
+                "maxhp": 300,
                 "status": "",
                 "fainted": false,
-                "level": 84,
-                "ability": "innerfocus",
-                "item": "lifeorb",
+                "level": 85,
+                "ability": "pixilate",
+                "item": "leftovers",
                 "moves": [
-                  "vacuumwave",
-                  "focusblast",
-                  "nastyplot",
-                  "flashcannon"
+                  "hypervoice",
+                  "protect",
+                  "calmmind",
+                  "wish"
                 ],
                 "boosts": {},
                 "types": [
-                  "Fighting",
-                  "Steel"
+                  "Fairy"
                 ]
               },
               {
-                "name": "Mew",
-                "species": "mew",
-                "hp": 298,
-                "maxhp": 298,
+                "name": "Jirachi",
+                "species": "jirachi",
+                "hp": 291,
+                "maxhp": 291,
                 "status": "",
                 "fainted": false,
-                "level": 82,
-                "ability": "synchronize",
-                "item": "lifeorb",
+                "level": 80,
+                "ability": "serenegrace",
+                "item": "leftovers",
                 "moves": [
-                  "psychicfangs",
-                  "knockoff",
-                  "closecombat",
-                  "swordsdance"
+                  "psychic",
+                  "protect",
+                  "wish",
+                  "ironhead"
+                ],
+                "boosts": {},
+                "types": [
+                  "Steel",
+                  "Psychic"
+                ]
+              },
+              {
+                "name": "Meowstic",
+                "species": "meowstic",
+                "hp": 277,
+                "maxhp": 277,
+                "status": "",
+                "fainted": false,
+                "level": 89,
+                "ability": "prankster",
+                "item": "lightclay",
+                "moves": [
+                  "reflect",
+                  "psychicnoise",
+                  "lightscreen",
+                  "yawn"
                 ],
                 "boosts": {},
                 "types": [
@@ -348,89 +366,68 @@
                 ]
               },
               {
-                "name": "Arceus-Ice",
-                "species": "arceusice",
-                "hp": 291,
-                "maxhp": 291,
+                "name": "Ursaluna",
+                "species": "ursaluna",
+                "hp": 335,
+                "maxhp": 335,
                 "status": "",
                 "fainted": false,
-                "level": 72,
-                "ability": "multitype",
-                "item": "icicleplate",
+                "level": 79,
+                "ability": "guts",
+                "item": "flameorb",
                 "moves": [
-                  "calmmind",
-                  "judgment",
-                  "thunderbolt",
-                  "recover"
+                  "crunch",
+                  "trailblaze",
+                  "headlongrush",
+                  "facade"
                 ],
                 "boosts": {},
                 "types": [
-                  "Ice"
+                  "Ground",
+                  "Normal"
                 ]
               },
               {
-                "name": "Squawkabilly-Yellow",
-                "species": "squawkabillyyellow",
-                "hp": 291,
-                "maxhp": 291,
+                "name": "Electivire",
+                "species": "electivire",
+                "hp": 263,
+                "maxhp": 263,
                 "status": "",
                 "fainted": false,
-                "level": 89,
-                "ability": "hustle",
+                "level": 84,
+                "ability": "motordrive",
                 "item": "choiceband",
                 "moves": [
-                  "doubleedge",
-                  "bravebird",
-                  "quickattack",
-                  "foulplay"
-                ],
-                "boosts": {},
-                "types": [
-                  "Normal",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Dodrio",
-                "species": "dodrio",
-                "hp": 241,
-                "maxhp": 241,
-                "status": "",
-                "fainted": false,
-                "level": 85,
-                "ability": "earlybird",
-                "item": "heavydutyboots",
-                "moves": [
-                  "drillrun",
                   "knockoff",
-                  "bravebird",
-                  "swordsdance"
+                  "earthquake",
+                  "supercellslam",
+                  "icepunch"
                 ],
                 "boosts": {},
                 "types": [
-                  "Normal",
-                  "Flying"
+                  "Electric"
                 ]
               },
               {
-                "name": "Dondozo",
-                "species": "dondozo",
-                "hp": 362,
-                "maxhp": 362,
+                "name": "Froslass",
+                "species": "froslass",
+                "hp": 263,
+                "maxhp": 263,
                 "status": "",
                 "fainted": false,
-                "level": 78,
-                "ability": "unaware",
-                "item": "leftovers",
+                "level": 87,
+                "ability": "cursedbody",
+                "item": "widelens",
                 "moves": [
-                  "sleeptalk",
-                  "wavecrash",
-                  "rest",
-                  "curse"
+                  "taunt",
+                  "tripleaxel",
+                  "spikes",
+                  "poltergeist"
                 ],
                 "boosts": {},
                 "types": [
-                  "Water"
+                  "Ice",
+                  "Ghost"
                 ]
               }
             ]
@@ -450,134 +447,131 @@
             "id": "p1",
             "pokemon": [
               {
-                "name": "Jumpluff",
-                "species": "jumpluff",
-                "hp": 240,
-                "maxhp": 271,
+                "name": "Regigigas",
+                "species": "regigigas",
+                "hp": 194,
+                "maxhp": 322,
                 "status": "",
                 "fainted": false,
-                "level": 87,
-                "ability": "infiltrator",
-                "item": "",
-                "moves": [
-                  "leechseed",
-                  "substitute",
-                  "strengthsap",
-                  "acrobatics"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Florges-Orange",
-                "species": "florgesorange",
-                "hp": 271,
-                "maxhp": 271,
-                "status": "",
-                "fainted": false,
-                "level": 85,
-                "ability": "flowerveil",
+                "level": 84,
+                "ability": "slowstart",
                 "item": "leftovers",
                 "moves": [
-                  "wish",
-                  "calmmind",
-                  "protect",
-                  "moonblast"
+                  "substitute",
+                  "bodyslam",
+                  "knockoff",
+                  "protect"
                 ],
                 "boosts": {},
                 "types": [
-                  "Fairy"
+                  "Normal"
                 ]
               },
               {
-                "name": "Kilowattrel",
-                "species": "kilowattrel",
-                "hp": 252,
-                "maxhp": 252,
+                "name": "Tauros",
+                "species": "tauros",
+                "hp": 257,
+                "maxhp": 257,
                 "status": "",
                 "fainted": false,
-                "level": 83,
-                "ability": "voltabsorb",
-                "item": "heavydutyboots",
+                "level": 82,
+                "ability": "sheerforce",
+                "item": "lifeorb",
                 "moves": [
-                  "roost",
-                  "discharge",
-                  "uturn",
-                  "hurricane"
+                  "closecombat",
+                  "earthquake",
+                  "bodyslam",
+                  "throatchop"
+                ],
+                "boosts": {},
+                "types": [
+                  "Normal"
+                ]
+              },
+              {
+                "name": "Raging Bolt",
+                "species": "ragingbolt",
+                "hp": 323,
+                "maxhp": 323,
+                "status": "",
+                "fainted": false,
+                "level": 78,
+                "ability": "protosynthesis",
+                "item": "boosterenergy",
+                "moves": [
+                  "thunderclap",
+                  "calmmind",
+                  "dragonpulse",
+                  "thunderbolt"
                 ],
                 "boosts": {},
                 "types": [
                   "Electric",
-                  "Flying"
+                  "Dragon"
                 ]
               },
               {
-                "name": "Basculegion-F",
-                "species": "basculegionf",
-                "hp": 335,
-                "maxhp": 335,
+                "name": "Muk",
+                "species": "muk",
+                "hp": 321,
+                "maxhp": 321,
                 "status": "",
                 "fainted": false,
-                "level": 83,
-                "ability": "adaptability",
-                "item": "choicespecs",
+                "level": 86,
+                "ability": "poisontouch",
+                "item": "assaultvest",
                 "moves": [
-                  "hydropump",
-                  "flipturn",
-                  "shadowball",
-                  "icebeam"
+                  "shadowsneak",
+                  "poisonjab",
+                  "icepunch",
+                  "knockoff"
                 ],
                 "boosts": {},
                 "types": [
-                  "Water",
-                  "Ghost"
+                  "Poison"
                 ]
               },
               {
-                "name": "Great Tusk",
-                "species": "greattusk",
-                "hp": 304,
-                "maxhp": 304,
+                "name": "Arbok",
+                "species": "arbok",
+                "hp": 246,
+                "maxhp": 246,
                 "status": "",
                 "fainted": false,
-                "level": 77,
-                "ability": "protosynthesis",
+                "level": 87,
+                "ability": "intimidate",
                 "item": "leftovers",
                 "moves": [
-                  "bulkup",
-                  "closecombat",
-                  "rapidspin",
-                  "earthquake"
+                  "trailblaze",
+                  "earthquake",
+                  "coil",
+                  "gunkshot"
                 ],
                 "boosts": {},
                 "types": [
-                  "Ground",
-                  "Fighting"
+                  "Poison"
                 ]
               },
               {
-                "name": "Chandelure",
-                "species": "chandelure",
-                "hp": 235,
-                "maxhp": 235,
+                "name": "Wo-Chien",
+                "species": "wochien",
+                "hp": 277,
+                "maxhp": 277,
                 "status": "",
                 "fainted": false,
                 "level": 83,
-                "ability": "flashfire",
-                "item": "choicescarf",
+                "ability": "tabletsofruin",
+                "item": "leftovers",
                 "moves": [
-                  "shadowball",
-                  "trick",
-                  "fireblast",
-                  "energyball"
+                  "knockoff",
+                  "protect",
+                  "leechseed",
+                  "gigadrain"
                 ],
                 "boosts": {},
                 "types": [
-                  "Ghost",
-                  "Fire"
+                  "Dark",
+                  "Grass"
                 ]
               }
             ]
@@ -587,42 +581,63 @@
             "id": "p2",
             "pokemon": [
               {
-                "name": "Lucario",
-                "species": "lucario",
-                "hp": 230,
-                "maxhp": 255,
+                "name": "Sylveon",
+                "species": "sylveon",
+                "hp": 300,
+                "maxhp": 300,
                 "status": "",
                 "fainted": false,
-                "level": 84,
-                "ability": "innerfocus",
-                "item": "lifeorb",
+                "level": 85,
+                "ability": "pixilate",
+                "item": "leftovers",
                 "moves": [
-                  "vacuumwave",
-                  "focusblast",
-                  "nastyplot",
-                  "flashcannon"
+                  "hypervoice",
+                  "protect",
+                  "calmmind",
+                  "wish"
                 ],
                 "boosts": {},
                 "types": [
-                  "Fighting",
-                  "Steel"
+                  "Fairy"
                 ]
               },
               {
-                "name": "Mew",
-                "species": "mew",
-                "hp": 298,
-                "maxhp": 298,
+                "name": "Jirachi",
+                "species": "jirachi",
+                "hp": 291,
+                "maxhp": 291,
                 "status": "",
                 "fainted": false,
-                "level": 82,
-                "ability": "synchronize",
-                "item": "lifeorb",
+                "level": 80,
+                "ability": "serenegrace",
+                "item": "leftovers",
                 "moves": [
-                  "psychicfangs",
-                  "knockoff",
-                  "closecombat",
-                  "swordsdance"
+                  "psychic",
+                  "protect",
+                  "wish",
+                  "ironhead"
+                ],
+                "boosts": {},
+                "types": [
+                  "Steel",
+                  "Psychic"
+                ]
+              },
+              {
+                "name": "Meowstic",
+                "species": "meowstic",
+                "hp": 277,
+                "maxhp": 277,
+                "status": "",
+                "fainted": false,
+                "level": 89,
+                "ability": "prankster",
+                "item": "lightclay",
+                "moves": [
+                  "reflect",
+                  "psychicnoise",
+                  "lightscreen",
+                  "yawn"
                 ],
                 "boosts": {},
                 "types": [
@@ -630,89 +645,68 @@
                 ]
               },
               {
-                "name": "Arceus-Ice",
-                "species": "arceusice",
-                "hp": 291,
-                "maxhp": 291,
+                "name": "Ursaluna",
+                "species": "ursaluna",
+                "hp": 335,
+                "maxhp": 335,
                 "status": "",
                 "fainted": false,
-                "level": 72,
-                "ability": "multitype",
-                "item": "icicleplate",
+                "level": 79,
+                "ability": "guts",
+                "item": "flameorb",
                 "moves": [
-                  "calmmind",
-                  "judgment",
-                  "thunderbolt",
-                  "recover"
+                  "crunch",
+                  "trailblaze",
+                  "headlongrush",
+                  "facade"
                 ],
                 "boosts": {},
                 "types": [
-                  "Ice"
+                  "Ground",
+                  "Normal"
                 ]
               },
               {
-                "name": "Squawkabilly-Yellow",
-                "species": "squawkabillyyellow",
-                "hp": 291,
-                "maxhp": 291,
+                "name": "Electivire",
+                "species": "electivire",
+                "hp": 263,
+                "maxhp": 263,
                 "status": "",
                 "fainted": false,
-                "level": 89,
-                "ability": "hustle",
+                "level": 84,
+                "ability": "motordrive",
                 "item": "choiceband",
                 "moves": [
-                  "doubleedge",
-                  "bravebird",
-                  "quickattack",
-                  "foulplay"
-                ],
-                "boosts": {},
-                "types": [
-                  "Normal",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Dodrio",
-                "species": "dodrio",
-                "hp": 241,
-                "maxhp": 241,
-                "status": "",
-                "fainted": false,
-                "level": 85,
-                "ability": "earlybird",
-                "item": "heavydutyboots",
-                "moves": [
-                  "drillrun",
                   "knockoff",
-                  "bravebird",
-                  "swordsdance"
+                  "earthquake",
+                  "supercellslam",
+                  "icepunch"
                 ],
                 "boosts": {},
                 "types": [
-                  "Normal",
-                  "Flying"
+                  "Electric"
                 ]
               },
               {
-                "name": "Dondozo",
-                "species": "dondozo",
-                "hp": 362,
-                "maxhp": 362,
+                "name": "Froslass",
+                "species": "froslass",
+                "hp": 263,
+                "maxhp": 263,
                 "status": "",
                 "fainted": false,
-                "level": 78,
-                "ability": "unaware",
-                "item": "leftovers",
+                "level": 87,
+                "ability": "cursedbody",
+                "item": "widelens",
                 "moves": [
-                  "sleeptalk",
-                  "wavecrash",
-                  "rest",
-                  "curse"
+                  "taunt",
+                  "tripleaxel",
+                  "spikes",
+                  "poltergeist"
                 ],
                 "boosts": {},
                 "types": [
-                  "Water"
+                  "Ice",
+                  "Ghost"
                 ]
               }
             ]

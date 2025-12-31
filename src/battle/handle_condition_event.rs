@@ -160,6 +160,9 @@ impl Battle {
             "TryAddVolatile" => {
                 condition_callbacks::dispatch_on_try_add_volatile(self, condition_id, pokemon_pos)
             }
+            "TryPrimaryHit" | "onTryPrimaryHit" => {
+                condition_callbacks::dispatch_on_try_primary_hit(self, condition_id, pokemon_pos)
+            }
             "TryMove" => condition_callbacks::dispatch_on_try_move(self, condition_id, pokemon_pos),
             "TryMovePriority" => {
                 condition_callbacks::dispatch_on_try_move_priority(self, condition_id, pokemon_pos)

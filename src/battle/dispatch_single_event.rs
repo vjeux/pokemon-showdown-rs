@@ -19,6 +19,25 @@ impl Battle {
 
         let effect_str = effect_id.as_str();
 
+        // IMPORTANT: Check if effect is a condition (volatile, status, etc.) on the target Pokemon FIRST
+        // This prevents "substitute" volatile from being dispatched as "substitute" move
+        // In JavaScript, the event handler is attached to pokemon.volatiles['substitute'], so it knows it's the volatile
+        // In Rust, we need to check target.volatiles to determine if it's a volatile vs a move
+        if let Some(target_pos) = target {
+            if let Some(pokemon) = self.pokemon_at(target_pos.0, target_pos.1) {
+                // Check if effect is in target's volatiles
+                if pokemon.volatiles.contains_key(effect_id) {
+                    eprintln!("[DISPATCH_SINGLE_EVENT] Effect is volatile on target, calling handle_condition_event");
+                    return self.handle_condition_event(event_id, effect_str, target);
+                }
+                // Check if effect is target's status
+                if !pokemon.status.is_empty() && pokemon.status.as_str() == effect_str {
+                    eprintln!("[DISPATCH_SINGLE_EVENT] Effect is status on target, calling handle_condition_event");
+                    return self.handle_condition_event(event_id, effect_str, target);
+                }
+            }
+        }
+
         // Handle ability events
         if self.dex.abilities().get(effect_id.as_str()).is_some() {
             eprintln!("[DISPATCH_SINGLE_EVENT] Calling handle_ability_event");

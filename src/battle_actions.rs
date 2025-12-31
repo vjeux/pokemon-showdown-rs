@@ -171,6 +171,9 @@ pub struct ActiveMove {
     pub self_dropped: bool,
     pub smart_target: Option<bool>,
     pub stellar_boosted: bool,
+    /// Effect ID that changed this move's type (e.g., "pixilate", "aerilate")
+    /// Used to boost power after type change (JavaScript: typeChangerBoosted)
+    pub type_changer_boosted: Option<ID>,
     pub multi_hit: Option<i32>,
     pub multi_hit_type: Option<String>,
     pub multi_accuracy: bool,

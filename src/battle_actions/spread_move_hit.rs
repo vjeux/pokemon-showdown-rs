@@ -27,6 +27,41 @@ pub fn spread_move_hit(
         None => return (damages, final_targets),
     };
 
+    // Step 0: check for substitute (JavaScript line 1074-1089)
+    // JavaScript: damage = this.tryPrimaryHitEvent(damage, targets, pokemon, move, moveData, isSecondary);
+    // tryPrimaryHitEvent fires 'TryPrimaryHit' event which Substitute uses to intercept damage
+    if !is_secondary && !is_self {
+        // JavaScript: if (move.target !== 'all' && move.target !== 'allyTeam' && move.target !== 'allySide' && move.target !== 'foeSide')
+        let target_type = move_data.target.as_str();
+        if target_type != "all" && target_type != "allyTeam" && target_type != "allySide" && target_type != "foeSide" {
+            // tryPrimaryHitEvent: for (const [i, target] of targets.entries()) {
+            //     if (!target) continue;
+            //     damage[i] = this.battle.runEvent('TryPrimaryHit', target, pokemon, moveData);
+            // }
+            for (i, &target_opt) in targets.iter().enumerate() {
+                if let Some(target_pos) = target_opt {
+                    let result = battle.run_event(
+                        "TryPrimaryHit",
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(move_id),
+                        None,
+                    );
+
+                    // JavaScript checks: if (damage[i] === this.battle.HIT_SUBSTITUTE) {
+                    //     damage[i] = true;
+                    //     targets[i] = null;
+                    // }
+                    // HIT_SUBSTITUTE = 0 in JavaScript, so check for Some(0)
+                    if result == Some(0) {
+                        damages[i] = Some(1); // true equivalent
+                        final_targets[i] = None; // Don't calculate damage for this target
+                    }
+                }
+            }
+        }
+    }
+
     // Step 1: TryHit event
     if !is_secondary && !is_self {
         for (i, &target) in targets.iter().enumerate() {
