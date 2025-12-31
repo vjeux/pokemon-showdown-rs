@@ -39,13 +39,13 @@ fn test_team_preview_should_accept_only_team_choices() {
     let valid_choice = "team 1";
 
     // JavaScript:             assert(battle.choose('p1', validChoice));
-    assert!(battle.choose(SideID::P1, valid_choice).is_ok());
+    assert!(battle.choose(SideID::P1, valid_choice));
 
     // JavaScript:             battle.p1.clearChoice();
     // TODO: Need to implement simple clear_choice API
 
     // JavaScript:             assert(battle.choose('p2', validChoice));
-    assert!(battle.choose(SideID::P2, valid_choice).is_ok());
+    assert!(battle.choose(SideID::P2, valid_choice));
 
     // JavaScript:             battle.p1.clearChoice();
     // TODO: Need to implement simple clear_choice API
@@ -58,7 +58,7 @@ fn test_team_preview_should_accept_only_team_choices() {
     // JavaScript:             }
     for bad_choice in bad_choices {
         assert!(
-            battle.choose(SideID::P1, bad_choice).is_err(),
+            !battle.choose(SideID::P1, bad_choice),
             "Expected '{}' to be rejected",
             bad_choice
         );
@@ -98,15 +98,15 @@ fn test_team_preview_should_reject_non_numerical_choice_details() {
     // JavaScript:             }
     for side_id in [SideID::P1, SideID::P2] {
         assert!(
-            battle.choose(side_id, "team Rhydon").is_err(),
+            !battle.choose(side_id, "team Rhydon"),
             "Expected 'team Rhydon' to be rejected"
         );
         assert!(
-            battle.choose(side_id, "team Mew").is_err(),
+            !battle.choose(side_id, "team Mew"),
             "Expected 'team Mew' to be rejected"
         );
         assert!(
-            battle.choose(side_id, "team first").is_err(),
+            !battle.choose(side_id, "team first"),
             "Expected 'team first' to be rejected"
         );
     }
@@ -186,17 +186,17 @@ fn test_switch_generic_should_reject_non_numerical_input() {
     );
 
     // JavaScript:                 battle.makeChoices('move lunardance', 'move splash');
-    battle.make_choices("move lunardance", "move splash");
+    battle.make_choices(&["move lunardance", "move splash"]);
 
     // JavaScript:                 assert.throws(() => battle.choose('p1', 'switch first'));
     assert!(
-        battle.choose(SideID::P1, "switch first").is_err(),
+        !battle.choose(SideID::P1, "switch first"),
         "Expected 'switch first' to be rejected"
     );
 
     // JavaScript:                 assert.throws(() => battle.choose('p1', 'switch second'));
     assert!(
-        battle.choose(SideID::P1, "switch second").is_err(),
+        !battle.choose(SideID::P1, "switch second"),
         "Expected 'switch second' to be rejected"
     );
 }
@@ -223,7 +223,7 @@ fn test_switch_singles_should_accept_only_switch_choices() {
     );
 
     // JavaScript:                 battle.makeChoices('move lunardance', 'move splash');
-    battle.make_choices("move lunardance", "move splash");
+    battle.make_choices(&["move lunardance", "move splash"]);
 
     // JavaScript:                 const badChoices = ['move 1', 'move 2 mega', 'team 1', 'pass', 'shift'];
     let bad_choices = vec!["move 1", "move 2 mega", "team 1", "pass", "shift"];
@@ -233,7 +233,7 @@ fn test_switch_singles_should_accept_only_switch_choices() {
     // JavaScript:                 }
     for bad_choice in bad_choices {
         assert!(
-            battle.choose(SideID::P1, bad_choice).is_err(),
+            !battle.choose(SideID::P1, bad_choice),
             "Expected '{}' to be rejected",
             bad_choice
         );
@@ -246,7 +246,7 @@ fn test_switch_singles_should_accept_only_switch_choices() {
     // Note: This will fail because we currently require numeric switch arguments
     // TODO: Need to support both numeric and name-based switch arguments
     assert!(
-        battle.choose(SideID::P1, valid_choice).is_ok(),
+        battle.choose(SideID::P1, valid_choice),
         "Expected '{}' to be accepted",
         valid_choice
     );
@@ -287,10 +287,10 @@ fn test_switch_doubles_should_accept_switch_and_pass() {
     );
 
     // JavaScript:                 battle.makeChoices('move selfdestruct, move selfdestruct', 'move roost, move irondefense'); // Both p1 active Pokémon faint
-    battle.make_choices(
+    battle.make_choices(&[
         "move selfdestruct, move selfdestruct",
         "move roost, move irondefense",
-    );
+    ]);
 
     // JavaScript:                 const badChoices = ['move 1', 'move 2 mega', 'team 1', 'shift'];
     let bad_choices = vec!["move 1", "move 2 mega", "team 1", "shift"];
@@ -300,7 +300,7 @@ fn test_switch_doubles_should_accept_switch_and_pass() {
     // JavaScript:                 }
     for bad_choice in bad_choices {
         assert!(
-            battle.choose(SideID::P1, bad_choice).is_err(),
+            !battle.choose(SideID::P1, bad_choice),
             "Expected '{}' to be rejected",
             bad_choice
         );
@@ -308,7 +308,7 @@ fn test_switch_doubles_should_accept_switch_and_pass() {
 
     // JavaScript:                 assert(battle.p1.choose(`pass, switch 3`), `Choice 'pass, switch 3' should be valid`);
     assert!(
-        battle.choose(SideID::P1, "pass, switch 3").is_ok(),
+        battle.choose(SideID::P1, "pass, switch 3"),
         "Choice 'pass, switch 3' should be valid"
     );
 }
@@ -347,10 +347,10 @@ fn test_switch_doubles_should_reject_pass_with_choice_details() {
     );
 
     // JavaScript:             battle.makeChoices('move selfdestruct, move selfdestruct', 'move roost, move irondefense'); // Both p1 active Pokémon faint
-    battle.make_choices(
+    battle.make_choices(&[
         "move selfdestruct, move selfdestruct",
         "move roost, move irondefense",
-    );
+    ]);
 
     // JavaScript:             const switchChoice = 'switch 3';
     // JavaScript:             const passChoice = 'pass';
@@ -411,7 +411,7 @@ fn test_move_generic_should_reject_pass_for_non_fainted() {
     // JavaScript:                 }
     for side_id in [SideID::P1, SideID::P2] {
         assert!(
-            battle.choose(side_id, "pass").is_err(),
+            !battle.choose(side_id, "pass"),
             "Expected 'pass' to be rejected for {:?}",
             side_id
         );
@@ -457,7 +457,7 @@ fn test_move_generic_should_allow_mega_and_targeting() {
     for bad_choice in bad_choices {
         let choice = format!("{}, move tackle 1", bad_choice);
         assert!(
-            battle.choose(SideID::P1, &choice).is_err(),
+            !battle.choose(SideID::P1, &choice),
             "Expected '{}' to be rejected",
             choice
         );
@@ -502,7 +502,7 @@ fn test_move_generic_should_allow_dynamax() {
     // JavaScript:                 battle.makeChoices(`move max mindstorm`, `move psychic max`);
     // For now, just validate that the choices are accepted (parsing test)
     // Full execution would require Dynamax mechanics implementation
-    battle.make_choices("move psychic max", "move psychic max");
+    battle.make_choices(&["move psychic max", "move psychic max"]);
 
     // JavaScript:                 assert(battle.p1.active[0].volatiles['dynamax']);
     // JavaScript:                 assert(battle.p2.active[0].volatiles['dynamax']);
@@ -613,7 +613,7 @@ fn test_move_singles_should_accept_only_move_and_switch() {
     // JavaScript:                 }
     for action in valid_choices {
         assert!(
-            battle.choose(SideID::P1, action).is_ok(),
+            battle.choose(SideID::P1, action),
             "Choice '{}' should be valid",
             action
         );
@@ -628,7 +628,7 @@ fn test_move_singles_should_accept_only_move_and_switch() {
     // JavaScript:                 }
     for bad_choice in bad_choices {
         assert!(
-            battle.choose(SideID::P1, bad_choice).is_err(),
+            !battle.choose(SideID::P1, bad_choice),
             "Expected '{}' to be rejected",
             bad_choice
         );
@@ -669,13 +669,13 @@ fn test_move_doubles_should_enforce_pass_for_fainted() {
 
     // JavaScript:                 const p1 = battle.p1;
     // JavaScript:                 battle.makeChoices('move selfdestruct, move selfdestruct', 'move roost, move irondefense'); // Both p1 active Pokémon faint
-    battle.make_choices(
+    battle.make_choices(&[
         "move selfdestruct, move selfdestruct",
         "move roost, move irondefense",
-    );
+    ]);
 
     // JavaScript:                 battle.makeChoices('pass, switch 3', ''); // Koffing switches in at slot #2
-    battle.make_choices("pass, switch 3", "");
+    battle.make_choices(&["pass, switch 3", ""]);
 
     // JavaScript:                 assert.fainted(p1.active[0]);
     // Check that first active Pokemon is fainted
@@ -709,7 +709,7 @@ fn test_move_doubles_should_enforce_pass_for_fainted() {
 
     // JavaScript:                 assert(battle.choose('p1', 'move smog 2'));
     assert!(
-        battle.choose(SideID::P1, "move smog 2").is_ok(),
+        battle.choose(SideID::P1, "move smog 2"),
         "Choice 'move smog 2' should be valid"
     );
 
@@ -766,7 +766,7 @@ fn test_move_triples_should_accept_move_and_switch_for_center() {
     for action in valid_choices {
         let choice_string = format!("move 1, {}, move 1 1", action);
         assert!(
-            battle.choose(SideID::P1, &choice_string).is_ok(),
+            battle.choose(SideID::P1, &choice_string),
             "Choice '{}' should be valid",
             choice_string
         );
@@ -783,7 +783,7 @@ fn test_move_triples_should_accept_move_and_switch_for_center() {
     for bad_choice in bad_choices {
         let choice_string = format!("move 1, {}, move 1 1", bad_choice);
         assert!(
-            battle.choose(SideID::P1, &choice_string).is_err(),
+            !battle.choose(SideID::P1, &choice_string),
             "Expected '{}' to be rejected",
             choice_string
         );
@@ -838,7 +838,7 @@ fn test_move_triples_should_accept_move_switch_and_shift_for_left() {
     for action in valid_choices {
         let choice_string = format!("{}, move 1, move 1 1", action);
         assert!(
-            battle.choose(SideID::P1, &choice_string).is_ok(),
+            battle.choose(SideID::P1, &choice_string),
             "Choice '{}' should be valid",
             choice_string
         );
@@ -855,7 +855,7 @@ fn test_move_triples_should_accept_move_switch_and_shift_for_left() {
     for bad_choice in bad_choices {
         let choice_string = format!("{}, move 1, move 1 1", bad_choice);
         assert!(
-            battle.choose(SideID::P1, &choice_string).is_err(),
+            !battle.choose(SideID::P1, &choice_string),
             "Expected '{}' to be rejected",
             choice_string
         );
@@ -910,7 +910,7 @@ fn test_move_triples_should_accept_move_switch_and_shift_for_right() {
     for action in valid_choices {
         let choice_string = format!("move 1, move 1, {}", action);
         assert!(
-            battle.choose(SideID::P1, &choice_string).is_ok(),
+            battle.choose(SideID::P1, &choice_string),
             "Choice '{}' should be valid",
             choice_string
         );
@@ -933,7 +933,7 @@ fn test_move_triples_should_accept_move_switch_and_shift_for_right() {
     for bad_choice in bad_choices {
         let choice_string = format!("move 1, move 1, {}", bad_choice);
         assert!(
-            battle.choose(SideID::P1, &choice_string).is_err(),
+            !battle.choose(SideID::P1, &choice_string),
             "Expected '{}' to be rejected",
             choice_string
         );
@@ -977,13 +977,13 @@ fn test_move_triples_should_enforce_pass_for_fainted() {
 
     // JavaScript:                 const p1 = battle.p1;
     // JavaScript:                 battle.makeChoices('move selfdestruct, move selfdestruct, move lunardance', 'move roost, move irondefense, move defensecurl'); // All p1 active Pokémon faint
-    battle.make_choices(
+    battle.make_choices(&[
         "move selfdestruct, move selfdestruct, move lunardance",
         "move roost, move irondefense, move defensecurl",
-    );
+    ]);
 
     // JavaScript:                 battle.makeChoices('pass, switch 4, default', ''); // Forretress switches in to slot #2
-    battle.make_choices("pass, switch 4, pass", "");
+    battle.make_choices(&["pass, switch 4, pass", ""]);
 
     // JavaScript:                 assert.species(p1.active[1], 'Forretress');
     let p1_active_1_species = battle.sides[0].active[1]
@@ -1011,12 +1011,11 @@ fn test_move_triples_should_enforce_pass_for_fainted() {
         // JavaScript:                     assert.equal(battle.p1.getChoice(), `pass, move spikes, pass`);
         // JavaScript:                     battle.p1.clearChoice();
         let choice_with_passes = format!("pass, {}, pass", action);
-        match battle.choose(SideID::P1, &choice_with_passes) {
-            Ok(_) => {}
-            Err(e) => panic!(
-                "Choice '{}' should be valid but got error: {}",
-                choice_with_passes, e
-            ),
+        if !battle.choose(SideID::P1, &choice_with_passes) {
+            panic!(
+                "Choice '{}' should be valid but was rejected",
+                choice_with_passes
+            );
         }
 
         // TODO: Implement automatic choice normalization for partial choices

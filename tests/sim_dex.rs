@@ -9,7 +9,7 @@ fn test_get_species_flabebe() {
     let dex = Dex::load_default().unwrap();
 
     // Should normalize Flabébé forme names
-    if let Some(species) = dex.get_species("Flabébé-yellow") {
+    if let Some(species) = dex.species().get("Flabébé-yellow") {
         assert!(
             species.name == "Flabébé-Yellow" || species.name == "Flabebe-Yellow",
             "Expected 'Flabébé-Yellow' or 'Flabebe-Yellow', got '{}'",
@@ -25,7 +25,7 @@ fn test_get_species_flabebe() {
 fn test_get_species_rockruff_dusk() {
     let dex = Dex::load_default().unwrap();
 
-    if let Some(species) = dex.get_species("rockruffdusk") {
+    if let Some(species) = dex.species().get("rockruffdusk") {
         assert!(
             species.name.contains("Rockruff") && species.name.contains("Dusk"),
             "Expected name containing 'Rockruff' and 'Dusk', got '{}'",
@@ -39,7 +39,7 @@ fn test_get_species_rockruff_dusk() {
 fn test_get_move_gmax() {
     let dex = Dex::load_default().unwrap();
 
-    if let Some(move_data) = dex.get_move("G-Max Befuddle") {
+    if let Some(move_data) = dex.moves().get("G-Max Befuddle") {
         assert_eq!(move_data.name, "G-Max Befuddle");
         // G-Max moves were introduced in Gen 8
         assert!(
@@ -55,11 +55,11 @@ fn test_get_move_basic() {
     let dex = Dex::load_default().unwrap();
 
     // Test some common moves
-    let thunderbolt = dex.get_move("Thunderbolt");
+    let thunderbolt = dex.moves().get("Thunderbolt");
     assert!(thunderbolt.is_some());
     assert_eq!(thunderbolt.unwrap().name, "Thunderbolt");
 
-    let tackle = dex.get_move("Tackle");
+    let tackle = dex.moves().get("Tackle");
     assert!(tackle.is_some());
     assert_eq!(tackle.unwrap().name, "Tackle");
 }
@@ -70,11 +70,11 @@ fn test_get_item_basic() {
     let dex = Dex::load_default().unwrap();
 
     // Test some common items
-    let leftovers = dex.get_item("Leftovers");
+    let leftovers = dex.items().get("Leftovers");
     assert!(leftovers.is_some());
     assert_eq!(leftovers.unwrap().name, "Leftovers");
 
-    let choice_scarf = dex.get_item("Choice Scarf");
+    let choice_scarf = dex.items().get("Choice Scarf");
     assert!(choice_scarf.is_some());
     assert_eq!(choice_scarf.unwrap().name, "Choice Scarf");
 }
@@ -88,7 +88,7 @@ fn test_get_ability_basic() {
     println!("Dex loaded, checking abilities...");
 
     // Try to get some common abilities
-    let intimidate = dex.get_ability("Intimidate");
+    let intimidate = dex.abilities().get("Intimidate");
     if intimidate.is_none() {
         println!("Intimidate not found, abilities might not be loaded");
         // Skip this test if abilities aren't loaded yet
@@ -97,7 +97,7 @@ fn test_get_ability_basic() {
 
     assert_eq!(intimidate.unwrap().name, "Intimidate");
 
-    let levitate = dex.get_ability("Levitate");
+    let levitate = dex.abilities().get("Levitate");
     if let Some(ability) = levitate {
         assert_eq!(ability.name, "Levitate");
     }
@@ -109,11 +109,11 @@ fn test_get_species_basic() {
     let dex = Dex::load_default().unwrap();
 
     // Test some common species
-    let pikachu = dex.get_species("Pikachu");
+    let pikachu = dex.species().get("Pikachu");
     assert!(pikachu.is_some());
     assert_eq!(pikachu.unwrap().name, "Pikachu");
 
-    let charizard = dex.get_species("Charizard");
+    let charizard = dex.species().get("Charizard");
     assert!(charizard.is_some());
     assert_eq!(charizard.unwrap().name, "Charizard");
 }
@@ -124,19 +124,19 @@ fn test_case_insensitive_lookup() {
     let dex = Dex::load_default().unwrap();
 
     // Moves should be case-insensitive
-    assert!(dex.get_move("thunderbolt").is_some());
-    assert!(dex.get_move("THUNDERBOLT").is_some());
-    assert!(dex.get_move("ThunderBolt").is_some());
+    assert!(dex.moves().get("thunderbolt").is_some());
+    assert!(dex.moves().get("THUNDERBOLT").is_some());
+    assert!(dex.moves().get("ThunderBolt").is_some());
 
     // Species should be case-insensitive
-    assert!(dex.get_species("pikachu").is_some());
-    assert!(dex.get_species("PIKACHU").is_some());
+    assert!(dex.species().get("pikachu").is_some());
+    assert!(dex.species().get("PIKACHU").is_some());
 
     // Abilities should be case-insensitive (if loaded)
     // Skip ability test if abilities aren't loaded yet
-    if dex.get_ability("Intimidate").is_some() {
-        assert!(dex.get_ability("intimidate").is_some());
-        assert!(dex.get_ability("INTIMIDATE").is_some());
+    if dex.abilities().get("Intimidate").is_some() {
+        assert!(dex.abilities().get("intimidate").is_some());
+        assert!(dex.abilities().get("INTIMIDATE").is_some());
     }
 }
 
@@ -146,14 +146,14 @@ fn test_invalid_lookups() {
     let dex = Dex::load_default().unwrap();
 
     // Non-existent move
-    assert!(dex.get_move("NotARealMove").is_none());
+    assert!(dex.moves().get("NotARealMove").is_none());
 
     // Non-existent species
-    assert!(dex.get_species("NotARealPokemon").is_none());
+    assert!(dex.species().get("NotARealPokemon").is_none());
 
     // Non-existent ability
-    assert!(dex.get_ability("NotARealAbility").is_none());
+    assert!(dex.abilities().get("NotARealAbility").is_none());
 
     // Non-existent item
-    assert!(dex.get_item("NotARealItem").is_none());
+    assert!(dex.items().get("NotARealItem").is_none());
 }
