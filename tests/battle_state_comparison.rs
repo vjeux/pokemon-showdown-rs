@@ -69,6 +69,7 @@ struct BattleLog {
     states: Vec<StateRecord>,
     battle_log: Vec<TurnLog>,
     summary: BattleSummary,
+    prng_calls_per_turn: Vec<usize>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -209,6 +210,7 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
             winner: None,
             ended: false,
         },
+        prng_calls_per_turn: Vec::new(),
     };
 
     // Add team info
@@ -251,6 +253,9 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
     while !battle.ended && turn < max_turns {
         turn += 1;
 
+        // Track PRNG calls before turn
+        let prng_before = battle.prng.call_count;
+
         // Use "default" choices (move 1) to match JavaScript test behavior
         let p1_choice = "default";
         let p2_choice = "default";
@@ -264,6 +269,13 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
 
         // Execute choices
         battle.make_choices(&[&p1_choice, &p2_choice]);
+
+        // Track PRNG calls after turn
+        let prng_after = battle.prng.call_count;
+        let calls_this_turn = prng_after - prng_before;
+        log.prng_calls_per_turn.push(calls_this_turn);
+
+        println!("Rust: Turn {} - PRNG calls: {} (total: {})", turn, calls_this_turn, prng_after);
 
         // Record state after turn
         log.states.push(StateRecord {
@@ -290,12 +302,19 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
 #[test]
 fn test_battle_state_comparison() {
     let seed = PRNGSeed::Gen5([0, 0, 0, 1]);
-    println!("Running deterministic battle with seed: {:?}", seed);
+    println!("Rust: Running deterministic battle with seed: {:?}", seed);
 
-    let log = run_battle_with_states(seed, 1000);  // Run until battle ends (max 1000 turns)
+    let log = run_battle_with_states(seed.clone(), 1000);  // Run until battle ends (max 1000 turns)
 
-    println!("Battle completed in {} turns", log.summary.turns);
-    println!("Winner: {:?}", log.summary.winner);
+    println!("Rust: Total turns: {}", log.summary.turns);
+    println!("Rust: Winner: {:?}", log.summary.winner);
+    println!("Rust: Total PRNG calls: {}", log.prng_calls_per_turn.iter().sum::<usize>());
+    println!("Rust: PRNG calls per turn: {:?}", log.prng_calls_per_turn);
+
+    // Save trace to file for comparison
+    let trace_json = serde_json::to_string_pretty(&log).expect("Failed to serialize trace");
+    std::fs::write("trace-rust-seed1.json", trace_json).expect("Failed to write trace file");
+    println!("Rust: Trace saved to trace-rust-seed1.json");
 
     // Print turn 1 results for comparison
     if log.states.len() > 1 {
