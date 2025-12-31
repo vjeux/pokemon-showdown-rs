@@ -69,18 +69,27 @@ pub mod condition {
     pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         use crate::dex_data::ID;
 
+        eprintln!("[LEECH SEED] on_residual called for pokemon_pos={:?}", pokemon_pos);
+
         let pokemon = pokemon_pos;
 
         // const target = this.getAtSlot(pokemon.volatiles['leechseed'].sourceSlot);
         let source_slot = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
-                None => return EventResult::Continue,
+                None => {
+                    eprintln!("[LEECH SEED] Failed to get pokemon");
+                    return EventResult::Continue;
+                }
             };
             let leechseed_volatile = match pokemon_pokemon.volatiles.get(&ID::from("leechseed")) {
                 Some(v) => v,
-                None => return EventResult::Continue,
+                None => {
+                    eprintln!("[LEECH SEED] No leechseed volatile found");
+                    return EventResult::Continue;
+                }
             };
+            eprintln!("[LEECH SEED] Found leechseed volatile, source_slot={:?}", leechseed_volatile.source_slot);
             leechseed_volatile.source_slot
         };
 
@@ -100,7 +109,7 @@ pub mod condition {
         let target_pos = match target {
             Some(pokemon) => (pokemon.side_index, pokemon.position),
             None => {
-                battle.debug("Nothing to leech into");
+                eprintln!("[LEECH SEED] Nothing to leech into");
                 return EventResult::Continue;
             }
         };
@@ -109,7 +118,7 @@ pub mod condition {
             let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => {
-                    battle.debug("Nothing to leech into");
+                    eprintln!("[LEECH SEED] Nothing to leech into");
                     return EventResult::Continue;
                 }
             };
@@ -117,7 +126,7 @@ pub mod condition {
         };
 
         if !target_is_alive {
-            battle.debug("Nothing to leech into");
+            eprintln!("[LEECH SEED] Nothing to leech into");
             return EventResult::Continue;
         }
 
@@ -125,20 +134,30 @@ pub mod condition {
         let damage_amount = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
-                None => return EventResult::Continue,
+                None => {
+                    eprintln!("[LEECH SEED] Failed to get pokemon for damage calc");
+                    return EventResult::Continue;
+                }
             };
             pokemon_pokemon.base_maxhp / 8
         };
 
+        eprintln!("[LEECH SEED] Calling damage({}, {:?}, {:?})", damage_amount, pokemon, target_pos);
         let damage = battle.damage(damage_amount, Some(pokemon), Some(target_pos), None, false);
+        eprintln!("[LEECH SEED] damage() returned {:?}", damage);
 
         // if (damage) {
         //     this.heal(damage, target, pokemon);
         // }
         if let Some(damage_amount) = damage {
             if damage_amount > 0 {
+                eprintln!("[LEECH SEED] Calling heal({}, {:?}, {:?})", damage_amount, target_pos, pokemon);
                 battle.heal(damage_amount, Some(target_pos), Some(pokemon), None);
+            } else {
+                eprintln!("[LEECH SEED] damage_amount is 0, skipping heal");
             }
+        } else {
+            eprintln!("[LEECH SEED] damage is None, skipping heal");
         }
 
         EventResult::Continue

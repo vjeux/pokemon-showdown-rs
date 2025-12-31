@@ -119,6 +119,37 @@ pub fn run_move_effects(
             }
         }
 
+        // Apply volatile status
+        // JavaScript (battle-actions.ts): if (moveData.volatileStatus) { target.addVolatile(moveData.volatileStatus, source, move); }
+        if let Some(ref volatile_status) = move_data.volatile_status {
+            eprintln!("[RUN_MOVE_EFFECTS] Applying volatile status '{}' to target {:?}", volatile_status, target_pos);
+
+            // Get mutable reference to target pokemon
+            if let Some(side) = battle.sides.get_mut(target_pos.0) {
+                if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                    let volatile_id = crate::dex_data::ID::new(volatile_status);
+
+                    // Add the volatile (simplified - doesn't run full event chain)
+                    if pokemon.add_volatile(volatile_id.clone()) {
+                        eprintln!("[RUN_MOVE_EFFECTS] Added volatile '{}' to {}", volatile_status, pokemon.name);
+
+                        // Set source_slot (required for Leech Seed to know where to heal)
+                        if let Some(volatile_state) = pokemon.volatiles.get_mut(&volatile_id) {
+                            // Store the source pokemon's position index as the source_slot
+                            volatile_state.source_slot = Some(_source_pos.1);
+                        }
+                    } else {
+                        eprintln!("[RUN_MOVE_EFFECTS] Volatile '{}' already exists on {}", volatile_status, pokemon.name);
+                    }
+                }
+            }
+
+            // Trigger Start event for the volatile
+            // JavaScript: this.battle.singleEvent('Start', status, this.volatiles[status.id], this, source, sourceEffect);
+            let volatile_id_obj = crate::dex_data::ID::new(volatile_status);
+            battle.single_event("Start", &volatile_id_obj, Some(target_pos), Some(_source_pos), None);
+        }
+
         // Keep damage result
         // In the real implementation, we'd check if any effects failed
         // and update result_damages[i] accordingly

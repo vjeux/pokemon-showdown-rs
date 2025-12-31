@@ -45,20 +45,32 @@ impl Battle {
                 )
             }
             "AfterMoveSecondarySelf" => {
-                if let Some(source_pos) = source {
+                eprintln!("[HANDLE_ITEM_EVENT] AfterMoveSecondarySelf: current_event.source={:?}, target={:?}", source, target);
+                // In JavaScript: onAfterMoveSecondarySelf(source, target, move)
+                // where source = the Pokemon using the item (target param to handle_item_event)
+                // and target = the target of the move (source from current_event)
+                // So we need to swap them when calling the dispatcher
+                if let Some(target_of_move) = source {
+                    eprintln!("[HANDLE_ITEM_EVENT] Calling dispatcher with source_pos={:?} (attacker), target_pos={:?} (move target)", target, Some(target_of_move));
                     let move_id_str = if let Some(ref active_move) = self.active_move {
                         active_move.id.to_string()
                     } else {
                         String::new()
                     };
-                    item_callbacks::dispatch_on_after_move_secondary_self(
-                        self,
-                        item_id.as_str(),
-                        source_pos,
-                        target,
-                        &move_id_str,
-                    )
+                    // Note: target is the attacker (Pokemon with item), target_of_move is the move target
+                    if let Some(attacker_pos) = target {
+                        item_callbacks::dispatch_on_after_move_secondary_self(
+                            self,
+                            item_id.as_str(),
+                            attacker_pos,           // source_pos = attacker
+                            Some(target_of_move),  // target_pos = move target
+                            &move_id_str,
+                        )
+                    } else {
+                        EventResult::Continue
+                    }
                 } else {
+                    eprintln!("[HANDLE_ITEM_EVENT] source is None, returning Continue");
                     EventResult::Continue
                 }
             }
