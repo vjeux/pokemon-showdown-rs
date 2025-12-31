@@ -38,7 +38,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     };
 
     // JavaScript: if (this.checkMoveMakesContact(move, source, target) && !source.status && source.runStatusImmunity('powder'))
-    if !move_data.flags.contact {
+    if !move_data.flags.contains_key("contact") {
         return EventResult::Continue;
     }
 
@@ -61,15 +61,21 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     let r = battle.random(100) as i32;
 
     // Apply status based on random roll
+    // Get mutable reference to source Pokemon
+    let source_mut = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
     if r < 11 {
         // JavaScript: source.setStatus('slp', target);
-        battle.set_status(source_pos, "slp", Some(target_pos), None);
+        source_mut.try_set_status(crate::dex_data::ID::from("slp"), None);
     } else if r < 21 {
         // JavaScript: source.setStatus('par', target);
-        battle.set_status(source_pos, "par", Some(target_pos), None);
+        source_mut.try_set_status(crate::dex_data::ID::from("par"), None);
     } else if r < 30 {
         // JavaScript: source.setStatus('psn', target);
-        battle.set_status(source_pos, "psn", Some(target_pos), None);
+        source_mut.try_set_status(crate::dex_data::ID::from("psn"), None);
     }
 
     EventResult::Continue
