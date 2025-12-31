@@ -18,10 +18,31 @@ pub fn try_spread_move_hit(
         return false;
     }
 
-    // For now, implement a simplified version that just calls spreadMoveHit
-    // The full implementation would have the 7-step pipeline
+    // Implement the 7-step pipeline from JavaScript's trySpreadMoveHit
+    // Step 0-3: Invulnerability, TryHit, Type Immunity, Move-specific Immunity
+    // TODO: Implement these steps when needed
 
-    let target_list: Vec<Option<(usize, usize)>> = targets.iter().map(|&t| Some(t)).collect();
+    // Step 4: Check accuracy - THIS WAS THE MISSING STEP!
+    let hit_results = crate::battle_actions::hit_step_accuracy(battle, targets, pokemon_pos, move_id);
+
+    // Filter out targets that failed accuracy check
+    let mut remaining_targets = Vec::new();
+    for (i, &target) in targets.iter().enumerate() {
+        if hit_results.get(i).copied().unwrap_or(false) {
+            remaining_targets.push(target);
+        }
+    }
+
+    // If no targets remain, move failed
+    if remaining_targets.is_empty() {
+        return false;
+    }
+
+    // Step 5-6: Break Protect, Steal Boosts
+    // TODO: Implement these steps when needed
+
+    // Step 7: Move hit loop (damage calculation)
+    let target_list: Vec<Option<(usize, usize)>> = remaining_targets.iter().map(|&t| Some(t)).collect();
 
     let (damages, final_targets) =
         crate::battle_actions::spread_move_hit(battle, &target_list, pokemon_pos, move_id, false, false);

@@ -36,6 +36,7 @@ mod modify_damage;
 mod run_move_effects;
 mod spread_move_hit;
 mod try_spread_move_hit;
+mod hit_step_accuracy;
 mod run_move;
 pub use use_move::use_move;
 pub use use_move_inner::use_move_inner;
@@ -48,6 +49,7 @@ pub use modify_damage::modify_damage;
 pub use run_move_effects::run_move_effects;
 pub use spread_move_hit::spread_move_hit;
 pub use try_spread_move_hit::try_spread_move_hit;
+pub use hit_step_accuracy::hit_step_accuracy;
 pub use run_move::run_move;
 
 pub static CHOOSABLE_TARGETS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
