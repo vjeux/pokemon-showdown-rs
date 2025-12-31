@@ -121,8 +121,13 @@ fn main() {
         ..Default::default()
     });
 
-    // gen9randombattle format starts directly with move choices (no team preview)
-    eprintln!("[DEBUG] Initial state:");
+    // Team preview (same as JavaScript test)
+    eprintln!("[DEBUG] Initial state: battle.turn={}", battle.turn);
+    eprintln!("[MARKER] BEFORE team preview make_choices");
+    battle.make_choices(&["default", "default"]);
+    eprintln!("[MARKER] AFTER team preview make_choices");
+    eprintln!("[DEBUG] After team preview: battle.turn={}", battle.turn);
+
     if let Some(p1_active) = battle.sides[0].get_active(0) {
         eprintln!("  P1 active[0]: {} ({}/{})", p1_active.name, p1_active.hp, p1_active.maxhp);
     }
