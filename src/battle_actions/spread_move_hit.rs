@@ -233,20 +233,18 @@ pub fn spread_move_hit(
             }
 
             // JS: if (!isSecondary && moveData.self.boosts)
-            if !is_secondary {
-                if let Some(ref boosts) = self_effect.boosts {
-                    // JS: const secondaryRoll = this.battle.random(100);
-                    let secondary_roll = battle.random(100) as i32;
+            if !is_secondary && self_effect.boosts.is_some() {
+                // JS: const secondaryRoll = this.battle.random(100);
+                let secondary_roll = battle.random(100) as i32;
 
-                    // JS: if (typeof moveData.self.chance === 'undefined' || secondaryRoll < moveData.self.chance)
-                    let should_apply = self_effect.chance.map_or(true, |chance| secondary_roll < chance);
+                // JS: if (typeof moveData.self.chance === 'undefined' || secondaryRoll < moveData.self.chance)
+                let should_apply = self_effect.chance.map_or(true, |chance| secondary_roll < chance);
 
-                    if should_apply {
-                        // JS: this.moveHit(source, source, move, moveData.self, isSecondary, true);
-                        // In JavaScript, moveHit applies the boosts to the target
-                        // Here, we apply boosts directly using battle.boost()
+                if should_apply {
+                    // JS: this.moveHit(source, source, move, moveData.self, isSecondary, true);
+                    // Apply ALL self effects (boosts, volatile status, etc.)
 
-                        // Convert HashMap<String, i32> to Vec<(&str, i8)>
+                    if let Some(ref boosts) = self_effect.boosts {
                         let boost_array: Vec<(&str, i8)> = boosts
                             .iter()
                             .map(|(stat, &value)| (stat.as_str(), value as i8))
@@ -254,21 +252,42 @@ pub fn spread_move_hit(
 
                         battle.boost(
                             &boost_array,
-                            source_pos,           // target = source (apply to self)
-                            Some(source_pos),     // source
-                            Some(move_id.as_str()), // effect = move
-                            false,                // is_secondary = false (as per JavaScript call)
-                            true,                 // is_self = true (as per JavaScript call)
+                            source_pos,
+                            Some(source_pos),
+                            Some(move_id.as_str()),
+                            false,
+                            true,
                         );
                     }
 
-                    // JS: if (!move.multihit) move.selfDropped = true;
-                    // TODO: Set move.selfDropped = true for non-multihit moves
-                    // This requires tracking state in ActiveMove, which we don't have yet
+                    // Apply volatile status
+                    if let Some(ref volatile_status_name) = self_effect.volatile_status_secondary {
+                        eprintln!("[SELF_EFFECT] Applying volatile status (boosts branch): {}", volatile_status_name);
+
+                        // JavaScript onStart for lockedmove: this.effectState.trueDuration = this.random(2, 4);
+                        // We need to make the PRNG call BEFORE adding the volatile to match JS order
+                        if volatile_status_name == "lockedmove" {
+                            let duration = battle.random_with_range(2, 4);
+                            eprintln!("[SELF_EFFECT] Rolled lockedmove duration: {}", duration);
+                        }
+
+                        // Get mutable reference to source pokemon
+                        if let Some(side) = battle.sides.get_mut(source_pos.0) {
+                            if let Some(pokemon) = side.pokemon.get_mut(source_pos.1) {
+                                let volatile_id = crate::dex_data::ID::new(volatile_status_name);
+                                pokemon.add_volatile(volatile_id);
+                                eprintln!("[SELF_EFFECT] Successfully added volatile '{}' to source {}", volatile_status_name, pokemon.name);
+                            }
+                        }
+                    }
                 }
+
+                // JS: if (!move.multihit) move.selfDropped = true;
+                // TODO: Set move.selfDropped = true for non-multihit moves
             } else {
                 // JS: this.moveHit(source, source, move, moveData.self, isSecondary, true);
-                // When isSecondary is true, always apply the self effect
+                // When NOT (!isSecondary && has boosts), always apply moveHit (all self effects)
+
                 if let Some(ref boosts) = self_effect.boosts {
                     let boost_array: Vec<(&str, i8)> = boosts
                         .iter()
@@ -283,6 +302,27 @@ pub fn spread_move_hit(
                         is_secondary,
                         true,
                     );
+                }
+
+                // Apply volatile status (e.g., lockedmove from Outrage)
+                if let Some(ref volatile_status_name) = self_effect.volatile_status_secondary {
+                    eprintln!("[SELF_EFFECT] Applying volatile status (else branch): {}", volatile_status_name);
+
+                    // JavaScript onStart for lockedmove: this.effectState.trueDuration = this.random(2, 4);
+                    // We need to make the PRNG call BEFORE adding the volatile to match JS order
+                    if volatile_status_name == "lockedmove" {
+                        let duration = battle.random_with_range(2, 4);
+                        eprintln!("[SELF_EFFECT] Rolled lockedmove duration: {}", duration);
+                    }
+
+                    // Get mutable reference to source pokemon
+                    if let Some(side) = battle.sides.get_mut(source_pos.0) {
+                        if let Some(pokemon) = side.pokemon.get_mut(source_pos.1) {
+                            let volatile_id = crate::dex_data::ID::new(volatile_status_name);
+                            pokemon.add_volatile(volatile_id);
+                            eprintln!("[SELF_EFFECT] Successfully added volatile '{}' to source {}", volatile_status_name, pokemon.name);
+                        }
+                    }
                 }
             }
 

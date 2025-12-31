@@ -272,6 +272,8 @@ pub struct SelfEffect {
     pub boosts: Option<BoostsTable>,
     pub chance: Option<i32>,
     pub side_condition: Option<String>,
+    #[serde(rename = "volatileStatus")]
+    pub volatile_status: Option<String>,
 }
 
 /// Z-Move request option

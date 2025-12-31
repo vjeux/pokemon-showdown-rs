@@ -179,6 +179,7 @@ pub fn on_modify_move(
                 boosts: None,
                 chance: None,
                 side_condition: Some("waterpledge".to_string()),
+                volatile_status: None,
             });
         } else if source_effect.as_str() == "grasspledge" {
             // move.type = 'Fire';
