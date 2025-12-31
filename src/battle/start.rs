@@ -247,6 +247,7 @@ impl Battle {
 
         // JS: if (!this.requestState) this.turnLoop();
         if self.request_state == BattleRequestState::None {
+            eprintln!("[START DEBUG] About to call turn_loop()");
             self.turn_loop();
         }
     }

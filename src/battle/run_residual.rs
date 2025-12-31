@@ -18,11 +18,9 @@ impl Battle {
         // Note: We don't track residualPokemon yet for EmergencyExit handling
         // This will be needed when implementing EmergencyExit abilities
 
-        // this.eachEvent('Residual');
-        // NOTE: In JavaScript, this processes item/ability residuals for each Pokemon
-        self.each_event("Residual", None, None);
-
         // this.fieldEvent('Residual');
+        // NOTE: JavaScript ONLY calls fieldEvent, NOT eachEvent!
+        // fieldEvent handles all residual effects including items/abilities
         self.field_event("Residual", None);
 
         // if (!this.ended) this.add('upkeep');

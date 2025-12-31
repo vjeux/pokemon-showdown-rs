@@ -14,6 +14,7 @@ pub fn try_spread_move_hit(
     pokemon_pos: (usize, usize),
     move_id: &ID,
 ) -> bool {
+    eprintln!("[TRY_SPREAD_MOVE_HIT] Called for move {:?} from {:?} targeting {:?}", move_id, pokemon_pos, targets);
     if targets.is_empty() {
         return false;
     }

@@ -3,20 +3,21 @@
     0,
     0,
     0,
-    2
+    21
   ],
   "p1": [
     {
-      "species": "Passimian",
-      "level": 83,
-      "ability": "Defiant",
+      "species": "Kingambit",
+      "level": 74,
+      "ability": "Supreme Overlord",
       "item": "Leftovers",
       "nature": "Hardy",
+      "gender": "M",
       "moves": [
-        "knockoff",
-        "bulkup",
-        "gunkshot",
-        "drainpunch"
+        "suckerpunch",
+        "ironhead",
+        "kowtowcleave",
+        "swordsdance"
       ],
       "evs": {
         "hp": 85,
@@ -36,103 +37,17 @@
       }
     },
     {
-      "species": "Cryogonal",
-      "level": 89,
-      "ability": "Levitate",
-      "item": "Heavy-Duty Boots",
+      "species": "Pachirisu",
+      "level": 96,
+      "ability": "Volt Absorb",
+      "item": "Assault Vest",
       "nature": "Hardy",
+      "gender": "F",
       "moves": [
-        "rapidspin",
-        "freezedry",
-        "haze",
-        "recover"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      }
-    },
-    {
-      "species": "Great Tusk",
-      "level": 77,
-      "ability": "Protosynthesis",
-      "item": "Leftovers",
-      "nature": "Hardy",
-      "moves": [
-        "bulkup",
-        "closecombat",
-        "stoneedge",
-        "earthquake"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      }
-    },
-    {
-      "species": "Rotom-Fan",
-      "level": 86,
-      "ability": "Levitate",
-      "item": "Heavy-Duty Boots",
-      "nature": "Hardy",
-      "moves": [
-        "airslash",
-        "willowisp",
+        "superfang",
+        "uturn",
         "thunderbolt",
-        "nastyplot"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      }
-    },
-    {
-      "species": "Mew",
-      "level": 82,
-      "ability": "Synchronize",
-      "item": "Life Orb",
-      "nature": "Hardy",
-      "moves": [
-        "psychicfangs",
-        "swordsdance",
-        "closecombat",
-        "knockoff"
+        "nuzzle"
       ],
       "evs": {
         "hp": 85,
@@ -152,19 +67,110 @@
       }
     },
     {
-      "species": "Ho-Oh",
-      "level": 71,
-      "ability": "Regenerator",
+      "species": "Delibird",
+      "level": 100,
+      "ability": "Hustle",
       "item": "Heavy-Duty Boots",
       "nature": "Hardy",
+      "gender": "F",
       "moves": [
-        "bravebird",
-        "sacredfire",
-        "earthquake",
-        "recover"
+        "drillrun",
+        "spikes",
+        "icespinner",
+        "bravebird"
       ],
       "evs": {
         "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Jumpluff",
+      "level": 87,
+      "ability": "Infiltrator",
+      "item": "",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "encore",
+        "uturn",
+        "strengthsap",
+        "acrobatics"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Primarina",
+      "level": 83,
+      "ability": "Torrent",
+      "item": "Choice Specs",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "hydropump",
+        "flipturn",
+        "moonblast",
+        "psychic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Volcanion",
+      "level": 79,
+      "ability": "Water Absorb",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "N",
+      "moves": [
+        "flamecharge",
+        "earthpower",
+        "flamethrower",
+        "steameruption"
+      ],
+      "evs": {
+        "hp": 81,
         "atk": 85,
         "def": 85,
         "spa": 85,
@@ -183,161 +189,167 @@
   ],
   "p2": [
     {
-      "species": "Passimian",
-      "level": 83,
-      "ability": "Defiant",
-      "item": "Leftovers",
-      "nature": "Hardy",
-      "moves": [
-        "knockoff",
-        "bulkup",
-        "gunkshot",
-        "drainpunch"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      }
-    },
-    {
-      "species": "Cryogonal",
-      "level": 89,
-      "ability": "Levitate",
-      "item": "Heavy-Duty Boots",
-      "nature": "Hardy",
-      "moves": [
-        "rapidspin",
-        "freezedry",
-        "haze",
-        "recover"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      }
-    },
-    {
-      "species": "Great Tusk",
-      "level": 77,
-      "ability": "Protosynthesis",
-      "item": "Leftovers",
-      "nature": "Hardy",
-      "moves": [
-        "bulkup",
-        "closecombat",
-        "stoneedge",
-        "earthquake"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      }
-    },
-    {
-      "species": "Rotom-Fan",
-      "level": 86,
-      "ability": "Levitate",
-      "item": "Heavy-Duty Boots",
-      "nature": "Hardy",
-      "moves": [
-        "airslash",
-        "willowisp",
-        "thunderbolt",
-        "nastyplot"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      }
-    },
-    {
-      "species": "Mew",
+      "species": "Suicune",
       "level": 82,
-      "ability": "Synchronize",
+      "ability": "Pressure",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "N",
+      "moves": [
+        "scald",
+        "sleeptalk",
+        "calmmind",
+        "rest"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Jumpluff",
+      "level": 87,
+      "ability": "Infiltrator",
+      "item": "",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "acrobatics",
+        "strengthsap",
+        "uturn",
+        "sleeppowder"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Torkoal",
+      "level": 88,
+      "ability": "Drought",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "solarbeam",
+        "lavaplume",
+        "yawn",
+        "rapidspin"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Lilligant-Hisui",
+      "level": 79,
+      "ability": "Hustle",
+      "item": "Wide Lens",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "icespinner",
+        "closecombat",
+        "leafblade",
+        "victorydance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Basculegion-F",
+      "level": 83,
+      "ability": "Adaptability",
+      "item": "Choice Specs",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "flipturn",
+        "hydropump",
+        "icebeam",
+        "shadowball"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Dugtrio-Alola",
+      "level": 84,
+      "ability": "Tangling Hair",
       "item": "Life Orb",
       "nature": "Hardy",
+      "gender": "M",
       "moves": [
-        "psychicfangs",
-        "swordsdance",
-        "closecombat",
-        "knockoff"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      }
-    },
-    {
-      "species": "Ho-Oh",
-      "level": 71,
-      "ability": "Regenerator",
-      "item": "Heavy-Duty Boots",
-      "nature": "Hardy",
-      "moves": [
-        "bravebird",
-        "sacredfire",
+        "stealthrock",
         "earthquake",
-        "recover"
+        "ironhead",
+        "stoneedge"
       ],
       "evs": {
         "hp": 85,

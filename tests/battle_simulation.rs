@@ -414,7 +414,7 @@ fn test_make_choices_basic() {
     assert_eq!(battle.turn, 1);
 
     // Make moves
-    battle.make_choices("move thunderbolt", "move tackle");
+    battle.make_choices(&["move thunderbolt", "move tackle"]);
 
     // Should be turn 2 now
     assert_eq!(battle.turn, 2);
@@ -480,7 +480,7 @@ fn test_damage_dealt() {
 
     let initial_hp = battle.sides[1].get_active(0).unwrap().hp;
 
-    battle.make_choices("move thunderbolt", "move tackle");
+    battle.make_choices(&["move thunderbolt", "move tackle"]);
 
     // After the move, check HP - might be fainted or still active
     let final_hp = battle.sides[1].pokemon[0].hp; // Use pokemon directly instead of get_active
@@ -536,7 +536,7 @@ fn test_status_paralysis_speed() {
     }
 
     // Thunder Wave should paralyze
-    battle.make_choices("move thunderwave", "move quickattack");
+    battle.make_choices(&["move thunderwave", "move quickattack"]);
 
     // Check Rattata is paralyzed
     let rattata = battle.sides[1].get_active(0).unwrap();
@@ -601,7 +601,7 @@ fn test_switch_in_battle() {
     assert_eq!(battle.sides[0].get_active(0).unwrap().name, "Pikachu");
 
     // Switch to Charizard
-    battle.make_choices("switch 2", "move tackle");
+    battle.make_choices(&["switch 2", "move tackle"]);
 
     // Charizard should now be active
     assert_eq!(battle.sides[0].get_active(0).unwrap().name, "Charizard");
@@ -661,7 +661,7 @@ fn test_paralysis_cant_move() {
     }
 
     // Paralyze the Rattata
-    battle.make_choices("move thunderwave", "move tackle");
+    battle.make_choices(&["move thunderwave", "move tackle"]);
 
     assert_eq!(
         battle.sides[1].pokemon[0].status.as_str(),
@@ -671,7 +671,7 @@ fn test_paralysis_cant_move() {
 
     // Run multiple turns - statistically some should be blocked by paralysis
     for _ in 0..10 {
-        battle.make_choices("move thunderbolt", "move tackle");
+        battle.make_choices(&["move thunderbolt", "move tackle"]);
         if battle.ended {
             break;
         }
@@ -736,7 +736,7 @@ fn test_stat_boosts_sword_dance() {
     );
 
     // Use Swords Dance
-    battle.make_choices("move swordsdance", "move softboiled");
+    battle.make_choices(&["move swordsdance", "move softboiled"]);
 
     // Attack boost should now be +2
     assert_eq!(
@@ -745,7 +745,7 @@ fn test_stat_boosts_sword_dance() {
     );
 
     // Use Swords Dance again
-    battle.make_choices("move swordsdance", "move softboiled");
+    battle.make_choices(&["move swordsdance", "move softboiled"]);
 
     // Attack boost should now be +4
     assert_eq!(
@@ -754,7 +754,7 @@ fn test_stat_boosts_sword_dance() {
     );
 
     // Use Swords Dance a third time
-    battle.make_choices("move swordsdance", "move softboiled");
+    battle.make_choices(&["move swordsdance", "move softboiled"]);
 
     // Attack boost should cap at +6
     assert_eq!(
@@ -814,7 +814,7 @@ fn test_speed_order() {
         slowpoke.stored_stats.spe = 50;
     }
 
-    battle.make_choices("move thunderbolt", "move tackle");
+    battle.make_choices(&["move thunderbolt", "move tackle"]);
 
     // Check the log - Electrode should move before Slowpoke
     let log = battle.get_log();
@@ -878,7 +878,7 @@ fn test_weather_rain_boost() {
     battle.field.set_weather(ID::new("raindance"), Some(5));
 
     let hp_before = battle.sides[1].pokemon[0].hp;
-    battle.make_choices("move surf", "move flamethrower");
+    battle.make_choices(&["move surf", "move flamethrower"]);
 
     // Water move in rain should deal boosted damage
     let hp_after = battle.sides[1].pokemon[0].hp;
@@ -944,7 +944,7 @@ fn test_terrain_electric_boost() {
         .set_terrain(ID::new("electricterrain"), Some(5));
 
     let hp_before = battle.sides[1].pokemon[0].hp;
-    battle.make_choices("move thunderbolt", "move tackle");
+    battle.make_choices(&["move thunderbolt", "move tackle"]);
 
     let hp_after = battle.sides[1].pokemon[0].hp;
     let damage_dealt = hp_before - hp_after;
@@ -1014,12 +1014,12 @@ fn test_flying_immune_to_spikes() {
     battle.sides[1].pokemon[1].types = vec!["Normal".to_string(), "Flying".to_string()]; // Pidgeot - Flying
 
     // Set up 3 layers of Spikes
-    battle.make_choices("move spikes", "move tackle");
-    battle.make_choices("move spikes", "move tackle");
-    battle.make_choices("move spikes", "move tackle");
+    battle.make_choices(&["move spikes", "move tackle"]);
+    battle.make_choices(&["move spikes", "move tackle"]);
+    battle.make_choices(&["move spikes", "move tackle"]);
 
     // Switch in Pidgeot (Flying) - should NOT take damage
-    battle.make_choices("move spikes", "switch 2");
+    battle.make_choices(&["move spikes", "switch 2"]);
 
     // Pidgeot should only take tackle damage, NOT Spikes damage
     let log = battle.get_log();
@@ -1069,7 +1069,7 @@ fn test_protect_blocks_damage() {
     battle.start_battle();
 
     // Blissey uses Protect
-    battle.make_choices("move protect", "move closecombat");
+    battle.make_choices(&["move protect", "move closecombat"]);
 
     // Check that Protect was used
     let log = battle.get_log();
@@ -1124,7 +1124,7 @@ fn test_recovery_move() {
     battle.sides[0].pokemon[0].take_damage(damage);
     let _hp_before = battle.sides[0].pokemon[0].hp;
 
-    battle.make_choices("move recover", "move tackle");
+    battle.make_choices(&["move recover", "move tackle"]);
 
     let _hp_after = battle.sides[0].pokemon[0].hp;
 

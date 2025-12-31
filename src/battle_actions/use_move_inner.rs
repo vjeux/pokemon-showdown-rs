@@ -178,6 +178,7 @@ pub fn use_move_inner(
     z_move_param: Option<&str>,
     max_move_param: Option<&str>,
 ) -> bool {
+    eprintln!("[USE_MOVE_INNER] Called for move {:?} from {:?} to {:?}", move_or_move_name, pokemon_pos, target_pos);
     // let target = options?.target;
     let mut target = target_pos;
 

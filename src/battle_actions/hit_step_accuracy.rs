@@ -14,6 +14,7 @@ pub fn hit_step_accuracy(
     pokemon_pos: (usize, usize),
     move_id: &ID,
 ) -> Vec<bool> {
+    eprintln!("[HIT_STEP_ACCURACY] Called for move {:?}", move_id);
     let mut hit_results = vec![false; targets.len()];
 
     // Get move data

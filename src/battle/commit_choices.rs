@@ -114,6 +114,7 @@ impl Battle {
         }
 
         // JS: this.turnLoop();
+        eprintln!("[COMMIT_CHOICES DEBUG] About to call turn_loop()");
         self.turn_loop();
     }
 }
