@@ -805,24 +805,30 @@ impl Battle {
     }
 
     /// Check if a condition has a callback for an event
-    pub fn condition_has_callback(&self, condition_id: &str, event_id: &str) -> bool {
-        // Conditions don't have onAnySwitchIn
-        if event_id == "onAnySwitchIn" {
+    ///
+    /// In JavaScript, this is done by checking if effect[callbackName] exists.
+    /// In Rust, we can't do dynamic property lookup, so we delegate to the dispatcher.
+    /// The dispatcher will return EventResult::Continue if the callback isn't implemented.
+    ///
+    /// This matches JavaScript's behavior where getCallback() returns undefined for
+    /// non-existent callbacks, and the event system handles undefined gracefully.
+    pub fn condition_has_callback(&self, _condition_id: &str, event_id: &str) -> bool {
+        // Normalize event name by removing "on" prefix if present for comparison
+        let normalized = if event_id.starts_with("on") {
+            &event_id[2..]
+        } else {
+            event_id
+        };
+
+        // Special case: conditions don't have onAnySwitchIn
+        if normalized == "AnySwitchIn" {
             return false;
         }
 
-        // Check status conditions and volatile conditions
-        match event_id {
-            "Residual" | "onResidual" => matches!(
-                condition_id,
-                "brn" | "psn" | "tox" | "leechseed"
-            ),
-            "TryPrimaryHit" | "onTryPrimaryHit" => matches!(
-                condition_id,
-                "substitute"
-            ),
-            _ => false,
-        }
+        // Return true for all other events - let the dispatcher decide if implemented
+        // This matches JavaScript's approach where we check effect[callbackName] and
+        // get undefined if it doesn't exist, rather than pre-filtering
+        true
     }
 
     /// Check if a species has a callback for an event

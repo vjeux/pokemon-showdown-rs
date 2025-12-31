@@ -6,6 +6,10 @@ impl Battle {
     /// Rust helper method - JavaScript's singleEvent() directly invokes condition[`on${eventId}`] callbacks
     /// This method dispatches to condition_callbacks module based on event name
     /// Routes to condition-specific handlers for all event types (Residual, BeforeMove, Weather, etc.)
+    ///
+    /// Event names are normalized by removing "on" prefix if present.
+    /// JavaScript fires events as "TryPrimaryHit" but callbacks are named "onTryPrimaryHit".
+    /// We consistently use the non-prefixed version for matching.
     pub fn handle_condition_event(
         &mut self,
         event_id: &str,
@@ -17,7 +21,14 @@ impl Battle {
 
         let pokemon_pos = target.unwrap_or((0, 0));
 
-        match event_id {
+        // Normalize event name by removing "on" prefix if present
+        let normalized_event = if event_id.starts_with("on") {
+            &event_id[2..]
+        } else {
+            event_id
+        };
+
+        match normalized_event {
             "AfterMove" => {
                 condition_callbacks::dispatch_on_after_move(self, condition_id, pokemon_pos)
             }
@@ -160,7 +171,7 @@ impl Battle {
             "TryAddVolatile" => {
                 condition_callbacks::dispatch_on_try_add_volatile(self, condition_id, pokemon_pos)
             }
-            "TryPrimaryHit" | "onTryPrimaryHit" => {
+            "TryPrimaryHit" => {
                 condition_callbacks::dispatch_on_try_primary_hit(self, condition_id, pokemon_pos)
             }
             "TryMove" => condition_callbacks::dispatch_on_try_move(self, condition_id, pokemon_pos),
