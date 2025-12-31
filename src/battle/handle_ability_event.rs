@@ -333,15 +333,32 @@ impl Battle {
                 0, pokemon_pos, None, None
             ),
             "DamagingHit" => {
-                ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), 0, Some(pokemon_pos), None, "") // TODO: Wire through actual move_id
+                // Get move_id and source from current event context
+                let (move_id, source_pos) = self.current_event.as_ref()
+                    .map(|e| (
+                        e.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new()),
+                        e.source
+                    ))
+                    .unwrap_or_else(|| (String::new(), None));
+                ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), 0, Some(pokemon_pos), source_pos, &move_id)
             }
-            "DamagingHitOrder" => ability_callbacks::dispatch_on_damaging_hit_order(
-                self,
-                ability_id.as_str(),
-                0,
-            Some(pokemon_pos), None,
-            "", // TODO: Wire through actual move_id
-            ),
+            "DamagingHitOrder" => {
+                // Get move_id and source from current event context
+                let (move_id, source_pos) = self.current_event.as_ref()
+                    .map(|e| (
+                        e.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new()),
+                        e.source
+                    ))
+                    .unwrap_or_else(|| (String::new(), None));
+                ability_callbacks::dispatch_on_damaging_hit_order(
+                    self,
+                    ability_id.as_str(),
+                    0,
+                    Some(pokemon_pos),
+                    source_pos,
+                    &move_id,
+                )
+            }
             "DeductPP" => {
                 ability_callbacks::dispatch_on_deduct_p_p(self, ability_id.as_str(), Some(pokemon_pos), None)
             }
