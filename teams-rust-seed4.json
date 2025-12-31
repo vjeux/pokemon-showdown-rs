@@ -1,377 +1,383 @@
 {
+  "seed": [
+    0,
+    0,
+    0,
+    4
+  ],
   "p1": [
     {
-      "name": "Lickitung",
-      "species": "Lickitung",
-      "level": 61,
-      "ability": "Own Tempo",
-      "item": "tr32",
-      "nature": "relaxed",
-      "gender": "M",
-      "moves": [
-        "shadowbone",
-        "covet",
-        "spikes",
-        "leechlife"
-      ],
-      "evs": {
-        "hp": 74,
-        "atk": 80,
-        "def": 93,
-        "spa": 65,
-        "spd": 77,
-        "spe": 121
-      },
-      "ivs": {
-        "hp": 25,
-        "atk": 17,
-        "def": 18,
-        "spa": 30,
-        "spd": 27,
-        "spe": 15
-      }
-    },
-    {
-      "name": "Nacli",
-      "species": "Nacli",
-      "level": 83,
-      "ability": "Purifying Salt",
-      "item": "buggem",
-      "nature": "bashful",
-      "gender": "M",
-      "moves": [
-        "uproar",
-        "mudslap",
-        "nightslash",
-        "aquastep"
-      ],
-      "evs": {
-        "hp": 66,
-        "atk": 81,
-        "def": 70,
-        "spa": 94,
-        "spd": 87,
-        "spe": 112
-      },
-      "ivs": {
-        "hp": 0,
-        "atk": 15,
-        "def": 2,
-        "spa": 11,
-        "spd": 21,
-        "spe": 20
-      }
-    },
-    {
-      "name": "Tepig",
-      "species": "Tepig",
-      "level": 98,
-      "ability": "Blaze",
-      "item": "splashplate",
-      "nature": "brave",
+      "name": "Tinkaton",
+      "species": "Tinkaton",
+      "level": 82,
+      "ability": "moldbreaker",
+      "item": "leftovers",
+      "nature": "",
       "gender": "F",
       "moves": [
-        "hornleech",
-        "direclaw",
-        "morningsun",
-        "bubble"
+        "playrough",
+        "knockoff",
+        "stealthrock",
+        "gigatonhammer"
       ],
       "evs": {
-        "hp": 68,
-        "atk": 93,
-        "def": 67,
-        "spa": 115,
-        "spd": 77,
-        "spe": 90
-      },
-      "ivs": {
-        "hp": 12,
-        "atk": 28,
-        "def": 11,
-        "spa": 23,
-        "spd": 13,
-        "spe": 22
-      }
-    },
-    {
-      "name": "Aggron-Mega",
-      "species": "Aggron-Mega",
-      "level": 80,
-      "ability": "Filter",
-      "item": "sportball",
-      "nature": "gentle",
-      "gender": "M",
-      "moves": [
-        "discharge",
-        "magnitude",
-        "uturn",
-        "maxrockfall"
-      ],
-      "evs": {
-        "hp": 96,
-        "atk": 68,
+        "hp": 85,
+        "atk": 85,
         "def": 85,
-        "spa": 96,
-        "spd": 88,
-        "spe": 77
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
       },
       "ivs": {
-        "hp": 23,
-        "atk": 6,
-        "def": 13,
-        "spa": 8,
-        "spd": 6,
-        "spe": 10
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
       }
     },
     {
-      "name": "Ninjask",
-      "species": "Ninjask",
-      "level": 94,
-      "ability": "Speed Boost",
-      "item": "lovesweet",
-      "nature": "quirky",
-      "gender": "M",
-      "moves": [
-        "takedown",
-        "matblock",
-        "rage",
-        "subzeroslammer"
-      ],
-      "evs": {
-        "hp": 94,
-        "atk": 95,
-        "def": 92,
-        "spa": 76,
-        "spd": 86,
-        "spe": 67
-      },
-      "ivs": {
-        "hp": 22,
-        "atk": 22,
-        "def": 30,
-        "spa": 14,
-        "spd": 25,
-        "spe": 23
-      }
-    },
-    {
-      "name": "Rebble",
-      "species": "Rebble",
-      "level": 55,
-      "ability": "Levitate",
-      "item": "destinyknot",
-      "nature": "naive",
+      "name": "Great Tusk",
+      "species": "Great Tusk",
+      "level": 77,
+      "ability": "protosynthesis",
+      "item": "leftovers",
+      "nature": "",
       "gender": "",
       "moves": [
-        "maxgeyser",
-        "cosmicpower",
-        "boltbeak",
-        "mistball"
+        "bulkup",
+        "earthquake",
+        "stoneedge",
+        "closecombat"
       ],
       "evs": {
-        "hp": 88,
-        "atk": 76,
-        "def": 99,
-        "spa": 74,
-        "spd": 79,
-        "spe": 94
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
       },
       "ivs": {
-        "hp": 19,
-        "atk": 4,
-        "def": 13,
-        "spa": 14,
-        "spd": 30,
-        "spe": 25
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Whimsicott",
+      "species": "Whimsicott",
+      "level": 84,
+      "ability": "prankster",
+      "item": "leftovers",
+      "nature": "",
+      "gender": "M",
+      "moves": [
+        "leechseed",
+        "substitute",
+        "encore",
+        "moonblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Meowstic",
+      "species": "Meowstic-F",
+      "level": 89,
+      "ability": "competitive",
+      "item": "lifeorb",
+      "nature": "",
+      "gender": "F",
+      "moves": [
+        "psyshock",
+        "nastyplot",
+        "thunderbolt",
+        "darkpulse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Terapagos",
+      "species": "Terapagos",
+      "level": 77,
+      "ability": "terashift",
+      "item": "chestoberry",
+      "nature": "",
+      "gender": "M",
+      "moves": [
+        "rest",
+        "terastarstorm",
+        "earthpower",
+        "calmmind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Skuntank",
+      "species": "Skuntank",
+      "level": 84,
+      "ability": "aftermath",
+      "item": "lifeorb",
+      "nature": "",
+      "gender": "M",
+      "moves": [
+        "taunt",
+        "knockoff",
+        "suckerpunch",
+        "gunkshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
       }
     }
   ],
   "p2": [
     {
-      "name": "Celesteela",
-      "species": "Celesteela",
-      "level": 52,
-      "ability": "Beast Boost",
-      "item": "absolite",
-      "nature": "naughty",
-      "gender": "",
-      "moves": [
-        "jetpunch",
-        "batonpass",
-        "explosion",
-        "splishysplash"
-      ],
-      "evs": {
-        "hp": 96,
-        "atk": 93,
-        "def": 54,
-        "spa": 82,
-        "spd": 95,
-        "spe": 90
-      },
-      "ivs": {
-        "hp": 0,
-        "atk": 7,
-        "def": 24,
-        "spa": 18,
-        "spd": 22,
-        "spe": 10
-      }
-    },
-    {
-      "name": "Flabébé",
-      "species": "Flabébé",
-      "level": 73,
-      "ability": "Flower Veil",
-      "item": "galaricacuff",
-      "nature": "naughty",
+      "name": "Coalossal",
+      "species": "Coalossal",
+      "level": 89,
+      "ability": "flamebody",
+      "item": "heavydutyboots",
+      "nature": "",
       "gender": "F",
       "moves": [
-        "dynamicpunch",
-        "gmaxsnooze",
-        "risingvoltage",
-        "magiccoat"
+        "stoneedge",
+        "rapidspin",
+        "spikes",
+        "overheat"
       ],
       "evs": {
-        "hp": 55,
-        "atk": 104,
-        "def": 81,
-        "spa": 99,
-        "spd": 78,
-        "spe": 93
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
       },
       "ivs": {
-        "hp": 23,
-        "atk": 13,
-        "def": 17,
-        "spa": 22,
-        "spd": 13,
-        "spe": 27
-      }
-    },
-    {
-      "name": "Cubone",
-      "species": "Cubone",
-      "level": 92,
-      "ability": "Rock Head",
-      "item": "wacanberry",
-      "nature": "bashful",
-      "gender": "F",
-      "moves": [
-        "bloomdoom",
-        "maxooze",
-        "struggle",
-        "spite"
-      ],
-      "evs": {
-        "hp": 69,
-        "atk": 98,
-        "def": 73,
-        "spa": 99,
-        "spd": 71,
-        "spe": 100
-      },
-      "ivs": {
-        "hp": 13,
-        "atk": 30,
-        "def": 7,
-        "spa": 9,
-        "spd": 17,
-        "spe": 7
-      }
-    },
-    {
-      "name": "Maushold-Four",
-      "species": "Maushold-Four",
-      "level": 72,
-      "ability": "Friend Guard",
-      "item": "loadeddice",
-      "nature": "rash",
-      "gender": "",
-      "moves": [
-        "smog",
-        "instruct",
-        "slam",
-        "gmaxvoltcrash"
-      ],
-      "evs": {
-        "hp": 84,
-        "atk": 90,
-        "def": 76,
-        "spa": 65,
-        "spd": 97,
-        "spe": 98
-      },
-      "ivs": {
-        "hp": 9,
-        "atk": 22,
-        "def": 1,
-        "spa": 17,
-        "spd": 16,
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
         "spe": 31
       }
     },
     {
-      "name": "Dachsbun",
-      "species": "Dachsbun",
-      "level": 98,
-      "ability": "Well-Baked Body",
-      "item": "tatsugirinite",
-      "nature": "impish",
+      "name": "Mabosstiff",
+      "species": "Mabosstiff",
+      "level": 86,
+      "ability": "stakeout",
+      "item": "choiceband",
+      "nature": "",
       "gender": "F",
       "moves": [
-        "oblivionwing",
-        "wickedtorque",
-        "burnup",
-        "kowtowcleave"
+        "wildcharge",
+        "crunch",
+        "psychicfangs",
+        "playrough"
       ],
       "evs": {
-        "hp": 92,
-        "atk": 82,
-        "def": 62,
-        "spa": 100,
-        "spd": 68,
-        "spe": 106
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
       },
       "ivs": {
         "hp": 31,
-        "atk": 21,
-        "def": 22,
-        "spa": 3,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
         "spd": 31,
-        "spe": 15
+        "spe": 31
       }
     },
     {
-      "name": "Sandslash-Alola",
-      "species": "Sandslash-Alola",
-      "level": 79,
-      "ability": "Snow Cloak",
-      "item": "lycaniumz",
-      "nature": "sassy",
-      "gender": "M",
+      "name": "Samurott",
+      "species": "Samurott-Hisui",
+      "level": 77,
+      "ability": "sharpness",
+      "item": "lifeorb",
+      "nature": "",
+      "gender": "F",
       "moves": [
-        "tackle",
-        "powdersnow",
-        "naturepower",
-        "nightshade"
+        "swordsdance",
+        "suckerpunch",
+        "ceaselessedge",
+        "razorshell"
       ],
       "evs": {
-        "hp": 97,
-        "atk": 81,
-        "def": 93,
-        "spa": 71,
-        "spd": 73,
-        "spe": 95
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
       },
       "ivs": {
-        "hp": 7,
-        "atk": 8,
-        "def": 15,
-        "spa": 17,
-        "spd": 15,
-        "spe": 19
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Azelf",
+      "species": "Azelf",
+      "level": 82,
+      "ability": "levitate",
+      "item": "choicespecs",
+      "nature": "",
+      "gender": "",
+      "moves": [
+        "psyshock",
+        "uturn",
+        "thunderbolt",
+        "dazzlinggleam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Iron Valiant",
+      "species": "Iron Valiant",
+      "level": 78,
+      "ability": "quarkdrive",
+      "item": "lifeorb",
+      "nature": "",
+      "gender": "",
+      "moves": [
+        "knockoff",
+        "closecombat",
+        "encore",
+        "moonblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pikachu",
+      "species": "Pikachu-Sinnoh",
+      "level": 93,
+      "ability": "lightningrod",
+      "item": "lightball",
+      "nature": "",
+      "gender": "F",
+      "moves": [
+        "surf",
+        "knockoff",
+        "voltswitch",
+        "volttackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
       }
     }
   ]

@@ -46,17 +46,49 @@ The battle appears to be choosing the same moves repeatedly. The 4 PRNG calls in
 
 JavaScript's turn 20 extra calls (95-98) are also for executing a move, suggesting JavaScript executes an additional action that Rust doesn't.
 
-## Next Steps
+## ROOT CAUSE FOUND
 
-1. **Determine exact turn mapping**: Create JavaScript test that logs PRNG count after each turn (turns 1-20)
-2. **Find divergence point**: Compare JavaScript turn-by-turn counts with Rust to find where first divergence occurs
-3. **Identify missing action**: Once divergence turn is found, add detailed logging to both JS and Rust for that specific turn to see what action Rust is missing or JavaScript is adding extra
-4. **Possible causes to investigate**:
-   - End-of-turn/residual effects executing differently
-   - Move order or priority differences
-   - Switch-in or faint mechanics
-   - After-move callbacks executing moves
-   - Turn structure differences (when turns start/end)
+The divergence is caused by **Flame Body ability not being called properly** in Rust.
+
+### The Bug
+
+1. Coalossal (p2a) has the **Flame Body** ability
+2. Great Tusk (p1b) uses **Rapid Spin** (contact move) on Coalossal
+3. Flame Body should trigger `onDamagingHit` callback with 30% chance to burn the attacker
+4. This makes a `randomChance(3, 10)` PRNG call
+
+### Rust Implementation Issue
+
+The Flame Body callback IS being called, but the `move_id` parameter is an **EMPTY STRING**!
+
+Location: `src/battle/handle_ability_event.rs:336`
+```rust
+"DamagingHit" => {
+    ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), 0, Some(pokemon_pos), None, "") // TODO: Wire through actual move_id
+}
+```
+
+The TODO comment confirms: "Wire through actual move_id"
+
+Without the move_id, Flame Body cannot:
+- Look up the move in the dex
+- Check if the move has the "contact" flag
+- Therefore cannot make the PRNG call
+
+### The Fix Needed
+
+The `run_event` function needs to pass the `move_id` (or `effect_id`) through to the ability event handler so that it can be forwarded to the callback.
+
+This is an infrastructure issue that affects ALL onDamagingHit ability callbacks, not just Flame Body.
+
+### Impact
+
+JavaScript makes 4 extra PRNG calls in seed 4 because:
+- Each Rapid Spin hit triggers Flame Body check
+- Some of these checks pass the 30% probability
+- Each successful check makes a randomChance call
+
+Total difference: 98 PRNG calls (JS) vs 94 (Rust) = 4 missing calls
 
 ## Current Understanding
 
