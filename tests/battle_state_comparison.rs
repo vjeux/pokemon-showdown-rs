@@ -336,29 +336,26 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
             .collect(),
     );
 
-    // Record initial state
+    // Record initial state (before turn 1)
     log.states.push(StateRecord {
         turn: 0,
         state: extract_battle_state(&battle),
     });
-
-    // Make initial team choices to skip team preview
-    battle.make_choices(&["default", "default"]);
 
     // Run the battle
     let mut turn = 0;
     while !battle.ended && turn < max_turns {
         turn += 1;
 
-        // Make random choices for both players
-        let p1_choice = make_random_choice(&battle, "p1", &mut choice_prng);
-        let p2_choice = make_random_choice(&battle, "p2", &mut choice_prng);
+        // Use "default" choices (move 1) to match JavaScript test behavior
+        let p1_choice = "default";
+        let p2_choice = "default";
 
         // Record choices
         log.battle_log.push(TurnLog {
             turn,
-            p1: p1_choice.clone(),
-            p2: p2_choice.clone(),
+            p1: p1_choice.to_string(),
+            p2: p2_choice.to_string(),
         });
 
         // Execute choices
