@@ -87,11 +87,15 @@ impl Battle {
         event_id: &str,  // Changed from _event_id to event_id (removed underscore)
         target: (usize, usize),
     ) -> Vec<(ID, Option<(usize, usize)>)> {
+        eprintln!("[FIND_POKEMON_HANDLERS] event_id={}, target={:?}", event_id, target);
+
         let mut handlers = Vec::new();
         let (side_idx, poke_idx) = target;
 
         if let Some(side) = self.sides.get(side_idx) {
             if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                eprintln!("[FIND_POKEMON_HANDLERS] Pokemon: {}, item: {}", pokemon.name, pokemon.item);
+
                 // JS: const status = pokemon.getStatus();
                 // Add status handler if it has callback for this event
                 if !pokemon.status.is_empty() && self.has_callback(&pokemon.status, event_id) {
@@ -100,8 +104,11 @@ impl Battle {
 
                 // JS: for (const id in pokemon.volatiles)
                 // Add volatile handlers if they have callbacks for this event
+                eprintln!("[FIND_POKEMON_HANDLERS] Checking {} volatiles for {}", pokemon.volatiles.len(), pokemon.name);
                 for volatile_id in pokemon.volatiles.keys() {
+                    eprintln!("[FIND_POKEMON_HANDLERS] Volatile '{}' has_callback({})={}", volatile_id, event_id, self.has_callback(volatile_id, event_id));
                     if self.has_callback(volatile_id, event_id) {
+                        eprintln!("[FIND_POKEMON_HANDLERS] Adding volatile handler: {}", volatile_id);
                         handlers.push((volatile_id.clone(), Some(target)));
                     }
                 }
@@ -114,8 +121,13 @@ impl Battle {
 
                 // JS: const item = pokemon.getItem();
                 // Add item handler if it has callback for this event
-                if !pokemon.item.is_empty() && self.has_callback(&pokemon.item, event_id) {
-                    handlers.push((pokemon.item.clone(), Some(target)));
+                if !pokemon.item.is_empty() {
+                    let has_cb = self.has_callback(&pokemon.item, event_id);
+                    eprintln!("[FIND_POKEMON_HANDLERS] Item {} has_callback({})={}", pokemon.item, event_id, has_cb);
+                    if has_cb {
+                        eprintln!("[FIND_POKEMON_HANDLERS] Adding item handler: {}", pokemon.item);
+                        handlers.push((pokemon.item.clone(), Some(target)));
+                    }
                 }
 
                 // JS: const species = pokemon.baseSpecies;

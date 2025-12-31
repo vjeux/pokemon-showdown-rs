@@ -390,7 +390,7 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
 
 #[test]
 fn test_battle_state_comparison() {
-    let seed = PRNGSeed::Gen5([0, 0, 0, 23]);
+    let seed = PRNGSeed::Gen5([0, 0, 0, 24]);
     println!("Running deterministic battle with seed: {:?}", seed);
 
     let log = run_battle_with_states(seed, 1);  // Only run 1 turn for debugging

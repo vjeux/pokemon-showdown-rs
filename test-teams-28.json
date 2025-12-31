@@ -7,56 +7,77 @@
   ],
   "p1": [
     {
-      "name": "Iron Moth",
-      "species": "Iron Moth",
-      "level": 78,
+      "species": "Porygon-Z",
+      "level": 83,
+      "ability": "Download",
+      "item": "Choice Scarf",
+      "nature": "Hardy",
+      "gender": "N",
+      "moves": [
+        "trick",
+        "shadowball",
+        "thunderbolt",
+        "triattack"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Sunflora",
+      "level": 100,
+      "ability": "Chlorophyll",
+      "item": "Choice Specs",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "earthpower",
+        "dazzlinggleam",
+        "sludgebomb",
+        "leafstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Iron Boulder",
+      "level": 77,
       "ability": "Quark Drive",
-      "item": "Heavy-Duty Boots",
+      "item": "Booster Energy",
       "nature": "Hardy",
-      "gender": "None",
+      "gender": "N",
       "moves": [
-        "energyball",
-        "fierydance",
-        "morningsun",
-        "sludgewave"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Grass"
-    },
-    {
-      "name": "Conkeldurr",
-      "species": "Conkeldurr",
-      "level": 80,
-      "ability": "Guts",
-      "item": "Flame Orb",
-      "nature": "Hardy",
-      "gender": "Male",
-      "moves": [
-        "knockoff",
-        "facade",
+        "zenheadbutt",
+        "swordsdance",
         "closecombat",
-        "machpunch"
+        "mightycleave"
       ],
       "evs": {
         "hp": 85,
@@ -73,142 +94,20 @@
         "spa": 31,
         "spd": 31,
         "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Normal"
+      }
     },
     {
-      "name": "Vigoroth",
-      "species": "Vigoroth",
-      "level": 85,
-      "ability": "Vital Spirit",
-      "item": "Eviolite",
-      "nature": "Hardy",
-      "gender": "Male",
-      "moves": [
-        "knockoff",
-        "bodyslam",
-        "bulkup",
-        "slackoff"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Ghost"
-    },
-    {
-      "name": "Kyurem",
-      "species": "Kyurem-Black",
-      "level": 71,
-      "ability": "Teravolt",
-      "item": "Loaded Dice",
-      "nature": "Hardy",
-      "gender": "None",
-      "moves": [
-        "dragondance",
-        "scaleshot",
-        "terablast",
-        "iciclespear"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Ground"
-    },
-    {
-      "name": "Rhydon",
-      "species": "Rhydon",
-      "level": 85,
-      "ability": "Lightning Rod",
-      "item": "Eviolite",
-      "nature": "Hardy",
-      "gender": "Male",
-      "moves": [
-        "stoneedge",
-        "earthquake",
-        "stealthrock",
-        "megahorn"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Fairy"
-    },
-    {
-      "name": "Feraligatr",
-      "species": "Feraligatr",
-      "level": 79,
-      "ability": "Sheer Force",
+      "species": "Zebstrika",
+      "level": 87,
+      "ability": "Sap Sipper",
       "item": "Life Orb",
       "nature": "Hardy",
-      "gender": "Male",
+      "gender": "M",
       "moves": [
-        "trailblaze",
-        "liquidation",
-        "dragondance",
-        "icepunch"
+        "highhorsepower",
+        "overheat",
+        "voltswitch",
+        "supercellslam"
       ],
       "evs": {
         "hp": 85,
@@ -225,220 +124,82 @@
         "spa": 31,
         "spd": 31,
         "spe": 31
+      }
+    },
+    {
+      "species": "Scyther",
+      "level": 82,
+      "ability": "Technician",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "uturn",
+        "dualwingbeat",
+        "closecombat",
+        "defog"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
       },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Water"
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Tauros-Paldea-Blaze",
+      "level": 81,
+      "ability": "Intimidate",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "wildcharge",
+        "flareblitz",
+        "closecombat",
+        "stoneedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
     }
   ],
   "p2": [
     {
-      "name": "Meowstic",
-      "species": "Meowstic-F",
-      "level": 89,
-      "ability": "Competitive",
-      "item": "Life Orb",
-      "nature": "Hardy",
-      "gender": "Female",
-      "moves": [
-        "darkpulse",
-        "nastyplot",
-        "psyshock",
-        "alluringvoice"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Dark"
-    },
-    {
-      "name": "Tentacruel",
-      "species": "Tentacruel",
+      "species": "Dugtrio-Alola",
       "level": 84,
-      "ability": "Liquid Ooze",
-      "item": "Leftovers",
+      "ability": "Tangling Hair",
+      "item": "Choice Band",
       "nature": "Hardy",
-      "gender": "Male",
+      "gender": "F",
       "moves": [
-        "sludgebomb",
-        "surf",
-        "rapidspin",
-        "toxicspikes"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Grass"
-    },
-    {
-      "name": "Chimecho",
-      "species": "Chimecho",
-      "level": 93,
-      "ability": "Levitate",
-      "item": "Leftovers",
-      "nature": "Hardy",
-      "gender": "Female",
-      "moves": [
-        "calmmind",
-        "dazzlinggleam",
-        "psyshock",
-        "recover"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Steel"
-    },
-    {
-      "name": "Darkrai",
-      "species": "Darkrai",
-      "level": 77,
-      "ability": "Bad Dreams",
-      "item": "Life Orb",
-      "nature": "Hardy",
-      "gender": "None",
-      "moves": [
-        "focusblast",
-        "nastyplot",
-        "sludgebomb",
-        "darkpulse"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Poison"
-    },
-    {
-      "name": "Ceruledge",
-      "species": "Ceruledge",
-      "level": 78,
-      "ability": "Weak Armor",
-      "item": "Heavy-Duty Boots",
-      "nature": "Hardy",
-      "gender": "Female",
-      "moves": [
-        "bitterblade",
-        "closecombat",
-        "poltergeist",
-        "swordsdance"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Fighting"
-    },
-    {
-      "name": "Cetitan",
-      "species": "Cetitan",
-      "level": 82,
-      "ability": "Sheer Force",
-      "item": "Life Orb",
-      "nature": "Hardy",
-      "gender": "Female",
-      "moves": [
+        "stoneedge",
         "earthquake",
-        "iciclecrash",
-        "liquidation",
-        "iceshard"
+        "ironhead",
+        "suckerpunch"
       ],
       "evs": {
         "hp": 85,
@@ -455,14 +216,157 @@
         "spa": 31,
         "spd": 31,
         "spe": 31
+      }
+    },
+    {
+      "species": "Luxray",
+      "level": 88,
+      "ability": "Guts",
+      "item": "Flame Orb",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "playrough",
+        "trailblaze",
+        "facade",
+        "supercellslam"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
       },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Water"
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Meganium",
+      "level": 90,
+      "ability": "Overgrow",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "knockoff",
+        "energyball",
+        "synthesis",
+        "encore"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Gallade",
+      "level": 80,
+      "ability": "Sharpness",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "agility",
+        "psychocut",
+        "sacredsword",
+        "nightslash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Iron Moth",
+      "level": 78,
+      "ability": "Quark Drive",
+      "item": "Choice Specs",
+      "nature": "Hardy",
+      "gender": "N",
+      "moves": [
+        "fierydance",
+        "energyball",
+        "sludgewave",
+        "uturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Spiritomb",
+      "level": 89,
+      "ability": "Infiltrator",
+      "item": "Choice Band",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "poltergeist",
+        "shadowsneak",
+        "suckerpunch",
+        "foulplay"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
     }
   ]
 }

@@ -336,7 +336,11 @@ pub fn dispatch_on_residual(
 
             EventResult::Continue
         }
-        _ => EventResult::Continue,
+        // Volatile conditions from moves (like leechseed) are handled by move_callbacks
+        _ => {
+            use crate::data::move_callbacks;
+            move_callbacks::dispatch_condition_on_residual(battle, condition_id, pokemon_pos)
+        }
     }
 }
 

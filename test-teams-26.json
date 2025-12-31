@@ -7,211 +7,50 @@
   ],
   "p1": [
     {
-      "name": "Arcanine",
-      "species": "Arcanine",
-      "level": 84,
-      "ability": "Intimidate",
-      "item": "Heavy-Duty Boots",
-      "nature": "Hardy",
-      "gender": "Female",
-      "moves": [
-        "closecombat",
-        "morningsun",
-        "extremespeed",
-        "flareblitz"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Fighting"
-    },
-    {
-      "name": "Grafaiai",
-      "species": "Grafaiai",
-      "level": 86,
-      "ability": "Poison Touch",
-      "item": "Life Orb",
-      "nature": "Hardy",
-      "gender": "Male",
-      "moves": [
-        "lowkick",
-        "gunkshot",
-        "knockoff",
-        "swordsdance"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Dark"
-    },
-    {
-      "name": "Keldeo",
-      "species": "Keldeo-Resolute",
-      "level": 79,
-      "ability": "Justified",
-      "item": "Leftovers",
-      "nature": "Hardy",
-      "gender": "None",
-      "moves": [
-        "calmmind",
-        "hydropump",
-        "substitute",
-        "secretsword"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Steel"
-    },
-    {
-      "name": "Rotom",
-      "species": "Rotom-Wash",
+      "species": "Typhlosion-Hisui",
       "level": 83,
-      "ability": "Levitate",
+      "ability": "Blaze",
       "item": "Choice Scarf",
       "nature": "Hardy",
-      "gender": "None",
+      "gender": "F",
       "moves": [
-        "hydropump",
-        "voltswitch",
-        "thunderbolt",
-        "trick"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Electric"
-    },
-    {
-      "name": "Porygon-Z",
-      "species": "Porygon-Z",
-      "level": 83,
-      "ability": "Adaptability",
-      "item": "Life Orb",
-      "nature": "Hardy",
-      "gender": "None",
-      "moves": [
-        "nastyplot",
         "shadowball",
-        "thunderbolt",
-        "triattack"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Electric"
-    },
-    {
-      "name": "Azelf",
-      "species": "Azelf",
-      "level": 82,
-      "ability": "Levitate",
-      "item": "Choice Specs",
-      "nature": "Hardy",
-      "gender": "None",
-      "moves": [
-        "dazzlinggleam",
-        "uturn",
-        "psyshock",
+        "focusblast",
+        "eruption",
         "fireblast"
       ],
       "evs": {
         "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Quaquaval",
+      "level": 79,
+      "ability": "Moxie",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "aquastep",
+        "closecombat",
+        "swordsdance",
+        "roost"
+      ],
+      "evs": {
+        "hp": 85,
         "atk": 85,
         "def": 85,
         "spa": 85,
@@ -225,30 +64,172 @@
         "spa": 31,
         "spd": 31,
         "spe": 31
+      }
+    },
+    {
+      "species": "Espathra",
+      "level": 80,
+      "ability": "Speed Boost",
+      "item": "Choice Specs",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "uturn",
+        "shadowball",
+        "luminacrash",
+        "dazzlinggleam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
       },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Fairy"
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Blissey",
+      "level": 85,
+      "ability": "Natural Cure",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "healbell",
+        "seismictoss",
+        "softboiled",
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Miraidon",
+      "level": 65,
+      "ability": "Hadron Engine",
+      "item": "Choice Specs",
+      "nature": "Hardy",
+      "gender": "N",
+      "moves": [
+        "voltswitch",
+        "overheat",
+        "electrodrift",
+        "dracometeor"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Hippowdon",
+      "level": 82,
+      "ability": "Sand Stream",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "stoneedge",
+        "earthquake",
+        "slackoff",
+        "curse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
     }
   ],
   "p2": [
     {
-      "name": "Rampardos",
-      "species": "Rampardos",
-      "level": 90,
-      "ability": "Sheer Force",
+      "species": "Vigoroth",
+      "level": 85,
+      "ability": "Vital Spirit",
+      "item": "Eviolite",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "slackoff",
+        "bulkup",
+        "bodyslam",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Shiftry",
+      "level": 89,
+      "ability": "Wind Rider",
       "item": "Life Orb",
       "nature": "Hardy",
-      "gender": "Female",
+      "gender": "M",
       "moves": [
-        "zenheadbutt",
-        "rockslide",
-        "earthquake",
-        "firepunch"
+        "lowkick",
+        "knockoff",
+        "leafblade",
+        "tailwind"
       ],
       "evs": {
         "hp": 85,
@@ -265,180 +246,80 @@
         "spa": 31,
         "spd": 31,
         "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Fire"
+      }
     },
     {
-      "name": "Wugtrio",
-      "species": "Wugtrio",
-      "level": 91,
-      "ability": "Gooey",
-      "item": "Choice Band",
-      "nature": "Hardy",
-      "gender": "Male",
-      "moves": [
-        "stompingtantrum",
-        "aquajet",
-        "throatchop",
-        "liquidation"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Dark"
-    },
-    {
-      "name": "Magcargo",
-      "species": "Magcargo",
-      "level": 95,
-      "ability": "Flame Body",
-      "item": "Heavy-Duty Boots",
-      "nature": "Hardy",
-      "gender": "Male",
-      "moves": [
-        "recover",
-        "stealthrock",
-        "lavaplume",
-        "powergem"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Grass"
-    },
-    {
-      "name": "Lanturn",
-      "species": "Lanturn",
-      "level": 89,
-      "ability": "Volt Absorb",
-      "item": "Heavy-Duty Boots",
-      "nature": "Hardy",
-      "gender": "Female",
-      "moves": [
-        "thunderwave",
-        "scald",
-        "thunderbolt",
-        "voltswitch"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 0,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 0,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Flying"
-    },
-    {
-      "name": "Chesnaught",
-      "species": "Chesnaught",
-      "level": 84,
-      "ability": "Bulletproof",
-      "item": "Rocky Helmet",
-      "nature": "Hardy",
-      "gender": "Female",
-      "moves": [
-        "synthesis",
-        "bodypress",
-        "spikes",
-        "woodhammer"
-      ],
-      "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
-      },
-      "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
-      },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Steel"
-    },
-    {
-      "name": "Clefable",
-      "species": "Clefable",
+      "species": "Hydrapple",
       "level": 83,
-      "ability": "Unaware",
+      "ability": "Regenerator",
+      "item": "Assault Vest",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "earthpower",
+        "ficklebeam",
+        "dragontail",
+        "gigadrain"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Charizard",
+      "level": 85,
+      "ability": "Blaze",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "flamethrower",
+        "focusblast",
+        "hurricane",
+        "willowisp"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Annihilape",
+      "level": 76,
+      "ability": "Defiant",
       "item": "Leftovers",
       "nature": "Hardy",
-      "gender": "Male",
+      "gender": "F",
       "moves": [
-        "moonblast",
-        "knockoff",
-        "thunderwave",
-        "moonlight"
+        "ragefist",
+        "bulkup",
+        "gunkshot",
+        "drainpunch"
       ],
       "evs": {
         "hp": 85,
@@ -455,14 +336,37 @@
         "spa": 31,
         "spd": 31,
         "spe": 31
+      }
+    },
+    {
+      "species": "Necrozma-Dusk-Mane",
+      "level": 69,
+      "ability": "Prism Armor",
+      "item": "Weakness Policy",
+      "nature": "Hardy",
+      "gender": "N",
+      "moves": [
+        "sunsteelstrike",
+        "morningsun",
+        "earthquake",
+        "dragondance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
       },
-      "shiny": false,
-      "happiness": 255,
-      "pokeball": "",
-      "hptype": null,
-      "dynamax_level": 10,
-      "gigantamax": false,
-      "tera_type": "Steel"
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
     }
   ]
 }
