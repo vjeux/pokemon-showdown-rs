@@ -389,13 +389,17 @@ pub fn dispatch_on_after_move_secondary_priority(
 
 /// Dispatch onAfterMoveSecondarySelf callbacks
 pub fn dispatch_on_after_move_secondary_self(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    item_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
     _move_id: &str,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "lifeorb" => lifeorb::on_after_move_secondary_self(battle, source_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onAfterMoveSecondarySelfPriority callbacks
@@ -831,14 +835,18 @@ pub fn dispatch_on_modify_crit_ratio(
 
 /// Dispatch onModifyDamage callbacks
 pub fn dispatch_on_modify_damage(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _damage: i32,
-    _pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    battle: &mut Battle,
+    item_id: &str,
+    damage: i32,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
     _move_id: &str,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "lifeorb" => lifeorb::on_modify_damage(battle, damage, pokemon_pos, target_pos),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onModifyDef callbacks

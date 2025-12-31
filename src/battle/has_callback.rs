@@ -634,6 +634,14 @@ impl Battle {
                 item_id,
                 "ejectpack"
             ),
+            "onModifyDamage" => matches!(
+                item_id,
+                "lifeorb"
+            ),
+            "onAfterMoveSecondarySelf" => matches!(
+                item_id,
+                "lifeorb"
+            ),
             _ => false,
         }
     }
@@ -807,7 +815,7 @@ impl Battle {
         match event_id {
             "onResidual" => matches!(
                 condition_id,
-                "brn" | "psn" | "tox"
+                "brn" | "psn" | "tox" | "leechseed"
             ),
             _ => false,
         }
