@@ -51,6 +51,20 @@ pub fn try_spread_move_hit(
     let (damages, final_targets) =
         crate::battle_actions::spread_move_hit(battle, &target_list, pokemon_pos, move_id, false, false);
 
+    // JavaScript (battle-actions.ts line 831): move.totalDamage += damage[i];
+    // Accumulate total damage for recoil calculation
+    let mut total_damage = 0;
+    for damage_opt in &damages {
+        if let Some(dmg) = damage_opt {
+            total_damage += dmg;
+        }
+    }
+
+    // Store total damage in active_move for recoil handling
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.total_damage = total_damage;
+    }
+
     // Check if any target was hit
     for (i, damage) in damages.iter().enumerate() {
         if let Some(dmg) = damage {

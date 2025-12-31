@@ -774,6 +774,69 @@ pub fn use_move_inner(
     // This is called once per hit for multi-hit moves, or once for single-hit moves
     battle.each_event("Update", None, None);
 
+    // JavaScript recoil handling (battle-actions.ts lines 853-859):
+    //   if ((move.recoil || move.id === "chloroblast") && move.totalDamage) {
+    //     const hpBeforeRecoil = pokemon.hp;
+    //     this.battle.damage(this.calcRecoilDamage(move.totalDamage, move, pokemon), pokemon, pokemon, "recoil");
+    //     if (pokemon.hp <= pokemon.maxhp / 2 && hpBeforeRecoil > pokemon.maxhp / 2) {
+    //       this.battle.runEvent("EmergencyExit", pokemon, pokemon);
+    //     }
+    //   }
+    //
+    // calcRecoilDamage (line 1180):
+    //   if (move.id === "chloroblast") return Math.round(pokemon.maxhp / 2);
+    //   return this.battle.clampIntRange(Math.round(damageDealt * move.recoil[0] / move.recoil[1]), 1);
+    //
+    if let Some(ref active_move) = battle.active_move.clone() {
+        let has_recoil = active_move.recoil.is_some() || active_move.id.as_str() == "chloroblast";
+        let total_damage = active_move.total_damage;
+
+        if has_recoil && total_damage > 0 {
+            // Get HP before recoil and maxhp for Emergency Exit check
+            let hp_before_recoil = battle.sides[side_idx].pokemon[poke_idx].hp;
+            let maxhp = battle.sides[side_idx].pokemon[poke_idx].maxhp;
+
+            // Calculate recoil damage
+            let recoil_damage = if active_move.id.as_str() == "chloroblast" {
+                // JS: Math.round(pokemon.maxhp / 2)
+                (maxhp as f64 / 2.0).round() as i32
+            } else if let Some((recoil_num, recoil_denom)) = active_move.recoil {
+                // JS: Math.round(damageDealt * move.recoil[0] / move.recoil[1])
+                let recoil = (total_damage as f64 * recoil_num as f64 / recoil_denom as f64).round() as i32;
+                // JS: this.battle.clampIntRange(recoil, 1)
+                recoil.max(1)
+            } else {
+                0
+            };
+
+            // Apply recoil damage
+            // JS: this.battle.damage(..., pokemon, pokemon, "recoil")
+            if recoil_damage > 0 {
+                let recoil_effect_id = ID::new("recoil");
+                battle.damage(
+                    recoil_damage,
+                    Some(pokemon_pos),
+                    Some(pokemon_pos),
+                    Some(&recoil_effect_id),
+                    false,  // instafaint = false
+                );
+
+                // Check for Emergency Exit after recoil
+                // JS: if (pokemon.hp <= pokemon.maxhp / 2 && hpBeforeRecoil > pokemon.maxhp / 2)
+                let current_hp = battle.sides[side_idx].pokemon[poke_idx].hp;
+                if current_hp <= maxhp / 2 && hp_before_recoil > maxhp / 2 {
+                    battle.run_event(
+                        "EmergencyExit",
+                        Some(pokemon_pos),
+                        Some(pokemon_pos),
+                        None,
+                        None,
+                    );
+                }
+            }
+        }
+    }
+
     // if (moveData.selfdestruct === 'ifHit' && damage[i] !== false) {
     //     this.battle.faint(source, source, move);
     // }
