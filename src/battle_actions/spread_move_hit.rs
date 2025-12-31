@@ -49,57 +49,6 @@ pub fn spread_move_hit(
         }
     }
 
-    // Step 1.5: Accuracy check
-    // JavaScript: accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
-    if !is_secondary && !is_self {
-        for (i, &target) in targets.iter().enumerate() {
-            if let Some(target_pos) = target {
-                // Skip if already failed TryHit
-                if damages[i].is_none() {
-                    continue;
-                }
-
-                // Get base accuracy from move
-                let base_accuracy = match battle.dex.moves().get(move_id.as_str()) {
-                    Some(m) => {
-                        match m.accuracy {
-                        crate::dex::Accuracy::Percent(p) => p,
-                        crate::dex::Accuracy::AlwaysHits => {
-                            // Always hits, skip accuracy check
-                            continue;
-                        }
-                    }},
-                    None => {
-                        continue;
-                    }
-                };
-
-                // Trigger Accuracy event to allow abilities/items to modify accuracy
-                // JavaScript: accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
-                let mut accuracy = base_accuracy;
-                if let Some(modified_acc) = battle.run_event(
-                    "Accuracy",
-                    Some(target_pos),
-                    Some(source_pos),
-                    Some(move_id),
-                    Some(accuracy),
-                ) {
-                    accuracy = modified_acc;
-                }
-
-                // Check if move hits based on accuracy
-                // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
-                // Always call randomChance to consume PRNG value, even if accuracy is 100
-                if !battle.random_chance(accuracy, 100) {
-                    // Move missed
-                    damages[i] = None;
-                    final_targets[i] = None;
-                    // TODO: Add miss message: this.battle.add('-miss', pokemon, target);
-                }
-            }
-        }
-    }
-
     // Step 2: Get damage for each target
     // JavaScript: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
     // IMPORTANT: Pass final_targets (which has None for misses), not targets

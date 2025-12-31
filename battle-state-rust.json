@@ -6,80 +6,6 @@
     22
   ],
   "teams": {
-    "p2": [
-      {
-        "species": "Pachirisu",
-        "moves": [
-          "encore",
-          "uturn",
-          "superfang",
-          "discharge"
-        ],
-        "ability": "Volt Absorb",
-        "item": "Heavy-Duty Boots",
-        "level": 96
-      },
-      {
-        "species": "Pincurchin",
-        "moves": [
-          "scald",
-          "recover",
-          "thunderbolt",
-          "toxicspikes"
-        ],
-        "ability": "Electric Surge",
-        "item": "Leftovers",
-        "level": 100
-      },
-      {
-        "species": "Lumineon",
-        "moves": [
-          "uturn",
-          "hydropump",
-          "encore",
-          "icebeam"
-        ],
-        "ability": "Storm Drain",
-        "item": "Heavy-Duty Boots",
-        "level": 93
-      },
-      {
-        "species": "Jirachi",
-        "moves": [
-          "bodyslam",
-          "wish",
-          "ironhead",
-          "protect"
-        ],
-        "ability": "Serene Grace",
-        "item": "Leftovers",
-        "level": 80
-      },
-      {
-        "species": "Farigiraf",
-        "moves": [
-          "bodyslam",
-          "psychicnoise",
-          "wish",
-          "protect"
-        ],
-        "ability": "Sap Sipper",
-        "item": "Leftovers",
-        "level": 91
-      },
-      {
-        "species": "Crawdaunt",
-        "moves": [
-          "knockoff",
-          "crabhammer",
-          "dragondance",
-          "aquajet"
-        ],
-        "ability": "Adaptability",
-        "item": "Life Orb",
-        "level": 84
-      }
-    ],
     "p1": [
       {
         "species": "Camerupt",
@@ -152,6 +78,80 @@
         "ability": "Contrary",
         "item": "Life Orb",
         "level": 79
+      }
+    ],
+    "p2": [
+      {
+        "species": "Pachirisu",
+        "moves": [
+          "encore",
+          "uturn",
+          "superfang",
+          "discharge"
+        ],
+        "ability": "Volt Absorb",
+        "item": "Heavy-Duty Boots",
+        "level": 96
+      },
+      {
+        "species": "Pincurchin",
+        "moves": [
+          "scald",
+          "recover",
+          "thunderbolt",
+          "toxicspikes"
+        ],
+        "ability": "Electric Surge",
+        "item": "Leftovers",
+        "level": 100
+      },
+      {
+        "species": "Lumineon",
+        "moves": [
+          "uturn",
+          "hydropump",
+          "encore",
+          "icebeam"
+        ],
+        "ability": "Storm Drain",
+        "item": "Heavy-Duty Boots",
+        "level": 93
+      },
+      {
+        "species": "Jirachi",
+        "moves": [
+          "bodyslam",
+          "wish",
+          "ironhead",
+          "protect"
+        ],
+        "ability": "Serene Grace",
+        "item": "Leftovers",
+        "level": 80
+      },
+      {
+        "species": "Farigiraf",
+        "moves": [
+          "bodyslam",
+          "psychicnoise",
+          "wish",
+          "protect"
+        ],
+        "ability": "Sap Sipper",
+        "item": "Leftovers",
+        "level": 91
+      },
+      {
+        "species": "Crawdaunt",
+        "moves": [
+          "knockoff",
+          "crabhammer",
+          "dragondance",
+          "aquajet"
+        ],
+        "ability": "Adaptability",
+        "item": "Life Orb",
+        "level": 84
       }
     ]
   },
