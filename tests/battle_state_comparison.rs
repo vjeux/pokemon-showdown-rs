@@ -1,15 +1,13 @@
 //! Battle State Comparison Test
 //!
-//! This test loads pre-generated teams (from test-teams.json) and runs a battle
-//! with random moves derived from a specific seed. It records the state at every
-//! step to enable comparison with the JavaScript implementation.
+//! This test generates random teams from a seed and runs a battle with random
+//! moves. It records the state at every step to enable comparison with the
+//! JavaScript implementation.
 
 use pokemon_showdown::{
     Battle, BattleOptions, PRNGSeed, PlayerOptions, PRNG,
 };
-use pokemon_showdown::dex_data::{StatsTable, Gender};
 use serde::{Deserialize, Serialize};
-use std::fs;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct PokemonState {
@@ -166,111 +164,12 @@ fn make_random_choice(battle: &Battle, player_id: &str, prng: &mut PRNG) -> Stri
 
 /// Run a deterministic battle and record states
 fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
-    // Load pre-generated teams from JSON
-    // Extract seed number from PRNGSeed::Gen5([0, 0, 0, N])
-    let seed_num = match seed {
-        PRNGSeed::Gen5([_, _, _, n]) => n,
-        _ => 22, // Default to 22 if not Gen5 seed
-    };
-    let test_teams_path = format!("test-teams-{}.json", seed_num);
-    let test_teams_json = fs::read_to_string(&test_teams_path)
-        .unwrap_or_else(|_| panic!("Failed to read {}", test_teams_path));
+    // Load dex for team generation
+    let dex = pokemon_showdown::Dex::load_default().expect("Failed to load dex");
 
-    #[derive(Debug, Deserialize)]
-    struct TestTeams {
-        p1: Vec<TestPokemon>,
-        p2: Vec<TestPokemon>,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct TestPokemon {
-        species: String,
-        level: u8,
-        ability: String,
-        item: String,
-        nature: String,
-        #[serde(default)]
-        gender: String,  // Optional field, defaults to empty string
-        moves: Vec<String>,
-        evs: TestStats,
-        ivs: TestStats,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct TestStats {
-        hp: i32,
-        atk: i32,
-        def: i32,
-        spa: i32,
-        spd: i32,
-        spe: i32,
-    }
-
-    let test_teams: TestTeams = serde_json::from_str(&test_teams_json)
-        .expect("Failed to parse test-teams.json");
-
-    // Convert to PokemonSets for battle
-    let team1: Vec<_> = test_teams.p1
-        .iter()
-        .map(|set| pokemon_showdown::PokemonSet {
-            name: set.species.clone(),
-            species: set.species.clone(),
-            level: set.level,
-            ability: set.ability.clone(),
-            item: set.item.clone(),
-            nature: set.nature.clone(),
-            gender: Gender::parse(&set.gender),  // Parse gender from string
-            moves: set.moves.clone(),
-            evs: StatsTable::new(
-                set.evs.hp,
-                set.evs.atk,
-                set.evs.def,
-                set.evs.spa,
-                set.evs.spd,
-                set.evs.spe,
-            ),
-            ivs: StatsTable::new(
-                set.ivs.hp,
-                set.ivs.atk,
-                set.ivs.def,
-                set.ivs.spa,
-                set.ivs.spd,
-                set.ivs.spe,
-            ),
-            ..Default::default()
-        })
-        .collect();
-
-    let team2: Vec<_> = test_teams.p2
-        .iter()
-        .map(|set| pokemon_showdown::PokemonSet {
-            name: set.species.clone(),
-            species: set.species.clone(),
-            level: set.level,
-            ability: set.ability.clone(),
-            item: set.item.clone(),
-            nature: set.nature.clone(),
-            gender: Gender::parse(&set.gender),  // Parse gender from string
-            moves: set.moves.clone(),
-            evs: StatsTable::new(
-                set.evs.hp,
-                set.evs.atk,
-                set.evs.def,
-                set.evs.spa,
-                set.evs.spd,
-                set.evs.spe,
-            ),
-            ivs: StatsTable::new(
-                set.ivs.hp,
-                set.ivs.atk,
-                set.ivs.def,
-                set.ivs.spa,
-                set.ivs.spd,
-                set.ivs.spe,
-            ),
-            ..Default::default()
-        })
-        .collect();
+    // Generate random teams from seed
+    let mut team_prng = PRNG::new(Some(seed.clone()));
+    let (team1, team2) = pokemon_showdown::team_generator::generate_random_teams(&mut team_prng, &dex);
 
     // Create battle with the seed
     let mut battle = Battle::new(BattleOptions {
@@ -390,18 +289,13 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
 
 #[test]
 fn test_battle_state_comparison() {
-    let seed = PRNGSeed::Gen5([0, 0, 0, 9]);
+    let seed = PRNGSeed::Gen5([0, 0, 0, 1]);
     println!("Running deterministic battle with seed: {:?}", seed);
 
     let log = run_battle_with_states(seed, 1);  // Only run 1 turn for debugging
 
-    let output_path = "battle-state-rust.json";
-    let json = serde_json::to_string_pretty(&log).expect("Failed to serialize log");
-    fs::write(output_path, json).expect("Failed to write log file");
-
     println!("Battle completed in {} turns", log.summary.turns);
     println!("Winner: {:?}", log.summary.winner);
-    println!("Output saved to: {}", output_path);
 
     // Print turn 1 results for comparison
     if log.states.len() > 1 {

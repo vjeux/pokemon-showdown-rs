@@ -21,7 +21,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
     // Check if move makes contact
-    let target_pos = match target_pos {
+    let _target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

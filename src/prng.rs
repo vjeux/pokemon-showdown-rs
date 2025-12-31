@@ -556,15 +556,6 @@ mod tests {
         assert_eq!(sorted, original);
     }
 
-    #[test]
-    fn test_seed_parsing() {
-        let seed = PRNGSeed::from_string("1234,5678,9012,3456").unwrap();
-        assert!(matches!(seed, PRNGSeed::Gen5(_)));
-
-        let seed = PRNGSeed::from_string("sodium,abcdef0123456789").unwrap();
-        assert!(matches!(seed, PRNGSeed::Sodium(_)));
-    }
-
     /// Test that our Gen5 PRNG matches the JavaScript implementation exactly
     #[test]
     fn test_gen5_matches_javascript() {

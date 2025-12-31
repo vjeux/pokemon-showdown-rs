@@ -790,7 +790,7 @@ mod tests {
 
     #[test]
     fn test_species_methods() {
-        let dex = Dex::load_default().expect("Failed to load dex");
+        let _dex = Dex::load_default().expect("Failed to load dex");
 
         // Spec methods are directly accessed from species data
         // No convenience wrappers - matches TypeScript pattern

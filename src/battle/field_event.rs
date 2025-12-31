@@ -5,7 +5,7 @@ use crate::battle::PriorityItem;
 #[derive(Clone)]
 struct FieldEventHandler {
     effect_id: ID,
-    effect_type: crate::battle::EffectType,
+    _effect_type: crate::battle::EffectType,
     holder: Option<(usize, usize)>,
     is_field: bool,
     is_side: bool,
@@ -75,7 +75,7 @@ impl Battle {
 
         FieldEventHandler {
             effect_id,
-            effect_type,
+            _effect_type: effect_type,
             holder,
             is_field,
             is_side,

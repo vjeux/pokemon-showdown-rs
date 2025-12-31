@@ -27,7 +27,7 @@ pub fn hit_step_accuracy(
     };
 
     // Get pokemon
-    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+    let _pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
         None => {
             return hit_results;
@@ -84,7 +84,7 @@ pub fn hit_step_accuracy(
 
             // Apply accuracy/evasion boosts
             // Simplified version - just use accuracy/evasion boosts without checking flags
-            let mut boost = 0;
+            let mut boost;
 
             // Get attacker's accuracy boost
             boost = attacker_acc_boost.max(-6).min(6);
