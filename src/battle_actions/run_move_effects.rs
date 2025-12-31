@@ -140,10 +140,13 @@ pub fn run_move_effects(
             };
 
             if !already_has_volatile {
-                // Get default duration from dex.conditions
+                // Get default duration from move's condition first, then from dex.conditions
                 // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
-                let default_duration = battle.dex.conditions.get(&volatile_id)
+                // When adding a volatile via move.volatileStatus, the duration comes from move.condition.duration
+                let move_condition_duration = move_data.condition.as_ref().and_then(|c| c.duration);
+                let dex_condition_duration = battle.dex.conditions.get(&volatile_id)
                     .and_then(|cond| cond.duration);
+                let default_duration = move_condition_duration.or(dex_condition_duration);
 
                 // Check if condition has a durationCallback
                 // JS: if (status.durationCallback) {

@@ -60,10 +60,12 @@ impl Battle {
                 let priority_a = get_priority(&list[next_indexes[0]]);
                 let priority_i = get_priority(&list[i]);
                 let cmp = Self::compare_priority(&priority_a, &priority_i);
+                eprintln!("[SPEED_SORT COMPARE] i={}, sorted={}, priority_a={:?}, priority_i={:?}, cmp={:?}", i, sorted, priority_a, priority_i, cmp);
                 match cmp {
                     std::cmp::Ordering::Less => continue,
                     std::cmp::Ordering::Greater => next_indexes = vec![i],
                     std::cmp::Ordering::Equal => {
+                        eprintln!("[SPEED_SORT TIE] Found tie between index {} and {}", next_indexes[0], i);
                         next_indexes.push(i);
                     }
                 }

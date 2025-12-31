@@ -119,8 +119,8 @@ impl Battle {
                 for (volatile_id, volatile_state) in &pokemon.volatiles {
                     let has_cb = self.condition_has_callback(volatile_id.as_str(), event_id);
                     let has_get_key = get_key == Some("duration") && volatile_state.duration.is_some();
-                    eprintln!("[FIND_POKEMON_HANDLERS] Volatile '{}' condition_has_callback({})={}, has_get_key({:?})={}",
-                        volatile_id, event_id, has_cb, get_key, has_get_key);
+                    eprintln!("[FIND_POKEMON_HANDLERS] Volatile '{}' condition_has_callback({})={}, duration={:?}, get_key={:?}, has_get_key={}",
+                        volatile_id, event_id, has_cb, volatile_state.duration, get_key, has_get_key);
                     if has_cb || has_get_key {
                         eprintln!("[FIND_POKEMON_HANDLERS] Adding volatile handler: {}", volatile_id);
                         handlers.push((volatile_id.clone(), Some(target), crate::battle::EffectType::Condition));
