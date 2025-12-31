@@ -337,13 +337,13 @@ impl Battle {
         // This allows moves/abilities/items to have event handlers
         if let Some(source_effect_id) = source_effect {
             // Add to front of list (unshift in JavaScript)
-            handlers.insert(0, (source_effect_id.clone(), target));
+            handlers.insert(0, (event_id.to_string(), source_effect_id.clone(), target));
         }
 
 
-        for (effect_id, holder_target) in handlers {
+        for (event_variant, effect_id, holder_target) in handlers {
             let event_result =
-                self.dispatch_single_event(event_id, &effect_id, holder_target, source);
+                self.dispatch_single_event(&event_variant, &effect_id, holder_target, source);
 
 
             match event_result {

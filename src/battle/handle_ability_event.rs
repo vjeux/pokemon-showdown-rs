@@ -592,12 +592,28 @@ impl Battle {
                 ability_id.as_str(),
             "", // TODO: Wire through actual move_id
             ),
-            "SourceModifyDamage" => ability_callbacks::dispatch_on_source_modify_damage(
-                self,
-                ability_id.as_str(),
-                0, pokemon_pos, pokemon_pos,
-            "", // TODO: Wire through actual move_id
-            ),
+            "SourceModifyDamage" => {
+                // Extract parameters from current_event
+                let (damage, source_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                    (
+                        event.relay_var.unwrap_or(0), // damage value
+                        event.target.unwrap_or((0, 0)), // attacker position
+                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default() // move id
+                    )
+                } else {
+                    (0, (0, 0), String::new())
+                };
+                // pokemon_pos is the defender (pokemon with the ability, e.g., Houndstone with Fluffy)
+                // source_pos is the attacker (e.g., Koraidon using Outrage)
+                eprintln!("[HANDLE_ABILITY_EVENT] SourceModifyDamage for ability={}, damage={}, source={:?}, target={:?}, move={}",
+                    ability_id.as_str(), damage, source_pos, pokemon_pos, move_id_str);
+                ability_callbacks::dispatch_on_source_modify_damage(
+                    self,
+                    ability_id.as_str(),
+                    damage, source_pos, pokemon_pos,
+                &move_id_str
+                )
+            }
             "SourceModifyDamagePriority" => {
                 ability_callbacks::dispatch_on_source_modify_damage_priority(
                     self,

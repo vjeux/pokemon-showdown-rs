@@ -84,7 +84,7 @@ impl Battle {
         event_id: &str,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
-    ) -> Vec<(ID, Option<(usize, usize)>)> {
+    ) -> Vec<(String, ID, Option<(usize, usize)>)> {  // Now returns (event_variant, effect_id, target)
         let mut handlers = Vec::new();
 
         // JavaScript: const prefixedHandlers = !['BeforeTurn', 'Update', 'Weather', 'WeatherChange', 'TerrainChange'].includes(eventName);
@@ -99,8 +99,11 @@ impl Battle {
         if let Some(target_pos) = target {
             // JavaScript: handlers = this.findPokemonEventHandlers(target, `on${eventName}`);
             let prefixed_event = format!("on{}", event_name);
-            let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos);
-            handlers.append(&mut pokemon_handlers);
+            let pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos);
+            // Add event variant name to each handler
+            for (effect_id, holder) in pokemon_handlers {
+                handlers.push((event_name.to_string(), effect_id, holder));
+            }
 
             if prefixed_handlers {
                 let (target_side, _target_idx) = target_pos;
@@ -117,16 +120,22 @@ impl Battle {
                     for poke_idx in side.active.iter().flatten() {
                         let ally_pos = (target_side, *poke_idx);
                         // onAlly handlers
+                        let ally_variant = format!("Ally{}", event_name);
                         let ally_event = format!("onAlly{}", event_name);
-                        let mut ally_handlers =
+                        let ally_handlers =
                             self.find_pokemon_event_handlers(&ally_event, ally_pos);
-                        handlers.append(&mut ally_handlers);
+                        for (effect_id, holder) in ally_handlers {
+                            handlers.push((ally_variant.clone(), effect_id, holder));
+                        }
 
                         // onAny handlers
+                        let any_variant = format!("Any{}", event_name);
                         let any_event = format!("onAny{}", event_name);
-                        let mut any_handlers =
+                        let any_handlers =
                             self.find_pokemon_event_handlers(&any_event, ally_pos);
-                        handlers.append(&mut any_handlers);
+                        for (effect_id, holder) in any_handlers {
+                            handlers.push((any_variant.clone(), effect_id, holder));
+                        }
                     }
                 }
 
@@ -142,16 +151,22 @@ impl Battle {
                         for poke_idx in side.active.iter().flatten() {
                             let foe_pos = (side_idx, *poke_idx);
                             // onFoe handlers
+                            let foe_variant = format!("Foe{}", event_name);
                             let foe_event = format!("onFoe{}", event_name);
-                            let mut foe_handlers =
+                            let foe_handlers =
                                 self.find_pokemon_event_handlers(&foe_event, foe_pos);
-                            handlers.append(&mut foe_handlers);
+                            for (effect_id, holder) in foe_handlers {
+                                handlers.push((foe_variant.clone(), effect_id, holder));
+                            }
 
                             // onAny handlers
+                            let any_variant = format!("Any{}", event_name);
                             let any_event = format!("onAny{}", event_name);
-                            let mut any_handlers =
+                            let any_handlers =
                                 self.find_pokemon_event_handlers(&any_event, foe_pos);
-                            handlers.append(&mut any_handlers);
+                            for (effect_id, holder) in any_handlers {
+                                handlers.push((any_variant.clone(), effect_id, holder));
+                            }
                         }
                     }
                 }
@@ -163,22 +178,27 @@ impl Battle {
         // }
         if let Some(source_pos) = source {
             if prefixed_handlers {
+                let source_variant = format!("Source{}", event_name);
                 let source_event = format!("onSource{}", event_name);
-                let mut source_handlers =
+                let source_handlers =
                     self.find_pokemon_event_handlers(&source_event, source_pos);
-                handlers.append(&mut source_handlers);
+                for (effect_id, holder) in source_handlers {
+                    handlers.push((source_variant.clone(), effect_id, holder));
+                }
             }
         }
 
         // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
         let prefixed_event = format!("on{}", event_name);
-        let mut field_handlers = self.find_field_event_handlers(&prefixed_event);
-        handlers.append(&mut field_handlers);
+        let field_handlers = self.find_field_event_handlers(&prefixed_event);
+        for (effect_id, holder) in field_handlers {
+            handlers.push((event_name.to_string(), effect_id, holder));
+        }
 
         // JavaScript: handlers.push(...this.findBattleEventHandlers(`on${eventName}`));
         let battle_handler_ids = self.find_battle_event_handlers(&prefixed_event);
         for id in battle_handler_ids {
-            handlers.push((id, None));
+            handlers.push((event_name.to_string(), id, None));
         }
 
         handlers
