@@ -63,6 +63,9 @@ impl Dex {
             .collect();
 
         // Generate cosmetic forme entries
+        // DISABLED: JavaScript doesn't auto-generate cosmetic forme entries,
+        // so we skip this to maintain parity for team generation
+        /*
         // Collect species with cosmetic formes first to avoid borrow issues
         let species_with_cosmetic_formes: Vec<(ID, SpeciesData)> = species
             .iter()
@@ -122,6 +125,7 @@ impl Dex {
                 }
             }
         }
+        */
 
         let moves = moves_raw
             .into_iter()
