@@ -14,6 +14,7 @@ use crate::event_system::EffectState;
 // Function modules
 mod new;
 mod update_move_z_flags;
+mod update_move_pp;
 mod fullname;
 mod details;
 mod is_fainted;

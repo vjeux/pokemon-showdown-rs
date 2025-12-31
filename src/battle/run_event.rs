@@ -335,12 +335,13 @@ impl Battle {
         let mut handlers = self.find_event_handlers(event_id, target, source);
 
         // JavaScript: if (onEffect) { ... handlers.unshift(...) }
-        // If source_effect is provided, add it to the handlers list
-        // This allows moves/abilities/items to have event handlers
-        if let Some(source_effect_id) = source_effect {
-            // Add to front of list (unshift in JavaScript)
-            handlers.insert(0, (event_id.to_string(), source_effect_id.clone(), target));
-        }
+        // In JavaScript, sourceEffect's handler is ONLY added when onEffect parameter is true
+        // Since Rust doesn't have an onEffect parameter, we should NOT add sourceEffect to handlers
+        // The sourceEffect is passed for context (stored in current_event), but NOT for calling its handler
+        // This prevents moves from having their onHit called twice:
+        //   1. single_event("Hit", move_id, ...) - correctly calls move.onHit
+        //   2. run_event("Hit", target, source, move_id, ...) - should NOT call move.onHit again
+        // REMOVED: handlers.insert(0, (event_id.to_string(), source_effect_id.clone(), target));
 
 
         for (event_variant, effect_id, holder_target) in handlers {

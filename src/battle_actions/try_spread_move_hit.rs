@@ -76,7 +76,29 @@ pub fn try_spread_move_hit(
     // TODO: Implement these steps when needed
 
     // PrepareHit event - must be called BEFORE accuracy check
-    // JavaScript (battle-actions.ts:587): this.battle.runEvent('PrepareHit', pokemon, targets[0], move);
+    // JavaScript (battle-actions.ts:587):
+    //   this.battle.singleEvent("PrepareHit", move, {}, targets[0], pokemon, move) &&
+    //   this.battle.runEvent("PrepareHit", pokemon, targets[0], move);
+
+    // First, call move's onPrepareHit handler via single_event
+    let prepare_hit_result = battle.single_event(
+        "PrepareHit",
+        move_id,
+        Some(targets_after_try_hit[0]),
+        Some(pokemon_pos),
+        None,
+    );
+
+    // If single_event returned false/None/NotFail, the move fails
+    use crate::event::EventResult;
+    match prepare_hit_result {
+        EventResult::Boolean(false) | EventResult::NotFail | EventResult::Null => {
+            return false;
+        }
+        _ => {}
+    }
+
+    // Then, call run_event to find handlers on pokemon/target
     battle.run_event(
         "PrepareHit",
         Some(pokemon_pos),

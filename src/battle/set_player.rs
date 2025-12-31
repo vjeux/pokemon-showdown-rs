@@ -138,6 +138,10 @@ impl Battle {
 
                 // Update Z-move flags using Dex
                 self.sides[slot_num].pokemon[poke_idx].update_move_z_flags(&self.dex);
+
+                // Update PP values using Dex
+                // JavaScript: let basepp = move.noPPBoosts ? move.pp : move.pp * 8 / 5;
+                self.sides[slot_num].pokemon[poke_idx].update_move_pp(&self.dex, self.gen);
             }
 
             // Initialize Pokemon stats after creating the side
