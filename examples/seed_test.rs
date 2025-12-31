@@ -119,8 +119,8 @@ fn main() {
         p2_active.map(|p| p.maxhp).unwrap_or(0)
     );
 
-    // Run 5 turns
-    for _turn_num in 1..=5 {
+    // Run 3 turns (matching JavaScript test)
+    for _turn_num in 1..=3 {
         if battle.ended {
             break;
         }
