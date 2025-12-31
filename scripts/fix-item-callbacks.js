@@ -43,6 +43,67 @@ function funcNameToEventName(funcName) {
     return 'on' + parts.slice(1).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
 }
 
+// Get the correct parameters for each callback type based on dispatcher signature
+function getCallParams(funcName) {
+    // Map each callback to its parameter pattern
+    const paramMap = {
+        'on_take_item': 'battle, Some(pokemon_pos), pokemon_pos, source_pos',
+        'on_damaging_hit': 'battle, damage, target_pos, source_pos',
+        'on_base_power': 'battle, base_power, pokemon_pos, target_pos, move_id',
+        'on_after_boost': 'battle, pokemon_pos',
+        'on_update': 'battle, pokemon_pos',
+        'on_try_eat_item': 'battle, pokemon_pos',
+        'on_eat': 'battle, pokemon_pos',
+        'on_start': 'battle, pokemon_pos',
+        'on_after_sub_damage': 'battle, pokemon_pos',
+        'on_modify_sp_d': 'battle, pokemon_pos',
+        'on_disable_move': 'battle, pokemon_pos',
+        'on_source_modify_damage': 'battle, damage, source_pos, target_pos, move_id',
+        'on_residual': 'battle, pokemon_pos',
+        'on_try_heal': 'battle, pokemon_pos',
+        'on_switch_in': 'battle, pokemon_pos',
+        'on_modify_accuracy': 'battle, pokemon_pos',
+        'on_source_try_primary_hit': 'battle, pokemon_pos, source_pos, move_id',
+        'on_modify_move': 'battle, move_id, pokemon_pos',
+        'on_modify_atk': 'battle, pokemon_pos',
+        'on_modify_spe': 'battle, pokemon_pos',
+        'on_modify_sp_a': 'battle, pokemon_pos',
+        'on_try_boost': 'battle, pokemon_pos, boost',
+        'on_modify_secondaries': 'battle, pokemon_pos, secondaries',
+        'on_fractional_priority': 'battle, pokemon_pos, priority',
+        'on_attract': 'battle, pokemon_pos',
+        'on_after_move_secondary': 'battle, pokemon_pos',
+        'on_any_switch_in': 'battle, pokemon_pos',
+        'on_any_after_mega': 'battle, pokemon_pos',
+        'on_any_after_move': 'battle, pokemon_pos',
+        'on_use_item': 'battle, pokemon_pos',
+        'on_use': 'battle, pokemon_pos',
+        'on_end': 'battle, pokemon_pos',
+        'on_terrain_change': 'battle, pokemon_pos',
+        'on_hit': 'battle, pokemon_pos',
+        'on_modify_def': 'battle, pokemon_pos',
+        'on_modify_damage': 'battle, damage, pokemon_pos, target_pos, move_id',
+        'on_modify_weight': 'battle, pokemon_pos, weight',
+        'on_damage': 'battle, pokemon_pos',
+        'on_effectiveness': 'battle, pokemon_pos',
+        'on_modify_crit_ratio': 'battle, pokemon_pos, crit_ratio',
+        'on_after_move_secondary_self': 'battle, pokemon_pos, target, move_id',
+        'on_after_set_status': 'battle, pokemon_pos',
+        'on_foe_after_boost': 'battle, pokemon_pos, target, source, effect_id, boost',
+        'on_any_after_terastallization': 'battle, pokemon_pos',
+        'on_charge_move': 'battle, pokemon_pos',
+        'on_any_pseudo_weather_change': 'battle, pokemon_pos',
+        'on_immunity': 'battle, pokemon_pos, type_name',
+        'on_try_hit': 'battle, pokemon_pos, source_pos, move_id',
+        'on_trap_pokemon': 'battle, pokemon_pos',
+        'on_maybe_trap_pokemon': 'battle, pokemon_pos',
+        'on_source_modify_accuracy': 'battle, pokemon_pos',
+        'on_set_ability': 'battle, pokemon_pos',
+    };
+
+    return paramMap[funcName] || 'battle, pokemon_pos';
+}
+
 // Update mod.rs dispatchers
 function updateDispatchers() {
     const modPath = path.join(workspaceRoot, 'src', 'data', 'item_callbacks', 'mod.rs');
@@ -65,9 +126,10 @@ function updateDispatchers() {
 
         const match = content.match(regex);
         if (match) {
-            // Generate new match arms
+            // Generate new match arms with correct parameters
+            const params = getCallParams(funcName);
             const matchArms = items.map(item => {
-                return `        "${item}" => ${item}::${funcName}(battle, pokemon_pos),`;
+                return `        "${item}" => ${item}::${funcName}(${params}),`;
             }).join('\n');
 
             const replacement = `${match[1]}\n${matchArms}\n${match[3]}`;
