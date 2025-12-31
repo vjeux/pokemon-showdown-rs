@@ -10,7 +10,7 @@
 
 ## Findings for Seed 1
 
-### First Divergence: Turn 21
+### First Divergence: Turn 21 (ONGOING)
 
 **JavaScript (Turn 21):**
 - 3 PRNG calls (calls #70, #71, #72)
@@ -29,47 +29,32 @@
   - Shuffling 5 items makes exactly 4 PRNG calls
   - This happens in `speed_sort()` when there are ties
 
-### Turn Pattern
+### Investigation Progress
 
-| Turn | JS Calls | Rust Calls | Difference | Cumulative JS | Cumulative Rust |
-|------|----------|------------|------------|---------------|-----------------|
-| 19   | 4        | 4          | 0 (✓)      | 69            | 69              |
-| 20   | 0        | 0          | 0 (✓)      | 69            | 69              |
-| 21   | 3        | 7          | +4 (✗)     | 72            | 76              |
-| 22   | 0        | 3          | +3 (✗)     | 72            | 79              |
+#### Fixes Applied:
+1. ✓ Changed `PriorityItem.speed` from `i32` to `f64` (src/battle.rs:596)
+2. ✓ Changed Action speeds to `f64`:
+   - `MoveAction.speed` (src/battle_queue.rs:58)
+   - `SwitchAction.speed` (src/battle_queue.rs:108)
+   - `TeamAction.speed` (src/battle_queue.rs:132)
+   - `PokemonAction.speed` (src/battle_queue.rs:168)
+3. ✓ Changed `EventListener.speed` from `Option<i32>` to `Option<f64>` (src/battle.rs:214)
+4. ✓ Implemented fractional speed adjustment for SwitchIn event handlers (src/battle/resolve_priority.rs:201-216)
+5. ✓ Updated all comparison functions to use `total_cmp()` for f64
 
-### Root Cause Hypothesis
+#### Current Status: DIVERGENCE PERSISTS
 
-The 4 extra `random(n=6)` calls on turn 21 strongly suggest:
-
-1. **Speed sorting with ties**: Rust's `speed_sort()` calls `shuffle_range()` when items have equal priority
-2. **Shuffle makes N-1 calls**: Shuffling 5 items makes exactly 4 PRNG calls
-3. **Incorrect tie detection**: Rust is finding 5 tied items when JavaScript doesn't
-
-Possible causes:
-- Rust's `compare_priority()` function might be finding ties where JS doesn't
-- Different priority calculation between JS and Rust
-- Speed/priority values might differ slightly due to floating point or calculation differences
-- Rust might be calling `speed_sort()` in a place where JS doesn't
-
-### Key Code Locations
-
-**Rust:**
-- `src/battle/speed_sort.rs`: Main sorting function
-- `src/battle/shuffle_range.rs`: Makes the extra PRNG calls
-- `src/battle/compare_priority.rs`: Determines if items tie
-
-**JavaScript:**
-- `dist/sim/battle.js`: speedSort() function
-- `dist/sim/prng.js`: shuffle() function
+Despite implementing f64 speeds and fractional adjustments for EventListener, the divergence on turn 21 still occurs. This suggests:
+- The fractional adjustment may need to be applied elsewhere (not just SwitchIn handlers)
+- There may be a different sorting operation that's causing ties
+- The ties might be in action queue sorting, not event handler sorting
 
 ### Next Steps
 
-1. **Add logging to compare_priority**: Log when Rust detects ties
-2. **Compare priority values**: Check if priority/speed values match between JS and Rust
-3. **Track speed_sort calls**: Log when speed_sort is called and how many ties it finds
-4. **Root cause**: Find why Rust detects 5 tied items when JS doesn't
-5. **Fix**: Ensure priority calculation matches JS exactly
+1. **Add detailed logging for turn 21**: Track all PRNG calls and their sources
+2. **Check action speed calculation**: Verify if actions need fractional adjustments too
+3. **Investigate speed_sort calls**: Find all places where speed_sort is called on turn 21
+4. **Compare with JavaScript behavior**: Identify exact differences in sorting logic
 
 ## Battle Outcomes
 
