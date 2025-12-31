@@ -78,6 +78,19 @@ impl Battle {
         let callback_name = format!("on{}", event_id);
         let _get_key_is_duration = event_id == "Residual";
 
+        eprintln!("[FIELD_EVENT] Starting {} event", event_id);
+        // Debug: Check Pokemon states at start of Residual event
+        if event_id == "Residual" {
+            for (side_idx, side) in self.sides.iter().enumerate() {
+                for (poke_idx, pokemon) in side.pokemon.iter().enumerate() {
+                    if !pokemon.fainted {
+                        eprintln!("[FIELD_EVENT] INITIAL STATE CHECK: sides[{}].pokemon[{}] '{}' has {} volatiles: {:?}",
+                            side_idx, poke_idx, pokemon.name, pokemon.volatiles.len(), pokemon.volatiles.keys().collect::<Vec<_>>());
+                    }
+                }
+            }
+        }
+
         // Collect all handlers
         let mut handlers: Vec<FieldEventHandler> = Vec::new();
 

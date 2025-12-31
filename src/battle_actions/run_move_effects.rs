@@ -129,18 +129,30 @@ pub fn run_move_effects(
                 if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
                     let volatile_id = crate::dex_data::ID::new(volatile_status);
 
+                    eprintln!("[RUN_MOVE_EFFECTS] Before add_volatile: {} has {} volatiles", pokemon.name, pokemon.volatiles.len());
                     // Add the volatile (simplified - doesn't run full event chain)
                     if pokemon.add_volatile(volatile_id.clone()) {
-                        eprintln!("[RUN_MOVE_EFFECTS] Added volatile '{}' to {}", volatile_status, pokemon.name);
+                        eprintln!("[RUN_MOVE_EFFECTS] Successfully added volatile '{}' to {} (side={}, pos={})", volatile_status, pokemon.name, target_pos.0, target_pos.1);
+                        eprintln!("[RUN_MOVE_EFFECTS] After add_volatile: {} now has {} volatiles", pokemon.name, pokemon.volatiles.len());
 
                         // Set source_slot (required for Leech Seed to know where to heal)
                         if let Some(volatile_state) = pokemon.volatiles.get_mut(&volatile_id) {
                             // Store the source pokemon's position index as the source_slot
                             volatile_state.source_slot = Some(_source_pos.1);
+                            eprintln!("[RUN_MOVE_EFFECTS] Set source_slot={:?} for volatile on {}", volatile_state.source_slot, pokemon.name);
                         }
                     } else {
                         eprintln!("[RUN_MOVE_EFFECTS] Volatile '{}' already exists on {}", volatile_status, pokemon.name);
                     }
+                }
+            }
+
+            // Verify volatile was actually added to battle state
+            eprintln!("[RUN_MOVE_EFFECTS] VERIFICATION: Checking battle.sides[{}].pokemon[{}] volatiles...", target_pos.0, target_pos.1);
+            if let Some(side) = battle.sides.get(target_pos.0) {
+                if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                    eprintln!("[RUN_MOVE_EFFECTS] VERIFICATION: {} now has {} volatiles: {:?}",
+                        pokemon.name, pokemon.volatiles.len(), pokemon.volatiles.keys().collect::<Vec<_>>());
                 }
             }
 
