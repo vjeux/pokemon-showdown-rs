@@ -7,7 +7,7 @@
 use pokemon_showdown::{
     Battle, BattleOptions, PRNGSeed, PlayerOptions, PRNG,
 };
-use pokemon_showdown::dex_data::StatsTable;
+use pokemon_showdown::dex_data::{StatsTable, Gender};
 use serde::{Deserialize, Serialize};
 use std::fs;
 
@@ -184,6 +184,8 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
         ability: String,
         item: String,
         nature: String,
+        #[serde(default)]
+        gender: String,  // Optional field, defaults to empty string
         moves: Vec<String>,
         evs: TestStats,
         ivs: TestStats,
@@ -212,6 +214,7 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
             ability: set.ability.clone(),
             item: set.item.clone(),
             nature: set.nature.clone(),
+            gender: Gender::parse(&set.gender),  // Parse gender from string
             moves: set.moves.clone(),
             evs: StatsTable::new(
                 set.evs.hp,
@@ -242,6 +245,7 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
             ability: set.ability.clone(),
             item: set.item.clone(),
             nature: set.nature.clone(),
+            gender: Gender::parse(&set.gender),  // Parse gender from string
             moves: set.moves.clone(),
             evs: StatsTable::new(
                 set.evs.hp,
