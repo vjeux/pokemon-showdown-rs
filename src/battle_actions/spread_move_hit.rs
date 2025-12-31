@@ -22,6 +22,8 @@ pub fn spread_move_hit(
     let mut final_targets = targets.to_vec();
 
     // Get move data
+    eprintln!("[SPREAD_MOVE_HIT] ENTRY: move={:?}, is_secondary={}, is_self={}", move_id, is_secondary, is_self);
+
     let move_data = match battle.dex.moves().get(move_id.as_str()) {
         Some(m) => m.clone(),
         None => return (damages, final_targets),
