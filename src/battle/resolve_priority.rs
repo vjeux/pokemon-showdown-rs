@@ -5,6 +5,50 @@ use crate::dex_data::StatID;
 
 impl Battle {
 
+    /// Get callback order from dex data
+    /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`] || false;
+    /// Returns None if no order is specified (equivalent to false in JS)
+    pub(crate) fn get_callback_order(effect_type: EffectType, effect_id: &str, callback_name: &str) -> Option<i32> {
+        // Extract event name from callback (e.g., "onResidual" -> "Residual")
+        let event = if callback_name.starts_with("on") {
+            &callback_name[2..]
+        } else {
+            callback_name
+        };
+
+        match (effect_type, event) {
+            // Ability onResidualOrder values (from data/abilities.ts)
+            (EffectType::Ability, "Residual") => match effect_id {
+                "slowstart" => Some(28),
+                _ => None,
+            },
+            // Item onResidualOrder values (from data/items.ts)
+            (EffectType::Item, "Residual") => match effect_id {
+                "leftovers" => Some(5),
+                "blacksludge" => Some(5),
+                _ => None,
+            },
+            // Status onResidualOrder values (from data/conditions.ts)
+            (EffectType::Condition, "Residual") => match effect_id {
+                "brn" => Some(10),
+                "psn" => Some(9),
+                "tox" => Some(9),
+                _ => None,
+            },
+            _ => None,
+        }
+    }
+
+    /// Get callback priority from dex data
+    /// JavaScript: handler.priority = (handler.effect as any)[`${callbackName}Priority`] || 0;
+    /// Returns 0 if no priority is specified (default in JS)
+    pub(crate) fn get_callback_priority(effect_type: EffectType, effect_id: &str, callback_name: &str) -> i32 {
+        // Most callbacks don't have custom priorities, return 0 by default
+        // Can be expanded as needed
+        let _ = (effect_type, effect_id, callback_name);
+        0
+    }
+
     /// Resolve event handler priority
     /// Equivalent to battle.ts resolvePriority()
     ///
@@ -86,9 +130,9 @@ impl Battle {
         // JS: handler.priority = (handler.effect as any)[`${callbackName}Priority`] || 0;
         // JS: handler.subOrder = (handler.effect as any)[`${callbackName}SubOrder`] || 0;
         //
-        // In Rust, we don't have dynamic property access, so we assume these are already set
-        // or we get them from ability/item/move data lookups.
-        // For now, we'll set defaults and then calculate subOrder based on effectType.
+        // Look up order and priority from dex data based on effect type and ID
+        handler.order = Self::get_callback_order(handler.effect_type, handler.effect_id.as_str(), callback_name);
+        handler.priority = Self::get_callback_priority(handler.effect_type, handler.effect_id.as_str(), callback_name);
 
         // If subOrder is not already set, calculate it based on effectType
         if handler.sub_order == 0 {

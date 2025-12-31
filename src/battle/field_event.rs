@@ -5,13 +5,86 @@ use crate::battle::PriorityItem;
 #[derive(Clone)]
 struct FieldEventHandler {
     effect_id: ID,
+    effect_type: crate::battle::EffectType,
     holder: Option<(usize, usize)>,
     is_field: bool,
     is_side: bool,
     speed: i32,
+    order: Option<i32>,
+    priority: i32,
+    sub_order: i32,
 }
 
 impl Battle {
+
+    /// Determine effect type from effect ID by checking dex
+    fn determine_effect_type(&self, effect_id: &str) -> crate::battle::EffectType {
+        // Check abilities
+        if self.dex.abilities().get(effect_id).is_some() {
+            return crate::battle::EffectType::Ability;
+        }
+        // Check items
+        if self.dex.items().get(effect_id).is_some() {
+            return crate::battle::EffectType::Item;
+        }
+        // Check moves
+        if self.dex.moves().get(effect_id).is_some() {
+            return crate::battle::EffectType::Move;
+        }
+        // Default to Condition (volatiles, status, etc.)
+        crate::battle::EffectType::Condition
+    }
+
+    /// Helper to create a FieldEventHandler with proper order/priority from dex
+    fn create_field_handler(
+        &self,
+        effect_id: ID,
+        effect_type: crate::battle::EffectType,
+        holder: Option<(usize, usize)>,
+        is_field: bool,
+        is_side: bool,
+        callback_name: &str,
+    ) -> FieldEventHandler {
+
+        // Get order and priority from dex
+        let order = Self::get_callback_order(effect_type, effect_id.as_str(), callback_name);
+        let priority = Self::get_callback_priority(effect_type, effect_id.as_str(), callback_name);
+
+        // Calculate sub_order based on effect type
+        let sub_order = match effect_type {
+            crate::battle::EffectType::Ability => 7,
+            crate::battle::EffectType::Item => 8,
+            crate::battle::EffectType::Condition => 2,
+            _ => 0,
+        };
+
+        // Get speed from holder Pokemon
+        let speed = if let Some((side_idx, poke_idx)) = holder {
+            if let Some(side) = self.sides.get(side_idx) {
+                if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                    pokemon.stored_stats.spe
+                } else {
+                    0
+                }
+            } else {
+                0
+            }
+        } else {
+            0
+        };
+
+        FieldEventHandler {
+            effect_id,
+            effect_type,
+            holder,
+            is_field,
+            is_side,
+            speed,
+            order,
+            priority,
+            sub_order,
+        }
+    }
 
     /// Run event on field (weather, terrain, pseudo-weather)
     /// Equivalent to battle.ts fieldEvent() (battle.ts:484-568, 85 lines)
@@ -98,13 +171,16 @@ impl Battle {
         let field_event = format!("onField{}", event_id);
         let field_handlers = self.find_field_event_handlers(&field_event);
         for (effect_id, holder) in field_handlers {
-            handlers.push(FieldEventHandler {
+            let effect_type = self.determine_effect_type(effect_id.as_str());
+            let handler = self.create_field_handler(
                 effect_id,
+                effect_type,
                 holder,
-                is_field: true,
-                is_side: false,
-                speed: 0,
-            });
+                true,
+                false,
+                &callback_name,
+            );
+            handlers.push(handler);
         }
 
         // JS: for (const side of this.sides) { ... }
@@ -117,13 +193,16 @@ impl Battle {
                 let side_event = format!("onSide{}", event_id);
                 let side_handlers = self.find_side_event_handlers(&side_event, side_idx);
                 for (effect_id, holder) in side_handlers {
-                    handlers.push(FieldEventHandler {
+                    let effect_type = self.determine_effect_type(effect_id.as_str());
+                    let handler = self.create_field_handler(
                         effect_id,
+                        effect_type,
                         holder,
-                        is_field: false,
-                        is_side: true,
-                        speed: 0,
-                    });
+                        false,
+                        true,
+                        &callback_name,
+                    );
+                    handlers.push(handler);
                 }
             }
 
@@ -145,17 +224,16 @@ impl Battle {
                     let any_event = format!("onAny{}", event_id);
                     let any_handlers = self.find_pokemon_event_handlers(&any_event, target_pos);
                     for (effect_id, holder) in any_handlers {
-                        let speed = self.sides.get(side_idx)
-                            .and_then(|s| s.pokemon.get(poke_idx))
-                            .map(|p| p.speed)
-                            .unwrap_or(0);
-                        handlers.push(FieldEventHandler {
+                        let effect_type = self.determine_effect_type(effect_id.as_str());
+                        let handler = self.create_field_handler(
                             effect_id,
+                            effect_type,
                             holder,
-                            is_field: false,
-                            is_side: false,
-                            speed,
-                        });
+                            false,
+                            false,
+                            &any_event,
+                        );
+                        handlers.push(handler);
                     }
                 }
 
@@ -170,17 +248,16 @@ impl Battle {
                 // JS: handlers = handlers.concat(this.findPokemonEventHandlers(active, callbackName, getKey));
                 let pokemon_handlers = self.find_pokemon_event_handlers(&callback_name, target_pos);
                 for (effect_id, holder) in pokemon_handlers {
-                    let speed = self.sides.get(side_idx)
-                        .and_then(|s| s.pokemon.get(poke_idx))
-                        .map(|p| p.speed)
-                        .unwrap_or(0);
-                    handlers.push(FieldEventHandler {
+                    let effect_type = self.determine_effect_type(effect_id.as_str());
+                    let handler = self.create_field_handler(
                         effect_id,
+                        effect_type,
                         holder,
-                        is_field: false,
-                        is_side: false,
-                        speed,
-                    });
+                        false,
+                        false,
+                        &callback_name,
+                    );
+                    handlers.push(handler);
                 }
 
                 // Note: findSideEventHandlers and findFieldEventHandlers with customHolder
@@ -193,15 +270,15 @@ impl Battle {
         // Sort handlers by Pokemon speed
         eprintln!("[FIELD_EVENT] Sorting {} handlers before processing", handlers.len());
         for (i, h) in handlers.iter().enumerate() {
-            eprintln!("[FIELD_EVENT] Handler {}: effect={}, speed={}, is_field={}, is_side={}",
-                i, h.effect_id.as_str(), h.speed, h.is_field, h.is_side);
+            eprintln!("[FIELD_EVENT] Handler {}: effect={}, speed={}, order={:?}, priority={}, sub_order={}, is_field={}, is_side={}",
+                i, h.effect_id.as_str(), h.speed, h.order, h.priority, h.sub_order, h.is_field, h.is_side);
         }
         self.speed_sort(&mut handlers, |h| {
             PriorityItem {
-                order: None,
-                priority: 0,
+                order: h.order,
+                priority: h.priority,
                 speed: h.speed,
-                sub_order: 0,
+                sub_order: h.sub_order,
                 effect_order: 0,
                 index: 0,
             }
