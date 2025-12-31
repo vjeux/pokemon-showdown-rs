@@ -845,6 +845,13 @@ impl Battle {
                 condition_id,
                 "substitute"  // Has onTryPrimaryHit
             ),
+            "TryHit" => matches!(
+                condition_id,
+                // Protect-like moves (from move_callbacks/mod.rs dispatch_condition_on_try_hit)
+                "banefulbunker" | "burningbulwark" | "craftyshield" | "kingsshield" |
+                "magiccoat" | "matblock" | "maxguard" | "obstruct" | "protect" |
+                "quickguard" | "silktrap" | "spikyshield" | "wideguard"
+            ),
             _ => {
                 // For other events, conservatively return false
                 // This can be expanded as more condition callbacks are implemented

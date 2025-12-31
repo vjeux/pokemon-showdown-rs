@@ -15,16 +15,26 @@ pub fn on_prepare_hit(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Called for pokemon {:?}", pokemon_pos);
+
     let pokemon = pokemon_pos;
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     let will_act = battle.queue.will_act().is_some();
+    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] will_act={}", will_act);
+
     if !will_act {
+        eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Returning false (will_act=false)");
         return EventResult::Boolean(false);
     }
 
+    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Calling run_event StallMove");
     let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, None);
-    EventResult::Boolean(will_act && stall_result.unwrap_or(0) != 0)
+    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] StallMove result: {:?}", stall_result);
+
+    let result = will_act && stall_result.unwrap_or(0) != 0;
+    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Returning {}", result);
+    EventResult::Boolean(result)
 }
 
 /// onHit(pokemon) {
@@ -163,12 +173,15 @@ pub mod condition {
     ) -> EventResult {
         use crate::dex_data::ID;
 
+        eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] Called with source={:?}, target={:?}", source_pos, target_pos);
+
         let source = source_pos;
         let target = target_pos;
 
         // if (!move.flags['protect'] || move.category === 'Status') {
         let (has_protect, is_status, move_id, is_z, is_max) = {
             if let Some(ref active_move) = battle.active_move {
+                eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] active_move exists: {}", active_move.id);
                 (
                     active_move.flags.protect,
                     active_move.category == "Status",
@@ -177,9 +190,12 @@ pub mod condition {
                     active_move.is_max,
                 )
             } else {
+                eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] No active_move, returning Continue");
                 return EventResult::Continue;
             }
         };
+
+        eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] has_protect={}, is_status={}", has_protect, is_status);
 
         if !has_protect || is_status {
             //     if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
@@ -281,6 +297,7 @@ pub mod condition {
             battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"), false, false);
         }
 
+        eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] Returning NotFail");
         //     return this.NOT_FAIL;
         EventResult::NotFail
     }

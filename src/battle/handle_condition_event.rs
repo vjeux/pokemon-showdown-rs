@@ -174,6 +174,12 @@ impl Battle {
             "TryPrimaryHit" => {
                 condition_callbacks::dispatch_on_try_primary_hit(self, condition_id, pokemon_pos)
             }
+            "TryHit" => {
+                // TryHit needs both source and target positions
+                // Get source from current_event
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                condition_callbacks::dispatch_on_try_hit(self, condition_id, source_pos, pokemon_pos)
+            }
             "TryMove" => condition_callbacks::dispatch_on_try_move(self, condition_id, pokemon_pos),
             "TryMovePriority" => {
                 condition_callbacks::dispatch_on_try_move_priority(self, condition_id, pokemon_pos)

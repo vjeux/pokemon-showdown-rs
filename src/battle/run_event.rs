@@ -347,6 +347,7 @@ impl Battle {
             let event_result =
                 self.dispatch_single_event(&event_variant, &effect_id, holder_target, source);
 
+            eprintln!("[RUN_EVENT] Handler returned: {:?}", event_result);
 
             match event_result {
                 EventResult::Boolean(false) => {
@@ -359,6 +360,12 @@ impl Battle {
                     // JavaScript: relayVar = returnVal;
                     // True is truthy, so set result to 1 and continue
                     result = Some(1);
+                }
+                EventResult::NotFail => {
+                    // JavaScript: relayVar = this.NOT_FAIL; (NOT_FAIL = '' which is falsy)
+                    // NotFail is falsy, so set result to None and break
+                    result = None;
+                    break;
                 }
                 EventResult::Stop => {
                     break;

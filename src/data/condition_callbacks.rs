@@ -570,6 +570,18 @@ pub fn dispatch_on_try_primary_hit(
     move_callbacks::dispatch_condition_on_try_primary_hit(battle, condition_id, pokemon_pos)
 }
 
+/// Dispatch onTryHit callbacks
+pub fn dispatch_on_try_hit(
+    battle: &mut Battle,
+    condition_id: &str,
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+) -> EventResult {
+    // Route to actual implementation in move_callbacks
+    use crate::data::move_callbacks;
+    move_callbacks::dispatch_condition_on_try_hit(battle, condition_id, source_pos, target_pos)
+}
+
 /// Dispatch onType callbacks
 pub fn dispatch_on_type(
     _battle: &mut Battle,

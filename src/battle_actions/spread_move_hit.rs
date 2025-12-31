@@ -64,27 +64,9 @@ pub fn spread_move_hit(
         }
     }
 
-    // Step 1: TryHit event
-    if !is_secondary && !is_self {
-        for (i, &target) in targets.iter().enumerate() {
-            if let Some(target_pos) = target {
-                // JavaScript: hitResult = this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
-                let hit_result = battle.single_event(
-                    "TryHit",
-                    move_id,
-                    Some(target_pos),
-                    Some(source_pos),
-                    Some(move_id),
-                );
-
-                // If TryHit returns false, the move fails
-                if matches!(hit_result, crate::event::EventResult::Boolean(false)) {
-                    damages[i] = None;
-                    final_targets[i] = None;
-                }
-            }
-        }
-    }
+    // Step 1: TryHit event - NOW HANDLED IN try_spread_move_hit BEFORE accuracy check
+    // The TryHit event was moved to try_spread_move_hit.rs to run before the accuracy check
+    // This ensures that Protect-like moves can block attacks without wasting a PRNG call on accuracy
 
     // Step 2: Get damage for each target
     // JavaScript: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);

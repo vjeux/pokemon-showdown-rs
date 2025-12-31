@@ -19,6 +19,16 @@ impl Battle {
 
         let effect_str = effect_id.as_str();
 
+        // IMPORTANT: For PrepareHit, check if effect is a move FIRST before checking volatiles
+        // PrepareHit should call the MOVE's handler (e.g., King's Shield's onPrepareHit),
+        // not a volatile's handler (even if the Pokemon has a kingsshield volatile)
+        if event_id == "PrepareHit" {
+            if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
+                eprintln!("[DISPATCH_SINGLE_EVENT] PrepareHit: Calling handle_move_event for move");
+                return self.handle_move_event(event_id, effect_str, target);
+            }
+        }
+
         // IMPORTANT: Check if effect is a condition (volatile, status, etc.) on the target Pokemon FIRST
         // This prevents "substitute" volatile from being dispatched as "substitute" move
         // In JavaScript, the event handler is attached to pokemon.volatiles['substitute'], so it knows it's the volatile

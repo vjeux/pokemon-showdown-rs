@@ -23,7 +23,56 @@ pub fn try_spread_move_hit(
     }
 
     // Implement the 7-step pipeline from JavaScript's trySpreadMoveHit
-    // Step 0-3: Invulnerability, TryHit, Type Immunity, Move-specific Immunity
+    // Step 0: Invulnerability
+    // TODO: Implement invulnerability check (hitStepInvulnerabilityEvent)
+
+    // Step 1: TryHit event (Protect, Magic Bounce, Volt Absorb, etc.)
+    // JavaScript (battle-actions.ts): this.hitStepTryHitEvent
+    // This must run BEFORE accuracy check so that Protect can block the move
+    let mut try_hit_results = vec![true; targets.len()];
+    for (i, &target) in targets.iter().enumerate() {
+        // JavaScript: hitResult = this.battle.runEvent('TryHit', targets, pokemon, move);
+        // Use run_event (not single_event) to check target's volatiles like kingsshield
+        let hit_result = battle.run_event(
+            "TryHit",
+            Some(target),
+            Some(pokemon_pos),
+            Some(move_id),
+            None,
+        );
+
+        eprintln!("[TRY_SPREAD_MOVE_HIT] TryHit result for target {:?}: {:?}", target, hit_result);
+
+        // JavaScript: if (hitResults[i] !== this.battle.NOT_FAIL) hitResults[i] = hitResults[i] || false;
+        // Then: targets = targets.filter((val, i) => hitResults[i] || hitResults[i] === 0);
+        // Keep targets where result is truthy OR === 0
+        // Filter out where result is falsy AND !== 0 (i.e., false or NOT_FAIL)
+        match hit_result {
+            None => {
+                // None represents falsy non-0 values (false, NOT_FAIL)
+                try_hit_results[i] = false;
+                eprintln!("[TRY_SPREAD_MOVE_HIT] Target {:?} BLOCKED by TryHit (None)", target);
+            }
+            Some(_) => {
+                // Some(0) and Some(non-zero) both mean keep the target
+                try_hit_results[i] = true;
+                eprintln!("[TRY_SPREAD_MOVE_HIT] Target {:?} PASSED TryHit", target);
+            }
+        }
+    }
+
+    // Filter targets based on TryHit results
+    let targets_after_try_hit: Vec<_> = targets.iter().enumerate()
+        .filter(|(i, _)| try_hit_results[*i])
+        .map(|(_, &t)| t)
+        .collect();
+
+    // If all targets blocked, move failed
+    if targets_after_try_hit.is_empty() {
+        return false;
+    }
+
+    // Step 2-3: Type Immunity, Move-specific Immunity
     // TODO: Implement these steps when needed
 
     // PrepareHit event - must be called BEFORE accuracy check
@@ -31,17 +80,17 @@ pub fn try_spread_move_hit(
     battle.run_event(
         "PrepareHit",
         Some(pokemon_pos),
-        Some(targets[0]),
+        Some(targets_after_try_hit[0]),
         Some(move_id),
         None,
     );
 
-    // Step 4: Check accuracy - THIS WAS THE MISSING STEP!
-    let hit_results = crate::battle_actions::hit_step_accuracy(battle, targets, pokemon_pos, move_id);
+    // Step 4: Check accuracy
+    let hit_results = crate::battle_actions::hit_step_accuracy(battle, &targets_after_try_hit, pokemon_pos, move_id);
 
     // Filter out targets that failed accuracy check
     let mut remaining_targets = Vec::new();
-    for (i, &target) in targets.iter().enumerate() {
+    for (i, &target) in targets_after_try_hit.iter().enumerate() {
         if hit_results.get(i).copied().unwrap_or(false) {
             remaining_targets.push(target);
         }
