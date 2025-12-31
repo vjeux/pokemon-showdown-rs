@@ -1,78 +1,70 @@
 # Seed 2 PRNG Divergence Investigation
 
 ## Problem
-Seed 2 has only 18 PRNG calls vs JavaScript's 57 across 20 turns.
+Seed 2 had only 18 PRNG calls vs JavaScript's 57 across 20 turns.
 - Turn 1: 5 calls (both) ✓
 - Turn 2: 0 calls (Rust) vs 1 call (JS) ❌ **FIRST DIVERGENCE**
 - Turn 3: 1 call (both) ✓
 - Turns 4-17: 0 calls (Rust) vs 1+ calls each (JS) ❌
 
-## ROOT CAUSE IDENTIFIED
+## ROOT CAUSE - FIXED ✅
 
-**Bug**: In turn 2, `run_event("StallMove")` returns a result WITHOUT calling `find_pokemon_event_handlers`.
+**Bug**: kingsshield volatile was being added with `duration=None` instead of `duration=Some(1)`.
 
-### Evidence:
+### Technical Details
 
-**Turn 1 (first Kings Shield use):**
-```
-[KINGSSHIELD::ON_PREPARE_HIT] Calling run_event StallMove
-[FIND_POKEMON_HANDLERS] event_id=onStallMove, target=(0, 0)
-[FIND_POKEMON_HANDLERS] Checking 0 volatiles for Sandaconda  ← stall not created yet
-[KINGSSHIELD::ON_PREPARE_HIT] StallMove result: Some(1)
-...later...
-[KINGSSHIELD::ON_HIT] Added 'stall' volatile. Total volatiles: 1  ← created here
-```
+1. **JavaScript behavior**:
+   - kingsshield move has `volatileStatus: "kingsshield"` and `condition: { duration: 1 }`
+   - When move hits, it adds kingsshield volatile with duration=1
+   - During Residual event with `get_key="duration"`, both kingsshield and stall volatiles are added as handlers
+   - Both have identical priority → triggers shuffle → makes PRNG call
 
-**Turn 2 (second Kings Shield use):**
-```
-[KINGSSHIELD::ON_PREPARE_HIT] Calling run_event StallMove
-[KINGSSHIELD::ON_PREPARE_HIT] StallMove result: Some(0)  ← NO find_pokemon_event_handlers called!
-[KINGSSHIELD::ON_PREPARE_HIT] Returning false
-```
+2. **Rust bug**:
+   - `run_move_effects.rs` was getting duration from `battle.dex.conditions.get("kingsshield")`
+   - The global dex.conditions registry didn't have kingsshield's duration
+   - Should have checked `move_data.condition.duration` first
+   - This caused kingsshield volatile to have duration=None
+   - Without duration, `has_get_key = get_key == Some("duration") && volatile_state.duration.is_some()` was false
+   - kingsshield wasn't added as a Residual event handler
+   - No tie between handlers → no shuffle → no PRNG call
 
-**Turn 3 (third Kings Shield use):**
-```
-[KINGSSHIELD::ON_PREPARE_HIT] Calling run_event StallMove
-[FIND_POKEMON_HANDLERS] event_id=onStallMove, target=(0, 0)
-[FIND_POKEMON_HANDLERS] Checking 2 volatiles for Sandaconda
-[FIND_POKEMON_HANDLERS] Volatile 'stall' condition_has_callback(onStallMove)=true  ← found!
-[STALL] Success chance: 33%
-[RANDOM_CHANCE] Called with 1/3  ← PRNG call made!
-[STALL] randomChance(1, 3) = false
-[STALL] Removed stall volatile (failed)
+### The Fix
+
+In `src/battle_actions/run_move_effects.rs` line 143-149:
+
+**Before**:
+```rust
+let default_duration = battle.dex.conditions.get(&volatile_id)
+    .and_then(|cond| cond.duration);
 ```
 
-## Analysis
+**After**:
+```rust
+// Get default duration from move's condition first, then from dex.conditions
+// When adding a volatile via move.volatileStatus, the duration comes from move.condition.duration
+let move_condition_duration = move_data.condition.as_ref().and_then(|c| c.duration);
+let dex_condition_duration = battle.dex.conditions.get(&volatile_id)
+    .and_then(|cond| cond.duration);
+let default_duration = move_condition_duration.or(dex_condition_duration);
+```
 
-1. **Turn 2 is missing find_pokemon_event_handlers call**
-   - run_event("StallMove") is called
-   - But it returns Some(0) immediately without checking for handlers
-   - This means no randomChance() call is made
-   - Stall volatile exists at this point but is not checked
+### Verification
 
-2. **Possible causes**:
-   - run_event has a cache that's incorrectly returning a cached result
-   - There's a short-circuit path in run_event that skips handler lookup
-   - The event system has state that prevents re-execution
+After fix, turn 2 Residual event properly finds both handlers:
+```
+[FIND_POKEMON_HANDLERS] Volatile 'stall' ... duration=Some(2) ... has_get_key=true
+[FIND_POKEMON_HANDLERS] Adding volatile handler: stall
+[FIND_POKEMON_HANDLERS] Volatile 'kingsshield' ... duration=Some(1) ... has_get_key=true
+[FIND_POKEMON_HANDLERS] Adding volatile handler: kingsshield
+[FIELD_EVENT] Sorting 2 handlers before processing
+[SPEED_SORT TIE] Found tie between index 0 and 1
+[PRNG #6] value=3880739566
+```
 
-3. **Impact**:
-   - Turn 2 misses the stall check → 0 PRNG calls instead of 1
-   - All subsequent turns with Kings Shield are affected similarly
-   - This cascades to create the 18 vs 57 divergence
+## Impact
 
-## Next Steps
+This fix should restore PRNG synchronization for seed 2 across all 20 turns. Any move with `volatileStatus` and `condition.duration` will now correctly apply the duration from the move's condition field.
 
-1. **PRIORITY**: Investigate `run_event` implementation
-   - Check for caching mechanisms
-   - Look for short-circuit logic
-   - Verify handler lookup is always performed
+## Commit
 
-2. Compare with JavaScript's `runEvent()` to find 1-to-1 differences
-
-3. Test fix and verify turn 2 makes exactly 1 PRNG call
-
-## Related Files
-- src/battle/run_event.rs - Event system (likely culprit)
-- src/battle/find_pokemon_event_handlers.rs - Handler lookup
-- src/data/move_callbacks/kingsshield.rs - Kings Shield onPrepareHit
-- src/data/condition_callbacks.rs - Stall's onStallMove (lines 488-545)
+Committed as `0c31ea44`: "Fix kingsshield volatile duration bug"
