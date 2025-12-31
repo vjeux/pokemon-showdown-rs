@@ -32,9 +32,14 @@ impl Battle {
         }
 
         // JS: (b.speed || 0) - (a.speed || 0)
-        let speed_cmp = b.speed() - a.speed();
-        if speed_cmp != 0 {
-            return speed_cmp;
+        // Use total_cmp for f64 comparison (handles NaN properly)
+        let speed_cmp = b.speed().total_cmp(&a.speed());
+        if speed_cmp != std::cmp::Ordering::Equal {
+            return match speed_cmp {
+                std::cmp::Ordering::Greater => 1,
+                std::cmp::Ordering::Less => -1,
+                std::cmp::Ordering::Equal => 0,
+            };
         }
 
         // JS: -((b.subOrder || 0) - (a.subOrder || 0))

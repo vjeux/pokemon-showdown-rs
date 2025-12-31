@@ -58,7 +58,7 @@ impl BattleQueue {
                         move_priority_modified: None,
                         priority: 0,
                         fractional_priority: 0.0,
-                        speed: 0,
+                        speed: 0.0,
                         order: 200,
                     }));
                 }
@@ -72,7 +72,7 @@ impl BattleQueue {
                         target_index: switch_to,
                         source_effect: None,
                         priority: 0,
-                        speed: 0,
+                        speed: 0.0,
                         order: 103,
                     }));
                 }
@@ -83,7 +83,7 @@ impl BattleQueue {
                 let priority = -(side_action.switch_index.unwrap_or(0) as i8);
                 actions.push(Action::Team(TeamAction {
                     priority,
-                    speed: 1,  // Will be set by get_action_speed
+                    speed: 1.0,  // Will be set by get_action_speed
                     pokemon_index: side_action.pokemon_index,
                     side_index: side_idx,
                     index: side_action.pokemon_index,
@@ -104,7 +104,7 @@ impl BattleQueue {
                         target_index: switch_to,
                         source_effect: None,
                         priority: 0,
-                        speed: 0,
+                        speed: 0.0,
                         order: 3,
                     }));
                 }
@@ -118,7 +118,7 @@ impl BattleQueue {
                         target_index: switch_to,
                         source_effect: None,
                         priority: 0,
-                        speed: 0,
+                        speed: 0.0,
                         order: 6,
                     }));
                 }

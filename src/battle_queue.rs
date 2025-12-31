@@ -55,7 +55,7 @@ pub struct MoveAction {
     /// Fractional priority (higher = earlier)
     pub fractional_priority: f64,
     /// Speed of pokemon using move (higher = earlier if priority tie)
-    pub speed: i32,
+    pub speed: f64,
     /// Index of the pokemon doing the move
     pub pokemon_index: usize,
     /// Side index of the pokemon
@@ -105,7 +105,7 @@ pub struct SwitchAction {
     /// Priority of the action
     pub priority: i8,
     /// Speed of pokemon switching
-    pub speed: i32,
+    pub speed: f64,
     /// Index of the pokemon doing the switch
     pub pokemon_index: usize,
     /// Side index of the pokemon
@@ -129,7 +129,7 @@ pub struct TeamAction {
     /// Priority (negative index for team actions)
     pub priority: i8,
     /// Speed of pokemon (for tie-breaking)
-    pub speed: i32,
+    pub speed: f64,
     /// Pokemon index
     pub pokemon_index: usize,
     /// Side index
@@ -165,7 +165,7 @@ pub struct PokemonAction {
     /// Priority
     pub priority: i8,
     /// Speed
-    pub speed: i32,
+    pub speed: f64,
     /// Pokemon index
     pub pokemon_index: usize,
     /// Side index
@@ -246,12 +246,12 @@ impl Action {
     }
 
     /// Get the speed value for sorting
-    pub fn speed(&self) -> i32 {
+    pub fn speed(&self) -> f64 {
         match self {
             Action::Move(a) => a.speed,
             Action::Switch(a) => a.speed,
             Action::Team(a) => a.speed,
-            Action::Field(_) => 1,
+            Action::Field(_) => 1.0,
             Action::Pokemon(a) => a.speed,
         }
     }
@@ -357,7 +357,7 @@ mod tests {
             order: 200,
             priority: 0,
             fractional_priority: 0.0,
-            speed: 50,
+            speed: 50.0,
             pokemon_index: 0,
             side_index: 0,
             target_loc: 0,
@@ -374,7 +374,7 @@ mod tests {
             order: 200,
             priority: 1, // Higher priority
             fractional_priority: 0.0,
-            speed: 30,
+            speed: 30.0,
             pokemon_index: 1,
             side_index: 1,
             target_loc: 0,
@@ -391,7 +391,7 @@ mod tests {
             order: 200,
             priority: 0,
             fractional_priority: 0.0,
-            speed: 100, // Highest speed
+            speed: 100.0, // Highest speed
             pokemon_index: 2,
             side_index: 0,
             target_loc: 0,

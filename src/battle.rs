@@ -211,7 +211,7 @@ pub struct EventListener {
     /// Effect order (for hazards and abilities with same priority)
     pub effect_order: Option<i32>,
     /// Speed stat (for speed-based sorting)
-    pub speed: Option<i32>,
+    pub speed: Option<f64>,
 }
 
 /// Effect type - matches JavaScript effectType
@@ -593,7 +593,7 @@ impl Battle {
 pub struct PriorityItem {
     pub order: Option<i32>,
     pub priority: i32,
-    pub speed: i32,
+    pub speed: f64,  // Changed from i32 to f64 to match JavaScript's fractional speeds
     pub sub_order: i32,
     pub effect_order: i32,
     pub index: usize,

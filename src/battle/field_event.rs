@@ -280,7 +280,7 @@ impl Battle {
             PriorityItem {
                 order: h.order,
                 priority: h.priority,
-                speed: h.speed,
+                speed: h.speed as f64,
                 sub_order: h.sub_order,
                 effect_order: 0,
                 index: 0,

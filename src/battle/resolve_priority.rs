@@ -183,18 +183,21 @@ impl Battle {
                 && handler.effect_id.as_str() == "magicbounce"
                 && callback_name == "onAllyTryHitSide";
 
+            // Get Magic Bounce speed if needed (requires mutable borrow)
+            let magic_bounce_speed = if needs_magic_bounce_speed {
+                Some(self.get_pokemon_stat(effect_holder, StatID::Spe, true, true) as f64)
+            } else {
+                None
+            };
+
             // Get Pokemon speed
             if let Some(side) = self.sides.get(effect_holder.0) {
                 if let Some(pokemon) = side.pokemon.get(effect_holder.1) {
-                    handler.speed = Some(pokemon.stored_stats.spe);
+                    handler.speed = Some(pokemon.stored_stats.spe as f64);
 
                     // JS: if (handler.effect.effectType === 'Ability' && handler.effect.name === 'Magic Bounce' && callbackName === 'onAllyTryHitSide')
-                    if needs_magic_bounce_speed {
-                        // JS: handler.speed = pokemon.getStat('spe', true, true);
-                        // Get unmodified speed stat (unboosted=true, unmodified=true)
-                        // Need to call get_pokemon_stat
-                        let speed_stat = self.get_pokemon_stat(effect_holder, StatID::Spe, true, true);
-                        handler.speed = Some(speed_stat);
+                    if let Some(mb_speed) = magic_bounce_speed {
+                        handler.speed = Some(mb_speed);
                     }
 
                     // JS: if (callbackName.endsWith('SwitchIn'))
@@ -204,9 +207,15 @@ impl Battle {
                         //
                         // This adjusts speed for switch-in ordering by subtracting a fractional value
                         // based on field position in the pre-sorted speed order
-                        //
-                        // TODO: Requires this.speedOrder array which stores pre-sorted field positions
-                        // For now, skip this adjustment
+                        let field_position_value = effect_holder.0 * self.sides.len() + pokemon.position;
+
+                        // Find index in speed_order array
+                        if let Some(index) = self.speed_order.iter().position(|&pos| pos == field_position_value) {
+                            let adjustment = index as f64 / (self.active_per_half * 2) as f64;
+                            if let Some(speed) = handler.speed {
+                                handler.speed = Some(speed - adjustment);
+                            }
+                        }
                     }
                 }
             }

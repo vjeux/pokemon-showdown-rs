@@ -141,7 +141,7 @@ impl Battle {
                 // JS: action.speed = action.pokemon.getActionSpeed();
                 let pokemon_speed = self
                     .get_pokemon_action_speed(move_action.side_index, move_action.pokemon_index);
-                move_action.speed = pokemon_speed;
+                move_action.speed = pokemon_speed as f64;
             }
             Action::Switch(ref mut switch_action) => {
                 // JS: if (!action.pokemon) { action.speed = 1; }
@@ -150,20 +150,20 @@ impl Battle {
                     switch_action.side_index,
                     switch_action.pokemon_index,
                 );
-                switch_action.speed = pokemon_speed;
+                switch_action.speed = pokemon_speed as f64;
             }
             Action::Pokemon(ref mut poke_action) => {
                 // Get pokemon speed for pokemon actions
                 let pokemon_speed = self
                     .get_pokemon_action_speed(poke_action.side_index, poke_action.pokemon_index);
-                poke_action.speed = pokemon_speed;
+                poke_action.speed = pokemon_speed as f64;
             }
             Action::Team(ref mut team_action) => {
                 // JS: if (!action.pokemon) { action.speed = 1; } else { action.speed = action.pokemon.getActionSpeed(); }
                 // Team actions have a pokemon, so they get the pokemon's speed
                 let pokemon_speed = self
                     .get_pokemon_action_speed(team_action.side_index, team_action.pokemon_index);
-                team_action.speed = pokemon_speed;
+                team_action.speed = pokemon_speed as f64;
             }
             _ => {
                 // Only Field actions don't have speed

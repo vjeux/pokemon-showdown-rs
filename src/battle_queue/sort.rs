@@ -35,7 +35,7 @@ impl BattleQueue {
             }
 
             // Speed: higher first
-            b.speed().cmp(&a.speed())
+            b.speed().total_cmp(&a.speed())
         });
     }
 }

@@ -38,7 +38,7 @@ impl Battle {
             choice: PokemonActionType::RunSwitch,
             order: 101,
             priority: 0,
-            speed: self.sides[side_index].pokemon[pokemon_index].speed,
+            speed: self.sides[side_index].pokemon[pokemon_index].speed as f64,
             pokemon_index,
             side_index,
             event: None,

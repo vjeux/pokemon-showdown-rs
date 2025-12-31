@@ -63,7 +63,7 @@ pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
     battle.speed_sort(&mut all_active, |item| PriorityItem {
         order: None,
         priority: 0,
-        speed: item.2,
+        speed: item.2 as f64,
         sub_order: 0,
         effect_order: 0,
         index: 0,

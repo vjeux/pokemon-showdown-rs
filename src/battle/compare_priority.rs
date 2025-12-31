@@ -44,7 +44,7 @@ impl Battle {
         }
 
         // 3. Speed, high to low (default 0)
-        let speed_cmp = b.speed.cmp(&a.speed);
+        let speed_cmp = b.speed.total_cmp(&a.speed);
         if speed_cmp != std::cmp::Ordering::Equal {
             return speed_cmp;
         }

@@ -507,7 +507,7 @@ impl Battle {
                         self.speed_sort(&mut all_active_with_speeds, |(_, speed)| PriorityItem {
                             order: None,
                             priority: 0,
-                            speed: **speed,
+                            speed: **speed as f64,
                             sub_order: 0,
                             effect_order: 0,
                             index: 0,
