@@ -2441,12 +2441,22 @@ pub fn dispatch_condition_on_try_move(
 /// Dispatch condition onTryPrimaryHit callbacks
 pub fn dispatch_condition_on_try_primary_hit(
     battle: &mut Battle,
-    move_id: &str,
-    source_pos: (usize, usize),
+    condition_id: &str,
+    target_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    // Get source and move from current_event context
+    // JavaScript: runEvent('TryPrimaryHit', target, source, moveData)
+    let (source_pos, move_id_str) = if let Some(ref event) = battle.current_event {
+        let source = event.source;
+        let move_id = event.effect.as_ref().map(|id| id.to_string()).unwrap_or_default();
+        (source, move_id)
+    } else {
+        (None, String::new())
+    };
+
+    match condition_id {
         "substitute" => {
-            substitute::condition::on_try_primary_hit(battle, Some(source_pos), None, "substitute")
+            substitute::condition::on_try_primary_hit(battle, Some(target_pos), source_pos, &move_id_str)
         }
         _ => EventResult::Continue,
     }
