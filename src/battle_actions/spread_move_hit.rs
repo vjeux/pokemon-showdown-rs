@@ -417,7 +417,63 @@ pub fn spread_move_hit(
                     }
                 }
 
-                // TODO: Handle secondary.volatileStatus, etc.
+                // Apply volatile status from secondary effect
+                // JS: if (moveData.volatileStatus) {
+                //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
+                // }
+                if let Some(ref volatile_status_name) = secondary_effect.volatile_status_secondary {
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Applying volatile status '{}' from secondary to target {:?}",
+                        battle.turn, volatile_status_name, target_pos);
+
+                    let volatile_id = crate::dex_data::ID::new(volatile_status_name);
+
+                    // Check if pokemon already has this volatile
+                    let already_has_volatile = {
+                        if let Some(side) = battle.sides.get(target_pos.0) {
+                            if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                                pokemon.volatiles.contains_key(&volatile_id)
+                            } else {
+                                true // Pokemon doesn't exist
+                            }
+                        } else {
+                            true // Side doesn't exist
+                        }
+                    };
+
+                    if !already_has_volatile {
+                        // Get default duration from dex.conditions
+                        let default_duration = battle.dex.conditions.get(&volatile_id)
+                            .and_then(|cond| cond.duration);
+
+                        // Call durationCallback if it exists
+                        let callback_duration = crate::data::duration_callbacks::dispatch_duration_callback(
+                            battle,
+                            volatile_id.as_str(),
+                            target_pos,
+                            Some(source_pos),
+                        );
+
+                        // durationCallback overrides default duration
+                        let final_duration = callback_duration.or(default_duration);
+
+                        // Add the volatile
+                        if let Some(side) = battle.sides.get_mut(target_pos.0) {
+                            if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                                let mut state = crate::event_system::EffectState::new(volatile_id.clone());
+                                state.duration = final_duration;
+
+                                pokemon.volatiles.insert(volatile_id, state);
+                                eprintln!("[SPREAD_MOVE_HIT T{}] Successfully added volatile '{}' with duration {:?}",
+                                    battle.turn, volatile_status_name, final_duration);
+                            }
+                        }
+                    } else {
+                        eprintln!("[SPREAD_MOVE_HIT T{}] Volatile '{}' already exists on target",
+                            battle.turn, volatile_status_name);
+                    }
+                }
+
+                // TODO: Handle other secondary effects (side conditions, etc.)
             }
         }
     }

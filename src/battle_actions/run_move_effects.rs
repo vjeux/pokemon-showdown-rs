@@ -124,47 +124,54 @@ pub fn run_move_effects(
         if let Some(ref volatile_status) = move_data.volatile_status {
             eprintln!("[RUN_MOVE_EFFECTS] Applying volatile status '{}' to target {:?}", volatile_status, target_pos);
 
-            // Get mutable reference to target pokemon
-            if let Some(side) = battle.sides.get_mut(target_pos.0) {
-                if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
-                    let volatile_id = crate::dex_data::ID::new(volatile_status);
+            let volatile_id = crate::dex_data::ID::new(volatile_status);
 
-                    eprintln!("[RUN_MOVE_EFFECTS] Before add_volatile: {} has {} volatiles", pokemon.name, pokemon.volatiles.len());
-                    // Add the volatile (simplified - doesn't run full event chain)
-                    if pokemon.add_volatile(volatile_id.clone()) {
-                        eprintln!("[RUN_MOVE_EFFECTS] Successfully added volatile '{}' to {} (side={}, pos={})", volatile_status, pokemon.name, target_pos.0, target_pos.1);
-                        eprintln!("[RUN_MOVE_EFFECTS] After add_volatile: {} now has {} volatiles", pokemon.name, pokemon.volatiles.len());
-
-                        // Set source_slot (required for Leech Seed to know where to heal)
-                        // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
-                        if let Some(volatile_state) = pokemon.volatiles.get_mut(&volatile_id) {
-                            // Store the source pokemon's position index as the source_slot
-                            volatile_state.source_slot = Some(_source_pos.1);
-                            eprintln!("[RUN_MOVE_EFFECTS] Set source_slot={:?} for volatile on {}", volatile_state.source_slot, pokemon.name);
-
-                            // Set duration from move's condition data
-                            if let Some(condition) = &move_data.condition {
-                                if let Some(duration) = condition.duration {
-                                    volatile_state.duration = Some(duration);
-                                    eprintln!("[RUN_MOVE_EFFECTS] Set duration={} for volatile '{}' on {} (from move condition)", duration, volatile_id, pokemon.name);
-                                }
-                            }
-
-                            // If no duration from move, check battle.dex.conditions
-                            // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
-                            if volatile_state.duration.is_none() {
-                                if let Some(condition_data) = battle.dex.conditions.get(&volatile_id) {
-                                    if let Some(duration) = condition_data.duration {
-                                        volatile_state.duration = Some(duration);
-                                        eprintln!("[RUN_MOVE_EFFECTS] Set duration={} for volatile '{}' on {} (from dex.conditions)", duration, volatile_id, pokemon.name);
-                                    }
-                                }
-                            }
-                        }
+            // Check if pokemon already has this volatile
+            let already_has_volatile = {
+                if let Some(side) = battle.sides.get(target_pos.0) {
+                    if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                        pokemon.volatiles.contains_key(&volatile_id)
                     } else {
-                        eprintln!("[RUN_MOVE_EFFECTS] Volatile '{}' already exists on {}", volatile_status, pokemon.name);
+                        true // Pokemon doesn't exist, treat as "already has"
+                    }
+                } else {
+                    true // Side doesn't exist
+                }
+            };
+
+            if !already_has_volatile {
+                // Get default duration from dex.conditions
+                // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
+                let default_duration = battle.dex.conditions.get(&volatile_id)
+                    .and_then(|cond| cond.duration);
+
+                // Check if condition has a durationCallback
+                // JS: if (status.durationCallback) {
+                //     this.volatiles[status.id].duration = status.durationCallback.call(this.battle, this, source, sourceEffect);
+                // }
+                let callback_duration = crate::data::duration_callbacks::dispatch_duration_callback(
+                    battle,
+                    volatile_id.as_str(),
+                    target_pos,
+                    Some(_source_pos),
+                );
+
+                // durationCallback overrides default duration
+                let final_duration = callback_duration.or(default_duration);
+
+                // Add the volatile
+                if let Some(side) = battle.sides.get_mut(target_pos.0) {
+                    if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                        let mut state = crate::event_system::EffectState::new(volatile_id.clone());
+                        state.duration = final_duration;
+                        state.source_slot = Some(_source_pos.1);
+
+                        pokemon.volatiles.insert(volatile_id.clone(), state);
+                        eprintln!("[RUN_MOVE_EFFECTS] Successfully added volatile '{}' with duration {:?}", volatile_status, final_duration);
                     }
                 }
+            } else {
+                eprintln!("[RUN_MOVE_EFFECTS] Volatile '{}' already exists on target", volatile_status);
             }
 
             // Verify volatile was actually added to battle state
