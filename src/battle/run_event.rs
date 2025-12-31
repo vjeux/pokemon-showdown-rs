@@ -356,8 +356,9 @@ impl Battle {
                 }
                 EventResult::Number(n) => {
                     // Numbers are in 4096 basis points (e.g., 4096 = 1.0x, 6144 = 1.5x, 2048 = 0.5x)
+                    // Use modify_internal for correct rounding (adds 2047 before dividing)
                     if let Some(ref mut r) = result {
-                        *r = (*r as f64 * (n as f64 / 4096.0)) as i32;
+                        *r = self.modify_internal(*r, n);
                     }
                 }
                 _ => {}
