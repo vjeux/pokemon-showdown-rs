@@ -98,8 +98,8 @@ fn main() {
 
     println!("RUST: Seed 3 battle created");
 
-    // Run 3 turns for comparison
-    for turn_num in 1..=3 {
+    // Run up to 20 turns or until battle ends
+    for turn_num in 1..=20 {
         println!("\n=== RUST: Making turn {} choices ===", turn_num);
         let prng_before = battle.prng.call_count;
 
@@ -107,6 +107,11 @@ fn main() {
 
         let prng_after = battle.prng.call_count;
         println!("RUST: Turn {} used {} PRNG calls (total: {})", turn_num, prng_after - prng_before, prng_after);
+
+        if battle.ended {
+            println!("Battle ended at turn {}", turn_num);
+            break;
+        }
     }
 
     println!("\nTotal PRNG calls: {}", battle.prng.call_count);
