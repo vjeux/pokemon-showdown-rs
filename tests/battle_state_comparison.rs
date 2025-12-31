@@ -292,7 +292,7 @@ fn test_battle_state_comparison() {
     let seed = PRNGSeed::Gen5([0, 0, 0, 1]);
     println!("Running deterministic battle with seed: {:?}", seed);
 
-    let log = run_battle_with_states(seed, 1);  // Only run 1 turn for debugging
+    let log = run_battle_with_states(seed, 1000);  // Run until battle ends (max 1000 turns)
 
     println!("Battle completed in {} turns", log.summary.turns);
     println!("Winner: {:?}", log.summary.winner);
