@@ -147,8 +147,16 @@ pub fn modify_damage(
     //   ...
     //   baseDamage = this.battle.modify(baseDamage, stab);
     // }
-    if move_data.move_type != "???" {
-        let has_stab = source_types.iter().any(|t| t == &move_data.move_type);
+    // CRITICAL: Use active_move.move_type, not move_data.move_type!
+    // Abilities like Pixilate modify active_move.move_type, so we need to read from there.
+    let move_type = if let Some(ref active_move) = battle.active_move {
+        &active_move.move_type
+    } else {
+        &move_data.move_type
+    };
+
+    if move_type != "???" {
+        let has_stab = source_types.iter().any(|t| t == move_type);
         if has_stab {
             base_damage = battle.modify(base_damage, 3, 2);
             eprintln!("[MODIFY_DAMAGE] After STAB: base_damage={}", base_damage);
@@ -170,9 +178,10 @@ pub fn modify_damage(
     //     baseDamage = tr(baseDamage / 2);
     //   }
     // }
-    let type_mod = battle.get_type_effectiveness_mod(&move_data.move_type, &target_types);
+    // CRITICAL: Use the same move_type we used for STAB (from active_move if available)
+    let type_mod = battle.get_type_effectiveness_mod(move_type, &target_types);
     eprintln!("[MODIFY_DAMAGE] Type effectiveness: move_type={}, target_types={:?}, type_mod={}",
-        move_data.move_type, target_types, type_mod);
+        move_type, target_types, type_mod);
     if type_mod > 0 {
         battle.add("-supereffective", &[Arg::String(target_slot.clone())]);
         for _ in 0..type_mod {

@@ -126,6 +126,7 @@ fn main() {
     eprintln!("[MARKER] BEFORE team preview make_choices");
     battle.make_choices(&["default", "default"]);
     eprintln!("[MARKER] AFTER team preview make_choices");
+    eprintln!("[BATTLE LOG] {}", battle.log.join("\n"));
     eprintln!("[DEBUG] After team preview: battle.turn={}", battle.turn);
 
     if let Some(p1_active) = battle.sides[0].get_active(0) {
