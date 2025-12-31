@@ -5,8 +5,6 @@ impl Battle {
     /// Insert a Field action into the queue with priority-based positioning
     /// Matches JavaScript's queue.insertChoice() for Field actions
     pub fn insert_field_action(&mut self, action: crate::battle_queue::Action) {
-        use crate::battle_queue::Action;
-
         // JS: let firstIndex = null; let lastIndex = null;
         let mut first_index: Option<usize> = None;
         let mut last_index: Option<usize> = None;
