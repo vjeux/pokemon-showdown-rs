@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Gumshoos",
+      "species": "Gumshoos",
+      "level": 95,
+      "ability": "Stakeout",
+      "item": "fightiniumz",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "infestation",
+        "knockoff",
+        "confide",
+        "meteorassault"
+      ],
+      "evs": {
+        "hp": 108,
+        "atk": 62,
+        "def": 74,
+        "spa": 100,
+        "spd": 82,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 30,
+        "def": 10,
+        "spa": 30,
+        "spd": 3,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Volcarona",
+      "species": "Volcarona",
+      "level": 66,
+      "ability": "Flame Body",
+      "item": "sweetapple",
+      "nature": "mild",
+      "gender": "",
+      "moves": [
+        "dynamicpunch",
+        "visegrip",
+        "barbbarrage",
+        "doomdesire"
+      ],
+      "evs": {
+        "hp": 60,
+        "atk": 107,
+        "def": 102,
+        "spa": 85,
+        "spd": 69,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 0,
+        "def": 21,
+        "spa": 10,
+        "spd": 28,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Jellicent",
+      "species": "Jellicent",
+      "level": 86,
+      "ability": "Water Absorb",
+      "item": "tartapple",
+      "nature": "quirky",
+      "gender": "",
+      "moves": [
+        "roar",
+        "hiddenpowerground",
+        "aeroblast",
+        "wickedblow"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 75,
+        "def": 88,
+        "spa": 105,
+        "spd": 91,
+        "spe": 73
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 27,
+        "def": 26,
+        "spa": 3,
+        "spd": 9,
+        "spe": 13
+      }
+    },
+    {
+      "name": "Rayquaza-Mega",
+      "species": "Rayquaza-Mega",
+      "level": 63,
+      "ability": "Delta Stream",
+      "item": "medichamite",
+      "nature": "jolly",
+      "gender": "",
+      "moves": [
+        "attackorder",
+        "metronome",
+        "dragonrush",
+        "drumbeating"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 85,
+        "def": 116,
+        "spa": 67,
+        "spd": 95,
+        "spe": 57
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 14,
+        "def": 7,
+        "spa": 29,
+        "spd": 11,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Groudon",
+      "species": "Groudon",
+      "level": 52,
+      "ability": "Drought",
+      "item": "tr96",
+      "nature": "naive",
+      "gender": "",
+      "moves": [
+        "suckerpunch",
+        "hiddenpower",
+        "banefulbunker",
+        "rockclimb"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 77,
+        "def": 103,
+        "spa": 78,
+        "spd": 88,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 30,
+        "def": 9,
+        "spa": 13,
+        "spd": 4,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Embirch",
+      "species": "Embirch",
+      "level": 86,
+      "ability": "Reckless",
+      "item": "rockgem",
+      "nature": "bashful",
+      "gender": "",
+      "moves": [
+        "surgingstrikes",
+        "naturepower",
+        "icefang",
+        "healingwish"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 82,
+        "def": 97,
+        "spa": 90,
+        "spd": 59,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 20,
+        "def": 11,
+        "spa": 30,
+        "spd": 1,
+        "spe": 8
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Solgaleo",
+      "species": "Solgaleo",
+      "level": 87,
+      "ability": "Full Metal Body",
+      "item": "abomasite",
+      "nature": "quiet",
+      "gender": "",
+      "moves": [
+        "paleowave",
+        "gmaxsnooze",
+        "perishsong",
+        "zingzap"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 104,
+        "def": 74,
+        "spa": 73,
+        "spd": 76,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 23,
+        "def": 26,
+        "spa": 24,
+        "spd": 3,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Growlithe-Hisui",
+      "species": "Growlithe-Hisui",
+      "level": 64,
+      "ability": "Intimidate",
+      "item": "aguavberry",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "stompingtantrum",
+        "psybeam",
+        "mirrormove",
+        "orderup"
+      ],
+      "evs": {
+        "hp": 55,
+        "atk": 89,
+        "def": 64,
+        "spa": 104,
+        "spd": 121,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 20,
+        "def": 10,
+        "spa": 31,
+        "spd": 23,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Tinkatuff",
+      "species": "Tinkatuff",
+      "level": 50,
+      "ability": "Mold Breaker",
+      "item": "armorfossil",
+      "nature": "calm",
+      "gender": "",
+      "moves": [
+        "amnesia",
+        "highhorsepower",
+        "mirrormove",
+        "crunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 83,
+        "def": 94,
+        "spa": 80,
+        "spd": 81,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 27,
+        "def": 3,
+        "spa": 8,
+        "spd": 15,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Unown-Q",
+      "species": "Unown-Q",
+      "level": 92,
+      "ability": "Levitate",
+      "item": "wellspringmask",
+      "nature": "relaxed",
+      "gender": "",
+      "moves": [
+        "obstruct",
+        "strangesteam",
+        "refresh",
+        "defendorder"
+      ],
+      "evs": {
+        "hp": 72,
+        "atk": 69,
+        "def": 105,
+        "spa": 65,
+        "spd": 94,
+        "spe": 105
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 2,
+        "def": 6,
+        "spa": 9,
+        "spd": 18,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Tadbulb",
+      "species": "Tadbulb",
+      "level": 86,
+      "ability": "Own Tempo",
+      "item": "grassiumz",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "highhorsepower",
+        "strengthsap",
+        "bravebird",
+        "drainingkiss"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 64,
+        "def": 87,
+        "spa": 75,
+        "spd": 111,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 17,
+        "def": 13,
+        "spa": 27,
+        "spd": 21,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Numel",
+      "species": "Numel",
+      "level": 69,
+      "ability": "Oblivious",
+      "item": "scovillainite",
+      "nature": "adamant",
+      "gender": "",
+      "moves": [
+        "rockslide",
+        "secretsword",
+        "hornleech",
+        "aurawheel"
+      ],
+      "evs": {
+        "hp": 59,
+        "atk": 88,
+        "def": 112,
+        "spa": 81,
+        "spd": 76,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 16,
+        "def": 26,
+        "spa": 7,
+        "spd": 18,
+        "spe": 7
+      }
+    }
+  ]
+}

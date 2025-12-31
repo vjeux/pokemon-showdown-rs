@@ -189,9 +189,7 @@ impl RNG for Gen5RNG {
     fn next(&mut self) -> u32 {
         self.next_frame();
         // Use the upper 32 bits
-        let result = ((self.seed[0] as u32) << 16) | (self.seed[1] as u32);
-        eprintln!("[RS PRNG] next() -> {} (seed: {},{},{},{})", result, self.seed[0], self.seed[1], self.seed[2], self.seed[3]);
-        result
+        ((self.seed[0] as u32) << 16) | (self.seed[1] as u32)
     }
 }
 
@@ -496,7 +494,6 @@ impl PRNG {
 
     /// Shuffle a range of the slice
     pub fn shuffle_range<T>(&mut self, items: &mut [T], start: usize, end: usize) {
-        eprintln!("PRNG [shuffle]: shuffling array length={}, start={}, end={}", items.len(), start, end);
         let mut i = start;
         while i < end.saturating_sub(1) {
             let next_index = self.random_range(i as i32, end as i32) as usize;

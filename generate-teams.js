@@ -63,20 +63,21 @@ function generateRandomEVs(prng) {
 function generateRandomTeam(prng, dex) {
 	const team = [];
 
-	// Get all available species as an array for sampling
-	const allSpecies = Object.values(dex.species.all());
+	// Get all available species as an array for sampling (sorted by name for determinism across languages)
+	let allSpecies = Object.values(dex.species.all());
+	allSpecies.sort((a, b) => a.name.localeCompare(b.name));
 	if (allSpecies.length === 0) {
 		return team;
 	}
 
-	// Get all available moves as an array for sampling
-	const allMoves = Object.keys(dex.moves.all());
+	// Get all available moves as an array for sampling (extract IDs)
+	const allMoves = Object.values(dex.moves.all()).map(m => m.id);
 
-	// Get all available items as an array for sampling
-	const allItems = Object.keys(dex.items.all());
+	// Get all available items as an array for sampling (extract IDs)
+	const allItems = Object.values(dex.items.all()).map(i => i.id);
 
-	// Get all available natures as an array for sampling
-	const allNatures = Object.keys(dex.natures.all());
+	// Get all available natures as an array for sampling (extract IDs)
+	const allNatures = Object.values(dex.natures.all()).map(n => n.id);
 
 	// Track used species and items to avoid duplicates
 	const usedSpecies = [];

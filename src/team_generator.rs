@@ -12,20 +12,24 @@ use crate::prng::PRNG;
 pub fn generate_random_team(prng: &mut PRNG, dex: &Dex) -> Vec<PokemonSet> {
     let mut team = Vec::new();
 
-    // Get all available species as a Vec for sampling
-    let all_species: Vec<_> = dex.species.values().collect();
+    // Get all available species as a Vec for sampling (sorted by name for determinism across languages)
+    let mut all_species: Vec<_> = dex.species.values().collect();
+    all_species.sort_by_key(|s| &s.name);
     if all_species.is_empty() {
         return team;
     }
 
-    // Get all available moves as a Vec for sampling
-    let all_moves: Vec<_> = dex.moves.keys().map(|id| id.as_str()).collect();
+    // Get all available moves as a Vec for sampling (sorted for determinism across languages)
+    let mut all_moves: Vec<_> = dex.moves.keys().map(|id| id.as_str()).collect();
+    all_moves.sort();
 
-    // Get all available items as a Vec for sampling
-    let all_items: Vec<_> = dex.items.keys().map(|id| id.as_str()).collect();
+    // Get all available items as a Vec for sampling (sorted for determinism across languages)
+    let mut all_items: Vec<_> = dex.items.keys().map(|id| id.as_str()).collect();
+    all_items.sort();
 
-    // Get all available natures as a Vec for sampling
-    let all_natures: Vec<_> = dex.natures.keys().map(|id| id.as_str()).collect();
+    // Get all available natures as a Vec for sampling (sorted for determinism across languages)
+    let mut all_natures: Vec<_> = dex.natures.keys().map(|id| id.as_str()).collect();
+    all_natures.sort();
 
     // Track used species and items to avoid duplicates
     let mut used_species = Vec::new();
