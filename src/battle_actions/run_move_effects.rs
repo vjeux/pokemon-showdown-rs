@@ -136,10 +136,30 @@ pub fn run_move_effects(
                         eprintln!("[RUN_MOVE_EFFECTS] After add_volatile: {} now has {} volatiles", pokemon.name, pokemon.volatiles.len());
 
                         // Set source_slot (required for Leech Seed to know where to heal)
+                        // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
                         if let Some(volatile_state) = pokemon.volatiles.get_mut(&volatile_id) {
                             // Store the source pokemon's position index as the source_slot
                             volatile_state.source_slot = Some(_source_pos.1);
                             eprintln!("[RUN_MOVE_EFFECTS] Set source_slot={:?} for volatile on {}", volatile_state.source_slot, pokemon.name);
+
+                            // Set duration from move's condition data
+                            if let Some(condition) = &move_data.condition {
+                                if let Some(duration) = condition.duration {
+                                    volatile_state.duration = Some(duration);
+                                    eprintln!("[RUN_MOVE_EFFECTS] Set duration={} for volatile '{}' on {} (from move condition)", duration, volatile_id, pokemon.name);
+                                }
+                            }
+
+                            // If no duration from move, check battle.dex.conditions
+                            // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
+                            if volatile_state.duration.is_none() {
+                                if let Some(condition_data) = battle.dex.conditions.get(&volatile_id) {
+                                    if let Some(duration) = condition_data.duration {
+                                        volatile_state.duration = Some(duration);
+                                        eprintln!("[RUN_MOVE_EFFECTS] Set duration={} for volatile '{}' on {} (from dex.conditions)", duration, volatile_id, pokemon.name);
+                                    }
+                                }
+                            }
                         }
                     } else {
                         eprintln!("[RUN_MOVE_EFFECTS] Volatile '{}' already exists on {}", volatile_status, pokemon.name);

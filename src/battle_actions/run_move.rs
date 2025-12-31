@@ -108,13 +108,39 @@ pub fn run_move(
     }
 
     // Handle Z-Move
-    if z_move.is_some() {
+    if let Some(zmove_name) = &z_move {
+        eprintln!("[RUN_MOVE] Z-move detected: {}", zmove_name);
         // if (pokemon.illusion) {
         //     this.battle.singleEvent('End', this.dex.abilities.get('Illusion'), pokemon.abilityState, pokemon);
         // }
         // this.battle.add('-zpower', pokemon);
+        let pokemon_ident = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return,
+            };
+            pokemon.get_slot()
+        };
+        battle.add("-zpower", &[pokemon_ident.as_str().into()]);
+
         // pokemon.side.zMoveUsed = true;
-        // TODO: Implement Z-Move handling
+        battle.sides[pokemon_pos.0].z_move_used = true;
+        eprintln!("[RUN_MOVE] Set z_move_used = true for side {}", pokemon_pos.0);
+
+        // Disable the Z-move in the pokemon's move_slots
+        // Find and disable the move that was used as a Z-move
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            let zmove_id = ID::new(zmove_name);
+            eprintln!("[RUN_MOVE] Looking for move {} in {} move_slots", zmove_id, pokemon.move_slots.len());
+            for move_slot in &mut pokemon.move_slots {
+                eprintln!("[RUN_MOVE]   Checking move_slot: {} vs {}", move_slot.id, zmove_id);
+                if move_slot.id == zmove_id {
+                    move_slot.disabled = true;
+                    eprintln!("[RUN_MOVE] Disabled Z-move: {}", zmove_id);
+                    break;
+                }
+            }
+        }
     }
 
     // Call useMove

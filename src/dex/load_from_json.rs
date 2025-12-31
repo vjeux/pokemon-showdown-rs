@@ -1,5 +1,6 @@
 use crate::*;
 use crate::dex::AbilityData;
+use crate::dex::ConditionData;
 use crate::dex::DexJsonData;
 use crate::dex::FormatData;
 use crate::dex::ItemData;
@@ -21,6 +22,7 @@ impl Dex {
         let abilities_raw: HashMap<String, AbilityData> =
             serde_json::from_str(json_data.abilities_json)?;
         let items_raw: HashMap<String, ItemData> = serde_json::from_str(json_data.items_json)?;
+        let conditions_raw: HashMap<String, ConditionData> = serde_json::from_str(json_data.conditions_json)?;
         let types: HashMap<String, TypeData> = serde_json::from_str(json_data.types_json)?;
         let natures_raw: HashMap<String, NatureData> =
             serde_json::from_str(json_data.natures_json)?;
@@ -57,7 +59,7 @@ impl Dex {
         }
 
         // Convert string keys to ID keys
-        let mut species: HashMap<ID, SpeciesData> = species_raw
+        let species: HashMap<ID, SpeciesData> = species_raw
             .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
@@ -154,12 +156,17 @@ impl Dex {
             .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
+        let conditions = conditions_raw
+            .into_iter()
+            .map(|(k, v)| (ID::new(&k), v))
+            .collect();
 
         Ok(Self {
             species,
             moves,
             abilities,
             items,
+            conditions,
             types,
             natures,
             rulesets,

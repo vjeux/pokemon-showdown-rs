@@ -152,6 +152,7 @@ impl Pokemon {
                 disabled_source: None,
                 used: false,
                 virtual_move: true,
+                is_z: slot.is_z,
             })
             .collect();
 

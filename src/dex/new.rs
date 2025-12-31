@@ -9,6 +9,7 @@ impl Dex {
             moves: HashMap::new(),
             abilities: HashMap::new(),
             items: HashMap::new(),
+            conditions: HashMap::new(),
             types: HashMap::new(),
             natures: HashMap::new(),
             rulesets: HashMap::new(),

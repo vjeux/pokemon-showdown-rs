@@ -1,0 +1,50 @@
+{
+  "flinch": {
+    "duration": 1
+  },
+  "partiallytrapped": {
+    "duration": 5
+  },
+  "lockedmove": {
+    "duration": 2
+  },
+  "twoturnmove": {
+    "duration": 2
+  },
+  "mustrecharge": {
+    "duration": 2
+  },
+  "stall": {
+    "duration": 2
+  },
+  "gem": {
+    "duration": 1
+  },
+  "raindance": {
+    "duration": 5
+  },
+  "primordialsea": {
+    "duration": 0
+  },
+  "sunnyday": {
+    "duration": 5
+  },
+  "desolateland": {
+    "duration": 0
+  },
+  "sandstorm": {
+    "duration": 5
+  },
+  "hail": {
+    "duration": 5
+  },
+  "snowscape": {
+    "duration": 5
+  },
+  "deltastream": {
+    "duration": 0
+  },
+  "rolloutstorage": {
+    "duration": 2
+  }
+}

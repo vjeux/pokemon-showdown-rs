@@ -149,9 +149,14 @@ impl Battle {
     //
     pub fn field_event(&mut self, event_id: &str, targets: Option<&[(usize, usize)]>) {
         let callback_name = format!("on{}", event_id);
-        let _get_key_is_duration = event_id == "Residual";
+        // JS: if (eventid === 'Residual') { getKey = 'duration'; }
+        let get_key = if event_id == "Residual" {
+            Some("duration")
+        } else {
+            None
+        };
 
-        eprintln!("[FIELD_EVENT] Starting {} event", event_id);
+        eprintln!("[FIELD_EVENT] Starting {} event, get_key={:?}", event_id, get_key);
         // Debug: Check Pokemon states at start of Residual event
         if event_id == "Residual" {
             for (side_idx, side) in self.sides.iter().enumerate() {
@@ -222,9 +227,8 @@ impl Battle {
                 //     }
                 if event_id == "SwitchIn" {
                     let any_event = format!("onAny{}", event_id);
-                    let any_handlers = self.find_pokemon_event_handlers(&any_event, target_pos);
-                    for (effect_id, holder) in any_handlers {
-                        let effect_type = self.determine_effect_type(effect_id.as_str());
+                    let any_handlers = self.find_pokemon_event_handlers(&any_event, target_pos, None);
+                    for (effect_id, holder, effect_type) in any_handlers {
                         let handler = self.create_field_handler(
                             effect_id,
                             effect_type,
@@ -246,9 +250,8 @@ impl Battle {
                 }
 
                 // JS: handlers = handlers.concat(this.findPokemonEventHandlers(active, callbackName, getKey));
-                let pokemon_handlers = self.find_pokemon_event_handlers(&callback_name, target_pos);
-                for (effect_id, holder) in pokemon_handlers {
-                    let effect_type = self.determine_effect_type(effect_id.as_str());
+                let pokemon_handlers = self.find_pokemon_event_handlers(&callback_name, target_pos, get_key);
+                for (effect_id, holder, effect_type) in pokemon_handlers {
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,

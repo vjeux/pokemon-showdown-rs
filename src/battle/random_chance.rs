@@ -10,11 +10,19 @@ impl Battle {
     // 	}
     //
     pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
-        eprintln!("[RANDOM_CHANCE] Called with {}/{}", numerator, denominator);
-        eprintln!("[RANDOM_CHANCE] Call #{}", {
+        let call_num = {
             static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
             COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
-        });
+        };
+        eprintln!("[RANDOM_CHANCE] Called with {}/{}", numerator, denominator);
+        eprintln!("[RANDOM_CHANCE] Call #{}", call_num);
+        eprintln!("[RANDOM_CHANCE] Battle turn: {}", self.turn);
+
+        if call_num >= 5 && call_num <= 10 {
+            use std::backtrace::Backtrace;
+            eprintln!("Stack trace:\n{}", Backtrace::force_capture());
+        }
+
         if let Some(forced) = self.force_random_chance {
             return forced;
         }

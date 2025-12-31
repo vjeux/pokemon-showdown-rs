@@ -86,8 +86,9 @@ impl Battle {
         &self,
         event_id: &str,  // Changed from _event_id to event_id (removed underscore)
         target: (usize, usize),
-    ) -> Vec<(ID, Option<(usize, usize)>)> {
-        eprintln!("[FIND_POKEMON_HANDLERS] event_id={}, target={:?}", event_id, target);
+        get_key: Option<&str>,  // NEW: 'duration' for Residual events
+    ) -> Vec<(ID, Option<(usize, usize)>, crate::battle::EffectType)> {  // NEW: Include EffectType
+        eprintln!("[FIND_POKEMON_HANDLERS] event_id={}, target={:?}, get_key={:?}", event_id, target, get_key);
 
         let mut handlers = Vec::new();
         let (side_idx, poke_idx) = target;
@@ -99,8 +100,11 @@ impl Battle {
                 // JS: const status = pokemon.getStatus();
                 // Add status handler if it has callback for this event
                 // IMPORTANT: Must use condition_has_callback, not has_callback, to avoid checking other effect types
-                if !pokemon.status.is_empty() && self.condition_has_callback(pokemon.status.as_str(), event_id) {
-                    handlers.push((pokemon.status.clone(), Some(target)));
+                // JS: if (callback !== undefined || (getKey && pokemon.statusState[getKey]))
+                let has_callback = !pokemon.status.is_empty() && self.condition_has_callback(pokemon.status.as_str(), event_id);
+                let has_get_key = get_key == Some("duration") && pokemon.status_state.duration.is_some();
+                if has_callback || has_get_key {
+                    handlers.push((pokemon.status.clone(), Some(target), crate::battle::EffectType::Condition));
                 }
 
                 // JS: for (const id in pokemon.volatiles)
@@ -108,54 +112,65 @@ impl Battle {
                 // IMPORTANT: Must use condition_has_callback, not has_callback
                 // Bug fix: Previously used has_callback which checked ALL effect types (abilities, items, MOVES, conditions)
                 // This caused "substitute" volatile to match "substitute" MOVE's onHit callback, dealing double damage
+                // JS: if (callback !== undefined || (getKey && volatileState[getKey]))
                 eprintln!("[FIND_POKEMON_HANDLERS] Checking {} volatiles for {}", pokemon.volatiles.len(), pokemon.name);
-                for volatile_id in pokemon.volatiles.keys() {
+                for (volatile_id, volatile_state) in &pokemon.volatiles {
                     let has_cb = self.condition_has_callback(volatile_id.as_str(), event_id);
-                    eprintln!("[FIND_POKEMON_HANDLERS] Volatile '{}' condition_has_callback({})={}", volatile_id, event_id, has_cb);
-                    if has_cb {
+                    let has_get_key = get_key == Some("duration") && volatile_state.duration.is_some();
+                    eprintln!("[FIND_POKEMON_HANDLERS] Volatile '{}' condition_has_callback({})={}, has_get_key({:?})={}",
+                        volatile_id, event_id, has_cb, get_key, has_get_key);
+                    if has_cb || has_get_key {
                         eprintln!("[FIND_POKEMON_HANDLERS] Adding volatile handler: {}", volatile_id);
-                        handlers.push((volatile_id.clone(), Some(target)));
+                        handlers.push((volatile_id.clone(), Some(target), crate::battle::EffectType::Condition));
                     }
                 }
 
                 // JS: const ability = pokemon.getAbility();
                 // Add ability handler if it has callback for this event
                 // IMPORTANT: Must use ability_has_callback, not has_callback
+                // JS: if (callback !== undefined || (getKey && pokemon.abilityState[getKey]))
                 if !pokemon.ability.is_empty() {
                     let has_cb = self.ability_has_callback(pokemon.ability.as_str(), event_id);
-                    eprintln!("[FIND_POKEMON_HANDLERS] Ability {} ability_has_callback({})={}", pokemon.ability, event_id, has_cb);
-                    if has_cb {
+                    let has_get_key = get_key == Some("duration") && pokemon.ability_state.duration.is_some();
+                    eprintln!("[FIND_POKEMON_HANDLERS] Ability {} ability_has_callback({})={}, has_get_key={}", pokemon.ability, event_id, has_cb, has_get_key);
+                    if has_cb || has_get_key {
                         eprintln!("[FIND_POKEMON_HANDLERS] Adding ability handler: {}", pokemon.ability);
-                        handlers.push((pokemon.ability.clone(), Some(target)));
+                        handlers.push((pokemon.ability.clone(), Some(target), crate::battle::EffectType::Ability));
                     }
                 }
 
                 // JS: const item = pokemon.getItem();
                 // Add item handler if it has callback for this event
                 // IMPORTANT: Must use item_has_callback, not has_callback
+                // JS: if (callback !== undefined || (getKey && pokemon.itemState[getKey]))
                 if !pokemon.item.is_empty() {
                     let has_cb = self.item_has_callback(pokemon.item.as_str(), event_id);
-                    eprintln!("[FIND_POKEMON_HANDLERS] Item {} item_has_callback({})={}", pokemon.item, event_id, has_cb);
-                    if has_cb {
+                    let has_get_key = get_key == Some("duration") && pokemon.item_state.duration.is_some();
+                    eprintln!("[FIND_POKEMON_HANDLERS] Item {} item_has_callback({})={}, has_get_key={}", pokemon.item, event_id, has_cb, has_get_key);
+                    if has_cb || has_get_key {
                         eprintln!("[FIND_POKEMON_HANDLERS] Adding item handler: {}", pokemon.item);
-                        handlers.push((pokemon.item.clone(), Some(target)));
+                        handlers.push((pokemon.item.clone(), Some(target), crate::battle::EffectType::Item));
                     }
                 }
 
                 // JS: const species = pokemon.baseSpecies;
                 // Add species handler if it has callback for this event
                 // IMPORTANT: Must use species_has_callback, not has_callback
+                // Note: Species don't have state with getKey fields
                 if self.species_has_callback(pokemon.species_id.as_str(), event_id) {
-                    handlers.push((pokemon.species_id.clone(), Some(target)));
+                    handlers.push((pokemon.species_id.clone(), Some(target), crate::battle::EffectType::Condition));
                 }
 
                 // JS: for (const conditionid in side.slotConditions[pokemon.position])
                 // Add slot condition handlers if they have callbacks for this event
                 // IMPORTANT: Must use condition_has_callback, not has_callback (slot conditions are conditions)
+                // JS: if (callback !== undefined || (getKey && slotConditionState[getKey]))
                 if let Some(slot_conds) = side.slot_conditions.get(pokemon.position) {
-                    for slot_cond_id in slot_conds.keys() {
-                        if self.condition_has_callback(slot_cond_id.as_str(), event_id) {
-                            handlers.push((slot_cond_id.clone(), Some(target)));
+                    for (slot_cond_id, slot_cond_state) in slot_conds {
+                        let has_cb = self.condition_has_callback(slot_cond_id.as_str(), event_id);
+                        let has_get_key = get_key == Some("duration") && slot_cond_state.duration.is_some();
+                        if has_cb || has_get_key {
+                            handlers.push((slot_cond_id.clone(), Some(target), crate::battle::EffectType::Condition));
                         }
                     }
                 }

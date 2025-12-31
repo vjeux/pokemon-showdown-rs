@@ -99,9 +99,9 @@ impl Battle {
         if let Some(target_pos) = target {
             // JavaScript: handlers = this.findPokemonEventHandlers(target, `on${eventName}`);
             let prefixed_event = format!("on{}", event_name);
-            let pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos);
+            let pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos, None);
             // Add event variant name to each handler
-            for (effect_id, holder) in pokemon_handlers {
+            for (effect_id, holder, _effect_type) in pokemon_handlers {
                 handlers.push((event_name.to_string(), effect_id, holder));
             }
 
@@ -123,8 +123,8 @@ impl Battle {
                         let ally_variant = format!("Ally{}", event_name);
                         let ally_event = format!("onAlly{}", event_name);
                         let ally_handlers =
-                            self.find_pokemon_event_handlers(&ally_event, ally_pos);
-                        for (effect_id, holder) in ally_handlers {
+                            self.find_pokemon_event_handlers(&ally_event, ally_pos, None);
+                        for (effect_id, holder, _effect_type) in ally_handlers {
                             handlers.push((ally_variant.clone(), effect_id, holder));
                         }
 
@@ -132,8 +132,8 @@ impl Battle {
                         let any_variant = format!("Any{}", event_name);
                         let any_event = format!("onAny{}", event_name);
                         let any_handlers =
-                            self.find_pokemon_event_handlers(&any_event, ally_pos);
-                        for (effect_id, holder) in any_handlers {
+                            self.find_pokemon_event_handlers(&any_event, ally_pos, None);
+                        for (effect_id, holder, _effect_type) in any_handlers {
                             handlers.push((any_variant.clone(), effect_id, holder));
                         }
                     }
@@ -154,8 +154,8 @@ impl Battle {
                             let foe_variant = format!("Foe{}", event_name);
                             let foe_event = format!("onFoe{}", event_name);
                             let foe_handlers =
-                                self.find_pokemon_event_handlers(&foe_event, foe_pos);
-                            for (effect_id, holder) in foe_handlers {
+                                self.find_pokemon_event_handlers(&foe_event, foe_pos, None);
+                            for (effect_id, holder, _effect_type) in foe_handlers {
                                 handlers.push((foe_variant.clone(), effect_id, holder));
                             }
 
@@ -163,8 +163,8 @@ impl Battle {
                             let any_variant = format!("Any{}", event_name);
                             let any_event = format!("onAny{}", event_name);
                             let any_handlers =
-                                self.find_pokemon_event_handlers(&any_event, foe_pos);
-                            for (effect_id, holder) in any_handlers {
+                                self.find_pokemon_event_handlers(&any_event, foe_pos, None);
+                            for (effect_id, holder, _effect_type) in any_handlers {
                                 handlers.push((any_variant.clone(), effect_id, holder));
                             }
                         }
@@ -181,8 +181,8 @@ impl Battle {
                 let source_variant = format!("Source{}", event_name);
                 let source_event = format!("onSource{}", event_name);
                 let source_handlers =
-                    self.find_pokemon_event_handlers(&source_event, source_pos);
-                for (effect_id, holder) in source_handlers {
+                    self.find_pokemon_event_handlers(&source_event, source_pos, None);
+                for (effect_id, holder, _effect_type) in source_handlers {
                     handlers.push((source_variant.clone(), effect_id, holder));
                 }
             }

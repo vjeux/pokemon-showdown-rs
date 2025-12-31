@@ -13,6 +13,7 @@ use crate::event_system::EffectState;
 
 // Function modules
 mod new;
+mod update_move_z_flags;
 mod fullname;
 mod details;
 mod is_fainted;
@@ -141,6 +142,7 @@ pub struct MoveSlot {
     pub disabled_source: Option<String>,
     pub used: bool,
     pub virtual_move: bool,
+    pub is_z: bool,
 }
 
 impl MoveSlot {
@@ -155,6 +157,7 @@ impl MoveSlot {
             disabled_source: None,
             used: false,
             virtual_move: false,
+            is_z: false,
         }
     }
 }

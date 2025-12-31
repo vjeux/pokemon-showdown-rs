@@ -341,9 +341,9 @@ impl Battle {
                     (side_idx, poke_idx),
                     target_loc,
                     None, // source_effect
-                    None, // z_move
+                    move_action.zmove.clone(), // z_move
                     false, // external_move
-                    None, // max_move
+                    move_action.max_move.clone(), // max_move
                     None, // original_target
                 );
             }

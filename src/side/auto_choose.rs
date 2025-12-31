@@ -61,12 +61,48 @@ impl Side {
                         if pokemon.is_fainted() {
                             self.choose_pass();
                         } else {
-                            // Try first available move
-                            if let Some(first_move) = pokemon.move_slots.first() {
-                                let move_id = first_move.id.clone();
-                                let _ = self.choose_move(move_id, None, false, None, None, None);
-                            } else {
-                                // Struggle
+                            // Find first non-disabled move
+                            // JavaScript: if (autoChoose) {
+                            // JavaScript:     for (const [i, move2] of request.moves.entries()) {
+                            // JavaScript:         if (move2.disabled) continue;
+                            // JavaScript:         if (i < moves.length && move2.id === moves[i].id && moves[i].disabled) continue;
+                            // JavaScript:         moveid = move2.id;
+                            // JavaScript:         targetType = move2.target;
+                            // JavaScript:         break;
+                            // JavaScript:     }
+                            // JavaScript: }
+                            eprintln!("[AUTO_CHOOSE] Pokemon {} has {} moves", pokemon.name, pokemon.move_slots.len());
+                            eprintln!("[AUTO_CHOOSE] z_move_used = {}", self.z_move_used);
+                            for (i, move_slot) in pokemon.move_slots.iter().enumerate() {
+                                eprintln!("[AUTO_CHOOSE]   Move {}: {} (disabled={}, is_z={})", i, move_slot.id, move_slot.disabled, move_slot.is_z);
+                            }
+                            let mut found_move = false;
+                            for move_slot in &pokemon.move_slots {
+                                // Skip if disabled
+                                if move_slot.disabled {
+                                    continue;
+                                }
+                                // Skip Z-moves if already used
+                                if move_slot.is_z && self.z_move_used {
+                                    eprintln!("[AUTO_CHOOSE] Skipping Z-move {} because z_move_used=true", move_slot.id);
+                                    continue;
+                                }
+
+                                eprintln!("[AUTO_CHOOSE] Choosing move: {}", move_slot.id);
+                                let move_id = move_slot.id.clone();
+                                // Pass zmove name if this is a Z-move and it hasn't been used
+                                let zmove = if move_slot.is_z && !self.z_move_used {
+                                    Some(move_slot.move_name.clone())
+                                } else {
+                                    None
+                                };
+                                let _ = self.choose_move(move_id, None, false, zmove, None, None);
+                                found_move = true;
+                                break;
+                            }
+                            if !found_move {
+                                eprintln!("[AUTO_CHOOSE] All moves disabled, using Struggle");
+                                // All moves disabled, use Struggle
                                 let _ = self.choose_move(
                                     ID::new("struggle"),
                                     None,

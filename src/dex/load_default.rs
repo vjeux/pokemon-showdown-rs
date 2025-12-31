@@ -10,6 +10,7 @@ impl Dex {
             moves_json: embedded::MOVES_JSON,
             abilities_json: embedded::ABILITIES_JSON,
             items_json: embedded::ITEMS_JSON,
+            conditions_json: embedded::CONDITIONS_JSON,
             types_json: embedded::TYPES_JSON,
             natures_json: embedded::NATURES_JSON,
             rulesets_json: embedded::RULESETS_JSON,

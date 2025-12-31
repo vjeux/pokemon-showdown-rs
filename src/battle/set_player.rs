@@ -135,6 +135,9 @@ impl Battle {
 
                     self.sides[slot_num].pokemon[poke_idx].gender = gender;
                 }
+
+                // Update Z-move flags using Dex
+                self.sides[slot_num].pokemon[poke_idx].update_move_z_flags(&self.dex);
             }
 
             // Initialize Pokemon stats after creating the side

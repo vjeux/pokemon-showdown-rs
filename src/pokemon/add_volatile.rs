@@ -69,7 +69,13 @@ impl Pokemon {
         if self.volatiles.contains_key(&id) {
             return false;
         }
-        self.volatiles.insert(id.clone(), EffectState::new(id));
+        let state = EffectState::new(id.clone());
+
+        // Duration is set by the caller who has access to battle.dex
+        // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
+        // This happens in run_move_effects.rs or other callers that look up the condition
+
+        self.volatiles.insert(id, state);
         true
     }
 }

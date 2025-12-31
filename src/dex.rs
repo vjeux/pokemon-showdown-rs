@@ -164,6 +164,14 @@ pub struct MoveSecondary {
 }
 
 /// Move data from the move list
+/// Condition data for volatile statuses
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ConditionData {
+    #[serde(default)]
+    pub duration: Option<i32>,
+    // Add other condition fields as needed
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MoveData {
@@ -201,6 +209,8 @@ pub struct MoveData {
     pub status: Option<String>,
     #[serde(rename = "volatileStatus", default)]
     pub volatile_status: Option<String>,
+    #[serde(default)]
+    pub condition: Option<ConditionData>,
     #[serde(default)]
     pub drain: Option<(i32, i32)>,
     #[serde(default)]
@@ -621,6 +631,7 @@ pub struct Dex {
     pub moves: HashMap<ID, MoveData>,
     pub abilities: HashMap<ID, AbilityData>,
     pub items: HashMap<ID, ItemData>,
+    pub conditions: HashMap<ID, ConditionData>,
     pub types: HashMap<String, TypeData>,
     pub natures: HashMap<ID, NatureData>,
     pub rulesets: HashMap<ID, RulesetData>,
@@ -639,6 +650,7 @@ pub struct DexJsonData<'a> {
     pub moves_json: &'a str,
     pub abilities_json: &'a str,
     pub items_json: &'a str,
+    pub conditions_json: &'a str,
     pub types_json: &'a str,
     pub natures_json: &'a str,
     pub rulesets_json: &'a str,
@@ -657,6 +669,7 @@ pub mod embedded {
     pub const MOVES_JSON: &str = include_str!("../data/moves.json");
     pub const ABILITIES_JSON: &str = include_str!("../data/abilities.json");
     pub const ITEMS_JSON: &str = include_str!("../data/items.json");
+    pub const CONDITIONS_JSON: &str = include_str!("../data/conditions.json");
     pub const TYPES_JSON: &str = include_str!("../data/typechart.json");
     pub const NATURES_JSON: &str = include_str!("../data/natures.json");
     pub const RULESETS_JSON: &str = include_str!("../data/rulesets.json");
