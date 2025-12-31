@@ -14,7 +14,10 @@ pub fn try_spread_move_hit(
     pokemon_pos: (usize, usize),
     move_id: &ID,
 ) -> bool {
-    eprintln!("[TRY_SPREAD_MOVE_HIT] Called for move {:?} from {:?} targeting {:?}", move_id, pokemon_pos, targets);
+    eprintln!("[TRY_SPREAD_MOVE_HIT #{}] Called for move {:?} from {:?} targeting {:?}", {
+        static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+        COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+    }, move_id, pokemon_pos, targets);
     if targets.is_empty() {
         return false;
     }

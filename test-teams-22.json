@@ -1,0 +1,372 @@
+{
+  "seed": [
+    0,
+    0,
+    0,
+    22
+  ],
+  "p1": [
+    {
+      "species": "Camerupt",
+      "level": 91,
+      "ability": "Solid Rock",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "willowisp",
+        "earthquake",
+        "overheat",
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Qwilfish-Hisui",
+      "level": 83,
+      "ability": "Intimidate",
+      "item": "Eviolite",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "crunch",
+        "gunkshot",
+        "taunt",
+        "toxicspikes"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Slither Wing",
+      "level": 81,
+      "ability": "Protosynthesis",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "N",
+      "moves": [
+        "closecombat",
+        "willowisp",
+        "morningsun",
+        "uturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Snorlax",
+      "level": 82,
+      "ability": "Thick Fat",
+      "item": "Chesto Berry",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "bodyslam",
+        "earthquake",
+        "rest",
+        "curse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Magnezone",
+      "level": 85,
+      "ability": "Magnet Pull",
+      "item": "Choice Scarf",
+      "nature": "Hardy",
+      "gender": "N",
+      "moves": [
+        "bodypress",
+        "voltswitch",
+        "thunderbolt",
+        "flashcannon"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Serperior",
+      "level": 79,
+      "ability": "Contrary",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "leafstorm",
+        "terablast",
+        "glare",
+        "synthesis"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "species": "Pachirisu",
+      "level": 96,
+      "ability": "Volt Absorb",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "encore",
+        "uturn",
+        "superfang",
+        "discharge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Pincurchin",
+      "level": 100,
+      "ability": "Electric Surge",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "scald",
+        "recover",
+        "thunderbolt",
+        "toxicspikes"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Lumineon",
+      "level": 93,
+      "ability": "Storm Drain",
+      "item": "Heavy-Duty Boots",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "uturn",
+        "hydropump",
+        "encore",
+        "icebeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Jirachi",
+      "level": 80,
+      "ability": "Serene Grace",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "N",
+      "moves": [
+        "bodyslam",
+        "wish",
+        "ironhead",
+        "protect"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Farigiraf",
+      "level": 91,
+      "ability": "Sap Sipper",
+      "item": "Leftovers",
+      "nature": "Hardy",
+      "gender": "F",
+      "moves": [
+        "bodyslam",
+        "psychicnoise",
+        "wish",
+        "protect"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "species": "Crawdaunt",
+      "level": 84,
+      "ability": "Adaptability",
+      "item": "Life Orb",
+      "nature": "Hardy",
+      "gender": "M",
+      "moves": [
+        "knockoff",
+        "crabhammer",
+        "dragondance",
+        "aquajet"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

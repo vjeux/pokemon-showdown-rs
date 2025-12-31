@@ -167,9 +167,9 @@ fn make_random_choice(battle: &Battle, player_id: &str, prng: &mut PRNG) -> Stri
 /// Run a deterministic battle and record states
 fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
     // Load pre-generated teams from JSON
-    let test_teams_path = "test-teams.json";
+    let test_teams_path = "test-teams-22.json";
     let test_teams_json = fs::read_to_string(test_teams_path)
-        .expect("Failed to read test-teams.json");
+        .expect("Failed to read test-teams-22.json");
 
     #[derive(Debug, Deserialize)]
     struct TestTeams {
@@ -385,7 +385,7 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
 
 #[test]
 fn test_battle_state_comparison() {
-    let seed = PRNGSeed::Gen5([0, 0, 0, 21]);
+    let seed = PRNGSeed::Gen5([0, 0, 0, 22]);
     println!("Running deterministic battle with seed: {:?}", seed);
 
     let log = run_battle_with_states(seed, 1);  // Only run 1 turn for debugging

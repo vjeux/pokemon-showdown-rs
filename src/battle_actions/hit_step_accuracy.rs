@@ -14,7 +14,7 @@ pub fn hit_step_accuracy(
     pokemon_pos: (usize, usize),
     move_id: &ID,
 ) -> Vec<bool> {
-    eprintln!("[HIT_STEP_ACCURACY] Called for move {:?}", move_id);
+    eprintln!("[HIT_STEP_ACCURACY] Called for move {:?} from {:?} targeting {:?}", move_id, pokemon_pos, targets);
     let mut hit_results = vec![false; targets.len()];
 
     // Get move data
@@ -35,6 +35,7 @@ pub fn hit_step_accuracy(
     };
 
     for (i, &target_pos) in targets.iter().enumerate() {
+        eprintln!("[HIT_STEP_ACCURACY] Processing target {} of {}: {:?}", i, targets.len(), target_pos);
         // Get base accuracy from move
         let mut accuracy = match move_data.accuracy {
             crate::dex::Accuracy::Percent(p) => p,
@@ -117,16 +118,20 @@ pub fn hit_step_accuracy(
         // In Rust, accuracy=0 represents true
         // NOTE: JavaScript also skips randomChance for accuracy=100 through some mechanism
         // (possibly ModifyAccuracy event or dex storing 100% as true), so we skip it too
+        eprintln!("[HIT_STEP_ACCURACY] About to check accuracy: accuracy={}, will call random_chance: {}", accuracy, accuracy != 0 && accuracy != 100);
         if accuracy != 0 && accuracy != 100 && !battle.random_chance(accuracy, 100) {
             // Miss!
             // TODO: Add miss message and Blunder Policy handling
+            eprintln!("[HIT_STEP_ACCURACY] Miss! accuracy check failed");
             hit_results[i] = false;
             continue;
         }
 
         // Hit!
+        eprintln!("[HIT_STEP_ACCURACY] Hit! target {} succeeded", i);
         hit_results[i] = true;
     }
 
+    eprintln!("[HIT_STEP_ACCURACY] Returning results: {:?}", hit_results);
     hit_results
 }

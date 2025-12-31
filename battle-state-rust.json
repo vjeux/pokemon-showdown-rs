@@ -3,155 +3,155 @@
     0,
     0,
     0,
-    21
+    22
   ],
   "teams": {
-    "p1": [
-      {
-        "species": "Kingambit",
-        "moves": [
-          "suckerpunch",
-          "ironhead",
-          "kowtowcleave",
-          "swordsdance"
-        ],
-        "ability": "Supreme Overlord",
-        "item": "Leftovers",
-        "level": 74
-      },
+    "p2": [
       {
         "species": "Pachirisu",
         "moves": [
-          "superfang",
+          "encore",
           "uturn",
-          "thunderbolt",
-          "nuzzle"
+          "superfang",
+          "discharge"
         ],
         "ability": "Volt Absorb",
-        "item": "Assault Vest",
+        "item": "Heavy-Duty Boots",
         "level": 96
       },
       {
-        "species": "Delibird",
+        "species": "Pincurchin",
         "moves": [
-          "drillrun",
-          "spikes",
-          "icespinner",
-          "bravebird"
+          "scald",
+          "recover",
+          "thunderbolt",
+          "toxicspikes"
         ],
-        "ability": "Hustle",
-        "item": "Heavy-Duty Boots",
+        "ability": "Electric Surge",
+        "item": "Leftovers",
         "level": 100
       },
       {
-        "species": "Jumpluff",
+        "species": "Lumineon",
         "moves": [
-          "encore",
           "uturn",
-          "strengthsap",
-          "acrobatics"
+          "hydropump",
+          "encore",
+          "icebeam"
         ],
-        "ability": "Infiltrator",
-        "item": "",
-        "level": 87
+        "ability": "Storm Drain",
+        "item": "Heavy-Duty Boots",
+        "level": 93
       },
       {
-        "species": "Primarina",
+        "species": "Jirachi",
         "moves": [
-          "hydropump",
-          "flipturn",
-          "moonblast",
-          "psychic"
+          "bodyslam",
+          "wish",
+          "ironhead",
+          "protect"
         ],
-        "ability": "Torrent",
-        "item": "Choice Specs",
+        "ability": "Serene Grace",
+        "item": "Leftovers",
+        "level": 80
+      },
+      {
+        "species": "Farigiraf",
+        "moves": [
+          "bodyslam",
+          "psychicnoise",
+          "wish",
+          "protect"
+        ],
+        "ability": "Sap Sipper",
+        "item": "Leftovers",
+        "level": 91
+      },
+      {
+        "species": "Crawdaunt",
+        "moves": [
+          "knockoff",
+          "crabhammer",
+          "dragondance",
+          "aquajet"
+        ],
+        "ability": "Adaptability",
+        "item": "Life Orb",
+        "level": 84
+      }
+    ],
+    "p1": [
+      {
+        "species": "Camerupt",
+        "moves": [
+          "willowisp",
+          "earthquake",
+          "overheat",
+          "stealthrock"
+        ],
+        "ability": "Solid Rock",
+        "item": "Leftovers",
+        "level": 91
+      },
+      {
+        "species": "Qwilfish-Hisui",
+        "moves": [
+          "crunch",
+          "gunkshot",
+          "taunt",
+          "toxicspikes"
+        ],
+        "ability": "Intimidate",
+        "item": "Eviolite",
         "level": 83
       },
       {
-        "species": "Volcanion",
+        "species": "Slither Wing",
         "moves": [
-          "flamecharge",
-          "earthpower",
-          "flamethrower",
-          "steameruption"
+          "closecombat",
+          "willowisp",
+          "morningsun",
+          "uturn"
         ],
-        "ability": "Water Absorb",
-        "item": "Assault Vest",
-        "level": 79
-      }
-    ],
-    "p2": [
+        "ability": "Protosynthesis",
+        "item": "Heavy-Duty Boots",
+        "level": 81
+      },
       {
-        "species": "Suicune",
+        "species": "Snorlax",
         "moves": [
-          "scald",
-          "sleeptalk",
-          "calmmind",
-          "rest"
+          "bodyslam",
+          "earthquake",
+          "rest",
+          "curse"
         ],
-        "ability": "Pressure",
-        "item": "Leftovers",
+        "ability": "Thick Fat",
+        "item": "Chesto Berry",
         "level": 82
       },
       {
-        "species": "Jumpluff",
+        "species": "Magnezone",
         "moves": [
-          "acrobatics",
-          "strengthsap",
-          "uturn",
-          "sleeppowder"
+          "bodypress",
+          "voltswitch",
+          "thunderbolt",
+          "flashcannon"
         ],
-        "ability": "Infiltrator",
-        "item": "",
-        "level": 87
+        "ability": "Magnet Pull",
+        "item": "Choice Scarf",
+        "level": 85
       },
       {
-        "species": "Torkoal",
+        "species": "Serperior",
         "moves": [
-          "solarbeam",
-          "lavaplume",
-          "yawn",
-          "rapidspin"
+          "leafstorm",
+          "terablast",
+          "glare",
+          "synthesis"
         ],
-        "ability": "Drought",
-        "item": "Heavy-Duty Boots",
-        "level": 88
-      },
-      {
-        "species": "Lilligant-Hisui",
-        "moves": [
-          "icespinner",
-          "closecombat",
-          "leafblade",
-          "victorydance"
-        ],
-        "ability": "Hustle",
-        "item": "Wide Lens",
-        "level": 79
-      },
-      {
-        "species": "Basculegion-F",
-        "moves": [
-          "flipturn",
-          "hydropump",
-          "icebeam",
-          "shadowball"
-        ],
-        "ability": "Adaptability",
-        "item": "Choice Specs",
-        "level": 83
-      },
-      {
-        "species": "Dugtrio-Alola",
-        "moves": [
-          "stealthrock",
-          "earthquake",
-          "ironhead",
-          "stoneedge"
-        ],
-        "ability": "Tangling Hair",
+        "ability": "Contrary",
         "item": "Life Orb",
-        "level": 84
+        "level": 79
       }
     ]
   },
@@ -168,134 +168,133 @@
             "id": "p1",
             "pokemon": [
               {
-                "name": "Kingambit",
-                "species": "kingambit",
-                "hp": 270,
-                "maxhp": 270,
+                "name": "Camerupt",
+                "species": "camerupt",
+                "hp": 275,
+                "maxhp": 275,
                 "status": "",
                 "fainted": false,
-                "level": 74,
-                "ability": "supremeoverlord",
+                "level": 91,
+                "ability": "solidrock",
                 "item": "leftovers",
                 "moves": [
-                  "suckerpunch",
-                  "ironhead",
-                  "kowtowcleave",
-                  "swordsdance"
-                ],
-                "boosts": {},
-                "types": [
-                  "Dark",
-                  "Steel"
-                ]
-              },
-              {
-                "name": "Pachirisu",
-                "species": "pachirisu",
-                "hp": 271,
-                "maxhp": 271,
-                "status": "",
-                "fainted": false,
-                "level": 96,
-                "ability": "voltabsorb",
-                "item": "assaultvest",
-                "moves": [
-                  "superfang",
-                  "uturn",
-                  "thunderbolt",
-                  "nuzzle"
-                ],
-                "boosts": {},
-                "types": [
-                  "Electric"
-                ]
-              },
-              {
-                "name": "Delibird",
-                "species": "delibird",
-                "hp": 252,
-                "maxhp": 252,
-                "status": "",
-                "fainted": false,
-                "level": 100,
-                "ability": "hustle",
-                "item": "heavydutyboots",
-                "moves": [
-                  "drillrun",
-                  "spikes",
-                  "icespinner",
-                  "bravebird"
-                ],
-                "boosts": {},
-                "types": [
-                  "Ice",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Jumpluff",
-                "species": "jumpluff",
-                "hp": 271,
-                "maxhp": 271,
-                "status": "",
-                "fainted": false,
-                "level": 87,
-                "ability": "infiltrator",
-                "item": "",
-                "moves": [
-                  "encore",
-                  "uturn",
-                  "strengthsap",
-                  "acrobatics"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Primarina",
-                "species": "primarina",
-                "hp": 268,
-                "maxhp": 268,
-                "status": "",
-                "fainted": false,
-                "level": 83,
-                "ability": "torrent",
-                "item": "choicespecs",
-                "moves": [
-                  "hydropump",
-                  "flipturn",
-                  "moonblast",
-                  "psychic"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Fairy"
-                ]
-              },
-              {
-                "name": "Volcanion",
-                "species": "volcanion",
-                "hp": 255,
-                "maxhp": 255,
-                "status": "",
-                "fainted": false,
-                "level": 79,
-                "ability": "waterabsorb",
-                "item": "assaultvest",
-                "moves": [
-                  "flamecharge",
-                  "earthpower",
-                  "flamethrower",
-                  "steameruption"
+                  "willowisp",
+                  "earthquake",
+                  "overheat",
+                  "stealthrock"
                 ],
                 "boosts": {},
                 "types": [
                   "Fire",
-                  "Water"
+                  "Ground"
+                ]
+              },
+              {
+                "name": "Qwilfish-Hisui",
+                "species": "qwilfishhisui",
+                "hp": 244,
+                "maxhp": 244,
+                "status": "",
+                "fainted": false,
+                "level": 83,
+                "ability": "intimidate",
+                "item": "eviolite",
+                "moves": [
+                  "crunch",
+                  "gunkshot",
+                  "taunt",
+                  "toxicspikes"
+                ],
+                "boosts": {},
+                "types": [
+                  "Dark",
+                  "Poison"
+                ]
+              },
+              {
+                "name": "Slither Wing",
+                "species": "slitherwing",
+                "hp": 270,
+                "maxhp": 270,
+                "status": "",
+                "fainted": false,
+                "level": 81,
+                "ability": "protosynthesis",
+                "item": "heavydutyboots",
+                "moves": [
+                  "closecombat",
+                  "willowisp",
+                  "morningsun",
+                  "uturn"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Fighting"
+                ]
+              },
+              {
+                "name": "Snorlax",
+                "species": "snorlax",
+                "hp": 397,
+                "maxhp": 397,
+                "status": "",
+                "fainted": false,
+                "level": 82,
+                "ability": "thickfat",
+                "item": "chestoberry",
+                "moves": [
+                  "bodyslam",
+                  "earthquake",
+                  "rest",
+                  "curse"
+                ],
+                "boosts": {},
+                "types": [
+                  "Normal"
+                ]
+              },
+              {
+                "name": "Magnezone",
+                "species": "magnezone",
+                "hp": 258,
+                "maxhp": 258,
+                "status": "",
+                "fainted": false,
+                "level": 85,
+                "ability": "magnetpull",
+                "item": "choicescarf",
+                "moves": [
+                  "bodypress",
+                  "voltswitch",
+                  "thunderbolt",
+                  "flashcannon"
+                ],
+                "boosts": {},
+                "types": [
+                  "Electric",
+                  "Steel"
+                ]
+              },
+              {
+                "name": "Serperior",
+                "species": "serperior",
+                "hp": 248,
+                "maxhp": 248,
+                "status": "",
+                "fainted": false,
+                "level": 79,
+                "ability": "contrary",
+                "item": "lifeorb",
+                "moves": [
+                  "leafstorm",
+                  "terablast",
+                  "glare",
+                  "synthesis"
+                ],
+                "boosts": {},
+                "types": [
+                  "Grass"
                 ]
               }
             ]
@@ -305,20 +304,62 @@
             "id": "p2",
             "pokemon": [
               {
-                "name": "Suicune",
-                "species": "suicune",
-                "hp": 298,
-                "maxhp": 298,
+                "name": "Pachirisu",
+                "species": "pachirisu",
+                "hp": 271,
+                "maxhp": 271,
                 "status": "",
                 "fainted": false,
-                "level": 82,
-                "ability": "pressure",
+                "level": 96,
+                "ability": "voltabsorb",
+                "item": "heavydutyboots",
+                "moves": [
+                  "encore",
+                  "uturn",
+                  "superfang",
+                  "discharge"
+                ],
+                "boosts": {},
+                "types": [
+                  "Electric"
+                ]
+              },
+              {
+                "name": "Pincurchin",
+                "species": "pincurchin",
+                "hp": 258,
+                "maxhp": 258,
+                "status": "",
+                "fainted": false,
+                "level": 100,
+                "ability": "electricsurge",
                 "item": "leftovers",
                 "moves": [
                   "scald",
-                  "sleeptalk",
-                  "calmmind",
-                  "rest"
+                  "recover",
+                  "thunderbolt",
+                  "toxicspikes"
+                ],
+                "boosts": {},
+                "types": [
+                  "Electric"
+                ]
+              },
+              {
+                "name": "Lumineon",
+                "species": "lumineon",
+                "hp": 279,
+                "maxhp": 279,
+                "status": "",
+                "fainted": false,
+                "level": 93,
+                "ability": "stormdrain",
+                "item": "heavydutyboots",
+                "moves": [
+                  "uturn",
+                  "hydropump",
+                  "encore",
+                  "icebeam"
                 ],
                 "boosts": {},
                 "types": [
@@ -326,112 +367,69 @@
                 ]
               },
               {
-                "name": "Jumpluff",
-                "species": "jumpluff",
-                "hp": 271,
-                "maxhp": 271,
+                "name": "Jirachi",
+                "species": "jirachi",
+                "hp": 291,
+                "maxhp": 291,
                 "status": "",
                 "fainted": false,
-                "level": 87,
-                "ability": "infiltrator",
-                "item": "",
+                "level": 80,
+                "ability": "serenegrace",
+                "item": "leftovers",
                 "moves": [
-                  "acrobatics",
-                  "strengthsap",
-                  "uturn",
-                  "sleeppowder"
+                  "bodyslam",
+                  "wish",
+                  "ironhead",
+                  "protect"
                 ],
                 "boosts": {},
                 "types": [
-                  "Grass",
-                  "Flying"
+                  "Steel",
+                  "Psychic"
                 ]
               },
               {
-                "name": "Torkoal",
-                "species": "torkoal",
-                "hp": 266,
-                "maxhp": 266,
+                "name": "Farigiraf",
+                "species": "farigiraf",
+                "hp": 366,
+                "maxhp": 366,
                 "status": "",
                 "fainted": false,
-                "level": 88,
-                "ability": "drought",
-                "item": "heavydutyboots",
+                "level": 91,
+                "ability": "sapsipper",
+                "item": "leftovers",
                 "moves": [
-                  "solarbeam",
-                  "lavaplume",
-                  "yawn",
-                  "rapidspin"
+                  "bodyslam",
+                  "psychicnoise",
+                  "wish",
+                  "protect"
                 ],
                 "boosts": {},
                 "types": [
-                  "Fire"
+                  "Normal",
+                  "Psychic"
                 ]
               },
               {
-                "name": "Lilligant-Hisui",
-                "species": "lilliganthisui",
-                "hp": 240,
-                "maxhp": 240,
+                "name": "Crawdaunt",
+                "species": "crawdaunt",
+                "hp": 243,
+                "maxhp": 243,
                 "status": "",
                 "fainted": false,
-                "level": 79,
-                "ability": "hustle",
-                "item": "widelens",
-                "moves": [
-                  "icespinner",
-                  "closecombat",
-                  "leafblade",
-                  "victorydance"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass",
-                  "Fighting"
-                ]
-              },
-              {
-                "name": "Basculegion-F",
-                "species": "basculegionf",
-                "hp": 335,
-                "maxhp": 335,
-                "status": "",
-                "fainted": false,
-                "level": 83,
+                "level": 84,
                 "ability": "adaptability",
-                "item": "choicespecs",
+                "item": "lifeorb",
                 "moves": [
-                  "flipturn",
-                  "hydropump",
-                  "icebeam",
-                  "shadowball"
+                  "knockoff",
+                  "crabhammer",
+                  "dragondance",
+                  "aquajet"
                 ],
                 "boosts": {},
                 "types": [
                   "Water",
-                  "Ghost"
-                ]
-              },
-              {
-                "name": "Dugtrio-Alola",
-                "species": "dugtrioalola",
-                "hp": 196,
-                "maxhp": 196,
-                "status": "",
-                "fainted": false,
-                "level": 84,
-                "ability": "tanglinghair",
-                "item": "lifeorb",
-                "moves": [
-                  "stealthrock",
-                  "earthquake",
-                  "ironhead",
-                  "stoneedge"
-                ],
-                "boosts": {},
-                "types": [
-                  "Ground",
-                  "Steel"
+                  "Dark"
                 ]
               }
             ]
@@ -451,134 +449,133 @@
             "id": "p1",
             "pokemon": [
               {
-                "name": "Kingambit",
-                "species": "kingambit",
-                "hp": 190,
-                "maxhp": 270,
+                "name": "Camerupt",
+                "species": "camerupt",
+                "hp": 275,
+                "maxhp": 275,
                 "status": "",
                 "fainted": false,
-                "level": 74,
-                "ability": "supremeoverlord",
+                "level": 91,
+                "ability": "solidrock",
                 "item": "leftovers",
                 "moves": [
-                  "suckerpunch",
-                  "ironhead",
-                  "kowtowcleave",
-                  "swordsdance"
-                ],
-                "boosts": {},
-                "types": [
-                  "Dark",
-                  "Steel"
-                ]
-              },
-              {
-                "name": "Pachirisu",
-                "species": "pachirisu",
-                "hp": 271,
-                "maxhp": 271,
-                "status": "",
-                "fainted": false,
-                "level": 96,
-                "ability": "voltabsorb",
-                "item": "assaultvest",
-                "moves": [
-                  "superfang",
-                  "uturn",
-                  "thunderbolt",
-                  "nuzzle"
-                ],
-                "boosts": {},
-                "types": [
-                  "Electric"
-                ]
-              },
-              {
-                "name": "Delibird",
-                "species": "delibird",
-                "hp": 252,
-                "maxhp": 252,
-                "status": "",
-                "fainted": false,
-                "level": 100,
-                "ability": "hustle",
-                "item": "heavydutyboots",
-                "moves": [
-                  "drillrun",
-                  "spikes",
-                  "icespinner",
-                  "bravebird"
-                ],
-                "boosts": {},
-                "types": [
-                  "Ice",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Jumpluff",
-                "species": "jumpluff",
-                "hp": 271,
-                "maxhp": 271,
-                "status": "",
-                "fainted": false,
-                "level": 87,
-                "ability": "infiltrator",
-                "item": "",
-                "moves": [
-                  "encore",
-                  "uturn",
-                  "strengthsap",
-                  "acrobatics"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Primarina",
-                "species": "primarina",
-                "hp": 268,
-                "maxhp": 268,
-                "status": "",
-                "fainted": false,
-                "level": 83,
-                "ability": "torrent",
-                "item": "choicespecs",
-                "moves": [
-                  "hydropump",
-                  "flipturn",
-                  "moonblast",
-                  "psychic"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Fairy"
-                ]
-              },
-              {
-                "name": "Volcanion",
-                "species": "volcanion",
-                "hp": 255,
-                "maxhp": 255,
-                "status": "",
-                "fainted": false,
-                "level": 79,
-                "ability": "waterabsorb",
-                "item": "assaultvest",
-                "moves": [
-                  "flamecharge",
-                  "earthpower",
-                  "flamethrower",
-                  "steameruption"
+                  "willowisp",
+                  "earthquake",
+                  "overheat",
+                  "stealthrock"
                 ],
                 "boosts": {},
                 "types": [
                   "Fire",
-                  "Water"
+                  "Ground"
+                ]
+              },
+              {
+                "name": "Qwilfish-Hisui",
+                "species": "qwilfishhisui",
+                "hp": 244,
+                "maxhp": 244,
+                "status": "",
+                "fainted": false,
+                "level": 83,
+                "ability": "intimidate",
+                "item": "eviolite",
+                "moves": [
+                  "crunch",
+                  "gunkshot",
+                  "taunt",
+                  "toxicspikes"
+                ],
+                "boosts": {},
+                "types": [
+                  "Dark",
+                  "Poison"
+                ]
+              },
+              {
+                "name": "Slither Wing",
+                "species": "slitherwing",
+                "hp": 270,
+                "maxhp": 270,
+                "status": "",
+                "fainted": false,
+                "level": 81,
+                "ability": "protosynthesis",
+                "item": "heavydutyboots",
+                "moves": [
+                  "closecombat",
+                  "willowisp",
+                  "morningsun",
+                  "uturn"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Fighting"
+                ]
+              },
+              {
+                "name": "Snorlax",
+                "species": "snorlax",
+                "hp": 397,
+                "maxhp": 397,
+                "status": "",
+                "fainted": false,
+                "level": 82,
+                "ability": "thickfat",
+                "item": "chestoberry",
+                "moves": [
+                  "bodyslam",
+                  "earthquake",
+                  "rest",
+                  "curse"
+                ],
+                "boosts": {},
+                "types": [
+                  "Normal"
+                ]
+              },
+              {
+                "name": "Magnezone",
+                "species": "magnezone",
+                "hp": 258,
+                "maxhp": 258,
+                "status": "",
+                "fainted": false,
+                "level": 85,
+                "ability": "magnetpull",
+                "item": "choicescarf",
+                "moves": [
+                  "bodypress",
+                  "voltswitch",
+                  "thunderbolt",
+                  "flashcannon"
+                ],
+                "boosts": {},
+                "types": [
+                  "Electric",
+                  "Steel"
+                ]
+              },
+              {
+                "name": "Serperior",
+                "species": "serperior",
+                "hp": 248,
+                "maxhp": 248,
+                "status": "",
+                "fainted": false,
+                "level": 79,
+                "ability": "contrary",
+                "item": "lifeorb",
+                "moves": [
+                  "leafstorm",
+                  "terablast",
+                  "glare",
+                  "synthesis"
+                ],
+                "boosts": {},
+                "types": [
+                  "Grass"
                 ]
               }
             ]
@@ -588,20 +585,62 @@
             "id": "p2",
             "pokemon": [
               {
-                "name": "Suicune",
-                "species": "suicune",
-                "hp": 250,
-                "maxhp": 298,
+                "name": "Pachirisu",
+                "species": "pachirisu",
+                "hp": 271,
+                "maxhp": 271,
+                "status": "brn",
+                "fainted": false,
+                "level": 96,
+                "ability": "voltabsorb",
+                "item": "heavydutyboots",
+                "moves": [
+                  "encore",
+                  "uturn",
+                  "superfang",
+                  "discharge"
+                ],
+                "boosts": {},
+                "types": [
+                  "Electric"
+                ]
+              },
+              {
+                "name": "Pincurchin",
+                "species": "pincurchin",
+                "hp": 258,
+                "maxhp": 258,
                 "status": "",
                 "fainted": false,
-                "level": 82,
-                "ability": "pressure",
+                "level": 100,
+                "ability": "electricsurge",
                 "item": "leftovers",
                 "moves": [
                   "scald",
-                  "sleeptalk",
-                  "calmmind",
-                  "rest"
+                  "recover",
+                  "thunderbolt",
+                  "toxicspikes"
+                ],
+                "boosts": {},
+                "types": [
+                  "Electric"
+                ]
+              },
+              {
+                "name": "Lumineon",
+                "species": "lumineon",
+                "hp": 279,
+                "maxhp": 279,
+                "status": "",
+                "fainted": false,
+                "level": 93,
+                "ability": "stormdrain",
+                "item": "heavydutyboots",
+                "moves": [
+                  "uturn",
+                  "hydropump",
+                  "encore",
+                  "icebeam"
                 ],
                 "boosts": {},
                 "types": [
@@ -609,112 +648,69 @@
                 ]
               },
               {
-                "name": "Jumpluff",
-                "species": "jumpluff",
-                "hp": 271,
-                "maxhp": 271,
+                "name": "Jirachi",
+                "species": "jirachi",
+                "hp": 291,
+                "maxhp": 291,
                 "status": "",
                 "fainted": false,
-                "level": 87,
-                "ability": "infiltrator",
-                "item": "",
+                "level": 80,
+                "ability": "serenegrace",
+                "item": "leftovers",
                 "moves": [
-                  "acrobatics",
-                  "strengthsap",
-                  "uturn",
-                  "sleeppowder"
+                  "bodyslam",
+                  "wish",
+                  "ironhead",
+                  "protect"
                 ],
                 "boosts": {},
                 "types": [
-                  "Grass",
-                  "Flying"
+                  "Steel",
+                  "Psychic"
                 ]
               },
               {
-                "name": "Torkoal",
-                "species": "torkoal",
-                "hp": 266,
-                "maxhp": 266,
+                "name": "Farigiraf",
+                "species": "farigiraf",
+                "hp": 366,
+                "maxhp": 366,
                 "status": "",
                 "fainted": false,
-                "level": 88,
-                "ability": "drought",
-                "item": "heavydutyboots",
+                "level": 91,
+                "ability": "sapsipper",
+                "item": "leftovers",
                 "moves": [
-                  "solarbeam",
-                  "lavaplume",
-                  "yawn",
-                  "rapidspin"
+                  "bodyslam",
+                  "psychicnoise",
+                  "wish",
+                  "protect"
                 ],
                 "boosts": {},
                 "types": [
-                  "Fire"
+                  "Normal",
+                  "Psychic"
                 ]
               },
               {
-                "name": "Lilligant-Hisui",
-                "species": "lilliganthisui",
-                "hp": 240,
-                "maxhp": 240,
+                "name": "Crawdaunt",
+                "species": "crawdaunt",
+                "hp": 243,
+                "maxhp": 243,
                 "status": "",
                 "fainted": false,
-                "level": 79,
-                "ability": "hustle",
-                "item": "widelens",
-                "moves": [
-                  "icespinner",
-                  "closecombat",
-                  "leafblade",
-                  "victorydance"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass",
-                  "Fighting"
-                ]
-              },
-              {
-                "name": "Basculegion-F",
-                "species": "basculegionf",
-                "hp": 335,
-                "maxhp": 335,
-                "status": "",
-                "fainted": false,
-                "level": 83,
+                "level": 84,
                 "ability": "adaptability",
-                "item": "choicespecs",
+                "item": "lifeorb",
                 "moves": [
-                  "flipturn",
-                  "hydropump",
-                  "icebeam",
-                  "shadowball"
+                  "knockoff",
+                  "crabhammer",
+                  "dragondance",
+                  "aquajet"
                 ],
                 "boosts": {},
                 "types": [
                   "Water",
-                  "Ghost"
-                ]
-              },
-              {
-                "name": "Dugtrio-Alola",
-                "species": "dugtrioalola",
-                "hp": 196,
-                "maxhp": 196,
-                "status": "",
-                "fainted": false,
-                "level": 84,
-                "ability": "tanglinghair",
-                "item": "lifeorb",
-                "moves": [
-                  "stealthrock",
-                  "earthquake",
-                  "ironhead",
-                  "stoneedge"
-                ],
-                "boosts": {},
-                "types": [
-                  "Ground",
-                  "Steel"
+                  "Dark"
                 ]
               }
             ]
