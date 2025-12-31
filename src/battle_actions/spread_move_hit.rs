@@ -360,16 +360,22 @@ pub fn spread_move_hit(
     //       }
     //     }
     //   }
+    eprintln!("[SPREAD_MOVE_HIT T{}] Checking secondary for move {}: has_secondary={}, final_targets.len()={}",
+        battle.turn, move_id, move_data.secondary.is_some(), final_targets.len());
     if let Some(ref secondary_effect) = move_data.secondary {
+        eprintln!("[SPREAD_MOVE_HIT T{}] Processing secondary effect, chance={:?}", battle.turn, secondary_effect.chance);
         // JS: for (const target of targets) { if (target === false) continue; ... }
-        for &target_opt in &final_targets {
+        for (i, &target_opt) in final_targets.iter().enumerate() {
             if target_opt.is_none() {
+                eprintln!("[SPREAD_MOVE_HIT T{}] Skipping None target at index {}", battle.turn, i);
                 continue;
             }
             let target_pos = target_opt.unwrap();
+            eprintln!("[SPREAD_MOVE_HIT T{}] Making PRNG call for secondary on target {:?}", battle.turn, target_pos);
 
             // JS: const secondaryRoll = this.battle.random(100);
             let secondary_roll = battle.random(100) as i32;
+            eprintln!("[SPREAD_MOVE_HIT T{}] Secondary roll={}, chance={:?}", battle.turn, secondary_roll, secondary_effect.chance);
 
             // JS: const secondaryOverflow = (secondary.boosts || secondary.self) && this.battle.gen <= 8;
             // For now, skip the overflow logic (gen 8 and below edge case)
@@ -395,8 +401,23 @@ pub fn spread_move_hit(
                     );
                 }
 
-                // TODO: Handle secondary.status, secondary.volatileStatus, etc.
-                // For now, only boosts are implemented
+                // Apply status from secondary effect
+                // JS: moveHit applies moveData.status if present
+                if let Some(ref status_name) = secondary_effect.status {
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Applying status '{}' from secondary to target {:?}",
+                        battle.turn, status_name, target_pos);
+
+                    // Get mutable reference to target pokemon
+                    if let Some(side) = battle.sides.get_mut(target_pos.0) {
+                        if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                            let status_id = crate::dex_data::ID::new(status_name);
+                            let applied = pokemon.set_status(status_id);
+                            eprintln!("[SPREAD_MOVE_HIT T{}] Status '{}' applied: {}", battle.turn, status_name, applied);
+                        }
+                    }
+                }
+
+                // TODO: Handle secondary.volatileStatus, etc.
             }
         }
     }

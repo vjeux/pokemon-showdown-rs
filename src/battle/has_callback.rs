@@ -827,6 +827,10 @@ impl Battle {
 
         // Check dispatchers to see which conditions have which callbacks
         match normalized {
+            "BeforeMove" => matches!(
+                condition_id,
+                "par"  // Paralysis has onBeforeMove (25% chance to prevent move)
+            ),
             "Residual" => matches!(
                 condition_id,
                 // Status conditions (from condition_callbacks.rs)

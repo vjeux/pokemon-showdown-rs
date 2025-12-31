@@ -51,12 +51,60 @@ pub fn dispatch_on_base_power_priority(
 }
 
 /// Dispatch onBeforeMove callbacks
+/// JavaScript source (conditions.ts):
+/// par: {
+///     onBeforeMovePriority: 1,
+///     onBeforeMove(pokemon) {
+///         if (this.randomChance(1, 4)) {
+///             this.add('cant', pokemon, 'par');
+///             return false;
+///         }
+///     },
+/// }
 pub fn dispatch_on_before_move(
-    _battle: &mut Battle,
-    _condition_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    use crate::battle::Arg;
+
+    eprintln!("[CONDITION_CALLBACKS T{}] dispatch_on_before_move: condition_id={}", battle.turn, condition_id);
+
+    match condition_id {
+        "par" => {
+            eprintln!("[CONDITION_CALLBACKS T{}] Handling paralysis BeforeMove", battle.turn);
+            // Paralysis has 25% chance to prevent move
+            if battle.random_chance(1, 4) {
+                eprintln!("[CONDITION_CALLBACKS T{}] Paralysis check succeeded, preventing move", battle.turn);
+                // Get pokemon identifier string (e.g. "p1a: Metang")
+                let pokemon_id = {
+                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    let side_id = match pokemon_pos.0 {
+                        0 => "p1",
+                        1 => "p2",
+                        2 => "p3",
+                        _ => "p4",
+                    };
+                    let position_letter = match pokemon.position {
+                        0 => "a",
+                        1 => "b",
+                        2 => "c",
+                        3 => "d",
+                        4 => "e",
+                        _ => "f",
+                    };
+                    format!("{}{}: {}", side_id, position_letter, pokemon.name)
+                };
+                battle.add("cant", &[Arg::String(pokemon_id), Arg::Str("par")]);
+                return EventResult::Boolean(false);
+            }
+            EventResult::Continue
+        }
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onBeforeMovePriority callbacks

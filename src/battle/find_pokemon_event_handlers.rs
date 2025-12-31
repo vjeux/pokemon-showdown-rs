@@ -95,7 +95,7 @@ impl Battle {
 
         if let Some(side) = self.sides.get(side_idx) {
             if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                eprintln!("[FIND_POKEMON_HANDLERS] Pokemon: {}, item: {}", pokemon.name, pokemon.item);
+                eprintln!("[FIND_POKEMON_HANDLERS] Pokemon: {}, item: {}, status: '{}'", pokemon.name, pokemon.item, pokemon.status);
 
                 // JS: const status = pokemon.getStatus();
                 // Add status handler if it has callback for this event
@@ -103,7 +103,9 @@ impl Battle {
                 // JS: if (callback !== undefined || (getKey && pokemon.statusState[getKey]))
                 let has_callback = !pokemon.status.is_empty() && self.condition_has_callback(pokemon.status.as_str(), event_id);
                 let has_get_key = get_key == Some("duration") && pokemon.status_state.duration.is_some();
+                eprintln!("[FIND_POKEMON_HANDLERS] Status check: status='{}', has_callback={}, has_get_key={}", pokemon.status, has_callback, has_get_key);
                 if has_callback || has_get_key {
+                    eprintln!("[FIND_POKEMON_HANDLERS] Adding status handler: {}", pokemon.status);
                     handlers.push((pokemon.status.clone(), Some(target), crate::battle::EffectType::Condition));
                 }
 

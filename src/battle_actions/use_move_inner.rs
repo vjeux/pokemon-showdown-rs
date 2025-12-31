@@ -678,27 +678,9 @@ pub fn use_move_inner(
         }
     }
 
-    // Trigger BeforeMove event to allow abilities to prevent move execution
-    // JavaScript: const willTryMove = this.battle.runEvent('BeforeMove', pokemon, target, move);
-    // if (!willTryMove) { this.battle.runEvent('MoveAborted', pokemon, target, move); return; }
-    let will_try_move = battle.run_event_bool(
-        "BeforeMove",
-        Some(pokemon_pos),
-        target_pos.into(),
-        Some(move_or_move_name),
-    );
-    if !will_try_move {
-        battle.run_event(
-            "MoveAborted",
-            Some(pokemon_pos),
-            target_pos.into(),
-            Some(move_or_move_name),
-            None,
-        );
-        // TODO: battle.clearActiveMove(true) - clear active move state
-        // TODO: pokemon.moveThisTurnResult = willTryMove - track move result
-        return false;
-    }
+    // NOTE: BeforeMove event is called in run_move.rs, not here
+    // JavaScript calls BeforeMove in runMove(), and useMoveInner() is called from runMove()
+    // So we don't call it again here to avoid duplicate PRNG calls
 
     // if (!this.battle.singleEvent('TryMove', move, null, pokemon, target, move) ||
     //     !this.battle.runEvent('TryMove', pokemon, target, move)) {
