@@ -82,6 +82,12 @@ impl Side {
                                 if move_slot.disabled {
                                     continue;
                                 }
+                                // Skip if PP is 0
+                                // JavaScript: if ((moveSlot.pp <= 0 && !this.volatiles['partialtrappinglock']) || ...) { disabled = true; }
+                                if move_slot.pp == 0 {
+                                    eprintln!("[AUTO_CHOOSE] Skipping move {} with 0 PP", move_slot.id);
+                                    continue;
+                                }
                                 // Skip Z-moves if already used
                                 if move_slot.is_z && self.z_move_used {
                                     eprintln!("[AUTO_CHOOSE] Skipping Z-move {} because z_move_used=true", move_slot.id);
