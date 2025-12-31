@@ -224,18 +224,24 @@ pub fn spread_move_hit(
     //           }
     //       }
     //   }
+    eprintln!("[SPREAD_MOVE_HIT] move_data.self_effect = {:?}", move_data.self_effect);
     if let Some(ref self_effect) = move_data.self_effect {
+        eprintln!("[SPREAD_MOVE_HIT] Processing self_effect for move {}", move_id);
         // JS: for (const target of targets) { if (target === false) continue; ... }
         // We need to loop through targets to match JavaScript behavior
         // (even though we're applying to source, not target)
         for &target in &final_targets {
             // JS: if (target === false) continue;
             if target.is_none() {
+                eprintln!("[SPREAD_MOVE_HIT] Skipping None target");
                 continue;
             }
 
+            eprintln!("[SPREAD_MOVE_HIT] Processing target {:?}, is_secondary={}, has_boosts={}", target, is_secondary, self_effect.boosts.is_some());
+
             // JS: if (!isSecondary && moveData.self.boosts)
             if !is_secondary && self_effect.boosts.is_some() {
+                eprintln!("[SPREAD_MOVE_HIT] Taking boosts branch");
                 // JS: const secondaryRoll = this.battle.random(100);
                 let secondary_roll = battle.random(100) as i32;
 
@@ -287,6 +293,7 @@ pub fn spread_move_hit(
                 // JS: if (!move.multihit) move.selfDropped = true;
                 // TODO: Set move.selfDropped = true for non-multihit moves
             } else {
+                eprintln!("[SPREAD_MOVE_HIT] Taking else branch (no boosts or is_secondary=true)");
                 // JS: this.moveHit(source, source, move, moveData.self, isSecondary, true);
                 // When NOT (!isSecondary && has boosts), always apply moveHit (all self effects)
 
