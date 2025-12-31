@@ -277,6 +277,7 @@ impl RNG for SodiumRNG {
 pub struct PRNG {
     pub starting_seed: PRNGSeed,
     rng: PRNGImpl,
+    pub call_count: usize,
 }
 
 impl Default for PRNG {
@@ -300,7 +301,11 @@ impl PRNG {
             PRNGSeed::Sodium(hex) => PRNGImpl::Sodium(SodiumRNG::new(hex)),
             PRNGSeed::Gen5(s) => PRNGImpl::Gen5(Gen5RNG::new(*s)),
         };
-        Self { starting_seed, rng }
+        Self {
+            starting_seed,
+            rng,
+            call_count: 0,
+        }
     }
 
     /// Create a new PRNG from a seed string
@@ -348,15 +353,24 @@ impl PRNG {
         Self {
             starting_seed: self.starting_seed.clone(),
             rng: self.rng.clone(),
+            call_count: self.call_count,
         }
     }
 
     /// Get the next random 32-bit number
     fn next_raw(&mut self) -> u32 {
-        match &mut self.rng {
+        self.call_count += 1;
+        let value = match &mut self.rng {
             PRNGImpl::Gen5(rng) => rng.next(),
             PRNGImpl::Sodium(rng) => rng.next(),
+        };
+
+        // Log PRNG calls (can be enabled for debugging)
+        if std::env::var("RUST_LOG_PRNG").is_ok() && self.call_count <= 50 {
+            eprintln!("[PRNG #{}] value={}", self.call_count, value);
         }
+
+        value
     }
 
     /// Get a random number

@@ -1,0 +1,399 @@
+|t:|1767194353
+|gametype|singles
+|player|p1|Player 1||
+|player|p2|Player 2||
+|gen|9
+|tier|gen9randombattle
+|
+|t:|1767194353
+|teamsize|p1|6
+|teamsize|p2|6
+|start
+|switch|p1: Grubbin|grubbin, L95, M|240/240
+|switch|p2: Slowbro-Mega|slowbromega, L93, F|324/324
+|-start|p1a|typechange|Bug|[silent]
+|-start|p2a|typechange|Water/Psychic|[silent]
+|turn|1
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-supereffective|p2a
+|-damage|p2a|260/324
+|-enditem|p2a|Vile Vial|[from] move: Knock Off|[of] p1a
+|move|p2: Slowbro-Mega|Snowscape
+|-damage|p1a|240/240
+|
+|upkeep
+|turn|2
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-supereffective|p2a
+|-damage|p2a|216/324
+|move|p2: Slowbro-Mega|Snowscape
+|-damage|p1a|240/240
+|
+|upkeep
+|turn|3
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-supereffective|p2a
+|-damage|p2a|172/324
+|move|p2: Slowbro-Mega|Snowscape
+|-damage|p1a|240/240
+|
+|upkeep
+|turn|4
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-supereffective|p2a
+|-damage|p2a|130/324
+|move|p2: Slowbro-Mega|Snowscape
+|-damage|p1a|240/240
+|
+|upkeep
+|turn|5
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-supereffective|p2a
+|-damage|p2a|86/324
+|move|p2: Slowbro-Mega|Snowscape
+|-damage|p1a|240/240
+|
+|upkeep
+|turn|6
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-supereffective|p2a
+|-damage|p2a|44/324
+|move|p2: Slowbro-Mega|Snowscape
+|-damage|p1a|240/240
+|
+|upkeep
+|turn|7
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-supereffective|p2a
+|-damage|p2a|4/324
+|move|p2: Slowbro-Mega|Snowscape
+|-damage|p1a|240/240
+|
+|upkeep
+|turn|8
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-supereffective|p2a
+|-damage|p2a|0/324
+|faint|p2a: Slowbro-Mega
+|
+|upkeep
+|
+|t:|1767194353
+|switch|p2: Latias-Mega|latiasmega, L53, F|168/168
+|-start|p2a|typechange|Dragon/Psychic|[silent]
+|turn|9
+|
+|t:|1767194353
+|move|p2: Latias-Mega|Water Gun
+|-damage|p1a|213/240
+|move|p1: Grubbin|Knock Off
+|-supereffective|p2a
+|-damage|p2a|0/168
+|-enditem|p2a|TR61|[from] move: Knock Off|[of] p1a
+|faint|p2a: Latias-Mega
+|
+|upkeep
+|
+|t:|1767194353
+|switch|p2: Mantine|mantine, L56, F|185/185
+|-start|p2a|typechange|Water/Flying|[silent]
+|turn|10
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-damage|p2a|94/185
+|-enditem|p2a|Dark Memory|[from] move: Knock Off|[of] p1a
+|move|p2: Mantine|Punishment
+|-damage|p1a|213/240
+|
+|upkeep
+|-start|p2a|typechange|Water/Flying|[silent]
+|turn|11
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-damage|p2a|22/185
+|move|p2: Mantine|Punishment
+|-damage|p1a|213/240
+|
+|upkeep
+|-start|p2a|typechange|Water/Flying|[silent]
+|turn|12
+|
+|t:|1767194353
+|move|p1: Grubbin|Knock Off
+|-damage|p2a|0/185
+|faint|p2a: Mantine
+|
+|upkeep
+|
+|t:|1767194353
+|switch|p2: Cinderace-Gmax|cinderacegmax, L63, M|206/206
+|-start|p2a|typechange|Fire|[silent]
+|turn|13
+|
+|t:|1767194353
+|move|p2: Cinderace-Gmax|Psychic
+|-damage|p1a|165/240
+|move|p1: Grubbin|Knock Off
+|-damage|p2a|130/206
+|-enditem|p2a|Apicot Berry|[from] move: Knock Off|[of] p1a
+|
+|upkeep
+|-start|p2a|typechange|Fire|[silent]
+|turn|14
+|
+|t:|1767194353
+|move|p2: Cinderace-Gmax|Psychic
+|-damage|p1a|123/240
+|move|p1: Grubbin|Knock Off
+|-damage|p2a|51/206
+|
+|upkeep
+|-start|p2a|typechange|Fire|[silent]
+|turn|15
+|
+|t:|1767194353
+|move|p2: Cinderace-Gmax|Psychic
+|-damage|p1a|75/240
+|move|p1: Grubbin|Knock Off
+|-damage|p2a|0/206
+|faint|p2a: Cinderace-Gmax
+|
+|upkeep
+|
+|t:|1767194353
+|switch|p2: Zacian|zacian, L95|331/331
+|-start|p2a|typechange|Fairy|[silent]
+|turn|16
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-damage|p1a|0/240
+|faint|p1a: Grubbin
+|
+|upkeep
+|
+|t:|1767194353
+|switch|p1: Genesect-Shock|genesectshock, L88|263/263
+|-start|p1a|typechange|Bug/Steel|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|17
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-resisted|p1a
+|-damage|p1a|201/263
+|move|p1: Genesect-Shock|Vise Grip
+|-damage|p2a|296/331
+|
+|upkeep
+|-start|p1a|typechange|Bug/Steel|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|18
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-resisted|p1a
+|-damage|p1a|157/263
+|move|p1: Genesect-Shock|Vise Grip
+|-damage|p2a|259/331
+|
+|upkeep
+|-start|p1a|typechange|Bug/Steel|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|19
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-resisted|p1a
+|-damage|p1a|120/263
+|move|p1: Genesect-Shock|Vise Grip
+|-damage|p2a|225/331
+|
+|upkeep
+|-start|p1a|typechange|Bug/Steel|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|20
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-resisted|p1a
+|-damage|p1a|78/263
+|move|p1: Genesect-Shock|Vise Grip
+|-damage|p2a|191/331
+|
+|upkeep
+|-start|p1a|typechange|Bug/Steel|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|21
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-resisted|p1a
+|-damage|p1a|35/263
+|move|p1: Genesect-Shock|Vise Grip
+|-damage|p2a|156/331
+|
+|upkeep
+|-start|p1a|typechange|Bug/Steel|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|22
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-resisted|p1a
+|-damage|p1a|0/263
+|faint|p1a: Genesect-Shock
+|
+|upkeep
+|
+|t:|1767194353
+|switch|p1: Glimmora|glimmora, F|322/322
+|-start|p1a|typechange|Rock/Poison|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|23
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-supereffective|p1a
+|-damage|p1a|182/322
+|move|p1: Glimmora|Gastro Acid
+|-damage|p2a|156/331
+|
+|upkeep
+|-start|p1a|typechange|Rock/Poison|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|24
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-supereffective|p1a
+|-damage|p1a|48/322
+|move|p1: Glimmora|Gastro Acid
+|-damage|p2a|156/331
+|
+|upkeep
+|-start|p1a|typechange|Rock/Poison|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|25
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-supereffective|p1a
+|-damage|p1a|0/322
+|faint|p1a: Glimmora
+|
+|upkeep
+|
+|t:|1767194353
+|switch|p1: Golem-Alola|golemalola, L98, F|288/288
+|-start|p1a|typechange|Rock/Electric|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|26
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-damage|p1a|227/288
+|move|p1: Golem-Alola|G-Max Terror
+|-damage|p2a|148/331
+|
+|upkeep
+|-start|p1a|typechange|Rock/Electric|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|27
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-damage|p1a|163/288
+|move|p1: Golem-Alola|G-Max Terror
+|-damage|p2a|139/331
+|
+|upkeep
+|-start|p1a|typechange|Rock/Electric|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|28
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-damage|p1a|78/288
+|move|p1: Golem-Alola|G-Max Terror
+|-damage|p2a|130/331
+|
+|upkeep
+|-start|p1a|typechange|Rock/Electric|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|29
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-damage|p1a|22/288
+|move|p1: Golem-Alola|G-Max Terror
+|-damage|p2a|121/331
+|
+|upkeep
+|-start|p1a|typechange|Rock/Electric|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|30
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-damage|p1a|0/288
+|faint|p1a: Golem-Alola
+|
+|upkeep
+|
+|t:|1767194353
+|switch|p1: Vivillon-Savanna|vivillonsavanna, L99, F|290/290
+|-start|p1a|typechange|Bug/Flying|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|31
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-damage|p1a|170/290
+|move|p1: Vivillon-Savanna|Origin Pulse
+|-damage|p2a|25/331
+|
+|upkeep
+|-start|p1a|typechange|Bug/Flying|[silent]
+|-start|p2a|typechange|Fairy|[silent]
+|turn|32
+|
+|t:|1767194353
+|move|p2: Zacian|Zen Headbutt
+|-damage|p1a|63/290
+|move|p1: Vivillon-Savanna|Origin Pulse
+|-damage|p2a|0/331
+|faint|p2a: Zacian
+|
+|upkeep
+|
+|t:|1767194353
+|switch|p2: Cutiefly|cutiefly, L91, M|192/192
+|-start|p1a|typechange|Bug/Flying|[silent]
+|-start|p2a|typechange|Bug/Fairy|[silent]
+|turn|33
+|
+|t:|1767194353
+|move|p1: Vivillon-Savanna|Origin Pulse
+|-damage|p2a|0/192
+|faint|p2a: Cutiefly
+|
+|win|Player 1

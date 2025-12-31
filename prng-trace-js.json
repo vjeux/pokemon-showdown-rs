@@ -1,0 +1,212 @@
+[
+  {
+    "count": 1,
+    "value": 1566083941,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 2,
+    "value": 3820307428,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 3,
+    "value": 1031784986,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 4,
+    "value": 1072108706,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 5,
+    "value": 1969985952,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 6,
+    "value": 2043302932,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 7,
+    "value": 584781495,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 8,
+    "value": 2397612597,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 9,
+    "value": 2312035555,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 10,
+    "value": 2060475165,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 11,
+    "value": 1058251792,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 12,
+    "value": 1577856120,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 13,
+    "value": 113672010,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 14,
+    "value": 1292419139,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 15,
+    "value": 1550572511,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 16,
+    "value": 3940456069,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 17,
+    "value": 1028305123,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 18,
+    "value": 1601645436,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 19,
+    "value": 751320073,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 20,
+    "value": 2902572889,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 21,
+    "value": 3506358397,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 22,
+    "value": 3025926385,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 23,
+    "value": 2011685642,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 24,
+    "value": 4215694657,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 25,
+    "value": 329507084,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 26,
+    "value": 2799460436,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 27,
+    "value": 3490383159,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 28,
+    "value": 2004111396,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 29,
+    "value": 3030804705,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 30,
+    "value": 2412744333,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 31,
+    "value": 741174957,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 32,
+    "value": 2471741324,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 33,
+    "value": 2401591807,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 34,
+    "value": 1173160384,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 35,
+    "value": 1735437340,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 36,
+    "value": 2096133539,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 37,
+    "value": 1699260408,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 38,
+    "value": 3404192745,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 39,
+    "value": 359787311,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  },
+  {
+    "count": 40,
+    "value": 4260025370,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 41,
+    "value": 2776172195,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at PRNG.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:108:17) |     at Battle.randomChance (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:213:22)"
+  },
+  {
+    "count": 42,
+    "value": 1089458516,
+    "stack": "    at PRNG.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/prng.js:86:29) |     at Battle.random (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:209:22) |     at Battle.randomizer (/Users/vjeux/random/showdown/pokemon-showdown-ts/dist/sim/battle.js:1958:23)"
+  }
+]

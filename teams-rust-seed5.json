@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Spoink",
+      "species": "Spoink",
+      "level": 84,
+      "ability": "Thick Fat",
+      "item": "armorfossil",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "doubleironbash",
+        "letssnuggleforever",
+        "falseswipe",
+        "smokescreen"
+      ],
+      "evs": {
+        "hp": 117,
+        "atk": 74,
+        "def": 81,
+        "spa": 74,
+        "spd": 88,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 11,
+        "def": 28,
+        "spa": 7,
+        "spd": 30,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Clawitzer",
+      "species": "Clawitzer",
+      "level": 50,
+      "ability": "Mega Launcher",
+      "item": "psychicmemory",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "defog",
+        "multiattack",
+        "mysticalpower",
+        "sharpen"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 113,
+        "def": 84,
+        "spa": 84,
+        "spd": 82,
+        "spe": 59
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 9,
+        "def": 14,
+        "spa": 12,
+        "spd": 24,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Jumpluff",
+      "species": "Jumpluff",
+      "level": 93,
+      "ability": "Chlorophyll",
+      "item": "psychicgem",
+      "nature": "bashful",
+      "gender": "F",
+      "moves": [
+        "thunderbolt",
+        "hail",
+        "weatherball",
+        "spikes"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 90,
+        "def": 72,
+        "spa": 87,
+        "spd": 59,
+        "spe": 114
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 28,
+        "def": 12,
+        "spa": 31,
+        "spd": 13,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Tarountula",
+      "species": "Tarountula",
+      "level": 74,
+      "ability": "Insomnia",
+      "item": "cherishball",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "maliciousmoonsault",
+        "maxovergrowth",
+        "endeavor",
+        "obstruct"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 62,
+        "def": 61,
+        "spa": 70,
+        "spd": 102,
+        "spe": 122
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 11,
+        "def": 20,
+        "spa": 11,
+        "spd": 4,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Delcatty",
+      "species": "Delcatty",
+      "level": 97,
+      "ability": "Cute Charm",
+      "item": "choiceband",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "hiddenpowersteel",
+        "electrodrift",
+        "silverwind",
+        "secretpower"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 89,
+        "def": 49,
+        "spa": 86,
+        "spd": 104,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 29,
+        "def": 31,
+        "spa": 28,
+        "spd": 17,
+        "spe": 11
+      }
+    },
+    {
+      "name": "Starly",
+      "species": "Starly",
+      "level": 81,
+      "ability": "Keen Eye",
+      "item": "parkball",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "strugglebug",
+        "poltergeist",
+        "coil",
+        "blazingtorque"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 75,
+        "def": 71,
+        "spa": 93,
+        "spd": 80,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 15,
+        "def": 3,
+        "spa": 30,
+        "spd": 10,
+        "spe": 24
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Smokomodo",
+      "species": "Smokomodo",
+      "level": 97,
+      "ability": "Blaze",
+      "item": "tr81",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "grudge",
+        "eruption",
+        "echoedvoice",
+        "takeheart"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 78,
+        "def": 71,
+        "spa": 107,
+        "spd": 114,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 26,
+        "def": 31,
+        "spa": 22,
+        "spd": 0,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Urshifu-Rapid-Strike-Gmax",
+      "species": "Urshifu-Rapid-Strike-Gmax",
+      "level": 73,
+      "ability": "Unseen Fist",
+      "item": "redcard",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "naturesmadness",
+        "torment",
+        "zippyzap",
+        "gmaxvinelash"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 81,
+        "def": 95,
+        "spa": 64,
+        "spd": 93,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 21,
+        "def": 28,
+        "spa": 11,
+        "spd": 11,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Saharascal",
+      "species": "Saharascal",
+      "level": 55,
+      "ability": "Water Absorb",
+      "item": "pyroarite",
+      "nature": "quiet",
+      "gender": "F",
+      "moves": [
+        "magicpowder",
+        "trick",
+        "selfdestruct",
+        "powertrick"
+      ],
+      "evs": {
+        "hp": 119,
+        "atk": 89,
+        "def": 61,
+        "spa": 88,
+        "spd": 67,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 5,
+        "def": 2,
+        "spa": 9,
+        "spd": 15,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Foongus",
+      "species": "Foongus",
+      "level": 82,
+      "ability": "Effect Spore",
+      "item": "rootfossil",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "risingvoltage",
+        "overdrive",
+        "drumbeating",
+        "wideguard"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 77,
+        "def": 110,
+        "spa": 92,
+        "spd": 94,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 27,
+        "def": 7,
+        "spa": 7,
+        "spd": 25,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Spiritomb",
+      "species": "Spiritomb",
+      "level": 84,
+      "ability": "Pressure",
+      "item": "chilanberry",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "rest",
+        "fairylock",
+        "surf",
+        "uproar"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 77,
+        "def": 75,
+        "spa": 71,
+        "spd": 90,
+        "spe": 111
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 8,
+        "def": 26,
+        "spa": 21,
+        "spd": 0,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Dubwool",
+      "species": "Dubwool",
+      "level": 50,
+      "ability": "Fluffy",
+      "item": "steelixite",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "waterspout",
+        "doublekick",
+        "vitalthrow",
+        "firelash"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 85,
+        "def": 104,
+        "spa": 110,
+        "spd": 60,
+        "spe": 73
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 27,
+        "def": 30,
+        "spa": 13,
+        "spd": 15,
+        "spe": 9
+      }
+    }
+  ]
+}

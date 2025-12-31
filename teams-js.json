@@ -5,7 +5,7 @@
       "species": "Grubbin",
       "level": 95,
       "ability": "Swarm",
-      "item": "firiumz",
+      "item": "fightiniumz",
       "nature": "docile",
       "gender": "M",
       "moves": [
@@ -36,14 +36,14 @@
       "species": "Genesect-Shock",
       "level": 88,
       "ability": "Download",
-      "item": "powerweight",
+      "item": "poisongem",
       "nature": "careful",
       "gender": "",
       "moves": [
-        "volttackle",
+        "visegrip",
         "barbbarrage",
         "doomdesire",
-        "terrainpulse"
+        "temperflare"
       ],
       "evs": {
         "hp": 80,
@@ -67,7 +67,7 @@
       "species": "Glimmora",
       "level": 100,
       "ability": "Toxic Debris",
-      "item": "tr76",
+      "item": "tr62",
       "nature": "lax",
       "gender": "F",
       "moves": [
@@ -98,13 +98,13 @@
       "species": "Golem-Alola",
       "level": 98,
       "ability": "Magnet Pull",
-      "item": "petayaberry",
+      "item": "oddincense",
       "nature": "naive",
       "gender": "F",
       "moves": [
         "gmaxterror",
         "kingsshield",
-        "steelroller",
+        "steameruption",
         "dragontail"
       ],
       "evs": {
@@ -129,7 +129,7 @@
       "species": "Vivillon-Savanna",
       "level": 99,
       "ability": "Shield Dust",
-      "item": "rockgem",
+      "item": "raichunitex",
       "nature": "rash",
       "gender": "F",
       "moves": [
@@ -160,13 +160,13 @@
       "species": "Grovyle",
       "level": 85,
       "ability": "Overgrow",
-      "item": "fightinggem",
+      "item": "fairygem",
       "nature": "naughty",
       "gender": "M",
       "moves": [
         "constrict",
-        "phantomforce",
-        "volttackle",
+        "petaldance",
+        "visegrip",
         "doubleironbash"
       ],
       "evs": {
@@ -193,14 +193,14 @@
       "species": "Slowbro-Mega",
       "level": 93,
       "ability": "Shell Armor",
-      "item": "wiseglasses",
+      "item": "vilevial",
       "nature": "careful",
       "gender": "F",
       "moves": [
-        "solarbeam",
+        "snowscape",
         "neverendingnightmare",
         "lightscreen",
-        "present"
+        "powerwhip"
       ],
       "evs": {
         "hp": 101,
@@ -224,13 +224,13 @@
       "species": "Latias-Mega",
       "level": 53,
       "ability": "Levitate",
-      "item": "tr75",
+      "item": "tr61",
       "nature": "hasty",
       "gender": "F",
       "moves": [
-        "watershuriken",
-        "tectonicrage",
-        "smartstrike",
+        "watergun",
+        "tearfullook",
+        "sludgebomb",
         "honeclaws"
       ],
       "evs": {
@@ -255,14 +255,14 @@
       "species": "Mantine",
       "level": 56,
       "ability": "Swift Swim",
-      "item": "deepseatooth",
+      "item": "darkmemory",
       "nature": "rash",
       "gender": "F",
       "moves": [
-        "pursuit",
-        "steelwing",
+        "punishment",
+        "steamroller",
         "bloodmoon",
-        "twister"
+        "twinbeam"
       ],
       "evs": {
         "hp": 67,
@@ -290,8 +290,8 @@
       "nature": "relaxed",
       "gender": "M",
       "moves": [
-        "psychicnoise",
-        "tickle",
+        "psychic",
+        "thunderpunch",
         "bulkup",
         "lightthatburnsthesky"
       ],
@@ -317,11 +317,11 @@
       "species": "Zacian",
       "level": 95,
       "ability": "Intrepid Sword",
-      "item": "laxincense",
+      "item": "kelpsyberry",
       "nature": "naughty",
       "gender": "",
       "moves": [
-        "paleowave",
+        "zenheadbutt",
         "makeitrain",
         "lick",
         "nobleroar"
@@ -352,9 +352,9 @@
       "nature": "bold",
       "gender": "M",
       "moves": [
-        "spiderweb",
+        "spectralthief",
         "astralbarrage",
-        "visegrip",
+        "venoshock",
         "alloutpummeling"
       ],
       "evs": {

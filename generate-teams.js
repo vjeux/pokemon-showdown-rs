@@ -70,14 +70,17 @@ function generateRandomTeam(prng, dex) {
 		return team;
 	}
 
-	// Get all available moves as an array for sampling (extract IDs)
+	// Get all available moves as an array for sampling (extract IDs and sort for determinism)
 	const allMoves = Object.values(dex.moves.all()).map(m => m.id);
+	allMoves.sort();
 
-	// Get all available items as an array for sampling (extract IDs)
+	// Get all available items as an array for sampling (extract IDs and sort for determinism)
 	const allItems = Object.values(dex.items.all()).map(i => i.id);
+	allItems.sort();
 
-	// Get all available natures as an array for sampling (extract IDs)
+	// Get all available natures as an array for sampling (extract IDs and sort for determinism)
 	const allNatures = Object.values(dex.natures.all()).map(n => n.id);
+	allNatures.sort();
 
 	// Track used species and items to avoid duplicates
 	const usedSpecies = [];
@@ -196,10 +199,11 @@ module.exports = {
 
 // Example usage (if run directly):
 if (require.main === module) {
-	const prng = new PRNG([1, 2, 3, 4]);
+	const seedValue = parseInt(process.argv[2] || '1', 10);
+	const prng = new PRNG([0, 0, 0, seedValue]);
 	const dex = Dex.forFormat('gen9randombattle');
 
-	console.log('Generating random teams with seed [1, 2, 3, 4]...');
+	console.log(`Generating random teams with seed [0, 0, 0, ${seedValue}]...`);
 	const teams = generateRandomTeams(prng, dex);
 
 	console.log('\nP1 Team:');
@@ -223,4 +227,10 @@ if (require.main === module) {
 		console.log(`   IVs: ${pokemon.ivs.hp} HP / ${pokemon.ivs.atk} Atk / ${pokemon.ivs.def} Def / ${pokemon.ivs.spa} SpA / ${pokemon.ivs.spd} SpD / ${pokemon.ivs.spe} Spe`);
 		console.log('');
 	});
+
+	// Save teams to file
+	const fs = require('fs');
+	const filename = seedValue === 1 ? 'teams-js.json' : `teams-js-seed${seedValue}.json`;
+	fs.writeFileSync(filename, JSON.stringify(teams, null, 2));
+	console.log(`\nSaved teams to ${filename}`);
 }

@@ -1,7 +1,7 @@
 /// Example: Generate and export random teams to JSON for comparison with JavaScript
 ///
-/// This generates teams with seed [0,0,0,1] and exports them to JSON
-/// for comparison with the JavaScript implementation.
+/// Usage: cargo run --example export_teams [seed]
+/// Default seed is 1 if not provided
 
 use pokemon_showdown::{Dex, PRNG, PRNGSeed};
 use serde::Serialize;
@@ -37,11 +37,17 @@ struct StatsExport {
 }
 
 fn main() {
+    // Get seed from command line argument, default to 1
+    let seed_value: u16 = std::env::args()
+        .nth(1)
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(1);
+
     // Load dex
     let dex = Dex::load_default().expect("Failed to load dex");
 
-    // Create PRNG with seed [0, 0, 0, 1]
-    let mut prng = PRNG::new(Some(PRNGSeed::Gen5([0, 0, 0, 1])));
+    // Create PRNG with seed [0, 0, 0, seed_value]
+    let mut prng = PRNG::new(Some(PRNGSeed::Gen5([0, 0, 0, seed_value])));
 
     // Generate teams
     let (team1, team2) = pokemon_showdown::team_generator::generate_random_teams(&mut prng, &dex);
@@ -118,9 +124,14 @@ fn main() {
 
     // Export to JSON
     let json = serde_json::to_string_pretty(&export).expect("Failed to serialize");
-    std::fs::write("teams-rust.json", json).expect("Failed to write file");
+    let filename = if seed_value == 1 {
+        "teams-rust.json".to_string()
+    } else {
+        format!("teams-rust-seed{}.json", seed_value)
+    };
+    std::fs::write(&filename, json).expect("Failed to write file");
 
-    println!("Teams exported to teams-rust.json");
+    println!("Teams exported to {}", filename);
     println!(
         "P1 team: {}",
         export

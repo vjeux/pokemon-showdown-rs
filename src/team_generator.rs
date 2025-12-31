@@ -89,6 +89,7 @@ pub fn generate_random_team(prng: &mut PRNG, dex: &Dex) -> Vec<PokemonSet> {
         };
 
         // Select random gender based on species gender ratio
+        // Match JavaScript behavior: if no gender_ratio, check gender field first, then default to 50/50
         let gender = if let Some(ref ratio) = species.gender_ratio {
             if ratio.m > 0.0 && ratio.f > 0.0 {
                 // Mixed gender
@@ -104,8 +105,28 @@ pub fn generate_random_team(prng: &mut PRNG, dex: &Dex) -> Vec<PokemonSet> {
             } else {
                 Gender::None
             }
+        } else if let Some(ref gender_str) = species.gender {
+            // No gender_ratio, but gender field is set (M, F, or N)
+            match gender_str.as_str() {
+                "M" => Gender::Male,
+                "F" => Gender::Female,
+                "N" => Gender::None,
+                _ => {
+                    // Default to 50/50 like JavaScript
+                    if prng.random_chance(1, 2) {
+                        Gender::Male
+                    } else {
+                        Gender::Female
+                    }
+                }
+            }
         } else {
-            Gender::None
+            // No gender_ratio and no gender field - default to 50/50 like JavaScript
+            if prng.random_chance(1, 2) {
+                Gender::Male
+            } else {
+                Gender::Female
+            }
         };
 
         // Select 4 random moves
