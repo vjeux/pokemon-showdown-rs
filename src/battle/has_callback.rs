@@ -797,14 +797,20 @@ impl Battle {
     }
 
     /// Check if a condition has a callback for an event
-    fn condition_has_callback(&self, _condition_id: &str, event_id: &str) -> bool {
+    fn condition_has_callback(&self, condition_id: &str, event_id: &str) -> bool {
         // Conditions don't have onAnySwitchIn
         if event_id == "onAnySwitchIn" {
             return false;
         }
 
-        // For other events, conservatively return false by default
-        false
+        // Check status conditions
+        match event_id {
+            "onResidual" => matches!(
+                condition_id,
+                "brn" | "psn" | "tox"
+            ),
+            _ => false,
+        }
     }
 
     /// Check if a species has a callback for an event

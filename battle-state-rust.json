@@ -6,80 +6,6 @@
     22
   ],
   "teams": {
-    "p1": [
-      {
-        "species": "Camerupt",
-        "moves": [
-          "willowisp",
-          "earthquake",
-          "overheat",
-          "stealthrock"
-        ],
-        "ability": "Solid Rock",
-        "item": "Leftovers",
-        "level": 91
-      },
-      {
-        "species": "Qwilfish-Hisui",
-        "moves": [
-          "crunch",
-          "gunkshot",
-          "taunt",
-          "toxicspikes"
-        ],
-        "ability": "Intimidate",
-        "item": "Eviolite",
-        "level": 83
-      },
-      {
-        "species": "Slither Wing",
-        "moves": [
-          "closecombat",
-          "willowisp",
-          "morningsun",
-          "uturn"
-        ],
-        "ability": "Protosynthesis",
-        "item": "Heavy-Duty Boots",
-        "level": 81
-      },
-      {
-        "species": "Snorlax",
-        "moves": [
-          "bodyslam",
-          "earthquake",
-          "rest",
-          "curse"
-        ],
-        "ability": "Thick Fat",
-        "item": "Chesto Berry",
-        "level": 82
-      },
-      {
-        "species": "Magnezone",
-        "moves": [
-          "bodypress",
-          "voltswitch",
-          "thunderbolt",
-          "flashcannon"
-        ],
-        "ability": "Magnet Pull",
-        "item": "Choice Scarf",
-        "level": 85
-      },
-      {
-        "species": "Serperior",
-        "moves": [
-          "leafstorm",
-          "terablast",
-          "glare",
-          "synthesis"
-        ],
-        "ability": "Contrary",
-        "item": "Life Orb",
-        "level": 79
-      }
-    ],
     "p2": [
       {
         "species": "Pachirisu",
@@ -152,6 +78,80 @@
         "ability": "Adaptability",
         "item": "Life Orb",
         "level": 84
+      }
+    ],
+    "p1": [
+      {
+        "species": "Camerupt",
+        "moves": [
+          "willowisp",
+          "earthquake",
+          "overheat",
+          "stealthrock"
+        ],
+        "ability": "Solid Rock",
+        "item": "Leftovers",
+        "level": 91
+      },
+      {
+        "species": "Qwilfish-Hisui",
+        "moves": [
+          "crunch",
+          "gunkshot",
+          "taunt",
+          "toxicspikes"
+        ],
+        "ability": "Intimidate",
+        "item": "Eviolite",
+        "level": 83
+      },
+      {
+        "species": "Slither Wing",
+        "moves": [
+          "closecombat",
+          "willowisp",
+          "morningsun",
+          "uturn"
+        ],
+        "ability": "Protosynthesis",
+        "item": "Heavy-Duty Boots",
+        "level": 81
+      },
+      {
+        "species": "Snorlax",
+        "moves": [
+          "bodyslam",
+          "earthquake",
+          "rest",
+          "curse"
+        ],
+        "ability": "Thick Fat",
+        "item": "Chesto Berry",
+        "level": 82
+      },
+      {
+        "species": "Magnezone",
+        "moves": [
+          "bodypress",
+          "voltswitch",
+          "thunderbolt",
+          "flashcannon"
+        ],
+        "ability": "Magnet Pull",
+        "item": "Choice Scarf",
+        "level": 85
+      },
+      {
+        "species": "Serperior",
+        "moves": [
+          "leafstorm",
+          "terablast",
+          "glare",
+          "synthesis"
+        ],
+        "ability": "Contrary",
+        "item": "Life Orb",
+        "level": 79
       }
     ]
   },
@@ -587,7 +587,7 @@
               {
                 "name": "Pachirisu",
                 "species": "pachirisu",
-                "hp": 271,
+                "hp": 255,
                 "maxhp": 271,
                 "status": "brn",
                 "fainted": false,

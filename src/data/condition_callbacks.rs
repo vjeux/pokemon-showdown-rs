@@ -5,6 +5,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::ID;
 
 // =========================================================================
 // DISPATCH FUNCTIONS
@@ -294,11 +295,49 @@ pub fn dispatch_on_move_aborted(
 
 /// Dispatch onResidual callbacks
 pub fn dispatch_on_residual(
-    _battle: &mut Battle,
-    _condition_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match condition_id {
+        // JavaScript brn condition (data/conditions.ts):
+        //   brn: {
+        //     name: 'brn',
+        //     effectType: 'Status',
+        //     onResidualOrder: 10,
+        //     onResidual(pokemon) {
+        //       this.damage(pokemon.baseMaxhp / 16);
+        //     },
+        //   },
+        "brn" => {
+            // JS: this.damage(pokemon.baseMaxhp / 16);
+            // Extract maxhp first to avoid borrow conflicts
+            let damage_amount = if let Some(side) = battle.sides.get(pokemon_pos.0) {
+                if let Some(pokemon) = side.pokemon.get(pokemon_pos.1) {
+                    pokemon.maxhp / 16
+                } else {
+                    return EventResult::Continue;
+                }
+            } else {
+                return EventResult::Continue;
+            };
+
+            // Now call damage with the amount
+            // JS: this.damage(pokemon.baseMaxhp / 16);
+            // JavaScript damage() signature: damage(damage, target=null, source=null, effect=null, instafaint=false)
+            let effect_id = ID::new("brn");
+            battle.damage(
+                damage_amount,
+                Some(pokemon_pos),
+                None,  // No source
+                Some(&effect_id),  // Effect is the burn status
+                false,  // instafaint = false (default in JS)
+            );
+
+            EventResult::Continue
+        }
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onResidualOrder callbacks

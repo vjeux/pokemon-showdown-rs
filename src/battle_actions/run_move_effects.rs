@@ -15,6 +15,7 @@ pub fn run_move_effects(
     _is_secondary: bool,
     _is_self: bool,
 ) -> Vec<Option<i32>> {
+    eprintln!("[RUN_MOVE_EFFECTS] Called for move: {:?}, has status: {:?}", move_data.id, move_data.status);
     let result_damages = damages.to_vec();
 
     for &target in targets.iter() {
@@ -102,12 +103,17 @@ pub fn run_move_effects(
 
         // Apply status
         if let Some(ref status) = move_data.status {
+            eprintln!("[RUN_MOVE_EFFECTS] Applying status '{}' to target {:?}", status, target_pos);
             if let Some(side) = battle.sides.get_mut(target_pos.0) {
                 if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
+                    eprintln!("[RUN_MOVE_EFFECTS] Target {} current status: '{}'", pokemon.name, pokemon.status);
                     // Simple status application (full version would check immunity)
                     if pokemon.status.is_empty() {
                         pokemon.status = crate::dex_data::ID::new(status);
+                        eprintln!("[RUN_MOVE_EFFECTS] Applied status '{}' to {}", status, pokemon.name);
                         battle.add("-status", &[format!("p{}a", target_pos.0 + 1).into(), status.as_str().into()]);
+                    } else {
+                        eprintln!("[RUN_MOVE_EFFECTS] Status not applied - {} already has status '{}'", pokemon.name, pokemon.status);
                     }
                 }
             }
