@@ -6,80 +6,6 @@
     1
   ],
   "teams": {
-    "p2": [
-      {
-        "species": "Slowbro-Mega",
-        "moves": [
-          "snowscape",
-          "neverendingnightmare",
-          "lightscreen",
-          "powerwhip"
-        ],
-        "ability": "Shell Armor",
-        "item": "vilevial",
-        "level": 93
-      },
-      {
-        "species": "Latias-Mega",
-        "moves": [
-          "watergun",
-          "tearfullook",
-          "sludgebomb",
-          "honeclaws"
-        ],
-        "ability": "Levitate",
-        "item": "tr61",
-        "level": 53
-      },
-      {
-        "species": "Mantine",
-        "moves": [
-          "punishment",
-          "steamroller",
-          "bloodmoon",
-          "twinbeam"
-        ],
-        "ability": "Swift Swim",
-        "item": "darkmemory",
-        "level": 56
-      },
-      {
-        "species": "Cinderace-Gmax",
-        "moves": [
-          "psychic",
-          "thunderpunch",
-          "bulkup",
-          "lightthatburnsthesky"
-        ],
-        "ability": "Blaze",
-        "item": "apicotberry",
-        "level": 63
-      },
-      {
-        "species": "Zacian",
-        "moves": [
-          "zenheadbutt",
-          "makeitrain",
-          "lick",
-          "nobleroar"
-        ],
-        "ability": "Intrepid Sword",
-        "item": "kelpsyberry",
-        "level": 95
-      },
-      {
-        "species": "Cutiefly",
-        "moves": [
-          "spectralthief",
-          "astralbarrage",
-          "venoshock",
-          "alloutpummeling"
-        ],
-        "ability": "Honey Gather",
-        "item": "altarianite",
-        "level": 91
-      }
-    ],
     "p1": [
       {
         "species": "Grubbin",
@@ -152,6 +78,80 @@
         "ability": "Overgrow",
         "item": "fairygem",
         "level": 85
+      }
+    ],
+    "p2": [
+      {
+        "species": "Slowbro-Mega",
+        "moves": [
+          "snowscape",
+          "neverendingnightmare",
+          "lightscreen",
+          "powerwhip"
+        ],
+        "ability": "Shell Armor",
+        "item": "vilevial",
+        "level": 93
+      },
+      {
+        "species": "Latias-Mega",
+        "moves": [
+          "watergun",
+          "tearfullook",
+          "sludgebomb",
+          "honeclaws"
+        ],
+        "ability": "Levitate",
+        "item": "tr61",
+        "level": 53
+      },
+      {
+        "species": "Mantine",
+        "moves": [
+          "punishment",
+          "steamroller",
+          "bloodmoon",
+          "twinbeam"
+        ],
+        "ability": "Swift Swim",
+        "item": "darkmemory",
+        "level": 56
+      },
+      {
+        "species": "Cinderace-Gmax",
+        "moves": [
+          "psychic",
+          "thunderpunch",
+          "bulkup",
+          "lightthatburnsthesky"
+        ],
+        "ability": "Blaze",
+        "item": "apicotberry",
+        "level": 63
+      },
+      {
+        "species": "Zacian",
+        "moves": [
+          "zenheadbutt",
+          "makeitrain",
+          "lick",
+          "nobleroar"
+        ],
+        "ability": "Intrepid Sword",
+        "item": "kelpsyberry",
+        "level": 95
+      },
+      {
+        "species": "Cutiefly",
+        "moves": [
+          "spectralthief",
+          "astralbarrage",
+          "venoshock",
+          "alloutpummeling"
+        ],
+        "ability": "Honey Gather",
+        "item": "altarianite",
+        "level": 91
       }
     ]
   },
