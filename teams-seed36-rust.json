@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Polteageist",
+      "species": "Polteageist-Antique",
+      "level": 78,
+      "ability": "cursedbody",
+      "item": "whiteherb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "storedpower",
+        "shellsmash",
+        "strengthsap",
+        "shadowball"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mabosstiff",
+      "species": "Mabosstiff",
+      "level": 86,
+      "ability": "stakeout",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "playrough",
+        "wildcharge",
+        "crunch",
+        "psychicfangs"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pyroar",
+      "species": "Pyroar",
+      "level": 88,
+      "ability": "unnerve",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "fireblast",
+        "darkpulse",
+        "hypervoice",
+        "workup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Heracross",
+      "species": "Heracross",
+      "level": 80,
+      "ability": "moxie",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "megahorn",
+        "knockoff",
+        "closecombat",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dragalge",
+      "species": "Dragalge",
+      "level": 88,
+      "ability": "adaptability",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "sludgewave",
+        "dragontail",
+        "dracometeor",
+        "focusblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Iron Crown",
+      "species": "Iron Crown",
+      "level": 78,
+      "ability": "quarkdrive",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "psyshock",
+        "tachyoncutter",
+        "calmmind",
+        "focusblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Drednaw",
+      "species": "Drednaw",
+      "level": 81,
+      "ability": "shellarmor",
+      "item": "whiteherb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "shellsmash",
+        "stoneedge",
+        "earthquake",
+        "liquidation"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Meowscarada",
+      "species": "Meowscarada",
+      "level": 78,
+      "ability": "protean",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "knockoff",
+        "tripleaxel",
+        "toxicspikes",
+        "flowertrick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Oinkologne",
+      "species": "Oinkologne-F",
+      "level": 92,
+      "ability": "thickfat",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "bodyslam",
+        "lashout",
+        "curse",
+        "highhorsepower"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wugtrio",
+      "species": "Wugtrio",
+      "level": 91,
+      "ability": "gooey",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "stompingtantrum",
+        "liquidation",
+        "aquajet",
+        "throatchop"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Koraidon",
+      "species": "Koraidon",
+      "level": 64,
+      "ability": "orichalcumpulse",
+      "item": "loadeddice",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "scaleshot",
+        "flareblitz",
+        "swordsdance",
+        "collisioncourse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hoopa",
+      "species": "Hoopa",
+      "level": 85,
+      "ability": "magician",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "trick",
+        "psyshock",
+        "focusblast",
+        "shadowball"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

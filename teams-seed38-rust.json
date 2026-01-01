@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Palkia",
+      "species": "Palkia-Origin",
+      "level": 72,
+      "ability": "pressure",
+      "item": "lustrousglobe",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "hydropump",
+        "dracometeor",
+        "thunderwave",
+        "fireblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Golduck",
+      "species": "Golduck",
+      "level": 90,
+      "ability": "cloudnine",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "hydropump",
+        "encore",
+        "nastyplot",
+        "grassknot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Klawf",
+      "species": "Klawf",
+      "level": 90,
+      "ability": "regenerator",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "stoneedge",
+        "highhorsepower",
+        "knockoff",
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wo-Chien",
+      "species": "Wo-Chien",
+      "level": 83,
+      "ability": "tabletsofruin",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "knockoff",
+        "protect",
+        "ruination",
+        "leechseed"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Girafarig",
+      "species": "Girafarig",
+      "level": 89,
+      "ability": "sapsipper",
+      "item": "eviolite",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "dazzlinggleam",
+        "thunderbolt",
+        "psyshock",
+        "nastyplot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Masquerain",
+      "species": "Masquerain",
+      "level": 87,
+      "ability": "intimidate",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "bugbuzz",
+        "stickyweb",
+        "hydropump",
+        "hurricane"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Wugtrio",
+      "species": "Wugtrio",
+      "level": 91,
+      "ability": "gooey",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "liquidation",
+        "stompingtantrum",
+        "throatchop",
+        "aquajet"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Snorlax",
+      "species": "Snorlax",
+      "level": 82,
+      "ability": "thickfat",
+      "item": "chestoberry",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "earthquake",
+        "curse",
+        "bodyslam",
+        "rest"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Infernape",
+      "species": "Infernape",
+      "level": 82,
+      "ability": "blaze",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "machpunch",
+        "closecombat",
+        "gunkshot",
+        "overheat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Regidrago",
+      "species": "Regidrago",
+      "level": 77,
+      "ability": "dragonsmaw",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "terablast",
+        "dragonclaw",
+        "dragondance",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Charizard",
+      "species": "Charizard",
+      "level": 85,
+      "ability": "blaze",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "flamethrower",
+        "willowisp",
+        "hurricane",
+        "focusblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Uxie",
+      "species": "Uxie",
+      "level": 83,
+      "ability": "levitate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "uturn",
+        "thunderwave",
+        "psychicnoise",
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

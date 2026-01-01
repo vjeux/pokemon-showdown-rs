@@ -15,8 +15,8 @@
    - PRNG calls now match JavaScript (7 → 4 calls at turn 30)
 
 ### Test Infrastructure
-- **35 Random Battle Seeds** ready for testing
-- **Rust tests:** 35 seeds tested, all complete successfully, no crashes
+- **40 Random Battle Seeds** ready for testing
+- **Rust tests:** 40 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -58,6 +58,11 @@
 | 33 | ✅ Pass (T55, PRNG 234) | ⏳ Needs verification | Regice vs Porygon2 |
 | 34 | ✅ Pass (T9, PRNG 55) | ⏳ Needs verification | Thundurus vs Leavanny |
 | 35 | ✅ Pass (T20, PRNG 111) | ⏳ Needs verification | Rotom vs Skeledirge |
+| 36 | ✅ Pass (T23, PRNG 109) | ⏳ Needs verification | Polteageist vs Drednaw |
+| 37 | ✅ Pass (T64, PRNG 237) | ⏳ Needs verification | Basculegion vs Sandy Shocks |
+| 38 | ✅ Pass (T18, PRNG 101) | ⏳ Needs verification | Palkia vs Wugtrio |
+| 39 | ✅ Pass (T28, PRNG 155) | ⏳ Needs verification | Donphan vs Enamorus |
+| 40 | ✅ Pass (T64, PRNG 275) | ⏳ Needs verification | Slowbro vs Pachirisu |
 
 ## How to Verify
 
@@ -109,7 +114,7 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Next Steps
 
-1. **User runs JavaScript tests** for seeds 1-35 to verify exact match
+1. **User runs JavaScript tests** for seeds 1-40 to verify exact match
 2. **If divergences found:** Investigate PRNG call differences and fix
 3. **Generate more seeds** if all current ones pass
 4. **Continue testing** until multiple random battles all match perfectly
@@ -133,4 +138,4 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Current Confidence Level
 
-**High** - The Shield Dust fix resolved the only known divergence. All 35 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
+**High** - The Shield Dust fix resolved the only known divergence. All 40 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
