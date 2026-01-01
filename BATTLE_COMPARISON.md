@@ -37,23 +37,30 @@
    - psywave.rs: Changed `battle.prng.random_range()` to `battle.random_with_range()`
    - quickclaw.rs: Changed `battle.prng.random_chance()` to `battle.random_chance()`
 
-#### Current Status: Investigating Turn 27 divergence
+#### Current Status: Investigating Turn 32 divergence
 
 **Progress:**
 1. ✓ Fixed duplicate test execution - test was running twice due to duplicate `#[test]` attributes
 2. ✓ Turns 1-26 match perfectly between JS and Rust
+3. ✓ Implemented Intrepid Sword ability (cc4e7c4a) - Turns 1-31 now match perfectly
 
-**Turn 27 Divergence Details:**
-- JavaScript: 4 PRNG calls (Zen Headbutt KOs Genesect, Vise Grip not used)
-- Rust: 7 PRNG calls (Zen Headbutt deals 40 damage, Genesect survives with 57/263 HP, then Vise Grip used)
-- Genesect HP before Zen Headbutt: 97/263
-- Zen Headbutt damage in Rust: 40 (base 81, halved by type resistance)
-- Issue: In JavaScript, Zen Headbutt must deal 97+ damage to KO Genesect
-- Possible cause: Critical hit in JavaScript but not Rust, OR different damage calculation
+**Turn 27 Divergence - FIXED:**
+- **Root Cause**: Intrepid Sword ability was not implemented
+- **Fix**: Implemented onStart handler that:
+  - Checks if boost already applied using volatiles
+  - Adds 'swordboost' volatile to prevent double-boosting
+  - Applies +1 Attack boost to Zacian
+- **Result**: Zacian now correctly gets +1 Attack, dealing enough damage to KO Genesect
+- **Status**: Turn 27 now matches JS (4 PRNG calls)
+
+**Turn 32 Divergence Details:**
+- JavaScript: 4 PRNG calls
+- Rust: 6 PRNG calls
+- Difference: 2 extra PRNG calls in Rust
 
 **Next Steps:**
-- Compare what moves/actions are executed on Turn 27 in JS vs Rust
-- Identify which 3 extra PRNG calls are made in Rust
+- Investigate what happens on Turn 32 in both JS and Rust
+- Identify which 2 extra PRNG calls are made in Rust
 
 ### Previous Investigation
 
