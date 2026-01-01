@@ -235,6 +235,8 @@ pub struct MoveData {
     pub base_move: Option<ID>,
     #[serde(rename = "isZOrMaxPowered", default)]
     pub is_z_or_max_powered: bool,
+    #[serde(rename = "willCrit", default)]
+    pub will_crit: Option<bool>,
 }
 
 /// Accuracy can be a number or true (always hits)
