@@ -365,28 +365,37 @@ impl PRNG {
             PRNGImpl::Sodium(rng) => rng.next(),
         };
 
-        // Log PRNG calls around turn 38 for debugging (cumulative 137-145)
-        if self.call_count >= 137 && self.call_count <= 145 {
-            let bt = std::backtrace::Backtrace::force_capture();
-            let bt_str = format!("{}", bt);
-            let caller = bt_str.lines()
-                .filter(|line| !line.contains("prng.rs") && !line.contains("std::") && !line.contains("core::"))
-                .take(3)
-                .collect::<Vec<_>>()
-                .join("\n    ");
-            eprintln!("[Rust PRNG #{}] value={}\n    {}", self.call_count, value, caller);
-        }
+        // Parse TRACE_PRNG environment variable for configurable tracing
+        // Examples: TRACE_PRNG=1-5 (trace calls 1 through 5)
+        //           TRACE_PRNG=10 (trace call 10)
+        //           TRACE_PRNG=1,5,10 (trace calls 1, 5, and 10)
+        if let Ok(trace_spec) = std::env::var("TRACE_PRNG") {
+            let should_trace = trace_spec.split(',').any(|part| {
+                if part.contains('-') {
+                    // Range like "1-5"
+                    let parts: Vec<&str> = part.split('-').collect();
+                    if parts.len() == 2 {
+                        if let (Ok(start), Ok(end)) = (parts[0].parse::<usize>(), parts[1].parse::<usize>()) {
+                            return self.call_count >= start && self.call_count <= end;
+                        }
+                    }
+                    false
+                } else {
+                    // Single number like "10"
+                    part.parse::<usize>().ok() == Some(self.call_count)
+                }
+            });
 
-        // Log PRNG calls (can be enabled for debugging)
-        if std::env::var("RUST_LOG_PRNG").is_ok() && self.call_count <= 100 {
-            let bt = std::backtrace::Backtrace::force_capture();
-            let bt_str = format!("{}", bt);
-            let caller = bt_str.lines()
-                .filter(|line| !line.contains("prng.rs") && !line.contains("std::") && !line.contains("core::"))
-                .take(5)
-                .collect::<Vec<_>>()
-                .join("\n    ");
-            eprintln!("[PRNG #{}] value={}\n    {}", self.call_count, value, caller);
+            if should_trace {
+                let bt = std::backtrace::Backtrace::force_capture();
+                let bt_str = format!("{}", bt);
+                let caller = bt_str.lines()
+                    .filter(|line| !line.contains("prng.rs") && !line.contains("std::") && !line.contains("core::"))
+                    .take(8)
+                    .collect::<Vec<_>>()
+                    .join("\n  ");
+                eprintln!("\n[Rust PRNG #{}] value={}\n  {}\n", self.call_count, value, caller);
+            }
         }
 
         value

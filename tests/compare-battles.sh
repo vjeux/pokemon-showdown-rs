@@ -8,12 +8,17 @@
 # 3. Running battles with those teams
 # 4. Comparing battle state turn-by-turn
 #
-# Usage: ./tests/compare-battles.sh [seed_number]
+# Usage: ./tests/compare-battles.sh [seed_number] [TRACE_PRNG]
+# Example: ./tests/compare-battles.sh 100 1-5  (trace PRNG calls 1-5)
 
 SEED=${1:-1}
+TRACE_PRNG=${2:-}
 
 echo "======================================"
 echo "Battle Comparison Test - Seed $SEED"
+if [ -n "$TRACE_PRNG" ]; then
+    echo "PRNG Trace: $TRACE_PRNG"
+fi
 echo "======================================"
 echo ""
 
@@ -55,10 +60,18 @@ echo "Step 3: Running battles..."
 echo ""
 
 echo "  JavaScript battle:"
-node tests/test-battle-js.js $SEED 2>&1 | grep '^#[0-9]' > /tmp/js-battle-seed${SEED}.txt
+if [ -n "$TRACE_PRNG" ]; then
+    TRACE_PRNG=$TRACE_PRNG node tests/test-battle-js.js $SEED 2>&1 | grep '^#[0-9]' > /tmp/js-battle-seed${SEED}.txt
+else
+    node tests/test-battle-js.js $SEED 2>&1 | grep '^#[0-9]' > /tmp/js-battle-seed${SEED}.txt
+fi
 
 echo "  Rust battle:"
-docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example test_battle_rust $SEED 2>&1 | grep '^#[0-9]'" > /tmp/rust-battle-seed${SEED}.txt
+if [ -n "$TRACE_PRNG" ]; then
+    docker exec -e TRACE_PRNG="$TRACE_PRNG" pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example test_battle_rust $SEED 2>&1 | grep '^#[0-9]'" > /tmp/rust-battle-seed${SEED}.txt
+else
+    docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example test_battle_rust $SEED 2>&1 | grep '^#[0-9]'" > /tmp/rust-battle-seed${SEED}.txt
+fi
 
 # Step 4: Compare battle outputs
 echo ""

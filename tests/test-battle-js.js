@@ -65,11 +65,39 @@ battle.setPlayer('p2', {
     })),
 });
 
-// Wrap PRNG to count calls
+// Parse TRACE_PRNG environment variable
+// Examples: TRACE_PRNG=1-5 (trace calls 1 through 5)
+//           TRACE_PRNG=10 (trace call 10)
+//           TRACE_PRNG=1,5,10 (trace calls 1, 5, and 10)
+const tracePrng = process.env.TRACE_PRNG || '';
+const traceCalls = new Set();
+if (tracePrng) {
+    tracePrng.split(',').forEach(part => {
+        if (part.includes('-')) {
+            const [start, end] = part.split('-').map(Number);
+            for (let i = start; i <= end; i++) {
+                traceCalls.add(i);
+            }
+        } else {
+            traceCalls.add(Number(part));
+        }
+    });
+}
+
+// Wrap PRNG to count calls and optionally trace
 let totalPrngCalls = 0;
 const originalNext = battle.prng.rng.next.bind(battle.prng.rng);
 battle.prng.rng.next = function() {
     totalPrngCalls++;
+
+    // Trace specific calls if requested
+    if (traceCalls.has(totalPrngCalls)) {
+        console.error(`\n[JS PRNG #${totalPrngCalls}] Stack trace:`);
+        const stack = new Error().stack.split('\n').slice(2, 10);
+        stack.forEach(line => console.error('  ' + line.trim()));
+        console.error('');
+    }
+
     return originalNext();
 };
 
