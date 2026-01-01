@@ -6,80 +6,6 @@
     1
   ],
   "teams": {
-    "p2": [
-      {
-        "species": "Slowbro-Mega",
-        "moves": [
-          "snowscape",
-          "neverendingnightmare",
-          "lightscreen",
-          "powerwhip"
-        ],
-        "ability": "Shell Armor",
-        "item": "vilevial",
-        "level": 93
-      },
-      {
-        "species": "Latias-Mega",
-        "moves": [
-          "watergun",
-          "tearfullook",
-          "sludgebomb",
-          "honeclaws"
-        ],
-        "ability": "Levitate",
-        "item": "tr61",
-        "level": 53
-      },
-      {
-        "species": "Mantine",
-        "moves": [
-          "punishment",
-          "steamroller",
-          "bloodmoon",
-          "twinbeam"
-        ],
-        "ability": "Swift Swim",
-        "item": "darkmemory",
-        "level": 56
-      },
-      {
-        "species": "Cinderace-Gmax",
-        "moves": [
-          "psychic",
-          "thunderpunch",
-          "bulkup",
-          "lightthatburnsthesky"
-        ],
-        "ability": "Blaze",
-        "item": "apicotberry",
-        "level": 63
-      },
-      {
-        "species": "Zacian",
-        "moves": [
-          "zenheadbutt",
-          "makeitrain",
-          "lick",
-          "nobleroar"
-        ],
-        "ability": "Intrepid Sword",
-        "item": "kelpsyberry",
-        "level": 95
-      },
-      {
-        "species": "Cutiefly",
-        "moves": [
-          "spectralthief",
-          "astralbarrage",
-          "venoshock",
-          "alloutpummeling"
-        ],
-        "ability": "Honey Gather",
-        "item": "altarianite",
-        "level": 91
-      }
-    ],
     "p1": [
       {
         "species": "Grubbin",
@@ -152,6 +78,80 @@
         "ability": "Overgrow",
         "item": "fairygem",
         "level": 85
+      }
+    ],
+    "p2": [
+      {
+        "species": "Slowbro-Mega",
+        "moves": [
+          "snowscape",
+          "neverendingnightmare",
+          "lightscreen",
+          "powerwhip"
+        ],
+        "ability": "Shell Armor",
+        "item": "vilevial",
+        "level": 93
+      },
+      {
+        "species": "Latias-Mega",
+        "moves": [
+          "watergun",
+          "tearfullook",
+          "sludgebomb",
+          "honeclaws"
+        ],
+        "ability": "Levitate",
+        "item": "tr61",
+        "level": 53
+      },
+      {
+        "species": "Mantine",
+        "moves": [
+          "punishment",
+          "steamroller",
+          "bloodmoon",
+          "twinbeam"
+        ],
+        "ability": "Swift Swim",
+        "item": "darkmemory",
+        "level": 56
+      },
+      {
+        "species": "Cinderace-Gmax",
+        "moves": [
+          "psychic",
+          "thunderpunch",
+          "bulkup",
+          "lightthatburnsthesky"
+        ],
+        "ability": "Blaze",
+        "item": "apicotberry",
+        "level": 63
+      },
+      {
+        "species": "Zacian",
+        "moves": [
+          "zenheadbutt",
+          "makeitrain",
+          "lick",
+          "nobleroar"
+        ],
+        "ability": "Intrepid Sword",
+        "item": "kelpsyberry",
+        "level": 95
+      },
+      {
+        "species": "Cutiefly",
+        "moves": [
+          "spectralthief",
+          "astralbarrage",
+          "venoshock",
+          "alloutpummeling"
+        ],
+        "ability": "Honey Gather",
+        "item": "altarianite",
+        "level": 91
       }
     ]
   },
@@ -588,7 +588,7 @@
               {
                 "name": "Slowbro-Mega",
                 "species": "slowbromega",
-                "hp": 280,
+                "hp": 260,
                 "maxhp": 324,
                 "status": "",
                 "fainted": false,
@@ -870,7 +870,7 @@
               {
                 "name": "Slowbro-Mega",
                 "species": "slowbromega",
-                "hp": 238,
+                "hp": 218,
                 "maxhp": 324,
                 "status": "",
                 "fainted": false,
@@ -1152,7 +1152,7 @@
               {
                 "name": "Slowbro-Mega",
                 "species": "slowbromega",
-                "hp": 196,
+                "hp": 176,
                 "maxhp": 324,
                 "status": "",
                 "fainted": false,
@@ -1434,7 +1434,7 @@
               {
                 "name": "Slowbro-Mega",
                 "species": "slowbromega",
-                "hp": 154,
+                "hp": 134,
                 "maxhp": 324,
                 "status": "",
                 "fainted": false,
@@ -1716,7 +1716,7 @@
               {
                 "name": "Slowbro-Mega",
                 "species": "slowbromega",
-                "hp": 112,
+                "hp": 92,
                 "maxhp": 324,
                 "status": "",
                 "fainted": false,
@@ -1998,7 +1998,7 @@
               {
                 "name": "Slowbro-Mega",
                 "species": "slowbromega",
-                "hp": 70,
+                "hp": 50,
                 "maxhp": 324,
                 "status": "",
                 "fainted": false,
@@ -2280,7 +2280,7 @@
               {
                 "name": "Slowbro-Mega",
                 "species": "slowbromega",
-                "hp": 30,
+                "hp": 10,
                 "maxhp": 324,
                 "status": "",
                 "fainted": false,
@@ -3148,7 +3148,7 @@
               {
                 "name": "Latias-Mega",
                 "species": "latiasmega",
-                "hp": 56,
+                "hp": 4,
                 "maxhp": 168,
                 "status": "",
                 "fainted": false,
@@ -4016,7 +4016,7 @@
               {
                 "name": "Mantine",
                 "species": "mantine",
-                "hp": 113,
+                "hp": 79,
                 "maxhp": 185,
                 "status": "",
                 "fainted": false,
@@ -4298,7 +4298,7 @@
               {
                 "name": "Mantine",
                 "species": "mantine",
-                "hp": 41,
+                "hp": 7,
                 "maxhp": 185,
                 "status": "",
                 "fainted": false,
@@ -5166,7 +5166,7 @@
               {
                 "name": "Cinderace-Gmax",
                 "species": "cinderacegmax",
-                "hp": 149,
+                "hp": 122,
                 "maxhp": 206,
                 "status": "",
                 "fainted": false,
@@ -5448,7 +5448,7 @@
               {
                 "name": "Cinderace-Gmax",
                 "species": "cinderacegmax",
-                "hp": 96,
+                "hp": 69,
                 "maxhp": 206,
                 "status": "",
                 "fainted": false,
@@ -5730,7 +5730,7 @@
               {
                 "name": "Cinderace-Gmax",
                 "species": "cinderacegmax",
-                "hp": 96,
+                "hp": 69,
                 "maxhp": 206,
                 "status": "",
                 "fainted": false,
@@ -6012,7 +6012,7 @@
               {
                 "name": "Cinderace-Gmax",
                 "species": "cinderacegmax",
-                "hp": 96,
+                "hp": 69,
                 "maxhp": 206,
                 "status": "",
                 "fainted": false,
@@ -6081,7 +6081,7 @@
     {
       "turn": 21,
       "state": {
-        "turn": 18,
+        "turn": 17,
         "ended": false,
         "winner": null,
         "sides": [
@@ -6113,7 +6113,7 @@
               {
                 "name": "Genesect-Shock",
                 "species": "genesectshock",
-                "hp": 253,
+                "hp": 263,
                 "maxhp": 263,
                 "status": "",
                 "fainted": false,
@@ -6294,10 +6294,10 @@
               {
                 "name": "Cinderace-Gmax",
                 "species": "cinderacegmax",
-                "hp": 27,
+                "hp": 0,
                 "maxhp": 206,
-                "status": "",
-                "fainted": false,
+                "status": "fnt",
+                "fainted": true,
                 "level": 63,
                 "ability": "blaze",
                 "item": "",
@@ -6395,7 +6395,7 @@
               {
                 "name": "Genesect-Shock",
                 "species": "genesectshock",
-                "hp": 253,
+                "hp": 263,
                 "maxhp": 263,
                 "status": "",
                 "fainted": false,
@@ -6677,7 +6677,7 @@
               {
                 "name": "Genesect-Shock",
                 "species": "genesectshock",
-                "hp": 253,
+                "hp": 222,
                 "maxhp": 263,
                 "status": "",
                 "fainted": false,
@@ -6879,7 +6879,7 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 331,
+                "hp": 297,
                 "maxhp": 331,
                 "status": "",
                 "fainted": false,
@@ -6959,289 +6959,7 @@
               {
                 "name": "Genesect-Shock",
                 "species": "genesectshock",
-                "hp": 212,
-                "maxhp": 263,
-                "status": "",
-                "fainted": false,
-                "level": 88,
-                "ability": "download",
-                "item": "poisongem",
-                "moves": [
-                  "visegrip",
-                  "barbbarrage",
-                  "doomdesire",
-                  "temperflare"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Steel"
-                ]
-              },
-              {
-                "name": "Glimmora",
-                "species": "glimmora",
-                "hp": 322,
-                "maxhp": 322,
-                "status": "",
-                "fainted": false,
-                "level": 100,
-                "ability": "toxicdebris",
-                "item": "tr62",
-                "moves": [
-                  "gastroacid",
-                  "doubleslap",
-                  "gmaxrapidflow",
-                  "crosspoison"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Poison"
-                ]
-              },
-              {
-                "name": "Golem-Alola",
-                "species": "golemalola",
-                "hp": 288,
-                "maxhp": 288,
-                "status": "",
-                "fainted": false,
-                "level": 98,
-                "ability": "magnetpull",
-                "item": "oddincense",
-                "moves": [
-                  "gmaxterror",
-                  "kingsshield",
-                  "steameruption",
-                  "dragontail"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Electric"
-                ]
-              },
-              {
-                "name": "Vivillon-Savanna",
-                "species": "vivillonsavanna",
-                "hp": 290,
-                "maxhp": 290,
-                "status": "",
-                "fainted": false,
-                "level": 99,
-                "ability": "noability",
-                "item": "raichunitex",
-                "moves": [
-                  "originpulse",
-                  "fakeout",
-                  "lick",
-                  "gmaxcuddle"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Grovyle",
-                "species": "grovyle",
-                "hp": 208,
-                "maxhp": 208,
-                "status": "",
-                "fainted": false,
-                "level": 85,
-                "ability": "overgrow",
-                "item": "fairygem",
-                "moves": [
-                  "constrict",
-                  "petaldance",
-                  "visegrip",
-                  "doubleironbash"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass"
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Player 2",
-            "id": "p2",
-            "pokemon": [
-              {
-                "name": "Slowbro-Mega",
-                "species": "slowbromega",
-                "hp": 0,
-                "maxhp": 324,
-                "status": "fnt",
-                "fainted": true,
-                "level": 93,
-                "ability": "shellarmor",
-                "item": "",
-                "moves": [
-                  "snowscape",
-                  "neverendingnightmare",
-                  "lightscreen",
-                  "powerwhip"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Latias-Mega",
-                "species": "latiasmega",
-                "hp": 0,
-                "maxhp": 168,
-                "status": "fnt",
-                "fainted": true,
-                "level": 53,
-                "ability": "levitate",
-                "item": "",
-                "moves": [
-                  "watergun",
-                  "tearfullook",
-                  "sludgebomb",
-                  "honeclaws"
-                ],
-                "boosts": {},
-                "types": [
-                  "Dragon",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Mantine",
-                "species": "mantine",
-                "hp": 0,
-                "maxhp": 185,
-                "status": "fnt",
-                "fainted": true,
-                "level": 56,
-                "ability": "swiftswim",
-                "item": "",
-                "moves": [
-                  "punishment",
-                  "steamroller",
-                  "bloodmoon",
-                  "twinbeam"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Cinderace-Gmax",
-                "species": "cinderacegmax",
-                "hp": 0,
-                "maxhp": 206,
-                "status": "fnt",
-                "fainted": true,
-                "level": 63,
-                "ability": "blaze",
-                "item": "",
-                "moves": [
-                  "psychic",
-                  "thunderpunch",
-                  "bulkup",
-                  "lightthatburnsthesky"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fire"
-                ]
-              },
-              {
-                "name": "Zacian",
-                "species": "zacian",
-                "hp": 299,
-                "maxhp": 331,
-                "status": "",
-                "fainted": false,
-                "level": 95,
-                "ability": "intrepidsword",
-                "item": "kelpsyberry",
-                "moves": [
-                  "zenheadbutt",
-                  "makeitrain",
-                  "lick",
-                  "nobleroar"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fairy"
-                ]
-              },
-              {
-                "name": "Cutiefly",
-                "species": "cutiefly",
-                "hp": 192,
-                "maxhp": 192,
-                "status": "",
-                "fainted": false,
-                "level": 91,
-                "ability": "honeygather",
-                "item": "altarianite",
-                "moves": [
-                  "spectralthief",
-                  "astralbarrage",
-                  "venoshock",
-                  "alloutpummeling"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Fairy"
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "turn": 25,
-      "state": {
-        "turn": 21,
-        "ended": false,
-        "winner": null,
-        "sides": [
-          {
-            "name": "Player 1",
-            "id": "p1",
-            "pokemon": [
-              {
-                "name": "Grubbin",
-                "species": "grubbin",
-                "hp": 0,
-                "maxhp": 240,
-                "status": "fnt",
-                "fainted": true,
-                "level": 95,
-                "ability": "swarm",
-                "item": "fightiniumz",
-                "moves": [
-                  "knockoff",
-                  "confide",
-                  "meteorassault",
-                  "maxphantasm"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug"
-                ]
-              },
-              {
-                "name": "Genesect-Shock",
-                "species": "genesectshock",
-                "hp": 168,
+                "hp": 181,
                 "maxhp": 263,
                 "status": "",
                 "fainted": false,
@@ -7489,9 +7207,9 @@
       }
     },
     {
-      "turn": 26,
+      "turn": 25,
       "state": {
-        "turn": 22,
+        "turn": 21,
         "ended": false,
         "winner": null,
         "sides": [
@@ -7523,7 +7241,7 @@
               {
                 "name": "Genesect-Shock",
                 "species": "genesectshock",
-                "hp": 128,
+                "hp": 137,
                 "maxhp": 263,
                 "status": "",
                 "fainted": false,
@@ -7725,7 +7443,7 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 230,
+                "hp": 231,
                 "maxhp": 331,
                 "status": "",
                 "fainted": false,
@@ -7771,9 +7489,9 @@
       }
     },
     {
-      "turn": 27,
+      "turn": 26,
       "state": {
-        "turn": 23,
+        "turn": 22,
         "ended": false,
         "winner": null,
         "sides": [
@@ -7805,7 +7523,7 @@
               {
                 "name": "Genesect-Shock",
                 "species": "genesectshock",
-                "hp": 88,
+                "hp": 97,
                 "maxhp": 263,
                 "status": "",
                 "fainted": false,
@@ -8053,9 +7771,9 @@
       }
     },
     {
-      "turn": 28,
+      "turn": 27,
       "state": {
-        "turn": 24,
+        "turn": 23,
         "ended": false,
         "winner": null,
         "sides": [
@@ -8087,7 +7805,7 @@
               {
                 "name": "Genesect-Shock",
                 "species": "genesectshock",
-                "hp": 46,
+                "hp": 57,
                 "maxhp": 263,
                 "status": "",
                 "fainted": false,
@@ -8289,7 +8007,289 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 161,
+                "hp": 162,
+                "maxhp": 331,
+                "status": "",
+                "fainted": false,
+                "level": 95,
+                "ability": "intrepidsword",
+                "item": "kelpsyberry",
+                "moves": [
+                  "zenheadbutt",
+                  "makeitrain",
+                  "lick",
+                  "nobleroar"
+                ],
+                "boosts": {},
+                "types": [
+                  "Fairy"
+                ]
+              },
+              {
+                "name": "Cutiefly",
+                "species": "cutiefly",
+                "hp": 192,
+                "maxhp": 192,
+                "status": "",
+                "fainted": false,
+                "level": 91,
+                "ability": "honeygather",
+                "item": "altarianite",
+                "moves": [
+                  "spectralthief",
+                  "astralbarrage",
+                  "venoshock",
+                  "alloutpummeling"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Fairy"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "turn": 28,
+      "state": {
+        "turn": 24,
+        "ended": false,
+        "winner": null,
+        "sides": [
+          {
+            "name": "Player 1",
+            "id": "p1",
+            "pokemon": [
+              {
+                "name": "Grubbin",
+                "species": "grubbin",
+                "hp": 0,
+                "maxhp": 240,
+                "status": "fnt",
+                "fainted": true,
+                "level": 95,
+                "ability": "swarm",
+                "item": "fightiniumz",
+                "moves": [
+                  "knockoff",
+                  "confide",
+                  "meteorassault",
+                  "maxphantasm"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug"
+                ]
+              },
+              {
+                "name": "Genesect-Shock",
+                "species": "genesectshock",
+                "hp": 15,
+                "maxhp": 263,
+                "status": "",
+                "fainted": false,
+                "level": 88,
+                "ability": "download",
+                "item": "poisongem",
+                "moves": [
+                  "visegrip",
+                  "barbbarrage",
+                  "doomdesire",
+                  "temperflare"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Steel"
+                ]
+              },
+              {
+                "name": "Glimmora",
+                "species": "glimmora",
+                "hp": 322,
+                "maxhp": 322,
+                "status": "",
+                "fainted": false,
+                "level": 100,
+                "ability": "toxicdebris",
+                "item": "tr62",
+                "moves": [
+                  "gastroacid",
+                  "doubleslap",
+                  "gmaxrapidflow",
+                  "crosspoison"
+                ],
+                "boosts": {},
+                "types": [
+                  "Rock",
+                  "Poison"
+                ]
+              },
+              {
+                "name": "Golem-Alola",
+                "species": "golemalola",
+                "hp": 288,
+                "maxhp": 288,
+                "status": "",
+                "fainted": false,
+                "level": 98,
+                "ability": "magnetpull",
+                "item": "oddincense",
+                "moves": [
+                  "gmaxterror",
+                  "kingsshield",
+                  "steameruption",
+                  "dragontail"
+                ],
+                "boosts": {},
+                "types": [
+                  "Rock",
+                  "Electric"
+                ]
+              },
+              {
+                "name": "Vivillon-Savanna",
+                "species": "vivillonsavanna",
+                "hp": 290,
+                "maxhp": 290,
+                "status": "",
+                "fainted": false,
+                "level": 99,
+                "ability": "noability",
+                "item": "raichunitex",
+                "moves": [
+                  "originpulse",
+                  "fakeout",
+                  "lick",
+                  "gmaxcuddle"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Flying"
+                ]
+              },
+              {
+                "name": "Grovyle",
+                "species": "grovyle",
+                "hp": 208,
+                "maxhp": 208,
+                "status": "",
+                "fainted": false,
+                "level": 85,
+                "ability": "overgrow",
+                "item": "fairygem",
+                "moves": [
+                  "constrict",
+                  "petaldance",
+                  "visegrip",
+                  "doubleironbash"
+                ],
+                "boosts": {},
+                "types": [
+                  "Grass"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Player 2",
+            "id": "p2",
+            "pokemon": [
+              {
+                "name": "Slowbro-Mega",
+                "species": "slowbromega",
+                "hp": 0,
+                "maxhp": 324,
+                "status": "fnt",
+                "fainted": true,
+                "level": 93,
+                "ability": "shellarmor",
+                "item": "",
+                "moves": [
+                  "snowscape",
+                  "neverendingnightmare",
+                  "lightscreen",
+                  "powerwhip"
+                ],
+                "boosts": {},
+                "types": [
+                  "Water",
+                  "Psychic"
+                ]
+              },
+              {
+                "name": "Latias-Mega",
+                "species": "latiasmega",
+                "hp": 0,
+                "maxhp": 168,
+                "status": "fnt",
+                "fainted": true,
+                "level": 53,
+                "ability": "levitate",
+                "item": "",
+                "moves": [
+                  "watergun",
+                  "tearfullook",
+                  "sludgebomb",
+                  "honeclaws"
+                ],
+                "boosts": {},
+                "types": [
+                  "Dragon",
+                  "Psychic"
+                ]
+              },
+              {
+                "name": "Mantine",
+                "species": "mantine",
+                "hp": 0,
+                "maxhp": 185,
+                "status": "fnt",
+                "fainted": true,
+                "level": 56,
+                "ability": "swiftswim",
+                "item": "",
+                "moves": [
+                  "punishment",
+                  "steamroller",
+                  "bloodmoon",
+                  "twinbeam"
+                ],
+                "boosts": {},
+                "types": [
+                  "Water",
+                  "Flying"
+                ]
+              },
+              {
+                "name": "Cinderace-Gmax",
+                "species": "cinderacegmax",
+                "hp": 0,
+                "maxhp": 206,
+                "status": "fnt",
+                "fainted": true,
+                "level": 63,
+                "ability": "blaze",
+                "item": "",
+                "moves": [
+                  "psychic",
+                  "thunderpunch",
+                  "bulkup",
+                  "lightthatburnsthesky"
+                ],
+                "boosts": {},
+                "types": [
+                  "Fire"
+                ]
+              },
+              {
+                "name": "Zacian",
+                "species": "zacian",
+                "hp": 127,
                 "maxhp": 331,
                 "status": "",
                 "fainted": false,
@@ -8337,7 +8337,7 @@
     {
       "turn": 29,
       "state": {
-        "turn": 25,
+        "turn": 24,
         "ended": false,
         "winner": null,
         "sides": [
@@ -8369,10 +8369,10 @@
               {
                 "name": "Genesect-Shock",
                 "species": "genesectshock",
-                "hp": 3,
+                "hp": 0,
                 "maxhp": 263,
-                "status": "",
-                "fainted": false,
+                "status": "fnt",
+                "fainted": true,
                 "level": 88,
                 "ability": "download",
                 "item": "poisongem",
@@ -8955,7 +8955,7 @@
               {
                 "name": "Glimmora",
                 "species": "glimmora",
-                "hp": 322,
+                "hp": 188,
                 "maxhp": 322,
                 "status": "",
                 "fainted": false,
@@ -9237,7 +9237,7 @@
               {
                 "name": "Glimmora",
                 "species": "glimmora",
-                "hp": 186,
+                "hp": 56,
                 "maxhp": 322,
                 "status": "",
                 "fainted": false,
@@ -9465,7 +9465,7 @@
     {
       "turn": 33,
       "state": {
-        "turn": 28,
+        "turn": 27,
         "ended": false,
         "winner": null,
         "sides": [
@@ -9519,10 +9519,10 @@
               {
                 "name": "Glimmora",
                 "species": "glimmora",
-                "hp": 52,
+                "hp": 0,
                 "maxhp": 322,
-                "status": "",
-                "fainted": false,
+                "status": "fnt",
+                "fainted": true,
                 "level": 100,
                 "ability": "toxicdebris",
                 "item": "tr62",
@@ -9747,7 +9747,7 @@
     {
       "turn": 34,
       "state": {
-        "turn": 29,
+        "turn": 28,
         "ended": false,
         "winner": null,
         "sides": [
@@ -9801,10 +9801,10 @@
               {
                 "name": "Glimmora",
                 "species": "glimmora",
-                "hp": 52,
+                "hp": 0,
                 "maxhp": 322,
-                "status": "",
-                "fainted": false,
+                "status": "fnt",
+                "fainted": true,
                 "level": 100,
                 "ability": "toxicdebris",
                 "item": "tr62",
@@ -10105,7 +10105,7 @@
               {
                 "name": "Golem-Alola",
                 "species": "golemalola",
-                "hp": 288,
+                "hp": 230,
                 "maxhp": 288,
                 "status": "",
                 "fainted": false,
@@ -10263,7 +10263,7 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 127,
+                "hp": 118,
                 "maxhp": 331,
                 "status": "",
                 "fainted": false,
@@ -10387,7 +10387,7 @@
               {
                 "name": "Golem-Alola",
                 "species": "golemalola",
-                "hp": 288,
+                "hp": 175,
                 "maxhp": 288,
                 "status": "",
                 "fainted": false,
@@ -10545,7 +10545,7 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 127,
+                "hp": 103,
                 "maxhp": 331,
                 "status": "",
                 "fainted": false,
@@ -10669,7 +10669,7 @@
               {
                 "name": "Golem-Alola",
                 "species": "golemalola",
-                "hp": 191,
+                "hp": 118,
                 "maxhp": 288,
                 "status": "",
                 "fainted": false,
@@ -10827,7 +10827,7 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 119,
+                "hp": 94,
                 "maxhp": 331,
                 "status": "",
                 "fainted": false,
@@ -10951,7 +10951,7 @@
               {
                 "name": "Golem-Alola",
                 "species": "golemalola",
-                "hp": 128,
+                "hp": 60,
                 "maxhp": 288,
                 "status": "",
                 "fainted": false,
@@ -11109,7 +11109,7 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 110,
+                "hp": 86,
                 "maxhp": 331,
                 "status": "",
                 "fainted": false,
@@ -11156,6 +11156,288 @@
     },
     {
       "turn": 39,
+      "state": {
+        "turn": 32,
+        "ended": false,
+        "winner": null,
+        "sides": [
+          {
+            "name": "Player 1",
+            "id": "p1",
+            "pokemon": [
+              {
+                "name": "Grubbin",
+                "species": "grubbin",
+                "hp": 0,
+                "maxhp": 240,
+                "status": "fnt",
+                "fainted": true,
+                "level": 95,
+                "ability": "swarm",
+                "item": "fightiniumz",
+                "moves": [
+                  "knockoff",
+                  "confide",
+                  "meteorassault",
+                  "maxphantasm"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug"
+                ]
+              },
+              {
+                "name": "Genesect-Shock",
+                "species": "genesectshock",
+                "hp": 0,
+                "maxhp": 263,
+                "status": "fnt",
+                "fainted": true,
+                "level": 88,
+                "ability": "download",
+                "item": "poisongem",
+                "moves": [
+                  "visegrip",
+                  "barbbarrage",
+                  "doomdesire",
+                  "temperflare"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Steel"
+                ]
+              },
+              {
+                "name": "Glimmora",
+                "species": "glimmora",
+                "hp": 0,
+                "maxhp": 322,
+                "status": "fnt",
+                "fainted": true,
+                "level": 100,
+                "ability": "toxicdebris",
+                "item": "tr62",
+                "moves": [
+                  "gastroacid",
+                  "doubleslap",
+                  "gmaxrapidflow",
+                  "crosspoison"
+                ],
+                "boosts": {},
+                "types": [
+                  "Rock",
+                  "Poison"
+                ]
+              },
+              {
+                "name": "Golem-Alola",
+                "species": "golemalola",
+                "hp": 0,
+                "maxhp": 288,
+                "status": "fnt",
+                "fainted": true,
+                "level": 98,
+                "ability": "magnetpull",
+                "item": "oddincense",
+                "moves": [
+                  "gmaxterror",
+                  "kingsshield",
+                  "steameruption",
+                  "dragontail"
+                ],
+                "boosts": {},
+                "types": [
+                  "Rock",
+                  "Electric"
+                ]
+              },
+              {
+                "name": "Vivillon-Savanna",
+                "species": "vivillonsavanna",
+                "hp": 290,
+                "maxhp": 290,
+                "status": "",
+                "fainted": false,
+                "level": 99,
+                "ability": "noability",
+                "item": "raichunitex",
+                "moves": [
+                  "originpulse",
+                  "fakeout",
+                  "lick",
+                  "gmaxcuddle"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Flying"
+                ]
+              },
+              {
+                "name": "Grovyle",
+                "species": "grovyle",
+                "hp": 208,
+                "maxhp": 208,
+                "status": "",
+                "fainted": false,
+                "level": 85,
+                "ability": "overgrow",
+                "item": "fairygem",
+                "moves": [
+                  "constrict",
+                  "petaldance",
+                  "visegrip",
+                  "doubleironbash"
+                ],
+                "boosts": {},
+                "types": [
+                  "Grass"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Player 2",
+            "id": "p2",
+            "pokemon": [
+              {
+                "name": "Slowbro-Mega",
+                "species": "slowbromega",
+                "hp": 0,
+                "maxhp": 324,
+                "status": "fnt",
+                "fainted": true,
+                "level": 93,
+                "ability": "shellarmor",
+                "item": "",
+                "moves": [
+                  "snowscape",
+                  "neverendingnightmare",
+                  "lightscreen",
+                  "powerwhip"
+                ],
+                "boosts": {},
+                "types": [
+                  "Water",
+                  "Psychic"
+                ]
+              },
+              {
+                "name": "Latias-Mega",
+                "species": "latiasmega",
+                "hp": 0,
+                "maxhp": 168,
+                "status": "fnt",
+                "fainted": true,
+                "level": 53,
+                "ability": "levitate",
+                "item": "",
+                "moves": [
+                  "watergun",
+                  "tearfullook",
+                  "sludgebomb",
+                  "honeclaws"
+                ],
+                "boosts": {},
+                "types": [
+                  "Dragon",
+                  "Psychic"
+                ]
+              },
+              {
+                "name": "Mantine",
+                "species": "mantine",
+                "hp": 0,
+                "maxhp": 185,
+                "status": "fnt",
+                "fainted": true,
+                "level": 56,
+                "ability": "swiftswim",
+                "item": "",
+                "moves": [
+                  "punishment",
+                  "steamroller",
+                  "bloodmoon",
+                  "twinbeam"
+                ],
+                "boosts": {},
+                "types": [
+                  "Water",
+                  "Flying"
+                ]
+              },
+              {
+                "name": "Cinderace-Gmax",
+                "species": "cinderacegmax",
+                "hp": 0,
+                "maxhp": 206,
+                "status": "fnt",
+                "fainted": true,
+                "level": 63,
+                "ability": "blaze",
+                "item": "",
+                "moves": [
+                  "psychic",
+                  "thunderpunch",
+                  "bulkup",
+                  "lightthatburnsthesky"
+                ],
+                "boosts": {},
+                "types": [
+                  "Fire"
+                ]
+              },
+              {
+                "name": "Zacian",
+                "species": "zacian",
+                "hp": 86,
+                "maxhp": 331,
+                "status": "",
+                "fainted": false,
+                "level": 95,
+                "ability": "intrepidsword",
+                "item": "kelpsyberry",
+                "moves": [
+                  "zenheadbutt",
+                  "makeitrain",
+                  "lick",
+                  "nobleroar"
+                ],
+                "boosts": {},
+                "types": [
+                  "Fairy"
+                ]
+              },
+              {
+                "name": "Cutiefly",
+                "species": "cutiefly",
+                "hp": 192,
+                "maxhp": 192,
+                "status": "",
+                "fainted": false,
+                "level": 91,
+                "ability": "honeygather",
+                "item": "altarianite",
+                "moves": [
+                  "spectralthief",
+                  "astralbarrage",
+                  "venoshock",
+                  "alloutpummeling"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Fairy"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "turn": 40,
       "state": {
         "turn": 33,
         "ended": false,
@@ -11233,10 +11515,10 @@
               {
                 "name": "Golem-Alola",
                 "species": "golemalola",
-                "hp": 72,
+                "hp": 0,
                 "maxhp": 288,
-                "status": "",
-                "fainted": false,
+                "status": "fnt",
+                "fainted": true,
                 "level": 98,
                 "ability": "magnetpull",
                 "item": "oddincense",
@@ -11391,289 +11673,7 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 101,
-                "maxhp": 331,
-                "status": "",
-                "fainted": false,
-                "level": 95,
-                "ability": "intrepidsword",
-                "item": "kelpsyberry",
-                "moves": [
-                  "zenheadbutt",
-                  "makeitrain",
-                  "lick",
-                  "nobleroar"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fairy"
-                ]
-              },
-              {
-                "name": "Cutiefly",
-                "species": "cutiefly",
-                "hp": 192,
-                "maxhp": 192,
-                "status": "",
-                "fainted": false,
-                "level": 91,
-                "ability": "honeygather",
-                "item": "altarianite",
-                "moves": [
-                  "spectralthief",
-                  "astralbarrage",
-                  "venoshock",
-                  "alloutpummeling"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Fairy"
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "turn": 40,
-      "state": {
-        "turn": 34,
-        "ended": false,
-        "winner": null,
-        "sides": [
-          {
-            "name": "Player 1",
-            "id": "p1",
-            "pokemon": [
-              {
-                "name": "Grubbin",
-                "species": "grubbin",
-                "hp": 0,
-                "maxhp": 240,
-                "status": "fnt",
-                "fainted": true,
-                "level": 95,
-                "ability": "swarm",
-                "item": "fightiniumz",
-                "moves": [
-                  "knockoff",
-                  "confide",
-                  "meteorassault",
-                  "maxphantasm"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug"
-                ]
-              },
-              {
-                "name": "Genesect-Shock",
-                "species": "genesectshock",
-                "hp": 0,
-                "maxhp": 263,
-                "status": "fnt",
-                "fainted": true,
-                "level": 88,
-                "ability": "download",
-                "item": "poisongem",
-                "moves": [
-                  "visegrip",
-                  "barbbarrage",
-                  "doomdesire",
-                  "temperflare"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Steel"
-                ]
-              },
-              {
-                "name": "Glimmora",
-                "species": "glimmora",
-                "hp": 0,
-                "maxhp": 322,
-                "status": "fnt",
-                "fainted": true,
-                "level": 100,
-                "ability": "toxicdebris",
-                "item": "tr62",
-                "moves": [
-                  "gastroacid",
-                  "doubleslap",
-                  "gmaxrapidflow",
-                  "crosspoison"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Poison"
-                ]
-              },
-              {
-                "name": "Golem-Alola",
-                "species": "golemalola",
-                "hp": 15,
-                "maxhp": 288,
-                "status": "",
-                "fainted": false,
-                "level": 98,
-                "ability": "magnetpull",
-                "item": "oddincense",
-                "moves": [
-                  "gmaxterror",
-                  "kingsshield",
-                  "steameruption",
-                  "dragontail"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Electric"
-                ]
-              },
-              {
-                "name": "Vivillon-Savanna",
-                "species": "vivillonsavanna",
-                "hp": 290,
-                "maxhp": 290,
-                "status": "",
-                "fainted": false,
-                "level": 99,
-                "ability": "noability",
-                "item": "raichunitex",
-                "moves": [
-                  "originpulse",
-                  "fakeout",
-                  "lick",
-                  "gmaxcuddle"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Grovyle",
-                "species": "grovyle",
-                "hp": 208,
-                "maxhp": 208,
-                "status": "",
-                "fainted": false,
-                "level": 85,
-                "ability": "overgrow",
-                "item": "fairygem",
-                "moves": [
-                  "constrict",
-                  "petaldance",
-                  "visegrip",
-                  "doubleironbash"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass"
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Player 2",
-            "id": "p2",
-            "pokemon": [
-              {
-                "name": "Slowbro-Mega",
-                "species": "slowbromega",
-                "hp": 0,
-                "maxhp": 324,
-                "status": "fnt",
-                "fainted": true,
-                "level": 93,
-                "ability": "shellarmor",
-                "item": "",
-                "moves": [
-                  "snowscape",
-                  "neverendingnightmare",
-                  "lightscreen",
-                  "powerwhip"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Latias-Mega",
-                "species": "latiasmega",
-                "hp": 0,
-                "maxhp": 168,
-                "status": "fnt",
-                "fainted": true,
-                "level": 53,
-                "ability": "levitate",
-                "item": "",
-                "moves": [
-                  "watergun",
-                  "tearfullook",
-                  "sludgebomb",
-                  "honeclaws"
-                ],
-                "boosts": {},
-                "types": [
-                  "Dragon",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Mantine",
-                "species": "mantine",
-                "hp": 0,
-                "maxhp": 185,
-                "status": "fnt",
-                "fainted": true,
-                "level": 56,
-                "ability": "swiftswim",
-                "item": "",
-                "moves": [
-                  "punishment",
-                  "steamroller",
-                  "bloodmoon",
-                  "twinbeam"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Cinderace-Gmax",
-                "species": "cinderacegmax",
-                "hp": 0,
-                "maxhp": 206,
-                "status": "fnt",
-                "fainted": true,
-                "level": 63,
-                "ability": "blaze",
-                "item": "",
-                "moves": [
-                  "psychic",
-                  "thunderpunch",
-                  "bulkup",
-                  "lightthatburnsthesky"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fire"
-                ]
-              },
-              {
-                "name": "Zacian",
-                "species": "zacian",
-                "hp": 91,
+                "hp": 86,
                 "maxhp": 331,
                 "status": "",
                 "fainted": false,
@@ -11721,7 +11721,7 @@
     {
       "turn": 41,
       "state": {
-        "turn": 34,
+        "turn": 33,
         "ended": false,
         "winner": null,
         "sides": [
@@ -11819,7 +11819,7 @@
               {
                 "name": "Vivillon-Savanna",
                 "species": "vivillonsavanna",
-                "hp": 290,
+                "hp": 175,
                 "maxhp": 290,
                 "status": "",
                 "fainted": false,
@@ -11955,10 +11955,10 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 91,
+                "hp": 0,
                 "maxhp": 331,
-                "status": "",
-                "fainted": false,
+                "status": "fnt",
+                "fainted": true,
                 "level": 95,
                 "ability": "intrepidsword",
                 "item": "kelpsyberry",
@@ -12002,6 +12002,288 @@
     },
     {
       "turn": 42,
+      "state": {
+        "turn": 34,
+        "ended": false,
+        "winner": null,
+        "sides": [
+          {
+            "name": "Player 1",
+            "id": "p1",
+            "pokemon": [
+              {
+                "name": "Grubbin",
+                "species": "grubbin",
+                "hp": 0,
+                "maxhp": 240,
+                "status": "fnt",
+                "fainted": true,
+                "level": 95,
+                "ability": "swarm",
+                "item": "fightiniumz",
+                "moves": [
+                  "knockoff",
+                  "confide",
+                  "meteorassault",
+                  "maxphantasm"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug"
+                ]
+              },
+              {
+                "name": "Genesect-Shock",
+                "species": "genesectshock",
+                "hp": 0,
+                "maxhp": 263,
+                "status": "fnt",
+                "fainted": true,
+                "level": 88,
+                "ability": "download",
+                "item": "poisongem",
+                "moves": [
+                  "visegrip",
+                  "barbbarrage",
+                  "doomdesire",
+                  "temperflare"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Steel"
+                ]
+              },
+              {
+                "name": "Glimmora",
+                "species": "glimmora",
+                "hp": 0,
+                "maxhp": 322,
+                "status": "fnt",
+                "fainted": true,
+                "level": 100,
+                "ability": "toxicdebris",
+                "item": "tr62",
+                "moves": [
+                  "gastroacid",
+                  "doubleslap",
+                  "gmaxrapidflow",
+                  "crosspoison"
+                ],
+                "boosts": {},
+                "types": [
+                  "Rock",
+                  "Poison"
+                ]
+              },
+              {
+                "name": "Golem-Alola",
+                "species": "golemalola",
+                "hp": 0,
+                "maxhp": 288,
+                "status": "fnt",
+                "fainted": true,
+                "level": 98,
+                "ability": "magnetpull",
+                "item": "oddincense",
+                "moves": [
+                  "gmaxterror",
+                  "kingsshield",
+                  "steameruption",
+                  "dragontail"
+                ],
+                "boosts": {},
+                "types": [
+                  "Rock",
+                  "Electric"
+                ]
+              },
+              {
+                "name": "Vivillon-Savanna",
+                "species": "vivillonsavanna",
+                "hp": 175,
+                "maxhp": 290,
+                "status": "",
+                "fainted": false,
+                "level": 99,
+                "ability": "noability",
+                "item": "raichunitex",
+                "moves": [
+                  "originpulse",
+                  "fakeout",
+                  "lick",
+                  "gmaxcuddle"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Flying"
+                ]
+              },
+              {
+                "name": "Grovyle",
+                "species": "grovyle",
+                "hp": 208,
+                "maxhp": 208,
+                "status": "",
+                "fainted": false,
+                "level": 85,
+                "ability": "overgrow",
+                "item": "fairygem",
+                "moves": [
+                  "constrict",
+                  "petaldance",
+                  "visegrip",
+                  "doubleironbash"
+                ],
+                "boosts": {},
+                "types": [
+                  "Grass"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Player 2",
+            "id": "p2",
+            "pokemon": [
+              {
+                "name": "Slowbro-Mega",
+                "species": "slowbromega",
+                "hp": 0,
+                "maxhp": 324,
+                "status": "fnt",
+                "fainted": true,
+                "level": 93,
+                "ability": "shellarmor",
+                "item": "",
+                "moves": [
+                  "snowscape",
+                  "neverendingnightmare",
+                  "lightscreen",
+                  "powerwhip"
+                ],
+                "boosts": {},
+                "types": [
+                  "Water",
+                  "Psychic"
+                ]
+              },
+              {
+                "name": "Latias-Mega",
+                "species": "latiasmega",
+                "hp": 0,
+                "maxhp": 168,
+                "status": "fnt",
+                "fainted": true,
+                "level": 53,
+                "ability": "levitate",
+                "item": "",
+                "moves": [
+                  "watergun",
+                  "tearfullook",
+                  "sludgebomb",
+                  "honeclaws"
+                ],
+                "boosts": {},
+                "types": [
+                  "Dragon",
+                  "Psychic"
+                ]
+              },
+              {
+                "name": "Mantine",
+                "species": "mantine",
+                "hp": 0,
+                "maxhp": 185,
+                "status": "fnt",
+                "fainted": true,
+                "level": 56,
+                "ability": "swiftswim",
+                "item": "",
+                "moves": [
+                  "punishment",
+                  "steamroller",
+                  "bloodmoon",
+                  "twinbeam"
+                ],
+                "boosts": {},
+                "types": [
+                  "Water",
+                  "Flying"
+                ]
+              },
+              {
+                "name": "Cinderace-Gmax",
+                "species": "cinderacegmax",
+                "hp": 0,
+                "maxhp": 206,
+                "status": "fnt",
+                "fainted": true,
+                "level": 63,
+                "ability": "blaze",
+                "item": "",
+                "moves": [
+                  "psychic",
+                  "thunderpunch",
+                  "bulkup",
+                  "lightthatburnsthesky"
+                ],
+                "boosts": {},
+                "types": [
+                  "Fire"
+                ]
+              },
+              {
+                "name": "Zacian",
+                "species": "zacian",
+                "hp": 0,
+                "maxhp": 331,
+                "status": "fnt",
+                "fainted": true,
+                "level": 95,
+                "ability": "intrepidsword",
+                "item": "kelpsyberry",
+                "moves": [
+                  "zenheadbutt",
+                  "makeitrain",
+                  "lick",
+                  "nobleroar"
+                ],
+                "boosts": {},
+                "types": [
+                  "Fairy"
+                ]
+              },
+              {
+                "name": "Cutiefly",
+                "species": "cutiefly",
+                "hp": 192,
+                "maxhp": 192,
+                "status": "",
+                "fainted": false,
+                "level": 91,
+                "ability": "honeygather",
+                "item": "altarianite",
+                "moves": [
+                  "spectralthief",
+                  "astralbarrage",
+                  "venoshock",
+                  "alloutpummeling"
+                ],
+                "boosts": {},
+                "types": [
+                  "Bug",
+                  "Fairy"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "turn": 43,
       "state": {
         "turn": 35,
         "ended": false,
@@ -12101,7 +12383,7 @@
               {
                 "name": "Vivillon-Savanna",
                 "species": "vivillonsavanna",
-                "hp": 290,
+                "hp": 127,
                 "maxhp": 290,
                 "status": "",
                 "fainted": false,
@@ -12237,292 +12519,10 @@
               {
                 "name": "Zacian",
                 "species": "zacian",
-                "hp": 91,
+                "hp": 0,
                 "maxhp": 331,
-                "status": "",
-                "fainted": false,
-                "level": 95,
-                "ability": "intrepidsword",
-                "item": "kelpsyberry",
-                "moves": [
-                  "zenheadbutt",
-                  "makeitrain",
-                  "lick",
-                  "nobleroar"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fairy"
-                ]
-              },
-              {
-                "name": "Cutiefly",
-                "species": "cutiefly",
-                "hp": 192,
-                "maxhp": 192,
-                "status": "",
-                "fainted": false,
-                "level": 91,
-                "ability": "honeygather",
-                "item": "altarianite",
-                "moves": [
-                  "spectralthief",
-                  "astralbarrage",
-                  "venoshock",
-                  "alloutpummeling"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Fairy"
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "turn": 43,
-      "state": {
-        "turn": 36,
-        "ended": false,
-        "winner": null,
-        "sides": [
-          {
-            "name": "Player 1",
-            "id": "p1",
-            "pokemon": [
-              {
-                "name": "Grubbin",
-                "species": "grubbin",
-                "hp": 0,
-                "maxhp": 240,
                 "status": "fnt",
                 "fainted": true,
-                "level": 95,
-                "ability": "swarm",
-                "item": "fightiniumz",
-                "moves": [
-                  "knockoff",
-                  "confide",
-                  "meteorassault",
-                  "maxphantasm"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug"
-                ]
-              },
-              {
-                "name": "Genesect-Shock",
-                "species": "genesectshock",
-                "hp": 0,
-                "maxhp": 263,
-                "status": "fnt",
-                "fainted": true,
-                "level": 88,
-                "ability": "download",
-                "item": "poisongem",
-                "moves": [
-                  "visegrip",
-                  "barbbarrage",
-                  "doomdesire",
-                  "temperflare"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Steel"
-                ]
-              },
-              {
-                "name": "Glimmora",
-                "species": "glimmora",
-                "hp": 0,
-                "maxhp": 322,
-                "status": "fnt",
-                "fainted": true,
-                "level": 100,
-                "ability": "toxicdebris",
-                "item": "tr62",
-                "moves": [
-                  "gastroacid",
-                  "doubleslap",
-                  "gmaxrapidflow",
-                  "crosspoison"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Poison"
-                ]
-              },
-              {
-                "name": "Golem-Alola",
-                "species": "golemalola",
-                "hp": 0,
-                "maxhp": 288,
-                "status": "fnt",
-                "fainted": true,
-                "level": 98,
-                "ability": "magnetpull",
-                "item": "oddincense",
-                "moves": [
-                  "gmaxterror",
-                  "kingsshield",
-                  "steameruption",
-                  "dragontail"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Electric"
-                ]
-              },
-              {
-                "name": "Vivillon-Savanna",
-                "species": "vivillonsavanna",
-                "hp": 183,
-                "maxhp": 290,
-                "status": "",
-                "fainted": false,
-                "level": 99,
-                "ability": "noability",
-                "item": "raichunitex",
-                "moves": [
-                  "originpulse",
-                  "fakeout",
-                  "lick",
-                  "gmaxcuddle"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Grovyle",
-                "species": "grovyle",
-                "hp": 208,
-                "maxhp": 208,
-                "status": "",
-                "fainted": false,
-                "level": 85,
-                "ability": "overgrow",
-                "item": "fairygem",
-                "moves": [
-                  "constrict",
-                  "petaldance",
-                  "visegrip",
-                  "doubleironbash"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass"
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Player 2",
-            "id": "p2",
-            "pokemon": [
-              {
-                "name": "Slowbro-Mega",
-                "species": "slowbromega",
-                "hp": 0,
-                "maxhp": 324,
-                "status": "fnt",
-                "fainted": true,
-                "level": 93,
-                "ability": "shellarmor",
-                "item": "",
-                "moves": [
-                  "snowscape",
-                  "neverendingnightmare",
-                  "lightscreen",
-                  "powerwhip"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Latias-Mega",
-                "species": "latiasmega",
-                "hp": 0,
-                "maxhp": 168,
-                "status": "fnt",
-                "fainted": true,
-                "level": 53,
-                "ability": "levitate",
-                "item": "",
-                "moves": [
-                  "watergun",
-                  "tearfullook",
-                  "sludgebomb",
-                  "honeclaws"
-                ],
-                "boosts": {},
-                "types": [
-                  "Dragon",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Mantine",
-                "species": "mantine",
-                "hp": 0,
-                "maxhp": 185,
-                "status": "fnt",
-                "fainted": true,
-                "level": 56,
-                "ability": "swiftswim",
-                "item": "",
-                "moves": [
-                  "punishment",
-                  "steamroller",
-                  "bloodmoon",
-                  "twinbeam"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Cinderace-Gmax",
-                "species": "cinderacegmax",
-                "hp": 0,
-                "maxhp": 206,
-                "status": "fnt",
-                "fainted": true,
-                "level": 63,
-                "ability": "blaze",
-                "item": "",
-                "moves": [
-                  "psychic",
-                  "thunderpunch",
-                  "bulkup",
-                  "lightthatburnsthesky"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fire"
-                ]
-              },
-              {
-                "name": "Zacian",
-                "species": "zacian",
-                "hp": 7,
-                "maxhp": 331,
-                "status": "",
-                "fainted": false,
                 "level": 95,
                 "ability": "intrepidsword",
                 "item": "kelpsyberry",
@@ -12665,7 +12665,7 @@
               {
                 "name": "Vivillon-Savanna",
                 "species": "vivillonsavanna",
-                "hp": 72,
+                "hp": 74,
                 "maxhp": 290,
                 "status": "",
                 "fainted": false,
@@ -12849,571 +12849,7 @@
     {
       "turn": 45,
       "state": {
-        "turn": 37,
-        "ended": false,
-        "winner": null,
-        "sides": [
-          {
-            "name": "Player 1",
-            "id": "p1",
-            "pokemon": [
-              {
-                "name": "Grubbin",
-                "species": "grubbin",
-                "hp": 0,
-                "maxhp": 240,
-                "status": "fnt",
-                "fainted": true,
-                "level": 95,
-                "ability": "swarm",
-                "item": "fightiniumz",
-                "moves": [
-                  "knockoff",
-                  "confide",
-                  "meteorassault",
-                  "maxphantasm"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug"
-                ]
-              },
-              {
-                "name": "Genesect-Shock",
-                "species": "genesectshock",
-                "hp": 0,
-                "maxhp": 263,
-                "status": "fnt",
-                "fainted": true,
-                "level": 88,
-                "ability": "download",
-                "item": "poisongem",
-                "moves": [
-                  "visegrip",
-                  "barbbarrage",
-                  "doomdesire",
-                  "temperflare"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Steel"
-                ]
-              },
-              {
-                "name": "Glimmora",
-                "species": "glimmora",
-                "hp": 0,
-                "maxhp": 322,
-                "status": "fnt",
-                "fainted": true,
-                "level": 100,
-                "ability": "toxicdebris",
-                "item": "tr62",
-                "moves": [
-                  "gastroacid",
-                  "doubleslap",
-                  "gmaxrapidflow",
-                  "crosspoison"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Poison"
-                ]
-              },
-              {
-                "name": "Golem-Alola",
-                "species": "golemalola",
-                "hp": 0,
-                "maxhp": 288,
-                "status": "fnt",
-                "fainted": true,
-                "level": 98,
-                "ability": "magnetpull",
-                "item": "oddincense",
-                "moves": [
-                  "gmaxterror",
-                  "kingsshield",
-                  "steameruption",
-                  "dragontail"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Electric"
-                ]
-              },
-              {
-                "name": "Vivillon-Savanna",
-                "species": "vivillonsavanna",
-                "hp": 72,
-                "maxhp": 290,
-                "status": "",
-                "fainted": false,
-                "level": 99,
-                "ability": "noability",
-                "item": "raichunitex",
-                "moves": [
-                  "originpulse",
-                  "fakeout",
-                  "lick",
-                  "gmaxcuddle"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Grovyle",
-                "species": "grovyle",
-                "hp": 208,
-                "maxhp": 208,
-                "status": "",
-                "fainted": false,
-                "level": 85,
-                "ability": "overgrow",
-                "item": "fairygem",
-                "moves": [
-                  "constrict",
-                  "petaldance",
-                  "visegrip",
-                  "doubleironbash"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass"
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Player 2",
-            "id": "p2",
-            "pokemon": [
-              {
-                "name": "Slowbro-Mega",
-                "species": "slowbromega",
-                "hp": 0,
-                "maxhp": 324,
-                "status": "fnt",
-                "fainted": true,
-                "level": 93,
-                "ability": "shellarmor",
-                "item": "",
-                "moves": [
-                  "snowscape",
-                  "neverendingnightmare",
-                  "lightscreen",
-                  "powerwhip"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Latias-Mega",
-                "species": "latiasmega",
-                "hp": 0,
-                "maxhp": 168,
-                "status": "fnt",
-                "fainted": true,
-                "level": 53,
-                "ability": "levitate",
-                "item": "",
-                "moves": [
-                  "watergun",
-                  "tearfullook",
-                  "sludgebomb",
-                  "honeclaws"
-                ],
-                "boosts": {},
-                "types": [
-                  "Dragon",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Mantine",
-                "species": "mantine",
-                "hp": 0,
-                "maxhp": 185,
-                "status": "fnt",
-                "fainted": true,
-                "level": 56,
-                "ability": "swiftswim",
-                "item": "",
-                "moves": [
-                  "punishment",
-                  "steamroller",
-                  "bloodmoon",
-                  "twinbeam"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Cinderace-Gmax",
-                "species": "cinderacegmax",
-                "hp": 0,
-                "maxhp": 206,
-                "status": "fnt",
-                "fainted": true,
-                "level": 63,
-                "ability": "blaze",
-                "item": "",
-                "moves": [
-                  "psychic",
-                  "thunderpunch",
-                  "bulkup",
-                  "lightthatburnsthesky"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fire"
-                ]
-              },
-              {
-                "name": "Zacian",
-                "species": "zacian",
-                "hp": 0,
-                "maxhp": 331,
-                "status": "fnt",
-                "fainted": true,
-                "level": 95,
-                "ability": "intrepidsword",
-                "item": "kelpsyberry",
-                "moves": [
-                  "zenheadbutt",
-                  "makeitrain",
-                  "lick",
-                  "nobleroar"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fairy"
-                ]
-              },
-              {
-                "name": "Cutiefly",
-                "species": "cutiefly",
-                "hp": 192,
-                "maxhp": 192,
-                "status": "",
-                "fainted": false,
-                "level": 91,
-                "ability": "honeygather",
-                "item": "altarianite",
-                "moves": [
-                  "spectralthief",
-                  "astralbarrage",
-                  "venoshock",
-                  "alloutpummeling"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Fairy"
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "turn": 46,
-      "state": {
-        "turn": 38,
-        "ended": false,
-        "winner": null,
-        "sides": [
-          {
-            "name": "Player 1",
-            "id": "p1",
-            "pokemon": [
-              {
-                "name": "Grubbin",
-                "species": "grubbin",
-                "hp": 0,
-                "maxhp": 240,
-                "status": "fnt",
-                "fainted": true,
-                "level": 95,
-                "ability": "swarm",
-                "item": "fightiniumz",
-                "moves": [
-                  "knockoff",
-                  "confide",
-                  "meteorassault",
-                  "maxphantasm"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug"
-                ]
-              },
-              {
-                "name": "Genesect-Shock",
-                "species": "genesectshock",
-                "hp": 0,
-                "maxhp": 263,
-                "status": "fnt",
-                "fainted": true,
-                "level": 88,
-                "ability": "download",
-                "item": "poisongem",
-                "moves": [
-                  "visegrip",
-                  "barbbarrage",
-                  "doomdesire",
-                  "temperflare"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Steel"
-                ]
-              },
-              {
-                "name": "Glimmora",
-                "species": "glimmora",
-                "hp": 0,
-                "maxhp": 322,
-                "status": "fnt",
-                "fainted": true,
-                "level": 100,
-                "ability": "toxicdebris",
-                "item": "tr62",
-                "moves": [
-                  "gastroacid",
-                  "doubleslap",
-                  "gmaxrapidflow",
-                  "crosspoison"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Poison"
-                ]
-              },
-              {
-                "name": "Golem-Alola",
-                "species": "golemalola",
-                "hp": 0,
-                "maxhp": 288,
-                "status": "fnt",
-                "fainted": true,
-                "level": 98,
-                "ability": "magnetpull",
-                "item": "oddincense",
-                "moves": [
-                  "gmaxterror",
-                  "kingsshield",
-                  "steameruption",
-                  "dragontail"
-                ],
-                "boosts": {},
-                "types": [
-                  "Rock",
-                  "Electric"
-                ]
-              },
-              {
-                "name": "Vivillon-Savanna",
-                "species": "vivillonsavanna",
-                "hp": 27,
-                "maxhp": 290,
-                "status": "",
-                "fainted": false,
-                "level": 99,
-                "ability": "noability",
-                "item": "raichunitex",
-                "moves": [
-                  "originpulse",
-                  "fakeout",
-                  "lick",
-                  "gmaxcuddle"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Grovyle",
-                "species": "grovyle",
-                "hp": 208,
-                "maxhp": 208,
-                "status": "",
-                "fainted": false,
-                "level": 85,
-                "ability": "overgrow",
-                "item": "fairygem",
-                "moves": [
-                  "constrict",
-                  "petaldance",
-                  "visegrip",
-                  "doubleironbash"
-                ],
-                "boosts": {},
-                "types": [
-                  "Grass"
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Player 2",
-            "id": "p2",
-            "pokemon": [
-              {
-                "name": "Slowbro-Mega",
-                "species": "slowbromega",
-                "hp": 0,
-                "maxhp": 324,
-                "status": "fnt",
-                "fainted": true,
-                "level": 93,
-                "ability": "shellarmor",
-                "item": "",
-                "moves": [
-                  "snowscape",
-                  "neverendingnightmare",
-                  "lightscreen",
-                  "powerwhip"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Latias-Mega",
-                "species": "latiasmega",
-                "hp": 0,
-                "maxhp": 168,
-                "status": "fnt",
-                "fainted": true,
-                "level": 53,
-                "ability": "levitate",
-                "item": "",
-                "moves": [
-                  "watergun",
-                  "tearfullook",
-                  "sludgebomb",
-                  "honeclaws"
-                ],
-                "boosts": {},
-                "types": [
-                  "Dragon",
-                  "Psychic"
-                ]
-              },
-              {
-                "name": "Mantine",
-                "species": "mantine",
-                "hp": 0,
-                "maxhp": 185,
-                "status": "fnt",
-                "fainted": true,
-                "level": 56,
-                "ability": "swiftswim",
-                "item": "",
-                "moves": [
-                  "punishment",
-                  "steamroller",
-                  "bloodmoon",
-                  "twinbeam"
-                ],
-                "boosts": {},
-                "types": [
-                  "Water",
-                  "Flying"
-                ]
-              },
-              {
-                "name": "Cinderace-Gmax",
-                "species": "cinderacegmax",
-                "hp": 0,
-                "maxhp": 206,
-                "status": "fnt",
-                "fainted": true,
-                "level": 63,
-                "ability": "blaze",
-                "item": "",
-                "moves": [
-                  "psychic",
-                  "thunderpunch",
-                  "bulkup",
-                  "lightthatburnsthesky"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fire"
-                ]
-              },
-              {
-                "name": "Zacian",
-                "species": "zacian",
-                "hp": 0,
-                "maxhp": 331,
-                "status": "fnt",
-                "fainted": true,
-                "level": 95,
-                "ability": "intrepidsword",
-                "item": "kelpsyberry",
-                "moves": [
-                  "zenheadbutt",
-                  "makeitrain",
-                  "lick",
-                  "nobleroar"
-                ],
-                "boosts": {},
-                "types": [
-                  "Fairy"
-                ]
-              },
-              {
-                "name": "Cutiefly",
-                "species": "cutiefly",
-                "hp": 192,
-                "maxhp": 192,
-                "status": "",
-                "fainted": false,
-                "level": 91,
-                "ability": "honeygather",
-                "item": "altarianite",
-                "moves": [
-                  "spectralthief",
-                  "astralbarrage",
-                  "venoshock",
-                  "alloutpummeling"
-                ],
-                "boosts": {},
-                "types": [
-                  "Bug",
-                  "Fairy"
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "turn": 47,
-      "state": {
-        "turn": 38,
+        "turn": 36,
         "ended": true,
         "winner": "Player 1",
         "sides": [
@@ -13511,7 +12947,7 @@
               {
                 "name": "Vivillon-Savanna",
                 "species": "vivillonsavanna",
-                "hp": 27,
+                "hp": 74,
                 "maxhp": 290,
                 "status": "",
                 "fainted": false,
@@ -13918,20 +13354,10 @@
       "turn": 45,
       "p1": "default",
       "p2": "default"
-    },
-    {
-      "turn": 46,
-      "p1": "default",
-      "p2": "default"
-    },
-    {
-      "turn": 47,
-      "p1": "default",
-      "p2": "default"
     }
   ],
   "summary": {
-    "turns": 47,
+    "turns": 45,
     "winner": "Player 1",
     "ended": true
   },
@@ -13956,7 +13382,6 @@
     7,
     4,
     0,
-    7,
     3,
     0,
     7,
@@ -13969,7 +13394,6 @@
     0,
     5,
     5,
-    2,
     4,
     0,
     6,
@@ -13979,8 +13403,8 @@
     4,
     0,
     7,
-    7,
     0,
+    4,
     4,
     3
   ]

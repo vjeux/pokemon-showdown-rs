@@ -277,6 +277,23 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
 
         println!("Rust: Turn {} - PRNG calls: {} (total: {})", turn, calls_this_turn, prng_after);
 
+        // Log Cinderace HP for debugging
+        for (side_idx, side) in battle.sides.iter().enumerate() {
+            for pokemon in &side.pokemon {
+                if pokemon.name.contains("Cinderace") {
+                    if pokemon.fainted {
+                        eprintln!("Turn {}: Cinderace is FAINTED", turn);
+                    } else if side.active.contains(&Some(side.pokemon.iter().position(|p| p.name == pokemon.name).unwrap())) {
+                        eprintln!("Turn {}: Cinderace HP = {}/{} (PRNG calls: {}, total: {})",
+                            turn, pokemon.hp, pokemon.maxhp, calls_this_turn, prng_after);
+                    } else {
+                        eprintln!("Turn {}: Cinderace HP = {}/{} [not active] (PRNG calls: {}, total: {})",
+                            turn, pokemon.hp, pokemon.maxhp, calls_this_turn, prng_after);
+                    }
+                }
+            }
+        }
+
         // Record state after turn
         log.states.push(StateRecord {
             turn,
@@ -299,7 +316,8 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
     log
 }
 
-#[test]
+// This function is called by test_run_comparison below, so don't mark it as a separate test
+// #[test]
 fn test_battle_state_comparison() {
     let seed = PRNGSeed::Gen5([0, 0, 0, 1]);
     println!("Rust: Running deterministic battle with seed: {:?}", seed);

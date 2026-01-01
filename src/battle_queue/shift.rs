@@ -15,7 +15,11 @@ impl BattleQueue {
         if self.list.is_empty() {
             None
         } else {
-            Some(self.list.remove(0))
+            let action = self.list.remove(0);
+            eprintln!("[QUEUE.SHIFT] Removed action: priority={}, speed={}, order={:?}",
+                action.priority(), action.speed(), action.order());
+            eprintln!("[QUEUE.SHIFT] Queue now has {} actions remaining", self.list.len());
+            Some(action)
         }
     }
 }
