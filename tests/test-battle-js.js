@@ -101,6 +101,22 @@ battle.prng.rng.next = function() {
     return originalNext();
 };
 
+// Patch speedSort to log what's being shuffled
+const originalSpeedSort = battle.speedSort.bind(battle);
+battle.speedSort = function(list, comparator) {
+    const prngBefore = totalPrngCalls;
+    const result = originalSpeedSort(list, comparator);
+    const prngAfter = totalPrngCalls;
+
+    if (prngAfter > prngBefore) {
+        console.error(`\n[SPEED_SORT SHUFFLED] Made ${prngAfter - prngBefore} PRNG calls sorting ${list.length} items:`);
+        list.forEach((item, i) => {
+            console.error(`  [${i}] effect=${item.effect?.id || item.id || 'unknown'}, speed=${item.speed || 0}, priority=${item.priority || 0}, subOrder=${item.subOrder || 0}, order=${item.order || 'none'}`);
+        });
+    }
+    return result;
+};
+
 console.log(`# JavaScript Battle Test - Seed ${seedNum}`);
 console.log(`# P1: ${teams.p1[0].name} vs P2: ${teams.p2[0].name}`);
 

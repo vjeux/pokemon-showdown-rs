@@ -38,6 +38,56 @@ Seed 123 now has a battle divergence starting at turn 5:
 
 ---
 
+## 2026-01-01: PRNG Stack Trace Debugging System
+
+### Implementation
+Created a comprehensive PRNG tracing system to debug divergences:
+
+**Features:**
+- Configurable via `TRACE_PRNG` environment variable
+- Supports ranges (1-5), individual calls (10), and lists (1,5,10)
+- Shows stack traces for specific PRNG calls in both JS and Rust
+- New script: `tests/trace-prng.sh` for easy debugging
+- Updated comparison script to support PRNG tracing
+- Complete documentation in `PRNG_TRACING.md`
+
+**Usage examples:**
+```bash
+# Trace PRNG call #1
+./tests/trace-prng.sh 100 1
+
+# Trace calls 1-5
+./tests/trace-prng.sh 100 1-5
+
+# Trace in comparison test
+./tests/compare-battles.sh 100 1-5
+```
+
+### Seed 100 Root Cause Found
+
+Using the new tracing system, identified why Rust makes 0 PRNG calls on turn 2 while JS makes 1:
+
+**JavaScript (turn 2 Residual event):**
+- Has 3 handlers: pickup (order=28), stall (order=undefined), spikyshield (order=undefined)
+- All have same speed=119, priority=0, subOrder=2
+- pickup sorts first (order=28 < undefined)
+- stall and spikyshield tie (both order=undefined) → shuffled → 1 PRNG call
+
+**Rust (turn 2 Residual event):**
+- Has only 2 handlers: spikyshield, pickup
+- **Missing "stall" volatile** from Linoone-Galar
+- pickup shows order=None (should be order=28 from onResidualOrder)
+- No ties → no shuffle → 0 PRNG calls
+
+**Issues identified:**
+1. Rust is missing "stall" volatile - need to investigate why it's not being added
+2. Rust's default order (i32::MAX) differs from JavaScript's (4294967296 = 2^32)
+3. Rust's get_callback_order not reading pickup's onResidualOrder=28
+
+**Status:** Root cause identified, fixes pending
+
+---
+
 ## 2026-01-01: Display Name and Comparison Script Fixes
 
 ### Issue
