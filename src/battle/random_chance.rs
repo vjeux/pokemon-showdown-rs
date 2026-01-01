@@ -14,8 +14,8 @@ impl Battle {
         let result = self.prng.random_chance(numerator, denominator);
         let call_after = self.prng.call_count;
 
-        // Log calls around turn 21 to track what's calling them
-        if call_after >= 69 && call_after <= 77 {
+        // Log calls around divergence point to track what's calling them
+        if call_after >= 137 && call_after <= 150 {
             eprintln!("[Battle::random_chance] Call #{} (was #{}): random_chance({}/{}) = {}, turn={}",
                 call_after, call_before, numerator, denominator, result, self.turn);
         }

@@ -204,6 +204,34 @@ pub fn spread_move_hit(
         is_self,
     );
 
+    // JavaScript (battle-actions.ts:1103-1105):
+    //   for (const i of targets.keys()) {
+    //     if (!damage[i] && damage[i] !== 0) targets[i] = false;
+    //   }
+    // Filter targets based on damage array - targets with no damage (and damage !== 0) are filtered out
+    let mut filtered_targets = final_targets.clone();
+    for (i, damage_opt) in damages.iter().enumerate() {
+        // JS: if (!damage[i] && damage[i] !== 0) targets[i] = false;
+        // In Rust: if damage is None OR damage is Some(value) where value != 0 is false, filter it out
+        // Actually, JS logic is: if damage is falsy (false, null, undefined) AND not exactly 0
+        // In Rust: damage_opt is None or Some(0) means keep, otherwise check if Some(non-zero)
+        match damage_opt {
+            None => {
+                // damage[i] is falsy (None/null/undefined), so filter out (set to None)
+                filtered_targets[i] = None;
+                eprintln!("[SPREAD_MOVE_HIT] Filtering out target {} because damage is None", i);
+            }
+            Some(0) => {
+                // damage[i] === 0, keep the target (JavaScript: !damage && damage !== 0 is false when damage === 0)
+                eprintln!("[SPREAD_MOVE_HIT] Keeping target {} because damage is Some(0)", i);
+            }
+            Some(_) => {
+                // damage[i] is a non-zero number, keep the target
+                eprintln!("[SPREAD_MOVE_HIT] Keeping target {} because damage is Some(non-zero)", i);
+            }
+        }
+    }
+
     // Step 4.5: Apply self stat changes (move.self boosts)
     // JavaScript (battle-actions.ts:1116):
     //   if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
@@ -229,7 +257,8 @@ pub fn spread_move_hit(
         // JS: for (const target of targets) { if (target === false) continue; ... }
         // We need to loop through targets to match JavaScript behavior
         // (even though we're applying to source, not target)
-        for &target in &final_targets {
+        // Use filtered_targets to match JavaScript filtering
+        for &target in &filtered_targets {
             // JS: if (target === false) continue;
             if target.is_none() {
                 eprintln!("[SPREAD_MOVE_HIT] Skipping None target");
@@ -360,17 +389,43 @@ pub fn spread_move_hit(
     //       }
     //     }
     //   }
-    eprintln!("[SPREAD_MOVE_HIT T{}] Checking secondary for move {}: has_secondary={}, final_targets.len()={}",
-        battle.turn, move_id, move_data.secondary.is_some(), final_targets.len());
+    eprintln!("[SPREAD_MOVE_HIT T{}] Checking secondary for move {}: has_secondary={}, filtered_targets.len()={}",
+        battle.turn, move_id, move_data.secondary.is_some(), filtered_targets.len());
     if let Some(ref secondary_effect) = move_data.secondary {
         eprintln!("[SPREAD_MOVE_HIT T{}] Processing secondary effect, chance={:?}", battle.turn, secondary_effect.chance);
         // JS: for (const target of targets) { if (target === false) continue; ... }
-        for (i, &target_opt) in final_targets.iter().enumerate() {
+        // Use filtered_targets instead of final_targets to match JavaScript filtering
+        for (i, &target_opt) in filtered_targets.iter().enumerate() {
             if target_opt.is_none() {
                 eprintln!("[SPREAD_MOVE_HIT T{}] Skipping None target at index {}", battle.turn, i);
                 continue;
             }
             let target_pos = target_opt.unwrap();
+
+            // JS: const secondaries = this.battle.runEvent('ModifySecondaries', target, source, moveData, moveData.secondaries.slice());
+            // Call ModifySecondaries event to allow abilities like Shield Dust to filter secondaries
+            // For now, we use a simple approach: if the event returns anything other than Continue, skip this secondary
+            let modify_result = battle.run_event(
+                "ModifySecondaries",
+                Some(target_pos),
+                Some(source_pos),
+                Some(move_id),
+                None,
+            );
+
+            // If ModifySecondaries event returns a falsy value (like EventResult::Null or EventResult::Boolean(false)),
+            // it means the secondary should be blocked (e.g., by Shield Dust)
+            if let Some(result) = modify_result {
+                if result == 0 {
+                    eprintln!("[SPREAD_MOVE_HIT T{}] ModifySecondaries returned 0, skipping secondary", battle.turn);
+                    continue;
+                }
+            } else {
+                // None means the event blocked the secondary
+                eprintln!("[SPREAD_MOVE_HIT T{}] ModifySecondaries returned None, skipping secondary", battle.turn);
+                continue;
+            }
+
             eprintln!("[SPREAD_MOVE_HIT T{}] Making PRNG call for secondary on target {:?}", battle.turn, target_pos);
 
             // JS: const secondaryRoll = this.battle.random(100);

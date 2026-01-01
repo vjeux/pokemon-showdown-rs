@@ -366,6 +366,13 @@ impl Battle {
                     // True is truthy, so set result to 1 and continue
                     result = Some(1);
                 }
+                EventResult::Null => {
+                    // JavaScript: returning null means stopping or interrupting the event
+                    // Null is falsy, so set result to None and break
+                    // This is different from NotFail - Null suppresses failure messages
+                    result = None;
+                    break;
+                }
                 EventResult::NotFail => {
                     // JavaScript: relayVar = this.NOT_FAIL; (NOT_FAIL = '' which is falsy)
                     // NotFail is falsy, so set result to None and break

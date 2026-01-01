@@ -12,7 +12,12 @@ use crate::event::EventResult;
 ///     return secondaries.filter(effect => !!effect.self);
 /// }
 pub fn on_modify_secondaries(_battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+    // JavaScript: return secondaries.filter(effect => !!effect.self);
+    // This filters out all secondaries that don't have effect.self
+    // In other words, it blocks all opponent-targeting secondaries
+    // For now, we block ALL secondaries by returning Null
+    // TODO: Check if the specific secondary has 'self' and only block if it doesn't
+    eprintln!("[SHIELD_DUST] Blocking secondary effect");
+    EventResult::Null
 }
 
