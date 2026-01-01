@@ -169,6 +169,10 @@ pub struct MoveSecondary {
 pub struct ConditionData {
     #[serde(default)]
     pub duration: Option<i32>,
+    /// Extra fields (like onResidualOrder, onResidualSubOrder, etc.)
+    /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`]
+    #[serde(flatten)]
+    pub extra: HashMap<String, serde_json::Value>,
     // Add other condition fields as needed
 }
 
@@ -483,6 +487,10 @@ pub struct AbilityData {
     pub flags: HashMap<String, i32>,
     #[serde(default)]
     pub effect_type: Option<String>,
+    /// Extra fields (like onResidualOrder, onResidualSubOrder, etc.)
+    /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`]
+    #[serde(flatten)]
+    pub extra: HashMap<String, serde_json::Value>,
 }
 
 /// Item data
@@ -522,6 +530,10 @@ pub struct ItemData {
     /// Stat boosts when item is used (e.g., for Cell Battery)
     #[serde(default)]
     pub boosts: Option<std::collections::HashMap<String, i32>>,
+    /// Extra fields (like onResidualOrder, onResidualSubOrder, etc.)
+    /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`]
+    #[serde(flatten)]
+    pub extra: HashMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -8,7 +8,7 @@ impl Battle {
     /// Get callback sub-order from dex data
     /// JavaScript: handler.subOrder = (handler.effect as any)[`${callbackName}SubOrder`] || 0;
     /// Returns None if no sub-order is specified (will use default based on effect type)
-    pub(crate) fn get_callback_sub_order(effect_type: EffectType, effect_id: &str, callback_name: &str) -> Option<i32> {
+    pub(crate) fn get_callback_sub_order(&self, effect_type: EffectType, effect_id: &str, callback_name: &str) -> Option<i32> {
         // Extract event name from callback (e.g., "onResidual" -> "Residual")
         let event = if callback_name.starts_with("on") {
             &callback_name[2..]
@@ -16,13 +16,35 @@ impl Battle {
             callback_name
         };
 
-        match (effect_type, event) {
-            // Ability onResidualSubOrder values (from data/abilities.ts)
-            (EffectType::Ability, "Residual") => match effect_id {
-                "slowstart" => Some(2),
-                "pickup" => Some(2),
-                _ => None,
-            },
+        // JavaScript: handler.subOrder = (handler.effect as any)[`${callbackName}SubOrder`] || 0;
+        // Construct the property name: e.g., "onResidualSubOrder"
+        let property_name = format!("on{}SubOrder", event);
+
+        match effect_type {
+            EffectType::Ability => {
+                if let Some(ability_data) = self.dex.abilities().get(effect_id) {
+                    if let Some(value) = ability_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                None
+            }
+            EffectType::Item => {
+                if let Some(item_data) = self.dex.items().get(effect_id) {
+                    if let Some(value) = item_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                None
+            }
+            EffectType::Condition => {
+                if let Some(condition_data) = self.dex.conditions.get(&ID::from(effect_id)) {
+                    if let Some(value) = condition_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                None
+            }
             _ => None,
         }
     }
@@ -30,7 +52,7 @@ impl Battle {
     /// Get callback order from dex data
     /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`] || false;
     /// Returns None if no order is specified (equivalent to false in JS)
-    pub(crate) fn get_callback_order(effect_type: EffectType, effect_id: &str, callback_name: &str) -> Option<i32> {
+    pub(crate) fn get_callback_order(&self, effect_type: EffectType, effect_id: &str, callback_name: &str) -> Option<i32> {
         // Extract event name from callback (e.g., "onResidual" -> "Residual")
         let event = if callback_name.starts_with("on") {
             &callback_name[2..]
@@ -38,26 +60,35 @@ impl Battle {
             callback_name
         };
 
-        match (effect_type, event) {
-            // Ability onResidualOrder values (from data/abilities.ts)
-            (EffectType::Ability, "Residual") => match effect_id {
-                "slowstart" => Some(28),
-                "pickup" => Some(28),
-                _ => None,
-            },
-            // Item onResidualOrder values (from data/items.ts)
-            (EffectType::Item, "Residual") => match effect_id {
-                "leftovers" => Some(5),
-                "blacksludge" => Some(5),
-                _ => None,
-            },
-            // Status onResidualOrder values (from data/conditions.ts)
-            (EffectType::Condition, "Residual") => match effect_id {
-                "brn" => Some(10),
-                "psn" => Some(9),
-                "tox" => Some(9),
-                _ => None,
-            },
+        // JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`] || false;
+        // Construct the property name: e.g., "onResidualOrder"
+        let property_name = format!("on{}Order", event);
+
+        match effect_type {
+            EffectType::Ability => {
+                if let Some(ability_data) = self.dex.abilities().get(effect_id) {
+                    if let Some(value) = ability_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                None
+            }
+            EffectType::Item => {
+                if let Some(item_data) = self.dex.items().get(effect_id) {
+                    if let Some(value) = item_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                None
+            }
+            EffectType::Condition => {
+                if let Some(condition_data) = self.dex.conditions.get(&ID::from(effect_id)) {
+                    if let Some(value) = condition_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                None
+            }
             _ => None,
         }
     }
@@ -154,10 +185,16 @@ impl Battle {
         // JS: handler.subOrder = (handler.effect as any)[`${callbackName}SubOrder`] || 0;
         //
         // Look up order and priority from dex data based on effect type and ID
-        handler.order = Self::get_callback_order(handler.effect_type, handler.effect_id.as_str(), callback_name);
+        handler.order = self.get_callback_order(handler.effect_type, handler.effect_id.as_str(), callback_name);
         handler.priority = Self::get_callback_priority(handler.effect_type, handler.effect_id.as_str(), callback_name);
 
-        // If subOrder is not already set, calculate it based on effectType
+        // Check for custom sub_order from dex data first
+        if let Some(custom_sub_order) = self.get_callback_sub_order(handler.effect_type, handler.effect_id.as_str(), callback_name) {
+            handler.sub_order = custom_sub_order;
+        }
+
+        // If subOrder is not set (neither from input nor from dex), calculate it based on effectType
+        // JS: if (!handler.subOrder) { ... }
         if handler.sub_order == 0 {
             // https://www.smogon.com/forums/threads/sword-shield-battle-mechanics-research.3655528/page-59#post-8685465
             handler.sub_order = match handler.effect_type {
