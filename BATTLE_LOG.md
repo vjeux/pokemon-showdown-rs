@@ -115,3 +115,34 @@ JavaScript's modifyDamage returns `tr(baseDamage, 16)` which applies a 16-bit tr
 The 16-bit trunc fixed seed 42's turn 4-5 issue but revealed a new faint detection problem. Seed 123's damage differences persist, suggesting a different calculation issue (not related to final truncation).
 
 ---
+## 2026-01-01: Seed 100 and Seed 123 Investigation
+
+### Seed 100 Issue
+**Problem:** Rust makes one fewer PRNG call than JavaScript from turn 1
+- JS turn 1: prng=0->1 (1 call)
+- Rust turn 1: prng=0->0 (0 calls)
+- This off-by-one persists throughout the entire battle
+
+**Analysis:**
+- Team: Linoone-Galar (Pickup) vs Raging Bolt (Protosynthesis)
+- Protosynthesis ability is completely unimplemented in Rust (all callbacks return EventResult::Continue)
+- The ability should trigger WeatherChange event at battle start, which likely accounts for the missing PRNG call
+
+**Status:** Needs Protosynthesis implementation
+
+### Seed 123 Issue
+**Problem:** PRNG calls match perfectly, but damage calculations differ by 2-3 HP per turn
+- Example turn 5: JS deals 20 damage, Rust deals 17 damage
+- Differences vary: sometimes 0 HP, sometimes 2-3 HP
+
+**Analysis:**
+- Investigated type effectiveness calculation - found it working correctly
+- Type chart verified: Grass vs Fairy is neutral (1x), Grass vs Steel is 0.5x
+- `get_type_effectiveness_mod` correctly iterates through both types
+- Tinkaton has "powertrick" volatile (swaps Attack/Defense stats)
+- Base damage calculation and randomizer appear correct
+
+**Status:** Still investigating - damage formula differences not yet identified
+
+---
+
