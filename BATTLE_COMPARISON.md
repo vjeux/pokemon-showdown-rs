@@ -37,18 +37,43 @@
    - psywave.rs: Changed `battle.prng.random_range()` to `battle.random_with_range()`
    - quickclaw.rs: Changed `battle.prng.random_chance()` to `battle.random_chance()`
 
-#### Current Status: DIVERGENCE PERSISTS
+#### Current Status: ROOT CAUSE IDENTIFIED
 
-**Root Cause Identified:**
-- The 4 extra PRNG calls are from `Battle::random_chance()`
-- Turn 20 shows 4 random_chance calls in logs, but summary says 0 PRNG calls
-- Turn 21 shows 4 random_chance calls + 3 random calls = 7 total
-- This suggests turn attribution issue or phase mismatch
+**JavaScript (Turn 20-21):**
+- Turn 20: 0 PRNG calls (total stays at 69)
+- Turn 21: 3 PRNG calls (#70-72)
+  - One move executes: `p1b:visegrip`
+  - Call #70: random_chance(100/100) - accuracy check
+  - Call #71: random_chance(1/24) - critical hit check
+  - Call #72: random(16) - damage roll
 
-**Hypothesis:**
-- The random_chance calls might be happening at end of turn vs beginning of turn
-- JavaScript might not make these random_chance calls on turn 21
-- Need to identify WHAT is calling random_chance (likely Quick Claw item checks)
+**Rust (Turn 18, self.turn=17):**
+- 7 PRNG calls total (#70-76)
+  - TWO moves execute in sequence:
+  - `p1b:visegrip` (calls #70-72): accuracy, crit, damage
+  - `p2b:psychic` (calls #73-76): accuracy, crit, damage, + random(100)
+
+**The Problem:**
+Rust executes BOTH `p1b:visegrip` AND `p2b:psychic` on the same turn (turn=17), while JavaScript only executes visegrip on turn 21.
+
+From Rust logs:
+```
+RUN_ACTION Move: p1a uses knockoff
+RUN_ACTION Move: p1b uses visegrip     ← Calls #70-72
+RUN_ACTION Move: p2b uses psychic      ← Calls #73-76 (SHOULD NOT EXECUTE IN JS)
+```
+
+**Possible Causes:**
+1. Someone faints after visegrip in JavaScript, ending the turn or battle
+2. Turn boundary is handled differently - psychic might be deferred to next turn in JS
+3. Action queue processing differs between JS and Rust
+4. BeforeMove or other event prevents psychic execution in JS
+
+**Next Investigation:**
+Need to check JavaScript battle log to see:
+1. If anyone faints after visegrip on turn 21
+2. If psychic is attempted but blocked
+3. If the turn ends immediately after visegrip
 
 ### Next Steps
 

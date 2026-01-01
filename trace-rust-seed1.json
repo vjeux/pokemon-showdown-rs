@@ -6,80 +6,6 @@
     1
   ],
   "teams": {
-    "p1": [
-      {
-        "species": "Grubbin",
-        "moves": [
-          "knockoff",
-          "confide",
-          "meteorassault",
-          "maxphantasm"
-        ],
-        "ability": "Swarm",
-        "item": "fightiniumz",
-        "level": 95
-      },
-      {
-        "species": "Genesect-Shock",
-        "moves": [
-          "visegrip",
-          "barbbarrage",
-          "doomdesire",
-          "temperflare"
-        ],
-        "ability": "Download",
-        "item": "poisongem",
-        "level": 88
-      },
-      {
-        "species": "Glimmora",
-        "moves": [
-          "gastroacid",
-          "doubleslap",
-          "gmaxrapidflow",
-          "crosspoison"
-        ],
-        "ability": "Toxic Debris",
-        "item": "tr62",
-        "level": 100
-      },
-      {
-        "species": "Golem-Alola",
-        "moves": [
-          "gmaxterror",
-          "kingsshield",
-          "steameruption",
-          "dragontail"
-        ],
-        "ability": "Magnet Pull",
-        "item": "oddincense",
-        "level": 98
-      },
-      {
-        "species": "Vivillon-Savanna",
-        "moves": [
-          "originpulse",
-          "fakeout",
-          "lick",
-          "gmaxcuddle"
-        ],
-        "ability": "No Ability",
-        "item": "raichunitex",
-        "level": 99
-      },
-      {
-        "species": "Grovyle",
-        "moves": [
-          "constrict",
-          "petaldance",
-          "visegrip",
-          "doubleironbash"
-        ],
-        "ability": "Overgrow",
-        "item": "fairygem",
-        "level": 85
-      }
-    ],
     "p2": [
       {
         "species": "Slowbro-Mega",
@@ -152,6 +78,80 @@
         "ability": "Honey Gather",
         "item": "altarianite",
         "level": 91
+      }
+    ],
+    "p1": [
+      {
+        "species": "Grubbin",
+        "moves": [
+          "knockoff",
+          "confide",
+          "meteorassault",
+          "maxphantasm"
+        ],
+        "ability": "Swarm",
+        "item": "fightiniumz",
+        "level": 95
+      },
+      {
+        "species": "Genesect-Shock",
+        "moves": [
+          "visegrip",
+          "barbbarrage",
+          "doomdesire",
+          "temperflare"
+        ],
+        "ability": "Download",
+        "item": "poisongem",
+        "level": 88
+      },
+      {
+        "species": "Glimmora",
+        "moves": [
+          "gastroacid",
+          "doubleslap",
+          "gmaxrapidflow",
+          "crosspoison"
+        ],
+        "ability": "Toxic Debris",
+        "item": "tr62",
+        "level": 100
+      },
+      {
+        "species": "Golem-Alola",
+        "moves": [
+          "gmaxterror",
+          "kingsshield",
+          "steameruption",
+          "dragontail"
+        ],
+        "ability": "Magnet Pull",
+        "item": "oddincense",
+        "level": 98
+      },
+      {
+        "species": "Vivillon-Savanna",
+        "moves": [
+          "originpulse",
+          "fakeout",
+          "lick",
+          "gmaxcuddle"
+        ],
+        "ability": "No Ability",
+        "item": "raichunitex",
+        "level": 99
+      },
+      {
+        "species": "Grovyle",
+        "moves": [
+          "constrict",
+          "petaldance",
+          "visegrip",
+          "doubleironbash"
+        ],
+        "ability": "Overgrow",
+        "item": "fairygem",
+        "level": 85
       }
     ]
   },
