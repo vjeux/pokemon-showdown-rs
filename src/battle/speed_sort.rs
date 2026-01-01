@@ -44,9 +44,13 @@ impl Battle {
     where
         F: FnMut(&T) -> PriorityItem,
     {
-        eprintln!("[SPEED_SORT DEBUG] Sorting list of {} items", list.len());
+        // Only log details for specific turns to reduce noise
+        let should_log = self.turn >= 20 && self.turn <= 22;
+
+        if should_log {
+            eprintln!("[TURN {} SPEED_SORT] Sorting list of {} items", self.turn, list.len());
+        }
         if list.len() < 2 {
-            eprintln!("[SPEED_SORT DEBUG] List too small, skipping");
             return;
         }
 
@@ -60,12 +64,19 @@ impl Battle {
                 let priority_a = get_priority(&list[next_indexes[0]]);
                 let priority_i = get_priority(&list[i]);
                 let cmp = Self::compare_priority(&priority_a, &priority_i);
-                eprintln!("[SPEED_SORT COMPARE] i={}, sorted={}, priority_a={:?}, priority_i={:?}, cmp={:?}", i, sorted, priority_a, priority_i, cmp);
+
+                if should_log {
+                    eprintln!("[TURN {} SPEED_SORT COMPARE] i={}, sorted={}, priority_a={:?}, priority_i={:?}, cmp={:?}",
+                        self.turn, i, sorted, priority_a, priority_i, cmp);
+                }
+
                 match cmp {
                     std::cmp::Ordering::Less => continue,
                     std::cmp::Ordering::Greater => next_indexes = vec![i],
                     std::cmp::Ordering::Equal => {
-                        eprintln!("[SPEED_SORT TIE] Found tie between index {} and {}", next_indexes[0], i);
+                        if should_log {
+                            eprintln!("[TURN {} SPEED_SORT TIE] Found tie between index {} and {}", self.turn, next_indexes[0], i);
+                        }
                         next_indexes.push(i);
                     }
                 }
@@ -80,13 +91,19 @@ impl Battle {
 
             // If there were ties, shuffle them randomly
             if next_indexes.len() > 1 {
-                eprintln!("[SPEED_SORT DEBUG] Found {} tied items at position {}, shuffling...", next_indexes.len(), sorted);
+                if should_log {
+                    eprintln!("[TURN {} SPEED_SORT SHUFFLE] Found {} tied items at position {}, calling shuffle_range...",
+                        self.turn, next_indexes.len(), sorted);
+                }
                 let end = sorted + next_indexes.len();
                 self.shuffle_range(list, sorted, end);
             }
 
             sorted += next_indexes.len();
         }
-        eprintln!("[SPEED_SORT DEBUG] Done sorting");
+
+        if should_log {
+            eprintln!("[TURN {} SPEED_SORT] Done sorting", self.turn);
+        }
     }
 }

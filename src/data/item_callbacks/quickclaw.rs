@@ -23,7 +23,7 @@ pub fn on_fractional_priority(
     if priority <= 0.0 {
         let activate = {
             // Use random chance: 1 in 5 (20%)
-            battle.prng.random_chance(1, 5)
+            battle.random_chance(1, 5)
         };
 
         if activate {

@@ -18,7 +18,7 @@ pub fn damage_callback(
     let pokemon = pokemon_pos;
 
     // return (this.random(50, 151) * pokemon.level) / 100;
-    let rand = battle.prng.random_range(50, 151);
+    let rand = battle.random_with_range(50, 151);
 
     let level = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {

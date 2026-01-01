@@ -17,21 +17,31 @@ impl Battle {
     ///     }
     ///   }
     pub fn shuffle_range<T>(&mut self, list: &mut [T], mut start: usize, end: usize) {
-        let bt = std::backtrace::Backtrace::force_capture();
-        let bt_str = format!("{}", bt);
-        let caller = bt_str.lines()
-            .filter(|line| line.contains("speed_sort") || line.contains("each_event") || line.contains("commit") || line.contains("run_"))
-            .take(3)
-            .collect::<Vec<_>>()
-            .join(" <- ");
-        eprintln!("[SHUFFLE_RANGE] range=[{}, {}), caller: {}", start, end, caller);
+        // Log shuffle_range calls during specific turns for debugging
+        let should_log = self.turn >= 20 && self.turn <= 22;
+
+        if should_log {
+            eprintln!("[TURN {} SHUFFLE_RANGE] Starting shuffle of range=[{}, {}), count={} items",
+                self.turn, start, end, end - start);
+        }
 
         while start < end - 1 {
+            let call_before = self.prng.call_count;
             let next_index = self.random_with_range(start as i32, end as i32) as usize;
+
+            if should_log {
+                eprintln!("[TURN {} SHUFFLE_RANGE] Call #{}: random_with_range({}, {}) = {}",
+                    self.turn, call_before + 1, start, end, next_index);
+            }
+
             if start != next_index {
                 list.swap(start, next_index);
             }
             start += 1;
+        }
+
+        if should_log {
+            eprintln!("[TURN {} SHUFFLE_RANGE] Finished shuffle", self.turn);
         }
     }
 }

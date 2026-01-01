@@ -19,12 +19,28 @@ impl Battle {
     // - random(n) returns an integer in [0, n)
     // - random_with_range(m, n) returns an integer in [m, n)
     pub fn random(&mut self, n: i32) -> i32 {
-        self.prng.random_int(n)
+        let result = self.prng.random_int(n);
+
+        // Log PRNG calls on turns 19-22 to debug divergence
+        let call_num = self.prng.call_count;
+        if self.turn >= 19 && self.turn <= 22 {
+            eprintln!("[TURN {} PRNG #{}] random({}) = {}", self.turn, call_num, n, result);
+        }
+
+        result
     }
 
     /// Random number in range [from, to)
     /// Equivalent to TypeScript random(from, to)
     pub fn random_with_range(&mut self, from: i32, to: i32) -> i32 {
-        self.prng.random_range(from, to)
+        let result = self.prng.random_range(from, to);
+
+        // Log PRNG calls on turns 19-22 to debug divergence
+        let call_num = self.prng.call_count;
+        if self.turn >= 19 && self.turn <= 22 {
+            eprintln!("[TURN {} PRNG #{}] random_with_range({}, {}) = {}", self.turn, call_num, from, to, result);
+        }
+
+        result
     }
 }
