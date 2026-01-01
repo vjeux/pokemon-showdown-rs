@@ -6,8 +6,17 @@ impl Battle {
     /// Run event on all relevant handlers
     /// Equivalent to battle.ts runEvent()
     ///
-    /// This is a simplified version that handles common event patterns.
-    // TypeScript source:
+    /// This is the internal implementation with full parameters including on_effect.
+    /// For most calls, use the public wrapper below which defaults on_effect to false.
+    fn run_event_internal(
+        &mut self,
+        event_id: &str,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
+        relay_var: Option<i32>,
+        on_effect: bool,
+    ) -> Option<i32> {
     // /**
     // 	 * runEvent is the core of Pokemon Showdown's event system.
     // 	 *
@@ -293,14 +302,6 @@ impl Battle {
     // 		return Array.isArray(target) ? targetRelayVars : relayVar;
     // 	}
     //
-    pub fn run_event(
-        &mut self,
-        event_id: &str,
-        target: Option<(usize, usize)>,
-        source: Option<(usize, usize)>,
-        source_effect: Option<&ID>,
-        relay_var: Option<i32>,
-    ) -> Option<i32> {
         use crate::event::EventResult;
 
         // Check stack depth
@@ -335,14 +336,17 @@ impl Battle {
         let mut handlers = self.find_event_handlers(event_id, target, source);
 
         // JavaScript: if (onEffect) { ... handlers.unshift(...) }
-        // In JavaScript, sourceEffect's handler is ONLY added when onEffect parameter is true
-        // Since Rust doesn't have an onEffect parameter, we should NOT add sourceEffect to handlers
-        // The sourceEffect is passed for context (stored in current_event), but NOT for calling its handler
-        // This prevents moves from having their onHit called twice:
-        //   1. single_event("Hit", move_id, ...) - correctly calls move.onHit
-        //   2. run_event("Hit", target, source, move_id, ...) - should NOT call move.onHit again
-        // REMOVED: handlers.insert(0, (event_id.to_string(), source_effect_id.clone(), target));
-
+        // When onEffect is true, add the sourceEffect's handler at the BEGINNING of the handler list
+        // This is used for events like BasePower where the move's onBasePower handler should be called
+        if on_effect {
+            if let Some(source_effect_id) = source_effect {
+                // Add the sourceEffect handler at the beginning (unshift)
+                // JavaScript: handlers.unshift(this.resolvePriority({
+                //     effect: sourceEffect, callback, state: this.initEffectState({}), end: null, effectHolder: target,
+                // }, `on${eventid}`));
+                handlers.insert(0, (event_id.to_string(), source_effect_id.clone(), target));
+            }
+        }
 
         for (event_variant, effect_id, holder_target) in handlers {
             let event_result =
@@ -402,5 +406,31 @@ impl Battle {
         self.current_event = parent_event;
 
         result
+    }
+
+    /// Public wrapper for run_event that defaults on_effect to false
+    /// This is the standard call used in most places
+    pub fn run_event(
+        &mut self,
+        event_id: &str,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
+        relay_var: Option<i32>,
+    ) -> Option<i32> {
+        self.run_event_internal(event_id, target, source, source_effect, relay_var, false)
+    }
+
+    /// Public wrapper for run_event that sets on_effect to true
+    /// This is used for BasePower event where moves should have their onBasePower handler called
+    pub fn run_event_with_effect(
+        &mut self,
+        event_id: &str,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
+        relay_var: Option<i32>,
+    ) -> Option<i32> {
+        self.run_event_internal(event_id, target, source, source_effect, relay_var, true)
     }
 }

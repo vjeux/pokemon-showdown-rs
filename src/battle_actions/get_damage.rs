@@ -166,10 +166,13 @@ pub fn get_damage(
         }
     }
 
-    // Trigger BasePower event to allow abilities/items to modify base power
+    // Trigger BasePower event to allow abilities/items/moves to modify base power
     // JavaScript: basePower = this.battle.runEvent('BasePower', source, target, move, basePower, true);
+    //                                                                                          ^^^^
+    //                                                                                      on_effect=true
+    // When on_effect is true, the move's onBasePower handler is called (e.g., Knock Off's 1.5x boost)
     eprintln!("[GET_DAMAGE] basePower BEFORE BasePower event: {}", base_power);
-    if let Some(modified_bp) = battle.run_event(
+    if let Some(modified_bp) = battle.run_event_with_effect(
         "BasePower",
         Some(source_pos),
         Some(target_pos),

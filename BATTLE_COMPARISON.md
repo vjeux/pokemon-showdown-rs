@@ -37,7 +37,28 @@
    - psywave.rs: Changed `battle.prng.random_range()` to `battle.random_with_range()`
    - quickclaw.rs: Changed `battle.prng.random_chance()` to `battle.random_chance()`
 
-#### Current Status: ROOT CAUSE IDENTIFIED - DAMAGE CALCULATION BUG
+#### Current Status: on_effect parameter fix COMPLETED - New divergence on Turn 27
+
+**Previous Root Cause (FIXED):**
+Rust's `run_event` function was missing the `on_effect` parameter that JavaScript uses to determine whether to call the sourceEffect (move/item/ability)'s event handler.
+
+**The Fix (COMPLETED):**
+1. ✓ Renamed main `run_event` to `run_event_internal` with `on_effect: bool` parameter
+2. ✓ Implemented logic to add sourceEffect handler when `on_effect` is true
+3. ✓ Updated get_damage.rs to use `run_event_with_effect` for BasePower event
+4. ✓ Created public wrapper functions (`run_event` and `run_event_with_effect`)
+5. ✓ Code compiles successfully
+
+**Result:**
+- Turns 1-26 now match between JS and Rust!
+- First divergence moved from Turn 21 to Turn 27
+- Turn 27: JS has 4 PRNG calls, Rust has 7 (3 extra calls)
+
+**Next Steps:**
+- Investigate what's happening on Turn 27 that causes the divergence
+- Check battle log to identify which move/action is behaving differently
+
+### Previous Investigation
 
 **JavaScript Turn 21:**
 ```
@@ -56,11 +77,15 @@
 - Cinderace then uses Psychic
 - PRNG calls: #70-72 (visegrip), #73-76 (psychic)
 
-**THE BUG:**
-Rust is calculating **lower damage** for Vise Grip than JavaScript, causing Cinderace to survive when it should faint. This is a damage calculation bug in Rust.
+**HP Divergence Found on Turn 17:**
+- JavaScript: Cinderace 206 → 122 HP (lost 84 HP from Knock Off)
+- Rust: Cinderace 206 → 149 HP (lost 57 HP from Knock Off)
+- Difference: 27 HP
 
-**Immediate Next Step:**
-Compare the exact damage values between JS and Rust for the Vise Grip attack on turn 21. The damage calculation in Rust must be producing a different result than JavaScript.
+**Damage Calculation Comparison (Turn 17 Knock Off):**
+- JavaScript: base_damage=90, roll=6, result=84
+- Rust: base_damage=61, roll=6, result=57
+- Missing: 1.5x boost (90/61 = 1.475 ≈ 1.5)
 
 ### Next Steps
 
