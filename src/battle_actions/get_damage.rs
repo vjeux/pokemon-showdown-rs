@@ -145,6 +145,7 @@ pub fn get_damage(
                     let crit_chance = crit_mult[crit_ratio as usize];
                     if crit_chance > 0 {
                         is_crit = battle.random_chance(1, crit_chance);
+                        eprintln!("[GET_DAMAGE CRIT] crit_ratio={}, crit_chance=1/{}, is_crit={}", crit_ratio, crit_chance, is_crit);
                     }
                 }
             }
@@ -154,6 +155,7 @@ pub fn get_damage(
                 let crit_chance = crit_mult[crit_ratio as usize];
                 if crit_chance > 0 {
                     is_crit = battle.random_chance(1, crit_chance);
+                    eprintln!("[GET_DAMAGE CRIT] crit_ratio={}, crit_chance=1/{}, is_crit={}", crit_ratio, crit_chance, is_crit);
                 }
             }
         }
@@ -161,8 +163,10 @@ pub fn get_damage(
         // Trigger CriticalHit event to allow abilities to prevent/modify crit
         // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
         if is_crit {
+            eprintln!("[GET_DAMAGE CRIT] Critical hit confirmed before CriticalHit event");
             is_crit =
                 battle.run_event_bool("CriticalHit", Some(target_pos), None, Some(&move_data.id));
+            eprintln!("[GET_DAMAGE CRIT] Critical hit after CriticalHit event: {}", is_crit);
         }
     }
 
