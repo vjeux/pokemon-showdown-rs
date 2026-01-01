@@ -1,0 +1,375 @@
+{
+  "p1": [
+    {
+      "name": "Gliscor",
+      "species": "Gliscor",
+      "level": 76,
+      "ability": "poisonheal",
+      "item": "toxicorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "knockoff",
+        "earthquake",
+        "protect",
+        "toxicspikes"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ditto",
+      "species": "Ditto",
+      "level": 87,
+      "ability": "imposter",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "transform"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Brute Bonnet",
+      "species": "Brute Bonnet",
+      "level": 81,
+      "ability": "protosynthesis",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "suckerpunch",
+        "seedbomb",
+        "closecombat",
+        "spore"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Glaceon",
+      "species": "Glaceon",
+      "level": 94,
+      "ability": "icebody",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "protect",
+        "wish",
+        "mudshot",
+        "freezedry"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Skeledirge",
+      "species": "Skeledirge",
+      "level": 79,
+      "ability": "unaware",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "willowisp",
+        "hex",
+        "slackoff",
+        "torchsong"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wigglytuff",
+      "species": "Wigglytuff",
+      "level": 96,
+      "ability": "competitive",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "protect",
+        "wish",
+        "knockoff",
+        "alluringvoice"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Oranguru",
+      "species": "Oranguru",
+      "level": 92,
+      "ability": "innerfocus",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "focusblast",
+        "nastyplot",
+        "psychic",
+        "thunderbolt"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tauros",
+      "species": "Tauros-Paldea-Blaze",
+      "level": 81,
+      "ability": "cudchew",
+      "item": "sitrusberry",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "ragingbull",
+        "closecombat",
+        "substitute",
+        "bulkup"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Rampardos",
+      "species": "Rampardos",
+      "level": 90,
+      "ability": "sheerforce",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "rockslide",
+        "firepunch",
+        "earthquake",
+        "headsmash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Keldeo",
+      "species": "Keldeo-Resolute",
+      "level": 79,
+      "ability": "justified",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "calmmind",
+        "secretsword",
+        "substitute",
+        "surf"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Minun",
+      "species": "Minun",
+      "level": 95,
+      "ability": "voltabsorb",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "nastyplot",
+        "thunderbolt",
+        "alluringvoice",
+        "encore"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Staraptor",
+      "species": "Staraptor",
+      "level": 79,
+      "ability": "reckless",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "bravebird",
+        "doubleedge",
+        "closecombat",
+        "uturn"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

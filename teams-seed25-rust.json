@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Magearna",
+      "species": "Magearna",
+      "level": 77,
+      "ability": "soulheart",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "flashcannon",
+        "calmmind",
+        "fleurcannon",
+        "shiftgear"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sylveon",
+      "species": "Sylveon",
+      "level": 85,
+      "ability": "pixilate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "hypervoice",
+        "protect",
+        "wish",
+        "calmmind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lilligant",
+      "species": "Lilligant",
+      "level": 86,
+      "ability": "owntempo",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "petaldance",
+        "quiverdance",
+        "alluringvoice",
+        "sleeppowder"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Veluza",
+      "species": "Veluza",
+      "level": 85,
+      "ability": "sharpness",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "flipturn",
+        "psychocut",
+        "aquacutter",
+        "nightslash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sandaconda",
+      "species": "Sandaconda",
+      "level": 84,
+      "ability": "shedskin",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "stealthrock",
+        "earthquake",
+        "stoneedge",
+        "rest"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zamazenta",
+      "species": "Zamazenta",
+      "level": 71,
+      "ability": "dauntlessshield",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "irondefense",
+        "crunch",
+        "ironhead",
+        "bodypress"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Drednaw",
+      "species": "Drednaw",
+      "level": 81,
+      "ability": "shellarmor",
+      "item": "whiteherb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "shellsmash",
+        "earthquake",
+        "stoneedge",
+        "liquidation"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Rampardos",
+      "species": "Rampardos",
+      "level": 90,
+      "ability": "sheerforce",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "earthquake",
+        "rockslide",
+        "headsmash",
+        "firepunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Iron Treads",
+      "species": "Iron Treads",
+      "level": 77,
+      "ability": "quarkdrive",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "earthquake",
+        "ironhead",
+        "rapidspin",
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Venomoth",
+      "species": "Venomoth",
+      "level": 84,
+      "ability": "tintedlens",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "bugbuzz",
+        "sleeppowder",
+        "sludgewave",
+        "quiverdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kommo-o",
+      "species": "Kommo-o",
+      "level": 78,
+      "ability": "soundproof",
+      "item": "loadeddice",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "swordsdance",
+        "closecombat",
+        "ironhead",
+        "scaleshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bombirdier",
+      "species": "Bombirdier",
+      "level": 85,
+      "ability": "bigpecks",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "roost",
+        "uturn",
+        "knockoff",
+        "bravebird"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}
