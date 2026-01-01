@@ -16,7 +16,7 @@
 
 ### Test Infrastructure
 - **10 Random Battle Seeds** ready for testing
-- **Rust tests:** 6 seeds tested, all complete successfully, no crashes
+- **Rust tests:** 10 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -29,10 +29,10 @@
 | 4 | ✅ Pass (T52, PRNG 310) | ⏳ Needs verification | Lickitung vs Celesteela |
 | 5 | ✅ Pass (T16, PRNG 63) | ⏳ Needs verification | Spoink vs Smokomodo |
 | 6 | ✅ Pass (T42, PRNG 231) | ⏳ Needs verification | Dachsbun vs Wormadam-Trash |
-| 7 | ⏳ Not run | ⏳ Not created | Mr. Mime vs Lilligant |
-| 8 | ⏳ Not run | ⏳ Not created | Vanillite vs Togetic |
-| 9 | ⏳ Not run | ⏳ Not created | Finizen vs Lilligant |
-| 10 | ⏳ Not run | ⏳ Not created | Pokestar F-002 vs Cottonee |
+| 7 | ✅ Pass (T95, PRNG 376) | ⏳ Needs verification | Mr. Mime vs Lilligant |
+| 8 | ✅ Pass (T43, PRNG 189) | ⏳ Needs verification | Vanillite vs Togetic |
+| 9 | ✅ Pass (T73, PRNG 300) | ⏳ Needs verification | Finizen vs Lilligant |
+| 10 | ✅ Pass (T20, PRNG 97) | ⏳ Needs verification | Pokestar F-002 vs Cottonee |
 
 ## How to Verify
 
@@ -75,19 +75,18 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 3. `src/battle_actions/spread_move_hit.rs` - ModifySecondaries event (already present, now works correctly)
 
 ### Test Infrastructure
-- `examples/compare_seed[1-3].rs` - Rust battle runners
-- `compare-seed[1-3].js` - JavaScript battle runners
-- `teams-seed[1-5]-{rust,js}.json` - Team data files
+- `examples/compare_seed[1-10].rs` - Rust battle runners
+- `compare-seed[1-10].js` - JavaScript battle runners
+- `teams-seed[1-10]-{rust,js}.json` - Team data files
 - `test-all-seeds.sh` - Quick test script
 - Documentation: `BATTLE_TESTING_PROGRESS.md`, `SEED_TESTING_README.md`
 
 ## Next Steps
 
-1. **User runs JavaScript tests** for seeds 1-3 to verify exact match
+1. **User runs JavaScript tests** for seeds 1-10 to verify exact match
 2. **If divergences found:** Investigate PRNG call differences and fix
-3. **Create and test seeds 4-5** comparison files
-4. **Generate more seeds** if all current ones pass
-5. **Continue testing** until multiple random battles all match perfectly
+3. **Generate more seeds** if all current ones pass
+4. **Continue testing** until multiple random battles all match perfectly
 
 ## Technical Notes
 
@@ -108,4 +107,4 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Current Confidence Level
 
-**High** - The Shield Dust fix resolved the only known divergence. All Rust battles complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
+**High** - The Shield Dust fix resolved the only known divergence. All 10 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.

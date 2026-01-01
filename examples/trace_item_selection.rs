@@ -22,5 +22,5 @@ fn main() {
     println!("All items length: {}", all_items.len());
     let item = prng.sample(&all_items).expect("No items");
     println!("Selected item: {}", item);
-    println!("Index of selected item: {:?}", all_items.iter().position(|&x| x == item));
+    println!("Index of selected item: {:?}", all_items.iter().position(|&x| x == *item));
 }
