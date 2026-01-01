@@ -23,16 +23,17 @@ This document describes the process for ensuring JS/Rust battle synchronization.
 - ✅ Team generation synchronized
 - ✅ Display names fixed (formes display as base species)
 - ✅ Comparison script fixed (ignores headers)
+- ✅ willCrit field implemented (guaranteed crits work)
 - ✅ Seed 1: Perfect match!
-- ❌ Seeds 42, 100, 123: Battle logic divergences (damage calculations, PRNG usage)
+- ⚠️ Seed 42: Improved to turn 4 (was turn 1), investigating turn 4-5 divergence
+- ❌ Seeds 100, 123: Battle logic divergences
 
 ## Next Steps
 
-Investigate battle divergences in seeds 42, 100, 123 to find:
-- Damage calculation bugs
-- Missing/extra PRNG calls
-- Stat modifier issues
-- Move implementation differences
+Continue investigating seed 42 turn 4-5 divergence:
+- JS: Eelektrik faints on turn 4 (prng 15->17, 2 calls)
+- Rust: Eelektrik survives to turn 5 (prng 15->22, 7 calls)
+- Different HP: JS 0/200 vs Rust 26/200
 
 ## Quick Commands
 

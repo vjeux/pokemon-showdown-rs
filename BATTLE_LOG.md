@@ -68,3 +68,28 @@ Test comparison was failing due to:
 - Need to investigate: damage calculations, stat modifiers, or move implementations
 
 ---
+
+## 2026-01-01: willCrit Field Implementation
+
+### Issue
+Moves with guaranteed critical hits (like Wicked Blow) were not properly applying crits.
+
+**Seed 42 divergence:**
+- JS turn 1: prng=0->6
+- Rust turn 1: prng=0->7 (extra PRNG call)
+
+### Root Cause
+`MoveData` struct was missing the `willCrit` field from JavaScript move data. When `get_active_move` created an `ActiveMove`, it always set `will_crit: None`, causing the crit logic to roll for a random crit instead of using the guaranteed crit from the move data.
+
+### Fix
+- Added `will_crit: Option<bool>` to `MoveData` struct in `src/dex.rs`
+- Updated `get_active_move` to copy `will_crit` from move_data
+- Now moves like Wicked Blow (`"willCrit": true`) properly guarantee critical hits
+
+### Results
+- ✅ Seed 1: Still passes (no regression)
+- ⚠️ Seed 42: Improved! First 4 turns now match exactly
+  - Divergence moved from turn 1 to turn 4-5
+  - New issue: Different damage/faint timing (needs investigation)
+
+---
