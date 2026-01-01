@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Decidueye",
+      "species": "Decidueye-Hisui",
+      "level": 87,
+      "ability": "scrappy",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "triplearrows",
+        "roost",
+        "knockoff",
+        "leafblade"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Arcanine",
+      "species": "Arcanine",
+      "level": 84,
+      "ability": "intimidate",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "closecombat",
+        "roar",
+        "flareblitz",
+        "morningsun"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dragonite",
+      "species": "Dragonite",
+      "level": 74,
+      "ability": "multiscale",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "outrage",
+        "dragondance",
+        "ironhead",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Espathra",
+      "species": "Espathra",
+      "level": 80,
+      "ability": "speedboost",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "calmmind",
+        "storedpower",
+        "protect",
+        "dazzlinggleam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lapras",
+      "species": "Lapras",
+      "level": 87,
+      "ability": "waterabsorb",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "sparklingaria",
+        "rest",
+        "sleeptalk",
+        "freezedry"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Giratina",
+      "species": "Giratina",
+      "level": 75,
+      "ability": "pressure",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "rest",
+        "sleeptalk",
+        "calmmind",
+        "dragonpulse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Noctowl",
+      "species": "Noctowl",
+      "level": 95,
+      "ability": "tintedlens",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "calmmind",
+        "hypervoice",
+        "roost",
+        "hurricane"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Piloswine",
+      "species": "Piloswine",
+      "level": 85,
+      "ability": "thickfat",
+      "item": "eviolite",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "earthquake",
+        "iciclecrash",
+        "iceshard",
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Abomasnow",
+      "species": "Abomasnow",
+      "level": 84,
+      "ability": "snowwarning",
+      "item": "lightclay",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "blizzard",
+        "auroraveil",
+        "earthquake",
+        "iceshard"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Poliwrath",
+      "species": "Poliwrath",
+      "level": 88,
+      "ability": "swiftswim",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "knockoff",
+        "liquidation",
+        "raindance",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ambipom",
+      "species": "Ambipom",
+      "level": 84,
+      "ability": "technician",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "tripleaxel",
+        "knockoff",
+        "doubleedge",
+        "uturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lilligant",
+      "species": "Lilligant-Hisui",
+      "level": 79,
+      "ability": "hustle",
+      "item": "widelens",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "icespinner",
+        "victorydance",
+        "closecombat",
+        "leafblade"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}
