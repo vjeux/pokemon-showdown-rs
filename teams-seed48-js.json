@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Wyrdeer",
+      "species": "Wyrdeer",
+      "level": 87,
+      "ability": "intimidate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "megahorn",
+        "thunderwave",
+        "psychicnoise",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Beartic",
+      "species": "Beartic",
+      "level": 91,
+      "ability": "slushrush",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "swordsdance",
+        "earthquake",
+        "closecombat",
+        "iciclecrash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Feraligatr",
+      "species": "Feraligatr",
+      "level": 79,
+      "ability": "sheerforce",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "trailblaze",
+        "dragondance",
+        "icepunch",
+        "liquidation"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lumineon",
+      "species": "Lumineon",
+      "level": 93,
+      "ability": "stormdrain",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "alluringvoice",
+        "icebeam",
+        "hydropump",
+        "encore"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Koraidon",
+      "species": "Koraidon",
+      "level": 64,
+      "ability": "orichalcumpulse",
+      "item": "loadeddice",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "flareblitz",
+        "scaleshot",
+        "swordsdance",
+        "collisioncourse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Porygon2",
+      "species": "Porygon2",
+      "level": 81,
+      "ability": "download",
+      "item": "eviolite",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "triattack",
+        "icebeam",
+        "recover",
+        "discharge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Glaceon",
+      "species": "Glaceon",
+      "level": 94,
+      "ability": "icebody",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "freezedry",
+        "protect",
+        "wish",
+        "mudshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Raichu",
+      "species": "Raichu-Alola",
+      "level": 87,
+      "ability": "surgesurfer",
+      "item": "choicespecs",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "thunderbolt",
+        "psychic",
+        "alluringvoice",
+        "voltswitch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dusknoir",
+      "species": "Dusknoir",
+      "level": 89,
+      "ability": "frisk",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "poltergeist",
+        "earthquake",
+        "shadowsneak",
+        "willowisp"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Frosmoth",
+      "species": "Frosmoth",
+      "level": 82,
+      "ability": "icescales",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "icebeam",
+        "terablast",
+        "gigadrain",
+        "quiverdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Munkidori",
+      "species": "Munkidori",
+      "level": 79,
+      "ability": "toxicchain",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "uturn",
+        "fakeout",
+        "psychicnoise",
+        "sludgewave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Torterra",
+      "species": "Torterra",
+      "level": 78,
+      "ability": "overgrow",
+      "item": "loadeddice",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "bulletseed",
+        "shellsmash",
+        "rockblast",
+        "headlongrush"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

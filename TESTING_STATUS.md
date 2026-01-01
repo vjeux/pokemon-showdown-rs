@@ -15,8 +15,8 @@
    - PRNG calls now match JavaScript (7 → 4 calls at turn 30)
 
 ### Test Infrastructure
-- **45 Random Battle Seeds** ready for testing
-- **Rust tests:** 45 seeds tested, all complete successfully, no crashes
+- **50 Random Battle Seeds** ready for testing
+- **Rust tests:** 50 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -68,6 +68,11 @@
 | 43 | ✅ Pass (T29, PRNG 123) | ⏳ Needs verification | Quagsire vs Espathra |
 | 44 | ✅ Pass (T68, PRNG 165) | ⏳ Needs verification | Wyrdeer vs Gastrodon |
 | 45 | ✅ Pass (T40, PRNG 196) | ⏳ Needs verification | Magearna vs Luvdisc |
+| 46 | ✅ Pass (T95, PRNG 280) | ⏳ Needs verification | Tauros vs Cresselia |
+| 47 | ✅ Pass (T31, PRNG 178) | ⏳ Needs verification | Duraludon vs Polteageist |
+| 48 | ✅ Pass (T91, PRNG 338) | ⏳ Needs verification | Wyrdeer vs Glaceon |
+| 49 | ✅ Pass (T82, PRNG 247) | ⏳ Needs verification | Volcarona vs Dodrio |
+| 50 | ✅ Pass (T6, PRNG 18) | ⏳ Needs verification | Miraidon vs Gardevoir |
 
 ## How to Verify
 
@@ -119,7 +124,7 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Next Steps
 
-1. **User runs JavaScript tests** for seeds 1-45 to verify exact match
+1. **User runs JavaScript tests** for seeds 1-50 to verify exact match
 2. **If divergences found:** Investigate PRNG call differences and fix
 3. **Generate more seeds** if all current ones pass
 4. **Continue testing** until multiple random battles all match perfectly
@@ -143,4 +148,4 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Current Confidence Level
 
-**High** - The Shield Dust fix resolved the only known divergence. All 45 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
+**High** - The Shield Dust fix resolved the only known divergence. All 50 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
