@@ -103,6 +103,45 @@ pub fn dispatch_on_before_move(
             }
             EventResult::Continue
         }
+        "flinch" => {
+            // JavaScript source (conditions.ts):
+            // flinch: {
+            //     name: 'flinch',
+            //     duration: 1,
+            //     onBeforeMovePriority: 8,
+            //     onBeforeMove(pokemon) {
+            //         this.add('cant', pokemon, 'flinch');
+            //         this.runEvent('Flinch', pokemon);
+            //         return false;
+            //     },
+            // },
+            eprintln!("[CONDITION_CALLBACKS T{}] Handling flinch BeforeMove", battle.turn);
+            // Get pokemon identifier string (e.g. "p1a: Metang")
+            let pokemon_id = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                let side_id = match pokemon_pos.0 {
+                    0 => "p1",
+                    1 => "p2",
+                    2 => "p3",
+                    _ => "p4",
+                };
+                let position_letter = match pokemon.position {
+                    0 => "a",
+                    1 => "b",
+                    2 => "c",
+                    3 => "d",
+                    4 => "e",
+                    _ => "f",
+                };
+                format!("{}{}: {}", side_id, position_letter, pokemon.name)
+            };
+            battle.add("cant", &[Arg::String(pokemon_id), Arg::Str("flinch")]);
+            // TODO: Implement runEvent('Flinch', pokemon) when event system is ready
+            return EventResult::Boolean(false);
+        }
         _ => EventResult::Continue,
     }
 }

@@ -365,9 +365,16 @@ impl PRNG {
             PRNGImpl::Sodium(rng) => rng.next(),
         };
 
-        // Log PRNG calls around turn 21 for debugging
-        if self.call_count >= 69 && self.call_count <= 77 {
-            eprintln!("[PRNG.next_raw] Call #{} -> value={}", self.call_count, value);
+        // Log PRNG calls around turn 32 for debugging (cumulative 113-120)
+        if self.call_count >= 113 && self.call_count <= 120 {
+            let bt = std::backtrace::Backtrace::force_capture();
+            let bt_str = format!("{}", bt);
+            let caller = bt_str.lines()
+                .filter(|line| !line.contains("prng.rs") && !line.contains("std::") && !line.contains("core::"))
+                .take(3)
+                .collect::<Vec<_>>()
+                .join("\n    ");
+            eprintln!("[Rust PRNG #{}] value={}\n    {}", self.call_count, value, caller);
         }
 
         // Log PRNG calls (can be enabled for debugging)

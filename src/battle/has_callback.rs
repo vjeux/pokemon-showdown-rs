@@ -829,7 +829,7 @@ impl Battle {
         match normalized {
             "BeforeMove" => matches!(
                 condition_id,
-                "par"  // Paralysis has onBeforeMove (25% chance to prevent move)
+                "par" | "flinch"  // Paralysis has onBeforeMove (25% chance to prevent move), Flinch has onBeforeMove (100% chance to prevent move)
             ),
             "Residual" => matches!(
                 condition_id,
