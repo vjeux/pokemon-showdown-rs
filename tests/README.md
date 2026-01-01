@@ -4,11 +4,13 @@ This directory contains the infrastructure for comparing JavaScript and Rust bat
 
 ## Files
 
-- **`generate-test-teams.js`** - Generates random battle teams with a specific seed
+- **`generate-test-teams.js`** - Generates random battle teams with a specific seed (JavaScript)
 - **`test-battle-js.js`** - Runs battles in JavaScript
+- **`../examples/generate_test_teams_rust.rs`** - Generates random battle teams with a specific seed (Rust)
 - **`../examples/test_battle_rust.rs`** - Runs battles in Rust
 - **`compare-battles.sh`** - Compares JS and Rust outputs line by line
-- **`teams-seed*.json`** - Generated team data for each seed
+
+**Note:** All generated files (team JSON and battle outputs) are stored in `/tmp` and not checked into git.
 
 ## Quick Start
 

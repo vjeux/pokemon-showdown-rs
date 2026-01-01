@@ -28,19 +28,22 @@ echo ""
 echo "  Rust team generation:"
 docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example generate_test_teams_rust $SEED 2>&1" | grep -E '(✓|P1|P2|File)'
 
+# Copy Rust teams from container to host /tmp
+docker cp pokemon-rust-dev:/tmp/teams-seed${SEED}-rust.json /tmp/teams-seed${SEED}-rust.json
+
 # Step 2: Compare team generation
 echo ""
 echo "Step 2: Comparing team generation..."
 echo ""
 
-if diff -q tests/teams-seed${SEED}-js.json tests/teams-seed${SEED}-rust.json > /dev/null 2>&1; then
+if diff -q /tmp/teams-seed${SEED}-js.json /tmp/teams-seed${SEED}-rust.json > /dev/null 2>&1; then
     echo "✅ PASS: Team generation matches!"
 else
     echo "❌ FAIL: Team generation differs between JS and Rust!"
     echo ""
     echo "This indicates the random team generation logic is not synchronized."
     echo "Differences:"
-    diff tests/teams-seed${SEED}-js.json tests/teams-seed${SEED}-rust.json | head -20
+    diff /tmp/teams-seed${SEED}-js.json /tmp/teams-seed${SEED}-rust.json | head -20
     echo ""
     echo "Stopping test. Fix team generation before testing battles."
     exit 1
@@ -98,7 +101,7 @@ fi
 
 echo ""
 echo "Output files:"
-echo "  JS teams:     tests/teams-seed${SEED}-js.json"
-echo "  Rust teams:   tests/teams-seed${SEED}-rust.json"
+echo "  JS teams:     /tmp/teams-seed${SEED}-js.json"
+echo "  Rust teams:   /tmp/teams-seed${SEED}-rust.json"
 echo "  JS battle:    /tmp/js-battle-seed${SEED}.txt"
 echo "  Rust battle:  /tmp/rust-battle-seed${SEED}.txt"

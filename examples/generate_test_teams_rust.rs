@@ -128,8 +128,8 @@ fn main() {
             .collect(),
     };
 
-    // Write to file
-    let filename = format!("tests/teams-seed{}-rust.json", seed_num);
+    // Write to /tmp (container's /tmp)
+    let filename = format!("/tmp/teams-seed{}-rust.json", seed_num);
     let json = serde_json::to_string_pretty(&export).unwrap();
     fs::write(&filename, json).unwrap();
 

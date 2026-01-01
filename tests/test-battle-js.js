@@ -16,10 +16,9 @@
 const {Battle} = require('./../../pokemon-showdown-ts/dist/sim/battle');
 const {PRNG} = require('./../../pokemon-showdown-ts/dist/sim/prng');
 const fs = require('fs');
-const path = require('path');
 
 const seedNum = parseInt(process.argv[2]) || 1;
-const teamsFile = path.join(__dirname, `teams-seed${seedNum}-js.json`);
+const teamsFile = `/tmp/teams-seed${seedNum}-js.json`;
 
 if (!fs.existsSync(teamsFile)) {
     console.error(`ERROR: Team file not found: ${teamsFile}`);

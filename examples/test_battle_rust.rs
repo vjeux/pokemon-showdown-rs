@@ -20,7 +20,7 @@ fn main() {
         .and_then(|s| s.parse().ok())
         .unwrap_or(1);
 
-    let teams_file = format!("tests/teams-seed{}-rust.json", seed_num);
+    let teams_file = format!("/tmp/teams-seed{}-rust.json", seed_num);
 
     if !std::path::Path::new(&teams_file).exists() {
         eprintln!("ERROR: Team file not found: {}", teams_file);
