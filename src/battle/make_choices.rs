@@ -23,6 +23,7 @@ impl Battle {
     // 	}
     //
     pub fn make_choices(&mut self, inputs: &[&str]) {
+        eprintln!("[MAKE_CHOICES] Called with inputs: {:?}, turn={}, request_state={:?}", inputs, self.turn, self.request_state);
         // JS: if (inputs.length) {
         if !inputs.is_empty() {
             // JS: for (const [i, input] of inputs.entries()) {
@@ -44,6 +45,7 @@ impl Battle {
 
         // JS: this.commitChoices();
         self.commit_choices();
+        eprintln!("[MAKE_CHOICES] Returning, turn={}, request_state={:?}", self.turn, self.request_state);
     }
 }
 

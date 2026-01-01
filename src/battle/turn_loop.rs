@@ -78,19 +78,23 @@ impl Battle {
         // JS:     if (this.requestState || this.ended) return;
         // JS: }
         while let Some(action) = self.queue.shift() {
-            eprintln!("[TURN_LOOP] Running action: {:?}", action);
+            eprintln!("[TURN_LOOP] Running action: {:?}, request_state={:?}", action, self.request_state);
             self.run_action(&action);
 
             if self.ended {
+                eprintln!("[TURN_LOOP] Battle ended, exiting");
                 return;
             }
 
             if self.request_state != BattleRequestState::None {
+                eprintln!("[TURN_LOOP] Request state is {:?}, exiting WITHOUT calling end_turn", self.request_state);
                 return;
             }
         }
 
+        eprintln!("[TURN_LOOP] Queue empty, calling end_turn");
         self.end_turn();
+        eprintln!("[TURN_LOOP] end_turn completed");
         self.mid_turn = false;
         self.queue.clear();
     }
