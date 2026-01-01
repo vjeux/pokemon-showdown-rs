@@ -15,8 +15,8 @@
    - PRNG calls now match JavaScript (7 → 4 calls at turn 30)
 
 ### Test Infrastructure
-- **5 Random Battle Seeds** ready for testing
-- **Rust tests:** All complete successfully, no crashes
+- **10 Random Battle Seeds** ready for testing
+- **Rust tests:** 6 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -26,8 +26,13 @@
 | 1 | ✅ Pass (T31, PRNG 147) | ⏳ Needs verification | Grubbin vs Slowbro-Mega |
 | 2 | ✅ Pass (T52, PRNG 199) | ⏳ Needs verification | Sandaconda vs Metang |
 | 3 | ✅ Pass (T30, PRNG 140) | ⏳ Needs verification | Braviary-Hisui vs Dedenne |
-| 4 | ⏳ Not run | ⏳ Not created | Lickitung vs Celesteela |
-| 5 | ⏳ Not run | ⏳ Not created | Spoink vs Smokomodo |
+| 4 | ✅ Pass (T52, PRNG 310) | ⏳ Needs verification | Lickitung vs Celesteela |
+| 5 | ✅ Pass (T16, PRNG 63) | ⏳ Needs verification | Spoink vs Smokomodo |
+| 6 | ✅ Pass (T42, PRNG 231) | ⏳ Needs verification | Dachsbun vs Wormadam-Trash |
+| 7 | ⏳ Not run | ⏳ Not created | Mr. Mime vs Lilligant |
+| 8 | ⏳ Not run | ⏳ Not created | Vanillite vs Togetic |
+| 9 | ⏳ Not run | ⏳ Not created | Finizen vs Lilligant |
+| 10 | ⏳ Not run | ⏳ Not created | Pokestar F-002 vs Cottonee |
 
 ## How to Verify
 
