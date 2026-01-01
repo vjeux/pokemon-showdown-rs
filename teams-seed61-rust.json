@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Phione",
+      "species": "Phione",
+      "level": 91,
+      "ability": "hydration",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "takeheart",
+        "rest",
+        "sleeptalk",
+        "scald"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Squawkabilly",
+      "species": "Squawkabilly-Blue",
+      "level": 85,
+      "ability": "guts",
+      "item": "flameorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "facade",
+        "uturn",
+        "bravebird",
+        "quickattack"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Regirock",
+      "species": "Regirock",
+      "level": 83,
+      "ability": "clearbody",
+      "item": "chestoberry",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "curse",
+        "bodypress",
+        "stoneedge",
+        "rest"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Charizard",
+      "species": "Charizard",
+      "level": 85,
+      "ability": "blaze",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "outrage",
+        "swordsdance",
+        "earthquake",
+        "flareblitz"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cresselia",
+      "species": "Cresselia",
+      "level": 80,
+      "ability": "levitate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "psyshock",
+        "thunderbolt",
+        "calmmind",
+        "moonlight"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hatterene",
+      "species": "Hatterene",
+      "level": 85,
+      "ability": "magicbounce",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "mysticalfire",
+        "nuzzle",
+        "psychicnoise",
+        "drainingkiss"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Abomasnow",
+      "species": "Abomasnow",
+      "level": 84,
+      "ability": "snowwarning",
+      "item": "lightclay",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "woodhammer",
+        "auroraveil",
+        "blizzard",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Luxray",
+      "species": "Luxray",
+      "level": 88,
+      "ability": "guts",
+      "item": "flameorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "playrough",
+        "supercellslam",
+        "trailblaze",
+        "facade"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Volbeat",
+      "species": "Volbeat",
+      "level": 90,
+      "ability": "prankster",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "encore",
+        "thunderwave",
+        "uturn",
+        "roost"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Inteleon",
+      "species": "Inteleon",
+      "level": 81,
+      "ability": "torrent",
+      "item": "choicespecs",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "hydropump",
+        "uturn",
+        "scald",
+        "icebeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Victreebel",
+      "species": "Victreebel",
+      "level": 90,
+      "ability": "chlorophyll",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "sunnyday",
+        "weatherball",
+        "powerwhip",
+        "sludgewave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zekrom",
+      "species": "Zekrom",
+      "level": 71,
+      "ability": "teravolt",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "dragondance",
+        "boltstrike",
+        "substitute",
+        "outrage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

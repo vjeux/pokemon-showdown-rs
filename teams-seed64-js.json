@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Iron Thorns",
+      "species": "Iron Thorns",
+      "level": 83,
+      "ability": "quarkdrive",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "voltswitch",
+        "spikes",
+        "wildcharge",
+        "stoneedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Magearna",
+      "species": "Magearna-Original",
+      "level": 77,
+      "ability": "soulheart",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "calmmind",
+        "fleurcannon",
+        "shiftgear",
+        "flashcannon"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cetitan",
+      "species": "Cetitan",
+      "level": 82,
+      "ability": "thickfat",
+      "item": "sitrusberry",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "icespinner",
+        "earthquake",
+        "bellydrum",
+        "iceshard"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Florges",
+      "species": "Florges-White",
+      "level": 85,
+      "ability": "flowerveil",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "calmmind",
+        "wish",
+        "moonblast",
+        "protect"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hariyama",
+      "species": "Hariyama",
+      "level": 87,
+      "ability": "thickfat",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "heavyslam",
+        "knockoff",
+        "bulletpunch",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Articuno",
+      "species": "Articuno",
+      "level": 86,
+      "ability": "pressure",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "bravebird",
+        "uturn",
+        "freezedry",
+        "roost"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Dachsbun",
+      "species": "Dachsbun",
+      "level": 92,
+      "ability": "wellbakedbody",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "stompingtantrum",
+        "protect",
+        "playrough",
+        "wish"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bombirdier",
+      "species": "Bombirdier",
+      "level": 85,
+      "ability": "rockypayload",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "stoneedge",
+        "suckerpunch",
+        "bravebird",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Garchomp",
+      "species": "Garchomp",
+      "level": 74,
+      "ability": "roughskin",
+      "item": "rockyhelmet",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "spikes",
+        "dragontail",
+        "earthquake",
+        "outrage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Garganacl",
+      "species": "Garganacl",
+      "level": 80,
+      "ability": "purifyingsalt",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "saltcure",
+        "protect",
+        "recover",
+        "bodypress"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Archaludon",
+      "species": "Archaludon",
+      "level": 78,
+      "ability": "stamina",
+      "item": "lumberry",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "earthquake",
+        "ironhead",
+        "swordsdance",
+        "outrage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Volcarona",
+      "species": "Volcarona",
+      "level": 77,
+      "ability": "swarm",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "quiverdance",
+        "bugbuzz",
+        "fireblast",
+        "morningsun"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Calyrex",
+      "species": "Calyrex-Ice",
+      "level": 72,
+      "ability": "asoneglastrier",
+      "item": "weaknesspolicy",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "glaciallance",
+        "agility",
+        "closecombat",
+        "highhorsepower"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bronzong",
+      "species": "Bronzong",
+      "level": 88,
+      "ability": "levitate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "hypnosis",
+        "earthquake",
+        "psychicnoise",
+        "ironhead"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Chesnaught",
+      "species": "Chesnaught",
+      "level": 84,
+      "ability": "bulletproof",
+      "item": "rockyhelmet",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "knockoff",
+        "bodypress",
+        "synthesis",
+        "woodhammer"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Garchomp",
+      "species": "Garchomp",
+      "level": 74,
+      "ability": "roughskin",
+      "item": "rockyhelmet",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "dragontail",
+        "outrage",
+        "stealthrock",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hariyama",
+      "species": "Hariyama",
+      "level": 87,
+      "ability": "guts",
+      "item": "flameorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "facade",
+        "headlongrush",
+        "knockoff",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Azumarill",
+      "species": "Azumarill",
+      "level": 82,
+      "ability": "hugepower",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "aquajet",
+        "playrough",
+        "knockoff",
+        "liquidation"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Oinkologne",
+      "species": "Oinkologne-F",
+      "level": 92,
+      "ability": "thickfat",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "highhorsepower",
+        "curse",
+        "bodyslam",
+        "lashout"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Avalugg",
+      "species": "Avalugg",
+      "level": 88,
+      "ability": "sturdy",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "rapidspin",
+        "recover",
+        "avalanche",
+        "bodypress"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Spiritomb",
+      "species": "Spiritomb",
+      "level": 89,
+      "ability": "infiltrator",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "foulplay",
+        "shadowsneak",
+        "poltergeist",
+        "toxic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Regidrago",
+      "species": "Regidrago",
+      "level": 77,
+      "ability": "dragonsmaw",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "terablast",
+        "dragonclaw",
+        "earthquake",
+        "dragondance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tentacruel",
+      "species": "Tentacruel",
+      "level": 84,
+      "ability": "liquidooze",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "flipturn",
+        "sludgebomb",
+        "surf",
+        "toxic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Qwilfish",
+      "species": "Qwilfish",
+      "level": 86,
+      "ability": "intimidate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "spikes",
+        "taunt",
+        "gunkshot",
+        "waterfall"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}
