@@ -93,3 +93,25 @@ Moves with guaranteed critical hits (like Wicked Blow) were not properly applyin
   - New issue: Different damage/faint timing (needs investigation)
 
 ---
+
+## 2026-01-01: 16-bit Truncation Fix in modifyDamage
+
+### Issue
+JavaScript's modifyDamage returns `tr(baseDamage, 16)` which applies a 16-bit truncation mask, but Rust was calling `trunc(final_damage, None)` without the mask.
+
+### Fix
+- Updated `src/battle_actions/modify_damage.rs` line 236 to use `battle.trunc(final_damage as f64, Some(16))`
+- Now matches JavaScript's `return tr(baseDamage, 16);` exactly
+
+### Results
+- ✅ Seed 1: Still passes perfectly
+- ⚠️ Seed 42: Improved again! Now matches through turn 4 (was turn 4-5 divergence)
+  - JS: Eelektrik faints turn 4
+  - Rust: Eelektrik survives to turn 5 (new issue)
+- ❌ Seed 123: Still has 3 HP damage differences (different root cause)  
+- ❌ Seed 100: Still has divergences
+
+### Analysis
+The 16-bit trunc fixed seed 42's turn 4-5 issue but revealed a new faint detection problem. Seed 123's damage differences persist, suggesting a different calculation issue (not related to final truncation).
+
+---
