@@ -227,3 +227,39 @@ Implemented all Protosynthesis ability callbacks:
 
 ---
 
+
+---
+
+## 2026-01-01: Seed 100 PRNG Divergence Investigation
+
+### Issue
+Seed 100 shows PRNG divergence starting at turn 5:
+- JavaScript: turn 5, prng=4->5 (1 call)
+- Rust: turn 5, prng=4->6 (2 calls) - ONE EXTRA CALL
+
+### Investigation
+
+**Key Finding:** Rust's onPrepareHit event routing is correct - the move's handler IS being called.
+
+**Added debug logging in `dispatch_single_event.rs`:**
+```rust
+if event_id == "PrepareHit" {
+    eprintln!("[DISPATCH_SINGLE_EVENT] PrepareHit check: checking if {} is a move", effect_id);
+    if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
+        eprintln!("[DISPATCH_SINGLE_EVENT] PrepareHit: Calling handle_move_event for move");
+        return self.handle_move_event(event_id, effect_str, target);
+    } else {
+        eprintln!("[DISPATCH_SINGLE_EVENT] PrepareHit: {} not found in moves dex", effect_id);
+    }
+}
+```
+
+**Pattern Discovered:**
+- Rust makes StallMove PRNG calls on turns 2, 4, 6, 8...  
+- JavaScript makes StallMove calls on turns 3, 4, 6, 8...
+- Pattern is offset by one turn on initial occurrence
+
+**Root Cause:** The `stall` volatile is being managed differently in terms of when it's first added or how duration is tracked. When Spiky Shield is used multiple turns in a row, the stall volatile's duration decrements at end of turn. If duration reaches 0, volatile is removed. The first StallMove check with an active stall volatile triggers the PRNG call.
+
+**Status:** Complex timing issue - needs deeper investigation of volatile duration management and turn structure. The move callbacks are working correctly; the issue is in the lifecycle of the stall volatile.
+
