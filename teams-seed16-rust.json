@@ -1,0 +1,375 @@
+{
+  "p1": [
+    {
+      "name": "Flareon",
+      "species": "Flareon",
+      "level": 90,
+      "ability": "guts",
+      "item": "toxicorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "flareblitz",
+        "trailblaze",
+        "facade",
+        "quickattack"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gliscor",
+      "species": "Gliscor",
+      "level": 76,
+      "ability": "poisonheal",
+      "item": "toxicorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "protect",
+        "earthquake",
+        "toxic",
+        "substitute"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Indeedee",
+      "species": "Indeedee-F",
+      "level": 90,
+      "ability": "psychicsurge",
+      "item": "choicespecs",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "hypervoice",
+        "psyshock",
+        "dazzlinggleam",
+        "shadowball"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Plusle",
+      "species": "Plusle",
+      "level": 95,
+      "ability": "lightningrod",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "encore",
+        "thunderbolt",
+        "nastyplot",
+        "grassknot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Scrafty",
+      "species": "Scrafty",
+      "level": 84,
+      "ability": "shedskin",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "rest",
+        "drainpunch",
+        "bulkup",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ditto",
+      "species": "Ditto",
+      "level": 87,
+      "ability": "imposter",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "transform"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Azelf",
+      "species": "Azelf",
+      "level": 82,
+      "ability": "levitate",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "psychic",
+        "knockoff",
+        "fireblast",
+        "taunt"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Regice",
+      "species": "Regice",
+      "level": 88,
+      "ability": "clearbody",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "bodypress",
+        "thunderwave",
+        "icebeam",
+        "thunderbolt"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Samurott",
+      "species": "Samurott-Hisui",
+      "level": 77,
+      "ability": "sharpness",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "razorshell",
+        "ceaselessedge",
+        "sacredsword",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zoroark",
+      "species": "Zoroark",
+      "level": 83,
+      "ability": "illusion",
+      "item": "choicespecs",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "darkpulse",
+        "sludgebomb",
+        "uturn",
+        "psychic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Talonflame",
+      "species": "Talonflame",
+      "level": 83,
+      "ability": "flamebody",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "overheat",
+        "roost",
+        "bravebird",
+        "defog"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Slowbro",
+      "species": "Slowbro-Galar",
+      "level": 87,
+      "ability": "regenerator",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "psychic",
+        "fireblast",
+        "shellsidearm",
+        "trickroom"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 0
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 0
+      }
+    }
+  ]
+}
