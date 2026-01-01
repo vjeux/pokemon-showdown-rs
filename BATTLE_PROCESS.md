@@ -5,18 +5,21 @@ This document describes the process for ensuring JS/Rust battle synchronization.
 ## Process
 
 1. **Run test**: `./tests/compare-battles.sh <seed>`
-2. **Check output**:
-   - If teams differ → fix team generation
-   - If teams match but battles differ → note first divergence point
-3. **Analyze divergence**:
-   - Compare PRNG call counts (if different → missing/extra events)
-   - Compare HP values (if PRNG matches → damage calculation bug)
-4. **Find JS code**: Locate exact JS implementation causing difference
-5. **Port to Rust**: Implement 1-to-1 port, no workarounds
-6. **Compile**: `docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo build 2>&1" | tail -40`
-7. **Retest**: Verify fix, test multiple seeds
-8. **Document**: Update BATTLE_LOG.md with fix details (keep concise)
-9. **Commit & push**: Git commit with clear message
+2. **Check output**: Note first divergence (PRNG count or HP difference)
+3. **Trace PRNG calls** (if counts differ):
+   ```bash
+   # JavaScript
+   TRACE_PRNG=5,6 node tests/test-battle-js.js 100
+
+   # Rust
+   docker exec -e TRACE_PRNG="5,6" pokemon-rust-dev bash -c \
+     "cd /home/builder/workspace && cargo run --example test_battle_rust 100 2>&1"
+   ```
+4. **Find JS code**: Use stack traces to locate exact implementation
+5. **Port to Rust**: 1-to-1 port, no workarounds, do infrastructure changes if needed
+6. **Compile & test**: Build and verify fix works
+7. **Document**: Update BATTLE_LOG.md (keep concise)
+8. **Commit & push**: Clear commit message
 
 ## Current Status
 
@@ -25,10 +28,12 @@ This document describes the process for ensuring JS/Rust battle synchronization.
 - ✅ Comparison script fixed (ignores headers)
 - ✅ willCrit field implemented (guaranteed crits work)
 - ✅ 16-bit truncation in modifyDamage fixed
+- ✅ Stall volatile duration fixed (all protecting moves)
+- ✅ Dynamic callback order/subOrder loading from JSON
 - ✅ Seed 1: Perfect match!
-- ⚠️ Seed 42: Improved to turn 4, investigating faint detection at turn 4-5
-- ❌ Seed 123: Persistent 3 HP damage differences (investigating)
-- ❌ Seed 100: Battle logic divergences
+- ⚠️ Seed 100: Turn 5 PRNG divergence (Residual event timing issue)
+- ⚠️ Seed 123: Small damage differences (3 HP per turn, PRNG matches)
+- ⚠️ Seed 42: Faint detection timing (Eelektrik faints turn 4 JS, turn 5 Rust)
 
 ## Next Steps
 

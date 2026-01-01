@@ -23,9 +23,12 @@ impl Battle {
         // PrepareHit should call the MOVE's handler (e.g., King's Shield's onPrepareHit),
         // not a volatile's handler (even if the Pokemon has a kingsshield volatile)
         if event_id == "PrepareHit" {
+            eprintln!("[DISPATCH_SINGLE_EVENT] PrepareHit check: checking if {} is a move", effect_id);
             if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
                 eprintln!("[DISPATCH_SINGLE_EVENT] PrepareHit: Calling handle_move_event for move");
                 return self.handle_move_event(event_id, effect_str, target);
+            } else {
+                eprintln!("[DISPATCH_SINGLE_EVENT] PrepareHit: {} not found in moves dex", effect_id);
             }
         }
 
