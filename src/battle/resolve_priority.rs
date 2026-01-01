@@ -5,6 +5,28 @@ use crate::dex_data::StatID;
 
 impl Battle {
 
+    /// Get callback sub-order from dex data
+    /// JavaScript: handler.subOrder = (handler.effect as any)[`${callbackName}SubOrder`] || 0;
+    /// Returns None if no sub-order is specified (will use default based on effect type)
+    pub(crate) fn get_callback_sub_order(effect_type: EffectType, effect_id: &str, callback_name: &str) -> Option<i32> {
+        // Extract event name from callback (e.g., "onResidual" -> "Residual")
+        let event = if callback_name.starts_with("on") {
+            &callback_name[2..]
+        } else {
+            callback_name
+        };
+
+        match (effect_type, event) {
+            // Ability onResidualSubOrder values (from data/abilities.ts)
+            (EffectType::Ability, "Residual") => match effect_id {
+                "slowstart" => Some(2),
+                "pickup" => Some(2),
+                _ => None,
+            },
+            _ => None,
+        }
+    }
+
     /// Get callback order from dex data
     /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`] || false;
     /// Returns None if no order is specified (equivalent to false in JS)
@@ -20,6 +42,7 @@ impl Battle {
             // Ability onResidualOrder values (from data/abilities.ts)
             (EffectType::Ability, "Residual") => match effect_id {
                 "slowstart" => Some(28),
+                "pickup" => Some(28),
                 _ => None,
             },
             // Item onResidualOrder values (from data/items.ts)

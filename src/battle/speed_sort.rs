@@ -45,7 +45,7 @@ impl Battle {
         F: FnMut(&T) -> PriorityItem,
     {
         // Only log details for specific turns to reduce noise
-        let should_log = self.turn >= 20 && self.turn <= 22;
+        let should_log = self.turn == 4 || self.turn == 5 || (self.turn >= 20 && self.turn <= 22);
 
         if should_log {
             eprintln!("[TURN {} SPEED_SORT] Sorting list of {} items", self.turn, list.len());

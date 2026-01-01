@@ -50,13 +50,14 @@ impl Battle {
         let order = Self::get_callback_order(effect_type, effect_id.as_str(), callback_name);
         let priority = Self::get_callback_priority(effect_type, effect_id.as_str(), callback_name);
 
-        // Calculate sub_order based on effect type
-        let sub_order = match effect_type {
-            crate::battle::EffectType::Ability => 7,
-            crate::battle::EffectType::Item => 8,
-            crate::battle::EffectType::Condition => 2,
-            _ => 0,
-        };
+        // Get sub_order: first try custom value, then fall back to default based on effect type
+        let sub_order = Self::get_callback_sub_order(effect_type, effect_id.as_str(), callback_name)
+            .unwrap_or_else(|| match effect_type {
+                crate::battle::EffectType::Ability => 7,
+                crate::battle::EffectType::Item => 8,
+                crate::battle::EffectType::Condition => 2,
+                _ => 0,
+            });
 
         // Get speed from holder Pokemon
         let speed = if let Some((side_idx, poke_idx)) = holder {
@@ -271,11 +272,12 @@ impl Battle {
 
         // JS: this.speedSort(handlers);
         // Sort handlers by Pokemon speed
-        eprintln!("[FIELD_EVENT] Sorting {} handlers before processing", handlers.len());
+        eprintln!("[FIELD_EVENT] Sorting {} handlers before processing, turn={}", handlers.len(), self.turn);
         for (i, h) in handlers.iter().enumerate() {
-            eprintln!("[FIELD_EVENT] Handler {}: effect={}, speed={}, order={:?}, priority={}, sub_order={}, is_field={}, is_side={}",
+            eprintln!("[FIELD_EVENT] Handler {} BEFORE SORT: effect={}, speed={}, order={:?}, priority={}, sub_order={}, is_field={}, is_side={}",
                 i, h.effect_id.as_str(), h.speed, h.order, h.priority, h.sub_order, h.is_field, h.is_side);
         }
+        eprintln!("[FIELD_EVENT] About to call speed_sort at turn={}", self.turn);
         self.speed_sort(&mut handlers, |h| {
             PriorityItem {
                 order: h.order,
@@ -286,6 +288,11 @@ impl Battle {
                 index: 0,
             }
         });
+        eprintln!("[FIELD_EVENT] Done with speed_sort at turn={}", self.turn);
+        for (i, h) in handlers.iter().enumerate() {
+            eprintln!("[FIELD_EVENT] Handler {} AFTER SORT: effect={}, speed={}, order={:?}, priority={}, sub_order={}",
+                i, h.effect_id.as_str(), h.speed, h.order, h.priority, h.sub_order);
+        }
 
         // JS: while (handlers.length) { ... }
         while !handlers.is_empty() {

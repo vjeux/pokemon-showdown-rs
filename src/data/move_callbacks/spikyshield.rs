@@ -43,18 +43,10 @@ pub fn on_hit(
     // onHit(pokemon) {
     //     pokemon.addVolatile('stall');
     // }
-    let pokemon = pokemon_pos;
 
     // pokemon.addVolatile('stall');
-    {
-        let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-
-            None => return EventResult::Continue,
-        };
-
-        pokemon.add_volatile(ID::from("stall"));
-    }
+    // Use battle.add_volatile_to_pokemon to properly set duration from dex.conditions
+    battle.add_volatile_to_pokemon(pokemon_pos, ID::from("stall"), None);
 
     EventResult::Continue
 }

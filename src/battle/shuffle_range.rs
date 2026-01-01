@@ -17,8 +17,10 @@ impl Battle {
     ///     }
     ///   }
     pub fn shuffle_range<T>(&mut self, list: &mut [T], mut start: usize, end: usize) {
+        eprintln!("[SHUFFLE_RANGE CALLED] turn={}, start={}, end={}, count={}", self.turn, start, end, end - start);
+
         // Log shuffle_range calls during specific turns for debugging
-        let should_log = self.turn >= 20 && self.turn <= 22;
+        let should_log = self.turn == 4 || self.turn == 5 || (self.turn >= 20 && self.turn <= 22);
 
         if should_log {
             eprintln!("[TURN {} SHUFFLE_RANGE] Starting shuffle of range=[{}, {}), count={} items",

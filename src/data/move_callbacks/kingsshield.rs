@@ -76,32 +76,22 @@ pub fn on_hit(
     } else {
         eprintln!("[KINGSSHIELD::ON_HIT] Adding new 'stall' volatile");
         // pokemon.addVolatile('stall');
-        {
-            let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => {
-                    eprintln!("[KINGSSHIELD::ON_HIT] Pokemon not found!");
-                    return EventResult::Continue;
-                }
-            };
+        // Use battle.add_volatile_to_pokemon to properly set duration from dex.conditions
+        battle.add_volatile_to_pokemon(pokemon, stall_id.clone(), None);
+        eprintln!("[KINGSSHIELD::ON_HIT] Added 'stall' volatile via battle.add_volatile_to_pokemon");
 
-            pokemon.add_volatile(stall_id.clone());
-            eprintln!("[KINGSSHIELD::ON_HIT] Added 'stall' volatile. Total volatiles: {}", pokemon.volatiles.len());
-        }
-
-        // Initialize duration and counter for new stall volatile
-        // JavaScript: if (status.duration) this.volatiles[status.id].duration = status.duration;
-        // onStart() { this.effectState.counter = 3; }
+        // Initialize counter for new stall volatile (duration is set by add_volatile_to_pokemon)
+        // JavaScript onStart: this.effectState.counter = 3;
         {
-            let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
 
-            if let Some(volatile) = pokemon.volatiles.get_mut(&stall_id) {
-                volatile.duration = Some(2); // stall condition has duration: 2
+            if let Some(volatile) = pokemon_mut.volatiles.get_mut(&stall_id) {
+                // Duration is already set by add_volatile_to_pokemon, just set counter
                 volatile.data.insert("counter".to_string(), serde_json::Value::from(3)); // onStart sets counter to 3
-                eprintln!("[KINGSSHIELD::ON_HIT] Initialized stall: duration=2, counter=3");
+                eprintln!("[KINGSSHIELD::ON_HIT] Initialized stall counter=3");
             }
         }
 
