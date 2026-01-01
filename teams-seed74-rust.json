@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Tauros",
+      "species": "Tauros-Paldea-Combat",
+      "level": 82,
+      "ability": "intimidate",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "closecombat",
+        "bulkup",
+        "throatchop",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Rillaboom",
+      "species": "Rillaboom",
+      "level": 79,
+      "ability": "grassysurge",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "highhorsepower",
+        "grassyglide",
+        "swordsdance",
+        "woodhammer"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bronzong",
+      "species": "Bronzong",
+      "level": 88,
+      "ability": "levitate",
+      "item": "chestoberry",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "irondefense",
+        "psychicnoise",
+        "bodypress",
+        "rest"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lurantis",
+      "species": "Lurantis",
+      "level": 87,
+      "ability": "contrary",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "superpower",
+        "defog",
+        "synthesis",
+        "leafstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mimikyu",
+      "species": "Mimikyu",
+      "level": 79,
+      "ability": "disguise",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "playrough",
+        "swordsdance",
+        "drainpunch",
+        "shadowsneak"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Banette",
+      "species": "Banette",
+      "level": 93,
+      "ability": "insomnia",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "shadowsneak",
+        "thunderwave",
+        "gunkshot",
+        "poltergeist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Lilligant",
+      "species": "Lilligant-Hisui",
+      "level": 79,
+      "ability": "hustle",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "victorydance",
+        "icespinner",
+        "leafblade",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Raichu",
+      "species": "Raichu-Alola",
+      "level": 87,
+      "ability": "surgesurfer",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "thunderbolt",
+        "psyshock",
+        "alluringvoice",
+        "nastyplot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dudunsparce",
+      "species": "Dudunsparce-Three-Segment",
+      "level": 83,
+      "ability": "rattled",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "roost",
+        "shadowball",
+        "boomburst",
+        "calmmind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Arboliva",
+      "species": "Arboliva",
+      "level": 91,
+      "ability": "harvest",
+      "item": "sitrusberry",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "substitute",
+        "hypervoice",
+        "protect",
+        "leechseed"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Regice",
+      "species": "Regice",
+      "level": 88,
+      "ability": "clearbody",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "bodypress",
+        "thunderbolt",
+        "thunderwave",
+        "icebeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mew",
+      "species": "Mew",
+      "level": 82,
+      "ability": "synchronize",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "swordsdance",
+        "knockoff",
+        "psychicfangs",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

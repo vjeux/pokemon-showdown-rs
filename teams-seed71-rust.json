@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Deoxys",
+      "species": "Deoxys-Speed",
+      "level": 82,
+      "ability": "pressure",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "nastyplot",
+        "darkpulse",
+        "psychoboost",
+        "focusblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wugtrio",
+      "species": "Wugtrio",
+      "level": 91,
+      "ability": "gooey",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "throatchop",
+        "liquidation",
+        "aquajet",
+        "stompingtantrum"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Skeledirge",
+      "species": "Skeledirge",
+      "level": 79,
+      "ability": "unaware",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "willowisp",
+        "torchsong",
+        "slackoff",
+        "hex"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Vikavolt",
+      "species": "Vikavolt",
+      "level": 83,
+      "ability": "levitate",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "bugbuzz",
+        "thunderbolt",
+        "stickyweb",
+        "voltswitch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ursaluna",
+      "species": "Ursaluna-Bloodmoon",
+      "level": 79,
+      "ability": "mindseye",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "calmmind",
+        "bloodmoon",
+        "earthpower",
+        "moonlight"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Glastrier",
+      "species": "Glastrier",
+      "level": 86,
+      "ability": "chillingneigh",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "iciclecrash",
+        "heavyslam",
+        "highhorsepower",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Gumshoos",
+      "species": "Gumshoos",
+      "level": 95,
+      "ability": "stakeout",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "earthquake",
+        "knockoff",
+        "uturn",
+        "doubleedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Banette",
+      "species": "Banette",
+      "level": 93,
+      "ability": "insomnia",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "poltergeist",
+        "shadowsneak",
+        "gunkshot",
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Jolteon",
+      "species": "Jolteon",
+      "level": 84,
+      "ability": "voltabsorb",
+      "item": "choicespecs",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "shadowball",
+        "thunderbolt",
+        "voltswitch",
+        "alluringvoice"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Trevenant",
+      "species": "Trevenant",
+      "level": 89,
+      "ability": "harvest",
+      "item": "sitrusberry",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "toxic",
+        "protect",
+        "poltergeist",
+        "drainpunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Amoonguss",
+      "species": "Amoonguss",
+      "level": 82,
+      "ability": "regenerator",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "clearsmog",
+        "sludgebomb",
+        "spore",
+        "gigadrain"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Salamence",
+      "species": "Salamence",
+      "level": 77,
+      "ability": "intimidate",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "outrage",
+        "earthquake",
+        "dualwingbeat",
+        "dragondance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

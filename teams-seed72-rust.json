@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Medicham",
+      "species": "Medicham",
+      "level": 86,
+      "ability": "purepower",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "bulletpunch",
+        "poisonjab",
+        "zenheadbutt",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Virizion",
+      "species": "Virizion",
+      "level": 82,
+      "ability": "justified",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "leafblade",
+        "closecombat",
+        "stoneedge",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Scovillain",
+      "species": "Scovillain",
+      "level": 91,
+      "ability": "chlorophyll",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "energyball",
+        "flamethrower",
+        "overheat",
+        "leafstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Clodsire",
+      "species": "Clodsire",
+      "level": 81,
+      "ability": "waterabsorb",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "poisonjab",
+        "earthquake",
+        "recover",
+        "curse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cresselia",
+      "species": "Cresselia",
+      "level": 80,
+      "ability": "levitate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "calmmind",
+        "moonblast",
+        "psyshock",
+        "moonlight"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Rhydon",
+      "species": "Rhydon",
+      "level": 85,
+      "ability": "lightningrod",
+      "item": "eviolite",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "megahorn",
+        "stealthrock",
+        "earthquake",
+        "stoneedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Alcremie",
+      "species": "Alcremie-Caramel-Swirl",
+      "level": 90,
+      "ability": "aromaveil",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "terablast",
+        "calmmind",
+        "recover",
+        "alluringvoice"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Reshiram",
+      "species": "Reshiram",
+      "level": 76,
+      "ability": "turboblaze",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "willowisp",
+        "blueflare",
+        "earthpower",
+        "dracometeor"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Basculegion",
+      "species": "Basculegion",
+      "level": 80,
+      "ability": "adaptability",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "aquajet",
+        "flipturn",
+        "shadowball",
+        "wavecrash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Braviary",
+      "species": "Braviary-Hisui",
+      "level": 85,
+      "ability": "tintedlens",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "roost",
+        "esperwing",
+        "hurricane",
+        "defog"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Empoleon",
+      "species": "Empoleon",
+      "level": 84,
+      "ability": "competitive",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "stealthrock",
+        "surf",
+        "flipturn",
+        "roost"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Vileplume",
+      "species": "Vileplume",
+      "level": 85,
+      "ability": "effectspore",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "gigadrain",
+        "strengthsap",
+        "sludgebomb",
+        "sleeppowder"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}
