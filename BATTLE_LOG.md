@@ -146,3 +146,34 @@ The 16-bit trunc fixed seed 42's turn 4-5 issue but revealed a new faint detecti
 
 ---
 
+## 2026-01-01: Protosynthesis Ability Implementation
+
+### Implementation
+Implemented all Protosynthesis ability callbacks:
+
+**Main ability callbacks:**
+- `on_start`: Triggers WeatherChange event
+- `on_weather_change`: Adds/removes protosynthesis volatile based on sunny day
+- `on_end`: Removes volatile and adds silent end message
+
+**Condition (volatile) callbacks:**
+- `on_start`: Calculates best stat and displays activation message
+- `on_modify_atk/def/spa/spd`: Applies 1.3x boost (5325/4096) if best stat matches
+- `on_modify_spe`: Applies 1.5x boost (3/2 ratio) if Spe is best stat
+- `on_end`: Displays end message
+
+### Challenges
+- Borrow checker issues required inline calculation of best stat instead of calling `pokemon.get_best_stat()`
+- ID type conversion needed for volatile management
+- Arg import path needed correction
+
+### Results
+- ✅ Code compiles successfully
+- ❌ Seed 100: Still shows PRNG off-by-one (0->0 vs 0->1 per turn)
+  - Ability callbacks are registered in has_callback
+  - Need to investigate why PRNG calls aren't happening
+
+**Status:** Implementation complete but not yet fixing the PRNG divergence
+
+---
+
