@@ -54,8 +54,16 @@ pub fn generate_random_team(prng: &mut PRNG, dex: &Dex) -> Vec<PokemonSet> {
         let level = prng.random_range(50, 101) as u8;
 
         // Select random ability from the species' abilities
+        // For cosmetic formes, inherit from baseSpecies
         let ability = if let Some(ref a) = species.abilities.slot0 {
             a.clone()
+        } else if let Some(ref base_species_name) = species.base_species {
+            // Cosmetic forme - get ability from base species
+            if let Some(base_species) = dex.species().get(base_species_name) {
+                base_species.abilities.slot0.clone().unwrap_or_else(|| "No Ability".to_string())
+            } else {
+                "No Ability".to_string()
+            }
         } else {
             "No Ability".to_string()
         };
