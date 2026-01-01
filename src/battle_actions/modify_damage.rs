@@ -231,7 +231,9 @@ pub fn modify_damage(
         base_damage
     };
 
-    let result = battle.trunc(final_damage as f64, None) as i32;
+    // JavaScript: return tr(baseDamage, 16);
+    // The 16-bit truncation is important for damage calculation accuracy
+    let result = battle.trunc(final_damage as f64, Some(16)) as i32;
     eprintln!("[MODIFY_DAMAGE] FINAL: result={}", result);
     result
 }
