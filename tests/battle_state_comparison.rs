@@ -5,8 +5,10 @@
 //! JavaScript implementation.
 
 use pokemon_showdown::{
-    Battle, BattleOptions, PRNGSeed, PlayerOptions, PRNG,
+    Battle, BattleOptions, PRNGSeed, PlayerOptions, PRNG, PokemonSet,
+    Gender,
 };
+use pokemon_showdown::dex_data::StatsTable;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -77,6 +79,90 @@ struct BattleSummary {
     turns: i32,
     winner: Option<String>,
     ended: bool,
+}
+
+// Structures for loading teams from JSON file
+#[derive(Debug, Deserialize)]
+struct JsonStats {
+    hp: i32,
+    atk: i32,
+    def: i32,
+    spa: i32,
+    spd: i32,
+    spe: i32,
+}
+
+#[derive(Debug, Deserialize)]
+struct JsonPokemon {
+    name: String,
+    species: String,
+    level: u8,
+    ability: String,
+    item: String,
+    nature: String,
+    gender: String,
+    moves: Vec<String>,
+    evs: JsonStats,
+    ivs: JsonStats,
+}
+
+#[derive(Debug, Deserialize)]
+struct JsonTeams {
+    p1: Vec<JsonPokemon>,
+    p2: Vec<JsonPokemon>,
+}
+
+/// Load teams from JSON file (matching JavaScript implementation)
+fn load_teams_from_json(file_path: &str) -> Result<(Vec<PokemonSet>, Vec<PokemonSet>), Box<dyn std::error::Error>> {
+    let json_content = std::fs::read_to_string(file_path)?;
+    let teams: JsonTeams = serde_json::from_str(&json_content)?;
+
+    let convert_pokemon = |json_poke: JsonPokemon| -> PokemonSet {
+        let gender = match json_poke.gender.as_str() {
+            "M" => Gender::Male,
+            "F" => Gender::Female,
+            _ => Gender::None,
+        };
+
+        PokemonSet {
+            name: json_poke.name,
+            species: json_poke.species,
+            item: json_poke.item,
+            ability: json_poke.ability,
+            moves: json_poke.moves,
+            nature: json_poke.nature,
+            gender,
+            evs: StatsTable {
+                hp: json_poke.evs.hp,
+                atk: json_poke.evs.atk,
+                def: json_poke.evs.def,
+                spa: json_poke.evs.spa,
+                spd: json_poke.evs.spd,
+                spe: json_poke.evs.spe,
+            },
+            ivs: StatsTable {
+                hp: json_poke.ivs.hp,
+                atk: json_poke.ivs.atk,
+                def: json_poke.ivs.def,
+                spa: json_poke.ivs.spa,
+                spd: json_poke.ivs.spd,
+                spe: json_poke.ivs.spe,
+            },
+            level: json_poke.level,
+            shiny: false,
+            happiness: 255,
+            pokeball: "pokeball".to_string(),
+            hptype: None,
+            dynamax_level: 10,
+            gigantamax: false,
+            tera_type: None,
+        }
+    };
+
+    let team1 = teams.p1.into_iter().map(convert_pokemon).collect();
+    let team2 = teams.p2.into_iter().map(convert_pokemon).collect();
+
+    Ok((team1, team2))
 }
 
 /// Extract battle state at a given point
@@ -168,9 +254,13 @@ fn run_battle_with_states(seed: PRNGSeed, max_turns: i32) -> BattleLog {
     // Load dex for team generation
     let dex = pokemon_showdown::Dex::load_default().expect("Failed to load dex");
 
-    // Generate random teams from seed
-    let mut team_prng = PRNG::new(Some(seed.clone()));
-    let (team1, team2) = pokemon_showdown::team_generator::generate_random_teams(&mut team_prng, &dex);
+    // Load pre-generated teams from JSON file (matching JavaScript implementation)
+    let (team1, team2) = load_teams_from_json("teams-js.json")
+        .expect("Failed to load teams from teams-js.json");
+
+    println!("Rust: Loaded teams from teams-js.json");
+    println!("Rust: P1 Team: {:?}", team1.iter().map(|p| &p.species).collect::<Vec<_>>());
+    println!("Rust: P2 Team: {:?}", team2.iter().map(|p| &p.species).collect::<Vec<_>>());
 
     // Create battle with the seed
     let mut battle = Battle::new(BattleOptions {
