@@ -37,26 +37,28 @@
    - psywave.rs: Changed `battle.prng.random_range()` to `battle.random_with_range()`
    - quickclaw.rs: Changed `battle.prng.random_chance()` to `battle.random_chance()`
 
-#### Current Status: on_effect parameter fix COMPLETED - New divergence on Turn 27
+#### Current Status: Speed sorting bug found on Turn 27 - INVESTIGATING
 
-**Previous Root Cause (FIXED):**
-Rust's `run_event` function was missing the `on_effect` parameter that JavaScript uses to determine whether to call the sourceEffect (move/item/ability)'s event handler.
+**Turn 27 Divergence:**
+- JavaScript: Zacian uses Zen Headbutt first → Genesect faints → 4 PRNG calls
+- Rust: Genesect uses Vise Grip first → then Zacian uses Zen Headbutt → 7 PRNG calls
 
-**The Fix (COMPLETED):**
-1. ✓ Renamed main `run_event` to `run_event_internal` with `on_effect: bool` parameter
-2. ✓ Implemented logic to add sourceEffect handler when `on_effect` is true
-3. ✓ Updated get_damage.rs to use `run_event_with_effect` for BasePower event
-4. ✓ Created public wrapper functions (`run_event` and `run_event_with_effect`)
-5. ✓ Code compiles successfully
+**Root Cause:**
+Move order is backwards! Zacian (speed=293) should move before Genesect (speed=210), but Rust has Genesect moving first.
 
-**Result:**
-- Turns 1-26 now match between JS and Rust!
-- First divergence moved from Turn 21 to Turn 27
-- Turn 27: JS has 4 PRNG calls, Rust has 7 (3 extra calls)
+**Investigation:**
+The `compare_priority` function appears correct:
+- Line 47: `b.speed.total_cmp(&a.speed)` should put higher speed first
+- For Genesect (210) vs Zacian (293), returns `Greater` → Zacian should come first
+
+The `speed_sort` logic also appears correct:
+- When `cmp=Greater`, selects the faster Pokemon
+- Swaps it to the front of the queue
 
 **Next Steps:**
-- Investigate what's happening on Turn 27 that causes the divergence
-- Check battle log to identify which move/action is behaving differently
+- Add detailed logging to verify the swap is happening
+- Check if queue is being re-sorted or if there's a different execution order issue
+- Verify turn counter (logs show "TURN 22" but we're on turn 27)
 
 ### Previous Investigation
 
