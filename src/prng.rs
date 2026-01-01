@@ -365,6 +365,11 @@ impl PRNG {
             PRNGImpl::Sodium(rng) => rng.next(),
         };
 
+        // Log PRNG calls around turn 21 for debugging
+        if self.call_count >= 69 && self.call_count <= 77 {
+            eprintln!("[PRNG.next_raw] Call #{} -> value={}", self.call_count, value);
+        }
+
         // Log PRNG calls (can be enabled for debugging)
         if std::env::var("RUST_LOG_PRNG").is_ok() && self.call_count <= 100 {
             let bt = std::backtrace::Backtrace::force_capture();

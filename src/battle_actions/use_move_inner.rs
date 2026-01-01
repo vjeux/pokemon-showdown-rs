@@ -178,7 +178,9 @@ pub fn use_move_inner(
     z_move_param: Option<&str>,
     max_move_param: Option<&str>,
 ) -> bool {
-    eprintln!("[USE_MOVE_INNER] Called for move {:?} from {:?} to {:?}", move_or_move_name, pokemon_pos, target_pos);
+    let prng_call_start = battle.prng.call_count;
+    eprintln!("[USE_MOVE_INNER] START move {:?} from {:?} to {:?}, PRNG calls={}",
+        move_or_move_name, pokemon_pos, target_pos, prng_call_start);
     // let target = options?.target;
     let mut target = target_pos;
 
@@ -905,6 +907,9 @@ pub fn use_move_inner(
     }
 
     // return true;
+    let prng_call_end = battle.prng.call_count;
+    eprintln!("[USE_MOVE_INNER] END move {:?}, PRNG calls: {} -> {} (delta={})",
+        move_or_move_name, prng_call_start, prng_call_end, prng_call_end - prng_call_start);
     true // Placeholder - will be set by actual move execution
 }
 
