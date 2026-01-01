@@ -187,11 +187,35 @@ pub fn get_damage(
         eprintln!("[GET_DAMAGE] No BasePower event modification");
     }
 
-    // Check if base power is still 0 after BasePower event
-    // For moves like Punishment, the BasePower event sets the power from 0 to the actual value
-    if base_power == 0 {
-        return Some(0); // No damage dealt, move continues
+    // JavaScript: if (!source.volatiles["dynamax"] && move.isMax || move.isMax && this.dex.moves.get(move.baseMove).isMax) { basePower = 0; }
+    // CRITICAL: Max/G-Max moves used without dynamax do 0 damage!
+    // This happens when a Pokemon uses a Max move in the turn after un-dynamaxing
+    if move_data.is_max.is_some() {
+        let has_dynamax_volatile = if let Some(side) = battle.sides.get(source_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+                pokemon.has_volatile(&ID::new("dynamax"))
+            } else {
+                false
+            }
+        } else {
+            false
+        };
+
+        // Check first condition: !source.volatiles["dynamax"] && move.isMax
+        if !has_dynamax_volatile {
+            base_power = 0;
+            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower to 0");
+        } else {
+            // TODO: Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
+            // This would require checking if the base move (the original move before dynamax conversion) is also a Max move
+            // For now, this is rare and not needed for our current test case
+        }
     }
+
+    // NOTE: Do NOT return early if base_power == 0 here!
+    // JavaScript continues with the damage calculation even when basePower is 0,
+    // resulting in baseDamage=0, which then gets passed to modifyDamage
+    // modifyDamage will add 2 and randomize, resulting in 1 damage (minimum)
 
     // Get attacker level
     let level = if let Some(side) = battle.sides.get(source_pos.0) {

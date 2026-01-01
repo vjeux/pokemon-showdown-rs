@@ -43,7 +43,22 @@ BattleActions.prototype.modifyDamage = function(baseDamage, pokemon, target, mov
 const originalGetDamage = BattleActions.prototype.getDamage;
 BattleActions.prototype.getDamage = function(source, target, move, suppressMessages) {
     console.log(`[JS GET_DAMAGE START] move ${move.id}, basePower=${move.basePower}, hasBasePowerCallback=${!!move.basePowerCallback}, hasDamageCallback=${!!move.damageCallback}, isMax=${move.isMax}`);
+    console.log(`[JS GET_DAMAGE] source.volatiles.dynamax=${!!source.volatiles['dynamax']}, move.baseMove=${move.baseMove}`);
+
+    // Log basePower before and after BasePower event
+    const originalRunEvent = this.battle.runEvent.bind(this.battle);
+    this.battle.runEvent = function(eventName, ...args) {
+        const result = originalRunEvent(eventName, ...args);
+        if (eventName === 'BasePower' && args[2]?.id === 'gmaxterror') {
+            console.log(`[JS GET_DAMAGE] BasePower event for gmaxterror: before=${args[3]}, after=${result || args[3]}`);
+        }
+        return result;
+    };
+
     const result = originalGetDamage.call(this, source, target, move, suppressMessages);
+
+    this.battle.runEvent = originalRunEvent;
+
     console.log(`[JS GET_DAMAGE END] move ${move.id} returned ${result}`);
     return result;
 };
