@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Blaziken",
+      "species": "Blaziken",
+      "level": 76,
+      "ability": "speedboost",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "closecombat",
+        "protect",
+        "swordsdance",
+        "flareblitz"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Flareon",
+      "species": "Flareon",
+      "level": 90,
+      "ability": "guts",
+      "item": "toxicorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "flareblitz",
+        "trailblaze",
+        "facade",
+        "quickattack"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dodrio",
+      "species": "Dodrio",
+      "level": 85,
+      "ability": "earlybird",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "bravebird",
+        "doubleedge",
+        "knockoff",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Chesnaught",
+      "species": "Chesnaught",
+      "level": 84,
+      "ability": "bulletproof",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "irondefense",
+        "bodypress",
+        "trailblaze",
+        "synthesis"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sandy Shocks",
+      "species": "Sandy Shocks",
+      "level": 80,
+      "ability": "protosynthesis",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "earthpower",
+        "spikes",
+        "thunderwave",
+        "thunderbolt"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Quagsire",
+      "species": "Quagsire",
+      "level": 84,
+      "ability": "unaware",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "toxic",
+        "recover",
+        "earthquake",
+        "icebeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Jumpluff",
+      "species": "Jumpluff",
+      "level": 87,
+      "ability": "infiltrator",
+      "item": "",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "sleeppowder",
+        "strengthsap",
+        "acrobatics",
+        "encore"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lapras",
+      "species": "Lapras",
+      "level": 87,
+      "ability": "waterabsorb",
+      "item": "loadeddice",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "earthquake",
+        "waterfall",
+        "iciclespear",
+        "dragondance"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Banette",
+      "species": "Banette",
+      "level": 93,
+      "ability": "cursedbody",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "gunkshot",
+        "shadowsneak",
+        "poltergeist",
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Glaceon",
+      "species": "Glaceon",
+      "level": 94,
+      "ability": "icebody",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "wish",
+        "protect",
+        "freezedry",
+        "mudshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Arceus",
+      "species": "Arceus-Fighting",
+      "level": 70,
+      "ability": "multitype",
+      "item": "fistplate",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "bodypress",
+        "irondefense",
+        "recover",
+        "shadowball"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Klefki",
+      "species": "Klefki",
+      "level": 84,
+      "ability": "prankster",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "magnetrise",
+        "playrough",
+        "thunderwave",
+        "spikes"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

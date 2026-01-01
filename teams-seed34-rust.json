@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Thundurus",
+      "species": "Thundurus",
+      "level": 80,
+      "ability": "prankster",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "thunderbolt",
+        "thunderwave",
+        "knockoff",
+        "grassknot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wigglytuff",
+      "species": "Wigglytuff",
+      "level": 96,
+      "ability": "competitive",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "alluringvoice",
+        "knockoff",
+        "protect",
+        "wish"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Solgaleo",
+      "species": "Solgaleo",
+      "level": 74,
+      "ability": "fullmetalbody",
+      "item": "weaknesspolicy",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "sunsteelstrike",
+        "flamecharge",
+        "psychic",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Donphan",
+      "species": "Donphan",
+      "level": 84,
+      "ability": "sturdy",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "knockoff",
+        "stealthrock",
+        "rapidspin",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Drednaw",
+      "species": "Drednaw",
+      "level": 81,
+      "ability": "strongjaw",
+      "item": "whiteherb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "shellsmash",
+        "liquidation",
+        "crunch",
+        "stoneedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Maushold",
+      "species": "Maushold-Four",
+      "level": 76,
+      "ability": "technician",
+      "item": "widelens",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "populationbomb",
+        "bite",
+        "encore",
+        "tidyup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Leavanny",
+      "species": "Leavanny",
+      "level": 86,
+      "ability": "swarm",
+      "item": "focussash",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "lunge",
+        "knockoff",
+        "stickyweb",
+        "leafblade"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Chimecho",
+      "species": "Chimecho",
+      "level": 93,
+      "ability": "levitate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "storedpower",
+        "recover",
+        "dazzlinggleam",
+        "cosmicpower"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zarude",
+      "species": "Zarude",
+      "level": 77,
+      "ability": "leafguard",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "powerwhip",
+        "closecombat",
+        "swordsdance",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tornadus",
+      "species": "Tornadus",
+      "level": 82,
+      "ability": "prankster",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "focusblast",
+        "heatwave",
+        "nastyplot",
+        "bleakwindstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Whiscash",
+      "species": "Whiscash",
+      "level": 88,
+      "ability": "oblivious",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "stealthrock",
+        "spikes",
+        "earthquake",
+        "hydropump"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Electrode",
+      "species": "Electrode",
+      "level": 92,
+      "ability": "static",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "thunderwave",
+        "thunderbolt",
+        "taunt",
+        "foulplay"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}
