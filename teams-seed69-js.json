@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Garganacl",
+      "species": "Garganacl",
+      "level": 80,
+      "ability": "purifyingsalt",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "saltcure",
+        "recover",
+        "bodypress",
+        "irondefense"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bruxish",
+      "species": "Bruxish",
+      "level": 85,
+      "ability": "strongjaw",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "crunch",
+        "flipturn",
+        "psychicfangs",
+        "wavecrash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Piloswine",
+      "species": "Piloswine",
+      "level": 85,
+      "ability": "thickfat",
+      "item": "eviolite",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "earthquake",
+        "roar",
+        "stealthrock",
+        "iciclecrash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Victreebel",
+      "species": "Victreebel",
+      "level": 90,
+      "ability": "chlorophyll",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "suckerpunch",
+        "sludgewave",
+        "sleeppowder",
+        "powerwhip"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Regice",
+      "species": "Regice",
+      "level": 88,
+      "ability": "clearbody",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "thunderwave",
+        "bodypress",
+        "icebeam",
+        "thunderbolt"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Arceus",
+      "species": "Arceus-Ghost",
+      "level": 69,
+      "ability": "multitype",
+      "item": "spookyplate",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "focusblast",
+        "judgment",
+        "calmmind",
+        "recover"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Ogerpon",
+      "species": "Ogerpon-Cornerstone",
+      "level": 76,
+      "ability": "sturdy",
+      "item": "cornerstonemask",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "synthesis",
+        "spikes",
+        "powerwhip",
+        "ivycudgel"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lugia",
+      "species": "Lugia",
+      "level": 73,
+      "ability": "multiscale",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "recover",
+        "earthpower",
+        "aeroblast",
+        "calmmind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Slowbro",
+      "species": "Slowbro",
+      "level": 85,
+      "ability": "regenerator",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "slackoff",
+        "bodypress",
+        "irondefense",
+        "scald"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Basculegion",
+      "species": "Basculegion-F",
+      "level": 83,
+      "ability": "adaptability",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "hydropump",
+        "flipturn",
+        "shadowball",
+        "wavecrash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Volbeat",
+      "species": "Volbeat",
+      "level": 90,
+      "ability": "prankster",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "thunderwave",
+        "roost",
+        "encore",
+        "uturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Probopass",
+      "species": "Probopass",
+      "level": 92,
+      "ability": "magnetpull",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "bodypress",
+        "flashcannon",
+        "powergem",
+        "irondefense"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

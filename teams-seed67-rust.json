@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Terapagos",
+      "species": "Terapagos-Terastal",
+      "level": 77,
+      "ability": "terashell",
+      "item": "chestoberry",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "darkpulse",
+        "rest",
+        "calmmind",
+        "terastarstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Perrserker",
+      "species": "Perrserker",
+      "level": 89,
+      "ability": "steelyspirit",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "closecombat",
+        "ironhead",
+        "stealthrock",
+        "uturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Golem",
+      "species": "Golem-Alola",
+      "level": 93,
+      "ability": "galvanize",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "explosion",
+        "earthquake",
+        "doubleedge",
+        "stoneedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Calyrex",
+      "species": "Calyrex-Shadow",
+      "level": 64,
+      "ability": "asonespectrier",
+      "item": "choicespecs",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "pollenpuff",
+        "psyshock",
+        "astralbarrage",
+        "trick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dodrio",
+      "species": "Dodrio",
+      "level": 85,
+      "ability": "earlybird",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "knockoff",
+        "doubleedge",
+        "bravebird",
+        "quickattack"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sandy Shocks",
+      "species": "Sandy Shocks",
+      "level": 80,
+      "ability": "protosynthesis",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "thunderbolt",
+        "spikes",
+        "thunderwave",
+        "earthpower"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Greninja",
+      "species": "Greninja-Bond",
+      "level": 80,
+      "ability": "battlebond",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "darkpulse",
+        "gunkshot",
+        "hydropump",
+        "icebeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Primarina",
+      "species": "Primarina",
+      "level": 83,
+      "ability": "torrent",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "drainingkiss",
+        "sparklingaria",
+        "psychic",
+        "calmmind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Toucannon",
+      "species": "Toucannon",
+      "level": 88,
+      "ability": "skilllink",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "boomburst",
+        "bulletseed",
+        "roost",
+        "beakblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Terrakion",
+      "species": "Terrakion",
+      "level": 79,
+      "ability": "justified",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "quickattack",
+        "stoneedge",
+        "closecombat",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Deoxys",
+      "species": "Deoxys-Speed",
+      "level": 82,
+      "ability": "pressure",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "spikes",
+        "stealthrock",
+        "superpower",
+        "psychoboost"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gothitelle",
+      "species": "Gothitelle",
+      "level": 90,
+      "ability": "shadowtag",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "focusblast",
+        "psychicnoise",
+        "calmmind",
+        "darkpulse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

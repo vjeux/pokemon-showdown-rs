@@ -15,8 +15,8 @@
    - PRNG calls now match JavaScript (7 → 4 calls at turn 30)
 
 ### Test Infrastructure
-- **65 Random Battle Seeds** ready for testing
-- **Rust tests:** 65 seeds tested, all complete successfully, no crashes
+- **70 Random Battle Seeds** ready for testing
+- **Rust tests:** 70 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -88,6 +88,11 @@
 | 63 | ✅ Pass (T59, PRNG 104) | ⏳ Needs verification | Samurott vs Plusle |
 | 64 | ✅ Pass (T19, PRNG 80) | ⏳ Needs verification | Articuno vs Garganacl |
 | 65 | ✅ Pass (T23, PRNG 116) | ⏳ Needs verification | Typhlosion vs Dunsparce |
+| 66 | ✅ Pass (T38, PRNG 179) | ⏳ Needs verification | Rillaboom vs Bastiodon |
+| 67 | ✅ Pass (T93, PRNG 329) | ⏳ Needs verification | Sandy Shocks vs Terrakion |
+| 68 | ✅ Pass (T28, PRNG 151) | ⏳ Needs verification | Cryogonal vs Iron Hands |
+| 69 | ✅ Pass (T27, PRNG 116) | ⏳ Needs verification | Bruxish vs Probopass |
+| 70 | ✅ Pass (T26, PRNG 105) | ⏳ Needs verification | Oricorio vs Cobalion |
 
 ## How to Verify
 
@@ -139,7 +144,7 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Next Steps
 
-1. **User runs JavaScript tests** for seeds 1-65 to verify exact match
+1. **User runs JavaScript tests** for seeds 1-70 to verify exact match
 2. **If divergences found:** Investigate PRNG call differences and fix
 3. **Generate more seeds** if all current ones pass
 4. **Continue testing** until multiple random battles all match perfectly
@@ -163,4 +168,4 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Current Confidence Level
 
-**High** - The Shield Dust fix resolved the only known divergence. All 65 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
+**High** - The Shield Dust fix resolved the only known divergence. All 70 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
