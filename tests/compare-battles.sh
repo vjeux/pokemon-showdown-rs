@@ -55,10 +55,10 @@ echo "Step 3: Running battles..."
 echo ""
 
 echo "  JavaScript battle:"
-node tests/test-battle-js.js $SEED 2>&1 | grep '^#' > /tmp/js-battle-seed${SEED}.txt
+node tests/test-battle-js.js $SEED 2>&1 | grep '^#[0-9]' > /tmp/js-battle-seed${SEED}.txt
 
 echo "  Rust battle:"
-docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example test_battle_rust $SEED 2>&1 | grep '^#'" > /tmp/rust-battle-seed${SEED}.txt
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example test_battle_rust $SEED 2>&1 | grep '^#[0-9]'" > /tmp/rust-battle-seed${SEED}.txt
 
 # Step 4: Compare battle outputs
 echo ""

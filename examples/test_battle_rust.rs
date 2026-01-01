@@ -134,7 +134,9 @@ fn main() {
         for active_idx in &battle.sides[0].active {
             if let Some(poke_idx) = active_idx {
                 if let Some(pokemon) = battle.sides[0].pokemon.get(*poke_idx) {
-                    p1_active.push(format!("{}({}/{})", pokemon.name, pokemon.hp, pokemon.maxhp));
+                    // Use base species name (strip forme suffix) to match JavaScript output
+                    let display_name = pokemon.name.split('-').next().unwrap_or(&pokemon.name);
+                    p1_active.push(format!("{}({}/{})", display_name, pokemon.hp, pokemon.maxhp));
                 }
             } else {
                 p1_active.push("none".to_string());
@@ -144,7 +146,9 @@ fn main() {
         for active_idx in &battle.sides[1].active {
             if let Some(poke_idx) = active_idx {
                 if let Some(pokemon) = battle.sides[1].pokemon.get(*poke_idx) {
-                    p2_active.push(format!("{}({}/{})", pokemon.name, pokemon.hp, pokemon.maxhp));
+                    // Use base species name (strip forme suffix) to match JavaScript output
+                    let display_name = pokemon.name.split('-').next().unwrap_or(&pokemon.name);
+                    p2_active.push(format!("{}({}/{})", display_name, pokemon.hp, pokemon.maxhp));
                 }
             } else {
                 p2_active.push("none".to_string());
