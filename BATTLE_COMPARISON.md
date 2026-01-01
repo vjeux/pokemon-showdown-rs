@@ -37,43 +37,30 @@
    - psywave.rs: Changed `battle.prng.random_range()` to `battle.random_with_range()`
    - quickclaw.rs: Changed `battle.prng.random_chance()` to `battle.random_chance()`
 
-#### Current Status: ROOT CAUSE IDENTIFIED
+#### Current Status: ROOT CAUSE IDENTIFIED - DAMAGE CALCULATION BUG
 
-**JavaScript (Turn 20-21):**
-- Turn 20: 0 PRNG calls (total stays at 69)
-- Turn 21: 3 PRNG calls (#70-72)
-  - One move executes: `p1b:visegrip`
-  - Call #70: random_chance(100/100) - accuracy check
-  - Call #71: random_chance(1/24) - critical hit check
-  - Call #72: random(16) - damage roll
-
-**Rust (Turn 18, self.turn=17):**
-- 7 PRNG calls total (#70-76)
-  - TWO moves execute in sequence:
-  - `p1b:visegrip` (calls #70-72): accuracy, crit, damage
-  - `p2b:psychic` (calls #73-76): accuracy, crit, damage, + random(100)
-
-**The Problem:**
-Rust executes BOTH `p1b:visegrip` AND `p2b:psychic` on the same turn (turn=17), while JavaScript only executes visegrip on turn 21.
-
-From Rust logs:
+**JavaScript Turn 21:**
 ```
-RUN_ACTION Move: p1a uses knockoff
-RUN_ACTION Move: p1b uses visegrip     ← Calls #70-72
-RUN_ACTION Move: p2b uses psychic      ← Calls #73-76 (SHOULD NOT EXECUTE IN JS)
+|move|p1a: Genesect|Vise Grip|p2a: Cinderace
+|-damage|p2a: Cinderace|0 fnt
+|faint|p2a: Cinderace      ← CINDERACE FAINTS!
 ```
+- Genesect uses Vise Grip on Cinderace
+- Cinderace takes fatal damage and faints
+- Turn ends, psychic is never executed
+- PRNG calls: #70 (accuracy), #71 (crit), #72 (damage roll)
 
-**Possible Causes:**
-1. Someone faints after visegrip in JavaScript, ending the turn or battle
-2. Turn boundary is handled differently - psychic might be deferred to next turn in JS
-3. Action queue processing differs between JS and Rust
-4. BeforeMove or other event prevents psychic execution in JS
+**Rust Turn 21 (turn=17):**
+- Genesect uses Vise Grip on Cinderace
+- Cinderace survives (INCORRECT!)
+- Cinderace then uses Psychic
+- PRNG calls: #70-72 (visegrip), #73-76 (psychic)
 
-**Next Investigation:**
-Need to check JavaScript battle log to see:
-1. If anyone faints after visegrip on turn 21
-2. If psychic is attempted but blocked
-3. If the turn ends immediately after visegrip
+**THE BUG:**
+Rust is calculating **lower damage** for Vise Grip than JavaScript, causing Cinderace to survive when it should faint. This is a damage calculation bug in Rust.
+
+**Immediate Next Step:**
+Compare the exact damage values between JS and Rust for the Vise Grip attack on turn 21. The damage calculation in Rust must be producing a different result than JavaScript.
 
 ### Next Steps
 
