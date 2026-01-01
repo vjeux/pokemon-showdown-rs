@@ -365,8 +365,8 @@ impl PRNG {
             PRNGImpl::Sodium(rng) => rng.next(),
         };
 
-        // Log PRNG calls around turn 32 for debugging (cumulative 113-120)
-        if self.call_count >= 113 && self.call_count <= 120 {
+        // Log PRNG calls around turn 38 for debugging (cumulative 137-145)
+        if self.call_count >= 137 && self.call_count <= 145 {
             let bt = std::backtrace::Backtrace::force_capture();
             let bt_str = format!("{}", bt);
             let caller = bt_str.lines()

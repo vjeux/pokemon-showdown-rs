@@ -78,6 +78,7 @@ impl Pokemon {
         // JS: this.apparentType = rawSpecies.types.join('/');
         // JS: this.addedType = species.addedType || '';
         // JS: this.knownType = true;
+        eprintln!("[SET_SPECIES] Setting types for {} (species: {}): {:?}", self.name, species_id, types);
         self.types = types.clone();
         self.base_types = types.clone();
         self.added_type = None; // TypeScript uses empty string, Rust uses None

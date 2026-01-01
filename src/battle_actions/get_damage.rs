@@ -76,19 +76,17 @@ pub fn get_damage(
     let mut base_power = move_data.base_power;
 
     // JavaScript: if (move.basePowerCallback) { basePower = move.basePowerCallback.call(this.battle, source, target, move); }
-    // Call basePowerCallback FIRST, before any checks
-    // This is for moves like Punishment that calculate their own base power
-    if base_power == 0 {
-        use crate::data::move_callbacks;
-        if let crate::event::EventResult::Number(bp) = move_callbacks::dispatch_base_power_callback(
-            battle,
-            move_data.id.as_str(),
-            source_pos,
-            Some(target_pos),
-        ) {
-            base_power = bp;
-            eprintln!("[GET_DAMAGE] basePowerCallback set basePower to {}", base_power);
-        }
+    // CRITICAL: Always check for basePowerCallback, regardless of initial base_power!
+    // Max/G-Max moves have non-zero base_power in move data but use callback to calculate actual damage
+    use crate::data::move_callbacks;
+    if let crate::event::EventResult::Number(bp) = move_callbacks::dispatch_base_power_callback(
+        battle,
+        move_data.id.as_str(),
+        source_pos,
+        Some(target_pos),
+    ) {
+        base_power = bp;
+        eprintln!("[GET_DAMAGE] basePowerCallback set basePower to {}", base_power);
     }
 
     // JavaScript: if (!basePower) return basePower === 0 ? void 0 : basePower;

@@ -130,6 +130,7 @@ pub fn modify_damage(
 
         let target_types = if let Some(side) = battle.sides.get(target_pos.0) {
             if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                eprintln!("[MODIFY_DAMAGE] Reading types for {} (species: {}): {:?}", pokemon.name, pokemon.species_id, pokemon.types);
                 pokemon.types.clone()
             } else {
                 vec![]
