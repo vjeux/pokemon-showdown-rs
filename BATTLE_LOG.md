@@ -309,3 +309,28 @@ Seed 100 now diverges at turn 19:
 
 ---
 
+## 2026-01-01: Seed 100 Turn 19/20 Investigation
+
+### Issue
+After fixing stall condition callbacks, seed 100 now diverges at turn 19/20:
+- JavaScript: prng=23→27 (4 calls), Raging Bolt takes damage (225→186 HP)
+- Rust: prng=23→25 (2 calls), no damage occurs
+
+### Analysis
+
+**JavaScript PRNG calls at turn 20:**
+1. PRNG #24: Present's onModifyMove (choose power: 40/80/120 or heal)
+2. PRNG #25: Accuracy check in hitStepAccuracy
+3. PRNG #26: Critical hit check in getDamage
+4. PRNG #27: Damage randomizer (85-100%) in modifyDamage
+
+**Rust behavior:**
+- Makes only 2 PRNG calls (23→25)
+- Linoone chooses Present, Raging Bolt chooses Conversion
+- Present has onModifyMove implemented and registered in has_callback
+- dispatch_on_modify_move includes present at line 959
+
+**Status:** Investigating why move execution stops early or doesn't trigger onModifyMove
+
+---
+
