@@ -15,8 +15,8 @@
    - PRNG calls now match JavaScript (7 → 4 calls at turn 30)
 
 ### Test Infrastructure
-- **55 Random Battle Seeds** ready for testing
-- **Rust tests:** 55 seeds tested, all complete successfully, no crashes
+- **60 Random Battle Seeds** ready for testing
+- **Rust tests:** 60 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -78,6 +78,11 @@
 | 53 | ✅ Pass (T72, PRNG 213) | ⏳ Needs verification | Illumise vs Passimian |
 | 54 | ✅ Pass (T42, PRNG 81) | ⏳ Needs verification | Iron Hands vs Cobalion |
 | 55 | ✅ Pass (T63, PRNG 168) | ⏳ Needs verification | Smeargle vs Alcremie |
+| 56 | ✅ Pass (T34, PRNG 186) | ⏳ Needs verification | Veluza vs Gastrodon |
+| 57 | ✅ Pass (T31, PRNG 286) | ⏳ Needs verification | Scream Tail vs Scream Tail |
+| 58 | ✅ Pass (T27, PRNG 109) | ⏳ Needs verification | Ogerpon vs Bruxish |
+| 59 | ✅ Pass (T20, PRNG 105) | ⏳ Needs verification | Conkeldurr vs Cinderace |
+| 60 | ✅ Pass (T39, PRNG 177) | ⏳ Needs verification | Sableye vs Ursaluna |
 
 ## How to Verify
 
@@ -129,7 +134,7 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Next Steps
 
-1. **User runs JavaScript tests** for seeds 1-55 to verify exact match
+1. **User runs JavaScript tests** for seeds 1-60 to verify exact match
 2. **If divergences found:** Investigate PRNG call differences and fix
 3. **Generate more seeds** if all current ones pass
 4. **Continue testing** until multiple random battles all match perfectly
@@ -153,4 +158,4 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Current Confidence Level
 
-**High** - The Shield Dust fix resolved the only known divergence. All 55 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
+**High** - The Shield Dust fix resolved the only known divergence. All 60 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
