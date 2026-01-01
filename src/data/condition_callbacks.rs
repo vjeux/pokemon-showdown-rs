@@ -563,12 +563,12 @@ pub fn dispatch_on_stall_move(
             .unwrap_or(1)
     };
 
-    eprintln!("[STALL] Success chance: {}%", 100 / counter);
+    eprintln!("[STALL_MOVE] turn={}, counter={}, Success chance: {}%", battle.turn, counter, 100 / counter);
 
     // Call randomChance(1, counter)
     let success = battle.random_chance(1, counter);
 
-    eprintln!("[STALL] randomChance(1, {}) = {}", counter, success);
+    eprintln!("[STALL_MOVE] turn={}, randomChance(1, {}) = {}", battle.turn, counter, success);
 
     // If unsuccessful, remove the stall volatile
     if !success {
@@ -585,10 +585,32 @@ pub fn dispatch_on_stall_move(
 
 /// Dispatch onStart callbacks
 pub fn dispatch_on_start(
-    _battle: &mut Battle,
-    _condition_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
+    // JavaScript source from conditions.js:
+    // onStart() {
+    //   this.effectState.counter = 3;
+    // }
+
+    if condition_id != "stall" {
+        return EventResult::Continue;
+    }
+
+    eprintln!("[STALL_START] Called for {:?}", pokemon_pos);
+
+    // Set counter to 3 when stall is first added
+    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    if let Some(stall_volatile) = pokemon_mut.volatiles.get_mut(&ID::from("stall")) {
+        stall_volatile.data.insert("counter".to_string(), serde_json::Value::from(3));
+        eprintln!("[STALL_START] Set counter to 3");
+    }
+
     EventResult::Continue
 }
 

@@ -18,7 +18,23 @@ impl Battle {
             };
 
             if pokemon.volatiles.contains_key(&volatile_id) {
-                return false;
+                // JavaScript: if (pokemon.volatiles[status.id]) {
+                //     if (!status.onRestart) return false;
+                //     return this.singleEvent('Restart', status, this.volatiles[status.id], target, source, sourceEffect);
+                // }
+                // Call onRestart callback if the volatile already exists
+                let restart_result = crate::data::condition_callbacks::dispatch_on_restart(
+                    self,
+                    volatile_id.as_str(),
+                    pokemon_pos,
+                );
+
+                // If onRestart returns false or Continue, return false (volatile not re-added)
+                use crate::event::EventResult;
+                match restart_result {
+                    EventResult::Boolean(false) | EventResult::Continue => return false,
+                    _ => return true,
+                }
             }
         }
 
@@ -51,7 +67,35 @@ impl Battle {
         let mut state = crate::event_system::EffectState::new(volatile_id.clone());
         state.duration = final_duration;
 
-        pokemon_mut.volatiles.insert(volatile_id, state);
-        true
+        pokemon_mut.volatiles.insert(volatile_id.clone(), state);
+
+        // JavaScript: result = this.battle.singleEvent("Start", status, this.volatiles[status.id], this, source, sourceEffect);
+        // Call the Start event for the newly added volatile
+        let start_result = self.single_event(
+            "Start",
+            &volatile_id,
+            Some(pokemon_pos),
+            source_pos,
+            None,
+        );
+
+        // JavaScript: if (!result) { delete this.volatiles[status.id]; return result; }
+        // If Start event returns false/failure, remove the volatile
+        use crate::event::EventResult;
+        match start_result {
+            EventResult::Boolean(false) => {
+                // Start event failed, remove the volatile
+                let pokemon_mut = match self.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return false,
+                };
+                pokemon_mut.volatiles.remove(&volatile_id);
+                return false;
+            }
+            _ => {
+                // Start event succeeded or returned non-Boolean
+                return true;
+            }
+        }
     }
 }

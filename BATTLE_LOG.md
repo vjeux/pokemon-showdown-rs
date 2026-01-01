@@ -263,3 +263,49 @@ if event_id == "PrepareHit" {
 
 **Status:** Complex timing issue - needs deeper investigation of volatile duration management and turn structure. The move callbacks are working correctly; the issue is in the lifecycle of the stall volatile.
 
+## 2026-01-01: Stall Condition Implementation (onStart and onRestart)
+
+### Issue
+Seed 100 PRNG divergence due to missing stall condition callbacks.
+
+**Root causes identified:**
+1. `dispatch_on_start` was unimplemented - stall counter defaulted to 1 instead of 3
+2. `add_volatile_to_pokemon` didn't call Start event after adding volatile  
+3. `onRestart` callback wasn't being invoked when volatile already exists
+
+### Fixes Implemented
+
+**src/data/condition_callbacks.rs:**
+- Implemented `dispatch_on_start` for stall condition
+  - Sets counter=3 when stall is first added (matches JavaScript)
+  - JavaScript: `onStart() { this.effectState.counter = 3; }`
+
+- Implemented `dispatch_on_restart` for stall condition  
+  - Multiplies counter by 3 (up to counterMax=729)
+  - Resets duration to 2
+  - JavaScript: `onRestart() { this.effectState.counter *= 3; this.effectState.duration = 2; }`
+
+**src/battle/add_volatile_to_pokemon.rs:**
+- Added onRestart callback invocation when volatile already exists
+- Added Start event call after inserting volatile
+- Matches JavaScript's `pokemon.addVolatile()` behavior exactly
+
+### Results
+- ✅ Seed 1: Still passes (no regression)
+- ⚠️ Seed 100: Now matches through turn 18 (was failing at turn 5)  
+- ⚠️ Seed 42: Improved to turn 33
+- ⚠️ Seed 123: Still has damage calculation issues
+
+**Stall mechanic now working:**
+- Counter starts at 3 (33% success)  
+- On restart: 3 → 9 (11% success) → 27 (4% success) → 81 (1.2% success)
+- Protect moves properly decrease success chance on consecutive uses
+
+### Next Issue  
+Seed 100 now diverges at turn 19:
+- JavaScript: prng=23→27 (4 calls), Raging Bolt takes damage (225→186 HP)
+- Rust: prng=23→25 (2 calls), no damage
+- Need to investigate what happens at turn 20
+
+---
+
