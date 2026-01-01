@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Hariyama",
+      "species": "Hariyama",
+      "level": 87,
+      "ability": "thickfat",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "bulletpunch",
+        "knockoff",
+        "closecombat",
+        "heavyslam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Umbreon",
+      "species": "Umbreon",
+      "level": 84,
+      "ability": "synchronize",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "wish",
+        "protect",
+        "foulplay",
+        "toxic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Vaporeon",
+      "species": "Vaporeon",
+      "level": 86,
+      "ability": "waterabsorb",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "flipturn",
+        "wish",
+        "protect",
+        "scald"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Phione",
+      "species": "Phione",
+      "level": 91,
+      "ability": "hydration",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "sleeptalk",
+        "scald",
+        "rest",
+        "takeheart"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dodrio",
+      "species": "Dodrio",
+      "level": 85,
+      "ability": "earlybird",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "bravebird",
+        "doubleedge",
+        "drillrun",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Arceus",
+      "species": "Arceus-Electric",
+      "level": 70,
+      "ability": "multitype",
+      "item": "zapplate",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "calmmind",
+        "icebeam",
+        "judgment",
+        "recover"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Iron Bundle",
+      "species": "Iron Bundle",
+      "level": 77,
+      "ability": "quarkdrive",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "encore",
+        "icebeam",
+        "freezedry",
+        "hydropump"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Excadrill",
+      "species": "Excadrill",
+      "level": 79,
+      "ability": "moldbreaker",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "rockslide",
+        "earthquake",
+        "rapidspin",
+        "ironhead"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Victreebel",
+      "species": "Victreebel",
+      "level": 90,
+      "ability": "chlorophyll",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "sludgewave",
+        "weatherball",
+        "sunnyday",
+        "powerwhip"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Granbull",
+      "species": "Granbull",
+      "level": 88,
+      "ability": "intimidate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "earthquake",
+        "roar",
+        "thunderwave",
+        "playrough"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ursaring",
+      "species": "Ursaring",
+      "level": 84,
+      "ability": "quickfeet",
+      "item": "toxicorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "facade",
+        "swordsdance",
+        "crunch",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tauros",
+      "species": "Tauros-Paldea-Blaze",
+      "level": 81,
+      "ability": "intimidate",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "closecombat",
+        "flareblitz",
+        "wildcharge",
+        "stoneedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

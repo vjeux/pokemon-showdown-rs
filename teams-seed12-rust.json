@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Primarina",
+      "species": "Primarina",
+      "level": 83,
+      "ability": "torrent",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "sparklingaria",
+        "calmmind",
+        "drainingkiss",
+        "psychic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Muk",
+      "species": "Muk-Alola",
+      "level": 82,
+      "ability": "poisontouch",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "icepunch",
+        "shadowsneak",
+        "knockoff",
+        "poisonjab"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Terrakion",
+      "species": "Terrakion",
+      "level": 79,
+      "ability": "justified",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "stoneedge",
+        "earthquake",
+        "closecombat",
+        "quickattack"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cetitan",
+      "species": "Cetitan",
+      "level": 82,
+      "ability": "sheerforce",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "superpower",
+        "liquidation",
+        "iceshard",
+        "iciclecrash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Articuno",
+      "species": "Articuno-Galar",
+      "level": 84,
+      "ability": "competitive",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "freezingglare",
+        "calmmind",
+        "hurricane",
+        "recover"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Solgaleo",
+      "species": "Solgaleo",
+      "level": 74,
+      "ability": "fullmetalbody",
+      "item": "weaknesspolicy",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "psychic",
+        "knockoff",
+        "sunsteelstrike",
+        "flamecharge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Quagsire",
+      "species": "Quagsire",
+      "level": 84,
+      "ability": "unaware",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "toxic",
+        "spikes",
+        "recover",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Decidueye",
+      "species": "Decidueye-Hisui",
+      "level": 87,
+      "ability": "scrappy",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "triplearrows",
+        "leafblade",
+        "uturn",
+        "roost"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Komala",
+      "species": "Komala",
+      "level": 89,
+      "ability": "comatose",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "rapidspin",
+        "bodyslam",
+        "knockoff",
+        "uturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zacian",
+      "species": "Zacian-Crowned",
+      "level": 64,
+      "ability": "intrepidsword",
+      "item": "rustedsword",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "closecombat",
+        "playrough",
+        "behemothblade",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Metagross",
+      "species": "Metagross",
+      "level": 79,
+      "ability": "clearbody",
+      "item": "weaknesspolicy",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "knockoff",
+        "agility",
+        "earthquake",
+        "heavyslam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Eternatus",
+      "species": "Eternatus",
+      "level": 69,
+      "ability": "pressure",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "flamethrower",
+        "recover",
+        "toxic",
+        "dynamaxcannon"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

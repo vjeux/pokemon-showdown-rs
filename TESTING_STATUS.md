@@ -15,8 +15,8 @@
    - PRNG calls now match JavaScript (7 → 4 calls at turn 30)
 
 ### Test Infrastructure
-- **10 Random Battle Seeds** ready for testing
-- **Rust tests:** 10 seeds tested, all complete successfully, no crashes
+- **15 Random Battle Seeds** ready for testing
+- **Rust tests:** 15 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -33,6 +33,11 @@
 | 8 | ✅ Pass (T43, PRNG 189) | ⏳ Needs verification | Vanillite vs Togetic |
 | 9 | ✅ Pass (T73, PRNG 300) | ⏳ Needs verification | Finizen vs Lilligant |
 | 10 | ✅ Pass (T20, PRNG 97) | ⏳ Needs verification | Pokestar F-002 vs Cottonee |
+| 11 | ✅ Pass (T14, PRNG 65) | ⏳ Needs verification | Magmortar vs Vikavolt |
+| 12 | ✅ Pass (T23, PRNG 143) | ⏳ Needs verification | Primarina vs Quagsire |
+| 13 | ✅ Pass (T71, PRNG 209) | ⏳ Needs verification | Corviknight vs Frosmoth |
+| 14 | ✅ Pass (T23, PRNG 128) | ⏳ Needs verification | Spiritomb vs Incineroar |
+| 15 | ✅ Pass (T36, PRNG 178) | ⏳ Needs verification | Hariyama vs Iron Bundle |
 
 ## How to Verify
 
@@ -75,15 +80,15 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 3. `src/battle_actions/spread_move_hit.rs` - ModifySecondaries event (already present, now works correctly)
 
 ### Test Infrastructure
-- `examples/compare_seed[1-10].rs` - Rust battle runners
-- `compare-seed[1-10].js` - JavaScript battle runners
-- `teams-seed[1-10]-{rust,js}.json` - Team data files
+- `examples/compare_seed[1-15].rs` - Rust battle runners
+- `compare-seed[1-15].js` - JavaScript battle runners
+- `teams-seed[1-15]-{rust,js}.json` - Team data files
 - `test-all-seeds.sh` - Quick test script
 - Documentation: `BATTLE_TESTING_PROGRESS.md`, `SEED_TESTING_README.md`
 
 ## Next Steps
 
-1. **User runs JavaScript tests** for seeds 1-10 to verify exact match
+1. **User runs JavaScript tests** for seeds 1-15 to verify exact match
 2. **If divergences found:** Investigate PRNG call differences and fix
 3. **Generate more seeds** if all current ones pass
 4. **Continue testing** until multiple random battles all match perfectly
@@ -107,4 +112,4 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Current Confidence Level
 
-**High** - The Shield Dust fix resolved the only known divergence. All 10 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
+**High** - The Shield Dust fix resolved the only known divergence. All 15 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
