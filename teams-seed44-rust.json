@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Wyrdeer",
+      "species": "Wyrdeer",
+      "level": 87,
+      "ability": "intimidate",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "bodyslam",
+        "psychicnoise",
+        "megahorn",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Stonjourner",
+      "species": "Stonjourner",
+      "level": 91,
+      "ability": "powerspot",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "rockpolish",
+        "heatcrash",
+        "stoneedge",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Krookodile",
+      "species": "Krookodile",
+      "level": 80,
+      "ability": "intimidate",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "bulkup",
+        "knockoff",
+        "gunkshot",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zapdos",
+      "species": "Zapdos-Galar",
+      "level": 77,
+      "ability": "defiant",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "closecombat",
+        "bulkup",
+        "bravebird",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Whiscash",
+      "species": "Whiscash",
+      "level": 88,
+      "ability": "oblivious",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "hydropump",
+        "spikes",
+        "stealthrock",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Eiscue",
+      "species": "Eiscue",
+      "level": 88,
+      "ability": "iceface",
+      "item": "sitrusberry",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "icespinner",
+        "terablast",
+        "liquidation",
+        "bellydrum"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Gastrodon",
+      "species": "Gastrodon-East",
+      "level": 86,
+      "ability": "stormdrain",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "earthquake",
+        "stealthrock",
+        "sludgebomb",
+        "recover"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Orthworm",
+      "species": "Orthworm",
+      "level": 88,
+      "ability": "eartheater",
+      "item": "chestoberry",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "rest",
+        "bodypress",
+        "coil",
+        "irontail"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Diancie",
+      "species": "Diancie",
+      "level": 82,
+      "ability": "clearbody",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "rockpolish",
+        "diamondstorm",
+        "moonblast",
+        "bodypress"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tauros",
+      "species": "Tauros-Paldea-Combat",
+      "level": 82,
+      "ability": "intimidate",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "closecombat",
+        "earthquake",
+        "ironhead",
+        "bulkup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Slowbro",
+      "species": "Slowbro-Galar",
+      "level": 87,
+      "ability": "regenerator",
+      "item": "assaultvest",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "surf",
+        "psychic",
+        "shellsidearm",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dudunsparce",
+      "species": "Dudunsparce-Three-Segment",
+      "level": 83,
+      "ability": "rattled",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "calmmind",
+        "shadowball",
+        "boomburst",
+        "roost"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

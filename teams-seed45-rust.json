@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Magearna",
+      "species": "Magearna-Original",
+      "level": 77,
+      "ability": "soulheart",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "aurasphere",
+        "flashcannon",
+        "spikes",
+        "fleurcannon"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Skarmory",
+      "species": "Skarmory",
+      "level": 80,
+      "ability": "sturdy",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "roost",
+        "bravebird",
+        "spikes",
+        "whirlwind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Banette",
+      "species": "Banette",
+      "level": 93,
+      "ability": "cursedbody",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "swordsdance",
+        "shadowsneak",
+        "poltergeist",
+        "gunkshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lunala",
+      "species": "Lunala",
+      "level": 70,
+      "ability": "shadowshield",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "calmmind",
+        "moonlight",
+        "moongeistbeam",
+        "psyshock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Magmortar",
+      "species": "Magmortar",
+      "level": 88,
+      "ability": "flamebody",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "knockoff",
+        "thunderbolt",
+        "fireblast",
+        "scorchingsands"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mudsdale",
+      "species": "Mudsdale",
+      "level": 83,
+      "ability": "stamina",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "heavyslam",
+        "stoneedge",
+        "stealthrock",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Luvdisc",
+      "species": "Luvdisc",
+      "level": 100,
+      "ability": "swiftswim",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "surf",
+        "whirlpool",
+        "substitute",
+        "endeavor"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tsareena",
+      "species": "Tsareena",
+      "level": 87,
+      "ability": "queenlymajesty",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "knockoff",
+        "tripleaxel",
+        "synthesis",
+        "powerwhip"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hitmonchan",
+      "species": "Hitmonchan",
+      "level": 87,
+      "ability": "ironfist",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "poisonjab",
+        "drainpunch",
+        "bulkup",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Donphan",
+      "species": "Donphan",
+      "level": 84,
+      "ability": "sturdy",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "rapidspin",
+        "earthquake",
+        "iceshard",
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Vivillon",
+      "species": "Vivillon-Elegant",
+      "level": 83,
+      "ability": "compoundeyes",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "bugbuzz",
+        "quiverdance",
+        "sleeppowder",
+        "hurricane"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Revavroom",
+      "species": "Revavroom",
+      "level": 79,
+      "ability": "filter",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "ironhead",
+        "shiftgear",
+        "highhorsepower",
+        "gunkshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

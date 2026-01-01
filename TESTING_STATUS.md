@@ -15,8 +15,8 @@
    - PRNG calls now match JavaScript (7 → 4 calls at turn 30)
 
 ### Test Infrastructure
-- **40 Random Battle Seeds** ready for testing
-- **Rust tests:** 40 seeds tested, all complete successfully, no crashes
+- **45 Random Battle Seeds** ready for testing
+- **Rust tests:** 45 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -63,6 +63,11 @@
 | 38 | ✅ Pass (T18, PRNG 101) | ⏳ Needs verification | Palkia vs Wugtrio |
 | 39 | ✅ Pass (T28, PRNG 155) | ⏳ Needs verification | Donphan vs Enamorus |
 | 40 | ✅ Pass (T64, PRNG 275) | ⏳ Needs verification | Slowbro vs Pachirisu |
+| 41 | ✅ Pass (T68, PRNG 176) | ⏳ Needs verification | Dialga vs Politoed |
+| 42 | ✅ Pass (T92, PRNG 387) | ⏳ Needs verification | Noivern vs Toxapex |
+| 43 | ✅ Pass (T29, PRNG 123) | ⏳ Needs verification | Quagsire vs Espathra |
+| 44 | ✅ Pass (T68, PRNG 165) | ⏳ Needs verification | Wyrdeer vs Gastrodon |
+| 45 | ✅ Pass (T40, PRNG 196) | ⏳ Needs verification | Magearna vs Luvdisc |
 
 ## How to Verify
 
@@ -114,7 +119,7 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Next Steps
 
-1. **User runs JavaScript tests** for seeds 1-40 to verify exact match
+1. **User runs JavaScript tests** for seeds 1-45 to verify exact match
 2. **If divergences found:** Investigate PRNG call differences and fix
 3. **Generate more seeds** if all current ones pass
 4. **Continue testing** until multiple random battles all match perfectly
@@ -138,4 +143,4 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Current Confidence Level
 
-**High** - The Shield Dust fix resolved the only known divergence. All 40 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
+**High** - The Shield Dust fix resolved the only known divergence. All 45 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.

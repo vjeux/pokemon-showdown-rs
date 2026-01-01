@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Dialga",
+      "species": "Dialga",
+      "level": 73,
+      "ability": "pressure",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "fireblast",
+        "stealthrock",
+        "dracometeor",
+        "heavyslam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Girafarig",
+      "species": "Girafarig",
+      "level": 89,
+      "ability": "sapsipper",
+      "item": "eviolite",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "nastyplot",
+        "dazzlinggleam",
+        "psyshock",
+        "shadowball"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Iron Crown",
+      "species": "Iron Crown",
+      "level": 78,
+      "ability": "quarkdrive",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "tachyoncutter",
+        "focusblast",
+        "calmmind",
+        "psyshock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Spiritomb",
+      "species": "Spiritomb",
+      "level": 89,
+      "ability": "infiltrator",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "shadowsneak",
+        "suckerpunch",
+        "poltergeist",
+        "foulplay"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Salamence",
+      "species": "Salamence",
+      "level": 77,
+      "ability": "intimidate",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "dualwingbeat",
+        "dragondance",
+        "earthquake",
+        "outrage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Persian",
+      "species": "Persian",
+      "level": 92,
+      "ability": "technician",
+      "item": "silkscarf",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "fakeout",
+        "doubleedge",
+        "knockoff",
+        "uturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Politoed",
+      "species": "Politoed",
+      "level": 88,
+      "ability": "drizzle",
+      "item": "choicespecs",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "focusblast",
+        "icebeam",
+        "weatherball",
+        "hydropump"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bronzong",
+      "species": "Bronzong",
+      "level": 88,
+      "ability": "levitate",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "psychic",
+        "stealthrock",
+        "earthquake",
+        "hypnosis"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dusknoir",
+      "species": "Dusknoir",
+      "level": 89,
+      "ability": "frisk",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "substitute",
+        "painsplit",
+        "poltergeist",
+        "focuspunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Golurk",
+      "species": "Golurk",
+      "level": 87,
+      "ability": "noguard",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "dynamicpunch",
+        "stoneedge",
+        "earthquake",
+        "poltergeist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gastrodon",
+      "species": "Gastrodon-East",
+      "level": 86,
+      "ability": "stormdrain",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "recover",
+        "surf",
+        "earthquake",
+        "sludgebomb"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Leavanny",
+      "species": "Leavanny",
+      "level": 86,
+      "ability": "chlorophyll",
+      "item": "loadeddice",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "stickyweb",
+        "knockoff",
+        "tripleaxel",
+        "bulletseed"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}
