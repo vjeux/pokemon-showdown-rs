@@ -25,8 +25,10 @@ pub fn on_modify_move(
     _pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    eprintln!("[PRESENT] onModifyMove called at turn={}", battle.turn);
     // const rand = this.random(10);
     let rand = battle.random(10);
+    eprintln!("[PRESENT] onModifyMove generated rand={}", rand);
 
     if rand < 2 {
         // move.heal = [1, 4];

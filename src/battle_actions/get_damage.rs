@@ -73,7 +73,15 @@ pub fn get_damage(
         // For now, skip this
     }
 
-    let mut base_power = move_data.base_power;
+    // CRITICAL: Check active_move.base_power first!
+    // Moves like Present modify active_move.base_power in their onModifyMove callback
+    // JavaScript passes the same move object around, but in Rust we have separate move_data and active_move
+    // So we must check active_move first to get modifications from onModifyMove events
+    let mut base_power = if let Some(ref active_move) = battle.active_move {
+        active_move.base_power
+    } else {
+        move_data.base_power
+    };
 
     // JavaScript: if (move.basePowerCallback) { basePower = move.basePowerCallback.call(this.battle, source, target, move); }
     // CRITICAL: Always check for basePowerCallback, regardless of initial base_power!

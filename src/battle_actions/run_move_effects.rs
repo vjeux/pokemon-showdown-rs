@@ -56,7 +56,16 @@ pub fn run_move_effects(
         }
 
         // Apply healing
-        if let Some((heal_num, heal_denom)) = move_data.heal {
+        // CRITICAL: Check active_move.heal first!
+        // Moves like Present modify active_move.heal in their onModifyMove callback
+        // JavaScript passes the same move object around, but in Rust we have separate move_data and active_move
+        let heal_tuple = if let Some(ref active_move) = battle.active_move {
+            active_move.heal.or(move_data.heal)
+        } else {
+            move_data.heal
+        };
+
+        if let Some((heal_num, heal_denom)) = heal_tuple {
             let target_maxhp = if let Some(side) = battle.sides.get(target_pos.0) {
                 if let Some(pokemon) = side.pokemon.get(target_pos.1) {
                     pokemon.maxhp

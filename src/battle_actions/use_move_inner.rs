@@ -370,6 +370,7 @@ pub fn use_move_inner(
 
     // this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
     // this.battle.singleEvent('ModifyMove', move, null, pokemon, target, move, move);
+    eprintln!("[USE_MOVE_INNER] turn={}, About to call singleEvent ModifyType and ModifyMove for move: {}", battle.turn, move_or_move_name.as_str());
     battle.single_event(
         "ModifyType",
         move_or_move_name,
@@ -377,6 +378,7 @@ pub fn use_move_inner(
         target,
         Some(move_or_move_name),
     );
+    eprintln!("[USE_MOVE_INNER] turn={}, Calling singleEvent ModifyMove for move: {}", battle.turn, move_or_move_name.as_str());
     battle.single_event(
         "ModifyMove",
         move_or_move_name,
@@ -384,6 +386,7 @@ pub fn use_move_inner(
         target,
         Some(move_or_move_name),
     );
+    eprintln!("[USE_MOVE_INNER] turn={}, Finished singleEvent ModifyMove for move: {}", battle.turn, move_or_move_name.as_str());
 
     // if (baseTarget !== move.target) {
     //     target = this.battle.getRandomTarget(pokemon, move);
