@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Furret",
+      "species": "Furret",
+      "level": 94,
+      "ability": "frisk",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "doubleedge",
+        "uturn",
+        "knockoff",
+        "trick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lunala",
+      "species": "Lunala",
+      "level": 70,
+      "ability": "shadowshield",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "moonlight",
+        "calmmind",
+        "moonblast",
+        "moongeistbeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Trevenant",
+      "species": "Trevenant",
+      "level": 89,
+      "ability": "naturalcure",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "hornleech",
+        "drainpunch",
+        "poltergeist",
+        "rest"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tsareena",
+      "species": "Tsareena",
+      "level": 87,
+      "ability": "queenlymajesty",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "highjumpkick",
+        "powerwhip",
+        "knockoff",
+        "tripleaxel"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Persian",
+      "species": "Persian-Alola",
+      "level": 86,
+      "ability": "furcoat",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "terablast",
+        "nastyplot",
+        "thunderbolt",
+        "darkpulse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hypno",
+      "species": "Hypno",
+      "level": 95,
+      "ability": "insomnia",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "thunderwave",
+        "encore",
+        "knockoff",
+        "psychicnoise"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Iron Boulder",
+      "species": "Iron Boulder",
+      "level": 77,
+      "ability": "quarkdrive",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "closecombat",
+        "swordsdance",
+        "zenheadbutt",
+        "mightycleave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pawmot",
+      "species": "Pawmot",
+      "level": 80,
+      "ability": "ironfist",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "closecombat",
+        "doubleshock",
+        "revivalblessing",
+        "icepunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Vaporeon",
+      "species": "Vaporeon",
+      "level": 86,
+      "ability": "waterabsorb",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "calmmind",
+        "wish",
+        "scald",
+        "protect"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Klawf",
+      "species": "Klawf",
+      "level": 90,
+      "ability": "regenerator",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "highhorsepower",
+        "crabhammer",
+        "stoneedge",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gothitelle",
+      "species": "Gothitelle",
+      "level": 90,
+      "ability": "shadowtag",
+      "item": "choicescarf",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "psychic",
+        "focusblast",
+        "darkpulse",
+        "trick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Misdreavus",
+      "species": "Misdreavus",
+      "level": 90,
+      "ability": "levitate",
+      "item": "eviolite",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "shadowball",
+        "drainingkiss",
+        "calmmind",
+        "willowisp"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}

@@ -15,8 +15,8 @@
    - PRNG calls now match JavaScript (7 → 4 calls at turn 30)
 
 ### Test Infrastructure
-- **50 Random Battle Seeds** ready for testing
-- **Rust tests:** 50 seeds tested, all complete successfully, no crashes
+- **55 Random Battle Seeds** ready for testing
+- **Rust tests:** 55 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -73,6 +73,11 @@
 | 48 | ✅ Pass (T91, PRNG 338) | ⏳ Needs verification | Wyrdeer vs Glaceon |
 | 49 | ✅ Pass (T82, PRNG 247) | ⏳ Needs verification | Volcarona vs Dodrio |
 | 50 | ✅ Pass (T6, PRNG 18) | ⏳ Needs verification | Miraidon vs Gardevoir |
+| 51 | ✅ Pass (T65, PRNG 164) | ⏳ Needs verification | Garchomp vs Meganium |
+| 52 | ✅ Pass (T94, PRNG 137) | ⏳ Needs verification | Furret vs Iron Boulder |
+| 53 | ✅ Pass (T72, PRNG 213) | ⏳ Needs verification | Illumise vs Passimian |
+| 54 | ✅ Pass (T42, PRNG 81) | ⏳ Needs verification | Iron Hands vs Cobalion |
+| 55 | ✅ Pass (T63, PRNG 168) | ⏳ Needs verification | Smeargle vs Alcremie |
 
 ## How to Verify
 
@@ -124,7 +129,7 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Next Steps
 
-1. **User runs JavaScript tests** for seeds 1-50 to verify exact match
+1. **User runs JavaScript tests** for seeds 1-55 to verify exact match
 2. **If divergences found:** Investigate PRNG call differences and fix
 3. **Generate more seeds** if all current ones pass
 4. **Continue testing** until multiple random battles all match perfectly
@@ -148,4 +153,4 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Current Confidence Level
 
-**High** - The Shield Dust fix resolved the only known divergence. All 50 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
+**High** - The Shield Dust fix resolved the only known divergence. All 55 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.

@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Tropius",
+      "species": "Tropius",
+      "level": 91,
+      "ability": "harvest",
+      "item": "sitrusberry",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "airslash",
+        "leechseed",
+        "protect",
+        "substitute"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Iron Leaves",
+      "species": "Iron Leaves",
+      "level": 80,
+      "ability": "quarkdrive",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "closecombat",
+        "psyblade",
+        "leafblade",
+        "megahorn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Oricorio",
+      "species": "Oricorio-Sensu",
+      "level": 85,
+      "ability": "dancer",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "quiverdance",
+        "hurricane",
+        "revelationdance",
+        "roost"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pecharunt",
+      "species": "Pecharunt",
+      "level": 77,
+      "ability": "poisonpuppeteer",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "malignantchain",
+        "recover",
+        "shadowball",
+        "nastyplot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bisharp",
+      "species": "Bisharp",
+      "level": 79,
+      "ability": "defiant",
+      "item": "eviolite",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "ironhead",
+        "suckerpunch",
+        "throatchop",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Smeargle",
+      "species": "Smeargle",
+      "level": 95,
+      "ability": "owntempo",
+      "item": "focussash",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "ceaselessedge",
+        "spore",
+        "stealthrock",
+        "stickyweb"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Alcremie",
+      "species": "Alcremie-Ruby-Cream",
+      "level": 90,
+      "ability": "aromaveil",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "calmmind",
+        "terablast",
+        "recover",
+        "alluringvoice"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Klefki",
+      "species": "Klefki",
+      "level": 84,
+      "ability": "prankster",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "magnetrise",
+        "playrough",
+        "thunderwave",
+        "spikes"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Blaziken",
+      "species": "Blaziken",
+      "level": 76,
+      "ability": "speedboost",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "flareblitz",
+        "protect",
+        "closecombat",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Calyrex",
+      "species": "Calyrex-Ice",
+      "level": 72,
+      "ability": "asoneglastrier",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "closecombat",
+        "trickroom",
+        "highhorsepower",
+        "glaciallance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 0
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Dondozo",
+      "species": "Dondozo",
+      "level": 78,
+      "ability": "unaware",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "wavecrash",
+        "sleeptalk",
+        "rest",
+        "curse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Delphox",
+      "species": "Delphox",
+      "level": 84,
+      "ability": "blaze",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "nastyplot",
+        "fireblast",
+        "psyshock",
+        "focusblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}
