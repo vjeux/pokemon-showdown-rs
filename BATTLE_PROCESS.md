@@ -21,8 +21,18 @@ This document describes the process for ensuring JS/Rust battle synchronization.
 ## Current Status
 
 - ✅ Team generation synchronized
-- ⚠️ Seed 123: Damage calculation divergence at turn 5 (PRNG matches)
-- Next: Test new seeds to find more divergences
+- ✅ Display names fixed (formes display as base species)
+- ✅ Comparison script fixed (ignores headers)
+- ✅ Seed 1: Perfect match!
+- ❌ Seeds 42, 100, 123: Battle logic divergences (damage calculations, PRNG usage)
+
+## Next Steps
+
+Investigate battle divergences in seeds 42, 100, 123 to find:
+- Damage calculation bugs
+- Missing/extra PRNG calls
+- Stat modifier issues
+- Move implementation differences
 
 ## Quick Commands
 

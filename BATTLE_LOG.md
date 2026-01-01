@@ -37,3 +37,34 @@ Seed 123 now has a battle divergence starting at turn 5:
 - Damage calculation difference of 3 HP per turn
 
 ---
+
+## 2026-01-01: Display Name and Comparison Script Fixes
+
+### Issue
+Test comparison was failing due to:
+1. Pokemon name display differences (JS: "Slowbro" vs Rust: "Slowbro-Mega")
+2. Comparison script including header lines that differ
+
+### Fixes
+
+**examples/test_battle_rust.rs:**
+- Strip forme suffixes using `split('-').next()` for display
+- Now shows "Slowbro" instead of "Slowbro-Mega" to match JavaScript
+
+**tests/compare-battles.sh:**
+- Changed grep pattern from '^#' to '^#[0-9]'
+- Only compares numbered battle state lines, excludes headers
+
+### Results
+- ✅ Seed 1: PASS (perfect match!)
+- ❌ Seed 42: FAIL (PRNG diverges from turn 1)
+- ❌ Seed 100: FAIL (battle logic divergence)
+- ❌ Seed 123: FAIL (damage calculation divergence from turn 5)
+
+### Analysis
+- Display/comparison issues are resolved
+- Seed 1 passes completely - provides a working baseline
+- Remaining failures are actual battle logic bugs
+- Need to investigate: damage calculations, stat modifiers, or move implementations
+
+---
