@@ -15,8 +15,8 @@
    - PRNG calls now match JavaScript (7 → 4 calls at turn 30)
 
 ### Test Infrastructure
-- **25 Random Battle Seeds** ready for testing
-- **Rust tests:** 25 seeds tested, all complete successfully, no crashes
+- **30 Random Battle Seeds** ready for testing
+- **Rust tests:** 30 seeds tested, all complete successfully, no crashes
 - **JavaScript tests:** Ready to run for verification
 
 ### Seeds Ready for Testing
@@ -48,6 +48,11 @@
 | 23 | ✅ Pass (T91, PRNG 225) | ⏳ Needs verification | Gliscor vs Oranguru |
 | 24 | ✅ Pass (T52, PRNG 176) | ⏳ Needs verification | Sneasler vs Tropius |
 | 25 | ✅ Pass (T22, PRNG 105) | ⏳ Needs verification | Magearna vs Drednaw |
+| 26 | ✅ Pass (T58, PRNG 108) | ⏳ Needs verification | Granbull vs Oranguru |
+| 27 | ✅ Pass (T47, PRNG 221) | ⏳ Needs verification | Fezandipiti vs Abomasnow |
+| 28 | ✅ Pass (T27, PRNG 120) | ⏳ Needs verification | Muk vs Serperior |
+| 29 | ✅ Pass (T21, PRNG 85) | ⏳ Needs verification | Decidueye vs Calyrex |
+| 30 | ✅ Pass (T29, PRNG 104) | ⏳ Needs verification | Hydrapple vs Excadrill |
 
 ## How to Verify
 
@@ -99,7 +104,7 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Next Steps
 
-1. **User runs JavaScript tests** for seeds 1-25 to verify exact match
+1. **User runs JavaScript tests** for seeds 1-30 to verify exact match
 2. **If divergences found:** Investigate PRNG call differences and fix
 3. **Generate more seeds** if all current ones pass
 4. **Continue testing** until multiple random battles all match perfectly
@@ -123,4 +128,4 @@ If divergence exists: **Diff shows differences** - needs investigation and fix
 
 ## Current Confidence Level
 
-**High** - The Shield Dust fix resolved the only known divergence. All 25 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.
+**High** - The Shield Dust fix resolved the only known divergence. All 30 Rust battle seeds complete successfully without crashes. Ready for JavaScript verification to confirm exact parity.

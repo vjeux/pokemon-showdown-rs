@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Hydrapple",
+      "species": "Hydrapple",
+      "level": 83,
+      "ability": "regenerator",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "nastyplot",
+        "recover",
+        "earthpower",
+        "ficklebeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Golduck",
+      "species": "Golduck",
+      "level": 90,
+      "ability": "cloudnine",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "icebeam",
+        "nastyplot",
+        "grassknot",
+        "hydropump"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ambipom",
+      "species": "Ambipom",
+      "level": 84,
+      "ability": "technician",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "doubleedge",
+        "tripleaxel",
+        "uturn",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Baxcalibur",
+      "species": "Baxcalibur",
+      "level": 75,
+      "ability": "thermalexchange",
+      "item": "loadeddice",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "swordsdance",
+        "scaleshot",
+        "iciclespear",
+        "earthquake"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Armarouge",
+      "species": "Armarouge",
+      "level": 80,
+      "ability": "weakarmor",
+      "item": "powerherb",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "armorcannon",
+        "meteorbeam",
+        "energyball",
+        "psyshock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dunsparce",
+      "species": "Dunsparce",
+      "level": 86,
+      "ability": "serenegrace",
+      "item": "eviolite",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "roost",
+        "coil",
+        "earthquake",
+        "bodyslam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Excadrill",
+      "species": "Excadrill",
+      "level": 79,
+      "ability": "moldbreaker",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "earthquake",
+        "ironhead",
+        "swordsdance",
+        "rapidspin"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hippowdon",
+      "species": "Hippowdon",
+      "level": 82,
+      "ability": "sandstream",
+      "item": "leftovers",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "stoneedge",
+        "earthquake",
+        "curse",
+        "slackoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mightyena",
+      "species": "Mightyena",
+      "level": 96,
+      "ability": "intimidate",
+      "item": "choiceband",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "suckerpunch",
+        "playrough",
+        "throatchop",
+        "poisonfang"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Latios",
+      "species": "Latios",
+      "level": 78,
+      "ability": "levitate",
+      "item": "souldew",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "dracometeor",
+        "lusterpurge",
+        "aurasphere",
+        "recover"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 0,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 0,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Deoxys",
+      "species": "Deoxys-Attack",
+      "level": 72,
+      "ability": "pressure",
+      "item": "lifeorb",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "psychoboost",
+        "icebeam",
+        "superpower",
+        "knockoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Delibird",
+      "species": "Delibird",
+      "level": 100,
+      "ability": "hustle",
+      "item": "heavydutyboots",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "icespinner",
+        "drillrun",
+        "iceshard",
+        "bravebird"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ]
+}
