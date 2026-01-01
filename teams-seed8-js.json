@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Vanillite",
+      "species": "Vanillite",
+      "level": 50,
+      "ability": "Ice Body",
+      "item": "rawstberry",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "jumpkick",
+        "lunge",
+        "makeitrain",
+        "seedbomb"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 79,
+        "def": 85,
+        "spa": 96,
+        "spd": 91,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 30,
+        "def": 13,
+        "spa": 20,
+        "spd": 19,
+        "spe": 11
+      }
+    },
+    {
+      "name": "Draggalong",
+      "species": "Draggalong",
+      "level": 94,
+      "ability": "Armor Tail",
+      "item": "payapaberry",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "psyblade",
+        "bulletseed",
+        "guardianofalola",
+        "beatup"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 65,
+        "def": 105,
+        "spa": 81,
+        "spd": 75,
+        "spe": 104
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 20,
+        "def": 20,
+        "spa": 18,
+        "spd": 0,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Meloetta",
+      "species": "Meloetta",
+      "level": 89,
+      "ability": "Serene Grace",
+      "item": "absolitez",
+      "nature": "gentle",
+      "gender": "",
+      "moves": [
+        "thunderouskick",
+        "weatherball",
+        "stealthrock",
+        "sonicboom"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 96,
+        "def": 58,
+        "spa": 86,
+        "spd": 83,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 3,
+        "def": 14,
+        "spa": 3,
+        "spd": 24,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Tomohawk",
+      "species": "Tomohawk",
+      "level": 70,
+      "ability": "Intimidate",
+      "item": "babiriberry",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "gmaxvoltcrash",
+        "chillyreception",
+        "seismictoss",
+        "overdrive"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 103,
+        "def": 87,
+        "spa": 60,
+        "spd": 97,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 29,
+        "def": 24,
+        "spa": 13,
+        "spd": 19,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Calyrex-Shadow",
+      "species": "Calyrex-Shadow",
+      "level": 97,
+      "ability": "As One (Spectrier)",
+      "item": "twistedspoon",
+      "nature": "careful",
+      "gender": "",
+      "moves": [
+        "xscissor",
+        "weatherball",
+        "lastresort",
+        "rockblast"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 101,
+        "def": 65,
+        "spa": 95,
+        "spd": 100,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 31,
+        "def": 17,
+        "spa": 6,
+        "spd": 23,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Arceus-Bug",
+      "species": "Arceus-Bug",
+      "level": 56,
+      "ability": "Multitype",
+      "item": "tr35",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "dynamicpunch",
+        "maxflare",
+        "needlearm",
+        "slash"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 102,
+        "def": 92,
+        "spa": 71,
+        "spd": 70,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 7,
+        "def": 26,
+        "spa": 25,
+        "spd": 19,
+        "spe": 16
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Togetic",
+      "species": "Togetic",
+      "level": 52,
+      "ability": "Hustle",
+      "item": "tr48",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "weatherball",
+        "ficklebeam",
+        "powdersnow",
+        "poisontail"
+      ],
+      "evs": {
+        "hp": 67,
+        "atk": 77,
+        "def": 83,
+        "spa": 74,
+        "spd": 108,
+        "spe": 101
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 29,
+        "def": 30,
+        "spa": 14,
+        "spd": 27,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Pokestar MT2",
+      "species": "Pokestar MT2",
+      "level": 85,
+      "ability": "Flash Fire",
+      "item": "kebiaberry",
+      "nature": "lonely",
+      "gender": "",
+      "moves": [
+        "teeterdance",
+        "dynamaxcannon",
+        "playrough",
+        "chargebeam"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 71,
+        "def": 74,
+        "spa": 94,
+        "spd": 71,
+        "spe": 108
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 24,
+        "def": 7,
+        "spa": 18,
+        "spd": 26,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Lickilicky",
+      "species": "Lickilicky",
+      "level": 95,
+      "ability": "Own Tempo",
+      "item": "waterstone",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "psychocut",
+        "watersport",
+        "tailwhip",
+        "megadrain"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 92,
+        "def": 96,
+        "spa": 61,
+        "spd": 93,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 8,
+        "def": 9,
+        "spa": 6,
+        "spd": 24,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Xatu",
+      "species": "Xatu",
+      "level": 98,
+      "ability": "Synchronize",
+      "item": "watergem",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "guillotine",
+        "snatch",
+        "corkscrewcrash",
+        "naturesmadness"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 79,
+        "def": 77,
+        "spa": 85,
+        "spd": 72,
+        "spe": 96
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 23,
+        "def": 0,
+        "spa": 11,
+        "spd": 23,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Kadabra",
+      "species": "Kadabra",
+      "level": 77,
+      "ability": "Synchronize",
+      "item": "whippeddream",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "hiddenpowerflying",
+        "gyroball",
+        "psychic",
+        "gmaxcannonade"
+      ],
+      "evs": {
+        "hp": 100,
+        "atk": 95,
+        "def": 89,
+        "spa": 65,
+        "spd": 59,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 3,
+        "def": 26,
+        "spa": 14,
+        "spd": 7,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Genesect-Burn",
+      "species": "Genesect-Burn",
+      "level": 69,
+      "ability": "Download",
+      "item": "powerbelt",
+      "nature": "timid",
+      "gender": "",
+      "moves": [
+        "gmaxsteelsurge",
+        "darkvoid",
+        "spark",
+        "petaldance"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 84,
+        "def": 69,
+        "spa": 79,
+        "spd": 98,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 21,
+        "def": 24,
+        "spa": 24,
+        "spd": 5,
+        "spe": 0
+      }
+    }
+  ]
+}

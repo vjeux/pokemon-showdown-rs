@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Pokestar F-002",
+      "species": "Pokestar F-002",
+      "level": 96,
+      "ability": "Reckless",
+      "item": "aggronite",
+      "nature": "brave",
+      "gender": "F",
+      "moves": [
+        "gmaxbefuddle",
+        "doomdesire",
+        "gravapple",
+        "headlongrush"
+      ],
+      "evs": {
+        "hp": 57,
+        "atk": 99,
+        "def": 111,
+        "spa": 88,
+        "spd": 56,
+        "spe": 99
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 2,
+        "def": 13,
+        "spa": 28,
+        "spd": 4,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Guzzlord",
+      "species": "Guzzlord",
+      "level": 65,
+      "ability": "Beast Boost",
+      "item": "lifeorb",
+      "nature": "rash",
+      "gender": "",
+      "moves": [
+        "gravapple",
+        "minimize",
+        "supercellslam",
+        "thunderbolt"
+      ],
+      "evs": {
+        "hp": 62,
+        "atk": 86,
+        "def": 88,
+        "spa": 99,
+        "spd": 115,
+        "spe": 60
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 12,
+        "def": 11,
+        "spa": 25,
+        "spd": 29,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Vulpix-Alola",
+      "species": "Vulpix-Alola",
+      "level": 52,
+      "ability": "Snow Cloak",
+      "item": "galaricacuff",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "nightmare",
+        "solarbeam",
+        "irondefense",
+        "barrage"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 81,
+        "def": 64,
+        "spa": 98,
+        "spd": 122,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 3,
+        "def": 24,
+        "spa": 27,
+        "spd": 21,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Ogerpon-Wellspring-Tera",
+      "species": "Ogerpon-Wellspring-Tera",
+      "level": 94,
+      "ability": "Embody Aspect (Wellspring)",
+      "item": "magostberry",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "ivycudgel",
+        "gunkshot",
+        "gmaxtartness",
+        "futuresight"
+      ],
+      "evs": {
+        "hp": 63,
+        "atk": 82,
+        "def": 74,
+        "spa": 108,
+        "spd": 91,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 31,
+        "def": 6,
+        "spa": 23,
+        "spd": 27,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Pawmo",
+      "species": "Pawmo",
+      "level": 92,
+      "ability": "Volt Absorb",
+      "item": "tr97",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "holdhands",
+        "aquastep",
+        "ragingbull",
+        "weatherball"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 82,
+        "def": 65,
+        "spa": 85,
+        "spd": 115,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 7,
+        "def": 6,
+        "spa": 14,
+        "spd": 20,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Syclant",
+      "species": "Syclant",
+      "level": 54,
+      "ability": "Compound Eyes",
+      "item": "iciumz",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "toxicspikes",
+        "magicroom",
+        "firefang",
+        "watershuriken"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 87,
+        "def": 93,
+        "spa": 81,
+        "spd": 83,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 15,
+        "def": 17,
+        "spa": 18,
+        "spd": 11,
+        "spe": 30
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Cottonee",
+      "species": "Cottonee",
+      "level": 91,
+      "ability": "Prankster",
+      "item": "nomelberry",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "waterspout",
+        "helpinghand",
+        "hornattack",
+        "watershuriken"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 79,
+        "def": 60,
+        "spa": 92,
+        "spd": 107,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 26,
+        "def": 9,
+        "spa": 8,
+        "spd": 2,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Milotic",
+      "species": "Milotic",
+      "level": 94,
+      "ability": "Marvel Scale",
+      "item": "luxuryball",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "forcepalm",
+        "shadowpunch",
+        "ingrain",
+        "dracometeor"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 71,
+        "def": 90,
+        "spa": 96,
+        "spd": 69,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 19,
+        "def": 10,
+        "spa": 1,
+        "spd": 1,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Sizzlipede",
+      "species": "Sizzlipede",
+      "level": 58,
+      "ability": "Flash Fire",
+      "item": "groundmemory",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "meteorbeam",
+        "afteryou",
+        "flyingpress",
+        "strengthsap"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 84,
+        "def": 93,
+        "spa": 71,
+        "spd": 90,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 0,
+        "def": 31,
+        "spa": 13,
+        "spd": 9,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Tatsugiri-Curly-Mega",
+      "species": "Tatsugiri-Curly-Mega",
+      "level": 65,
+      "ability": "Commander",
+      "item": "shockdrive",
+      "nature": "rash",
+      "gender": "M",
+      "moves": [
+        "thunderfang",
+        "thunder",
+        "poisongas",
+        "fling"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 92,
+        "def": 77,
+        "spa": 98,
+        "spd": 80,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 31,
+        "def": 6,
+        "spa": 28,
+        "spd": 4,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Furret",
+      "species": "Furret",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "latiosite",
+      "nature": "quiet",
+      "gender": "M",
+      "moves": [
+        "razorshell",
+        "powersplit",
+        "moonlight",
+        "gmaxtartness"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 88,
+        "def": 81,
+        "spa": 75,
+        "spd": 95,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 18,
+        "def": 9,
+        "spa": 13,
+        "spd": 25,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Cupra",
+      "species": "Cupra",
+      "level": 91,
+      "ability": "Shield Dust",
+      "item": "dragongem",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "gmaxmalodor",
+        "steamroller",
+        "gmaxtartness",
+        "boomburst"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 87,
+        "def": 77,
+        "spa": 84,
+        "spd": 91,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 20,
+        "def": 4,
+        "spa": 24,
+        "spd": 25,
+        "spe": 18
+      }
+    }
+  ]
+}

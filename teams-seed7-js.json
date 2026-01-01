@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Mr. Mime",
+      "species": "Mr. Mime",
+      "level": 78,
+      "ability": "Soundproof",
+      "item": "lucarionite",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "auroraveil",
+        "defendorder",
+        "bugbite",
+        "hyperspacefury"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 76,
+        "def": 113,
+        "spa": 82,
+        "spd": 82,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 23,
+        "def": 2,
+        "spa": 12,
+        "spd": 22,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Lapras",
+      "species": "Lapras",
+      "level": 51,
+      "ability": "Water Absorb",
+      "item": "crucibellite",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "doubleshock",
+        "obstruct",
+        "psychicfangs",
+        "reflecttype"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 78,
+        "def": 81,
+        "spa": 102,
+        "spd": 75,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 0,
+        "def": 27,
+        "spa": 29,
+        "spd": 15,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Sprigatito",
+      "species": "Sprigatito",
+      "level": 85,
+      "ability": "Overgrow",
+      "item": "blukberry",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "lick",
+        "covet",
+        "steelwing",
+        "healblock"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 86,
+        "def": 78,
+        "spa": 85,
+        "spd": 99,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 6,
+        "def": 21,
+        "spa": 3,
+        "spd": 0,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Shelgon",
+      "species": "Shelgon",
+      "level": 71,
+      "ability": "Rock Head",
+      "item": "lovesweet",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "cosmicpower",
+        "matblock",
+        "gmaxterror",
+        "magicaltorque"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 81,
+        "def": 75,
+        "spa": 110,
+        "spd": 82,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 20,
+        "def": 9,
+        "spa": 10,
+        "spd": 19,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Chuggon",
+      "species": "Chuggon",
+      "level": 70,
+      "ability": "Shell Armor",
+      "item": "tr43",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "nihillight",
+        "miracleeye",
+        "octolock",
+        "focusenergy"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 76,
+        "def": 80,
+        "spa": 92,
+        "spd": 83,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 26,
+        "def": 0,
+        "spa": 22,
+        "spd": 28,
+        "spe": 11
+      }
+    },
+    {
+      "name": "Iron Bundle",
+      "species": "Iron Bundle",
+      "level": 85,
+      "ability": "Quark Drive",
+      "item": "magoberry",
+      "nature": "quiet",
+      "gender": "",
+      "moves": [
+        "lockon",
+        "tripledive",
+        "thunderclap",
+        "combattorque"
+      ],
+      "evs": {
+        "hp": 120,
+        "atk": 65,
+        "def": 95,
+        "spa": 85,
+        "spd": 59,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 28,
+        "def": 26,
+        "spa": 23,
+        "spd": 23,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Lilligant",
+      "species": "Lilligant",
+      "level": 52,
+      "ability": "Chlorophyll",
+      "item": "silkscarf",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "constrict",
+        "megahorn",
+        "rocktomb",
+        "confuseray"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 66,
+        "def": 56,
+        "spa": 124,
+        "spd": 90,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 24,
+        "def": 22,
+        "spa": 6,
+        "spd": 24,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Pokestar MT2",
+      "species": "Pokestar MT2",
+      "level": 56,
+      "ability": "Flash Fire",
+      "item": "aggronite",
+      "nature": "mild",
+      "gender": "",
+      "moves": [
+        "dragonclaw",
+        "clamp",
+        "hiddenpowerflying",
+        "gmaxgravitas"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 94,
+        "def": 76,
+        "spa": 68,
+        "spd": 80,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 4,
+        "def": 18,
+        "spa": 19,
+        "spd": 15,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Braviary",
+      "species": "Braviary",
+      "level": 59,
+      "ability": "Keen Eye",
+      "item": "luxuryball",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "icespinner",
+        "hiddenpowerpsychic",
+        "magneticflux",
+        "heartswap"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 92,
+        "def": 100,
+        "spa": 61,
+        "spd": 85,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 27,
+        "def": 7,
+        "spa": 25,
+        "spd": 2,
+        "spe": 20
+      }
+    },
+    {
+      "name": "MissingNo.",
+      "species": "MissingNo.",
+      "level": 79,
+      "ability": "",
+      "item": "rabutaberry",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "jawlock",
+        "takeheart",
+        "electroball",
+        "round"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 75,
+        "def": 88,
+        "spa": 103,
+        "spd": 78,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 14,
+        "def": 21,
+        "spa": 23,
+        "spd": 18,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Caterpie",
+      "species": "Caterpie",
+      "level": 79,
+      "ability": "Shield Dust",
+      "item": "icestone",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "smog",
+        "hiddenpowerrock",
+        "harden",
+        "softboiled"
+      ],
+      "evs": {
+        "hp": 113,
+        "atk": 83,
+        "def": 85,
+        "spa": 65,
+        "spd": 88,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 11,
+        "def": 7,
+        "spa": 28,
+        "spd": 15,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Masquerain",
+      "species": "Masquerain",
+      "level": 100,
+      "ability": "Intimidate",
+      "item": "tr57",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "mortalspin",
+        "return",
+        "infernalparade",
+        "swift"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 71,
+        "def": 84,
+        "spa": 100,
+        "spd": 79,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 25,
+        "def": 20,
+        "spa": 17,
+        "spd": 13,
+        "spe": 22
+      }
+    }
+  ]
+}

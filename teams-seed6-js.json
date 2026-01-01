@@ -1,0 +1,378 @@
+{
+  "p1": [
+    {
+      "name": "Dachsbun",
+      "species": "Dachsbun",
+      "level": 56,
+      "ability": "Well-Baked Body",
+      "item": "fairyfeather",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "orderup",
+        "spinout",
+        "psychocut",
+        "chloroblast"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 98,
+        "def": 94,
+        "spa": 77,
+        "spd": 90,
+        "spe": 64
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 26,
+        "def": 30,
+        "spa": 16,
+        "spd": 30,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Skwovet",
+      "species": "Skwovet",
+      "level": 96,
+      "ability": "Cheek Pouch",
+      "item": "stickybarb",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "sunnyday",
+        "flamecharge",
+        "stringshot",
+        "fireblast"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 80,
+        "def": 92,
+        "spa": 89,
+        "spd": 83,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 16,
+        "def": 18,
+        "spa": 16,
+        "spd": 5,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pecharunt",
+      "species": "Pecharunt",
+      "level": 67,
+      "ability": "Poison Puppeteer",
+      "item": "lustrousglobe",
+      "nature": "modest",
+      "gender": "",
+      "moves": [
+        "thunderpunch",
+        "thunderwave",
+        "celebrate",
+        "playrough"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 99,
+        "def": 93,
+        "spa": 89,
+        "spd": 81,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 0,
+        "def": 31,
+        "spa": 21,
+        "spd": 30,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Exeggcute",
+      "species": "Exeggcute",
+      "level": 62,
+      "ability": "Chlorophyll",
+      "item": "delphoxite",
+      "nature": "quiet",
+      "gender": "F",
+      "moves": [
+        "skydrop",
+        "freezingglare",
+        "return",
+        "gigavolthavoc"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 115,
+        "def": 70,
+        "spa": 77,
+        "spd": 70,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 10,
+        "def": 28,
+        "spa": 8,
+        "spd": 6,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Slowpoke",
+      "species": "Slowpoke",
+      "level": 79,
+      "ability": "Oblivious",
+      "item": "pixieplate",
+      "nature": "naughty",
+      "gender": "F",
+      "moves": [
+        "guardsplit",
+        "wrap",
+        "surgingstrikes",
+        "petaldance"
+      ],
+      "evs": {
+        "hp": 115,
+        "atk": 83,
+        "def": 86,
+        "spa": 75,
+        "spd": 68,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 3,
+        "def": 25,
+        "spa": 16,
+        "spd": 5,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Gourgeist",
+      "species": "Gourgeist",
+      "level": 52,
+      "ability": "Pickup",
+      "item": "tr69",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "extremeevoboost",
+        "octolock",
+        "flamecharge",
+        "eggbomb"
+      ],
+      "evs": {
+        "hp": 102,
+        "atk": 83,
+        "def": 77,
+        "spa": 72,
+        "spd": 79,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 9,
+        "def": 25,
+        "spa": 0,
+        "spd": 24,
+        "spe": 29
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Wormadam-Trash",
+      "species": "Wormadam-Trash",
+      "level": 84,
+      "ability": "Anticipation",
+      "item": "swampertite",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "wickedtorque",
+        "rockslide",
+        "combattorque",
+        "grudge"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 88,
+        "def": 65,
+        "spa": 103,
+        "spd": 71,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 4,
+        "def": 14,
+        "spa": 0,
+        "spd": 27,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Whismur",
+      "species": "Whismur",
+      "level": 80,
+      "ability": "Soundproof",
+      "item": "psychicseed",
+      "nature": "careful",
+      "gender": "F",
+      "moves": [
+        "xscissor",
+        "lick",
+        "thunderclap",
+        "tectonicrage"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 85,
+        "def": 81,
+        "spa": 89,
+        "spd": 88,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 23,
+        "def": 16,
+        "spa": 24,
+        "spd": 30,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Corviknight",
+      "species": "Corviknight",
+      "level": 66,
+      "ability": "Pressure",
+      "item": "firestone",
+      "nature": "relaxed",
+      "gender": "F",
+      "moves": [
+        "syrupbomb",
+        "hiddenpowerelectric",
+        "wildcharge",
+        "drillrun"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 74,
+        "def": 100,
+        "spa": 111,
+        "spd": 59,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 12,
+        "def": 8,
+        "spa": 8,
+        "spd": 13,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Lairon",
+      "species": "Lairon",
+      "level": 52,
+      "ability": "Sturdy",
+      "item": "eviolite",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "doodle",
+        "healbell",
+        "ivycudgel",
+        "powergem"
+      ],
+      "evs": {
+        "hp": 102,
+        "atk": 103,
+        "def": 86,
+        "spa": 76,
+        "spd": 63,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 7,
+        "def": 21,
+        "spa": 10,
+        "spd": 16,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Sizzlipede",
+      "species": "Sizzlipede",
+      "level": 90,
+      "ability": "Flash Fire",
+      "item": "venusaurite",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "metalburst",
+        "focusenergy",
+        "powershift",
+        "uproar"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 78,
+        "def": 65,
+        "spa": 91,
+        "spd": 99,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 25,
+        "def": 15,
+        "spa": 30,
+        "spd": 20,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Aurumoth",
+      "species": "Aurumoth",
+      "level": 93,
+      "ability": "Weak Armor",
+      "item": "crackedpot",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "wildcharge",
+        "drumbeating",
+        "focusblast",
+        "firepunch"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 48,
+        "def": 80,
+        "spa": 100,
+        "spd": 100,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 20,
+        "def": 16,
+        "spa": 1,
+        "spd": 12,
+        "spe": 15
+      }
+    }
+  ]
+}
