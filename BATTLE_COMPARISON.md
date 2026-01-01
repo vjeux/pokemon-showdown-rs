@@ -37,29 +37,23 @@
    - psywave.rs: Changed `battle.prng.random_range()` to `battle.random_with_range()`
    - quickclaw.rs: Changed `battle.prng.random_chance()` to `battle.random_chance()`
 
-#### Current Status: Queue insertion bug found - INVESTIGATING
+#### Current Status: Investigating Turn 27 divergence
 
-**Turn 27 Divergence:**
-- JavaScript: Zacian uses Zen Headbutt first → Genesect faints → 4 PRNG calls
-- Rust: Genesect uses Vise Grip first → then Zacian uses Zen Headbutt → 7 PRNG calls
+**Progress:**
+1. ✓ Fixed duplicate test execution - test was running twice due to duplicate `#[test]` attributes
+2. ✓ Turns 1-26 match perfectly between JS and Rust
 
-**Root Cause Found:**
-The `commit_choices` sorting works CORRECTLY:
-- Before sort: Action 0=speed:210 (Genesect), Action 1=speed:293 (Zacian)
-- After sort: Action 0=speed:293 (Zacian), Action 1=speed:210 (Genesect) ✓
-
-BUT then turn_loop inserts a BeforeTurn field action, and somehow Genesect's action (speed:210) gets executed first instead of Zacian's action (speed:293).
-
-**Findings:**
-1. ✓ `speed_sort` function works correctly - swaps actions properly
-2. ✓ `compare_priority` function works correctly - returns Greater for Zacian > Genesect
-3. ✗ After `insert_field_action`, the queue order gets corrupted somehow
-4. There's a SECOND sort happening in turn_loop with different items (order:200 vs order:300)
+**Turn 27 Divergence Details:**
+- JavaScript: 4 PRNG calls (Zen Headbutt KOs Genesect, Vise Grip not used)
+- Rust: 7 PRNG calls (Zen Headbutt deals 40 damage, Genesect survives with 57/263 HP, then Vise Grip used)
+- Genesect HP before Zen Headbutt: 97/263
+- Zen Headbutt damage in Rust: 40 (base 81, halved by type resistance)
+- Issue: In JavaScript, Zen Headbutt must deal 97+ damage to KO Genesect
+- Possible cause: Critical hit in JavaScript but not Rust, OR different damage calculation
 
 **Next Steps:**
-- Trace what happens to the queue after insert_field_action
-- Understand why Genesect's action is at the front of the queue when turn_loop executes moves
-- Check if the queue.shift() is picking the wrong action
+- Compare what moves/actions are executed on Turn 27 in JS vs Rust
+- Identify which 3 extra PRNG calls are made in Rust
 
 ### Previous Investigation
 
