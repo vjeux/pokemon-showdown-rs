@@ -37,28 +37,29 @@
    - psywave.rs: Changed `battle.prng.random_range()` to `battle.random_with_range()`
    - quickclaw.rs: Changed `battle.prng.random_chance()` to `battle.random_chance()`
 
-#### Current Status: Speed sorting bug found on Turn 27 - INVESTIGATING
+#### Current Status: Queue insertion bug found - INVESTIGATING
 
 **Turn 27 Divergence:**
 - JavaScript: Zacian uses Zen Headbutt first → Genesect faints → 4 PRNG calls
 - Rust: Genesect uses Vise Grip first → then Zacian uses Zen Headbutt → 7 PRNG calls
 
-**Root Cause:**
-Move order is backwards! Zacian (speed=293) should move before Genesect (speed=210), but Rust has Genesect moving first.
+**Root Cause Found:**
+The `commit_choices` sorting works CORRECTLY:
+- Before sort: Action 0=speed:210 (Genesect), Action 1=speed:293 (Zacian)
+- After sort: Action 0=speed:293 (Zacian), Action 1=speed:210 (Genesect) ✓
 
-**Investigation:**
-The `compare_priority` function appears correct:
-- Line 47: `b.speed.total_cmp(&a.speed)` should put higher speed first
-- For Genesect (210) vs Zacian (293), returns `Greater` → Zacian should come first
+BUT then turn_loop inserts a BeforeTurn field action, and somehow Genesect's action (speed:210) gets executed first instead of Zacian's action (speed:293).
 
-The `speed_sort` logic also appears correct:
-- When `cmp=Greater`, selects the faster Pokemon
-- Swaps it to the front of the queue
+**Findings:**
+1. ✓ `speed_sort` function works correctly - swaps actions properly
+2. ✓ `compare_priority` function works correctly - returns Greater for Zacian > Genesect
+3. ✗ After `insert_field_action`, the queue order gets corrupted somehow
+4. There's a SECOND sort happening in turn_loop with different items (order:200 vs order:300)
 
 **Next Steps:**
-- Add detailed logging to verify the swap is happening
-- Check if queue is being re-sorted or if there's a different execution order issue
-- Verify turn counter (logs show "TURN 22" but we're on turn 27)
+- Trace what happens to the queue after insert_field_action
+- Understand why Genesect's action is at the front of the queue when turn_loop executes moves
+- Check if the queue.shift() is picking the wrong action
 
 ### Previous Investigation
 

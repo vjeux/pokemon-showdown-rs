@@ -98,6 +98,14 @@ impl Battle {
             }
         });
         eprintln!("[COMMIT_CHOICES DEBUG] speed_sort done");
+
+        // DEBUG: Log all actions AFTER sorting
+        eprintln!("[COMMIT_CHOICES DEBUG] Actions AFTER sorting:");
+        for (i, action) in list.iter().enumerate() {
+            eprintln!("  Action {}: priority={}, speed={}, order={:?}",
+                i, action.priority(), action.speed(), action.order());
+        }
+
         self.queue.list = list;
 
         // JS: this.queue.list.push(...oldQueue);
