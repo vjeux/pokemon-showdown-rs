@@ -39,24 +39,20 @@
 
 #### Current Status: Investigating Turn 32 divergence
 
-**Progress:**
+**Major Progress:**
 1. ✓ Fixed duplicate test execution - test was running twice due to duplicate `#[test]` attributes
-2. ✓ Turns 1-26 match perfectly between JS and Rust
-3. ✓ Implemented Intrepid Sword ability (cc4e7c4a) - Turns 1-31 now match perfectly
+2. ✓ Implemented Intrepid Sword ability (commit cc4e7c4a)
+3. ✓ **Fixed team generation mismatch (commit 42095a08)** - Major breakthrough!
+   - Root cause: JavaScript loaded teams from `teams-js.json`, Rust generated teams dynamically
+   - Fix: Modified Rust test to load same pre-generated teams from JSON file
+   - Added JSON deserialization structs and `load_teams_from_json()` function
+   - **Result: Turns 1-31 now match perfectly!** (was 1-26 before fix)
 
-**Turn 27 Divergence - FIXED:**
-- **Root Cause**: Intrepid Sword ability was not implemented
-- **Fix**: Implemented onStart handler that:
-  - Checks if boost already applied using volatiles
-  - Adds 'swordboost' volatile to prevent double-boosting
-  - Applies +1 Attack boost to Zacian
-- **Result**: Zacian now correctly gets +1 Attack, dealing enough damage to KO Genesect
-- **Status**: Turn 27 now matches JS (4 PRNG calls)
-
-**Turn 32 Divergence Details:**
+**Turn 32 Divergence - INVESTIGATING:**
 - JavaScript: 4 PRNG calls
 - Rust: 6 PRNG calls
 - Difference: 2 extra PRNG calls in Rust
+- This is the first divergence after team loading fix
 
 **Next Steps:**
 - Investigate what happens on Turn 32 in both JS and Rust
