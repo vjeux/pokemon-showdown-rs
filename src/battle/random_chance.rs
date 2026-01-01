@@ -14,11 +14,13 @@ impl Battle {
             static COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
             COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
         };
-        eprintln!("[RANDOM_CHANCE] Called with {}/{}", numerator, denominator);
-        eprintln!("[RANDOM_CHANCE] Call #{}", call_num);
-        eprintln!("[RANDOM_CHANCE] Battle turn: {}", self.turn);
 
-        if call_num >= 5 && call_num <= 10 {
+        // Log calls around turn 20-21 to debug divergence
+        if call_num >= 54 && call_num <= 61 {
+            eprintln!("[RANDOM_CHANCE] Called with {}/{}", numerator, denominator);
+            eprintln!("[RANDOM_CHANCE] Call #{}", call_num);
+            eprintln!("[RANDOM_CHANCE] Battle turn: {}", self.turn);
+
             use std::backtrace::Backtrace;
             eprintln!("Stack trace:\n{}", Backtrace::force_capture());
         }
