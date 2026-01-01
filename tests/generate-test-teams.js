@@ -60,9 +60,9 @@ if (!fs.existsSync(testDir)) {
     fs.mkdirSync(testDir, { recursive: true });
 }
 
-fs.writeFileSync(path.join(testDir, `teams-seed${seedNum}.json`), JSON.stringify(teams, null, 2));
+fs.writeFileSync(path.join(testDir, `teams-seed${seedNum}-js.json`), JSON.stringify(teams, null, 2));
 
 console.log(`✓ Generated teams for seed ${seedNum}`);
 console.log(`  P1: ${p1Team[0].name} (${p1Team[0].species})`);
 console.log(`  P2: ${p2Team[0].name} (${p2Team[0].species})`);
-console.log(`  File: tests/teams-seed${seedNum}.json`);
+console.log(`  File: tests/teams-seed${seedNum}-js.json`);

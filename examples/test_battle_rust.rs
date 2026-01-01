@@ -20,11 +20,11 @@ fn main() {
         .and_then(|s| s.parse().ok())
         .unwrap_or(1);
 
-    let teams_file = format!("tests/teams-seed{}.json", seed_num);
+    let teams_file = format!("tests/teams-seed{}-rust.json", seed_num);
 
     if !std::path::Path::new(&teams_file).exists() {
         eprintln!("ERROR: Team file not found: {}", teams_file);
-        eprintln!("Run: node tests/generate-test-teams.js {} first", seed_num);
+        eprintln!("Run: docker exec pokemon-rust-dev bash -c \"cd /home/builder/workspace && cargo run --example generate_test_teams_rust {}\" first", seed_num);
         std::process::exit(1);
     }
 
