@@ -611,22 +611,23 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Design pattern: work around borrow checker by returning data
 
 #### eat_item.rs
-- Status: ✅ Fixed (Partially Implemented)
+- Status: ✅ Fixed (Partially Implemented - Session 24 Part 14)
 - Issue: Very simplified, just delegates to use_item()
-- Action: Added HP check with berry exception and isActive check, documented remaining missing pieces
+- Action: Added HP check, isActive check, and item tracking fields, documented remaining missing pieces
 - Notes:
   - ✅ NOW IMPLEMENTED: HP check with Jaboca/Rowap Berry exception
   - ✅ NOW IMPLEMENTED: isActive check
+  - ✅ NOW IMPLEMENTED (Session 24 Part 14): lastItem, usedItemThisTurn, ateBerry tracking
+  - ✅ NOW IMPLEMENTED (Session 24 Part 14): Fixed incorrect comment (staleness fields do exist)
   - Missing source and sourceEffect parameters
   - Missing sourceEffect item type check
   - Missing runEvent('UseItem') and runEvent('TryEatItem')
   - Missing battle.add('-enditem') message
   - Missing singleEvent('Eat') and runEvent('EatItem')
-  - Missing RESTORATIVE_BERRIES staleness logic
-  - Missing pendingStaleness and staleness fields (don't exist in Rust)
-  - Missing lastItem, usedItemThisTurn, ateBerry tracking
+  - Missing RESTORATIVE_BERRIES staleness logic (fields exist, need logic)
   - Missing runEvent('AfterUseItem')
-  - Currently delegates to use_item()
+  - Delegates to use_item() then additionally sets ateBerry = true
+  - Now ~60% complete (was ~50%)
 
 #### faint.rs
 - Status: ✅ Fixed (Documented)
@@ -1836,6 +1837,42 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 feature implemented (timesAttacked copying)
   - 1 file modified (pokemon/transform_into.rs)
   - 4 lines changed (2 insertions, 2 deletions)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 14 - 2026-01-01 (eat_item Item Tracking - COMPLETED)
+- **Goal**: Add item consumption tracking (lastItem, usedItemThisTurn, ateBerry) in eat_item
+- **Completed**:
+  - ✅ Implemented ateBerry = true tracking (specific to eating berries)
+  - ✅ Delegates to use_item() for lastItem and usedItemThisTurn
+  - ✅ Sets ateBerry = true when item successfully eaten
+  - ✅ Fixed incorrect comment about staleness fields (they DO exist in Pokemon struct)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - eat_item.rs - Now ~60% complete (was ~50%)
+    - ✅ NOW IMPLEMENTED: lastItem tracking (via use_item)
+    - ✅ NOW IMPLEMENTED: usedItemThisTurn tracking (via use_item)
+    - ✅ NOW IMPLEMENTED: ateBerry = true tracking
+    - JavaScript equivalent:
+      - `this.lastItem = this.item;`
+      - `this.usedItemThisTurn = true;`
+      - `this.ateBerry = true;`
+    - Rust implementation:
+      - Calls `use_item()` which sets first two
+      - Additionally sets `ate_berry = true` if successful
+- **Technical Details**:
+  - Fields exist in Pokemon struct: last_item, used_item_this_turn, ate_berry
+  - staleness, pending_staleness, volatile_staleness fields also exist (documentation updated)
+  - use_item() already handles lastItem and usedItemThisTurn
+  - eat_item() adds ateBerry tracking on top
+  - Pattern: Reuse existing implementation, add specific behavior
+- **Session Statistics**:
+  - 1 method improved (eat_item.rs)
+  - 1 feature implemented (ateBerry tracking)
+  - 1 file modified (pokemon/eat_item.rs)
+  - 11 insertions, 6 deletions
   - 1 commit pushed to git
   - 100% compilation success rate
 
