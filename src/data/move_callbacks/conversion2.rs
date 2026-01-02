@@ -124,12 +124,18 @@ pub fn on_hit(
         None => return EventResult::Boolean(false),
     };
 
-    {
+    // Try to set the type and check if it succeeded
+    let set_type_succeeded = {
         let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.set_type(vec![random_type_str.to_string()], false);
+        source_pokemon.set_type(vec![random_type_str.to_string()], false)
+    };
+
+    // Check if setType failed
+    if !set_type_succeeded {
+        return EventResult::Boolean(false);
     }
 
     // this.add('-start', source, 'typechange', randomType);

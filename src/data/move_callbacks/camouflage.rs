@@ -69,17 +69,18 @@ pub fn on_hit(
     // Check if types match (single type case)
     let types_match = target_types.len() == 1 && target_types[0] == new_type;
 
-    if types_match {
-        return EventResult::Boolean(false);
-    }
-
-    // target.setType(newType)
-    {
+    // Try to set the type and check if it succeeded
+    let set_type_succeeded = {
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_type(vec![new_type.clone()], false);
+        target_pokemon.set_type(vec![new_type.clone()], false)
+    };
+
+    // Check if it failed (either types match or setType returned false)
+    if types_match || !set_type_succeeded {
+        return EventResult::Boolean(false);
     }
 
     // this.add('-start', target, 'typechange', newType);

@@ -52,16 +52,18 @@ pub fn on_hit(
         target_pokemon.has_type(&move_type)
     };
 
-    if has_type {
-        return EventResult::Boolean(false);
-    }
-
-    {
+    // Try to set the type and check if it succeeded
+    let set_type_succeeded = {
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_type(vec![move_type.clone()], false);
+        target_pokemon.set_type(vec![move_type.clone()], false)
+    };
+
+    // Check if it failed (either already has type or setType returned false)
+    if has_type || !set_type_succeeded {
+        return EventResult::Boolean(false);
     }
 
     // this.add('-start', target, 'typechange', type);

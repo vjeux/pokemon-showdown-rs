@@ -30,16 +30,18 @@ pub fn on_hit(
         target_pokemon.get_types(false).join("")
     };
 
-    if types_string == "Psychic" {
-        return EventResult::Boolean(false);
-    }
-
-    {
+    // Try to set the type and check if it succeeded
+    let set_type_succeeded = {
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_type(vec!["Psychic".to_string()], false);
+        target_pokemon.set_type(vec!["Psychic".to_string()], false)
+    };
+
+    // Check if it failed (either already Psychic or setType returned false)
+    if types_string == "Psychic" || !set_type_succeeded {
+        return EventResult::Boolean(false);
     }
 
     // this.add('-start', target, 'typechange', 'Psychic');
