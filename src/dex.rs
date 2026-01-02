@@ -952,6 +952,8 @@ pub struct FormatData {
 }
 
 /// The main Dex structure
+/// JavaScript equivalent: ModdedDex (sim/dex.ts)
+/// ~15 fields in JavaScript (data maps, gen, formats, etc.)
 #[derive(Debug, Clone, Default)]
 pub struct Dex {
     pub species: HashMap<ID, SpeciesData>,
@@ -972,6 +974,8 @@ pub struct Dex {
 }
 
 /// Struct to hold JSON data for loading the Dex
+/// TODO: Not in JavaScript - Rust-specific helper for JSON deserialization
+/// JavaScript loads data directly from require() statements
 pub struct DexJsonData<'a> {
     pub species_json: &'a str,
     pub moves_json: &'a str,
