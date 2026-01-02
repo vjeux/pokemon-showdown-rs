@@ -47,6 +47,7 @@ mod get_max_move;
 mod get_active_max_move;
 mod after_move_secondary_event;
 mod force_switch;
+mod hit_step_break_protect;
 pub use can_mega_evo::can_mega_evo;
 pub use can_ultra_burst::can_ultra_burst;
 pub use run_mega_evo::run_mega_evo;
@@ -70,6 +71,7 @@ pub use get_max_move::get_max_move;
 pub use get_active_max_move::get_active_max_move;
 pub use after_move_secondary_event::after_move_secondary_event;
 pub use force_switch::force_switch;
+pub use hit_step_break_protect::hit_step_break_protect;
 
 /// Choosable target types for moves
 /// JavaScript equivalent: CHOOSABLE_TARGETS constant (sim/battle-actions.ts)
