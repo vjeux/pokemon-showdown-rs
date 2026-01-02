@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 51 Complete)
-- **Session 24 Total Progress**: 26+ commits, 51 parts completed
+## Overview (Updated: Session 24 Part 52 Complete)
+- **Session 24 Total Progress**: 27+ commits, 52 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
@@ -12,6 +12,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Part 49: Major refactor - use_item/eat_item to associated functions with HP/boosts
   - Part 50: battle.add messages for item consumption (Red Card, Gems)
   - Part 51: eat_item standalone implementation (fixed divergence from JS)
+  - Part 52: RESTORATIVE_BERRIES staleness logic in eat_item
 - **Methods Significantly Improved**:
   - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
@@ -21,7 +22,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ignoring_item.rs (Primal Orb, ignoreKlutz - now 100%)
   - ignoring_ability.rs (ability.flags checks - now 100%)
   - use_item.rs (HP/Gem check, item.boosts, battle.add messages - now ~70%, was ~45%)
-  - eat_item.rs (standalone implementation, battle.add [eat] - now ~70%, was ~50%)
+  - eat_item.rs (standalone, battle.add [eat], RESTORATIVE_BERRIES - now ~75%, was ~50%)
   - 6 core methods with source/sourceEffect parameters added
 - **Move Callbacks Fixed**: 9 files with proper source/effect/linkedStatus parameters
 - **Infrastructure Achievements**:
@@ -31,6 +32,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ItemData.extra HashMap for item properties (isPrimalOrb, ignoreKlutz, isGem, boosts)
   - AbilityData.flags HashMap for ability flags (notransform, cantsuppress)
   - battle.add integration for item consumption logging
+  - RESTORATIVE_BERRIES staleness tracking
   - 250+ callsites updated across codebase
 - **Compilation Success Rate**: 100% (0 errors, 0 warnings throughout)
 - **Remaining Work**: Only 1 TODO in src/pokemon/ (event system infrastructure in calculate_stat.rs)
@@ -698,10 +700,13 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Design pattern: work around borrow checker by returning data
 
 #### eat_item.rs
-- Status: ✅ Fixed (Improved - Session 24 Part 51)
+- Status: ✅ Fixed (Improved - Session 24 Part 52)
 - Issue: Was incorrectly calling use_item() - JavaScript has separate implementations!
-- Action: Refactored to standalone implementation matching JS exactly (Session 24 Part 51)
+- Action: Implemented RESTORATIVE_BERRIES staleness logic (Session 24 Part 52)
 - Notes:
+  - ✅ NOW IMPLEMENTED (Session 24 Part 52): RESTORATIVE_BERRIES staleness logic
+  - ✅ NOW IMPLEMENTED (Session 24 Part 52): pendingStaleness to staleness conversion
+  - ✅ NOW IMPLEMENTED (Session 24 Part 52): is_restorative_berry() helper function
   - ✅ NOW IMPLEMENTED (Session 24 Part 51): Standalone implementation (no longer calls use_item)
   - ✅ NOW IMPLEMENTED (Session 24 Part 51): battle.add('-enditem', pokemon, item, '[eat]')
   - ✅ NOW IMPLEMENTED (Session 24 Part 51): Directly sets lastItem, item, itemState, usedItemThisTurn, ateBerry
@@ -717,9 +722,8 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing sourceEffect item type check
   - Missing runEvent('UseItem') and runEvent('TryEatItem')
   - Missing singleEvent('Eat') and runEvent('EatItem')
-  - Missing RESTORATIVE_BERRIES staleness logic (fields exist, need logic)
   - Missing runEvent('AfterUseItem')
-  - Now ~70% complete (was ~60%)
+  - Now ~75% complete (was ~70%)
 
 #### faint.rs
 - Status: ✅ Fixed (Documented)
