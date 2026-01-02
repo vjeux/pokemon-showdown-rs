@@ -15,6 +15,7 @@ pub const TYPES: [&str; 18] = [
 ];
 
 /// Type effectiveness values
+/// JavaScript equivalent: Type effectiveness multipliers (sim/dex-data.ts)
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Effectiveness {
     Immune,    // 0x
