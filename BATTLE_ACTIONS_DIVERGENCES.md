@@ -696,6 +696,24 @@ These files exist only in Rust and should be evaluated:
   6. Call switchIn with is_drag=true
 - 1:1 match with JavaScript dragIn
 
+### 2026-01-02
+**Refactored: can_terastallize.rs signature** ✅ API FIXED!
+- Changed from static function with pre-calculated parameters to proper battle action:
+  - **BEFORE**: `can_terastallize(item_is_z_move, can_mega_evo, gen, tera_type)`
+  - **AFTER**: `can_terastallize(battle, pokemon_pos)`
+  - Matches JavaScript signature: `canTerastallize(pokemon)`
+- Now accesses Pokemon and Battle data directly:
+  - Reads pokemon.item to check for Z-move (item_data.extra.get("zMove"))
+  - Calls can_mega_evo(battle, pokemon_pos) to check Mega Evolution eligibility
+  - Reads battle.gen to check for Gen 9
+  - Returns pokemon.tera_type if eligible
+- All checks match JavaScript exactly:
+  1. If item is Z-move → return null
+  2. If can Mega Evolve → return null
+  3. If not Gen 9 → return null
+  4. Otherwise → return tera_type
+- 1:1 match with JavaScript canTerastallize
+
 ---
 
 ## Next Steps
