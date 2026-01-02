@@ -6,8 +6,9 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Excellent Progress:** The battle_actions module is approaching 1:1 equivalence with JavaScript!
 
-**Stub Functions:** 16/17 completed (94%)
+**Stub Functions:** 17/18 completed (94%)
 - ✅ All simple stubs implemented except hit_step_move_hit_loop (deferred for infrastructure)
+- ✅ try_primary_hit_event implemented
 
 **Partial Implementations:** 3/4 completed (75%)
 - ✅ hit_step_accuracy.rs - All 3 TODOs completed
@@ -418,6 +419,17 @@ These files exist only in Rust and should be evaluated:
   - Transforms move to Max move when maxMove option is set or source effect is Max move
   - Matches JavaScript: `move = this.getActiveMaxMove(move, pokemon)`
 - Both transformations use already-implemented functions
+- 1:1 match with JavaScript implementation
+
+### 2026-01-02
+**Implemented: try_primary_hit_event** ✅ STUB COMPLETED!
+- Implemented 1:1 port of tryPrimaryHitEvent from JavaScript battle-actions.ts
+- Loops through all targets
+- Fires TryPrimaryHit event for each valid target:
+  - Calls battle.run_event("TryPrimaryHit", target, pokemon, moveData)
+  - Converts event result to SpreadMoveDamageValue
+  - Updates damage array with result
+- Simple 8-line implementation matching JavaScript exactly
 - 1:1 match with JavaScript implementation
 
 ---
