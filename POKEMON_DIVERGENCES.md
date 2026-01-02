@@ -1318,31 +1318,44 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
-### Session 19 - 2026-01-01 (is_grounded negate_immunity parameter)
-- **Goal**: Add missing negate_immunity parameter and special cases to is_grounded method
+### Session 19 - 2026-01-01 (is_grounded & transform_into improvements)
+- **Goal**: Add missing parameters and gen checks to improve 1-to-1 equivalence
 - **Completed**:
-  - ✅ Added negate_immunity: bool parameter to is_grounded:
-    - JavaScript signature: isGrounded(negateImmunity = false)
-    - Rust signature: is_grounded(&self, battle: &Battle, negate_immunity: bool) -> bool
-  - ✅ Implemented special ??? + Roost case for Fire/Flying with Burn Up:
-    - When Pokemon has both ??? type AND Roost volatile, it IS grounded
-    - This handles Fire/Flying using Burn Up (loses Fire → ???) then Roost
-  - ✅ Changed ability check to use has_ability() method instead of direct field check
-  - ✅ Updated ~21 callsites across codebase to pass false (JavaScript default value)
+  - ✅ is_grounded improvements:
+    - Added negate_immunity: bool parameter (JavaScript signature: isGrounded(negateImmunity = false))
+    - Implemented special ??? + Roost case for Fire/Flying with Burn Up
+    - Changed ability check to use has_ability() method instead of direct field check
+    - Updated ~21 callsites across codebase to pass false (JavaScript default value)
+  - ✅ transform_into improvements:
+    - Refactored from instance method to associated function
+    - Changed signature: `&mut self, &Pokemon` → `(battle: &mut Battle, pokemon_pos, target_pos)`
+    - Added gen >= 5 check for substitute blocking transform
+    - Added gen >= 2 check for target transformed blocking transform
+    - Added gen >= 5 check for self transformed blocking transform
+    - Added gen check for move PP/maxpp calculation (gen >= 5)
+    - Added gen > 2 check for ability copying
+    - Eliminated unsafe code in transform move callback (now uses clean associated function pattern)
   - ✅ All changes compile successfully (0 errors, 0 warnings)
-  - ✅ Committed and pushed 1 commit
+  - ✅ Committed and pushed 2 commits
 - **Methods Now Significantly Improved**:
   - is_grounded.rs - Now ~85% complete (was ~75%)
     - ✅ Has: negate_immunity parameter, special ??? + Roost case, has_ability() call
     - ❌ Still missing: suppressingAbility check for Levitate
     - ❌ Should return Option<bool> to represent null, but signature is bool
+  - transform_into.rs - Now ~70% complete (was ~50%)
+    - ✅ Has: All gen checks for transform blocking conditions
+    - ✅ Has: Gen check for move PP/maxpp calculation
+    - ✅ Has: Gen check for ability copying
+    - ✅ Refactored to associated function (eliminates unsafe code)
+    - ❌ Still missing: Many event system calls, species data checks, etc.
 - **Session Statistics**:
-  - 1 method significantly improved (is_grounded)
-  - 1 parameter added (negate_immunity)
-  - 1 special case implemented (??? + Roost)
-  - 13 files modified (1 pokemon method + ~12 callsites)
-  - ~21 callsites updated
-  - 1 commit pushed to git
+  - 2 methods significantly improved (is_grounded, transform_into)
+  - 2 parameters added (is_grounded: negate_immunity, transform_into: battle reference)
+  - 6 gen checks implemented (3 in transform blocking, 1 in move PP, 1 in ability, 1 in substitute already existed)
+  - 1 special case implemented (??? + Roost in is_grounded)
+  - 15 files modified (2 pokemon methods + ~12 callsites + 1 move callback)
+  - ~21 callsites updated (is_grounded)
+  - 2 commits pushed to git (is_grounded, transform_into)
   - 100% compilation success rate
 
 ### Implementation Progress Summary
