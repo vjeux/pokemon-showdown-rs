@@ -145,7 +145,7 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Note: This file does not exist in the codebase, may have been a planned feature or already consolidated
 
 #### copy_volatile_from.rs
-- Status: ✅ Fixed (Session 24 Part 39)
+- Status: ✅ Fixed (Session 24 Parts 39 & 46)
 - Issue: "TODO: implement the same logic as JavaScript"
 - Action: Refactored to associated function with full JavaScript equivalence
 - Notes:
@@ -155,7 +155,8 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED: Proper shedtail handling (only copies substitute, not boosts)
   - ✅ NOW IMPLEMENTED: singleEvent('Copy') calls for each copied volatile
   - ✅ NOW IMPLEMENTED: Boost copying conditional on switch_cause
-  - Missing: linkedPokemon bidirectional link updating (complex, requires multi-Pokemon updates)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 46): linkedPokemon bidirectional link updating
+  - Full 1-to-1 JavaScript equivalence achieved!
 
 #### copy_volatile_from_full.rs
 - Status: ✅ Deleted (Session 24 Part 41)
