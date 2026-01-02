@@ -34,6 +34,7 @@ impl GameType {
 }
 
 /// Format mod (generation)
+/// JavaScript equivalent: ModID (sim/dex-formats.ts)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum FormatMod {
     Gen1,
