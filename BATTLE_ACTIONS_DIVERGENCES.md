@@ -6,8 +6,8 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 12 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move, after_move_secondary_event, force_switch, hit_step_break_protect, hit_step_invulnerability_event)
-**Remaining stubs**: 5
+**Completed implementations**: 13 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move, after_move_secondary_event, force_switch, hit_step_break_protect, hit_step_invulnerability_event, hit_step_steal_boosts)
+**Remaining stubs**: 4
 
 ## Files with Stubs (Not Implemented)
 
@@ -25,8 +25,8 @@ These files are completely unimplemented stubs:
 10. ~~`force_switch.rs` - forceSwitch~~ ✅ IMPLEMENTED
 11. ~~`hit_step_break_protect.rs` - hitStepBreakProtect~~ ✅ IMPLEMENTED
 12. ~~`hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent~~ ✅ IMPLEMENTED
-13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop
-14. `hit_step_steal_boosts.rs` - hitStepStealBoosts
+13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop (DEFERRED - needs infrastructure work)
+14. ~~`hit_step_steal_boosts.rs` - hitStepStealBoosts~~ ✅ IMPLEMENTED
 15. `hit_step_try_hit_event.rs` - hitStepTryHitEvent
 16. `hit_step_try_immunity.rs` - hitStepTryImmunity
 17. `hit_step_type_immunity.rs` - hitStepTypeImmunity
@@ -207,6 +207,21 @@ These files exist only in Rust and should be evaluated:
 - Handles smart_target flag (disables instead of showing miss)
 - Adds miss messages with attr_last_move('[miss]') for non-spread moves
 - Fixed has_type signature (takes &str not &[&str])
+
+### 2026-01-02 - Commit 771238a8
+**Implemented: hit_step_steal_boosts**
+- Implemented 1:1 port of hitStepStealBoosts from JavaScript battle-actions.ts
+- Steals positive stat boosts from the first target
+- Only runs if move.stealsBoosts is true
+- Collects all positive boosts (atk, def, spa, spd, spe, accuracy, evasion)
+- If any positive boosts found:
+  - Calls battle.attr_last_move(&["[still]"])
+  - Adds -clearpositiveboost message
+  - Boosts attacker using battle.boost() with converted boost array
+  - Sets target's stolen boosts to 0 using Pokemon::set_boost()
+  - Special case for Spectral Thief (needs addMove - TODO)
+- Converts BoostsTable to &[(&str, i8)] for battle.boost signature
+- Converts stolen boosts to HashMap<BoostID, i8> for Pokemon::set_boost signature
 
 ---
 
