@@ -295,6 +295,7 @@ impl Default for PokemonSet {
 }
 
 /// Trapped state for a Pokemon
+/// JavaScript equivalent: false | true | 'hidden' (sim/pokemon.ts)
 /// JavaScript uses: false | true | 'hidden'
 /// Rust equivalent:
 /// - None: Not trapped (false)
