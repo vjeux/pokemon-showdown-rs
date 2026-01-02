@@ -20,7 +20,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
     };
 
     let ignoring_item = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-        pokemon.ignoring_item()
+        pokemon.ignoring_item(battle, false)
     } else {
         return EventResult::Continue;
     };

@@ -28,7 +28,7 @@ pub fn on_modify_type(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.ignoring_item()
+        pokemon_pokemon.ignoring_item(battle, false)
     };
 
     if ignoring_item {
@@ -96,7 +96,7 @@ pub fn on_prepare_hit(
             Some(p) => p,
             None => return EventResult::Boolean(false),
         };
-        pokemon_pokemon.ignoring_item()
+        pokemon_pokemon.ignoring_item(battle, false)
     };
 
     if ignoring_item {

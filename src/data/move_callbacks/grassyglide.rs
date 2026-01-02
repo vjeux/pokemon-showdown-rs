@@ -31,7 +31,7 @@ pub fn on_modify_priority(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.is_grounded()
+        source_pokemon.is_grounded(battle)
     };
 
     if is_grassy_terrain && is_grounded {

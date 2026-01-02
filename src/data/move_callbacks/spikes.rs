@@ -101,14 +101,14 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.is_grounded()
+            pokemon_pokemon.is_grounded(battle)
         };
         let has_heavy_duty_boots = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.has_item(&["heavydutyboots"])
+            pokemon_pokemon.has_item(battle, &["heavydutyboots"])
         };
 
         if !is_grounded || has_heavy_duty_boots {

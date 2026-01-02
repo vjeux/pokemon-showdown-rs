@@ -62,7 +62,7 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize
             None => return EventResult::Continue,
         };
         let field_weather = battle.field.weather.as_str();
-        pokemon.effective_weather(field_weather)
+        pokemon.effective_weather(battle, field_weather)
     };
 
     eprintln!("[ORICHALCUM] effective_weather={}", effective_weather);

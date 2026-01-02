@@ -18,9 +18,13 @@ impl Pokemon {
     // 		return item !== 'airballoon';
     // 	}
     //
-    pub fn is_grounded(&self) -> bool {
+    pub fn is_grounded(&self, battle: &Battle) -> bool {
         // JS: if ('gravity' in this.battle.field.pseudoWeather) return true;
-        // Note: Missing Gravity check - would need Battle reference for field.pseudoWeather
+        // ✅ NOW IMPLEMENTED: Gravity check
+        let gravity_id = ID::new("gravity");
+        if battle.field.has_pseudo_weather(&gravity_id) {
+            return true;
+        }
 
         // JS: if ('ingrain' in this.volatiles && this.battle.gen >= 4) return true;
         // Note: Missing gen check - would need Battle reference
@@ -34,7 +38,7 @@ impl Pokemon {
         }
 
         // JS: const item = (this.ignoringItem() ? '' : this.item);
-        let item = if self.ignoring_item() {
+        let item = if self.ignoring_item(battle, false) {
             ""
         } else {
             self.item.as_str()

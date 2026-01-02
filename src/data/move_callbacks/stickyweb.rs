@@ -42,8 +42,8 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
             (
-                pokemon_ref.is_grounded(),
-                pokemon_ref.has_item(&["heavydutyboots"]),
+                pokemon_ref.is_grounded(battle),
+                pokemon_ref.has_item(battle, &["heavydutyboots"]),
             )
         };
 

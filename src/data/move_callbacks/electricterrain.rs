@@ -32,7 +32,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Number(5),
                 };
-                source_pokemon.has_item(&["terrainextender"])
+                source_pokemon.has_item(battle, &["terrainextender"])
             };
 
             if has_terrain_extender {
@@ -71,7 +71,7 @@ pub mod condition {
                     None => return EventResult::Continue,
                 };
                 (
-                    target_pokemon.is_grounded(),
+                    target_pokemon.is_grounded(battle),
                     target_pokemon.is_semi_invulnerable(),
                 )
             };
@@ -150,7 +150,7 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
             (
-                target_pokemon.is_grounded(),
+                target_pokemon.is_grounded(battle),
                 target_pokemon.is_semi_invulnerable(),
             )
         };
@@ -216,7 +216,7 @@ pub mod condition {
                     None => return EventResult::Continue,
                 };
                 (
-                    attacker_pokemon.is_grounded(),
+                    attacker_pokemon.is_grounded(battle),
                     attacker_pokemon.is_semi_invulnerable(),
                 )
             };

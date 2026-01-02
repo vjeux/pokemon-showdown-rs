@@ -90,7 +90,7 @@ pub fn on_try_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        attacker_pokemon.effective_weather(field_weather)
+        attacker_pokemon.effective_weather(battle, field_weather)
     };
 
     if effective_weather == "raindance" || effective_weather == "primordialsea" {

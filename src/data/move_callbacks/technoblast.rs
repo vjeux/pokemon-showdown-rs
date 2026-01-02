@@ -24,7 +24,7 @@ pub fn on_modify_type(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_ref.ignoring_item()
+        pokemon_ref.ignoring_item(battle, false)
     };
 
     if is_ignoring_item {

@@ -86,7 +86,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.has_item(&["ironball"])
+            pokemon.has_item(battle, &["ironball"])
         };
         let has_ingrain = {
             let pokemon_data = match battle.pokemon_at(pokemon.0, pokemon.1) {

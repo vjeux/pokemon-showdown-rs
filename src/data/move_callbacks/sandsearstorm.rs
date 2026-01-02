@@ -29,7 +29,7 @@ pub fn on_modify_move(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let weather_str = pokemon.effective_weather(field_weather);
+            let weather_str = pokemon.effective_weather(battle, field_weather);
             if weather_str.is_empty() {
                 None
             } else {

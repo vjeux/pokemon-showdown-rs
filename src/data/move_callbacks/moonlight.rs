@@ -45,7 +45,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.effective_weather(battle.field.weather.as_str())
+        pokemon_pokemon.effective_weather(battle, battle.field.weather.as_str())
     };
 
     match effective_weather {

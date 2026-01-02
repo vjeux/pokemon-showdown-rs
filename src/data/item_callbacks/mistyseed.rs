@@ -25,7 +25,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
             None => return EventResult::Continue,
         };
 
-        !pokemon.ignoring_item() && battle.field.terrain.as_str() == "mistyterrain"
+        !pokemon.ignoring_item(battle, false) && battle.field.terrain.as_str() == "mistyterrain"
     };
 
     if should_use_item {

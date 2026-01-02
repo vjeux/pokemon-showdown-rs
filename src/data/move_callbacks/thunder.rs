@@ -35,7 +35,7 @@ pub fn on_modify_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.effective_weather(battle.field.weather.as_str()).to_string()
+        target_pokemon.effective_weather(battle, battle.field.weather.as_str()).to_string()
     };
 
     // Modify move accuracy based on weather

@@ -30,7 +30,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ignoring_item()
+        pokemon.ignoring_item(battle, false)
     };
 
     // Check if trick room is active

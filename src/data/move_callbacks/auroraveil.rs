@@ -47,7 +47,7 @@ pub mod condition {
                 None => return EventResult::Number(5),
             };
 
-            if source_pokemon.has_item(&["lightclay"]) {
+            if source_pokemon.has_item(battle, &["lightclay"]) {
                 return EventResult::Number(8);
             }
         }

@@ -157,7 +157,7 @@ impl Battle {
             if let Some((side_idx, poke_idx)) = target {
                 if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                        if pokemon.ignoring_item() {
+                        if pokemon.ignoring_item(self, false) {
                             self.debug(&format!(
                                 "{} handler suppressed by Embargo, Klutz or Magic Room",
                                 event_id

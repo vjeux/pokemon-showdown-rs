@@ -21,14 +21,14 @@ use crate::*;
 impl Pokemon {
     /// Get effective weather considering abilities and Utility Umbrella
     /// Equivalent to pokemon.ts effectiveWeather()
-    pub fn effective_weather<'a>(&self, field_weather: &'a str) -> &'a str {
+    pub fn effective_weather<'a>(&self, battle: &Battle, field_weather: &'a str) -> &'a str {
         // JS: switch (weather) {
         // JS: case 'sunnyday': case 'raindance': case 'desolateland': case 'primordialsea':
         //         if (this.hasItem('utilityumbrella')) return '';
         match field_weather {
             "sunnyday" | "raindance" | "desolateland" | "primordialsea" => {
                 // JS: if (this.hasItem('utilityumbrella')) return '';
-                if self.has_item(&["utilityumbrella"]) {
+                if self.has_item(battle, &["utilityumbrella"]) {
                     "" // Weather negated by Utility Umbrella
                 } else {
                     field_weather

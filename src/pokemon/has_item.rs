@@ -13,7 +13,7 @@ impl Pokemon {
     // 		return !this.ignoringItem();
     // 	}
     //
-    pub fn has_item(&self, items: &[&str]) -> bool {
+    pub fn has_item(&self, battle: &Battle, items: &[&str]) -> bool {
         // JS: if (Array.isArray(item)) {
         // JS:     if (!item.map(toID).includes(this.item)) return false;
         // JS: } else {
@@ -27,6 +27,6 @@ impl Pokemon {
         }
 
         // JS: return !this.ignoringItem();
-        !self.ignoring_item()
+        !self.ignoring_item(battle, false)
     }
 }

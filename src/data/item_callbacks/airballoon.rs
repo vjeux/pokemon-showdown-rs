@@ -30,7 +30,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.ignoring_item()
+        target.ignoring_item(battle, false)
     };
 
     // Check if gravity is active

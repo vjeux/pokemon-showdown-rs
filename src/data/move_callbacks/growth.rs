@@ -24,7 +24,7 @@ pub fn on_modify_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.effective_weather(field_weather)
+        pokemon_pokemon.effective_weather(battle, field_weather)
     };
 
     if effective_weather == "sunnyday" || effective_weather == "desolateland" {

@@ -43,7 +43,7 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
 
-        let weather = pokemon_pokemon.effective_weather(battle.field.weather.as_str());
+        let weather = pokemon_pokemon.effective_weather(battle, battle.field.weather.as_str());
 
         // let factor = 0.5;
         // switch (pokemon.effectiveWeather()) {

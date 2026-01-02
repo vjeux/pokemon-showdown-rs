@@ -99,7 +99,7 @@ pub fn on_try_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let weather_str = pokemon.effective_weather(field_weather);
+        let weather_str = pokemon.effective_weather(battle, field_weather);
         if weather_str.is_empty() {
             None
         } else {
@@ -179,7 +179,7 @@ pub fn on_base_power(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let weather_str = pokemon.effective_weather(field_weather);
+        let weather_str = pokemon.effective_weather(battle, field_weather);
         if weather_str.is_empty() {
             None
         } else {

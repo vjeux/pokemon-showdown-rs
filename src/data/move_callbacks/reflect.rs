@@ -32,7 +32,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                source_pokemon.has_item(&["lightclay"])
+                source_pokemon.has_item(battle, &["lightclay"])
             };
 
             if has_light_clay {

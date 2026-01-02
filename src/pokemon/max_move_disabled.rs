@@ -26,7 +26,7 @@ impl Pokemon {
         // JS: return !!(baseMove.category === 'Status' && (this.hasItem('assaultvest') || this.volatiles['taunt']));
         if let Some(base_move) = battle.dex.moves().get(base_move_id.as_str()) {
             if base_move.category == "Status" {
-                return self.has_item(&["assaultvest"]) || self.has_volatile(&ID::new("taunt"));
+                return self.has_item(battle, &["assaultvest"]) || self.has_volatile(&ID::new("taunt"));
             }
         }
 

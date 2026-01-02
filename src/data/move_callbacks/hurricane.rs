@@ -36,7 +36,7 @@ pub fn on_modify_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.effective_weather(field_weather)
+        target_pokemon.effective_weather(battle, field_weather)
     };
 
     // case 'raindance':

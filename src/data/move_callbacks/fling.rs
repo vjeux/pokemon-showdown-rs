@@ -52,7 +52,7 @@ pub fn on_prepare_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_ref.ignoring_item()
+        pokemon_ref.ignoring_item(battle, true)
     };
 
     if ignoring_item {

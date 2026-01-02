@@ -95,7 +95,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_ref.is_grounded()
+            pokemon_ref.is_grounded(battle)
         };
 
         if !is_grounded {
@@ -143,7 +143,7 @@ pub mod condition {
                 };
                 (
                     pokemon_ref.has_type("Steel"),
-                    pokemon_ref.has_item(&["heavydutyboots"]),
+                    pokemon_ref.has_item(battle, &["heavydutyboots"]),
                 )
             };
 
