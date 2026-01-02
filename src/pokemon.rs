@@ -208,8 +208,10 @@ pub struct Attacker {
     /// Source slot
     /// JavaScript: slot: PokemonSlot
     pub slot: (usize, usize),
-    // TODO: Add damageValue field from JavaScript
-    // JavaScript: damageValue?: number | boolean | undefined
+    /// Damage value (can be number, boolean, or undefined)
+    /// JavaScript: damageValue?: number | boolean | undefined
+    /// TODO: Rust uses Option<i32>, cannot represent boolean variant
+    pub damage_value: Option<i32>,
 }
 
 /// Pokemon team set (from team builder)

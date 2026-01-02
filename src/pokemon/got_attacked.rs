@@ -32,6 +32,7 @@ impl Pokemon {
             this_turn: true,
             move_id: Some(move_id),
             slot: (source_side, source_pos), // Same as source for tracking
+            damage_value: Some(damage), // JavaScript: damageValue: damage
         });
 
         // Track times attacked (not in JS source, but used for mechanics)
