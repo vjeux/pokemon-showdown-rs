@@ -352,18 +352,18 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now fully 1-to-1 with JavaScript!
 
 #### ignoring_ability.rs
-- Status: ✅ Fixed (Significantly Improved - Session 15)
+- Status: ✅ Fixed (Fully Implemented - Session 24 Part 48)
 - Issue: Partial implementation missing gen check, Ability Shield, Neutralizing Gas, and ability flags
-- Action: Refactored to take &Battle parameter, implemented gen check, Ability Shield, and Neutralizing Gas loop
+- Action: Refactored to take &Battle parameter, implemented gen check, Ability Shield, Neutralizing Gas loop, and ability.flags checks
 - Notes:
   - ✅ NOW IMPLEMENTED (Session 15): Gen >= 5 check for inactive Pokemon (was assuming gen >= 5)
   - ✅ NOW IMPLEMENTED (Session 15): Ability Shield item check (prevents ability suppression)
   - ✅ NOW IMPLEMENTED (Session 15): Neutralizing Gas loop checking all active Pokemon
   - ✅ NOW IMPLEMENTED (Session 15): Refactored to take `battle: &Battle` parameter
   - ✅ NOW IMPLEMENTED: Gastro Acid volatile check (already had this)
-  - ❌ Still missing: ability.flags['notransform'] check (would need ability data access)
-  - ❌ Still missing: ability.flags['cantsuppress'] check (would need ability data access)
-  - Overall: **Now ~85% complete** (was ~40% before Session 15)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 48): ability.flags['notransform'] check (Disguise, etc. won't activate while Transformed)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 48): ability.flags['cantsuppress'] check (Commander, As One cannot be suppressed)
+  - Overall: **Now 100% complete!** (was ~85% before Session 24 Part 48)
 
 #### ignoring_item.rs
 - Status: ✅ Fixed (Fully Implemented - Session 24 Part 47)
@@ -2981,14 +2981,14 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 17. copy_volatile_from.rs - ✅ Complete (Session 24 Parts 39 & 46)
 18. get_smart_targets.rs - ✅ Complete (Session 24 Part 45)
 19. ignoring_item.rs - ✅ Complete (Session 24 Part 47)
+20. ignoring_ability.rs - ✅ Complete (Session 24 Part 48)
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. try_set_status.rs - Core logic correct, simplified
 2. get_weight.rs - Has max(1, weight), missing ModifyWeight event
 3. get_types.rs - Has empty check, missing runEvent('Type')
-4. ignoring_item.rs - Has Magic Room, isFling, Ability Shield, missing Primal Orb and ignoreKlutz
-5. is_grounded.rs - Has Gravity check, missing suppressingAbility and negateImmunity
-6. And many others...
+4. is_grounded.rs - Has Gravity check, missing suppressingAbility and negateImmunity
+5. And many others...
 
 ## Notes
 - Must compile after each fix
