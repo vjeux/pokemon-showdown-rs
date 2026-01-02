@@ -201,6 +201,24 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Action: Documented simplified implementation and what's needed for full equivalence
 - Note: Missing runEvent('NegateImmunity'), isGrounded() for Ground type, immunity messages
 
+#### get_types.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing runEvent('Type') call and gen check for default type
+- Action: Added empty types check to return "Normal", documented missing runEvent and gen check
+- Note: Assumes gen >= 5 for "Normal" vs "???" decision
+
+#### get_updated_details.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing Greninja-Bond/Rockruff-Dusk special case and shiny flag
+- Action: Documented what's implemented and what's missing
+- Note: Would need species data for baseSpecies, would need set reference for shiny flag
+
+#### try_set_status.rs
+- Status: ✅ Fixed
+- Issue: Had incorrect immunity checks (those belong in setStatus)
+- Action: Simplified to match JavaScript logic - just delegate to setStatus
+- Note: JavaScript uses `setStatus(this.status || status)` which is equivalent to our check
+
 #### got_attacked.rs
 - Status: ✅ Fixed (New entry)
 - Issue: Setting last_damage field that doesn't exist in JavaScript
@@ -318,6 +336,15 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Project compiles successfully (0 errors, 0 warnings)
 - **Remaining**: ~51 TODOs (down from 56), many requiring Battle references
 - **Next**: Continue documenting what's implemented and what's missing for remaining TODOs
+
+### Session 6 - 2026-01-01 (Continuation Session 5)
+- **Completed**:
+  - ✅ Fixed get_types.rs (added empty types check, documented missing runEvent and gen check)
+  - ✅ Documented get_updated_details.rs (noted missing Greninja/Rockruff and shiny cases)
+  - ✅ Fixed try_set_status.rs (removed incorrect immunity checks, matches JS logic)
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+- **Remaining**: ~48 TODOs (down from 51)
+- **Next**: Continue documenting/fixing remaining TODOs
 
 ## Notes
 - Must compile after each fix

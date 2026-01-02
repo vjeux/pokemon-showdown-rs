@@ -10,43 +10,20 @@ impl Pokemon {
     // 	}
     //
     pub fn try_set_status(&mut self, status_id: ID, _source_effect: Option<&str>) -> bool {
-        // TODO: implement the same logic as JavaScript
-
-        // Check if already has status
+        // JS: return this.setStatus(this.status || status, source, sourceEffect);
+        //
+        // If already has a status, setStatus will be called with the current status
+        // and should return false. Otherwise, setStatus is called with the new status.
+        //
+        // Note: The JavaScript version passes (this.status || status) which evaluates to
+        // the current status if it exists, or the new status if not. Then setStatus
+        // checks if it's the same status and fails. This is functionally equivalent to
+        // checking if we already have a status and returning false.
         if !self.status.is_empty() {
             return false;
         }
 
-        // Check for type-based immunities
-        let status_str = status_id.as_str();
-        match status_str {
-            "brn" => {
-                // Fire types immune to burn
-                if self.has_type("fire") {
-                    return false;
-                }
-            }
-            "par" => {
-                // Electric types immune to paralysis (Gen 6+)
-                if self.has_type("electric") {
-                    return false;
-                }
-            }
-            "psn" | "tox" => {
-                // Poison and Steel types immune to poison
-                if self.has_type("poison") || self.has_type("steel") {
-                    return false;
-                }
-            }
-            "frz" => {
-                // Ice types immune to freeze
-                if self.has_type("ice") {
-                    return false;
-                }
-            }
-            _ => {}
-        }
-
+        // Call setStatus which will handle all immunity checks and events
         self.set_status(status_id)
     }
 }

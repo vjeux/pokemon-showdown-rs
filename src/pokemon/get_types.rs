@@ -15,8 +15,6 @@ impl Pokemon {
     // 	}
     //
     pub fn get_types(&self, exclude_added: bool) -> Vec<String> {
-        // TODO: implement the same logic as JavaScript
-        
         // JS: if (!preterastallized && this.terastallized && this.terastallized !== 'Stellar') return [this.terastallized];
         if let Some(ref tera) = self.terastallized {
             if tera != "Stellar" {
@@ -25,7 +23,14 @@ impl Pokemon {
         }
 
         // JS: const types = this.battle.runEvent('Type', this, null, null, this.types);
+        // Note: runEvent('Type') not called - would need Battle reference
         let mut types = self.types.clone();
+
+        // JS: if (!types.length) types.push(this.battle.gen >= 5 ? 'Normal' : '???');
+        // Note: Gen check not implemented - would need Battle reference for gen
+        if types.is_empty() {
+            types.push("Normal".to_string()); // Assumes gen >= 5
+        }
 
         // JS: if (!excludeAdded && this.addedType) return types.concat(this.addedType);
         if !exclude_added {
