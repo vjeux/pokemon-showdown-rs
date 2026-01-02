@@ -148,7 +148,11 @@ pub struct ActiveMove {
     // =========================================================================
     // From BasicEffect (inherited via MutableMove)
     // =========================================================================
+    /// Move ID
+    /// JavaScript: id: ID
     pub id: ID,
+    /// Move name
+    /// JavaScript: name: string
     pub name: String,
     /// Full name with effect type
     /// JavaScript: fullname: string
@@ -190,6 +194,8 @@ pub struct ActiveMove {
     /// Condition data for moves that create conditions
     /// JavaScript: condition?: ConditionData
     pub condition: Option<String>, // TODO: Should be ConditionData type when available
+    /// Base power of the move
+    /// JavaScript: basePower: number
     pub base_power: i32,
     /// Accuracy value
     /// JavaScript: accuracy: true | number
@@ -198,10 +204,20 @@ pub struct ActiveMove {
     /// Power Points
     /// JavaScript: pp: number
     pub pp: u8,
+    /// Move category (Physical/Special/Status)
+    /// JavaScript: category: string
     pub category: String,
+    /// Move type
+    /// JavaScript: type: string
     pub move_type: String,
+    /// Move priority (-7 to +7)
+    /// JavaScript: priority: number
     pub priority: i8,
+    /// Target type
+    /// JavaScript: target: string
     pub target: String,
+    /// Move flags
+    /// JavaScript: flags: MoveFlags
     pub flags: MoveFlags,
     /// Real move ID (for called/transformed moves)
     /// JavaScript: realMove?: string
@@ -242,20 +258,34 @@ pub struct ActiveMove {
     /// Draining fraction
     /// JavaScript: drain?: [number, number]
     pub drain: Option<(i32, i32)>,
+    /// Forces the target to switch out
+    /// JavaScript: forceSwitch: boolean
     pub force_switch: bool,
     /// Self-switch effect
     /// JavaScript: selfSwitch?: 'copyvolatile' | 'shedtail' | boolean
     /// TODO: Rust uses Option<String>, cannot fully represent boolean variant
     pub self_switch: Option<String>,
+    /// Self stat boosts (e.g., Bulk Up)
+    /// JavaScript: selfBoost?: BoostsTable
     pub self_boost: Option<BoostsTable>,
     /// Self-destruct type
     /// JavaScript: selfdestruct?: 'always' | 'ifHit' | boolean
     /// TODO: Rust uses Option<String>, cannot fully represent boolean variant
     pub self_destruct: Option<String>,
+    /// Breaks through protection
+    /// JavaScript: breaksProtect: boolean
     pub breaks_protect: bool,
+    /// Recoil damage fraction
+    /// JavaScript: recoil?: [number, number]
     pub recoil: Option<(i32, i32)>,
+    /// Mind Blown recoil flag
+    /// JavaScript: mindBlownRecoil: boolean
     pub mindblown_recoil: bool,
+    /// Steals target's stat boosts
+    /// JavaScript: stealsBoosts: boolean
     pub steals_boosts: bool,
+    /// Struggle recoil flag
+    /// JavaScript: struggleRecoil: boolean
     pub struggle_recoil: bool,
     /// Single secondary effect
     /// JavaScript: secondary?: SecondaryEffect | null
@@ -266,7 +296,11 @@ pub struct ActiveMove {
     /// Self-targeting effect
     /// JavaScript: self?: SecondaryEffect | null
     pub self_effect: Option<SelfEffect>,
+    /// Has Sheer Force flag
+    /// JavaScript: hasSheerForce: boolean
     pub has_sheer_force: bool,
+    /// Always hits (ignores accuracy)
+    /// JavaScript: alwaysHit: boolean
     pub always_hit: bool,
     /// Base move type before type-changing effects
     /// JavaScript: baseMoveType?: string
@@ -277,10 +311,14 @@ pub struct ActiveMove {
     /// Critical hit modifier
     /// JavaScript: critModifier?: number
     pub crit_modifier: Option<f64>,
+    /// Critical hit ratio (1 = normal, 2 = high crit rate)
+    /// JavaScript: critRatio: number
     pub crit_ratio: i32,
     /// Override which Pokemon's offensive stat to use
     /// JavaScript: overrideOffensivePokemon?: 'target' | 'source'
     pub override_offensive_pokemon: Option<String>,
+    /// Override which offensive stat to use
+    /// JavaScript: overrideOffensiveStat?: StatIDExceptHP
     pub override_offensive_stat: Option<String>,
     /// Override which Pokemon's defensive stat to use
     /// JavaScript: overrideDefensivePokemon?: 'target' | 'source'
@@ -288,22 +326,52 @@ pub struct ActiveMove {
     /// Override which defensive stat to use
     /// JavaScript: overrideDefensiveStat?: StatIDExceptHP
     pub override_defensive_stat: Option<String>,
+    /// Force STAB (Same Type Attack Bonus)
+    /// JavaScript: forceSTAB: boolean
     pub force_stab: bool,
+    /// Ignore target's ability
+    /// JavaScript: ignoreAbility: boolean
     pub ignore_ability: bool,
+    /// Ignore accuracy checks
+    /// JavaScript: ignoreAccuracy: boolean
     pub ignore_accuracy: bool,
+    /// Ignore target's evasion
+    /// JavaScript: ignoreEvasion: boolean
     pub ignore_evasion: bool,
     /// Ignore positive evasion boosts
     /// JavaScript: ignorePositiveEvasion?: boolean
     pub ignore_positive_evasion: Option<bool>,
+    /// Ignore type immunity
+    /// JavaScript: ignoreImmunity?: boolean | { [k: string]: boolean }
+    /// TODO: Rust uses Option<bool>, cannot represent object variant
     pub ignore_immunity: Option<bool>,
+    /// Ignore defensive stat changes
+    /// JavaScript: ignoreDefensive: boolean
     pub ignore_defensive: bool,
+    /// Ignore offensive stat changes
+    /// JavaScript: ignoreOffensive: boolean
     pub ignore_offensive: bool,
+    /// Ignore negative offensive stat changes
+    /// JavaScript: ignoreNegativeOffensive: boolean
     pub ignore_negative_offensive: bool,
+    /// Ignore positive defensive stat changes
+    /// JavaScript: ignorePositiveDefensive: boolean
     pub ignore_positive_defensive: bool,
+    /// Infiltrates through Substitute, etc.
+    /// JavaScript: infiltrates: boolean
     pub infiltrates: bool,
+    /// Will always crit
+    /// JavaScript: willCrit?: boolean
     pub will_crit: Option<bool>,
+    /// Multi-accuracy flag (for moves like Triple Axel)
+    /// JavaScript: multiaccuracy: boolean
     pub multi_accuracy: bool,
+    /// Number of hits for multi-hit moves
+    /// JavaScript: multihit?: number | number[]
+    /// TODO: Rust uses Option<i32>, cannot represent number[] variant
     pub multi_hit: Option<i32>,
+    /// Multi-hit type (e.g., "parentalbond")
+    /// JavaScript: multihitType?: string
     pub multi_hit_type: Option<String>,
     /// No damage variance (no random factor)
     /// JavaScript: noDamageVariance?: boolean
@@ -315,8 +383,14 @@ pub struct ActiveMove {
     /// Spread move damage modifier
     /// JavaScript: spreadModifier?: number
     pub spread_modifier: Option<f64>,
+    /// Usable while sleeping
+    /// JavaScript: sleepUsable: boolean
     pub sleep_usable: bool,
+    /// Smart target selection
+    /// JavaScript: smartTarget?: boolean
     pub smart_target: Option<bool>,
+    /// Tracks target (e.g., Lock-On)
+    /// JavaScript: tracksTarget: boolean
     pub tracks_target: bool,
     /// Calls another move
     /// JavaScript: callsMove?: boolean
@@ -337,18 +411,36 @@ pub struct ActiveMove {
     // =========================================================================
     // From HitEffect (inherited via MoveData)
     // =========================================================================
+    /// Stat boosts to apply
+    /// JavaScript: boosts?: SparseBoostsTable
     pub boosts: Option<BoostsTable>,
+    /// Status condition to inflict
+    /// JavaScript: status?: string
     pub status: Option<String>,
+    /// Volatile status to inflict
+    /// JavaScript: volatileStatus?: string
     pub volatile_status: Option<String>,
+    /// Side condition to apply
+    /// JavaScript: sideCondition?: string
     pub side_condition: Option<String>,
+    /// Slot condition to apply
+    /// JavaScript: slotCondition?: string
     pub slot_condition: Option<String>,
+    /// Pseudo-weather to apply
+    /// JavaScript: pseudoWeather?: string
     pub pseudo_weather: Option<String>,
+    /// Terrain to set
+    /// JavaScript: terrain?: string
     pub terrain: Option<String>,
+    /// Weather to set
+    /// JavaScript: weather?: string
     pub weather: Option<String>,
 
     // =========================================================================
     // ActiveMove-specific fields
     // =========================================================================
+    /// Hit number in multi-hit moves
+    /// JavaScript: hit: number
     pub hit: i32,
     /// Total damage dealt
     /// JavaScript: totalDamage: number | false
@@ -357,13 +449,23 @@ pub struct ActiveMove {
     /// Move hit data for tracking crit, type effectiveness, etc.
     /// JavaScript: moveHitData?: MoveHitData
     pub move_hit_data: Option<crate::pokemon::MoveHitData>,
+    /// Hit a spread move (doubles/triples)
+    /// JavaScript: spreadHit: boolean
     pub spread_hit: bool,
     /// Last hit of a multi-hit move
     /// JavaScript: lastHit?: boolean
     pub last_hit: Option<bool>,
+    /// Move is from external source (not direct Pokemon action)
+    /// JavaScript: isExternal: boolean
     pub is_external: bool,
+    /// Is Z or Max powered
+    /// JavaScript: isZOrMaxPowered: boolean
     pub is_z_or_max_powered: bool,
+    /// Prankster boosted this move
+    /// JavaScript: pranksterBoosted: boolean
     pub prankster_boosted: bool,
+    /// Move has been bounced by Magic Coat/Bounce
+    /// JavaScript: hasBounced: boolean
     pub has_bounced: bool,
     /// Source effect that triggered this move (Dancer, Instruct, etc.)
     /// JavaScript: sourceEffect?: ID
@@ -377,7 +479,11 @@ pub struct ActiveMove {
     /// Move caused crash damage (High Jump Kick, Jump Kick)
     /// JavaScript: causedCrashDamage?: boolean
     pub caused_crash_damage: Option<bool>,
+    /// User dropped its item (Fling, etc.)
+    /// JavaScript: selfDropped: boolean
     pub self_dropped: bool,
+    /// Move is Stellar type boosted
+    /// JavaScript: stellarBoosted: boolean
     pub stellar_boosted: bool,
     /// Effect ID that changed this move's type (e.g., "pixilate", "aerilate")
     /// Used to boost power after type change
@@ -388,10 +494,13 @@ pub struct ActiveMove {
     /// JavaScript: magnitude?: number
     pub magnitude: Option<i32>,
     /// Whether this move will cause a forme change (relicsong)
+    /// JavaScript: willChangeForme: boolean
     pub will_change_forme: bool,
     /// Status roll result for secondary status effects
     /// JavaScript: statusRoll?: string
     pub status_roll: Option<String>,
+    /// Force a specific status condition
+    /// JavaScript: forceStatus?: string
     pub force_status: Option<String>,
 
     // Tablets of Ruin tracking
