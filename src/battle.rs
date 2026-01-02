@@ -182,6 +182,8 @@ pub struct SplitMessage {
 
 /// Argument type for battle.add() - can be a Pokemon reference or a string
 /// This allows mixing types like: battle.add("-activate", &[pokemon.into(), "ability: Immunity".into()])
+/// TODO: Not in JavaScript - Rust-specific enum for type-safe protocol message arguments
+/// JavaScript uses spread arguments with mixed types (Pokemon | string | Function)
 pub enum Arg<'a> {
     Pokemon(&'a Pokemon),
     Str(&'a str),
@@ -322,6 +324,8 @@ impl std::fmt::Display for Arg<'_> {
 }
 
 /// Result of a switch operation
+/// TODO: Not in JavaScript - Rust-specific enum for switch operation results
+/// JavaScript switch methods return undefined or false on failure
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SwitchResult {
     /// Switch succeeded
