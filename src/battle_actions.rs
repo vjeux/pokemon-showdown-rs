@@ -534,7 +534,11 @@ pub struct SecondaryEffect {
 }
 
 /// Self effect data
+/// JavaScript uses HitEffect for the `self` field in SecondaryEffect
+/// Rust simplifies this with a dedicated struct
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+/// JavaScript equivalent: HitEffect (in SecondaryEffect.self field)
+/// TODO: Missing fields from HitEffect: status, slotCondition, pseudoWeather, terrain, weather, onHit
 pub struct SelfEffect {
     pub boosts: Option<BoostsTable>,
     pub chance: Option<i32>,
