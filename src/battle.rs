@@ -311,34 +311,44 @@ pub enum SwitchResult {
     PursuitFaint,
 }
 
-/// Event information for tracking current event context
+/// Event information passed through the event system
 #[derive(Debug, Clone, Serialize, Deserialize)]
-/// JavaScript equivalent: EventInfo (sim/global-types.ts)
-/// 16 fields in JavaScript
-/// JavaScript equivalent: EventInfo (sim/global-types.ts)
-/// 16 fields in JavaScript
-/// JavaScript equivalent: EventInfo (sim/global-types.ts)
-/// 16 fields in JavaScript
+/// JavaScript equivalent: Event object (sim/battle.ts)
+/// JavaScript stores this in battle.event during event processing
+/// 10+ fields in JavaScript (context object with dynamic properties)
 pub struct EventInfo {
     /// Event ID/name
+    /// JavaScript: event.id (implicit, based on which event is running)
     pub id: String,
     /// Target of the event (side_idx, poke_idx) or None for field/battle
+    /// JavaScript: event.target (Pokemon reference)
+    /// TODO: Rust uses indices instead of Pokemon reference due to ownership
     pub target: Option<(usize, usize)>,
     /// Source of the event
+    /// JavaScript: event.source (Pokemon reference)
+    /// TODO: Rust uses indices instead of Pokemon reference due to ownership
     pub source: Option<(usize, usize)>,
     /// Effect that caused the event
+    /// JavaScript: event.effect (Effect object)
+    /// TODO: Rust uses ID instead of full Effect object
     pub effect: Option<ID>,
     /// Modifier accumulated during event processing (4096 = 1.0x)
+    /// JavaScript: event.modifier (number)
     pub modifier: i32,
     /// Relay variable for events that modify numeric values (crit ratio, weight, etc.)
+    /// JavaScript: relayVar parameter in event callbacks
     pub relay_var: Option<i32>,
     /// Relay variable for events that use float values (fractional priority, etc.)
+    /// JavaScript: relayVar parameter in event callbacks (number)
     pub relay_var_float: Option<f64>,
     /// Relay variable for boost events (onTryBoost, onAfterBoost, etc.)
+    /// JavaScript: relayVar parameter in boost events (BoostsTable)
     pub relay_var_boost: Option<crate::dex_data::BoostsTable>,
     /// Relay variable for secondary effects (onModifySecondaries, etc.)
+    /// JavaScript: relayVar parameter in secondary events (SecondaryEffect[])
     pub relay_var_secondaries: Option<Vec<crate::battle_actions::SecondaryEffect>>,
     /// Relay variable for type strings (onImmunity, etc.)
+    /// JavaScript: relayVar parameter in type events (string)
     pub relay_var_type: Option<String>,
 }
 
@@ -424,52 +434,83 @@ impl EventContext {
 }
 
 /// Faint queue entry data
-/// Equivalent to battle.ts FaintQueue entry
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: FaintQueue entry (sim/battle.ts)
+/// 3 fields in JavaScript
 pub struct FaintData {
     /// Pokemon that fainted (side_idx, poke_idx)
+    /// JavaScript: target (Pokemon reference)
+    /// TODO: Rust uses indices instead of Pokemon reference due to ownership
     pub target: (usize, usize),
     /// Source of the faint (side_idx, poke_idx) or None
+    /// JavaScript: source (Pokemon reference or null)
+    /// TODO: Rust uses indices instead of Pokemon reference due to ownership
     pub source: Option<(usize, usize)>,
     /// Effect that caused the faint
+    /// JavaScript: effect (Effect object or null)
+    /// TODO: Rust uses ID instead of full Effect object
     pub effect: Option<ID>,
 }
 
-/// Battle options
+/// Battle creation options
 #[derive(Debug, Clone, Default)]
 /// JavaScript equivalent: BattleOptions (sim/battle.ts)
 /// 14 fields in JavaScript
-/// JavaScript equivalent: BattleOptions (sim/battle.ts)
-/// 14 fields in JavaScript
-/// JavaScript equivalent: BattleOptions (sim/battle.ts)
-/// 14 fields in JavaScript
 pub struct BattleOptions {
+    /// Format ID
+    /// JavaScript: formatid: ID
     pub format_id: ID,
+    /// Format name
+    /// JavaScript: format?: string
     pub format_name: Option<String>,
+    /// Game type (singles, doubles, etc.)
+    /// JavaScript: gameType?: GameType
     pub game_type: Option<GameType>,
+    /// PRNG seed
+    /// JavaScript: seed?: PRNGSeed
     pub seed: Option<PRNGSeed>,
+    /// Rated match
+    /// JavaScript: rated?: boolean | string
     pub rated: Option<String>,
+    /// Debug mode
+    /// JavaScript: debug?: boolean
     pub debug: bool,
+    /// Strict choice validation
+    /// JavaScript: strictChoices?: boolean
     pub strict_choices: bool,
+    /// Force random chance outcome
+    /// JavaScript: forceRandomChance?: boolean
     pub force_random_chance: Option<bool>,
+    /// Player 1 options
+    /// JavaScript: p1?: PlayerOptions
     pub p1: Option<PlayerOptions>,
+    /// Player 2 options
+    /// JavaScript: p2?: PlayerOptions
     pub p2: Option<PlayerOptions>,
+    /// Player 3 options (multi battles)
+    /// JavaScript: p3?: PlayerOptions
     pub p3: Option<PlayerOptions>,
+    /// Player 4 options (multi battles)
+    /// JavaScript: p4?: PlayerOptions
     pub p4: Option<PlayerOptions>,
 }
 
-/// Player options
+/// Player/side creation options
 #[derive(Debug, Clone)]
 /// JavaScript equivalent: PlayerOptions (sim/global-types.ts)
-/// Fields: name, avatar, rating, team, seed
-/// JavaScript equivalent: PlayerOptions (sim/global-types.ts)
-/// Fields: name, avatar, rating, team, seed
-/// JavaScript equivalent: PlayerOptions (sim/global-types.ts)
-/// Fields: name, avatar, rating, team, seed
+/// 5 fields in JavaScript
 pub struct PlayerOptions {
+    /// Player name
+    /// JavaScript: name: string
     pub name: String,
+    /// Player's team
+    /// JavaScript: team: PokemonSet[]
     pub team: Vec<PokemonSet>,
+    /// Player avatar
+    /// JavaScript: avatar?: string
     pub avatar: Option<String>,
+    /// Player rating
+    /// JavaScript: rating?: number | string
     pub rating: Option<String>,
 }
 
