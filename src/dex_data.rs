@@ -899,10 +899,6 @@ fn get_all_natures() -> Vec<Nature> {
 /// Types collection with caching
 /// JavaScript equivalent: DexTypes (sim/dex-data.ts)
 /// Fields: dex, allCache, namesCache
-/// JavaScript equivalent: DexTypes (sim/dex-data.ts)
-/// Fields: dex, allCache, namesCache
-/// JavaScript equivalent: DexTypes (sim/dex-data.ts)
-/// Fields: dex, allCache, namesCache
 pub struct DexTypes {
     gen: u8,
     type_cache: HashMap<String, TypeInfo>,
@@ -1310,10 +1306,6 @@ fn get_all_types(gen: u8) -> Vec<TypeInfo> {
 // =========================================================================
 
 /// Stats helper with name lookups
-/// JavaScript equivalent: DexStats (sim/dex-data.ts)
-/// 9 fields in JavaScript
-/// JavaScript equivalent: DexStats (sim/dex-data.ts)
-/// 9 fields in JavaScript
 /// JavaScript equivalent: DexStats (sim/dex-data.ts)
 /// 9 fields in JavaScript
 pub struct DexStats {
