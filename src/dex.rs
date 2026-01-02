@@ -289,7 +289,7 @@ pub struct SpeciesData {
 /// Move secondary effect data
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: MoveSecondary/SecondaryEffect (sim/dex-moves.ts)
-/// 4 fields in JavaScript (simplified from full SecondaryEffect)
+/// 9 fields in JavaScript (matching full SecondaryEffect)
 pub struct MoveSecondary {
     /// Chance of effect occurring (percentage)
     /// JavaScript: chance?: number
@@ -307,6 +307,26 @@ pub struct MoveSecondary {
     /// JavaScript: volatileStatus?: string
     #[serde(rename = "volatileStatus", default)]
     pub volatile_status_secondary: Option<String>,
+    /// Side condition to apply
+    /// JavaScript: sideCondition?: string
+    #[serde(rename = "sideCondition", default)]
+    pub side_condition: Option<String>,
+    /// Slot condition to apply
+    /// JavaScript: slotCondition?: string
+    #[serde(rename = "slotCondition", default)]
+    pub slot_condition: Option<String>,
+    /// Pseudo weather to apply
+    /// JavaScript: pseudoWeather?: string
+    #[serde(rename = "pseudoWeather", default)]
+    pub pseudo_weather: Option<String>,
+    /// Terrain to apply
+    /// JavaScript: terrain?: string
+    #[serde(default)]
+    pub terrain: Option<String>,
+    /// Weather to apply
+    /// JavaScript: weather?: string
+    #[serde(default)]
+    pub weather: Option<String>,
 }
 
 /// Condition data for volatile statuses

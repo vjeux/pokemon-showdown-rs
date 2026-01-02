@@ -525,7 +525,70 @@ pub fn spread_move_hit(
                     }
                 }
 
-                // TODO: Handle other secondary effects (side conditions, etc.)
+                // Apply side condition from secondary effect
+                // JS: if (moveData.sideCondition) {
+                //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
+                // }
+                if let Some(ref side_condition_name) = secondary_effect.side_condition {
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Applying side condition '{}' from secondary to side {}",
+                        battle.turn, side_condition_name, target_pos.0);
+
+                    let side_condition_id = crate::dex_data::ID::new(side_condition_name);
+                    let applied = battle.sides[target_pos.0].add_side_condition(side_condition_id, None);
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Side condition '{}' applied: {}", battle.turn, side_condition_name, applied);
+                }
+
+                // Apply slot condition from secondary effect
+                // JS: if (moveData.slotCondition) {
+                //     hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
+                // }
+                if let Some(ref slot_condition_name) = secondary_effect.slot_condition {
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Applying slot condition '{}' from secondary to {:?}",
+                        battle.turn, slot_condition_name, target_pos);
+
+                    let slot_condition_id = crate::dex_data::ID::new(slot_condition_name);
+                    let applied = battle.sides[target_pos.0].add_slot_condition(target_pos.1, slot_condition_id, None);
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Slot condition '{}' applied: {}", battle.turn, slot_condition_name, applied);
+                }
+
+                // Apply pseudo weather from secondary effect
+                // JS: if (moveData.pseudoWeather) {
+                //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
+                // }
+                if let Some(ref pseudo_weather_name) = secondary_effect.pseudo_weather {
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Applying pseudo weather '{}' from secondary",
+                        battle.turn, pseudo_weather_name);
+
+                    let pseudo_weather_id = crate::dex_data::ID::new(pseudo_weather_name);
+                    let applied = battle.field.add_pseudo_weather(pseudo_weather_id, None);
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Pseudo weather '{}' applied: {}", battle.turn, pseudo_weather_name, applied);
+                }
+
+                // Apply terrain from secondary effect
+                // JS: if (moveData.terrain) {
+                //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
+                // }
+                if let Some(ref terrain_name) = secondary_effect.terrain {
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Applying terrain '{}' from secondary",
+                        battle.turn, terrain_name);
+
+                    let terrain_id = crate::dex_data::ID::new(terrain_name);
+                    let applied = battle.field.set_terrain(terrain_id, None);
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Terrain '{}' applied: {}", battle.turn, terrain_name, applied);
+                }
+
+                // Apply weather from secondary effect
+                // JS: if (moveData.weather) {
+                //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
+                // }
+                if let Some(ref weather_name) = secondary_effect.weather {
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Applying weather '{}' from secondary",
+                        battle.turn, weather_name);
+
+                    let weather_id = crate::dex_data::ID::new(weather_name);
+                    let applied = battle.field.set_weather(weather_id, None);
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Weather '{}' applied: {}", battle.turn, weather_name, applied);
+                }
             }
         }
     }
