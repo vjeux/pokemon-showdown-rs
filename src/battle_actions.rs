@@ -42,6 +42,7 @@ mod hit_step_accuracy;
 mod run_move;
 mod get_z_move;
 mod can_z_move;
+mod get_active_z_move;
 pub use can_mega_evo::can_mega_evo;
 pub use can_ultra_burst::can_ultra_burst;
 pub use run_mega_evo::run_mega_evo;
@@ -60,6 +61,7 @@ pub use hit_step_accuracy::hit_step_accuracy;
 pub use run_move::run_move;
 pub use get_z_move::get_z_move;
 pub use can_z_move::can_z_move;
+pub use get_active_z_move::get_active_z_move;
 
 /// Choosable target types for moves
 /// JavaScript equivalent: CHOOSABLE_TARGETS constant (sim/battle-actions.ts)
