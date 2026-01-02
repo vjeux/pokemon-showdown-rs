@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 91 Complete - set_ability cantsuppress check)
-- **Session 24 Total Progress**: 44+ commits, 91 parts (Part 91 complete)
+## Overview (Updated: Session 24 Part 92 Complete - singleEvent relay_var support)
+- **Session 24 Total Progress**: 45+ commits, 92 parts (Part 92 complete)
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -50,10 +50,11 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 89**: **COMPLETED** - run_status_immunity refactor - Complete 1:1 JavaScript implementation with battle.debug(), battle.add('-immune'), and runEvent('Immunity') for ability-based immunity. Updated 8 callsites
   - **Part 90**: **COMPLETED** - run_effectiveness refactor - Complete 1:1 JavaScript implementation with Stellar type handling, runEvent('Effectiveness'), Terapagos-Terastal Tera Shell logic, battle.add messages. Updated 24+ callsites
   - **Part 91**: **COMPLETED** - set_ability cantsuppress check - Implemented ability.flags['cantsuppress'] validation for both new and old abilities (checks both old and new ability). Conditional runEvent('SetAbility') based on isFromFormeChange and isTransform flags
+  - **Part 92**: **COMPLETED** - singleEvent relay_var support - Implemented relay_var parameter in singleEvent to enable type effectiveness modifiers (e.g., Freeze-Dry vs Water). Created single_event_with_relay_var() with relay_var: Option<i32>, refactored existing single_event() as wrapper. Returns relay_var when handler returns Continue (JavaScript: returnVal === undefined ? relayVar : returnVal). Updated run_effectiveness.rs to use new method for Effectiveness event
 - **Methods Significantly Improved**:
   - run_immunity.rs (runEvent, is_grounded, get_immunity, battle.add messages - now ~95%, was ~20%)
   - run_status_immunity.rs (battle.debug, battle.add, runEvent('Immunity') - now ~95%, was ~30%)
-  - run_effectiveness.rs (Stellar type, runEvent, Tera Shell, battle.add - now ~85%, was ~20%)
+  - run_effectiveness.rs (Stellar type, singleEvent with relay_var, runEvent, Tera Shell, battle.add - now 100%, was ~20%)
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
   - get_moves.rs (**MAJOR REFACTOR** - full move objects, lockedMove parameter, trapped side effect - now ~78%, was ~75%)
@@ -89,7 +90,7 @@ This document tracks divergences between the JavaScript and Rust implementations
 - **Compilation Success Rate**: 100% (0 errors, 61 warnings throughout Session 24 Parts 58-73)
 - **Remaining Work**: 🎉 **ZERO TODOs in src/pokemon/** (was 1 in calculate_stat.rs - now documented with event infrastructure plan)
 - **Remaining Work Detail**: 135 NOTE comments for event system, species data, and other infrastructure improvements
-- **Methods Now at 100%**: 24 methods fully equivalent to JavaScript
+- **Methods Now at 100%**: 25 methods fully equivalent to JavaScript (includes run_effectiveness.rs from Part 92)
 - **Goal**: Achieve 1:1 line-by-line equivalence with JavaScript
 
 ## Status Legend
