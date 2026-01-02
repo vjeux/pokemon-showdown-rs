@@ -92,7 +92,6 @@ mod got_attacked;
 mod get_locked_move;
 mod max_move_disabled;
 mod transform_into;
-mod copy_volatile_from_full;
 mod set_species;
 mod forme_change;
 mod get_base_species_name;
