@@ -181,6 +181,18 @@ pub struct SpeciesData {
     /// JavaScript: evoLevel?: number
     #[serde(default)]
     pub evo_level: Option<i32>,
+    /// Evolution item required
+    /// JavaScript: evoItem?: string
+    #[serde(rename = "evoItem", default)]
+    pub evo_item: Option<String>,
+    /// Evolution condition (e.g., "during the day")
+    /// JavaScript: evoCondition?: string
+    #[serde(rename = "evoCondition", default)]
+    pub evo_condition: Option<String>,
+    /// Can this species hatch from an egg?
+    /// JavaScript: canHatch?: boolean
+    #[serde(rename = "canHatch", default)]
+    pub can_hatch: bool,
     /// Base species (for formes)
     /// JavaScript: baseSpecies?: string
     #[serde(default)]
