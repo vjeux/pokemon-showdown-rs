@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 67 Complete)
-- **Session 24 Total Progress**: 39+ commits, 67 parts completed
+## Overview (Updated: Session 24 Part 68 Complete)
+- **Session 24 Total Progress**: 40+ commits, 68 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
@@ -25,9 +25,10 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 64**: get_switch_request_data Gen 9 fields (commanding, teraType, terastallized)
   - **Part 65**: get_switch_request_data documentation cleanup
   - **Part 67**: get_moves lockedMove parameter implementation (Recharge, locked move handling)
+  - **Part 68**: get_switch_request_data forAlly parameter (base_moves vs moves selection)
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
-  - get_switch_request_data.rs (full protocol fields, Gen 9 support - now ~80%, was ~50%)
+  - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
   - get_moves.rs (**MAJOR REFACTOR** - full move objects, lockedMove parameter - now ~75%, was ~70%)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
   - copy_volatile_from.rs (complete refactor + linkedPokemon bidirectional updating - now 100%)
@@ -870,24 +871,26 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now ~75% complete (was ~70% in Part 63, was ~10% before)
 
 #### get_switch_request_data.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Improved - Session 24 Parts 60, 64, 65, 68)
 - Issue: Very simplified JSON missing most protocol fields
-- Action: Documented all missing pieces line by line
+- Action: Implemented full protocol fields in Part 60, Gen 9 fields in Part 64, forAlly parameter in Part 68
 - Notes:
-  - Missing ident field (should be fullname like "p1a: Pikachu")
-  - Missing details field (species with forme/shiny/gender)
-  - Missing condition field (should be getHealth().secret format "hp/maxhp status")
-  - Missing active field (whether currently in battle vs on bench)
-  - Missing stats object with baseStoredStats (atk, def, spa, spd, spe)
-  - Missing forAlly parameter to choose baseMoves vs moves
-  - Missing Hidden Power formatting in moves (with type and power)
-  - Missing Return/Frustration power calculation in moves
-  - Missing baseAbility field
-  - Missing pokeball field
-  - Missing gen > 6 check for ability field
-  - Missing Gen 9+ commanding and reviving fields
-  - Missing Gen 9 teraType and terastallized fields
-  - Currently returns custom JSON with basic fields
+  - ✅ NOW IMPLEMENTED (Session 24 Part 68): forAlly parameter to choose base_moves vs moves
+  - ✅ NOW IMPLEMENTED (Session 24 Part 68): base_move_slots selection when for_ally=true
+  - ✅ NOW IMPLEMENTED (Session 24 Part 68): Hidden Power formatting (hiddenpowerfire format)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 64): commanding field (Gen 9)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 64): teraType and terastallized fields (Gen 9)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 60): ident field (fullname format)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 60): details field (using get_updated_details)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 60): condition field (using get_health)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 60): active field
+  - ✅ NOW IMPLEMENTED (Session 24 Part 60): stats object with baseStoredStats
+  - ✅ NOW IMPLEMENTED (Session 24 Part 56): baseAbility and pokeball fields
+  - Note: Would need Battle reference for gen check (ability field conditional on gen > 6)
+  - Note: Return/Frustration power calculation needs Dex access
+  - Note: reviving field needs Side.slotConditions reference
+  - Note: Hidden Power power suffix (Gen < 6) needs Battle reference for gen check
+  - Now ~85% complete (was ~80% in Part 64, was ~50% before)
 
 #### get_dynamax_request.rs
 - Status: ✅ Fixed (Documented)
