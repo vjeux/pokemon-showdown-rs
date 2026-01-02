@@ -104,6 +104,22 @@ impl Battle {
         source: Option<(usize, usize)>,
         _source_effect: Option<&ID>,
     ) -> crate::event::EventResult {
+        self.single_event_with_relay_var(event_id, effect_id, target, source, _source_effect, None)
+    }
+
+    /// Single event with relay_var support
+    /// JavaScript: singleEvent(eventid, effect, state, target, source, sourceEffect, relayVar)
+    /// The relayVar parameter allows passing a value through the event system that can be modified by handlers
+    /// For example, effectiveness modifiers (Freeze-Dry making Water weak) use this
+    pub fn single_event_with_relay_var(
+        &mut self,
+        event_id: &str,
+        effect_id: &ID,
+        target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
+        _source_effect: Option<&ID>,
+        relay_var: Option<i32>,
+    ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
         // JavaScript: if (this.eventDepth >= 8) throw Error
@@ -203,13 +219,15 @@ impl Battle {
         let parent_effect_state = self.current_effect_state.take();
 
         // Set up current event
+        // JavaScript: this.event = { id: eventid, target, source, effect: sourceEffect };
+        // JavaScript: if (hasRelayVar) args.unshift(relayVar); // relayVar becomes first argument to handler
         self.current_event = Some(EventInfo {
             id: event_id.to_string(),
             target,
             source,
             effect: Some(effect_id.clone()),
             modifier: 4096,
-            relay_var: None,
+            relay_var,
             relay_var_float: None,
             relay_var_boost: None,
             relay_var_secondaries: None,
@@ -227,6 +245,18 @@ impl Battle {
         self.current_effect = parent_effect;
         self.current_effect_state = parent_effect_state;
 
-        result
+        // JavaScript: return returnVal === undefined ? relayVar : returnVal;
+        // If handler returns Continue (undefined equivalent) and we have relay_var, return it
+        // Otherwise return the handler's result
+        match result {
+            EventResult::Continue => {
+                if let Some(rv) = relay_var {
+                    EventResult::Number(rv)
+                } else {
+                    EventResult::Continue
+                }
+            }
+            _ => result,
+        }
     }
 }

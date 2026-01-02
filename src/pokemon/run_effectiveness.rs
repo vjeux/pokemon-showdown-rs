@@ -70,10 +70,21 @@ impl Pokemon {
                 let mut type_mod = battle.dex.get_effectiveness(&move_type, defender_type);
 
                 // JS: typeMod = this.battle.singleEvent('Effectiveness', move, null, this, type, move, typeMod);
-                // Note: singleEvent for move effectiveness modifiers (e.g., Freeze-Dry vs Water)
-                // This would require passing typeMod through the event system, but our singleEvent
-                // signature doesn't support this yet. For now, skip this call.
-                // TODO: Implement singleEvent with proper relay_var support for effectiveness modifiers
+                // ✅ NOW IMPLEMENTED (Session 24 Part 92): singleEvent with relay_var support
+                // Call singleEvent on the move to allow move-specific effectiveness modifiers (e.g., Freeze-Dry)
+                let single_event_result = battle.single_event_with_relay_var(
+                    "Effectiveness",
+                    move_id,
+                    Some(pokemon_pos),
+                    None,
+                    None,
+                    Some(type_mod),
+                );
+
+                // Extract modified type_mod from event result
+                if let crate::event::EventResult::Number(modified_mod) = single_event_result {
+                    type_mod = modified_mod;
+                }
 
                 // JS: totalTypeMod += this.battle.runEvent('Effectiveness', this, type, move, typeMod);
                 // runEvent returns modified effectiveness or None if event fails
