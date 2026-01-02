@@ -54,10 +54,10 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.run_effectiveness("Ice")
+        Pokemon::run_effectiveness(battle, target_pos, &ID::from("Ice"))
     };
 
-    if type_effectiveness <= 1.0 {
+    if type_effectiveness <= 0 {
         return EventResult::Continue;
     }
 

@@ -33,15 +33,9 @@ pub fn on_base_power(
     };
 
     // if (target.runEffectiveness(move) > 0) {
-    let effectiveness = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.run_effectiveness(move_id.as_str())
-    };
+    let effectiveness = crate::Pokemon::run_effectiveness(battle, target, &move_id);
 
-    if effectiveness > 0.0 {
+    if effectiveness > 0 {
         // this.debug(`collision course super effective buff`);
         battle.debug("collision course super effective buff");
 

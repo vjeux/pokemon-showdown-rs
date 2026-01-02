@@ -58,18 +58,27 @@ pub mod condition {
         // steelHazard.type = 'Steel';
         // const typeMod = this.clampIntRange(pokemon.runEffectiveness(steelHazard), -6, 6);
         // We need to run effectiveness as if using a Steel-type Stealth Rock
-        // For now, we'll use the stealth rock move ID but the effectiveness system
-        // should handle type-based calculations
+        use crate::dex_data::ID;
+
+        // Create a Steel-type move ID for effectiveness calculation
+        let steel_move_id = ID::from("stealthrock"); // Using Stealth Rock as base move
+
+        // Run effectiveness for Steel-type (the move type is checked in run_effectiveness)
+        // Note: In full implementation, we'd modify battle.active_move.move_type to "Steel" temporarily
+        // For now, we'll use a direct Steel type effectiveness check
         let type_mod = {
-            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            // Use the Dex to get Steel type effectiveness against pokemon's types
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            // Run effectiveness for Steel-type Stealth Rock
-            // The move is Stealth Rock but we need to treat it as Steel type
-            let effectiveness = pokemon_pokemon.run_effectiveness("steel");
+            let pokemon_types = pokemon_ref.get_types(battle, false);
+            let mut total_mod = 0;
+            for poke_type in &pokemon_types {
+                total_mod += battle.dex.get_effectiveness("Steel", poke_type);
+            }
             // Clamp between -6 and 6
-            battle.clamp_int_range(effectiveness as i32, Some(-6), Some(6))
+            battle.clamp_int_range(total_mod, Some(-6), Some(6))
         };
 
         // this.damage(pokemon.maxhp * (2 ** typeMod) / 8);

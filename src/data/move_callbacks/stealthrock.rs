@@ -57,14 +57,20 @@ pub mod condition {
         }
 
         // const typeMod = this.clampIntRange(pokemon.runEffectiveness(this.dex.getActiveMove('stealthrock')), -6, 6);
-        let effectiveness = {
-            let pokemon_data = match battle.pokemon_at(pokemon.0, pokemon.1) {
+        // Run effectiveness for Rock-type Stealth Rock
+        let type_mod = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_data.run_effectiveness("rock")
+            let pokemon_types = pokemon_ref.get_types(battle, false);
+            let mut total_mod = 0;
+            for poke_type in &pokemon_types {
+                total_mod += battle.dex.get_effectiveness("Rock", poke_type);
+            }
+            // Clamp between -6 and 6
+            battle.clamp_int_range(total_mod, Some(-6), Some(6))
         };
-        let type_mod = battle.clamp_int_range(effectiveness as i32, Some(-6), Some(6));
 
         // this.damage(pokemon.maxhp * (2 ** typeMod) / 8);
         let max_hp = {

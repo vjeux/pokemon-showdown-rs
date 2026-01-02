@@ -22,24 +22,18 @@ pub fn on_modify_damage(battle: &mut Battle, _damage: i32, _pokemon_pos: (usize,
         None => return EventResult::Continue,
     };
 
-    // Get move type from active_move
-    let move_type = match &battle.active_move {
-        Some(active_move) => active_move.move_type.clone(),
+    // Get move ID from active_move (clone to avoid borrow issues)
+    let move_id = match &battle.active_move {
+        Some(active_move) => active_move.id.clone(),
         None => return EventResult::Continue,
     };
 
     // Check type effectiveness against target
     // target.getMoveHitData(move).typeMod > 0 means super effective
-    let type_effectiveness = {
-        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target.run_effectiveness(&move_type)
-    };
+    let type_effectiveness = crate::Pokemon::run_effectiveness(battle, target_pos, &move_id);
 
-    // typeMod > 0 in JavaScript means super effective (effectiveness > 1.0 in our system)
-    if type_effectiveness > 1.0 {
+    // typeMod > 0 in JavaScript means super effective
+    if type_effectiveness > 0 {
         // return this.chainModify([4915, 4096]);
         battle.chain_modify_fraction(4915, 4096);
     }

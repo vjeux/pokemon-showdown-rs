@@ -23,21 +23,22 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
     };
 
     // Check if move is super effective
+    // Get move ID from active_move (clone to avoid borrow issues)
+    let move_id = match &battle.active_move {
+        Some(active_move) => active_move.id.clone(),
+        None => return EventResult::Continue,
+    };
+
+    // target.getMoveHitData(move).typeMod > 0 means super effective
+    let type_effectiveness = Pokemon::run_effectiveness(battle, target_pos, &move_id);
+
     let (is_super_effective, target_base_maxhp) = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        // Get move type from active_move
-        let move_type = match &battle.active_move {
-            Some(active_move) => &active_move.move_type,
-            None => return EventResult::Continue,
-        };
-
-        // target.getMoveHitData(move).typeMod > 0 means super effective
-        let type_effectiveness = target.run_effectiveness(move_type);
-        (type_effectiveness > 1.0, target.base_maxhp)
+        (type_effectiveness > 0, target.base_maxhp)
     };
 
     if !is_super_effective {
