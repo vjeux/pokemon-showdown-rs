@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -65,16 +66,14 @@ pub mod condition {
 
         // if (status.id === 'slp' && target.isGrounded() && !target.isSemiInvulnerable()) {
         if status == Some("slp") {
-            let (is_grounded, is_semi_invulnerable) = {
+            let is_grounded = {
                 let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                (
-                    target_pokemon.is_grounded(battle),
-                    target_pokemon.is_semi_invulnerable(),
-                )
+                target_pokemon.is_grounded(battle)
             };
+            let is_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, target);
 
             if is_grounded && !is_semi_invulnerable {
                 // if (effect.id === 'yawn' || (effect.effectType === 'Move' && !effect.secondaries)) {
@@ -144,16 +143,14 @@ pub mod condition {
         };
 
         // if (!target.isGrounded() || target.isSemiInvulnerable()) return;
-        let (is_grounded, is_semi_invulnerable) = {
+        let is_grounded = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (
-                target_pokemon.is_grounded(battle),
-                target_pokemon.is_semi_invulnerable(),
-            )
+            target_pokemon.is_grounded(battle)
         };
+        let is_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, target);
 
         if !is_grounded || is_semi_invulnerable {
             // return;
@@ -210,16 +207,14 @@ pub mod condition {
 
         // if (move.type === 'Electric' && attacker.isGrounded() && !attacker.isSemiInvulnerable()) {
         if move_type == "electric" {
-            let (is_grounded, is_semi_invulnerable) = {
+            let is_grounded = {
                 let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                (
-                    attacker_pokemon.is_grounded(battle),
-                    attacker_pokemon.is_semi_invulnerable(),
-                )
+                attacker_pokemon.is_grounded(battle)
             };
+            let is_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, attacker);
 
             if is_grounded && !is_semi_invulnerable {
                 // this.debug('electric terrain boost');

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -78,13 +79,7 @@ pub mod condition {
         };
 
         // if (snatchUser.isSkyDropped()) return;
-        let is_skydropped = {
-            let snatch_user_pokemon = match battle.pokemon_at(snatch_user.0, snatch_user.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            snatch_user_pokemon.is_sky_dropped()
-        };
+        let is_skydropped = Pokemon::is_sky_dropped(battle, snatch_user);
         if is_skydropped {
             return EventResult::Continue;
         }

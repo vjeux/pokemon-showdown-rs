@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -87,13 +88,7 @@ pub mod condition {
                     defender_pokemon.is_grounded(battle)
                 };
 
-                let defender_semi_invuln = {
-                    let defender_pokemon = match battle.pokemon_at(defender.0, defender.1) {
-                        Some(p) => p,
-                        None => return EventResult::Continue,
-                    };
-                    defender_pokemon.is_semi_invulnerable()
-                };
+                let defender_semi_invuln = Pokemon::is_semi_invulnerable(battle, defender);
 
                 if defender_grounded && !defender_semi_invuln {
                     // this.debug('move weakened by grassy terrain');
@@ -212,13 +207,7 @@ pub mod condition {
             pokemon_pokemon.is_grounded(battle)
         };
 
-        let is_semi_invuln = {
-            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            pokemon_pokemon.is_semi_invulnerable()
-        };
+        let is_semi_invuln = Pokemon::is_semi_invulnerable(battle, pokemon);
 
         if is_grounded && !is_semi_invuln {
             // this.heal(pokemon.baseMaxhp / 16, pokemon, pokemon);

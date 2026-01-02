@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// ```ignore
 /// onTry(source) {
@@ -79,14 +80,7 @@ pub mod condition {
         };
 
         // if (ragePowderUser.isSkyDropped()) return;
-        let is_sky_dropped = {
-            let rage_powder_pokemon = match battle.pokemon_at(rage_powder_user.0, rage_powder_user.1)
-            {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            rage_powder_pokemon.is_sky_dropped()
-        };
+        let is_sky_dropped = Pokemon::is_sky_dropped(battle, rage_powder_user);
 
         if is_sky_dropped {
             return EventResult::Continue;

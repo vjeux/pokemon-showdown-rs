@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTry(source) {
 ///     return this.activePerHalf > 1;
@@ -104,14 +105,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let is_sky_dropped = {
-            let target_pokemon =
-                match battle.pokemon_at(effect_state_target.0, effect_state_target.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-            target_pokemon.is_sky_dropped()
-        };
+        let is_sky_dropped = Pokemon::is_sky_dropped(battle, effect_state_target);
 
         if is_sky_dropped {
             return EventResult::Continue;

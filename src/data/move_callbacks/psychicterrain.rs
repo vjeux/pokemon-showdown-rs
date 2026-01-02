@@ -85,13 +85,7 @@ pub mod condition {
         }
 
         // if (target.isSemiInvulnerable() || target.isAlly(source)) return;
-        let is_semi_invulnerable = {
-            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            target_pokemon.is_semi_invulnerable()
-        };
+        let is_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, target);
         let is_ally = Pokemon::is_ally(battle, target, source.0);
 
         if is_semi_invulnerable || is_ally {
@@ -164,16 +158,14 @@ pub mod condition {
 
         // if (move.type === 'Psychic' && attacker.isGrounded() && !attacker.isSemiInvulnerable()) {
         if move_type == "psychic" {
-            let (is_grounded, is_semi_invulnerable) = {
+            let is_grounded = {
                 let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                (
-                    attacker_pokemon.is_grounded(battle),
-                    attacker_pokemon.is_semi_invulnerable(),
-                )
+                attacker_pokemon.is_grounded(battle)
             };
+            let is_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, attacker);
 
             if is_grounded && !is_semi_invulnerable {
                 // this.debug('psychic terrain boost');

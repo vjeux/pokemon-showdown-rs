@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -64,16 +65,14 @@ pub mod condition {
         };
 
         // if (!target.isGrounded() || target.isSemiInvulnerable()) return;
-        let (is_grounded, is_semi_invulnerable) = {
+        let is_grounded = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (
-                target_pokemon.is_grounded(battle),
-                target_pokemon.is_semi_invulnerable(),
-            )
+            target_pokemon.is_grounded(battle)
         };
+        let is_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, target);
 
         if !is_grounded || is_semi_invulnerable {
             return EventResult::Continue;
@@ -132,16 +131,14 @@ pub mod condition {
         };
 
         // if (!target.isGrounded() || target.isSemiInvulnerable()) return;
-        let (is_grounded, is_semi_invulnerable) = {
+        let is_grounded = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (
-                target_pokemon.is_grounded(battle),
-                target_pokemon.is_semi_invulnerable(),
-            )
+            target_pokemon.is_grounded(battle)
         };
+        let is_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, target);
 
         if !is_grounded || is_semi_invulnerable {
             return EventResult::Continue;
@@ -214,16 +211,14 @@ pub mod condition {
             return EventResult::Continue;
         }
 
-        let (is_grounded, is_semi_invulnerable) = {
+        let is_grounded = {
             let defender_pokemon = match battle.pokemon_at(defender.0, defender.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (
-                defender_pokemon.is_grounded(battle),
-                defender_pokemon.is_semi_invulnerable(),
-            )
+            defender_pokemon.is_grounded(battle)
         };
+        let is_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, defender);
 
         if is_grounded && !is_semi_invulnerable {
             // this.debug('misty terrain weaken');
