@@ -6,13 +6,15 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
+**Completed implementations**: 1
+**Remaining stubs**: 15
 
 ## Files with Stubs (Not Implemented)
 
 These files are completely unimplemented stubs:
 
-1. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
-2. `can_mega_evo.rs` - canMegaEvo
+1. ~~`can_mega_evo.rs` - canMegaEvo~~ ✅ IMPLEMENTED
+2. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
 3. `can_z_move.rs` - canZMove
 4. `force_switch.rs` - forceSwitch
 5. `get_active_max_move.rs` - getActiveMaxMove
@@ -64,16 +66,26 @@ These files exist only in Rust and should be evaluated:
 
 ## Fixes Applied
 
-### [Date] - [Commit Hash]
-- [Description of fix]
+### 2026-01-02 - Commit 275d04d0
+**Implemented: can_mega_evo**
+- Added `isMega`, `requiredMove`, and `requiredAbility` fields to SpeciesData struct
+- Implemented 1:1 port of canMegaEvo from battle-actions.ts
+- Exported can_mega_evo from battle_actions module
+- Handles all Mega Evolution cases:
+  - Mega Rayquaza (requires Dragon Ascent move)
+  - Floette/Zygarde special cases
+  - Array-based mega stones (Charizard X/Y)
+  - Standard mega stone evolution
+- Matches JavaScript implementation line by line
 
 ---
 
 ## Next Steps
 
-1. Implement all stubbed files by porting from JavaScript battle-actions.ts
-2. Complete partial implementations with missing TODOs
-3. Verify Rust-specific files are necessary or can be removed
-4. Ensure all implementations match JavaScript line-by-line
-5. Run battle tests to verify correctness
+1. Implement canUltraBurst and runMegaEvo to complete Mega Evolution functionality
+2. Implement remaining stubbed files by porting from JavaScript battle-actions.ts
+3. Complete partial implementations with missing TODOs
+4. Verify Rust-specific files are necessary or can be removed
+5. Ensure all implementations match JavaScript line-by-line
+6. Run battle tests to verify correctness
 
