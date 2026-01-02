@@ -1530,11 +1530,12 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - is_grounded: Added `battle.suppressing_ability(Some((self.side_index, self.position)))` check
   - is_grounded: Documented null vs false approximation trade-off
   - details: Added shiny flag formatting with proper protocol string format
+  - set_hp: Refactored to associated function with battle.trunc and proper overflow handling
 - **Session Statistics**:
-  - 3 methods improved (update_max_hp fully complete, is_grounded significantly improved, details improved)
-  - 3 feature implementations (battle.add call, suppressingAbility check, shiny flag)
-  - 3 files modified (update_max_hp.rs, is_grounded.rs, details.rs)
-  - 3 commits pushed to git
+  - 4 methods improved (update_max_hp fully complete, is_grounded significantly improved, details improved, set_hp fully complete)
+  - 4 feature implementations (battle.add call, suppressingAbility check, shiny flag, battle.trunc with overflow handling)
+  - 5 files modified (update_max_hp.rs, is_grounded.rs, details.rs, set_hp.rs, painsplit.rs)
+  - 4 commits pushed to git
   - 100% compilation success rate
 
 ### Implementation Progress Summary
