@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 80 Complete - Continuing NOTE Fixes)
-- **Session 24 Total Progress**: 40+ commits, 80 parts completed
+## Overview (Updated: Session 24 Part 81 Complete - Continuing NOTE Fixes)
+- **Session 24 Total Progress**: 40+ commits, 81 parts completed
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -39,11 +39,12 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 78**: set_status runEvent calls - Implemented runEvent('SetStatus') before status change and runEvent('AfterSetStatus') after status change
   - **Part 79**: set_ability runEvent call - Implemented runEvent('SetAbility') before changing ability
   - **Part 80**: take_item runEvent calls - Implemented runEvent('TakeItem') before removal and runEvent('AfterTakeItem') after removal
+  - **Part 81**: add_volatile runEvent call - Implemented runEvent('TryAddVolatile') before adding volatile
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
   - get_moves.rs (**MAJOR REFACTOR** - full move objects, lockedMove parameter, trapped side effect - now ~78%, was ~75%)
-  - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
+  - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus, runEvent('TryAddVolatile') - now ~99%, was ~98%)
   - copy_volatile_from.rs (complete refactor + linkedPokemon bidirectional updating - now 100%)
   - get_smart_targets.rs (Dragon Darts double-target logic - now 100%)
   - faint.rs, update_max_hp.rs, set_hp.rs, get_locked_move.rs (all 100%)
