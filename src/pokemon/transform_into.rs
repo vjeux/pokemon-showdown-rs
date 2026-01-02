@@ -450,7 +450,7 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED: Proper setAbility call with parameters (gen > 2)
         // JS parameters: (ability, source=this, sourceEffect=null, isFromFormeChange=true, isTransform=true)
         if gen > 2 {
-            self_pokemon_mut.set_ability(target_ability, Some(pokemon_pos), None, true, true);
+            Pokemon::set_ability(battle, pokemon_pos, target_ability, Some(pokemon_pos), None, true, true);
         }
 
         // JS: // Change formes based on held items (for Transform)

@@ -6,6 +6,8 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex_data::ID;
+use crate::Pokemon;
 
 /// onHit(target, source, move) {
 ///     let success: boolean | null = false;
@@ -90,14 +92,8 @@ pub fn on_hit(
             }
 
             // const oldAbility = pokemon.setAbility(target.ability, null, move);
-            let old_ability = {
-                let ally_pokemon = match battle.pokemon_at_mut(ally_pos.0, ally_pos.1) {
-                    Some(p) => p,
-                    None => continue,
-                };
-                // setAbility returns ID - the old ability
-                ally_pokemon.set_ability(target_ability_id.clone(), None, None, false, false)
-            };
+            // setAbility returns ID - the old ability
+            let old_ability = Pokemon::set_ability(battle, ally_pos, target_ability_id.clone(), None, None, false, false);
 
             // if (oldAbility) {
             //     success = true;

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTryImmunity(target) {
 ///     // Truant and Insomnia have special treatment; they fail before
@@ -96,14 +97,7 @@ pub fn on_hit(
 
     // const oldAbility = target.setAbility('insomnia');
     // if (!oldAbility) return oldAbility as false | null;
-    let old_ability = {
-        let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        target_mut.set_ability(ID::from("insomnia"), None, None, false, false)
-    };
+    let old_ability = Pokemon::set_ability(battle, target, ID::from("insomnia"), None, None, false, false);
 
     if old_ability.is_empty() {
         return EventResult::Stop; // return null/false

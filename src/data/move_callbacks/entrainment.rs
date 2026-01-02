@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTryHit(target, source) {
 ///     if (target === source || target.volatiles['dynamax']) return false;
@@ -134,13 +135,7 @@ pub fn on_hit(
         source_pokemon.ability.clone()
     };
 
-    let old_ability = {
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.set_ability(source_ability, None, None, false, false)
-    };
+    let old_ability = Pokemon::set_ability(battle, target, source_ability, None, None, false, false);
 
     // if (!oldAbility) return oldAbility as false | null;
     if old_ability.as_str().is_empty() {

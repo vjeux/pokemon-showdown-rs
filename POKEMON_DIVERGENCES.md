@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 75 Complete - Continuing NOTE Fixes)
-- **Session 24 Total Progress**: 40+ commits, 75 parts completed
+## Overview (Updated: Session 24 Part 76 Complete - Continuing NOTE Fixes)
+- **Session 24 Total Progress**: 40+ commits, 76 parts completed
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -34,6 +34,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 73**: get_moves trapped side effect - Changed to &mut self, implements trapped = true for 1:1 JavaScript equivalence
   - **Part 74**: set_item singleEvent calls - Implemented singleEvent('End') for old item and singleEvent('Start') for new item
   - **Part 75**: take_item singleEvent call - Implemented singleEvent('End') for removed item
+  - **Part 76**: set_ability singleEvent calls - Refactored to associated function, implemented singleEvent('End') for old ability and singleEvent('Start') for new ability with gen > 3 check
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
@@ -47,7 +48,10 @@ This document tracks divergences between the JavaScript and Rust implementations
   - get_last_damaged_by.rs (filter by damage, ally check - now 100%)
   - use_item.rs (HP/Gem check, item.boosts, battle.add messages - now ~70%, was ~45%)
   - eat_item.rs (standalone, battle.add [eat], RESTORATIVE_BERRIES - now ~75%, was ~50%)
-  - set_item.rs (RESTORATIVE_BERRIES pendingStaleness, associated function - now ~60%, was ~55%)
+  - set_item.rs (RESTORATIVE_BERRIES pendingStaleness, associated function, singleEvent calls - now ~70%, was ~55%)
+  - take_item.rs (singleEvent('End') for removed item - now ~78%, was ~72%)
+  - set_ability.rs (associated function, singleEvent('End'/'Start') with gen checks - now ~75%, was ~70%)
+  - clear_ability.rs (refactored to associated function - now 100%)
   - 6 core methods with source/sourceEffect parameters added
 - **Move Callbacks Fixed**: 9 files with proper source/effect/linkedStatus parameters
 - **Infrastructure Achievements**:
@@ -525,27 +529,29 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ Updated all callsites across codebase
 
 #### set_ability.rs
-- Status: ✅ Fixed (Improved - Session 24 Part 29)
-- Issue: Missing source, sourceEffect, isFromFormeChange, isTransform parameters
-- Action: Added all 4 missing parameters and implemented source/source_effect assignments
+- Status: ✅ Fixed (Improved - Session 24 Part 76)
+- Issue: Missing source, sourceEffect, isFromFormeChange, isTransform parameters, singleEvent calls
+- Action: Refactored to associated function, added all parameters, implemented singleEvent calls with gen checks
 - Notes:
   - ✅ NOW IMPLEMENTED: HP check (returns empty ID when fainted, equivalent to false)
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): source_pos parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): source_effect parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): _is_from_forme_change parameter (declared but not used yet)
-  - ✅ NOW IMPLEMENTED (Session 24 Part 29): _is_transform parameter (declared but not used yet)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 29): is_transform parameter (used in Part 76 for start event condition)
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): ability_state.source assignment
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): ability_state.source_slot assignment
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): ability_state.source_effect assignment
-  - ✅ NOW IMPLEMENTED (Session 24 Part 29): Updated 6 callsites to pass None, None, false, false
+  - ✅ NOW IMPLEMENTED (Session 24 Part 76): Refactored from instance method to associated function (Pokemon::set_ability)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 76): singleEvent('End') for old ability
+  - ✅ NOW IMPLEMENTED (Session 24 Part 76): singleEvent('Start') for new ability
+  - ✅ NOW IMPLEMENTED (Session 24 Part 76): gen > 3 check for ability start event
+  - ✅ NOW IMPLEMENTED (Session 24 Part 76): Transform condition check (old ability != new ability || gen <= 4)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 76): Updated 7 callsites (clear_ability, transform_into, 5 move callbacks)
   - Missing cantsuppress flag checks (would need ability data)
   - Missing runEvent('SetAbility')
-  - Missing singleEvent('End') for old ability
-  - Missing singleEvent('Start') for new ability
   - Missing battle.add message
-  - Missing gen check for ability start
   - Returns old ability ID correctly
-  - Now ~60% complete (was ~50%)
+  - Now ~75% complete (was ~60%)
 
 #### set_item.rs
 - Status: ✅ Fixed (Improved - Session 24 Part 74)

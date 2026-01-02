@@ -6,6 +6,8 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex_data::ID;
+use crate::Pokemon;
 
 /// onTryHit(target) {
 ///     if (target.getAbility().flags['cantsuppress'] || target.ability === 'simple' || target.ability === 'truant') {
@@ -75,13 +77,7 @@ pub fn on_hit(
     };
 
     // const oldAbility = target.setAbility('simple');
-    let old_ability = {
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.set_ability(ID::from("simple"), None, None, false, false)
-    };
+    let old_ability = Pokemon::set_ability(battle, target, ID::from("simple"), None, None, false, false);
 
     // if (!oldAbility) return oldAbility as false | null;
     if old_ability == ID::from("") {
