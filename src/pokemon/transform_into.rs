@@ -122,7 +122,7 @@ impl Pokemon {
         // Phase 1: Extract target data immutably
         let (target_species_id, target_weight_hg, target_types, target_added_type, target_stored_stats,
              target_move_slots, target_boosts, target_ability, target_has_substitute, target_transformed,
-             target_fainted, target_times_attacked) = {
+             target_fainted, target_times_attacked, target_apparent_type) = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return false,
@@ -141,53 +141,58 @@ impl Pokemon {
                 target.transformed,
                 target.fainted,
                 target.times_attacked,
+                target.apparent_type.clone(),
             )
         };
 
         // Phase 2: Check self pokemon immutably
-        let self_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return false,
-        };
+        let self_terastallized = {
+            let self_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return false,
+            };
 
-        // JS: const species = pokemon.species;
-        // JS: if (pokemon.fainted || this.illusion || pokemon.illusion || ...) return false;
-        // Note: Missing illusion checks on both pokemon
-        if self_pokemon.fainted || target_fainted {
-            return false;
-        }
-
-        // JS: (pokemon.volatiles['substitute'] && this.battle.gen >= 5)
-        // ✅ NOW IMPLEMENTED: Gen >= 5 check for substitute
-        if target_has_substitute && gen >= 5 {
-            return false;
-        }
-
-        // JS: (pokemon.transformed && this.battle.gen >= 2)
-        // ✅ NOW IMPLEMENTED: Gen >= 2 check for target transformed
-        if target_transformed && gen >= 2 {
-            return false;
-        }
-
-        // JS: (this.transformed && this.battle.gen >= 5)
-        // ✅ NOW IMPLEMENTED: Gen >= 5 check for self transformed
-        if self_pokemon.transformed && gen >= 5 {
-            return false;
-        }
-
-        // JS: species.name === 'Eternatus-Eternamax'
-        // Note: Missing Eternatus-Eternamax check - would need species data
-
-        // JS: (['Ogerpon', 'Terapagos'].includes(species.baseSpecies) && (this.terastallized || pokemon.terastallized))
-        // Note: Missing Ogerpon/Terapagos terastallized check - would need species data
-
-        // JS: this.terastallized === 'Stellar'
-        // ✅ NOW IMPLEMENTED: Stellar tera check
-        if let Some(ref tera_type) = self_pokemon.terastallized {
-            if tera_type == "Stellar" {
+            // JS: const species = pokemon.species;
+            // JS: if (pokemon.fainted || this.illusion || pokemon.illusion || ...) return false;
+            // Note: Missing illusion checks on both pokemon
+            if self_pokemon.fainted || target_fainted {
                 return false;
             }
-        }
+
+            // JS: (pokemon.volatiles['substitute'] && this.battle.gen >= 5)
+            // ✅ NOW IMPLEMENTED: Gen >= 5 check for substitute
+            if target_has_substitute && gen >= 5 {
+                return false;
+            }
+
+            // JS: (pokemon.transformed && this.battle.gen >= 2)
+            // ✅ NOW IMPLEMENTED: Gen >= 2 check for target transformed
+            if target_transformed && gen >= 2 {
+                return false;
+            }
+
+            // JS: (this.transformed && this.battle.gen >= 5)
+            // ✅ NOW IMPLEMENTED: Gen >= 5 check for self transformed
+            if self_pokemon.transformed && gen >= 5 {
+                return false;
+            }
+
+            // JS: species.name === 'Eternatus-Eternamax'
+            // Note: Missing Eternatus-Eternamax check - would need species data
+
+            // JS: (['Ogerpon', 'Terapagos'].includes(species.baseSpecies) && (this.terastallized || pokemon.terastallized))
+            // Note: Missing Ogerpon/Terapagos terastallized check - would need species data
+
+            // JS: this.terastallized === 'Stellar'
+            // ✅ NOW IMPLEMENTED: Stellar tera check
+            if let Some(ref tera_type) = self_pokemon.terastallized {
+                if tera_type == "Stellar" {
+                    return false;
+                }
+            }
+
+            self_pokemon.terastallized.clone()
+        };
 
         // Phase 3: Get mutable reference and apply transformation
         let self_pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -220,10 +225,12 @@ impl Pokemon {
         self_pokemon_mut.added_type = target_added_type;
 
         // JS: this.knownType = this.isAlly(pokemon) && pokemon.knownType;
-        // Note: knownType field doesn't exist in Rust
+        // Note: JavaScript knownType is boolean (is type publicly known), Rust known_type is Option<String> (what type is known for Illusion)
+        // Different semantics, so not setting known_type here
 
         // JS: this.apparentType = pokemon.apparentType;
-        // Note: apparentType field doesn't exist in Rust
+        // ✅ NOW IMPLEMENTED: apparentType copying from target
+        self_pokemon_mut.apparent_type = target_apparent_type;
 
         // JS: for (statName in this.storedStats) { this.storedStats[statName] = pokemon.storedStats[statName]; }
         // Copy stats
@@ -300,7 +307,11 @@ impl Pokemon {
         // JS:     this.knownType = true;
         // JS:     this.apparentType = this.terastallized;
         // JS: }
-        // Note: Missing terastallized knownType/apparentType update
+        // ✅ NOW IMPLEMENTED: terastallized apparentType update
+        if let Some(tera_type) = self_terastallized {
+            self_pokemon_mut.apparent_type = Some(tera_type);
+        }
+        // Note: Not setting known_type as it has different semantics in Rust (Option<String> vs boolean)
 
         // JS: if (this.battle.gen > 2) this.setAbility(pokemon.ability, this, null, true, true);
         // ✅ NOW IMPLEMENTED: Gen check for ability copying (gen > 2)
