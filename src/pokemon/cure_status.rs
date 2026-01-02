@@ -40,7 +40,7 @@ impl Pokemon {
         };
 
         // JS: this.setStatus('');
-        self.set_status(ID::empty());
+        self.set_status(ID::empty(), None, None, false);
         self.status_state.duration = None;
 
         // Return (status_id, removed_nightmare, silent) for caller to log

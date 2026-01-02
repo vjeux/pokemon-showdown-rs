@@ -173,7 +173,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_status(ID::from("slp"))
+        target_pokemon.set_status(ID::from("slp"), None, None, false)
     };
 
     // if (!result) return result;

@@ -82,7 +82,7 @@ impl Pokemon {
                 Some(p) => p,
                 None => return false,
             };
-            pokemon.set_status(ID::empty());
+            pokemon.set_status(ID::empty(), None, None, false);
         }
 
         // JS: return true;

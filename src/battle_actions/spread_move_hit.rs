@@ -458,7 +458,7 @@ pub fn spread_move_hit(
                     if let Some(side) = battle.sides.get_mut(target_pos.0) {
                         if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
                             let status_id = crate::dex_data::ID::new(status_name);
-                            let applied = pokemon.set_status(status_id);
+                            let applied = pokemon.set_status(status_id, None, None, false);
                             eprintln!("[SPREAD_MOVE_HIT T{}] Status '{}' applied: {}", battle.turn, status_name, applied);
                         }
                     }

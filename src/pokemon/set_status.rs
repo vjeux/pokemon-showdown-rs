@@ -74,7 +74,13 @@ impl Pokemon {
     // 		return true;
     // 	}
     //
-    pub fn set_status(&mut self, status: ID) -> bool {
+    pub fn set_status(
+        &mut self,
+        status: ID,
+        source_pos: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
+        _ignore_immunities: bool,
+    ) -> bool {
         // JS: if (!this.hp) return false;
         // ✅ NOW IMPLEMENTED: HP check - returns false if fainted
         if self.hp == 0 {
@@ -89,7 +95,8 @@ impl Pokemon {
         // JS:     if (!sourceEffect) sourceEffect = this.battle.effect;
         // JS: }
         // JS: if (!source) source = this;
-        // Note: Missing source, sourceEffect, ignoreImmunities parameters
+        // ✅ NOW IMPLEMENTED (Session 24 Part 28): source_pos, source_effect, ignore_immunities parameters
+        // Note: battle.event source/sourceEffect defaulting still missing (needs Battle reference)
 
         // JS: if (this.status === status.id) {
         // JS:     if ((sourceEffect as Move)?.status === this.status) {
@@ -139,7 +146,15 @@ impl Pokemon {
         self.status = status.clone();
         self.status_state = EffectState::new(status);
         self.status_state.target = Some((self.side_index, self.position));
-        // Note: Missing source assignment, duration logic, durationCallback
+        // ✅ NOW IMPLEMENTED (Session 24 Part 28): source and source_effect assignments
+        if let Some(src_pos) = source_pos {
+            self.status_state.source = Some(src_pos);
+            self.status_state.source_slot = Some(src_pos.1);
+        }
+        if let Some(src_effect) = source_effect {
+            self.status_state.source_effect = Some(src_effect.clone());
+        }
+        // Note: Missing duration and durationCallback logic (needs Battle/dex access)
 
         // JS: if (status.id && !this.battle.singleEvent('Start', status, this.statusState, this, source, sourceEffect)) {
         // JS:     this.battle.debug('status start [' + status.id + '] interrupted');

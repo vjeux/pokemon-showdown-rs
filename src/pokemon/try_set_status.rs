@@ -24,6 +24,6 @@ impl Pokemon {
         }
 
         // Call setStatus which will handle all immunity checks and events
-        self.set_status(status_id)
+        self.set_status(status_id, None, None, false)
     }
 }
