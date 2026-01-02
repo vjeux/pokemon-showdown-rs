@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
-use crate::pokemon::Pokemon;
 use crate::Pokemon;
 
 /// onTryMove(attacker, defender, move) {

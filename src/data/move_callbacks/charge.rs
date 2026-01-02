@@ -175,11 +175,7 @@ pub mod condition {
         // if (move.type === 'Electric' && move.id !== 'charge') {
         if move_data.move_type == "Electric" && move_id != "charge" {
             // pokemon.removeVolatile('charge');
-            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("charge"));
+            Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("charge"));
         }
 
         EventResult::Continue
@@ -209,11 +205,7 @@ pub mod condition {
         // if (move.type === 'Electric' && move.id !== 'charge') {
         if move_data.move_type == "Electric" && move_id.as_str() != "charge" {
             // pokemon.removeVolatile('charge');
-            let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("charge"));
+            Pokemon::remove_volatile(battle, source_pos, &ID::from("charge"));
         }
 
         EventResult::Continue

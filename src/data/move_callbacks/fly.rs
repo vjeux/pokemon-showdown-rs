@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
-use crate::pokemon::Pokemon;
 use crate::Pokemon;
 
 /// onTryMove(attacker, defender, move) {
@@ -35,17 +34,17 @@ pub fn on_try_move(
     // if (attacker.removeVolatile(move.id)) {
     //     return;
     // }
-    {
-        let attacker = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+    let has_volatile = {
+        let attacker = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
+        attacker.volatiles.contains_key(&move_id)
+    };
 
-        if attacker.volatiles.contains_key(&move_id) {
-            Pokemon::remove_volatile(battle, (attacker.side_index, attacker.position), &move_id);
-            // return;
-            return EventResult::Continue;
-        }
+    if has_volatile {
+        Pokemon::remove_volatile(battle, source_pos, &move_id);
+        return EventResult::Continue;
     }
 
     // this.add('-prepare', attacker, move.name);

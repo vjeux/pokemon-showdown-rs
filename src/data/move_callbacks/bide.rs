@@ -286,12 +286,7 @@ pub mod condition {
     /// }
     pub fn on_move_aborted(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // pokemon.removeVolatile('bide');
-        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("bide"));
+        Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("bide"));
 
         EventResult::Continue
     }
