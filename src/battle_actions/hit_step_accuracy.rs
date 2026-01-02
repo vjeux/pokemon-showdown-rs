@@ -114,24 +114,86 @@ pub fn hit_step_accuracy(
         };
 
         // Handle OHKO moves
-        if move_data.ohko.is_some() {
-            // TODO: Full OHKO logic
-            // For now, treat as normal accuracy check
-        }
+        // JavaScript: if (move.ohko) { ... }
+        if let Some(ref ohko_type) = move_data.ohko {
+            // if (!target.isSemiInvulnerable())
+            let target_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, target_pos);
 
-        // Set active_target for events
-        battle.active_target = Some(target_pos);
+            if !target_semi_invulnerable {
+                // accuracy = 30;
+                accuracy = 30;
 
-        // JavaScript: else { accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy); }
-        // ModifyAccuracy event can change accuracy to true (represented as 0 in Rust)
-        if let Some(modified_acc) = battle.run_event(
-            "ModifyAccuracy",
-            Some(target_pos),
-            Some(pokemon_pos),
-            Some(&move_id),
-            Some(accuracy),
-        ) {
-            accuracy = modified_acc;
+                // if (move.ohko === 'Ice' && this.battle.gen >= 7 && !pokemon.hasType('Ice'))
+                if let crate::dex::Ohko::TypeBased(ref type_name) = ohko_type {
+                    if type_name == "Ice" && battle.gen >= 7 {
+                        let attacker_has_ice = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
+                            .map(|p| p.has_type(battle, "Ice"))
+                            .unwrap_or(false);
+                        if !attacker_has_ice {
+                            // accuracy = 20;
+                            accuracy = 20;
+                        }
+                    }
+                }
+
+                // if (!target.volatiles['dynamax'] && pokemon.level >= target.level &&
+                //     (move.ohko === true || !target.hasType(move.ohko)))
+                let (target_has_dynamax, pokemon_level, target_level, target_has_ohko_type) = {
+                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return hit_results,
+                    };
+                    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                        Some(t) => t,
+                        None => {
+                            hit_results[i] = false;
+                            continue;
+                        }
+                    };
+                    let has_dynamax = target.volatiles.contains_key(&ID::from("dynamax"));
+                    let target_type_check = match ohko_type {
+                        crate::dex::Ohko::Generic => {
+                            false // ohko === true means any type is valid
+                        }
+                        crate::dex::Ohko::TypeBased(ref type_name) => {
+                            target.has_type(battle, type_name.as_str())
+                        }
+                    };
+                    (has_dynamax, pokemon.level, target.level, target_type_check)
+                };
+
+                let is_generic_ohko = matches!(ohko_type, crate::dex::Ohko::Generic);
+                if !target_has_dynamax && pokemon_level >= target_level &&
+                    (is_generic_ohko || !target_has_ohko_type) {
+                    // accuracy += (pokemon.level - target.level);
+                    accuracy += (pokemon_level - target_level) as i32;
+                } else {
+                    // this.battle.add('-immune', target, '[ohko]');
+                    // hitResults[i] = false;
+                    // continue;
+                    if let Some(target_pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
+                        let target_ident = format!("p{}a: {}", target_pos.0 + 1, target_pokemon.set.species);
+                        battle.add("-immune", &[
+                            crate::battle::Arg::String(target_ident),
+                            crate::battle::Arg::Str("[ohko]"),
+                        ]);
+                    }
+                    hit_results[i] = false;
+                    continue;
+                }
+            }
+        } else {
+            // Not an OHKO move - run ModifyAccuracy event
+            // JavaScript: else { accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy); }
+            if let Some(modified_acc) = battle.run_event(
+                "ModifyAccuracy",
+                Some(target_pos),
+                Some(pokemon_pos),
+                Some(&move_id),
+                Some(accuracy),
+            ) {
+                accuracy = modified_acc;
+            }
         }
 
         // JavaScript: if (accuracy !== true) { apply boosts }
@@ -169,17 +231,43 @@ pub fn hit_step_accuracy(
         }
 
         // JavaScript: if (move.alwaysHit || ...) { accuracy = true; } else { accuracy = runEvent('Accuracy', ...); }
-        // Check special conditions that set accuracy to true
-        // TODO: Implement move.target === 'self' and toxic special cases
-        // For now, just run the Accuracy event
-        if let Some(modified_acc) = battle.run_event(
-            "Accuracy",
-            Some(target_pos),
-            Some(pokemon_pos),
-            Some(&move_id),
-            Some(accuracy),
-        ) {
-            accuracy = modified_acc;
+        // if (
+        //     move.alwaysHit || (move.id === 'toxic' && this.battle.gen >= 8 && pokemon.hasType('Poison')) ||
+        //     (move.target === 'self' && move.category === 'Status' && !target.isSemiInvulnerable())
+        // ) {
+        //     accuracy = true; // bypasses ohko accuracy modifiers
+        // } else {
+        //     accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+        // }
+
+        let always_hit = {
+            let active_always_hit = battle.active_move.as_ref()
+                .map(|m| m.always_hit)
+                .unwrap_or(false);
+
+            active_always_hit ||
+                (move_id.as_str() == "toxic" && battle.gen >= 8 && {
+                    battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
+                        .map(|p| p.has_type(battle, "Poison"))
+                        .unwrap_or(false)
+                }) ||
+                (move_data.target == "self" && move_data.category == "Status" && !Pokemon::is_semi_invulnerable(battle, target_pos))
+        };
+
+        if always_hit {
+            // accuracy = true; // bypasses ohko accuracy modifiers
+            accuracy = 0; // In Rust, 0 represents boolean true for accuracy
+        } else {
+            // accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+            if let Some(modified_acc) = battle.run_event(
+                "Accuracy",
+                Some(target_pos),
+                Some(pokemon_pos),
+                Some(&move_id),
+                Some(accuracy),
+            ) {
+                accuracy = modified_acc;
+            }
         }
 
         // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
@@ -192,7 +280,53 @@ pub fn hit_step_accuracy(
         }
         if accuracy != 0 && !battle.random_chance(accuracy, 100) {
             // Miss!
-            // TODO: Add miss message and Blunder Policy handling
+            // if (move.smartTarget) {
+            //     move.smartTarget = false;
+            // } else {
+            //     if (!move.spreadHit) this.battle.attrLastMove('[miss]');
+            //     this.battle.add('-miss', pokemon, target);
+            // }
+            // if (!move.ohko && pokemon.hasItem('blunderpolicy') && pokemon.useItem()) {
+            //     this.battle.boost({ spe: 2 }, pokemon);
+            // }
+
+            // TODO: Need to modify ActiveMove.smart_target, but we only have a reference to move_data
+            // For now, just handle the miss messages
+            let spread_hit = battle.active_move.as_ref()
+                .map(|m| m.spread_hit)
+                .unwrap_or(false);
+
+            if !spread_hit {
+                battle.attr_last_move(&["[miss]"]);
+            }
+
+            if let Some(attacker_pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                let attacker_ident = format!("p{}a: {}", pokemon_pos.0 + 1, attacker_pokemon.set.species);
+                if let Some(target_pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
+                    let target_ident = format!("p{}a: {}", target_pos.0 + 1, target_pokemon.set.species);
+                    battle.add("-miss", &[
+                        crate::battle::Arg::String(attacker_ident),
+                        crate::battle::Arg::String(target_ident),
+                    ]);
+                }
+            }
+
+            // Blunder Policy item handling
+            // if (!move.ohko && pokemon.hasItem('blunderpolicy') && pokemon.useItem())
+            if move_data.ohko.is_none() {
+                let has_blunder_policy = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
+                    .map(|p| p.has_item(battle, &["blunderpolicy"]))
+                    .unwrap_or(false);
+                if has_blunder_policy {
+                    // pokemon.useItem()
+                    let used_item = Pokemon::use_item(battle, pokemon_pos, None, None);
+                    if used_item.is_some() {
+                        // this.battle.boost({ spe: 2 }, pokemon);
+                        battle.boost(&[("spe", 2)], pokemon_pos, Some(pokemon_pos), None, false, false);
+                    }
+                }
+            }
+
             eprintln!("[HIT_STEP_ACCURACY] Miss! accuracy check failed");
             hit_results[i] = false;
             continue;

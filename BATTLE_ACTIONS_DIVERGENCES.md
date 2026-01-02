@@ -37,10 +37,10 @@ These files are completely unimplemented stubs:
 
 These files have implementations but with TODOs for missing functionality:
 
-### hit_step_accuracy.rs
-- Line 118: Full OHKO logic missing
-- Line 173: move.target === 'self' and toxic special cases
-- Line 195: Miss message and Blunder Policy handling
+### ~~hit_step_accuracy.rs~~ ✅ COMPLETED
+- ~~Line 118: Full OHKO logic missing~~ ✅ IMPLEMENTED
+- ~~Line 173: move.target === 'self' and toxic special cases~~ ✅ IMPLEMENTED
+- ~~Line 195: Miss message and Blunder Policy handling~~ ✅ IMPLEMENTED
 
 ### get_damage.rs
 - Line 358: Second condition check for move.isMax
@@ -264,6 +264,30 @@ These files exist only in Rust and should be evaluated:
   - Passes !move.smartTarget as show_message parameter
 - Returns Vec<bool> indicating which targets can be hit
 - Simple and straightforward implementation
+
+### 2026-01-02
+**Completed: hit_step_accuracy** ✅ ALL TODOs IMPLEMENTED!
+- Implemented full OHKO logic (TODO #1):
+  - Base accuracy 30, reduced to 20 for Ice OHKO without Ice-type user (Gen 7+)
+  - Level difference modifies accuracy
+  - Dynamax and type-based immunity checks
+  - Proper handling of `Ohko` enum (Generic vs TypeBased)
+  - Uses `Pokemon::is_semi_invulnerable` associated function
+- Implemented always-hit special cases (TODO #2):
+  - Checks `battle.active_move.always_hit` from battle state
+  - Toxic bypasses accuracy if user is Poison-type (Gen 8+)
+  - Self-targeting Status moves bypass accuracy if target not semi-invulnerable
+  - Sets accuracy to 0 (representing boolean true) for always-hit moves
+- Implemented miss handling (TODO #3):
+  - Checks `battle.active_move.spread_hit` from battle state
+  - Adds '[miss]' attribute for non-spread moves
+  - Adds '-miss' message with attacker and target identifiers
+  - Blunder Policy item handling: boosts Speed by 2 on miss (non-OHKO moves)
+  - Uses `Pokemon::use_item` associated function
+  - Uses `pokemon.has_item(battle, &["blunderpolicy"])` for item check
+- Infrastructure note: Accesses `battle.active_move` for ActiveMove-specific fields
+  - Avoids massive signature refactor through all callers
+  - Falls back to defaults if active_move is None
 
 ---
 
