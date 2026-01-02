@@ -770,6 +770,8 @@ pub struct SelfEffect {
 }
 
 /// Z-Move request option
+/// JavaScript equivalent: ZMoveOption (sim/side.ts)
+/// 2 fields in JavaScript
 #[derive(Debug, Clone)]
 pub struct ZMoveOption {
     pub move_name: String,
@@ -777,6 +779,8 @@ pub struct ZMoveOption {
 }
 
 /// Damage value (can be number, false, or undefined-like None)
+/// TODO: Rust uses enum to represent JavaScript's number | false | undefined union type
+/// JavaScript: number | false | undefined
 #[derive(Debug, Clone)]
 pub enum DamageValue {
     Damage(i32),
@@ -785,6 +789,8 @@ pub enum DamageValue {
 }
 
 /// Switch copy flag type
+/// TODO: Not in JavaScript - Rust-specific enum for switch copy behavior
+/// JavaScript uses string literals 'copyvolatile' | 'shedtail' | true
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SwitchCopyFlag {
     None,
@@ -937,6 +943,8 @@ pub struct UseMoveOptions {
 
 /// Spread move damage result type
 /// Can be damage amount, false (failed), or true/undefined (success with no damage)
+/// TODO: Rust uses enum to represent JavaScript's number | false | true | undefined union type
+/// JavaScript: number | false | true | undefined
 #[derive(Debug, Clone, Copy, Default)]
 pub enum SpreadMoveDamageValue {
     Damage(i32),
@@ -951,6 +959,8 @@ pub enum SpreadMoveDamageValue {
 pub type SpreadMoveDamage = Vec<SpreadMoveDamageValue>;
 
 /// Target info for spread moves (can be the Pokemon or null/false for failed)
+/// TODO: Rust uses enum to represent JavaScript's Pokemon | null | false union type
+/// JavaScript: Pokemon | null | false
 #[derive(Debug, Clone)]
 pub enum SpreadMoveTarget {
     Target(usize),
@@ -966,6 +976,8 @@ impl<'a> BattleActions<'a> {
 }
 
 /// Result of run_move
+/// TODO: Not in JavaScript - Rust-specific struct for runMove return value
+/// JavaScript runMove() returns boolean (success/failure)
 #[derive(Debug, Clone)]
 pub struct RunMoveResult {
     pub move_id: ID,
@@ -978,6 +990,8 @@ pub struct RunMoveResult {
 }
 
 /// Result of run_z_power
+/// TODO: Not in JavaScript - Rust-specific enum for runZPower return value
+/// JavaScript runZPower() uses various return patterns (boolean, object, etc.)
 #[derive(Debug, Clone)]
 pub enum ZPowerResult {
     DamageMove,
@@ -991,6 +1005,8 @@ pub enum ZPowerResult {
 }
 
 /// Result of terastallize
+/// TODO: Not in JavaScript - Rust-specific enum for terastallize return value
+/// JavaScript terastallize() returns various values (string, boolean, object)
 #[derive(Debug, Clone)]
 pub enum TerastallizeResult {
     Success {
