@@ -6,8 +6,11 @@ use crate::dex::{Dex, FormatData};
 use crate::dex_data::ID;
 
 /// Helper struct for format lookups
-/// Equivalent to DexFormats class in TypeScript
+/// JavaScript equivalent: DexFormats (sim/dex-formats.ts)
+/// 1 field in JavaScript (dex)
 pub struct DexFormats<'a> {
+    /// Dex reference
+    /// JavaScript: readonly dex: ModdedDex
     pub(crate) dex: &'a Dex,
 }
 

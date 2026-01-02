@@ -5,8 +5,11 @@
 use crate::dex::{Dex, TypeData};
 
 /// Helper struct for type lookups
-/// Equivalent to DexTypes class in TypeScript
+/// JavaScript equivalent: DexTypes (sim/dex-data.ts)
+/// 1 field in JavaScript (dex)
 pub struct DexTypes<'a> {
+    /// Dex reference
+    /// JavaScript: readonly dex: ModdedDex
     pub(crate) dex: &'a Dex,
 }
 

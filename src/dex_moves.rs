@@ -6,14 +6,11 @@ use crate::dex::{Dex, MoveData};
 use crate::dex_data::ID;
 
 /// Helper struct for moves lookups
-/// Equivalent to DexMoves class in TypeScript
 /// JavaScript equivalent: DexMoves (sim/dex-moves.ts)
-/// Fields: dex, allCache, name, name
-/// JavaScript equivalent: DexMoves (sim/dex-moves.ts)
-/// Fields: dex, allCache, name, name
-/// JavaScript equivalent: DexMoves (sim/dex-moves.ts)
-/// Fields: dex, allCache, name, name
+/// 1 field in JavaScript (dex)
 pub struct DexMoves<'a> {
+    /// Dex reference
+    /// JavaScript: readonly dex: ModdedDex
     pub(crate) dex: &'a Dex,
 }
 

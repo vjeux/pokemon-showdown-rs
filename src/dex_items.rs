@@ -6,14 +6,11 @@ use crate::dex::{Dex, ItemData};
 use crate::dex_data::ID;
 
 /// Helper struct for items lookups
-/// Equivalent to DexItems class in TypeScript
 /// JavaScript equivalent: DexItems (sim/dex-items.ts)
-/// Fields: dex, allCache, name
-/// JavaScript equivalent: DexItems (sim/dex-items.ts)
-/// Fields: dex, allCache, name
-/// JavaScript equivalent: DexItems (sim/dex-items.ts)
-/// Fields: dex, allCache, name
+/// 1 field in JavaScript (dex)
 pub struct DexItems<'a> {
+    /// Dex reference
+    /// JavaScript: readonly dex: ModdedDex
     pub(crate) dex: &'a Dex,
 }
 
