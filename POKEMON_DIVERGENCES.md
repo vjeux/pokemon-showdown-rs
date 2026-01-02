@@ -349,12 +349,13 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing: check if move.category == 'Status' && (hasItem('assaultvest') || has_volatile('taunt'))
 
 #### has_item.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Missing ignoringItem() call at the end
-- Action: Documented that should return false if item effects are being ignored
+- Status: ✅ Fixed (Fully Implemented)
+- Issue: Was missing ignoringItem() call, now implemented
+- Action: Added ignoringItem() check at the end
 - Notes:
-  - Currently just checks if item matches, doesn't check if ignoring
-  - Should call ignoringItem() (Embargo, Magic Room, Klutz, etc.)
+  - ✅ NOW FULLY IMPLEMENTED: Returns false if item effects are being ignored
+  - ✅ Correctly checks if item matches
+  - ✅ Correctly calls ignoringItem() to check Embargo, Magic Room, Klutz, etc.
 
 #### set_ability.rs
 - Status: ✅ Fixed (Documented)
@@ -951,6 +952,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 - **Goal**: Start implementing missing functionality to achieve 1-to-1 equivalence
 - **Completed**:
   - ✅ Fixed update_max_hp.rs - Added Dynamax check for HP doubling
+  - ✅ Fixed has_item.rs - Added ignoringItem() check (now fully 1-to-1!)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
 - **In Progress**: Implementing simple improvements before large refactors
 - **Next**: Continue fixing methods, then plan Battle-dependent method refactoring

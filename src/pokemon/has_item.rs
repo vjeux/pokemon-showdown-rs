@@ -27,9 +27,6 @@ impl Pokemon {
         }
 
         // JS: return !this.ignoringItem();
-        // Note: Missing ignoringItem() check
-        // Should return false if item effects are being ignored
-        // (Embargo, Magic Room, Klutz, etc.)
-        true
+        !self.ignoring_item()
     }
 }
