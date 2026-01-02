@@ -214,7 +214,8 @@ impl Battle {
                                 .and_then(|s| s.pokemon.get_mut(foe_poke_idx))
                             {
                                 foe_pokemon.volatiles.remove(&substitute_id);
-                                foe_pokemon.sub_fainted = true;
+                                // JavaScript: pokemon.subFainted = true (boolean | null type)
+                                foe_pokemon.sub_fainted = Some(true);
                             }
                         } else {
                             // JS: this.add('-activate', foe, 'Substitute', '[damage]');

@@ -27,7 +27,7 @@ pub fn on_hit(
     // let move: Move | ActiveMove | null = this.lastMove;
     // if (!move) return;
     let move_id = match &battle.last_move {
-        Some(id) => id.clone(),
+        Some(active_move) => active_move.id.clone(),
         None => {
             // return;
             return EventResult::Continue;

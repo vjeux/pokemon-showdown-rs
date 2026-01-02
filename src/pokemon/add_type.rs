@@ -17,7 +17,7 @@ impl Pokemon {
             return false;
         }
         // JS: this.addedType = newType;
-        self.added_type = Some(new_type);
+        self.added_type = new_type;
         // JS: return true;
         true
     }

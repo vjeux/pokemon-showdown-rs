@@ -90,7 +90,8 @@ pub fn on_hit(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target.added_type.is_some()
+            // JavaScript: addedType is string, check if not empty
+            !target.added_type.is_empty()
         };
 
         if has_added_type {

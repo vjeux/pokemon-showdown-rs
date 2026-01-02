@@ -444,18 +444,35 @@ pub enum MoveTarget {
 /// Effect state - stores runtime data about effects
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 /// JavaScript equivalent: EffectState (sim/pokemon.ts)
-/// Fields: id, effectOrder, duration
-/// JavaScript equivalent: EffectState (sim/pokemon.ts)
-/// Fields: id, effectOrder, duration
-/// JavaScript equivalent: EffectState (sim/pokemon.ts)
-/// Fields: id, effectOrder, duration
+/// 3 fields in JavaScript: id, effectOrder, duration
 pub struct EffectState {
+    /// Effect ID
+    /// JavaScript: id: string
     pub id: ID,
+
+    /// Effect order for sorting
+    /// JavaScript: effectOrder: number
     pub effect_order: i32,
+
+    /// Duration in turns
+    /// JavaScript: duration?: number
     pub duration: Option<i32>,
+
+    // TODO: DELETE - Not in JavaScript EffectState (only has id, effectOrder, duration)
+    // These fields may belong in a different Rust struct or be Rust-specific extensions
+    /// Number of layers (for Spikes, Toxic Spikes, etc.)
     pub layers: Option<i32>,
+
+    // TODO: DELETE - Not in JavaScript EffectState
+    /// Source slot for slot conditions
     pub source_slot: Option<String>,
+
+    // TODO: DELETE - Not in JavaScript EffectState
+    /// Target side index
     pub target_side: Option<usize>,
+
+    // TODO: DELETE - Not in JavaScript EffectState
+    /// Custom data storage (flattened for serialization)
     #[serde(flatten)]
     pub data: HashMap<String, serde_json::Value>,
 }

@@ -15,6 +15,13 @@ impl Dex {
                 .map(Self::convert_boosts_hash_to_table),
             status: secondary.status.clone(),
             volatile_status: secondary.volatile_status_secondary.clone(),
+            side_condition: None,
+            slot_condition: None,
+            pseudo_weather: None,
+            terrain: None,
+            weather: None,
+            ability: None,
+            kingsrock: None,
             self_effect: false,
         }
     }

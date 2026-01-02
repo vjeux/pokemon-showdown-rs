@@ -43,11 +43,10 @@ impl Pokemon {
         }
 
         // JS: if (!excludeAdded && this.addedType) return types.concat(this.addedType);
-        if !exclude_added {
-            if let Some(ref added) = self.added_type {
-                if !types.contains(added) {
-                    types.push(added.clone());
-                }
+        // JavaScript: addedType is string, check if not empty
+        if !exclude_added && !self.added_type.is_empty() {
+            if !types.contains(&self.added_type) {
+                types.push(self.added_type.clone());
             }
         }
         types

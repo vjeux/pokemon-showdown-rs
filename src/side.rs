@@ -72,20 +72,47 @@ mod choose;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: ChosenAction (sim/side.ts)
 /// 15 fields in JavaScript
-/// JavaScript equivalent: ChosenAction (sim/side.ts)
-/// 15 fields in JavaScript
-/// JavaScript equivalent: ChosenAction (sim/side.ts)
-/// 15 fields in JavaScript
 pub struct ChosenAction {
     pub choice: ChoiceType,
+
+    // TODO: In JavaScript this is pokemon: Pokemon (optional reference)
+    // Rust uses pokemon_index instead
     pub pokemon_index: usize,
+
     pub target_loc: Option<i8>,
     pub move_id: Option<ID>,
+
+    /// ActiveMove for this action
+    /// JavaScript: move?: ActiveMove
+    pub move_action: Option<crate::battle_actions::ActiveMove>,
+
+    // TODO: In JavaScript this is target: Pokemon (optional reference)
+    // Rust uses target_loc instead
+
+    // TODO: In JavaScript this is index: number (optional)
+    // May correspond to switch_index in Rust?
     pub switch_index: Option<usize>,
+
+    // TODO: In JavaScript this is side: Side (optional reference)
+    // Rust can infer from pokemon_index
+
     pub mega: bool,
+
+    /// Mega Evolution X form
+    /// JavaScript: megax?: boolean | null
+    pub megax: Option<bool>,
+
+    /// Mega Evolution Y form
+    /// JavaScript: megay?: boolean | null
+    pub megay: Option<bool>,
+
     pub zmove: Option<String>,
     pub max_move: Option<String>,
     pub terastallize: Option<String>,
+
+    /// Move priority (for ordering)
+    /// JavaScript: priority?: number
+    pub priority: Option<i32>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -142,6 +169,12 @@ pub enum RequestState {
 /// 77 fields in JavaScript
 /// JavaScript equivalent: Side (sim/global-types.ts)
 pub struct Side {
+    // Core references (readonly in JavaScript)
+    // TODO: These should be references, not indices
+    // pub battle: &Battle - needs lifetime management
+    // pub foe: &Side - use foe_index instead
+    // pub ally_side: Option<&Side> - use ally_index instead
+
     /// Side ID (p1, p2, p3, p4)
     pub id: SideID,
     /// Index in battle.sides
@@ -167,8 +200,12 @@ pub struct Side {
     pub dynamax_used: bool,
 
     /// Last Pokemon to faint last turn
+    /// JavaScript: faintedLastTurn: Pokemon | null
+    /// TODO: Rust uses index instead of Pokemon reference due to ownership
     pub fainted_last_turn: Option<usize>,
     /// Last Pokemon to faint this turn
+    /// JavaScript: faintedThisTurn: Pokemon | null
+    /// TODO: Rust uses index instead of Pokemon reference due to ownership
     pub fainted_this_turn: Option<usize>,
     /// Total Pokemon fainted
     pub total_fainted: usize,
@@ -176,6 +213,8 @@ pub struct Side {
     /// Last selected move (Gen 1 only)
     pub last_selected_move: ID,
     /// Last move used (Gen 1)
+    /// JavaScript: lastMove: Move | null
+    /// TODO: Rust uses ID instead of Move object
     pub last_move: Option<ID>,
 
     /// Side conditions (Stealth Rock, Spikes, etc.)
@@ -191,9 +230,9 @@ pub struct Side {
     /// Current choice
     pub choice: Choice,
 
-    /// Foe side index
+    /// Foe side index (used instead of direct reference)
     pub foe_index: Option<usize>,
-    /// Ally side index (multi battles)
+    /// Ally side index (multi battles, used instead of direct reference)
     pub ally_index: Option<usize>,
 }
 

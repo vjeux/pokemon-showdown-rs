@@ -95,10 +95,10 @@ impl Pokemon {
         // Format move IDs with Hidden Power type (Return/Frustration need Dex access)
         let formatted_moves: Vec<String> = move_ids.iter().map(|move_id| {
             if move_id == "hiddenpower" {
-                if let Some(ref hp_type) = self.hp_type {
+                if !self.hp_type.is_empty() {
                     // Note: Would need Battle reference for gen check to conditionally append power
                     // Gen 6+: "hiddenpowerfire", Gen < 6: "hiddenpowerfire70"
-                    format!("hiddenpower{}", hp_type.to_lowercase())
+                    format!("hiddenpower{}", self.hp_type.to_lowercase())
                 } else {
                     move_id.clone()
                 }

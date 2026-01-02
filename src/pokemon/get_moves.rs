@@ -152,8 +152,8 @@ impl Pokemon {
                 // JS:     }
                 // ✅ NOW IMPLEMENTED (Session 24 Part 63): Hidden Power type/power formatting
                 let move_name = if slot.id.as_str() == "hiddenpower" {
-                    if let Some(ref hp_type) = self.hp_type {
-                        let name = format!("Hidden Power {}", hp_type);
+                    if !self.hp_type.is_empty() {
+                        let name = format!("Hidden Power {}", self.hp_type);
                         // Note: Would need Battle reference for gen check to append power
                         // Assuming modern gen (6+) for now, don't append power
                         name

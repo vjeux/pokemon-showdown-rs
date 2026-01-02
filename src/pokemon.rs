@@ -134,20 +134,26 @@ mod get_move_targets_stub;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: MoveSlot (sim/pokemon.ts)
 /// 9 fields in JavaScript
-/// JavaScript equivalent: MoveSlot (sim/pokemon.ts)
-/// 9 fields in JavaScript
-/// JavaScript equivalent: MoveSlot (sim/pokemon.ts)
-/// 9 fields in JavaScript
 pub struct MoveSlot {
     pub id: ID,
+    /// Move name
+    /// JavaScript: move: string
+    /// TODO: Rust uses move_name to avoid keyword conflict with 'move'
     pub move_name: String,
     pub pp: u8,
     pub maxpp: u8,
     pub target: Option<String>,
+    /// Whether move is disabled
+    /// JavaScript: disabled: boolean | 'hidden'
+    /// TODO: Rust uses bool, cannot represent 'hidden' string variant
     pub disabled: bool,
     pub disabled_source: Option<String>,
     pub used: bool,
+    /// Virtual move flag
+    /// JavaScript: virtual?: boolean
+    /// TODO: Rust uses virtual_move to avoid keyword conflict with potential 'virtual'
     pub virtual_move: bool,
+    // TODO: DELETE - Not in JavaScript MoveSlot (or verify if it exists)
     pub is_z: bool,
 }
 
@@ -173,21 +179,23 @@ impl MoveSlot {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: Attacker (sim/pokemon.ts)
 /// 6 fields in JavaScript
-/// JavaScript equivalent: Attacker (sim/pokemon.ts)
-/// 6 fields in JavaScript
-/// JavaScript equivalent: Attacker (sim/pokemon.ts)
-/// 6 fields in JavaScript
 pub struct Attacker {
     /// Source Pokemon (side_idx, poke_idx)
+    /// JavaScript: source: Pokemon
+    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub source: (usize, usize),
     /// Damage dealt
     pub damage: i32,
     /// Whether this attack happened this turn
     pub this_turn: bool,
     /// Move ID used
+    /// JavaScript: move?: ID
     pub move_id: Option<ID>,
     /// Source slot
+    /// JavaScript: slot: PokemonSlot
     pub slot: (usize, usize),
+    // TODO: Add damageValue field from JavaScript
+    // JavaScript: damageValue?: number | boolean | undefined
 }
 
 /// Pokemon set - the team builder representation of a Pokemon
@@ -279,33 +287,69 @@ impl TrappedState {
 /// 167 fields in JavaScript
 /// JavaScript equivalent: Pokemon (sim/global-types.ts)
 pub struct Pokemon {
-    // Identity
+    // Core references (readonly in JavaScript)
+    // TODO: These should be references/indices, not owned data
+    // pub side: &Side - needs lifetime management
+    // pub battle: &Battle - needs lifetime management
+    /// Original team builder set (readonly)
+    /// JavaScript: readonly set: PokemonSet
+    pub set: PokemonSet,
+
+    // Identity (readonly in JavaScript)
     pub name: String,
+    /// Full name with side prefix (readonly, e.g., "p1: Pikachu")
+    /// JavaScript: readonly fullname: string
+    pub fullname: String,
+    // TODO: DELETE - Not in JavaScript Pokemon (Rust uses ID, JavaScript has Species object)
     pub species_id: ID,
+    /// Full species object (not just ID)
+    /// JavaScript: species: Species
+    // TODO: Change from ID to Species struct when available
+    // pub species: Species,
     pub base_species: ID,
+    /// Full base species object (not just ID)
+    /// JavaScript: baseSpecies: Species
+    // TODO: Change from ID to Species struct when available
+    // pub base_species_obj: Species,
+    /// Species effect state
+    /// JavaScript: speciesState: EffectState
+    pub species_state: EffectState,
     pub level: u8,
     pub gender: Gender,
+    // TODO: DELETE - Not in JavaScript Pokemon (belongs in PokemonSet only)
     pub nature: String,
     pub happiness: u8,
     pub pokeball: ID,
     pub dynamax_level: u8,
     pub gigantamax: bool,
+    // TODO: DELETE - Not in JavaScript Pokemon (belongs in PokemonSet only)
     pub shiny: bool, // For getUpdatedDetails protocol output
+
+    /// Details string sent to clients
+    /// JavaScript: details: string
+    pub details: String,
 
     // Position
     pub position: usize,
+    // TODO: DELETE - Not in JavaScript Pokemon (Rust-specific for tracking)
     pub side_index: usize,
     pub is_active: bool,
 
     // Stats
     pub base_stored_stats: StatsTable,
+    /// Stored stats (excluding HP)
+    /// JavaScript: storedStats: StatsExceptHPTable
+    // TODO: Change to StatsExceptHPTable when that type exists
     pub stored_stats: StatsTable,
+    // TODO: DELETE - Not in JavaScript Pokemon (belongs in PokemonSet only)
     pub evs: StatsTable, // Effort Values (for getCombatPower and other calculations)
+    // TODO: DELETE - Not in JavaScript Pokemon (belongs in PokemonSet only)
     pub ivs: StatsTable, // Individual Values (for getCombatPower and other calculations)
     pub boosts: BoostsTable,
     pub maxhp: i32,
     pub base_maxhp: i32,
     pub hp: i32,
+    // TODO: DELETE - Not in JavaScript Pokemon
     pub max_hp_undynamaxed: i32,
 
     // Ability
@@ -321,15 +365,22 @@ pub struct Pokemon {
     pub ate_berry: bool,
     pub item_knocked_off: bool,
 
+    // TODO: DELETE - Not in JavaScript Pokemon (implicit in volatiles)
     // Choice item lock (Choice Band/Scarf/Specs)
     pub locked_move: Option<ID>,
 
     // Types
     pub types: Vec<String>,
-    pub added_type: Option<String>,
+    /// Added type (from Forest's Curse or Trick-or-Treat)
+    /// JavaScript: addedType: string
+    pub added_type: String,
     pub base_types: Vec<String>,
-    pub known_type: Option<String>, // Known type for illusion/disguise mechanics
-    pub apparent_type: Option<String>, // Type string shown to players (for type reveal mechanic)
+    /// Known type flag (for type reveal mechanics)
+    /// JavaScript: knownType: boolean
+    pub known_type: bool,
+    /// Apparent type (for type reveal mechanics)
+    /// JavaScript: apparentType: string
+    pub apparent_type: String,
 
     // Tera
     pub tera_type: Option<String>,
@@ -341,14 +392,17 @@ pub struct Pokemon {
     pub move_slots: Vec<MoveSlot>,
 
     // Hidden Power type and power
-    pub hp_type: Option<String>,
-    pub hp_power: Option<u8>,
-    pub base_hp_type: Option<String>,
-    pub base_hp_power: Option<u8>,
+    pub hp_type: String,
+    pub hp_power: u8,
+    pub base_hp_type: String,
+    pub base_hp_power: u8,
 
     // Status
     pub status: ID,
     pub status_state: EffectState,
+    /// Whether to show cure message
+    /// JavaScript: showCure?: boolean
+    pub show_cure: Option<bool>,
     pub volatiles: HashMap<ID, EffectState>,
 
     // Battle state
@@ -356,30 +410,69 @@ pub struct Pokemon {
     pub faint_queued: bool,
     pub transformed: bool,
     pub illusion: Option<usize>, // Index of pokemon providing illusion
+    /// Forme regression flag (for Zacian/Zamazenta)
+    /// JavaScript: formeRegression: boolean
+    pub forme_regression: bool,
 
     // Flags
     pub trapped: TrappedState,
     pub maybe_trapped: bool,
     pub maybe_disabled: bool,
-    pub maybe_locked: bool, // Choice items may lock next turn
+    /// Maybe locked by choice item
+    /// JavaScript: maybeLocked: boolean | null
+    pub maybe_locked: Option<bool>, // Choice items may lock next turn
+    /// Switch flag (ID of move or true/false)
+    /// JavaScript: switchFlag: ID | boolean
+    // TODO: Change type to support both ID and boolean
     pub switch_flag: bool,
     pub force_switch_flag: bool,
     pub newly_switched: bool,
     pub being_called_back: bool,
-    pub dragged_in: Option<usize>,
+    /// Dragged in by Red Card/Roar/etc
+    /// JavaScript: draggedIn: number | null
+    pub dragged_in: Option<i32>,
     pub skip_before_switch_out_event_flag: bool,
     pub stats_raised_this_turn: bool,
     pub stats_lowered_this_turn: bool,
-    pub sub_fainted: bool, // Gen 1: Substitute fainted (different from main faint)
+    /// Substitute fainted (Gen 1 specific)
+    /// JavaScript: subFainted: boolean | null
+    pub sub_fainted: Option<bool>,
 
     // Ability-specific flags
-    pub sword_boost: bool, // Intrepid Sword / Dauntless Shield
+    pub sword_boost: bool, // Intrepid Sword
+    /// Dauntless Shield boost flag
+    /// JavaScript: shieldBoost: boolean
+    pub shield_boost: bool,
+    /// Truant ability turn tracking
+    /// JavaScript: truantTurn: boolean
+    pub truant_turn: bool,
+    /// Bond ability triggered flag (Greninja)
+    /// JavaScript: bondTriggered: boolean
+    pub bond_triggered: bool,
+    /// Hero message displayed flag (Palafin)
+    /// JavaScript: heroMessageDisplayed: boolean
+    pub hero_message_displayed: bool,
+    /// Syrup Bomb triggered flag
+    /// JavaScript: syrupTriggered: boolean
+    pub syrup_triggered: bool,
 
     // Turn state
+    /// Last move used
+    /// JavaScript: lastMove: ActiveMove | null
+    // TODO: Change from Option<ID> to Option<ActiveMove>
     pub last_move: Option<ID>,
+    /// Last move for Encore tracking (Gen 2+)
+    /// JavaScript: lastMoveEncore?: ActiveMove | null
+    // TODO: Change from Option<ID> to Option<ActiveMove>
     pub last_move_encore: Option<ID>, // Gen 2 only - for Encore tracking
+    /// Last move used (for repetition tracking)
+    /// JavaScript: lastMoveUsed: ActiveMove | null
+    // TODO: Change from Option<ID> to Option<ActiveMove>
     pub last_move_used: Option<ID>,
     pub last_move_target_loc: Option<i8>,
+    /// Move used this turn
+    /// JavaScript: moveThisTurn: string | boolean
+    // TODO: Change from Option<ID> to support both string and boolean
     pub move_this_turn: Option<ID>,
     pub move_this_turn_result: Option<bool>,
     pub move_last_turn_result: Option<bool>,
@@ -403,6 +496,12 @@ pub struct Pokemon {
 
     // Mega/Dynamax state
     pub can_mega_evo: Option<String>,
+    /// Can Mega Evolve into X forme
+    /// JavaScript: canMegaEvoX: string | false | null | undefined
+    pub can_mega_evo_x: Option<String>,
+    /// Can Mega Evolve into Y forme
+    /// JavaScript: canMegaEvoY: string | false | null | undefined
+    pub can_mega_evo_y: Option<String>,
     pub can_ultra_burst: Option<String>,
     pub can_gigantamax: Option<String>,
 
@@ -413,6 +512,11 @@ pub struct Pokemon {
     pub staleness: Option<String>,
     pub pending_staleness: Option<String>,
     pub volatile_staleness: Option<String>,
+
+    /// Modified stats (for stat modifications)
+    /// JavaScript: modifiedStats?: StatsExceptHPTable
+    // TODO: Change to StatsExceptHPTable when that type exists
+    pub modified_stats: Option<StatsTable>,
 }
 
 impl Pokemon {
@@ -428,7 +532,7 @@ pub struct GetMoveTargetsResult {
 }
 
 /// Move hit data for tracking crit, type effectiveness, etc.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct MoveHitData {
     /// Was this hit a critical hit?
     pub crit: bool,

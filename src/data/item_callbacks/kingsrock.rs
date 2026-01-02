@@ -56,6 +56,13 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target
                 boosts: None,
                 status: None,
                 volatile_status: Some("flinch".to_string()),
+                side_condition: None,
+                slot_condition: None,
+                pseudo_weather: None,
+                terrain: None,
+                weather: None,
+                ability: None,
+                kingsrock: None,
                 self_effect: false,
             });
         }

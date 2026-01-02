@@ -107,8 +107,8 @@ impl Pokemon {
         pokemon.types = new_types;
 
         // JS: this.addedType = '';
-        // ✅ NOW IMPLEMENTED: addedType reset
-        pokemon.added_type = None;
+        // JavaScript: this.addedType = '';
+        pokemon.added_type = String::new();
 
         // JS: this.knownType = true;
         // Note: JavaScript uses boolean knownType, but Rust uses Option<String> known_type for Illusion mechanics
@@ -117,8 +117,8 @@ impl Pokemon {
         // In Rust, this field is used differently (for Illusion breaking), so we don't set it here
 
         // JS: this.apparentType = this.types.join('/');
-        // ✅ NOW IMPLEMENTED: apparentType field assignment
-        pokemon.apparent_type = Some(apparent_type_str);
+        // JavaScript: this.apparentType = this.types.join('/');
+        pokemon.apparent_type = apparent_type_str;
 
         // JS: return true;
         true

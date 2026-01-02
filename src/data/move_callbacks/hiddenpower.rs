@@ -23,10 +23,11 @@ pub fn on_modify_type(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon
-            .hp_type
-            .clone()
-            .unwrap_or_else(|| String::from("Dark"))
+        if pokemon_pokemon.hp_type.is_empty() {
+            String::from("Dark")
+        } else {
+            pokemon_pokemon.hp_type.clone()
+        }
     };
 
     if let Some(ref mut current_move) = battle.active_move {

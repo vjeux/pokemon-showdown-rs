@@ -416,7 +416,8 @@ impl Battle {
         let mut disable_move_data: Vec<((usize, usize), ID)> = Vec::new();
 
         // Collect type change messages to execute after the loop (to avoid borrow checker issues)
-        let mut type_change_messages: Vec<(String, String, Option<String>, (usize, usize))> = Vec::new(); // (target_slot, real_type, added_type, seen_pokemon_pos)
+        // JavaScript: added_type is string, not Option<String>
+        let mut type_change_messages: Vec<(String, String, String, (usize, usize))> = Vec::new(); // (target_slot, real_type, added_type, seen_pokemon_pos)
 
         // Collect attackedBy updates to process after the loop (to avoid borrow checker issues)
         let mut attacked_by_updates: Vec<(usize, usize)> = Vec::new(); // (side_idx, poke_idx)
@@ -464,7 +465,7 @@ impl Battle {
                 pokemon.maybe_disabled = false;
 
                 // JS: pokemon.maybeLocked = false;
-                pokemon.maybe_locked = false;
+                pokemon.maybe_locked = Some(false);
 
                 // JS: for (const moveSlot of pokemon.moveSlots) { moveSlot.disabled = false; moveSlot.disabledSource = ''; }
                 for move_slot in &mut pokemon.move_slots {
@@ -483,7 +484,7 @@ impl Battle {
 
                 // JS: if (pokemon.getLastAttackedBy() && this.gen >= 7) pokemon.knownType = true;
                 if self.gen >= 7 && pokemon.get_last_attacked_by().is_some() {
-                    pokemon.known_type = Some(pokemon.types.join("/"));
+                    pokemon.known_type = true;
                 }
 
                 // JS: for (let i = pokemon.attackedBy.length - 1; i >= 0; i--) {
@@ -513,7 +514,8 @@ impl Battle {
                     if seen_pokemon_pos == pokemon_pos {
                         // Get real type string from current pokemon
                         let real_type_string = pokemon.types.join("/");
-                        let apparent_type_changed = pokemon.apparent_type.as_deref() != Some(&real_type_string);
+                        // JavaScript: apparentType is string, check if it differs
+                        let apparent_type_changed = pokemon.apparent_type != real_type_string;
 
                         if apparent_type_changed && !real_type_string.is_empty() {
                             // Collect for later to avoid borrow checker issues with self.add()
@@ -625,7 +627,8 @@ impl Battle {
                     real_type = seen_pokemon.types.join("/");
 
                     // Check if type changed
-                    let apparent_type_changed = seen_pokemon.apparent_type.as_deref() != Some(&real_type);
+                    // JavaScript: apparentType is string, check if it differs
+                    let apparent_type_changed = seen_pokemon.apparent_type != real_type;
                     if !apparent_type_changed || real_type.is_empty() {
                         continue; // Skip if no change or empty type
                     }
@@ -646,15 +649,17 @@ impl Battle {
             if let Some(seen_pokemon_mut) = self.sides.get_mut(seen_pokemon_pos.0)
                 .and_then(|s| s.pokemon.get_mut(seen_pokemon_pos.1))
             {
-                seen_pokemon_mut.apparent_type = Some(real_type);
+                // JavaScript: this.apparentType = realTypeString;
+                seen_pokemon_mut.apparent_type = real_type;
             }
 
             // JS: if (pokemon.addedType) { this.add('-start', pokemon, 'typeadd', pokemon.addedType, '[silent]'); }
-            if let Some(added_type) = added_type_opt {
+            // JavaScript: addedType is string, check if not empty
+            if !added_type_opt.is_empty() {
                 self.add("-start", &[
                     target_slot.as_str().into(),
                     "typeadd".into(),
-                    added_type.as_str().into(),
+                    added_type_opt.as_str().into(),
                     "[silent]".into()
                 ]);
             }
@@ -716,7 +721,7 @@ impl Battle {
             let should_run_maybe_trap = {
                 let pokemon = &self.sides[pokemon_pos.0].pokemon[pokemon_pos.1];
                 // Run if type is not known OR if not immune to trapped status
-                pokemon.known_type.is_none() || Pokemon::run_status_immunity(self, pokemon_pos, "trapped", false)
+                !pokemon.known_type || Pokemon::run_status_immunity(self, pokemon_pos, "trapped", false)
             };
 
             if should_run_maybe_trap {
@@ -814,12 +819,12 @@ impl Battle {
 
         // JS: if (this.gen === 2) this.quickClawRoll = this.randomChance(60, 256);
         if self.gen == 2 {
-            self.quick_claw_roll = Some(self.random_chance(60, 256));
+            self.quick_claw_roll = self.random_chance(60, 256);
         }
 
         // JS: if (this.gen === 3) this.quickClawRoll = this.randomChance(1, 5);
         if self.gen == 3 {
-            self.quick_claw_roll = Some(self.random_chance(1, 5));
+            self.quick_claw_roll = self.random_chance(1, 5);
         }
 
         // JS: this.makeRequest('move');

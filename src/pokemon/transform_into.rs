@@ -272,8 +272,8 @@ impl Pokemon {
             .map(|slot| {
                 // Format move name for Hidden Power
                 let move_name = if slot.id.as_str() == "hiddenpower" {
-                    if let Some(ref hp_type) = hp_type_for_moves {
-                        format!("Hidden Power {}", hp_type)
+                    if !hp_type_for_moves.is_empty() {
+                        format!("Hidden Power {}", hp_type_for_moves)
                     } else {
                         slot.move_name.clone()
                     }
@@ -438,7 +438,8 @@ impl Pokemon {
         // JS: }
         // ✅ NOW IMPLEMENTED: terastallized apparentType update
         if let Some(tera_type) = self_terastallized {
-            self_pokemon_mut.apparent_type = Some(tera_type);
+            // JavaScript: this.apparentType = this.terastallized;
+            self_pokemon_mut.apparent_type = tera_type;
         }
         // Note: Not setting known_type as it has different semantics in Rust (Option<String> vs boolean)
 

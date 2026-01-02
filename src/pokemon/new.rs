@@ -225,13 +225,16 @@ impl Pokemon {
             .collect();
 
         Self {
+            set: set.clone(),
             name: if set.name.is_empty() {
                 set.species.clone()
             } else {
                 set.name.clone()
             },
+            fullname: String::new(), // Will be set by fullname() method
             species_id: species_id.clone(),
             base_species: species_id.clone(),
+            species_state: EffectState::new(ID::empty()),
             level: set.level,
             gender: set.gender,
             nature: set.nature.clone(),
@@ -240,6 +243,8 @@ impl Pokemon {
             dynamax_level: set.dynamax_level,
             gigantamax: set.gigantamax,
             shiny: set.shiny, // For getUpdatedDetails protocol output
+
+            details: String::new(), // Will be set by details() method
 
             position,
             side_index,
@@ -272,10 +277,13 @@ impl Pokemon {
             locked_move: None,
 
             types: Vec::new(),
-            added_type: None,
+            // JavaScript: this.addedType = '';
+            added_type: String::new(),
             base_types: Vec::new(),
-            known_type: None, // Initially null, set when type becomes known (e.g., Illusion breaks)
-            apparent_type: None, // Initially null, set when type is revealed to players
+            known_type: false, // Initially false, set to true when type becomes known
+            // JavaScript: this.apparentType = this.baseSpecies.types.join('/');
+            // Initially set to empty, will be updated in set_species
+            apparent_type: String::new(),
 
             tera_type: set.tera_type.clone(),
             terastallized: None,
@@ -284,24 +292,27 @@ impl Pokemon {
             base_move_slots: move_slots.clone(),
             move_slots,
 
-            hp_type: set.hptype.clone(),
-            hp_power: None, // Will be calculated by Battle::dex.getHiddenPower(ivs)
-            base_hp_type: set.hptype.clone(), // JS: this.baseHpType = this.hpType;
-            base_hp_power: None, // Will be set after Battle::dex.getHiddenPower(ivs) calculates hp_power
+            hp_type: set.hptype.clone().unwrap_or_default(),
+            hp_power: 0, // Will be calculated by Battle::dex.getHiddenPower(ivs)
+            base_hp_type: set.hptype.clone().unwrap_or_default(), // JS: this.baseHpType = this.hpType;
+            base_hp_power: 0, // Will be set after Battle::dex.getHiddenPower(ivs) calculates hp_power
 
             status: ID::empty(),
             status_state: EffectState::new(ID::empty()),
+            show_cure: None,
             volatiles: HashMap::new(),
 
             fainted: false,
             faint_queued: false,
             transformed: false,
             illusion: None,
+            forme_regression: false,
 
             trapped: TrappedState::None,
             maybe_trapped: false,
             maybe_disabled: false,
-            maybe_locked: false,
+            // JavaScript: this.maybeLocked = false;
+            maybe_locked: Some(false),
             switch_flag: false,
             force_switch_flag: false,
             newly_switched: false,
@@ -310,9 +321,15 @@ impl Pokemon {
             skip_before_switch_out_event_flag: false,
             stats_raised_this_turn: false,
             stats_lowered_this_turn: false,
-            sub_fainted: false,
+            // JavaScript: this.subFainted = null;
+            sub_fainted: None,
 
             sword_boost: false,
+            shield_boost: false,
+            truant_turn: false,
+            bond_triggered: false,
+            hero_message_displayed: false,
+            syrup_triggered: false,
 
             last_move: None,
             last_move_encore: None,
@@ -337,6 +354,8 @@ impl Pokemon {
             speed: 0,
 
             can_mega_evo: None,
+            can_mega_evo_x: None,
+            can_mega_evo_y: None,
             can_ultra_burst: None,
             can_gigantamax: if set.gigantamax {
                 Some(set.species.clone())
@@ -349,6 +368,8 @@ impl Pokemon {
             staleness: None,
             pending_staleness: None,
             volatile_staleness: None,
+
+            modified_stats: None,
         }
     }
 }

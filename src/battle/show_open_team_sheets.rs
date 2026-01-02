@@ -127,7 +127,11 @@ impl Battle {
                         ID::new(m).as_str() == "hiddenpower"
                     });
                     if has_hidden_power {
-                        new_set.hptype = pokemon.hp_type.clone();
+                        new_set.hptype = if pokemon.hp_type.is_empty() {
+                            None
+                        } else {
+                            Some(pokemon.hp_type.clone())
+                        };
                     }
 
                     // JS: if ((toID(set.species) === 'zacian' && toID(set.item) === 'rustedsword') || ...)

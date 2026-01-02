@@ -284,7 +284,8 @@ pub fn switch_in(
 
     // Gen 2 drag tracking
     if is_drag && battle.gen == 2 {
-        battle.sides[side_index].pokemon[pokemon_index].dragged_in = Some(battle.turn as usize);
+        // JavaScript: pokemon.draggedIn = this.turn (number | null type)
+        battle.sides[side_index].pokemon[pokemon_index].dragged_in = Some(battle.turn);
     }
     battle.sides[side_index].pokemon[pokemon_index].previously_switched_in += 1;
 

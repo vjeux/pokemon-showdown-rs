@@ -19,7 +19,7 @@ impl Battle {
     pub fn clear_active_move(&mut self, failed: bool) {
         if self.active_move.is_some() {
             if !failed {
-                self.last_move = self.active_move.as_ref().map(|m| m.id.clone());
+                self.last_move = self.active_move.clone();
             }
             self.active_move = None;
             self.active_pokemon = None;

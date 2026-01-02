@@ -489,10 +489,24 @@ pub enum BattleRequestState {
 /// 153 fields in JavaScript
 /// JavaScript equivalent: Battle (sim/global-types.ts)
 pub struct Battle {
+    /// Battle ID
+    /// JavaScript: readonly id: ID
+    pub id: ID,
+
+    // TODO: DELETE - Not in JavaScript Battle (JavaScript has format.id, not separate field)
     /// Format ID
     pub format_id: ID,
+    // TODO: DELETE - Not in JavaScript Battle (JavaScript has format.name, not separate field)
     /// Format name (e.g., "Gen 9 OU")
     pub format_name: String,
+    /// Full format object
+    /// JavaScript: readonly format: Format
+    #[serde(skip)]
+    pub format: Option<crate::data::formats::Format>,
+    /// Format data effect state
+    /// JavaScript: readonly formatData: EffectState
+    pub format_data: EffectState,
+
     /// Game type (singles, doubles, etc.)
     pub game_type: GameType,
     /// Generation
@@ -526,9 +540,21 @@ pub struct Battle {
     pub log: Vec<String>,
     /// Input log
     pub input_log: Vec<String>,
+    /// Message log (for clients)
+    /// JavaScript: readonly messageLog: string[]
+    pub message_log: Vec<String>,
+
+    /// Report exact HP values (not percentages)
+    /// JavaScript: reportExactHP: boolean
+    pub report_exact_hp: bool,
+
+    /// Report HP as percentages
+    /// JavaScript: reportPercentages: boolean
+    pub report_percentages: bool,
 
     /// Current request state
     pub request_state: BattleRequestState,
+    // TODO: DELETE - Not in JavaScript Battle class
     /// Whether requests have been sent to players
     /// JavaScript: sentRequests
     pub sent_requests: bool,
@@ -545,8 +571,15 @@ pub struct Battle {
     /// Winner (side ID string)
     pub winner: Option<String>,
 
-    /// Last move used in battle
-    pub last_move: Option<ID>,
+    /// Battle actions handler
+    /// JavaScript: actions: BattleActions
+    // TODO: Add this field - requires adding lifetime parameter to Battle struct
+    // #[serde(skip)]
+    // pub actions: Option<crate::battle_actions::BattleActions<'a>>,
+
+    /// Last move used in battle (full ActiveMove, not just ID)
+    /// JavaScript: lastMove: ActiveMove | null
+    pub last_move: Option<crate::battle_actions::ActiveMove>,
     /// Last successful move this turn (for Dancer ability)
     pub last_successful_move_this_turn: Option<ID>,
     /// Last move log line index (for attrLastMove)
@@ -554,33 +587,60 @@ pub struct Battle {
     /// Last damage dealt (for Counter in Gen 1)
     pub last_damage: i32,
     /// Quick Claw roll result for this turn (Gen 2-3)
-    pub quick_claw_roll: Option<bool>,
+    /// JavaScript: quickClawRoll: boolean
+    pub quick_claw_roll: bool,
 
     /// Currently active move being executed
     pub active_move: Option<crate::battle_actions::ActiveMove>,
     /// Pokemon currently using a move
+    /// JavaScript: activePokemon: Pokemon | null
+    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub active_pokemon: Option<(usize, usize)>, // (side_idx, poke_idx)
     /// Target of the current move
+    /// JavaScript: activeTarget: Pokemon | null
+    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub active_target: Option<(usize, usize)>, // (side_idx, poke_idx)
 
     /// Effect order counter
     pub effect_order: i32,
 
+    /// Current effect (JavaScript: effect: Effect)
+    /// NOTE: Rust also has current_effect for internal use
+    pub effect: Option<ID>,
+    /// Current effect state (JavaScript: effectState: EffectState)
+    /// NOTE: Rust also has current_effect_state for internal use
+    pub effect_state: EffectState,
+    /// Current event object (JavaScript: event: AnyObject)
+    /// NOTE: Rust also has current_event for internal use
+    pub event: Option<EventInfo>,
+
+    // TODO: DELETE - Not in JavaScript Battle class
     /// Event depth for recursion tracking
     pub event_depth: u8,
-    /// Current event being processed
+    // TODO: DELETE - Not in JavaScript Battle class (use `event` field instead)
+    /// Current event being processed (internal tracking)
     pub current_event: Option<EventInfo>,
-    /// Current effect being processed
+    // TODO: DELETE - Not in JavaScript Battle class (use `effect` field instead)
+    /// Current effect being processed (internal tracking)
     pub current_effect: Option<ID>,
-    /// Current effect state
+    // TODO: DELETE - Not in JavaScript Battle class (use `effect_state` field instead)
+    /// Current effect state (internal tracking)
     pub current_effect_state: Option<EffectState>,
+    // TODO: DELETE - Not in JavaScript Battle class
     /// Current effect metadata (name, type, pranksterBoosted, etc.)
     pub current_effect_data: Option<crate::event_system::EffectData>,
-    /// Log position for line limit checking
+
+    /// Log position for sent messages
+    /// JavaScript: sentLogPos: number
     pub sent_log_pos: usize,
     /// Whether end message has been sent
     /// JavaScript: sentEnd
     pub sent_end: bool,
+
+    /// Team generator (for random battles)
+    /// JavaScript: teamGenerator: ReturnType<typeof Teams.getGenerator> | null
+    #[serde(skip)]
+    pub team_generator: Option<Box<dyn std::any::Any + Send + Sync>>,
 
     /// Output callback for sending updates to clients
     /// JavaScript: send?: (type: string, data: string | string[]) => void
@@ -613,9 +673,6 @@ pub struct Battle {
     pub faint_queue: Vec<FaintData>,
 }
 
-impl Battle {
-}
-
 /// Priority item for sorting actions/handlers
 #[derive(Debug, Clone, Default)]
 pub struct PriorityItem {
@@ -628,6 +685,22 @@ pub struct PriorityItem {
 }
 
 impl Battle {
+    /// Battle result constant: NOT_FAIL
+    /// JavaScript: readonly NOT_FAIL: ''
+    pub const NOT_FAIL: &'static str = "";
+
+    /// Battle result constant: HIT_SUBSTITUTE
+    /// JavaScript: readonly HIT_SUBSTITUTE: 0
+    pub const HIT_SUBSTITUTE: i32 = 0;
+
+    /// Battle result constant: FAIL
+    /// JavaScript: readonly FAIL: false
+    pub const FAIL: bool = false;
+
+    /// Battle result constant: SILENT_FAIL
+    /// JavaScript: readonly SILENT_FAIL: null
+    /// Note: In Rust, we use Option::None to represent null
+    pub const SILENT_FAIL: Option<i32> = None;
 }
 
 // =========================================================================

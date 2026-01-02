@@ -69,6 +69,13 @@ pub fn on_modify_move(
             status: Some("par".to_string()),
             boosts: None,
             volatile_status: None,
+            side_condition: None,
+            slot_condition: None,
+            pseudo_weather: None,
+            terrain: None,
+            weather: None,
+            ability: None,
+            kingsrock: None,
             self_effect: false,
         };
         active_move.secondaries.push(secondary);
@@ -82,6 +89,13 @@ pub fn on_modify_move(
             status: Some("slp".to_string()),
             boosts: None,
             volatile_status: None,
+            side_condition: None,
+            slot_condition: None,
+            pseudo_weather: None,
+            terrain: None,
+            weather: None,
+            ability: None,
+            kingsrock: None,
             self_effect: false,
         };
         active_move.secondaries.push(secondary);
@@ -99,6 +113,13 @@ pub fn on_modify_move(
             boosts: Some(boosts),
             status: None,
             volatile_status: None,
+            side_condition: None,
+            slot_condition: None,
+            pseudo_weather: None,
+            terrain: None,
+            weather: None,
+            ability: None,
+            kingsrock: None,
             self_effect: false,
         };
         active_move.secondaries.push(secondary);
@@ -116,6 +137,13 @@ pub fn on_modify_move(
             boosts: Some(boosts),
             status: None,
             volatile_status: None,
+            side_condition: None,
+            slot_condition: None,
+            pseudo_weather: None,
+            terrain: None,
+            weather: None,
+            ability: None,
+            kingsrock: None,
             self_effect: false,
         };
         active_move.secondaries.push(secondary);

@@ -148,11 +148,15 @@ impl Side {
             pokemon_index: index,
             target_loc: None,
             move_id: None,
+            move_action: None,
             switch_index: Some(slot),
             mega: false,
+            megax: None,
+            megay: None,
             zmove: None,
             max_move: None,
             terastallize: None,
+            priority: None,
         });
 
         Ok(())

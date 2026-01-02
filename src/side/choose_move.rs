@@ -324,11 +324,15 @@ impl Side {
             pokemon_index: index,
             target_loc,
             move_id: Some(move_id),
+            move_action: None,
             switch_index: None,
             mega,
+            megax: None,
+            megay: None,
             zmove: zmove.clone(),
             max_move: max_move.clone(),
             terastallize: terastallize.clone(),
+            priority: None,
         });
 
         if mega {

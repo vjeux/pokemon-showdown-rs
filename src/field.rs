@@ -12,9 +12,18 @@ use crate::dex_data::{EffectState, ID};
 /// The battle field - contains weather, terrain, and field-wide effects
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: Field (sim/field.ts)
-/// 14 fields in JavaScript
+/// 7 fields in JavaScript
 /// JavaScript equivalent: Field (sim/global-types.ts)
 pub struct Field {
+    // Core reference (readonly in JavaScript)
+    /// JavaScript: readonly battle: Battle
+    /// TODO: This should be a reference, not owned (needs lifetime management)
+    // pub battle: &Battle
+
+    /// Field ID (readonly)
+    /// JavaScript: readonly id: ID
+    pub id: ID,
+
     /// Current weather ID (empty string = no weather)
     pub weather: ID,
     /// Weather effect state
@@ -39,6 +48,7 @@ impl Field {
     /// Create a new empty field
     pub fn new() -> Self {
         Self {
+            id: ID::empty(),
             weather: ID::empty(),
             weather_state: EffectState::new(ID::empty()),
             terrain: ID::empty(),

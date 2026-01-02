@@ -48,8 +48,11 @@ impl Battle {
         };
 
         let mut battle = Self {
+            id: ID::new("battle-sim"),
             format_id: options.format_id,
             format_name: options.format_name.unwrap_or_else(|| format_id_str.clone()),
+            format: None, // Will be set later if needed
+            format_data: crate::event_system::EffectState::default(),
             game_type,
             gen,
             active_per_half,
@@ -63,6 +66,9 @@ impl Battle {
             prng_seed: seed.clone(),
             log: Vec::new(),
             input_log: Vec::new(),
+            message_log: Vec::new(),
+            report_exact_hp: false,
+            report_percentages: false,
             request_state: BattleRequestState::None,
             sent_requests: false, // JavaScript: sentRequests defaults to false
             turn: 0,
@@ -75,11 +81,14 @@ impl Battle {
             last_successful_move_this_turn: None,
             last_move_line: -1,
             last_damage: 0,
-            quick_claw_roll: None,
+            quick_claw_roll: false,
             active_move: None,
             active_pokemon: None,
             active_target: None,
             effect_order: 0,
+            effect: None,
+            effect_state: crate::event_system::EffectState::default(),
+            event: None,
             event_depth: 0,
             current_event: None,
             current_effect: None,
@@ -87,6 +96,7 @@ impl Battle {
             current_effect_data: None,
             sent_log_pos: 0,
             sent_end: false,
+            team_generator: None,
             send: None,
             debug_mode: options.debug,
             rated: options.rated,

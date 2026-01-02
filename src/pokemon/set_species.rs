@@ -80,9 +80,10 @@ impl Pokemon {
         // JS: this.knownType = true;
         self.types = types.clone();
         self.base_types = types.clone();
-        self.added_type = None; // TypeScript uses empty string, Rust uses None
-        // ✅ NOW IMPLEMENTED: apparentType field assignment
-        self.apparent_type = Some(types.join("/"));
+        // JavaScript: this.addedType = species.addedType || '';
+        self.added_type = String::new();
+        // JavaScript: this.apparentType = rawSpecies.types.join('/');
+        self.apparent_type = types.join("/");
         // Note: JavaScript knownType is boolean (is type publicly known), Rust known_type is Option<String> (what type is known for Illusion)
         // Different semantics, so not setting known_type here
 

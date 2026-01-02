@@ -360,6 +360,8 @@ pub struct ZMoveRequest {
 }
 
 /// Side request data (team info)
+/// JavaScript equivalent: SideRequestData (sim/side.ts)
+/// 4 fields in JavaScript
 #[derive(Debug, Clone, Default)]
 pub struct SideRequest {
     /// Player name
@@ -367,12 +369,16 @@ pub struct SideRequest {
     /// Player ID
     pub id: String,
     /// Pokemon on team
-    pub pokemon: Vec<PokemonRequest>,
+    pub pokemon: Vec<PokemonSwitchRequestData>,
+    /// No cancel allowed?
+    pub no_cancel: Option<bool>,
 }
 
-/// Pokemon request data
+/// Pokemon switch request data (team preview and force switch)
+/// JavaScript equivalent: PokemonSwitchRequestData (sim/side.ts)
+/// 14 fields in JavaScript
 #[derive(Debug, Clone)]
-pub struct PokemonRequest {
+pub struct PokemonSwitchRequestData {
     /// Pokemon ident (e.g., "p1: Pikachu")
     pub ident: String,
     /// Details string
@@ -381,29 +387,133 @@ pub struct PokemonRequest {
     pub condition: String,
     /// Is this Pokemon active?
     pub active: bool,
-    /// Stats
-    pub stats: RequestStats,
+    /// Stats (except HP)
+    pub stats: RequestStatsExceptHP,
     /// Moves
-    pub moves: Vec<String>,
+    pub moves: Vec<ID>,
     /// Base ability
-    pub base_ability: String,
-    /// Current ability (if different)
-    pub ability: Option<String>,
+    pub base_ability: ID,
     /// Item
-    pub item: String,
+    pub item: ID,
     /// Pokeball
-    pub pokeball: String,
+    pub pokeball: ID,
+    /// Current ability (if different from base)
+    pub ability: Option<ID>,
+    /// Is commanding another Pokemon (Dondozo/Tatsugiri)
+    pub commanding: Option<bool>,
+    /// Is reviving (Revival Blessing)
+    pub reviving: Option<bool>,
+    /// Tera type
+    pub tera_type: Option<String>,
+    /// Has terastallized
+    pub terastallized: Option<String>,
 }
 
-/// Stats in request
+/// Pokemon move request data (normal turn move selection)
+/// JavaScript equivalent: PokemonMoveRequestData (sim/side.ts)
+/// 13 fields in JavaScript
 #[derive(Debug, Clone, Default)]
-pub struct RequestStats {
+pub struct PokemonMoveRequestData {
+    /// Available moves
+    pub moves: Vec<MoveRequestOption>,
+    /// Maybe disabled by Imprison, etc.
+    pub maybe_disabled: Option<bool>,
+    /// Maybe locked by Choice item, etc.
+    pub maybe_locked: Option<bool>,
+    /// Trapped by ability/move
+    pub trapped: Option<bool>,
+    /// Maybe trapped
+    pub maybe_trapped: Option<bool>,
+    /// Can mega evolve
+    pub can_mega_evo: Option<bool>,
+    /// Can mega evolve X
+    pub can_mega_evo_x: Option<bool>,
+    /// Can mega evolve Y
+    pub can_mega_evo_y: Option<bool>,
+    /// Can ultra burst
+    pub can_ultra_burst: Option<bool>,
+    /// Can use Z-move
+    pub can_z_move: Option<Vec<Option<ZMoveOption>>>,
+    /// Can Dynamax
+    pub can_dynamax: Option<bool>,
+    /// Max moves available
+    pub max_moves: Option<DynamaxOptions>,
+    /// Can Terastallize (tera type if available)
+    pub can_terastallize: Option<String>,
+}
+
+/// Move option in request
+#[derive(Debug, Clone)]
+pub struct MoveRequestOption {
+    /// Move name
+    pub move_name: String,
+    /// Move ID
+    pub id: ID,
+    /// Move target type
+    pub target: Option<String>,
+    /// Is move disabled?
+    pub disabled: Option<MoveDisabled>,
+    /// What disabled the move
+    pub disabled_source: Option<String>,
+}
+
+/// Move disabled state
+#[derive(Debug, Clone)]
+pub enum MoveDisabled {
+    /// Disabled by name (e.g., "locked")
+    Named(String),
+    /// Disabled boolean
+    Bool(bool),
+}
+
+/// Dynamax options
+/// JavaScript equivalent: DynamaxOptions (sim/side.ts)
+/// 2 fields in JavaScript
+#[derive(Debug, Clone)]
+pub struct DynamaxOptions {
+    /// Max moves available
+    pub max_moves: Vec<MaxMoveOption>,
+    /// Gigantamax forme if available
+    pub gigantamax: Option<String>,
+}
+
+/// Max move option
+#[derive(Debug, Clone)]
+pub struct MaxMoveOption {
+    /// Move name
+    pub move_name: String,
+    /// Move target type
+    pub target: String,
+    /// Is move disabled?
+    pub disabled: Option<bool>,
+}
+
+/// Z-Move option
+#[derive(Debug, Clone)]
+pub struct ZMoveOption {
+    /// Z-Move name
+    pub move_name: String,
+    /// Z-Move target type
+    pub target: String,
+}
+
+/// Stats except HP (for requests)
+#[derive(Debug, Clone, Default)]
+pub struct RequestStatsExceptHP {
     pub atk: i32,
     pub def: i32,
     pub spa: i32,
     pub spd: i32,
     pub spe: i32,
 }
+
+/// Deprecated - use PokemonSwitchRequestData instead
+#[deprecated(note = "Use PokemonSwitchRequestData instead")]
+pub type PokemonRequest = PokemonSwitchRequestData;
+
+/// Deprecated - use RequestStatsExceptHP instead
+#[deprecated(note = "Use RequestStatsExceptHP instead")]
+pub type RequestStats = RequestStatsExceptHP;
 
 impl Default for BattleRequest {
     fn default() -> Self {
