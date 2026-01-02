@@ -35,6 +35,7 @@ mod iter;
 mod iter_mut;
 mod change_action;
 mod insert_in_order;
+mod insert_choice;
 mod add_choice;
 mod add_choice_raw;
 mod debug;
@@ -56,6 +57,10 @@ pub struct MoveAction {
     pub fractional_priority: f64,
     /// Speed of pokemon using move (higher = earlier if priority tie)
     pub speed: f64,
+    /// Sub-order for tie-breaking (lower = earlier)
+    pub sub_order: i32,
+    /// Effect order for tie-breaking (lower = earlier)
+    pub effect_order: i32,
     /// Index of the pokemon doing the move
     pub pokemon_index: usize,
     /// Side index of the pokemon
@@ -106,6 +111,10 @@ pub struct SwitchAction {
     pub priority: i8,
     /// Speed of pokemon switching
     pub speed: f64,
+    /// Sub-order for tie-breaking (lower = earlier)
+    pub sub_order: i32,
+    /// Effect order for tie-breaking (lower = earlier)
+    pub effect_order: i32,
     /// Index of the pokemon doing the switch
     pub pokemon_index: usize,
     /// Side index of the pokemon
@@ -130,6 +139,10 @@ pub struct TeamAction {
     pub priority: i8,
     /// Speed of pokemon (for tie-breaking)
     pub speed: f64,
+    /// Sub-order for tie-breaking (lower = earlier)
+    pub sub_order: i32,
+    /// Effect order for tie-breaking (lower = earlier)
+    pub effect_order: i32,
     /// Pokemon index
     pub pokemon_index: usize,
     /// Side index
@@ -145,6 +158,10 @@ pub struct FieldAction {
     pub choice: FieldActionType,
     /// Priority
     pub priority: i8,
+    /// Sub-order for tie-breaking (lower = earlier)
+    pub sub_order: i32,
+    /// Effect order for tie-breaking (lower = earlier)
+    pub effect_order: i32,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -166,6 +183,10 @@ pub struct PokemonAction {
     pub priority: i8,
     /// Speed
     pub speed: f64,
+    /// Sub-order for tie-breaking (lower = earlier)
+    pub sub_order: i32,
+    /// Effect order for tie-breaking (lower = earlier)
+    pub effect_order: i32,
     /// Pokemon index
     pub pokemon_index: usize,
     /// Side index
@@ -264,6 +285,28 @@ impl Action {
         }
     }
 
+    /// Get the sub-order for tie-breaking
+    pub fn sub_order(&self) -> i32 {
+        match self {
+            Action::Move(a) => a.sub_order,
+            Action::Switch(a) => a.sub_order,
+            Action::Team(a) => a.sub_order,
+            Action::Field(a) => a.sub_order,
+            Action::Pokemon(a) => a.sub_order,
+        }
+    }
+
+    /// Get the effect order for tie-breaking
+    pub fn effect_order(&self) -> i32 {
+        match self {
+            Action::Move(a) => a.effect_order,
+            Action::Switch(a) => a.effect_order,
+            Action::Team(a) => a.effect_order,
+            Action::Field(a) => a.effect_order,
+            Action::Pokemon(a) => a.effect_order,
+        }
+    }
+
     /// Get pokemon index if applicable
     pub fn pokemon_index(&self) -> Option<usize> {
         match self {
@@ -338,6 +381,8 @@ mod tests {
         let action = Action::Field(FieldAction {
             choice: FieldActionType::Start,
             priority: 0,
+            sub_order: 0,
+            effect_order: 0,
         });
         queue.push(action);
         assert_eq!(queue.len(), 1);

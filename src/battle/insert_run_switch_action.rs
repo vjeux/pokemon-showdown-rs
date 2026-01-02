@@ -39,6 +39,8 @@ impl Battle {
             order: 101,
             priority: 0,
             speed: self.sides[side_index].pokemon[pokemon_index].speed as f64,
+            sub_order: 0,
+            effect_order: 0,
             pokemon_index,
             side_index,
             event: None,
@@ -51,7 +53,7 @@ impl Battle {
         // JS: for (const [i, curAction] of this.list.entries()) {
         for (i, cur_action) in self.queue.list.iter().enumerate() {
             // JS: const compared = this.battle.comparePriority(actions[0], curAction);
-            let compared = self.compare_action_priority(&action, cur_action);
+            let compared = Battle::compare_action_priority(&action, cur_action);
 
             // JS: if (compared <= 0 && firstIndex === null) { firstIndex = i; }
             if compared <= 0 && first_index.is_none() {

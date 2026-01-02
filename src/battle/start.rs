@@ -240,6 +240,8 @@ impl Battle {
         self.queue.add_choice_raw(Action::Field(FieldAction {
             choice: FieldActionType::Start,
             priority: 0,
+            sub_order: 0,
+            effect_order: 0,
         }));
 
         // JS: this.midTurn = true;

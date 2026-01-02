@@ -55,19 +55,23 @@ impl Battle {
             // JS: this.queue.addChoice({ choice: "residual" });
             use crate::battle_queue::{Action, FieldAction, FieldActionType};
 
-            // Insert beforeTurn action with priority insertion (uses PRNG for tie-breaking)
+            // JS: this.queue.insertChoice({ choice: 'beforeTurn' });
             let before_turn_action = Action::Field(FieldAction {
                 choice: FieldActionType::BeforeTurn,
                 priority: 0,
+                sub_order: 0,
+                effect_order: 0,
             });
-            self.insert_field_action(before_turn_action);
+            self.queue_insert_choice(before_turn_action);
 
-            // Add residual action to end of queue
+            // JS: this.queue.addChoice({ choice: 'residual' });
             let residual_action = Action::Field(FieldAction {
                 choice: FieldActionType::Residual,
                 priority: 0,
+                sub_order: 0,
+                effect_order: 0,
             });
-            self.queue.add_choice_raw(residual_action);
+            self.queue.list.push(residual_action);
 
             self.mid_turn = true;
         }

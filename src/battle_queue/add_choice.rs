@@ -47,6 +47,8 @@ impl BattleQueue {
 
                     actions.push(Action::Move(MoveAction {
                         choice: MoveActionType::Move,
+                        sub_order: 0,
+                        effect_order: 0,
                         side_index: side_idx,
                         pokemon_index: pokemon_idx,
                         move_id: move_id.clone(),
@@ -67,6 +69,8 @@ impl BattleQueue {
                 if let Some(switch_to) = side_action.switch_index {
                     actions.push(Action::Switch(SwitchAction {
                         choice: SwitchActionType::Switch,
+                        sub_order: 0,
+                        effect_order: 0,
                         side_index: side_idx,
                         pokemon_index: side_action.pokemon_index,
                         target_index: switch_to,
@@ -83,6 +87,8 @@ impl BattleQueue {
                 let priority = -(side_action.switch_index.unwrap_or(0) as i8);
                 actions.push(Action::Team(TeamAction {
                     priority,
+                    sub_order: 0,
+                    effect_order: 0,
                     speed: 1.0,  // Will be set by get_action_speed
                     pokemon_index: side_action.pokemon_index,
                     side_index: side_idx,
@@ -92,6 +98,8 @@ impl BattleQueue {
             crate::side::ChoiceType::Pass => {
                 actions.push(Action::Field(FieldAction {
                     choice: FieldActionType::Pass,
+                    sub_order: 0,
+                    effect_order: 0,
                     priority: 0,
                 }));
             }
@@ -99,6 +107,8 @@ impl BattleQueue {
                 if let Some(switch_to) = side_action.switch_index {
                     actions.push(Action::Switch(SwitchAction {
                         choice: SwitchActionType::InstaSwitch,
+                        sub_order: 0,
+                        effect_order: 0,
                         side_index: side_idx,
                         pokemon_index: side_action.pokemon_index,
                         target_index: switch_to,
@@ -113,6 +123,8 @@ impl BattleQueue {
                 if let Some(switch_to) = side_action.switch_index {
                     actions.push(Action::Switch(SwitchAction {
                         choice: SwitchActionType::RevivalBlessing,
+                        sub_order: 0,
+                        effect_order: 0,
                         side_index: side_idx,
                         pokemon_index: side_action.pokemon_index,
                         target_index: switch_to,

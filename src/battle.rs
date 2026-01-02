@@ -48,6 +48,7 @@ mod do_switch;
 mod compare_action_priority;
 mod insert_run_switch_action;
 mod insert_field_action;
+mod queue_insert_choice;
 mod field_event_switch_in;
 mod get_move_target;
 mod run_residual;
