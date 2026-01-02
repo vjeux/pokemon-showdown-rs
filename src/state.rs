@@ -12,177 +12,281 @@ use std::collections::HashMap;
 
 /// Serializable battle state
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Battle state serialization (sim/battle.ts toJSON)
+/// ~10 fields in JavaScript (inline return type)
 pub struct BattleState {
     /// Format ID
+    /// JavaScript: formatid: string
     pub format_id: ID,
     /// PRNG seed at start of battle
+    /// JavaScript: seed: PRNGSeed
     pub seed: PRNGSeed,
     /// Current turn number
+    /// JavaScript: turn: number
     pub turn: i32,
     /// Active turn (for mid-turn states)
+    /// JavaScript: activeTurn: boolean
     pub active_turn: bool,
     /// Battle ended
+    /// JavaScript: ended: boolean
     pub ended: bool,
     /// Winner (if ended)
+    /// JavaScript: winner?: string
     pub winner: Option<String>,
     /// Side states
+    /// JavaScript: p1: Side, p2: Side (stored as array in Rust)
     pub sides: [SideState; 2],
     /// Field state
+    /// JavaScript: field: Field
     pub field: FieldState,
     /// Input log (all player choices)
+    /// JavaScript: inputLog: string[]
     pub input_log: Vec<String>,
     /// Battle log (all output messages)
+    /// JavaScript: log: string[]
     pub log: Vec<String>,
 }
 
 /// Serializable side state
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Side state serialization (sim/side.ts toJSON)
+/// ~6 fields in JavaScript (inline return type)
 pub struct SideState {
     /// Side ID (p1, p2)
+    /// JavaScript: id: SideID
     pub id: String,
     /// Player name
+    /// JavaScript: name: string
     pub name: String,
     /// All Pokemon on this side
+    /// JavaScript: pokemon: Pokemon[]
     pub pokemon: Vec<PokemonState>,
     /// Active Pokemon indices
+    /// JavaScript: active: Pokemon[] (Rust uses indices)
     pub active: Vec<Option<usize>>,
     /// Side conditions with layer counts
+    /// JavaScript: sideConditions: { [id: string]: number }
     pub side_conditions: HashMap<ID, u8>,
     /// Slot conditions (Wish, etc.)
+    /// JavaScript: slotConditions: { [slot: number]: { [id: string]: EffectState } }
     pub slot_conditions: HashMap<usize, HashMap<ID, EffectState>>,
 }
 
 /// Serializable Pokemon state
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Pokemon state serialization (sim/pokemon.ts toJSON)
+/// ~25 fields in JavaScript (inline return type)
 pub struct PokemonState {
     /// Species name
+    /// JavaScript: species: string
     pub species: String,
     /// Nickname (if different from species)
+    /// JavaScript: name: string
     pub name: String,
     /// Level
+    /// JavaScript: level: number
     pub level: u8,
     /// Gender
+    /// JavaScript: gender: GenderName
     pub gender: String,
     /// Current HP
+    /// JavaScript: hp: number
     pub hp: i32,
     /// Maximum HP
+    /// JavaScript: maxhp: number
     pub maxhp: i32,
     /// Current ability ID
+    /// JavaScript: ability: ID
     pub ability: ID,
     /// Base ability ID (before Transform, etc.)
+    /// JavaScript: baseAbility: ID
     pub base_ability: ID,
     /// Current item ID (empty if no item)
+    /// JavaScript: item: ID
     pub item: ID,
     /// Original item (before Knock Off, etc.)
+    /// JavaScript: itemData: { id: ID }
     pub original_item: ID,
     /// Current types
+    /// JavaScript: types: string[]
     pub types: Vec<String>,
     /// Base types (original)
+    /// JavaScript: baseTypes?: string[]
     pub base_types: Vec<String>,
     /// Move slots
+    /// JavaScript: moves: MoveSlot[]
     pub moves: Vec<MoveSlotState>,
     /// Current stats (after modifications)
+    /// JavaScript: stats: StatsTable
     pub stats: StatsState,
     /// Base stats (before modifications)
+    /// JavaScript: baseStats?: StatsTable
     pub base_stats: StatsState,
     /// Stat boosts
+    /// JavaScript: boosts: BoostsTable
     pub boosts: BoostsState,
     /// Non-volatile status
+    /// JavaScript: status: ID
     pub status: Option<String>,
     /// Status data (sleep turns, toxic counter, etc.)
+    /// JavaScript: statusState: EffectState
     pub status_state: Option<EffectState>,
     /// Volatile conditions
+    /// JavaScript: volatiles: { [id: string]: EffectState }
     pub volatiles: HashMap<ID, EffectState>,
     /// Is this Pokemon active?
+    /// JavaScript: isActive: boolean
     pub is_active: bool,
     /// Is this Pokemon fainted?
+    /// JavaScript: fainted: boolean
     pub fainted: bool,
     /// Position in team (0-5)
+    /// JavaScript: position: number
     pub position: usize,
     /// Last move used
+    /// JavaScript: lastMove?: ID
     pub last_move: Option<ID>,
     /// Last move turn
+    /// JavaScript: lastMoveTurn?: number
     pub last_move_turn: Option<i32>,
     /// Transform target (if transformed)
+    /// JavaScript: transformed: boolean
     pub transformed: bool,
 }
 
 /// Serializable move slot state
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: MoveSlot serialization (sim/pokemon.ts)
+/// 5 fields in JavaScript
 pub struct MoveSlotState {
     /// Move ID
+    /// JavaScript: id: ID
     pub id: ID,
     /// Current PP
+    /// JavaScript: pp: number
     pub pp: u8,
     /// Maximum PP
+    /// JavaScript: maxpp: number
     pub maxpp: u8,
     /// Is this move disabled?
+    /// JavaScript: disabled: boolean | 'hidden'
+    /// TODO: Rust uses bool, cannot represent 'hidden' variant
     pub disabled: bool,
     /// Used this turn?
+    /// JavaScript: used: boolean
     pub used: bool,
 }
 
 /// Serializable stats
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
+/// JavaScript equivalent: StatsTable (sim/global-types.ts)
+/// 6 fields in JavaScript
 pub struct StatsState {
+    /// Hit Points
+    /// JavaScript: hp: number
     pub hp: i32,
+    /// Attack
+    /// JavaScript: atk: number
     pub atk: i32,
+    /// Defense
+    /// JavaScript: def: number
     pub def: i32,
+    /// Special Attack
+    /// JavaScript: spa: number
     pub spa: i32,
+    /// Special Defense
+    /// JavaScript: spd: number
     pub spd: i32,
+    /// Speed
+    /// JavaScript: spe: number
     pub spe: i32,
 }
 
 /// Serializable boosts
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
+/// JavaScript equivalent: BoostsTable (sim/global-types.ts)
+/// 7 fields in JavaScript
 pub struct BoostsState {
+    /// Attack boost (-6 to +6)
+    /// JavaScript: atk: number
     pub atk: i8,
+    /// Defense boost (-6 to +6)
+    /// JavaScript: def: number
     pub def: i8,
+    /// Special Attack boost (-6 to +6)
+    /// JavaScript: spa: number
     pub spa: i8,
+    /// Special Defense boost (-6 to +6)
+    /// JavaScript: spd: number
     pub spd: i8,
+    /// Speed boost (-6 to +6)
+    /// JavaScript: spe: number
     pub spe: i8,
+    /// Accuracy boost (-6 to +6)
+    /// JavaScript: accuracy: number
     pub accuracy: i8,
+    /// Evasion boost (-6 to +6)
+    /// JavaScript: evasion: number
     pub evasion: i8,
 }
 
 /// Serializable field state
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Field state serialization (sim/field.ts toJSON)
+/// 5 fields in JavaScript
 pub struct FieldState {
     /// Current weather ID (empty = no weather)
+    /// JavaScript: weather: ID
     pub weather: ID,
     /// Weather state
+    /// JavaScript: weatherState: EffectState
     pub weather_state: Option<EffectState>,
     /// Current terrain ID (empty = no terrain)
+    /// JavaScript: terrain: ID
     pub terrain: ID,
     /// Terrain state
+    /// JavaScript: terrainState: EffectState
     pub terrain_state: Option<EffectState>,
     /// Pseudo-weather conditions
+    /// JavaScript: pseudoWeather: { [id: string]: EffectState }
     pub pseudo_weather: HashMap<ID, EffectState>,
 }
 
 /// Input log entry for replay
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Input log entry (sim/battle.ts)
+/// 3 fields in JavaScript (inline type)
 pub struct InputLogEntry {
     /// Turn number
+    /// JavaScript: turn: number
     pub turn: i32,
     /// Side index (0 or 1)
+    /// JavaScript: side: number
     pub side: usize,
     /// Choice string (e.g., "move 1", "switch 2")
+    /// JavaScript: choice: string
     pub choice: String,
 }
 
 /// Replay data for deterministic replay
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Replay data structure
+/// 5 fields in JavaScript (inline type)
 pub struct ReplayData {
     /// Format ID
+    /// JavaScript: formatid: ID
     pub format_id: ID,
     /// Initial PRNG seed
+    /// JavaScript: seed: PRNGSeed
     pub seed: PRNGSeed,
     /// Player 1 team (in import format)
+    /// JavaScript: p1team: string
     pub p1_team: String,
     /// Player 2 team (in import format)
+    /// JavaScript: p2team: string
     pub p2_team: String,
     /// All input choices in order
+    /// JavaScript: inputLog: InputLogEntry[]
     pub inputs: Vec<InputLogEntry>,
 }
 
