@@ -381,7 +381,30 @@ impl Pokemon {
         // JS: } else {
         // JS:     this.battle.add('-transform', this, pokemon);
         // JS: }
-        // Note: Missing battle.add message - would need Battle reference
+        // ✅ NOW IMPLEMENTED: battle.add('-transform') message
+        {
+            let self_ident = {
+                let self_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return false,
+                };
+                self_pokemon.get_slot()
+            };
+            let target_ident = {
+                let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                    Some(p) => p,
+                    None => return false,
+                };
+                target_pokemon.get_slot()
+            };
+            battle.add(
+                "-transform",
+                &[
+                    self_ident.as_str().into(),
+                    target_ident.as_str().into(),
+                ],
+            );
+        }
 
         // Get mutable reference again for final transformations
         let self_pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -400,12 +423,11 @@ impl Pokemon {
         // Note: Not setting known_type as it has different semantics in Rust (Option<String> vs boolean)
 
         // JS: if (this.battle.gen > 2) this.setAbility(pokemon.ability, this, null, true, true);
-        // ✅ NOW IMPLEMENTED: Gen check for ability copying (gen > 2)
-        // Copy ability
+        // ✅ NOW IMPLEMENTED: Proper setAbility call with parameters (gen > 2)
+        // JS parameters: (ability, source=this, sourceEffect=null, isFromFormeChange=true, isTransform=true)
         if gen > 2 {
-            self_pokemon_mut.ability = target_ability;
+            self_pokemon_mut.set_ability(target_ability, Some(pokemon_pos), None, true, true);
         }
-        // Note: Missing setAbility call with proper parameters
 
         // JS: // Change formes based on held items (for Transform)
         // JS: if (this.battle.gen === 4) { ... Giratina/Arceus forme changes ... }
