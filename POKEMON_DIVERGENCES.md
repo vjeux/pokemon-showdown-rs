@@ -311,14 +311,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing different-side adjacency formula using active.length
 
 #### is_grounded.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Partially Implemented)
 - Issue: Multiple missing checks and incorrect case handling
-- Action: Rewrote to match JS flow, documented all missing pieces
+- Action: Rewrote to match JS flow, added ignoringItem() checks
 - Notes:
-  - Fixed has_type to use case-sensitive comparison (was using toLowerCase)
+  - ✅ Fixed has_type to use case-sensitive comparison (was using toLowerCase)
+  - ✅ NOW IMPLEMENTED: ignoringItem() checks for Iron Ball and Air Balloon
   - Missing Gravity pseudo-weather check (needs Battle reference)
   - Missing gen check for Ingrain (assumes gen >= 4)
-  - Missing ignoringItem() calls for Iron Ball and Air Balloon
   - Missing negateImmunity parameter
   - Missing special ??? + Roost case for Fire/Flying with Burn Up
   - Missing suppressingAbility check for Levitate
@@ -955,9 +955,10 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Fixed update_max_hp.rs - Added Dynamax check for HP doubling (MERGED)
   - ✅ Fixed has_item.rs - Added ignoringItem() check - now fully 1-to-1! (MERGED)
   - ✅ Fixed try_trap.rs - Added runStatusImmunity check (MERGED)
+  - ✅ Fixed is_grounded.rs - Added ignoringItem() checks for Iron Ball and Air Balloon (MERGED)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
 - **Methods Now Fully 1-to-1**: has_item.rs
-- **Methods Significantly Improved**: update_max_hp.rs, try_trap.rs
+- **Methods Significantly Improved**: update_max_hp.rs, try_trap.rs, is_grounded.rs
 - **Path Forward**:
   - Phase 1 (Current): Fix methods that can be improved without API changes
   - Phase 2 (Next): Refactor method signatures to take Battle where needed

@@ -34,16 +34,20 @@ impl Pokemon {
         }
 
         // JS: const item = (this.ignoringItem() ? '' : this.item);
+        let item = if self.ignoring_item() {
+            ""
+        } else {
+            self.item.as_str()
+        };
+
         // JS: if (item === 'ironball') return true;
-        // Note: Missing ignoringItem() check
-        if self.item.as_str() == "ironball" {
+        if item == "ironball" {
             return true;
         }
 
         // JS: if (!negateImmunity && this.hasType('Flying') && !(this.hasType('???') && 'roost' in this.volatiles)) return false;
         // Note: Missing negateImmunity parameter
-        // Note: Using case-sensitive comparison like JS (no toLowerCase)
-        // Note: Missing special ??? + Roost case
+        // Note: Missing special ??? + Roost case for Fire/Flying with Burn Up
         if self.has_type("Flying") {
             return false;
         }
@@ -66,7 +70,6 @@ impl Pokemon {
         }
 
         // JS: return item !== 'airballoon';
-        // Note: Missing ignoringItem() check
-        self.item.as_str() != "airballoon"
+        item != "airballoon"
     }
 }
