@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 79 Complete - Continuing NOTE Fixes)
-- **Session 24 Total Progress**: 40+ commits, 79 parts completed
+## Overview (Updated: Session 24 Part 80 Complete - Continuing NOTE Fixes)
+- **Session 24 Total Progress**: 40+ commits, 80 parts completed
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -38,6 +38,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 77**: **MAJOR REFACTOR** - set_status/cure_status/try_set_status to associated functions + singleEvent('Start') in set_status with rollback logic. Updated 60+ callsites across ability/item/move callbacks
   - **Part 78**: set_status runEvent calls - Implemented runEvent('SetStatus') before status change and runEvent('AfterSetStatus') after status change
   - **Part 79**: set_ability runEvent call - Implemented runEvent('SetAbility') before changing ability
+  - **Part 80**: take_item runEvent calls - Implemented runEvent('TakeItem') before removal and runEvent('AfterTakeItem') after removal
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
@@ -52,7 +53,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - use_item.rs (HP/Gem check, item.boosts, battle.add messages - now ~70%, was ~45%)
   - eat_item.rs (standalone, battle.add [eat], RESTORATIVE_BERRIES - now ~75%, was ~50%)
   - set_item.rs (RESTORATIVE_BERRIES pendingStaleness, associated function, singleEvent calls - now ~70%, was ~55%)
-  - take_item.rs (singleEvent('End') for removed item - now ~78%, was ~72%)
+  - take_item.rs (singleEvent + runEvent calls - now ~82%, was ~72%)
   - set_ability.rs (associated function, singleEvent + runEvent calls - now ~78%, was ~70%)
   - clear_ability.rs (refactored to associated function - now 100%)
   - set_status.rs (associated function, singleEvent('Start') + runEvent calls - now ~65%, was ~50%)

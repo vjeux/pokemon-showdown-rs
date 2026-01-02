@@ -82,8 +82,14 @@ impl Pokemon {
         // Already have item from Phase 1
 
         // JS: if (this.battle.runEvent('TakeItem', this, source, null, item)) { ... }
-        // Note: Missing runEvent('TakeItem') - would need event system
-        // Currently always succeeds
+        // ✅ NOW IMPLEMENTED (Session 24 Part 80): runEvent('TakeItem')
+        // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
+        //       Passing None for now - handlers can check pokemon's item field before it's cleared
+        let take_item_result = battle.run_event("TakeItem", Some(pokemon_pos), Some(source_pos), None, None);
+        // runEvent returns Option<i32>, None or Some(0) means failure
+        if take_item_result == Some(0) || take_item_result == None {
+            return None; // false in JavaScript
+        }
 
         // JS: const oldItemState = this.itemState;
         // ✅ NOW IMPLEMENTED (Session 24 Part 75): Store oldItemState for singleEvent('End')
@@ -119,7 +125,10 @@ impl Pokemon {
         battle.single_event("End", &item, Some(pokemon_pos), None, None);
 
         // JS: this.battle.runEvent('AfterTakeItem', this, null, null, item);
-        // Note: Missing runEvent('AfterTakeItem') - would need event system
+        // ✅ NOW IMPLEMENTED (Session 24 Part 80): runEvent('AfterTakeItem')
+        // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
+        //       Passing None for now - handlers can check pokemon's item field which is now empty
+        battle.run_event("AfterTakeItem", Some(pokemon_pos), None, None, None);
 
         // JS: return item;
         Some(item)
