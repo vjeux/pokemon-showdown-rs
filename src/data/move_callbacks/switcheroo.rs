@@ -148,9 +148,7 @@ pub fn on_hit(
     //     this.add('-enditem', target, yourItem, '[silent]', '[from] move: Switcheroo');
     // }
     if let Some(my_item_id) = my_item.clone() {
-        if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
-            target_pokemon.set_item(my_item_id.clone(), None, None);
-        }
+        Pokemon::set_item(battle, target, my_item_id.clone(), None, None);
 
         let my_item_name = {
             let item_data = battle.dex.items().get_by_id(&my_item_id);
@@ -193,9 +191,7 @@ pub fn on_hit(
     //     this.add('-enditem', source, myItem, '[silent]', '[from] move: Switcheroo');
     // }
     if let Some(your_item_id) = your_item {
-        if let Some(source_pokemon) = battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-            source_pokemon.set_item(your_item_id.clone(), None, None);
-        }
+        Pokemon::set_item(battle, source_pos, your_item_id.clone(), None, None);
 
         let your_item_name = {
             let item_data = battle.dex.items().get_by_id(&your_item_id);

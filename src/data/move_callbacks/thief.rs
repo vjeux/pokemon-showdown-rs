@@ -83,11 +83,7 @@ pub fn on_after_hit(
     let can_take_item = !matches!(take_item_result, EventResult::Boolean(false));
 
     let set_item_success = if can_take_item {
-        let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source_pokemon.set_item(your_item_id.clone(), None, None)
+        Pokemon::set_item(battle, source_pos, your_item_id.clone(), None, None)
     } else {
         false
     };

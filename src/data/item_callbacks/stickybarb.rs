@@ -85,9 +85,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
     };
 
     // Give item to source
-    if let Some(source) = battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-        source.set_item(barb, None, None);
-    }
+    Pokemon::set_item(battle, source_pos, barb, None, None);
 
     EventResult::Continue
 }

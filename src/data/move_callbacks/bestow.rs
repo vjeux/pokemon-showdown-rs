@@ -60,15 +60,7 @@ pub fn on_hit(
     let take_item_event =
         battle.single_event("TakeItem", &my_item, Some(target), Some(pokemon_pos), None);
 
-    let set_item_success = {
-        let target_pokemon = battle.pokemon_at_mut(target.0, target.1);
-
-        if let Some(target_pokemon) = target_pokemon {
-            target_pokemon.set_item(my_item.clone(), None, None)
-        } else {
-            false
-        }
-    };
+    let set_item_success = Pokemon::set_item(battle, target, my_item.clone(), None, None);
 
     if matches!(take_item_event, EventResult::Boolean(false)) || !set_item_success {
         // source.item = myItem.id;

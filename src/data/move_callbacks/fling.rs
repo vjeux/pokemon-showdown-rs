@@ -199,12 +199,12 @@ pub mod condition {
         // pokemon.setItem('');
         // pokemon.lastItem = item.id;
         // pokemon.usedItemThisTurn = true;
+        Pokemon::set_item(battle, pokemon, ID::empty(), None, None);
         {
             let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_mut.set_item(ID::empty(), None, None);
             pokemon_mut.last_item = item_id.clone();
             pokemon_mut.used_item_this_turn = true;
         }

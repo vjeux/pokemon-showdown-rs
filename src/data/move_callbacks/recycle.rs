@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(pokemon, source, move) {
 ///     if (pokemon.item || !pokemon.lastItem) return false;
@@ -79,14 +80,8 @@ pub fn on_hit(
     // JavaScript: pokemon.setItem(item, source, move)
     // source = pokemon (self-targeting move)
     // move = "recycle"
-    {
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        // ✅ NOW PASSING: source_pos = Some(pokemon_pos), source_effect = Some("recycle")
-        pokemon_pokemon.set_item(item, Some(pokemon_pos), Some(&ID::new("recycle")));
-    }
+    // ✅ NOW PASSING: source_pos = Some(pokemon_pos), source_effect = Some("recycle")
+    Pokemon::set_item(battle, pokemon_pos, item, Some(pokemon_pos), Some(&ID::new("recycle")));
 
     EventResult::Continue
 }

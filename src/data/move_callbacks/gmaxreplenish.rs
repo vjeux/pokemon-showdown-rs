@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(source)
 ///
@@ -112,13 +113,7 @@ pub fn on_hit(
             ],
         );
 
-        {
-            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => continue,
-            };
-            pokemon.set_item(last_item_id, None, None);
-        }
+        Pokemon::set_item(battle, pokemon_pos, last_item_id, None, None);
     //     }
     // }
     }
