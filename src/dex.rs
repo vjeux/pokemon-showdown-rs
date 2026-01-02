@@ -208,28 +208,41 @@ pub struct SpeciesData {
     pub exists: bool,
 }
 
-/// Move secondary effect
+/// Move secondary effect data
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: MoveSecondary/SecondaryEffect (sim/dex-moves.ts)
+/// 4 fields in JavaScript (simplified from full SecondaryEffect)
 pub struct MoveSecondary {
+    /// Chance of effect occurring (percentage)
+    /// JavaScript: chance?: number
     #[serde(default)]
     pub chance: Option<i32>,
+    /// Status to inflict
+    /// JavaScript: status?: string
     #[serde(default)]
     pub status: Option<String>,
+    /// Stat boosts to apply
+    /// JavaScript: boosts?: SparseBoostsTable
     #[serde(default)]
     pub boosts: Option<HashMap<String, i32>>,
+    /// Volatile status to inflict
+    /// JavaScript: volatileStatus?: string
     #[serde(rename = "volatileStatus", default)]
     pub volatile_status_secondary: Option<String>,
 }
 
-/// Move data from the move list
 /// Condition data for volatile statuses
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 /// JavaScript equivalent: ConditionData (sim/dex-conditions.ts)
+/// 10+ fields in JavaScript (many are callbacks)
 pub struct ConditionData {
+    /// Duration in turns
+    /// JavaScript: duration?: number
     #[serde(default)]
     pub duration: Option<i32>,
     /// Extra fields (like onResidualOrder, onResidualSubOrder, etc.)
     /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`]
+    /// Note: JavaScript has many callback methods that cannot be stored in data
     #[serde(flatten)]
     pub extra: HashMap<String, serde_json::Value>,
     // Add other condition fields as needed
