@@ -8,6 +8,7 @@
 use crate::dex_data::ID;
 
 /// Item effect types for different game events (legacy enum for compatibility)
+/// TODO: Not in JavaScript - Rust-specific enum for categorizing item event types
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ItemEvent {
     /// When Pokemon switches in
@@ -41,6 +42,7 @@ pub enum ItemEvent {
 }
 
 /// Modifiers returned by item effects
+/// TODO: Not in JavaScript - Rust-specific struct for returning item effect results
 #[derive(Debug, Clone, Default)]
 pub struct ItemModifier {
     /// Multiply damage by this factor (1.0 = no change)
