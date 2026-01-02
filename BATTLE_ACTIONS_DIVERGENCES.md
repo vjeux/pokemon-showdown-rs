@@ -2,6 +2,33 @@
 
 This document tracks divergences between the JavaScript implementation in `pokemon-showdown/sim/battle-actions.ts` and the Rust implementation in `pokemon-showdown-rs/src/battle_actions/`.
 
+## Executive Summary (2026-01-02)
+
+**Excellent Progress:** The battle_actions module is approaching 1:1 equivalence with JavaScript!
+
+**Stub Functions:** 16/17 completed (94%)
+- ✅ All simple stubs implemented except hit_step_move_hit_loop (deferred for infrastructure)
+
+**Partial Implementations:** 2/3 completed (67%)
+- ✅ hit_step_accuracy.rs - All 3 TODOs completed
+- ✅ get_damage.rs - All TODOs completed
+- ⚠️ run_move.rs - 4/13 TODOs completed (9 remaining require infrastructure)
+
+**Key Achievements:**
+- OHKO logic with Ohko enum handling
+- Always-hit special cases and miss handling with Blunder Policy
+- Hacked Max Move detection
+- Event system integration (OverrideAction, LockMove, etc.)
+- Gen 4 active move restoration
+- Infrastructure solution: Using `battle.active_move` to avoid massive signature refactors
+
+**Remaining Work:**
+- 9 TODOs in run_move.rs (need Pokemon fields, callbacks, ability systems)
+- 1 deferred function (hit_step_move_hit_loop)
+- Other files with TODOs (use_move_inner, try_spread_move_hit, etc.)
+
+---
+
 ## Status Summary
 
 **Total files in battle_actions/**: 43
