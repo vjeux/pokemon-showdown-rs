@@ -6,29 +6,30 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 1
-**Remaining stubs**: 15
+**Completed implementations**: 3 (can_mega_evo, can_ultra_burst, run_mega_evo)
+**Remaining stubs**: 14
 
 ## Files with Stubs (Not Implemented)
 
 These files are completely unimplemented stubs:
 
 1. ~~`can_mega_evo.rs` - canMegaEvo~~ ✅ IMPLEMENTED
-2. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
-3. `can_z_move.rs` - canZMove
-4. `force_switch.rs` - forceSwitch
-5. `get_active_max_move.rs` - getActiveMaxMove
-6. `get_active_z_move.rs` - getActiveZMove
-7. `get_max_move.rs` - getMaxMove
-8. `get_z_move.rs` - getZMove
-9. `hit_step_break_protect.rs` - hitStepBreakProtect
-10. `hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent
-11. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop
-12. `hit_step_steal_boosts.rs` - hitStepStealBoosts
-13. `hit_step_try_hit_event.rs` - hitStepTryHitEvent
-14. `hit_step_try_immunity.rs` - hitStepTryImmunity
-15. `hit_step_type_immunity.rs` - hitStepTypeImmunity
-16. `run_mega_evo.rs` - runMegaEvo
+2. ~~`can_ultra_burst.rs` - canUltraBurst~~ ✅ IMPLEMENTED (Converted to standalone function)
+3. ~~`run_mega_evo.rs` - runMegaEvo~~ ✅ IMPLEMENTED
+4. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
+5. `can_z_move.rs` - canZMove
+6. `force_switch.rs` - forceSwitch
+7. `get_active_max_move.rs` - getActiveMaxMove
+8. `get_active_z_move.rs` - getActiveZMove
+9. `get_max_move.rs` - getMaxMove
+10. `get_z_move.rs` - getZMove
+11. `hit_step_break_protect.rs` - hitStepBreakProtect
+12. `hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent
+13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop
+14. `hit_step_steal_boosts.rs` - hitStepStealBoosts
+15. `hit_step_try_hit_event.rs` - hitStepTryHitEvent
+16. `hit_step_try_immunity.rs` - hitStepTryImmunity
+17. `hit_step_type_immunity.rs` - hitStepTypeImmunity
 
 ## Files with Partial Implementation
 
@@ -78,14 +79,33 @@ These files exist only in Rust and should be evaluated:
   - Standard mega stone evolution
 - Matches JavaScript implementation line by line
 
+### 2026-01-02 - Commit c8cd8c9f
+**Updated: can_ultra_burst**
+- Converted from BattleActions method to standalone function
+- Matches new function pattern: `(battle: &Battle, side_index: usize, pokemon_index: usize) -> Option<String>`
+- Maintains 1:1 equivalence with JavaScript implementation
+
+### 2026-01-02 - Commit 5e72cfc6
+**Implemented: run_mega_evo**
+- Implemented 1:1 port of runMegaEvo from battle-actions.ts
+- Calls can_mega_evo and can_ultra_burst to determine forme
+- Performs forme change (using current forme_change method)
+- Limits one mega evolution per side
+- Fires AfterMega event
+- Note: Current forme_change method signature doesn't match JavaScript
+  - JavaScript: `formeChange(speciesId, source, isPermanent, abilitySlot, message)`
+  - Rust: `forme_change(new_species_id, new_types, new_ability)`
+  - Full 1:1 forme_change rewrite needed in future
+
 ---
 
 ## Next Steps
 
-1. Implement canUltraBurst and runMegaEvo to complete Mega Evolution functionality
-2. Implement remaining stubbed files by porting from JavaScript battle-actions.ts
+1. ~~Implement canUltraBurst and runMegaEvo to complete Mega Evolution functionality~~ ✅ COMPLETED
+2. Implement remaining stubbed files by porting from JavaScript battle-actions.ts (14 remaining)
 3. Complete partial implementations with missing TODOs
-4. Verify Rust-specific files are necessary or can be removed
-5. Ensure all implementations match JavaScript line-by-line
-6. Run battle tests to verify correctness
+4. Rewrite forme_change to match JavaScript 1:1
+5. Verify Rust-specific files are necessary or can be removed
+6. Ensure all implementations match JavaScript line-by-line
+7. Run battle tests to verify correctness
 
