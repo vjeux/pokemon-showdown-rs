@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target) {
 ///     const type = this.dex.moves.get(target.moveSlots[0].id).type;
@@ -53,13 +54,7 @@ pub fn on_hit(
     };
 
     // Try to set the type and check if it succeeded
-    let set_type_succeeded = {
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.set_type(vec![move_type.clone()], false)
-    };
+    let set_type_succeeded = Pokemon::set_type(battle, target, vec![move_type.clone()], false);
 
     // Check if it failed (either already has type or setType returned false)
     if has_type || !set_type_succeeded {

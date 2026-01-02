@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// ```ignore
 /// onHit(target) {
@@ -70,13 +71,7 @@ pub fn on_hit(
     let types_match = target_types.len() == 1 && target_types[0] == new_type;
 
     // Try to set the type and check if it succeeded
-    let set_type_succeeded = {
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.set_type(vec![new_type.clone()], false)
-    };
+    let set_type_succeeded = Pokemon::set_type(battle, target, vec![new_type.clone()], false);
 
     // Check if it failed (either types match or setType returned false)
     if types_match || !set_type_succeeded {

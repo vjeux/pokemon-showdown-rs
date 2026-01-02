@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target) {
 ///     if (target.getTypes().join() === 'Water' || !target.setType('Water')) {
@@ -42,13 +43,7 @@ pub fn on_hit(
     };
 
     // Try to set the type and check if it succeeded
-    let set_type_succeeded = {
-        let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target.set_type(vec![String::from("Water")], false)
-    };
+    let set_type_succeeded = Pokemon::set_type(battle, target_pos, vec![String::from("Water")], false);
 
     // Check if it failed (either already Water or setType returned false)
     if types_are_water || !set_type_succeeded {

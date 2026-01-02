@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target, source) {
 ///     if (source.species && (source.species.num === 493 || source.species.num === 773)) return false;
@@ -132,12 +133,12 @@ pub fn on_hit(
         target.added_type.clone()
     };
 
+    Pokemon::set_type(battle, source_pos, new_base_types, false);
+
     let source = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
         Some(p) => p,
         None => return EventResult::Continue,
     };
-
-    source.set_type(new_base_types, false);
     source.added_type = target_added_type;
 
     EventResult::Continue
