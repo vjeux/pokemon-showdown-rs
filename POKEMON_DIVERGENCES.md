@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 68 Complete)
-- **Session 24 Total Progress**: 40+ commits, 68 parts completed
+## Overview (Updated: Session 24 Part 69 Complete)
+- **Session 24 Total Progress**: 40+ commits, 69 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
@@ -26,6 +26,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 65**: get_switch_request_data documentation cleanup
   - **Part 67**: get_moves lockedMove parameter implementation (Recharge, locked move handling)
   - **Part 68**: get_switch_request_data forAlly parameter (base_moves vs moves selection)
+  - **Part 69**: is_grounded documentation update (confirmed 100% via ignoring_item delegation)
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
@@ -55,7 +56,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - 250+ callsites updated across codebase
 - **Compilation Success Rate**: 100% (0 errors, 61 warnings throughout Session 24 Parts 58-65)
 - **Remaining Work**: Only 1 TODO in src/pokemon/ (event system infrastructure in calculate_stat.rs)
-- **Methods Now at 100%**: 21 methods fully equivalent to JavaScript
+- **Methods Now at 100%**: 22 methods fully equivalent to JavaScript
 - **Goal**: Achieve 1:1 line-by-line equivalence with JavaScript
 
 ## Status Legend
@@ -450,7 +451,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Battle version handles same-side (position diff) and different-side (complex formula) correctly
 
 #### is_grounded.rs
-- Status: ✅ Fixed (Significantly Improved - Session 24)
+- Status: ✅ Fixed (100% Complete - Session 24 Part 69)
 - Issue: Missing Gravity check, Battle parameter, gen check for Ingrain, and suppressingAbility check
 - Action: Refactored to take Battle parameter, implemented all missing checks
 - Notes:
@@ -462,9 +463,11 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24): suppressingAbility check for Levitate
   - ✅ Fixed has_type to use case-sensitive comparison (was using toLowerCase)
   - ✅ NOW IMPLEMENTED: ignoringItem() checks for Iron Ball and Air Balloon
+  - ✅ NOW IMPLEMENTED (Session 24 Part 69): Primal Orb and ignoreKlutz checks (delegated to ignoring_item())
   - ✅ Updated all callsites across codebase
   - Note: Returns bool instead of Option<bool> to avoid updating 21 callsites
   - Note: JavaScript returns null for unsuppressed Levitate, Rust returns false (functionally equivalent in boolean contexts)
+  - Note: Primal Orb and ignoreKlutz checks are handled by ignoring_item() which is 100% complete
 
 #### is_last_active.rs
 - Status: ✅ Fixed (Fully Implemented)
@@ -3045,6 +3048,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 19. ignoring_item.rs - ✅ Complete (Session 24 Part 47)
 20. ignoring_ability.rs - ✅ Complete (Session 24 Part 48)
 21. get_last_damaged_by.rs - ✅ Complete (Session 24 Part 55)
+22. is_grounded.rs - ✅ Complete (Session 24 Part 69)
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. try_set_status.rs - Core logic correct, simplified
