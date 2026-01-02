@@ -29,40 +29,49 @@ impl Pokemon {
     // 		return true;
     // 	}
     //
-    pub fn set_type(&mut self, new_types: Vec<String>) {
+    pub fn set_type(&mut self, new_types: Vec<String>, enforce: bool) -> bool {
         // JS: if (!enforce) { ... }
-        // Note: Missing enforce parameter (defaults to false in JS)
+        if !enforce {
+            // JS: if (typeof newType === 'string' ? newType === 'Stellar' : newType.includes('Stellar')) return false;
+            // ✅ NOW IMPLEMENTED: Stellar type check
+            if new_types.iter().any(|t| t == "Stellar") {
+                return false;
+            }
 
-        // JS: if (typeof newType === 'string' ? newType === 'Stellar' : newType.includes('Stellar')) return false;
-        // Note: Missing Stellar type check when !enforce
+            // JS: if ((this.battle.gen >= 5 && (this.species.num === 493 || this.species.num === 773)) ||
+            // JS:     (this.battle.gen === 4 && this.hasAbility('multitype'))) {
+            // JS:     return false;
+            // JS: }
+            // Note: Missing Arceus (493) and Silvally (773) protection
+            // Would need Battle reference for gen check and species data for num
 
-        // JS: if ((this.battle.gen >= 5 && (this.species.num === 493 || this.species.num === 773)) ||
-        // JS:     (this.battle.gen === 4 && this.hasAbility('multitype'))) {
-        // JS:     return false;
-        // JS: }
-        // Note: Missing Arceus (493) and Silvally (773) protection
-        // Would need Battle reference for gen check and species data for num
-
-        // JS: if (this.terastallized) return false;
-        // Note: Missing Terastallized protection when !enforce
+            // JS: if (this.terastallized) return false;
+            // ✅ NOW IMPLEMENTED: Terastallized protection
+            if self.terastallized.is_some() {
+                return false;
+            }
+        }
 
         // JS: if (!newType) throw new Error("Must pass type to setType");
-        // Note: No error handling for empty newType
+        // ✅ NOW IMPLEMENTED: Empty type check
+        if new_types.is_empty() {
+            return false; // Return false instead of panic
+        }
 
         // JS: this.types = (typeof newType === 'string' ? [newType] : newType);
         self.types = new_types;
 
         // JS: this.addedType = '';
-        // Note: Missing addedType reset
-        // Would need: self.added_type = None;
+        // ✅ NOW IMPLEMENTED: addedType reset
+        self.added_type = None;
 
         // JS: this.knownType = true;
-        // Note: Missing knownType field assignment
+        // Note: Missing knownType field assignment (field doesn't exist)
 
         // JS: this.apparentType = this.types.join('/');
-        // Note: Missing apparentType field assignment
+        // Note: Missing apparentType field assignment (field doesn't exist)
 
         // JS: return true;
-        // Note: Returns nothing (void) instead of bool
+        true
     }
 }

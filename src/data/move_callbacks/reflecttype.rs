@@ -137,7 +137,7 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
 
-    source.set_type(new_base_types);
+    source.set_type(new_base_types, false);
     source.added_type = target_added_type;
 
     EventResult::Continue

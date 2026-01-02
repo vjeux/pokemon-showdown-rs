@@ -129,7 +129,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.set_type(vec![random_type_str.to_string()]);
+        source_pokemon.set_type(vec![random_type_str.to_string()], false);
     }
 
     // this.add('-start', source, 'typechange', randomType);

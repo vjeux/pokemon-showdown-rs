@@ -47,7 +47,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.set_type(vec![String::from("Water")]);
+        target.set_type(vec![String::from("Water")], false);
     }
 
     // Check if it failed

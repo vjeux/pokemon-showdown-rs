@@ -39,7 +39,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_type(vec!["Psychic".to_string()]);
+        target_pokemon.set_type(vec!["Psychic".to_string()], false);
     }
 
     // this.add('-start', target, 'typechange', 'Psychic');

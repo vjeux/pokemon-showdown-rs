@@ -61,7 +61,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_type(vec![move_type.clone()]);
+        target_pokemon.set_type(vec![move_type.clone()], false);
     }
 
     // this.add('-start', target, 'typechange', type);
