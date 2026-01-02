@@ -420,6 +420,11 @@ pub struct MoveData {
     /// JavaScript: willCrit?: boolean
     #[serde(rename = "willCrit", default)]
     pub will_crit: Option<bool>,
+    /// Nonstandard status (Past, Future, Unobtainable, etc.)
+    /// JavaScript: isNonstandard?: Nonstandard | null
+    /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
+    #[serde(rename = "isNonstandard", default)]
+    pub is_nonstandard: Option<String>,
 }
 
 /// Accuracy can be a number or true (always hits)

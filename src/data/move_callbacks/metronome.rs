@@ -37,10 +37,13 @@ pub fn on_hit(
     let moves: Vec<ID> = all_moves
         .iter()
         .filter(|&&move_data| {
-            // TODO: Add is_nonstandard field to MoveData and check it here
-            // For now, just check for metronome flag
-            // move.flags['metronome']
-            move_data.flags.contains_key("metronome")
+            // (!move.isNonstandard || move.isNonstandard === 'Unobtainable') && move.flags['metronome']
+            let is_valid = match &move_data.is_nonstandard {
+                None => true,
+                Some(s) if s == "Unobtainable" => true,
+                _ => false,
+            };
+            is_valid && move_data.flags.contains_key("metronome")
         })
         .map(|m| m.id.clone())
         .collect();
