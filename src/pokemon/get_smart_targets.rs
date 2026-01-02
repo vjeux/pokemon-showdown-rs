@@ -25,8 +25,41 @@ impl Pokemon {
         target_pos: usize,
         move_smart_target: bool,
     ) -> Vec<(usize, usize)> {
-        // TODO: implement the same logic as JavaScript
-        
+        // Note: Used for Dragon Darts - hits target and adjacent ally twice
+
+        // Note: JavaScript signature is getSmartTargets(target: Pokemon, move: ActiveMove)
+        // Note: Rust takes target position and smartTarget flag instead
+
+        // JS: const target2 = target.adjacentAllies()[0];
+        // Note: Missing adjacentAllies() call to find adjacent ally
+        // Note: Would need Battle reference to access target Pokemon
+
+        // JS: if (!target2 || target2 === this || !target2.hp) {
+        // Note: Missing checks for:
+        // Note:   - No adjacent ally exists
+        // Note:   - Adjacent ally is self (shouldn't happen but checked)
+        // Note:   - Adjacent ally is fainted (hp = 0)
+
+        // JS:     move.smartTarget = false;
+        // Note: Missing setting move.smartTarget flag to false
+
+        // JS:     return [target];
+        // Note: If no valid second target, return just original target
+        // JS: }
+
+        // JS: if (!target.hp) {
+        // Note: Missing check if original target is fainted
+
+        // JS:     move.smartTarget = false;
+        // Note: Missing setting move.smartTarget flag to false
+
+        // JS:     return [target2];
+        // Note: If original target fainted but ally alive, return just the ally
+        // JS: }
+
+        // JS: return [target, target2];
+        // Note: If both targets valid, return both for Dragon Darts double-hit
+
         if !move_smart_target {
             return vec![(target_side, target_pos)];
         }

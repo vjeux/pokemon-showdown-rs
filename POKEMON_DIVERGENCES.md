@@ -618,6 +618,78 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Core infrastructure (EffectState.data) must be implemented first
   - Used for Leech Seed, Powder moves, etc. bidirectional linking
 
+#### get_moves.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Very complex method with many features, currently just returns IDs
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Missing lockedMove parameter (returns single locked move or Recharge)
+  - Missing restrictData parameter (controls hidden disabled visibility)
+  - Missing hasValidMove tracking (returns empty array if all moves disabled)
+  - Missing Hidden Power type/power formatting (e.g., "Hidden Power Fire 70")
+  - Missing Return/Frustration power calculation with basePowerCallback
+  - Missing target overrides for Curse (Ghost vs non-Ghost), Pollen Puff (Heal Block), Tera Star Storm (Terapagos-Stellar)
+  - Missing disabled calculation: Dynamax with maxMoveDisabled, PP <= 0, partial trapping lock
+  - Missing hidden disabled handling with restrictData
+  - Currently returns Vec<String> of move IDs
+  - Should return Vec of objects with {move, id, pp, maxpp, target, disabled}
+
+#### get_switch_request_data.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Very simplified JSON missing most protocol fields
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Missing ident field (should be fullname like "p1a: Pikachu")
+  - Missing details field (species with forme/shiny/gender)
+  - Missing condition field (should be getHealth().secret format "hp/maxhp status")
+  - Missing active field (whether currently in battle vs on bench)
+  - Missing stats object with baseStoredStats (atk, def, spa, spd, spe)
+  - Missing forAlly parameter to choose baseMoves vs moves
+  - Missing Hidden Power formatting in moves (with type and power)
+  - Missing Return/Frustration power calculation in moves
+  - Missing baseAbility field
+  - Missing pokeball field
+  - Missing gen > 6 check for ability field
+  - Missing Gen 9+ commanding and reviving fields
+  - Missing Gen 9 teraType and terastallized fields
+  - Currently returns custom JSON with basic fields
+
+#### get_dynamax_request.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Very simplified, just returns canDynamax flag
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Parameter is can_dynamax (inverted from JS skipChecks)
+  - Missing side.canDynamaxNow() check (needs Side reference)
+  - Missing species checks: isMega, isPrimal, forme === "Ultra"
+  - Missing item.zMove and canMegaEvo checks
+  - Missing cannotDynamax check (Zacian, Zamazenta, Eternatus)
+  - Missing illusion species cannotDynamax check
+  - Missing atLeastOne tracking (return None if all moves disabled)
+  - Missing maxMoves array generation:
+    - Loop through move slots
+    - Call battle.actions.getMaxMove() for each
+    - Check maxMoveDisabled() per move
+    - Add {move, target, disabled?} objects
+  - Missing Gigantamax field (species name when can Gigantamax)
+  - Currently just returns {"canDynamax": true}
+
+#### get_smart_targets.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Dragon Darts helper missing adjacent ally logic
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Used for Dragon Darts (hits target + adjacent ally twice)
+  - JavaScript signature: getSmartTargets(target: Pokemon, move: ActiveMove)
+  - Rust signature: takes target position and smartTarget flag
+  - Missing target.adjacentAllies() call to find adjacent ally
+  - Missing checks for no adjacent ally, ally is self, ally fainted
+  - Missing move.smartTarget flag setting to false
+  - Missing logic: if no valid second target, return just original
+  - Missing logic: if original fainted but ally alive, return just ally
+  - Missing logic: if both valid, return both for double-hit
+  - Currently just returns original target position
+
 ### Rust-Specific Helpers (May be intentional)
 
 The following are marked as "NOTE: This method is NOT in JavaScript - Rust-specific implementation":
@@ -752,8 +824,14 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Documented update_max_hp.rs (missing Dynamax check and battle.add message)
   - ✅ Documented remove_linked_volatiles.rs (needs EffectState.data infrastructure)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-- **Remaining**: ~18 TODOs (down from 26)
-- **Next**: Continue with remaining TODOs (get_moves, get_switch_request_data, etc.)
+  - ✅ Committed and pushed (4 files)
+  - ✅ Documented get_moves.rs (complex method with many missing features)
+  - ✅ Documented get_switch_request_data.rs (simplified JSON, missing many fields)
+  - ✅ Documented get_dynamax_request.rs (simplified, missing species checks and max moves)
+  - ✅ Documented get_smart_targets.rs (Dragon Darts helper, missing adjacent ally logic)
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+- **Remaining**: ~14 TODOs (down from 18)
+- **Next**: Continue with remaining TODOs (get_combat_power, get_move_hit_data, new.rs, etc.)
 
 ## Notes
 - Must compile after each fix
