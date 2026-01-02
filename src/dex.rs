@@ -526,6 +526,30 @@ pub struct MoveData {
     /// JavaScript: stallingMove?: boolean
     #[serde(rename = "stallingMove", default)]
     pub stalling_move: bool,
+    /// Pseudo-weather condition (Gravity, Fairy Lock, etc.)
+    /// JavaScript: pseudoWeather?: string
+    #[serde(rename = "pseudoWeather", default)]
+    pub pseudo_weather: Option<String>,
+    /// Thaws frozen target
+    /// JavaScript: thawsTarget?: boolean
+    #[serde(rename = "thawsTarget", default)]
+    pub thaws_target: bool,
+    /// Has Sheer Force boost
+    /// JavaScript: hasSheerForce?: boolean
+    #[serde(rename = "hasSheerForce", default)]
+    pub has_sheer_force: bool,
+    /// Override offensive stat (use SpA for physical move, etc.)
+    /// JavaScript: overrideOffensiveStat?: StatID
+    #[serde(rename = "overrideOffensiveStat", default)]
+    pub override_offensive_stat: Option<String>,
+    /// Override defensive stat (target Def instead of SpD)
+    /// JavaScript: overrideDefensiveStat?: StatID
+    #[serde(rename = "overrideDefensiveStat", default)]
+    pub override_defensive_stat: Option<String>,
+    /// Override offensive Pokemon (for Foul Play)
+    /// JavaScript: overrideOffensivePokemon?: 'target' | 'source'
+    #[serde(rename = "overrideOffensivePokemon", default)]
+    pub override_offensive_pokemon: Option<String>,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
