@@ -27,31 +27,18 @@ pub fn run_move_effects(
 
         // Apply boosts
         if let Some(ref boosts_map) = move_data.boosts {
-            // Convert HashMap<String, i32> to BoostsTable
-            let mut boosts_table = crate::dex_data::BoostsTable::default();
+            // Convert HashMap<String, i32> to boost array for battle.boost()
+            let mut boost_array = Vec::new();
             for (stat_name, &value) in boosts_map.iter() {
-                match stat_name.to_lowercase().as_str() {
-                    "atk" => boosts_table.atk = value as i8,
-                    "def" => boosts_table.def = value as i8,
-                    "spa" => boosts_table.spa = value as i8,
-                    "spd" => boosts_table.spd = value as i8,
-                    "spe" => boosts_table.spe = value as i8,
-                    "accuracy" => boosts_table.accuracy = value as i8,
-                    "evasion" => boosts_table.evasion = value as i8,
-                    _ => {}
+                if value != 0 {
+                    boost_array.push((stat_name.as_str(), value as i8));
                 }
             }
 
-            // Apply boosts to target
-            if let Some(side) = battle.sides.get_mut(target_pos.0) {
-                if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
-                    for boost_id in crate::dex_data::BoostID::all() {
-                        let change = boosts_table.get(*boost_id);
-                        if change != 0 {
-                            pokemon.boosts.boost(*boost_id, change);
-                        }
-                    }
-                }
+            // Use battle.boost() to apply boosts (fires events, handles boost limits, etc.)
+            // JavaScript: this.boost(moveData.boosts, target, source, move);
+            if !boost_array.is_empty() {
+                battle.boost(&boost_array, target_pos, Some(_source_pos), None, _is_secondary, _is_self);
             }
         }
 
@@ -111,97 +98,19 @@ pub fn run_move_effects(
         }
 
         // Apply status
+        // JavaScript: if (moveData.status) { target.setStatus(moveData.status, source, move); }
         if let Some(ref status) = move_data.status {
             eprintln!("[RUN_MOVE_EFFECTS] Applying status '{}' to target {:?}", status, target_pos);
-            if let Some(side) = battle.sides.get_mut(target_pos.0) {
-                if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
-                    eprintln!("[RUN_MOVE_EFFECTS] Target {} current status: '{}'", pokemon.name, pokemon.status);
-                    // Simple status application (full version would check immunity)
-                    if pokemon.status.is_empty() {
-                        pokemon.status = crate::dex_data::ID::new(status);
-                        eprintln!("[RUN_MOVE_EFFECTS] Applied status '{}' to {}", status, pokemon.name);
-                        battle.add("-status", &[format!("p{}a", target_pos.0 + 1).into(), status.as_str().into()]);
-                    } else {
-                        eprintln!("[RUN_MOVE_EFFECTS] Status not applied - {} already has status '{}'", pokemon.name, pokemon.status);
-                    }
-                }
-            }
+            let status_id = crate::dex_data::ID::new(status);
+            let _applied = Pokemon::set_status(battle, target_pos, status_id, Some(_source_pos), None, false);
         }
 
         // Apply volatile status
         // JavaScript (battle-actions.ts): if (moveData.volatileStatus) { target.addVolatile(moveData.volatileStatus, source, move); }
         if let Some(ref volatile_status) = move_data.volatile_status {
             eprintln!("[RUN_MOVE_EFFECTS] Applying volatile status '{}' to target {:?}", volatile_status, target_pos);
-
             let volatile_id = crate::dex_data::ID::new(volatile_status);
-
-            // Check if pokemon already has this volatile
-            let already_has_volatile = {
-                if let Some(side) = battle.sides.get(target_pos.0) {
-                    if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-                        pokemon.volatiles.contains_key(&volatile_id)
-                    } else {
-                        true // Pokemon doesn't exist, treat as "already has"
-                    }
-                } else {
-                    true // Side doesn't exist
-                }
-            };
-
-            if !already_has_volatile {
-                // Get default duration from move's condition first, then from dex.conditions
-                // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
-                // When adding a volatile via move.volatileStatus, the duration comes from move.condition.duration
-                let move_condition_duration = move_data.condition.as_ref().and_then(|c| c.duration);
-                let dex_condition_duration = battle.dex.conditions.get(&volatile_id)
-                    .and_then(|cond| cond.duration);
-                let default_duration = move_condition_duration.or(dex_condition_duration);
-
-                // Check if condition has a durationCallback
-                // JS: if (status.durationCallback) {
-                //     this.volatiles[status.id].duration = status.durationCallback.call(this.battle, this, source, sourceEffect);
-                // }
-                let callback_duration = crate::data::duration_callbacks::dispatch_duration_callback(
-                    battle,
-                    volatile_id.as_str(),
-                    target_pos,
-                    Some(_source_pos),
-                );
-
-                // durationCallback overrides default duration
-                let final_duration = callback_duration.or(default_duration);
-
-                // Add the volatile
-                if let Some(side) = battle.sides.get_mut(target_pos.0) {
-                    if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
-                        let mut state = crate::event_system::EffectState::new(volatile_id.clone());
-                        state.duration = final_duration;
-                        state.target = Some(target_pos);
-                        state.source = Some(_source_pos);
-                        state.source_slot = Some(_source_pos.1);
-                        state.source_effect = Some(move_data.id.clone());
-
-                        pokemon.volatiles.insert(volatile_id.clone(), state);
-                        eprintln!("[RUN_MOVE_EFFECTS] Successfully added volatile '{}' with duration {:?}", volatile_status, final_duration);
-                    }
-                }
-            } else {
-                eprintln!("[RUN_MOVE_EFFECTS] Volatile '{}' already exists on target", volatile_status);
-            }
-
-            // Verify volatile was actually added to battle state
-            eprintln!("[RUN_MOVE_EFFECTS] VERIFICATION: Checking battle.sides[{}].pokemon[{}] volatiles...", target_pos.0, target_pos.1);
-            if let Some(side) = battle.sides.get(target_pos.0) {
-                if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-                    eprintln!("[RUN_MOVE_EFFECTS] VERIFICATION: {} now has {} volatiles: {:?}",
-                        pokemon.name, pokemon.volatiles.len(), pokemon.volatiles.keys().collect::<Vec<_>>());
-                }
-            }
-
-            // Trigger Start event for the volatile
-            // JavaScript: this.battle.singleEvent('Start', status, this.volatiles[status.id], this, source, sourceEffect);
-            let volatile_id_obj = crate::dex_data::ID::new(volatile_status);
-            battle.single_event("Start", &volatile_id_obj, Some(target_pos), Some(_source_pos), None);
+            Pokemon::add_volatile(battle, target_pos, volatile_id, Some(_source_pos), None, None);
         }
 
         // Keep damage result
