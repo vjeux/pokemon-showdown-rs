@@ -1358,7 +1358,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 2 commits pushed to git (is_grounded, transform_into)
   - 100% compilation success rate
 
-### Session 20 - 2026-01-01 (set_species improvements + continuing)
+### Session 20 - 2026-01-01 (set_species & run_status_immunity improvements)
 - **Goal**: Continue fixing TODOs and NOTEs with focus on simple improvements
 - **Completed**:
   - ✅ set_species improvements:
@@ -1367,19 +1367,29 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
     - Added Gen 1 burn/para stat drops (gen <= 1)
       - Paralysis: Speed multiplied by 0.25
       - Burn: Attack multiplied by 0.5
+  - ✅ run_status_immunity improvements:
+    - Added message: bool parameter matching JavaScript signature
+    - Updated 8 callsites to pass false (JavaScript default)
+    - Message parameter allows callers to know if immunity message should be shown
   - ✅ All changes compile successfully (0 errors, 0 warnings)
-  - ✅ Committed and pushed 1 commit
+  - ✅ Committed and pushed 3 commits
 - **Methods Now Improved**:
   - set_species.rs - Now ~80% complete (was ~70%)
     - ✅ Has: isTransform parameter handling
     - ✅ Has: Gen 1 burn/para stat drops
     - ❌ Still missing: ModifySpecies event, species.maxHP override, knownType field
-- **Session Statistics (so far)**:
-  - 1 method improved (set_species)
-  - 2 feature implementations (isTransform handling, Gen 1 status drops)
-  - 1 file modified
-  - 1 commit pushed to git
+  - run_status_immunity.rs - Now ~75% complete (was ~70%)
+    - ✅ Has: message parameter
+    - ✅ Has: fainted check, empty string check
+    - ❌ Still missing: runEvent('Immunity')
+- **Session Statistics**:
+  - 2 methods improved (set_species, run_status_immunity)
+  - 4 feature implementations (isTransform handling, Gen 1 status drops, message parameter, immunity logging support)
+  - 9 files modified (2 pokemon methods + 7 callsites)
+  - 8 callsites updated (run_status_immunity)
+  - 3 commits pushed to git
   - 100% compilation success rate
+
 
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
