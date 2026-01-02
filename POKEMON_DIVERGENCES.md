@@ -355,15 +355,15 @@ This document tracks divergences between the JavaScript and Rust implementations
 
 #### is_grounded.rs
 - Status: ✅ Fixed (Significantly Improved)
-- Issue: Missing Gravity check and Battle parameter
-- Action: Refactored to take Battle parameter, implemented Gravity check
+- Issue: Missing Gravity check, Battle parameter, and gen check for Ingrain
+- Action: Refactored to take Battle parameter, implemented Gravity check and Ingrain gen check
 - Notes:
   - ✅ NOW IMPLEMENTED: Refactored signature to take `battle: &Battle`
   - ✅ NOW IMPLEMENTED: Gravity pseudo-weather check
+  - ✅ NOW IMPLEMENTED: Gen check for Ingrain (gen >= 4)
   - ✅ Fixed has_type to use case-sensitive comparison (was using toLowerCase)
   - ✅ NOW IMPLEMENTED: ignoringItem() checks for Iron Ball and Air Balloon
   - ✅ Updated all callsites across codebase
-  - Missing gen check for Ingrain (assumes gen >= 4)
   - Missing negateImmunity parameter
   - Missing special ??? + Roost case for Fire/Flying with Burn Up
   - Missing suppressingAbility check for Levitate
@@ -458,11 +458,11 @@ This document tracks divergences between the JavaScript and Rust implementations
 
 #### set_species.rs
 - Status: ✅ Fixed (Documented)
-- Issue: Several TODOs for missing features, has eprintln debug output
-- Action: Changed TODOs to Notes, documented what's implemented vs missing
+- Issue: Several TODOs for missing features, had eprintln debug output
+- Action: Changed TODOs to Notes, documented what's implemented vs missing, removed debug output
 - Notes:
+  - ✅ NOW IMPLEMENTED: Removed eprintln debug output
   - Missing runEvent('ModifySpecies') call
-  - Has eprintln debug output that should be removed in production
   - Missing knownType field assignment (field doesn't exist)
   - Missing species.maxHP override handling
   - Missing isTransform parameter handling (always sets baseStoredStats)
@@ -524,15 +524,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing Ogerpon/Terapagos canTerastallize blocking
 
 #### add_volatile.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Significantly Improved)
 - Issue: Had TODO to double check 1-1 mapping
-- Action: Documented all missing pieces line by line
+- Action: Documented all missing pieces line by line and implemented runStatusImmunity check
 - Notes:
   - Fairly complete implementation with duration callback support
+  - ✅ NOW IMPLEMENTED: runStatusImmunity check for volatile immunity
   - Missing HP check with affectsFainted flag
   - Missing linkedStatus parameter and source HP check
   - Missing battle.event source/sourceEffect defaulting
-  - Missing runStatusImmunity check for volatile
   - Missing runEvent('TryAddVolatile')
   - Missing source, sourceSlot, sourceEffect assignments to EffectState
   - Missing linkedStatus bidirectional linking (Leech Seed, etc.)
@@ -1169,25 +1169,33 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
     - Used two-phase borrow pattern to avoid borrow checker conflicts
     - Updated 4 callsites in move callbacks (fairylock, ingrain, noretreat, octolock)
     - Added `use crate::Pokemon;` to files using try_trap
+  - ✅ Implemented runStatusImmunity check in add_volatile.rs
+  - ✅ Implemented gen check for Ingrain in is_grounded.rs (gen >= 4)
+  - ✅ Removed debug eprintln from set_species.rs
   - ✅ Updated 46 files total across the codebase
   - ✅ All changes compile successfully (0 errors, 0 warnings)
-  - ✅ Committed and pushed 1 commit with all changes
+  - ✅ Committed and pushed 5 commits total
 - **Methods Now Improved**:
   - ignoring_item.rs - Added 2 gen checks (was missing these)
   - get_types.rs - Now fully implements gen-dependent default type
   - has_type.rs - Refactored to take Battle parameter
   - run_status_immunity.rs - Refactored to take Battle parameter
   - try_trap.rs - Refactored to associated function, now fully 1-to-1
-- **Specific Implementations**: 3 new feature implementations
+  - add_volatile.rs - Added runStatusImmunity check for immunity
+  - is_grounded.rs - Added gen check for Ingrain volatile
+  - set_species.rs - Removed production-inappropriate debug output
+- **Specific Implementations**: 5 new feature implementations
   - ignoring_item: Gen check for inactive Pokemon (gen >= 5)
   - ignoring_item: Gen check for Fling case (gen >= 5)
   - get_types: Gen check for default type ("Normal" vs "???")
+  - add_volatile: runStatusImmunity check before adding volatile
+  - is_grounded: Gen check for Ingrain (gen >= 4)
 - **Session Statistics**:
-  - 5 methods improved
-  - 3 gen checks implemented
+  - 8 methods improved
+  - 5 gen checks/feature implementations
   - 4 method signature refactorings (get_types, has_type, run_status_immunity, try_trap)
   - 46 files updated (38 has_type + 7 run_status_immunity + 4 try_trap callsites + imports)
-  - 1 commit pushed to git
+  - 5 commits pushed to git
   - 100% compilation success rate
 
 
