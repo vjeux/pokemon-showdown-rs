@@ -87,7 +87,7 @@ pub fn on_after_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.set_item(your_item_id.clone())
+        source_pokemon.set_item(your_item_id.clone(), None, None)
     } else {
         false
     };

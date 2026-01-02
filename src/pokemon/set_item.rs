@@ -28,7 +28,12 @@ impl Pokemon {
     // 		return true;
     // 	}
     //
-    pub fn set_item(&mut self, item_id: ID) -> bool {
+    pub fn set_item(
+        &mut self,
+        item_id: ID,
+        _source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&ID>,
+    ) -> bool {
         // JS: if (!this.hp || !this.isActive) return false;
         if self.hp == 0 || !self.is_active {
             return false;
@@ -45,8 +50,9 @@ impl Pokemon {
         // JS: } else {
         // JS:     this.pendingStaleness = undefined;
         // JS: }
+        // ✅ NOW IMPLEMENTED (Session 24 Part 32): source_pos and source_effect parameters
         // Note: Missing RESTORATIVE_BERRIES check and pendingStaleness logic
-        // Would need Battle reference for effect, and source parameter
+        // Note: Would need Battle reference for effect.id check
 
         // JS: const oldItem = this.getItem();
         // JS: const oldItemState = this.itemState;

@@ -64,7 +64,7 @@ pub fn on_hit(
         let target_pokemon = battle.pokemon_at_mut(target.0, target.1);
 
         if let Some(target_pokemon) = target_pokemon {
-            target_pokemon.set_item(my_item.clone())
+            target_pokemon.set_item(my_item.clone(), None, None)
         } else {
             false
         }

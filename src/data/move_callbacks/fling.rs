@@ -204,7 +204,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_mut.set_item(ID::empty());
+            pokemon_mut.set_item(ID::empty(), None, None);
             pokemon_mut.last_item = item_id.clone();
             pokemon_mut.used_item_this_turn = true;
         }

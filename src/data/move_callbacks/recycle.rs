@@ -81,7 +81,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.set_item(item);
+        pokemon_pokemon.set_item(item, None, None);
     }
 
     EventResult::Continue

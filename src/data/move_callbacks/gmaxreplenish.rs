@@ -117,7 +117,7 @@ pub fn on_hit(
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.set_item(last_item_id);
+            pokemon.set_item(last_item_id, None, None);
         }
     //     }
     // }
