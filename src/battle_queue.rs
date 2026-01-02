@@ -48,7 +48,6 @@ mod splice;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: MoveAction (sim/battle-queue.ts)
 /// 14 fields in JavaScript
-/// JavaScript equivalent: MoveAction (sim/global-types.ts)
 pub struct MoveAction {
     /// Action type
     /// JavaScript: choice: 'move' | 'beforeTurnMove' | 'priorityChargeMove'
@@ -443,7 +442,6 @@ impl Action {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 /// JavaScript equivalent: BattleQueue (sim/battle-queue.ts)
 /// 32 fields in JavaScript
-/// JavaScript equivalent: BattleQueue (sim/global-types.ts)
 pub struct BattleQueue {
     /// List of actions
     pub list: Vec<Action>,
