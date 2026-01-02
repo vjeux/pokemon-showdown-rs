@@ -13,23 +13,37 @@ impl Pokemon {
     // 		return true;
     // 	}
     //
-    pub fn is_last_active(&self) -> bool {
+    // ✅ NOW IMPLEMENTED: Full 1-to-1 with JavaScript
+    // Refactored to associated function to access Battle for side.active check
+    pub fn is_last_active(battle: &Battle, pokemon_pos: (usize, usize)) -> bool {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return false,
+        };
+
         // JS: if (!this.isActive) return false;
-        if !self.is_active {
+        if !pokemon.is_active {
             return false;
         }
 
+        let position = pokemon.position;
+
         // JS: const allyActive = this.side.active;
+        let side = &battle.sides[pokemon_pos.0];
+
         // JS: for (let i = this.position + 1; i < allyActive.length; i++) {
-        // JS:     if (allyActive[i] && !allyActive[i].fainted) return false;
-        // JS: }
+        for i in (position + 1)..side.active.len() {
+            // JS:     if (allyActive[i] && !allyActive[i].fainted) return false;
+            if let Some(pokemon_idx) = side.active[i] {
+                if let Some(ally_pokemon) = side.pokemon.get(pokemon_idx) {
+                    if !ally_pokemon.fainted {
+                        return false;
+                    }
+                }
+            }
+        }
+
         // JS: return true;
-        //
-        // Note: Missing check for other active Pokemon on same side
-        // Would need Battle reference to access side.active array
-        // Currently just returns is_active which is incorrect
-        // Full implementation: loop through side.active from position+1 to end,
-        // return false if any non-fainted Pokemon found
-        self.is_active
+        true
     }
 }

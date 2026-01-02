@@ -356,12 +356,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Should return Option<bool> to represent null, but signature is bool
 
 #### is_last_active.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Fully Implemented)
 - Issue: Just returns is_active instead of checking other active Pokemon
-- Action: Documented that it needs to loop through side.active
+- Action: Refactored to associated function, implemented full side.active check
 - Notes:
-  - Would need Battle reference to access side.active array
-  - Should loop from position+1 checking for non-fainted Pokemon
+  - ✅ NOW IMPLEMENTED: Refactored to take Battle parameter
+  - ✅ NOW IMPLEMENTED: Loops through side.active from position+1
+  - ✅ NOW IMPLEMENTED: Checks if any non-fainted Pokemon exist
+  - Now fully 1-to-1 with JavaScript!
 
 #### is_sky_dropped.rs
 - Status: ✅ Fixed (Documented)
