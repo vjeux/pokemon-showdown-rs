@@ -123,7 +123,7 @@ impl From<BaseStatsData> for StatsTable {
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 /// JavaScript equivalent: SpeciesData (sim/dex-species.ts)
-/// 50+ fields in JavaScript
+/// 47 fields in Rust (matching JavaScript fields)
 pub struct SpeciesData {
     /// Species number in the Pokedex
     /// JavaScript: num: number
@@ -318,7 +318,7 @@ pub struct ConditionData {
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 /// JavaScript equivalent: MoveData (sim/dex-moves.ts)
-/// 40+ fields in JavaScript
+/// 49 fields in Rust (matching JavaScript fields)
 pub struct MoveData {
     /// Move number in the Dex
     /// JavaScript: num: number
