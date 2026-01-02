@@ -303,6 +303,8 @@ impl Default for PRNG {
     }
 }
 
+/// Internal RNG implementation enum
+/// TODO: Not in JavaScript - Rust-specific enum for holding Gen5RNG or SodiumRNG
 #[derive(Debug, Clone)]
 enum PRNGImpl {
     Gen5(Gen5RNG),
