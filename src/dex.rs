@@ -493,6 +493,23 @@ pub struct MoveData {
     /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses boolean | string union
     #[serde(rename = "selfSwitch", default)]
     pub self_switch: Option<serde_json::Value>,
+    /// Ignore target's ability
+    /// JavaScript: ignoreAbility?: boolean
+    #[serde(rename = "ignoreAbility", default)]
+    pub ignore_ability: bool,
+    /// Ignore defensive stat changes
+    /// JavaScript: ignoreDefensive?: boolean
+    #[serde(rename = "ignoreDefensive", default)]
+    pub ignore_defensive: bool,
+    /// Ignore evasion stat changes
+    /// JavaScript: ignoreEvasion?: boolean
+    #[serde(rename = "ignoreEvasion", default)]
+    pub ignore_evasion: bool,
+    /// Ignore type immunities
+    /// JavaScript: ignoreImmunity?: boolean | { [type: string]: boolean }
+    /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses boolean | object union
+    #[serde(rename = "ignoreImmunity", default)]
+    pub ignore_immunity: Option<serde_json::Value>,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
