@@ -93,92 +93,118 @@ impl Pokemon {
     // 		return hasValidMove ? moves : [];
     // 	}
     //
-    pub fn get_moves(&self) -> Vec<String> {
+    pub fn get_moves(&self) -> Vec<serde_json::Value> {
         // JS: if (lockedMove) {
         // JS:     lockedMove = toID(lockedMove);
         // JS:     this.trapped = true;
         // Note: Missing lockedMove parameter handling
+        // Note: Would need to add locked_move parameter to match JavaScript signature
 
         // JS:     if (lockedMove === 'recharge') {
         // JS:         return [{ move: 'Recharge', id: 'recharge' as ID }];
         // JS:     }
-        // Note: Missing Recharge special case
+        // Note: Missing Recharge special case (needs lockedMove parameter)
 
         // JS:     for (const moveSlot of this.moveSlots) {
         // JS:         if (moveSlot.id !== lockedMove) continue;
         // JS:         return [{ move: moveSlot.move, id: moveSlot.id }];
         // JS:     }
-        // Note: Missing locked move slot search and early return
+        // Note: Missing locked move slot search and early return (needs lockedMove parameter)
 
         // JS:     return [{ move: this.battle.dex.moves.get(lockedMove).name, id: lockedMove }];
-        // Note: Missing fallback to dex lookup for locked move
+        // Note: Missing fallback to dex lookup for locked move (needs lockedMove parameter)
 
         // JS: const moves = [];
         // JS: let hasValidMove = false;
-        // Note: Missing hasValidMove tracking and empty array return
+        // ✅ NOW IMPLEMENTED (Session 24 Part 63): hasValidMove tracking
+        let mut has_valid_move = false;
 
         // JS: for (const moveSlot of this.moveSlots) {
         // JS:     let moveName = moveSlot.move;
-        self.move_slots
+        let moves: Vec<serde_json::Value> = self.move_slots
             .iter()
             .map(|slot| {
                 // JS:     if (moveSlot.id === 'hiddenpower') {
                 // JS:         moveName = `Hidden Power ${this.hpType}`;
                 // JS:         if (this.battle.gen < 6) moveName += ` ${this.hpPower}`;
                 // JS:     }
-                // Note: Missing Hidden Power type/power formatting
-
-                // JS:     else if (moveSlot.id === 'return' || moveSlot.id === 'frustration') {
-                // JS:         const basePowerCallback = this.battle.dex.moves.get(moveSlot.id).basePowerCallback as (pokemon: Pokemon) => number;
-                // JS:         moveName += ` ${basePowerCallback(this)}`;
-                // JS:     }
-                // Note: Missing Return/Frustration power calculation
+                // ✅ NOW IMPLEMENTED (Session 24 Part 63): Hidden Power type/power formatting
+                let move_name = if slot.id.as_str() == "hiddenpower" {
+                    if let Some(ref hp_type) = self.hp_type {
+                        let name = format!("Hidden Power {}", hp_type);
+                        // Note: Would need Battle reference for gen check to append power
+                        // Assuming modern gen (6+) for now, don't append power
+                        name
+                    } else {
+                        slot.move_name.clone()
+                    }
+                } else if slot.id.as_str() == "return" || slot.id.as_str() == "frustration" {
+                    // JS:     else if (moveSlot.id === 'return' || moveSlot.id === 'frustration') {
+                    // JS:         const basePowerCallback = this.battle.dex.moves.get(moveSlot.id).basePowerCallback as (pokemon: Pokemon) => number;
+                    // JS:         moveName += ` ${basePowerCallback(this)}`;
+                    // JS:     }
+                    // Note: Missing Return/Frustration power calculation (needs Dex access)
+                    slot.move_name.clone()
+                } else {
+                    slot.move_name.clone()
+                };
 
                 // JS:     let target = moveSlot.target;
                 // JS:     switch (moveSlot.id) {
-                // JS:     case 'curse':
-                // JS:         if (!this.hasType('Ghost')) target = this.battle.dex.moves.get('curse').nonGhostTarget;
-                // JS:         break;
-                // JS:     case 'pollenpuff':
-                // JS:         if (this.volatiles['healblock']) target = 'adjacentFoe';
-                // JS:         break;
-                // JS:     case 'terastarstorm':
-                // JS:         if (this.species.name === 'Terapagos-Stellar') target = 'allAdjacentFoes';
-                // JS:         break;
+                // JS:     case 'curse': ...
+                // JS:     case 'pollenpuff': ...
+                // JS:     case 'terastarstorm': ...
                 // JS:     }
-                // Note: Missing target overrides for Curse, Pollen Puff, Tera Star Storm
+                // Note: Missing target overrides for Curse, Pollen Puff, Tera Star Storm (needs volatiles/type checks)
+                let target = slot.target.as_deref().unwrap_or("");
 
                 // JS:     let disabled = moveSlot.disabled;
-                // JS:     if (this.volatiles['dynamax']) {
-                // JS:         const canCauseStruggle = ['Encore', 'Disable', 'Taunt', 'Assault Vest', 'Belch', 'Stuff Cheeks'];
-                // JS:         disabled = this.maxMoveDisabled(moveSlot.id) || disabled && canCauseStruggle.includes(moveSlot.disabledSource!);
-                // JS:     } else if (moveSlot.pp <= 0 && !this.volatiles['partialtrappinglock']) {
+                // JS:     if (this.volatiles['dynamax']) { ... }
+                // JS:     else if (moveSlot.pp <= 0 && !this.volatiles['partialtrappinglock']) {
                 // JS:         disabled = true;
                 // JS:     }
-                // Note: Missing disabled calculation (Dynamax, PP, partial trapping lock)
+                // ✅ NOW IMPLEMENTED (Session 24 Part 63): Basic disabled calculation
+                let disabled = if slot.pp == 0 && !self.has_volatile(&ID::new("partialtrappinglock")) {
+                    true
+                } else {
+                    slot.disabled
+                };
+                // Note: Missing Dynamax disabled logic (needs maxMoveDisabled method)
 
                 // JS:     if (disabled === 'hidden') disabled = !restrictData;
                 // Note: Missing restrictData parameter and hidden disabled handling
 
                 // JS:     if (!disabled) hasValidMove = true;
-                // Note: Missing hasValidMove tracking
+                // Can't mutate has_valid_move from inside map, will handle after
 
-                // JS:     moves.push({
-                // JS:         move: moveName,
-                // JS:         id: moveSlot.id,
-                // JS:         pp: moveSlot.pp,
-                // JS:         maxpp: moveSlot.maxpp,
-                // JS:         target,
-                // JS:         disabled,
-                // JS:     });
-                // Note: Currently returns just ID as string
-                // Note: Should return object with move, id, pp, maxpp, target, disabled
-
-                slot.id.as_str().to_string()
+                // JS:     moves.push({ move: moveName, id: moveSlot.id, pp: moveSlot.pp, maxpp: moveSlot.maxpp, target, disabled });
+                // ✅ NOW IMPLEMENTED (Session 24 Part 63): Return full move object structure
+                serde_json::json!({
+                    "move": move_name,
+                    "id": slot.id.as_str(),
+                    "pp": slot.pp,
+                    "maxpp": slot.maxpp,
+                    "target": target,
+                    "disabled": disabled
+                })
             })
-            .collect()
+            .collect();
 
         // JS: return hasValidMove ? moves : [];
-        // Note: Should return empty array if no valid moves
+        // ✅ NOW IMPLEMENTED (Session 24 Part 63): Check if any move is valid
+        for move_obj in &moves {
+            if let Some(disabled) = move_obj.get("disabled") {
+                if !disabled.as_bool().unwrap_or(true) {
+                    has_valid_move = true;
+                    break;
+                }
+            }
+        }
+
+        if has_valid_move {
+            moves
+        } else {
+            vec![]
+        }
     }
 }
