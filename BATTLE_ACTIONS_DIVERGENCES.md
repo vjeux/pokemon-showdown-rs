@@ -492,6 +492,20 @@ These files exist only in Rust and should be evaluated:
 - 1:1 match with JavaScript implementation
 
 ### 2026-01-02
+**Completed: secondaries.rs** ✅ ALL TODOs COMPLETED!
+- Implemented all secondary effect types (not just boosts):
+  - status (e.g., paralysis, burn, sleep)
+  - volatile_status (e.g., confusion, flinch)
+  - side_condition (e.g., Stealth Rock, Spikes)
+  - slot_condition (e.g., Future Sight slot targeting)
+  - pseudo_weather (e.g., Trick Room, Magic Room)
+  - terrain (e.g., Electric Terrain, Grassy Terrain)
+  - weather (e.g., Rain Dance, Sunny Day, Sandstorm)
+- Applies effects using same methods as spread_move_hit.rs
+- Uses SecondaryEffect struct from battle_actions.rs (already has all required fields)
+- 1:1 match with JavaScript secondaries() function that calls moveHit
+
+### 2026-01-02
 **Completed: spread_move_hit.rs secondary effects** ✅ TODO COMPLETED!
 - Implemented full secondary effect handling for all effect types:
   - side_condition (e.g., Stealth Rock, Spikes)
