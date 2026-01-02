@@ -295,7 +295,7 @@ impl Pokemon {
             transformed: false,
             illusion: None,
 
-            trapped: false,
+            trapped: TrappedState::None,
             maybe_trapped: false,
             maybe_disabled: false,
             maybe_locked: false,

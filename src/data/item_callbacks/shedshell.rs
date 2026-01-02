@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::TrappedState;
 
 /// onTrapPokemon(pokemon) {
 ///     pokemon.trapped = false;
@@ -13,7 +14,7 @@ use crate::event::EventResult;
 pub fn on_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.trapped = false;
     if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        pokemon.trapped = false;
+        pokemon.trapped = TrappedState::None;
     }
     EventResult::Continue
 }

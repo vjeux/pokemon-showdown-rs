@@ -31,7 +31,7 @@ impl Pokemon {
                 Some(p) => p,
                 None => return false,
             };
-            pokemon.trapped
+            pokemon.trapped.is_trapped()
         };
 
         if already_trapped && is_hidden {
@@ -43,10 +43,11 @@ impl Pokemon {
             Some(p) => p,
             None => return false,
         };
-        pokemon_mut.trapped = true;
-        // Note: Rust trapped field is bool, cannot represent 'hidden' state
-        // Note: JavaScript uses bool | 'hidden' to distinguish visible vs hidden trap
-        // Note: This is a type system limitation - would need enum Trapped { Visible, Hidden }
+        pokemon_mut.trapped = if is_hidden {
+            TrappedState::Hidden
+        } else {
+            TrappedState::Visible
+        };
 
         // JS: return true;
         true

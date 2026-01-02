@@ -35,5 +35,5 @@ pub use battle::{Arg, Battle, BattleOptions, PlayerOptions};
 pub use battle_actions::{BattleActions, DamageResult};
 pub use dex::Dex;
 pub use dex_data::{GameType, Gender, SideID, ID};
-pub use pokemon::{Pokemon, PokemonSet};
+pub use pokemon::{Pokemon, PokemonSet, TrappedState};
 pub use prng::{PRNGSeed, PRNG};

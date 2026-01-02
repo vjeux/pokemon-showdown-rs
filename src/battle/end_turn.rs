@@ -533,7 +533,7 @@ impl Battle {
                 }
 
                 // JS: pokemon.trapped = pokemon.maybeTrapped = false;
-                pokemon.trapped = false;
+                pokemon.trapped = TrappedState::None;
                 pokemon.maybe_trapped = false;
 
                 // JS: pokemon.activeTurns++;
@@ -545,7 +545,7 @@ impl Battle {
                 }
 
                 // JS: sideTrapped = sideTrapped && pokemon.trapped;
-                side_trapped = side_trapped && pokemon.trapped;
+                side_trapped = side_trapped && pokemon.trapped.is_trapped();
 
                 // JS: const staleness = pokemon.volatileStaleness || pokemon.staleness;
                 // JS: if (staleness) sideStaleness = sideStaleness === 'external' ? sideStaleness : staleness;

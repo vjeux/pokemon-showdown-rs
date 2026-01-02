@@ -13,7 +13,7 @@ impl Pokemon {
         self.last_move = None;
         self.switch_flag = false;
         self.force_switch_flag = false;
-        self.trapped = false;
+        self.trapped = TrappedState::None;
         self.maybe_trapped = false;
         self.newly_switched = false;
         self.being_called_back = false;
