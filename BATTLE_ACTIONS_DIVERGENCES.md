@@ -6,8 +6,8 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 10 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move, after_move_secondary_event, force_switch)
-**Remaining stubs**: 7
+**Completed implementations**: 12 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move, after_move_secondary_event, force_switch, hit_step_break_protect, hit_step_invulnerability_event)
+**Remaining stubs**: 5
 
 ## Files with Stubs (Not Implemented)
 
@@ -23,8 +23,8 @@ These files are completely unimplemented stubs:
 8. ~~`get_active_max_move.rs` - getActiveMaxMove~~ ✅ IMPLEMENTED
 9. ~~`after_move_secondary_event.rs` - afterMoveSecondaryEvent~~ ✅ IMPLEMENTED
 10. ~~`force_switch.rs` - forceSwitch~~ ✅ IMPLEMENTED
-11. `hit_step_break_protect.rs` - hitStepBreakProtect
-12. `hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent
+11. ~~`hit_step_break_protect.rs` - hitStepBreakProtect~~ ✅ IMPLEMENTED
+12. ~~`hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent~~ ✅ IMPLEMENTED
 13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop
 14. `hit_step_steal_boosts.rs` - hitStepStealBoosts
 15. `hit_step_try_hit_event.rs` - hitStepTryHitEvent
@@ -183,6 +183,30 @@ These files exist only in Rust and should be evaluated:
   - Previously stored single usize, now stores (side_index, pokemon_index)
   - Matches how Pokemon are referenced throughout codebase
   - JavaScript stores Pokemon objects, Rust uses position tuples
+
+### 2026-01-02 - Commit 247ca085
+**Implemented: hit_step_break_protect**
+- Implemented 1:1 port of hitStepBreakProtect from JavaScript battle-actions.ts
+- Breaks through protection moves like Protect, King's Shield, etc.
+- Only runs if move.breaksProtect is true
+- Removes volatile effects: banefulbunker, burningbulwark, kingsshield, obstruct, protect, silktrap, spikyshield
+- Removes side conditions (Gen 6+ or non-allies): craftyshield, matblock, quickguard, wideguard
+- Uses Pokemon::remove_volatile() associated function
+- Uses battle.sides[i].remove_side_condition() for side effects
+- Adds activation messages for Feint and other break-protect moves
+- Removes 'stall' volatile in Gen 6+
+
+### 2026-01-02 - Commit 37856efa
+**Implemented: hit_step_invulnerability_event**
+- Implemented 1:1 port of hitStepInvulnerabilityEvent from JavaScript battle-actions.ts
+- Returns Vec<bool> indicating which targets can be hit
+- Special case: helpinghand always hits all targets (returns all true)
+- Checks for 'commanding' volatile (blocks all hits)
+- Gen 8+ toxic special case: bypasses invulnerability if attacker is Poison-type
+- Fires Invulnerability event for normal cases (returns result != Some(0))
+- Handles smart_target flag (disables instead of showing miss)
+- Adds miss messages with attr_last_move('[miss]') for non-spread moves
+- Fixed has_type signature (takes &str not &[&str])
 
 ---
 
