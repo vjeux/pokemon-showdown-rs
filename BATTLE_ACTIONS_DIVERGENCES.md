@@ -679,6 +679,23 @@ These files exist only in Rust and should be evaluated:
 - Comment documentation matches JavaScript exactly
 - 1:1 match with JavaScript getSpreadDamage lines 1163-1184
 
+### 2026-01-02
+**Completed: drag_in.rs 1:1 port** ✅ ISACTIVE CHECK ADDED!
+- Added missing `pokemon.isActive` check:
+  - JavaScript: `if (!pokemon || pokemon.isActive) return false;`
+  - Rust: Checks if switch_target is in any active slot
+  - Uses `battle.sides[side_idx].active.iter().any(|&slot_idx| slot_idx == Some(switch_target))`
+  - Returns false if the pokemon to drag in is already active
+- Improved comments to match JavaScript line-by-line
+- All checks now match JavaScript exactly:
+  1. Get random switchable pokemon (returns false if none)
+  2. Check if pokemon is already active (returns false if active)
+  3. Check if old active exists (returns false if none)
+  4. Check if old active has HP (returns false if fainted)
+  5. Fire DragOut event (returns false if blocked)
+  6. Call switchIn with is_drag=true
+- 1:1 match with JavaScript dragIn
+
 ---
 
 ## Next Steps
