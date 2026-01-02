@@ -44,10 +44,10 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
 
-    let cure_status_result = pokemon_mut.cure_status();
+    let cure_status_result = pokemon_mut.cure_status(false);
     let cured = cure_status_result.is_some();
 
-    if let Some((status, removed_nightmare)) = cure_status_result {
+    if let Some((status, removed_nightmare, _silent)) = cure_status_result {
         let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
         battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
         if removed_nightmare {

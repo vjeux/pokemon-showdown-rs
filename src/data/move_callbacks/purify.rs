@@ -40,9 +40,9 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
 
-    let cure_result = target_mut.cure_status();
+    let cure_result = target_mut.cure_status(false);
 
-    if let Some((status, removed_nightmare)) = cure_result {
+    if let Some((status, removed_nightmare, _silent)) = cure_result {
         let full_name = format!("{}: {}", target_ident, target_name);
         battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
         if removed_nightmare {

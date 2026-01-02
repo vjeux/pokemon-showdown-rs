@@ -78,7 +78,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.cure_status();
+        target.cure_status(false);
     }
 
     EventResult::Continue

@@ -125,7 +125,7 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
 
-        target_mut.cure_status();
+        target_mut.cure_status(false);
     }
 
     EventResult::Continue

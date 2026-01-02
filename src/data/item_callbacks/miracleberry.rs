@@ -42,7 +42,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         None => return EventResult::Continue,
     };
 
-    pokemon_mut.cure_status();
+    pokemon_mut.cure_status(false);
     pokemon_mut.remove_volatile(&"confusion".into());
 
     EventResult::Continue

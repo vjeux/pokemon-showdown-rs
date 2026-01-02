@@ -35,7 +35,7 @@ pub fn on_hit(
     // Iterate through all pokemon on the side and cure their status
     for poke_idx in 0..pokemon_count {
         if let Some(ally) = battle.pokemon_at_mut(source_side, poke_idx) {
-            ally.cure_status();
+            ally.cure_status(false);
         }
     }
 

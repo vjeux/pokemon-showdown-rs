@@ -123,7 +123,7 @@ pub fn on_after_move(
                 None => continue,
             };
 
-            if let Some((status, removed_nightmare)) = pokemon_mut.cure_status() {
+            if let Some((status, removed_nightmare, _silent)) = pokemon_mut.cure_status(false) {
                 let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
                 battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
                 if removed_nightmare {

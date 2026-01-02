@@ -45,7 +45,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     };
 
     if pokemon_mut.status == "frz".into() {
-        pokemon_mut.cure_status();
+        pokemon_mut.cure_status(false);
     }
 
     EventResult::Continue

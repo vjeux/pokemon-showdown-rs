@@ -46,7 +46,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     if is_burned {
         // pokemon.cureStatus();
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            pokemon.cure_status();
+            pokemon.cure_status(false);
         }
     }
 
