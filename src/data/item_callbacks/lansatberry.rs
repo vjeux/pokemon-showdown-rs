@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onUpdate(pokemon) {
 ///     if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 &&
@@ -54,8 +55,6 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.addVolatile('focusenergy');
-    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        pokemon.add_volatile("focusenergy".into());
-    }
+    Pokemon::add_volatile(battle, pokemon_pos, "focusenergy".into(), None);
     EventResult::Continue
 }

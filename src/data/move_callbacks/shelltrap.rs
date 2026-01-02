@@ -5,28 +5,18 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// priorityChargeCallback(pokemon) {
 ///     pokemon.addVolatile('shelltrap');
 /// }
 pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    use crate::dex_data::ID;
-
     // priorityChargeCallback(pokemon) {
     //     pokemon.addVolatile('shelltrap');
     // }
-    let pokemon = pokemon_pos;
-
-    {
-        let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-
-            None => return EventResult::Continue,
-        };
-
-        pokemon.add_volatile(ID::from("shelltrap"));
-    }
+    Pokemon::add_volatile(battle, pokemon_pos, ID::from("shelltrap"), None);
 
     EventResult::Continue
 }

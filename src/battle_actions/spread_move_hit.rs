@@ -308,13 +308,9 @@ pub fn spread_move_hit(
                         }
 
                         // Get mutable reference to source pokemon
-                        if let Some(side) = battle.sides.get_mut(source_pos.0) {
-                            if let Some(pokemon) = side.pokemon.get_mut(source_pos.1) {
-                                let volatile_id = crate::dex_data::ID::new(volatile_status_name);
-                                pokemon.add_volatile(volatile_id);
-                                eprintln!("[SELF_EFFECT] Successfully added volatile '{}' to source {}", volatile_status_name, pokemon.name);
-                            }
-                        }
+                        let volatile_id = ID::new(volatile_status_name);
+                        Pokemon::add_volatile(battle, source_pos, volatile_id, None);
+                        eprintln!("[SELF_EFFECT] Successfully added volatile '{}' to source", volatile_status_name);
                     }
                 }
 
@@ -353,13 +349,9 @@ pub fn spread_move_hit(
                     }
 
                     // Get mutable reference to source pokemon
-                    if let Some(side) = battle.sides.get_mut(source_pos.0) {
-                        if let Some(pokemon) = side.pokemon.get_mut(source_pos.1) {
-                            let volatile_id = crate::dex_data::ID::new(volatile_status_name);
-                            pokemon.add_volatile(volatile_id);
-                            eprintln!("[SELF_EFFECT] Successfully added volatile '{}' to source {}", volatile_status_name, pokemon.name);
-                        }
-                    }
+                    let volatile_id = ID::new(volatile_status_name);
+                    Pokemon::add_volatile(battle, source_pos, volatile_id, None);
+                    eprintln!("[SELF_EFFECT] Successfully added volatile '{}' to source", volatile_status_name);
                 }
             }
 

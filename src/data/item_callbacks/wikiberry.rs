@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onUpdate(pokemon) {
 ///     if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 &&
@@ -99,11 +100,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // Phase 3: Check nature and add confusion if minus stat is 'spa'
     if let Some(nature_data) = battle.dex.natures().get(&nature_name) {
         if nature_data.minus.as_deref() == Some("spa") {
-            let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            pokemon_mut.add_volatile("confusion".into());
+            Pokemon::add_volatile(battle, pokemon_pos, "confusion".into(), None);
         }
     }
 

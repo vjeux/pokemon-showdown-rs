@@ -2,14 +2,7 @@ use crate::*;
 
 impl Battle {
 
-    // =========================================================================
-    // REMAINING METHODS (ported from battle.ts for complete 1:1 port)
-    // =========================================================================
-
     /// Add split message for different players
-    /// Equivalent to battle.ts addSplit()
-    ///
-    //
     // 	addSplit(side: SideID, secret: Part[], shared?: Part[]) {
     // 		this.log.push(`|split|${side}`);
     // 		this.add(...secret);

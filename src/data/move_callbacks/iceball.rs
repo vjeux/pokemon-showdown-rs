@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// basePowerCallback(pokemon, target, move) {
 ///     let bp = move.basePower;
@@ -31,8 +33,6 @@ pub fn base_power_callback(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let pokemon = pokemon_pos;
 
     // let bp = move.basePower;
@@ -160,8 +160,6 @@ pub fn on_modify_move(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let pokemon = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -190,15 +188,7 @@ pub fn on_modify_move(
     }
 
     // pokemon.addVolatile('iceball');
-    {
-        let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-
-            None => return EventResult::Continue,
-        };
-
-        pokemon.add_volatile(ID::from("iceball"));
-    }
+    Pokemon::add_volatile(battle, pokemon, ID::from("iceball"), None);
 
     // if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
     if battle
@@ -245,8 +235,6 @@ pub fn on_after_move(
     source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = source_pos;
 
     // const iceballData = source.volatiles["iceball"];
@@ -281,15 +269,7 @@ pub fn on_after_move(
 
     if has_iceball && hit_count_is_5 && contact_hit_count < 5 {
         // source.addVolatile("rolloutstorage");
-        {
-            let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-
-                None => return EventResult::Continue,
-            };
-
-            pokemon.add_volatile(ID::from("rolloutstorage"));
-        }
+        Pokemon::add_volatile(battle, source, ID::from("rolloutstorage"), None);
 
         // source.volatiles["rolloutstorage"].contactHitCount =
         // iceballData.contactHitCount;

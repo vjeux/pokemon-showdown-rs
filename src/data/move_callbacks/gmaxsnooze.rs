@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onHit(target) {
 ///     if (target.status || !target.runStatusImmunity('slp')) return;
@@ -17,8 +19,6 @@ pub fn on_hit(
     _pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -55,11 +55,7 @@ pub fn on_hit(
     }
 
     // target.addVolatile('yawn');
-    let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-    target_pokemon.add_volatile(ID::from("yawn"));
+    Pokemon::add_volatile(battle, target, ID::from("yawn"), None);
 
     EventResult::Continue
 }
@@ -74,8 +70,6 @@ pub fn on_after_sub_damage(
     _damage: i32,
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -112,11 +106,7 @@ pub fn on_after_sub_damage(
     }
 
     // target.addVolatile('yawn');
-    let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-    target_pokemon.add_volatile(ID::from("yawn"));
+    Pokemon::add_volatile(battle, target, ID::from("yawn"), None);
 
     EventResult::Continue
 }

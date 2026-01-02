@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// damageCallback(pokemon) {
 ///     if (!pokemon.volatiles['mirrorcoat']) return 0;
@@ -16,8 +18,6 @@ pub fn damage_callback(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let pokemon = pokemon_pos;
 
     // if (!pokemon.volatiles['mirrorcoat']) return 0;
@@ -51,18 +51,10 @@ pub fn damage_callback(
 ///     pokemon.addVolatile('mirrorcoat');
 /// }
 pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    use crate::dex_data::ID;
-
     let pokemon = pokemon_pos;
 
     // pokemon.addVolatile('mirrorcoat');
-    {
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon_pokemon.add_volatile(ID::from("mirrorcoat"));
-    }
+    Pokemon::add_volatile(battle, pokemon, ID::from("mirrorcoat"), None);
 
     EventResult::Continue
 }
@@ -76,8 +68,6 @@ pub fn on_try(
     source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = source_pos;
 
     // if (!source.volatiles['mirrorcoat']) return false;

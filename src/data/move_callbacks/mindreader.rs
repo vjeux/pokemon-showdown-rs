@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onTryHit(target, source) {
 ///     if (source.volatiles['lockon']) return false;
@@ -15,8 +17,6 @@ pub fn on_try_hit(
     source_pos: (usize, usize),
     _target_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = source_pos;
 
     // if (source.volatiles['lockon']) return false;
@@ -44,8 +44,6 @@ pub fn on_hit(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -53,13 +51,7 @@ pub fn on_hit(
     };
 
     // source.addVolatile('lockon', target);
-    {
-        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source_pokemon.add_volatile(ID::from("lockon"));
-    }
+    Pokemon::add_volatile(battle, source, ID::from("lockon"), Some(target));
 
     // this.add('-activate', source, 'move: Mind Reader', `[of] ${target}`);
     let (source_arg, target_arg) = {

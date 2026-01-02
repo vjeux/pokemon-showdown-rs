@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// basePowerCallback(pokemon, target, move) {
 ///     let bp = move.basePower;
@@ -31,8 +33,6 @@ pub fn base_power_callback(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let pokemon = pokemon_pos;
 
     // let bp = move.basePower;
@@ -128,8 +128,6 @@ pub fn on_modify_move(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let pokemon = pokemon_pos;
     let target = target_pos;
 
@@ -150,15 +148,7 @@ pub fn on_modify_move(
     }
 
     // pokemon.addVolatile('rollout');
-    {
-        let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-
-            None => return EventResult::Continue,
-        };
-
-        pokemon.add_volatile(ID::from("rollout"));
-    }
+    Pokemon::add_volatile(battle, pokemon, ID::from("rollout"), None);
 
     // if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
     let has_source_effect = {
@@ -206,8 +196,6 @@ pub fn on_after_move(
     source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = source_pos;
 
     // const rolloutData = source.volatiles["rollout"];
@@ -229,15 +217,7 @@ pub fn on_after_move(
     if let Some(data) = rollout_data {
         if data.hit_count.unwrap_or(0) == 5 && data.contact_hit_count.unwrap_or(0) < 5 {
             // source.addVolatile("rolloutstorage");
-            {
-                let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                    Some(p) => p,
-
-                    None => return EventResult::Continue,
-                };
-
-                pokemon.add_volatile(ID::from("rolloutstorage"));
-            }
+            Pokemon::add_volatile(battle, source, ID::from("rolloutstorage"), None);
 
             // source.volatiles["rolloutstorage"].contactHitCount = rolloutData.contactHitCount;
             let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::dex_data::ID;
+    use crate::pokemon::Pokemon;
 use crate::event::EventResult;
 
 /// onPrepareHit(pokemon) {
@@ -37,7 +38,7 @@ pub fn on_hit(
 ) -> EventResult {
     // pokemon.addVolatile('stall');
     // Use battle.add_volatile_to_pokemon to properly set duration from dex.conditions
-    battle.add_volatile_to_pokemon(pokemon_pos, ID::from("stall"), None);
+    Pokemon::add_volatile(battle, pokemon_pos, ID::from("stall"), None);
 
     EventResult::Continue
 }

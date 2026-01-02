@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onSourceTryPrimaryHit(target, source, move) {
 ///     if (target === source || move.category === 'Status' || move.flags['pledgecombo']) return;
@@ -62,9 +63,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
 
         if used_item {
             // source.addVolatile('gem');
-            if let Some(source_pokemon) = battle.pokemon_at_mut(source.0, source.1) {
-                source_pokemon.add_volatile("gem".into());
-            }
+            Pokemon::add_volatile(battle, source, "gem".into(), None);
         }
     }
 

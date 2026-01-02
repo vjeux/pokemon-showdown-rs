@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onHitField(target, source, move) {
 ///     let result = false;
@@ -32,8 +34,6 @@ pub fn on_hit_field(
     source_pos: Option<(usize, usize)>,
     move_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = source_pos;
 
     // let result = false;
@@ -105,15 +105,7 @@ pub fn on_hit_field(
 
                 if !has_perishsong {
                     // pokemon.addVolatile('perishsong');
-                    {
-                        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                            Some(p) => p,
-
-                            None => return EventResult::Continue,
-                        };
-
-                        pokemon.add_volatile(ID::from("perishsong"));
-                    }
+                    Pokemon::add_volatile(battle, pokemon_pos, ID::from("perishsong"), None);
 
                     // this.add('-start', pokemon, 'perish3', '[silent]');
                     let pokemon_arg = {

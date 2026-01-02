@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onHit(source)
 ///
@@ -38,9 +39,7 @@ pub fn on_hit(
         .collect();
 
     for foe_pos in foe_positions {
-        if let Some(foe) = battle.pokemon_at_mut(foe_pos.0, foe_pos.1) {
-            foe.add_volatile(ID::from("partiallytrapped"));
-        }
+        Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source_pos));
     }
 
     EventResult::Continue

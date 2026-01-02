@@ -25,6 +25,7 @@ pub fn on_try(
 /// }
 pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
+    use crate::pokemon::Pokemon;
 
     let source = match source_pos {
         Some(pos) => pos,
@@ -33,7 +34,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> E
 
     // source.addVolatile('stall');
     // Use battle.add_volatile_to_pokemon to properly set duration from dex.conditions
-    battle.add_volatile_to_pokemon(source, ID::from("stall"), None);
+    Pokemon::add_volatile(battle, source, ID::from("stall"), None);
 
     EventResult::Continue
 }

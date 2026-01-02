@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onPrepareHit(target, source, move) {
 ///     if (source.ignoringItem(true)) return false;
@@ -42,8 +44,6 @@ pub fn on_prepare_hit(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let pokemon = pokemon_pos;
 
     // if (source.ignoringItem(true)) return false;
@@ -143,13 +143,7 @@ pub fn on_prepare_hit(
     }
 
     // source.addVolatile('fling');
-    {
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon_mut.add_volatile(ID::from("fling"));
-    }
+    Pokemon::add_volatile(battle, pokemon, ID::from("fling"), None);
 
     EventResult::Continue
 }

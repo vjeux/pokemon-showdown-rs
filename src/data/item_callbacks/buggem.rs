@@ -5,7 +5,9 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onSourceTryPrimaryHit(target, source, move) {
 ///     if (target === source || move.category === 'Status') return;
@@ -57,11 +59,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
 
         if used_item {
             // source.addVolatile('gem');
-            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            source_pokemon.add_volatile(crate::dex_data::ID::new("gem"));
+            Pokemon::add_volatile(battle, source, ID::new("gem"), None);
         }
     }
 

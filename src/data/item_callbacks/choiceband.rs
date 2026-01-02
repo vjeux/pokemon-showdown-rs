@@ -5,7 +5,9 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onStart(pokemon) {
 ///     if (pokemon.volatiles['choicelock']) {
@@ -29,7 +31,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.has_volatile(&crate::dex_data::ID::new("choicelock"))
+        pokemon.has_volatile(&ID::new("choicelock"))
     };
 
     if has_choicelock {
@@ -40,7 +42,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_mut.remove_volatile(&crate::dex_data::ID::new("choicelock"));
+    pokemon_mut.remove_volatile(&ID::new("choicelock"));
 
     EventResult::Continue
 }
@@ -50,11 +52,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // pokemon.addVolatile('choicelock');
-    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-    pokemon_mut.add_volatile(crate::dex_data::ID::new("choicelock"));
+    Pokemon::add_volatile(battle, pokemon_pos, ID::new("choicelock"), None);
 
     EventResult::Continue
 }

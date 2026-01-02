@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onHit(source, target, effect)
 ///
@@ -38,11 +39,17 @@ pub fn on_hit(
         .collect();
 
     for foe_pos in foe_positions {
-        if let Some(foe) = battle.pokemon_at_mut(foe_pos.0, foe_pos.1) {
-            // Only add torment if not dynamaxed
-            if !foe.has_volatile(&ID::from("dynamax")) {
-                foe.add_volatile(ID::from("torment"));
-            }
+        let has_dynamax = {
+            let foe = match battle.pokemon_at(foe_pos.0, foe_pos.1) {
+                Some(p) => p,
+                None => continue,
+            };
+            foe.has_volatile(&ID::from("dynamax"))
+        };
+
+        // Only add torment if not dynamaxed
+        if !has_dynamax {
+            Pokemon::add_volatile(battle, foe_pos, ID::from("torment"), Some(source_pos));
         }
     }
 

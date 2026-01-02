@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onTryMove(attacker, defender, move) {
 ///     if (attacker.removeVolatile(move.id)) {
@@ -24,8 +26,6 @@ pub fn on_try_move(
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let attacker = source_pos;
     let defender = target_pos;
 
@@ -87,11 +87,7 @@ pub fn on_try_move(
     }
 
     // attacker.addVolatile('twoturnmove', defender);
-    let attacker_pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-    attacker_pokemon.add_volatile(ID::from("twoturnmove"));
+    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender);
 
     // return null;
     EventResult::Stop

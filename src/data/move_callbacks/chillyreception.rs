@@ -7,18 +7,14 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// priorityChargeCallback(source) {
 ///     source.addVolatile('chillyreception');
 /// }
 pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // source.addVolatile('chillyreception');
-    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    pokemon.add_volatile(ID::from("chillyreception"));
+    Pokemon::add_volatile(battle, pokemon_pos, ID::from("chillyreception"), None);
 
     EventResult::Continue
 }

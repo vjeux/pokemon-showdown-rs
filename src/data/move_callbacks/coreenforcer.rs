@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onHit(target) {
 ///     if (target.getAbility().flags['cantsuppress']) return;
@@ -60,11 +61,7 @@ pub fn on_hit(
     }
 
     // target.addVolatile('gastroacid');
-    let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-    target_pokemon.add_volatile(ID::from("gastroacid"));
+    Pokemon::add_volatile(battle, target, ID::from("gastroacid"), None);
 
     EventResult::Continue
 }
@@ -121,11 +118,7 @@ pub fn on_after_sub_damage(
     }
 
     // target.addVolatile('gastroacid');
-    let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-    target_pokemon.add_volatile(ID::from("gastroacid"));
+    Pokemon::add_volatile(battle, target, ID::from("gastroacid"), None);
 
     EventResult::Continue
 }

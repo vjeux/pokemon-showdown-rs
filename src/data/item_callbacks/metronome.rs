@@ -5,7 +5,9 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onStart(pokemon) {
 ///     pokemon.addVolatile('metronome');
@@ -17,11 +19,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
         None => return EventResult::Continue,
     };
 
-    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-    pokemon_mut.add_volatile(crate::dex_data::ID::new("metronome"));
+    Pokemon::add_volatile(battle, pokemon_pos, ID::new("metronome"), None);
 
     EventResult::Continue
 }

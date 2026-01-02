@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onUpdate(pokemon) {
 ///     if (!pokemon.hp) return;
@@ -50,12 +51,13 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
         // pokemon.addVolatile('leppaberry');
         // pokemon.volatiles['leppaberry'].moveSlot = moveSlot;
+        Pokemon::add_volatile(battle, pokemon_pos, ID::from("leppaberry"), None);
+
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        pokemon_mut.add_volatile(ID::from("leppaberry"));
         if let Some(volatile) = pokemon_mut.get_volatile_mut(&ID::from("leppaberry")) {
             // Store the move slot index in the volatile's data field
             volatile.data.insert(

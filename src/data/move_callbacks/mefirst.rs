@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// ```ignore
 /// onTryHit(target, pokemon) {
@@ -26,8 +28,6 @@ pub fn on_try_hit(
     source_pos: (usize, usize),
     target_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let pokemon = source_pos;
     let target = target_pos;
 
@@ -74,13 +74,7 @@ pub fn on_try_hit(
     }
 
     // pokemon.addVolatile('mefirst');
-    {
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Boolean(false),
-        };
-        pokemon_pokemon.add_volatile(ID::from("mefirst"));
-    }
+    Pokemon::add_volatile(battle, pokemon, ID::from("mefirst"), None);
 
     // this.actions.useMove(move, pokemon, { target });
     crate::battle_actions::use_move(battle, &move_id, pokemon, Some(target), None, None, None);

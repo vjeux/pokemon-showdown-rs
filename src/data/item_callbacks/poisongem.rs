@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onSourceTryPrimaryHit(target, source, move) {
 ///     if (target === source || move.category === 'Status') return;
@@ -41,15 +42,17 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
 
     // if (move.type === 'Poison' && source.useItem())
     if move_type == "Poison" {
-        // Get source pokemon mutably to use item
-        let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let used_item = {
+            let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.use_item().is_some()
         };
 
-        if source_pokemon.use_item().is_some() {
+        if used_item {
             // source.addVolatile('gem');
-            source_pokemon.add_volatile("gem".into());
+            Pokemon::add_volatile(battle, source_pos, "gem".into(), None);
         }
     }
 

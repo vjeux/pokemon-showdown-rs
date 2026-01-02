@@ -33,12 +33,9 @@ pub fn on_hit(
     };
 
     if source_is_active {
-        let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        target_mut.add_volatile(ID::from("trapped"));
+        // target.addVolatile('trapped', source, move, 'trapper');
+        use crate::pokemon::Pokemon;
+        Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(source));
     }
 
     EventResult::Continue

@@ -7,13 +7,14 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onHit(target, source, move) {
 ///     return target.addVolatile('trapped', source, move, 'trapper');
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // Get the target
@@ -23,12 +24,7 @@ pub fn on_hit(
     };
 
     // return target.addVolatile('trapped', source, move, 'trapper');
-    let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    let result = target_pokemon.add_volatile(ID::from("trapped"));
+    let result = Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(pokemon_pos));
 
     EventResult::Boolean(result)
 }

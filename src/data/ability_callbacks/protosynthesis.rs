@@ -5,7 +5,9 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 use crate::Arg;
 
 /// onStart(pokemon) {
@@ -14,7 +16,7 @@ use crate::Arg;
 pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // Trigger WeatherChange event to check if Protosynthesis should activate
     // Pass the ability ID as the effect
-    let ability_id = crate::dex_data::ID::from("protosynthesis");
+    let ability_id = ID::from("protosynthesis");
     battle.single_event("WeatherChange", &ability_id, Some(pokemon_pos), None, None);
     EventResult::Continue
 }
@@ -34,12 +36,12 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
 
     if is_sunny {
         // Add protosynthesis volatile
-        let volatile_id = crate::dex_data::ID::from("protosynthesis");
+        let volatile_id = ID::from("protosynthesis");
         eprintln!("[PROTOSYNTHESIS] Adding volatile");
-        battle.add_volatile_to_pokemon(pokemon_pos, volatile_id, None);
+        Pokemon::add_volatile(battle, pokemon_pos, volatile_id, None);
     } else {
         // Check if pokemon has protosynthesis volatile and if it's not from Booster Energy
-        let id = crate::dex_data::ID::from("protosynthesis");
+        let id = ID::from("protosynthesis");
         let has_volatile = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             pokemon.has_volatile(&id)
         } else {

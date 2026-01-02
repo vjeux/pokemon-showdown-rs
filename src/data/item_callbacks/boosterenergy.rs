@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onStart(pokemon) {
 ///     this.effectState.started = true;
@@ -88,11 +89,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             };
 
             if used_item {
-                let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                pokemon_mut.add_volatile(ID::from("protosynthesis"));
+                Pokemon::add_volatile(battle, pokemon_pos, ID::from("protosynthesis"), None);
             }
         }
     }
@@ -122,11 +119,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             };
 
             if used_item {
-                let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                pokemon_mut.add_volatile(ID::from("quarkdrive"));
+                Pokemon::add_volatile(battle, pokemon_pos, ID::from("quarkdrive"), None);
             }
         }
     }

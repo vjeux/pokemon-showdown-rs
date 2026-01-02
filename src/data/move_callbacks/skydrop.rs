@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// ```ignore
 /// onModifyMove(move, source) {
@@ -369,15 +370,7 @@ pub fn on_try_hit(
         );
 
         // source.addVolatile('twoturnmove', target);
-        {
-            let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-
-                None => return EventResult::Continue,
-            };
-
-            pokemon.add_volatile(ID::from("twoturnmove"));
-        }
+        Pokemon::add_volatile(battle, source, ID::from("twoturnmove"), Some(target));
 
         // return null;
         return EventResult::Stop;

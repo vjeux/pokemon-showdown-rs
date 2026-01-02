@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::{GameType, ID};
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onPrepareHit(pokemon) {
 ///     return pokemon.addVolatile('allyswitch');
@@ -17,12 +18,7 @@ pub fn on_prepare_hit(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // return pokemon.addVolatile('allyswitch');
-    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    let result = pokemon.add_volatile(ID::from("allyswitch"));
+    let result = Pokemon::add_volatile(battle, pokemon_pos, ID::from("allyswitch"), None);
     EventResult::Boolean(result)
 }
 

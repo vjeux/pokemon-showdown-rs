@@ -5,7 +5,9 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onAttract(target, source) {
 ///     this.debug(`attract intercepted: ${target} from ${source}`);
@@ -40,15 +42,11 @@ pub fn on_attract(battle: &mut Battle, target_pos: Option<(usize, usize)>, sourc
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_volatile(&crate::dex_data::ID::new("attract"))
+        source_pokemon.has_volatile(&ID::new("attract"))
     };
 
     if !has_attract {
-        let source_pokemon_mut = match battle.pokemon_at_mut(source.0, source.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source_pokemon_mut.add_volatile(crate::dex_data::ID::new("attract"));
+        Pokemon::add_volatile(battle, source, ID::new("attract"), Some(target));
     }
 
     EventResult::Continue

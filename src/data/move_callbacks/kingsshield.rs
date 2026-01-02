@@ -46,6 +46,7 @@ pub fn on_hit(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     use crate::dex_data::ID;
+    use crate::pokemon::Pokemon;
 
     eprintln!("[KINGSSHIELD::ON_HIT] Called with pokemon_pos={:?}", pokemon_pos);
 
@@ -77,7 +78,7 @@ pub fn on_hit(
         eprintln!("[KINGSSHIELD::ON_HIT] Adding new 'stall' volatile");
         // pokemon.addVolatile('stall');
         // Use battle.add_volatile_to_pokemon to properly set duration from dex.conditions
-        battle.add_volatile_to_pokemon(pokemon, stall_id.clone(), None);
+        Pokemon::add_volatile(battle, pokemon, stall_id.clone(), None);
         eprintln!("[KINGSSHIELD::ON_HIT] Added 'stall' volatile via battle.add_volatile_to_pokemon");
 
         // Initialize counter for new stall volatile (duration is set by add_volatile_to_pokemon)

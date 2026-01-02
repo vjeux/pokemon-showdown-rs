@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// onHit(target, source, move)
 ///
@@ -40,9 +41,7 @@ pub fn on_hit(
     };
 
     if source_is_active {
-        if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
-            target_pokemon.add_volatile(ID::from("trapped"));
-        }
+        Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(source_pos));
     }
 
     EventResult::Continue

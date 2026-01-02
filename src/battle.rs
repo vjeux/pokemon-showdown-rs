@@ -22,7 +22,6 @@ use crate::side::{Side};
 // Function modules
 
 // Function modules
-mod add_volatile_to_pokemon;
 mod new;
 mod pokemon_at;
 mod pokemon_at_mut;

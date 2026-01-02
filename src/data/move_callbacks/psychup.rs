@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// ```ignore
 /// onHit(target, source) {
@@ -33,8 +35,6 @@ pub fn on_hit(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -97,13 +97,7 @@ pub fn on_hit(
         };
 
         if has_volatile {
-            {
-                let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                pokemon.add_volatile(volatile.clone());
-            }
+            Pokemon::add_volatile(battle, source, volatile.clone(), None);
 
             if volatile == &ID::from("gmaxchistrike") {
                 let layers = {

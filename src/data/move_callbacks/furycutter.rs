@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::pokemon::Pokemon;
 
 /// basePowerCallback(pokemon, target, move) {
 ///     if (!pokemon.volatiles['furycutter'] || move.hit === 1) {
@@ -20,8 +22,6 @@ pub fn base_power_callback(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let pokemon = pokemon_pos;
     let furycutter_id = ID::from("furycutter");
 
@@ -45,12 +45,7 @@ pub fn base_power_callback(
     };
 
     if !has_furycutter || move_hit == 1 {
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        pokemon_mut.add_volatile(furycutter_id.clone());
+        Pokemon::add_volatile(battle, pokemon, furycutter_id.clone(), None);
     }
 
     // const bp = this.clampIntRange(move.basePower * pokemon.volatiles['furycutter'].multiplier, 1, 160);
