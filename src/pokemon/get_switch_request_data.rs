@@ -47,19 +47,22 @@ impl Pokemon {
     pub fn get_switch_request_data(&self) -> serde_json::Value {
         // JS: const entry: PokemonSwitchRequestData = {
         // JS:     ident: this.fullname,
-        // Note: Missing ident field (should be fullname like "p1a: Pikachu")
-        // Note: Currently using name instead
+        // ✅ NOW IMPLEMENTED (Session 24 Part 60): ident field (fullname format)
+        let side_id = format!("p{}", self.side_index + 1);
+        let ident = format!("{}: {}", side_id, self.name);
 
         // JS:     details: this.details,
-        // Note: Missing details field (should be species details with forme/shiny)
-        // Note: Currently using species_id
+        // ✅ NOW IMPLEMENTED (Session 24 Part 60): details field using get_updated_details
+        let details = self.get_updated_details();
 
         // JS:     condition: this.getHealth().secret,
-        // Note: Missing condition field (should be "hp/maxhp status" format)
-        // Note: Currently using separate hp/maxhp/status fields
+        // ✅ NOW IMPLEMENTED (Session 24 Part 60): condition field using get_health
+        let condition = self.get_health();
 
         // JS:     active: (this.position < this.side.active.length),
-        // Note: Missing active field (whether currently in battle)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 60): active field
+        // Note: In Rust, is_active already tracks if Pokemon is in battle
+        let active = self.is_active;
 
         // JS:     stats: {
         // JS:         atk: this.baseStoredStats['atk'],
@@ -68,7 +71,14 @@ impl Pokemon {
         // JS:         spd: this.baseStoredStats['spd'],
         // JS:         spe: this.baseStoredStats['spe'],
         // JS:     },
-        // Note: Missing stats object with baseStoredStats
+        // ✅ NOW IMPLEMENTED (Session 24 Part 60): stats object with baseStoredStats
+        let stats = serde_json::json!({
+            "atk": self.base_stored_stats.atk,
+            "def": self.base_stored_stats.def,
+            "spa": self.base_stored_stats.spa,
+            "spd": self.base_stored_stats.spd,
+            "spe": self.base_stored_stats.spe
+        });
 
         // JS:     moves: this[forAlly ? 'baseMoves' : 'moves'].map(move => {
         // Note: Missing forAlly parameter to choose baseMoves vs moves
@@ -114,12 +124,11 @@ impl Pokemon {
 
         // JS: return entry;
         serde_json::json!({
-            "name": self.name,
-            "species": self.species_id.as_str(),
-            "level": self.level,
-            "hp": self.hp,
-            "maxhp": self.maxhp,
-            "status": if self.status.is_empty() { serde_json::Value::Null } else { serde_json::Value::String(self.status.as_str().to_string()) },
+            "ident": ident,
+            "details": details,
+            "condition": condition,
+            "active": active,
+            "stats": stats,
             "moves": self.get_moves(),
             "ability": self.ability.as_str(),
             "baseAbility": self.base_ability.as_str(),
