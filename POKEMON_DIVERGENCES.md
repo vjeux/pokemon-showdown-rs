@@ -445,10 +445,11 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Returns true correctly
 
 #### set_type.rs
-- Status: ✅ Fixed (Significantly Improved - Session 22)
-- Issue: Missing Arceus/Silvally protection and Battle parameter
-- Action: Refactored to associated function with Battle parameter, implemented Arceus/Silvally protection
+- Status: ✅ Fixed (Nearly Complete - Session 23)
+- Issue: Missing Arceus/Silvally protection, Battle parameter, and field assignments
+- Action: Refactored to associated function with Battle parameter, implemented all protections and field assignments
 - Notes:
+  - ✅ NOW IMPLEMENTED (Session 23): apparent_type field assignment (sets to types.join("/"))
   - ✅ NOW IMPLEMENTED (Session 22): Refactored from instance method to associated function
   - ✅ NOW IMPLEMENTED (Session 22): Battle parameter for gen checks and species data access
   - ✅ NOW IMPLEMENTED (Session 22): Arceus (493) protection - Gen 5+: blocks type changes
@@ -461,8 +462,10 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED: Empty type validation (returns false instead of panicking)
   - ✅ NOW IMPLEMENTED: addedType reset (sets self.added_type = None)
   - ✅ NOW IMPLEMENTED: Returns bool instead of void
-  - Missing knownType field assignment (field doesn't exist)
-  - Missing apparentType field assignment (field doesn't exist)
+  - Note: JavaScript knownType (boolean) vs Rust known_type (Option<String>) are different concepts
+    - JS: knownType = true tracks "is type publicly known?"
+    - Rust: known_type = Some(type) tracks "what type is known?" (for Illusion mechanics)
+    - Not setting known_type in Rust as it serves a different purpose
   - Updated 6 callsites (reflecttype, magicpowder, conversion, conversion2, camouflage, soak)
 
 #### set_species.rs
@@ -1442,6 +1445,33 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 6 feature implementations (Arceus gen5+, Silvally gen5+, Multitype gen4, Battle parameter, two-phase pattern, associated function)
   - 7 files modified (1 pokemon method + 6 move callbacks)
   - 6 callsites updated
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 23 - 2026-01-01 (set_type apparent_type Field Assignment)
+- **Goal**: Implement apparent_type field assignment in set_type
+- **Completed**:
+  - ✅ Discovered that known_type and apparent_type fields DO exist in Pokemon struct
+  - ✅ Implemented apparent_type field assignment (sets to types.join("/"))
+  - ✅ Documented knownType vs known_type type mismatch (boolean in JS, Option<String> in Rust)
+  - ✅ Explained why known_type is NOT set (different purposes in JS vs Rust)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+- **Methods Now Nearly Complete**:
+  - set_type.rs - Now ~95% complete (was ~90%)
+    - ✅ Has: All validations, protections, gen checks, field assignments
+    - ✅ Has: apparent_type = Some(types.join("/"))
+    - Note: known_type intentionally NOT set due to type/semantic differences
+      - JS knownType: boolean tracking "is type publicly known?"
+      - Rust known_type: Option<String> tracking "what type is known?" (Illusion mechanics)
+- **Technical Details**:
+  - Added Phase 2 to calculate apparent_type_str before mutation
+  - Set pokemon.apparent_type = Some(apparent_type_str)
+  - Documented the knownType vs known_type semantic difference
+- **Session Statistics**:
+  - 1 method improved (set_type)
+  - 1 feature implementation (apparent_type field assignment)
+  - 1 file modified (set_type.rs)
   - 1 commit pushed to git
   - 100% compilation success rate
 
