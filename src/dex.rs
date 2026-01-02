@@ -205,6 +205,10 @@ pub struct SpeciesData {
     /// JavaScript: forme?: string
     #[serde(default)]
     pub forme: Option<String>,
+    /// Changes from (base forme this changes from)
+    /// JavaScript: changesFrom?: string
+    #[serde(rename = "changesFrom", default)]
+    pub changes_from: Option<String>,
     /// Other formes
     /// JavaScript: otherFormes?: string[]
     #[serde(default)]
@@ -242,6 +246,10 @@ pub struct SpeciesData {
     /// JavaScript: requiredItems?: string[]
     #[serde(rename = "requiredItems", default)]
     pub required_items: Vec<String>,
+    /// Can Gigantamax (G-Max move name)
+    /// JavaScript: canGigantamax?: string
+    #[serde(rename = "canGigantamax", default)]
+    pub can_gigantamax: Option<String>,
     // Format data fields
     /// Tier in formats
     /// JavaScript: tier?: string
