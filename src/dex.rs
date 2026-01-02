@@ -123,7 +123,7 @@ impl From<BaseStatsData> for StatsTable {
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 /// JavaScript equivalent: SpeciesData (sim/dex-species.ts)
-/// 47 fields in Rust (matching JavaScript fields)
+/// 50 fields in Rust (matching JavaScript fields)
 pub struct SpeciesData {
     /// Species number in the Pokedex
     /// JavaScript: num: number
@@ -246,6 +246,18 @@ pub struct SpeciesData {
     /// JavaScript: requiredItems?: string[]
     #[serde(rename = "requiredItems", default)]
     pub required_items: Vec<String>,
+    /// True if this Pokemon is a Mega Evolution
+    /// JavaScript: isMega?: boolean
+    #[serde(rename = "isMega", default)]
+    pub is_mega: bool,
+    /// Required move to use this forme in-battle
+    /// JavaScript: requiredMove?: string
+    #[serde(rename = "requiredMove", default)]
+    pub required_move: Option<String>,
+    /// Required ability to use this forme in-battle
+    /// JavaScript: requiredAbility?: string
+    #[serde(rename = "requiredAbility", default)]
+    pub required_ability: Option<String>,
     /// Can Gigantamax (G-Max move name)
     /// JavaScript: canGigantamax?: string
     #[serde(rename = "canGigantamax", default)]
