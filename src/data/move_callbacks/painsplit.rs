@@ -1,11 +1,11 @@
 //! Pain Split Move
 //!
-//! Pokemon Showdown - http://pokemonshowdown.com/
-//!
+//! Pokemon Showdown - http://pokemonshowdown.com/!
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target, pokemon) {
 ///     const targetHP = target.getUndynamaxedHP();
@@ -58,20 +58,14 @@ pub fn on_hit(
     let target_change = target_hp - average_hp;
 
     // target.sethp(target.hp - targetChange);
-    {
-        let new_hp = {
-            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            target_pokemon.hp - target_change
-        };
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+    let new_target_hp = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_hp(new_hp);
-    }
+        target_pokemon.hp - target_change
+    };
+    Pokemon::set_hp(battle, target, new_target_hp);
 
     // this.add('-sethp', target, target.getHealth, '[from] move: Pain Split', '[silent]');
     {
@@ -95,13 +89,7 @@ pub fn on_hit(
     }
 
     // pokemon.sethp(averagehp);
-    {
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon_pokemon.set_hp(average_hp);
-    }
+    Pokemon::set_hp(battle, pokemon, average_hp);
 
     // this.add('-sethp', pokemon, pokemon.getHealth, '[from] move: Pain Split');
     {
