@@ -76,12 +76,16 @@ pub fn on_hit(
     );
 
     // pokemon.setItem(item, source, move);
+    // JavaScript: pokemon.setItem(item, source, move)
+    // source = pokemon (self-targeting move)
+    // move = "recycle"
     {
         let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.set_item(item, None, None);
+        // ✅ NOW PASSING: source_pos = Some(pokemon_pos), source_effect = Some("recycle")
+        pokemon_pokemon.set_item(item, Some(pokemon_pos), Some(&ID::new("recycle")));
     }
 
     EventResult::Continue
