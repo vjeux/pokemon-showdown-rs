@@ -59,10 +59,35 @@ pub fn secondaries(
 
         // const secondaries: Dex.SecondaryEffect[] =
         //     this.battle.runEvent('ModifySecondaries', target, source, moveData, moveData.secondaries.slice());
-        // TODO: Implement ModifySecondaries event
-        // For now, just use the secondaries from active_move directly
+        // Call ModifySecondaries event to allow abilities like Shield Dust to filter secondaries
+        // The event can modify or filter the secondaries array
         let secondaries = if let Some(ref active_move) = battle.active_move {
-            active_move.secondaries.clone().unwrap_or_default()
+            let mut secs = active_move.secondaries.clone().unwrap_or_default();
+
+            // Fire ModifySecondaries event for each secondary
+            // In JavaScript, this returns a filtered/modified array
+            // In Rust, we check the event result to see if we should skip this secondary
+            let modify_result = battle.run_event(
+                "ModifySecondaries",
+                Some(target_pos),
+                Some(source_pos),
+                Some(move_id),
+                None,
+            );
+
+            // If ModifySecondaries event returns a falsy value (like EventResult::Null or EventResult::Boolean(false)),
+            // it means the secondaries should be blocked (e.g., by Shield Dust)
+            if let Some(result) = modify_result {
+                if result == 0 {
+                    // Event returned 0, skip all secondaries for this target
+                    Vec::new()
+                } else {
+                    secs
+                }
+            } else {
+                // None means the event blocked the secondaries
+                Vec::new()
+            }
         } else {
             continue;
         };
