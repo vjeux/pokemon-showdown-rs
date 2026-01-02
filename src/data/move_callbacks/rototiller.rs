@@ -47,13 +47,7 @@ pub fn on_hit_field(
         //     anyAirborne = true;
         //     continue;
         // }
-        let is_immune_to_ground = {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => continue,
-            };
-            !pokemon.run_immunity("Ground")
-        };
+        let is_immune_to_ground = !crate::Pokemon::run_immunity(battle, pokemon_pos, "Ground", false);
 
         if is_immune_to_ground {
             let pokemon_slot = {

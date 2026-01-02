@@ -38,14 +38,13 @@ pub fn on_effectiveness(
     };
 
     // if (!target.runImmunity('Ground'))
-    let (has_immunity, has_flying_type) = {
+    let has_immunity = crate::Pokemon::run_immunity(battle, target, "Ground", false);
+    let has_flying_type = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let immunity = target_pokemon.run_immunity("Ground");
-        let has_flying = target_pokemon.has_type(battle, "Flying");
-        (immunity, has_flying)
+        target_pokemon.has_type(battle, "Flying")
     };
 
     if !has_immunity {
