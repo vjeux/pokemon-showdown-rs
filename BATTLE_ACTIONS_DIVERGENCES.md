@@ -492,6 +492,21 @@ These files exist only in Rust and should be evaluated:
 - 1:1 match with JavaScript implementation
 
 ### 2026-01-02
+**Completed: self_drops.rs** ✅ ALL TODOs COMPLETED!
+- Implemented all self effect types (both branches: with/without boosts check):
+  - status (e.g., Rest inflicting sleep on self)
+  - volatile_status (e.g., Focus Energy, Confusion from Outrage)
+  - side_condition (e.g., self-inflicted hazards on own side)
+  - slot_condition (e.g., self-targeting slot effects)
+  - pseudo_weather (e.g., self-set Trick Room)
+  - terrain (e.g., self-set terrain from abilities/moves)
+  - weather (e.g., self-set weather from abilities/moves)
+- All effects apply to SOURCE Pokemon/side/field (not target)
+- Uses SelfEffect struct from battle_actions.rs (already has all required fields)
+- Matches JavaScript selfDrops() that calls moveHit(source, source, move, moveData.self, ...)
+- 1:1 match with JavaScript implementation
+
+### 2026-01-02
 **Completed: secondaries.rs** ✅ ALL TODOs COMPLETED!
 - Implemented all secondary effect types (not just boosts):
   - status (e.g., paralysis, burn, sleep)
