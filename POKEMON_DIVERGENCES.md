@@ -2,14 +2,15 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 49 Complete)
-- **Session 24 Total Progress**: 24+ commits, 49 parts completed
+## Overview (Updated: Session 24 Part 50 Complete)
+- **Session 24 Total Progress**: 25+ commits, 50 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
   - Parts 42-46: Documentation updates and final infrastructure fixes
   - Parts 47-48: Final actionable improvements (ignoring_item, ignoring_ability - both now 100%)
   - Part 49: Major refactor - use_item/eat_item to associated functions with HP/boosts
+  - Part 50: battle.add messages for item consumption (Red Card, Gems)
 - **Methods Significantly Improved**:
   - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
@@ -18,7 +19,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - faint.rs, update_max_hp.rs, set_hp.rs, get_locked_move.rs (all 100%)
   - ignoring_item.rs (Primal Orb, ignoreKlutz - now 100%)
   - ignoring_ability.rs (ability.flags checks - now 100%)
-  - use_item.rs (HP/Gem check, item.boosts - now ~65%, was ~45%)
+  - use_item.rs (HP/Gem check, item.boosts, battle.add messages - now ~70%, was ~45%)
   - eat_item.rs (refactored to associated function - now ~60%, was ~50%)
   - 6 core methods with source/sourceEffect parameters added
 - **Move Callbacks Fixed**: 9 files with proper source/effect/linkedStatus parameters
@@ -28,6 +29,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - TrappedState enum for proper type safety
   - ItemData.extra HashMap for item properties (isPrimalOrb, ignoreKlutz, isGem, boosts)
   - AbilityData.flags HashMap for ability flags (notransform, cantsuppress)
+  - battle.add integration for item consumption logging
   - 250+ callsites updated across codebase
 - **Compilation Success Rate**: 100% (0 errors, 0 warnings throughout)
 - **Remaining Work**: Only 1 TODO in src/pokemon/ (event system infrastructure in calculate_stat.rs)
@@ -757,26 +759,26 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Not implemented - requires significant Battle reference infrastructure
 
 #### use_item.rs
-- Status: ✅ Fixed (Improved - Session 24 Part 49)
+- Status: ✅ Fixed (Improved - Session 24 Part 50)
 - Issue: Missing source and sourceEffect parameters
-- Action: Refactored to associated function with HP/Gem check and item.boosts handling (Session 24 Part 49)
+- Action: Implemented battle.add messages for item consumption (Session 24 Part 50)
 - Notes:
   - ✅ NOW IMPLEMENTED (Session 24 Part 49): Refactored from instance method to associated function
   - ✅ NOW IMPLEMENTED (Session 24 Part 49): HP check with Gem exception using `item_data.extra.get("isGem")`
   - ✅ NOW IMPLEMENTED (Session 24 Part 49): item.boosts handling via `battle.boost()`
   - ✅ NOW IMPLEMENTED (Session 24 Part 49): Signature: `Pokemon::use_item(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos, source_effect)`
+  - ✅ NOW IMPLEMENTED (Session 24 Part 50): battle.add messages with special cases (Red Card, Gems)
   - ✅ NOW IMPLEMENTED: isActive check
   - ✅ NOW IMPLEMENTED (Session 24 Part 30): source_pos parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 30): source_effect parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 49): Updated 100+ callsites (was 58)
   - Missing sourceEffect item type check
   - Missing runEvent('UseItem')
-  - Missing battle.add message with special cases for Red Card and Gems
   - Missing singleEvent('Use')
   - Missing runEvent('AfterUseItem')
   - Missing item.onEat event handling
   - Currently sets flags and clears item
-  - Now ~65% complete (was ~45%)
+  - Now ~70% complete (was ~65%)
 
 #### try_trap.rs
 - Status: ✅ Fixed (Fully Implemented - Session 24 Part 10)
