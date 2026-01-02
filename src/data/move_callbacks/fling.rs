@@ -223,11 +223,7 @@ pub mod condition {
         battle.run_event("AfterUseItem", Some(pokemon), None, Some(&item_id), None);
 
         // pokemon.removeVolatile('fling');
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("fling"));
+        Pokemon::remove_volatile(battle, pokemon, &ID::from("fling"));
 
         EventResult::Continue
     }

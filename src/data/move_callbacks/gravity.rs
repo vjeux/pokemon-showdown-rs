@@ -133,21 +133,8 @@ pub mod condition {
             let mut applies = false;
 
             // if (pokemon.removeVolatile('bounce') || pokemon.removeVolatile('fly')) {
-            let removed_bounce = {
-                let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("bounce"))
-            };
-
-            let removed_fly = {
-                let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("fly"))
-            };
+            let removed_bounce = Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("bounce"));
+            let removed_fly = Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("fly"));
 
             if removed_bounce || removed_fly {
                 // applies = true;
@@ -157,11 +144,7 @@ pub mod condition {
                 battle.queue.cancel_move(pokemon_pos.0, pokemon_pos.1);
 
                 // pokemon.removeVolatile('twoturnmove');
-                let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("twoturnmove"));
+                Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("twoturnmove"));
             }
 
             // if (pokemon.volatiles['skydrop']) {
@@ -216,12 +199,8 @@ pub mod condition {
 
                 // pokemon.removeVolatile('skydrop');
                 // pokemon.removeVolatile('twoturnmove');
-                let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("skydrop"));
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("twoturnmove"));
+                Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("skydrop"));
+                Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("twoturnmove"));
             }
 
             // if (pokemon.volatiles['magnetrise']) {

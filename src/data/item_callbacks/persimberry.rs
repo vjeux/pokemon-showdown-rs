@@ -16,7 +16,7 @@ use crate::Pokemon;
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // if (pokemon.volatiles['confusion'])
     let has_confusion = {
-        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             pokemon.has_volatile(&"confusion".into())
         } else {
             false
@@ -36,9 +36,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.removeVolatile('confusion');
-    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        pokemon.remove_volatile(&"confusion".into());
-    }
+    Pokemon::remove_volatile(battle, pokemon_pos, &"confusion".into());
 
     EventResult::Continue
 }

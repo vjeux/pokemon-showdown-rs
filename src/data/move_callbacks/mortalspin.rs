@@ -44,19 +44,20 @@ pub fn on_after_hit(
         // if (pokemon.hp && pokemon.removeVolatile('leechseed')) {
         //     this.add('-end', pokemon, 'Leech Seed', '[from] move: Mortal Spin', `[of] ${pokemon}`);
         // }
-        let (has_hp, removed_leechseed, pokemon_ident) = {
-            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        let (has_hp, pokemon_ident) = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
             let hp = pokemon.hp > 0;
-            let removed = if hp {
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("leechseed"))
-            } else {
-                false
-            };
             let ident = pokemon.get_slot();
-            (hp, removed, ident)
+            (hp, ident)
+        };
+
+        let removed_leechseed = if has_hp {
+            Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("leechseed"))
+        } else {
+            false
         };
 
         if has_hp && removed_leechseed {
@@ -139,11 +140,7 @@ pub fn on_after_hit(
         };
 
         if has_hp {
-            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("partiallytrapped"));
+            Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("partiallytrapped"));
         }
     }
 

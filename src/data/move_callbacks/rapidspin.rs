@@ -53,18 +53,18 @@ pub fn on_after_hit(
     };
 
     if pokemon_hp > 0 {
-        let removed_leechseed = {
-            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+        let has_leechseed = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
+            pokemon_ref.has_volatile(&ID::from("leechseed"))
+        };
 
-            if pokemon_mut.has_volatile(&ID::from("leechseed")) {
-                Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("leechseed"));
-                true
-            } else {
-                false
-            }
+        let removed_leechseed = if has_leechseed {
+            Pokemon::remove_volatile(battle, pokemon, &ID::from("leechseed"))
+        } else {
+            false
         };
 
         if removed_leechseed {
@@ -142,13 +142,16 @@ pub fn on_after_hit(
     };
 
     if pokemon_hp > 0 {
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let has_partiallytrapped = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.has_volatile(&ID::from("partiallytrapped"))
         };
 
-        if pokemon_mut.has_volatile(&ID::from("partiallytrapped")) {
-            Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("partiallytrapped"));
+        if has_partiallytrapped {
+            Pokemon::remove_volatile(battle, pokemon, &ID::from("partiallytrapped"));
         }
     }
 
@@ -202,18 +205,18 @@ pub fn on_after_sub_damage(
     };
 
     if pokemon_hp > 0 {
-        let removed_leechseed = {
-            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+        let has_leechseed = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
+            pokemon_ref.has_volatile(&ID::from("leechseed"))
+        };
 
-            if pokemon_mut.has_volatile(&ID::from("leechseed")) {
-                Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("leechseed"));
-                true
-            } else {
-                false
-            }
+        let removed_leechseed = if has_leechseed {
+            Pokemon::remove_volatile(battle, pokemon, &ID::from("leechseed"))
+        } else {
+            false
         };
 
         if removed_leechseed {
@@ -291,13 +294,16 @@ pub fn on_after_sub_damage(
     };
 
     if pokemon_hp > 0 {
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
+        let has_partiallytrapped = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.has_volatile(&ID::from("partiallytrapped"))
         };
 
-        if pokemon_mut.has_volatile(&ID::from("partiallytrapped")) {
-            Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("partiallytrapped"));
+        if has_partiallytrapped {
+            Pokemon::remove_volatile(battle, pokemon, &ID::from("partiallytrapped"));
         }
     }
 

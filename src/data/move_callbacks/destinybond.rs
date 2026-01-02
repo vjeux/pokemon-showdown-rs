@@ -22,11 +22,7 @@ pub fn on_prepare_hit(
     let pokemon = pokemon_pos;
 
     let removed = {
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("destinybond"))
+        Pokemon::remove_volatile(battle, pokemon, &ID::from("destinybond"))
     };
 
     // return !pokemon.removeVolatile('destinybond');
@@ -175,11 +171,7 @@ pub mod condition {
 
         // pokemon.removeVolatile('destinybond');
         let pokemon = pokemon_pos;
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("destinybond"));
+        Pokemon::remove_volatile(battle, pokemon, &ID::from("destinybond"));
 
         EventResult::Continue
     }
@@ -197,11 +189,7 @@ pub mod condition {
 
         // pokemon.removeVolatile('destinybond');
         let pokemon = pokemon_pos;
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("destinybond"));
+        Pokemon::remove_volatile(battle, pokemon, &ID::from("destinybond"));
 
         EventResult::Continue
     }

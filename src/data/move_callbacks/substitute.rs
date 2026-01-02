@@ -228,11 +228,7 @@ pub mod condition {
             );
 
             // delete target.volatiles['partiallytrapped'];
-            let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::remove_volatile(battle, (target_pokemon.side_index, target_pokemon.position), &ID::from("partiallytrapped"));
+            Pokemon::remove_volatile(battle, target, &ID::from("partiallytrapped"));
         }
 
         EventResult::Continue
@@ -402,11 +398,7 @@ pub mod condition {
             }
 
             // target.removeVolatile('substitute');
-            let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::remove_volatile(battle, (target_mut.side_index, target_mut.position), &ID::from("substitute"));
+            Pokemon::remove_volatile(battle, target, &ID::from("substitute"));
         } else {
             // this.add('-activate', target, 'move: Substitute', '[damage]');
             let target_slot = {

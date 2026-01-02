@@ -227,11 +227,7 @@ pub mod condition {
             if duration == 2 {
                 // delete source.volatiles['lockedmove'];
                 {
-                    let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                        Some(p) => p,
-                        None => return EventResult::Continue,
-                    };
-                    Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("lockedmove"));
+                    Pokemon::remove_volatile(battle, source, &ID::from("lockedmove"));
                 }
             }
         }

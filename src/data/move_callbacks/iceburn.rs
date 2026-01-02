@@ -36,15 +36,7 @@ pub fn on_try_move(
         None => return EventResult::Continue,
     };
 
-    let removed = {
-        let pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
-            Some(p) => p,
-
-            None => return EventResult::Continue,
-        };
-
-        pokemon.remove_volatile(&move_id.id)
-    };
+    let removed = Pokemon::remove_volatile(battle, attacker, &move_id.id);
     if removed {
         return EventResult::Continue;
     }

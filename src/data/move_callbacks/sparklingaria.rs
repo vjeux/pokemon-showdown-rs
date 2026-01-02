@@ -71,13 +71,7 @@ pub fn on_after_move(
         // for (const pokemon of this.getAllActive()) delete pokemon.volatiles['sparklingaria'];
         let all_active = battle.get_all_active(false);
         for pokemon_pos in all_active {
-            {
-                let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("sparklingaria"));
-            }
+            Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("sparklingaria"));
         }
 
         // return;
@@ -110,13 +104,7 @@ pub fn on_after_move(
             continue;
         }
 
-        let removed_volatile = {
-            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => continue,
-            };
-            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("sparklingaria"))
-        };
+        let removed_volatile = Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("sparklingaria"));
 
         if (removed_volatile || number_targets > 1) && has_burn {
             let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

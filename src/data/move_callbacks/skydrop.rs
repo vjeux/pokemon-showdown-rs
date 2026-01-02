@@ -108,18 +108,10 @@ pub fn on_move_fail(
         // source.removeVolatile('skydrop');
         // source.removeVolatile('twoturnmove');
         {
-            let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("skydrop"));
+            Pokemon::remove_volatile(battle, source, &ID::from("skydrop"));
         }
         {
-            let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("twoturnmove"));
+            Pokemon::remove_volatile(battle, source, &ID::from("twoturnmove"));
         }
 
         // if (target === this.effectState.target) {
@@ -245,13 +237,7 @@ pub fn on_try_hit(
 
     // if (source.removeVolatile(move.id)) {
     let removed = {
-        let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-            Some(p) => p,
-
-            None => return EventResult::Continue,
-        };
-
-        Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &move_id)
+        Pokemon::remove_volatile(battle, source, &move_id)
     };
 
     if removed {

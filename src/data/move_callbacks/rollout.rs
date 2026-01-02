@@ -290,11 +290,7 @@ pub mod condition {
 
         if last_move_is_struggle {
             {
-                let pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("rollout"));
+                Pokemon::remove_volatile(battle, target, &ID::from("rollout"));
             }
         }
 

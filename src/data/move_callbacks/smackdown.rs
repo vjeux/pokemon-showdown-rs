@@ -110,26 +110,15 @@ pub mod condition {
         //     this.queue.cancelMove(pokemon);
         //     pokemon.removeVolatile('twoturnmove');
         // }
-        let (removed_fly, removed_bounce) = {
-            let poke = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            let fly = Pokemon::remove_volatile(battle, (poke.side_index, poke.position), &ID::from("fly"));
-            let bounce = Pokemon::remove_volatile(battle, (poke.side_index, poke.position), &ID::from("bounce"));
-            (fly, bounce)
-        };
+        let removed_fly = Pokemon::remove_volatile(battle, pokemon, &ID::from("fly"));
+        let removed_bounce = Pokemon::remove_volatile(battle, pokemon, &ID::from("bounce"));
 
         if removed_fly || removed_bounce {
             applies = true;
             // this.queue.cancelMove(pokemon);
             battle.queue.cancel_move(pokemon.0, pokemon.1);
             {
-                let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("twoturnmove"));
+                Pokemon::remove_volatile(battle, pokemon, &ID::from("twoturnmove"));
             }
         }
 
@@ -148,11 +137,7 @@ pub mod condition {
         if has_magnetrise {
             applies = true;
             {
-                let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("magnetrise"));
+                Pokemon::remove_volatile(battle, pokemon, &ID::from("magnetrise"));
             }
         }
 
@@ -173,11 +158,7 @@ pub mod condition {
         if has_telekinesis {
             applies = true;
             {
-                let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("telekinesis"));
+                Pokemon::remove_volatile(battle, pokemon, &ID::from("telekinesis"));
             }
         }
 
@@ -224,15 +205,8 @@ pub mod condition {
         //     pokemon.removeVolatile('twoturnmove');
         //     this.add('-start', pokemon, 'Smack Down');
         // }
-        let (removed_fly, removed_bounce) = {
-            let poke = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            let fly = Pokemon::remove_volatile(battle, (poke.side_index, poke.position), &ID::from("fly"));
-            let bounce = Pokemon::remove_volatile(battle, (poke.side_index, poke.position), &ID::from("bounce"));
-            (fly, bounce)
-        };
+        let removed_fly = Pokemon::remove_volatile(battle, pokemon, &ID::from("fly"));
+        let removed_bounce = Pokemon::remove_volatile(battle, pokemon, &ID::from("bounce"));
 
         if removed_fly || removed_bounce {
             // this.queue.cancelMove(pokemon);
@@ -240,11 +214,7 @@ pub mod condition {
 
             // pokemon.removeVolatile('twoturnmove');
             {
-                let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("twoturnmove"));
+                Pokemon::remove_volatile(battle, pokemon, &ID::from("twoturnmove"));
             }
 
             // this.add('-start', pokemon, 'Smack Down');

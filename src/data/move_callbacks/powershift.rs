@@ -123,11 +123,7 @@ pub mod condition {
 
         // pokemon.removeVolatile('Power Shift');
         {
-            let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("powershift"));
+            Pokemon::remove_volatile(battle, pokemon, &ID::from("powershift"));
         }
 
         EventResult::Continue

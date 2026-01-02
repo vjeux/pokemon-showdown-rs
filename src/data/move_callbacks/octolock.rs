@@ -116,11 +116,7 @@ pub mod condition {
             if !is_active || hp <= 0 || active_turns == 0 {
                 // delete pokemon.volatiles['octolock'];
                 {
-                    let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                        Some(p) => p,
-                        None => return EventResult::Continue,
-                    };
-                    Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("octolock"));
+                    Pokemon::remove_volatile(battle, pokemon, &ID::from("octolock"));
                 }
 
                 // this.add('-end', pokemon, 'Octolock', '[partiallytrapped]', '[silent]');

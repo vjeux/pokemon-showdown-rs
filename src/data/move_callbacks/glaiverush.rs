@@ -72,11 +72,7 @@ pub mod condition {
         battle.debug("removing Glaive Rush drawback before attack");
 
         // pokemon.removeVolatile('glaiverush');
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("glaiverush"));
+        Pokemon::remove_volatile(battle, pokemon, &ID::from("glaiverush"));
 
         EventResult::Continue
     }

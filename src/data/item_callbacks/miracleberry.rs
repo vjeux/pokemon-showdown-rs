@@ -18,12 +18,15 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     //     pokemon.eatItem();
     // }
 
-    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
+    let should_eat = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        !pokemon.status.is_empty() || pokemon.volatiles.contains_key(&"confusion".into())
     };
 
-    if !pokemon_mut.status.is_empty() || pokemon_mut.volatiles.contains_key(&"confusion".into()) {
+    if should_eat {
         Pokemon::eat_item(battle, pokemon_pos, false, None, None);
     }
 
@@ -39,12 +42,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.removeVolatile('confusion');
 
     Pokemon::cure_status(battle, pokemon_pos, false);
-
-    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-    pokemon_mut.remove_volatile(&"confusion".into());
+    Pokemon::remove_volatile(battle, pokemon_pos, &"confusion".into());
 
     EventResult::Continue
 }

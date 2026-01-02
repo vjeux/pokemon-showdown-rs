@@ -71,13 +71,7 @@ pub fn on_hit(
     ];
 
     for volatile in &volatiles_to_copy {
-        {
-            let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            pokemon.remove_volatile(volatile);
-        }
+        Pokemon::remove_volatile(battle, source, volatile);
     }
 
     // for (const volatile of volatilesToCopy) {

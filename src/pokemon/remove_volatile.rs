@@ -89,7 +89,7 @@ impl Pokemon {
                 battle,
                 pokemon_pos,
                 &linked_status_id,
-                linked_pokemon_positions,
+                &linked_pokemon_positions,
             );
         }
 

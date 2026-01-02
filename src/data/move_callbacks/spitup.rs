@@ -97,11 +97,7 @@ pub fn on_after_move(
 
     // pokemon.removeVolatile('stockpile');
     {
-        let pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("stockpile"));
+        Pokemon::remove_volatile(battle, pokemon, &ID::from("stockpile"));
     }
 
     EventResult::Continue

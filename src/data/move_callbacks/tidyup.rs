@@ -43,13 +43,16 @@ pub fn on_hit(
     // }
     let all_active = battle.get_all_active(false);
     for active_pos in all_active {
-        let active_mut = match battle.pokemon_at_mut(active_pos.0, active_pos.1) {
-            Some(p) => p,
-            None => continue,
+        let has_substitute = {
+            let active = match battle.pokemon_at(active_pos.0, active_pos.1) {
+                Some(p) => p,
+                None => continue,
+            };
+            active.has_volatile(&ID::from("substitute"))
         };
 
-        if active_mut.has_volatile(&ID::from("substitute")) {
-            Pokemon::remove_volatile(battle, (active_mut.side_index, active_mut.position), &ID::from("substitute"));
+        if has_substitute {
+            Pokemon::remove_volatile(battle, active_pos, &ID::from("substitute"));
             success = true;
         }
     }

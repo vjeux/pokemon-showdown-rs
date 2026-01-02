@@ -172,11 +172,7 @@ pub mod condition {
         battle.debug("removing Grudge before attack");
 
         // pokemon.removeVolatile('grudge');
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("grudge"));
+        Pokemon::remove_volatile(battle, pokemon, &ID::from("grudge"));
 
         EventResult::Continue
     }

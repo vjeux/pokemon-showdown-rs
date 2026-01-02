@@ -135,11 +135,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
     // Remove volatile if present
     {
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("leppaberry"));
+        Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("leppaberry"));
     }
 
     // moveSlot.pp += 5;

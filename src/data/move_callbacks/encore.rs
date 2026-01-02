@@ -225,11 +225,7 @@ pub mod condition {
             if should_remove {
                 // early termination if you run out of PP
                 // target.removeVolatile('encore');
-                let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                Pokemon::remove_volatile(battle, (target_pokemon.side_index, target_pokemon.position), &ID::from("encore"));
+                Pokemon::remove_volatile(battle, target, &ID::from("encore"));
             }
         }
 
