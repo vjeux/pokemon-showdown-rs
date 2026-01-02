@@ -393,11 +393,11 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ Updated all callsites across codebase
 
 #### set_ability.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Partially Implemented)
 - Issue: Very simplified implementation missing most JS logic
-- Action: Documented all missing pieces line by line
+- Action: Added HP check, documented remaining missing pieces
 - Notes:
-  - Missing HP check (should return false if fainted)
+  - ✅ NOW IMPLEMENTED: HP check (returns empty ID when fainted, equivalent to false)
   - Missing source, sourceEffect, isFromFormeChange, isTransform parameters
   - Missing cantsuppress flag checks (would need ability data)
   - Missing runEvent('SetAbility')
@@ -420,19 +420,20 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Returns true correctly
 
 #### set_type.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Partially Implemented)
 - Issue: Missing enforce parameter and all validation/field updates
-- Action: Documented all missing pieces line by line
+- Action: Implemented enforce parameter, validations, and field resets
 - Notes:
-  - Missing enforce parameter (defaults to false in JS)
-  - Missing Stellar type check when !enforce
+  - ✅ NOW IMPLEMENTED: enforce parameter (defaults to false in JS)
+  - ✅ NOW IMPLEMENTED: Stellar type check when !enforce (prevents Stellar as base type)
+  - ✅ NOW IMPLEMENTED: Terastallized protection when !enforce (can't change type while tera'd)
+  - ✅ NOW IMPLEMENTED: Empty type validation (returns false instead of panicking)
+  - ✅ NOW IMPLEMENTED: addedType reset (sets self.added_type = None)
+  - ✅ NOW IMPLEMENTED: Returns bool instead of void
   - Missing Arceus (493) and Silvally (773) protection (needs gen and species data)
-  - Missing Terastallized protection when !enforce
-  - No error handling for empty newType
-  - Missing addedType reset (would need: self.added_type = None)
-  - Missing knownType field assignment
-  - Missing apparentType field assignment
-  - Returns void instead of bool
+  - Missing knownType field assignment (field doesn't exist)
+  - Missing apparentType field assignment (field doesn't exist)
+  - Updated 6 callsites (reflecttype, magicpowder, conversion, conversion2, camouflage, soak)
 
 #### set_species.rs
 - Status: ✅ Fixed (Documented)
@@ -550,12 +551,12 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Design pattern: work around borrow checker by returning data
 
 #### eat_item.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Partially Implemented)
 - Issue: Very simplified, just delegates to use_item()
-- Action: Documented all missing pieces line by line
+- Action: Added HP check with berry exception and isActive check, documented remaining missing pieces
 - Notes:
-  - Missing HP check with Jaboca/Rowap Berry exception for fainted Pokemon
-  - Missing isActive check
+  - ✅ NOW IMPLEMENTED: HP check with Jaboca/Rowap Berry exception
+  - ✅ NOW IMPLEMENTED: isActive check
   - Missing source and sourceEffect parameters
   - Missing sourceEffect item type check
   - Missing runEvent('UseItem') and runEvent('TryEatItem')
@@ -565,7 +566,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing pendingStaleness and staleness fields (don't exist in Rust)
   - Missing lastItem, usedItemThisTurn, ateBerry tracking
   - Missing runEvent('AfterUseItem')
-  - Currently just calls use_item()
+  - Currently delegates to use_item()
 
 #### faint.rs
 - Status: ✅ Fixed (Documented)
@@ -605,20 +606,20 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Not implemented - requires significant Battle reference infrastructure
 
 #### use_item.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Partially Implemented)
 - Issue: Very simplified implementation missing most JS logic
-- Action: Documented all missing pieces line by line
+- Action: Added isActive check, documented remaining missing pieces
 - Notes:
-  - Missing HP check with Gem exception (!this.hp && !this.getItem().isGem)
-  - Missing isActive check
+  - Missing HP check with Gem exception (needs Battle reference to check if item.isGem)
+  - ✅ NOW IMPLEMENTED: isActive check
   - Missing source and sourceEffect parameters
   - Missing sourceEffect item type check
   - Missing runEvent('UseItem')
-  - Missing battle.add message with special cases for Red Card, Gems, and default
+  - Missing battle.add message with special cases for Red Card and Gems
   - Missing item.boosts handling (would need item data access)
   - Missing singleEvent('Use')
   - Missing runEvent('AfterUseItem')
-  - Currently just sets flags and clears item
+  - Currently sets flags and clears item
 
 #### try_trap.rs
 - Status: ✅ Fixed (Partially Implemented)
@@ -1044,6 +1045,38 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 51 files updated (move/item callbacks, battle system)
   - 3 commits pushed to git
   - 100% compilation success rate
+
+### Session 11 - 2026-01-01 (Continuing Implementation Phase)
+- **Goal**: Continue fixing Pokemon methods for 1-to-1 equivalence
+- **Completed**:
+  - ✅ Improved set_type.rs - Added enforce parameter, validations, and field resets
+  - ✅ Improved set_ability.rs - Added HP check
+  - ✅ Improved use_item.rs - Added isActive check
+  - ✅ Improved eat_item.rs - Added HP check with Jaboca/Rowap Berry exception and isActive check
+  - ✅ Updated 6 callsites across move callbacks (for set_type)
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 2 commits
+- **Methods Now Improved**:
+  - set_type.rs - Partially implemented with enforce parameter, Stellar/Tera validation, empty check
+  - set_ability.rs - Partially implemented with HP check
+  - use_item.rs - Partially implemented with isActive check
+  - eat_item.rs - Partially implemented with HP check and isActive check
+- **Specific Implementations**: 10 new feature implementations marked with "✅ NOW IMPLEMENTED"
+  - set_type: enforce parameter, Stellar type check, Terastallized protection, empty validation, addedType reset, bool return type
+  - set_ability: HP check
+  - use_item: isActive check
+  - eat_item: HP check with berry exception, isActive check
+- **Path Forward**:
+  - Phase 1 (Current): Continue finding simple improvements across Pokemon methods
+  - Phase 2 (Next): Implement missing event system calls
+  - Phase 3 (Future): Add EffectState.data infrastructure
+- **Session Statistics**:
+  - 4 methods improved
+  - 10 feature implementations
+  - 6 callsites updated
+  - 2 commits pushed to git
+  - 100% compilation success rate
+
 
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
