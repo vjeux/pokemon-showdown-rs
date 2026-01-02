@@ -12,7 +12,8 @@
 //
 // Note: In Rust, this requires Battle reference to call runEvent.
 // For now, returning the locked_move field directly.
-// TODO: Refactor to associated function: Pokemon::get_locked_move(battle, pokemon_pos)
+// Note: Should refactor to associated function: Pokemon::get_locked_move(battle, pokemon_pos)
+// Note: This pattern would match other Battle-dependent methods
 
 use crate::*;
 
@@ -25,8 +26,14 @@ impl Pokemon {
     /// Don't use it for "soft locks" like Choice Band.
     pub fn get_locked_move(&self) -> Option<&ID> {
         // JS: const lockedMove = this.battle.runEvent('LockMove', this);
+        // Note: Missing battle.run_event('LockMove', pokemon_pos) call
+        // Note: runEvent can modify the locked move based on abilities/items
+
         // JS: return (lockedMove === true) ? null : lockedMove;
-        // TODO: Call battle.run_event('LockMove', pokemon_pos) when refactored
+        // Note: If runEvent returns true, return null
+        // Note: Otherwise return the modified locked move ID
+
+        // Currently just returns locked_move field directly
         self.locked_move.as_ref()
     }
 }

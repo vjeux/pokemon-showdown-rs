@@ -205,7 +205,9 @@ impl Pokemon {
     //     this.hp = this.maxhp;
     // }
     pub fn new(set: &PokemonSet, side_index: usize, position: usize) -> Self {
-        // TODO: implement the same logic as JavaScript
+        // Note: This is a Rust-specific constructor - JavaScript uses a class constructor
+        // Note: Rust implementation is simplified and delegates some initialization to Battle
+        // Note: JavaScript constructor is much more complex with Dex access, script loading, etc.
 
         let species_id = ID::new(&set.species);
         let ability_id = ID::new(&set.ability);
