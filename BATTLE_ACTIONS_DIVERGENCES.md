@@ -483,6 +483,14 @@ These files exist only in Rust and should be evaluated:
 - TODO: Illusion ending for Ogerpon/Terapagos, forme changes (Ogerpon, Terapagos-Stellar), Morpeko special case
 - Matches JavaScript implementation line by line
 
+### 2026-01-02
+**Fixed: spread_move_hit.rs selfDropped flag** ✅ TODO COMPLETED!
+- Implemented selfDropped flag for non-multihit moves
+- JavaScript: `if (!move.multihit) move.selfDropped = true`
+- Rust: Checks active_move.multi_hit.is_none() and sets self_dropped = true
+- Prevents self effects from applying multiple times on subsequent hits
+- 1:1 match with JavaScript implementation
+
 ---
 
 ## Next Steps
