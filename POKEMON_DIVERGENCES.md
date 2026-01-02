@@ -692,13 +692,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Not implemented - requires significant Battle reference infrastructure
 
 #### use_item.rs
-- Status: ✅ Fixed (Partially Implemented)
-- Issue: Very simplified implementation missing most JS logic
-- Action: Added isActive check, documented remaining missing pieces
+- Status: ✅ Fixed (Improved - Session 24 Part 30)
+- Issue: Missing source and sourceEffect parameters
+- Action: Added 2 missing parameters, updated 58 callsites
 - Notes:
   - Missing HP check with Gem exception (needs Battle reference to check if item.isGem)
   - ✅ NOW IMPLEMENTED: isActive check
-  - Missing source and sourceEffect parameters
+  - ✅ NOW IMPLEMENTED (Session 24 Part 30): source_pos parameter
+  - ✅ NOW IMPLEMENTED (Session 24 Part 30): source_effect parameter
+  - ✅ NOW IMPLEMENTED (Session 24 Part 30): Updated 58 callsites to pass None, None
   - Missing sourceEffect item type check
   - Missing runEvent('UseItem')
   - Missing battle.add message with special cases for Red Card and Gems
@@ -706,6 +708,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing singleEvent('Use')
   - Missing runEvent('AfterUseItem')
   - Currently sets flags and clears item
+  - Now ~45% complete (was ~40%)
 
 #### try_trap.rs
 - Status: ✅ Fixed (Fully Implemented - Session 24 Part 10)
@@ -2482,6 +2485,53 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 4 parameters added (source_pos, source_effect, _is_from_forme_change, _is_transform)
   - 6 callsites updated across pokemon/, data/move_callbacks/
   - ~15 lines of implementation code (parameters + field assignments)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+#### Session 24 Part 30 - 2026-01-02 (use_item Parameters - COMPLETED)
+- **Goal**: Add missing parameters to use_item signature (1-to-1 with JavaScript)
+- **Completed**:
+  - ✅ Discovered that use_item was missing 2 parameters
+  - ✅ JavaScript signature: `useItem(source?: Pokemon, sourceEffect?: Effect)`
+  - ✅ Rust signature before: `use_item(&mut self) -> Option<ID>`
+  - ✅ Rust signature after: `use_item(&mut self, _source_pos: Option<(usize, usize)>, _source_effect: Option<&ID>) -> Option<ID>`
+  - ✅ Added 2 parameters: _source_pos, _source_effect
+  - ✅ Updated 58 callsites across item_callbacks and pokemon/ to pass None, None
+  - ✅ Used perl script for batch updates (efficient for large number of callsites)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit (43 files changed)
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - pokemon/use_item.rs - Now ~45% complete (was ~40%)
+    - ✅ NOW IMPLEMENTED: source_pos parameter support
+    - ✅ NOW IMPLEMENTED: source_effect parameter support
+    - JavaScript equivalent:
+      - `useItem(source?: Pokemon, sourceEffect?: Effect)`
+    - Rust implementation:
+      - `pub fn use_item(&mut self, _source_pos: Option<(usize, usize)>, _source_effect: Option<&ID>) -> Option<ID>`
+    - ❌ Still missing: HP check with Gem exception
+    - ❌ Still missing: battle.event source/sourceEffect defaulting
+    - ❌ Still missing: sourceEffect item type check
+    - ❌ Still missing: runEvent('UseItem')
+    - ❌ Still missing: battle.add message with Red Card and Gem special cases
+    - ❌ Still missing: item.boosts handling
+    - ❌ Still missing: singleEvent('Use')
+    - ❌ Still missing: runEvent('AfterUseItem')
+    - Note: Unlike set_status/set_ability/add_volatile, use_item doesn't create an EffectState, so no source/source_effect field assignments needed
+    - Parameters will be used when event system is implemented
+- **Technical Details**:
+  - Parameters added: _source_pos (Option<(usize, usize)>), _source_effect (Option<&ID>)
+  - 58 callsites updated (second largest after add_volatile's 109)
+  - Used perl script: `s/\.use_item\(\)/.use_item(None, None)/g` for efficiency
+  - Both parameters prefixed with underscore (not yet used in implementation)
+  - Continues the pattern of adding missing parameters to match JavaScript signatures
+- **Session Statistics**:
+  - 1 method improved (use_item.rs)
+  - 1 infrastructure change (added missing parameters to core API)
+  - 43 files modified (1 pokemon method + 1 eat_item caller + 41 item callbacks)
+  - 2 parameters added (_source_pos, _source_effect)
+  - 58 callsites updated across pokemon/, data/item_callbacks/
+  - ~5 lines of implementation code (just parameters, no field assignments)
   - 1 commit pushed to git
   - 100% compilation success rate
 
