@@ -485,16 +485,20 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Updated 6 callsites (reflecttype, magicpowder, conversion, conversion2, camouflage, soak)
 
 #### set_species.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Session 24 Part 18 - apparentType assignment)
 - Issue: Several TODOs for missing features, had eprintln debug output
-- Action: Changed TODOs to Notes, documented what's implemented vs missing, removed debug output
+- Action: Changed TODOs to Notes, documented what's implemented vs missing, removed debug output, added apparentType assignment
 - Notes:
   - ✅ NOW IMPLEMENTED: Removed eprintln debug output
+  - ✅ NOW IMPLEMENTED (Session 24 Part 18): apparentType field assignment (sets to types.join("/"))
   - Missing runEvent('ModifySpecies') call
-  - Missing knownType field assignment (field doesn't exist)
   - Missing species.maxHP override handling
   - Missing isTransform parameter handling (always sets baseStoredStats)
   - Missing Gen 1 burn/para stat drops (needs gen check)
+  - Note: JavaScript knownType (boolean) vs Rust known_type (Option<String>) have different semantics
+    - JS knownType: tracks "is type publicly known?"
+    - Rust known_type: tracks "what type is known?" (for Illusion mechanics)
+    - Not setting known_type as it serves a different purpose
   - Otherwise has fairly complete implementation with species data lookup
 
 #### set_status.rs
@@ -1969,6 +1973,42 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 outdated comment fixed
   - 1 file modified (pokemon/clear_volatile.rs)
   - 5 insertions, 1 deletion
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 18 - 2026-01-01 (set_species apparentType Assignment - COMPLETED)
+- **Goal**: Add missing apparentType field assignment in set_species
+- **Completed**:
+  - ✅ Implemented apparentType field assignment
+  - ✅ JavaScript logic: `this.apparentType = rawSpecies.types.join('/');`
+  - ✅ Fixed incorrect comment claiming field doesn't exist (field DOES exist)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - set_species.rs - Now ~85% complete (was ~80%)
+    - ✅ NOW IMPLEMENTED: apparentType field assignment
+    - ✅ Sets apparent_type = Some(types.join("/"))
+    - JavaScript equivalent:
+      - `this.apparentType = rawSpecies.types.join('/');`
+    - Rust implementation:
+      - `self.apparent_type = Some(types.join("/"));`
+    - Note: JavaScript knownType (boolean) vs Rust known_type (Option<String>) have different semantics
+      - JS knownType: tracks "is type publicly known?"
+      - Rust known_type: tracks "what type is known?" (for Illusion mechanics)
+      - Not setting known_type as it serves a different purpose
+- **Technical Details**:
+  - Comment claimed "knownType field doesn't exist in Rust Pokemon struct"
+  - Field DOES exist but has different semantics (documented in Session 23)
+  - More importantly, apparentType assignment was missing from the JavaScript port
+  - Simple one-line field assignment: `self.apparent_type = Some(types.join("/"));`
+  - Added clarifying comment about knownType vs known_type semantic difference
+- **Session Statistics**:
+  - 1 method improved (set_species.rs)
+  - 1 feature implemented (apparentType assignment)
+  - 1 outdated comment fixed
+  - 1 file modified (pokemon/set_species.rs)
+  - 4 insertions, 1 deletion
   - 1 commit pushed to git
   - 100% compilation success rate
 
