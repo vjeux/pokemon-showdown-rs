@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 85 Complete - cure_status fix + cleanup)
-- **Session 24 Total Progress**: 40+ commits, 85 parts (Part 85 complete)
+## Overview (Updated: Session 24 Part 87 Complete - Greninja-Bond + ability messages)
+- **Session 24 Total Progress**: 40+ commits, 87 parts (Part 87 complete)
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -44,6 +44,8 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 83**: eat_item event calls - Implemented runEvent('UseItem'), runEvent('TryEatItem'), singleEvent('Eat'), runEvent('EatItem'), and runEvent('AfterUseItem')
   - **Part 84**: **COMPLETED** - remove_volatile refactor - Complete rewrite as associated function with HP check, singleEvent('End'), linkedPokemon cleanup. Updated 95+ callsites across ability/item/move callbacks. Build: ✅ 0 errors
   - **Part 85**: **COMPLETED** - cure_status fix + documentation cleanup - Fixed cure_status to use Pokemon::remove_volatile for nightmare removal (was bypassing event system). Documented add_volatile rollback logic. Removed outdated notes.
+  - **Part 86**: **COMPLETED** - get_updated_details Greninja-Bond/Rockruff-Dusk fix - Implemented baseSpecies fallback for Greninja-Bond, Greninja-Ash, and Rockruff-Dusk forms
+  - **Part 87**: **COMPLETED** - set_ability battle.add message - Implemented -ability message for ability changes with source tracking (using IDs as approximation for ability names)
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
