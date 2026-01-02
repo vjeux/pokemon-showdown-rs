@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 73 Complete - Continuing NOTE Fixes)
-- **Session 24 Total Progress**: 40+ commits, 73 parts completed
+## Overview (Updated: Session 24 Part 74 Complete - Continuing NOTE Fixes)
+- **Session 24 Total Progress**: 40+ commits, 74 parts completed
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -32,6 +32,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 71**: cure_status documentation update (confirmed 100% from Session 18)
   - **Part 72**: **FINAL TODO ELIMINATED** - calculate_stat ModifyBoost event infrastructure documented
   - **Part 73**: get_moves trapped side effect - Changed to &mut self, implements trapped = true for 1:1 JavaScript equivalence
+  - **Part 74**: set_item singleEvent calls - Implemented singleEvent('End') for old item and singleEvent('Start') for new item
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
@@ -546,9 +547,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now ~60% complete (was ~50%)
 
 #### set_item.rs
-- Status: ✅ Fixed (Improved - Session 24 Part 53)
-- Issue: Missing source and effect parameters, RESTORATIVE_BERRIES staleness logic
-- Action: Refactored to associated function, implemented RESTORATIVE_BERRIES staleness logic
+- Status: ✅ Fixed (Improved - Session 24 Part 74)
+- Issue: Missing source and effect parameters, RESTORATIVE_BERRIES staleness logic, singleEvent calls
+- Action: Refactored to associated function, implemented RESTORATIVE_BERRIES staleness logic and singleEvent calls
 - Notes:
   - Has correct HP and is_active check
   - ✅ NOW IMPLEMENTED (Session 24 Part 53): Refactored from instance method to associated function
@@ -559,10 +560,10 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24 Part 32): source_pos parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 32): source_effect parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 53): Updated 12 callsites to Pokemon::set_item(battle, pos, ...)
-  - Missing singleEvent('End') for old item
-  - Missing singleEvent('Start') for new item
+  - ✅ NOW IMPLEMENTED (Session 24 Part 74): singleEvent('End') for old item
+  - ✅ NOW IMPLEMENTED (Session 24 Part 74): singleEvent('Start') for new item
   - Returns true correctly
-  - Now ~60% complete (was ~50%)
+  - Now ~70% complete (was ~60%)
 
 #### set_type.rs
 - Status: ✅ Fixed (100% Complete - Session 24 Part 70)

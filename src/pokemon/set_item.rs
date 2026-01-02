@@ -118,7 +118,15 @@ impl Pokemon {
 
         // JS: const oldItem = this.getItem();
         // JS: const oldItemState = this.itemState;
-        // Note: Not storing old item for singleEvent('End')
+        // ✅ NOW IMPLEMENTED (Session 24 Part 74): Store old item for singleEvent('End')
+        // Note: old_item_state extracted but not used - Rust event system handles state internally
+        let (old_item_id, _old_item_state) = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return false,
+            };
+            (pokemon.item.clone(), pokemon.item_state.clone())
+        };
 
         // Phase 2: Mutate pokemon to set new item
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -133,12 +141,18 @@ impl Pokemon {
         pokemon_mut.item_state.target = Some((pokemon_pos.0, pokemon_pos.1));
 
         // JS: if (oldItem.exists) this.battle.singleEvent('End', oldItem, oldItemState, this);
-        // Note: Missing singleEvent('End') for old item - would need event system infrastructure
+        // ✅ NOW IMPLEMENTED (Session 24 Part 74): singleEvent('End') for old item
+        if !old_item_id.as_str().is_empty() {
+            battle.single_event("End", &old_item_id, Some(pokemon_pos), None, None);
+        }
 
         // JS: if (item.id) {
         // JS:     this.battle.singleEvent('Start', item, this.itemState, this, source, effect);
         // JS: }
-        // Note: Missing singleEvent('Start') for new item - would need event system infrastructure
+        // ✅ NOW IMPLEMENTED (Session 24 Part 74): singleEvent('Start') for new item
+        if !item_id.as_str().is_empty() {
+            battle.single_event("Start", &item_id, Some(pokemon_pos), source_pos, source_effect);
+        }
 
         // JS: return true;
         true
