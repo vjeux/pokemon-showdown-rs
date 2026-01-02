@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 87 Complete - Greninja-Bond + ability messages)
-- **Session 24 Total Progress**: 40+ commits, 87 parts (Part 87 complete)
+## Overview (Updated: Session 24 Part 88 Complete - run_immunity refactor)
+- **Session 24 Total Progress**: 41+ commits, 88 parts (Part 88 complete)
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -46,7 +46,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 85**: **COMPLETED** - cure_status fix + documentation cleanup - Fixed cure_status to use Pokemon::remove_volatile for nightmare removal (was bypassing event system). Documented add_volatile rollback logic. Removed outdated notes.
   - **Part 86**: **COMPLETED** - get_updated_details Greninja-Bond/Rockruff-Dusk fix - Implemented baseSpecies fallback for Greninja-Bond, Greninja-Ash, and Rockruff-Dusk forms
   - **Part 87**: **COMPLETED** - set_ability battle.add message - Implemented -ability message for ability changes with source tracking (using IDs as approximation for ability names)
+  - **Part 88**: **COMPLETED** - run_immunity refactor - Complete 1:1 JavaScript implementation with runEvent('NegateImmunity'), is_grounded(), battle.dex.get_immunity(), and battle.add messages
 - **Methods Significantly Improved**:
+  - run_immunity.rs (runEvent, is_grounded, get_immunity, battle.add messages - now ~95%, was ~20%)
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
   - get_moves.rs (**MAJOR REFACTOR** - full move objects, lockedMove parameter, trapped side effect - now ~78%, was ~75%)
@@ -333,10 +335,18 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Note: Missing singleEvent/runEvent calls, Tera Shell ability, Stellar type handling
 
 #### run_immunity.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Fully Implemented - Session 24 Part 88)
 - Issue: "TODO: implement the same logic as JavaScript"
-- Action: Documented simplified implementation and what's needed for full equivalence
-- Note: Missing runEvent('NegateImmunity'), isGrounded() for Ground type, immunity messages
+- Action: Refactored to associated function with full 1-to-1 JavaScript implementation
+- Notes:
+  - ✅ NOW IMPLEMENTED: Refactored to associated function `Pokemon::run_immunity(battle, pokemon_pos, move_type, with_message)`
+  - ✅ NOW IMPLEMENTED: runEvent('NegateImmunity') call
+  - ✅ NOW IMPLEMENTED: Ground type → is_grounded(negate_immunity) call
+  - ✅ NOW IMPLEMENTED: Other types → battle.dex.get_immunity() call
+  - ✅ NOW IMPLEMENTED: battle.add('-immune') messages with proper context
+  - ✅ NOW IMPLEMENTED: Levitate immunity message for Ground type
+  - Updated 2 callsites (thousandarrows.rs, rototiller.rs)
+  - Now ~95% complete (full event system integration)
 
 #### get_types.rs
 - Status: ✅ Fixed (Fully Implemented for default type)
