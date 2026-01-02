@@ -15,19 +15,33 @@ impl Pokemon {
     // 	}
     //
     pub fn update_max_hp(&mut self, new_base_max_hp: i32) {
-        // TODO: implement the same logic as JavaScript
+        // JS: const newBaseMaxHp = this.battle.statModify(this.species.baseStats, this.set, 'hp');
+        // Note: Takes new_base_max_hp as parameter instead of calculating from species
+        // Note: JavaScript calculates it from species.baseStats and set
 
+        // JS: if (newBaseMaxHp === this.baseMaxhp) return;
         if new_base_max_hp == self.base_maxhp {
             return;
         }
+
+        // JS: this.baseMaxhp = newBaseMaxHp;
         self.base_maxhp = new_base_max_hp;
+
+        // JS: const newMaxHP = this.volatiles['dynamax'] ? (2 * this.baseMaxhp) : this.baseMaxhp;
         let old_maxhp = self.maxhp;
         self.maxhp = new_base_max_hp;
+        // Note: Missing Dynamax check - should double max HP if Dynamaxed
+        // Note: Would need to check has_volatile("dynamax")
 
+        // JS: this.hp = this.hp <= 0 ? 0 : Math.max(1, newMaxHP - (this.maxhp - this.hp));
         // Adjust current HP proportionally
         if self.hp > 0 {
             let hp_lost = old_maxhp - self.hp;
             self.hp = self.maxhp.saturating_sub(hp_lost).max(1);
         }
+
+        // JS: if (this.hp) this.battle.add('-heal', this, this.getHealth, '[silent]');
+        // Note: Missing battle.add('-heal') message
+        // Note: Would need Battle reference
     }
 }

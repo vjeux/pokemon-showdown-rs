@@ -568,6 +568,56 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Would need Substitute interactions
   - Not implemented - requires significant Battle reference infrastructure
 
+#### use_item.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Very simplified implementation missing most JS logic
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Missing HP check with Gem exception (!this.hp && !this.getItem().isGem)
+  - Missing isActive check
+  - Missing source and sourceEffect parameters
+  - Missing sourceEffect item type check
+  - Missing runEvent('UseItem')
+  - Missing battle.add message with special cases for Red Card, Gems, and default
+  - Missing item.boosts handling (would need item data access)
+  - Missing singleEvent('Use')
+  - Missing runEvent('AfterUseItem')
+  - Currently just sets flags and clears item
+
+#### try_trap.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing runStatusImmunity check and trapped type distinction
+- Action: Documented missing pieces
+- Notes:
+  - Missing runStatusImmunity('trapped') check (needs Battle reference)
+  - Rust trapped field is bool, cannot represent 'hidden' state
+  - JavaScript uses bool | 'hidden' to distinguish visible vs hidden trap
+  - Missing ability to differentiate trap visibility for Shadow Tag vs Arena Trap
+
+#### update_max_hp.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Takes parameter instead of calculating from species, missing Dynamax
+- Action: Documented missing pieces
+- Notes:
+  - Takes new_base_max_hp as parameter instead of calculating from species.baseStats
+  - JavaScript calculates: battle.statModify(this.species.baseStats, this.set, 'hp')
+  - Missing Dynamax check - should double max HP if has volatile('dynamax')
+  - Missing battle.add('-heal', this, this.getHealth, '[silent]') message
+  - Otherwise has correct HP adjustment logic (proportional HP preservation)
+
+#### remove_linked_volatiles.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Needs EffectState.data infrastructure for linkedPokemon tracking
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Already implemented as associated function (correct for borrow checker)
+  - Missing EffectState.data HashMap to store linkedPokemon: Vec<(usize, usize)>
+  - Would need to loop through each linked pokemon position
+  - Would need to access data["linkedPokemon"] and remove this pokemon
+  - Would need to remove volatile if linkedPokemon list becomes empty
+  - Core infrastructure (EffectState.data) must be implemented first
+  - Used for Leech Seed, Powder moves, etc. bidirectional linking
+
 ### Rust-Specific Helpers (May be intentional)
 
 The following are marked as "NOTE: This method is NOT in JavaScript - Rust-specific implementation":
@@ -689,6 +739,21 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 - **Remaining**: ~26 TODOs (down from 44)
 - **Total documented this session**: 22 files across 5 commits
 - **Next**: Continue with remaining TODOs
+
+### Session 8 - 2026-01-01 (Continuation Session 7)
+- **Completed**:
+  - ✅ Documented eat_item.rs (very simplified, missing extensive berry eating logic)
+  - ✅ Documented faint.rs (borrow checker workaround - caller adds to faintQueue)
+  - ✅ Documented get_last_damaged_by.rs (not implemented, needs attackedBy field)
+  - ✅ Documented get_move_targets.rs (complex method, not implemented)
+  - ✅ Committed and pushed (4 files)
+  - ✅ Documented use_item.rs (simplified, missing event calls and special cases)
+  - ✅ Documented try_trap.rs (missing runStatusImmunity, trapped type limitation)
+  - ✅ Documented update_max_hp.rs (missing Dynamax check and battle.add message)
+  - ✅ Documented remove_linked_volatiles.rs (needs EffectState.data infrastructure)
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+- **Remaining**: ~18 TODOs (down from 26)
+- **Next**: Continue with remaining TODOs (get_moves, get_switch_request_data, etc.)
 
 ## Notes
 - Must compile after each fix
