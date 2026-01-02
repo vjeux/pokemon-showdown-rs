@@ -124,16 +124,27 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - **Result**: Matches JavaScript logic flow (infrastructure-limited for state and priority)
 - **Commit**: a4d9e90c
 
+**Fifth Implementation: find_pokemon_event_handlers.rs** ✅
+- **Issue**: Returned `Vec<(ID, Option<(usize, usize)>, EffectType)>` (wrong return type), should return `EventListener[]`
+- **Action**: Refactored to return `Vec<EventListener>` matching JavaScript
+  - Implements all 6 handler loops: status, volatiles, ability, item, species, slot conditions
+  - Removed debug eprintln statements
+  - Added TODOs for getCallback checks, getKey conditions, and state population
+- **Side Effects**:
+  - Updated all call sites in find_event_handlers.rs (8 locations) to extract effect_id/effect_holder from EventListener
+  - Updated 2 call sites in field_event.rs to extract fields from EventListener
+- **Result**: Matches JavaScript logic flow (infrastructure-limited for callbacks/state)
+- **Commit**: 015a4b0d
+
 **Progress:**
-- Files completed: 4
-- Files remaining: 147
-- TODOs resolved: 1 (find_field_event_handlers stub)
-- New TODOs added: 4 (infrastructure-dependent in find_field_event_handlers.rs)
-- Infrastructure fixes: 1 (added Terrain to EffectType)
-- Current TODO count: ~198
+- Files completed: 5
+- Files remaining: 146
+- TODOs resolved: 1 (find_pokemon_event_handlers wrong return type)
+- New TODOs added: ~12 (infrastructure-dependent: getCallback checks, getKey conditions, state population for each handler type)
+- Current TODO count: ~209
 
 **Next Steps:**
-1. Implement remaining Category A stubs (find_pokemon/side_event_handlers)
+1. Implement last Category A stub (find_side_event_handlers)
 2. Fix Category B partial implementations
 3. Verify Category D clean files
 
