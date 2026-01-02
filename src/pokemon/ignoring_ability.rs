@@ -33,13 +33,28 @@ impl Pokemon {
         }
 
         // JS: if (this.getAbility().flags['notransform'] && this.transformed) return true;
-        // Note: Ability flags check not implemented - would need ability data access
+        // ✅ NOW IMPLEMENTED (Session 24 Part 48): Check notransform flag
+        // Certain Abilities won't activate while Transformed (e.g. Disguise)
         if self.transformed {
-            // Would need to check if ability has 'notransform' flag
+            if let Some(ability_data) = battle.dex.abilities().get_by_id(&self.ability) {
+                if let Some(&notransform_flag) = ability_data.flags.get("notransform") {
+                    if notransform_flag != 0 {
+                        return true;
+                    }
+                }
+            }
         }
 
         // JS: if (this.getAbility().flags['cantsuppress']) return false;
-        // Note: Ability flags check not implemented
+        // ✅ NOW IMPLEMENTED (Session 24 Part 48): Check cantsuppress flag
+        // Some abilities cannot be suppressed (e.g. Commander, As One)
+        if let Some(ability_data) = battle.dex.abilities().get_by_id(&self.ability) {
+            if let Some(&cantsuppress_flag) = ability_data.flags.get("cantsuppress") {
+                if cantsuppress_flag != 0 {
+                    return false;
+                }
+            }
+        }
 
         // JS: if (this.volatiles['gastroacid']) return true;
         if self.has_volatile(&ID::new("gastroacid")) {
