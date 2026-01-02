@@ -6,9 +6,9 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Excellent Progress:** The battle_actions module is approaching 1:1 equivalence with JavaScript!
 
-**Stub Functions:** 21/22 completed (95%)
+**Stub Functions:** 22/23 completed (96%)
 - ✅ All simple stubs implemented except hit_step_move_hit_loop (deferred for infrastructure)
-- ✅ try_primary_hit_event, try_move_hit, self_drops, secondaries implemented
+- ✅ try_primary_hit_event, try_move_hit, self_drops, secondaries, terastallize implemented
 
 **Partial Implementations:** 3/4 completed (75%)
 - ✅ hit_step_accuracy.rs - All 3 TODOs completed
@@ -468,6 +468,19 @@ These files exist only in Rust and should be evaluated:
   - Applies effect if roll succeeds
 - Applies boosts directly using battle.boost()
 - TODO: ModifySecondaries event, full moveHit for other secondary effects
+- Matches JavaScript implementation line by line
+
+### 2026-01-02
+**Implemented: terastallize** ✅ STUB COMPLETED!
+- Implemented 1:1 port of terastallize from JavaScript battle-actions.ts
+- Handles Terastallization (Gen 9 mechanic)
+- Ogerpon special case: Prevents softlock by restricting to Fire/Grass/Rock/Water types
+- Sets pokemon.terastallized to the Tera type
+- Disables canTerastallize for all allies on the side
+- Updates type-related fields: addedType = '', knownType = true, apparentType = teraType
+- Adds -terastallize battle message
+- Fires AfterTerastallization event
+- TODO: Illusion ending for Ogerpon/Terapagos, forme changes (Ogerpon, Terapagos-Stellar), Morpeko special case
 - Matches JavaScript implementation line by line
 
 ---
