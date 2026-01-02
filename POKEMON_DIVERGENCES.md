@@ -535,12 +535,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now ~72% complete (was ~70%)
 
 #### transform_into.rs
-- Status: ✅ Fixed (Partially Implemented - Session 24 Part 13)
+- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 13 & 19)
 - Issue: Missing Stellar tera check and many other JS features
-- Action: Implemented Stellar Terastallization check, timesAttacked copying, documented remaining missing pieces
+- Action: Implemented Stellar Terastallization check, timesAttacked copying, apparentType copying, documented remaining missing pieces
 - Notes:
   - ✅ NOW IMPLEMENTED: Stellar tera check (prevents Transform when Stellar Terastallized)
   - ✅ NOW IMPLEMENTED (Session 24 Part 13): timesAttacked copying from target Pokemon
+  - ✅ NOW IMPLEMENTED (Session 24 Part 19): apparentType copying from target Pokemon
+  - ✅ NOW IMPLEMENTED (Session 24 Part 19): apparentType update when self is terastallized
   - Missing illusion checks on both pokemon
   - Missing gen checks for substitute, transformed states
   - Missing Eternatus-Eternamax check
@@ -548,14 +550,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing gen1stadium Ditto checks
   - Not calling setSpecies (should update from species data)
   - Missing roost volatile type handling
-  - Missing knownType, apparentType field assignments (fields don't exist)
+  - Note: JavaScript knownType is boolean (is type publicly known), Rust known_type is Option<String> (what type is known for Illusion)
+    - Different semantics, so not setting known_type
   - Missing modifiedStats copying for Gen 1
   - Missing hpType/hpPower conditional copying based on gen
   - Missing Hidden Power move name formatting with hpType
   - Missing gen check for PP/maxpp calculation
   - Missing Gen 6+ crit volatile copying (dragoncheer, focusenergy, gmaxchistrike, laserfocus)
   - Missing battle.add message
-  - Missing terastallized knownType/apparentType update
   - Missing gen check and setAbility call with proper parameters
   - Missing Gen 4 Giratina/Arceus forme changes
   - Missing Ogerpon/Terapagos canTerastallize blocking
@@ -2009,6 +2011,46 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 outdated comment fixed
   - 1 file modified (pokemon/set_species.rs)
   - 4 insertions, 1 deletion
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 19 - 2026-01-01 (transform_into apparentType Copying - COMPLETED)
+- **Goal**: Add missing apparentType copying in transform_into
+- **Completed**:
+  - ✅ Implemented apparentType copying from target Pokemon
+  - ✅ Implemented apparentType update when self is terastallized
+  - ✅ JavaScript logic: `this.apparentType = pokemon.apparentType;` and `if (this.terastallized) this.apparentType = this.terastallized;`
+  - ✅ Fixed incorrect comments claiming fields don't exist (fields DO exist)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - transform_into.rs - Now ~75% complete (was ~72%)
+    - ✅ NOW IMPLEMENTED: apparentType copying from target Pokemon
+    - ✅ NOW IMPLEMENTED: apparentType update when terastallized
+    - JavaScript equivalent:
+      - `this.apparentType = pokemon.apparentType;`
+      - `if (this.terastallized) this.apparentType = this.terastallized;`
+    - Rust implementation:
+      - Phase 1: Extract `target_apparent_type` from target
+      - Phase 2: Extract `self_terastallized` from self
+      - Phase 3: `self_pokemon_mut.apparent_type = target_apparent_type;`
+      - Later: `if let Some(tera_type) = self_terastallized { self_pokemon_mut.apparent_type = Some(tera_type); }`
+    - Note: JavaScript knownType (boolean) vs Rust known_type (Option<String>) have different semantics
+      - Not setting known_type as it has different purpose
+- **Technical Details**:
+  - Comments claimed "apparentType field doesn't exist in Rust" (lines 226, 303)
+  - Fields DO exist but were not being used
+  - Added target_apparent_type to Phase 1 extraction (13 fields now)
+  - Wrapped Phase 2 checks in extraction block to extract self_terastallized
+  - Fixed compiler warnings about unnecessary parentheses
+  - Two-phase borrow pattern maintains Rust safety guarantees
+- **Session Statistics**:
+  - 1 method improved (transform_into.rs)
+  - 2 feature implementations (apparentType copying + terastallized update)
+  - 2 outdated comments fixed
+  - 1 file modified (pokemon/transform_into.rs)
+  - 50 insertions, 39 deletions
   - 1 commit pushed to git
   - 100% compilation success rate
 
