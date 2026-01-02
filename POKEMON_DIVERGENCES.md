@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 53 Complete)
-- **Session 24 Total Progress**: 28+ commits, 53 parts completed
+## Overview (Updated: Session 24 Part 54 Complete)
+- **Session 24 Total Progress**: 29+ commits, 54 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
@@ -14,8 +14,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Part 51: eat_item standalone implementation (fixed divergence from JS)
   - Part 52: RESTORATIVE_BERRIES staleness logic in eat_item
   - Part 53: set_item RESTORATIVE_BERRIES logic + refactor to associated function
+  - Part 54: transform_into battle.add message + proper set_ability call
 - **Methods Significantly Improved**:
-  - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked)
+  - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked, battle.add, set_ability - now ~80%)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
   - copy_volatile_from.rs (complete refactor + linkedPokemon bidirectional updating - now 100%)
   - get_smart_targets.rs (Dragon Darts double-target logic - now 100%)
@@ -617,9 +618,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now ~72% complete (was ~70%)
 
 #### transform_into.rs
-- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 13, 19 & 33)
+- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 13, 19, 33 & 54)
 - Issue: Missing Stellar tera check and many other JS features
-- Action: Implemented Stellar Terastallization check, timesAttacked copying, apparentType copying, Gen 6+ crit volatile copying
+- Action: Implemented Stellar Terastallization check, timesAttacked copying, apparentType copying, Gen 6+ crit volatile copying, battle.add message, proper set_ability call
 - Notes:
   - ✅ NOW IMPLEMENTED: Stellar tera check (prevents Transform when Stellar Terastallized)
   - ✅ NOW IMPLEMENTED (Session 24 Part 13): timesAttacked copying from target Pokemon
@@ -627,6 +628,8 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24 Part 19): apparentType update when self is terastallized
   - ✅ NOW IMPLEMENTED (Session 24 Part 33): Gen 6+ crit volatile copying (dragoncheer, focusenergy, gmaxchistrike, laserfocus)
   - ✅ NOW IMPLEMENTED (Session 24 Part 33): Special data copying for gmaxchistrike.layers and dragoncheer.hasDragonType
+  - ✅ NOW IMPLEMENTED (Session 24 Part 54): battle.add('-transform') message for battle log
+  - ✅ NOW IMPLEMENTED (Session 24 Part 54): Proper set_ability call with parameters (gen > 2, source=self, isFromFormeChange=true, isTransform=true)
   - Missing illusion checks on both pokemon
   - Missing gen checks for substitute, transformed states
   - Missing Eternatus-Eternamax check
@@ -640,10 +643,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing hpType/hpPower conditional copying based on gen
   - Missing Hidden Power move name formatting with hpType
   - Missing gen check for PP/maxpp calculation (already implemented)
-  - Missing battle.add message
-  - Missing gen check and setAbility call with proper parameters
   - Missing Gen 4 Giratina/Arceus forme changes
   - Missing Ogerpon/Terapagos canTerastallize blocking
+  - Now ~80% complete (was ~78%)
 
 #### add_volatile.rs
 - Status: ✅ Fixed (Significantly Improved - Session 24 Parts 12, 15, 20, 21, 27, 37)
