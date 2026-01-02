@@ -578,6 +578,18 @@ pub struct MoveData {
     /// JavaScript: noPPBoosts?: boolean
     #[serde(rename = "noPPBoosts", default)]
     pub no_pp_boosts: bool,
+    /// Non-Ghost type target override (for Curse)
+    /// JavaScript: nonGhostTarget?: string
+    #[serde(rename = "nonGhostTarget", default)]
+    pub non_ghost_target: Option<String>,
+    /// On-damage priority for ordering damage calculations
+    /// JavaScript: onDamagePriority?: number
+    #[serde(rename = "onDamagePriority", default)]
+    pub on_damage_priority: Option<i32>,
+    /// Real move name (for Hidden Power variants)
+    /// JavaScript: realMove?: string
+    #[serde(rename = "realMove", default)]
+    pub real_move: Option<String>,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
