@@ -89,15 +89,15 @@ impl Pokemon {
         // Note: Currently calling get_moves() which returns Vec<String>
 
         // JS:     baseAbility: this.baseAbility,
-        // Note: Missing baseAbility field
+        // ✅ NOW IMPLEMENTED (Session 24 Part 56): baseAbility field
 
         // JS:     item: this.item,
         // JS:     pokeball: this.pokeball,
-        // Note: Missing pokeball field
+        // ✅ NOW IMPLEMENTED (Session 24 Part 56): pokeball field
 
         // JS: };
         // JS: if (this.battle.gen > 6) entry.ability = this.ability;
-        // Note: Missing gen check for ability field
+        // Note: Would need Battle reference for gen check
         // Note: Currently always including ability
 
         // JS: if (this.battle.gen >= 9) {
@@ -122,7 +122,9 @@ impl Pokemon {
             "status": if self.status.is_empty() { serde_json::Value::Null } else { serde_json::Value::String(self.status.as_str().to_string()) },
             "moves": self.get_moves(),
             "ability": self.ability.as_str(),
-            "item": self.item.as_str()
+            "baseAbility": self.base_ability.as_str(),
+            "item": self.item.as_str(),
+            "pokeball": self.pokeball.as_str()
         })
     }
 }
