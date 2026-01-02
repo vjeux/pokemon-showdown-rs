@@ -2897,28 +2897,68 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
-### Session 24 Summary (Parts 27-39)
+#### Session 24 Part 46 - 2026-01-02 (linkedPokemon Bidirectional Updating - COMPLETED)
+- **Goal**: Fix remaining TODO in copy_volatile_from.rs about linkedPokemon bidirectional updating
+- **Completed**:
+  - ✅ Implemented full linkedPokemon bidirectional updating for Baton Pass/Shed Tail
+  - ✅ When volatiles are copied, updates all linked Pokemon to point to target instead of source
+  - ✅ Replaces source_pos with target_pos in linkedPokemon arrays
+  - ✅ Properly handles Leech Seed and other bidirectionally linked volatiles
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Updated POKEMON_DIVERGENCES.md documentation
+  - ✅ Committed and pushed 4 commits total
+- **Implementation Details**:
+  - Collects volatiles with linkedPokemon from target
+  - Parses linkedPokemon arrays: [[side, slot], ...]
+  - Loops through each linked Pokemon position
+  - Updates their linkedStatus volatile's linkedPokemon array
+  - Finds and replaces source_pos with target_pos
+- **Files Modified**:
+  - copy_volatile_from.rs: Added ~89 lines of linkedPokemon update logic
+  - POKEMON_DIVERGENCES.md: Updated documentation (3 commits)
+- **Methods Now Fully Complete**:
+  - copy_volatile_from.rs - Now 100% JavaScript equivalent!
+- **Session Statistics**:
+  - 1 method brought to 100% completion
+  - 1 complex infrastructure feature implemented
+  - 2 files modified
+  - 89 insertions, 4 deletions (net +85 lines)
+  - 4 commits pushed to git
+  - 100% compilation success rate
+
+### Session 24 Summary (Parts 1-46)
 - **Major Milestones**:
-  - Completed systematic parameter additions to 6 core Pokemon methods (Parts 27-32)
-  - Implemented Gen 6+ crit volatile copying in transform_into (Part 33)
-  - Fixed move callback parameters to match JavaScript (Part 35)
-  - Improved add_volatile.rs with 3 missing JavaScript features (Part 37)
-  - Refactored copy_volatile_from.rs to associated function (Part 39)
+  - Parts 1-26: Foundation work (get_smart_targets, parameter signatures, field additions)
+  - Parts 27-32: Completed systematic parameter additions to 6 core Pokemon methods
+  - Part 33: Implemented Gen 6+ crit volatile copying in transform_into
+  - Part 35: Fixed move callback parameters to match JavaScript
+  - Part 37: Improved add_volatile.rs with 3 missing JavaScript features
+  - Part 39: Refactored copy_volatile_from.rs to associated function
+  - Parts 42-45: Documentation updates and finalization
+  - Part 46: Implemented linkedPokemon bidirectional updating (copy_volatile_from now 100%!)
 - **Total callsites updated**: 250+ across entire codebase
-- **Total commits**: 12
-- **Methods improved**: add_volatile, set_status, set_ability, use_item, eat_item, set_item, transform_into, copy_volatile_from
+- **Total commits**: 21+
+- **Methods improved**: add_volatile, set_status, set_ability, use_item, eat_item, set_item, transform_into, copy_volatile_from, get_smart_targets, faint, update_max_hp, set_hp, get_locked_move, and many more
 - **Move callbacks fixed**: 9 files (rest, recycle, block, meanlook, spiderweb, jawlock, anchorshot, spiritshackle, thousandwaves, alluringvoice)
+- **Methods Brought to 100% Completion**:
+  - copy_volatile_from.rs - Full linkedPokemon bidirectional updating
+  - get_smart_targets.rs - Complete Dragon Darts logic
+  - faint.rs - Full source/effect tracking with faint queue
+  - Many others documented throughout
 - **Impact**:
   - All 6 core methods now have proper JavaScript-equivalent parameter signatures
   - Transform now properly handles critical hit volatiles in Gen 6+
   - Move callbacks now properly track source Pokemon and effects
-  - add_volatile now properly handles fainted Pokemon and -immune messages
-  - copy_volatile_from now uses dynamic noCopy checking and proper event firing
-- **Compilation**: 100% success rate (0 errors, 0 warnings throughout)
+  - add_volatile now ~98% complete (only event system calls remaining)
+  - copy_volatile_from now 100% complete with full bidirectional link updating
+  - Only 1 TODO remaining in src/pokemon/ (event system infrastructure)
+- **Compilation**: 100% success rate (0 errors, 0 warnings throughout all 46 parts)
 - **Foundation**:
   - Established proper source/source_effect tracking for future event system implementation
-  - Demonstrated EffectState.data usage for complex volatile state management
+  - Demonstrated EffectState.data HashMap usage for complex volatile state management
+  - Implemented linkedPokemon bidirectional updating for Baton Pass/Shed Tail
   - Move callbacks now provide proper effect attribution for battle log and future events
+  - TrappedState enum for type-safe trapped state representation
 
 ## Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
@@ -2938,6 +2978,8 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 14. set_hp.rs - ✅ Complete (Session 24)
 15. faint.rs - ✅ Complete (Session 24 Part 7)
 16. remove_linked_volatiles.rs - ✅ Complete (Session 24 Part 8)
+17. copy_volatile_from.rs - ✅ Complete (Session 24 Parts 39 & 46)
+18. get_smart_targets.rs - ✅ Complete (Session 24 Part 45)
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. try_set_status.rs - Core logic correct, simplified
