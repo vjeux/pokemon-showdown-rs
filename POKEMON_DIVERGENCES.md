@@ -1054,30 +1054,33 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Improved use_item.rs - Added isActive check
   - ✅ Improved eat_item.rs - Added HP check with Jaboca/Rowap Berry exception and isActive check
   - ✅ Improved set_status.rs - Added HP check
+  - ✅ Improved get_stat.rs - Added Wonder Room swap logic for Download ability
   - ✅ Updated 6 callsites across move callbacks (for set_type)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-  - ✅ Committed and pushed 3 commits
+  - ✅ Committed and pushed 4 commits
 - **Methods Now Improved**:
   - set_type.rs - Partially implemented with enforce parameter, Stellar/Tera validation, empty check
   - set_ability.rs - Partially implemented with HP check
   - use_item.rs - Partially implemented with isActive check
   - eat_item.rs - Partially implemented with HP check and isActive check
   - set_status.rs - Partially implemented with HP check
-- **Specific Implementations**: 11 new feature implementations marked with "✅ NOW IMPLEMENTED"
+  - get_stat.rs - Partially implemented with Wonder Room swap for Download
+- **Specific Implementations**: 12 new feature implementations marked with "✅ NOW IMPLEMENTED"
   - set_type: enforce parameter, Stellar type check, Terastallized protection, empty validation, addedType reset, bool return type
   - set_ability: HP check
   - use_item: isActive check
   - eat_item: HP check with berry exception, isActive check
   - set_status: HP check
+  - get_stat: Wonder Room swap for unmodified (Download ability)
 - **Path Forward**:
   - Phase 1 (Current): Continue finding simple improvements across Pokemon methods
   - Phase 2 (Next): Implement missing event system calls
   - Phase 3 (Future): Add EffectState.data infrastructure
 - **Session Statistics**:
-  - 5 methods improved
-  - 11 feature implementations
+  - 6 methods improved
+  - 12 feature implementations
   - 6 callsites updated
-  - 3 commits pushed to git
+  - 4 commits pushed to git
   - 100% compilation success rate
 
 
