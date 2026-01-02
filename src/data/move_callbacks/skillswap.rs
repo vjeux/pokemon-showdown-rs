@@ -270,6 +270,7 @@ pub fn on_hit(
         };
         source_pokemon.ability_state =
             crate::event_system::EffectState::new(target_ability_id.clone());
+        source_pokemon.ability_state.target = Some(source);
     }
     {
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
@@ -278,6 +279,7 @@ pub fn on_hit(
         };
         target_pokemon.ability_state =
             crate::event_system::EffectState::new(source_ability_id.clone());
+        target_pokemon.ability_state.target = Some(target);
     }
 
     // source.volatileStaleness = undefined;
