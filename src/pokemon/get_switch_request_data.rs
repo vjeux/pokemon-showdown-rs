@@ -44,7 +44,7 @@ impl Pokemon {
     // 		return entry;
     // 	}
     //
-    pub fn get_switch_request_data(&self) -> serde_json::Value {
+    pub fn get_switch_request_data(&self, for_ally: bool) -> serde_json::Value {
         // JS: const entry: PokemonSwitchRequestData = {
         // JS:     ident: this.fullname,
         // ✅ NOW IMPLEMENTED (Session 24 Part 60): ident field (fullname format)
@@ -82,6 +82,32 @@ impl Pokemon {
 
         // JS:     moves: this[forAlly ? 'baseMoves' : 'moves'].map(move => {
         // Note: Missing forAlly parameter to choose baseMoves vs moves
+        // ✅ NOW IMPLEMENTED (Session 24 Part 68): forAlly parameter support
+        //
+        // Get move IDs based on forAlly parameter
+        let move_ids: Vec<String> = if for_ally {
+            // Use base move slots (moves before Transform)
+            self.base_move_slots.iter().map(|slot| slot.id.as_str().to_string()).collect()
+        } else {
+            // Use current move slots (may be transformed)
+            self.move_slots.iter().map(|slot| slot.id.as_str().to_string()).collect()
+        };
+
+        // Format move IDs with Hidden Power type (Return/Frustration need Dex access)
+        let formatted_moves: Vec<String> = move_ids.iter().map(|move_id| {
+            if move_id == "hiddenpower" {
+                if let Some(ref hp_type) = self.hp_type {
+                    // Note: Would need Battle reference for gen check to conditionally append power
+                    // Gen 6+: "hiddenpowerfire", Gen < 6: "hiddenpowerfire70"
+                    format!("hiddenpower{}", hp_type.to_lowercase())
+                } else {
+                    move_id.clone()
+                }
+            } else {
+                // Return/Frustration formatting needs Dex access (see note below)
+                move_id.clone()
+            }
+        }).collect();
 
         // JS:         if (move === 'hiddenpower') {
         // JS:             return `${move}${toID(this.hpType)}${this.battle.gen < 6 ? '' : this.hpPower}` as ID;
@@ -134,7 +160,7 @@ impl Pokemon {
             "condition": condition,
             "active": active,
             "stats": stats,
-            "moves": self.get_moves(None), // ✅ NOW IMPLEMENTED (Session 24 Part 67): Pass None for locked_move
+            "moves": formatted_moves, // ✅ NOW IMPLEMENTED (Session 24 Part 68): Use forAlly-selected and formatted moves
             "ability": self.ability.as_str(),
             "baseAbility": self.base_ability.as_str(),
             "item": self.item.as_str(),
