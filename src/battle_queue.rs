@@ -118,6 +118,9 @@ impl MoveAction {
     }
 }
 
+/// Move action choice type
+/// JavaScript equivalent: MoveAction.choice type (sim/battle-queue.ts)
+/// JavaScript: 'move' | 'beforeTurnMove' | 'priorityChargeMove'
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum MoveActionType {
     Move,
@@ -162,6 +165,9 @@ pub struct SwitchAction {
     pub source_effect: Option<ID>,
 }
 
+/// Switch action choice type
+/// JavaScript equivalent: SwitchAction.choice type (sim/battle-queue.ts)
+/// JavaScript: 'switch' | 'instaswitch' | 'revivalblessing'
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum SwitchActionType {
     Switch,
@@ -199,6 +205,9 @@ pub struct TeamAction {
     pub index: usize,
 }
 
+/// Team action choice type
+/// JavaScript equivalent: TeamAction.choice type (sim/battle-queue.ts)
+/// JavaScript: 'team'
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum TeamActionType {
     Team,
@@ -226,6 +235,9 @@ pub struct FieldAction {
     // JavaScript: pokemon is undefined for field actions
 }
 
+/// Field action choice type
+/// JavaScript equivalent: FieldAction.choice type (sim/battle-queue.ts)
+/// JavaScript: 'start' | 'residual' | 'pass' | 'beforeTurn'
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum FieldActionType {
     Start,
@@ -273,6 +285,9 @@ pub struct PokemonAction {
     pub dragger: Option<(usize, usize)>,
 }
 
+/// Pokemon action choice type
+/// JavaScript equivalent: PokemonAction.choice type (sim/battle-queue.ts)
+/// JavaScript: 'start' | 'beforeTurn' | 'megaEvo' | 'megaEvoX' | 'megaEvoY' | 'shift' | 'runSwitch' | 'event' | 'runDynamax' | 'terastallize' | 'residual'
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PokemonActionType {
     Start,
