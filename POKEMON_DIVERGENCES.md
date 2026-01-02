@@ -2698,20 +2698,81 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
-### Session 24 Summary (Parts 27-33)
+#### Session 24 Part 35 - 2026-01-02 (Move Callback Parameters - COMPLETED)
+- **Goal**: Fix move callbacks to pass source_pos, source_effect, and linked_status parameters to Pokemon methods
+- **Completed**:
+  - ✅ Fixed 9 move callbacks to pass proper parameters matching JavaScript 1-to-1
+  - ✅ Status-setting moves: rest.rs → set_status now receives Some(source), Some(move)
+  - ✅ Item-setting moves: recycle.rs → set_item now receives Some(source), Some(move)
+  - ✅ Trapping moves: block, meanlook, spiderweb, jawlock, anchorshot, spiritshackle, thousandwaves → add_volatile now receives source, move, linked_status='trapper'
+  - ✅ Confusion moves: alluringvoice.rs → add_volatile now receives Some(source), Some(move)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit (9 files changed, 102 insertions, 11 deletions)
+- **Move Callbacks Fixed**:
+  1. **rest.rs** - set_status call:
+     - Was: `set_status(ID::from("slp"), None, None, false)`
+     - Now: `set_status(ID::from("slp"), Some(target), Some(&ID::new("rest")), false)`
+  2. **recycle.rs** - set_item call:
+     - Was: `set_item(item, None, None)`
+     - Now: `set_item(item, Some(pokemon_pos), Some(&ID::new("recycle")))`
+  3. **block.rs** - add_volatile call:
+     - Was: `add_volatile(battle, target, ID::from("trapped"), Some(pokemon_pos), None, None)`
+     - Now: `add_volatile(battle, target, ID::from("trapped"), Some(pokemon_pos), Some(&ID::new("block")), Some(ID::from("trapper")))`
+  4. **meanlook.rs** - add_volatile call:
+     - Was: `add_volatile(battle, target, ID::from("trapped"), Some(source), None, None)`
+     - Now: `add_volatile(battle, target, ID::from("trapped"), Some(source), Some(&ID::new("meanlook")), Some(ID::from("trapper")))`
+  5. **spiderweb.rs** - add_volatile call:
+     - Was: `add_volatile(battle, target, ID::from("trapped"), Some(source), None, None)`
+     - Now: `add_volatile(battle, target, ID::from("trapped"), Some(source), Some(&ID::new("spiderweb")), Some(ID::from("trapper")))`
+  6. **jawlock.rs** - mutual trapping (both source and target):
+     - Was: Both calls passing `None, None` for last two params
+     - Now: Both calls passing `Some(&ID::new("jawlock")), Some(ID::from("trapper"))`
+  7. **anchorshot.rs** - conditional trapping (if source.isActive):
+     - Was: `add_volatile(battle, target, ID::from("trapped"), Some(source_pos), None, None)`
+     - Now: `add_volatile(battle, target, ID::from("trapped"), Some(source_pos), Some(&ID::new("anchorshot")), Some(ID::from("trapper")))`
+  8. **spiritshackle.rs** - conditional trapping (if source.isActive):
+     - Was: `add_volatile(battle, target, ID::from("trapped"), Some(source_pos), None, None)`
+     - Now: `add_volatile(battle, target, ID::from("trapped"), Some(source_pos), Some(&ID::new("spiritshackle")), Some(ID::from("trapper")))`
+  9. **thousandwaves.rs** - conditional trapping (if source.isActive):
+     - Was: `add_volatile(battle, target, ID::from("trapped"), Some(source), None, None)`
+     - Now: `add_volatile(battle, target, ID::from("trapped"), Some(source), Some(&ID::new("thousandwaves")), Some(ID::from("trapper")))`
+  10. **alluringvoice.rs** - confusion (if target.statsRaisedThisTurn):
+      - Was: `add_volatile(battle, target, ID::from("confusion"), None, None, None)`
+      - Now: `add_volatile(battle, target, ID::from("confusion"), Some(source_pos), Some(&ID::new("alluringvoice")), None)`
+      - Also removed underscore from `_source_pos` parameter since it's now used
+- **Technical Details**:
+  - JavaScript pattern: `target.addVolatile('trapped', source, move, 'trapper')`
+  - Rust pattern: `Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(source), Some(&ID::new("move_name")), Some(ID::from("trapper")))`
+  - linkedStatus='trapper' enables bidirectional linking between trapped Pokemon and trapper
+  - Proper source tracking enables future event system to determine which Pokemon/move caused the effect
+- **Session Statistics**:
+  - 9 move callbacks fixed
+  - 1 status-setting call fixed (rest.rs)
+  - 1 item-setting call fixed (recycle.rs)
+  - 7 volatile-setting calls fixed (trapping moves)
+  - 1 confusion-setting call fixed (alluringvoice.rs)
+  - 102 lines added, 11 lines removed
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Summary (Parts 27-35)
 - **Major Milestones**:
   - Completed systematic parameter additions to 6 core Pokemon methods (Parts 27-32)
   - Implemented Gen 6+ crit volatile copying in transform_into (Part 33)
-- **Total callsites updated**: 250 across entire codebase
-- **Total commits**: 7
+  - Fixed move callback parameters to match JavaScript (Part 35)
+- **Total callsites updated**: 250+ across entire codebase
+- **Total commits**: 8
 - **Methods improved**: add_volatile, set_status, set_ability, use_item, eat_item, set_item, transform_into
+- **Move callbacks fixed**: 9 files (rest, recycle, block, meanlook, spiderweb, jawlock, anchorshot, spiritshackle, thousandwaves, alluringvoice)
 - **Impact**:
   - All 6 core methods now have proper JavaScript-equivalent parameter signatures
   - Transform now properly handles critical hit volatiles in Gen 6+
+  - Move callbacks now properly track source Pokemon and effects
 - **Compilation**: 100% success rate (0 errors, 0 warnings throughout)
 - **Foundation**:
   - Established proper source/source_effect tracking for future event system implementation
   - Demonstrated EffectState.data usage for complex volatile state management
+  - Move callbacks now provide proper effect attribution for battle log and future events
 
 ## Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
