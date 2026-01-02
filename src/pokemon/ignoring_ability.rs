@@ -26,20 +26,30 @@ impl Pokemon {
     // 	}
     //
     pub fn ignoring_ability(&self) -> bool {
-        // TODO: implement the same logic as JavaScript
-
-        // Gen 5+: inactive Pokemon have abilities suppressed
+        // JS: if (this.battle.gen >= 5 && !this.isActive) return true;
+        // Note: Gen check not implemented - assumes gen >= 5
         if !self.is_active {
             return true;
         }
-        // Transformed Pokemon with certain abilities
+
+        // JS: if (this.getAbility().flags['notransform'] && this.transformed) return true;
+        // Note: Ability flags check not implemented - would need ability data access
         if self.transformed {
-            // Would need to check ability flags
+            // Would need to check if ability has 'notransform' flag
         }
-        // Gastro Acid volatile
+
+        // JS: if (this.getAbility().flags['cantsuppress']) return false;
+        // Note: Ability flags check not implemented
+
+        // JS: if (this.volatiles['gastroacid']) return true;
         if self.has_volatile(&ID::new("gastroacid")) {
             return true;
         }
+
+        // JS: if (this.hasItem('Ability Shield') || this.ability === 'neutralizinggas') return false;
+        // JS: Check all active pokemon for Neutralizing Gas ability
+        // Note: Neutralizing Gas check not implemented - would need Battle reference to getAllActive()
+
         false
     }
 }

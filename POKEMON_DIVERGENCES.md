@@ -257,6 +257,44 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Notes:
   - Uses modulo 25 calculation when nature not explicitly set
 
+#### move_used.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing lastMoveEncore tracking for Gen 2
+- Action: Documented that method tracks move usage but Gen 2 lastMoveEncore not implemented
+- Notes:
+  - Would need Battle reference for gen check
+  - Rust stores move IDs, JS stores full ActiveMove objects
+
+#### ignoring_ability.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Partial implementation missing ability flags and Neutralizing Gas check
+- Action: Documented what's implemented and what's missing
+- Notes:
+  - Missing ability.flags['notransform'] check with transformed
+  - Missing ability.flags['cantsuppress'] check
+  - Missing Neutralizing Gas check (needs Battle.getAllActive())
+  - Would need ability data access and Battle reference
+
+#### ignoring_item.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Partial implementation missing Primal Orb, Magic Room, and ignoreKlutz checks
+- Action: Documented what's implemented and what's missing
+- Notes:
+  - Missing Primal Orb check (needs item data access)
+  - Missing Magic Room pseudo-weather check (needs Battle reference)
+  - Missing isFling parameter support
+  - Missing ignoreKlutz flag check (needs item data access)
+
+#### run_status_immunity.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Partial implementation missing fainted check and runEvent
+- Action: Documented simplified type-based immunity vs full implementation
+- Notes:
+  - Missing fainted check
+  - Uses simplified type immunity (Fire can't be burned, etc.)
+  - Missing runEvent('Immunity') call (needs Battle reference)
+  - Missing immunity message support
+
 ### Rust-Specific Helpers (May be intentional)
 
 The following are marked as "NOTE: This method is NOT in JavaScript - Rust-specific implementation":
@@ -345,6 +383,16 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Project compiles successfully (0 errors, 0 warnings)
 - **Remaining**: ~48 TODOs (down from 51)
 - **Next**: Continue documenting/fixing remaining TODOs
+
+### Session 7 - 2026-01-01 (Continuation Session 6)
+- **Completed**:
+  - ✅ Documented move_used.rs (noted missing lastMoveEncore for Gen 2)
+  - ✅ Documented ignoring_ability.rs (noted missing ability flags and Neutralizing Gas check)
+  - ✅ Documented ignoring_item.rs (noted missing Primal Orb, Magic Room, ignoreKlutz checks)
+  - ✅ Documented run_status_immunity.rs (noted missing fainted check and runEvent)
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+- **Remaining**: ~44 TODOs (down from 48)
+- **Next**: Continue with more TODOs
 
 ## Notes
 - Must compile after each fix

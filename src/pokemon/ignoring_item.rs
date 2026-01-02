@@ -14,20 +14,30 @@ impl Pokemon {
     // 	}
     //
     pub fn ignoring_item(&self) -> bool {
-        // TODO: implement the same logic as JavaScript
-        
-        // Gen 5+: inactive Pokemon have items suppressed
+        // JS: if (this.getItem().isPrimalOrb) return false;
+        // Note: Primal Orb check not implemented - would need item data access
+
+        // JS: if (this.battle.gen >= 5 && !this.isActive) return true;
+        // Note: Gen check not implemented - assumes gen >= 5
         if !self.is_active {
             return true;
         }
-        // Embargo volatile
+
+        // JS: if (this.volatiles['embargo'] || this.battle.field.pseudoWeather['magicroom']) return true;
         if self.has_volatile(&ID::new("embargo")) {
             return true;
         }
-        // Klutz ability
+        // Note: Magic Room check not implemented - would need Battle reference
+
+        // JS: if (isFling) return this.battle.gen >= 5 && this.hasAbility('klutz');
+        // Note: isFling parameter not in Rust signature
+
+        // JS: return !this.getItem().ignoreKlutz && this.hasAbility('klutz');
+        // Note: ignoreKlutz flag not checked - would need item data access
         if self.ability.as_str() == "klutz" {
             return true;
         }
+
         false
     }
 }

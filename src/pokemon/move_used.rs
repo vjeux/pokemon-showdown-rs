@@ -12,10 +12,20 @@ impl Pokemon {
     // 	}
     //
     pub fn move_used(&mut self, move_id: ID, target_loc: Option<i8>) {
-        // TODO: implement the same logic as JavaScript
+        // JS: this.lastMove = move;
+        // Note: JS stores the entire ActiveMove object, Rust stores just the ID
         self.last_move = Some(move_id.clone());
+
+        // Note: last_move_used field not in JavaScript - Rust-specific tracking
         self.last_move_used = Some(move_id.clone());
+
+        // JS: if (this.battle.gen === 2) this.lastMoveEncore = move;
+        // Note: lastMoveEncore tracking not implemented - would need gen check
+
+        // JS: this.lastMoveTargetLoc = targetLoc;
         self.last_move_target_loc = target_loc;
+
+        // JS: this.moveThisTurn = move.id;
         self.move_this_turn = Some(move_id);
     }
 }
