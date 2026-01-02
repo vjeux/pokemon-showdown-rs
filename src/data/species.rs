@@ -10,6 +10,8 @@ use once_cell::sync::Lazy;
 use std::collections::HashMap;
 
 /// Base stats for a species
+/// JavaScript equivalent: BaseStats (sim/dex-species.ts)
+/// 6 fields in JavaScript
 #[derive(Debug, Clone, Copy, Default)]
 pub struct BaseStats {
     pub hp: i32,
@@ -39,6 +41,7 @@ impl BaseStats {
 }
 
 /// Gender ratio for a species
+/// JavaScript equivalent: GenderRatio (sim/dex-species.ts)
 #[derive(Debug, Clone, Copy)]
 pub enum GenderRatio {
     /// Always male
@@ -58,6 +61,8 @@ impl Default for GenderRatio {
 }
 
 /// Species definition
+/// JavaScript equivalent: SpeciesData (sim/dex-species.ts)
+/// 14 fields in JavaScript
 #[derive(Debug, Clone)]
 pub struct SpeciesDef {
     /// National dex number
