@@ -175,8 +175,10 @@ impl Battle {
 
         // JS: let handlers = this.findFieldEventHandlers(this.field, `onField${eventid}`, getKey);
         let field_event = format!("onField{}", event_id);
-        let field_handlers = self.find_field_event_handlers(&field_event);
-        for (effect_id, holder) in field_handlers {
+        let field_handlers = self.find_field_event_handlers(&field_event, None, None);
+        for handler in field_handlers {
+            let effect_id = handler.effect_id;
+            let holder = handler.effect_holder;
             let effect_type = self.determine_effect_type(effect_id.as_str());
             let handler = self.create_field_handler(
                 effect_id,

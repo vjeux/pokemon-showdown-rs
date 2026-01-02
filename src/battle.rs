@@ -249,6 +249,7 @@ pub enum EffectType {
     SideCondition,
     FieldCondition,
     Weather,
+    Terrain,  // Added to match JavaScript effectType
     Format,
     Rule,
     Ruleset,

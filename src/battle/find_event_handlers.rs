@@ -190,9 +190,9 @@ impl Battle {
 
         // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
         let prefixed_event = format!("on{}", event_name);
-        let field_handlers = self.find_field_event_handlers(&prefixed_event);
-        for (effect_id, holder) in field_handlers {
-            handlers.push((event_name.to_string(), effect_id, holder));
+        let field_handlers = self.find_field_event_handlers(&prefixed_event, None, None);
+        for handler in field_handlers {
+            handlers.push((event_name.to_string(), handler.effect_id, handler.effect_holder));
         }
 
         // JavaScript: handlers.push(...this.findBattleEventHandlers(`on${eventName}`));
