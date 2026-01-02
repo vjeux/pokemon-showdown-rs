@@ -189,6 +189,7 @@ impl Choice {
 }
 
 /// Choice parsing error
+/// TODO: Not in JavaScript - Rust-specific error type for choice parsing failures
 #[derive(Debug, Clone, PartialEq)]
 pub enum ChoiceError {
     InvalidFormat(String),
@@ -299,6 +300,7 @@ pub struct BattleRequest {
 }
 
 /// Type of request
+/// JavaScript equivalent: 'move' | 'switch' | 'teamPreview' | 'wait' (sim/side.ts)
 #[derive(Debug, Clone, PartialEq)]
 pub enum RequestType {
     /// Normal turn - choose moves/switches
@@ -515,6 +517,7 @@ pub struct MoveRequestOption {
 }
 
 /// Move disabled state
+/// TODO: Rust uses enum to represent JavaScript's boolean | string union type
 #[derive(Debug, Clone)]
 pub enum MoveDisabled {
     /// Disabled by name (e.g., "locked")
