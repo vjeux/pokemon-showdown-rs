@@ -6,8 +6,8 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 7 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move)
-**Remaining stubs**: 10
+**Completed implementations**: 8 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move)
+**Remaining stubs**: 9
 
 ## Files with Stubs (Not Implemented)
 
@@ -20,9 +20,9 @@ These files are completely unimplemented stubs:
 5. ~~`get_z_move.rs` - getZMove~~ ✅ IMPLEMENTED
 6. ~~`get_active_z_move.rs` - getActiveZMove~~ ✅ IMPLEMENTED
 7. ~~`get_max_move.rs` - getMaxMove~~ ✅ IMPLEMENTED
-8. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
-9. `force_switch.rs` - forceSwitch
-10. `get_active_max_move.rs` - getActiveMaxMove
+8. ~~`get_active_max_move.rs` - getActiveMaxMove~~ ✅ IMPLEMENTED
+9. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
+10. `force_switch.rs` - forceSwitch
 11. `hit_step_break_protect.rs` - hitStepBreakProtect
 12. `hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent
 13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop
@@ -141,6 +141,20 @@ These files exist only in Rust and should be evaluated:
   - Status category → Max Guard
   - Damaging moves → Typed Max Moves (Max Flare, Max Geyser, etc.)
 - Matches all 18 type mappings from JavaScript
+
+### 2026-01-02 - Commit 0ad8851e
+**Implemented: get_active_max_move**
+- Implemented 1:1 port of getActiveMaxMove from JavaScript battle-actions.ts
+- Returns ActiveMove for Max Moves with appropriate properties
+- Handles Struggle special case (returns as ActiveMove)
+- Creates ActiveMove for generic Max Moves based on type/category
+- Checks for Gigantamax-specific moves (overwrites generic Max Move if type matches)
+- Sets basePower from move.maxMove.basePower (JSON Value access)
+- Special handling: gmaxdrumsolo, gmaxfireball, gmaxhydrosnipe keep original power
+- Sets baseMove to original move ID
+- Copies priority from base move (for Psychic Terrain, Quick Guard)
+- Sets isZOrMaxPowered flag
+- Reuses helper functions from get_active_z_move
 
 ---
 
