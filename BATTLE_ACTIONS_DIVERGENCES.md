@@ -6,8 +6,8 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 6 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move)
-**Remaining stubs**: 11
+**Completed implementations**: 7 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move)
+**Remaining stubs**: 10
 
 ## Files with Stubs (Not Implemented)
 
@@ -19,10 +19,10 @@ These files are completely unimplemented stubs:
 4. ~~`can_z_move.rs` - canZMove~~ ✅ IMPLEMENTED
 5. ~~`get_z_move.rs` - getZMove~~ ✅ IMPLEMENTED
 6. ~~`get_active_z_move.rs` - getActiveZMove~~ ✅ IMPLEMENTED
-7. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
-8. `force_switch.rs` - forceSwitch
-9. `get_active_max_move.rs` - getActiveMaxMove
-10. `get_max_move.rs` - getMaxMove
+7. ~~`get_max_move.rs` - getMaxMove~~ ✅ IMPLEMENTED
+8. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
+9. `force_switch.rs` - forceSwitch
+10. `get_active_max_move.rs` - getActiveMaxMove
 11. `hit_step_break_protect.rs` - hitStepBreakProtect
 12. `hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent
 13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop
@@ -130,6 +130,17 @@ These files exist only in Rust and should be evaluated:
   - move_data_to_active_move() - Convert MoveData to ActiveMove
   - move_data_flags_to_active_flags() - Convert move flags
 - Note: Full dex.getActiveMove() method should be implemented
+
+### 2026-01-02 - Commit f28bb70e
+**Implemented: get_max_move**
+- Implemented 1:1 port of getMaxMove from JavaScript battle-actions.ts
+- Returns MoveData reference for Max Moves with lifetime annotation
+- Handles Struggle special case (returns unchanged)
+- Checks for Gigantamax-specific moves (e.g., G-Max Wildfire for Charizard)
+- Returns generic Max Moves based on type/category:
+  - Status category → Max Guard
+  - Damaging moves → Typed Max Moves (Max Flare, Max Geyser, etc.)
+- Matches all 18 type mappings from JavaScript
 
 ---
 
