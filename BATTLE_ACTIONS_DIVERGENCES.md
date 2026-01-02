@@ -6,9 +6,9 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Excellent Progress:** The battle_actions module is approaching 1:1 equivalence with JavaScript!
 
-**Stub Functions:** 17/18 completed (94%)
+**Stub Functions:** 20/21 completed (95%)
 - ✅ All simple stubs implemented except hit_step_move_hit_loop (deferred for infrastructure)
-- ✅ try_primary_hit_event implemented
+- ✅ try_primary_hit_event, try_move_hit, self_drops implemented
 
 **Partial Implementations:** 3/4 completed (75%)
 - ✅ hit_step_accuracy.rs - All 3 TODOs completed
@@ -431,6 +431,31 @@ These files exist only in Rust and should be evaluated:
   - Updates damage array with result
 - Simple 8-line implementation matching JavaScript exactly
 - 1:1 match with JavaScript implementation
+
+### 2026-01-02
+**Implemented: try_move_hit** ✅ STUB COMPLETED!
+- Implemented 1:1 port of tryMoveHit from JavaScript battle-actions.ts
+- Handles Try and PrepareHit events for field-wide moves
+- Implements three target type branches:
+  - move.target === 'all': Calls TryHitField event
+  - FFA hazard (foeSide in freeforall): Loops through all sides with TryHitSide
+  - Normal: Calls TryHitSide for single target
+- Adds -fail message and [still] attribute on failure
+- TODO: Calls moveHit function (not yet implemented)
+- Matches JavaScript implementation line by line
+
+### 2026-01-02
+**Implemented: self_drops** ✅ STUB COMPLETED!
+- Implemented 1:1 port of selfDrops from JavaScript battle-actions.ts
+- Applies self stat drops/boosts after a move executes
+- Handles chance-based secondary effects with random roll
+- Two branches:
+  - With boosts check (!isSecondary && moveData.self.boosts): Rolls for chance, sets selfDropped flag
+  - Without boosts check: Always applies
+- Applies boosts directly using battle.boost()
+- Sets move.selfDropped = true for non-multihit moves
+- TODO: Full moveHit implementation for non-boost self effects
+- Matches JavaScript implementation line by line
 
 ---
 
