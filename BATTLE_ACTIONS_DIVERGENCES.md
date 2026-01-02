@@ -735,19 +735,43 @@ These files exist only in Rust and should be evaluated:
 - All three missing features now match JavaScript battle-actions.ts switchIn() lines 25-80
 - 1:1 match with JavaScript implementation
 
+### 2026-01-02
+**Partially Completed: run_move** ⚠️ 3/9 TODOs IMPLEMENTED!
+- Implemented activeMoveActions tracking:
+  - JavaScript: `pokemon.activeMoveActions++;`
+  - Rust: `pokemon.active_move_actions += 1;`
+  - Tracks how many times a Pokemon has used a move (for Instruct, etc.)
+- Implemented moveThisTurnResult tracking:
+  - JavaScript: `pokemon.moveThisTurnResult = willTryMove;`
+  - Rust: `pokemon.move_this_turn_result = Some(will_try_move);`
+  - Records whether the move attempt succeeded or failed
+- Implemented moveUsed tracking:
+  - JavaScript: `pokemon.moveUsed(move, targetLoc);`
+  - Rust: Inlined the logic to avoid borrow checker issues
+  - Sets `last_move`, `last_move_encore` (Gen 2), `last_move_used`, `last_move_target_loc`, `move_this_turn`
+  - Matches JavaScript moveUsed() 1:1
+- **Remaining 6 TODOs:**
+  - pranksterBoosted (needs calculation logic)
+  - cantusetwice handling (needs move flags check)
+  - beforeMoveCallback (needs callback system infrastructure)
+  - PP deduction verification (might already be done elsewhere)
+  - cantusetwice hint (needs Pokemon.removeVolatile with move.id)
+  - Dancer ability activation (needs ability check and recursive runMove call)
+
 ---
 
 ## Session Summary (2026-01-02 Continuation)
 
 This session focused on systematic file-by-file review to ensure 1:1 line-by-line equivalence between JavaScript and Rust implementations.
 
-**Files Fixed and Verified (6 major fixes):**
+**Files Fixed and Verified (7 major fixes):**
 1. ✅ modify_damage.rs - Added 6 missing features (spread, parental bond, crit msg, burn, gen5, z-break)
 2. ✅ get_confusion_damage.rs - Refactored signature to match JavaScript (battle, pokemon_pos, base_power)
 3. ✅ get_spread_damage.rs - Added error handling, activeTarget, fail messages
 4. ✅ drag_in.rs - Added missing isActive check
 5. ✅ can_terastallize.rs - Refactored signature to match JavaScript (battle, pokemon_pos)
 6. ✅ switch_in.rs - Added 3 missing features (switchCopyFlag, Gen 4 lastMove, Gen 4 lastItem)
+7. ⚠️ run_move.rs - Partially completed: 3/9 TODOs implemented (activeMoveActions, moveThisTurnResult, moveUsed)
 
 **Files Verified as Correct:**
 - calc_recoil_damage.rs
