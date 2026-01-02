@@ -372,12 +372,17 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now fully 1-to-1 with JavaScript!
 
 #### is_sky_dropped.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Significantly Improved)
 - Issue: Missing check for foe Pokemon with Sky Drop where source is this Pokemon
-- Action: Documented current partial implementation
+- Action: Refactored to associated function, implemented full foe active check with EffectState.source
 - Notes:
-  - Would need Battle reference to access side.foe.active
-  - Would need EffectState.source field to track Sky Drop initiator
+  - ✅ NOW IMPLEMENTED: Refactored to take Battle parameter
+  - ✅ NOW IMPLEMENTED: Checks foe active Pokemon for Sky Drop with source == this Pokemon
+  - ✅ NOW IMPLEMENTED: Uses EffectState.source field to track Sky Drop initiator
+  - ✅ NOW IMPLEMENTED: Filters foe sides using is_ally check
+  - ✅ Loops through foe.active array checking each Pokemon's skydrop volatile
+  - Updated 1 callsite (followme.rs)
+  - Now significantly improved, nearly 1-to-1 with JavaScript!
 
 #### max_move_disabled.rs
 - Status: ✅ Fixed (Fully Implemented)
@@ -1096,6 +1101,41 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 12 feature implementations + 5 bugfixes
   - 6 callsites updated
   - 8 commits pushed to git
+  - 100% compilation success rate
+
+
+### Session 12 - 2026-01-01 (Major Refactoring Phase - COMPLETED)
+- **Goal**: Continue fixing Pokemon methods for 1-to-1 equivalence with large refactors
+- **Completed**:
+  - ✅ Implemented is_last_active - Full 1-to-1 with side.active check (COMMIT 1)
+  - ✅ Migrated is_adjacent to Battle::is_adjacent (already complete) (COMMIT 2)
+  - ✅ Implemented is_ally with full ally_index check for multi-battles (COMMIT 3)
+  - ✅ Updated 3 callsites (waterpledge, firepledge, psychicterrain) for is_ally
+  - ✅ Implemented is_sky_dropped to check foe active Pokemon with EffectState.source (COMMIT 4)
+  - ✅ Refactored is_semi_invulnerable to call new is_sky_dropped (COMMIT 4)
+  - ✅ Updated 11 callsites across move/item callbacks (COMMIT 4):
+    - psychicterrain.rs (2 callsites)
+    - ragepowder.rs (1 callsite)
+    - snatch.rs (1 callsite)
+    - ejectbutton.rs (1 callsite)
+    - grassyterrain.rs (2 callsites)
+    - electricterrain.rs (3 callsites)
+    - mistyterrain.rs (3 callsites)
+    - followme.rs (1 callsite)
+    - magiccoat.rs (2 callsites)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ All commits pushed to git
+- **Methods Now Fully 1-to-1**:
+  - is_last_active.rs - ✅ Complete
+  - is_ally.rs - ✅ Complete
+- **Methods Significantly Improved**:
+  - is_adjacent.rs - Migrated to Battle version (complete)
+  - is_sky_dropped.rs - Full foe active check with EffectState.source
+  - is_semi_invulnerable.rs - Refactored to associated function
+- **Session Statistics**:
+  - 5 methods completed/improved (is_last_active, is_ally, is_adjacent, is_sky_dropped, is_semi_invulnerable)
+  - 14 callsites updated total
+  - 4 commits pushed to git
   - 100% compilation success rate
 
 
