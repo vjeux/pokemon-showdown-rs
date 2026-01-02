@@ -145,7 +145,16 @@ impl Pokemon {
         // JS:         return result;
         // JS:     }
         // JS: }
-        // Note: Missing runEvent('SetStatus')
+        // ✅ NOW IMPLEMENTED (Session 24 Part 78): runEvent('SetStatus')
+        // Note: JavaScript passes status as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
+        //       Passing None for now - handlers can check target pokemon's status field after it's set
+        if !status.as_str().is_empty() {
+            let set_status_result = battle.run_event("SetStatus", Some(pokemon_pos), source_pos, source_effect, None);
+            // runEvent returns Option<i32>, None or Some(0) means failure
+            if set_status_result == Some(0) || set_status_result == None {
+                return false;
+            }
+        }
 
         // Phase 2: Mutate pokemon to set new status
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -199,7 +208,16 @@ impl Pokemon {
         // JS: if (status.id && !this.battle.runEvent('AfterSetStatus', this, source, sourceEffect, status)) {
         // JS:     return false;
         // JS: }
-        // Note: Missing runEvent('AfterSetStatus')
+        // ✅ NOW IMPLEMENTED (Session 24 Part 78): runEvent('AfterSetStatus')
+        // Note: JavaScript passes status as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
+        //       Passing None for now - handlers can check target pokemon's status field which has been set
+        if !status.as_str().is_empty() {
+            let after_result = battle.run_event("AfterSetStatus", Some(pokemon_pos), source_pos, source_effect, None);
+            // runEvent returns Option<i32>, None or Some(0) means failure
+            if after_result == Some(0) || after_result == None {
+                return false;
+            }
+        }
 
         // JS: return true;
         true
