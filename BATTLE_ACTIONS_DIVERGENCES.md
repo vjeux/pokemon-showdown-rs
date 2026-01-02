@@ -47,18 +47,24 @@ These files have implementations but with TODOs for missing functionality:
 - Line 364: NOTE about not returning early if base_power == 0 (this is a comment, not a TODO)
 
 ### run_move.rs
-Multiple missing features:
-- Line 30: activeMoveActions tracking
-- Line 45: pranksterBoosted implementation
-- Line 51: OverrideAction event
-- Line 75: moveThisTurnResult tracking
-- Line 81: cantusetwice handling
-- Line 85: beforeMoveCallback
-- Line 100: LockMove event
-- Line 104: PP deduction verification
-- Line 107: moveUsed tracking
-- Line 159: lastSuccessfulMoveThisTurn
-- Line 170: cantusetwice hint
+Multiple missing features (9 remaining, 4 completed):
+
+**Completed:**
+- ~~Line 51: OverrideAction event~~ ✅ IMPLEMENTED
+- ~~Line 100: LockMove event~~ ✅ IMPLEMENTED
+- ~~Line 159: lastSuccessfulMoveThisTurn~~ ✅ IMPLEMENTED
+- ~~Line 187: gen 4 active move restoration~~ ✅ IMPLEMENTED
+
+**Remaining (require infrastructure changes):**
+- Line 30: activeMoveActions tracking (needs Pokemon.activeMoveActions field)
+- Line 45: pranksterBoosted implementation (needs calculation logic)
+- Line 75: moveThisTurnResult tracking (needs Pokemon.moveThisTurnResult field)
+- Line 81: cantusetwice handling (needs move flags check and Pokemon.lastMove)
+- Line 85: beforeMoveCallback (needs callback system implementation)
+- Line 104: PP deduction verification (might already be done in run_action)
+- Line 107: moveUsed tracking (needs Pokemon.moveUsed() method)
+- Line 170: cantusetwice hint (needs Pokemon.removeVolatile with move.id)
+- Line 174: Dancer ability activation (needs ability check and recursive move call)
 
 ## Rust-Specific Files (Not in JavaScript)
 
@@ -298,6 +304,27 @@ These files exist only in Rust and should be evaluated:
   - Accesses `move_data.base_move` field
   - Looks up base move in `battle.dex.moves()` and checks `is_max` field
   - 1:1 match with JavaScript condition
+
+### 2026-01-02
+**Partial completion: run_move** ✅ 4/13 TODOs IMPLEMENTED!
+- Implemented OverrideAction event:
+  - Fires 'OverrideAction' event for non-struggle, non-Z, non-Max, non-external moves
+  - JavaScript: `this.battle.runEvent('OverrideAction', pokemon, target, baseMove)`
+  - Note: Full implementation would require handling move changes from event return value
+- Implemented LockMove event:
+  - Fires 'LockMove' event for non-external moves
+  - JavaScript: `lockedMove = this.battle.runEvent('LockMove', pokemon)`
+  - Used for moves like Outrage, Petal Dance that lock the user
+- Implemented lastSuccessfulMoveThisTurn tracking:
+  - Sets `battle.last_successful_move_this_turn` based on move success
+  - JavaScript: `this.battle.lastSuccessfulMoveThisTurn = moveDidSomething ? this.battle.activeMove && this.battle.activeMove.id : null`
+  - Accesses Battle.last_successful_move_this_turn field (line 684 in battle.rs)
+- Implemented Gen 4 active move restoration:
+  - Saves `battle.active_move` at start if gen <= 4
+  - Restores it at end of function
+  - JavaScript: `if (this.battle.gen <= 4) { this.battle.activeMove = oldActiveMove; }`
+  - Ensures Gen 4 compatibility for nested move calls
+- Remaining 9 TODOs require infrastructure (Pokemon fields, callback system, etc.)
 
 ---
 

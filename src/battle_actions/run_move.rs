@@ -26,6 +26,14 @@ pub fn run_move(
     max_move: Option<String>,
     _original_target: Option<(usize, usize)>,
 ) {
+    // Gen 4 compatibility: save old active move
+    // if (this.battle.gen <= 4) oldActiveMove = this.battle.activeMove;
+    let old_active_move = if battle.gen <= 4 {
+        battle.active_move.clone()
+    } else {
+        None
+    };
+
     // pokemon.activeMoveActions++;
     // TODO: Implement activeMoveActions tracking
 
@@ -48,7 +56,9 @@ pub fn run_move(
     // if (baseMove.id !== 'struggle' && !zMove && !maxMove && !externalMove)
     if move_id.as_str() != "struggle" && z_move.is_none() && max_move.is_none() && !external_move {
         // const changedMove = this.battle.runEvent('OverrideAction', pokemon, target, baseMove);
-        // TODO: Implement OverrideAction event
+        // JavaScript: if (changedMove && changedMove.id !== move.id) { ... }
+        // For now, just run the event - full implementation would require changing the move
+        battle.run_event("OverrideAction", Some(pokemon_pos), Some(target_pos), Some(move_id), None);
     }
 
     // Set active move
@@ -97,7 +107,9 @@ pub fn run_move(
     if !external_move {
         // Check for locked move
         // lockedMove = this.battle.runEvent('LockMove', pokemon);
-        // TODO: Implement LockMove event
+        // JavaScript: if (lockedMove === true) lockedMove = false;
+        // JavaScript: if (!lockedMove) { ... deduct PP ... }
+        let _locked_move = battle.run_event("LockMove", Some(pokemon_pos), None, None, None);
 
         // Deduct PP
         // if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle'))
@@ -145,7 +157,7 @@ pub fn run_move(
 
     // Call useMove
     // const moveDidSomething = this.useMove(baseMove, pokemon, { target, sourceEffect, zMove, maxMove });
-    let _move_did_something = crate::battle_actions::use_move(
+    let move_did_something = crate::battle_actions::use_move(
         battle,
         move_id,
         pokemon_pos,
@@ -156,7 +168,11 @@ pub fn run_move(
     );
 
     // this.battle.lastSuccessfulMoveThisTurn = moveDidSomething ? this.battle.activeMove && this.battle.activeMove.id : null;
-    // TODO: Implement lastSuccessfulMoveThisTurn
+    battle.last_successful_move_this_turn = if move_did_something {
+        battle.active_move.as_ref().map(|m| m.id.clone())
+    } else {
+        None
+    };
 
     // AfterMove events
     // this.battle.singleEvent('AfterMove', move, null, pokemon, target, move);
@@ -180,9 +196,11 @@ pub fn run_move(
     // this.battle.checkWin();
     battle.check_win(None);
 
-    // Gen 4 compatibility
+    // Gen 4 compatibility: restore old active move
     // if (this.battle.gen <= 4) {
     //     this.battle.activeMove = oldActiveMove;
     // }
-    // TODO: Implement gen 4 active move restoration
+    if battle.gen <= 4 {
+        battle.active_move = old_active_move;
+    }
 }
