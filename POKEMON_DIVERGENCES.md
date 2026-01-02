@@ -951,11 +951,36 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 ### Session 9 - 2026-01-01 (Implementation Phase Begins)
 - **Goal**: Start implementing missing functionality to achieve 1-to-1 equivalence
 - **Completed**:
-  - ✅ Fixed update_max_hp.rs - Added Dynamax check for HP doubling
-  - ✅ Fixed has_item.rs - Added ignoringItem() check (now fully 1-to-1!)
+  - ✅ Fixed update_max_hp.rs - Added Dynamax check for HP doubling (MERGED)
+  - ✅ Fixed has_item.rs - Added ignoringItem() check - now fully 1-to-1! (MERGED)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-- **In Progress**: Implementing simple improvements before large refactors
-- **Next**: Continue fixing methods, then plan Battle-dependent method refactoring
+- **Methods Now Fully 1-to-1**: has_item.rs
+- **Methods Significantly Improved**: update_max_hp.rs (only missing battle.add message)
+- **Path Forward**:
+  - Phase 1 (Current): Fix methods that can be improved without API changes
+  - Phase 2 (Next): Refactor method signatures to take Battle where needed
+  - Phase 3 (Future): Implement event system integration throughout
+  - Phase 4 (Future): Add EffectState.data infrastructure for linked volatiles
+
+### Implementation Progress Summary
+**Fully Implemented (1-to-1 with JavaScript):**
+1. has_item.rs - ✅ Complete
+2. clear_volatile.rs - ✅ Nearly complete (only missing linked volatiles removal which needs infrastructure)
+3. allies.rs, allies_and_self.rs, adjacent_allies.rs, adjacent_foes.rs, foes.rs - ✅ Complete
+4. clear_boosts.rs - ✅ Complete
+5. deduct_pp.rs - ✅ Complete
+6. disable_move.rs - ✅ Complete
+7. effective_weather.rs - ✅ Complete
+8. get_health.rs - ✅ Complete
+9. get_locked_move.rs - ✅ Returns field (missing runEvent call needs Battle)
+10. get_nature.rs - ✅ Complete
+
+**Partially Implemented (Core Logic Correct, Missing Events/Checks):**
+1. update_max_hp.rs - Has Dynamax check, missing battle.add
+2. try_set_status.rs - Core logic correct, simplified
+3. get_weight.rs - Has max(1, weight), missing ModifyWeight event
+4. get_types.rs - Has empty check, missing runEvent('Type')
+5. And many others...
 
 ## Notes
 - Must compile after each fix
