@@ -2,27 +2,33 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Parts 1-46 Complete)
-- **Session 24 Total Progress**: 21+ commits, 46 parts completed
+## Overview (Updated: Session 24 Parts 1-48 Complete)
+- **Session 24 Total Progress**: 23+ commits, 48 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
   - Parts 42-46: Documentation updates and final infrastructure fixes
+  - Parts 47-48: Final actionable improvements (ignoring_item, ignoring_ability - both now 100%)
 - **Methods Significantly Improved**:
   - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
   - copy_volatile_from.rs (complete refactor + linkedPokemon bidirectional updating - now 100%)
   - get_smart_targets.rs (Dragon Darts double-target logic - now 100%)
   - faint.rs, update_max_hp.rs, set_hp.rs, get_locked_move.rs (all 100%)
+  - ignoring_item.rs (Primal Orb, ignoreKlutz - now 100%)
+  - ignoring_ability.rs (ability.flags checks - now 100%)
   - 6 core methods with source/sourceEffect parameters added
 - **Move Callbacks Fixed**: 9 files with proper source/effect/linkedStatus parameters
 - **Infrastructure Achievements**:
   - EffectState.data HashMap fully utilized for complex volatile state
   - linkedPokemon bidirectional updating implemented
   - TrappedState enum for proper type safety
+  - ItemData.extra HashMap for item properties (isPrimalOrb, ignoreKlutz)
+  - AbilityData.flags HashMap for ability flags (notransform, cantsuppress)
   - 250+ callsites updated across codebase
 - **Compilation Success Rate**: 100% (0 errors, 0 warnings throughout)
-- **Remaining Work**: Only 1 TODO in src/pokemon/ (event system infrastructure)
+- **Remaining Work**: Only 1 TODO in src/pokemon/ (event system infrastructure in calculate_stat.rs)
+- **Methods Now at 100%**: 20 methods fully equivalent to JavaScript
 - **Goal**: Achieve 1:1 line-by-line equivalence with JavaScript
 
 ## Status Legend
