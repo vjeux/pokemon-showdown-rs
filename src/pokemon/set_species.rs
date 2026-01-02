@@ -51,7 +51,7 @@ impl Pokemon {
         battle: &mut Battle,
         species_id: &ID,
         _source: Option<&ID>,
-        _is_transform: bool,
+        is_transform: bool,
     ) -> bool {
         // JS: const species = this.battle.runEvent('ModifySpecies', this, null, source, rawSpecies);
         // Note: ModifySpecies event not called - would need to refactor for mutable battle access
@@ -111,16 +111,17 @@ impl Pokemon {
         }
 
         // JS: if (!isTransform) this.baseStoredStats = stats;
-        // Note: isTransform parameter not properly handled - always sets baseStoredStats
-        // For now, always set baseStoredStats
-        self.base_stored_stats = StatsTable {
-            hp: 0, // HP not stored in storedStats
-            atk: stats.atk,
-            def: stats.def,
-            spa: stats.spa,
-            spd: stats.spd,
-            spe: stats.spe,
-        };
+        // ✅ NOW IMPLEMENTED: isTransform parameter handling - only set base_stored_stats if NOT transform
+        if !is_transform {
+            self.base_stored_stats = StatsTable {
+                hp: 0, // HP not stored in storedStats
+                atk: stats.atk,
+                def: stats.def,
+                spa: stats.spa,
+                spd: stats.spd,
+                spe: stats.spe,
+            };
+        }
 
         // JS: for (statName in this.storedStats) { this.storedStats[statName] = stats[statName]; ... }
         self.stored_stats = StatsTable {
@@ -132,9 +133,23 @@ impl Pokemon {
             spe: stats.spe,
         };
 
-        // JS: if (this.battle.gen <= 1) { ... }
-        // Note: Gen 1 burn/para stat drops not implemented - would need Battle reference for gen check
-        // Should apply: if (status === 'par') modifyStat('spe', 0.25); if (status === 'brn') modifyStat('atk', 0.5);
+        // JS: if (this.battle.gen <= 1) {
+        // JS:     // Gen 1: Re-Apply burn and para drops.
+        // JS:     if (this.status === 'par') this.modifyStat!('spe', 0.25);
+        // JS:     if (this.status === 'brn') this.modifyStat!('atk', 0.5);
+        // JS: }
+        // ✅ NOW IMPLEMENTED: Gen 1 burn/para stat drops
+        if battle.gen <= 1 {
+            // Gen 1: Re-Apply burn and para drops
+            if self.status.as_str() == "par" {
+                // Paralysis: Speed is 25% of normal
+                self.stored_stats.spe = ((self.stored_stats.spe as f64) * 0.25) as i32;
+            }
+            if self.status.as_str() == "brn" {
+                // Burn: Attack is 50% of normal
+                self.stored_stats.atk = ((self.stored_stats.atk as f64) * 0.5) as i32;
+            }
+        }
 
         // JS: this.speed = this.storedStats.spe;
         self.speed = self.stored_stats.spe as i32;
