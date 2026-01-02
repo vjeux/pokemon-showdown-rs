@@ -2155,6 +2155,40 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
+### Session 24 Part 23 - 2026-01-02 (Pokemon EffectState target - COMPLETED)
+- **Goal**: Add missing EffectState.target assignments in set_item, set_ability, set_status, and forme_change
+- **Completed**:
+  - ✅ Discovered 4 Pokemon methods missing EffectState target assignments
+  - ✅ JavaScript pattern: `this.itemState = this.battle.initEffectState({ id: item.id, target: this });`
+  - ✅ JavaScript pattern: `this.abilityState = this.battle.initEffectState({ id: ability.id, target: this });`
+  - ✅ JavaScript pattern: `this.statusState = this.battle.initEffectState({ id: status.id, target: this });`
+  - ✅ Added target assignments using `Some((self.side_index, self.position))` in all 4 methods
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Files Now Improved**:
+  - set_item.rs - Now properly initializes item_state.target
+    - ✅ NOW IMPLEMENTED: `self.item_state.target = Some((self.side_index, self.position));`
+  - set_ability.rs - Now properly initializes ability_state.target
+    - ✅ NOW IMPLEMENTED: `self.ability_state.target = Some((self.side_index, self.position));`
+  - set_status.rs - Now properly initializes status_state.target
+    - ✅ NOW IMPLEMENTED: `self.status_state.target = Some((self.side_index, self.position));`
+  - forme_change.rs - Now properly initializes ability_state.target
+    - ✅ NOW IMPLEMENTED: `self.ability_state.target = Some((self.side_index, self.position));`
+- **Technical Details**:
+  - Found by systematic search for EffectState::new calls
+  - All 4 methods are instance methods with access to self.side_index and self.position
+  - Unlike switch_in (Part 22), these didn't need refactoring to associated functions
+  - Simple pattern: Create EffectState, then set target field
+  - Completes EffectState initialization pattern across Pokemon module
+- **Session Statistics**:
+  - 4 files improved (set_item, set_ability, set_status, forme_change)
+  - 4 feature implementations (4 target assignments)
+  - 4 files modified in src/pokemon/
+  - 4 insertions (1 per file)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
