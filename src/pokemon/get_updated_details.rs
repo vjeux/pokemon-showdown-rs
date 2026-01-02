@@ -14,10 +14,16 @@ impl Pokemon {
     pub fn get_updated_details(&self) -> String {
         // JS: let name = this.species.name;
         // JS: if (['Greninja-Bond', 'Rockruff-Dusk'].includes(name)) name = this.species.baseSpecies;
-        let mut details = self.species_id.as_str().to_string();
+        // ✅ NOW IMPLEMENTED: Greninja-Bond (Greninja-Ash) and Rockruff-Dusk use baseSpecies
+        // Note: JavaScript uses species.name ('Greninja-Bond'), Rust uses species_id ('greninjabond'/'greninjaash')
+        let species_str = self.species_id.as_str();
+        let name = if species_str == "greninjabond" || species_str == "greninjaash" || species_str == "rockruffdusk" {
+            self.base_species.as_str()
+        } else {
+            species_str
+        };
 
-        // Note: Greninja-Bond and Rockruff-Dusk special case not implemented
-        // Would need species data to get baseSpecies
+        let mut details = name.to_string();
 
         // JS: return name + (level === 100 ? '' : `, L${level}`)
         if self.level != 100 {
