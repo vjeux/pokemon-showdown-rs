@@ -152,6 +152,10 @@ pub struct SpeciesData {
     /// JavaScript: weightkg: number
     #[serde(default)]
     pub weightkg: f64,
+    /// Color
+    /// JavaScript: color?: string
+    #[serde(default)]
+    pub color: Option<String>,
     /// Gender
     /// JavaScript: gender?: 'M' | 'F' | 'N'
     /// TODO: Rust uses Option<String>, JavaScript uses literal union type
@@ -169,6 +173,10 @@ pub struct SpeciesData {
     /// JavaScript: prevo?: string
     #[serde(default)]
     pub prevo: Option<String>,
+    /// Evolution type
+    /// JavaScript: evoType?: string
+    #[serde(rename = "evoType", default)]
+    pub evo_type: Option<String>,
     /// Evolution level
     /// JavaScript: evoLevel?: number
     #[serde(default)]
