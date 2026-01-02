@@ -166,6 +166,7 @@ pub struct MoveSecondary {
 /// Move data from the move list
 /// Condition data for volatile statuses
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// JavaScript equivalent: ConditionData (sim/dex-conditions.ts)
 pub struct ConditionData {
     #[serde(default)]
     pub duration: Option<i32>,
@@ -178,6 +179,12 @@ pub struct ConditionData {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+/// JavaScript equivalent: MoveData (sim/dex-moves.ts)
+/// 74 fields in JavaScript
+/// JavaScript equivalent: MoveData (sim/dex-moves.ts)
+/// 74 fields in JavaScript
+/// JavaScript equivalent: MoveData (sim/dex-moves.ts)
+/// 74 fields in JavaScript
 pub struct MoveData {
     #[serde(default)]
     pub num: i32,
@@ -537,6 +544,12 @@ pub struct ItemData {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: FlingData (sim/dex-items.ts)
+/// Fields: basePower, status, volatileStatus, effect
+/// JavaScript equivalent: FlingData (sim/dex-items.ts)
+/// Fields: basePower, status, volatileStatus, effect
+/// JavaScript equivalent: FlingData (sim/dex-items.ts)
+/// Fields: basePower, status, volatileStatus, effect
 pub struct FlingData {
     #[serde(rename = "basePower", default)]
     pub base_power: i32,
@@ -550,6 +563,12 @@ pub struct FlingData {
 
 /// Type effectiveness data
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: TypeData (sim/dex-data.ts)
+/// Fields: damageTaken, HPdvs, HPivs, isNonstandard
+/// JavaScript equivalent: TypeData (sim/dex-data.ts)
+/// Fields: damageTaken, HPdvs, HPivs, isNonstandard
+/// JavaScript equivalent: TypeData (sim/dex-data.ts)
+/// Fields: damageTaken, HPdvs, HPivs, isNonstandard
 pub struct TypeData {
     #[serde(rename = "damageTaken")]
     pub damage_taken: HashMap<String, u8>,
@@ -565,6 +584,12 @@ pub struct RulesetData {
 
 /// Nature data
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: NatureData (sim/dex-data.ts)
+/// Fields: name, plus, minus
+/// JavaScript equivalent: NatureData (sim/dex-data.ts)
+/// Fields: name, plus, minus
+/// JavaScript equivalent: NatureData (sim/dex-data.ts)
+/// Fields: name, plus, minus
 pub struct NatureData {
     pub name: String,
     #[serde(default)]
@@ -590,6 +615,12 @@ pub struct EventData {
 /// Learnset data for a single species
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+/// JavaScript equivalent: LearnsetData (sim/dex-species.ts)
+/// Fields: learnset, eventData, eventOnly, encounters, exists
+/// JavaScript equivalent: LearnsetData (sim/dex-species.ts)
+/// Fields: learnset, eventData, eventOnly, encounters, exists
+/// JavaScript equivalent: LearnsetData (sim/dex-species.ts)
+/// Fields: learnset, eventData, eventOnly, encounters, exists
 pub struct LearnsetData {
     /// Map from move ID to learn methods (e.g., "9M", "8L15", "7E")
     #[serde(default)]

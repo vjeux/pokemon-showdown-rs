@@ -16,6 +16,7 @@ use serde::{Deserialize, Serialize};
 
 /// A PRNG seed can be either a sodium seed or a Gen5 seed
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+/// JavaScript equivalent: PRNGSeed (sim/prng.ts)
 pub enum PRNGSeed {
     /// Sodium/ChaCha20-based RNG seed (hex string)
     Sodium(String),
@@ -78,6 +79,12 @@ pub trait RNG {
 /// A PRNG intended to emulate the on-cartridge PRNG for Gen 5 with a 64-bit
 /// initial seed.
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: Gen5RNG (sim/prng.ts)
+/// Fields: seed
+/// JavaScript equivalent: Gen5RNG (sim/prng.ts)
+/// Fields: seed
+/// JavaScript equivalent: Gen5RNG (sim/prng.ts)
+/// Fields: seed
 pub struct Gen5RNG {
     seed: [u16; 4],
 }
@@ -274,6 +281,12 @@ impl RNG for SodiumRNG {
 /// Seeds starting with 'sodium' use sodium. Other seeds use the Gen 5 RNG.
 /// If a seed isn't given, defaults to sodium.
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: PRNG (sim/prng.ts)
+/// Fields: startingSeed
+/// JavaScript equivalent: PRNG (sim/prng.ts)
+/// Fields: startingSeed
+/// JavaScript equivalent: PRNG (sim/prng.ts)
+/// Fields: startingSeed
 pub struct PRNG {
     pub starting_seed: PRNGSeed,
     rng: PRNGImpl,

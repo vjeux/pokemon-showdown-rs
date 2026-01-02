@@ -11,6 +11,7 @@ use std::collections::HashMap;
 
 /// Game type (singles, doubles, etc.)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+/// JavaScript equivalent: GameType (sim/global-types.ts)
 pub enum GameType {
     #[default]
     Singles,
@@ -666,10 +667,17 @@ pub fn is_banned_in_format(format_id: &ID, thing: &str) -> bool {
 // =========================================================================
 
 /// Complex ban entry: (rule, source, limit, bans)
+/// JavaScript equivalent: ComplexBan (sim/dex-formats.ts)
 pub type ComplexBan = (String, String, i32, Vec<String>);
 
 /// Timer settings for battle
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: GameTimerSettings (sim/dex-formats.ts)
+/// 9 fields in JavaScript
+/// JavaScript equivalent: GameTimerSettings (sim/dex-formats.ts)
+/// 9 fields in JavaScript
+/// JavaScript equivalent: GameTimerSettings (sim/dex-formats.ts)
+/// 9 fields in JavaScript
 pub struct GameTimerSettings {
     pub dc_timer: bool,
     pub dc_timer_bank: bool,
@@ -688,6 +696,7 @@ pub struct GameTimerSettings {
 /// - '-[thing]' or '-[category]:[thing]' ban a thing
 /// - '+[thing]' or '+[category]:[thing]' allow a thing (override a ban)
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: RuleTable (sim/dex.ts)
 pub struct RuleTable {
     /// Map of rule ID to source format name
     rules: HashMap<String, String>,
@@ -1358,6 +1367,7 @@ impl RuleTable {
 
 /// Format class - runtime format object
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: Format (sim/global-types.ts)
 pub struct Format {
     pub id: String,
     pub name: String,
@@ -1428,6 +1438,12 @@ impl Format {
 }
 
 /// DexFormats - manages format loading and validation
+/// JavaScript equivalent: DexFormats (sim/dex-formats.ts)
+/// Fields: dex, formatsListCache, searchShow, default
+/// JavaScript equivalent: DexFormats (sim/dex-formats.ts)
+/// Fields: dex, formatsListCache, searchShow, default
+/// JavaScript equivalent: DexFormats (sim/dex-formats.ts)
+/// Fields: dex, formatsListCache, searchShow, default
 pub struct DexFormats {
     /// Cache of loaded formats
     pub formats_cache: HashMap<ID, Format>,

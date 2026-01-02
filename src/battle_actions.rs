@@ -117,6 +117,12 @@ pub enum DamageResult {
 /// Move hit data for tracking crits, effectiveness, etc.
 /// Equivalent to MoveHitData in battle-actions.ts
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: MoveHitData (sim/dex-moves.ts)
+/// Fields: crit, typeMod, zBrokeProtect
+/// JavaScript equivalent: MoveHitData (sim/dex-moves.ts)
+/// Fields: crit, typeMod, zBrokeProtect
+/// JavaScript equivalent: MoveHitData (sim/dex-moves.ts)
+/// Fields: crit, typeMod, zBrokeProtect
 pub struct MoveHitData {
     pub crit: bool,
     pub type_mod: i32,
@@ -127,6 +133,9 @@ pub struct MoveHitData {
 /// Active move state - represents a move being executed
 /// Equivalent to ActiveMove in battle-actions.ts
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+/// JavaScript equivalent: ActiveMove (sim/dex-moves.ts)
+/// 35 fields in JavaScript
+/// JavaScript equivalent: ActiveMove (sim/global-types.ts)
 pub struct ActiveMove {
     pub id: ID,
     pub name: String,
@@ -220,6 +229,12 @@ pub struct ActiveMove {
 
 /// Move flags
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+/// JavaScript equivalent: MoveFlags (sim/dex-moves.ts)
+/// 37 fields in JavaScript
+/// JavaScript equivalent: MoveFlags (sim/dex-moves.ts)
+/// 37 fields in JavaScript
+/// JavaScript equivalent: MoveFlags (sim/dex-moves.ts)
+/// 37 fields in JavaScript
 pub struct MoveFlags {
     pub contact: bool,
     pub protect: bool,
@@ -258,6 +273,9 @@ pub struct ZMoveData {
 
 /// Secondary effect data
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+/// JavaScript equivalent: SecondaryEffect (sim/dex-moves.ts)
+/// Fields: chance, ability, kingsrock, self
+/// JavaScript equivalent: SecondaryEffect (sim/dex.ts)
 pub struct SecondaryEffect {
     pub chance: Option<i32>,
     pub boosts: Option<BoostsTable>,
@@ -302,6 +320,9 @@ pub enum SwitchCopyFlag {
 /// Battle Actions struct - 1:1 port of BattleActions class
 /// Note: In Rust, this struct needs a reference to battle state.
 /// The actual methods that need battle access are implemented on Battle directly.
+/// JavaScript equivalent: BattleActions (sim/battle-actions.ts)
+/// 69 fields in JavaScript
+/// JavaScript equivalent: BattleActions (sim/global-types.ts)
 pub struct BattleActions<'a> {
     pub dex: &'a Dex,
     pub gen: u8,
@@ -368,6 +389,7 @@ pub enum SpreadMoveDamageValue {
 }
 
 /// Result of spread move hit containing damage and target info
+/// JavaScript equivalent: SpreadMoveDamage (sim/global-types.ts)
 pub type SpreadMoveDamage = Vec<SpreadMoveDamageValue>;
 
 /// Target info for spread moves (can be the Pokemon or null/false for failed)
@@ -379,6 +401,7 @@ pub enum SpreadMoveTarget {
 }
 
 /// Spread move targets array
+/// JavaScript equivalent: SpreadMoveTargets (sim/global-types.ts)
 pub type SpreadMoveTargets = Vec<SpreadMoveTarget>;
 
 impl<'a> BattleActions<'a> {

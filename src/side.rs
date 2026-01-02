@@ -70,6 +70,12 @@ mod choose;
 
 /// A single action that can be chosen
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: ChosenAction (sim/side.ts)
+/// 15 fields in JavaScript
+/// JavaScript equivalent: ChosenAction (sim/side.ts)
+/// 15 fields in JavaScript
+/// JavaScript equivalent: ChosenAction (sim/side.ts)
+/// 15 fields in JavaScript
 pub struct ChosenAction {
     pub choice: ChoiceType,
     pub pokemon_index: usize,
@@ -121,6 +127,7 @@ impl Choice {
 
 /// Request state
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
+/// JavaScript equivalent: RequestState (sim/battle.ts)
 pub enum RequestState {
     #[default]
     None,
@@ -131,6 +138,9 @@ pub enum RequestState {
 
 /// A side in the battle
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Side (sim/side.ts)
+/// 77 fields in JavaScript
+/// JavaScript equivalent: Side (sim/global-types.ts)
 pub struct Side {
     /// Side ID (p1, p2, p3, p4)
     pub id: SideID,

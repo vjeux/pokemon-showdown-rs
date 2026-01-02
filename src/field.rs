@@ -11,6 +11,9 @@ use crate::dex_data::{EffectState, ID};
 
 /// The battle field - contains weather, terrain, and field-wide effects
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Field (sim/field.ts)
+/// 14 fields in JavaScript
+/// JavaScript equivalent: Field (sim/global-types.ts)
 pub struct Field {
     /// Current weather ID (empty string = no weather)
     pub weather: ID,

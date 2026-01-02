@@ -140,6 +140,7 @@ impl Gender {
 
 /// Stat IDs
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+/// JavaScript equivalent: StatID (sim/global-types.ts)
 pub enum StatID {
     HP,
     Atk,
@@ -197,6 +198,7 @@ impl StatID {
 
 /// Stats table (all 6 stats)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+/// JavaScript equivalent: StatsTable (sim/global-types.ts)
 pub struct StatsTable {
     pub hp: i32,
     pub atk: i32,
@@ -243,6 +245,7 @@ impl StatsTable {
 
 /// Boost IDs (stats that can be boosted, plus accuracy/evasion)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+/// JavaScript equivalent: BoostID (sim/global-types.ts)
 pub enum BoostID {
     Atk,
     Def,
@@ -279,6 +282,7 @@ impl BoostID {
 
 /// Boosts table
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+/// JavaScript equivalent: BoostsTable (sim/global-types.ts)
 pub struct BoostsTable {
     pub atk: i8,
     pub def: i8,
@@ -352,6 +356,7 @@ pub enum EffectType {
 
 /// Nonstandard classification
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+/// JavaScript equivalent: Nonstandard (sim/global-types.ts)
 pub enum Nonstandard {
     Past,
     Future,
@@ -376,6 +381,7 @@ pub enum GameType {
 
 /// Side ID
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+/// JavaScript equivalent: SideID (sim/global-types.ts)
 pub enum SideID {
     P1,
     P2,
@@ -415,6 +421,7 @@ impl SideID {
 
 /// Move target type
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
+/// JavaScript equivalent: MoveTarget (sim/global-types.ts)
 pub enum MoveTarget {
     #[default]
     Normal,
@@ -436,6 +443,12 @@ pub enum MoveTarget {
 
 /// Effect state - stores runtime data about effects
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// JavaScript equivalent: EffectState (sim/pokemon.ts)
+/// Fields: id, effectOrder, duration
+/// JavaScript equivalent: EffectState (sim/pokemon.ts)
+/// Fields: id, effectOrder, duration
+/// JavaScript equivalent: EffectState (sim/pokemon.ts)
+/// Fields: id, effectOrder, duration
 pub struct EffectState {
     pub id: ID,
     pub effect_order: i32,
@@ -473,6 +486,18 @@ impl EffectState {
 
 /// Basic effect - base struct for abilities, items, moves, etc.
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: BasicEffect (sim/dex-data.ts)
+/// 16 fields in JavaScript
+/// JavaScript equivalent: BasicEffect (sim/global-types.ts)
+/// 7 fields in JavaScript
+/// JavaScript equivalent: BasicEffect (sim/dex-data.ts)
+/// 16 fields in JavaScript
+/// JavaScript equivalent: BasicEffect (sim/global-types.ts)
+/// 7 fields in JavaScript
+/// JavaScript equivalent: BasicEffect (sim/dex-data.ts)
+/// 16 fields in JavaScript
+/// JavaScript equivalent: BasicEffect (sim/global-types.ts)
+/// 7 fields in JavaScript
 pub struct BasicEffect {
     pub id: ID,
     pub name: String,
@@ -536,6 +561,7 @@ impl std::fmt::Display for BasicEffect {
 
 /// Nature data
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Nature (sim/global-types.ts)
 pub struct Nature {
     pub id: ID,
     pub name: String,
@@ -603,6 +629,7 @@ impl std::fmt::Display for Nature {
 
 /// Type info for type chart
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: TypeInfo (sim/global-types.ts)
 pub struct TypeInfo {
     pub id: ID,
     pub name: String,
@@ -649,6 +676,12 @@ impl std::fmt::Display for TypeInfo {
 // =========================================================================
 
 /// Natures collection with caching
+/// JavaScript equivalent: DexNatures (sim/dex-data.ts)
+/// Fields: dex, allCache
+/// JavaScript equivalent: DexNatures (sim/dex-data.ts)
+/// Fields: dex, allCache
+/// JavaScript equivalent: DexNatures (sim/dex-data.ts)
+/// Fields: dex, allCache
 pub struct DexNatures {
     gen: u8,
     nature_cache: HashMap<String, Nature>,
@@ -805,6 +838,12 @@ fn get_all_natures() -> Vec<Nature> {
 // =========================================================================
 
 /// Types collection with caching
+/// JavaScript equivalent: DexTypes (sim/dex-data.ts)
+/// Fields: dex, allCache, namesCache
+/// JavaScript equivalent: DexTypes (sim/dex-data.ts)
+/// Fields: dex, allCache, namesCache
+/// JavaScript equivalent: DexTypes (sim/dex-data.ts)
+/// Fields: dex, allCache, namesCache
 pub struct DexTypes {
     gen: u8,
     type_cache: HashMap<String, TypeInfo>,
@@ -1212,6 +1251,12 @@ fn get_all_types(gen: u8) -> Vec<TypeInfo> {
 // =========================================================================
 
 /// Stats helper with name lookups
+/// JavaScript equivalent: DexStats (sim/dex-data.ts)
+/// 9 fields in JavaScript
+/// JavaScript equivalent: DexStats (sim/dex-data.ts)
+/// 9 fields in JavaScript
+/// JavaScript equivalent: DexStats (sim/dex-data.ts)
+/// 9 fields in JavaScript
 pub struct DexStats {
     gen: u8,
 }

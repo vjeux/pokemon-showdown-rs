@@ -72,6 +72,12 @@ impl EffectType {
 /// Effect metadata - represents an effect with its properties
 /// Equivalent to Effect interface in TypeScript
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+/// JavaScript equivalent: EffectData (sim/global-types.ts)
+/// 8 fields in JavaScript
+/// JavaScript equivalent: EffectData (sim/global-types.ts)
+/// 8 fields in JavaScript
+/// JavaScript equivalent: EffectData (sim/global-types.ts)
+/// 8 fields in JavaScript
 pub struct EffectData {
     /// Effect name/ID
     pub name: String,

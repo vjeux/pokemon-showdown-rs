@@ -132,6 +132,12 @@ mod get_move_targets_stub;
 
 /// A Pokemon's move slot
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: MoveSlot (sim/pokemon.ts)
+/// 9 fields in JavaScript
+/// JavaScript equivalent: MoveSlot (sim/pokemon.ts)
+/// 9 fields in JavaScript
+/// JavaScript equivalent: MoveSlot (sim/pokemon.ts)
+/// 9 fields in JavaScript
 pub struct MoveSlot {
     pub id: ID,
     pub move_name: String,
@@ -165,6 +171,12 @@ impl MoveSlot {
 /// Record of a Pokemon that attacked this Pokemon
 /// Equivalent to Attacker interface in pokemon.ts
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Attacker (sim/pokemon.ts)
+/// 6 fields in JavaScript
+/// JavaScript equivalent: Attacker (sim/pokemon.ts)
+/// 6 fields in JavaScript
+/// JavaScript equivalent: Attacker (sim/pokemon.ts)
+/// 6 fields in JavaScript
 pub struct Attacker {
     /// Source Pokemon (side_idx, poke_idx)
     pub source: (usize, usize),
@@ -180,6 +192,9 @@ pub struct Attacker {
 
 /// Pokemon set - the team builder representation of a Pokemon
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: PokemonSet (sim/teams.ts)
+/// 17 fields in JavaScript
+/// JavaScript equivalent: PokemonSet (sim/global-types.ts)
 pub struct PokemonSet {
     pub name: String,
     pub species: String,
@@ -260,6 +275,9 @@ impl TrappedState {
 
 /// A Pokemon in battle
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Pokemon (sim/pokemon.ts)
+/// 167 fields in JavaScript
+/// JavaScript equivalent: Pokemon (sim/global-types.ts)
 pub struct Pokemon {
     // Identity
     pub name: String,

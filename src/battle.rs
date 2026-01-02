@@ -189,6 +189,12 @@ pub enum Arg<'a> {
 /// Event listener - matches JavaScript EventListener interface
 /// JavaScript: interface EventListener extends EventListenerWithoutPriority
 #[derive(Clone)]
+/// JavaScript equivalent: EventListener (sim/battle.ts)
+/// Fields: order, priority, subOrder, effectOrder, speed
+/// JavaScript equivalent: EventListener (sim/battle.ts)
+/// Fields: order, priority, subOrder, effectOrder, speed
+/// JavaScript equivalent: EventListener (sim/battle.ts)
+/// Fields: order, priority, subOrder, effectOrder, speed
 pub struct EventListener {
     /// Effect that owns this handler
     pub effect_id: ID,
@@ -217,6 +223,7 @@ pub struct EventListener {
 /// Effect type - matches JavaScript effectType
 /// Used to determine event handler priority ordering
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+/// JavaScript equivalent: EffectType (sim/global-types.ts)
 pub enum EffectType {
     ZMove,
     Condition,
@@ -306,6 +313,12 @@ pub enum SwitchResult {
 
 /// Event information for tracking current event context
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: EventInfo (sim/global-types.ts)
+/// 16 fields in JavaScript
+/// JavaScript equivalent: EventInfo (sim/global-types.ts)
+/// 16 fields in JavaScript
+/// JavaScript equivalent: EventInfo (sim/global-types.ts)
+/// 16 fields in JavaScript
 pub struct EventInfo {
     /// Event ID/name
     pub id: String,
@@ -424,6 +437,12 @@ pub struct FaintData {
 
 /// Battle options
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: BattleOptions (sim/battle.ts)
+/// 14 fields in JavaScript
+/// JavaScript equivalent: BattleOptions (sim/battle.ts)
+/// 14 fields in JavaScript
+/// JavaScript equivalent: BattleOptions (sim/battle.ts)
+/// 14 fields in JavaScript
 pub struct BattleOptions {
     pub format_id: ID,
     pub format_name: Option<String>,
@@ -441,6 +460,12 @@ pub struct BattleOptions {
 
 /// Player options
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: PlayerOptions (sim/global-types.ts)
+/// Fields: name, avatar, rating, team, seed
+/// JavaScript equivalent: PlayerOptions (sim/global-types.ts)
+/// Fields: name, avatar, rating, team, seed
+/// JavaScript equivalent: PlayerOptions (sim/global-types.ts)
+/// Fields: name, avatar, rating, team, seed
 pub struct PlayerOptions {
     pub name: String,
     pub team: Vec<PokemonSet>,
@@ -460,6 +485,9 @@ pub enum BattleRequestState {
 
 /// The main Battle struct
 #[derive(Serialize, Deserialize)]
+/// JavaScript equivalent: Battle (sim/battle.ts)
+/// 153 fields in JavaScript
+/// JavaScript equivalent: Battle (sim/global-types.ts)
 pub struct Battle {
     /// Format ID
     pub format_id: ID,

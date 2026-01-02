@@ -293,6 +293,12 @@ pub struct EventHandler {
 
 /// Flags that can be set on abilities
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// JavaScript equivalent: AbilityFlags (sim/dex-abilities.ts)
+/// 8 fields in JavaScript
+/// JavaScript equivalent: AbilityFlags (sim/dex-abilities.ts)
+/// 8 fields in JavaScript
+/// JavaScript equivalent: AbilityFlags (sim/dex-abilities.ts)
+/// 8 fields in JavaScript
 pub struct AbilityFlags {
     /// Can be suppressed by Mold Breaker etc.
     pub breakable: bool,

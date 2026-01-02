@@ -18,6 +18,10 @@ Total types: 217
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Implements:** EffectData
 
 **Fields:**
@@ -46,6 +50,10 @@ Total types: 217
 ### Battle
 
 **File:** `sim/battle.ts`
+
+**Rust:** `src/battle.rs`
+
+
 
 **Fields:**
 
@@ -211,6 +219,10 @@ Total types: 217
 
 **File:** `sim/battle-actions.ts`
 
+**Rust:** `src/battle_actions.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -291,6 +303,10 @@ Total types: 217
 
 **File:** `sim/battle-stream.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -304,6 +320,10 @@ Total types: 217
 ### BattleQueue
 
 **File:** `sim/battle-queue.ts`
+
+**Rust:** `src/battle_queue.rs`
+
+
 
 **Fields:**
 
@@ -348,6 +368,10 @@ Total types: 217
 
 **File:** `sim/battle-stream.ts`
 
+**Rust:** *Not found*
+
+
+
 **Extends:** Streams.ReadWriteStream
 
 **Fields:**
@@ -363,6 +387,10 @@ Total types: 217
 
 **File:** `sim/tools/exhaustive-runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Extends:** RandomPlayerAI
 
 **Fields:**
@@ -376,6 +404,10 @@ Total types: 217
 ### DexAbilities
 
 **File:** `sim/dex-abilities.ts`
+
+**Rust:** `src/dex_abilities.rs`
+
+
 
 **Fields:**
 
@@ -391,6 +423,10 @@ Total types: 217
 
 **File:** `sim/dex-conditions.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -402,6 +438,10 @@ Total types: 217
 ### DexFormats
 
 **File:** `sim/dex-formats.ts`
+
+**Rust:** `src/data/formats.rs`
+
+
 
 **Fields:**
 
@@ -418,6 +458,10 @@ Total types: 217
 
 **File:** `sim/dex-items.ts`
 
+**Rust:** `src/dex_items.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -431,6 +475,10 @@ Total types: 217
 ### DexMoves
 
 **File:** `sim/dex-moves.ts`
+
+**Rust:** `src/dex_moves.rs`
+
+
 
 **Fields:**
 
@@ -447,6 +495,10 @@ Total types: 217
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -459,6 +511,10 @@ Total types: 217
 ### DexSpecies
 
 **File:** `sim/dex-species.ts`
+
+**Rust:** `src/dex_species.rs`
+
+
 
 **Fields:**
 
@@ -492,6 +548,10 @@ Total types: 217
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -512,6 +572,10 @@ Total types: 217
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -526,6 +590,10 @@ Total types: 217
 
 **File:** `sim/tools/runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -538,6 +606,10 @@ Total types: 217
 ### ExhaustiveRunner
 
 **File:** `sim/tools/exhaustive-runner.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -555,6 +627,10 @@ Total types: 217
 ### Field
 
 **File:** `sim/field.ts`
+
+**Rust:** `src/field.rs`
+
+
 
 **Fields:**
 
@@ -581,6 +657,10 @@ Total types: 217
 
 **File:** `sim/prng.ts`
 
+**Rust:** *Not found*
+
+
+
 **Implements:** RNG
 
 **Fields:**
@@ -595,6 +675,10 @@ Total types: 217
 
 **File:** `sim/prng.ts`
 
+**Rust:** `src/prng.rs`
+
+
+
 **Implements:** RNG
 
 **Fields:**
@@ -608,6 +692,10 @@ Total types: 217
 ### Learnset
 
 **File:** `sim/dex-species.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -626,6 +714,10 @@ Total types: 217
 ### ModdedDex
 
 **File:** `sim/dex.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -671,6 +763,10 @@ Total types: 217
 
 **File:** `sim/tools/multi-random-runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -683,6 +779,10 @@ Total types: 217
 ### Pokemon
 
 **File:** `sim/pokemon.ts`
+
+**Rust:** `src/pokemon.rs`
+
+
 
 **Fields:**
 
@@ -862,6 +962,10 @@ Total types: 217
 
 **File:** `sim/team-validator.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -894,6 +998,10 @@ Total types: 217
 
 **File:** `sim/tools/exhaustive-runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -910,6 +1018,10 @@ Total types: 217
 
 **File:** `sim/prng.ts`
 
+**Rust:** `src/prng.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -921,6 +1033,10 @@ Total types: 217
 ### RandomPlayerAI
 
 **File:** `sim/tools/random-player-ai.ts`
+
+**Rust:** *Not found*
+
+
 
 **Extends:** BattlePlayer
 
@@ -945,6 +1061,10 @@ Total types: 217
 
 **File:** `sim/tools/runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Extends:** BattleStreams.BattleStream
 
 **Fields:**
@@ -959,6 +1079,10 @@ Total types: 217
 
 **File:** `sim/tools/runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -971,6 +1095,10 @@ Total types: 217
 ### Side
 
 **File:** `sim/side.ts`
+
+**Rust:** `src/side.rs`
+
+
 
 **Fields:**
 
@@ -1060,6 +1188,10 @@ Total types: 217
 
 **File:** `sim/tools/exhaustive-runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly | Visibility |
@@ -1078,6 +1210,10 @@ Total types: 217
 ### Teams
 
 **File:** `sim/teams.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -1101,6 +1237,10 @@ Total types: 217
 ### TeamValidator
 
 **File:** `sim/team-validator.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -1162,11 +1302,19 @@ Total types: 217
 
 **File:** `sim/dex-abilities.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### AbilityEventMethods
 
 **File:** `sim/dex-abilities.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -1181,6 +1329,10 @@ Total types: 217
 ### AbilityFlags
 
 **File:** `sim/dex-abilities.ts`
+
+**Rust:** `src/event.rs`
+
+
 
 **Fields:**
 
@@ -1201,6 +1353,10 @@ Total types: 217
 
 **File:** `sim/battle-queue.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -1212,6 +1368,10 @@ Total types: 217
 ### ActiveMove
 
 **File:** `sim/dex-moves.ts`
+
+**Rust:** `src/battle_actions.rs`
+
+
 
 **Extends:** MutableMove
 
@@ -1261,6 +1421,10 @@ Total types: 217
 
 **File:** `sim/tools/runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -1277,17 +1441,29 @@ Total types: 217
 
 **File:** `sim/dex.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### AnyObject
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### Attacker
 
 **File:** `sim/pokemon.ts`
+
+**Rust:** `src/pokemon.rs`
+
+
 
 **Fields:**
 
@@ -1305,6 +1481,10 @@ Total types: 217
 ### BasicEffect
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/dex_data.rs`
+
+
 
 **Extends:** EffectData
 
@@ -1326,6 +1506,10 @@ Total types: 217
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -1338,6 +1522,10 @@ Total types: 217
 ### BattleOptions
 
 **File:** `sim/battle.ts`
+
+**Rust:** `src/battle.rs`
+
+
 
 **Fields:**
 
@@ -1364,6 +1552,10 @@ Total types: 217
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -1375,6 +1567,10 @@ Total types: 217
 ### Choice
 
 **File:** `sim/side.ts`
+
+**Rust:** `src/choice.rs`
+
+
 
 **Fields:**
 
@@ -1397,6 +1593,10 @@ Total types: 217
 ### ChosenAction
 
 **File:** `sim/side.ts`
+
+**Rust:** `src/side.rs`
+
+
 
 **Fields:**
 
@@ -1424,6 +1624,10 @@ Total types: 217
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -1449,11 +1653,19 @@ Total types: 217
 
 **File:** `sim/dex-conditions.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### ConditionTextData
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Extends:** BasicTextData
 
@@ -1480,6 +1692,10 @@ Total types: 217
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -1495,6 +1711,10 @@ Total types: 217
 ### DexTableData
 
 **File:** `sim/dex.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -1519,6 +1739,10 @@ Total types: 217
 
 **File:** `sim/side.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -1531,6 +1755,10 @@ Total types: 217
 ### EffectData
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/event_system.rs`
+
+
 
 **Fields:**
 
@@ -1551,6 +1779,10 @@ Total types: 217
 
 **File:** `sim/pokemon.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -1564,6 +1796,10 @@ Total types: 217
 ### EventInfo
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/battle.rs`
+
+
 
 **Fields:**
 
@@ -1592,6 +1828,10 @@ Total types: 217
 
 **File:** `sim/battle.ts`
 
+**Rust:** `src/battle.rs`
+
+
+
 **Extends:** EventListenerWithoutPriority
 
 **Fields:**
@@ -1609,6 +1849,10 @@ Total types: 217
 ### EventListenerWithoutPriority
 
 **File:** `sim/battle.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -1628,6 +1872,10 @@ Total types: 217
 ### EventMethods
 
 **File:** `sim/dex-conditions.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -2068,6 +2316,10 @@ Total types: 217
 
 **File:** `sim/tools/exhaustive-runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2086,6 +2338,10 @@ Total types: 217
 
 **File:** `sim/teams.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2098,6 +2354,10 @@ Total types: 217
 ### FactoryTeamDetails
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -2123,6 +2383,10 @@ Total types: 217
 
 **File:** `sim/battle-queue.ts`
 
+**Rust:** `src/battle_queue.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2137,6 +2401,10 @@ Total types: 217
 ### FieldEventMethods
 
 **File:** `sim/dex-conditions.ts`
+
+**Rust:** *Not found*
+
+
 
 **Extends:** EventMethods
 
@@ -2158,6 +2426,10 @@ Total types: 217
 
 **File:** `sim/dex-items.ts`
 
+**Rust:** `src/dex.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2173,11 +2445,19 @@ Total types: 217
 
 **File:** `sim/dex-formats.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### FormatSection
 
 **File:** `sim/dex-formats.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -2192,6 +2472,10 @@ Total types: 217
 ### GameTimerSettings
 
 **File:** `sim/dex-formats.ts`
+
+**Rust:** `src/data/formats.rs`
+
+
 
 **Fields:**
 
@@ -2213,6 +2497,10 @@ Total types: 217
 
 **File:** `sim/dex-moves.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2233,11 +2521,19 @@ Total types: 217
 
 **File:** `sim/dex-items.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### LearnsetData
 
 **File:** `sim/dex-species.ts`
+
+**Rust:** `src/dex.rs`
+
+
 
 **Fields:**
 
@@ -2255,17 +2551,29 @@ Total types: 217
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### ModdedAbilityDataTable
 
 **File:** `sim/dex-abilities.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### ModdedBattleActions
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -2357,6 +2665,10 @@ Total types: 217
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2419,6 +2731,10 @@ Total types: 217
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2438,11 +2754,19 @@ Total types: 217
 
 **File:** `sim/dex-conditions.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### ModdedFormatDataTable
 
 **File:** `sim/dex-formats.ts`
+
+**Rust:** *Not found*
+
+
 
 ---
 
@@ -2450,11 +2774,19 @@ Total types: 217
 
 **File:** `sim/dex-items.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### ModdedLearnsetDataTable
 
 **File:** `sim/dex-species.ts`
+
+**Rust:** *Not found*
+
+
 
 ---
 
@@ -2462,11 +2794,19 @@ Total types: 217
 
 **File:** `sim/dex-moves.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### ModdedSpeciesDataTable
 
 **File:** `sim/dex-species.ts`
+
+**Rust:** *Not found*
+
+
 
 ---
 
@@ -2474,17 +2814,29 @@ Total types: 217
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### ModdedTypeDataTable
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### MoveAction
 
 **File:** `sim/battle-queue.ts`
+
+**Rust:** `src/battle_queue.rs`
+
+
 
 **Fields:**
 
@@ -2510,6 +2862,10 @@ Total types: 217
 ### MoveData
 
 **File:** `sim/dex-moves.ts`
+
+**Rust:** `src/dex.rs`
+
+
 
 **Extends:** EffectData, MoveEventMethods, HitEffect
 
@@ -2598,11 +2954,19 @@ Total types: 217
 
 **File:** `sim/dex-moves.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### MoveEventMethods
 
 **File:** `sim/dex-moves.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -2648,6 +3012,10 @@ Total types: 217
 ### MoveFlags
 
 **File:** `sim/dex-moves.ts`
+
+**Rust:** `src/battle_actions.rs`
+
+
 
 **Fields:**
 
@@ -2697,6 +3065,10 @@ Total types: 217
 
 **File:** `sim/dex-moves.ts`
 
+**Rust:** `src/battle_actions.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2710,6 +3082,10 @@ Total types: 217
 ### MoveRequest
 
 **File:** `sim/side.ts`
+
+**Rust:** `src/choice.rs`
+
+
 
 **Fields:**
 
@@ -2730,6 +3106,10 @@ Total types: 217
 
 **File:** `sim/pokemon.ts`
 
+**Rust:** `src/pokemon.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2749,6 +3129,10 @@ Total types: 217
 ### MoveTextData
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Extends:** ConditionTextData
 
@@ -2780,6 +3164,10 @@ Total types: 217
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** `src/dex.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2794,11 +3182,19 @@ Total types: 217
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### PlayerOptions
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/battle.rs`
+
+
 
 **Fields:**
 
@@ -2816,6 +3212,10 @@ Total types: 217
 
 **File:** `sim/battle-queue.ts`
 
+**Rust:** `src/battle_queue.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2832,6 +3232,10 @@ Total types: 217
 ### PokemonEventMethods
 
 **File:** `sim/dex-conditions.ts`
+
+**Rust:** *Not found*
+
+
 
 **Extends:** EventMethods
 
@@ -2931,6 +3335,10 @@ Total types: 217
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -2944,11 +3352,19 @@ Total types: 217
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### PokemonMoveRequestData
 
 **File:** `sim/side.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -2973,6 +3389,10 @@ Total types: 217
 ### PokemonSet
 
 **File:** `sim/teams.ts`
+
+**Rust:** `src/pokemon.rs`
+
+
 
 **Fields:**
 
@@ -3002,6 +3422,10 @@ Total types: 217
 
 **File:** `sim/side.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3027,6 +3451,10 @@ Total types: 217
 
 **File:** `sim/tools/exhaustive-runner.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3041,6 +3469,10 @@ Total types: 217
 ### RandomDraftFactorySet
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -3069,6 +3501,10 @@ Total types: 217
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3095,6 +3531,10 @@ Total types: 217
 ### RandomSet
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -3123,6 +3563,10 @@ Total types: 217
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3139,6 +3583,10 @@ Total types: 217
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3152,11 +3600,19 @@ Total types: 217
 
 **File:** `sim/prng.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### RunnerOptions
 
 **File:** `sim/tools/runner.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -3179,6 +3635,10 @@ Total types: 217
 
 **File:** `sim/dex-moves.ts`
 
+**Rust:** `src/battle_actions.rs`
+
+
+
 **Extends:** HitEffect
 
 **Fields:**
@@ -3195,6 +3655,10 @@ Total types: 217
 ### SideEventMethods
 
 **File:** `sim/dex-conditions.ts`
+
+**Rust:** *Not found*
+
+
 
 **Extends:** EventMethods
 
@@ -3216,6 +3680,10 @@ Total types: 217
 
 **File:** `sim/side.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3230,6 +3698,10 @@ Total types: 217
 ### SpeciesAbility
 
 **File:** `sim/dex-species.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -3246,11 +3718,19 @@ Total types: 217
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### SpeciesFormatsData
 
 **File:** `sim/dex-species.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -3268,11 +3748,19 @@ Total types: 217
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### SwitchAction
 
 **File:** `sim/battle-queue.ts`
+
+**Rust:** `src/battle_queue.rs`
+
+
 
 **Fields:**
 
@@ -3292,6 +3780,10 @@ Total types: 217
 
 **File:** `sim/side.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3309,6 +3801,10 @@ Total types: 217
 
 **File:** `sim/battle-queue.ts`
 
+**Rust:** `src/battle_queue.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3324,6 +3820,10 @@ Total types: 217
 ### TeamDetails
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -3354,6 +3854,10 @@ Total types: 217
 
 **File:** `sim/side.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3371,6 +3875,10 @@ Total types: 217
 
 **File:** `sim/dex.ts`
 
+**Rust:** *Not found*
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3387,6 +3895,10 @@ Total types: 217
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** `src/dex.rs`
+
+
+
 **Fields:**
 
 | Name | Type | Optional | Readonly |
@@ -3402,11 +3914,19 @@ Total types: 217
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** *Not found*
+
+
+
 ---
 
 ### WaitRequest
 
 **File:** `sim/side.ts`
+
+**Rust:** *Not found*
+
+
 
 **Fields:**
 
@@ -3426,6 +3946,10 @@ Total types: 217
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 import('./dex-abilities').Ability
@@ -3436,6 +3960,10 @@ import('./dex-abilities').Ability
 ### AbilityText
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3453,6 +3981,10 @@ TextFile<ConditionTextData & {
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/battle_queue.rs`
+
+
+
 **Definition:**
 ```typescript
 import('./battle-queue').Action
@@ -3463,6 +3995,10 @@ import('./battle-queue').Action
 ### ActionChoice
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3475,6 +4011,10 @@ import('./battle-queue').ActionChoice
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/battle_actions.rs`
+
+
+
 **Definition:**
 ```typescript
 import('./dex-moves').ActiveMove
@@ -3485,6 +4025,10 @@ import('./dex-moves').ActiveMove
 ### Battle
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/battle.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -3497,6 +4041,10 @@ import('./battle').Battle
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/battle_actions.rs`
+
+
+
 **Definition:**
 ```typescript
 import('./battle-actions').BattleActions
@@ -3507,6 +4055,10 @@ import('./battle-actions').BattleActions
 ### BattleQueue
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/battle_queue.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -3519,6 +4071,10 @@ import('./battle-queue').BattleQueue
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Definition:**
 ```typescript
 StatIDExceptHP | 'accuracy' | 'evasion'
@@ -3529,6 +4085,10 @@ StatIDExceptHP | 'accuracy' | 'evasion'
 ### BoostsTable
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/dex_data.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -3541,6 +4101,10 @@ StatIDExceptHP | 'accuracy' | 'evasion'
 
 **File:** `sim/battle.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 0 | 1 | 2 | 3 | 4
@@ -3551,6 +4115,10 @@ StatIDExceptHP | 'accuracy' | 'evasion'
 ### ChoiceRequest
 
 **File:** `sim/side.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3563,6 +4131,10 @@ SwitchRequest | TeamPreviewRequest | MoveRequest | WaitRequest
 
 **File:** `sim/dex-formats.ts`
 
+**Rust:** `src/data/formats.rs`
+
+
+
 **Definition:**
 ```typescript
 [string, string, number, string[]]
@@ -3573,6 +4145,10 @@ SwitchRequest | TeamPreviewRequest | MoveRequest | WaitRequest
 ### ComplexTeamBan
 
 **File:** `sim/dex-formats.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3585,6 +4161,10 @@ ComplexBan
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 import('./dex-conditions').Condition
@@ -3596,6 +4176,10 @@ import('./dex-conditions').Condition
 
 **File:** `sim/dex-conditions.ts`
 
+**Rust:** `src/dex.rs`
+
+
+
 **Definition:**
 ```typescript
 PokemonConditionData | SideConditionData | FieldConditionData
@@ -3606,6 +4190,10 @@ PokemonConditionData | SideConditionData | FieldConditionData
 ### DataType
 
 **File:** `sim/dex.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3619,6 +4207,10 @@ PokemonConditionData | SideConditionData | FieldConditionData
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 AnyObject
@@ -3629,6 +4221,10 @@ AnyObject
 ### Doubles
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3641,6 +4237,10 @@ AnyObject
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 Ability | Item | ActiveMove | Species | Condition | Format
@@ -3651,6 +4251,10 @@ Ability | Item | ActiveMove | Species | Condition | Format
 ### EffectType
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/battle.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -3664,6 +4268,10 @@ Ability | Item | ActiveMove | Species | Condition | Format
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/field.rs`
+
+
+
 **Definition:**
 ```typescript
 import('./field').Field
@@ -3674,6 +4282,10 @@ import('./field').Field
 ### Format
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/data/formats.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -3686,6 +4298,10 @@ import('./dex-formats').Format
 
 **File:** `sim/dex-formats.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 'Format' | 'Ruleset' | 'Rule' | 'ValidatorRule'
@@ -3696,6 +4312,10 @@ import('./dex-formats').Format
 ### FormatList
 
 **File:** `sim/dex-formats.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3708,6 +4328,10 @@ import('./dex-formats').Format
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/data/formats.rs`
+
+
+
 **Definition:**
 ```typescript
 'singles' | 'doubles' | 'triples' | 'rotation' | 'multi' | 'freeforall'
@@ -3718,6 +4342,10 @@ import('./dex-formats').Format
 ### Gen3RNGSeed
 
 **File:** `sim/prng.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3730,6 +4358,10 @@ import('./dex-formats').Format
 
 **File:** `sim/prng.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 [number, number, number, number]
@@ -3740,6 +4372,10 @@ import('./dex-formats').Format
 ### GenderName
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3752,6 +4388,10 @@ import('./dex-formats').Format
 
 **File:** `sim/dex.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 import('./dex-moves').HitEffect
@@ -3762,6 +4402,10 @@ import('./dex-moves').HitEffect
 ### ID
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3774,6 +4418,10 @@ import('./dex-moves').HitEffect
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 Lowercase<string>
@@ -3784,6 +4432,10 @@ Lowercase<string>
 ### Item
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3796,6 +4448,10 @@ import('./dex-items').Item
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 TextFile<ConditionTextData>
@@ -3806,6 +4462,10 @@ TextFile<ConditionTextData>
 ### ModdedAbilityData
 
 **File:** `sim/dex-abilities.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3818,6 +4478,10 @@ AbilityData | Partial<AbilityData> & { inherit: true }
 
 **File:** `sim/dex-conditions.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 ConditionData & { inherit?: true }
@@ -3828,6 +4492,10 @@ ConditionData & { inherit?: true }
 ### ModdedDex
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3840,6 +4508,10 @@ import('./dex').ModdedDex
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 EffectData | Partial<EffectData> & { inherit: true }
@@ -3851,6 +4523,10 @@ EffectData | Partial<EffectData> & { inherit: true }
 
 **File:** `sim/dex-formats.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 FormatData | Omit<FormatData, 'name'> & { inherit: true }
@@ -3861,6 +4537,10 @@ FormatData | Omit<FormatData, 'name'> & { inherit: true }
 ### ModdedItemData
 
 **File:** `sim/dex-items.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3876,6 +4556,10 @@ ItemData | Partial<Omit<ItemData, 'name'>> & {
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 LearnsetData & { inherit?: true }
@@ -3886,6 +4570,10 @@ LearnsetData & { inherit?: true }
 ### ModdedMoveData
 
 **File:** `sim/dex-moves.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3905,6 +4593,10 @@ MoveData | Partial<Omit<MoveData, 'name'>> & {
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 NatureData | Partial<Omit<NatureData, 'name'>> & { inherit: true }
@@ -3915,6 +4607,10 @@ NatureData | Partial<Omit<NatureData, 'name'>> & { inherit: true }
 ### ModdedSpeciesData
 
 **File:** `sim/dex-species.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3929,6 +4625,10 @@ SpeciesData | CosmeticFormeData |
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 SpeciesFormatsData & { inherit?: true }
@@ -3939,6 +4639,10 @@ SpeciesFormatsData & { inherit?: true }
 ### ModdedTypeData
 
 **File:** `sim/dex-data.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3951,6 +4655,10 @@ TypeData | Partial<Omit<TypeData, 'name'>> & { inherit: true }
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 import('./dex-moves').Move
@@ -3961,6 +4669,10 @@ import('./dex-moves').Move
 ### MoveAction
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/battle_queue.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -3973,6 +4685,10 @@ import('./battle-queue').MoveAction
 
 **File:** `sim/dex-moves.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 'Physical' | 'Special' | 'Status'
@@ -3983,6 +4699,10 @@ import('./battle-queue').MoveAction
 ### MoveSource
 
 **File:** `sim/dex-species.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -3999,6 +4719,10 @@ import('./battle-queue').MoveAction
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Definition:**
 ```typescript
 import('./dex-moves').MoveTarget
@@ -4009,6 +4733,10 @@ import('./dex-moves').MoveTarget
 ### MoveText
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4021,6 +4749,10 @@ TextFile<MoveTextData>
 
 **File:** `sim/dex-moves.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 BasicEffect & MoveData
@@ -4031,6 +4763,10 @@ BasicEffect & MoveData
 ### Nature
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/dex_data.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -4043,6 +4779,10 @@ import('./dex-data').Nature
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Definition:**
 ```typescript
 'Past' | 'Future' | 'Unobtainable' | 'CAP' | 'LGPE' | 'Custom' | 'Gigantamax'
@@ -4053,6 +4793,10 @@ import('./dex-data').Nature
 ### Other
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4065,6 +4809,10 @@ import('./dex-data').Nature
 
 **File:** `sim/battle.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 string | number | boolean | Pokemon | Side | Effect | Move | null | undefined
@@ -4075,6 +4823,10 @@ string | number | boolean | Pokemon | Side | Effect | Move | null | undefined
 ### PokedexText
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4087,6 +4839,10 @@ TextFile<BasicTextData>
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/pokemon.rs`
+
+
+
 **Definition:**
 ```typescript
 import('./pokemon').Pokemon
@@ -4097,6 +4853,10 @@ import('./pokemon').Pokemon
 ### PokemonSet
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/pokemon.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -4109,6 +4869,10 @@ import('./teams').PokemonSet
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 '' | IDEntry & { __isSlot: true }
@@ -4119,6 +4883,10 @@ import('./teams').PokemonSet
 ### PokemonSource
 
 **File:** `sim/team-validator.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4131,6 +4899,10 @@ string
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 import('./team-validator').PokemonSources
@@ -4141,6 +4913,10 @@ import('./team-validator').PokemonSources
 ### PRNGSeed
 
 **File:** `sim/prng.ts`
+
+**Rust:** `src/prng.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -4153,6 +4929,10 @@ import('./team-validator').PokemonSources
 
 **File:** `sim/state.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 Battle | Field | Side | Pokemon | Condition | Ability | Item | Move | Species
@@ -4164,6 +4944,10 @@ Battle | Field | Side | Pokemon | Condition | Ability | Item | Move | Species
 
 **File:** `sim/battle.ts`
 
+**Rust:** `src/side.rs`
+
+
+
 **Definition:**
 ```typescript
 'teampreview' | 'move' | 'switch' | ''
@@ -4174,6 +4958,10 @@ Battle | Field | Side | Pokemon | Condition | Ability | Item | Move | Species
 ### Role
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4190,6 +4978,10 @@ Battle | Field | Side | Pokemon | Condition | Ability | Item | Move | Species
 
 **File:** `sim/dex.ts`
 
+**Rust:** `src/data/formats.rs`
+
+
+
 **Definition:**
 ```typescript
 import('./dex-formats').RuleTable
@@ -4200,6 +4992,10 @@ import('./dex-formats').RuleTable
 ### SecondaryEffect
 
 **File:** `sim/dex.ts`
+
+**Rust:** `src/battle_actions.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -4212,6 +5008,10 @@ import('./dex-moves').SecondaryEffect
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/side.rs`
+
+
+
 **Definition:**
 ```typescript
 import('./side').Side
@@ -4223,6 +5023,10 @@ import('./side').Side
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Definition:**
 ```typescript
 'p1' | 'p2' | 'p3' | 'p4'
@@ -4233,6 +5037,10 @@ import('./side').Side
 ### Singles
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4246,6 +5054,10 @@ import('./side').Side
 
 **File:** `sim/prng.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 ['sodium', string]
@@ -4256,6 +5068,10 @@ import('./side').Side
 ### SparseBoostsTable
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4268,6 +5084,10 @@ Partial<BoostsTable>
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 Partial<StatsTable>
@@ -4278,6 +5098,10 @@ Partial<StatsTable>
 ### Species
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4290,6 +5114,10 @@ import('./dex-species').Species
 
 **File:** `sim/dex-species.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 "Mythical" | "Restricted Legendary" | "Sub-Legendary" | "Ultra Beast" | "Paradox"
@@ -4300,6 +5128,10 @@ import('./dex-species').Species
 ### SpreadMoveDamage
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/battle_actions.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -4312,6 +5144,10 @@ import('./dex-species').Species
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/battle_actions.rs`
+
+
+
 **Definition:**
 ```typescript
 (Pokemon | false | null)[]
@@ -4322,6 +5158,10 @@ import('./dex-species').Species
 ### StatID
 
 **File:** `sim/global-types.ts`
+
+**Rust:** `src/dex_data.rs`
+
+
 
 **Definition:**
 ```typescript
@@ -4334,6 +5174,10 @@ import('./dex-species').Species
 
 **File:** `sim/global-types.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 'atk' | 'def' | 'spa' | 'spd' | 'spe'
@@ -4344,6 +5188,10 @@ import('./dex-species').Species
 ### StatsExceptHPTable
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4356,6 +5204,10 @@ import('./dex-species').Species
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Definition:**
 ```typescript
 { [stat in StatID]: number }
@@ -4366,6 +5218,10 @@ import('./dex-species').Species
 ### TeamValidator
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript
@@ -4378,6 +5234,10 @@ import('./team-validator').TeamValidator
 
 **File:** `sim/global-types.ts`
 
+**Rust:** `src/dex_data.rs`
+
+
+
 **Definition:**
 ```typescript
 import('./dex-data').TypeInfo
@@ -4389,6 +5249,10 @@ import('./dex-data').TypeInfo
 
 **File:** `sim/dex-data.ts`
 
+**Rust:** *Not found*
+
+
+
 **Definition:**
 ```typescript
 'Type' | 'EffectType'
@@ -4399,6 +5263,10 @@ import('./dex-data').TypeInfo
 ### ZMoveOptions
 
 **File:** `sim/global-types.ts`
+
+**Rust:** *Not found*
+
+
 
 **Definition:**
 ```typescript

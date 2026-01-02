@@ -7,6 +7,12 @@ use crate::dex_data::ID;
 
 /// Helper struct for species lookups
 /// Equivalent to DexSpecies class in TypeScript
+/// JavaScript equivalent: DexSpecies (sim/dex-species.ts)
+/// 21 fields in JavaScript
+/// JavaScript equivalent: DexSpecies (sim/dex-species.ts)
+/// 21 fields in JavaScript
+/// JavaScript equivalent: DexSpecies (sim/dex-species.ts)
+/// 21 fields in JavaScript
 pub struct DexSpecies<'a> {
     pub(crate) dex: &'a Dex,
 }

@@ -46,6 +46,9 @@ mod splice;
 
 /// Move action
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: MoveAction (sim/battle-queue.ts)
+/// 14 fields in JavaScript
+/// JavaScript equivalent: MoveAction (sim/global-types.ts)
 pub struct MoveAction {
     /// Action type
     pub choice: MoveActionType,
@@ -102,6 +105,12 @@ pub enum MoveActionType {
 
 /// Switch action
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: SwitchAction (sim/battle-queue.ts)
+/// 7 fields in JavaScript
+/// JavaScript equivalent: SwitchAction (sim/battle-queue.ts)
+/// 7 fields in JavaScript
+/// JavaScript equivalent: SwitchAction (sim/battle-queue.ts)
+/// 7 fields in JavaScript
 pub struct SwitchAction {
     /// Action type
     pub choice: SwitchActionType,
@@ -134,6 +143,12 @@ pub enum SwitchActionType {
 
 /// Team preview choice action
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: TeamAction (sim/battle-queue.ts)
+/// Fields: choice, priority, speed, pokemon, index
+/// JavaScript equivalent: TeamAction (sim/battle-queue.ts)
+/// Fields: choice, priority, speed, pokemon, index
+/// JavaScript equivalent: TeamAction (sim/battle-queue.ts)
+/// Fields: choice, priority, speed, pokemon, index
 pub struct TeamAction {
     /// Priority (negative index for team actions)
     pub priority: i8,
@@ -153,6 +168,12 @@ pub struct TeamAction {
 
 /// Field action (not done by a pokemon)
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: FieldAction (sim/battle-queue.ts)
+/// Fields: choice, priority, speed, pokemon
+/// JavaScript equivalent: FieldAction (sim/battle-queue.ts)
+/// Fields: choice, priority, speed, pokemon
+/// JavaScript equivalent: FieldAction (sim/battle-queue.ts)
+/// Fields: choice, priority, speed, pokemon
 pub struct FieldAction {
     /// Action type
     pub choice: FieldActionType,
@@ -174,6 +195,12 @@ pub enum FieldActionType {
 
 /// Pokemon action (misc actions by a single pokemon)
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: PokemonAction (sim/battle-queue.ts)
+/// 6 fields in JavaScript
+/// JavaScript equivalent: PokemonAction (sim/battle-queue.ts)
+/// 6 fields in JavaScript
+/// JavaScript equivalent: PokemonAction (sim/battle-queue.ts)
+/// 6 fields in JavaScript
 pub struct PokemonAction {
     /// Action type
     pub choice: PokemonActionType,
@@ -212,6 +239,7 @@ pub enum PokemonActionType {
 
 /// All possible actions
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: Action (sim/global-types.ts)
 pub enum Action {
     Move(MoveAction),
     Switch(SwitchAction),
@@ -361,6 +389,9 @@ impl Action {
 
 /// The battle queue - manages the order of actions in a turn
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// JavaScript equivalent: BattleQueue (sim/battle-queue.ts)
+/// 32 fields in JavaScript
+/// JavaScript equivalent: BattleQueue (sim/global-types.ts)
 pub struct BattleQueue {
     /// List of actions
     pub list: Vec<Action>,
