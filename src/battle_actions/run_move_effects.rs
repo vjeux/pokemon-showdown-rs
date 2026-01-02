@@ -176,6 +176,7 @@ pub fn run_move_effects(
                     if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
                         let mut state = crate::event_system::EffectState::new(volatile_id.clone());
                         state.duration = final_duration;
+                        state.target = Some(target_pos);
                         state.source_slot = Some(_source_pos.1);
 
                         pokemon.volatiles.insert(volatile_id.clone(), state);

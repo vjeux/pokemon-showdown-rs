@@ -508,6 +508,7 @@ pub fn spread_move_hit(
                             if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
                                 let mut state = crate::event_system::EffectState::new(volatile_id.clone());
                                 state.duration = final_duration;
+                                state.target = Some(target_pos);
 
                                 pokemon.volatiles.insert(volatile_id, state);
                                 eprintln!("[SPREAD_MOVE_HIT T{}] Successfully added volatile '{}' with duration {:?}",
