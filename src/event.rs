@@ -10,6 +10,8 @@ use crate::dex_data::ID;
 use serde::{Deserialize, Serialize};
 
 /// Event types that can be dispatched
+/// TODO: Not in JavaScript - Rust-specific enum for event type constants
+/// JavaScript uses string literals for event names
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum EventType {
     // Move execution events
@@ -107,6 +109,8 @@ pub enum EventType {
 }
 
 /// Effect types that can have handlers
+/// TODO: Not in JavaScript - Rust-specific enum for effect type constants
+/// JavaScript uses string literals for effect types ('Ability', 'Item', 'Move', etc.)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum EffectType {
     Move,
@@ -122,6 +126,8 @@ pub enum EffectType {
 }
 
 /// Result from an event handler
+/// TODO: Not in JavaScript - Rust-specific enum for event handler return values
+/// JavaScript event handlers return various types directly (undefined, null, number, string, boolean, etc.)
 #[derive(Debug, Clone, Default)]
 pub enum EventResult {
     /// Continue to next handler, no modification
