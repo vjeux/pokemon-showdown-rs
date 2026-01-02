@@ -248,6 +248,8 @@ pub struct Pokemon {
     // Stats
     pub base_stored_stats: StatsTable,
     pub stored_stats: StatsTable,
+    pub evs: StatsTable, // Effort Values (for getCombatPower and other calculations)
+    pub ivs: StatsTable, // Individual Values (for getCombatPower and other calculations)
     pub boosts: BoostsTable,
     pub maxhp: i32,
     pub base_maxhp: i32,
