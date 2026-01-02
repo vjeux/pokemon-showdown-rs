@@ -111,15 +111,29 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - **Result**: Matches JavaScript logic flow (infrastructure-limited for format handlers)
 - **Commit**: 20fce3f7
 
+**Fourth Implementation: find_field_event_handlers.rs** ✅
+- **Issue**: Stub returning `Vec<(ID, Option<(usize, usize)>)>` (wrong return type), should return `EventListener[]`
+- **Action**: Implemented 1:1 logic flow matching JavaScript
+  - Returns `Vec<EventListener>` (correct type)
+  - Implements loops for pseudoWeather, weather, and terrain
+  - Added TODOs for resolve_priority calls, getCallback architectural difference, field state type conversion
+- **Side Effects**:
+  - Updated field_event.rs call site to use new signature
+  - Updated find_event_handlers.rs to define prefixed_event before use
+  - **Added `Terrain` variant to EffectType enum** to match JavaScript (infrastructure fix)
+- **Result**: Matches JavaScript logic flow (infrastructure-limited for state and priority)
+- **Commit**: a4d9e90c
+
 **Progress:**
-- Files completed: 3
-- Files remaining: 148
-- TODOs resolved: 1 (find_battle_event_handlers stub)
-- New TODOs added: 3 (infrastructure-dependent in find_battle_event_handlers.rs)
-- Current TODO count: ~195
+- Files completed: 4
+- Files remaining: 147
+- TODOs resolved: 1 (find_field_event_handlers stub)
+- New TODOs added: 4 (infrastructure-dependent in find_field_event_handlers.rs)
+- Infrastructure fixes: 1 (added Terrain to EffectType)
+- Current TODO count: ~198
 
 **Next Steps:**
-1. Implement remaining Category A stubs (find_field/pokemon/side_event_handlers)
+1. Implement remaining Category A stubs (find_pokemon/side_event_handlers)
 2. Fix Category B partial implementations
 3. Verify Category D clean files
 
