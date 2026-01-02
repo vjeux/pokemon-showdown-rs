@@ -531,11 +531,12 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now ~70% complete (was ~30%)
 
 #### transform_into.rs
-- Status: ✅ Fixed (Partially Implemented)
+- Status: ✅ Fixed (Partially Implemented - Session 24 Part 13)
 - Issue: Missing Stellar tera check and many other JS features
-- Action: Implemented Stellar Terastallization check, documented remaining missing pieces
+- Action: Implemented Stellar Terastallization check, timesAttacked copying, documented remaining missing pieces
 - Notes:
   - ✅ NOW IMPLEMENTED: Stellar tera check (prevents Transform when Stellar Terastallized)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 13): timesAttacked copying from target Pokemon
   - Missing illusion checks on both pokemon
   - Missing gen checks for substitute, transformed states
   - Missing Eternatus-Eternamax check
@@ -546,7 +547,6 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing knownType, apparentType field assignments (fields don't exist)
   - Missing modifiedStats copying for Gen 1
   - Missing hpType/hpPower conditional copying based on gen
-  - Missing timesAttacked copying (field doesn't exist)
   - Missing Hidden Power move name formatting with hpType
   - Missing gen check for PP/maxpp calculation
   - Missing Gen 6+ crit volatile copying (dragoncheer, focusenergy, gmaxchistrike, laserfocus)
@@ -1808,6 +1808,34 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 100 files modified (1 pokemon method + 99 callsites across battle_actions, item_callbacks, ability_callbacks, move_callbacks)
   - 1 parameter added (linked_status: Option<ID>)
   - ~70 lines of implementation code (bidirectional linking logic)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 13 - 2026-01-01 (transform_into timesAttacked Copying - COMPLETED)
+- **Goal**: Add timesAttacked field copying in transform_into (field exists but was not being copied)
+- **Completed**:
+  - ✅ Added target_times_attacked to Phase 1 immutable extraction
+  - ✅ Implemented copying: `self_pokemon_mut.times_attacked = target_times_attacked;`
+  - ✅ Updated documentation comment from "field doesn't exist" to "NOW IMPLEMENTED"
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - transform_into.rs - Now ~72% complete (was ~70%)
+    - ✅ NOW IMPLEMENTED: timesAttacked copying from target Pokemon
+    - JavaScript: `this.timesAttacked = pokemon.timesAttacked;`
+    - Rust: `self_pokemon_mut.times_attacked = target_times_attacked;`
+    - Perfect 1-to-1 match!
+- **Technical Details**:
+  - Field was documented as "doesn't exist in Rust" but actually exists as `pub times_attacked: i32` in Pokemon struct
+  - Adds to Phase 1 extraction tuple (12 values now)
+  - Simple assignment in Phase 3 after mutable borrow
+  - Used for tracking number of times Pokemon was attacked this turn
+- **Session Statistics**:
+  - 1 method improved (transform_into.rs)
+  - 1 feature implemented (timesAttacked copying)
+  - 1 file modified (pokemon/transform_into.rs)
+  - 4 lines changed (2 insertions, 2 deletions)
   - 1 commit pushed to git
   - 100% compilation success rate
 
