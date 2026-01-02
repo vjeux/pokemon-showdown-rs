@@ -191,7 +191,7 @@ impl Battle {
                 unsafe {
                     let pokemon = &mut self.sides[side_idx].pokemon[poke_idx] as *mut Pokemon;
                     let battle = self as *mut Battle;
-                    (*pokemon).clear_volatile_full(&mut *battle, false);
+                    (*pokemon).clear_volatile(&mut *battle, false);
                 }
 
                 // JS: pokemon.fainted = true;

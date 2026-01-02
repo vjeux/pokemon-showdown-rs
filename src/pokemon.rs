@@ -118,7 +118,7 @@ mod run_effectiveness;
 mod run_immunity;
 mod run_status_immunity;
 mod remove_linked_volatiles;
-mod clear_volatile_full;
+mod clear_volatile;
 mod get_nature;
 mod get_status;
 mod destroy;

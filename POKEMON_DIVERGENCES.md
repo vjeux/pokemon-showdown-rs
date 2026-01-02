@@ -17,24 +17,28 @@ This document tracks divergences between the JavaScript and Rust implementations
 ### High Priority - Missing Core Methods
 
 #### adjacentAllies.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: Empty TODO stub, needs full implementation
 - JS Source: Available in file
+- Fix: Implemented proper adjacency filtering with multi-battle support
 
 #### adjacentFoes.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: Empty TODO stub, needs full implementation
 - JS Source: Available in file
+- Fix: Implemented with activePerHalf check for singles/doubles optimization
 
 #### allies.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: Empty TODO stub, needs full implementation
 - JS Source: Available in file
+- Fix: Implemented to return all active teammates except self
 
 #### alliesAndSelf.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: Empty TODO stub, needs full implementation
 - JS Source: Available in file
+- Fix: Implemented to return all active teammates including self
 
 #### clearVolatile.rs
 - Status: ❌ Not Started
@@ -42,36 +46,37 @@ This document tracks divergences between the JavaScript and Rust implementations
 - JS Source: Available in file
 
 #### foes.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: Empty TODO stub, needs full implementation
 - JS Source: Available in file
+- Fix: Implemented with FreeForAll and standard game type support
 
 ### Medium Priority - Stub Implementations
 
 #### adjacent_allies_stub.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed (Deleted)
 - Issue: Uses simplified logic, should use battle.side.allies()
-- Note: Marked as "NOT in JavaScript" but should match JS logic
+- Note: Consolidated into adjacent_allies.rs
 
 #### adjacent_foes_stub.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed (Deleted)
 - Issue: Uses simplified logic, should use battle.side.foes()
-- Note: Marked as "NOT in JavaScript" but should match JS logic
+- Note: Consolidated into adjacent_foes.rs
 
 #### allies_stub.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed (Deleted)
 - Issue: Stub implementation exists, needs proper method
-- Note: Marked as "NOT in JavaScript"
+- Note: Consolidated into allies.rs
 
 #### allies_and_self_stub.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed (Deleted)
 - Issue: Stub implementation exists, needs proper method
-- Note: Marked as "NOT in JavaScript"
+- Note: Consolidated into allies_and_self.rs
 
 #### foes_stub.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed (Deleted)
 - Issue: Stub implementation exists, needs proper method
-- Note: Marked as "NOT in JavaScript"
+- Note: Consolidated into foes.rs
 
 ### Low Priority - Partial Implementations
 
@@ -173,10 +178,22 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 
 ## Progress Tracking
 
-### Session 1 - [Date]
+### Session 1 - 2026-01-01
 - Created tracking document
 - Identified 120 TODOs/NOTEs
 - Categorized by priority
+- **Completed**:
+  - ✅ Implemented allies.rs (returns teammates except self)
+  - ✅ Implemented allies_and_self.rs (returns all teammates including self)
+  - ✅ Implemented adjacent_allies.rs (returns adjacent teammates with multi-battle support)
+  - ✅ Implemented adjacent_foes.rs (returns adjacent foes with activePerHalf optimization)
+  - ✅ Implemented foes.rs (returns enemy pokemon with FreeForAll support)
+  - ✅ Deleted 5 _stub files that were consolidated
+  - ✅ Fixed src/dex/mod.rs compilation conflict (sync script error)
+  - ✅ Updated pokemon.rs mod declarations
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed: "Consolidate pokemon helper methods and fix dex/mod.rs conflict"
+- **Next**: Continue with Low Priority partial implementations (add_volatile, boost_by, calculate_stat, etc.)
 
 ### Session 2 - [Date]
 - TBD
