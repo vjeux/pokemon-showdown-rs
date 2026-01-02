@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event_system::EffectState;
 
 impl Pokemon {
 
@@ -100,7 +101,19 @@ impl Pokemon {
         // Note: Missing runEvent('UseItem') and runEvent('TryEatItem') (needs event system infrastructure)
 
         // JS: this.battle.add('-enditem', this, item, '[eat]');
-        // Note: Missing battle.add message (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 51): battle.add message for eating items
+        // Prepare message arguments (extract data, then drop borrows before battle.add call)
+        let message_args: Vec<Arg> = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return None,
+            };
+            let pokemon_str = format!("{}", pokemon);
+            let item_str = item_id.to_string();
+            vec![Arg::String(pokemon_str), Arg::String(item_str), Arg::String("[eat]".to_string())]
+        };
+        // All borrows dropped - now safe to call battle.add
+        battle.add("-enditem", &message_args);
 
         // JS: this.battle.singleEvent('Eat', item, this.itemState, this, source, sourceEffect);
         // JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
@@ -119,29 +132,32 @@ impl Pokemon {
         // JS: }
         // Note: Missing RESTORATIVE_BERRIES staleness logic (needs constant and staleness field checks)
 
+        // Phase 2: Mutate pokemon to consume item
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return None,
+        };
+
         // JS: this.lastItem = this.item;
+        pokemon_mut.last_item = item_id.clone();
+
         // JS: this.item = '';
+        pokemon_mut.item = ID::empty();
+
         // JS: this.battle.clearEffectState(this.itemState);
+        pokemon_mut.item_state = EffectState::new(ID::empty());
+
         // JS: this.usedItemThisTurn = true;
+        pokemon_mut.used_item_this_turn = true;
+
         // JS: this.ateBerry = true;
-        // ✅ NOW IMPLEMENTED: lastItem, usedItemThisTurn, ateBerry tracking
-
-        // Call Pokemon::use_item() which handles lastItem and usedItemThisTurn
-        // ✅ NOW IMPLEMENTED (Session 24 Part 49): Call refactored associated function
-        let result = Pokemon::use_item(battle, pokemon_pos, _source_pos, _source_effect);
-
-        // Additionally set ateBerry = true (specific to eating)
-        if result.is_some() {
-            let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return result,
-            };
-            pokemon_mut.ate_berry = true;
-        }
+        // ✅ NOW IMPLEMENTED: ateBerry tracking (specific to eat_item)
+        pokemon_mut.ate_berry = true;
 
         // JS: this.battle.runEvent('AfterUseItem', this, null, null, item);
         // Note: Missing runEvent('AfterUseItem') (needs event system infrastructure)
 
-        result
+        // JS: return true;
+        Some(item_id)
     }
 }
