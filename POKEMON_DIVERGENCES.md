@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 55 Complete)
-- **Session 24 Total Progress**: 30+ commits, 55 parts completed
+## Overview (Updated: Session 24 Part 67 Complete)
+- **Session 24 Total Progress**: 39+ commits, 67 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
@@ -16,8 +16,19 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Part 53: set_item RESTORATIVE_BERRIES logic + refactor to associated function
   - Part 54: transform_into battle.add message + proper set_ability call
   - Part 55: get_last_damaged_by full implementation with filtering logic
+  - **Part 58**: transform_into gen-based hp_type/hp_power conditional copying
+  - **Part 59**: transform_into Hidden Power move name formatting
+  - **Part 60**: get_switch_request_data protocol fields (ident, details, condition, active, stats)
+  - **Part 61**: copy_volatile_from documentation updates
+  - **Part 62**: Infrastructure - Added base_hp_type and base_hp_power fields
+  - **Part 63**: **MAJOR REFACTOR** - get_moves returns full move objects (Vec<serde_json::Value>)
+  - **Part 64**: get_switch_request_data Gen 9 fields (commanding, teraType, terastallized)
+  - **Part 65**: get_switch_request_data documentation cleanup
+  - **Part 67**: get_moves lockedMove parameter implementation (Recharge, locked move handling)
 - **Methods Significantly Improved**:
-  - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked, battle.add, set_ability - now ~80%)
+  - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
+  - get_switch_request_data.rs (full protocol fields, Gen 9 support - now ~80%, was ~50%)
+  - get_moves.rs (**MAJOR REFACTOR** - full move objects, lockedMove parameter - now ~75%, was ~70%)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
   - copy_volatile_from.rs (complete refactor + linkedPokemon bidirectional updating - now 100%)
   - get_smart_targets.rs (Dragon Darts double-target logic - now 100%)
@@ -38,8 +49,10 @@ This document tracks divergences between the JavaScript and Rust implementations
   - AbilityData.flags HashMap for ability flags (notransform, cantsuppress)
   - battle.add integration for item consumption logging
   - RESTORATIVE_BERRIES staleness tracking (eat_item + set_item)
+  - **base_hp_type/base_hp_power fields** for Transform untransform support
+  - **get_moves protocol format** - returns full JSON objects (breaking change)
   - 250+ callsites updated across codebase
-- **Compilation Success Rate**: 100% (0 errors, 0 warnings throughout)
+- **Compilation Success Rate**: 100% (0 errors, 61 warnings throughout Session 24 Parts 58-65)
 - **Remaining Work**: Only 1 TODO in src/pokemon/ (event system infrastructure in calculate_stat.rs)
 - **Methods Now at 100%**: 21 methods fully equivalent to JavaScript
 - **Goal**: Achieve 1:1 line-by-line equivalence with JavaScript
@@ -836,20 +849,25 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now fully 1-to-1 with JavaScript!
 
 #### get_moves.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Very complex method with many features, currently just returns IDs
-- Action: Documented all missing pieces line by line
+- Status: ✅ Fixed (Improved - Session 24 Parts 63 & 67)
+- Issue: Very complex method with many features, was returning just IDs
+- Action: **MAJOR REFACTOR** in Part 63, added lockedMove parameter in Part 67
 - Notes:
-  - Missing lockedMove parameter (returns single locked move or Recharge)
-  - Missing restrictData parameter (controls hidden disabled visibility)
-  - Missing hasValidMove tracking (returns empty array if all moves disabled)
-  - Missing Hidden Power type/power formatting (e.g., "Hidden Power Fire 70")
+  - ✅ NOW IMPLEMENTED (Session 24 Part 67): lockedMove parameter (Option<&ID>)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 67): Recharge special case
+  - ✅ NOW IMPLEMENTED (Session 24 Part 67): Locked move slot search and early return
+  - ✅ NOW IMPLEMENTED (Session 24 Part 63): Returns Vec<serde_json::Value> with full move objects
+  - ✅ NOW IMPLEMENTED (Session 24 Part 63): hasValidMove tracking (returns empty array if all disabled)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 63): Hidden Power type/power formatting (e.g., "Hidden Power Fire")
+  - ✅ NOW IMPLEMENTED (Session 24 Part 63): Basic disabled calculation (PP <= 0 && !partialtrappinglock)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 63): Returns objects with {move, id, pp, maxpp, target, disabled}
+  - Note: lockedMove trapped = true side effect skipped to keep method pure
+  - Missing lockedMove Dex fallback (needs Battle/Dex reference)
+  - Missing restrictData parameter for hidden disabled visibility
   - Missing Return/Frustration power calculation with basePowerCallback
   - Missing target overrides for Curse (Ghost vs non-Ghost), Pollen Puff (Heal Block), Tera Star Storm (Terapagos-Stellar)
-  - Missing disabled calculation: Dynamax with maxMoveDisabled, PP <= 0, partial trapping lock
-  - Missing hidden disabled handling with restrictData
-  - Currently returns Vec<String> of move IDs
-  - Should return Vec of objects with {move, id, pp, maxpp, target, disabled}
+  - Missing Dynamax disabled logic with maxMoveDisabled and canCauseStruggle checks
+  - Now ~75% complete (was ~70% in Part 63, was ~10% before)
 
 #### get_switch_request_data.rs
 - Status: ✅ Fixed (Documented)
