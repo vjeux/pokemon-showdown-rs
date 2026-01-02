@@ -2117,6 +2117,44 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
+### Session 24 Part 22 - 2026-01-02 (switch_in EffectState target - COMPLETED)
+- **Goal**: Add missing EffectState.target assignments in switch_in for ability_state and item_state
+- **Completed**:
+  - ✅ Discovered ability_state and item_state were missing target assignments in switch_in
+  - ✅ JavaScript logic: `pokemon.abilityState = this.battle.initEffectState({ id: pokemon.ability, target: pokemon });`
+  - ✅ JavaScript logic: `pokemon.itemState = this.battle.initEffectState({ id: pokemon.item, target: pokemon });`
+  - ✅ Added target assignments: `pokemon.ability_state.target = Some((side_index, pokemon_index));`
+  - ✅ Added target assignments: `pokemon.item_state.target = Some((side_index, pokemon_index));`
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Files Now Improved**:
+  - battle_actions/switch_in.rs - Now properly initializes EffectState target fields
+    - ✅ NOW IMPLEMENTED: ability_state.target assignment
+    - ✅ NOW IMPLEMENTED: item_state.target assignment
+    - JavaScript equivalent:
+      - `pokemon.abilityState = this.battle.initEffectState({ id: pokemon.ability, target: pokemon });`
+      - `pokemon.itemState = this.battle.initEffectState({ id: pokemon.item, target: pokemon });`
+    - Rust implementation:
+      - `pokemon.ability_state = EffectState::new(pokemon.ability.clone());`
+      - `pokemon.ability_state.target = Some((side_index, pokemon_index));`
+      - `pokemon.item_state = EffectState::new(pokemon.item.clone());`
+      - `pokemon.item_state.target = Some((side_index, pokemon_index));`
+- **Technical Details**:
+  - Found by systematic search for EffectState::new calls
+  - switch_in.rs is called when a Pokemon enters battle
+  - At this point, pokemon_pos is known (side_index, pokemon_index)
+  - Fields exist in EffectState struct but were not being set
+  - Simple two-line fix: Set target for both ability_state and item_state
+  - Completes the EffectState initialization pattern across the codebase
+- **Session Statistics**:
+  - 1 file improved (battle_actions/switch_in.rs)
+  - 2 feature implementations (ability_state.target + item_state.target)
+  - 1 file modified (battle_actions/switch_in.rs)
+  - 4 insertions (2 target assignments + 2 JS comment lines)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
