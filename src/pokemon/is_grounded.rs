@@ -66,10 +66,15 @@ impl Pokemon {
         }
 
         // JS: if (this.hasAbility('levitate') && !this.battle.suppressingAbility(this)) return null;
-        // Note: Missing suppressingAbility check - would need Battle.suppressingAbility()
-        // Note: Should return Option<bool> to represent null, but signature is bool
+        // ✅ NOW IMPLEMENTED: suppressingAbility check for Levitate
+        // Note: JavaScript returns null here, but Rust returns false (approximation)
+        // Note: Changing to Option<bool> would require updating 21 callsites
+        // Note: In JavaScript boolean contexts, null is falsy, so false is an acceptable approximation
         if self.has_ability(battle, &["levitate"]) {
-            return false;
+            // If ability is being suppressed (e.g., by Mold Breaker), Levitate doesn't apply
+            if !battle.suppressing_ability(Some((self.side_index, self.position))) {
+                return false; // Should be None/null in perfect 1-to-1, but false works
+            }
         }
 
         // JS: if ('magnetrise' in this.volatiles) return false;
