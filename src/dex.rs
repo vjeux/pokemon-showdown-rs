@@ -697,6 +697,11 @@ pub struct AbilityData {
     /// JavaScript: effectType?: string
     #[serde(default)]
     pub effect_type: Option<String>,
+    /// Nonstandard status (Past, Future, Unobtainable, etc.)
+    /// JavaScript: isNonstandard?: Nonstandard | null
+    /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
+    #[serde(rename = "isNonstandard", default)]
+    pub is_nonstandard: Option<String>,
     /// Extra fields (like onResidualOrder, onResidualSubOrder, etc.)
     /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`]
     /// Note: JavaScript has many callback methods (onStart, onEnd, etc.) that cannot be stored in data
@@ -767,6 +772,11 @@ pub struct ItemData {
     /// JavaScript: boosts?: SparseBoostsTable
     #[serde(default)]
     pub boosts: Option<std::collections::HashMap<String, i32>>,
+    /// Nonstandard status (Past, Future, Unobtainable, etc.)
+    /// JavaScript: isNonstandard?: Nonstandard | null
+    /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
+    #[serde(rename = "isNonstandard", default)]
+    pub is_nonstandard: Option<String>,
     /// Extra fields (like onResidualOrder, onResidualSubOrder, etc.)
     /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`]
     /// Note: JavaScript has many callback methods (onStart, onEnd, etc.) that cannot be stored in data
