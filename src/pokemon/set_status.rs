@@ -76,7 +76,10 @@ impl Pokemon {
     //
     pub fn set_status(&mut self, status: ID) -> bool {
         // JS: if (!this.hp) return false;
-        // Note: Missing HP check - should return false if fainted
+        // ✅ NOW IMPLEMENTED: HP check - returns false if fainted
+        if self.hp == 0 {
+            return false;
+        }
 
         // JS: status = this.battle.dex.conditions.get(status);
         // Note: In Rust we receive ID directly, would need Battle reference to get full condition data
