@@ -56,7 +56,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
         };
 
         if used_item {
-            Pokemon::add_volatile(battle, source, ID::new("gem"), None);
+            Pokemon::add_volatile(battle, source, ID::new("gem"), None, None);
         }
     }
 

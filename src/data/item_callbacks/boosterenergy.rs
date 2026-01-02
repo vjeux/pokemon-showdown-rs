@@ -89,7 +89,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             };
 
             if used_item {
-                Pokemon::add_volatile(battle, pokemon_pos, ID::from("protosynthesis"), None);
+                Pokemon::add_volatile(battle, pokemon_pos, ID::from("protosynthesis"), None, None);
             }
         }
     }
@@ -119,7 +119,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             };
 
             if used_item {
-                Pokemon::add_volatile(battle, pokemon_pos, ID::from("quarkdrive"), None);
+                Pokemon::add_volatile(battle, pokemon_pos, ID::from("quarkdrive"), None, None);
             }
         }
     }

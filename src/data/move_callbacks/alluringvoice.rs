@@ -44,7 +44,7 @@ pub fn on_hit(
     };
 
     if stats_raised {
-        Pokemon::add_volatile(battle, target, ID::from("confusion"), None);
+        Pokemon::add_volatile(battle, target, ID::from("confusion"), None, None);
     }
 
     EventResult::Continue

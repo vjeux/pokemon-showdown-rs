@@ -78,7 +78,7 @@ pub fn on_hit(
         eprintln!("[KINGSSHIELD::ON_HIT] Adding new 'stall' volatile");
         // pokemon.addVolatile('stall');
         // Use battle.add_volatile_to_pokemon to properly set duration from dex.conditions
-        Pokemon::add_volatile(battle, pokemon, stall_id.clone(), None);
+        Pokemon::add_volatile(battle, pokemon, stall_id.clone(), None, None);
         eprintln!("[KINGSSHIELD::ON_HIT] Added 'stall' volatile via battle.add_volatile_to_pokemon");
 
         // Initialize counter for new stall volatile (duration is set by add_volatile_to_pokemon)

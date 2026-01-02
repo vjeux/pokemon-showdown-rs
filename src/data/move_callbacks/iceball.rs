@@ -188,7 +188,7 @@ pub fn on_modify_move(
     }
 
     // pokemon.addVolatile('iceball');
-    Pokemon::add_volatile(battle, pokemon, ID::from("iceball"), None);
+    Pokemon::add_volatile(battle, pokemon, ID::from("iceball"), None, None);
 
     // if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
     if battle
@@ -269,7 +269,7 @@ pub fn on_after_move(
 
     if has_iceball && hit_count_is_5 && contact_hit_count < 5 {
         // source.addVolatile("rolloutstorage");
-        Pokemon::add_volatile(battle, source, ID::from("rolloutstorage"), None);
+        Pokemon::add_volatile(battle, source, ID::from("rolloutstorage"), None, None);
 
         // source.volatiles["rolloutstorage"].contactHitCount =
         // iceballData.contactHitCount;

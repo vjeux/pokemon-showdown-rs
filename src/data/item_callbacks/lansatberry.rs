@@ -55,6 +55,6 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.addVolatile('focusenergy');
-    Pokemon::add_volatile(battle, pokemon_pos, "focusenergy".into(), None);
+    Pokemon::add_volatile(battle, pokemon_pos, "focusenergy".into(), None, None);
     EventResult::Continue
 }

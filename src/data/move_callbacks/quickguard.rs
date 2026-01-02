@@ -34,7 +34,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> E
 
     // source.addVolatile('stall');
     // Use battle.add_volatile_to_pokemon to properly set duration from dex.conditions
-    Pokemon::add_volatile(battle, source, ID::from("stall"), None);
+    Pokemon::add_volatile(battle, source, ID::from("stall"), None, None);
 
     EventResult::Continue
 }

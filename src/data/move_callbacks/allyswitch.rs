@@ -18,7 +18,7 @@ pub fn on_prepare_hit(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // return pokemon.addVolatile('allyswitch');
-    let result = Pokemon::add_volatile(battle, pokemon_pos, ID::from("allyswitch"), None);
+    let result = Pokemon::add_volatile(battle, pokemon_pos, ID::from("allyswitch"), None, None);
     EventResult::Boolean(result)
 }
 

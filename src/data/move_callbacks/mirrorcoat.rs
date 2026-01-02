@@ -54,7 +54,7 @@ pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
     let pokemon = pokemon_pos;
 
     // pokemon.addVolatile('mirrorcoat');
-    Pokemon::add_volatile(battle, pokemon, ID::from("mirrorcoat"), None);
+    Pokemon::add_volatile(battle, pokemon, ID::from("mirrorcoat"), None, None);
 
     EventResult::Continue
 }

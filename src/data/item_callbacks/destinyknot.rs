@@ -46,7 +46,7 @@ pub fn on_attract(battle: &mut Battle, target_pos: Option<(usize, usize)>, sourc
     };
 
     if !has_attract {
-        Pokemon::add_volatile(battle, source, ID::new("attract"), Some(target));
+        Pokemon::add_volatile(battle, source, ID::new("attract"), Some(target), None);
     }
 
     EventResult::Continue

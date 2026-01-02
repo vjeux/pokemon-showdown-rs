@@ -148,7 +148,7 @@ pub fn on_modify_move(
     }
 
     // pokemon.addVolatile('rollout');
-    Pokemon::add_volatile(battle, pokemon, ID::from("rollout"), None);
+    Pokemon::add_volatile(battle, pokemon, ID::from("rollout"), None, None);
 
     // if (move.sourceEffect) pokemon.lastMoveTargetLoc = pokemon.getLocOf(target);
     let has_source_effect = {
@@ -217,7 +217,7 @@ pub fn on_after_move(
     if let Some(data) = rollout_data {
         if data.hit_count.unwrap_or(0) == 5 && data.contact_hit_count.unwrap_or(0) < 5 {
             // source.addVolatile("rolloutstorage");
-            Pokemon::add_volatile(battle, source, ID::from("rolloutstorage"), None);
+            Pokemon::add_volatile(battle, source, ID::from("rolloutstorage"), None, None);
 
             // source.volatiles["rolloutstorage"].contactHitCount = rolloutData.contactHitCount;
             let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {

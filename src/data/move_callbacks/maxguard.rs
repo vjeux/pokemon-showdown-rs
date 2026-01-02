@@ -40,7 +40,7 @@ pub fn on_hit(
     use crate::pokemon::Pokemon;
 
     // pokemon.addVolatile('stall');
-    Pokemon::add_volatile(battle, pokemon_pos, ID::from("stall"), None);
+    Pokemon::add_volatile(battle, pokemon_pos, ID::from("stall"), None, None);
 
     EventResult::Continue
 }

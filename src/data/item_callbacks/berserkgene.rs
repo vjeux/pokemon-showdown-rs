@@ -28,7 +28,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     };
 
     if used_item {
-        Pokemon::add_volatile(battle, pokemon_pos, ID::new("confusion"), None);
+        Pokemon::add_volatile(battle, pokemon_pos, ID::new("confusion"), None, None);
     }
 
     EventResult::Continue

@@ -65,12 +65,13 @@ impl Pokemon {
     ///
     /// In Rust, this is an associated function (not a method) because it needs
     /// mutable access to Battle while operating on a Pokemon within that Battle.
-    /// Call as: Pokemon::add_volatile(battle, target_pos, volatile_id, source_pos)
+    /// Call as: Pokemon::add_volatile(battle, target_pos, volatile_id, source_pos, None)
     pub fn add_volatile(
         battle: &mut Battle,
         target_pos: (usize, usize),
         volatile_id: ID,
         source_pos: Option<(usize, usize)>,
+        linked_status: Option<ID>,
     ) -> bool {
         // JS: status = this.battle.dex.conditions.get(status);
         // JS: if (!this.hp && !status.affectsFainted) return false;
@@ -215,7 +216,75 @@ impl Pokemon {
                 // JS:     this.volatiles[status.toString()].linkedPokemon = [source];
                 // JS:     this.volatiles[status.toString()].linkedStatus = linkedStatus;
                 // JS: }
-                // Note: Missing linkedStatus bidirectional linking (Leech Seed, etc.)
+
+                // ✅ NOW IMPLEMENTED: linkedStatus bidirectional linking (Leech Seed, Powder moves, etc.)
+                if let (Some(linked_status_id), Some(src_pos)) = (linked_status, source_pos) {
+                    // Check if source already has the linked volatile
+                    let source_has_volatile = {
+                        let source_pokemon = match battle.pokemon_at(src_pos.0, src_pos.1) {
+                            Some(p) => p,
+                            None => return true, // Target volatile was added successfully
+                        };
+                        source_pokemon.volatiles.contains_key(&linked_status_id)
+                    };
+
+                    if !source_has_volatile {
+                        // Add the linked volatile to source (recursive call)
+                        // JS: source.addVolatile(linkedStatus, this, sourceEffect);
+                        Pokemon::add_volatile(battle, src_pos, linked_status_id.clone(), Some(target_pos), None);
+
+                        // Initialize linkedPokemon array for source
+                        // JS: source.volatiles[linkedStatus.toString()].linkedPokemon = [this];
+                        if let Some(source_pokemon) = battle.pokemon_at_mut(src_pos.0, src_pos.1) {
+                            if let Some(state) = source_pokemon.volatiles.get_mut(&linked_status_id) {
+                                state.data.insert(
+                                    "linkedPokemon".to_string(),
+                                    serde_json::json!([[target_pos.0, target_pos.1]]),
+                                );
+                                // JS: source.volatiles[linkedStatus.toString()].linkedStatus = status;
+                                state.data.insert(
+                                    "linkedStatus".to_string(),
+                                    serde_json::json!(volatile_id.as_str()),
+                                );
+                            }
+                        }
+                    } else {
+                        // Source already has the linked volatile, append to linkedPokemon array
+                        // JS: source.volatiles[linkedStatus.toString()].linkedPokemon.push(this);
+                        if let Some(source_pokemon) = battle.pokemon_at_mut(src_pos.0, src_pos.1) {
+                            if let Some(state) = source_pokemon.volatiles.get_mut(&linked_status_id) {
+                                if let Some(linked_pokemon) = state.data.get_mut("linkedPokemon") {
+                                    if let Some(array) = linked_pokemon.as_array_mut() {
+                                        array.push(serde_json::json!([target_pos.0, target_pos.1]));
+                                    }
+                                } else {
+                                    // Initialize if missing
+                                    state.data.insert(
+                                        "linkedPokemon".to_string(),
+                                        serde_json::json!([[target_pos.0, target_pos.1]]),
+                                    );
+                                }
+                            }
+                        }
+                    }
+
+                    // Set linkedPokemon and linkedStatus on the target's volatile
+                    // JS: this.volatiles[status.toString()].linkedPokemon = [source];
+                    // JS: this.volatiles[status.toString()].linkedStatus = linkedStatus;
+                    if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+                        if let Some(state) = target_pokemon.volatiles.get_mut(&volatile_id) {
+                            state.data.insert(
+                                "linkedPokemon".to_string(),
+                                serde_json::json!([[src_pos.0, src_pos.1]]),
+                            );
+                            state.data.insert(
+                                "linkedStatus".to_string(),
+                                serde_json::json!(linked_status_id.as_str()),
+                            );
+                        }
+                    }
+                }
+
                 return true;
             }
         }
