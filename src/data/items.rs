@@ -11,6 +11,8 @@
 pub use crate::dex::ItemData;
 
 // Item category for organization
+/// TODO: Not in JavaScript - Rust-specific enum for categorizing items
+/// JavaScript doesn't have explicit item categories
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub enum ItemCategory {
     Berry,
