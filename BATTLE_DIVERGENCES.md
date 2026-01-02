@@ -84,8 +84,31 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - 90 files with TODOs/NOTEs (190 total comments)
 - 61 files appear clean (need verification)
 
+**First Implementation: check_ev_balance.rs** ✅
+- **Issue**: Duplicate files (check_e_v_balance.rs stub + check_ev_balance.rs with incorrect implementation)
+- **Action**: Removed stub, fixed check_ev_balance.rs to use `side.pokemon` instead of `side.team`
+- **Result**: 1:1 match with JavaScript checkEVBalance()
+- **Commit**: 7245c890
+
+**Second Implementation: get_team.rs** ✅
+- **Issue**: Empty stub with no implementation, set_player.rs not calling get_team()
+- **Action**: Implemented get_team() to match JavaScript logic flow
+  - Returns team from options if present
+  - Generates random team using team_generator::generate_random_team() if empty
+  - Added TODOs for missing infrastructure (Teams::unpack, PlayerOptions.seed, teamGenerator object)
+- **Side Effect**: Updated set_player.rs to call get_team() instead of options.team.clone()
+- **Result**: Matches JavaScript logic flow (infrastructure-limited)
+- **Commit**: 0e6ece66
+
+**Progress:**
+- Files completed: 2
+- Files remaining: 149
+- TODOs resolved: 1 (get_team stub)
+- New TODOs added: 6 (infrastructure-dependent in get_team.rs)
+- Current TODO count: ~193
+
 **Next Steps:**
-1. Create detailed inventory of all TODOs
-2. Prioritize critical infrastructure items
-3. Begin systematic implementation
+1. Implement remaining Category A stubs (get_callback, find_*_handlers)
+2. Fix Category B partial implementations
+3. Verify Category D clean files
 
