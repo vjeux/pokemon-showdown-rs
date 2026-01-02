@@ -283,6 +283,9 @@ impl Pokemon {
         // Copy boosts
         self_pokemon_mut.boosts = target_boosts;
 
+        // Release mutable reference before we need Battle access for volatiles
+        let _ = self_pokemon_mut;
+
         // JS: if (this.battle.gen >= 6) {
         // JS:     const volatilesToCopy = ['dragoncheer', 'focusenergy', 'gmaxchistrike', 'laserfocus'];
         // JS:     for (const volatile of volatilesToCopy) this.removeVolatile(volatile);
@@ -294,7 +297,84 @@ impl Pokemon {
         // JS:         }
         // JS:     }
         // JS: }
-        // Note: Missing Gen 6+ crit volatile copying (dragoncheer, focusenergy, gmaxchistrike, laserfocus)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 33): Gen 6+ crit volatile copying
+        if gen >= 6 {
+            let volatiles_to_copy = vec![
+                ID::new("dragoncheer"),
+                ID::new("focusenergy"),
+                ID::new("gmaxchistrike"),
+                ID::new("laserfocus"),
+            ];
+
+            // First pass: remove existing volatiles
+            for volatile_id in &volatiles_to_copy {
+                let self_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return false,
+                };
+                self_pokemon.remove_volatile(volatile_id);
+            }
+
+            // Second pass: check target and add if present
+            for volatile_id in &volatiles_to_copy {
+                // Check if target has this volatile and extract data
+                let (has_volatile, layers_data, dragon_type_data) = {
+                    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                        Some(p) => p,
+                        None => return false,
+                    };
+
+                    if let Some(volatile_state) = target.volatiles.get(volatile_id) {
+                        // Extract layers for gmaxchistrike
+                        let layers = if volatile_id.as_str() == "gmaxchistrike" {
+                            volatile_state.data.get("layers")
+                                .and_then(|v| v.as_i64())
+                                .map(|v| v as i32)
+                        } else {
+                            None
+                        };
+
+                        // Extract hasDragonType for dragoncheer
+                        let has_dragon = if volatile_id.as_str() == "dragoncheer" {
+                            volatile_state.data.get("hasDragonType")
+                                .and_then(|v| v.as_bool())
+                        } else {
+                            None
+                        };
+
+                        (true, layers, has_dragon)
+                    } else {
+                        (false, None, None)
+                    }
+                };
+
+                if has_volatile {
+                    // Add volatile to self
+                    Pokemon::add_volatile(battle, pokemon_pos, volatile_id.clone(), None, None, None);
+
+                    // Copy additional data fields
+                    if let Some(layers) = layers_data {
+                        let self_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                            Some(p) => p,
+                            None => return false,
+                        };
+                        if let Some(volatile_state) = self_pokemon.volatiles.get_mut(volatile_id) {
+                            volatile_state.data.insert("layers".to_string(), serde_json::json!(layers));
+                        }
+                    }
+
+                    if let Some(has_dragon) = dragon_type_data {
+                        let self_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                            Some(p) => p,
+                            None => return false,
+                        };
+                        if let Some(volatile_state) = self_pokemon.volatiles.get_mut(volatile_id) {
+                            volatile_state.data.insert("hasDragonType".to_string(), serde_json::json!(has_dragon));
+                        }
+                    }
+                }
+            }
+        }
 
         // JS: if (effect) {
         // JS:     this.battle.add('-transform', this, pokemon, '[from] ' + effect.fullname);
@@ -302,6 +382,12 @@ impl Pokemon {
         // JS:     this.battle.add('-transform', this, pokemon);
         // JS: }
         // Note: Missing battle.add message - would need Battle reference
+
+        // Get mutable reference again for final transformations
+        let self_pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return false,
+        };
 
         // JS: if (this.terastallized) {
         // JS:     this.knownType = true;
