@@ -2932,7 +2932,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 4 commits pushed to git
   - 100% compilation success rate
 
-### Session 24 Summary (Parts 1-46)
+### Session 24 Summary (Parts 1-48)
 - **Major Milestones**:
   - Parts 1-26: Foundation work (get_smart_targets, parameter signatures, field additions)
   - Parts 27-32: Completed systematic parameter additions to 6 core Pokemon methods
@@ -2942,14 +2942,18 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - Part 39: Refactored copy_volatile_from.rs to associated function
   - Parts 42-45: Documentation updates and finalization
   - Part 46: Implemented linkedPokemon bidirectional updating (copy_volatile_from now 100%!)
+  - Part 47: Implemented Primal Orb and ignoreKlutz checks (ignoring_item now 100%!)
+  - Part 48: Implemented ability.flags checks - notransform, cantsuppress (ignoring_ability now 100%!)
 - **Total callsites updated**: 250+ across entire codebase
-- **Total commits**: 21+
-- **Methods improved**: add_volatile, set_status, set_ability, use_item, eat_item, set_item, transform_into, copy_volatile_from, get_smart_targets, faint, update_max_hp, set_hp, get_locked_move, and many more
+- **Total commits**: 23+
+- **Methods improved**: add_volatile, set_status, set_ability, use_item, eat_item, set_item, transform_into, copy_volatile_from, get_smart_targets, faint, update_max_hp, set_hp, get_locked_move, ignoring_item, ignoring_ability, and many more
 - **Move callbacks fixed**: 9 files (rest, recycle, block, meanlook, spiderweb, jawlock, anchorshot, spiritshackle, thousandwaves, alluringvoice)
 - **Methods Brought to 100% Completion**:
   - copy_volatile_from.rs - Full linkedPokemon bidirectional updating
   - get_smart_targets.rs - Complete Dragon Darts logic
   - faint.rs - Full source/effect tracking with faint queue
+  - ignoring_item.rs - Primal Orb and ignoreKlutz checks
+  - ignoring_ability.rs - ability.flags notransform and cantsuppress checks
   - Many others documented throughout
 - **Impact**:
   - All 6 core methods now have proper JavaScript-equivalent parameter signatures
@@ -2957,14 +2961,19 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - Move callbacks now properly track source Pokemon and effects
   - add_volatile now ~98% complete (only event system calls remaining)
   - copy_volatile_from now 100% complete with full bidirectional link updating
-  - Only 1 TODO remaining in src/pokemon/ (event system infrastructure)
-- **Compilation**: 100% success rate (0 errors, 0 warnings throughout all 46 parts)
+  - ignoring_item now 100% complete with ItemData.extra checks
+  - ignoring_ability now 100% complete with AbilityData.flags checks
+  - Only 1 TODO remaining in src/pokemon/ (event system infrastructure in calculate_stat.rs)
+  - **20 methods now at 100% JavaScript equivalence**
+- **Compilation**: 100% success rate (0 errors, 0 warnings throughout all 48 parts)
 - **Foundation**:
   - Established proper source/source_effect tracking for future event system implementation
   - Demonstrated EffectState.data HashMap usage for complex volatile state management
   - Implemented linkedPokemon bidirectional updating for Baton Pass/Shed Tail
   - Move callbacks now provide proper effect attribution for battle log and future events
   - TrappedState enum for type-safe trapped state representation
+  - ItemData.extra HashMap for item properties (isPrimalOrb, ignoreKlutz)
+  - AbilityData.flags HashMap for ability flags (notransform, cantsuppress)
 
 ## Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
