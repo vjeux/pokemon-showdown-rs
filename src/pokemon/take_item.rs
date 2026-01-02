@@ -99,7 +99,8 @@ impl Pokemon {
         // Note: Not storing oldItemState or calling clearEffectState (would need Battle method)
 
         // JS: this.pendingStaleness = undefined;
-        // Note: Missing pendingStaleness reset - field doesn't exist in Rust
+        // ✅ NOW IMPLEMENTED: pendingStaleness reset (field exists in Rust)
+        pokemon_mut.pending_staleness = None;
 
         pokemon_mut.item_state = EffectState::new(ID::empty());
 
