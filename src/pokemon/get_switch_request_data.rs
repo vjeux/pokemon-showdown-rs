@@ -134,7 +134,7 @@ impl Pokemon {
             "condition": condition,
             "active": active,
             "stats": stats,
-            "moves": self.get_moves(),
+            "moves": self.get_moves(None), // ✅ NOW IMPLEMENTED (Session 24 Part 67): Pass None for locked_move
             "ability": self.ability.as_str(),
             "baseAbility": self.base_ability.as_str(),
             "item": self.item.as_str(),

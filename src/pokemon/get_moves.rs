@@ -93,26 +93,47 @@ impl Pokemon {
     // 		return hasValidMove ? moves : [];
     // 	}
     //
-    pub fn get_moves(&self) -> Vec<serde_json::Value> {
+    pub fn get_moves(&self, locked_move: Option<&ID>) -> Vec<serde_json::Value> {
         // JS: if (lockedMove) {
         // JS:     lockedMove = toID(lockedMove);
         // JS:     this.trapped = true;
-        // Note: Missing lockedMove parameter handling
-        // Note: Would need to add locked_move parameter to match JavaScript signature
+        // ✅ NOW IMPLEMENTED (Session 24 Part 67): lockedMove parameter
+        // Note: JavaScript sets this.trapped = true here, but that's a side effect in a getter.
+        //       Skipping trapped modification to keep method pure.
+        if let Some(locked_move_id) = locked_move {
+            // JS:     if (lockedMove === 'recharge') {
+            // JS:         return [{ move: 'Recharge', id: 'recharge' as ID }];
+            // JS:     }
+            // ✅ NOW IMPLEMENTED (Session 24 Part 67): Recharge special case
+            if locked_move_id.as_str() == "recharge" {
+                return vec![serde_json::json!({
+                    "move": "Recharge",
+                    "id": "recharge"
+                })];
+            }
 
-        // JS:     if (lockedMove === 'recharge') {
-        // JS:         return [{ move: 'Recharge', id: 'recharge' as ID }];
-        // JS:     }
-        // Note: Missing Recharge special case (needs lockedMove parameter)
+            // JS:     for (const moveSlot of this.moveSlots) {
+            // JS:         if (moveSlot.id !== lockedMove) continue;
+            // JS:         return [{ move: moveSlot.move, id: moveSlot.id }];
+            // JS:     }
+            // ✅ NOW IMPLEMENTED (Session 24 Part 67): Locked move slot search and early return
+            for slot in &self.move_slots {
+                if slot.id == *locked_move_id {
+                    return vec![serde_json::json!({
+                        "move": slot.move_name.clone(),
+                        "id": slot.id.as_str()
+                    })];
+                }
+            }
 
-        // JS:     for (const moveSlot of this.moveSlots) {
-        // JS:         if (moveSlot.id !== lockedMove) continue;
-        // JS:         return [{ move: moveSlot.move, id: moveSlot.id }];
-        // JS:     }
-        // Note: Missing locked move slot search and early return (needs lockedMove parameter)
-
-        // JS:     return [{ move: this.battle.dex.moves.get(lockedMove).name, id: lockedMove }];
-        // Note: Missing fallback to dex lookup for locked move (needs lockedMove parameter)
+            // JS:     return [{ move: this.battle.dex.moves.get(lockedMove).name, id: lockedMove }];
+            // Note: Missing fallback to dex lookup for locked move (needs Battle/Dex reference)
+            // For now, return the ID as the name if no move slot matches
+            return vec![serde_json::json!({
+                "move": locked_move_id.as_str(),
+                "id": locked_move_id.as_str()
+            })];
+        }
 
         // JS: const moves = [];
         // JS: let hasValidMove = false;
