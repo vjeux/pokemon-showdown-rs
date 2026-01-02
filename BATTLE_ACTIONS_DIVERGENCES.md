@@ -583,6 +583,23 @@ These files exist only in Rust and should be evaluated:
   - `battle.field.set_weather(id, None)`
 - 1:1 match with JavaScript implementation
 
+### 2026-01-02
+**Completed: modify_damage.rs spread and parental bond modifiers** ✅ DIVERGENCE FIXED!
+- Implemented spread hit damage modifier:
+  - JavaScript: `if (move.spreadHit) { baseDamage = this.battle.modify(baseDamage, spreadModifier); }`
+  - Checks `battle.active_move.spread_hit` flag
+  - Applies 0.75x damage in doubles/triples (default)
+  - Applies 0.5x damage in free-for-all battles
+  - Uses `battle.game_type == GameType::FreeForAll` check
+- Implemented Parental Bond damage modifier:
+  - JavaScript: `else if (move.multihitType === 'parentalbond' && move.hit > 1)`
+  - Checks `active_move.multi_hit_type == Some("parentalbond")` and `active_move.hit > 1`
+  - Applies 0.25x damage for second hit in Gen 7+
+  - Applies 0.5x damage for second hit in Gen 6
+- Uses `battle.modify_f()` for float multipliers
+- Modifiers applied in correct order (after base+2, before weather events)
+- 1:1 match with JavaScript modifyDamage lines 16-24
+
 ---
 
 ## Next Steps
