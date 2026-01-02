@@ -10,6 +10,8 @@ use unicode_normalization::UnicodeNormalization;
 
 /// An ID must be lowercase alphanumeric.
 /// This is the core identifier type used throughout Pokemon Showdown.
+/// JavaScript equivalent: ID (sim/global-types.ts)
+/// JavaScript uses string type with lowercase alphanumeric normalization
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
 pub struct ID(String);
 
@@ -88,6 +90,7 @@ pub fn to_id(text: &str) -> String {
 }
 
 /// Gender names
+/// JavaScript equivalent: GenderName type (sim/global-types.ts)
 /// JavaScript uses a lookup table: {M: "M", F: "F", N: "N"}
 /// Any other value (like "Male", "Female", "None") falls through to randomization
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Default)]
@@ -364,6 +367,8 @@ impl BoostsTable {
 }
 
 /// Effect type enumeration
+/// JavaScript equivalent: EffectType (sim/global-types.ts)
+/// JavaScript uses string literals for effect types
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum EffectType {
     #[default]
@@ -396,6 +401,8 @@ pub enum Nonstandard {
 }
 
 /// Game type
+/// JavaScript equivalent: GameType (sim/global-types.ts)
+/// JavaScript: 'singles' | 'doubles' | 'triples' | 'rotation' | 'multi' | 'freeforall'
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum GameType {
     #[default]
