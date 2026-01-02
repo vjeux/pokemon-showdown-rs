@@ -6,9 +6,9 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Excellent Progress:** The battle_actions module is approaching 1:1 equivalence with JavaScript!
 
-**Stub Functions:** 20/21 completed (95%)
+**Stub Functions:** 21/22 completed (95%)
 - ✅ All simple stubs implemented except hit_step_move_hit_loop (deferred for infrastructure)
-- ✅ try_primary_hit_event, try_move_hit, self_drops implemented
+- ✅ try_primary_hit_event, try_move_hit, self_drops, secondaries implemented
 
 **Partial Implementations:** 3/4 completed (75%)
 - ✅ hit_step_accuracy.rs - All 3 TODOs completed
@@ -455,6 +455,19 @@ These files exist only in Rust and should be evaluated:
 - Applies boosts directly using battle.boost()
 - Sets move.selfDropped = true for non-multihit moves
 - TODO: Full moveHit implementation for non-boost self effects
+- Matches JavaScript implementation line by line
+
+### 2026-01-02
+**Implemented: secondaries** ✅ STUB COMPLETED!
+- Implemented 1:1 port of secondaries from JavaScript battle-actions.ts
+- Applies secondary effects of moves (stat drops, status conditions, etc.)
+- For each target and each secondary effect:
+  - Rolls random(100) for chance check
+  - Implements Gen 8 overflow logic: (secondary.boosts || secondary.self) && gen <= 8
+  - If overflow, uses chance % 256 instead of chance
+  - Applies effect if roll succeeds
+- Applies boosts directly using battle.boost()
+- TODO: ModifySecondaries event, full moveHit for other secondary effects
 - Matches JavaScript implementation line by line
 
 ---
