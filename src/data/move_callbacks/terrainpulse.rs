@@ -39,7 +39,7 @@ pub fn on_modify_type(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_ref.is_grounded(battle, false)
+        pokemon_ref.is_grounded(battle, false).unwrap_or(false)
     };
 
     if !is_grounded {
@@ -95,7 +95,7 @@ pub fn on_modify_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_ref.is_grounded(battle, false)
+        pokemon_ref.is_grounded(battle, false).unwrap_or(false)
     };
 
     if !is_grounded {

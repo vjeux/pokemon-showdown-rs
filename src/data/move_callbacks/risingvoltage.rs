@@ -32,7 +32,7 @@ pub fn base_power_callback(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.is_grounded(battle, false)
+        target_pokemon.is_grounded(battle, false).unwrap_or(false)
     };
 
     if is_electric_terrain && target_is_grounded {

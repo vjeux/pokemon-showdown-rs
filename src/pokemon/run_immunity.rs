@@ -68,7 +68,9 @@ impl Pokemon {
                 Some(p) => p,
                 None => return true,
             };
-            pokemon.is_grounded(battle, negate_immunity)
+            // is_grounded returns Option<bool>: Some(true), Some(false), or None (Levitate)
+            // JavaScript treats null as falsy, so unwrap_or(false)
+            pokemon.is_grounded(battle, negate_immunity).unwrap_or(false)
         } else {
             // For other types, check type immunity via Dex
             if negate_immunity {

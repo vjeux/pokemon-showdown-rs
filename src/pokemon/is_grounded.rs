@@ -3,6 +3,10 @@ use crate::*;
 impl Pokemon {
 
     /// Check if Pokemon is grounded (affected by Ground moves and terrain)
+    /// Returns Option<bool>:
+    ///   - Some(true) = grounded
+    ///   - Some(false) = not grounded
+    ///   - None = null (Levitate without suppression)
     //
     // 	isGrounded(negateImmunity = false) {
     // 		if ('gravity' in this.battle.field.pseudoWeather) return true;
@@ -18,23 +22,23 @@ impl Pokemon {
     // 		return item !== 'airballoon';
     // 	}
     //
-    pub fn is_grounded(&self, battle: &Battle, negate_immunity: bool) -> bool {
+    pub fn is_grounded(&self, battle: &Battle, negate_immunity: bool) -> Option<bool> {
         // JS: if ('gravity' in this.battle.field.pseudoWeather) return true;
         // ✅ NOW IMPLEMENTED: Gravity check
         let gravity_id = ID::new("gravity");
         if battle.field.has_pseudo_weather(&gravity_id) {
-            return true;
+            return Some(true);
         }
 
         // JS: if ('ingrain' in this.volatiles && this.battle.gen >= 4) return true;
         // ✅ NOW IMPLEMENTED: Gen check for Ingrain (gen >= 4)
         if self.has_volatile(&ID::new("ingrain")) && battle.gen >= 4 {
-            return true;
+            return Some(true);
         }
 
         // JS: if ('smackdown' in this.volatiles) return true;
         if self.has_volatile(&ID::new("smackdown")) {
-            return true;
+            return Some(true);
         }
 
         // JS: const item = (this.ignoringItem() ? '' : this.item);
@@ -46,7 +50,7 @@ impl Pokemon {
 
         // JS: if (item === 'ironball') return true;
         if item == "ironball" {
-            return true;
+            return Some(true);
         }
 
         // JS: if (!negateImmunity && this.hasType('Flying') && !(this.hasType('???') && 'roost' in this.volatiles)) return false;
@@ -61,33 +65,31 @@ impl Pokemon {
             // If it has both ??? and Roost, don't return false (continue to other checks)
             // Otherwise, Flying type means not grounded
             if !(has_unknown_type && has_roost) {
-                return false;
+                return Some(false);
             }
         }
 
         // JS: if (this.hasAbility('levitate') && !this.battle.suppressingAbility(this)) return null;
-        // ✅ NOW IMPLEMENTED: suppressingAbility check for Levitate
-        // Note: JavaScript returns null here, but Rust returns false (approximation)
-        // Note: Changing to Option<bool> would require updating 21 callsites
-        // Note: In JavaScript boolean contexts, null is falsy, so false is an acceptable approximation
+        // ✅ NOW IMPLEMENTED (Session 24 Part 94): Return None for Levitate (1:1 with JavaScript null)
         if self.has_ability(battle, &["levitate"]) {
             // If ability is being suppressed (e.g., by Mold Breaker), Levitate doesn't apply
             if !battle.suppressing_ability(Some((self.side_index, self.position))) {
-                return false; // Should be None/null in perfect 1-to-1, but false works
+                return None; // JavaScript returns null here
             }
         }
 
         // JS: if ('magnetrise' in this.volatiles) return false;
         if self.has_volatile(&ID::new("magnetrise")) {
-            return false;
+            return Some(false);
         }
 
         // JS: if ('telekinesis' in this.volatiles) return false;
         if self.has_volatile(&ID::new("telekinesis")) {
-            return false;
+            return Some(false);
         }
 
         // JS: return item !== 'airballoon';
-        item != "airballoon"
+        // Returns true if no airballoon, false if has airballoon
+        Some(item != "airballoon")
     }
 }

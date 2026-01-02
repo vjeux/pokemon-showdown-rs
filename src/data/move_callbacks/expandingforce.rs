@@ -30,7 +30,7 @@ pub fn on_base_power(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.is_grounded(battle, false)
+            source_pokemon.is_grounded(battle, false).unwrap_or(false)
         };
 
         if is_grounded {
@@ -68,7 +68,7 @@ pub fn on_modify_move(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.is_grounded(battle, false)
+            source_pokemon.is_grounded(battle, false).unwrap_or(false)
         };
 
         if is_grounded {
