@@ -312,6 +312,7 @@ impl Pokemon {
             sword_boost: false,
 
             last_move: None,
+            last_move_encore: None,
             last_move_used: None,
             last_move_target_loc: None,
             move_this_turn: None,

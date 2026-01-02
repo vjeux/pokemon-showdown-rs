@@ -357,6 +357,7 @@ pub struct Pokemon {
 
     // Turn state
     pub last_move: Option<ID>,
+    pub last_move_encore: Option<ID>, // Gen 2 only - for Encore tracking
     pub last_move_used: Option<ID>,
     pub last_move_target_loc: Option<i8>,
     pub move_this_turn: Option<ID>,
