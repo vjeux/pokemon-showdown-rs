@@ -812,11 +812,12 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Currently just returns MoveHitData::default()
 
 #### clear_volatile.rs
-- Status: ✅ Fixed (Well Implemented)
-- Issue: Only missing linked volatiles removal
-- Action: Documented the one missing piece
+- Status: ✅ Fixed (Fully Implemented - Session 24 Part 9)
+- Issue: Missing removeLinkedVolatiles call
+- Action: Implemented full linkedPokemon removal before clearing volatiles
 - Notes:
-  - Very well implemented - nearly 1-to-1 with JavaScript!
+  - ✅ NOW IMPLEMENTED: removeLinkedVolatiles call for each linked volatile
+  - Very well implemented - now 100% 1-to-1 with JavaScript!
   - Has correct Gen 1 Mimic PP preservation
   - Has correct Eternatus-Eternamax Dynamax preservation
   - Correctly resets boosts, move slots, transformed, ability
@@ -824,8 +825,8 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Correctly clears switch flags (if includeSwitchFlags)
   - Correctly resets move tracking and damage tracking
   - Correctly calls setSpecies(baseSpecies)
-  - Only missing: removeLinkedVolatiles() call before clearing volatiles
-  - Missing because EffectState.data infrastructure for linkedPokemon not yet implemented
+  - Now properly removes linked volatiles before clearing (Leech Seed, Powder moves, etc.)
+  - Now fully 1-to-1 with JavaScript!
 
 #### update_move_pp.rs
 - Status: ✅ Fixed (Documented)
@@ -1657,12 +1658,41 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
+### Session 24 Part 9 - 2026-01-01 (clear_volatile Completion - COMPLETED)
+- **Goal**: Complete clear_volatile with removeLinkedVolatiles call
+- **Completed**:
+  - ✅ Added removeLinkedVolatiles call before clearing volatiles
+  - ✅ Loops through volatiles and checks for linkedStatus/linkedPokemon in data
+  - ✅ Parses linkedStatus as ID and linkedPokemon as array of positions
+  - ✅ Calls Pokemon::remove_linked_volatiles for each linked volatile
+  - ✅ Fixes unused variable warning
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+- **Methods Now Fully Implemented (1-to-1 with JS)**:
+  - clear_volatile.rs - Now 100% complete (was 95%, missing removeLinkedVolatiles)
+    - ✅ NOW IMPLEMENTED: removeLinkedVolatiles call
+    - ✅ Has: Gen 1 Mimic PP preservation
+    - ✅ Has: Eternatus-Eternamax Dynamax preservation
+    - ✅ Has: Correct boost/move/ability/transform resets
+    - ✅ Has: Linked volatile cleanup (Leech Seed, Powder moves, etc.)
+    - Now fully 1-to-1 with JavaScript!
+- **Technical Details**:
+  - Uses Pokemon::remove_linked_volatiles() which was implemented in Part 8
+  - Extracts linkedStatus and linkedPokemon from EffectState.data HashMap
+  - Uses (self.side_index, self.position) for this pokemon's position
+  - Handles JSON parsing gracefully
+- **Session Statistics**:
+  - 1 method fully implemented (clear_volatile.rs)
+  - 1 file modified
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
 2. max_move_disabled.rs - ✅ Complete
 3. get_action_speed.rs - ✅ Complete
-4. clear_volatile.rs - ✅ Nearly complete (only missing linked volatiles removal which needs infrastructure)
+4. clear_volatile.rs - ✅ Complete (Session 24 Part 9)
 5. allies.rs, allies_and_self.rs, adjacent_allies.rs, adjacent_foes.rs, foes.rs - ✅ Complete
 6. clear_boosts.rs - ✅ Complete
 7. deduct_pp.rs - ✅ Complete
