@@ -178,12 +178,16 @@ impl Pokemon {
         }
 
         // JS: this.lastMove = null;
-        // JS: if (this.battle.gen === 2) this.lastMoveEncore = null;  // Not tracked in Rust
+        // JS: if (this.battle.gen === 2) this.lastMoveEncore = null;
+        // ✅ NOW IMPLEMENTED: Gen 2 lastMoveEncore reset (field added in Session 24 Part 11)
         // JS: this.lastMoveUsed = null;
         // JS: this.moveThisTurn = '';
         // JS: this.moveLastTurnResult = undefined;
         // JS: this.moveThisTurnResult = undefined;
         self.last_move = None;
+        if battle.gen == 2 {
+            self.last_move_encore = None;
+        }
         self.last_move_used = None;
         self.move_this_turn = None;
         self.move_last_turn_result = None;
