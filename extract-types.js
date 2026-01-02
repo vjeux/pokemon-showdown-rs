@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Extract all type definitions from Pokemon Showdown JavaScript codebase
- * Finds classes, interfaces, types, and their fields
+ * Extract all type definitions from Pokemon Showdown sim/ folder (battle simulation)
+ * Finds classes, interfaces, types, and their fields from the sim/ directory only
  */
 
 const fs = require('fs');
@@ -15,29 +15,34 @@ const typeDefinitions = new Map();
 const processedFiles = new Set();
 
 /**
- * Recursively find all .ts and .js files
+ * Recursively find all .ts and .js files in sim/ folder only
  */
 function findSourceFiles(dir, files = []) {
-    if (!fs.existsSync(dir)) {
-        console.error(`Directory not found: ${dir}`);
+    const simDir = path.join(dir, 'sim');
+
+    if (!fs.existsSync(simDir)) {
+        console.error(`sim/ directory not found in: ${dir}`);
         return files;
     }
 
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    function scanDirectory(currentDir) {
+        const entries = fs.readdirSync(currentDir, { withFileTypes: true });
 
-    for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
+        for (const entry of entries) {
+            const fullPath = path.join(currentDir, entry.name);
 
-        if (entry.isDirectory()) {
-            // Skip node_modules and other common directories
-            if (!['node_modules', '.git', 'dist', 'build'].includes(entry.name)) {
-                findSourceFiles(fullPath, files);
+            if (entry.isDirectory()) {
+                // Skip node_modules and other common directories
+                if (!['node_modules', '.git', 'dist', 'build'].includes(entry.name)) {
+                    scanDirectory(fullPath);
+                }
+            } else if (entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.js'))) {
+                files.push(fullPath);
             }
-        } else if (entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.js'))) {
-            files.push(fullPath);
         }
     }
 
+    scanDirectory(simDir);
     return files;
 }
 
@@ -245,9 +250,9 @@ function processFile(filePath) {
  * Generate markdown output
  */
 function generateMarkdown() {
-    let output = '# JavaScript Type Definitions from Pokemon Showdown\n\n';
+    let output = '# JavaScript Type Definitions from Pokemon Showdown (sim/ folder)\n\n';
     output += `Generated: ${new Date().toISOString()}\n`;
-    output += `Source: ${SHOWDOWN_PATH}\n`;
+    output += `Source: ${SHOWDOWN_PATH}/sim/\n`;
     output += `Total types: ${typeDefinitions.size}\n\n`;
 
     output += '## Table of Contents\n\n';
@@ -360,10 +365,10 @@ function generateMarkdown() {
  * Main execution
  */
 function main() {
-    console.log(`Scanning ${SHOWDOWN_PATH} for type definitions...`);
+    console.log(`Scanning ${SHOWDOWN_PATH}/sim/ for type definitions...`);
 
     const files = findSourceFiles(SHOWDOWN_PATH);
-    console.log(`Found ${files.length} source files`);
+    console.log(`Found ${files.length} source files in sim/`);
 
     for (const file of files) {
         try {
