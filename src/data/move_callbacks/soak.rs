@@ -41,17 +41,17 @@ pub fn on_hit(
         types.len() == 1 && types[0].as_str() == "Water"
     };
 
-    // Try to set the type
-    {
+    // Try to set the type and check if it succeeded
+    let set_type_succeeded = {
         let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.set_type(vec![String::from("Water")], false);
-    }
+        target.set_type(vec![String::from("Water")], false)
+    };
 
-    // Check if it failed
-    if types_are_water {
+    // Check if it failed (either already Water or setType returned false)
+    if types_are_water || !set_type_succeeded {
         let target_ident = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
