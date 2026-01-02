@@ -29,10 +29,14 @@ impl Pokemon {
     //
     pub fn run_status_immunity(&self, status: &str) -> bool {
         // JS: if (this.fainted) return false;
-        // Note: Fainted check not implemented
+        if self.hp == 0 {
+            return false;
+        }
 
         // JS: if (!type) return true;
-        // Note: Empty string check not needed in Rust
+        if status.is_empty() {
+            return true;
+        }
 
         // JS: if (!this.battle.dex.getImmunity(type, this)) {
         // JS:     this.battle.debug('natural status immunity');
@@ -46,6 +50,7 @@ impl Pokemon {
             "psn" | "tox" => !self.has_type("Poison") && !self.has_type("Steel"),
             "frz" => !self.has_type("Ice"),
             "slp" => true, // No type immunity to sleep
+            "trapped" => true, // Trapped is a volatile, not a status - no type immunity
             _ => true,
         };
 
@@ -56,6 +61,7 @@ impl Pokemon {
         // JS: const immunity = this.battle.runEvent('Immunity', this, null, null, type);
         // JS: if (!immunity) { ... return false; }
         // Note: runEvent('Immunity') not called - would need Battle reference
+        // Note: Missing message parameter for battle.add('-immune') calls
 
         true
     }
