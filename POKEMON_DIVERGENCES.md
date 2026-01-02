@@ -557,20 +557,26 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing Ogerpon/Terapagos canTerastallize blocking
 
 #### add_volatile.rs
-- Status: ✅ Fixed (Significantly Improved)
-- Issue: Had TODO to double check 1-1 mapping
-- Action: Documented all missing pieces line by line and implemented runStatusImmunity check
+- Status: ✅ Fixed (Significantly Improved - Session 24 Part 12)
+- Issue: Missing linkedStatus bidirectional linking
+- Action: Implemented full linkedStatus bidirectional linking using EffectState.data HashMap
 - Notes:
   - Fairly complete implementation with duration callback support
+  - ✅ NOW IMPLEMENTED (Session 24 Part 12): linkedStatus parameter added to signature
+  - ✅ NOW IMPLEMENTED (Session 24 Part 12): Bidirectional linking for Leech Seed, Powder moves, etc.
+  - ✅ NOW IMPLEMENTED (Session 24 Part 12): Stores linkedPokemon arrays in EffectState.data
+  - ✅ NOW IMPLEMENTED (Session 24 Part 12): Stores linkedStatus IDs in EffectState.data
+  - ✅ NOW IMPLEMENTED (Session 24 Part 12): Handles source already having linked volatile (appends to array)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 12): Updated 100 files (1 method + 99 callsites)
   - ✅ NOW IMPLEMENTED: runStatusImmunity check for volatile immunity
-  - Missing HP check with affectsFainted flag
-  - Missing linkedStatus parameter and source HP check
-  - Missing battle.event source/sourceEffect defaulting
-  - Missing runEvent('TryAddVolatile')
-  - Missing source, sourceSlot, sourceEffect assignments to EffectState
-  - Missing linkedStatus bidirectional linking (Leech Seed, etc.)
+  - ❌ Still missing: HP check with affectsFainted flag (needs condition data access)
+  - ❌ Still missing: source HP check for linkedStatus
+  - ❌ Still missing: battle.event source/sourceEffect defaulting
+  - ❌ Still missing: runEvent('TryAddVolatile')
+  - ❌ Still missing: source, sourceSlot, sourceEffect assignments to EffectState
   - Has onRestart callback support
   - Has singleEvent('Start') with rollback on failure
+  - Now ~75% complete (was ~60%)
 
 #### calculate_stat.rs
 - Status: ✅ Fixed (Documented)
@@ -1753,6 +1759,55 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 field added to Pokemon struct (last_move_encore)
   - 3 files modified (pokemon.rs, pokemon/new.rs, pokemon/move_used.rs)
   - 1 method fully implemented (move_used.rs)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 12 - 2026-01-01 (add_volatile linkedStatus Implementation - COMPLETED)
+- **Goal**: Implement linkedStatus bidirectional linking in add_volatile using EffectState.data HashMap
+- **Completed**:
+  - ✅ Added `linked_status: Option<ID>` parameter to add_volatile signature
+  - ✅ Implemented full bidirectional linking logic:
+    - Checks if source already has linked volatile
+    - If not, recursively calls add_volatile to add it
+    - Stores linkedPokemon array in EffectState.data as JSON: [[side_idx, position], ...]
+    - Stores linkedStatus ID in EffectState.data as JSON string
+    - Handles appending to existing linkedPokemon arrays
+    - Sets bidirectional links for both source and target
+  - ✅ Created perl script to batch update ~119 callsites
+  - ✅ Updated 100 files total (1 method + 99 callsites)
+  - ✅ All callsites now pass None for linked_status (will be updated for specific moves later)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Significantly Improved**:
+  - add_volatile.rs - Now ~75% complete (was ~60%)
+    - ✅ NOW IMPLEMENTED: linkedStatus parameter support
+    - ✅ NOW IMPLEMENTED: Bidirectional linking for Leech Seed, Powder moves, etc.
+    - ✅ NOW IMPLEMENTED: linkedPokemon array storage in EffectState.data
+    - ✅ NOW IMPLEMENTED: linkedStatus ID storage in EffectState.data
+    - ✅ NOW IMPLEMENTED: Recursive add_volatile call for source
+    - ✅ NOW IMPLEMENTED: Append to existing linkedPokemon arrays
+    - ❌ Still missing: HP check with affectsFainted flag
+    - ❌ Still missing: source HP check for linkedStatus
+    - ❌ Still missing: battle.event source/sourceEffect defaulting
+    - ❌ Still missing: runEvent('TryAddVolatile')
+    - ❌ Still missing: source, sourceSlot, sourceEffect assignments
+- **Technical Details**:
+  - JavaScript stores Pokemon references in arrays, Rust stores position tuples [[side, slot], ...]
+  - Uses serde_json::json! macro for JSON storage in EffectState.data HashMap
+  - Matches JavaScript logic exactly:
+    - `source.volatiles[linkedStatus].linkedPokemon = [this]` (if new)
+    - `source.volatiles[linkedStatus].linkedPokemon.push(this)` (if existing)
+    - `this.volatiles[status].linkedPokemon = [source]`
+    - `this.volatiles[status].linkedStatus = linkedStatus`
+  - Perl script counts top-level commas to determine if call needs 5th parameter
+  - Pattern matching handles nested parentheses correctly
+- **Session Statistics**:
+  - 1 method significantly improved (add_volatile.rs)
+  - 1 major feature implemented (linkedStatus bidirectional linking)
+  - 100 files modified (1 pokemon method + 99 callsites across battle_actions, item_callbacks, ability_callbacks, move_callbacks)
+  - 1 parameter added (linked_status: Option<ID>)
+  - ~70 lines of implementation code (bidirectional linking logic)
   - 1 commit pushed to git
   - 100% compilation success rate
 
