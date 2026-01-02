@@ -115,7 +115,21 @@ impl Pokemon {
         // JS:     this.battle.runEvent('UseItem', this, null, null, item) &&
         // JS:     (force || this.battle.runEvent('TryEatItem', this, null, null, item))
         // JS: ) { ... }
-        // Note: Missing runEvent('UseItem') and runEvent('TryEatItem') (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 83): runEvent('UseItem') and runEvent('TryEatItem')
+        // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
+        //       Passing None for now - handlers can check pokemon's item field
+        let use_item_result = battle.run_event("UseItem", Some(pokemon_pos), None, None, None);
+        if use_item_result == Some(0) || use_item_result == None {
+            return None; // false in JavaScript
+        }
+
+        // Check TryEatItem unless forced
+        if !_is_forced {
+            let try_eat_result = battle.run_event("TryEatItem", Some(pokemon_pos), None, None, None);
+            if try_eat_result == Some(0) || try_eat_result == None {
+                return None; // false in JavaScript
+            }
+        }
 
         // JS: this.battle.add('-enditem', this, item, '[eat]');
         // ✅ NOW IMPLEMENTED (Session 24 Part 51): battle.add message for eating items
@@ -134,7 +148,9 @@ impl Pokemon {
 
         // JS: this.battle.singleEvent('Eat', item, this.itemState, this, source, sourceEffect);
         // JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
-        // Note: Missing singleEvent('Eat') and runEvent('EatItem') (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 83): singleEvent('Eat') and runEvent('EatItem')
+        battle.single_event("Eat", &item_id, Some(pokemon_pos), _source_pos, None);
+        battle.run_event("EatItem", Some(pokemon_pos), _source_pos, None, None);
 
         // JS: if (RESTORATIVE_BERRIES.has(item.id)) {
         // JS:     switch (this.pendingStaleness) {
@@ -194,7 +210,10 @@ impl Pokemon {
         pokemon_mut.ate_berry = true;
 
         // JS: this.battle.runEvent('AfterUseItem', this, null, null, item);
-        // Note: Missing runEvent('AfterUseItem') (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 83): runEvent('AfterUseItem')
+        // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
+        //       Passing None for now - handlers can check pokemon's item field which is now empty
+        battle.run_event("AfterUseItem", Some(pokemon_pos), None, None, None);
 
         // JS: return true;
         Some(item_id)

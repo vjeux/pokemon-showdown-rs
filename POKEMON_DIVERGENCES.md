@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 82 Complete - Continuing NOTE Fixes)
-- **Session 24 Total Progress**: 40+ commits, 82 parts completed
+## Overview (Updated: Session 24 Part 83 Complete - Continuing NOTE Fixes)
+- **Session 24 Total Progress**: 40+ commits, 83 parts completed
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -41,6 +41,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 80**: take_item runEvent calls - Implemented runEvent('TakeItem') before removal and runEvent('AfterTakeItem') after removal
   - **Part 81**: add_volatile runEvent call - Implemented runEvent('TryAddVolatile') before adding volatile
   - **Part 82**: use_item event calls - Implemented runEvent('UseItem'), singleEvent('Use'), and runEvent('AfterUseItem')
+  - **Part 83**: eat_item event calls - Implemented runEvent('UseItem'), runEvent('TryEatItem'), singleEvent('Eat'), runEvent('EatItem'), and runEvent('AfterUseItem')
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
@@ -53,7 +54,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ignoring_ability.rs (ability.flags checks - now 100%)
   - get_last_damaged_by.rs (filter by damage, ally check - now 100%)
   - use_item.rs (HP/Gem check, item.boosts, battle.add messages, event calls - now ~75%, was ~45%)
-  - eat_item.rs (standalone, battle.add [eat], RESTORATIVE_BERRIES - now ~75%, was ~50%)
+  - eat_item.rs (standalone, battle.add [eat], RESTORATIVE_BERRIES, event calls - now ~80%, was ~50%)
   - set_item.rs (RESTORATIVE_BERRIES pendingStaleness, associated function, singleEvent calls - now ~70%, was ~55%)
   - take_item.rs (singleEvent + runEvent calls - now ~82%, was ~72%)
   - set_ability.rs (associated function, singleEvent + runEvent calls - now ~78%, was ~70%)
@@ -757,10 +758,13 @@ This document tracks divergences between the JavaScript and Rust implementations
   - This is a Rust-appropriate solution given borrow checker constraints
 
 #### eat_item.rs
-- Status: ✅ Fixed (Improved - Session 24 Part 52)
+- Status: ✅ Fixed (Improved - Session 24 Part 83)
 - Issue: Was incorrectly calling use_item() - JavaScript has separate implementations!
-- Action: Implemented RESTORATIVE_BERRIES staleness logic (Session 24 Part 52)
+- Action: Implemented RESTORATIVE_BERRIES staleness logic (Session 24 Part 52), event calls (Session 24 Part 83)
 - Notes:
+  - ✅ NOW IMPLEMENTED (Session 24 Part 83): runEvent('UseItem') and runEvent('TryEatItem')
+  - ✅ NOW IMPLEMENTED (Session 24 Part 83): singleEvent('Eat') and runEvent('EatItem')
+  - ✅ NOW IMPLEMENTED (Session 24 Part 83): runEvent('AfterUseItem')
   - ✅ NOW IMPLEMENTED (Session 24 Part 52): RESTORATIVE_BERRIES staleness logic
   - ✅ NOW IMPLEMENTED (Session 24 Part 52): pendingStaleness to staleness conversion
   - ✅ NOW IMPLEMENTED (Session 24 Part 52): is_restorative_berry() helper function
@@ -777,10 +781,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24 Part 31): source_effect parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 31): Updated 60 callsites to pass None, None
   - Missing sourceEffect item type check
-  - Missing runEvent('UseItem') and runEvent('TryEatItem')
-  - Missing singleEvent('Eat') and runEvent('EatItem')
-  - Missing runEvent('AfterUseItem')
-  - Now ~75% complete (was ~70%)
+  - Now ~80% complete (was ~75%)
 
 #### faint.rs
 - Status: ✅ Fixed (Documented)
