@@ -46,6 +46,7 @@ impl Battle {
             pokemon_index,
             side_index,
             event: None,
+            dragger: None,
         });
 
         // JS: let firstIndex = null; let lastIndex = null;

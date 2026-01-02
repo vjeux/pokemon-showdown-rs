@@ -268,9 +268,10 @@ pub struct PokemonAction {
     /// Event name (for event actions)
     /// JavaScript: event?: string
     pub event: Option<String>,
-    // TODO: Missing from Rust - JavaScript has 'dragger' field
-    // JavaScript: dragger?: Pokemon
-    // Would need to add: pub dragger: Option<(usize, usize)>,
+    /// Pokemon that is dragging this pokemon (for Red Card, Roar, etc.)
+    /// JavaScript: dragger?: Pokemon
+    /// TODO: Rust uses indices instead of Pokemon reference due to ownership
+    pub dragger: Option<(usize, usize)>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
