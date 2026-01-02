@@ -186,6 +186,11 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Issue: Using toLowerCase() when JavaScript doesn't
 - Action: Removed toLowerCase() calls for case-sensitive comparison like JS
 
+#### has_move.rs
+- Status: ✅ Fixed (New entry)
+- Issue: Missing Hidden Power normalization logic
+- Action: Added Hidden Power normalization (all variants normalize to "hiddenpower")
+
 #### get_health.rs
 - Status: ✅ Fixed (New file)
 - Issue: Method was missing entirely
@@ -270,6 +275,13 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Fixed got_attacked.rs (removed last_damage assignment not in JS)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
 - **Next**: Continue with remaining TODOs (calculate_stat, eat_item, faint, etc.)
+
+### Session 4 - 2026-01-01 (Continuation Session 3)
+- **Completed**:
+  - ✅ Fixed has_move.rs (added Hidden Power normalization logic)
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+- **Remaining**: ~56 TODOs across 75 files, many requiring Battle references for full implementation
+- **Next**: Continue with methods that can be implemented without Battle reference or plan Battle refactoring
 
 ## Notes
 - Must compile after each fix
