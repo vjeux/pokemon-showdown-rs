@@ -165,12 +165,14 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Action: Complete item eating logic
 
 #### effective_weather.rs
-- Status: ✅ Fixed
-- Issue: "TODO: implement the same logic as JavaScript"
-- Action: Implemented weather logic with Utility Umbrella support
+- Status: ✅ Fixed (Fully Implemented)
+- Issue: Missing Battle parameter for has_item() call
+- Action: Refactored to take Battle parameter, fully implemented
 - Notes:
-  - Negates sun/rain when holding Utility Umbrella
-  - Fixed borrow checker issues in thunder.rs and weatherball.rs
+  - ✅ NOW IMPLEMENTED: Refactored signature to take `battle: &Battle`
+  - ✅ Negates sun/rain when holding Utility Umbrella
+  - ✅ Fixed borrow checker issues in thunder.rs and weatherball.rs
+  - ✅ Updated all callsites across codebase
 
 #### faint.rs
 - Status: ❌ Not Started
@@ -297,14 +299,18 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Would need ability data access and Battle reference
 
 #### ignoring_item.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Partial implementation missing Primal Orb, Magic Room, and ignoreKlutz checks
-- Action: Documented what's implemented and what's missing
+- Status: ✅ Fixed (Significantly Improved)
+- Issue: Missing Magic Room, isFling parameter, and Ability Shield check
+- Action: Refactored to take Battle parameter, implemented Magic Room and isFling
 - Notes:
+  - ✅ NOW IMPLEMENTED: Refactored signature to take `battle: &Battle, is_fling: bool`
+  - ✅ NOW IMPLEMENTED: Magic Room pseudo-weather check
+  - ✅ NOW IMPLEMENTED: is_fling parameter support (used by Fling move)
+  - ✅ NOW IMPLEMENTED: Ability Shield check (prevents Klutz effect)
+  - ✅ Updated 51 callsites across codebase
   - Missing Primal Orb check (needs item data access)
-  - Missing Magic Room pseudo-weather check (needs Battle reference)
-  - Missing isFling parameter support
   - Missing ignoreKlutz flag check (needs item data access)
+  - Some items ignore Klutz (e.g., Macho Brace, Power items)
 
 #### run_status_immunity.rs
 - Status: ✅ Fixed (Partially Implemented)
@@ -334,13 +340,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing different-side adjacency formula using active.length
 
 #### is_grounded.rs
-- Status: ✅ Fixed (Partially Implemented)
-- Issue: Multiple missing checks and incorrect case handling
-- Action: Rewrote to match JS flow, added ignoringItem() checks
+- Status: ✅ Fixed (Significantly Improved)
+- Issue: Missing Gravity check and Battle parameter
+- Action: Refactored to take Battle parameter, implemented Gravity check
 - Notes:
+  - ✅ NOW IMPLEMENTED: Refactored signature to take `battle: &Battle`
+  - ✅ NOW IMPLEMENTED: Gravity pseudo-weather check
   - ✅ Fixed has_type to use case-sensitive comparison (was using toLowerCase)
   - ✅ NOW IMPLEMENTED: ignoringItem() checks for Iron Ball and Air Balloon
-  - Missing Gravity pseudo-weather check (needs Battle reference)
+  - ✅ Updated all callsites across codebase
   - Missing gen check for Ingrain (assumes gen >= 4)
   - Missing negateImmunity parameter
   - Missing special ??? + Roost case for Fire/Flying with Burn Up
@@ -375,12 +383,14 @@ This document tracks divergences between the JavaScript and Rust implementations
 
 #### has_item.rs
 - Status: ✅ Fixed (Fully Implemented)
-- Issue: Was missing ignoringItem() call, now implemented
-- Action: Added ignoringItem() check at the end
+- Issue: Missing Battle parameter for ignoringItem() call
+- Action: Refactored to take Battle parameter, fully implemented
 - Notes:
+  - ✅ NOW IMPLEMENTED: Refactored signature to take `battle: &Battle`
   - ✅ NOW FULLY IMPLEMENTED: Returns false if item effects are being ignored
   - ✅ Correctly checks if item matches
   - ✅ Correctly calls ignoringItem() to check Embargo, Magic Room, Klutz, etc.
+  - ✅ Updated all callsites across codebase
 
 #### set_ability.rs
 - Status: ✅ Fixed (Documented)
@@ -1003,6 +1013,36 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 9 commits pushed to git
   - 100% compilation success rate
 
+### Session 10 - 2026-01-01 (Major Refactoring Phase - ACTIVE SESSION)
+- **Goal**: Refactor Pokemon methods to take Battle parameters for proper 1-to-1 equivalence
+- **Completed**:
+  - ✅ Refactored ignoring_item() to take (battle, is_fling) parameters
+  - ✅ Refactored has_item() to take battle parameter
+  - ✅ Refactored is_grounded() to take battle parameter
+  - ✅ Refactored effective_weather() to take battle parameter
+  - ✅ Implemented Magic Room pseudo-weather check in ignoring_item
+  - ✅ Implemented Gravity pseudo-weather check in is_grounded
+  - ✅ Implemented is_fling parameter support for Fling move
+  - ✅ Implemented Ability Shield check in ignoring_item
+  - ✅ Updated 51 files across move/item callbacks and battle system
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed major refactoring
+- **Methods Now Improved**:
+  - ignoring_item.rs - Significantly improved with Magic Room, isFling, Ability Shield
+  - has_item.rs - Fully implemented (already was complete, now properly delegates)
+  - is_grounded.rs - Significantly improved with Gravity check
+  - effective_weather.rs - Fully implemented (already was complete, now properly delegates)
+- **Specific Implementations**: 4 new feature implementations marked with "✅ NOW IMPLEMENTED"
+- **Path Forward**:
+  - Phase 1 (Current): Continue fixing methods that need Battle parameters
+  - Phase 2 (Next): Implement missing event system calls
+  - Phase 3 (Future): Add EffectState.data infrastructure
+- **Session Statistics**:
+  - 4 methods refactored to take Battle parameters
+  - 51 files updated (move/item callbacks, battle system)
+  - 1 major commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
@@ -1023,7 +1063,9 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 2. try_set_status.rs - Core logic correct, simplified
 3. get_weight.rs - Has max(1, weight), missing ModifyWeight event
 4. get_types.rs - Has empty check, missing runEvent('Type')
-5. And many others...
+5. ignoring_item.rs - Has Magic Room, isFling, Ability Shield, missing Primal Orb and ignoreKlutz
+6. is_grounded.rs - Has Gravity check, missing suppressingAbility and negateImmunity
+7. And many others...
 
 ## Notes
 - Must compile after each fix
