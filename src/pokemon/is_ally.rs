@@ -8,12 +8,30 @@ impl Pokemon {
     // 		return !!pokemon && (this.side === pokemon.side || this.side.allySide === pokemon.side);
     // 	}
     //
-    pub fn is_ally(&self, other_side_index: usize) -> bool {
+    // ✅ NOW IMPLEMENTED: Full 1-to-1 with JavaScript
+    // Refactored to associated function to access Battle for allySide check
+    pub fn is_ally(battle: &Battle, pokemon_pos: (usize, usize), other_side_index: usize) -> bool {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return false,
+        };
+
         // JS: return !!pokemon && (this.side === pokemon.side || this.side.allySide === pokemon.side);
-        //
-        // Note: Full implementation would require Battle reference to check allySide
-        // Currently only checks if on same side, missing multi-battle ally check
-        // Would need: battle.sides[self.side_index].ally_side == Some(other_side_index)
-        self.side_index == other_side_index
+
+        // Check if on same side
+        if pokemon.side_index == other_side_index {
+            return true;
+        }
+
+        // Check if other side is an ally (for multi battles)
+        if let Some(side) = battle.sides.get(pokemon.side_index) {
+            if let Some(ally_idx) = side.ally_index {
+                if ally_idx == other_side_index {
+                    return true;
+                }
+            }
+        }
+
+        false
     }
 }

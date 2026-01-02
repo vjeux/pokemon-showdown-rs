@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -84,16 +85,14 @@ pub mod condition {
         }
 
         // if (target.isSemiInvulnerable() || target.isAlly(source)) return;
-        let (is_semi_invulnerable, is_ally) = {
+        let is_semi_invulnerable = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (
-                target_pokemon.is_semi_invulnerable(),
-                target_pokemon.is_ally(source.0),
-            )
+            target_pokemon.is_semi_invulnerable()
         };
+        let is_ally = Pokemon::is_ally(battle, target, source.0);
 
         if is_semi_invulnerable || is_ally {
             return EventResult::Continue;

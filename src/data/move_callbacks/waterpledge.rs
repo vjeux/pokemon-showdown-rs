@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// basePowerCallback(target, source, move) {
 ///     if (['firepledge', 'grasspledge'].includes(move.sourceEffect)) {
@@ -97,13 +98,7 @@ pub fn on_prepare_hit(
             }
 
             // if (otherMoveUser.isAlly(source) && ['firepledge', 'grasspledge'].includes(otherMove.id))
-            let is_ally = {
-                let pokemon = match battle.pokemon_at(move_action.side_index, move_action.pokemon_index) {
-                    Some(p) => p,
-                    None => continue,
-                };
-                pokemon.is_ally(source.0)
-            };
+            let is_ally = Pokemon::is_ally(battle, (move_action.side_index, move_action.pokemon_index), source.0);
 
             let move_id_str = move_action.move_id.as_str();
             if is_ally && (move_id_str == "firepledge" || move_id_str == "grasspledge") {

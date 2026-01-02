@@ -325,11 +325,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing message parameter support for immunity messages
 
 #### is_ally.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Fully Implemented)
 - Issue: Missing allySide check for multi-battle support
-- Action: Documented that only checks same side, missing multi-battle ally check
+- Action: Refactored to associated function, implemented full ally_index check
 - Notes:
-  - Would need Battle reference to check allySide field
+  - ✅ NOW IMPLEMENTED: Refactored to take Battle parameter
+  - ✅ NOW IMPLEMENTED: Checks side.ally_index for multi-battle allies
+  - ✅ NOW IMPLEMENTED: Full 1-to-1 with JavaScript logic
+  - ✅ Updated 3 callsites (waterpledge, firepledge, psychicterrain)
+  - Now fully 1-to-1 with JavaScript!
 
 #### is_adjacent.rs
 - Status: ✅ Fixed (Migrated to Battle)
