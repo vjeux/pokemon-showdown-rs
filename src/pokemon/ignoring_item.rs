@@ -19,8 +19,8 @@ impl Pokemon {
         // Primal Orbs: Red Orb (Groudon), Blue Orb (Kyogre) - never suppressed
 
         // JS: if (this.battle.gen >= 5 && !this.isActive) return true;
-        // Note: Gen check not implemented - assumes gen >= 5
-        if !self.is_active {
+        // ✅ NOW IMPLEMENTED: Gen check for inactive Pokemon
+        if battle.gen >= 5 && !self.is_active {
             return true;
         }
 
@@ -37,9 +37,9 @@ impl Pokemon {
 
         // JS: if (isFling) return this.battle.gen >= 5 && this.hasAbility('klutz');
         // Check Fling first to avoid infinite recursion
-        // Note: Gen check not implemented - assumes gen >= 5
+        // ✅ NOW IMPLEMENTED: Gen check for Fling
         if is_fling {
-            return self.ability.as_str() == "klutz";
+            return battle.gen >= 5 && self.ability.as_str() == "klutz";
         }
 
         // JS: return !this.getItem().ignoreKlutz && this.hasAbility('klutz');
