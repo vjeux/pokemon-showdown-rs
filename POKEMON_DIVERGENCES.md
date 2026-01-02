@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 52 Complete)
-- **Session 24 Total Progress**: 27+ commits, 52 parts completed
+## Overview (Updated: Session 24 Part 53 Complete)
+- **Session 24 Total Progress**: 28+ commits, 53 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
@@ -13,6 +13,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Part 50: battle.add messages for item consumption (Red Card, Gems)
   - Part 51: eat_item standalone implementation (fixed divergence from JS)
   - Part 52: RESTORATIVE_BERRIES staleness logic in eat_item
+  - Part 53: set_item RESTORATIVE_BERRIES logic + refactor to associated function
 - **Methods Significantly Improved**:
   - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
@@ -23,6 +24,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ignoring_ability.rs (ability.flags checks - now 100%)
   - use_item.rs (HP/Gem check, item.boosts, battle.add messages - now ~70%, was ~45%)
   - eat_item.rs (standalone, battle.add [eat], RESTORATIVE_BERRIES - now ~75%, was ~50%)
+  - set_item.rs (RESTORATIVE_BERRIES pendingStaleness, associated function - now ~60%, was ~55%)
   - 6 core methods with source/sourceEffect parameters added
 - **Move Callbacks Fixed**: 9 files with proper source/effect/linkedStatus parameters
 - **Infrastructure Achievements**:
@@ -32,7 +34,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ItemData.extra HashMap for item properties (isPrimalOrb, ignoreKlutz, isGem, boosts)
   - AbilityData.flags HashMap for ability flags (notransform, cantsuppress)
   - battle.add integration for item consumption logging
-  - RESTORATIVE_BERRIES staleness tracking
+  - RESTORATIVE_BERRIES staleness tracking (eat_item + set_item)
   - 250+ callsites updated across codebase
 - **Compilation Success Rate**: 100% (0 errors, 0 warnings throughout)
 - **Remaining Work**: Only 1 TODO in src/pokemon/ (event system infrastructure in calculate_stat.rs)
@@ -515,19 +517,23 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now ~60% complete (was ~50%)
 
 #### set_item.rs
-- Status: ✅ Fixed (Improved - Session 24 Part 32)
-- Issue: Missing source and effect parameters
-- Action: Added 2 missing parameters, updated 12 callsites
+- Status: ✅ Fixed (Improved - Session 24 Part 53)
+- Issue: Missing source and effect parameters, RESTORATIVE_BERRIES staleness logic
+- Action: Refactored to associated function, implemented RESTORATIVE_BERRIES staleness logic
 - Notes:
   - Has correct HP and is_active check
+  - ✅ NOW IMPLEMENTED (Session 24 Part 53): Refactored from instance method to associated function
+  - ✅ NOW IMPLEMENTED (Session 24 Part 53): RESTORATIVE_BERRIES staleness logic
+  - ✅ NOW IMPLEMENTED (Session 24 Part 53): pendingStaleness setting based on trick/switcheroo
+  - ✅ NOW IMPLEMENTED (Session 24 Part 53): External vs internal detection (different side = external)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 53): is_restorative_berry() helper function (9 berries)
   - ✅ NOW IMPLEMENTED (Session 24 Part 32): source_pos parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 32): source_effect parameter
-  - ✅ NOW IMPLEMENTED (Session 24 Part 32): Updated 12 callsites to pass None, None
-  - Missing RESTORATIVE_BERRIES check and pendingStaleness logic
+  - ✅ NOW IMPLEMENTED (Session 24 Part 53): Updated 12 callsites to Pokemon::set_item(battle, pos, ...)
   - Missing singleEvent('End') for old item
   - Missing singleEvent('Start') for new item
   - Returns true correctly
-  - Now ~55% complete (was ~50%)
+  - Now ~60% complete (was ~50%)
 
 #### set_type.rs
 - Status: ✅ Fixed (Nearly Complete - Session 23)
