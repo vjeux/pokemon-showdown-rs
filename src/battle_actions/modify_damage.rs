@@ -219,7 +219,6 @@ pub fn modify_damage(
     //     baseDamage = tr(baseDamage / 2);
     //   }
     // }
-    // CRITICAL: Use the same move_type we used for STAB (from active_move if available)
     let type_mod = battle.get_type_effectiveness_mod(move_type, &target_types);
     eprintln!("[MODIFY_DAMAGE] Type effectiveness: move_type={}, target_types={:?}, type_mod={}",
         move_type, target_types, type_mod);
@@ -237,6 +236,45 @@ pub fn modify_damage(
         eprintln!("[MODIFY_DAMAGE] After resisted: base_damage={}", base_damage);
     }
 
+    // if (isCrit && !suppressMessages) this.battle.add("-crit", target);
+    if is_crit {
+        battle.add("-crit", &[Arg::String(target_slot.clone())]);
+    }
+
+    // if (pokemon.status === "brn" && move.category === "Physical" && !pokemon.hasAbility("guts")) {
+    //   if (this.battle.gen < 6 || move.id !== "facade") {
+    //     baseDamage = this.battle.modify(baseDamage, 0.5);
+    //   }
+    // }
+    let (source_status, source_has_guts) = {
+        if let Some(side) = battle.sides.get(source_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+                let status = pokemon.status.clone();
+                let has_guts = pokemon.has_ability(battle, &["guts"]);
+                (status, has_guts)
+            } else {
+                (ID::new(""), false)
+            }
+        } else {
+            (ID::new(""), false)
+        }
+    };
+
+    if source_status.as_str() == "brn"
+        && move_data.category == "Physical"
+        && !source_has_guts
+    {
+        if battle.gen < 6 || move_data.id.as_str() != "facade" {
+            base_damage = battle.modify(base_damage, 1, 2);
+            eprintln!("[MODIFY_DAMAGE] After burn halving: base_damage={}", base_damage);
+        }
+    }
+
+    // if (this.battle.gen === 5 && !baseDamage) baseDamage = 1;
+    if battle.gen == 5 && base_damage == 0 {
+        base_damage = 1;
+    }
+
     // baseDamage = this.battle.runEvent("ModifyDamage", pokemon, target, move, baseDamage);
     eprintln!("[MODIFY_DAMAGE] Before ModifyDamage event: base_damage={}", base_damage);
     if let Some(modified) = battle.run_event(
@@ -248,6 +286,28 @@ pub fn modify_damage(
     ) {
         base_damage = modified;
         eprintln!("[MODIFY_DAMAGE] After ModifyDamage event: base_damage={}", base_damage);
+    }
+
+    // if (move.isZOrMaxPowered && target.getMoveHitData(move).zBrokeProtect) {
+    //   baseDamage = this.battle.modify(baseDamage, 0.25);
+    //   this.battle.add("-zbroken", target);
+    // }
+    // Check if move is Z-powered or Max-powered and broke through protect
+    let (is_z_or_max_powered, z_broke_protect) = {
+        if let Some(ref active_move) = battle.active_move {
+            let is_z_or_max = active_move.is_z_or_max_powered;
+            // Note: zBrokeProtect is stored in getMoveHitData which we don't have access to here
+            // For now, we'll skip this check as it requires infrastructure changes
+            // TODO: Implement getMoveHitData storage for zBrokeProtect flag
+            (is_z_or_max, false)
+        } else {
+            (false, false)
+        }
+    };
+
+    if is_z_or_max_powered && z_broke_protect {
+        base_damage = battle.modify(base_damage, 1, 4); // 0.25x = 1/4
+        battle.add("-zbroken", &[Arg::String(target_slot.clone())]);
     }
 
     // if (this.battle.gen !== 5 && !baseDamage) return 1;
