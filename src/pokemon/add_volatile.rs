@@ -76,7 +76,22 @@ impl Pokemon {
     ) -> bool {
         // JS: status = this.battle.dex.conditions.get(status);
         // JS: if (!this.hp && !status.affectsFainted) return false;
-        // Note: Missing HP check with affectsFainted flag - would need condition data access
+        // ✅ NOW IMPLEMENTED (Session 24 Part 37): HP check with affectsFainted flag
+        let (target_hp, affects_fainted) = {
+            let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return false,
+            };
+            let affects_fainted = battle.dex.conditions.get(&volatile_id)
+                .and_then(|cond| cond.extra.get("affectsFainted"))
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false);
+            (pokemon.hp, affects_fainted)
+        };
+
+        if target_hp == 0 && !affects_fainted {
+            return false;
+        }
 
         // JS: if (linkedStatus && source && !source.hp) return false;
         // ✅ NOW IMPLEMENTED: linkedStatus parameter (Session 24 Part 12)
@@ -95,8 +110,11 @@ impl Pokemon {
         // JS:     if (!source) source = this.battle.event.source;
         // JS:     if (!sourceEffect) sourceEffect = this.battle.effect;
         // JS: }
+        // Note: Missing battle.event source/sourceEffect defaulting - requires event system
+
         // JS: if (!source) source = this;
-        // Note: Missing battle.event source/sourceEffect defaulting
+        // ✅ NOW IMPLEMENTED (Session 24 Part 37): Default source to target if not provided
+        let source_pos = source_pos.or(Some(target_pos));
 
         // Check if pokemon already has this volatile
         {
@@ -143,7 +161,23 @@ impl Pokemon {
         };
 
         if !can_be_volatile {
-            // Note: Missing sourceEffect.status check for battle.add('-immune')
+            // ✅ NOW IMPLEMENTED (Session 24 Part 37): sourceEffect.status check for -immune message
+            if let Some(src_effect) = source_effect {
+                // Check if sourceEffect is a Move with a status property
+                if let Some(move_data) = battle.dex.moves().get_by_id(src_effect) {
+                    if move_data.secondary.is_some() || move_data.status.is_some() {
+                        // Add -immune message
+                        let target_arg = {
+                            let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                                Some(p) => p,
+                                None => return false,
+                            };
+                            pokemon.get_slot()
+                        };
+                        battle.add("-immune", &[target_arg.into()]);
+                    }
+                }
+            }
             return false;
         }
 
