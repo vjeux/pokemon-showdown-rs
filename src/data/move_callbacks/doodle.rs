@@ -96,7 +96,7 @@ pub fn on_hit(
                     None => continue,
                 };
                 // setAbility returns ID - the old ability
-                ally_pokemon.set_ability(target_ability_id.clone())
+                ally_pokemon.set_ability(target_ability_id.clone(), None, None, false, false)
             };
 
             // if (oldAbility) {

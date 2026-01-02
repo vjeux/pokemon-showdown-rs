@@ -10,6 +10,6 @@ impl Pokemon {
     //
     pub fn clear_ability(&mut self) -> ID {
         // JS: return this.setAbility('');
-        self.set_ability(ID::empty())
+        self.set_ability(ID::empty(), None, None, false, false)
     }
 }

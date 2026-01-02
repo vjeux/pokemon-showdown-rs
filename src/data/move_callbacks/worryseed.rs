@@ -102,7 +102,7 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
 
-        target_mut.set_ability(ID::from("insomnia"))
+        target_mut.set_ability(ID::from("insomnia"), None, None, false, false)
     };
 
     if old_ability.is_empty() {

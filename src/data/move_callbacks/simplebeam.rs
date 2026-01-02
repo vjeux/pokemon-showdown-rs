@@ -80,7 +80,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_ability(ID::from("simple"))
+        target_pokemon.set_ability(ID::from("simple"), None, None, false, false)
     };
 
     // if (!oldAbility) return oldAbility as false | null;

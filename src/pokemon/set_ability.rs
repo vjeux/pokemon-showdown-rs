@@ -37,7 +37,14 @@ impl Pokemon {
     // 		return oldAbility.id;
     // 	}
     //
-    pub fn set_ability(&mut self, ability_id: ID) -> ID {
+    pub fn set_ability(
+        &mut self,
+        ability_id: ID,
+        source_pos: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
+        _is_from_forme_change: bool,
+        _is_transform: bool,
+    ) -> ID {
         // JS: if (!this.hp) return false;
         // ✅ NOW IMPLEMENTED: HP check - returns empty ID (equivalent to false) if fainted
         if self.hp == 0 {
@@ -48,7 +55,8 @@ impl Pokemon {
         // Note: In Rust we receive ID directly, would need Battle reference to get full ability data
 
         // JS: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
-        // Note: Missing source and sourceEffect parameters
+        // ✅ NOW IMPLEMENTED (Session 24 Part 29): source_pos and source_effect parameters
+        // Note: battle.event source/sourceEffect defaulting still missing (needs Battle reference)
 
         // JS: const oldAbility = this.battle.dex.abilities.get(this.ability);
         let old = self.ability.clone();
@@ -72,6 +80,14 @@ impl Pokemon {
         self.ability = ability_id.clone();
         self.ability_state = EffectState::new(ability_id.clone());
         self.ability_state.target = Some((self.side_index, self.position));
+        // ✅ NOW IMPLEMENTED (Session 24 Part 29): source and source_effect assignments
+        if let Some(src_pos) = source_pos {
+            self.ability_state.source = Some(src_pos);
+            self.ability_state.source_slot = Some(src_pos.1);
+        }
+        if let Some(src_effect) = source_effect {
+            self.ability_state.source_effect = Some(src_effect.clone());
+        }
 
         // JS: if (sourceEffect && !isFromFormeChange && !isTransform) {
         // JS:     this.battle.add('-ability', ...);

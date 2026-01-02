@@ -139,7 +139,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_ability(source_ability)
+        target_pokemon.set_ability(source_ability, None, None, false, false)
     };
 
     // if (!oldAbility) return oldAbility as false | null;
