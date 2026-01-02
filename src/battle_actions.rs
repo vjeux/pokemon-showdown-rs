@@ -63,6 +63,8 @@ pub static CHOOSABLE_TARGETS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
 });
 
 /// Parameters for Z-move functions
+/// TODO: Not in JavaScript - Rust-specific struct for passing Z-move parameters
+/// JavaScript uses inline parameters in Z-move related functions
 pub struct ZMoveParams<'a> {
     pub move_name: &'a str,
     pub move_type: &'a str,
@@ -75,6 +77,8 @@ pub struct ZMoveParams<'a> {
 }
 
 /// Parameters for can_z_move function
+/// TODO: Not in JavaScript - Rust-specific struct for passing can_z_move parameters
+/// JavaScript uses inline parameters in canZMove function
 pub struct CanZMoveParams<'a> {
     pub z_move_used: bool,
     pub is_transformed: bool,
@@ -87,6 +91,8 @@ pub struct CanZMoveParams<'a> {
 }
 
 /// Parameters for get_damage function
+/// TODO: Not in JavaScript - Rust-specific struct for passing damage calculation parameters
+/// JavaScript uses inline parameters in damage calculation functions
 pub struct DamageCalcParams<'a> {
     pub attacker_level: i32,
     pub attacker_attack: i32,
@@ -100,6 +106,8 @@ pub struct DamageCalcParams<'a> {
 }
 
 /// Damage calculation result
+/// TODO: Not in JavaScript - Rust-specific enum for damage calculation results
+/// JavaScript functions return number (damage) | undefined (immune/miss/fail) | false (failed)
 #[derive(Debug, Clone)]
 pub enum DamageResult {
     /// Actual damage dealt
