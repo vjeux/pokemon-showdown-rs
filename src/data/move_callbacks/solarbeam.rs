@@ -103,7 +103,7 @@ pub fn on_try_move(
         if weather_str.is_empty() {
             None
         } else {
-            Some(ID::from(weather_str.as_str()))
+            Some(ID::from(weather_str))
         }
     };
     if weather == Some(ID::from("sunnyday")) || weather == Some(ID::from("desolateland")) {
@@ -183,7 +183,7 @@ pub fn on_base_power(
         if weather_str.is_empty() {
             None
         } else {
-            Some(ID::from(weather_str.as_str()))
+            Some(ID::from(weather_str))
         }
     };
     let is_weak_weather = weather == Some(ID::from("raindance"))

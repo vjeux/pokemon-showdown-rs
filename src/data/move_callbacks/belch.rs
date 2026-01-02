@@ -18,7 +18,7 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
     };
 
     if !pokemon.ate_berry {
-        pokemon.disable_move("belch", None);
+        pokemon.disable_move("belch", false, None);
     }
 
     EventResult::Continue

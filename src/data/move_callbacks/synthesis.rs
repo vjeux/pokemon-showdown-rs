@@ -59,7 +59,7 @@ pub fn on_hit(
         //     factor = 0.25;
         //     break;
         // }
-        match weather.as_str() {
+        match weather {
             "sunnyday" | "desolateland" => (2, 3), // 0.667
             "raindance" | "primordialsea" | "sandstorm" | "hail" | "snowscape" => (1, 4), // 0.25
             _ => (1, 2), // 0.5

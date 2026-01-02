@@ -78,7 +78,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.disable_move(move_id.as_str(), None);
+            pokemon_pokemon.disable_move(move_id.as_str(), false, None);
         }
 
         // pokemon.maybeDisabled = true;

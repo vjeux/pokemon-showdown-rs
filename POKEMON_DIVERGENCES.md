@@ -41,9 +41,13 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Fix: Implemented to return all active teammates including self
 
 #### clearVolatile.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: Empty TODO stub, needs full implementation
 - JS Source: Available in file
+- Fix: Implemented full 1-to-1 with Gen 1 Mimic PP preservation and Eternamax Dynamax handling
+- Notes:
+  - Linked volatiles (leech seed, powder, etc.) require EffectState.data infrastructure not yet implemented
+  - Documented in code comments
 
 #### foes.rs
 - Status: ✅ Fixed
@@ -96,14 +100,17 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Action: Complete stat calculation logic
 
 #### clear_boosts.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: "TODO: implement the same logic as JavaScript"
-- Action: Implement boost clearing
+- Action: Implemented 1-to-1 with JavaScript, resets all stat boosts to 0
 
 #### clear_status.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: "TODO: implement the same logic as JavaScript"
-- Action: Implement status clearing
+- Action: Refactored to associated function `Pokemon::clear_status(battle, pokemon_pos)` due to borrow checker
+- Notes:
+  - Clears status and removes nightmare volatile if status was sleep
+  - Updated 2 callsites (healingwish.rs, lunardance.rs)
 
 #### clear_volatile_full.rs
 - Status: ❌ Not Started
@@ -130,14 +137,21 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Action: Refactor to match JS pattern
 
 #### deduct_pp.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: "TODO: implement the same logic as JavaScript"
-- Action: Complete PP deduction logic
+- Action: Changed signature to take `gen` parameter instead of `Battle` to avoid borrow conflicts
+- Notes:
+  - Returns u8 (amount deducted) instead of bool
+  - Handles Gen 1 special case
+  - Updated 4 callsites (use_move_inner.rs, eeriespell.rs, gmaxdepletion.rs, spite.rs)
 
 #### disable_move.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: "TODO: implement the same logic as JavaScript"
-- Action: Complete move disabling logic
+- Action: Implemented 1-to-1 move disabling logic
+- Notes:
+  - MoveSlot.disabled is bool in Rust (can't track 'hidden' state like JS bool|'hidden')
+  - Updated 11 callsites across move and item callbacks
 
 #### eat_item.rs
 - Status: ❌ Not Started
@@ -145,9 +159,12 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Action: Complete item eating logic
 
 #### effective_weather.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed
 - Issue: "TODO: implement the same logic as JavaScript"
-- Action: Complete weather logic
+- Action: Implemented weather logic with Utility Umbrella support
+- Notes:
+  - Negates sun/rain when holding Utility Umbrella
+  - Fixed borrow checker issues in thunder.rs and weatherball.rs
 
 #### faint.rs
 - Status: ❌ Not Started
@@ -158,6 +175,29 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Status: ❌ Not Started
 - Issue: "TODO: implement the same logic as JavaScript"
 - Action: Complete ability retrieval logic
+
+#### get_health.rs
+- Status: ✅ Fixed (New file)
+- Issue: Method was missing entirely
+- Action: Implemented to return health string for protocol messages
+- Notes:
+  - Returns "secret" field from JS object (hp/maxhp status format)
+  - StatusState.time not tracked for sleep duration display
+
+#### get_locked_move.rs
+- Status: ✅ Fixed (New file)
+- Issue: Method was missing entirely
+- Action: Implemented to return locked move ID for multi-turn moves
+- Notes:
+  - Currently returns field value directly
+  - TODO: Should call battle.run_event('LockMove') when refactored
+
+#### get_nature.rs
+- Status: ✅ Fixed (New file)
+- Issue: Method was missing entirely
+- Action: Implemented to return nature from set or calculated from PID
+- Notes:
+  - Uses modulo 25 calculation when nature not explicitly set
 
 ### Rust-Specific Helpers (May be intentional)
 
@@ -195,8 +235,23 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Committed and pushed: "Consolidate pokemon helper methods and fix dex/mod.rs conflict"
 - **Next**: Continue with Low Priority partial implementations (add_volatile, boost_by, calculate_stat, etc.)
 
-### Session 2 - [Date]
-- TBD
+### Session 2 - 2026-01-01 (Continuation)
+- **Completed**:
+  - ✅ Implemented clearVolatile.rs (full Gen 1 Mimic + Eternamax handling)
+  - ✅ Implemented remove_linked_volatiles.rs helper
+  - ✅ Implemented clear_boosts.rs
+  - ✅ Implemented clear_status.rs (refactored to associated function)
+  - ✅ Implemented deduct_pp.rs (changed signature to take gen parameter)
+  - ✅ Implemented get_nature.rs
+  - ✅ Implemented disable_move.rs
+  - ✅ Implemented effective_weather.rs (with Utility Umbrella logic)
+  - ✅ Implemented get_locked_move.rs
+  - ✅ Implemented get_health.rs
+  - ✅ Updated 17 callsites across move/item callbacks
+  - ✅ Fixed borrow checker conflicts in thunder.rs, weatherball.rs, and 8 other weather-related files
+  - ✅ Fixed .as_str() unstable method usage
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+- **Next**: Continue with boost_by, calculate_stat, copy_volatile_from, eat_item, faint, get_ability, etc.
 
 ## Notes
 - Must compile after each fix

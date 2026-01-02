@@ -136,7 +136,7 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            pokemon_mut.disable_move(&move_id.to_string(), None);
+            pokemon_mut.disable_move(&move_id.to_string(), false, None);
         }
 
         EventResult::Continue

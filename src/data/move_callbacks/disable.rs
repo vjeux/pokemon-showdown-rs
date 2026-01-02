@@ -369,7 +369,7 @@ pub mod condition {
                 .map(|move_slot| move_slot.id.clone());
 
             if let Some(move_id) = move_id_to_disable {
-                pokemon_pokemon.disable_move(move_id.as_str(), None);
+                pokemon_pokemon.disable_move(move_id.as_str(), false, None);
             }
         }
 

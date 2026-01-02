@@ -48,7 +48,7 @@ pub fn on_hit(
         pokemon_pokemon.effective_weather(battle.field.weather.as_str())
     };
 
-    match effective_weather.as_str() {
+    match effective_weather {
         // case 'sunnyday':
         // case 'desolateland':
         "sunnyday" | "desolateland" => {

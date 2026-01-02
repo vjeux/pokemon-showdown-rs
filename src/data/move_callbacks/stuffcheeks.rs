@@ -35,7 +35,7 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
             None => return EventResult::Continue,
         };
 
-        pokemon_mut.disable_move("stuffcheeks", None);
+        pokemon_mut.disable_move("stuffcheeks", false, None);
     }
 
     EventResult::Continue

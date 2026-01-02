@@ -1,31 +1,41 @@
+// JS Source:
+//
+// /**
+//  * Like Field.effectiveWeather(), but ignores sun and rain if
+//  * the Utility Umbrella is active for the Pokemon.
+//  */
+// effectiveWeather() {
+// 	const weather = this.battle.field.effectiveWeather();
+// 	switch (weather) {
+// 	case 'sunnyday':
+// 	case 'raindance':
+// 	case 'desolateland':
+// 	case 'primordialsea':
+// 		if (this.hasItem('utilityumbrella')) return '';
+// 	}
+// 	return weather;
+// }
+
 use crate::*;
 
 impl Pokemon {
-
-    /// Get effective weather considering abilities
-    // TypeScript source:
-    // /**
-    // 	 * Like Field.effectiveWeather(), but ignores sun and rain if
-    // 	 * the Utility Umbrella is active for the Pokemon.
-    // 	 */
-    // 	effectiveWeather() {
-    // 		const weather = this.battle.field.effectiveWeather();
-    // 		switch (weather) {
-    // 		case 'sunnyday':
-    // 		case 'raindance':
-    // 		case 'desolateland':
-    // 		case 'primordialsea':
-    // 			if (this.hasItem('utilityumbrella')) return '';
-    // 		}
-    // 		return weather;
-    // 	}
-    //
-    pub fn effective_weather(&self, field_weather: &str) -> String {
-        // TODO: implement the same logic as JavaScript
-        
-        // Cloud Nine and Air Lock negate weather
-        // This would normally check all Pokemon on field
-        // For now just return the field weather
-        field_weather.to_string()
+    /// Get effective weather considering abilities and Utility Umbrella
+    /// Equivalent to pokemon.ts effectiveWeather()
+    pub fn effective_weather<'a>(&self, field_weather: &'a str) -> &'a str {
+        // JS: switch (weather) {
+        // JS: case 'sunnyday': case 'raindance': case 'desolateland': case 'primordialsea':
+        //         if (this.hasItem('utilityumbrella')) return '';
+        match field_weather {
+            "sunnyday" | "raindance" | "desolateland" | "primordialsea" => {
+                // JS: if (this.hasItem('utilityumbrella')) return '';
+                if self.has_item(&["utilityumbrella"]) {
+                    "" // Weather negated by Utility Umbrella
+                } else {
+                    field_weather
+                }
+            }
+            // JS: return weather;
+            _ => field_weather,
+        }
     }
 }

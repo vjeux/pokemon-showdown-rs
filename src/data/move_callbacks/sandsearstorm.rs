@@ -33,7 +33,7 @@ pub fn on_modify_move(
             if weather_str.is_empty() {
                 None
             } else {
-                Some(ID::from(weather_str.as_str()))
+                Some(ID::from(weather_str))
             }
         };
 

@@ -81,7 +81,7 @@ pub mod condition {
         };
 
         for move_id in moves_to_disable {
-            pokemon_mut.disable_move(move_id.as_str(), Some("Throat Chop".to_string()));
+            pokemon_mut.disable_move(move_id.as_str(), false, Some("Throat Chop".to_string()));
         }
 
         EventResult::Continue

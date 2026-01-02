@@ -35,12 +35,12 @@ pub fn on_modify_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.effective_weather(battle.field.weather.as_str())
+        target_pokemon.effective_weather(battle.field.weather.as_str()).to_string()
     };
 
     // Modify move accuracy based on weather
     if let Some(ref mut active_move) = battle.active_move {
-        match weather.as_str() {
+        match weather.as_ref() {
             // case 'raindance':
             // case 'primordialsea':
             //     move.accuracy = true;

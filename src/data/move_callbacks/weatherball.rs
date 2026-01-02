@@ -39,11 +39,11 @@ pub fn on_modify_type(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_ref.effective_weather(battle.field.weather.as_str())
+        pokemon_ref.effective_weather(battle.field.weather.as_str()).to_string()
     };
 
     if let Some(ref mut active_move) = battle.active_move {
-        match effective_weather.as_str() {
+        match effective_weather.as_ref() {
             // case 'sunnyday':
             // case 'desolateland':
             //     move.type = 'Fire';
@@ -107,10 +107,10 @@ pub fn on_modify_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_ref.effective_weather(battle.field.weather.as_str())
+        pokemon_ref.effective_weather(battle.field.weather.as_str()).to_string()
     };
 
-    let should_double = match effective_weather.as_str() {
+    let should_double = match effective_weather.as_ref() {
         "sunnyday" | "desolateland" | "raindance" | "primordialsea" | "sandstorm" | "hail"
         | "snowscape" => true,
         _ => false,
