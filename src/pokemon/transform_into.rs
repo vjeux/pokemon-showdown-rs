@@ -145,7 +145,12 @@ impl Pokemon {
         // Note: Missing Ogerpon/Terapagos terastallized check - would need species data
 
         // JS: this.terastallized === 'Stellar'
-        // Note: Missing Stellar tera check - terastallized field exists but not checking value
+        // ✅ NOW IMPLEMENTED: Stellar tera check
+        if let Some(ref tera_type) = self.terastallized {
+            if tera_type == "Stellar" {
+                return false;
+            }
+        }
 
         // JS: if (this.battle.dex.currentMod === 'gen1stadium' && ...) return false;
         // Note: Missing gen1stadium Ditto checks - would need Battle reference
