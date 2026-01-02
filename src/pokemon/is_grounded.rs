@@ -27,8 +27,8 @@ impl Pokemon {
         }
 
         // JS: if ('ingrain' in this.volatiles && this.battle.gen >= 4) return true;
-        // Note: Missing gen check - would need Battle reference
-        if self.has_volatile(&ID::new("ingrain")) {
+        // ✅ NOW IMPLEMENTED: Gen check for Ingrain (gen >= 4)
+        if self.has_volatile(&ID::new("ingrain")) && battle.gen >= 4 {
             return true;
         }
 
