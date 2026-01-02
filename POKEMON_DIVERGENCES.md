@@ -449,11 +449,11 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Otherwise has fairly complete implementation with species data lookup
 
 #### set_status.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Partially Implemented)
 - Issue: Very simplified implementation missing most JS logic
-- Action: Documented all missing pieces line by line
+- Action: Added HP check, documented remaining missing pieces
 - Notes:
-  - Missing HP check (should return false if fainted)
+  - ✅ NOW IMPLEMENTED: HP check (returns false if fainted)
   - Missing source, sourceEffect, ignoreImmunities parameters
   - Has basic already-has-status check but missing different failure messages
   - Missing runStatusImmunity check and Corrosion ability exception
@@ -1053,28 +1053,31 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Improved set_ability.rs - Added HP check
   - ✅ Improved use_item.rs - Added isActive check
   - ✅ Improved eat_item.rs - Added HP check with Jaboca/Rowap Berry exception and isActive check
+  - ✅ Improved set_status.rs - Added HP check
   - ✅ Updated 6 callsites across move callbacks (for set_type)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-  - ✅ Committed and pushed 2 commits
+  - ✅ Committed and pushed 3 commits
 - **Methods Now Improved**:
   - set_type.rs - Partially implemented with enforce parameter, Stellar/Tera validation, empty check
   - set_ability.rs - Partially implemented with HP check
   - use_item.rs - Partially implemented with isActive check
   - eat_item.rs - Partially implemented with HP check and isActive check
-- **Specific Implementations**: 10 new feature implementations marked with "✅ NOW IMPLEMENTED"
+  - set_status.rs - Partially implemented with HP check
+- **Specific Implementations**: 11 new feature implementations marked with "✅ NOW IMPLEMENTED"
   - set_type: enforce parameter, Stellar type check, Terastallized protection, empty validation, addedType reset, bool return type
   - set_ability: HP check
   - use_item: isActive check
   - eat_item: HP check with berry exception, isActive check
+  - set_status: HP check
 - **Path Forward**:
   - Phase 1 (Current): Continue finding simple improvements across Pokemon methods
   - Phase 2 (Next): Implement missing event system calls
   - Phase 3 (Future): Add EffectState.data infrastructure
 - **Session Statistics**:
-  - 4 methods improved
-  - 10 feature implementations
+  - 5 methods improved
+  - 11 feature implementations
   - 6 callsites updated
-  - 2 commits pushed to git
+  - 3 commits pushed to git
   - 100% compilation success rate
 
 
