@@ -698,17 +698,17 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Note: Takes new_base_max_hp as parameter instead of calculating from species (caller responsibility)
 
 #### remove_linked_volatiles.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Needs EffectState.data infrastructure for linkedPokemon tracking
-- Action: Documented all missing pieces line by line
+- Status: ✅ Fixed (Fully Implemented - Session 24 Part 8)
+- Issue: Needed EffectState.data infrastructure for linkedPokemon tracking
+- Action: Implemented full 1-to-1 logic using EffectState.data HashMap
 - Notes:
-  - Already implemented as associated function (correct for borrow checker)
-  - Missing EffectState.data HashMap to store linkedPokemon: Vec<(usize, usize)>
-  - Would need to loop through each linked pokemon position
-  - Would need to access data["linkedPokemon"] and remove this pokemon
-  - Would need to remove volatile if linkedPokemon list becomes empty
-  - Core infrastructure (EffectState.data) must be implemented first
-  - Used for Leech Seed, Powder moves, etc. bidirectional linking
+  - ✅ NOW IMPLEMENTED: Loops through linked pokemon positions
+  - ✅ NOW IMPLEMENTED: Accesses data["linkedPokemon"] as JSON array
+  - ✅ NOW IMPLEMENTED: Removes this pokemon from linkedPokemon arrays
+  - ✅ NOW IMPLEMENTED: Removes volatile if linkedPokemon array becomes empty
+  - Used for Leech Seed, Powder moves, and other bidirectionally linked volatiles
+  - Signature: `Pokemon::remove_linked_volatiles(battle, this_pokemon, linked_status, linked_pokemon)`
+  - Now fully 1-to-1 with JavaScript!
 
 #### get_moves.rs
 - Status: ✅ Fixed (Documented)
@@ -1628,6 +1628,35 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
+### Session 24 Part 8 - 2026-01-01 (remove_linked_volatiles Implementation - COMPLETED)
+- **Goal**: Implement remove_linked_volatiles using EffectState.data HashMap
+- **Completed**:
+  - ✅ Discovered that EffectState.data HashMap already exists!
+  - ✅ Implemented full 1-to-1 logic for removing linked volatiles
+  - ✅ Loops through linked pokemon positions
+  - ✅ Accesses EffectState.data["linkedPokemon"] as JSON array
+  - ✅ Removes this pokemon from each linked pokemon's array
+  - ✅ Removes volatile if linkedPokemon array becomes empty
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+- **Methods Now Fully Implemented (1-to-1 with JS)**:
+  - remove_linked_volatiles.rs - Now 100% complete (was documented stub)
+    - ✅ NOW IMPLEMENTED: Full linkedPokemon removal logic
+    - ✅ NOW IMPLEMENTED: Uses EffectState.data HashMap
+    - ✅ NOW IMPLEMENTED: Properly handles JSON array operations
+    - ✅ Signature: `Pokemon::remove_linked_volatiles(battle, this_pokemon, linked_status, linked_pokemon)`
+    - Now fully functional for Leech Seed, Powder moves, etc.!
+- **Technical Details**:
+  - linkedPokemon stored as JSON array: [[side, slot], ...]
+  - Uses retain() to filter out this_pokemon from arrays
+  - Two-phase approach: check if should remove, then remove volatile
+  - Handles malformed data gracefully
+- **Session Statistics**:
+  - 1 method fully implemented (remove_linked_volatiles.rs)
+  - 1 file modified
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
@@ -1645,6 +1674,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 13. update_max_hp.rs - ✅ Complete (Session 24)
 14. set_hp.rs - ✅ Complete (Session 24)
 15. faint.rs - ✅ Complete (Session 24 Part 7)
+16. remove_linked_volatiles.rs - ✅ Complete (Session 24 Part 8)
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. try_set_status.rs - Core logic correct, simplified
