@@ -78,7 +78,17 @@ impl Pokemon {
         // Note: Missing HP check with affectsFainted flag - would need condition data access
 
         // JS: if (linkedStatus && source && !source.hp) return false;
-        // Note: Missing linkedStatus parameter and source HP check
+        // ✅ NOW IMPLEMENTED: linkedStatus parameter (Session 24 Part 12)
+        // ✅ NOW IMPLEMENTED: source HP check (Session 24 Part 15)
+        if let (Some(_linked_status_id), Some(src_pos)) = (linked_status.as_ref(), source_pos) {
+            let source_pokemon = match battle.pokemon_at(src_pos.0, src_pos.1) {
+                Some(p) => p,
+                None => return false,
+            };
+            if source_pokemon.hp == 0 {
+                return false;
+            }
+        }
 
         // JS: if (this.battle.event) {
         // JS:     if (!source) source = this.battle.event.source;
