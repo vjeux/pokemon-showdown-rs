@@ -315,7 +315,12 @@ pub fn spread_move_hit(
                 }
 
                 // JS: if (!move.multihit) move.selfDropped = true;
-                // TODO: Set move.selfDropped = true for non-multihit moves
+                // Set selfDropped flag for non-multihit moves
+                if let Some(ref mut active_move) = battle.active_move {
+                    if active_move.multi_hit.is_none() {
+                        active_move.self_dropped = true;
+                    }
+                }
             } else {
                 eprintln!("[SPREAD_MOVE_HIT] Taking else branch (no boosts or is_secondary=true)");
                 // JS: this.moveHit(source, source, move, moveData.self, isSecondary, true);
