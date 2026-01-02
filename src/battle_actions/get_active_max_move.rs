@@ -1,31 +1,212 @@
-// TODO: Implement getActiveMaxMove from JavaScript
-//
-// JS Source:
-// 
-// 	getActiveMaxMove(move: Move, pokemon: Pokemon) {
-// 		if (typeof move === 'string') move = this.dex.getActiveMove(move);
-// 		if (move.name === 'Struggle') return this.dex.getActiveMove(move);
-// 		let maxMove = this.dex.getActiveMove(this.MAX_MOVES[move.category === 'Status' ? move.category : move.type]);
-// 		if (move.category !== 'Status') {
-// 			if (pokemon.gigantamax && pokemon.canGigantamax) {
-// 				const gMaxMove = this.dex.getActiveMove(pokemon.canGigantamax);
-// 				if (gMaxMove.exists && gMaxMove.type === move.type) maxMove = gMaxMove;
-// 			}
-// 			if (!move.maxMove?.basePower) throw new Error(`${move.name} doesn't have a maxMove basePower`);
-// 			if (!['gmaxdrumsolo', 'gmaxfireball', 'gmaxhydrosnipe'].includes(maxMove.id)) {
-// 				maxMove.basePower = move.maxMove.basePower;
-// 			}
-// 			maxMove.category = move.category;
-// 		}
-// 		maxMove.baseMove = move.id;
-// 		// copy the priority for Psychic Terrain, Quick Guard
-// 		maxMove.priority = move.priority;
-// 		maxMove.isZOrMaxPowered = true;
-// 		return maxMove;
-// 	}
+//! BattleActions::getActiveMaxMove - Get active Max Move from a move
+//!
+//! 1:1 port of getActiveMaxMove from battle-actions.ts
 
 use crate::*;
+use crate::battle_actions::ActiveMove;
 
-impl Battle_actions {
-    // TODO: Implement this method
+/// Get active Max Move for a given move
+/// Equivalent to battle-actions.ts getActiveMaxMove()
+///
+/// getActiveMaxMove(move: Move, pokemon: Pokemon) {
+///     if (typeof move === 'string') move = this.dex.getActiveMove(move);
+///     if (move.name === 'Struggle') return this.dex.getActiveMove(move);
+///     let maxMove = this.dex.getActiveMove(this.MAX_MOVES[move.category === 'Status' ? move.category : move.type]);
+///     if (move.category !== 'Status') {
+///         if (pokemon.gigantamax && pokemon.canGigantamax) {
+///             const gMaxMove = this.dex.getActiveMove(pokemon.canGigantamax);
+///             if (gMaxMove.exists && gMaxMove.type === move.type) maxMove = gMaxMove;
+///         }
+///         if (!move.maxMove?.basePower) throw new Error(`${move.name} doesn't have a maxMove basePower`);
+///         if (!['gmaxdrumsolo', 'gmaxfireball', 'gmaxhydrosnipe'].includes(maxMove.id)) {
+///             maxMove.basePower = move.maxMove.basePower;
+///         }
+///         maxMove.category = move.category;
+///     }
+///     maxMove.baseMove = move.id;
+///     // copy the priority for Psychic Terrain, Quick Guard
+///     maxMove.priority = move.priority;
+///     maxMove.isZOrMaxPowered = true;
+///     return maxMove;
+/// }
+pub fn get_active_max_move(
+    battle: &Battle,
+    side_index: usize,
+    pokemon_index: usize,
+    move_id: &str,
+) -> ActiveMove {
+    // if (typeof move === 'string') move = this.dex.getActiveMove(move);
+    let move_data = battle.dex.moves().get(move_id).expect("Move not found");
+
+    // if (move.name === 'Struggle') return this.dex.getActiveMove(move);
+    if move_data.name == "Struggle" {
+        return move_data_to_active_move(move_data);
+    }
+
+    // Get pokemon
+    let pokemon = battle.sides.get(side_index)
+        .and_then(|s| s.pokemon.get(pokemon_index))
+        .expect("Pokemon not found");
+
+    // let maxMove = this.dex.getActiveMove(this.MAX_MOVES[move.category === 'Status' ? move.category : move.type]);
+    let max_move_name = if move_data.category == "Status" {
+        "Max Guard"
+    } else {
+        match move_data.move_type.as_str() {
+            "Flying" => "Max Airstream",
+            "Dark" => "Max Darkness",
+            "Fire" => "Max Flare",
+            "Bug" => "Max Flutterby",
+            "Water" => "Max Geyser",
+            "Ice" => "Max Hailstorm",
+            "Fighting" => "Max Knuckle",
+            "Electric" => "Max Lightning",
+            "Psychic" => "Max Mindstorm",
+            "Poison" => "Max Ooze",
+            "Grass" => "Max Overgrowth",
+            "Ghost" => "Max Phantasm",
+            "Ground" => "Max Quake",
+            "Rock" => "Max Rockfall",
+            "Fairy" => "Max Starfall",
+            "Steel" => "Max Steelspike",
+            "Normal" => "Max Strike",
+            "Dragon" => "Max Wyrmwind",
+            _ => panic!("Unknown type for Max move: {}", move_data.move_type),
+        }
+    };
+
+    let max_move_data = battle.dex.moves().get(max_move_name).expect("Max move not found");
+    let mut max_move = move_data_to_active_move(max_move_data);
+
+    // if (move.category !== 'Status') {
+    if move_data.category != "Status" {
+        //     if (pokemon.gigantamax && pokemon.canGigantamax) {
+        //         const gMaxMove = this.dex.getActiveMove(pokemon.canGigantamax);
+        //         if (gMaxMove.exists && gMaxMove.type === move.type) maxMove = gMaxMove;
+        //     }
+        if pokemon.gigantamax {
+            if let Some(ref can_gigantamax) = pokemon.can_gigantamax {
+                if let Some(gmax_move_data) = battle.dex.moves().get(can_gigantamax) {
+                    if gmax_move_data.move_type == move_data.move_type {
+                        max_move = move_data_to_active_move(gmax_move_data);
+                    }
+                }
+            }
+        }
+
+        //     if (!move.maxMove?.basePower) throw new Error(`${move.name} doesn't have a maxMove basePower`);
+        let max_move_base_power = move_data.max_move.as_ref()
+            .and_then(|mm| mm.get("basePower"))
+            .and_then(|bp| bp.as_i64())
+            .map(|bp| bp as i32)
+            .expect(&format!("{} doesn't have a maxMove basePower", move_data.name));
+
+        //     if (!['gmaxdrumsolo', 'gmaxfireball', 'gmaxhydrosnipe'].includes(maxMove.id)) {
+        //         maxMove.basePower = move.maxMove.basePower;
+        //     }
+        let max_move_id_str = max_move.id.as_str();
+        if max_move_id_str != "gmaxdrumsolo" &&
+           max_move_id_str != "gmaxfireball" &&
+           max_move_id_str != "gmaxhydrosnipe" {
+            max_move.base_power = max_move_base_power;
+        }
+
+        //     maxMove.category = move.category;
+        max_move.category = move_data.category.clone();
+    }
+
+    // maxMove.baseMove = move.id;
+    max_move.base_move = Some(move_data.id.clone());
+
+    // // copy the priority for Psychic Terrain, Quick Guard
+    // maxMove.priority = move.priority;
+    max_move.priority = move_data.priority;
+
+    // maxMove.isZOrMaxPowered = true;
+    max_move.is_z_or_max_powered = true;
+
+    // return maxMove;
+    max_move
+}
+
+/// Helper function to convert MoveData to ActiveMove
+/// TODO: This should be a proper Dex method (getActiveMove)
+fn move_data_to_active_move(move_data: &crate::dex::MoveData) -> ActiveMove {
+    // Create a basic ActiveMove from MoveData
+    // This is a simplified conversion - full implementation would be in dex.getActiveMove()
+
+    // Convert Accuracy enum to i32
+    let accuracy = match move_data.accuracy {
+        crate::dex::Accuracy::AlwaysHits => 0, // true means always hits (represented as 0 or special value)
+        crate::dex::Accuracy::Percent(n) => n,
+    };
+
+    ActiveMove {
+        id: move_data.id.clone(),
+        name: move_data.name.clone(),
+        fullname: format!("move: {}", move_data.name),
+        num: move_data.num,
+        exists: true,
+        gen: 9, // Default generation
+        short_desc: String::new(), // MoveData doesn't have this
+        desc: String::new(), // MoveData doesn't have this
+        is_nonstandard: None, // MoveData doesn't have this
+        duration: None,
+        no_copy: false,
+        affects_fainted: false,
+        source_effect_name: None,
+        condition: None,
+        base_power: move_data.base_power,
+        accuracy,
+        pp: move_data.pp as u8, // Convert i32 to u8
+        category: move_data.category.clone(),
+        move_type: move_data.move_type.clone(),
+        priority: move_data.priority,
+        target: move_data.target.clone(),
+        flags: move_data_flags_to_active_flags(&move_data.flags),
+        ..Default::default()
+    }
+}
+
+/// Helper to convert MoveData flags to ActiveMove MoveFlags
+fn move_data_flags_to_active_flags(flags: &std::collections::HashMap<String, i32>) -> crate::battle_actions::MoveFlags {
+    crate::battle_actions::MoveFlags {
+        allyanim: flags.get("allyanim").is_some(),
+        bite: flags.get("bite").is_some(),
+        bullet: flags.get("bullet").is_some(),
+        bypasssub: flags.get("bypasssub").is_some(),
+        cant_use_twice: flags.get("cantusetwice").is_some(),
+        charge: flags.get("charge").is_some(),
+        contact: flags.get("contact").is_some(),
+        dance: flags.get("dance").is_some(),
+        defrost: flags.get("defrost").is_some(),
+        distance: flags.get("distance").is_some(),
+        failcopycat: flags.get("failcopycat").is_some(),
+        failencore: flags.get("failencore").is_some(),
+        failinstruct: flags.get("failinstruct").is_some(),
+        failmefirst: flags.get("failmefirst").is_some(),
+        failmimic: flags.get("failmimic").is_some(),
+        future_move: flags.get("futuremove").is_some(),
+        gravity: flags.get("gravity").is_some(),
+        heal: flags.get("heal").is_some(),
+        metronome: flags.get("metronome").is_some(),
+        mirror: flags.get("mirror").is_some(),
+        mustpressure: flags.get("mustpressure").is_some(),
+        noassist: flags.get("noassist").is_some(),
+        nonsky: flags.get("nonsky").is_some(),
+        noparentalbond: flags.get("noparentalbond").is_some(),
+        nosketch: flags.get("nosketch").is_some(),
+        nosleeptalk: flags.get("nosleeptalk").is_some(),
+        pledgecombo: flags.get("pledgecombo").is_some(),
+        powder: flags.get("powder").is_some(),
+        protect: flags.get("protect").is_some(),
+        pulse: flags.get("pulse").is_some(),
+        punch: flags.get("punch").is_some(),
+        recharge: flags.get("recharge").is_some(),
+        reflectable: flags.get("reflectable").is_some(),
+        slicing: flags.get("slicing").is_some(),
+        snatch: flags.get("snatch").is_some(),
+        sound: flags.get("sound").is_some(),
+        wind: flags.get("wind").is_some(),
+    }
 }
