@@ -460,6 +460,10 @@ pub struct MoveData {
     /// JavaScript: zMove?: { basePower?: number, effect?: string, boost?: SparseBoostsTable }
     #[serde(rename = "zMove", default)]
     pub z_move: Option<serde_json::Value>,
+    /// Max Move options (basePower)
+    /// JavaScript: maxMove?: { basePower?: number }
+    #[serde(rename = "maxMove", default)]
+    pub max_move: Option<serde_json::Value>,
     /// Calls another move (like Metronome, Sleep Talk)
     /// JavaScript: callsMove?: boolean
     #[serde(rename = "callsMove", default)]
