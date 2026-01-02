@@ -10,10 +10,6 @@ use crate::dex_data::ID;
 #[derive(Debug, Clone, PartialEq)]
 /// JavaScript equivalent: Choice (sim/side.ts)
 /// 11 fields in JavaScript
-/// JavaScript equivalent: Choice (sim/side.ts)
-/// 11 fields in JavaScript
-/// JavaScript equivalent: Choice (sim/side.ts)
-/// 11 fields in JavaScript
 pub enum Choice {
     /// Use a move: move <slot> [target] [mega/zmove/dynamax/terastallize]
     Move {
