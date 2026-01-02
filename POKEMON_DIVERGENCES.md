@@ -476,15 +476,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing runEvent('AfterTakeItem')
 
 #### transform_into.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Partial implementation missing many JS features
-- Action: Documented all missing pieces line by line with extensive notes
+- Status: ✅ Fixed (Partially Implemented)
+- Issue: Missing Stellar tera check and many other JS features
+- Action: Implemented Stellar Terastallization check, documented remaining missing pieces
 - Notes:
+  - ✅ NOW IMPLEMENTED: Stellar tera check (prevents Transform when Stellar Terastallized)
   - Missing illusion checks on both pokemon
   - Missing gen checks for substitute, transformed states
   - Missing Eternatus-Eternamax check
   - Missing Ogerpon/Terapagos terastallized checks
-  - Missing Stellar tera check
   - Missing gen1stadium Ditto checks
   - Not calling setSpecies (should update from species data)
   - Missing roost volatile type handling
@@ -1013,7 +1013,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 9 commits pushed to git
   - 100% compilation success rate
 
-### Session 10 - 2026-01-01 (Major Refactoring Phase - ACTIVE SESSION)
+### Session 10 - 2026-01-01 (Major Refactoring Phase)
 - **Goal**: Refactor Pokemon methods to take Battle parameters for proper 1-to-1 equivalence
 - **Completed**:
   - ✅ Refactored ignoring_item() to take (battle, is_fling) parameters
@@ -1024,23 +1024,25 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Implemented Gravity pseudo-weather check in is_grounded
   - ✅ Implemented is_fling parameter support for Fling move
   - ✅ Implemented Ability Shield check in ignoring_item
+  - ✅ Implemented Stellar Terastallization check in transform_into
   - ✅ Updated 51 files across move/item callbacks and battle system
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-  - ✅ Committed and pushed major refactoring
+  - ✅ Committed and pushed 3 commits
 - **Methods Now Improved**:
   - ignoring_item.rs - Significantly improved with Magic Room, isFling, Ability Shield
   - has_item.rs - Fully implemented (already was complete, now properly delegates)
   - is_grounded.rs - Significantly improved with Gravity check
   - effective_weather.rs - Fully implemented (already was complete, now properly delegates)
-- **Specific Implementations**: 4 new feature implementations marked with "✅ NOW IMPLEMENTED"
+  - transform_into.rs - Improved with Stellar tera check
+- **Specific Implementations**: 5 new feature implementations marked with "✅ NOW IMPLEMENTED"
 - **Path Forward**:
-  - Phase 1 (Current): Continue fixing methods that need Battle parameters
+  - Phase 1 (Current): Continue fixing methods with simple improvements
   - Phase 2 (Next): Implement missing event system calls
   - Phase 3 (Future): Add EffectState.data infrastructure
 - **Session Statistics**:
-  - 4 methods refactored to take Battle parameters
+  - 5 methods improved/refactored
   - 51 files updated (move/item callbacks, battle system)
-  - 1 major commit pushed to git
+  - 3 commits pushed to git
   - 100% compilation success rate
 
 ### Implementation Progress Summary
