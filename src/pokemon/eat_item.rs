@@ -1,6 +1,23 @@
 use crate::*;
 use crate::event_system::EffectState;
 
+/// Check if an item is a restorative berry
+/// JavaScript: RESTORATIVE_BERRIES.has(item.id)
+fn is_restorative_berry(item_id: &str) -> bool {
+    matches!(
+        item_id,
+        "leppaberry"
+            | "aguavberry"
+            | "enigmaberry"
+            | "figyberry"
+            | "iapapaberry"
+            | "magoberry"
+            | "sitrusberry"
+            | "wikiberry"
+            | "oranberry"
+    )
+}
+
 impl Pokemon {
 
     /// Eat held item (berries)
@@ -130,7 +147,29 @@ impl Pokemon {
         // JS:     }
         // JS:     this.pendingStaleness = undefined;
         // JS: }
-        // Note: Missing RESTORATIVE_BERRIES staleness logic (needs constant and staleness field checks)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 52): RESTORATIVE_BERRIES staleness logic
+        if is_restorative_berry(item_id.as_str()) {
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return None,
+            };
+
+            match pokemon_mut.pending_staleness.as_deref() {
+                Some("internal") => {
+                    // Only set to internal if not already external
+                    if pokemon_mut.staleness.as_deref() != Some("external") {
+                        pokemon_mut.staleness = Some("internal".to_string());
+                    }
+                }
+                Some("external") => {
+                    pokemon_mut.staleness = Some("external".to_string());
+                }
+                _ => {
+                    // No pending staleness or other value - do nothing
+                }
+            }
+            pokemon_mut.pending_staleness = None;
+        }
 
         // Phase 2: Mutate pokemon to consume item
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
