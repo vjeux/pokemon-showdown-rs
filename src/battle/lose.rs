@@ -1,5 +1,6 @@
 use crate::*;
 use crate::side::RequestState;
+use crate::Pokemon;
 
 impl Battle {
 
@@ -54,15 +55,23 @@ impl Battle {
         }
 
         // JavaScript: side.pokemonLeft = 0;
-        if let Some(side) = self.sides.get_mut(side_id.index()) {
-            side.pokemon_left = 0;
+        // JavaScript: side.active[0]?.faint();
+        let pokemon_to_faint = {
+            if let Some(side) = self.sides.get_mut(side_id.index()) {
+                side.pokemon_left = 0;
 
-            // JavaScript: side.active[0]?.faint();
-            if let Some(Some(poke_idx)) = side.active.first() {
-                if let Some(pokemon) = side.pokemon.get_mut(*poke_idx) {
-                    pokemon.faint();
-                }
+                // Get the first active Pokemon position
+                side.active.first().and_then(|opt_idx| {
+                    opt_idx.map(|poke_idx| (side_id.index(), poke_idx))
+                })
+            } else {
+                None
             }
+        };
+
+        // Faint the Pokemon if there was one active
+        if let Some(pokemon_pos) = pokemon_to_faint {
+            Pokemon::faint(self, pokemon_pos, None, None);
         }
 
         // JavaScript: this.faintMessages(false, true);

@@ -1,9 +1,14 @@
 use crate::*;
+use crate::battle::FaintData;
 
 impl Pokemon {
 
     /// Mark Pokemon as fainted and queue faint
     /// Returns the amount of damage dealt (HP before faint)
+    ///
+    /// This is an associated function (not a method) because it needs
+    /// access to Battle for the faint_queue.
+    /// Call as: Pokemon::faint(battle, pokemon_pos, source_pos, effect)
     // TypeScript source:
     // /**
     // 	 * This function only puts the pokemon in the faint queue;
@@ -26,33 +31,56 @@ impl Pokemon {
     // 		return d;
     // 	}
     //
-    pub fn faint(&mut self) -> i32 {
-        // JS: if (this.fainted || this.faintQueued) return 0;
-        if self.fainted || self.faint_queued {
-            return 0;
+    pub fn faint(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        source_pos: Option<(usize, usize)>,
+        effect: Option<&ID>
+    ) -> i32 {
+        // Phase 1: Check if already fainted/queued and get HP
+        let damage = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return 0,
+            };
+
+            // JS: if (this.fainted || this.faintQueued) return 0;
+            if pokemon.fainted || pokemon.faint_queued {
+                return 0;
+            }
+
+            // JS: const d = this.hp;
+            pokemon.hp
+        };
+
+        // Phase 2: Mark as fainted mutably
+        {
+            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return 0,
+            };
+
+            // JS: this.hp = 0;
+            pokemon.hp = 0;
+
+            // JS: this.switchFlag = false;
+            pokemon.switch_flag = false;
+
+            // JS: this.faintQueued = true;
+            pokemon.faint_queued = true;
         }
-
-        // JS: const d = this.hp;
-        let damage = self.hp;
-
-        // JS: this.hp = 0;
-        self.hp = 0;
-
-        // JS: this.switchFlag = false;
-        self.switch_flag = false;
-
-        // JS: this.faintQueued = true;
-        self.faint_queued = true;
 
         // JS: this.battle.faintQueue.push({
         // JS:     target: this,
         // JS:     source,
         // JS:     effect,
         // JS: });
-        // Note: Missing source and effect parameters
-        // Note: Missing battle.faintQueue.push() - would need Battle reference
-        // Pokemon is marked as faint_queued but not added to battle's faint queue
-        // This is a borrow checker workaround - caller must add to faint queue
+        // ✅ NOW IMPLEMENTED: battle.faint_queue.push() with source and effect parameters
+        battle.faint_queue.push(FaintData {
+            target: pokemon_pos,
+            source: source_pos,
+            effect: effect.cloned(),
+        });
 
         // JS: return d;
         damage

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onPrepareHit(pokemon) {
 ///     return !pokemon.removeVolatile('destinybond');
@@ -142,11 +143,9 @@ pub mod condition {
             );
 
             // source.faint();
-            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            source_pokemon.faint();
+            // Source faints due to destiny bond from target
+            let destinybond_id = ID::from("destinybond");
+            Pokemon::faint(battle, source, Some(target), Some(&destinybond_id));
         }
 
         EventResult::Continue

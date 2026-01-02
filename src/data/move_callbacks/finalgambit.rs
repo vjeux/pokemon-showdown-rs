@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// damageCallback(pokemon) {
 ///     const damage = pokemon.hp;
@@ -29,12 +30,7 @@ pub fn damage_callback(
     };
 
     // pokemon.faint();
-    let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    pokemon_pokemon.faint();
+    Pokemon::faint(battle, pokemon, None, None);
 
     // return damage;
     EventResult::Number(damage)

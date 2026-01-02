@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::FaintData;
+use crate::Pokemon;
 
 impl Battle {
 
@@ -17,25 +17,14 @@ impl Battle {
         effect: Option<&str>,
     ) {
         // JS: pokemon.faint(source, effect)
-        // JS: battle.faintQueue.push({target: pokemon, source, effect})
+        // ✅ NOW USES: Pokemon::faint() which handles both marking as fainted AND adding to faint_queue
+        let effect_id = effect.map(ID::new);
+        Pokemon::faint(self, target, source, effect_id.as_ref());
 
-        let (target_side, target_idx) = target;
-        if let Some(side) = self.sides.get_mut(target_side) {
-            if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
-                pokemon.faint();
-
-                // In JavaScript, pokemon.faint() sets fainted=true immediately
-                // In Rust, we need to set it here as well for compatibility
-                pokemon.fainted = true;
-
-                // JS: this.faintQueue.push({target, source, effect});
-                let effect_id = effect.map(ID::new);
-                self.faint_queue.push(FaintData {
-                    target,
-                    source,
-                    effect: effect_id,
-                });
-            }
+        // JS: In JavaScript, pokemon.faint() also sets fainted=true immediately for some reason
+        // In Rust, we need to set it here as well for compatibility with JavaScript behavior
+        if let Some(pokemon) = self.pokemon_at_mut(target.0, target.1) {
+            pokemon.fainted = true;
         }
     }
 }

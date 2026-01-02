@@ -526,11 +526,7 @@ impl Battle {
 
                         // Gen 1-2 special handling
                         if self.gen <= 2 {
-                            if let Some(side) = self.sides.get_mut(target_pos.0) {
-                                if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
-                                    pokemon.faint();
-                                }
-                            }
+                            Pokemon::faint(self, *target_pos, source, effect);
 
                             // Gen 1: Clear queue and reset Bide
                             // JS: if (this.gen <= 1) {
