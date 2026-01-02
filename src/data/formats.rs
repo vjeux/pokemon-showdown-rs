@@ -81,47 +81,71 @@ impl FormatMod {
 
 /// Rule definition
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: RuleData (sim/dex-formats.ts)
+/// 5 fields in JavaScript
 pub struct RuleDef {
     /// Rule name
+    /// JavaScript: name: string
     pub name: &'static str,
     /// Rule description
+    /// JavaScript: desc: string
     pub desc: &'static str,
     /// Is this a ban rule?
+    /// JavaScript: isBan?: boolean
     pub is_ban: bool,
     /// Bans specific things (pokemon, moves, abilities, items)
+    /// JavaScript: bans?: string[]
     pub bans: &'static [&'static str],
     /// Unbans specific things
+    /// JavaScript: unbans?: string[]
     pub unbans: &'static [&'static str],
 }
 
 /// Format definition
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: FormatData (sim/dex-formats.ts)
+/// ~20 fields in JavaScript
 pub struct FormatDef {
     /// Format ID (e.g., "gen9ou")
+    /// JavaScript: id: ID
     pub id: &'static str,
     /// Format name (e.g., "Gen 9 OU")
+    /// JavaScript: name: string
     pub name: &'static str,
     /// Game type
+    /// JavaScript: gameType: 'singles' | 'doubles' | 'triples' | 'rotation' | 'multi' | 'freeforall'
     pub game_type: GameType,
     /// Generation mod
+    /// JavaScript: mod: string
     pub mod_: FormatMod,
     /// Team size
+    /// JavaScript: teamSize?: { battle?: number, validate?: [number, number] }
+    /// TODO: Rust uses simple usize, JavaScript uses complex object
     pub team_size: usize,
     /// Minimum team size
+    /// JavaScript: (part of teamSize.validate)
     pub min_team_size: usize,
     /// Level for Pokemon (usually 100)
+    /// JavaScript: maxLevel?: number
     pub max_level: u8,
     /// Default level (usually 100)
+    /// JavaScript: defaultLevel?: number
     pub default_level: u8,
     /// Rulesets this format inherits from
+    /// JavaScript: ruleset?: string[]
     pub rulesets: &'static [&'static str],
     /// Banned Pokemon, moves, abilities, items
+    /// JavaScript: banlist?: string[]
     pub bans: &'static [&'static str],
     /// Unbanned items (exceptions to ruleset bans)
+    /// JavaScript: unbanlist?: string[]
     pub unbans: &'static [&'static str],
     /// Is this format rated?
+    /// JavaScript: rated?: boolean
     pub rated: bool,
     /// Minimum ELO for this format
+    /// JavaScript: minSourceGen?: number
+    /// TODO: JavaScript uses different field name
     pub min_elo: Option<i32>,
 }
 
@@ -674,19 +698,33 @@ pub type ComplexBan = (String, String, i32, Vec<String>);
 #[derive(Debug, Clone, Default)]
 /// JavaScript equivalent: GameTimerSettings (sim/dex-formats.ts)
 /// 9 fields in JavaScript
-/// JavaScript equivalent: GameTimerSettings (sim/dex-formats.ts)
-/// 9 fields in JavaScript
-/// JavaScript equivalent: GameTimerSettings (sim/dex-formats.ts)
-/// 9 fields in JavaScript
 pub struct GameTimerSettings {
+    /// Enable disconnect timer
+    /// JavaScript: dcTimer: boolean
     pub dc_timer: bool,
+    /// Enable disconnect timer bank
+    /// JavaScript: dcTimerBank: boolean
     pub dc_timer_bank: bool,
+    /// Starting time in seconds
+    /// JavaScript: starting: number
     pub starting: i32,
+    /// Grace period in seconds
+    /// JavaScript: grace: number
     pub grace: i32,
+    /// Time added per turn in seconds
+    /// JavaScript: addPerTurn: number
     pub add_per_turn: i32,
+    /// Maximum time per turn in seconds
+    /// JavaScript: maxPerTurn: number
     pub max_per_turn: i32,
+    /// Maximum time for first turn in seconds
+    /// JavaScript: maxFirstTurn: number
     pub max_first_turn: i32,
+    /// Auto-choose move on timeout
+    /// JavaScript: timeoutAutoChoose: boolean
     pub timeout_auto_choose: bool,
+    /// Accelerate timer
+    /// JavaScript: accelerate: boolean
     pub accelerate: bool,
 }
 
@@ -697,32 +735,64 @@ pub struct GameTimerSettings {
 /// - '+[thing]' or '+[category]:[thing]' allow a thing (override a ban)
 #[derive(Debug, Clone, Default)]
 /// JavaScript equivalent: RuleTable (sim/dex.ts)
+/// ~20 fields in JavaScript
 pub struct RuleTable {
     /// Map of rule ID to source format name
+    /// JavaScript: has(ruleID: string): boolean
+    /// TODO: JavaScript uses Map methods, Rust uses HashMap
     rules: HashMap<String, String>,
     /// Complex bans (rule, source, limit, bans)
+    /// JavaScript: complexBans: [string, string, number, string[]][]
     pub complex_bans: Vec<ComplexBan>,
     /// Complex team bans
+    /// JavaScript: complexTeamBans: [string, string, number, string[]][]
     pub complex_team_bans: Vec<ComplexBan>,
     /// Tag rules (pokemontag rules)
+    /// JavaScript: tagRules: string[]
     pub tag_rules: Vec<String>,
     /// Value rules (rules with = values)
+    /// JavaScript: valueRules: Map<string, string>
     pub value_rules: HashMap<String, String>,
     /// Timer settings
+    /// JavaScript: timer?: GameTimerSettings
     pub timer: Option<GameTimerSettings>,
 
     // Resolved numeric properties
+    /// Minimum team size
+    /// JavaScript: minTeamSize: number
     pub min_team_size: usize,
+    /// Maximum team size
+    /// JavaScript: maxTeamSize: number
     pub max_team_size: usize,
+    /// Picked team size
+    /// JavaScript: pickedTeamSize?: number
     pub picked_team_size: Option<usize>,
+    /// Maximum total level
+    /// JavaScript: maxTotalLevel?: number
     pub max_total_level: Option<i32>,
+    /// Maximum move count
+    /// JavaScript: maxMoveCount: number
     pub max_move_count: usize,
+    /// Minimum source generation
+    /// JavaScript: minSourceGen: number
     pub min_source_gen: u8,
+    /// Minimum level
+    /// JavaScript: minLevel: number
     pub min_level: u8,
+    /// Maximum level
+    /// JavaScript: maxLevel: number
     pub max_level: u8,
+    /// Default level
+    /// JavaScript: defaultLevel: number
     pub default_level: u8,
+    /// Adjust level
+    /// JavaScript: adjustLevel?: number
     pub adjust_level: Option<u8>,
+    /// Adjust level down
+    /// JavaScript: adjustLevelDown?: number
     pub adjust_level_down: Option<u8>,
+    /// EV limit
+    /// JavaScript: evLimit?: number
     pub ev_limit: Option<i32>,
 }
 
