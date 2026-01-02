@@ -177,6 +177,16 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Action: Documented that Rust returns ID directly vs JS returning full ability object
 - Note: Callers can use battle.dex.abilities.get() if they need full ability data
 
+#### get_action_speed.rs
+- Status: ✅ Fixed (Fully Implemented)
+- Issue: Missing twisteddimensionmod rule check and proper trunc implementation
+- Action: Implemented full twisteddimensionmod logic and proper trunc(speed, 13)
+- Notes:
+  - ✅ NOW IMPLEMENTED: Checks battle.rule_table.has('twisteddimensionmod')
+  - ✅ NOW IMPLEMENTED: If twisteddimensionmod exists, inverts trick room check
+  - ✅ NOW IMPLEMENTED: Uses battle.trunc(speed, 13) for proper bit truncation
+  - Now fully 1-to-1 with JavaScript!
+
 #### get_status.rs
 - Status: ✅ Fixed (Documented)
 - Issue: "TODO: implement the same logic as JavaScript"
@@ -959,8 +969,9 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Fixed try_trap.rs - Added runStatusImmunity check (MERGED)
   - ✅ Fixed is_grounded.rs - Added ignoringItem() checks for Iron Ball and Air Balloon (MERGED)
   - ✅ Fixed max_move_disabled.rs - Refactored to take Battle parameter, implemented Status category check - now fully 1-to-1! (MERGED)
+  - ✅ Fixed get_action_speed.rs - Implemented twisteddimensionmod rule check and proper trunc - now fully 1-to-1! (MERGED)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-- **Methods Now Fully 1-to-1**: has_item.rs, max_move_disabled.rs
+- **Methods Now Fully 1-to-1**: has_item.rs, max_move_disabled.rs, get_action_speed.rs
 - **Methods Significantly Improved**: update_max_hp.rs, try_trap.rs, is_grounded.rs
 - **Path Forward**:
   - Phase 1 (Current): Fix methods that can be improved without API changes
@@ -972,15 +983,16 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
 2. max_move_disabled.rs - ✅ Complete
-3. clear_volatile.rs - ✅ Nearly complete (only missing linked volatiles removal which needs infrastructure)
-4. allies.rs, allies_and_self.rs, adjacent_allies.rs, adjacent_foes.rs, foes.rs - ✅ Complete
-5. clear_boosts.rs - ✅ Complete
-6. deduct_pp.rs - ✅ Complete
-7. disable_move.rs - ✅ Complete
-8. effective_weather.rs - ✅ Complete
-9. get_health.rs - ✅ Complete
-10. get_locked_move.rs - ✅ Returns field (missing runEvent call needs Battle)
-11. get_nature.rs - ✅ Complete
+3. get_action_speed.rs - ✅ Complete
+4. clear_volatile.rs - ✅ Nearly complete (only missing linked volatiles removal which needs infrastructure)
+5. allies.rs, allies_and_self.rs, adjacent_allies.rs, adjacent_foes.rs, foes.rs - ✅ Complete
+6. clear_boosts.rs - ✅ Complete
+7. deduct_pp.rs - ✅ Complete
+8. disable_move.rs - ✅ Complete
+9. effective_weather.rs - ✅ Complete
+10. get_health.rs - ✅ Complete
+11. get_locked_move.rs - ✅ Returns field (missing runEvent call needs Battle)
+12. get_nature.rs - ✅ Complete
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. update_max_hp.rs - Has Dynamax check, missing battle.add

@@ -23,21 +23,28 @@ impl Pokemon {
 
         // JS: const trickRoomCheck = this.battle.ruleTable.has('twisteddimensionmod') ?
         // JS:     !this.battle.field.getPseudoWeather('trickroom') : this.battle.field.getPseudoWeather('trickroom');
+        let trick_room_id = ID::new("trickroom");
+        let has_trick_room = battle.field.has_pseudo_weather(&trick_room_id);
+
+        let trick_room_check = if let Some(ref rule_table) = battle.rule_table {
+            if rule_table.has("twisteddimensionmod") {
+                !has_trick_room
+            } else {
+                has_trick_room
+            }
+        } else {
+            has_trick_room
+        };
+
         // JS: if (trickRoomCheck) {
         // JS:     speed = 10000 - speed;
         // JS: }
-        // Check for Trick Room pseudo-weather
-        // Note: 'twisteddimensionmod' rule check not yet implemented
-        let trick_room_id = ID::new("trickroom");
-        if battle.field.has_pseudo_weather(&trick_room_id) {
+        if trick_room_check {
             speed = 10000 - speed;
         }
 
         // JS: return this.battle.trunc(speed, 13);
         // Truncate to 13 bits (max value 8191) for Gen compatibility
-        // Note: trunc with bits parameter is only used in older gens
-        speed = speed.min(10000);
-
-        speed
+        battle.trunc(speed as f64, Some(13)) as i32
     }
 }
