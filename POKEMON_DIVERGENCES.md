@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 54 Complete)
-- **Session 24 Total Progress**: 29+ commits, 54 parts completed
+## Overview (Updated: Session 24 Part 55 Complete)
+- **Session 24 Total Progress**: 30+ commits, 55 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
@@ -15,6 +15,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Part 52: RESTORATIVE_BERRIES staleness logic in eat_item
   - Part 53: set_item RESTORATIVE_BERRIES logic + refactor to associated function
   - Part 54: transform_into battle.add message + proper set_ability call
+  - Part 55: get_last_damaged_by full implementation with filtering logic
 - **Methods Significantly Improved**:
   - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked, battle.add, set_ability - now ~80%)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
@@ -23,6 +24,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - faint.rs, update_max_hp.rs, set_hp.rs, get_locked_move.rs (all 100%)
   - ignoring_item.rs (Primal Orb, ignoreKlutz - now 100%)
   - ignoring_ability.rs (ability.flags checks - now 100%)
+  - get_last_damaged_by.rs (filter by damage, ally check - now 100%)
   - use_item.rs (HP/Gem check, item.boosts, battle.add messages - now ~70%, was ~45%)
   - eat_item.rs (standalone, battle.add [eat], RESTORATIVE_BERRIES - now ~75%, was ~50%)
   - set_item.rs (RESTORATIVE_BERRIES pendingStaleness, associated function - now ~60%, was ~55%)
@@ -39,7 +41,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - 250+ callsites updated across codebase
 - **Compilation Success Rate**: 100% (0 errors, 0 warnings throughout)
 - **Remaining Work**: Only 1 TODO in src/pokemon/ (event system infrastructure in calculate_stat.rs)
-- **Methods Now at 100%**: 20 methods fully equivalent to JavaScript
+- **Methods Now at 100%**: 21 methods fully equivalent to JavaScript
 - **Goal**: Achieve 1:1 line-by-line equivalence with JavaScript
 
 ## Status Legend
@@ -745,16 +747,17 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Otherwise correctly sets hp=0, switch_flag=false, faint_queued=true
 
 #### get_last_damaged_by.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Returns None, not implemented
-- Action: Documented what full implementation would need
+- Status: ✅ Fixed (Session 24 Part 55)
+- Issue: Was stub returning None, needed attacked_by field and filtering
+- Action: Refactored to associated function, implemented full 1-to-1 logic
 - Notes:
-  - Missing attackedBy: Vec<Attacker> field on Pokemon struct
-  - Missing tracking of all attacks in battle (push to attackedBy on damage)
-  - Missing filtering by damageValue type (number)
-  - Missing isAlly check when filterOutSameSide is true
-  - Should return last attacker that dealt damage
-  - Currently returns None
+  - ✅ NOW IMPLEMENTED: Refactored to associated function `Pokemon::get_last_damaged_by(battle, pokemon_pos, filter_out_same_side)`
+  - ✅ NOW IMPLEMENTED: Filter by damage value (i32, always a number in Rust)
+  - ✅ NOW IMPLEMENTED: Filter by ally check using `!Pokemon::is_ally(battle, pokemon_pos, attacker.source.0)`
+  - ✅ NOW IMPLEMENTED: Returns last attacker that dealt damage or None
+  - ✅ Updated 6 callsites (metalburst.rs, comeuppance.rs)
+  - attacked_by: Vec<Attacker> field already exists on Pokemon struct
+  - Now fully 1-to-1 with JavaScript!
 
 #### get_move_targets.rs
 - Status: ✅ Fixed (Documented)
@@ -3020,6 +3023,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 18. get_smart_targets.rs - ✅ Complete (Session 24 Part 45)
 19. ignoring_item.rs - ✅ Complete (Session 24 Part 47)
 20. ignoring_ability.rs - ✅ Complete (Session 24 Part 48)
+21. get_last_damaged_by.rs - ✅ Complete (Session 24 Part 55)
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. try_set_status.rs - Core logic correct, simplified
