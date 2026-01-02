@@ -187,6 +187,8 @@ impl Pokemon {
         // Create effect state with duration
         let mut state = crate::event_system::EffectState::new(volatile_id.clone());
         state.duration = final_duration;
+        // ✅ NOW IMPLEMENTED: target assignment (Session 24 Part 21)
+        state.target = Some(target_pos);
         // ✅ NOW IMPLEMENTED: source, sourceSlot assignments (Session 24 Part 20)
         if let Some(src_pos) = source_pos {
             state.source = Some(src_pos);
