@@ -1,3 +1,13 @@
+// JS Source:
+// 	spreadModify(baseStats: StatsTable, set: PokemonSet): StatsTable {
+// 		const modStats: StatsTable = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+// 		for (const statName in baseStats) {
+// 			modStats[statName as StatID] = this.statModify(baseStats, set, statName as StatID);
+// 		}
+// 		return modStats;
+// 	}
+
+
 use crate::*;
 use crate::dex_data::StatsTable;
 

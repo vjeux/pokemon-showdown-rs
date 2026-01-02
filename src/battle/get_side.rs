@@ -1,3 +1,10 @@
+// JS Source:
+// 
+// 	getSide(sideid: SideID): Side {
+// 		return this.sides[parseInt(sideid[1]) - 1];
+// 	}
+
+
 use crate::*;
 use crate::side::Side;
 

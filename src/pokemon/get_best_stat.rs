@@ -1,3 +1,19 @@
+// JS Source:
+// 	getBestStat(unboosted?: boolean, unmodified?: boolean): StatIDExceptHP {
+// 		let statName: StatIDExceptHP = 'atk';
+// 		let bestStat = 0;
+// 		const stats: StatIDExceptHP[] = ['atk', 'def', 'spa', 'spd', 'spe'];
+// 		for (const i of stats) {
+// 			if (this.getStat(i, unboosted, unmodified) > bestStat) {
+// 				statName = i;
+// 				bestStat = this.getStat(i, unboosted, unmodified);
+// 			}
+// 		}
+// 
+// 		return statName;
+// 	}
+
+
 use crate::*;
 use crate::dex_data::StatID;
 

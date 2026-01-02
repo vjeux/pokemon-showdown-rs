@@ -2,6 +2,22 @@
 //!
 //! 1:1 port of dragIn from battle-actions.ts
 
+// JS Source:
+// 	dragIn(side: Side, pos: number) {
+// 		const pokemon = this.battle.getRandomSwitchable(side);
+// 		if (!pokemon || pokemon.isActive) return false;
+// 		const oldActive = side.active[pos];
+// 		if (!oldActive) throw new Error(`nothing to drag out`);
+// 		if (!oldActive.hp) return false;
+// 
+// 		if (!this.battle.runEvent('DragOut', oldActive)) {
+// 			return false;
+// 		}
+// 		if (!this.switchIn(pokemon, pos, null, true)) return false;
+// 		return true;
+// 	}
+
+
 use crate::*;
 use crate::battle::SwitchResult;
 

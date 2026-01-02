@@ -1,3 +1,5 @@
+// NOTE: This method is NOT in JavaScript - Rust-specific implementation
+
 use crate::battle_stream::BattleStream;
 use crate::battle_stream::BattleStreamOptions;
 use std::collections::VecDeque;

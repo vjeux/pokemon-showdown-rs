@@ -1,3 +1,15 @@
+// JS Source:
+// 
+// 	debug(action?: any): string {
+// 		if (action) {
+// 			return `${action.order || ''}:${action.priority || ''}:${action.speed || ''}:${action.subOrder || ''} - ${action.choice}${action.pokemon ? ' ' + action.pokemon : ''}${action.move ? ' ' + action.move : ''}`;
+// 		}
+// 		return this.list.map(
+// 			queueAction => this.debug(queueAction)
+// 		).join('\n') + '\n';
+// 	}
+
+
 use crate::battle_queue::Action;
 use crate::battle_queue::BattleQueue;
 

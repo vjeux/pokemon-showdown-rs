@@ -1,3 +1,9 @@
+// JS Source:
+// 	getOverflowedTurnCount(): number {
+// 		return this.gen >= 8 ? (this.turn - 1) % 256 : this.turn - 1;
+// 	}
+
+
 use crate::*;
 
 impl Battle {

@@ -1,3 +1,12 @@
+// JS Source:
+// 	priorityEvent(
+// 		eventid: string, target: Pokemon | Side | Battle, source?: Pokemon | null,
+// 		effect?: Effect, relayVar?: any, onEffect?: boolean
+// 	): any {
+// 		return this.runEvent(eventid, target, source, effect, relayVar, onEffect, true);
+// 	}
+
+
 use crate::*;
 
 impl Battle {

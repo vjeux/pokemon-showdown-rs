@@ -1,3 +1,9 @@
+// JS Source:
+// 	peek(end?: boolean): Action | undefined {
+// 		return this.list[end ? this.list.length - 1 : 0];
+// 	}
+
+
 use crate::battle_queue::Action;
 use crate::battle_queue::BattleQueue;
 

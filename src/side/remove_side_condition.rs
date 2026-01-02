@@ -1,3 +1,14 @@
+// JS Source:
+// 
+// 	removeSideCondition(status: string | Effect): boolean {
+// 		status = this.battle.dex.conditions.get(status) as Effect;
+// 		if (!this.sideConditions[status.id]) return false;
+// 		this.battle.singleEvent('SideEnd', status, this.sideConditions[status.id], this);
+// 		delete this.sideConditions[status.id];
+// 		return true;
+// 	}
+
+
 use crate::side::*;
 
 impl Side {

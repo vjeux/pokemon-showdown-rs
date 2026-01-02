@@ -1,3 +1,5 @@
+// NOTE: This method is NOT in JavaScript - Rust-specific implementation
+
 use crate::battle_queue::BattleQueue;
 use crate::battle_queue::MoveAction;
 

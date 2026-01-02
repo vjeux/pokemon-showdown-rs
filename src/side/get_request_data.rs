@@ -1,3 +1,18 @@
+// JS Source:
+// 
+// 	getRequestData(forAlly?: boolean): SideRequestData {
+// 		const data: SideRequestData = {
+// 			name: this.name,
+// 			id: this.id,
+// 			pokemon: [] as PokemonSwitchRequestData[],
+// 		};
+// 		for (const pokemon of this.pokemon) {
+// 			data.pokemon.push(pokemon.getSwitchRequestData(forAlly));
+// 		}
+// 		return data;
+// 	}
+
+
 use crate::side::*;
 
 impl Side {

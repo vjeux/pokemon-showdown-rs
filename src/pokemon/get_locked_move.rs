@@ -1,3 +1,10 @@
+// JS Source:
+// 	getLockedMove(): ID | null {
+// 		const lockedMove = this.battle.runEvent('LockMove', this);
+// 		return (lockedMove === true) ? null : lockedMove;
+// 	}
+
+
 use crate::*;
 
 impl Pokemon {

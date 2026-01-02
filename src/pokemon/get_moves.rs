@@ -1,3 +1,11 @@
+// JS Source:
+// 
+// 	getMoves(lockedMove?: ID | null, restrictData?: boolean): {
+// 		move: string, id: ID, disabled?: string | boolean, disabledSource?: string,
+// 		target?: string, pp?: number, maxpp?: number,
+// 	}
+
+
 use crate::*;
 
 impl Pokemon {

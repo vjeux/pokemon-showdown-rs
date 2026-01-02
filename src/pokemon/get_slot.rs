@@ -1,3 +1,12 @@
+// JS Source:
+// 
+// 	getSlot(): PokemonSlot {
+// 		const positionOffset = Math.floor(this.side.n / 2) * this.side.active.length;
+// 		const positionLetter = 'abcdef'.charAt(this.position + positionOffset);
+// 		return (this.side.id + positionLetter) as PokemonSlot;
+// 	}
+
+
 use crate::*;
 
 impl Pokemon {

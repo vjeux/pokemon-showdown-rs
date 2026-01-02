@@ -1,3 +1,5 @@
+// NOTE: This method is NOT in JavaScript - Rust-specific implementation
+
 
 /// Split first utility function
 /// Equivalent to splitFirst() in battle-stream.ts

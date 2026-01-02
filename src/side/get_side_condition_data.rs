@@ -1,3 +1,11 @@
+// JS Source:
+// 
+// 	getSideConditionData(status: string | Effect): AnyObject {
+// 		status = this.battle.dex.conditions.get(status) as Effect;
+// 		return this.sideConditions[status.id] || null;
+// 	}
+
+
 use crate::side::*;
 
 impl Side {

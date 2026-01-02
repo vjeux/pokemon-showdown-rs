@@ -1,3 +1,9 @@
+// JS Source:
+// 			write(data: string) {
+// 				void stream.write(data);
+// 			}
+
+
 use crate::battle_stream::BattleStream;
 
 impl BattleStream {

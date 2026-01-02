@@ -1,3 +1,12 @@
+// JS Source:
+// 
+// 	async start() {
+// 		for await (const chunk of this.stream) {
+// 			this.receive(chunk);
+// 		}
+// 	}
+
+
 use crate::*;
 use crate::battle_stream::BattleStream;
 
