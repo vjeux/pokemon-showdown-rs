@@ -239,6 +239,7 @@ pub struct Pokemon {
     pub pokeball: ID,
     pub dynamax_level: u8,
     pub gigantamax: bool,
+    pub shiny: bool, // For getUpdatedDetails protocol output
 
     // Position
     pub position: usize,

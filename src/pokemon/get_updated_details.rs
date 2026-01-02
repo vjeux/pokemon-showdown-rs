@@ -30,7 +30,10 @@ impl Pokemon {
         }
 
         // JS: + (this.set.shiny ? ', shiny' : '');
-        // Note: shiny flag not tracked in Pokemon struct, would need self.set reference
+        // ✅ NOW IMPLEMENTED: shiny flag from Pokemon struct
+        if self.shiny {
+            details.push_str(", shiny");
+        }
 
         details
     }
