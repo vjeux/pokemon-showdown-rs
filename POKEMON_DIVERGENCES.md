@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 50 Complete)
-- **Session 24 Total Progress**: 25+ commits, 50 parts completed
+## Overview (Updated: Session 24 Part 51 Complete)
+- **Session 24 Total Progress**: 26+ commits, 51 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
@@ -11,6 +11,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Parts 47-48: Final actionable improvements (ignoring_item, ignoring_ability - both now 100%)
   - Part 49: Major refactor - use_item/eat_item to associated functions with HP/boosts
   - Part 50: battle.add messages for item consumption (Red Card, Gems)
+  - Part 51: eat_item standalone implementation (fixed divergence from JS)
 - **Methods Significantly Improved**:
   - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
@@ -20,7 +21,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ignoring_item.rs (Primal Orb, ignoreKlutz - now 100%)
   - ignoring_ability.rs (ability.flags checks - now 100%)
   - use_item.rs (HP/Gem check, item.boosts, battle.add messages - now ~70%, was ~45%)
-  - eat_item.rs (refactored to associated function - now ~60%, was ~50%)
+  - eat_item.rs (standalone implementation, battle.add [eat] - now ~70%, was ~50%)
   - 6 core methods with source/sourceEffect parameters added
 - **Move Callbacks Fixed**: 9 files with proper source/effect/linkedStatus parameters
 - **Infrastructure Achievements**:
@@ -697,29 +698,28 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Design pattern: work around borrow checker by returning data
 
 #### eat_item.rs
-- Status: ✅ Fixed (Improved - Session 24 Part 49)
-- Issue: Missing source and sourceEffect parameters
-- Action: Refactored to associated function calling new Pokemon::use_item (Session 24 Part 49)
+- Status: ✅ Fixed (Improved - Session 24 Part 51)
+- Issue: Was incorrectly calling use_item() - JavaScript has separate implementations!
+- Action: Refactored to standalone implementation matching JS exactly (Session 24 Part 51)
 - Notes:
+  - ✅ NOW IMPLEMENTED (Session 24 Part 51): Standalone implementation (no longer calls use_item)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 51): battle.add('-enditem', pokemon, item, '[eat]')
+  - ✅ NOW IMPLEMENTED (Session 24 Part 51): Directly sets lastItem, item, itemState, usedItemThisTurn, ateBerry
   - ✅ NOW IMPLEMENTED (Session 24 Part 49): Refactored from instance method to associated function
   - ✅ NOW IMPLEMENTED (Session 24 Part 49): Signature: `Pokemon::eat_item(battle: &mut Battle, pokemon_pos: (usize, usize), is_forced, source_pos, source_effect)`
-  - ✅ NOW IMPLEMENTED (Session 24 Part 49): Calls new associated function `Pokemon::use_item()`
   - ✅ NOW IMPLEMENTED: HP check with Jaboca/Rowap Berry exception
   - ✅ NOW IMPLEMENTED: isActive check
   - ✅ NOW IMPLEMENTED (Session 24 Part 14): lastItem, usedItemThisTurn, ateBerry tracking
   - ✅ NOW IMPLEMENTED (Session 24 Part 14): Fixed incorrect comment (staleness fields do exist)
   - ✅ NOW IMPLEMENTED (Session 24 Part 31): source_pos parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 31): source_effect parameter
-  - ✅ NOW IMPLEMENTED (Session 24 Part 31): Pass through source_pos and source_effect to use_item
   - ✅ NOW IMPLEMENTED (Session 24 Part 31): Updated 60 callsites to pass None, None
   - Missing sourceEffect item type check
   - Missing runEvent('UseItem') and runEvent('TryEatItem')
-  - Missing battle.add('-enditem') message
   - Missing singleEvent('Eat') and runEvent('EatItem')
   - Missing RESTORATIVE_BERRIES staleness logic (fields exist, need logic)
   - Missing runEvent('AfterUseItem')
-  - Delegates to use_item() then additionally sets ateBerry = true
-  - Now ~60% complete (was ~50%)
+  - Now ~70% complete (was ~60%)
 
 #### faint.rs
 - Status: ✅ Fixed (Documented)
