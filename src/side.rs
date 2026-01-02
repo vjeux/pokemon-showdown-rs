@@ -134,6 +134,8 @@ pub struct ChosenAction {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+/// JavaScript equivalent: ChosenAction.choice type (sim/side.ts)
+/// JavaScript: 'move' | 'switch' | 'instaswitch' | 'revivalblessing' | 'team' | 'shift' | 'pass'
 pub enum ChoiceType {
     Move,
     Switch,
@@ -210,7 +212,6 @@ pub enum RequestState {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: Side (sim/side.ts)
 /// 77 fields in JavaScript
-/// JavaScript equivalent: Side (sim/global-types.ts)
 pub struct Side {
     // Core references (readonly in JavaScript)
     // TODO: These should be references, not indices
