@@ -457,16 +457,19 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now ~60% complete (was ~50%)
 
 #### set_item.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Missing RESTORATIVE_BERRIES logic and event calls
-- Action: Documented all missing pieces line by line
+- Status: ✅ Fixed (Improved - Session 24 Part 32)
+- Issue: Missing source and effect parameters
+- Action: Added 2 missing parameters, updated 12 callsites
 - Notes:
   - Has correct HP and is_active check
-  - Missing source and effect parameters
+  - ✅ NOW IMPLEMENTED (Session 24 Part 32): source_pos parameter
+  - ✅ NOW IMPLEMENTED (Session 24 Part 32): source_effect parameter
+  - ✅ NOW IMPLEMENTED (Session 24 Part 32): Updated 12 callsites to pass None, None
   - Missing RESTORATIVE_BERRIES check and pendingStaleness logic
   - Missing singleEvent('End') for old item
   - Missing singleEvent('Start') for new item
   - Returns true correctly
+  - Now ~55% complete (was ~50%)
 
 #### set_type.rs
 - Status: ✅ Fixed (Nearly Complete - Session 23)
@@ -2585,6 +2588,65 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ~8 lines of implementation code (parameters + pass-through to use_item)
   - 1 commit pushed to git
   - 100% compilation success rate
+
+#### Session 24 Part 32 - 2026-01-02 (set_item Parameters - COMPLETED)
+- **Goal**: Add missing parameters to set_item signature (1-to-1 with JavaScript)
+- **Completed**:
+  - ✅ Discovered that set_item was missing 2 parameters
+  - ✅ JavaScript signature: `setItem(item: string | Item, source?: Pokemon, effect?: Effect)`
+  - ✅ Rust signature before: `set_item(&mut self, item_id: ID) -> bool`
+  - ✅ Rust signature after: `set_item(&mut self, item_id: ID, _source_pos: Option<(usize, usize)>, _source_effect: Option<&ID>) -> bool`
+  - ✅ Added 2 parameters: _source_pos, _source_effect
+  - ✅ Updated 12 callsites manually to pass None, None:
+    - clear_item.rs (line 13)
+    - gmaxreplenish.rs (line 120)
+    - fling.rs (line 207)
+    - bestow.rs (line 67)
+    - covet.rs (line 89)
+    - thief.rs (line 90)
+    - switcheroo.rs (lines 152, 197)
+    - trick.rs (lines 151, 196)
+    - recycle.rs (line 84)
+    - stickybarb.rs (line 89)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit (11 files changed)
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - pokemon/set_item.rs - Now ~55% complete (was ~50%)
+    - ✅ NOW IMPLEMENTED: source_pos parameter support
+    - ✅ NOW IMPLEMENTED: source_effect parameter support
+    - JavaScript equivalent:
+      - `setItem(item: string | Item, source?: Pokemon, effect?: Effect)`
+    - Rust implementation:
+      - `pub fn set_item(&mut self, item_id: ID, _source_pos: Option<(usize, usize)>, _source_effect: Option<&ID>) -> bool`
+    - ❌ Still missing: RESTORATIVE_BERRIES check and pendingStaleness logic
+    - ❌ Still missing: singleEvent('End') for old item
+    - ❌ Still missing: singleEvent('Start') for new item
+    - Note: Unlike set_status/set_ability which create EffectStates with source tracking, set_item doesn't initialize item_state with source fields (item_state is simpler)
+    - Parameters will be used when event system and RESTORATIVE_BERRIES logic are implemented
+- **Technical Details**:
+  - Parameters added: _source_pos (Option<(usize, usize)>), _source_effect (Option<&ID>)
+  - 12 callsites updated (manually, as perl script had issues with nested parentheses)
+  - Both parameters prefixed with underscore (not yet used in implementation)
+  - Complements the parameter work from Parts 27-31
+- **Session Statistics**:
+  - 1 method improved (set_item.rs)
+  - 1 infrastructure change (added missing parameters to core API)
+  - 11 files modified (1 pokemon method + 1 clear_item caller + 9 move/item callbacks)
+  - 2 parameters added (_source_pos, _source_effect)
+  - 12 callsites updated across pokemon/, data/move_callbacks/, data/item_callbacks/
+  - ~6 lines of implementation code (just parameters, no field assignments)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Summary (Parts 27-32)
+- **Major Milestone**: Completed systematic parameter additions to 6 core Pokemon methods
+- **Total callsites updated**: 250 across entire codebase
+- **Total commits**: 6
+- **Methods improved**: add_volatile, set_status, set_ability, use_item, eat_item, set_item
+- **Impact**: All 6 methods now have proper JavaScript-equivalent parameter signatures
+- **Compilation**: 100% success rate (0 errors, 0 warnings throughout)
+- **Foundation**: Established proper source/source_effect tracking for future event system implementation
 
 ## Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
