@@ -1439,21 +1439,37 @@ impl RuleTable {
 #[derive(Debug, Clone)]
 /// JavaScript equivalent: Format (sim/global-types.ts)
 pub struct Format {
+    /// JavaScript: id: ID
     pub id: String,
+    /// JavaScript: name: string
     pub name: String,
+    /// JavaScript: mod: string
     pub mod_: String,
+    /// JavaScript: effectType: string
     pub effect_type: String,
+    /// JavaScript: debug: boolean
     pub debug: bool,
+    /// JavaScript: rated: boolean
     pub rated: bool,
+    /// JavaScript: gameType: GameType
     pub game_type: GameType,
+    /// JavaScript: playerCount: number
     pub player_count: u8,
+    /// JavaScript: ruleset: string[]
     pub ruleset: Vec<String>,
+    /// JavaScript: baseRuleset: string[]
     pub base_ruleset: Vec<String>,
+    /// JavaScript: banlist: string[]
     pub banlist: Vec<String>,
+    /// JavaScript: restricted: string[]
     pub restricted: Vec<String>,
+    /// JavaScript: unbanlist: string[]
     pub unbanlist: Vec<String>,
+    /// JavaScript: customRules?: string[]
     pub custom_rules: Option<Vec<String>>,
+    /// JavaScript: ruleTable?: RuleTable
     pub rule_table: Option<RuleTable>,
+    /// JavaScript: exists: boolean
     pub exists: bool,
 }
 
@@ -1508,10 +1524,6 @@ impl Format {
 }
 
 /// DexFormats - manages format loading and validation
-/// JavaScript equivalent: DexFormats (sim/dex-formats.ts)
-/// Fields: dex, formatsListCache, searchShow, default
-/// JavaScript equivalent: DexFormats (sim/dex-formats.ts)
-/// Fields: dex, formatsListCache, searchShow, default
 /// JavaScript equivalent: DexFormats (sim/dex-formats.ts)
 /// Fields: dex, formatsListCache, searchShow, default
 pub struct DexFormats {
