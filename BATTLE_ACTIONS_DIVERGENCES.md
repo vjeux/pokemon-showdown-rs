@@ -6,8 +6,8 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 9 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move, after_move_secondary_event)
-**Remaining stubs**: 8
+**Completed implementations**: 10 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move, after_move_secondary_event, force_switch)
+**Remaining stubs**: 7
 
 ## Files with Stubs (Not Implemented)
 
@@ -22,7 +22,7 @@ These files are completely unimplemented stubs:
 7. ~~`get_max_move.rs` - getMaxMove~~ ✅ IMPLEMENTED
 8. ~~`get_active_max_move.rs` - getActiveMaxMove~~ ✅ IMPLEMENTED
 9. ~~`after_move_secondary_event.rs` - afterMoveSecondaryEvent~~ ✅ IMPLEMENTED
-10. `force_switch.rs` - forceSwitch
+10. ~~`force_switch.rs` - forceSwitch~~ ✅ IMPLEMENTED
 11. `hit_step_break_protect.rs` - hitStepBreakProtect
 12. `hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent
 13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop
@@ -168,6 +168,21 @@ These files exist only in Rust and should be evaluated:
 - Uses two-phase borrow pattern to avoid borrowing battle twice
 - Correctly calls has_ability(&Battle, &["sheerforce"])
 - Passes move ID as effect_id parameter
+
+### 2026-01-02 - Commit bc9046c5
+**Implemented: force_switch**
+- Implemented 1:1 port of forceSwitch from JavaScript battle-actions.ts
+- Handles forced switching from moves like Dragon Tail, Roar
+- Iterates through all targets checking conditions
+- For each valid target (HP > 0, source HP > 0, can switch):
+  - Fires DragOut event
+  - If event succeeds, sets force_switch_flag
+  - If event fails and move is Status, adds -fail message and sets damage to Failed
+- Uses two-phase borrow pattern to avoid borrow checker issues
+- Infrastructure change: Fixed SpreadMoveTarget::Target to store (usize, usize) tuple
+  - Previously stored single usize, now stores (side_index, pokemon_index)
+  - Matches how Pokemon are referenced throughout codebase
+  - JavaScript stores Pokemon objects, Rust uses position tuples
 
 ---
 
