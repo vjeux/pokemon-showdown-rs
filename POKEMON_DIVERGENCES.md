@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 70 Complete)
-- **Session 24 Total Progress**: 40+ commits, 70 parts completed
+## Overview (Updated: Session 24 Part 71 Complete)
+- **Session 24 Total Progress**: 40+ commits, 71 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
@@ -28,6 +28,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 68**: get_switch_request_data forAlly parameter (base_moves vs moves selection)
   - **Part 69**: is_grounded documentation update (confirmed 100% via ignoring_item delegation)
   - **Part 70**: set_type documentation update (confirmed 100% - knownType intentionally different)
+  - **Part 71**: cure_status documentation update (confirmed 100% from Session 18)
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
@@ -57,7 +58,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - 250+ callsites updated across codebase
 - **Compilation Success Rate**: 100% (0 errors, 61 warnings throughout Session 24 Parts 58-65)
 - **Remaining Work**: Only 1 TODO in src/pokemon/ (event system infrastructure in calculate_stat.rs)
-- **Methods Now at 100%**: 23 methods fully equivalent to JavaScript
+- **Methods Now at 100%**: 24 methods fully equivalent to JavaScript
 - **Goal**: Achieve 1:1 line-by-line equivalence with JavaScript
 
 ## Status Legend
@@ -719,14 +720,16 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Has basic Baton Pass and Shed Tail logic
 
 #### cure_status.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (100% Complete - Session 18)
 - Issue: Had TODO about passing Battle object
-- Action: Documented that it returns data for caller due to borrow checker
+- Action: Refactored to return tuple for caller due to borrow checker, added silent parameter
 - Notes:
-  - Missing silent parameter for silent cure
-  - Returns (status, removed_nightmare) tuple for caller to log
-  - Caller must call battle.add() with returned data
+  - ✅ NOW IMPLEMENTED (Session 18): silent parameter support
+  - ✅ Returns (status_id, removed_nightmare, silent) tuple for caller to log
+  - ✅ Caller must call battle.add() with returned data
+  - ✅ 33 callsites successfully updated (Session 18)
   - Design pattern: work around borrow checker by returning data
+  - This is a Rust-appropriate solution given borrow checker constraints
 
 #### eat_item.rs
 - Status: ✅ Fixed (Improved - Session 24 Part 52)
@@ -3052,13 +3055,13 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 21. get_last_damaged_by.rs - ✅ Complete (Session 24 Part 55)
 22. is_grounded.rs - ✅ Complete (Session 24 Part 69)
 23. set_type.rs - ✅ Complete (Session 24 Part 70)
+24. cure_status.rs - ✅ Complete (Session 18)
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. try_set_status.rs - Core logic correct, simplified
 2. get_weight.rs - Has max(1, weight), missing ModifyWeight event
 3. get_types.rs - Has empty check, missing runEvent('Type')
-4. is_grounded.rs - Has Gravity check, missing suppressingAbility and negateImmunity
-5. And many others...
+4. And many others...
 
 ## Notes
 - Must compile after each fix
