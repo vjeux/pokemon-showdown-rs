@@ -121,7 +121,19 @@ impl Pokemon {
         // JS:     }
         // JS:     return false;
         // JS: }
-        // Note: Missing runStatusImmunity check for volatile
+        // ✅ NOW IMPLEMENTED: runStatusImmunity check for volatile
+        let can_be_volatile = {
+            let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return false,
+            };
+            pokemon.run_status_immunity(battle, volatile_id.as_str())
+        };
+
+        if !can_be_volatile {
+            // Note: Missing sourceEffect.status check for battle.add('-immune')
+            return false;
+        }
 
         // JS: result = this.battle.runEvent('TryAddVolatile', this, source, sourceEffect, status);
         // JS: if (!result) {
