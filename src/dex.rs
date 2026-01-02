@@ -456,6 +456,18 @@ pub struct MoveData {
     /// JavaScript: contestType?: string
     #[serde(rename = "contestType", default)]
     pub contest_type: Option<String>,
+    /// Z-Move options (basePower, effect, boost)
+    /// JavaScript: zMove?: { basePower?: number, effect?: string, boost?: SparseBoostsTable }
+    #[serde(rename = "zMove", default)]
+    pub z_move: Option<serde_json::Value>,
+    /// Calls another move (like Metronome, Sleep Talk)
+    /// JavaScript: callsMove?: boolean
+    #[serde(rename = "callsMove", default)]
+    pub calls_move: bool,
+    /// Can be used while asleep
+    /// JavaScript: sleepUsable?: boolean
+    #[serde(rename = "sleepUsable", default)]
+    pub sleep_usable: bool,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
