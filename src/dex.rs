@@ -784,6 +784,18 @@ pub struct ItemData {
     /// JavaScript: boosts?: SparseBoostsTable
     #[serde(default)]
     pub boosts: Option<std::collections::HashMap<String, i32>>,
+    /// Sprite number for UI display
+    /// JavaScript: spritenum?: number
+    #[serde(default)]
+    pub spritenum: Option<i32>,
+    /// Generation introduced
+    /// JavaScript: gen?: number
+    #[serde(default)]
+    pub gen: Option<u8>,
+    /// Is this a Pok&eacute; Ball?
+    /// JavaScript: isPokeball?: boolean
+    #[serde(rename = "isPokeball", default)]
+    pub is_pokeball: bool,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
