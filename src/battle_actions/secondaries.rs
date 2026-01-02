@@ -93,8 +93,9 @@ pub fn secondaries(
 
             if should_apply {
                 // this.moveHit(target, source, move, secondary, true, isSelf);
-                // TODO: Implement full moveHit function
-                // For now, apply boosts if present
+                // Implement all secondary effects from moveHit
+
+                // Apply stat boosts
                 if let Some(ref boosts) = secondary.boosts {
                     let mut boost_array = Vec::new();
                     if boosts.atk != 0 {
@@ -119,10 +120,71 @@ pub fn secondaries(
                         boost_array.push(("evasion", boosts.evasion));
                     }
 
-                    battle.boost(&boost_array, target_pos, Some(source_pos), None, false, true);
+                    battle.boost(&boost_array, target_pos, Some(source_pos), None, true, false);
                 }
 
-                // TODO: Handle other secondary effects (status, volatiles, side conditions, etc.)
+                // Apply status from secondary effect
+                // JS: if (moveData.status) {
+                //     hitResult = target.setStatus(moveData.status, source, move);
+                // }
+                if let Some(ref status_name) = secondary.status {
+                    let status_id = crate::dex_data::ID::new(status_name);
+                    let _applied = Pokemon::set_status(battle, target_pos, status_id, None, None, false);
+                }
+
+                // Apply volatile status from secondary effect
+                // JS: if (moveData.volatileStatus) {
+                //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
+                // }
+                if let Some(ref volatile_status_name) = secondary.volatile_status {
+                    let volatile_id = crate::dex_data::ID::new(volatile_status_name);
+                    Pokemon::add_volatile(battle, target_pos, volatile_id, None, None, None);
+                }
+
+                // Apply side condition from secondary effect
+                // JS: if (moveData.sideCondition) {
+                //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
+                // }
+                if let Some(ref side_condition_name) = secondary.side_condition {
+                    let side_condition_id = crate::dex_data::ID::new(side_condition_name);
+                    let _applied = battle.sides[target_pos.0].add_side_condition(side_condition_id, None);
+                }
+
+                // Apply slot condition from secondary effect
+                // JS: if (moveData.slotCondition) {
+                //     hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
+                // }
+                if let Some(ref slot_condition_name) = secondary.slot_condition {
+                    let slot_condition_id = crate::dex_data::ID::new(slot_condition_name);
+                    let _applied = battle.sides[target_pos.0].add_slot_condition(target_pos.1, slot_condition_id, None);
+                }
+
+                // Apply pseudo weather from secondary effect
+                // JS: if (moveData.pseudoWeather) {
+                //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
+                // }
+                if let Some(ref pseudo_weather_name) = secondary.pseudo_weather {
+                    let pseudo_weather_id = crate::dex_data::ID::new(pseudo_weather_name);
+                    let _applied = battle.field.add_pseudo_weather(pseudo_weather_id, None);
+                }
+
+                // Apply terrain from secondary effect
+                // JS: if (moveData.terrain) {
+                //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
+                // }
+                if let Some(ref terrain_name) = secondary.terrain {
+                    let terrain_id = crate::dex_data::ID::new(terrain_name);
+                    let _applied = battle.field.set_terrain(terrain_id, None);
+                }
+
+                // Apply weather from secondary effect
+                // JS: if (moveData.weather) {
+                //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
+                // }
+                if let Some(ref weather_name) = secondary.weather {
+                    let weather_id = crate::dex_data::ID::new(weather_name);
+                    let _applied = battle.field.set_weather(weather_id, None);
+                }
             }
         }
     }
