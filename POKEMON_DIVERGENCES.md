@@ -513,9 +513,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing runEvent('AfterSetStatus')
 
 #### take_item.rs
-- Status: ✅ Fixed (Significantly Improved - Session 24)
-- Issue: Missing source parameter and Gen 4 Multitype/itemKnockedOff checks
-- Action: Refactored to associated function and implemented Gen 4 protection
+- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 6 & 16)
+- Issue: Missing source parameter, Gen 4 Multitype/itemKnockedOff checks, and pendingStaleness reset
+- Action: Refactored to associated function and implemented Gen 4 protection and pendingStaleness reset
 - Notes:
   - ✅ NOW IMPLEMENTED (Session 24): Refactored to associated function `Pokemon::take_item(battle, pokemon_pos, source_pos)`
   - ✅ NOW IMPLEMENTED (Session 24): source_pos parameter (optional, defaults to self)
@@ -523,12 +523,12 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24): Prevents item removal if source.item_knocked_off is true (Gen <= 4)
   - ✅ NOW IMPLEMENTED (Session 24): Prevents Arceus (Multitype ability) from having items removed (Gen <= 4)
   - ✅ NOW IMPLEMENTED (Session 24): Updated 13 callsites across move/item callbacks
+  - ✅ NOW IMPLEMENTED (Session 24 Part 16): pendingStaleness reset (field exists in Rust)
   - ❌ Still missing: runEvent('TakeItem')
   - ❌ Still missing: oldItemState storage and clearEffectState call
-  - ❌ Still missing: pendingStaleness reset (field doesn't exist in Rust)
   - ❌ Still missing: singleEvent('End')
   - ❌ Still missing: runEvent('AfterTakeItem')
-  - Now ~70% complete (was ~30%)
+  - Now ~72% complete (was ~70%)
 
 #### transform_into.rs
 - Status: ✅ Fixed (Partially Implemented - Session 24 Part 13)
@@ -1905,6 +1905,37 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 feature implemented (source HP check)
   - 1 file modified (pokemon/add_volatile.rs)
   - 11 insertions, 1 deletion
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 16 - 2026-01-01 (take_item pendingStaleness Reset - COMPLETED)
+- **Goal**: Add missing pendingStaleness reset in take_item
+- **Completed**:
+  - ✅ Implemented pendingStaleness reset
+  - ✅ JavaScript logic: `this.pendingStaleness = undefined;`
+  - ✅ Fixed incorrect comment - field DOES exist in Rust as `pending_staleness: Option<String>`
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - take_item.rs - Now ~72% complete (was ~70%)
+    - ✅ NOW IMPLEMENTED: pendingStaleness reset
+    - ✅ Sets pending_staleness = None when item is taken
+    - JavaScript equivalent:
+      - `this.pendingStaleness = undefined;`
+    - Rust implementation:
+      - `pokemon_mut.pending_staleness = None;`
+- **Technical Details**:
+  - Field was incorrectly documented as "doesn't exist in Rust"
+  - Field exists as `pub pending_staleness: Option<String>` in Pokemon struct
+  - Simple one-line fix after verifying field existence
+  - Reset happens after item is cleared but before item_state reset
+- **Session Statistics**:
+  - 1 method improved (take_item.rs)
+  - 1 feature implemented (pendingStaleness reset)
+  - 1 documentation error fixed (field exists, not missing)
+  - 1 file modified (pokemon/take_item.rs)
+  - 2 insertions, 1 deletion
   - 1 commit pushed to git
   - 100% compilation success rate
 
