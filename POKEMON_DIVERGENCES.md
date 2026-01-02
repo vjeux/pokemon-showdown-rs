@@ -1476,7 +1476,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
-### Session 24 - 2026-01-01 (update_max_hp and is_grounded Improvements)
+### Session 24 - 2026-01-01 (update_max_hp, is_grounded, and details Improvements)
 - **Goal**: Fix TODOs/NOTEs with actionable improvements
 - **Completed Part 1 - update_max_hp**:
   - ✅ Refactored update_max_hp from instance method to associated function
@@ -1489,6 +1489,12 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Implemented suppressingAbility check for Levitate ability
   - ✅ Now checks if Pokemon's Levitate ability is being suppressed (e.g., by Mold Breaker)
   - ✅ Documented that JavaScript returns null but Rust returns false (acceptable approximation)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+- **Completed Part 3 - details**:
+  - ✅ Added shiny flag to details() method output
+  - ✅ Improved protocol string to include ", shiny" when Pokemon is shiny
+  - ✅ Documented that terastallization is shown separately (temporary state vs permanent characteristic)
   - ✅ All changes compile successfully (0 errors, 0 warnings)
   - ✅ Committed and pushed 1 commit
 - **Methods Now Fully Implemented (1-to-1 with JS)**:
@@ -1510,6 +1516,11 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
     - Note: JavaScript returns null for unsuppressed Levitate, Rust returns false (functionally equivalent)
     - ❌ Still missing: Primal Orb check (needs item data field)
     - ❌ Still missing: ignoreKlutz check (needs item data field)
+  - details.rs - Rust-specific helper, now includes shiny flag
+    - ✅ NOW IMPLEMENTED: Shiny flag in details string
+    - ✅ Format: "species, L{level}, {gender}, shiny"
+    - Note: This is a Rust-specific helper method, not in JavaScript
+    - Note: Used for protocol message formatting
 - **Technical Details**:
   - update_max_hp: Changed signature from `&mut self, new_base_max_hp: i32` to `(battle: &mut Battle, pokemon_pos: (usize, usize), new_base_max_hp: i32)`
   - update_max_hp: Phase 1: Extract base_maxhp and has_dynamax immutably
@@ -1518,11 +1529,12 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - update_max_hp: No callsites to update (method never called in codebase)
   - is_grounded: Added `battle.suppressing_ability(Some((self.side_index, self.position)))` check
   - is_grounded: Documented null vs false approximation trade-off
+  - details: Added shiny flag formatting with proper protocol string format
 - **Session Statistics**:
-  - 2 methods improved (update_max_hp fully complete, is_grounded significantly improved)
-  - 2 feature implementations (battle.add call, suppressingAbility check)
-  - 2 files modified (update_max_hp.rs, is_grounded.rs)
-  - 2 commits pushed to git
+  - 3 methods improved (update_max_hp fully complete, is_grounded significantly improved, details improved)
+  - 3 feature implementations (battle.add call, suppressingAbility check, shiny flag)
+  - 3 files modified (update_max_hp.rs, is_grounded.rs, details.rs)
+  - 3 commits pushed to git
   - 100% compilation success rate
 
 ### Implementation Progress Summary
