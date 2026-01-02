@@ -101,8 +101,8 @@ impl Battle {
             let prefixed_event = format!("on{}", event_name);
             let pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos, None);
             // Add event variant name to each handler
-            for (effect_id, holder, _effect_type) in pokemon_handlers {
-                handlers.push((event_name.to_string(), effect_id, holder));
+            for handler in pokemon_handlers {
+                handlers.push((event_name.to_string(), handler.effect_id, handler.effect_holder));
             }
 
             if prefixed_handlers {
@@ -124,8 +124,8 @@ impl Battle {
                         let ally_event = format!("onAlly{}", event_name);
                         let ally_handlers =
                             self.find_pokemon_event_handlers(&ally_event, ally_pos, None);
-                        for (effect_id, holder, _effect_type) in ally_handlers {
-                            handlers.push((ally_variant.clone(), effect_id, holder));
+                        for handler in ally_handlers {
+                            handlers.push((ally_variant.clone(), handler.effect_id, handler.effect_holder));
                         }
 
                         // onAny handlers
@@ -133,8 +133,8 @@ impl Battle {
                         let any_event = format!("onAny{}", event_name);
                         let any_handlers =
                             self.find_pokemon_event_handlers(&any_event, ally_pos, None);
-                        for (effect_id, holder, _effect_type) in any_handlers {
-                            handlers.push((any_variant.clone(), effect_id, holder));
+                        for handler in any_handlers {
+                            handlers.push((any_variant.clone(), handler.effect_id, handler.effect_holder));
                         }
                     }
                 }
@@ -155,8 +155,8 @@ impl Battle {
                             let foe_event = format!("onFoe{}", event_name);
                             let foe_handlers =
                                 self.find_pokemon_event_handlers(&foe_event, foe_pos, None);
-                            for (effect_id, holder, _effect_type) in foe_handlers {
-                                handlers.push((foe_variant.clone(), effect_id, holder));
+                            for handler in foe_handlers {
+                                handlers.push((foe_variant.clone(), handler.effect_id, handler.effect_holder));
                             }
 
                             // onAny handlers
@@ -164,8 +164,8 @@ impl Battle {
                             let any_event = format!("onAny{}", event_name);
                             let any_handlers =
                                 self.find_pokemon_event_handlers(&any_event, foe_pos, None);
-                            for (effect_id, holder, _effect_type) in any_handlers {
-                                handlers.push((any_variant.clone(), effect_id, holder));
+                            for handler in any_handlers {
+                                handlers.push((any_variant.clone(), handler.effect_id, handler.effect_holder));
                             }
                         }
                     }
@@ -182,8 +182,8 @@ impl Battle {
                 let source_event = format!("onSource{}", event_name);
                 let source_handlers =
                     self.find_pokemon_event_handlers(&source_event, source_pos, None);
-                for (effect_id, holder, _effect_type) in source_handlers {
-                    handlers.push((source_variant.clone(), effect_id, holder));
+                for handler in source_handlers {
+                    handlers.push((source_variant.clone(), handler.effect_id, handler.effect_holder));
                 }
             }
         }

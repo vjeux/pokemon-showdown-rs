@@ -231,7 +231,10 @@ impl Battle {
                 if event_id == "SwitchIn" {
                     let any_event = format!("onAny{}", event_id);
                     let any_handlers = self.find_pokemon_event_handlers(&any_event, target_pos, None);
-                    for (effect_id, holder, effect_type) in any_handlers {
+                    for handler in any_handlers {
+                        let effect_id = handler.effect_id;
+                        let holder = handler.effect_holder;
+                        let effect_type = handler.effect_type;
                         let handler = self.create_field_handler(
                             effect_id,
                             effect_type,
@@ -254,7 +257,10 @@ impl Battle {
 
                 // JS: handlers = handlers.concat(this.findPokemonEventHandlers(active, callbackName, getKey));
                 let pokemon_handlers = self.find_pokemon_event_handlers(&callback_name, target_pos, get_key);
-                for (effect_id, holder, effect_type) in pokemon_handlers {
+                for handler in pokemon_handlers {
+                    let effect_id = handler.effect_id;
+                    let holder = handler.effect_holder;
+                    let effect_type = handler.effect_type;
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
