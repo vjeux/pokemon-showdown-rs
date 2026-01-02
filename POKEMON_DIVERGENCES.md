@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 88 Complete - run_immunity refactor)
-- **Session 24 Total Progress**: 41+ commits, 88 parts (Part 88 complete)
+## Overview (Updated: Session 24 Part 89 Complete - run_status_immunity refactor)
+- **Session 24 Total Progress**: 42+ commits, 89 parts (Part 89 complete)
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -47,8 +47,10 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 86**: **COMPLETED** - get_updated_details Greninja-Bond/Rockruff-Dusk fix - Implemented baseSpecies fallback for Greninja-Bond, Greninja-Ash, and Rockruff-Dusk forms
   - **Part 87**: **COMPLETED** - set_ability battle.add message - Implemented -ability message for ability changes with source tracking (using IDs as approximation for ability names)
   - **Part 88**: **COMPLETED** - run_immunity refactor - Complete 1:1 JavaScript implementation with runEvent('NegateImmunity'), is_grounded(), battle.dex.get_immunity(), and battle.add messages
+  - **Part 89**: **COMPLETED** - run_status_immunity refactor - Complete 1:1 JavaScript implementation with battle.debug(), battle.add('-immune'), and runEvent('Immunity') for ability-based immunity. Updated 8 callsites
 - **Methods Significantly Improved**:
   - run_immunity.rs (runEvent, is_grounded, get_immunity, battle.add messages - now ~95%, was ~20%)
+  - run_status_immunity.rs (battle.debug, battle.add, runEvent('Immunity') - now ~95%, was ~30%)
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
   - get_moves.rs (**MAJOR REFACTOR** - full move objects, lockedMove parameter, trapped side effect - now ~78%, was ~75%)
