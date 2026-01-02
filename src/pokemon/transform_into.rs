@@ -262,29 +262,44 @@ impl Pokemon {
         // JS:     if (moveSlot.id === 'hiddenpower') {
         // JS:         moveName = 'Hidden Power ' + this.hpType;
         // JS:     }
-        // Note: Missing Hidden Power move name formatting with hpType
+        // Extract hp_type for Hidden Power formatting
+        let hp_type_for_moves = self_pokemon_mut.hp_type.clone();
 
         // Copy moves with reduced PP
+        // ✅ NOW IMPLEMENTED (Session 24 Part 59): Hidden Power move name formatting with hpType
         self_pokemon_mut.move_slots = target_move_slots
             .iter()
-            .map(|slot| MoveSlot {
-                id: slot.id.clone(),
-                move_name: slot.move_name.clone(),
-                // JS: pp: moveSlot.maxpp === 1 ? 1 : 5,
-                // JS: maxpp: this.battle.gen >= 5 ? (moveSlot.maxpp === 1 ? 1 : 5) : moveSlot.maxpp,
-                // ✅ NOW IMPLEMENTED: Gen check for maxpp calculation
-                pp: if slot.maxpp == 1 { 1 } else { 5 },
-                maxpp: if gen >= 5 {
-                    if slot.maxpp == 1 { 1 } else { 5 }
+            .map(|slot| {
+                // Format move name for Hidden Power
+                let move_name = if slot.id.as_str() == "hiddenpower" {
+                    if let Some(ref hp_type) = hp_type_for_moves {
+                        format!("Hidden Power {}", hp_type)
+                    } else {
+                        slot.move_name.clone()
+                    }
                 } else {
-                    slot.maxpp
-                },
-                target: slot.target.clone(),
-                disabled: false,
-                disabled_source: None,
-                used: false,
-                virtual_move: true,
-                is_z: slot.is_z,
+                    slot.move_name.clone()
+                };
+
+                MoveSlot {
+                    id: slot.id.clone(),
+                    move_name,
+                    // JS: pp: moveSlot.maxpp === 1 ? 1 : 5,
+                    // JS: maxpp: this.battle.gen >= 5 ? (moveSlot.maxpp === 1 ? 1 : 5) : moveSlot.maxpp,
+                    // ✅ NOW IMPLEMENTED: Gen check for maxpp calculation
+                    pp: if slot.maxpp == 1 { 1 } else { 5 },
+                    maxpp: if gen >= 5 {
+                        if slot.maxpp == 1 { 1 } else { 5 }
+                    } else {
+                        slot.maxpp
+                    },
+                    target: slot.target.clone(),
+                    disabled: false,
+                    disabled_source: None,
+                    used: false,
+                    virtual_move: true,
+                    is_z: slot.is_z,
+                }
             })
             .collect();
 
