@@ -252,9 +252,13 @@ pub fn use_move_inner(
                     .is_some_and(|m| m.is_z)
             }))
     {
-        // TODO: Transform to Z-move - requires proper dex.getActiveMove implementation
-        // TypeScript calls this.dex.getActiveMove() to get Z-move from dex
-        // active_move = BattleActions::get_active_z_move(...);
+        // Transform to Z-move using get_active_z_move
+        active_move = crate::battle_actions::get_active_z_move(
+            battle,
+            pokemon_pos.0,
+            pokemon_pos.1,
+            active_move.id.as_str(),
+        );
     }
 
     // if (maxMove && move.category !== 'Status') {
@@ -291,9 +295,13 @@ pub fn use_move_inner(
                     .is_some_and(|m| m.is_max)
             }))
     {
-        // TODO: Transform to Max move - requires proper dex.getActiveMove implementation
-        // TypeScript calls this.dex.getActiveMove() to get Max move from dex
-        // active_move = BattleActions::get_active_max_move(...);
+        // Transform to Max move using get_active_max_move
+        active_move = crate::battle_actions::get_active_max_move(
+            battle,
+            pokemon_pos.0,
+            pokemon_pos.1,
+            active_move.id.as_str(),
+        );
     }
 
     // if (this.battle.activeMove) {
