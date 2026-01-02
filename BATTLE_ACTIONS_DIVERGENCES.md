@@ -9,9 +9,10 @@ This document tracks divergences between the JavaScript implementation in `pokem
 **Stub Functions:** 16/17 completed (94%)
 - ✅ All simple stubs implemented except hit_step_move_hit_loop (deferred for infrastructure)
 
-**Partial Implementations:** 2/3 completed (67%)
+**Partial Implementations:** 3/4 completed (75%)
 - ✅ hit_step_accuracy.rs - All 3 TODOs completed
 - ✅ get_damage.rs - All TODOs completed
+- ✅ use_move_inner.rs - All 2 TODOs completed
 - ⚠️ run_move.rs - 4/13 TODOs completed (9 remaining require infrastructure)
 
 **Key Achievements:**
@@ -103,6 +104,10 @@ Multiple missing features (9 remaining, 4 completed):
 - ~~Line 274: Break Protect (hitStepBreakProtect)~~ ✅ IMPLEMENTED
 - ~~Line 286: Steal Boosts (hitStepStealBoosts)~~ ✅ IMPLEMENTED
 - ~~Line 298: Move hit loop (spreadMoveHit)~~ ✅ IMPLEMENTED
+
+### ~~use_move_inner.rs~~ ✅ COMPLETED
+- ~~Line 255: Z-move transformation (getActiveZMove)~~ ✅ IMPLEMENTED
+- ~~Line 294: Max move transformation (getActiveMaxMove)~~ ✅ IMPLEMENTED
 
 ## Rust-Specific Files (Not in JavaScript)
 
@@ -400,6 +405,19 @@ These files exist only in Rust and should be evaluated:
   - Accumulates total_damage for recoil handling
   - Stores in active_move.total_damage
 - Borrow Checker Solution: Uses clone pattern for active_move to avoid borrowing conflicts
+- 1:1 match with JavaScript implementation
+
+### 2026-01-02
+**Completed: use_move_inner** ✅ ALL TODOs IMPLEMENTED!
+- Implemented Z-move transformation (line 255):
+  - Calls get_active_z_move(battle, pokemon_pos.0, pokemon_pos.1, active_move.id.as_str())
+  - Transforms move to Z-move when zMove option is set or source effect is Z-move
+  - Matches JavaScript: `move = this.getActiveZMove(move, pokemon)`
+- Implemented Max move transformation (line 294):
+  - Calls get_active_max_move(battle, pokemon_pos.0, pokemon_pos.1, active_move.id.as_str())
+  - Transforms move to Max move when maxMove option is set or source effect is Max move
+  - Matches JavaScript: `move = this.getActiveMaxMove(move, pokemon)`
+- Both transformations use already-implemented functions
 - 1:1 match with JavaScript implementation
 
 ---
