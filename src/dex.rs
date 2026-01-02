@@ -800,6 +800,10 @@ pub struct ItemData {
     /// JavaScript: isPokeball?: boolean
     #[serde(rename = "isPokeball", default)]
     pub is_pokeball: bool,
+    /// Does this item ignore the Klutz ability?
+    /// JavaScript: ignoreKlutz?: boolean
+    #[serde(rename = "ignoreKlutz", default)]
+    pub ignore_klutz: bool,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
