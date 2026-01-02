@@ -94,7 +94,10 @@ impl Pokemon {
             return false; // Return false instead of panic
         }
 
-        // Phase 2: Get mutable reference and apply changes
+        // Phase 2: Calculate apparent type string before mutation
+        let apparent_type_str = new_types.join("/");
+
+        // Phase 3: Get mutable reference and apply changes
         let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return false,
@@ -108,10 +111,14 @@ impl Pokemon {
         pokemon.added_type = None;
 
         // JS: this.knownType = true;
-        // Note: Missing knownType field assignment (field doesn't exist)
+        // Note: JavaScript uses boolean knownType, but Rust uses Option<String> known_type for Illusion mechanics
+        // These are different concepts - JS tracks "is type known?", Rust tracks "what type is known?"
+        // In JavaScript, setType sets knownType = true to indicate the type is now publicly known
+        // In Rust, this field is used differently (for Illusion breaking), so we don't set it here
 
         // JS: this.apparentType = this.types.join('/');
-        // Note: Missing apparentType field assignment (field doesn't exist)
+        // ✅ NOW IMPLEMENTED: apparentType field assignment
+        pokemon.apparent_type = Some(apparent_type_str);
 
         // JS: return true;
         true
