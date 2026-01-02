@@ -64,7 +64,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item();
+        pokemon_mut.use_item(None, None);
     }
 
     // delete this.effectState.boosts;

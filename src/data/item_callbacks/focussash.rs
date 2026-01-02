@@ -43,7 +43,7 @@ pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, us
         if effect_type == "Move" {
             // if (target.useItem())
             let used_item = if let Some(pokemon) = battle.pokemon_at_mut(target.0, target.1) {
-                pokemon.use_item().is_some()
+                pokemon.use_item(None, None).is_some()
             } else {
                 false
             };

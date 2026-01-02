@@ -29,7 +29,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usi
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item();
+        pokemon_mut.use_item(None, None);
     }
 
     EventResult::Continue

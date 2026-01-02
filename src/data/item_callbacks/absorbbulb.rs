@@ -25,7 +25,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     if is_water {
         // target.useItem();
         if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-            target_pokemon.use_item();
+            target_pokemon.use_item(None, None);
         }
     }
 

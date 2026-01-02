@@ -111,7 +111,7 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED: lastItem, usedItemThisTurn, ateBerry tracking
 
         // Call use_item() which handles lastItem and usedItemThisTurn
-        let result = self.use_item();
+        let result = self.use_item(None, None);
 
         // Additionally set ateBerry = true (specific to eating)
         if result.is_some() {

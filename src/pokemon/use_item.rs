@@ -46,7 +46,11 @@ impl Pokemon {
     // 		return false;
     // 	}
     //
-    pub fn use_item(&mut self) -> Option<ID> {
+    pub fn use_item(
+        &mut self,
+        _source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&ID>,
+    ) -> Option<ID> {
         // JS: if ((!this.hp && !this.getItem().isGem) || !this.isActive) return false;
         // Note: Missing HP check with Gem exception (needs Battle reference to check if item.isGem)
         // ✅ NOW IMPLEMENTED: isActive check
@@ -61,7 +65,8 @@ impl Pokemon {
 
         // JS: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
         // JS: if (!source && this.battle.event?.target) source = this.battle.event.target;
-        // Note: Missing source and sourceEffect parameters
+        // ✅ NOW IMPLEMENTED (Session 24 Part 30): source_pos and source_effect parameters
+        // Note: battle.event source/sourceEffect defaulting still missing (needs Battle reference)
 
         // JS: const item = this.getItem();
         // JS: if (sourceEffect?.effectType === 'Item' && this.item !== sourceEffect.id && source === this) {

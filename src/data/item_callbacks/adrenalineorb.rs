@@ -53,7 +53,7 @@ pub fn on_after_boost(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_mut.use_item();
+            pokemon_mut.use_item(None, None);
         }
     }
 

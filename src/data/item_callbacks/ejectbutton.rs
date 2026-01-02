@@ -138,7 +138,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_mut.use_item()
+        target_mut.use_item(None, None)
     };
 
     if item_used.is_some() {

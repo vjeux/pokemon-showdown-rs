@@ -47,7 +47,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
     if is_flying {
         // source.useItem()
         let used_item = if let Some(source_pokemon) = battle.pokemon_at_mut(source.0, source.1) {
-            source_pokemon.use_item().is_some()
+            source_pokemon.use_item(None, None).is_some()
         } else {
             false
         };

@@ -27,7 +27,7 @@ pub fn on_charge_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item()
+        pokemon_mut.use_item(None, None)
     };
 
     if used_item.is_some() {

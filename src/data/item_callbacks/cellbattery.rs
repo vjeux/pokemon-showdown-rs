@@ -34,7 +34,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            match pokemon.use_item() {
+            match pokemon.use_item(None, None) {
                 Some(id) => id,
                 None => return EventResult::Continue,
             }

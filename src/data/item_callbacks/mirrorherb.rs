@@ -120,7 +120,7 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item();
+        pokemon_mut.use_item(None, None);
     }
 
     EventResult::Continue
@@ -162,7 +162,7 @@ pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item();
+        pokemon_mut.use_item(None, None);
     }
 
     EventResult::Continue
@@ -204,7 +204,7 @@ pub fn on_any_after_terastallization(battle: &mut Battle) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item();
+        pokemon_mut.use_item(None, None);
     }
 
     EventResult::Continue
@@ -246,7 +246,7 @@ pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item();
+        pokemon_mut.use_item(None, None);
     }
 
     EventResult::Continue
@@ -288,7 +288,7 @@ pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventRe
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item();
+        pokemon_mut.use_item(None, None);
     }
 
     EventResult::Continue

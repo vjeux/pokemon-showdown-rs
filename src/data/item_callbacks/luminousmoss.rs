@@ -27,7 +27,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item();
+        pokemon_mut.use_item(None, None);
     }
 
     EventResult::Continue
