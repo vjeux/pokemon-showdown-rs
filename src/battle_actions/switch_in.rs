@@ -237,8 +237,12 @@ pub fn switch_in(
         }
 
         // Initialize ability and item state
+        // JS: pokemon.abilityState = this.battle.initEffectState({ id: pokemon.ability, target: pokemon });
+        // JS: pokemon.itemState = this.battle.initEffectState({ id: pokemon.item, target: pokemon });
         pokemon.ability_state = EffectState::new(pokemon.ability.clone());
+        pokemon.ability_state.target = Some((side_index, pokemon_index));
         pokemon.item_state = EffectState::new(pokemon.item.clone());
+        pokemon.item_state.target = Some((side_index, pokemon_index));
     }
 
     // Run BeforeSwitchIn event
