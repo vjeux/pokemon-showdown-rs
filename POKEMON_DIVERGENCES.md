@@ -2,9 +2,17 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview
-- Total TODOs/NOTEs found: 120
-- Goal: Achieve 1:1 line-by-line equivalence with JavaScript
+## Overview (Updated: Session 24 Parts 33-41 Complete)
+- **Session 24 Progress**: 14 commits, 9 parts completed (Parts 33-41)
+- **Methods Significantly Improved**:
+  - transform_into.rs (Gen 6+ crit volatile copying)
+  - add_volatile.rs (3 missing features implemented)
+  - copy_volatile_from.rs (complete refactor to associated function)
+- **Move Callbacks Fixed**: 9 files with proper source/effect parameters
+- **Duplicate Files Removed**: 1 (copy_volatile_from_full.rs)
+- **Compilation Success Rate**: 100% (0 errors, 0 warnings throughout)
+- **Remaining TODO/NOTEs**: Most require event system infrastructure not yet implemented
+- **Goal**: Achieve 1:1 line-by-line equivalence with JavaScript
 
 ## Status Legend
 - ✅ Fixed - Fully implemented matching JavaScript
