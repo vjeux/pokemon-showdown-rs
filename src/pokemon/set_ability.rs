@@ -85,7 +85,15 @@ impl Pokemon {
         // JS:     const setAbilityEvent = this.battle.runEvent('SetAbility', this, source, sourceEffect, ability);
         // JS:     if (!setAbilityEvent) return setAbilityEvent;
         // JS: }
-        // Note: Missing runEvent('SetAbility')
+        // ✅ NOW IMPLEMENTED (Session 24 Part 79): runEvent('SetAbility')
+        // Note: JavaScript passes ability as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
+        //       Passing None for now - handlers can check pokemon's ability field after it's set
+        // Note: isFromFormeChange and isTransform checks not implemented - calling event unconditionally
+        let set_ability_result = battle.run_event("SetAbility", Some(pokemon_pos), source_pos, source_effect, None);
+        // runEvent returns Option<i32>, None or Some(0) means failure
+        if set_ability_result == Some(0) || set_ability_result == None {
+            return ID::default();
+        }
 
         // JS: this.battle.singleEvent('End', oldAbility, this.abilityState, this, source);
         // ✅ NOW IMPLEMENTED (Session 24 Part 76): singleEvent('End') for old ability
