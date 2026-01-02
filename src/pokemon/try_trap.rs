@@ -18,7 +18,7 @@ impl Pokemon {
                 Some(p) => p,
                 None => return false,
             };
-            pokemon.run_status_immunity(battle, "trapped")
+            pokemon.run_status_immunity(battle, "trapped", false)
         };
 
         if !can_be_trapped {

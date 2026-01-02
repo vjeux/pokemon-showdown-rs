@@ -127,7 +127,7 @@ impl Pokemon {
                 Some(p) => p,
                 None => return false,
             };
-            pokemon.run_status_immunity(battle, volatile_id.as_str())
+            pokemon.run_status_immunity(battle, volatile_id.as_str(), false)
         };
 
         if !can_be_volatile {

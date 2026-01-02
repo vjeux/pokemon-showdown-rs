@@ -42,7 +42,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.run_status_immunity(battle, "slp")
+        target_pokemon.run_status_immunity(battle, "slp", false)
     };
 
     if !has_immunity {
@@ -93,7 +93,7 @@ pub fn on_after_sub_damage(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.run_status_immunity(battle, "slp")
+        target_pokemon.run_status_immunity(battle, "slp", false)
     };
 
     if !has_immunity {
