@@ -122,7 +122,7 @@ impl Pokemon {
         // Phase 1: Extract target data immutably
         let (target_species_id, target_weight_hg, target_types, target_added_type, target_stored_stats,
              target_move_slots, target_boosts, target_ability, target_has_substitute, target_transformed,
-             target_fainted, target_times_attacked, target_apparent_type) = {
+             target_fainted, target_times_attacked, target_apparent_type, target_hp_type, target_hp_power) = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return false,
@@ -142,6 +142,8 @@ impl Pokemon {
                 target.fainted,
                 target.times_attacked,
                 target.apparent_type.clone(),
+                target.hp_type.clone(),
+                target.hp_power,
             )
         };
 
@@ -242,7 +244,14 @@ impl Pokemon {
         // JS: this.moveSlots = [];
         // JS: this.hpType = (this.battle.gen >= 5 ? this.hpType : pokemon.hpType);
         // JS: this.hpPower = (this.battle.gen >= 5 ? this.hpPower : pokemon.hpPower);
-        // Note: Missing hpType/hpPower conditional copying based on gen
+        // ✅ NOW IMPLEMENTED (Session 24 Part 58): hpType/hpPower conditional copying based on gen
+        if gen >= 5 {
+            // Gen >= 5: Keep self's hp_type and hp_power (no action needed, already set)
+        } else {
+            // Gen < 5: Copy target's hp_type and hp_power
+            self_pokemon_mut.hp_type = target_hp_type;
+            self_pokemon_mut.hp_power = target_hp_power;
+        }
 
         // JS: this.timesAttacked = pokemon.timesAttacked;
         // ✅ NOW IMPLEMENTED: timesAttacked copying
